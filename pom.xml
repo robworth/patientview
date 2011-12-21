@@ -24,6 +24,35 @@
 		<jetty.version>7.5.0.v20110901</jetty.version>
         <spring.version>3.0.5.RELEASE</spring.version>
 	</properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>dev</env>
+                <tomcatmanagerurl>http://dev.solidstategroup.com:9080/manager/html</tomcatmanagerurl>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <env>staging</env>
+                <tomcatmanagerurl>http://staging.solidstategroup.com:8080/manager/html</tomcatmanagerurl>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <env>production</env>
+                <!--Not necessary but I think we need it-->
+                <tomcatmanagerurl>http://localhost:8080/manager/html</tomcatmanagerurl>
+            </properties>
+        </profile>
+    </profiles>
+
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
 		<dependency>
@@ -176,6 +205,17 @@
 					<downloadSources>true</downloadSources>
 				</configuration>
 			</plugin>
+            <!--For deploying to Tomcat-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <url>${tomcatmanagerurl}</url>
+                    <server>tomcatmanager</server>
+                    <path>/radar</path>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
