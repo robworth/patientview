@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
+    <title>
+        RADAR - National Renal Rare Disease Registry
+    </title>
+    <link href="css/normal.css" rel="stylesheet" type="text/css"/>
+    <link href="css/layout.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+    <div id="outerWrapper">
+        <div id="header">
+            <img alt="Renal RaDaR" src="images/logos/RADAR_logo_small.jpg" title="Renal RaDaR" style="float:right"/>
+        </div>
+
+
+        <div id="topNavigation"><a href="Default.aspx">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a id="ctl00_lnkReg"
+                                                                                           href="register.aspx">Health
+            Professional Registration</a>
+
+            <div id="rightNav"><a id="ctl00_lnkAbout"></a><a id="ctl00_lnkStudy"></a>
+                <a id="ctl00_lnkProfessionals" href="professionals.aspx">Professionals</a><span id="ctl00_lblSpace3">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a
+                        id="ctl00_lnkPatients" href="patients.aspx">Patients</a><span id="ctl00_lblSpace4">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a
+                        id="ctl00_lnkDiseases" href="Default5.aspx">Disease Index</a></div>
+
+        </div>
+
+        <div id="contentWrapper">
+            <div id="content">
+                <wicket:child/>
+            </div>
+            <div id="clearFooter"></div>
+
+        </div>
+    </div>
+    <div id="footer">
+        <script language="javacript" type="text/javascript">
+            document.write('&copy; The Renal Association 2009-'+(new Date()).getFullYear());
+        </script>
+
+
+        <noscript>&copy; The Renal Association</noscript>
+    </div>
+</body>
+</html>
