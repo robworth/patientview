@@ -1,6 +1,6 @@
 package com.solidstategroup;
 
-import com.solidstategroup.web.pages.BasePage;
+import com.solidstategroup.web.pages.BasePatientPage;
 import com.solidstategroup.web.pages.RadarApplication;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
@@ -23,9 +23,9 @@ public class TestHomePage
 	public void homepageRendersSuccessfully()
 	{
 		//start and render the test page
-		tester.startPage(BasePage.class);
+		tester.startPage(BasePatientPage.class);
 
 		//assert rendered page class
-		tester.assertRenderedPage(BasePage.class);
+		tester.assertRenderedPage(BasePatientPage.class);
 	}
 }

@@ -1,27 +1,21 @@
 package com.solidstategroup.web.pages;
 
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
 
 public class RadarApplication extends WebApplication
 {    	
-	/**
-	 * @see org.apache.wicket.Application#getHomePage()
-	 */
+
 	@Override
-	public Class<BasePage> getHomePage()
+	public Class<? extends WebPage> getHomePage()
 	{
-		return BasePage.class;
+		return HomePage.class;
 	}
 
-	/**
-	 * @see org.apache.wicket.Application#init()
-	 */
 	@Override
 	public void init()
 	{
 		super.init();
-
-		// add your configuration here
 	}
 }
