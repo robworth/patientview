@@ -1,9 +1,9 @@
 CREATE TABLE sysdiagrams (
-	name nvarchar(128) NOT NULL,
+	name varchar(128) NOT NULL,
 	principal_id int NOT NULL,
 	diagram_id int NOT NULL,
 	version int,
-	definition varbinary(max)
+	definition blob
 );
 
 CREATE TABLE tbl_6Month (
@@ -27,7 +27,7 @@ CREATE TABLE tbl_6Month (
 	COMP2 int,
 	COMP3 int,
 	COMP4 int,
-	OTHER_COMP nvarchar(50),
+	OTHER_COMP varchar(50),
 	DATE_START_DIAL datetime,
 	DIAL_TYPE int,
 	DATE_TRANSPLANT datetime,
@@ -36,39 +36,39 @@ CREATE TABLE tbl_6Month (
 	DATE_TX_REJECT datetime,
 	DATE_BX datetime,
 	DATE_NEPHRECT datetime,
-	DRUG1 nvarchar(50),
-	DRUG2 nvarchar(50),
-	DRUG3 nvarchar(50),
-	DRUG4 nvarchar(50),
-	DRUG5 nvarchar(50),
-	DRUG6 nvarchar(50),
+	DRUG1 varchar(50),
+	DRUG2 varchar(50),
+	DRUG3 varchar(50),
+	DRUG4 varchar(50),
+	DRUG5 varchar(50),
+	DRUG6 varchar(50),
 	SIG_CHANGE_STATUS nchar(10)
 );
 
 CREATE TABLE tbl_AdminUsers (
 	uID int NOT NULL,
-	uName nvarchar(30),
-	uEmail nvarchar(50),
+	uName varchar(30),
+	uEmail varchar(50),
 	uPass varbinary(50),
 	uUserName varbinary(50)
 );
 
 CREATE TABLE tbl_Centres (
 	cID int NOT NULL,
-	cName nvarchar(80),
-	cAbbrev nvarchar(15),
+	cName varchar(80),
+	cAbbrev varchar(15),
 	cCountry int
 );
 
 CREATE TABLE tbl_Clin_Pres (
 	cID int,
-	CLIN_PRES nvarchar(20)
+	CLIN_PRES varchar(20)
 );
 
 CREATE TABLE tbl_ClinicalData (
 	cID int NOT NULL,
 	RADAR_NO int NOT NULL,
-	DATE_CLIN_PIC smalldatetime,
+	DATE_CLIN_PIC TIMESTAMP,
 	HEIGHT decimal(8,1),
 	WEIGHT decimal(8,2),
 	COURSE_DIS int,
@@ -76,40 +76,40 @@ CREATE TABLE tbl_ClinicalData (
 	DIA_BP int,
 	MAP_BP int,
 	DIALYSIS_REQ int,
-	DATE_BX smalldatetime,
+	DATE_BX TIMESTAMP,
 	OEDEMA bit,
 	ANAEMIA bit,
 	HYPOVAL bit,
 	FEVER bit,
 	INFECTION bit,
-	INFECTION_DETAIL nvarchar(50),
-	INFECTION_TYPE nvarchar(50),
+	INFECTION_DETAIL varchar(50),
+	INFECTION_TYPE varchar(50),
 	THROMBOSIS bit,
-	THROMBOSIS_DETAIL nvarchar(250),
+	THROMBOSIS_DETAIL varchar(250),
 	COMP_THROMBOSIS bit,
 	COMP_THROMBOSIS_DETAIL text,
 	PERITONITIS bit,
 	PUL_OED bit,
 	HTH_REQ_TMT bit,
 	PREC_INF bit,
-	PREC_INF_DETAIL nvarchar(150),
+	PREC_INF_DETAIL varchar(150),
 	CLIN_EV_CHR_INF bit,
-	CLIN_EV_CHR_INF_DETAIL nvarchar(150),
+	CLIN_EV_CHR_INF_DETAIL varchar(150),
 	DIABETES smallint,
 	URTICARIA smallint,
 	RASH bit,
-	RASH_DETAIL nvarchar(50),
+	RASH_DETAIL varchar(50),
 	PART_LIPODYS bit,
 	OPTHALM bit,
-	OPTHALM_DETAIL nvarchar(50),
+	OPTHALM_DETAIL varchar(50),
 	IMMUNIS_TRIGGER bit,
 	COMMENTS text,
 	PHENOTYPE1 int,
 	PHENOTYPE2 int,
 	PHENOTYPE3 int,
 	PHENOTYPE4 int,
-	SIG_DIAG1 nvarchar(30),
-	SIG_DIAG2 nvarchar(30),
+	SIG_DIAG1 varchar(30),
+	SIG_DIAG2 varchar(30),
 	TX_LISTED bit,
 	CKD_STAGE int,
 	SEQ_NO int
@@ -117,25 +117,25 @@ CREATE TABLE tbl_ClinicalData (
 
 CREATE TABLE tbl_Complication (
 	cmpID int NOT NULL,
-	cmpDesc nvarchar(50)
+	cmpDesc varchar(50)
 );
 
 CREATE TABLE tbl_Consultants (
 	cID int NOT NULL,
-	cSNAME nvarchar(50),
-	cFNAME nvarchar(50),
+	cSNAME varchar(50),
+	cFNAME varchar(50),
 	cCentre int
 );
 
 CREATE TABLE tbl_Country (
 	cID int NOT NULL,
-	cName nvarchar(50)
+	cName varchar(50)
 );
 
 CREATE TABLE tbl_Demographics (
 	RADAR_NO int NOT NULL,
-	RR_NO nvarchar(10),
-	DATE_REG smalldatetime,
+	RR_NO varchar(10),
+	DATE_REG TIMESTAMP,
 	NHS_NO varbinary(50),
 	HOSP_NO varbinary(50),
 	UKT_NO bigint,
@@ -146,7 +146,7 @@ CREATE TABLE tbl_Demographics (
 	DOB varbinary(50),
 	AGE int,
 	SEX int,
-	ETHNIC_GP nvarchar(6),
+	ETHNIC_GP varchar(6),
 	ADD1 varbinary(50),
 	ADD2 varbinary(50),
 	ADD3 varbinary(50),
@@ -154,8 +154,8 @@ CREATE TABLE tbl_Demographics (
 	POSTCODE varbinary(50),
 	POSTCODE_OLD varbinary(50),
 	CONSENT bit,
-	DATE_BAPN_REG smalldatetime,
-	CONS_NEPH nvarchar(6),
+	DATE_BAPN_REG TIMESTAMP,
+	CONS_NEPH varchar(6),
 	RENAL_UNIT int,
 	RENAL_UNIT_2 int,
 	STATUS int
@@ -163,45 +163,45 @@ CREATE TABLE tbl_Demographics (
 
 CREATE TABLE tbl_DiagCode (
 	dcID int NOT NULL,
-	dcDesc nvarchar(70),
-	dcAbbr nvarchar(15)
+	dcDesc varchar(70),
+	dcAbbr varchar(15)
 );
 
 CREATE TABLE tbl_Diagnosis (
 	dID int NOT NULL,
 	RADAR_NO int,
-	DATE_DIAG smalldatetime,
+	DATE_DIAG TIMESTAMP,
 	DIAG int,
-	DIAG_TXT nvarchar(100),
+	DIAG_TXT varchar(100),
 	AGE_AT_DIAG decimal(4,1),
 	HEIGHT_FIRST_VISIT numeric(4,1),
-	BX_PROVEN_DIAG nvarchar(1),
+	BX_PROVEN_DIAG varchar(1),
 	PREPUB_DIAG bit,
 	CLIN_PRES int,
 	CLIN_PRES_B int,
-	GENE_MUT nvarchar(50),
-	GENE_MUT_TEXT nvarchar(100),
-	KARYOTYPE nvarchar(50),
-	KARYOTYPE_OTHER nvarchar(100),
-	DATE_ONSET_RENALDIS smalldatetime,
+	GENE_MUT varchar(50),
+	GENE_MUT_TEXT varchar(100),
+	KARYOTYPE varchar(50),
+	KARYOTYPE_OTHER varchar(100),
+	DATE_ONSET_RENALDIS TIMESTAMP,
 	CONSANGUINITY int,
 	FAM_HIST int,
-	REL1 nvarchar(20),
+	REL1 varchar(20),
 	REL1_RADAR int,
-	REL2 nvarchar(20),
+	REL2 varchar(20),
 	REL2_RADAR int,
-	REL3 nvarchar(20),
+	REL3 varchar(20),
 	REL3_RADAR int,
-	REL4 nvarchar(20),
+	REL4 varchar(20),
 	REL4_RADAR int,
-	REL5 nvarchar(20),
+	REL5 varchar(20),
 	REL5_RADAR int,
-	REL6 nvarchar(20),
+	REL6 varchar(20),
 	REL6_RADAR int,
-	SIG_DIAG1 nvarchar(50),
-	SIG_DIAG2 nvarchar(50),
+	SIG_DIAG1 varchar(50),
+	SIG_DIAG2 varchar(50),
 	STEROID_RESIST int,
-	DATE_ESRF smalldatetime,
+	DATE_ESRF TIMESTAMP,
 	MUTATION_1 bit,
 	MUTATION_1S bit,
 	MUTATION_2 bit,
@@ -229,18 +229,18 @@ CREATE TABLE tbl_DiseaseData (
 
 CREATE TABLE tbl_Ethnicity (
 	eID int NOT NULL,
-	eName nvarchar(50),
-	eCode nvarchar(50)
+	eName varchar(50),
+	eCode varchar(50)
 );
 
 CREATE TABLE tbl_GeneMutation (
 	gmID int NOT NULL,
-	GENE_MUTATION nvarchar(30)
+	GENE_MUTATION varchar(30)
 );
 
 CREATE TABLE tbl_HD_MODALITY (
 	hdID int,
-	hdType nvarchar(75)
+	hdType varchar(75)
 );
 
 CREATE TABLE tbl_HDial (
@@ -252,16 +252,16 @@ CREATE TABLE tbl_HDial (
 CREATE TABLE tbl_Hospitalisation (
 	hID int NOT NULL,
 	RADAR_NO int,
-	DATE_ADMIT smalldatetime,
-	DATE_DISCHARGE smalldatetime,
-	REASON_ADMIT nvarchar(250),
+	DATE_ADMIT TIMESTAMP,
+	DATE_DISCHARGE TIMESTAMP,
+	REASON_ADMIT varchar(250),
 	COMMENT text
 );
 
 CREATE TABLE tbl_ImmunoSupp (
 	imID int NOT NULL,
-	imDesc nvarchar(50),
-	"Group" int
+	imDesc varchar(50),
+	`Group` int
 );
 
 CREATE TABLE tbl_IMMUNSUP_TREATMENT (
@@ -276,7 +276,7 @@ CREATE TABLE tbl_IMMUNSUP_TREATMENT (
 
 CREATE TABLE tbl_Karyotype (
 	kID int,
-	KARYOTYPE nvarchar(50)
+	KARYOTYPE varchar(50)
 );
 
 CREATE TABLE tbl_LabData (
@@ -310,10 +310,10 @@ CREATE TABLE tbl_LabData (
 	ELISA_ASS int,
 	ENA int,
 	ANA int,
-	DNA_ANTIB nvarchar(50),
+	DNA_ANTIB varchar(50),
 	DNA_ANTI_DS int,
-	CRYOGLOB nvarchar(50),
-	ANTI_GBM nvarchar(50),
+	CRYOGLOB varchar(50),
+	ANTI_GBM varchar(50),
 	IGG numeric(4,1),
 	IGA numeric(4,1),
 	IGM numeric(4,1),
@@ -337,7 +337,7 @@ CREATE TABLE tbl_LabData (
 	HANTAVIRUS bit,
 	PARVO_ANTIB int,
 	OTHER_INFECT bit,
-	OTHER_INFECT_SP nvarchar(50),
+	OTHER_INFECT_SP varchar(50),
 	UR_VOL_24H int,
 	UR_VOL_24H_COND int,
 	HAEMATURIA int,
@@ -349,7 +349,7 @@ CREATE TABLE tbl_LabData (
 	NITRITE bit,
 	BACT_URINE bit,
 	GLUC_URINE bit,
-	OSMOLARITY nvarchar(50),
+	OSMOLARITY varchar(50),
 	PROTEINURIA_DIP int,
 	SEQ_NO int,
 	ANTI_CLQ numeric(4,1)
@@ -357,16 +357,16 @@ CREATE TABLE tbl_LabData (
 
 CREATE TABLE tbl_MONOCLONAL (
 	mID int NOT NULL,
-	mDesc nvarchar(20)
+	mDesc varchar(20)
 );
 
 CREATE TABLE tbl_Pathology (
 	pID int NOT NULL,
 	RADAR_NO int,
-	BX_DATE smalldatetime,
+	BX_DATE TIMESTAMP,
 	NAT_TRANSP_KID int,
 	LATERALITY_BX int,
-	SAMPLE_LAB_NO nvarchar(20),
+	SAMPLE_LAB_NO varchar(20),
 	PATHDIAG int,
 	GLOM_TOTAL_NO int,
 	GLOM_GLOB_SCL int,
@@ -375,19 +375,19 @@ CREATE TABLE tbl_Pathology (
 	GLOM_FIB_CRES int,
 	GLOM_END_HYPER int,
 	GLOM_FIN_NEC int,
-	GLOM_ANY_OTH_FEAT nvarchar(50),
+	GLOM_ANY_OTH_FEAT varchar(50),
 	TUB_ATROP_IF_EST int,
 	TUB_ATROP_IF_MEAS numeric(3,1),
-	TUB_OTHER_FEAT nvarchar(150),
-	INTER_INFLAM_INFIL nvarchar(150),
-	ART_ABNORMAL nvarchar(150),
-	IMM_HIST_FIND nvarchar(150),
-	ELECT_MSCOPE_FIND nvarchar(150),
-	IMAGE_URL1 nvarchar(150),
-	IMAGE_URL2 nvarchar(150),
-	IMAGE_URL3 nvarchar(150),
-	IMAGE_URL4 nvarchar(150),
-	IMAGE_URL5 nvarchar(150),
+	TUB_OTHER_FEAT varchar(150),
+	INTER_INFLAM_INFIL varchar(150),
+	ART_ABNORMAL varchar(150),
+	IMM_HIST_FIND varchar(150),
+	ELECT_MSCOPE_FIND varchar(150),
+	IMAGE_URL1 varchar(150),
+	IMAGE_URL2 varchar(150),
+	IMAGE_URL3 varchar(150),
+	IMAGE_URL4 varchar(150),
+	IMAGE_URL5 varchar(150),
 	PATH_TXT text,
 	SEQ_NO int
 );
@@ -395,7 +395,7 @@ CREATE TABLE tbl_Pathology (
 CREATE TABLE tbl_Patient_Users (
 	pID int NOT NULL,
 	RADAR_NO int,
-	pUserName nvarchar(50),
+	pUserName varchar(50),
 	pPassWord varbinary(50),
 	pDOB datetime,
 	pDateReg datetime
@@ -403,7 +403,7 @@ CREATE TABLE tbl_Patient_Users (
 
 CREATE TABLE tbl_PD_MODALITY (
 	pdID int,
-	pdType nvarchar(75)
+	pdType varchar(75)
 );
 
 CREATE TABLE tbl_PDial (
@@ -413,7 +413,7 @@ CREATE TABLE tbl_PDial (
 );
 CREATE TABLE tbl_PHENOTYPES (
 	pID int NOT NULL,
-	pDesc nvarchar(75)
+	pDesc varchar(75)
 );
 
 CREATE TABLE tbl_Plasmaph (
@@ -429,12 +429,12 @@ CREATE TABLE tbl_Relapse (
 	RADAR_NO int,
 	DATE_ONSET_RELAP datetime,
 	RELAP_TX_NAT bit,
-	TRIG_VIRAL nvarchar(50),
-	TRIG_IMMUN nvarchar(50),
-	TRIG_OTHER nvarchar(50),
-	RELAP_DRUG_1 nvarchar(50),
-	RELAP_DRUG_2 nvarchar(50),
-	RELAP_DRUG_3 nvarchar(50),
+	TRIG_VIRAL varchar(50),
+	TRIG_IMMUN varchar(50),
+	TRIG_OTHER varchar(50),
+	RELAP_DRUG_1 varchar(50),
+	RELAP_DRUG_2 varchar(50),
+	RELAP_DRUG_3 varchar(50),
 	REMISS_ACHIEVE int,
 	DATE_REMISSION datetime,
 	SEQ_NO int
@@ -442,71 +442,71 @@ CREATE TABLE tbl_Relapse (
 
 CREATE TABLE tbl_Relative (
 	rID int NOT NULL,
-	RELATIVE nvarchar(20)
+	RELATIVE varchar(20)
 );
 
 CREATE TABLE tbl_RRT_HD (
 	hID int NOT NULL,
 	RADAR_NO int,
 	HD_TMT_MODALITY int,
-	DATE_START_HDIAL smalldatetime,
-	DATE_STOP_HDIAL smalldatetime
+	DATE_START_HDIAL TIMESTAMP,
+	DATE_STOP_HDIAL TIMESTAMP
 );
 
 CREATE TABLE tbl_RRT_MODALITY (
 	mID int,
-	mType nvarchar(50),
-	"Group" int
+	mType varchar(50),
+	`Group` int
 );
 
 CREATE TABLE tbl_RRT_PD (
 	pID int NOT NULL,
 	RADAR_NO int,
 	PD_TMT_MODALITY int,
-	DATE_START_PD smalldatetime,
-	DATE_STOP_PD smalldatetime
+	DATE_START_PD TIMESTAMP,
+	DATE_STOP_PD TIMESTAMP
 );
 
 CREATE TABLE tbl_RRT_PLASMA (
 	plID int NOT NULL,
 	RADAR_NO int,
-	PLASMAPH nvarchar(20),
-	DATE_START_PLASMAPH smalldatetime,
-	DATE_STOP_PLASMAPH smalldatetime,
-	NO_EXCH_PLASMAPH nvarchar(10),
+	PLASMAPH varchar(20),
+	DATE_START_PLASMAPH TIMESTAMP,
+	DATE_STOP_PLASMAPH TIMESTAMP,
+	NO_EXCH_PLASMAPH varchar(10),
 	DUR_PLASMAPH int,
 	RESPONSE_TO_PLASMA int
 );
 
 CREATE TABLE tbl_RRT_PLASMA_LU (
 	exID int NOT NULL,
-	exDesc nvarchar(50)
+	exDesc varchar(50)
 );
 
 CREATE TABLE tbl_RRT_TREATMENT (
 	tID int NOT NULL,
 	RADAR_NO int,
 	MODALITY int,
-	DATE_START smalldatetime,
-	DATE_STOP smalldatetime,
+	DATE_START TIMESTAMP,
+	DATE_STOP TIMESTAMP,
 	UNIT_CODE int,
 	FIRST_FLAG bit
 );
 
 CREATE TABLE tbl_RT_Modality (
 	mID int NOT NULL,
-	mDesc nvarchar(50)
+	mDesc varchar(50)
 );
 
 CREATE TABLE tbl_Sex (
 	sID int,
-	sType nvarchar(14)
+	sType varchar(14)
 );
 
 CREATE TABLE tbl_Status (
 	sID int NOT NULL,
-	sDesc nvarchar(50),
-	sAbbrev nvarchar(20)
+	sDesc varchar(50),
+	sAbbrev varchar(20)
 );
 
 CREATE TABLE tbl_Test (
@@ -519,7 +519,7 @@ CREATE TABLE tbl_Test (
 CREATE TABLE tbl_Therapy (
 	tID int NOT NULL,
 	RADAR_NO int,
-	SIG_CHANGE_STATUS nvarchar(20),
+	SIG_CHANGE_STATUS varchar(20),
 	P_NSAID bit,
 	NSAID bit,
 	P_DIURETIC bit,
@@ -542,22 +542,22 @@ CREATE TABLE tbl_Therapy (
 	LIP_LOWER_AG bit,
 	P_EPO bit,
 	EPO bit,
-	P_OTHER_DRUG1 nvarchar(50),
-	OTHER_DRUG1 nvarchar(50),
-	P_OTHER_DRUG2 nvarchar(50),
-	OTHER_DRUG2 nvarchar(50),
-	P_OTHER_DRUG3 nvarchar(50),
-	OTHER_DRUG3 nvarchar(50),
-	P_OTHER_DRUG4 nvarchar(50),
-	OTHER_DRUG4 nvarchar(50),
+	P_OTHER_DRUG1 varchar(50),
+	OTHER_DRUG1 varchar(50),
+	P_OTHER_DRUG2 varchar(50),
+	OTHER_DRUG2 varchar(50),
+	P_OTHER_DRUG3 varchar(50),
+	OTHER_DRUG3 varchar(50),
+	P_OTHER_DRUG4 varchar(50),
+	OTHER_DRUG4 varchar(50),
 	P_IMMUN_SUP bit,
 	IMMUN_SUP bit,
-	P_IMMUN_SUP_DRUG nvarchar(50),
-	IMMUN_SUP_DRUG nvarchar(50),
+	P_IMMUN_SUP_DRUG varchar(50),
+	IMMUN_SUP_DRUG varchar(50),
 	MONOCLONAL_YN bit,
-	MONOCLONAL_NAME nvarchar(50),
+	MONOCLONAL_NAME varchar(50),
 	DATE_TREAT datetime,
-	TMT_MODALITY nvarchar(50),
+	TMT_MODALITY varchar(50),
 	SEQ_NO int
 );
 
@@ -565,7 +565,7 @@ CREATE TABLE tbl_Transplant (
 	trID int NOT NULL,
 	RADAR_NO int,
 	DATE_TRANSPLANT datetime,
-	TRANS_TYPE nvarchar(50),
+	TRANS_TYPE varchar(50),
 	TRANSPLANT_COUNTER int,
 	DATE_NEPHRECT datetime,
 	TRANS_RECURR bit,
@@ -576,28 +576,28 @@ CREATE TABLE tbl_Transplant (
 
 CREATE TABLE tbl_TRANSPLANT_MODALITY (
 	trID int,
-	trDesc nvarchar(75)
+	trDesc varchar(75)
 );
 
 CREATE TABLE tbl_Transplant_Reject (
 	recID int NOT NULL,
 	trID int NOT NULL,
-	trRejectDate smalldatetime,
-	trBiopsyDate smalldatetime,
-	trFailureDate smalldatetime
+	trRejectDate TIMESTAMP,
+	trBiopsyDate TIMESTAMP,
+	trFailureDate TIMESTAMP
 );
 
 CREATE TABLE tbl_Users (
 	uID int NOT NULL,
-	uSurname nvarchar(50),
-	uForename nvarchar(50),
-	uTitle nvarchar(50),
-	uGMC nvarchar(50),
-	uRole nvarchar(50),
-	uEmail nvarchar(50),
-	uPhone nvarchar(50),
+	uSurname varchar(50),
+	uForename varchar(50),
+	uTitle varchar(50),
+	uGMC varchar(50),
+	uRole varchar(50),
+	uEmail varchar(50),
+	uPhone varchar(50),
 	uCentre int,
-	uDateJoin smalldatetime,
+	uDateJoin TIMESTAMP,
 	uPass varbinary(50),
 	uUserName varbinary(50)
 );
