@@ -1,3 +1,125 @@
+CREATE TABLE sysdiagrams (
+	name nvarchar(128) NOT NULL,
+	principal_id int NOT NULL,
+	diagram_id int NOT NULL,
+	version int,
+	definition varbinary(max)
+);
+
+CREATE TABLE rpv.dbo.tbl_6Month (
+	fuID int NOT NULL,
+	RADAR_NO int,
+	DATE_FUP datetime,
+	RELAP_SINCE_LAST bit,
+	RELAP_LEN int,
+	VIRAL_TRIG int,
+	IMMUN_TRIG int,
+	OTHER_TRIG int,
+	IMMUNOSUP_INC bit,
+	IMMUNOSUP_DOSE int,
+	IMMUNOSUP_DUR int,
+	PLASMA_EXCH int,
+	PLASMA_EXCH_NO int,
+	RESPONSE_TO int,
+	MAX_PR_CREAT_RATIO int,
+	MIN_SER_ALB int,
+	COMP1 int,
+	COMP2 int,
+	COMP3 int,
+	COMP4 int,
+	OTHER_COMP nvarchar(50),
+	DATE_START_DIAL datetime,
+	DIAL_TYPE int,
+	DATE_TRANSPLANT datetime,
+	TRANS_TYPE int,
+	TRANS_RECURR bit,
+	DATE_TX_REJECT datetime,
+	DATE_BX datetime,
+	DATE_NEPHRECT datetime,
+	DRUG1 nvarchar(50),
+	DRUG2 nvarchar(50),
+	DRUG3 nvarchar(50),
+	DRUG4 nvarchar(50),
+	DRUG5 nvarchar(50),
+	DRUG6 nvarchar(50),
+	SIG_CHANGE_STATUS nchar(10)
+);
+
+CREATE TABLE rpv.dbo.tbl_AdminUsers (
+	uID int NOT NULL,
+	uName nvarchar(30),
+	uEmail nvarchar(50),
+	uPass varbinary(50),
+	uUserName varbinary(50)
+);
+
+CREATE TABLE rpv.dbo.tbl_Centres (
+	cID int NOT NULL,
+	cName nvarchar(80),
+	cAbbrev nvarchar(15),
+	cCountry int
+);
+
+CREATE TABLE rpv.dbo.tbl_Clin_Pres (
+	cID int,
+	CLIN_PRES nvarchar(20)
+);
+
+CREATE TABLE rpv.dbo.tbl_ClinicalData (
+	cID int NOT NULL,
+	RADAR_NO int NOT NULL,
+	DATE_CLIN_PIC smalldatetime,
+	HEIGHT decimal(8,1),
+	WEIGHT decimal(8,2),
+	COURSE_DIS int,
+	SYS_BP int,
+	DIA_BP int,
+	MAP_BP int,
+	DIALYSIS_REQ int,
+	DATE_BX smalldatetime,
+	OEDEMA bit,
+	ANAEMIA bit,
+	HYPOVAL bit,
+	FEVER bit,
+	INFECTION bit,
+	INFECTION_DETAIL nvarchar(50),
+	INFECTION_TYPE nvarchar(50),
+	THROMBOSIS bit,
+	THROMBOSIS_DETAIL nvarchar(250),
+	COMP_THROMBOSIS bit,
+	COMP_THROMBOSIS_DETAIL text,
+	PERITONITIS bit,
+	PUL_OED bit,
+	HTH_REQ_TMT bit,
+	PREC_INF bit,
+	PREC_INF_DETAIL nvarchar(150),
+	CLIN_EV_CHR_INF bit,
+	CLIN_EV_CHR_INF_DETAIL nvarchar(150),
+	DIABETES smallint,
+	URTICARIA smallint,
+	RASH bit,
+	RASH_DETAIL nvarchar(50),
+	PART_LIPODYS bit,
+	OPTHALM bit,
+	OPTHALM_DETAIL nvarchar(50),
+	IMMUNIS_TRIGGER bit,
+	COMMENTS text,
+	PHENOTYPE1 int,
+	PHENOTYPE2 int,
+	PHENOTYPE3 int,
+	PHENOTYPE4 int,
+	SIG_DIAG1 nvarchar(30),
+	SIG_DIAG2 nvarchar(30),
+	TX_LISTED bit,
+	CKD_STAGE int,
+	SEQ_NO int
+);
+
+CREATE TABLE rpv.dbo.tbl_Complication (
+	cmpID int NOT NULL,
+	cmpDesc nvarchar(50)
+);
+
 CREATE TABLE rpv.dbo.tbl_Consultants (
 	cID int NOT NULL,
 	cSNAME nvarchar(50),
