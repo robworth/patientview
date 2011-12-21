@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta id="ctl00_IE8CompatibilityMeta" http-equiv="X-UA-Compatible" content="IE=7"/>
+
+    <wicket:head>
+        <script type="text/javascript" language="javascript">
+            function ValidatePostCode(sender, args) {
+                args.IsValid = (args.Value.match(/(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]|[A-HK-Y][0-9]([0-9]|[ABEHMNPRV-Y]))|[0-9][A-HJKS-UW]) [0-9][ABD-HJLNP-UW-Z]{2})/i) != null);
+                return args.IsValid;
+            }
+        </script>
+        <style type="text/css">
+
+            input, select, textarea {
+                border: 1px solid gray;
+                padding-left: 3px;
+            }
+
+            select, input, textarea {
+                font-size: 95%;
+                color: #2D2E2E
+            }
+
+            .frmView {
+                margin-top: 0;
+            }
+
+            .style2 {
+                background-color: #B6DF9F;
+                table-layout: fixed;
+            }
+
+            .style3 {
+                border-collapse: collapse;
+                border-style: none;
+                border-color: inherit;
+                border-width: 0;
+                background-color: #EEF6ED;
+            }
+
+            #ctl00_ContentPlaceHolder1_CONSENTCheckBox {
+                border: 0;
+            }
+
+            .lblPad {
+                padding-right: 30px;
+            }
+
+                /* this because of the update panel for the tabs
+                #tabsC {
+                margin-top:-35px;
+                }
+                */
+        </style>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
+
+        <!--[if IE]>
+        <style type="text/css">
+            #mainBlock {
+                margin-top: 0;
+            }
+
+            #tabsC {
+                margin-top: 0;
+            }
+        </style>
+        <![endif]-->
+
+        <script type="text/javascript">
+            <!--
+            function sessionKeepAlive() {
+                var wRequest = new Sys.Net.WebRequest();
+                wRequest.set_url("SessionKeepAlive.aspx");
+                wRequest.set_httpVerb("POST");
+                wRequest.add_completed(sessionKeepAlive_Callback);
+                wRequest.set_body();
+                wRequest.get_headers()["Content-Length"] = 0;
+                wRequest.invoke();
+            }
+
+            // This callback function processes the
+            // request return values. It is called asynchronously
+            // by the current executor.
+            function sessionKeepAlive_Callback(executor, eventArgs) {
+                // No need to do anything, but if you are sending a value
+                // from the server as an additional safety measure, then
+                // you can check that here.
+            }
+
+            // Set 12 minute .NET session keep alive timer...
+            window.setInterval('sessionKeepAlive()', 12 * 60 * 1000);
+            // -->
+
+
+        </script>
+
+
+    </wicket:head>
+</head>
+<body id="ctl00_body">
+<wicket:extend>
+<form name="aspnetForm" method="post" action="demographics.aspx" onsubmit="javascript:return WebForm_OnSubmit();"
+      id="aspnetForm">
+
+
+<script type="text/javascript">
+    function WebForm_OnSubmit() {
+        if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+        return true;
+    }
+
+</script>
+
+<div id="tabsC">
+    <ul>
+        <li><a href="#" title="Demographics"><span class="hovered">Demographics</span></a></li>
+        <li><a id="ctl00_ContentPlaceHolder1_lnkDiagnosis" disabled="disabled" title="Diagnosis"
+               onclick="return confirm('Have you saved any changes?\nIf not click \'Cancel\' and save them now')"><span>Diagnosis</span></a>
+        </li>
+        <li><a id="ctl00_ContentPlaceHolder1_lnkLabResults" disabled="disabled" title="Laboratory Results"
+               onclick="return confirm('Have you saved any changes?\nIf not click \'Cancel\' and save them now')"><span>First Visit</span></a>
+        </li>
+        <li><a id="ctl00_ContentPlaceHolder1_lnk3Months" disabled="disabled" title="Follow Up"
+               onclick="return confirm('Have you saved any changes?\nIf not click \'Cancel\' and save them now')"><span>Follow Up</span></a>
+        </li>
+        <li><a id="ctl00_ContentPlaceHolder1_lnkPathology" disabled="disabled" Tootip="Pathology"
+               onclick="return confirm('Have you saved any changes?\nIf not click \'Cancel\' and save them now')"><span>Pathology</span></a>
+        </li>
+        <li><a id="ctl00_ContentPlaceHolder1_lnkRelapse" disabled="disabled" title="Relapse"
+               onclick="return confirm('Have you saved any changes?\nIf not click \'Cancel\' and save them now')"><span>Relapse</span></a>
+        </li>
+        <li><a id="ctl00_ContentPlaceHolder1_lnkHospital" disabled="disabled" title="Hospitalisation"
+               onclick="return confirm('Have you saved any changes?\nIf not click \'Cancel\' and save them now')"><span>Hospitalisation</span></a>
+        </li>
+        <li></li>
+    </ul>
+</div>
+<div id="mainBlock">
+
+<p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+<table cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
+    <tr>
+        <td style="height:30px;"><span id="ctl00_ContentPlaceHolder1_lblNew" style="font-weight:bold;"> Add a New Patient</span>
+        </td>
+        <td style="text-align:right; padding-right:10px;"><b>RADAR Number</b></td>
+        <td style="width:150px;"><input name="ctl00$ContentPlaceHolder1$RADAR_NOTextBox" type="text"
+                                        value="Auto allocated" readonly="readonly"
+                                        id="ctl00_ContentPlaceHolder1_RADAR_NOTextBox"
+                                        style="background-color:#EEF6ED;font-style:italic;"/></td>
+    </tr>
+    <tr>
+        <td style="height:30px;">
+            <label for="ctl00_ContentPlaceHolder1_DropDownList7" id="ctl00_ContentPlaceHolder1_lblDiag" class="lblPad"
+                   style="font-weight:bold;width:150px;">&nbsp;Diagnosis</label>
+            <select name="ctl00$ContentPlaceHolder1$DropDownList7" id="ctl00_ContentPlaceHolder1_DropDownList7">
+                <option value="">Select</option>
+                <option value="2">MPGN/DDD</option>
+                <option value="1">SRNS</option>
+
+            </select>
+
+            <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator8" style="color:Red;visibility:hidden;">*</span>
+
+        </td>
+        <td style="text-align:right; padding-right:10px;">Date Registered</td>
+        <td><input name="ctl00$ContentPlaceHolder1$DATE_REGTextBox" type="text" value="Today's date" readonly="readonly"
+                   id="ctl00_ContentPlaceHolder1_DATE_REGTextBox" style="background-color:#EEF6ED;font-style:italic;"/>
+        </td>
+    </tr>
+</table>
+<table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+       class="style3">
+<tr>
+<td style="width:50%; vertical-align:top;">
+    <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+        <tr>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$txtDateToday" type="text" value="20-12-2011"
+                       id="ctl00_ContentPlaceHolder1_txtDateToday"
+                       style="color:#EEF6ED;background-color:#EEF6ED;border-color:#EEF6ED;"/>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Surname</td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$SNAMETextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_SNAMETextBox"/>
+                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1" style="color:Red;visibility:hidden;">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$FNAMETextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_FNAMETextBox"/>
+                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2" style="color:Red;visibility:hidden;">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Date of Birth&nbsp;&nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator6" class="inline"
+                                               style="color:Red;visibility:hidden;">*</span>
+                &nbsp;</td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$DOBTextBox" type="text" id="ctl00_ContentPlaceHolder1_DOBTextBox"
+                       style="width:70px;"/>
+                <input type="image" name="ctl00$ContentPlaceHolder1$ImageButton1"
+                       id="ctl00_ContentPlaceHolder1_ImageButton1" src="images/Calendar_scheduleHS.png"
+                       style="border-width:0px;"/>
+                &nbsp;
+                <span id="ctl00_ContentPlaceHolder1_CompareValidator1" style="color:Red;display:none;">> today</span>
+                &nbsp;<a href="#" class="info"><em>Help</em><span>To select a different month in the
+                date picker, click the current month at the top.<br/><br/> Click again to select
+                a year.</span> </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Sex</td>
+            <td>
+                <select name="ctl00$ContentPlaceHolder1$DropDownList1" id="ctl00_ContentPlaceHolder1_DropDownList1">
+                    <option value="">Select</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                    <option value="9">Not specified</option>
+
+                </select> &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4"
+                                      style="color:Red;visibility:hidden;">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Ethnic Group</td>
+            <td>
+                <select name="ctl00$ContentPlaceHolder1$DropDownList3" id="ctl00_ContentPlaceHolder1_DropDownList3">
+                    <option value="">Please select</option>
+                    <option value="9S1..">White</option>
+                    <option value="9S2..">Black Caribbean</option>
+                    <option value="9S3..">Black African</option>
+                    <option value="9S6..">Indian</option>
+                    <option value="9S7..">Pakistani</option>
+                    <option value="9SA7.">Indian sub-continent (NMO)</option>
+                    <option value="9SA8.">Other Asian (NMO)</option>
+                    <option value="9SAD.">Other Ethnic NEC</option>
+                    <option value="9S9..">Chinese</option>
+                    <option value="9S4..">Black / other / non-mixed origin</option>
+                    <option value="9SB..">Other ethnic / mixed origin</option>
+                    <option value="9S8.">Bangladeshi</option>
+                    <option value="9S5..">Black - other / mixed</option>
+                    <option value="9S44.">Black - other African country</option>
+                    <option value="9S47.">Black - other Asian</option>
+                    <option value="9S48.">Black Black - other</option>
+                    <option value="9S41.">Black British</option>
+                    <option value="9S42.">Black Caribbean</option>
+                    <option value="9S45.">Black East African Asian</option>
+                    <option value="9S46.">Black Indian sub-continent</option>
+                    <option value="9S43.">Black North African</option>
+                    <option value="9SA1.">Brit. ethnic minor. spec. (NMO)</option>
+                    <option value="9SA2.">Brit. ethnic minor. unsp. (NMO)</option>
+                    <option value="9SA3.">Caribbean Island (NMO)</option>
+                    <option value="9SA6.">East African Asian (NMO)</option>
+                    <option value="9SAA.">Greek Cypriot (NMO)</option>
+                    <option value="9SA9.">Irish (NMO)</option>
+                    <option value="9SA4.">North African Arab (NMO)</option>
+                    <option value="9SA5.">Other African countries (NMO)</option>
+                    <option value="9S52.">Other Black - Black/Asian orig</option>
+                    <option value="9S51.">Other Black - Black/White orig</option>
+                    <option value="9SB2.">Other Ethnic / Asian/White orig</option>
+                    <option value="9SB1.">Other Ethnic / Black/White orig</option>
+                    <option value="9Sb3.">Other Ethnic / mixed white orig</option>
+                    <option value="9SB4.">Other Ethnic / other mixed orig</option>
+                    <option value="9SA..">Other Ethnic non-mixed (NMO)</option>
+                    <option value="9SAC.">Other European (NMO)</option>
+                    <option value="9SAB.">Turkish Cypriot (NMO)</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top">Address</td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$ADD1TextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_ADD1TextBox" style="width:200px;"/>
+                <br/>
+                <input name="ctl00$ContentPlaceHolder1$ADD2TextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_ADD2TextBox" style="width:200px;"/>
+                <br/>
+                <input name="ctl00$ContentPlaceHolder1$ADD3TextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_ADD3TextBox" style="width:200px;"/>
+                <br/>
+                <input name="ctl00$ContentPlaceHolder1$ADD4TextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_ADD4TextBox" style="width:200px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Postcode</td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$POSTCODETextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_POSTCODETextBox" style="width:70px;"/>
+                &nbsp;<span id="ctl00_ContentPlaceHolder1_CustomValidator1" style="color:Red;visibility:hidden;">Invalid postcode</span>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <fieldset style="border:1px solid green; margin-left:10px; width:360px">
+        <legend><strong>Archive</strong></legend>
+        <table style="width:95%; margin-left:5px;">
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Surname Alias</td>
+                <td>
+                    <input name="ctl00$ContentPlaceHolder1$SNAME_ALIASTextBox" type="text"
+                           id="ctl00_ContentPlaceHolder1_SNAME_ALIASTextBox"/>&nbsp;<a href="#"
+                                                                                       class="info"><em>Help</em><span>Has the patient been known by another surname? If so, enter here.</span></a>
+                </td>
+            </tr>
+            <tr>
+                <td>Previous Postcode</td>
+                <td>
+                    <input name="ctl00$ContentPlaceHolder1$POSTCODE_OLDTextBox" type="text"
+                           id="ctl00_ContentPlaceHolder1_POSTCODE_OLDTextBox"/>&nbsp;<a href="#"
+                                                                                        class="info"><em>Help</em><span>This is important if the patient has moved into your care from a different hospital</span></a>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+
+        </table>
+    </fieldset>
+    <br/><br/>
+
+
+    <div id="ctl00_ContentPlaceHolder1_ValidationSummary1" style="color:Red;display:none;">
+
+    </div>
+    <br/><br/>
+    <input type="submit" name="ctl00$ContentPlaceHolder1$btnSubmit" value="Add this Patient"
+           onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(ctl00$ContentPlaceHolder1$btnSubmit, false, false))"
+           id="ctl00_ContentPlaceHolder1_btnSubmit" class="saveBtn"/>
+    &nbsp;
+
+
+    &nbsp;
+
+
+</td>
+<td style="vertical-align:top;">
+    <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Hospital Number</td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$HOSP_NOTextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_HOSP_NOTextBox" style="width:80px;"/>
+                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator7" style="color:Red;visibility:hidden;">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td><span id="ctl00_ContentPlaceHolder1_lblNHS">NHS Number</span></td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$NHS_NOTextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_NHS_NOTextBox" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td><span id="ctl00_ContentPlaceHolder1_lblRRNumber">Renal Registry Number</span></td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$RR_NOTextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_RR_NOTextBox" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td><span id="ctl00_ContentPlaceHolder1_lblUKT">UK Transplant Number</span></td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$UKT_NOTextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_UKT_NOTextBox" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td><span id="ctl00_ContentPlaceHolder1_lblCHI">CHI No. (Scotland Only)</span></td>
+            <td>
+                <input name="ctl00$ContentPlaceHolder1$CHI_NOTextBox" type="text"
+                       id="ctl00_ContentPlaceHolder1_CHI_NOTextBox" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <select name="ctl00$ContentPlaceHolder1$DropDownList5" id="ctl00_ContentPlaceHolder1_DropDownList5">
+                    <option value="">Select</option>
+                    <option value="1">Current</option>
+                    <option value="2">Transferred to adult unit</option>
+                    <option value="3">Transferred to other Paediatric unit</option>
+                    <option value="4">Discharged</option>
+                    <option value="5">Moved abroad</option>
+                    <option value="6">Died</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Responsible Consultant</td>
+            <td>
+                <select name="ctl00$ContentPlaceHolder1$DropDownList4" id="ctl00_ContentPlaceHolder1_DropDownList4">
+                    <option value="">Select</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">Renal Unit &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5"
+                                                   style="color:Red;visibility:hidden;">*</span></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <select name="ctl00$ContentPlaceHolder1$DropDownList2" id="ctl00_ContentPlaceHolder1_DropDownList2"
+                        disabled="disabled">
+                    <option value="">Please select</option>
+                    <option value="57">All India Institute of Medical Science, New Dehli, India</option>
+                    <option value="1">Belfast, The Royal Belfast Hospital For Sick Children</option>
+                    <option value="2">Birmingham Children's Hospital</option>
+                    <option value="3">Bristol Royal Hospital for Children</option>
+                    <option value="4">Cardiff, Children's Hospital for Wales</option>
+                    <option value="58">Children Medical Centre Hospital, Tehran</option>
+                    <option value="55">Christian Medical College, Vellore, India</option>
+                    <option selected="selected" value="15">Demonstration Entries</option>
+                    <option value="99">Demonstration Entries</option>
+                    <option value="5">Glasgow - Yorkhill, Royal Hospital for Sick Children</option>
+                    <option value="6">Leeds - St James University Hospital, Dept of Paediatric Nephrology</option>
+                    <option value="7">Liverpool - Royal Liverpool Children's Hospital, Alder Hey</option>
+                    <option value="8">London - Evelina Children's Hospital</option>
+                    <option value="9">London - Great Ormond Street Hospital for Children NHS Trust</option>
+                    <option value="10">Manchester - Royal Manchester's Children's Hospital</option>
+                    <option value="11">Newcastle - Royal Victoria Infirmary, Paediatric Unit</option>
+                    <option value="12">Nottingham - QMC - Children's Kidney Unit</option>
+                    <option value="14">Renal Registry</option>
+                    <option value="13">Southampton General Hospital</option>
+                    <option value="56">St John's Medical College Hospital, Bangalore, India</option>
+                    <option value="16">Unknown</option>
+
+                </select>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>Consent (RaDaR only)</td>
+            <td>
+                <input id="ctl00_ContentPlaceHolder1_CONSENTCheckBox" type="checkbox"
+                       name="ctl00$ContentPlaceHolder1$CONSENTCheckBox"/>&nbsp;&nbsp;<a href="consent_forms.aspx">Consent
+                Forms</a>
+            </td>
+        </tr>
+        <tr id="ctl00_ContentPlaceHolder1_rowConsent">
+            <td colspan="2">&nbsp;</td>
+        </tr>
+
+        <tr id="ctl00_ContentPlaceHolder1_rowPatientInfo">
+            <td colspan="2"><span
+                    id="ctl00_ContentPlaceHolder1_lblVisibility">Allow visibility for another Renal Unit</span></td>
+        </tr>
+
+        <tr id="ctl00_ContentPlaceHolder1_rowInfo2">
+            <td colspan="2">
+                <select name="ctl00$ContentPlaceHolder1$DropDownList6" id="ctl00_ContentPlaceHolder1_DropDownList6">
+                    <option value="">None</option>
+                    <option value="1">Belfast, The Royal Belfast Hospital For Sick Children</option>
+                    <option value="2">Birmingham Children's Hospital</option>
+                    <option value="3">Bristol Royal Hospital for Children</option>
+                    <option value="4">Cardiff, Children's Hospital for Wales</option>
+                    <option value="15">Demonstration Entries</option>
+                    <option value="5">Glasgow - Yorkhill, Royal Hospital for Sick Children</option>
+                    <option value="6">Leeds - St James University Hospital, Dept of Paediatric Nephrology</option>
+                    <option value="7">Liverpool - Royal Liverpool Children's Hospital, Alder Hey</option>
+                    <option value="8">London - Evelina Children's Hospital</option>
+                    <option value="9">London - Great Ormond Street Hospital for Children NHS Trust</option>
+                    <option value="10">Manchester - Royal Manchester's Children's Hospital</option>
+                    <option value="11">Newcastle - Royal Victoria Infirmary, Paediatric Unit</option>
+                    <option value="12">Nottingham - QMC - Children's Kidney Unit</option>
+                    <option value="14">Renal Registry</option>
+                    <option value="13">Southampton General Hospital</option>
+                    <option value="16">Unknown</option>
+
+                </select>
+            </td>
+        </tr>
+
+        <tr id="ctl00_ContentPlaceHolder1_rowConsent2">
+            <td colspan="2">
+                &nbsp;</td>
+        </tr>
+
+
+    </table>
+</td>
+</tr>
+</table>
+
+
+<p><span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+</p>
+
+<p>
+    <span id="ctl00_ContentPlaceHolder1_lblDebug2"></span>
+</p>
+
+<p><span id="ctl00_ContentPlaceHolder1_lblPage">1</span></p>
+</div>
+
+</form>
+</wicket:extend>
+</body>
+</html>

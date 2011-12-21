@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<wicket:extend>
+    <div>
+
+        <h1>
+            Health Professional
+            Registration</h1>
+
+        <p>
+            To register please enter your name, NHS email address and Centre below. </p>
+
+        <p>
+            Once
+            validated you will be given a username and password to enter the site</p>
+        <fieldset style="padding:10px; width:760px;">
+            <table cellpadding="4" class="style1">
+                <tbody>
+                <tr>
+                    <td style="width:140px;">
+                        <label for="ctl00_ContentPlaceHolder1_txtSurname" id="ctl00_ContentPlaceHolder1_lblSurname">Surname:</label>
+                    </td>
+                    <td>
+                        <input name="ctl00$ContentPlaceHolder1$txtSurname" type="text"
+                               id="ctl00_ContentPlaceHolder1_txtSurname" style="width:230px;">
+                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1"
+                              style="color:Red;visibility:hidden;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ctl00_ContentPlaceHolder1_txtForename" id="ctl00_ContentPlaceHolder1_lblForename">Forename:</label>
+                    </td>
+                    <td>
+                        <input name="ctl00$ContentPlaceHolder1$txtForename" type="text"
+                               id="ctl00_ContentPlaceHolder1_txtForename" style="width:230px;">
+                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2"
+                              style="color:Red;visibility:hidden;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ctl00_ContentPlaceHolder1_txtGMC"
+                               id="ctl00_ContentPlaceHolder1_lblTitle">Title:</label>
+                    </td>
+                    <td>
+                        <select name="ctl00$ContentPlaceHolder1$DropDownList2"
+                                id="ctl00_ContentPlaceHolder1_DropDownList2">
+                            <option value="">Select</option>
+                            <option value="Dr">Dr</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+
+                        </select>
+                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3"
+                              style="color:Red;visibility:hidden;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Geographic area
+                    </td>
+                    <td>
+                        <select name="ctl00$ContentPlaceHolder1$DropDownList3"
+                                onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList3\',\'\')', 0)"
+                                id="ctl00_ContentPlaceHolder1_DropDownList3">
+                            <option selected="selected" value="">Select</option>
+                            <option value="1">GB and Ireland</option>
+                            <option value="2">Outside GB and Ireland</option>
+
+                        </select>
+
+                        &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator9"
+                                    style="color:Red;visibility:hidden;">*</span>
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        &nbsp;</td>
+                    <td>
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" name="ctl00$ContentPlaceHolder1$btnSubmit" value="Continue"
+                               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+                               id="ctl00_ContentPlaceHolder1_btnSubmit" class="inline">
+                    </td>
+                    <td>
+                        <div id="ctl00_ContentPlaceHolder1_ValidationSummary1" class="inline"
+                             style="color:Red;display:none;">
+
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p>
+                <span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+            &nbsp;</fieldset>
+        <p><span id="ctl00_ContentPlaceHolder1_lblDebug"></span></p>
+
+
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>

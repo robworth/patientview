@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+        <h2> View Patient Details</h2>
+        <p>
+            <span id="ctl00_ContentPlaceHolder1_lblSort">Click green column headings to sort records</span>
+        </p>
+
+        <div>
+            <table cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
+                   style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;">
+                <tbody>
+                <tr style="background-color:#EEF6ED;">
+                    <th scope="col">View / Edit</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">First Name</th>
+                    <th align="center" scope="col">DOB</th>
+                    <th scope="col"><a
+                            href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1','Sort$RADAR_NO')">RADAR
+                        No.</a></th>
+                    <th scope="col"><a
+                            href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1','Sort$DIAG')">Diagnosis</a>
+                    </th>
+                    <th scope="col">NHS Number</th>
+                    <th scope="col">Hospital No</th>
+                    <th align="center" scope="col"><a
+                            href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1','Sort$DATE_REG')">Date
+                        Reg</a></th>
+                    <th scope="col"><a
+                            href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1','Sort$sAbbrev')">Status</a>
+                    </th>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=511">Edit</a>
+                    </td>
+                    <td>
+                        Demo
+                    </td>
+                    <td>
+                        Test1
+                    </td>
+                    <td>
+                        01-06-1999
+                    </td>
+                    <td align="center">511</td>
+                    <td align="center">
+                        SRNS
+                    </td>
+                    <td>
+                        123456789
+                    </td>
+                    <td>
+                        987654B
+                    </td>
+                    <td>07-Dec-2011</td>
+                    <td>Curr</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=468">Edit</a>
+                    </td>
+                    <td>
+                        Test 1
+                    </td>
+                    <td>
+                        Paul
+                    </td>
+                    <td>
+                        16-08-2011
+                    </td>
+                    <td align="center">468</td>
+                    <td align="center">
+                        MPGN/DDD
+                    </td>
+                    <td>
+                        23423432
+                    </td>
+                    <td>
+                        123432
+                    </td>
+                    <td>13-Sep-2011</td>
+                    <td>Paed other</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=335">Edit</a>
+                    </td>
+                    <td>
+                        alpha
+                    </td>
+                    <td>
+                        beta
+                    </td>
+                    <td>
+                        12-09-2010
+                    </td>
+                    <td align="center">335</td>
+                    <td align="center">
+                        SRNS
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        b123456
+                    </td>
+                    <td>10-Nov-2010</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=336">Edit</a>
+                    </td>
+                    <td>
+                        alpha
+                    </td>
+                    <td>
+                        beta
+                    </td>
+                    <td>
+                        05-07-2010
+                    </td>
+                    <td align="center">336</td>
+                    <td align="center">
+                        -
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        b12345667
+                    </td>
+                    <td>10-Nov-2010</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=333">Edit</a>
+                    </td>
+                    <td>
+                        lady
+                    </td>
+                    <td>
+                        jane
+                    </td>
+                    <td>
+                        11/11/92
+                    </td>
+                    <td align="center">333</td>
+                    <td align="center">
+                        SRNS
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        b123445
+                    </td>
+                    <td>09-Nov-2010</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=331">Edit</a>
+                    </td>
+                    <td>
+                        Tester
+                    </td>
+                    <td>
+                        Test
+                    </td>
+                    <td>
+                        13-06-2006
+                    </td>
+                    <td align="center">331</td>
+                    <td align="center">
+                        SRNS
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        23456789
+                    </td>
+                    <td>08-Nov-2010</td>
+                    <td>Curr</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=310">Edit</a>
+                    </td>
+                    <td>
+                        Mouse
+                    </td>
+                    <td>
+                        Marcella
+                    </td>
+                    <td>
+                        10-06-2008
+                    </td>
+                    <td align="center">310</td>
+                    <td align="center">
+                        SRNS
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        3698754
+                    </td>
+                    <td>10-Aug-2010</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=271">Edit</a>
+                    </td>
+                    <td>
+                        Mouse
+                    </td>
+                    <td>
+                        Martin
+                    </td>
+                    <td>
+                        13-05-2006
+                    </td>
+                    <td align="center">271</td>
+                    <td align="center">
+                        MPGN/DDD
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        23JH654
+                    </td>
+                    <td>15-Apr-2010</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="diagnosis.aspx?id=270">Edit</a>
+                    </td>
+                    <td>
+                        Mouse
+                    </td>
+                    <td>
+                        Michaela
+                    </td>
+                    <td>
+                        24-08-2005
+                    </td>
+                    <td align="center">270</td>
+                    <td align="center">
+                        MPGN/DDD
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        889988
+                    </td>
+                    <td>12-Apr-2010</td>
+                    <td>Curr</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>
+
+        </p>
+
+        <p></p>
+
+        <p>
+            <span id="ctl00_ContentPlaceHolder1_lblPage">15</span></p>
+</wicket:extend>
+</body>
+</html>
