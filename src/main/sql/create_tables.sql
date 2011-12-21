@@ -6,7 +6,7 @@ CREATE TABLE sysdiagrams (
 	definition varbinary(max)
 );
 
-CREATE TABLE rpv.dbo.tbl_6Month (
+CREATE TABLE tbl_6Month (
 	fuID int NOT NULL,
 	RADAR_NO int,
 	DATE_FUP datetime,
@@ -45,7 +45,7 @@ CREATE TABLE rpv.dbo.tbl_6Month (
 	SIG_CHANGE_STATUS nchar(10)
 );
 
-CREATE TABLE rpv.dbo.tbl_AdminUsers (
+CREATE TABLE tbl_AdminUsers (
 	uID int NOT NULL,
 	uName nvarchar(30),
 	uEmail nvarchar(50),
@@ -53,19 +53,19 @@ CREATE TABLE rpv.dbo.tbl_AdminUsers (
 	uUserName varbinary(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_Centres (
+CREATE TABLE tbl_Centres (
 	cID int NOT NULL,
 	cName nvarchar(80),
 	cAbbrev nvarchar(15),
 	cCountry int
 );
 
-CREATE TABLE rpv.dbo.tbl_Clin_Pres (
+CREATE TABLE tbl_Clin_Pres (
 	cID int,
 	CLIN_PRES nvarchar(20)
 );
 
-CREATE TABLE rpv.dbo.tbl_ClinicalData (
+CREATE TABLE tbl_ClinicalData (
 	cID int NOT NULL,
 	RADAR_NO int NOT NULL,
 	DATE_CLIN_PIC smalldatetime,
@@ -115,24 +115,24 @@ CREATE TABLE rpv.dbo.tbl_ClinicalData (
 	SEQ_NO int
 );
 
-CREATE TABLE rpv.dbo.tbl_Complication (
+CREATE TABLE tbl_Complication (
 	cmpID int NOT NULL,
 	cmpDesc nvarchar(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_Consultants (
+CREATE TABLE tbl_Consultants (
 	cID int NOT NULL,
 	cSNAME nvarchar(50),
 	cFNAME nvarchar(50),
 	cCentre int
 );
 
-CREATE TABLE rpv.dbo.tbl_Country (
+CREATE TABLE tbl_Country (
 	cID int NOT NULL,
 	cName nvarchar(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_Demographics (
+CREATE TABLE tbl_Demographics (
 	RADAR_NO int NOT NULL,
 	RR_NO nvarchar(10),
 	DATE_REG smalldatetime,
@@ -161,13 +161,13 @@ CREATE TABLE rpv.dbo.tbl_Demographics (
 	STATUS int
 );
 
-CREATE TABLE rpv.dbo.tbl_DiagCode (
+CREATE TABLE tbl_DiagCode (
 	dcID int NOT NULL,
 	dcDesc nvarchar(70),
 	dcAbbr nvarchar(15)
 );
 
-CREATE TABLE rpv.dbo.tbl_Diagnosis (
+CREATE TABLE tbl_Diagnosis (
 	dID int NOT NULL,
 	RADAR_NO int,
 	DATE_DIAG smalldatetime,
@@ -222,34 +222,34 @@ CREATE TABLE rpv.dbo.tbl_Diagnosis (
 	MUTATION_9S bit
 );
 
-CREATE TABLE rpv.dbo.tbl_DiseaseData (
+CREATE TABLE tbl_DiseaseData (
 	dID int NOT NULL,
 	dText text
 );
 
-CREATE TABLE rpv.dbo.tbl_Ethnicity (
+CREATE TABLE tbl_Ethnicity (
 	eID int NOT NULL,
 	eName nvarchar(50),
 	eCode nvarchar(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_GeneMutation (
+CREATE TABLE tbl_GeneMutation (
 	gmID int NOT NULL,
 	GENE_MUTATION nvarchar(30)
 );
 
-CREATE TABLE rpv.dbo.tbl_HD_MODALITY (
+CREATE TABLE tbl_HD_MODALITY (
 	hdID int,
 	hdType nvarchar(75)
 );
 
-CREATE TABLE rpv.dbo.tbl_HDial (
+CREATE TABLE tbl_HDial (
 	hdID int NOT NULL,
 	RADAR_NO int,
 	DATE_START_HDIAL datetime
 );
 
-CREATE TABLE rpv.dbo.tbl_Hospitalisation (
+CREATE TABLE tbl_Hospitalisation (
 	hID int NOT NULL,
 	RADAR_NO int,
 	DATE_ADMIT smalldatetime,
@@ -258,13 +258,13 @@ CREATE TABLE rpv.dbo.tbl_Hospitalisation (
 	COMMENT text
 );
 
-CREATE TABLE rpv.dbo.tbl_ImmunoSupp (
+CREATE TABLE tbl_ImmunoSupp (
 	imID int NOT NULL,
 	imDesc nvarchar(50),
 	"Group" int
 );
 
-CREATE TABLE rpv.dbo.tbl_IMMUNSUP_TREATMENT (
+CREATE TABLE tbl_IMMUNSUP_TREATMENT (
 	tID int NOT NULL,
 	RADAR_NO int,
 	IMMUNSUP_DRUG_STARTDATE datetime,
@@ -274,12 +274,12 @@ CREATE TABLE rpv.dbo.tbl_IMMUNSUP_TREATMENT (
 	FIRST_FLAG bit
 );
 
-CREATE TABLE rpv.dbo.tbl_Karyotype (
+CREATE TABLE tbl_Karyotype (
 	kID int,
 	KARYOTYPE nvarchar(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_LabData (
+CREATE TABLE tbl_LabData (
 	labID int NOT NULL,
 	RADAR_NO int,
 	DATE_LAB_RES datetime,
@@ -355,12 +355,12 @@ CREATE TABLE rpv.dbo.tbl_LabData (
 	ANTI_CLQ numeric(4,1)
 );
 
-CREATE TABLE rpv.dbo.tbl_MONOCLONAL (
+CREATE TABLE tbl_MONOCLONAL (
 	mID int NOT NULL,
 	mDesc nvarchar(20)
 );
 
-CREATE TABLE rpv.dbo.tbl_Pathology (
+CREATE TABLE tbl_Pathology (
 	pID int NOT NULL,
 	RADAR_NO int,
 	BX_DATE smalldatetime,
@@ -392,7 +392,7 @@ CREATE TABLE rpv.dbo.tbl_Pathology (
 	SEQ_NO int
 );
 
-CREATE TABLE rpv.dbo.tbl_Patient_Users (
+CREATE TABLE tbl_Patient_Users (
 	pID int NOT NULL,
 	RADAR_NO int,
 	pUserName nvarchar(50),
@@ -401,22 +401,22 @@ CREATE TABLE rpv.dbo.tbl_Patient_Users (
 	pDateReg datetime
 );
 
-CREATE TABLE rpv.dbo.tbl_PD_MODALITY (
+CREATE TABLE tbl_PD_MODALITY (
 	pdID int,
 	pdType nvarchar(75)
 );
 
-CREATE TABLE rpv.dbo.tbl_PDial (
+CREATE TABLE tbl_PDial (
 	pdID int NOT NULL,
 	RADAR_NO int,
 	DATE_START_PDIAL datetime
 );
-CREATE TABLE rpv.dbo.tbl_PHENOTYPES (
+CREATE TABLE tbl_PHENOTYPES (
 	pID int NOT NULL,
 	pDesc nvarchar(75)
 );
 
-CREATE TABLE rpv.dbo.tbl_Plasmaph (
+CREATE TABLE tbl_Plasmaph (
 	plID int NOT NULL,
 	RENAL_NO int,
 	DATE_STARTED_PLASMAPH datetime,
@@ -424,7 +424,7 @@ CREATE TABLE rpv.dbo.tbl_Plasmaph (
 	NO_EXCH_PLASMAPH int
 );
 
-CREATE TABLE rpv.dbo.tbl_Relapse (
+CREATE TABLE tbl_Relapse (
 	relID int NOT NULL,
 	RADAR_NO int,
 	DATE_ONSET_RELAP datetime,
@@ -440,12 +440,12 @@ CREATE TABLE rpv.dbo.tbl_Relapse (
 	SEQ_NO int
 );
 
-CREATE TABLE rpv.dbo.tbl_Relative (
+CREATE TABLE tbl_Relative (
 	rID int NOT NULL,
 	RELATIVE nvarchar(20)
 );
 
-CREATE TABLE rpv.dbo.tbl_RRT_HD (
+CREATE TABLE tbl_RRT_HD (
 	hID int NOT NULL,
 	RADAR_NO int,
 	HD_TMT_MODALITY int,
@@ -453,13 +453,13 @@ CREATE TABLE rpv.dbo.tbl_RRT_HD (
 	DATE_STOP_HDIAL smalldatetime
 );
 
-CREATE TABLE rpv.dbo.tbl_RRT_MODALITY (
+CREATE TABLE tbl_RRT_MODALITY (
 	mID int,
 	mType nvarchar(50),
 	"Group" int
 );
 
-CREATE TABLE rpv.dbo.tbl_RRT_PD (
+CREATE TABLE tbl_RRT_PD (
 	pID int NOT NULL,
 	RADAR_NO int,
 	PD_TMT_MODALITY int,
@@ -467,7 +467,7 @@ CREATE TABLE rpv.dbo.tbl_RRT_PD (
 	DATE_STOP_PD smalldatetime
 );
 
-CREATE TABLE rpv.dbo.tbl_RRT_PLASMA (
+CREATE TABLE tbl_RRT_PLASMA (
 	plID int NOT NULL,
 	RADAR_NO int,
 	PLASMAPH nvarchar(20),
@@ -478,12 +478,12 @@ CREATE TABLE rpv.dbo.tbl_RRT_PLASMA (
 	RESPONSE_TO_PLASMA int
 );
 
-CREATE TABLE rpv.dbo.tbl_RRT_PLASMA_LU (
+CREATE TABLE tbl_RRT_PLASMA_LU (
 	exID int NOT NULL,
 	exDesc nvarchar(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_RRT_TREATMENT (
+CREATE TABLE tbl_RRT_TREATMENT (
 	tID int NOT NULL,
 	RADAR_NO int,
 	MODALITY int,
@@ -493,30 +493,30 @@ CREATE TABLE rpv.dbo.tbl_RRT_TREATMENT (
 	FIRST_FLAG bit
 );
 
-CREATE TABLE rpv.dbo.tbl_RT_Modality (
+CREATE TABLE tbl_RT_Modality (
 	mID int NOT NULL,
 	mDesc nvarchar(50)
 );
 
-CREATE TABLE rpv.dbo.tbl_Sex (
+CREATE TABLE tbl_Sex (
 	sID int,
 	sType nvarchar(14)
 );
 
-CREATE TABLE rpv.dbo.tbl_Status (
+CREATE TABLE tbl_Status (
 	sID int NOT NULL,
 	sDesc nvarchar(50),
 	sAbbrev nvarchar(20)
 );
 
-CREATE TABLE rpv.dbo.tbl_Test (
+CREATE TABLE tbl_Test (
 	tID smallint NOT NULL,
 	tOne bit,
 	tTwo bit,
 	tThree nchar(10)
 );
 
-CREATE TABLE rpv.dbo.tbl_Therapy (
+CREATE TABLE tbl_Therapy (
 	tID int NOT NULL,
 	RADAR_NO int,
 	SIG_CHANGE_STATUS nvarchar(20),
@@ -561,7 +561,7 @@ CREATE TABLE rpv.dbo.tbl_Therapy (
 	SEQ_NO int
 );
 
-CREATE TABLE rpv.dbo.tbl_Transplant (
+CREATE TABLE tbl_Transplant (
 	trID int NOT NULL,
 	RADAR_NO int,
 	DATE_TRANSPLANT datetime,
@@ -574,12 +574,12 @@ CREATE TABLE rpv.dbo.tbl_Transplant (
 	DATE_BX_TXK datetime
 );
 
-CREATE TABLE rpv.dbo.tbl_TRANSPLANT_MODALITY (
+CREATE TABLE tbl_TRANSPLANT_MODALITY (
 	trID int,
 	trDesc nvarchar(75)
 );
 
-CREATE TABLE rpv.dbo.tbl_Transplant_Reject (
+CREATE TABLE tbl_Transplant_Reject (
 	recID int NOT NULL,
 	trID int NOT NULL,
 	trRejectDate smalldatetime,
@@ -587,7 +587,7 @@ CREATE TABLE rpv.dbo.tbl_Transplant_Reject (
 	trFailureDate smalldatetime
 );
 
-CREATE TABLE rpv.dbo.tbl_Users (
+CREATE TABLE tbl_Users (
 	uID int NOT NULL,
 	uSurname nvarchar(50),
 	uForename nvarchar(50),
