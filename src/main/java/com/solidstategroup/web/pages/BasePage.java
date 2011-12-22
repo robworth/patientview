@@ -19,15 +19,20 @@ public abstract class BasePage extends WebPage {
     public BasePage() {
         add(new Label(TITLE_WICKET_ID, getTitle()));
 
-        BookmarkablePageLink homePage = new BookmarkablePageLink(HOME_PAGE_WICKET_ID, HomePage.class);
-        BookmarkablePageLink proRegistrationPage = new BookmarkablePageLink(PRO_REGISTRATION_PAGE_WICKET_ID, RegistrationProfessionalPage.class);
-        BookmarkablePageLink professionalsPage = new BookmarkablePageLink(PROFESSIONALS_PAGE_WICKET_ID, ProfessionalsPage.class);
-        BookmarkablePageLink patientsPage = new BookmarkablePageLink(PATIENTS_PAGE_WICKET_ID, PatientsPage.class);
-        BookmarkablePageLink diseaseIndexPage = new BookmarkablePageLink(DISEASE_INDEX_PAGE_WICKET_ID, DiseaseIndexPage.class);
-        BookmarkablePageLink demographicsPage = new BookmarkablePageLink("demographicsPage", DemographicsPage.class);
-        BookmarkablePageLink patientsListingPage = new BookmarkablePageLink("patientsListingPage", PatientsListingPage.class);
+        BookmarkablePageLink[] naviationPages = {
+            new BookmarkablePageLink(HOME_PAGE_WICKET_ID, HomePage.class),
+            new BookmarkablePageLink(PRO_REGISTRATION_PAGE_WICKET_ID, RegistrationProfessionalPage.class),
+            new BookmarkablePageLink(PROFESSIONALS_PAGE_WICKET_ID, ProfessionalsPage.class),
+            new BookmarkablePageLink(PATIENTS_PAGE_WICKET_ID, PatientsPage.class),
+            new BookmarkablePageLink(DISEASE_INDEX_PAGE_WICKET_ID, DiseaseIndexPage.class),
+            new BookmarkablePageLink("demographicsPage", DemographicsPage.class),
+            new BookmarkablePageLink("patientsListingPage", PatientsListingPage.class),
+            new BookmarkablePageLink("recruitmentPage", RecruitmentPage.class),
+            new BookmarkablePageLink("mpgnPage", MpgnPage.class),
+            new BookmarkablePageLink("srnsPage", SrnsPage.class)
+        };
 
-        add(homePage, proRegistrationPage, professionalsPage, patientsPage, diseaseIndexPage, demographicsPage, patientsListingPage);
+        add(naviationPages);
     }
 
     public String getTitle() {

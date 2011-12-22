@@ -9,6 +9,8 @@
     <link href="css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="css/ajxmenu.css" rel="stylesheet" type="text/css"/>
     <script src="js/ajxmenu-formatted.js" type="text/javascript"></script>
+    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="js/radar.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -48,7 +50,7 @@
                                 <a wicket:id="patientsListingPage" href="#" title="Modify Existing Patients">Modify Patients</a>
                             </li>
                             <li class="" style="position: static; ">
-                                <a href="recruitment.aspx" title="Recruitment">Recruitment</a>
+                                <a wicket:id="recruitmentPage" href="#" title="Recruitment">Recruitment</a>
                             </li>
                         </ul>
                     </li>
@@ -63,10 +65,10 @@
                         <a id="ctl00_lnkClinicianInfo" class="ajxsub" href="#">|Information for Clinicians</a>
                         <ul style="display: none; ">
                             <li class="sfirst" style="position: static; ">
-                                <a href="clinician-mpgn.aspx" title="MPGN/DDD">MPGN/DDD</a>
+                                <a wicket:id="mpgnPage" href="#" title="MPGN/DDD">MPGN/DDD</a>
                             </li>
                             <li class="" style="position: static; ">
-                                <a href="clinician-srns.aspx" title="SRNS">SRNS</a>
+                                <a wicket:id="srnsPage" href="#" title="SRNS">SRNS</a>
                             </li>
                             <li class="slast" style="position: static; ">
                                 <a href="consent_forms.aspx" title="Consent Forms">Consent Forms</a>
