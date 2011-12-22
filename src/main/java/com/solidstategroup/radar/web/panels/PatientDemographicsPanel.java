@@ -8,6 +8,8 @@ public class PatientDemographicsPanel extends Panel {
 
     public PatientDemographicsPanel(String id) {
         super(id);
+        setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
 
         Form<Diagnosis> form = new Form<Diagnosis>("form");
         add(form);

@@ -4,9 +4,9 @@ import com.solidstategroup.radar.model.Diagnosis;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class PatientDiagnosisPanel extends Panel {
+public class PatientPathologyPanel extends Panel {
 
-    public PatientDiagnosisPanel(String id) {
+    public PatientPathologyPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
