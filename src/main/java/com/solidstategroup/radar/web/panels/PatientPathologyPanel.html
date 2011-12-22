@@ -11,7 +11,6 @@
 
         <td class="btmBorder">
             <select id="ctl00_ContentPlaceHolder1_DropDownListBXDate"
-                    onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownListBXDate\',\'\')', 0)"
                     name="ctl00$ContentPlaceHolder1$DropDownListBXDate">
                 <option value="" selected="selected">Select</option>
 
@@ -38,7 +37,7 @@
         <td><b>Biopsy Record</b></td>
         <td class="style2"><strong>RADAR No.</strong></td>
         <td style="width:120px" class="style2">
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly"
+            <input type="text" style="width:100px;" readonly="readonly"
                    value="511" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
         </td>
     </tr>
@@ -87,7 +86,6 @@
 <tr>
     <td style="height:40px;" colspan="3">
         <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew2"
-               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSaveNew2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
                value="Save" name="ctl00$ContentPlaceHolder1$btnSaveNew2">
         &nbsp;
 
@@ -138,7 +136,7 @@
                     <span id="ctl00_ContentPlaceHolder1_lblLabNo">Lab No. of sample</span>
                     &nbsp;<input type="text" style="border-width:1px;border-style:solid;"
                                  id="ctl00_ContentPlaceHolder1_txtSAMPLE_LAB_NO"
-                                 name="ctl00$ContentPlaceHolder1$txtSAMPLE_LAB_NO">
+                                 wicket:id="sampleLabNumber">
                 </td>
                 <td>
                     &nbsp;</td>
@@ -165,7 +163,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtINTER_INFLAM_INFIL" cols="20"
-                              rows="3" name="ctl00$ContentPlaceHolder1$txtINTER_INFLAM_INFIL"></textarea>
+                              rows="3" wicket:id="interstitalInflmatoryInfilitrate"></textarea>
                 </td>
             </tr>
             <tr>
@@ -183,7 +181,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtART_ABNORMAL" cols="20" rows="3"
-                              name="ctl00$ContentPlaceHolder1$txtART_ABNORMAL"></textarea>
+                              wicket:id="arterialAbnormalities"></textarea>
                 </td>
             </tr>
             <tr>
@@ -201,7 +199,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtIMM_HIST_FIND" cols="20" rows="3"
-                              name="ctl00$ContentPlaceHolder1$txtIMM_HIST_FIND"></textarea>
+                              wicket:id="immunohistologicalFindings"></textarea>
                 </td>
             </tr>
             <tr>
@@ -219,7 +217,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtELECT_MSCOPE_FIND" cols="20" rows="3"
-                              name="ctl00$ContentPlaceHolder1$txtELECT_MSCOPE_FIND"></textarea>
+                              wicket:id="electronMicroscopicFindings"></textarea>
                 </td>
             </tr>
             <tr>
@@ -257,8 +255,7 @@
         </tr>
         <tr>
             <td><input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew"
-                       onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSaveNew&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                       value="Save" name="ctl00$ContentPlaceHolder1$btnSaveNew">
+                       value="Save" wicket:id="save">
                 <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span></td>
         </tr>
         </tbody>
@@ -299,7 +296,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtEstimated"
-                           name="ctl00$ContentPlaceHolder1$txtEstimated">
+                           wicket:id="estimatedTubules">
                 </td>
             </tr>
             <tr>
@@ -309,9 +306,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtMeasured"
-                           name="ctl00$ContentPlaceHolder1$txtMeasured">
-                    <input type="hidden" id="ctl00_ContentPlaceHolder1_txtMeasured_MaskedEditExtender_ClientState"
-                           name="ctl00$ContentPlaceHolder1$txtMeasured_MaskedEditExtender_ClientState">
+                           wicket:id="measuredTubules">
                 </td>
             </tr>
             <tr>
@@ -331,7 +326,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtTUB_OTHER_FEAT" cols="20" rows="3"
-                              name="ctl00$ContentPlaceHolder1$txtTUB_OTHER_FEAT"></textarea>
+                              wicket:id="tubulesOtherFeature"></textarea>
                 </td>
             </tr>
             <tr>
