@@ -5,14 +5,10 @@ import com.solidstategroup.radar.web.panels.PatientDiagnosisPanel;
 import com.solidstategroup.radar.web.panels.PatientPathologyPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.panel.Panel;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class PatientPage extends BasePage {
 
-    private enum CurrentTab {
+    public enum CurrentTab {
         // Todo: Use this for storing current tab
         DEMOGRAPHICS, DIAGNOSIS, FIRST_VISIT, FOLLOW_UP, PATHOLOGY, RELAPSE, HOSPITALISATION
     }
@@ -20,6 +16,7 @@ public class PatientPage extends BasePage {
     private PatientDemographicsPanel patientDemographicsPanel;
     private PatientDiagnosisPanel patientDiagnosisPanel;
     private PatientPathologyPanel patientPathologyPanel;
+    private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
     public PatientPage() {
 
@@ -28,10 +25,6 @@ public class PatientPage extends BasePage {
         patientDiagnosisPanel = new PatientDiagnosisPanel("diagnosisPanel");
         patientPathologyPanel = new PatientPathologyPanel("pathologyPanel");
 
-        // Hide them all but demographics
-        hideAllPanels();
-        patientDemographicsPanel.setVisible(true);
-
         // Add them all to the page
         add(patientDemographicsPanel, patientDiagnosisPanel, patientPathologyPanel);
 
@@ -39,42 +32,27 @@ public class PatientPage extends BasePage {
         add(new AjaxLink("demographicsLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                hideAllPanels();
-                patientDemographicsPanel.setVisible(true);
-                for (Panel panel : getPanels()) {
-                    target.add(panel);
-                }
+                currentTab = CurrentTab.DEMOGRAPHICS;
+                target.add(patientDemographicsPanel, patientDiagnosisPanel, patientPathologyPanel);
             }
         });
         add(new AjaxLink("diagnosisLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                hideAllPanels();
-                patientDiagnosisPanel.setVisible(true);
-                for (Panel panel : getPanels()) {
-                    target.add(panel);
-                }
+                currentTab = CurrentTab.DIAGNOSIS;
+                target.add(patientDemographicsPanel, patientDiagnosisPanel, patientPathologyPanel);
             }
         });
         add(new AjaxLink("pathologyLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                hideAllPanels();
-                patientPathologyPanel.setVisible(true);
-                for (Panel panel : getPanels()) {
-                    target.add(panel);
-                }
+                currentTab = CurrentTab.PATHOLOGY;
+                target.add(patientDemographicsPanel, patientDiagnosisPanel, patientPathologyPanel);
             }
         });
     }
 
-    private void hideAllPanels() {
-        for (Panel panel : getPanels()) {
-            panel.setVisible(false);
-        }
-    }
-
-    private List<Panel> getPanels() {
-        return Arrays.asList(patientDemographicsPanel, patientDiagnosisPanel, patientPathologyPanel);
+    public CurrentTab getCurrentTab() {
+        return currentTab;
     }
 }
