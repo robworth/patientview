@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta id="ctl00_IE8CompatibilityMeta" http-equiv="X-UA-Compatible" content="IE=7"/>
+
+    <wicket:head>
+        <script type="text/javascript" language="javascript">
+            function ValidatePostCode(sender, args) {
+                args.IsValid = (args.Value
+                        .match(/(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]|[A-HK-Y][0-9]([0-9]|[ABEHMNPRV-Y]))|[0-9][A-HJKS-UW]) [0-9][ABD-HJLNP-UW-Z]{2})/i) !=
+                        null);
+                return args.IsValid;
+            }
+        </script>
+        <style type="text/css">
+
+            input, select, textarea {
+                border: 1px solid gray;
+                padding-left: 3px;
+            }
+
+            select, input, textarea {
+                font-size: 95%;
+                color: #2D2E2E
+            }
+
+            .frmView {
+                margin-top: 0;
+            }
+
+            .style2 {
+                background-color: #B6DF9F;
+                table-layout: fixed;
+            }
+
+            .style3 {
+                border-collapse: collapse;
+                border-style: none;
+                border-color: inherit;
+                border-width: 0;
+                background-color: #EEF6ED;
+            }
+
+            #ctl00_ContentPlaceHolder1_CONSENTCheckBox {
+                border: 0;
+            }
+
+            .lblPad {
+                padding-right: 30px;
+            }
+
+                /* this because of the update panel for the tabs
+                #tabsC {
+                margin-top:-35px;
+                }
+                */
+        </style>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
+
+        <!--[if IE]>
+        <style type="text/css">
+            #mainBlock {
+                margin-top: 0;
+            }
+
+            #tabsC {
+                margin-top: 0;
+            }
+        </style>
+        <![endif]-->
+
+        <script type="text/javascript">
+            <!--
+            function sessionKeepAlive() {
+                var wRequest = new Sys.Net.WebRequest();
+                wRequest.set_url("SessionKeepAlive.aspx");
+                wRequest.set_httpVerb("POST");
+                wRequest.add_completed(sessionKeepAlive_Callback);
+                wRequest.set_body();
+                wRequest.get_headers()["Content-Length"] = 0;
+                wRequest.invoke();
+            }
+
+            // This callback function processes the
+            // request return values. It is called asynchronously
+            // by the current executor.
+            function sessionKeepAlive_Callback(executor, eventArgs) {
+                // No need to do anything, but if you are sending a value
+                // from the server as an additional safety measure, then
+                // you can check that here.
+            }
+
+            // Set 12 minute .NET session keep alive timer...
+            window.setInterval('sessionKeepAlive()', 12 * 60 * 1000);
+            // -->
+
+
+        </script>
+
+
+    </wicket:head>
+</head>
+<body id="ctl00_body">
+<wicket:extend>
+    <form name="aspnetForm" method="post" action="demographics.aspx" onsubmit="javascript:return WebForm_OnSubmit();"
+          id="aspnetForm">
+
+
+        <script type="text/javascript">
+            function WebForm_OnSubmit() {
+                if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) {
+                    return false;
+                }
+                return true;
+            }
+
+        </script>
+
+        <div id="tabsC">
+            <ul>
+                <li><a href="#" title="Demographics"><span class="hovered">Demographics</span></a></li>
+                <li><a title="Diagnosis"><span>Diagnosis</span></a></li>
+                <li><a title="Laboratory Results"><span>First Visit</span></a></li>
+                <li><a title="Follow Up"><span>Follow Up</span></a></li>
+                <li><a tootip="Pathology"><span>Pathology</span></a></li>
+                <li><a title="Relapse"><span>Relapse</span></a></li>
+                <li><a title="Hospitalisation"><span>Hospitalisation</span></a></li>
+                <li></li>
+            </ul>
+        </div>
+
+        <div id="mainBlock" wicket:id="content"/>
+
+    </form>
+</wicket:extend>
+</body>
+</html>
