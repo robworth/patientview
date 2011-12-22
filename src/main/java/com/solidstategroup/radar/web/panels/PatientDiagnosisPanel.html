@@ -1,0 +1,632 @@
+<wicket:panel>
+
+<form wicket:id="form">
+
+<div id="mainBlock">
+
+<table cellpadding="5" style="width: 100%;" class="style2">
+    <tbody>
+    <tr>
+        <td style="width:70%"><strong>Diagnosis</strong></td>
+        <td align="right" class="style2">RADAR NO:&nbsp;
+        </td>
+        <td style="width:120px;" class="style2">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_RADAR_NOTextbox" readonly="readonly"
+                   value="468" name="ctl00$ContentPlaceHolder1$RADAR_NOTextbox">
+        </td>
+    </tr>
+    <tr>
+        <td>Name
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_FNAMETextbox" readonly="readonly"
+                   value="Paul" name="ctl00$ContentPlaceHolder1$FNAMETextbox">&nbsp;<input type="text"
+                                                                                           style="width:100px;"
+                                                                                           id="ctl00_ContentPlaceHolder1_SNAMETextbox"
+                                                                                           readonly="readonly"
+                                                                                           value="Test 1"
+                                                                                           name="ctl00$ContentPlaceHolder1$SNAMETextbox">
+            &nbsp;DoB&nbsp;
+            <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_DOBTextbox" readonly="readonly"
+                   value="16-Aug-2011" name="ctl00$ContentPlaceHolder1$DOBTextbox">&nbsp;<input type="text"
+                                                                                                style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
+                                                                                                id="ctl00_ContentPlaceHolder1_txtDateToday"
+                                                                                                value="22-Dec-2011"
+                                                                                                name="ctl00$ContentPlaceHolder1$txtDateToday">
+        </td>
+        <td align="right" class="style2">Hospital No:
+        </td>
+        <td class="style2">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_HOSP_NOTextbox" readonly="readonly"
+                   value="123432" name="ctl00$ContentPlaceHolder1$HOSP_NOTextbox">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table cellspacing="0" cellpadding="0" class="style1" style="width: 100%; background-color:#EEF6ED;"
+       id="ctl00_ContentPlaceHolder1_mainForm">
+<tbody>
+<tr>
+<td valign="top" style="width:45%;">
+<table cellpadding="5" style="width: 95%" class="style1">
+    <tbody>
+    <tr>
+        <td style="height:35px;" colspan="2">
+            <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnUpdate2"
+                   value="Save" name="ctl00$ContentPlaceHolder1$btnUpdate2">
+            &nbsp;<span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+        </td>
+    </tr>
+    <tr>
+        <td class="style3"><label id="ctl00_ContentPlaceHolder1_lblDiagnosis"
+                                  for="ctl00_ContentPlaceHolder1_DropDownList7">Diagnosis</label>
+
+        </td>
+        <td>
+            <select tabindex="1" id="ctl00_ContentPlaceHolder1_DropDownList7"
+                    onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList7\',\'\')', 0)"
+                    name="ctl00$ContentPlaceHolder1$DropDownList7">
+                <option value="">Select</option>
+                <option value="1">SRNS</option>
+                <option value="2" selected="selected">MPGN/DDD</option>
+
+            </select>
+
+            &nbsp;
+            &nbsp;
+
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;">
+            <label id="ctl00_ContentPlaceHolder1_lblDiagText" for="ctl00_ContentPlaceHolder1_DIAG_TXTTextbox">Diagnosis
+                Text</label>
+        </td>
+        <td><textarea style="font-size:95%;width:90%;" tabindex="3" id="ctl00_ContentPlaceHolder1_DIAG_TXTTextbox"
+                      cols="20" rows="3" name="ctl00$ContentPlaceHolder1$DIAG_TXTTextbox"></textarea></td>
+    </tr>
+    <tr>
+        <td><span id="ctl00_ContentPlaceHolder1_lblDateDiag">Date of original biopsy</span>&nbsp;&nbsp;
+            &nbsp;</td>
+        <td><input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtDateDiag"
+                   name="ctl00$ContentPlaceHolder1$txtDateDiag">
+
+            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                   id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
+
+            &nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            <span id="ctl00_ContentPlaceHolder1_lblESRF">Date of ESRF</span>
+        </td>
+        <td>
+            <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtDATE_ESRF"
+                   name="ctl00$ContentPlaceHolder1$txtDATE_ESRF">
+
+            <input type="image" style="border-width:0px;"
+                   src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_imgBtnDATE_ESRF"
+                   name="ctl00$ContentPlaceHolder1$imgBtnDATE_ESRF">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblAge" for="ctl00_ContentPlaceHolder1_AGE_AT_DIAGTextbox">Age at
+                Diagnosis</label>
+        </td>
+        <td><input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_AGE_AT_DIAGTextbox"
+                   readonly="readonly" value="0" name="ctl00$ContentPlaceHolder1$AGE_AT_DIAGTextbox">&nbsp;
+            <span style="font-style:italic;" id="ctl00_ContentPlaceHolder1_lblCalc">calc</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblPubertal" for="ctl00_ContentPlaceHolder1_CheckBox10">Prepubertal
+                at Diagnosis</label>
+        </td>
+        <td><input type="checkbox" tabindex="5" name="ctl00$ContentPlaceHolder1$CheckBox10"
+                   id="ctl00_ContentPlaceHolder1_CheckBox10"></td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblHeight" for="ctl00_ContentPlaceHolder1_TextBox11">Height at
+                diagnosis in cm</label>
+        </td>
+        <td><input type="text" style="width:50px;" tabindex="6" id="ctl00_ContentPlaceHolder1_TextBox11"
+                   name="ctl00$ContentPlaceHolder1$TextBox11">&nbsp;<span style="color:Red;visibility:hidden;"
+                                                                          id="ctl00_ContentPlaceHolder1_RangeValidator1">35.0 - 185.0 cm</span>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblClinicalA" for="ctl00_ContentPlaceHolder1_DropDownList8">Clinical
+                Presentation A</label>
+        </td>
+        <td>
+            <select id="ctl00_ContentPlaceHolder1_DropDownList8"
+                    onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList8\',\'\')', 0)"
+                    name="ctl00$ContentPlaceHolder1$DropDownList8">
+                <option value="" selected="selected">Select</option>
+                <option value="1">Nephrotic</option>
+                <option value="2">Nephritic</option>
+                <option value="3">Haematuria</option>
+                <option value="4">Proteinuria</option>
+                <option value="99">other</option>
+
+            </select>
+
+            &nbsp;
+
+        </td>
+    </tr>
+    <tr>
+        <td class="style3">
+            <span id="ctl00_ContentPlaceHolder1_lblClinicalB">Clinical Presentation B</span>
+        </td>
+        <td class="style3">
+            <select id="ctl00_ContentPlaceHolder1_DropDownList14"
+                    onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList14\',\'\')', 0)"
+                    name="ctl00$ContentPlaceHolder1$DropDownList14">
+                <option value="" selected="selected">Select</option>
+                <option value="1">Nephrotic</option>
+                <option value="2">Nephritic</option>
+                <option value="3">Haematuria</option>
+                <option value="4">Proteinuria</option>
+                <option value="99">other</option>
+
+            </select>
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &nbsp;</td>
+        <td>&nbsp;
+            &nbsp;</td>
+    </tr>
+
+
+    <tr>
+        <td>
+
+        </td>
+        <td>
+            &nbsp;&nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblDateOnset"
+                   for="ctl00_ContentPlaceHolder1_DATE_ONSET_RENALDISTextbox">Date of onset of symptoms</label>
+        </td>
+        <td>
+            <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_DATE_ONSET_RENALDISTextbox"
+                   name="ctl00$ContentPlaceHolder1$DATE_ONSET_RENALDISTextbox">
+            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                   id="ctl00_ContentPlaceHolder1_btnDate1" name="ctl00$ContentPlaceHolder1$btnDate1">
+            &nbsp;<a class="info" href="#">Help <span id="ctl00_ContentPlaceHolder1_onsetHelp">Date of onset of symptoms or date of presentation to Renal unit</span></a><span
+                style="color:Red;" id="ctl00_ContentPlaceHolder1_lblDateWarn"></span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+
+<fieldset style="padding:5px; border:1px solid green; margin-left:20px; width:85%">
+    <legend>
+        <span id="ctl00_ContentPlaceHolder1_lblAdditional">Additional Significant Diagnosis</span></legend>
+    <table class="style1" style="width:95%; margin-left:20px;">
+        <tbody>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">1&nbsp;&nbsp;<input type="text" style="width:300px;"
+                                                id="ctl00_ContentPlaceHolder1_SIG_DIAG1Textbox" value="ascsa"
+                                                name="ctl00$ContentPlaceHolder1$SIG_DIAG1Textbox"></td>
+        </tr>
+        <tr>
+            <td colspan="2">2&nbsp;&nbsp;<input type="text" style="width:300px;"
+                                                id="ctl00_ContentPlaceHolder1_SIG_DIAG2Textbox" value="ascsac"
+                                                name="ctl00$ContentPlaceHolder1$SIG_DIAG2Textbox"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</fieldset>
+
+<br><br>
+&nbsp;<input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_UpdateButton"
+             value="Save" name="ctl00$ContentPlaceHolder1$UpdateButton">
+
+&nbsp;
+<span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+&nbsp;
+<div style="color:Red;display:none;" class="inline" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
+
+</div>
+</td>
+<td valign="top" style="width:55%;">
+<table cellpadding="5" id="rhTable" style="width: 100%; background-color:#EEF6ED;">
+<tbody>
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td style="width:200px">
+        <label id="ctl00_ContentPlaceHolder1_lblBiopsy" for="ctl00_ContentPlaceHolder1_DropDownList11">Biopsy Proven
+            Diagnosis</label>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList11" name="ctl00$ContentPlaceHolder1$DropDownList11">
+            <option value="0" selected="selected">No</option>
+            <option value="1">Yes</option>
+
+        </select>
+    </td>
+</tr>
+<tr id="ctl00_ContentPlaceHolder1_rowGeneLabel">
+    <td colspan="2">Gene Mutation</td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowGeneMutateA">
+<td style="padding-left:30px;" colspan="2">
+<table cellpadding="3" id="tblGeneMutate" class="style4">
+<tbody>
+<tr align="center" valign="baseline" style="font-weight:bold; color:Green; text-align:center">
+    <td style="font-weight:normal; color:#000; text-align:left">
+        &nbsp;</td>
+    <td class="auto-style3" style="width:30px">
+        <span title="Yes"> Y </span></td>
+    <td class="auto-style3" style="width:30px">
+        <span title="No"> N </span></td>
+    <td class="auto-style3" style="width:30px">
+        <span title="Sent"> S </span></td>
+    <td class="auto-style3" style="width:30px">
+        <span title="Not sent"> NS </span></td>
+</tr>
+<tr>
+    <td>
+        NPHS1 - NEPHRIN
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radNPHS1Y" name="ctl00$ContentPlaceHolder1$nphs1"
+               id="ctl00_ContentPlaceHolder1_radNPHS1Y">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radNPHS1N" name="ctl00$ContentPlaceHolder1$nphs1"
+               id="ctl00_ContentPlaceHolder1_radNPHS1N">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radNPHS1S" name="ctl00$ContentPlaceHolder1$nphs1s"
+               id="ctl00_ContentPlaceHolder1_radNPHS1S">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radNPHS1NS" name="ctl00$ContentPlaceHolder1$nphs1s"
+               id="ctl00_ContentPlaceHolder1_radNPHS1NS">
+    </td>
+</tr>
+<tr>
+    <td>
+        NPHS2 - PODOCIN
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radNPHS2Y" name="ctl00$ContentPlaceHolder1$nphs2"
+               id="ctl00_ContentPlaceHolder1_radNPHS2Y">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radNPHS2N" name="ctl00$ContentPlaceHolder1$nphs2"
+               id="ctl00_ContentPlaceHolder1_radNPHS2N">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radNPHS2S" name="ctl00$ContentPlaceHolder1$nphs2s"
+               id="ctl00_ContentPlaceHolder1_radNPHS2S">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radNPHS2NS" name="ctl00$ContentPlaceHolder1$nphs2s"
+               id="ctl00_ContentPlaceHolder1_radNPHS2NS">
+    </td>
+</tr>
+<tr>
+    <td>
+        NPHS3 - PLCE1
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radNPHS3Y" name="ctl00$ContentPlaceHolder1$nphs3"
+               id="ctl00_ContentPlaceHolder1_radNPHS3Y">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radNPHS3N" name="ctl00$ContentPlaceHolder1$nphs3"
+               id="ctl00_ContentPlaceHolder1_radNPHS3N">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radNPHS3S" name="ctl00$ContentPlaceHolder1$nphs3s"
+               id="ctl00_ContentPlaceHolder1_radNPHS3S">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radNPHS3NS" name="ctl00$ContentPlaceHolder1$nphs3s"
+               id="ctl00_ContentPlaceHolder1_radNPHS3NS">
+    </td>
+</tr>
+<tr>
+    <td>
+        WT1 - Wilm's Tumor
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radWilmY" name="ctl00$ContentPlaceHolder1$wilm"
+               id="ctl00_ContentPlaceHolder1_radWilmY">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radWilmN" name="ctl00$ContentPlaceHolder1$wilm"
+               id="ctl00_ContentPlaceHolder1_radWilmN">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radWilmS" name="ctl00$ContentPlaceHolder1$wilms"
+               id="ctl00_ContentPlaceHolder1_radWilmS">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radWilmNS" name="ctl00$ContentPlaceHolder1$wilms"
+               id="ctl00_ContentPlaceHolder1_radWilmNS">
+    </td>
+</tr>
+<tr>
+    <td>
+        CD2AP
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radCD2APYes" name="ctl00$ContentPlaceHolder1$ad2ap"
+               id="ctl00_ContentPlaceHolder1_radCD2APYes">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radCD2APNo" name="ctl00$ContentPlaceHolder1$ad2ap"
+               id="ctl00_ContentPlaceHolder1_radCD2APNo">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radCD2APS" name="ctl00$ContentPlaceHolder1$ad2aps"
+               id="ctl00_ContentPlaceHolder1_radCD2APS">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radCD2APNS" name="ctl00$ContentPlaceHolder1$ad2aps"
+               id="ctl00_ContentPlaceHolder1_radCD2APNS">
+    </td>
+</tr>
+<tr>
+    <td>
+        TRPC6
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radTRPC6Y" name="ctl00$ContentPlaceHolder1$trpc6"
+               id="ctl00_ContentPlaceHolder1_radTRPC6Y">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radTRPC6N" name="ctl00$ContentPlaceHolder1$trpc6"
+               id="ctl00_ContentPlaceHolder1_radTRPC6N">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radTRPC6S" name="ctl00$ContentPlaceHolder1$trpc6s"
+               id="ctl00_ContentPlaceHolder1_radTRPC6S">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radTRPC6NS" name="ctl00$ContentPlaceHolder1$trpc6s"
+               id="ctl00_ContentPlaceHolder1_radTRPC6NS">
+    </td>
+</tr>
+<tr>
+    <td>
+        ACTN4 - ALPHA-ACTININ 4
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radACTN4Y" name="ctl00$ContentPlaceHolder1$actn4"
+               id="ctl00_ContentPlaceHolder1_radACTN4Y">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radACTN4N" name="ctl00$ContentPlaceHolder1$actn4"
+               id="ctl00_ContentPlaceHolder1_radACTN4N">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radACTN4S" name="ctl00$ContentPlaceHolder1$actn4s"
+               id="ctl00_ContentPlaceHolder1_radACTN4S">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radACTN4NS" name="ctl00$ContentPlaceHolder1$actn4s"
+               id="ctl00_ContentPlaceHolder1_radACTN4NS">
+
+    </td>
+</tr>
+<tr>
+    <td>
+        LAMB2 - LAMININ-BETA-2
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radLAMB2Yes" name="ctl00$ContentPlaceHolder1$lamb"
+               id="ctl00_ContentPlaceHolder1_radLAMB2Yes">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radLAMB2No" name="ctl00$ContentPlaceHolder1$lamb"
+               id="ctl00_ContentPlaceHolder1_radLAMB2No">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radLAMBS" name="ctl00$ContentPlaceHolder1$lambs"
+               id="ctl00_ContentPlaceHolder1_radLAMBS">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radLAMBNS" name="ctl00$ContentPlaceHolder1$lambs"
+               id="ctl00_ContentPlaceHolder1_radLAMBNS">
+    </td>
+</tr>
+<tr>
+    <td>
+        Other
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radOtherY" name="ctl00$ContentPlaceHolder1$other"
+               id="ctl00_ContentPlaceHolder1_radOtherY">
+    </td>
+    <td class="auto-style2">
+        <input type="radio"
+               value="radOtherN" name="ctl00$ContentPlaceHolder1$other"
+               id="ctl00_ContentPlaceHolder1_radOtherN">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radOtherS" name="ctl00$ContentPlaceHolder1$otherS"
+               id="ctl00_ContentPlaceHolder1_radOtherS">
+    </td>
+    <td class="auto-style2">
+        <input type="radio" value="radOtherNS" name="ctl00$ContentPlaceHolder1$otherS"
+               id="ctl00_ContentPlaceHolder1_radOtherNS">
+    </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+
+
+<tr>
+    <td>
+
+    </td>
+    <td>
+
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label id="ctl00_ContentPlaceHolder1_lblParental" for="ctl00_ContentPlaceHolder1_DropDownList12">Parental
+            Consanguinity Y/N</label>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList12" name="ctl00$ContentPlaceHolder1$DropDownList12">
+            <option value="" selected="selected">Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+            <option value="9">Unkown</option>
+
+        </select>
+    </td>
+</tr>
+<tr>
+    <td>
+        <label id="ctl00_ContentPlaceHolder1_lblFamHist" for="ctl00_ContentPlaceHolder1_DropDownList13">Family History
+            Y/N</label>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList13"
+                name="ctl00$ContentPlaceHolder1$DropDownList13">
+            <option value="99" selected="selected">Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+            <option value="9">Unkown</option>
+        </select>
+    </td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td>
+
+    </td>
+</tr>
+<tr id="ctl00_ContentPlaceHolder1_rowREL1">
+    <td></td>
+    <td>
+        &nbsp;
+
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowREL2">
+    <td></td>
+    <td>
+        &nbsp;
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowREL3">
+    <td></td>
+    <td>
+        &nbsp;
+
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowREL4">
+    <td></td>
+    <td>
+        &nbsp;
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowREL5">
+    <td></td>
+    <td>&nbsp;
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowREL6">
+    <td></td>
+    <td>&nbsp;
+    </td>
+</tr>
+
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td>
+        &nbsp;</td>
+    <td>
+        &nbsp;</td>
+</tr>
+<tr>
+    <td>
+        &nbsp;</td>
+    <td>
+        &nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+<br><br>
+<span id="ctl00_ContentPlaceHolder1_lblPage">2A</span>
+
+
+</div>
+
+</form>
+
+</wicket:panel>
