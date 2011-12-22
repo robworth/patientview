@@ -1,0 +1,565 @@
+<wicket:panel>
+
+<form wicket:id="form">
+
+
+<div id="mainBlock">
+
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+    <tbody>
+    <tr>
+
+        <td class="btmBorder">
+            <select id="ctl00_ContentPlaceHolder1_DropDownListBXDate"
+                    onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownListBXDate\',\'\')', 0)"
+                    name="ctl00$ContentPlaceHolder1$DropDownListBXDate">
+                <option value="" selected="selected">Select</option>
+
+            </select>
+
+
+            &nbsp;Select previous record by date&nbsp;
+            <input type="submit" id="ctl00_ContentPlaceHolder1_btnAdd" value="Add new record"
+                   name="ctl00$ContentPlaceHolder1$btnAdd">
+        </td>
+        <td class="btmBorder">&nbsp;</td>
+        <td style="width:120px" class="btmBorder">
+            <strong>Pathology</strong></td>
+    </tr>
+    </tbody>
+</table>
+<div id="ctl00_ContentPlaceHolder1_pnlAdd">
+
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+
+    <tbody>
+    <tr>
+
+        <td><b>Biopsy Record</b></td>
+        <td class="style2"><strong>RADAR No.</strong></td>
+        <td style="width:120px" class="style2">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly"
+                   value="511" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+        </td>
+    </tr>
+    <tr>
+        <td><b>Name:</b>
+            <span id="ctl00_ContentPlaceHolder1_lblFirstName">Test1</span>&nbsp;<span
+                    style="display:inline-block;width:120px;" id="ctl00_ContentPlaceHolder1_lblSurname">Demo</span>
+            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDOB">01-Jun-1999</span>
+        </td>
+        <td class="style2"><strong>Hospital No.</strong></td>
+        <td class="style2">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly"
+                   value="987654B" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+        </td>
+    </tr>
+    <tr>
+        <td>Date of Biopsy
+            <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtBX_DATE"
+                   name="ctl00$ContentPlaceHolder1$txtBX_DATE">
+
+            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                   id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
+
+            <span style="color:Red;font-weight:bold;visibility:hidden;"
+                  id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>&nbsp;<span
+                    style="color:Red;display:none;"
+                    id="ctl00_ContentPlaceHolder1_CompareValidator1">Date of Biopsy</span>
+            &nbsp;<input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
+                         id="ctl00_ContentPlaceHolder1_txtDateToday" value="22-12-2011"
+                         name="ctl00$ContentPlaceHolder1$txtDateToday">
+            &nbsp;<span style="color:#B6DF9F;background-color:#B6DF9F;" id="ctl00_ContentPlaceHolder1_lblPid"></span>
+            &nbsp;<input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
+                         id="ctl00_ContentPlaceHolder1_txtSEQ_NO" value="0" name="ctl00$ContentPlaceHolder1$txtSEQ_NO">
+        </td>
+        <td class="style2"><strong>Diagnosis</strong></td>
+        <td class="style2">
+            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
+                   readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table cellspacing="0" cellpadding="5" style="width:100%; background-color:#EEF6ED; font-size:85%; table-layout:fixed"
+       id="ctl00_ContentPlaceHolder1_tblMain">
+<tbody>
+<tr>
+    <td style="height:40px;" colspan="3">
+        <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew2"
+               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSaveNew2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+               value="Save" name="ctl00$ContentPlaceHolder1$btnSaveNew2">
+        &nbsp;
+
+        &nbsp;
+        <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+    </td>
+</tr>
+<tr>
+<td style="width:33%">
+    <br>
+    <fieldset>
+        <table cellspacing="0" cellpadding="5" id="tblSample" class="style3">
+
+            <tbody>
+            <tr>
+                <td>
+                    <b>Sample</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="radio" value="radNat" name="ctl00$ContentPlaceHolder1$radNatTx"
+                           id="ctl00_ContentPlaceHolder1_radNat"><label
+                        for="ctl00_ContentPlaceHolder1_radNat">Native</label>
+                    &nbsp;
+                    <input type="radio" value="radTX" name="ctl00$ContentPlaceHolder1$radNatTx"
+                           id="ctl00_ContentPlaceHolder1_radTX"><label for="ctl00_ContentPlaceHolder1_radTX">Tx
+                    Kidney</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Side:&nbsp;
+                    <input type="radio" value="radLeft" name="ctl00$ContentPlaceHolder1$radSide"
+                           id="ctl00_ContentPlaceHolder1_radLeft"><label
+                        for="ctl00_ContentPlaceHolder1_radLeft">Left</label>
+                    &nbsp;
+                    <input type="radio" value="radRight" name="ctl00$ContentPlaceHolder1$radSide"
+                           id="ctl00_ContentPlaceHolder1_radRight"><label
+                        for="ctl00_ContentPlaceHolder1_radRight">Right</label>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblLabNo">Lab No. of sample</span>
+                    &nbsp;<input type="text" style="border-width:1px;border-style:solid;"
+                                 id="ctl00_ContentPlaceHolder1_txtSAMPLE_LAB_NO"
+                                 name="ctl00$ContentPlaceHolder1$txtSAMPLE_LAB_NO">
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellspacing="0" cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblInt" for="ctl00_ContentPlaceHolder1_txtINTER_INFLAM_INFIL">Interstital
+                        inflamatory infiltrate</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtINTER_INFLAM_INFIL" cols="20"
+                              rows="3" name="ctl00$ContentPlaceHolder1$txtINTER_INFLAM_INFIL"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblArterial" for="ctl00_ContentPlaceHolder1_txtART_ABNORMAL">Arterial
+                        &amp; arteriolar abnormalities</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtART_ABNORMAL" cols="20" rows="3"
+                              name="ctl00$ContentPlaceHolder1$txtART_ABNORMAL"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblImmunoFind"
+                           for="ctl00_ContentPlaceHolder1_txtIMM_HIST_FIND">Immunohistological findings</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtIMM_HIST_FIND" cols="20" rows="3"
+                              name="ctl00$ContentPlaceHolder1$txtIMM_HIST_FIND"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblElectron"
+                           for="ctl00_ContentPlaceHolder1_txtELECT_MSCOPE_FIND">Electron microscopic findings</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtELECT_MSCOPE_FIND" cols="20" rows="3"
+                              name="ctl00$ContentPlaceHolder1$txtELECT_MSCOPE_FIND"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <table cellpadding="5" class="style3">
+        <tbody>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew"
+                       onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSaveNew&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+                       value="Save" name="ctl00$ContentPlaceHolder1$btnSaveNew">
+                <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+</td>
+<td style="width:33%; vertical-align:top;">
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <b>Diagnosis</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <b>Tubules</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">Extent of altrophy + internal fibrosis</td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblEstimated" for="ctl00_ContentPlaceHolder1_txtEstimated">Estimated
+                        %</label>
+                </td>
+                <td>
+                    <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtEstimated"
+                           name="ctl00$ContentPlaceHolder1$txtEstimated">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblMeasured" for="ctl00_ContentPlaceHolder1_txtMeasured">Measured
+                        %</label>
+                </td>
+                <td>
+                    <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtMeasured"
+                           name="ctl00$ContentPlaceHolder1$txtMeasured">
+                    <input type="hidden" id="ctl00_ContentPlaceHolder1_txtMeasured_MaskedEditExtender_ClientState"
+                           name="ctl00$ContentPlaceHolder1$txtMeasured_MaskedEditExtender_ClientState">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblOther" for="ctl00_ContentPlaceHolder1_txtTUB_OTHER_FEAT">Other
+                        feature</label>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtTUB_OTHER_FEAT" cols="20" rows="3"
+                              name="ctl00$ContentPlaceHolder1$txtTUB_OTHER_FEAT"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblImages">Images</span>
+                    &nbsp;enter the full url, inc http://
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg1">1</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage1"
+                                 name="ctl00$ContentPlaceHolder1$txtImage1">
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg2">2</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage2"
+                                 name="ctl00$ContentPlaceHolder1$txtImage2">
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg3">3</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage3"
+                                 name="ctl00$ContentPlaceHolder1$txtImage3">
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg4">4</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage4"
+                                 name="ctl00$ContentPlaceHolder1$txtImage4">
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg5">5</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage5"
+                                 name="ctl00$ContentPlaceHolder1$txtImage5">
+                    <br>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <p>
+        <span style="color:#EEF6ED;font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblUploadWarn">Uploading images, please wait .....</span>
+    </p>
+</td>
+<td valign="top">
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <b>Glomeruli</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    Total No
+                    <span style="color:Red;visibility:hidden;"
+                          id="ctl00_ContentPlaceHolder1_RangeValidator1">0-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_TOTAL_NO"
+                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_TOTAL_NO">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No globally Sclerosed&nbsp;
+                    <span style="color:Red;visibility:hidden;"
+                          id="ctl00_ContentPlaceHolder1_RangeValidator2">0-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_GLOB_SCL"
+                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_GLOB_SCL">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No segmentally sclerosed&nbsp;
+                    <span style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_RangeValidator3">0-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_SEQ_SCL"
+                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_SEQ_SCL">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with cellular/fibrocellular crescents<br>
+                    &nbsp;<span style="color:Red;display:none;"
+                                id="ctl00_ContentPlaceHolder1_RangeValidator4">0-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150"
+                           id="ctl00_ContentPlaceHolder1_txtGLOM_CELL_CRES" maxlength="3"
+                           name="ctl00$ContentPlaceHolder1$txtGLOM_CELL_CRES">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with fibrous crescents&nbsp;
+                    <span style="color:Red;visibility:hidden;"
+                          id="ctl00_ContentPlaceHolder1_RangeValidator5">0-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIB_CRES"
+                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_FIB_CRES">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with endocapillary hypercellularity<br>
+                    &nbsp;<span style="color:Red;display:none;"
+                                id="ctl00_ContentPlaceHolder1_RangeValidator6">0-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150"
+                           id="ctl00_ContentPlaceHolder1_txtGLOM_END_HYPER" maxlength="3"
+                           name="ctl00$ContentPlaceHolder1$txtGLOM_END_HYPER">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with fibrinoid necrosis&nbsp;
+                    <span style="color:Red;visibility:hidden;"
+                          id="ctl00_ContentPlaceHolder1_RangeValidator7">1-150</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIN_NEC"
+                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_FIN_NEC">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblGLOM_OTHER"
+                           for="ctl00_ContentPlaceHolder1_txtGLOM_ANY_OTH_FEAT">Other feature</label>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtGLOM_ANY_OTH_FEAT" cols="20" rows="3"
+                              name="ctl00$ContentPlaceHolder1$txtGLOM_ANY_OTH_FEAT"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+
+            <tbody>
+            <tr>
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblPATH_TEXT">Histological Summary</span>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtPATH_TEXT" cols="20" rows="15"
+                              name="ctl00$ContentPlaceHolder1$txtPATH_TEXT"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<p><span id="ctl00_ContentPlaceHolder1_lblDebug"></span>&nbsp;</p>
+
+<div style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
+
+</div>
+<br>
+<span id="ctl00_ContentPlaceHolder1_lblPage">11B</span>
+</div>
+
+
+</form>
+
+</wicket:panel>

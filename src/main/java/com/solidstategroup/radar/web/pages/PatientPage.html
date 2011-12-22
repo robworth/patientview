@@ -120,18 +120,20 @@
 
         <div id="tabsC">
             <ul>
-                <li><a href="#" title="Demographics"><span class="hovered">Demographics</span></a></li>
-                <li><a title="Diagnosis"><span>Diagnosis</span></a></li>
+                <li><a wicket:id="demographicsLink" title="Demographics"><span class="hovered">Demographics</span></a></li>
+                <li><a wicket:id="diagnosisLink" title="Diagnosis"><span>Diagnosis</span></a></li>
                 <li><a title="Laboratory Results"><span>First Visit</span></a></li>
                 <li><a title="Follow Up"><span>Follow Up</span></a></li>
-                <li><a tootip="Pathology"><span>Pathology</span></a></li>
+                <li><a wicket:id="pathologyLink" title="Pathology"><span>Pathology</span></a></li>
                 <li><a title="Relapse"><span>Relapse</span></a></li>
                 <li><a title="Hospitalisation"><span>Hospitalisation</span></a></li>
                 <li></li>
             </ul>
         </div>
 
-        <div id="mainBlock" wicket:id="content"/>
+        <div id="mainBlock" wicket:id="demographicsPanel"/>
+        <div id="mainBlock" wicket:id="diagnosisPanel"/>
+        <div id="mainBlock" wicket:id="pathologyPanel"/>
 
     </form>
 </wicket:extend>
