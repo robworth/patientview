@@ -137,6 +137,6 @@ color: White;
 }
 
 .infoItemHidden {
-    display:none;
-    height: 0px;
+    display:none !important;
+    height: 0px !important;
 }
