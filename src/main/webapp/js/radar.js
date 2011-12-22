@@ -1,1 +1,4 @@
-console.log("inside radar");
+// document ready
+jQuery(function() {
+    console.log('hello');
+})

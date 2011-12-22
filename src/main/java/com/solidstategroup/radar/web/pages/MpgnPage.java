@@ -1,4 +1,4 @@
-package com.solidstategroup.web.pages;
+package com.solidstategroup.radar.web.pages;
 
 
 public class MpgnPage extends BasePage{
