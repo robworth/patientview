@@ -9,11 +9,26 @@ import org.junit.Test;
 public class TestPatientPage extends BasePageTest {
 
     @Test
-    public void homepageRendersSuccessfully() {
+    public void renderPatientPage() {
         //start and render the test page
         tester.startPage(PatientPage.class);
 
         //assert rendered page class
         tester.assertRenderedPage(PatientPage.class);
+
+        // Try Ajax refresh
+        tester.assertVisible("demographicsPanel");
+        tester.assertInvisible("diagnosisPanel");
+        tester.assertInvisible("pathologyPanel");
+
+        tester.clickLink("diagnosisLink");
+        tester.assertVisible("diagnosisPanel");
+        tester.assertInvisible("demographicsPanel");
+        tester.assertInvisible("pathologyPanel");
+
+        tester.clickLink("pathologyLink");
+        tester.assertVisible("pathologyPanel");
+        tester.assertInvisible("demographicsPanel");
+        tester.assertInvisible("diagnosisPanel");
     }
 }
