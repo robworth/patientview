@@ -5,19 +5,13 @@
 
 	<display-name>radar</display-name>
 
-
-	<!--filter>
-		<filter-name>wicket.radar</filter-name>
-		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>com.solidstategroup.WicketApplication</param-value>
-		</init-param>
-	</filter-->
-
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:context.xml</param-value>
+    </context-param>
 
     <filter>
         <filter-name>radar</filter-name>

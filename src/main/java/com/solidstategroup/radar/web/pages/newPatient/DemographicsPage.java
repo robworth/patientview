@@ -1,4 +1,4 @@
-package com.solidstategroup.web.pages.newPatient;
+package com.solidstategroup.radar.web.pages.newPatient;
 
 
 public class DemographicsPage extends NewPatientPage{

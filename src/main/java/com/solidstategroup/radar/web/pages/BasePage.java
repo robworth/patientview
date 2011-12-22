@@ -1,8 +1,8 @@
-package com.solidstategroup.web.pages;
+package com.solidstategroup.radar.web.pages;
 
 
 
-import com.solidstategroup.web.pages.newPatient.DemographicsPage;
+import com.solidstategroup.radar.web.pages.newPatient.DemographicsPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;

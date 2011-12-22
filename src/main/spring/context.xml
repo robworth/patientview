@@ -6,8 +6,7 @@
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <!--The parent application context where all other files will be referenced from-->
-
-    <import resource="applicationContext-project.xml"/>
+    <!-- Wicket WebApplication setup -->
+    <bean id="radarApplication" class="com.solidstategroup.radar.web.RadarApplication"/>
 
 </beans>
