@@ -71,52 +71,12 @@
         </style>
         <![endif]-->
 
-        <script type="text/javascript">
-            <!--
-            function sessionKeepAlive() {
-                var wRequest = new Sys.Net.WebRequest();
-                wRequest.set_url("SessionKeepAlive.aspx");
-                wRequest.set_httpVerb("POST");
-                wRequest.add_completed(sessionKeepAlive_Callback);
-                wRequest.set_body();
-                wRequest.get_headers()["Content-Length"] = 0;
-                wRequest.invoke();
-            }
-
-            // This callback function processes the
-            // request return values. It is called asynchronously
-            // by the current executor.
-            function sessionKeepAlive_Callback(executor, eventArgs) {
-                // No need to do anything, but if you are sending a value
-                // from the server as an additional safety measure, then
-                // you can check that here.
-            }
-
-            // Set 12 minute .NET session keep alive timer...
-            window.setInterval('sessionKeepAlive()', 12 * 60 * 1000);
-            // -->
-
-
-        </script>
-
-
     </wicket:head>
 </head>
 <body id="ctl00_body">
 <wicket:extend>
     <form name="aspnetForm" method="post" action="demographics.aspx" onsubmit="javascript:return WebForm_OnSubmit();"
           id="aspnetForm">
-
-
-        <script type="text/javascript">
-            function WebForm_OnSubmit() {
-                if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) {
-                    return false;
-                }
-                return true;
-            }
-
-        </script>
 
         <div id="tabsC">
             <ul>
@@ -125,8 +85,8 @@
                 <li><a title="Laboratory Results"><span>First Visit</span></a></li>
                 <li><a title="Follow Up"><span>Follow Up</span></a></li>
                 <li><a wicket:id="pathologyLink" title="Pathology"><span>Pathology</span></a></li>
-                <li><a title="Relapse"><span>Relapse</span></a></li>
-                <li><a title="Hospitalisation"><span>Hospitalisation</span></a></li>
+                <li><a wicket:id="relapseLink" title="Relapse"><span>Relapse</span></a></li>
+                <li><a wicket:id="hospitalisationLink" title="Hospitalisation"><span>Hospitalisation</span></a></li>
                 <li></li>
             </ul>
         </div>
@@ -134,6 +94,8 @@
         <div wicket:id="demographicsPanel"/>
         <div wicket:id="diagnosisPanel"/>
         <div wicket:id="pathologyPanel"/>
+        <div wicket:id="relapsePanel"/>
+        <div wicket:id="hospitalisationPanel"/>
 
     </form>
 </wicket:extend>

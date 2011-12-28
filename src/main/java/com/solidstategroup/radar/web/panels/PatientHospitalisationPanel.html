@@ -1,0 +1,174 @@
+<wicket:panel>
+
+    <form wicket:id="form">
+        <div id="mainBlock">
+            <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+                <tbody>
+                <tr>
+
+                    <td class="btmBorder">
+                        <select id="ctl00_ContentPlaceHolder1_DropDownListAdminDate"
+                                onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownListAdminDate\',\'\')', 0)"
+                                name="ctl00$ContentPlaceHolder1$DropDownListAdminDate">
+                            <option value="" selected="selected">Select</option>
+
+                        </select>
+                        &nbsp;Select previous record by admission date&nbsp;
+                        <input type="submit" id="ctl00_ContentPlaceHolder1_btnAdd" value="Add new record"
+                               name="ctl00$ContentPlaceHolder1$btnAdd">
+                    </td>
+                    <td class="btmBorder">&nbsp;</td>
+                    <td style="width:120px" class="btmBorder">
+                        <strong>Hospitalisation</strong></td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="ctl00_ContentPlaceHolder1_pnlAdd">
+
+                <table cellpadding="4" id="tblHeader" style="width: 100%;">
+                    <tbody>
+                    <tr>
+                        <td align="left" class="style4"><b>Hospitalisation Record</b></td>
+                        <td class="style2" style="text-align:right; ">RADAR No.</td>
+                        <td>
+                            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO"
+                                   readonly="readonly" value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">Name
+                            <input type="text" id="ctl00_ContentPlaceHolder1_txtFNAME" readonly="readonly" value="jane"
+                                   name="ctl00$ContentPlaceHolder1$txtFNAME">
+                            &nbsp;<input type="text" id="ctl00_ContentPlaceHolder1_txtSNAME" readonly="readonly"
+                                         value="lady" name="ctl00$ContentPlaceHolder1$txtSNAME">
+                            &nbsp;DoB
+                            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtDOB"
+                                   readonly="readonly" value="11-Nov-1992" name="ctl00$ContentPlaceHolder1$txtDOB">
+                        </td>
+                        <td style="text-align:right; ">Hospital No.</td>
+                        <td>
+                            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO"
+                                   readonly="readonly" value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">&nbsp;<input type="text"
+                                                                  style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
+                                                                  id="ctl00_ContentPlaceHolder1_txtDateToday"
+                                                                  name="ctl00$ContentPlaceHolder1$txtDateToday">
+                        </td>
+                        <td style="text-align:right; ">Diagnosis</td>
+                        <td>
+                            <input type="text" style="background-color:#FFFF99;width:100px;"
+                                   id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS" readonly="readonly" value="SRNS"
+                                   name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table cellpadding="10" style="width:100%; background-color:#eef6ed; font-size:85%"
+                       id="ctl00_ContentPlaceHolder1_tblMain">
+                    <tbody>
+                    <tr>
+                        <td style="height:40px;" colspan="2">
+                            <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSave2"
+                                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSave2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+                                   value="Save" name="ctl00$ContentPlaceHolder1$btnSave2">
+                            &nbsp;
+
+                            &nbsp;
+                            <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">
+                            <fieldset style="width:95%; height:100px;">
+                                <table cellpadding="5" style="width:100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td class="style5">
+                                            <b>Admission</b></td>
+                                        <td>
+                                            &nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="style5">
+                                            Date of admission
+                                        </td>
+                                        <td>
+                                            <input type="text" style="width:80px;" wicket:id="dateOfAdmission"/>
+
+                                            <input type="image" style="border-width:0px;"
+                                                   src="images/Calendar_scheduleHS.png"
+                                                   id="ctl00_ContentPlaceHolder1_imgCal1"
+                                                   name="ctl00$ContentPlaceHolder1$imgCal1">
+                                            &nbsp;<span style="color:Red;display:none;"
+                                                        id="ctl00_ContentPlaceHolder1_CompareValidator1">&gt;today</span>
+                                            &nbsp;<span style="color:Red;display:none;"
+                                                        id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="style5">
+                                            Date of Discharge
+                                        </td>
+                                        <td>
+                                            <input type="text" style="width:80px;" wicket:id="dateOfDischarge"/>
+
+                                            <input type="image" style="border-width:0px;"
+                                                   src="images/Calendar_scheduleHS.png"
+                                                   id="ctl00_ContentPlaceHolder1_imgCal2"
+                                                   name="ctl00$ContentPlaceHolder1$imgCal2">
+                                            &nbsp;<span style="color:Red;visibility:hidden;"
+                                                        id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt;today</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </td>
+                        <td valign="top" style="width:50%">
+                            <fieldset style="width:95%; height:100px;">
+                                <table cellpadding="5" style="width:100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" style="width:150px;"><b>Reason for Admission</b></td>
+                                        <td><textarea style="width:95%;" cols="20" rows="5"
+                                                      wicket:id="reason"></textarea></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <fieldset style="width:97%; padding:10px;">
+                                <p style="font-weight: 700">Comments&nbsp;
+                                    <span style="color:#EEF6ED;" id="ctl00_ContentPlaceHolder1_lblHid"></span>
+                                </p>
+                                <textarea style="width:95%;" cols="20" rows="20" wicket:id="comments"></textarea>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <p></p>
+                &nbsp;<input type="submit" class="saveBtn" value="Save" wicket:id="submit">
+                &nbsp;
+                <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+
+
+            </div>
+            <p>
+                <span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+            </p>
+
+            <p>
+                <span id="ctl00_ContentPlaceHolder1_lblPage">16B</span></p>
+        </div>
+
+    </form>
+</wicket:panel>
