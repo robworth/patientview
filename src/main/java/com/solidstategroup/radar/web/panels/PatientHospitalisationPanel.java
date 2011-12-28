@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 
 public class PatientHospitalisationPanel extends Panel {
     public PatientHospitalisationPanel(String id) {
@@ -15,7 +16,8 @@ public class PatientHospitalisationPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        Form<Hospitalisation> form = new Form<Hospitalisation>("form");
+        Form<Hospitalisation> form =
+                new Form<Hospitalisation>("form", new CompoundPropertyModel<Hospitalisation>(new Hospitalisation()));
         add(form);
 
         form.add(new DateTextField("dateOfAdmission"));

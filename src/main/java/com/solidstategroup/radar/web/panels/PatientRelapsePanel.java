@@ -23,7 +23,7 @@ public class PatientRelapsePanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        Form<Relapse> form = new Form<Relapse>("form");
+        Form<Relapse> form = new Form<Relapse>("form", new CompoundPropertyModel<Relapse>(new Relapse()));
 
         form.add(new DateTextField("dateOfRelapse"));
 
