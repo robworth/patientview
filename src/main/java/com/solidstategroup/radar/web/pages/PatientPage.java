@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.PatientDemographicsPanel;
 import com.solidstategroup.radar.web.panels.PatientDiagnosisPanel;
 import com.solidstategroup.radar.web.panels.PatientHospitalisationPanel;
@@ -18,6 +19,7 @@ public class PatientPage extends BasePage {
 
     private PatientDemographicsPanel demographicsPanel;
     private PatientDiagnosisPanel diagnosisPanel;
+    private FirstVisitPanel firstVisitPanel;
     private PatientPathologyPanel pathologyPanel;
     private PatientRelapsePanel relapsePanel;
     private PatientHospitalisationPanel hospitalisationPanel;
@@ -29,16 +31,18 @@ public class PatientPage extends BasePage {
         // Construct panels for each of the tabs
         demographicsPanel = new PatientDemographicsPanel("demographicsPanel");
         diagnosisPanel = new PatientDiagnosisPanel("diagnosisPanel");
+        firstVisitPanel = new FirstVisitPanel("firstVisitPanel");
         pathologyPanel = new PatientPathologyPanel("pathologyPanel");
         relapsePanel = new PatientRelapsePanel("relapsePanel");
         hospitalisationPanel = new PatientHospitalisationPanel("hospitalisationPanel");
 
         // Add them all to the page
-        add(demographicsPanel, diagnosisPanel, pathologyPanel, relapsePanel, hospitalisationPanel);
+        add(demographicsPanel, diagnosisPanel, firstVisitPanel, pathologyPanel, relapsePanel, hospitalisationPanel);
 
         // Add the links to switch tab
         add(new TabAjaxLink("demographicsLink", CurrentTab.DEMOGRAPHICS));
         add(new TabAjaxLink("diagnosisLink", CurrentTab.DIAGNOSIS));
+        add(new TabAjaxLink("firstVisitLink", CurrentTab.FIRST_VISIT));
         add(new TabAjaxLink("pathologyLink", CurrentTab.PATHOLOGY));
         add(new TabAjaxLink("relapseLink", CurrentTab.RELAPSE));
         add(new TabAjaxLink("hospitalisationLink", CurrentTab.HOSPITALISATION));
@@ -49,7 +53,6 @@ public class PatientPage extends BasePage {
     }
 
     private class TabAjaxLink extends AjaxLink {
-
         private CurrentTab tab;
 
         public TabAjaxLink(String id, CurrentTab tab) {
@@ -60,7 +63,8 @@ public class PatientPage extends BasePage {
         @Override
         public void onClick(AjaxRequestTarget target) {
             currentTab = tab;
-            target.add(demographicsPanel, diagnosisPanel, pathologyPanel, relapsePanel, hospitalisationPanel);
+            target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, pathologyPanel, relapsePanel,
+                    hospitalisationPanel);
         }
     }
 }

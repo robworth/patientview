@@ -1,0 +1,534 @@
+<wicket:panel>
+
+    <div id="subBlock">
+
+<form wicket:id="form">
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;" class="style1">
+    <tbody>
+    <tr>
+
+        <td>
+            <span style="font-weight:bold;"
+                  id="ctl00_ContentPlaceHolder1_lblTitle">Clinical Features at Diagnosis</span>
+        </td>
+        <td class="style2"><strong>RADAR No.</strong></td>
+        <td style="width:120px;" class="style2">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly"
+                   value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+        </td>
+    </tr>
+    <tr>
+        <td><b>Name:</b>
+            <span id="ctl00_ContentPlaceHolder1_lblFirstName">jane</span>&nbsp;<span
+                    style="display:inline-block;width:120px;" id="ctl00_ContentPlaceHolder1_lblSurname">lady</span>
+            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDOB">11-Nov-92</span>
+        </td>
+        <td class="style2"><strong>Hospital No.</strong></td>
+        <td class="style2">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly"
+                   value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+        </td>
+    </tr>
+    <tr>
+        <td>Date of Clinical Picture
+            <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDateClinicalPicture"
+                   value="09/11/2010" name="ctl00$ContentPlaceHolder1$txtDateClinicalPicture">
+
+            &nbsp;<input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                         id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
+
+            <span style="color:Red;font-weight:bold;visibility:hidden;"
+                  id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span></td>
+        <td class="style2"><strong>Diagnosis</strong></td>
+        <td class="style2">
+            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
+                   readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="style1" style="width: 100%; background-color:#EEF6ED;" id="ctl00_ContentPlaceHolder1_mainForm">
+<tbody>
+<tr>
+<td style="width:48%; vertical-align:top;">
+<table style="width: 100%">
+<tbody>
+<tr>
+    <td style="height:40px; vertical-align:top;" colspan="2">
+        <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSubmit2"
+               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSubmit2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+               value="Save" name="ctl00$ContentPlaceHolder1$btnSubmit2">
+        &nbsp;
+        <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px" class="style4">Height cm</td>
+    <td>
+        <input type="text" style="width:40px;" id="ctl00_ContentPlaceHolder1_txtHeight"
+               name="ctl00$ContentPlaceHolder1$txtHeight">
+        &nbsp;<span style="color:Red;visibility:hidden;"
+                    id="ctl00_ContentPlaceHolder1_RangeValidator3">35.0-185.0</span>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px" class="style4">Weight Kg</td>
+    <td>
+        <input type="text" style="width:40px;" id="ctl00_ContentPlaceHolder1_txtWeight"
+               name="ctl00$ContentPlaceHolder1$txtWeight">
+        &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator4">3.0 - 100</span>
+        <span style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_CompareValidator1">Sys to be &gt; dia</span>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px" class="style4">BP&nbsp;</td>
+    <td>
+        <input type="text" style="width:40px;" id="ctl00_ContentPlaceHolder1_txtBPSys"
+               name="ctl00$ContentPlaceHolder1$txtBPSys">&nbsp;<strong>/</strong>
+        &nbsp;<input type="text" style="width:40px;" id="ctl00_ContentPlaceHolder1_txtBPDia"
+                     name="ctl00$ContentPlaceHolder1$txtBPDia">
+        &nbsp;
+        <input type="text" style="font-style:italic;width:40px;" id="ctl00_ContentPlaceHolder1_txtBPMap"
+               readonly="readonly" value="Auto" name="ctl00$ContentPlaceHolder1$txtBPMap">
+        &nbsp;MAP
+    </td>
+</tr>
+<tr>
+    <td align="right" style="width: 140px">
+        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator1">Sys BP 50-200</span>
+    </td>
+    <td>
+        <span style="color:Red;visibility:hidden;" class="inline" id="ctl00_ContentPlaceHolder1_RangeValidator2">DAI BP 20-150</span>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px; text-align:right; padding-right:20px;">
+        <span id="ctl00_ContentPlaceHolder1_lblPhenotype1">Phenotype 1</span>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList6" name="ctl00$ContentPlaceHolder1$DropDownList6">
+            <option value="" selected="selected">Select</option>
+            <option value="1">Auto-immune disease</option>
+            <option value="2">Mental Retardation</option>
+            <option value="3">Polydactyly</option>
+            <option value="4">Blindness</option>
+            <option value="5">Deafness</option>
+            <option value="6">Cardiomyopathy</option>
+            <option value="7">Congenital CMV</option>
+            <option value="8">Other TORCH infections</option>
+            <option value="9">Diabetes</option>
+            <option value="10">Microcephaly</option>
+            <option value="11">Nail-Patella Syndrome</option>
+            <option value="12">Cardiac anomalies</option>
+            <option value="13">Hepatitis B</option>
+            <option value="14">Hepatitis C</option>
+            <option value="15">CNS abnormalitites</option>
+            <option value="16">Spondylo-epiphyseal dysplasia</option>
+            <option value="17">Microcoria</option>
+            <option value="18">Male pseudohermaphroditism</option>
+
+        </select>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px; text-align:right; padding-right:20px;">
+        <span id="ctl00_ContentPlaceHolder1_lblPhenotype2">Phenotype 2</span>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList7" name="ctl00$ContentPlaceHolder1$DropDownList7">
+            <option value="" selected="selected">Select</option>
+            <option value="1">Auto-immune disease</option>
+            <option value="2">Mental Retardation</option>
+            <option value="3">Polydactyly</option>
+            <option value="4">Blindness</option>
+            <option value="5">Deafness</option>
+            <option value="6">Cardiomyopathy</option>
+            <option value="7">Congenital CMV</option>
+            <option value="8">Other TORCH infections</option>
+            <option value="9">Diabetes</option>
+            <option value="10">Microcephaly</option>
+            <option value="11">Nail-Patella Syndrome</option>
+            <option value="12">Cardiac anomalies</option>
+            <option value="13">Hepatitis B</option>
+            <option value="14">Hepatitis C</option>
+            <option value="15">CNS abnormalitites</option>
+            <option value="16">Spondylo-epiphyseal dysplasia</option>
+            <option value="17">Microcoria</option>
+            <option value="18">Male pseudohermaphroditism</option>
+
+        </select>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px; text-align:right; padding-right:20px;">
+        <span id="ctl00_ContentPlaceHolder1_lblPhenotype3">Phenotype 3</span>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList8" name="ctl00$ContentPlaceHolder1$DropDownList8">
+            <option value="" selected="selected">Select</option>
+            <option value="1">Auto-immune disease</option>
+            <option value="2">Mental Retardation</option>
+            <option value="3">Polydactyly</option>
+            <option value="4">Blindness</option>
+            <option value="5">Deafness</option>
+            <option value="6">Cardiomyopathy</option>
+            <option value="7">Congenital CMV</option>
+            <option value="8">Other TORCH infections</option>
+            <option value="9">Diabetes</option>
+            <option value="10">Microcephaly</option>
+            <option value="11">Nail-Patella Syndrome</option>
+            <option value="12">Cardiac anomalies</option>
+            <option value="13">Hepatitis B</option>
+            <option value="14">Hepatitis C</option>
+            <option value="15">CNS abnormalitites</option>
+            <option value="16">Spondylo-epiphyseal dysplasia</option>
+            <option value="17">Microcoria</option>
+            <option value="18">Male pseudohermaphroditism</option>
+
+        </select>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px; text-align:right; padding-right:20px;">
+        <span id="ctl00_ContentPlaceHolder1_lblPhenotype4">Phenotype 4</span>
+    </td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList9" name="ctl00$ContentPlaceHolder1$DropDownList9">
+            <option value="" selected="selected">Select</option>
+            <option value="1">Auto-immune disease</option>
+            <option value="2">Mental Retardation</option>
+            <option value="3">Polydactyly</option>
+            <option value="4">Blindness</option>
+            <option value="5">Deafness</option>
+            <option value="6">Cardiomyopathy</option>
+            <option value="7">Congenital CMV</option>
+            <option value="8">Other TORCH infections</option>
+            <option value="9">Diabetes</option>
+            <option value="10">Microcephaly</option>
+            <option value="11">Nail-Patella Syndrome</option>
+            <option value="12">Cardiac anomalies</option>
+            <option value="13">Hepatitis B</option>
+            <option value="14">Hepatitis C</option>
+            <option value="15">CNS abnormalitites</option>
+            <option value="16">Spondylo-epiphyseal dysplasia</option>
+            <option value="17">Microcoria</option>
+            <option value="18">Male pseudohermaphroditism</option>
+
+        </select>
+    </td>
+</tr>
+<tr>
+    <td style="width: 140px">
+        &nbsp;</td>
+    <td>
+        &nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">
+        &nbsp;</td>
+    <td>
+        &nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">Comments&nbsp; <a href="#" class="info">Help <span>Enter any
+                    other relevant clinical features</span></a></td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtComments" cols="20" rows="15"
+                  name="ctl00$ContentPlaceHolder1$txtComments"></textarea>
+    </td>
+
+</tr>
+<tr>
+    <td style="width: 140px">&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">&nbsp;</td>
+    <td>
+        &nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td style="width: 140px">&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td colspan="2">
+        &nbsp;<input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSubmit"
+                     onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+                     value="Save" name="ctl00$ContentPlaceHolder1$btnSubmit">
+        &nbsp;
+        <div style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
+
+        </div>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        &nbsp;</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+    </td>
+</tr>
+<tr>
+    <td>
+
+    </td>
+</tr>
+</tbody>
+</table>
+</td>
+<td style="width:50%; vertical-align:top;">
+<table cellpadding="4" style="width: 100%" class="style1">
+<tbody>
+<tr>
+    <td style="width:200px;">
+
+    </td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblCourseDisease"></span>
+    </td>
+    <td>
+    </td>
+</tr>
+<tr>
+    <td>Additional Significant Diagnosis 1</td>
+    <td>
+        <input type="text" title="From Diagnosis page" id="ctl00_ContentPlaceHolder1_txtSigDiag1"
+               name="ctl00$ContentPlaceHolder1$txtSigDiag1">
+    </td>
+</tr>
+<tr>
+    <td>Additional Significant Diagnosis 2</td>
+    <td>
+        <input type="text" title="From Diagnosis page" id="ctl00_ContentPlaceHolder1_txtSigDiag2"
+               name="ctl00$ContentPlaceHolder1$txtSigDiag2">
+    </td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td>
+        &nbsp;</td>
+</tr>
+<tr>
+    <td class="indent">Oedema</td>
+    <td class="style6">
+        <input type="radio" value="radOedemaYes" name="ctl00$ContentPlaceHolder1$oedema"
+               id="ctl00_ContentPlaceHolder1_radOedemaYes"><label
+            for="ctl00_ContentPlaceHolder1_radOedemaYes">Yes</label>
+        &nbsp;<input type="radio" value="radOedemaNo" name="ctl00$ContentPlaceHolder1$oedema"
+                     id="ctl00_ContentPlaceHolder1_radOedemaNo"><label
+            for="ctl00_ContentPlaceHolder1_radOedemaNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radOedemaUnkn"
+                                           name="ctl00$ContentPlaceHolder1$oedema"
+                                           id="ctl00_ContentPlaceHolder1_radOedemaUnkn"><label
+            for="ctl00_ContentPlaceHolder1_radOedemaUnkn">Un</label></span>
+    </td>
+</tr>
+
+<tr>
+    <td class="indent">Hypovalaemia</td>
+    <td>
+        <input type="radio" value="radHypovYes" name="ctl00$ContentPlaceHolder1$hypov"
+               id="ctl00_ContentPlaceHolder1_radHypovYes"><label
+            for="ctl00_ContentPlaceHolder1_radHypovYes">Yes</label>
+        &nbsp;<input type="radio" value="radHypovNo" name="ctl00$ContentPlaceHolder1$hypov"
+                     id="ctl00_ContentPlaceHolder1_radHypovNo"><label
+            for="ctl00_ContentPlaceHolder1_radHypovNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radHypovUn"
+                                           name="ctl00$ContentPlaceHolder1$hypov"
+                                           id="ctl00_ContentPlaceHolder1_radHypovUn"><label
+            for="ctl00_ContentPlaceHolder1_radHypovUn">Un</label></span>
+    </td>
+</tr>
+<tr>
+    <td class="indent">Fever &gt; 38°C</td>
+    <td>
+        <input type="radio" value="radFeverYes" name="ctl00$ContentPlaceHolder1$radFever"
+               id="ctl00_ContentPlaceHolder1_radFeverYes"><label
+            for="ctl00_ContentPlaceHolder1_radFeverYes">Yes</label>
+        &nbsp;<input type="radio" value="radFeverNo" name="ctl00$ContentPlaceHolder1$radFever"
+                     id="ctl00_ContentPlaceHolder1_radFeverNo"><label
+            for="ctl00_ContentPlaceHolder1_radFeverNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radFeverUn"
+                                           name="ctl00$ContentPlaceHolder1$radFever"
+                                           id="ctl00_ContentPlaceHolder1_radFeverUn"><label
+            for="ctl00_ContentPlaceHolder1_radFeverUn">Un</label></span>
+    </td>
+</tr>
+<tr id="ctl00_ContentPlaceHolder1_rowThrombosis">
+    <td class="indent">Thrombosis</td>
+    <td>
+        <input type="radio" value="radThrombosisYes" name="ctl00$ContentPlaceHolder1$radThrombosis"
+               id="ctl00_ContentPlaceHolder1_radThrombosisYes"><label
+            for="ctl00_ContentPlaceHolder1_radThrombosisYes">Yes</label>
+        &nbsp;<input type="radio" value="radThrombosisNo" name="ctl00$ContentPlaceHolder1$radThrombosis"
+                     id="ctl00_ContentPlaceHolder1_radThrombosisNo"><label
+            for="ctl00_ContentPlaceHolder1_radThrombosisNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radThrombosisUn"
+                                           name="ctl00$ContentPlaceHolder1$radThrombosis"
+                                           id="ctl00_ContentPlaceHolder1_radThrombosisUn"><label
+            for="ctl00_ContentPlaceHolder1_radThrombosisUn">Un</label></span>
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowPeritonitis">
+    <td class="indent">Peritonitis</td>
+    <td>
+        <input type="radio" value="radPeritYes" name="ctl00$ContentPlaceHolder1$radPerit"
+               id="ctl00_ContentPlaceHolder1_radPeritYes"><label
+            for="ctl00_ContentPlaceHolder1_radPeritYes">Yes</label>
+        &nbsp;<input type="radio" value="radPeritNo" name="ctl00$ContentPlaceHolder1$radPerit"
+                     id="ctl00_ContentPlaceHolder1_radPeritNo"><label
+            for="ctl00_ContentPlaceHolder1_radPeritNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radPeritUn"
+                                           name="ctl00$ContentPlaceHolder1$radPerit"
+                                           id="ctl00_ContentPlaceHolder1_radPeritUn"><label
+            for="ctl00_ContentPlaceHolder1_radPeritUn">Un</label></span>
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowPulmonary">
+    <td class="indent">Pulmonary Oedema</td>
+    <td>
+        <input type="radio" value="radPulYes" name="ctl00$ContentPlaceHolder1$radPul"
+               id="ctl00_ContentPlaceHolder1_radPulYes"><label
+            for="ctl00_ContentPlaceHolder1_radPulYes">Yes</label>
+        &nbsp;<input type="radio" value="radPulNo" name="ctl00$ContentPlaceHolder1$radPul"
+                     id="ctl00_ContentPlaceHolder1_radPulNo"><label
+            for="ctl00_ContentPlaceHolder1_radPulNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radPulUn"
+                                           name="ctl00$ContentPlaceHolder1$radPul"
+                                           id="ctl00_ContentPlaceHolder1_radPulUn"><label
+            for="ctl00_ContentPlaceHolder1_radPulUn">Un</label></span>
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowHyperten">
+    <td class="indent">Hypertension, req Rx</td>
+    <td>
+        <input type="radio" value="radHyperYes" name="ctl00$ContentPlaceHolder1$hyperten"
+               id="ctl00_ContentPlaceHolder1_radHyperYes"><label
+            for="ctl00_ContentPlaceHolder1_radHyperYes">Yes</label>
+        &nbsp;<input type="radio" value="radHyperNo" name="ctl00$ContentPlaceHolder1$hyperten"
+                     id="ctl00_ContentPlaceHolder1_radHyperNo"><label
+            for="ctl00_ContentPlaceHolder1_radHyperNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radHyperUn"
+                                           name="ctl00$ContentPlaceHolder1$hyperten"
+                                           id="ctl00_ContentPlaceHolder1_radHyperUn"><label
+            for="ctl00_ContentPlaceHolder1_radHyperUn">Un</label></span>
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowDiabetes">
+    <td class="indent">Diabetes: Type</td>
+    <td>
+        <select id="ctl00_ContentPlaceHolder1_DropDownList4" name="ctl00$ContentPlaceHolder1$DropDownList4">
+            <option value="" selected="selected">Select</option>
+            <option value="1">Type I IDDM</option>
+            <option value="2">Type II NIDDM</option>
+            <option value="99">No</option>
+
+        </select>
+    </td>
+</tr>
+
+<tr>
+    <td valign="top" class="indent">
+        <span id="ctl00_ContentPlaceHolder1_lblRash">Rash</span>
+    </td>
+    <td>
+                <span style="display:inline-block;border-style:None;"><input type="radio"
+                                                                             onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radRashYes\',\'\')', 0)"
+                                                                             value="radRashYes"
+                                                                             name="ctl00$ContentPlaceHolder1$radRash"
+                                                                             id="ctl00_ContentPlaceHolder1_radRashYes"><label
+                        for="ctl00_ContentPlaceHolder1_radRashYes">Yes</label></span>
+        &nbsp;<input type="radio"
+                     onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radRashNo\',\'\')', 0)"
+                     value="radRashNo" name="ctl00$ContentPlaceHolder1$radRash"
+                     id="ctl00_ContentPlaceHolder1_radRashNo"><label
+            for="ctl00_ContentPlaceHolder1_radRashNo">No</label>
+        &nbsp;<input type="radio" checked="checked" value="radRashUkn" name="ctl00$ContentPlaceHolder1$radRash"
+                     id="ctl00_ContentPlaceHolder1_radRashUkn"><label
+            for="ctl00_ContentPlaceHolder1_radRashUkn">Un</label>
+    </td>
+</tr>
+
+<tr>
+    <td class="indent">Possible Immunisation trigger</td>
+    <td>
+        <input type="radio" value="radImmTrigYes" name="ctl00$ContentPlaceHolder1$radImmTrig"
+               id="ctl00_ContentPlaceHolder1_radImmTrigYes"><label
+            for="ctl00_ContentPlaceHolder1_radImmTrigYes">Yes</label>
+        &nbsp;<input type="radio" value="radImmTrigNo" name="ctl00$ContentPlaceHolder1$radImmTrig"
+                     id="ctl00_ContentPlaceHolder1_radImmTrigNo"><label
+            for="ctl00_ContentPlaceHolder1_radImmTrigNo">No</label>
+        &nbsp;<input type="radio" checked="checked" value="radImmTrigUn"
+                     name="ctl00$ContentPlaceHolder1$radImmTrig"
+                     id="ctl00_ContentPlaceHolder1_radImmTrigUn"><label
+            for="ctl00_ContentPlaceHolder1_radImmTrigUn">Un</label>
+    </td>
+</tr>
+
+
+<tr>
+    <td class="indent">
+        <span id="ctl00_ContentPlaceHolder1_lblOpth">Ophthalmoscopy</span>
+    </td>
+    <td>
+        <input type="radio"
+               onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radOpthalmYes\',\'\')', 0)"
+               value="radOpthalmYes" name="ctl00$ContentPlaceHolder1$Opthalm"
+               id="ctl00_ContentPlaceHolder1_radOpthalmYes"><label
+            for="ctl00_ContentPlaceHolder1_radOpthalmYes">Yes</label>
+        &nbsp;<input type="radio"
+                     onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radOpthalmNo\',\'\')', 0)"
+                     value="radOpthalmNo" name="ctl00$ContentPlaceHolder1$Opthalm"
+                     id="ctl00_ContentPlaceHolder1_radOpthalmNo"><label
+            for="ctl00_ContentPlaceHolder1_radOpthalmNo">No</label>
+        &nbsp;<span title="Unknown"><input type="radio" checked="checked" value="radOpthalmUn"
+                                           name="ctl00$ContentPlaceHolder1$Opthalm"
+                                           id="ctl00_ContentPlaceHolder1_radOpthalmUn"><label
+            for="ctl00_ContentPlaceHolder1_radOpthalmUn">Un</label></span>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" class="indent">
+
+        <input type="hidden" id="ctl00_ContentPlaceHolder1_txtOpDetail_TextBoxWatermarkExtender_ClientState"
+               name="ctl00$ContentPlaceHolder1$txtOpDetail_TextBoxWatermarkExtender_ClientState">
+    </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</form>
+&nbsp;&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+
+
+</div>
+
+</wicket:panel>

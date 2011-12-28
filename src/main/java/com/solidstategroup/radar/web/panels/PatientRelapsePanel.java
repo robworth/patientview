@@ -4,6 +4,7 @@ import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.Relapse;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
+import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -82,5 +83,10 @@ public class PatientRelapsePanel extends Panel {
 
         add(form);
 
+    }
+
+    @Override
+    public boolean isVisible() {
+        return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.RELAPSE);
     }
 }
