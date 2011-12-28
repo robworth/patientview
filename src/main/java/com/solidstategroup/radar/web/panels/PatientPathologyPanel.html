@@ -355,7 +355,7 @@
                     <br>
                     <span id="ctl00_ContentPlaceHolder1_lblImg1">1</span>
                     &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage1"
-                                 name="ctl00$ContentPlaceHolder1$txtImage1">
+                                 wicket:id="imageUrl1">
                     <br>
                 </td>
             </tr>
@@ -364,7 +364,7 @@
                     <br>
                     <span id="ctl00_ContentPlaceHolder1_lblImg2">2</span>
                     &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage2"
-                                 name="ctl00$ContentPlaceHolder1$txtImage2">
+                                 wicket:id="imageUrl2">
                     <br>
                 </td>
             </tr>
@@ -374,7 +374,7 @@
                     <br>
                     <span id="ctl00_ContentPlaceHolder1_lblImg3">3</span>
                     &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage3"
-                                 name="ctl00$ContentPlaceHolder1$txtImage3">
+                                 wicket:id="imageUrl3">
                     <br>
                 </td>
             </tr>
@@ -384,7 +384,7 @@
                     <br>
                     <span id="ctl00_ContentPlaceHolder1_lblImg4">4</span>
                     &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage4"
-                                 name="ctl00$ContentPlaceHolder1$txtImage4">
+                                 wicket:id="imageUrl4">
                     <br>
                 </td>
             </tr>
@@ -394,7 +394,7 @@
                     <br>
                     <span id="ctl00_ContentPlaceHolder1_lblImg5">5</span>
                     &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage5"
-                                 name="ctl00$ContentPlaceHolder1$txtImage5">
+                                 wicket:id="imageUrl5">
                     <br>
                 </td>
             </tr>
@@ -424,7 +424,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_TOTAL_NO"
-                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_TOTAL_NO">
+                           maxlength="3" wicket:id="totalNumber"/>
                 </td>
             </tr>
             <tr>
@@ -435,7 +435,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_GLOB_SCL"
-                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_GLOB_SCL">
+                           maxlength="3" wicket:id="numberSclerosed"/>
                 </td>
             </tr>
             <tr>
@@ -445,7 +445,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_SEQ_SCL"
-                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_SEQ_SCL">
+                           maxlength="3" wicket:id="numberSegmentallySclerosed"/>
                 </td>
             </tr>
             <tr>
@@ -457,7 +457,7 @@
                 <td>
                     <input type="text" style="width:50px;" title="0-150"
                            id="ctl00_ContentPlaceHolder1_txtGLOM_CELL_CRES" maxlength="3"
-                           name="ctl00$ContentPlaceHolder1$txtGLOM_CELL_CRES">
+                            wicket:id="numberCellularCrescents"/>
                 </td>
             </tr>
             <tr>
@@ -468,7 +468,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIB_CRES"
-                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_FIB_CRES">
+                           maxlength="3" wicket:id="numberFibrousCrescents"/>
                 </td>
             </tr>
             <tr>
@@ -480,7 +480,7 @@
                 <td>
                     <input type="text" style="width:50px;" title="0-150"
                            id="ctl00_ContentPlaceHolder1_txtGLOM_END_HYPER" maxlength="3"
-                           name="ctl00$ContentPlaceHolder1$txtGLOM_END_HYPER">
+                           wicket:id="numberEndocapillaryHypercelluarity"/>
                 </td>
             </tr>
             <tr>
@@ -491,7 +491,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIN_NEC"
-                           maxlength="3" name="ctl00$ContentPlaceHolder1$txtGLOM_FIN_NEC">
+                           maxlength="3" wicket:id="numberFibrinoidNecrosis"/>
                 </td>
             </tr>
             <tr>
@@ -505,7 +505,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtGLOM_ANY_OTH_FEAT" cols="20" rows="3"
-                              name="ctl00$ContentPlaceHolder1$txtGLOM_ANY_OTH_FEAT"></textarea>
+                              wicket:id="otherFeature"></textarea>
                 </td>
             </tr>
             <tr>
@@ -532,7 +532,7 @@
             <tr>
                 <td colspan="2">
                     <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtPATH_TEXT" cols="20" rows="15"
-                              name="ctl00$ContentPlaceHolder1$txtPATH_TEXT"></textarea>
+                              wicket:id="histologicalSummary"></textarea>
                 </td>
             </tr>
             </tbody>

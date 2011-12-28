@@ -30,12 +30,30 @@ public class Pathology extends BaseModel {
             numberFibrousCrescents, numberEndocapillaryHypercelluarity, numberFibrinoidNecrosis;
     private String otherFeature;
 
+    private String histologicalSummary;
+
     public Date getBiopsyDate() {
         return biopsyDate;
     }
 
     public void setBiopsyDate(Date biopsyDate) {
         this.biopsyDate = biopsyDate;
+    }
+
+    public KidneyTransplantedNative getKidneyTransplantedNative() {
+        return kidneyTransplantedNative;
+    }
+
+    public void setKidneyTransplantedNative(KidneyTransplantedNative kidneyTransplantedNative) {
+        this.kidneyTransplantedNative = kidneyTransplantedNative;
+    }
+
+    public Side getSide() {
+        return side;
+    }
+
+    public void setSide(Side side) {
+        this.side = side;
     }
 
     public String getSampleLabNumber() {
@@ -204,5 +222,13 @@ public class Pathology extends BaseModel {
 
     public void setOtherFeature(String otherFeature) {
         this.otherFeature = otherFeature;
+    }
+
+    public String getHistologicalSummary() {
+        return histologicalSummary;
+    }
+
+    public void setHistologicalSummary(String histologicalSummary) {
+        this.histologicalSummary = histologicalSummary;
     }
 }
