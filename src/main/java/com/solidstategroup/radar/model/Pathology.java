@@ -1,19 +1,23 @@
 package com.solidstategroup.radar.model;
 
+import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
+
 import java.util.Date;
 
 public class Pathology extends BaseModel {
 
+    public enum Side {LEFT, RIGHT}
+
     private Date biopsyDate;
 
-    // Todo: Native/Tx Kidney
-    // Todo: Side Left/Right
+    private KidneyTransplantedNative kidneyTransplantedNative;
+    private Side side;
 
     private String sampleLabNumber;
 
     private String interstitalInflmatoryInfilitrate, arterialAbnormalities, immunohistologicalFindings,
             electronMicroscopicFindings;
-    
+
     // Tubules
     private Double estimatedTubules, measuredTubules;
     private String tubulesOtherFeature;

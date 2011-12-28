@@ -35,5 +35,10 @@ public class TestPatientPage extends BasePageTest {
         tester.assertVisible("hospitalisationPanel");
         tester.assertInvisible("demographicsPanel");
         tester.assertInvisible("diagnosisPanel");
+
+        tester.clickLink("relapseLink");
+        tester.assertVisible("relapsePanel");
+        tester.assertInvisible("hospitalisationPanel");
+        tester.assertInvisible("diagnosisPanel");
     }
 }
