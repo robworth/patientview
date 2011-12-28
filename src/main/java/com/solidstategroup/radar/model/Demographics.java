@@ -3,29 +3,30 @@ package com.solidstategroup.radar.model;
 
 import java.util.Date;
 
-public class Demographics extends BaseModel{
+public class Demographics extends BaseModel {
+
     private Long radarNumber;
     private Date dateRegistered;
     private String surname;
-    private String firstName;
-    private Date dob;
+    private String forename;
+    private Date dateOfBirth;
     private Sex sex;
     private Ethnicity ethnicity;
-    private String address1;
-    private String address2;
-    private String address3;
-    private String address4;
-    private String postcode;
+    private String address1, address2, address3, address4, postcode;
+
     private String surnameAlias;
     private String previousPostcode;
+
     private String hospitalNumber;
     private String nhsNumber;
     private String renalRegistryNumber;
     private String ukTransplantNumber;
     private String chiNumber;
+
     private Status status;
     private Consultant consultant;
     private Centre renalUnit;
+
     private boolean consent;
     private Centre renalUnitAuthorised;
 
@@ -37,20 +38,20 @@ public class Demographics extends BaseModel{
         this.surname = surname;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getForename() {
+        return forename;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setForename(String forename) {
+        this.forename = forename;
     }
 
-    public Date getDob() {
-        return dob;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Sex getSex() {
