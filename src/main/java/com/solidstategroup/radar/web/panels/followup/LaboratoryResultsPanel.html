@@ -1,0 +1,785 @@
+<wicket:panel>
+<div id="subBlock">
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;" class="style1">
+	<tbody><tr>
+
+		<td class="btmBorder">
+            <select id="ctl00_ContentPlaceHolder1_DropDownList4" onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList4\',\'\')', 0)" name="ctl00$ContentPlaceHolder1$DropDownList4">
+	<option value="" selected="selected">Select</option>
+	<option value="1"></option>
+
+</select>
+
+&nbsp;Select previous visit record by date&nbsp;
+            <input type="submit" id="ctl00_ContentPlaceHolder1_btnAdd" value="Add new visit record" name="ctl00$ContentPlaceHolder1$btnAdd">
+        </td>
+		<td class="btmBorder">&nbsp;</td>
+		<td style="width:120px" class="btmBorder">
+            <strong>Lab Results</strong></td>
+	</tr>
+	</tbody></table>
+	<div style="background-color:#EEF6ED;" id="ctl00_ContentPlaceHolder1_pnlAdd">
+
+ <table cellpadding="4" id="tblHeader" style="width: 100%;">
+	<tbody><tr>
+		<td align="left"><b>Laboratory Results - Follow Visit</b></td>
+		<td style="text-align:right; width:100px;">RADAR No.</td>
+		<td style="width:120px;">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly" value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+        </td>
+	</tr>
+	<tr>
+		<td align="left">Name
+		<input type="text" id="ctl00_ContentPlaceHolder1_txtFNAME" readonly="readonly" value="jane" name="ctl00$ContentPlaceHolder1$txtFNAME">
+		&nbsp;<input type="text" id="ctl00_ContentPlaceHolder1_txtSNAME" readonly="readonly" value="lady" name="ctl00$ContentPlaceHolder1$txtSNAME">
+		&nbsp;DoB
+		<input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtDOB" readonly="readonly" value="11-Nov-1992" name="ctl00$ContentPlaceHolder1$txtDOB">
+
+		</td>
+		<td class="style5" style="text-align:right; ">Hospital No.</td>
+		<td>
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly" value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+        </td>
+	</tr>
+	<tr>
+		<td style="text-align:left;">Date of LAB Results&nbsp;<input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDateLab" name="ctl00$ContentPlaceHolder1$txtDateLab">
+            &nbsp;<input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
+            &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
+                 <input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;" id="ctl00_ContentPlaceHolder1_txtSEQ_NO" value="2" name="ctl00$ContentPlaceHolder1$txtSEQ_NO">
+        </td>
+		<td class="style5" style="text-align:right; ">Diagnosis</td>
+		<td>
+            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS" readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+        </td>
+	</tr>
+</tbody></table>
+
+<table cellspacing="10" cellpadding="4" style="width: 100%" class="style1" id="ctl00_ContentPlaceHolder1_tblMain">
+		<tbody><tr>
+			<td colspan="3">
+
+        &nbsp;<input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew2" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSaveNew2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" value="Add" name="ctl00$ContentPlaceHolder1$btnSaveNew2">
+        <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+        </td>
+		</tr>
+		<tr>
+			<td valign="top" style="width:25%">
+		<fieldset><legend style="font-weight:bold;">Bloods</legend>
+		<table cellpadding="4" style="width: 100%; margin-top:15px;" class="style1">
+
+			<tbody><tr>
+				<td>Hb g/dL<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator13">2.0-20</span>
+                </td>
+				<td>
+				    <input type="text" style="width:50px;" title="2.0-20" id="ctl00_ContentPlaceHolder1_txtHB" maxlength="4" name="ctl00$ContentPlaceHolder1$txtHB">
+
+
+				</td>
+			</tr>
+			<tr>
+                <td>
+                    WBC 10<sup>9</sup>/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator9">0.1-30.0</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.1-30.0" id="ctl00_ContentPlaceHolder1_txtWBC" maxlength="4" name="ctl00$ContentPlaceHolder1$txtWBC">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Neutrophils 10<sup>9</sup>/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator11">0.1-80</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.1-80" id="ctl00_ContentPlaceHolder1_txtNEUTRO" maxlength="4" name="ctl00$ContentPlaceHolder1$txtNEUTRO">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Platelets 10<sup>9</sup>/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator12">1-800</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="1-800" id="ctl00_ContentPlaceHolder1_txtPLATELETS" maxlength="3" name="ctl00$ContentPlaceHolder1$txtPLATELETS">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Sodium Na mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator4">90-180</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="90-180" id="ctl00_ContentPlaceHolder1_txtSODIUM" maxlength="3" name="ctl00$ContentPlaceHolder1$txtSODIUM">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Potassium K mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator5">1.0-9.9</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="1.0-9.9" id="ctl00_ContentPlaceHolder1_txtPOTASSIUM" maxlength="3" name="ctl00$ContentPlaceHolder1$txtPOTASSIUM">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    BUN Blood Urea mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator3">1.0-100.0</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="1.0-100.0" id="ctl00_ContentPlaceHolder1_txtUREA_SER" maxlength="5" name="ctl00$ContentPlaceHolder1$txtUREA_SER">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Serum Creatinine umol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator1">10-2800</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="10-2800" id="ctl00_ContentPlaceHolder1_txtCreatSer" maxlength="4" name="ctl00$ContentPlaceHolder1$txtCreatSer">
+
+                </td>
+            </tr>
+			<tr>
+				<td>Protein g/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator25">5-90</span>
+                </td>
+				<td>
+				<input type="text" style="width:50px;" title="5-90" id="ctl00_ContentPlaceHolder1_txtPROTEIN" maxlength="2" name="ctl00$ContentPlaceHolder1$txtPROTEIN">
+
+
+
+					</td>
+			</tr>
+			<tr>
+				<td>Albumin g/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator2">5-60</span>
+                </td>
+				<td>
+				<input type="text" style="width:50px;" title="5-60" id="ctl00_ContentPlaceHolder1_txtALBUMIN" maxlength="2" name="ctl00$ContentPlaceHolder1$txtALBUMIN">
+
+					</td>
+			</tr>
+			<tr>
+				<td>
+                    <span id="ctl00_ContentPlaceHolder1_lblCRP">CRP</span>
+                    &nbsp;mU/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator20">0-400</span>
+                    <br>
+                </td>
+				<td>
+				    <input type="text" style="width:50px;" title="0-400" id="ctl00_ContentPlaceHolder1_txtCRP" maxlength="3" name="ctl00$ContentPlaceHolder1$txtCRP">
+
+					</td>
+			</tr>
+			<tr>
+				<td>Total Cholesterol mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator14">1.0-30.0</span>
+                </td>
+				<td>
+				    <input type="text" style="width:50px;" title="1.0-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_TOTAL" maxlength="4" name="ctl00$ContentPlaceHolder1$txtCHOL_TOTAL">
+
+					</td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowHDL">
+				<td>HDL Cholesterol mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator15">0.1-30.0</span>
+                    <br>
+                </td>
+				<td>
+				    <input type="text" style="width:50px;" title="0.1-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_HDL" maxlength="4" name="ctl00$ContentPlaceHolder1$txtCHOL_HDL">
+
+
+					</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowLDL">
+				<td>LDL Cholesterol mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator16">1.0-30.0</span>
+                </td>
+				<td>
+				<input type="text" style="width:50px;" title="1.0-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_LDL" maxlength="4" name="ctl00$ContentPlaceHolder1$txtCHOL_LDL">
+
+					</td>
+			</tr>
+
+			<tr>
+                <td>
+                    Triglycerides mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" title="0.0-30.0" id="ctl00_ContentPlaceHolder1_RangeValidator18">0.0-30.0</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.0-30.0" id="ctl00_ContentPlaceHolder1_txtTRIG" maxlength="4" name="ctl00$ContentPlaceHolder1$txtTRIG">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblTHYROX">Thyroxine T4 pmol/L</span>
+                    <br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator30">0.0-30.0</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.0-30.0" id="ctl00_ContentPlaceHolder1_txtTHYROX" maxlength="4" name="ctl00$ContentPlaceHolder1$txtTHYROX">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    TSH mu/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator26">0.00-50</span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.00-50" id="ctl00_ContentPlaceHolder1_txtTSH" maxlength="5" name="ctl00$ContentPlaceHolder1$txtTSH">
+
+                </td>
+            </tr>
+            <tr id="ctl00_ContentPlaceHolder1_rowPhosphate">
+				<td>
+                    Phosphate PO4 mmol/L<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator6">0.10-5.60</span>
+                </td>
+				<td>
+                    <input type="text" style="width:50px;" title="0.10-5.6" id="ctl00_ContentPlaceHolder1_txtPHOS" maxlength="4" name="ctl00$ContentPlaceHolder1$txtPHOS">
+
+                </td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowFerritin">
+				<td>Ferritin ug/L<br>
+				    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator17">1-5000</span>
+				</td>
+				<td>
+				    <input type="text" style="width:50px;" title="1-5000" id="ctl00_ContentPlaceHolder1_txtFERRITIN" maxlength="4" name="ctl00$ContentPlaceHolder1$txtFERRITIN">
+
+					</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowINR">
+				<td>INR<br>
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator19">0.5-5.0</span>
+                    <br>
+				</td>
+				<td>
+				    <input type="text" style="width:50px;" title="0.5-5.0" id="ctl00_ContentPlaceHolder1_txtINR" maxlength="3" name="ctl00$ContentPlaceHolder1$txtINR">
+
+					</td>
+			</tr>
+
+			<tr>
+				<td><br>
+				</td>
+				<td>
+				    &nbsp;</td>
+			</tr>
+		</tbody></table>
+		</fieldset>
+		</td>
+			<td valign="top" style="width:41%">
+
+
+		<fieldset><legend style="font-weight:bold;">Urinalysis - Dipstick </legend>
+		<table style="width: 100%; margin-top:15px;">
+
+
+			<tbody><tr id="ctl00_ContentPlaceHolder1_rowUrVol">
+				<td class="style2">Urine Volume Condition</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList12" name="ctl00$ContentPlaceHolder1$DropDownList12">
+					<option value="" selected="selected">Select</option>
+					<option value="0">Normal</option>
+					<option value="1">Anuria</option>
+					<option value="2">Oliguria</option>
+					<option value="3">Polyuria</option>
+					<option value="8">Not 24 Hr collection</option>
+
+				</select>
+					</td>
+			</tr>
+
+
+
+			<tr>
+				<td class="style2">Haematuria</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList16" name="ctl00$ContentPlaceHolder1$DropDownList16">
+				<option value="" selected="selected">Select</option>
+				<option value="9">Not Tested</option>
+				<option value="1">Microscopic</option>
+				<option value="2">Macroscopic</option>
+				<option value="3">Negative</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr>
+			<td>Proteinuria</td>
+			<td><select id="ctl00_ContentPlaceHolder1_ddlProteinuria" name="ctl00$ContentPlaceHolder1$ddlProteinuria">
+				<option value="" selected="selected">Select</option>
+				<option value="0">Negative</option>
+				<option value="9">Trace</option>
+				<option value="1">1+</option>
+				<option value="2">2+</option>
+				<option value="3">3+</option>
+				<option value="4">4+</option>
+
+			</select></td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowAlbuminaria">
+				<td class="style2">Albuminuria</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList13" name="ctl00$ContentPlaceHolder1$DropDownList13">
+					<option value="" selected="selected">Select</option>
+					<option value="0">Negative</option>
+					<option value="1">1+</option>
+					<option value="2">2+</option>
+					<option value="3">3+</option>
+					<option value="4">4+</option>
+
+				</select>
+					</td>
+			</tr>
+
+
+			<tr>
+				<td class="style2">Leucocytes in urine &gt;50</td>
+				<td style="height: 26px">
+				    <input type="radio" value="radLeucoYes" name="ctl00$ContentPlaceHolder1$radLeuco" id="ctl00_ContentPlaceHolder1_radLeucoYes"><label for="ctl00_ContentPlaceHolder1_radLeucoYes">Yes</label>
+                    &nbsp;<input type="radio" value="radLeucoNo" name="ctl00$ContentPlaceHolder1$radLeuco" id="ctl00_ContentPlaceHolder1_radLeucoNo"><label for="ctl00_ContentPlaceHolder1_radLeucoNo">No</label>
+                    &nbsp;<input type="radio" value="radLeucoND" name="ctl00$ContentPlaceHolder1$radLeuco" id="ctl00_ContentPlaceHolder1_radLeucoND"><label for="ctl00_ContentPlaceHolder1_radLeucoND">ND</label>
+					</td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowNitrite">
+				<td class="style2">
+				<span id="ctl00_ContentPlaceHolder1_lblNITRITE">Nitrite</span>
+				</td>
+				<td>
+				    <input type="radio" value="radNitriteYes" name="ctl00$ContentPlaceHolder1$nitrite" id="ctl00_ContentPlaceHolder1_radNitriteYes"><label for="ctl00_ContentPlaceHolder1_radNitriteYes">Yes</label>
+                    &nbsp;<input type="radio" value="radNitriteNo" name="ctl00$ContentPlaceHolder1$nitrite" id="ctl00_ContentPlaceHolder1_radNitriteNo"><label for="ctl00_ContentPlaceHolder1_radNitriteNo">No</label>
+                    &nbsp;<span title="Not done"><input type="radio" value="radNitriteND" name="ctl00$ContentPlaceHolder1$nitrite" id="ctl00_ContentPlaceHolder1_radNitriteND"><label for="ctl00_ContentPlaceHolder1_radNitriteND">ND</label></span>
+					</td>
+			</tr>
+
+
+			<tr>
+				<td class="style2">Glucose in urine</td>
+				<td>
+				    <input type="radio" value="radGlucYes" name="ctl00$ContentPlaceHolder1$radGluc" id="ctl00_ContentPlaceHolder1_radGlucYes"><label for="ctl00_ContentPlaceHolder1_radGlucYes">Yes</label>
+                    &nbsp;<input type="radio" value="radGlucNo" name="ctl00$ContentPlaceHolder1$radGluc" id="ctl00_ContentPlaceHolder1_radGlucNo"><label for="ctl00_ContentPlaceHolder1_radGlucNo">No</label>
+                    &nbsp;<input type="radio" value="radGlucND" name="ctl00$ContentPlaceHolder1$radGluc" id="ctl00_ContentPlaceHolder1_radGlucND"><label for="ctl00_ContentPlaceHolder1_radGlucND">ND</label>
+					</td>
+			</tr>
+
+			<tr>
+				<td class="style2">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody></table>
+		</fieldset>
+		<fieldset><legend style="font-weight:bold;">Urinalysis - Lab </legend>
+		<table style="width: 100%; margin-top:15px;">
+		<tbody><tr id="ctl00_ContentPlaceHolder1_rowUrineVol24">
+				<td class="style2">Urine Volume ml/24hr<br>
+				<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator24">0-4000</span>
+				</td>
+				<td>
+				<input type="text" style="width:50px;" title="0-4000" id="ctl00_ContentPlaceHolder1_txtUR_VOL_24H" maxlength="4" name="ctl00$ContentPlaceHolder1$txtUR_VOL_24H">
+
+					</td>
+			</tr>
+
+			<tr>
+				<td class="style2">Protein Creatinine Ratio mg/mmol&nbsp;
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator7">0.0-15000</span>
+                </td>
+				<td>
+				<input type="text" style="width:50px;" title="0.0-15000" id="ctl00_ContentPlaceHolder1_txtPROT_CREAT_RAT" maxlength="6" name="ctl00$ContentPlaceHolder1$txtPROT_CREAT_RAT">
+
+					</td>
+			</tr>
+			<tr>
+				<td class="style2">Albumin Creatinine Ratio mg/mmol&nbsp;
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator8">1.0-3000</span>
+                </td>
+				<td>
+				<input type="text" style="width:50px;" title="1.0-3000" id="ctl00_ContentPlaceHolder1_txtALB_CREAT_RAT" maxlength="6" name="ctl00$ContentPlaceHolder1$txtALB_CREAT_RAT">
+
+					</td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowBacteria">
+				<td class="style2">Bacteria in urine &gt;10<sup>5</sup>/ml</td>
+				<td>
+				    <input type="checkbox" name="ctl00$ContentPlaceHolder1$chkBACT_URINE" id="ctl00_ContentPlaceHolder1_chkBACT_URINE">
+					</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowOsmolarity">
+				<td class="style2">Osmolality&nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator31">200-350</span>
+                </td>
+				<td>
+				<input type="text" style="width:50px;" title="200-350" id="ctl00_ContentPlaceHolder1_txtOSMOLALITY" maxlength="3" name="ctl00$ContentPlaceHolder1$txtOSMOLALITY">
+
+				</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowDysmorphic">
+				<td class="style2">Dysmorphic Erythrocytes in urine</td>
+				<td>
+				    <select id="ctl00_ContentPlaceHolder1_ddlDysEryth" name="ctl00$ContentPlaceHolder1$ddlDysEryth">
+					<option value="" selected="selected">Select</option>
+					<option value="1">Present</option>
+					<option value="0">Not present</option>
+					<option value="9">Not done</option>
+
+				</select></td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowRedCells">
+				<td class="style2">Red Cell Cast in urine</td>
+				<td>
+				    <select id="ctl00_ContentPlaceHolder1_ddlRedCellCast" name="ctl00$ContentPlaceHolder1$ddlRedCellCast">
+					<option value="" selected="selected">Select</option>
+					<option value="1">Present</option>
+					<option value="0">Not present</option>
+					<option value="9">Not done</option>
+
+				</select></td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowWhiteCells">
+				<td class="style2">White Cell Casts in urine &gt;50<br>
+
+                </td>
+				<td>
+				    <select id="ctl00_ContentPlaceHolder1_ddlWhiteCellCast" name="ctl00$ContentPlaceHolder1$ddlWhiteCellCast">
+					<option value="" selected="selected">Select</option>
+					<option value="1">Present</option>
+					<option value="0">Not present</option>
+					<option value="9">Not done</option>
+
+				</select></td>
+			</tr>
+
+</tbody></table>
+</fieldset>
+		<br>
+		<fieldset><legend style="font-weight:bold;">Creatinine Clearance</legend>
+		<table style="width: 100%; margin-top:15px;">
+
+
+			<tbody><tr>
+				<td>Creatinine Clearance Schwartz Method ml/min/per 1.73m<sup>2</sup>
+				</td>
+				<td>
+				<input type="text" style="width:50px;" title="Calculated" disabled="disabled" id="ctl00_ContentPlaceHolder1_txtCREAT_CLEAR_SCHZ" readonly="readonly" name="ctl00$ContentPlaceHolder1$txtCREAT_CLEAR_SCHZ">
+				</td>
+			</tr>
+			<tr>
+			<td>
+
+			    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblHeightWarn"></span>
+			</td>
+			</tr>
+
+		</tbody></table>
+		</fieldset>
+
+		</td>
+			<td valign="top">
+		<fieldset><legend style="font-weight:bold;">Antibodies &amp; Infections</legend>
+		<table cellpadding="4" style="margin-top:15px; table-layout:fixed " class="style7">
+
+			<tbody><tr>
+				<td style="width:120px">ANCA</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList1" name="ctl00$ContentPlaceHolder1$DropDownList1">
+				<option value="" selected="selected">Select</option>
+				<option value="1">C(PR3)</option>
+				<option value="2">P(MPO)</option>
+				<option value="3">C+P</option>
+				<option value="4">CANCA</option>
+				<option value="5">PANCA</option>
+				<option value="6">Negative</option>
+				<option value="9">Not done</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr>
+				<td>ENA</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList2" name="ctl00$ContentPlaceHolder1$DropDownList2">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Positive</option>
+				<option value="0">Negative</option>
+				<option value="9">Not Done</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr>
+				<td>ANA</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList3" onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList3\',\'\')', 0)" name="ctl00$ContentPlaceHolder1$DropDownList3">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Positive</option>
+				<option value="0">Negative</option>
+				<option value="9">Not Done</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowDNA_ANTIB">
+				<td>
+				<span id="ctl00_ContentPlaceHolder1_lblDNA_ANTIB">DNA Antibodies (desc + titre</span>
+				</td>
+				<td>
+				<textarea id="ctl00_ContentPlaceHolder1_txtDNA_ANTIB" cols="20" rows="3" name="ctl00$ContentPlaceHolder1$txtDNA_ANTIB"></textarea>
+					</td>
+			</tr>
+
+			<tr>
+				<td>Anti-dsDNA</td>
+				<td>
+				    <select id="ctl00_ContentPlaceHolder1_ddlANTI_DS_DNA" name="ctl00$ContentPlaceHolder1$ddlANTI_DS_DNA">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Yes</option>
+				<option value="0">No</option>
+				<option value="9">Not done</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr>
+				<td>Cryoglobulins</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList5" name="ctl00$ContentPlaceHolder1$DropDownList5">
+				<option value="" selected="selected">Select</option>
+				<option value="0">Negative</option>
+				<option value="1">Positive</option>
+				<option value="9">Not Done</option>
+
+			</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Anti-GBM</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList6" name="ctl00$ContentPlaceHolder1$DropDownList6">
+				<option value="" selected="selected">Select</option>
+				<option value="0">Negative</option>
+				<option value="1">Positive</option>
+				<option value="9">Not Done</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowIGG">
+				<td><span id="ctl00_ContentPlaceHolder1_lblIGG">IgG g/L</span></td>
+				<td>
+				<input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_txtIGG" name="ctl00$ContentPlaceHolder1$txtIGG">
+				    &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator33">0.0-20.0</span>
+				</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowIGA">
+				<td><span id="ctl00_ContentPlaceHolder1_lblIGA">IgA g/L</span></td>
+				<td>
+				<input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_txtIGA" name="ctl00$ContentPlaceHolder1$txtIGA">
+				    &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator34">0.0-10.0</span>
+				</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowIGM">
+				<td><span id="ctl00_ContentPlaceHolder1_lblIGM">IgM g/L</span></td>
+				<td>
+				<input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_txtIGM" name="ctl00$ContentPlaceHolder1$txtIGM">
+				    &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator35">0.0-10.0</span>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Complement C3</td>
+				<td>
+				    <input type="text" style="width:50px;" title="0.01-9.99" id="ctl00_ContentPlaceHolder1_txtCOMP_C3" maxlength="4" name="ctl00$ContentPlaceHolder1$txtCOMP_C3">&nbsp;
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator27">0.01-9.99</span>
+					</td>
+			</tr>
+			<tr>
+				<td>Complement C4</td>
+				<td>
+				    <input type="text" style="width:50px;" title="0.01-9.99" id="ctl00_ContentPlaceHolder1_txtCOMP_C4" maxlength="4" name="ctl00$ContentPlaceHolder1$txtCOMP_C4">&nbsp;
+                    <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator28">0.01-9.99</span>
+					</td>
+			</tr>
+			<tr>
+				<td>
+				    Complement Other</td>
+				<td>
+				    <input type="checkbox" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$chkCompOther\',\'\')', 0)" name="ctl00$ContentPlaceHolder1$chkCompOther" id="ctl00_ContentPlaceHolder1_chkCompOther">
+				    </td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowC3NEPH">
+				<td>
+                    <span id="ctl00_ContentPlaceHolder1_lblC3_NEPH_FAC">C3 Nephritic factor</span>
+                </td>
+				<td>
+                    <select id="ctl00_ContentPlaceHolder1_DropDownList15" name="ctl00$ContentPlaceHolder1$DropDownList15">
+					<option value="" selected="selected">Select</option>
+					<option value="1">Pos</option>
+					<option value="0">Neg</option>
+					<option value="9">Unknown</option>
+
+				</select>
+                </td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowAnti_CLQ">
+				<td>Anti Clq Antibodies</td>
+				<td><input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_txtANTI_CLQ" name="ctl00$ContentPlaceHolder1$txtANTI_CLQ">
+
+                &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator32">0.0-150.0</span>
+                </td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowANTI_STREP">
+				<td>
+				<span id="ctl00_ContentPlaceHolder1_lblANTI_STREP_O">Antistreptolysin 0 titre IU</span>
+				</td>
+				<td>
+				<input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_txtANTI_STREP_O" name="ctl00$ContentPlaceHolder1$txtANTI_STREP_O">
+				</td>
+			</tr>
+
+			<tr>
+				<td>Hepatitis B Antibody</td>
+				<td>
+				<select id="ctl00_ContentPlaceHolder1_DropDownList9" name="ctl00$ContentPlaceHolder1$DropDownList9">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Positive</option>
+				<option value="0">Negative</option>
+				<option value="9">Unknown</option>
+
+			</select>
+					</td>
+			</tr>
+			<tr>
+				<td>Hepatitis C Antigen</td>
+				<td><select id="ctl00_ContentPlaceHolder1_DropDownList10" name="ctl00$ContentPlaceHolder1$DropDownList10">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Positive</option>
+				<option value="0">Negative</option>
+				<option value="9">Unknown</option>
+
+			</select>
+</td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowHIV">
+				<td>HIV Antibody</td>
+				<td><select id="ctl00_ContentPlaceHolder1_DropDownList11" name="ctl00$ContentPlaceHolder1$DropDownList11">
+					<option value="" selected="selected">Select</option>
+					<option value="1">Positive</option>
+					<option value="0">Negative</option>
+					<option value="9">Unknown</option>
+
+				</select>
+</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowDNAFactorH">
+				<td>DNA taken for genetic Factor H</td>
+				<td>
+				    <input type="radio" value="radDNAYes" name="ctl00$ContentPlaceHolder1$dna" id="ctl00_ContentPlaceHolder1_radDNAYes"><label for="ctl00_ContentPlaceHolder1_radDNAYes">Yes</label>
+                    &nbsp;<input type="radio" value="radDNANo" name="ctl00$ContentPlaceHolder1$dna" id="ctl00_ContentPlaceHolder1_radDNANo"><label for="ctl00_ContentPlaceHolder1_radDNANo">No</label>
+					</td>
+			</tr>
+
+			<tr>
+                <td>
+                    EBV</td>
+                <td>
+                    <select id="ctl00_ContentPlaceHolder1_DropDownListEBV" name="ctl00$ContentPlaceHolder1$DropDownListEBV">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Neg</option>
+				<option value="2">IgG Pos</option>
+				<option value="3">IgM Pos</option>
+				<option value="4">IgG + IgM Pos</option>
+				<option value="9">Not done</option>
+
+			</select>
+                </td>
+            </tr>
+			<tr>
+				<td>CMV serology</td>
+				<td>
+				   <select id="ctl00_ContentPlaceHolder1_DropDownListCMV" name="ctl00$ContentPlaceHolder1$DropDownListCMV">
+				<option value="" selected="selected">Select</option>
+				<option value="1">Neg</option>
+				<option value="2">IgG Pos</option>
+				<option value="3">IgM Pos</option>
+				<option value="4">IgG + IgM Pos</option>
+				<option value="9">Not done</option>
+
+			</select></td>
+			</tr>
+			<tr id="ctl00_ContentPlaceHolder1_rowCMVSymp">
+				<td>CMV symptomatic</td>
+				<td>
+				<input type="checkbox" name="ctl00$ContentPlaceHolder1$chkCMV_SYM" id="ctl00_ContentPlaceHolder1_chkCMV_SYM">
+					</td>
+			</tr>
+
+			<tr id="ctl00_ContentPlaceHolder1_rowParvoVirus">
+				<td>
+				<span id="ctl00_ContentPlaceHolder1_lblPARVO_ANTIB">Parvovirus antibody</span>
+				</td>
+				<td>
+				    <select id="ctl00_ContentPlaceHolder1_DropDownListParvo" name="ctl00$ContentPlaceHolder1$DropDownListParvo">
+					<option value="" selected="selected">Select</option>
+					<option value="1">Neg</option>
+					<option value="2">Pos</option>
+					<option value="9">Not done</option>
+
+				</select>
+					</td>
+			</tr>
+
+			<tr>
+				<td>Other infection</td>
+				<td>
+				<span style="display:inline-block;border-style:None;"><input type="checkbox" onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$chkOTHER_INFECT\',\'\')', 0)" name="ctl00$ContentPlaceHolder1$chkOTHER_INFECT" id="ctl00_ContentPlaceHolder1_chkOTHER_INFECT"></span>
+					</td>
+			</tr>
+
+
+
+			</tbody></table>
+		</fieldset>
+		</td>
+		</tr>
+		<tr>
+			<td colspan="3">
+
+        &nbsp;<input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSaveNew&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" value="Add" name="ctl00$ContentPlaceHolder1$btnSaveNew">
+&nbsp;<span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+        &nbsp;
+        <div style="color:Red;display:none;" class="inline" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
+
+			</div>
+        </td>
+		</tr>
+	</tbody></table>
+
+
+</div>
+
+        &nbsp;&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+</div>
+
+</wicket:panel>

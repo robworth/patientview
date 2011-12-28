@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.panels;
+package com.solidstategroup.radar.web.panels.followup;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -12,6 +12,6 @@ public class LaboratoryResultsPanel extends Panel {
 
     @Override
     public boolean isVisible() {
-        return ((FirstVisitPanel) getParent()).getCurrentTab().equals(FirstVisitPanel.CurrentTab.LABORATORY_RESULTS);
+        return ((FollowUpPanel) getParent()).getCurrentTab().equals(FollowUpPanel.CurrentTab.LABORATORY_RESULTS);
     }
 }

@@ -19,8 +19,11 @@ public class TestPatientPage extends BasePageTest {
         // Try Ajax refresh
         tester.assertVisible("demographicsPanel");
         tester.assertInvisible("diagnosisPanel");
+        tester.assertInvisible("firstVisitPanel");
+        tester.assertInvisible("followUpPanel");
         tester.assertInvisible("pathologyPanel");
         tester.assertInvisible("relapsePanel");
+        tester.assertInvisible("hospitalisationPanel");
 
         tester.clickLink("diagnosisLink");
         tester.assertVisible("diagnosisPanel");
@@ -31,6 +34,11 @@ public class TestPatientPage extends BasePageTest {
         tester.clickLink("firstVisitLink");
         tester.assertVisible("firstVisitPanel");
         tester.assertInvisible("hospitalisationPanel");
+        tester.assertInvisible("diagnosisPanel");
+
+        tester.clickLink("followUpLink");
+        tester.assertVisible("followUpPanel");
+        tester.assertInvisible("firstVisitPanel");
         tester.assertInvisible("diagnosisPanel");
 
         tester.clickLink("pathologyLink");

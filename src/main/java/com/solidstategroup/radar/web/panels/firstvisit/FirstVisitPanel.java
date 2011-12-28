@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.panels;
+package com.solidstategroup.radar.web.panels.firstvisit;
 
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;

@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.panels;
+package com.solidstategroup.radar.web.panels.firstvisit;
 
 import com.solidstategroup.radar.model.ClinicalData;
 import org.apache.wicket.markup.html.form.Form;
