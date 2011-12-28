@@ -4,7 +4,7 @@ import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 
-public class BasePageTest {
+public abstract class BasePageTest {
 
     protected WicketTester tester;
 
