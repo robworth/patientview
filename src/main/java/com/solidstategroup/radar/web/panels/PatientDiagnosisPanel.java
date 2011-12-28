@@ -45,7 +45,7 @@ public class PatientDiagnosisPanel extends Panel {
         steroidContainer.add(new Radio("primarySteroidResistance", new Model(Diagnosis.SteroidResistance.PRIMARY)));
         steroidContainer.add(new Radio("secondarySteroidResistance", new Model(Diagnosis.SteroidResistance.SECONDARY)));
         steroidContainer.add(new Radio("presumedSteroidResistance", new Model(Diagnosis.SteroidResistance.PRESUMED)));
-        steroidContainer.add(new Radio("biospyProven", new Model(Diagnosis.SteroidResistance.BPS)));
+        steroidContainer.add(new Radio("biopsyProven", new Model(Diagnosis.SteroidResistance.BPS)));
         form.add(steroidContainer);
 
         // Additional significant diagnosis
@@ -72,6 +72,14 @@ public class PatientDiagnosisPanel extends Panel {
         // Parental consanguinity and family history
         form.add(new DropDownChoice("parentalConsanguinity"));
         form.add(new DropDownChoice("familyHistory"));
+
+        // Family history containers
+        form.add(new PatientDiagnosisRelativePanel("relative1Container", 1));
+        form.add(new PatientDiagnosisRelativePanel("relative2Container", 2));
+        form.add(new PatientDiagnosisRelativePanel("relative3Container", 3));
+        form.add(new PatientDiagnosisRelativePanel("relative4Container", 4));
+        form.add(new PatientDiagnosisRelativePanel("relative5Container", 5));
+        form.add(new PatientDiagnosisRelativePanel("relative6Container", 6));
     }
 
     @Override
