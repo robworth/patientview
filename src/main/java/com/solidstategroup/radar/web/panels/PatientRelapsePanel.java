@@ -50,8 +50,8 @@ public class PatientRelapsePanel extends Panel {
         Form<Plasmapheresis> plasmapheresisForm =
                 new Form<Plasmapheresis>("form", new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()));
 
-        plasmapheresisForm.add(new DateTextField("dateStarted"));
-        plasmapheresisForm.add(new DateTextField("dateStopped"));
+        plasmapheresisForm.add(new DateTextField("startDate"));
+        plasmapheresisForm.add(new DateTextField("endDate"));
         plasmapheresisForm.add(new DropDownChoice("plasmapheresisExchanges"));
         plasmapheresisForm.add(new DropDownChoice("response"));
 
