@@ -6,24 +6,24 @@ import java.util.Date;
 
 public class Plasmapheresis extends BaseModel {
 
-    private Date dateStarted, dateStopped;
+    private Date startDate, endDate;
     private PlasmapheresisExchangeUnit plasmapheresisExchanges;
     private RemissionAchieved response;
 
-    public Date getDateStarted() {
-        return dateStarted;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDateStarted(Date dateStarted) {
-        this.dateStarted = dateStarted;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getDateStopped() {
-        return dateStopped;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setDateStopped(Date dateStopped) {
-        this.dateStopped = dateStopped;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public PlasmapheresisExchangeUnit getPlasmapheresisExchanges() {

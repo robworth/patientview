@@ -45,6 +45,7 @@
     </tr>
     </tbody>
 </table>
+
 <table cellspacing="10" cellpadding="0" style="width: 100%; background-color:#EEF6ED; border:0px solid red;"
        id="ctl00_ContentPlaceHolder1_tblMain">
 <tbody>
@@ -64,8 +65,7 @@
 
             <div>
                 <table border="1" cellspacing="0" cellpadding="3"
-                       style="font-size:85%;width:600px;border-collapse:collapse;"
-                       id="ctl00_ContentPlaceHolder1_GridView1" rules="all">
+                       style="font-size:85%;width:600px;border-collapse:collapse;" rules="all">
                     <tbody>
                     <tr style="color:#3C982D;">
                         <th scope="col">Start date</th>
@@ -74,118 +74,153 @@
                         <th style="width:120px;" scope="col">Total Dose g Cyclophosphamide only</th>
                         <th scope="col">&nbsp;</th>
                     </tr>
-                    <tr>
-                        <td>13-Aug-2011</td>
-                        <td>&nbsp;</td>
-                        <td>Alemtuzumab</td>
-                        <td style="width:120px;">&nbsp;</td>
+                    <tr wicket:id="immunosuppressions">
+                        <td wicket:id="startDate"/>
+                        <td wicket:id="endDate"/>
+                        <td wicket:id="immunosuppression.description"/>
+                        <td style="width:120px;" wicket:id="cyclophosphamideTotalDose">&nbsp;</td>
                         <td valign="top">
-                            <input type="submit" id="ctl00_ContentPlaceHolder1_GridView1_ctl02_delButton"
+                            <input type="submit" wicket:id="deleteLink"
                                    onclick="return confirm('Are you sure you want to delete this record?');"
-                                   value="Delete" name="ctl00$ContentPlaceHolder1$GridView1$ctl02$delButton">
-                            <input type="submit" id="ctl00_ContentPlaceHolder1_GridView1_ctl02_btnImEdit" value="Edit"
-                                   name="ctl00$ContentPlaceHolder1$GridView1$ctl02$btnImEdit">
+                                   value="Delete"/>
+                            <input type="submit" wicket:id="editLink" value="Edit"/>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <table style="width: 600px; margin-top:10px; font-size:85%" class="style4">
 
-                <tbody>
-                <tr>
-                    <td>
-                        &nbsp;</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td class="style11"></td>
-                    <td class="style7">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="style10">
-                        Start Date
-                    </td>
-                    <td class="style10">
-                        Name
-                    </td>
-                    <td class="style10">
-                        End Date
-                    </td>
-                    <td class="style12"></td>
-                    <td class="style10">
-                        &nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator1">&gt; today</span>
-                    </td>
-                    <td>
-                        &nbsp;</td>
-                    <td class="style7">
-                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnImmuno"></span></td>
-                    <td align="center" class="style11">
-                        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator2">0.010-9.999</span>
-                    </td>
-                    <td class="style7">
-                        &nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="style7">
-                        <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtImmunoStart"
-                               name="ctl00$ContentPlaceHolder1$txtImmunoStart">
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_ImageButton11"
-                               name="ctl00$ContentPlaceHolder1$ImageButton11">
-                    </td>
-                    <td class="style7">
-                        <select style="font-size:100%;" id="ctl00_ContentPlaceHolder1_ddlImmunoSupp1"
-                                onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$ddlImmunoSupp1\',\'\')', 0)"
-                                name="ctl00$ContentPlaceHolder1$ddlImmunoSupp1">
-                            <option value="" selected="selected">Select</option>
-                            <option value="11">Alemtuzumab</option>
-                            <option value="3">Azathioprine</option>
-                            <option value="13">Basiliximab</option>
-                            <option value="4">Ciclosporin</option>
-                            <option value="1">Corticosteroids</option>
-                            <option value="8">Cyclophosphamide</option>
-                            <option value="12">Daclizumab</option>
-                            <option value="14">Eculizumab</option>
-                            <option value="15">Levamisole</option>
-                            <option value="2">MMF</option>
-                            <option value="88">Other</option>
-                            <option value="10">Rituximab</option>
-                            <option value="7">Sirolimus</option>
-                            <option value="6">Tacrolimus</option>
+            <div wicket:id="editContainer">
+                <br>
 
-                        </select></td>
-                    <td class="style7">
-                        <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtImmunoEnd"
-                               name="ctl00$ContentPlaceHolder1$txtImmunoEnd">
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_ImageButton2"
-                               name="ctl00$ContentPlaceHolder1$ImageButton2">
-                    </td>
-                    <td align="center" class="style11">
-                    </td>
-                    <td class="style7">
-                        <input type="submit" id="ctl00_ContentPlaceHolder1_btnAddMono" value="Add"
-                               name="ctl00$ContentPlaceHolder1$btnAddMono">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnImmuno"></span></td>
-                    <td class="style7">
-                        &nbsp;</td>
-                    <td class="style11">
-                        &nbsp;</td>
-                    <td class="style7">
-                        &nbsp;</td>
-                </tr>
-                </tbody>
-            </table>
+                <form wicket:id="editImmunosuppressionForm">
+                    <fieldset style="border-color:Red; padding:10px; width:95%;">
+                        <legend>Edit</legend>
+                        <br>
+                        <table style="margin-top:10px; font-size:85%; " class="style4">
+                            <tbody>
+                            <tr>
+                                <td>Start Date</td>
+                                <td>Name</td>
+                                <td>End Date</td>
+                                <td style="width:180px"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <span style="color:Red;visibility:hidden;"
+                                      id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt; today</span></td>
+                                <td>
+                                    &nbsp;</td>
+                                <td class="style7">
+                                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblMonoEDEditWarn"></span>
+                                </td>
+                                <td class="style7">
+                                <span style="color:Red;visibility:hidden;"
+                                      id="ctl00_ContentPlaceHolder1_RangeValidator3">0.010-9.999</span></td>
+                                <td class="style7">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="style7">
+                                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                           id="ctl00_ContentPlaceHolder1_ImageButton20"
+                                           name="ctl00$ContentPlaceHolder1$ImageButton20">
+                                </td>
+                                <td class="style7">
+                                    <select wicket:id="immunosuppression"/>
+                                </td>
+                                <td class="style7">
+                                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+                                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                           id="ctl00_ContentPlaceHolder1_ImageButton5"
+                                           name="ctl00$ContentPlaceHolder1$ImageButton5">
+                                </td>
+                                <td valign="bottom" style="width:90px">
+                                    &nbsp;&nbsp;
+                                </td>
+                                <td class="style7">
+                                    <input type="submit" value="Save" wicket:id="save"/>
+                                    &nbsp;
+                                    <input type="submit" value="Cancel" wicket:id="cancel"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblMonoEditWarn"></span></td>
+                                <td class="style7">&nbsp;</td>
+                                <td class="style7">&nbsp;</td>
+                                <td class="style7">&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form>
+            </div>
+
+            <form wicket:id="addImmunosuppressionForm">
+                <table style="width: 600px; margin-top:10px; font-size:85%" class="style4">
+
+                    <tbody>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                        <td class="style11"></td>
+                        <td class="style7">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="style10">Start Date</td>
+                        <td class="style10">Name</td>
+                        <td class="style10">End Date</td>
+                        <td class="style12"></td>
+                        <td class="style10">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+            <span style="color:Red;visibility:hidden;"
+                  id="ctl00_ContentPlaceHolder1_CompareValidator1">&gt; today</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td class="style7">
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnImmuno"></span></td>
+                        <td align="center" class="style11">
+                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator2">0.010-9.999</span>
+                        </td>
+                        <td class="style7">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="style7">
+                            <input type="text" style="width:70px;" wicket:id="startDate">
+                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                   id="ctl00_ContentPlaceHolder1_ImageButton11"
+                                   name="ctl00$ContentPlaceHolder1$ImageButton11">
+                        </td>
+                        <td class="style7">
+                            <select wicket:id="immunosuppression"/>
+                        </td>
+                        <td class="style7">
+                            <input type="text" style="width:70px;" wicket:id="endDate"/>
+                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                   id="ctl00_ContentPlaceHolder1_ImageButton2"
+                                   name="ctl00$ContentPlaceHolder1$ImageButton2">
+                        </td>
+                        <td align="center" class="style11">
+                        </td>
+                        <td class="style7">
+                            <input type="submit" disabled="disabled" value="Add" wicket:id="submit"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnImmuno"></span>
+                        </td>
+                        <td class="style7">&nbsp;</td>
+                        <td class="style11">&nbsp;</td>
+                        <td class="style7">&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
         </fieldset>
         <br>
     </td>
@@ -193,408 +228,459 @@
 <tr>
     <td style="width:68%; vertical-align:top;">
         <div id="pnlDrugs">
-            <fieldset>
-                <legend>Drugs</legend>
-                <br>
-                <table border="1px" cellpadding="5" id="tblDrugs" class="style13">
-                    <tbody>
-                    <tr>
-                        <td width="200px">
-                            &nbsp;</td>
-                        <td align="center" class="style17" id="ctl00_ContentPlaceHolder1_tdPrior">
-                            Prior to Referral
-                        </td>
+            <form wicket:id="therapyForm">
+                <fieldset>
+                    <legend>Drugs</legend>
+                    <br>
+                    <table border="1px" cellpadding="5" id="tblDrugs" class="style13">
+                        <tbody>
+                        <tr>
+                            <td width="200px">
+                                &nbsp;</td>
+                            <td align="center" class="style17" id="ctl00_ContentPlaceHolder1_tdPrior">
+                                Prior to Referral
+                            </td>
 
-                        <td align="center" width="150px" class="style16">
-                            <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblCurrent">Current</span>
-                        </td>
-                    </tr>
-                    <tr id="ctl00_ContentPlaceHolder1_rowNSAID">
-                        <td>
-                            NSAID
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdNSAID">
-                            <input type="radio" value="radNsaidInitYes" name="ctl00$ContentPlaceHolder1$NSAID"
-                                   id="ctl00_ContentPlaceHolder1_radNsaidInitYes"><label
-                                for="ctl00_ContentPlaceHolder1_radNsaidInitYes">Yes</label> &nbsp;
-                            <input type="radio" value="radNsaidInitNo" name="ctl00$ContentPlaceHolder1$NSAID"
-                                   id="ctl00_ContentPlaceHolder1_radNsaidInitNo"><label
-                                for="ctl00_ContentPlaceHolder1_radNsaidInitNo">No</label>
+                            <td align="center" width="150px" class="style16">
+                                <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblCurrent">Current</span>
+                            </td>
+                        </tr>
+                        <tr id="ctl00_ContentPlaceHolder1_rowNSAID">
+                            <td>
+                                NSAID
+                            </td>
+                            <td align="center" class="style15" wicket:id="nsaid"/>
+                            <td align="center" wicket:id="nsaidPrior"/>
+                        </tr>
 
-                        </td>
-                        <td align="center">
-                            <input type="radio" value="radNsaidYes" name="ctl00$ContentPlaceHolder1$NSAID2"
-                                   id="ctl00_ContentPlaceHolder1_radNsaidYes"><label
-                                for="ctl00_ContentPlaceHolder1_radNsaidYes">Yes</label> &nbsp;
-                            <input type="radio" value="radNsaidNo" name="ctl00$ContentPlaceHolder1$NSAID2"
-                                   id="ctl00_ContentPlaceHolder1_radNsaidNo"><label
-                                for="ctl00_ContentPlaceHolder1_radNsaidNo">No</label>
+                        <tr id="ctl00_ContentPlaceHolder1_rowDiuretic">
+                            <td>
+                                Diuretic
+                            </td>
+                            <td align="center" class="style15" wicket:id="diuretic"/>
+                            <td align="center" wicket:id="diureticPrior"/>
+                        </tr>
 
-                        </td>
-                    </tr>
-
-                    <tr id="ctl00_ContentPlaceHolder1_rowDiuretic">
-                        <td>
-                            Diuretic
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdDiuretic">
-                            <input type="radio" value="radP_DiureticYes" name="ctl00$ContentPlaceHolder1$DIURETIC"
-                                   id="ctl00_ContentPlaceHolder1_radP_DiureticYes"><label
-                                for="ctl00_ContentPlaceHolder1_radP_DiureticYes">Yes</label> &nbsp;
-                            <input type="radio" value="radP_DiureticNo" name="ctl00$ContentPlaceHolder1$DIURETIC"
-                                   id="ctl00_ContentPlaceHolder1_radP_DiureticNo"><label
-                                for="ctl00_ContentPlaceHolder1_radP_DiureticNo">No</label>
-
-                        </td>
-                        <td align="center">
-                            <input type="radio" value="radDiureticYes" name="ctl00$ContentPlaceHolder1$DIURETIC2"
-                                   id="ctl00_ContentPlaceHolder1_radDiureticYes"><label
-                                for="ctl00_ContentPlaceHolder1_radDiureticYes">Yes</label> &nbsp;
-                            <input type="radio" value="radDiureticNo" name="ctl00$ContentPlaceHolder1$DIURETIC2"
-                                   id="ctl00_ContentPlaceHolder1_radDiureticNo"><label
-                                for="ctl00_ContentPlaceHolder1_radDiureticNo">No</label>
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            Antihypertensive
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdANTI_HTN">
-                            <input type="radio"
-                                   onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radP_ANTI_HtnYes\',\'\')', 0)"
-                                   value="radP_ANTI_HtnYes" name="ctl00$ContentPlaceHolder1$ANTI_HTN"
-                                   id="ctl00_ContentPlaceHolder1_radP_ANTI_HtnYes"><label
-                                for="ctl00_ContentPlaceHolder1_radP_ANTI_HtnYes">Yes</label> &nbsp;
-                            <input type="radio"
-                                   onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radP_ANTI_HtnNo\',\'\')', 0)"
-                                   value="radP_ANTI_HtnNo" name="ctl00$ContentPlaceHolder1$ANTI_HTN"
-                                   id="ctl00_ContentPlaceHolder1_radP_ANTI_HtnNo"><label
-                                for="ctl00_ContentPlaceHolder1_radP_ANTI_HtnNo">No</label>
-
-                        </td>
-
-                        <td align="center">
-                            <input type="radio"
-                                   onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radANTI_HtnYes\',\'\')', 0)"
-                                   value="radANTI_HtnYes" name="ctl00$ContentPlaceHolder1$ANTI_HTN2"
-                                   id="ctl00_ContentPlaceHolder1_radANTI_HtnYes"><label
-                                for="ctl00_ContentPlaceHolder1_radANTI_HtnYes">Yes</label> &nbsp;
-                            <input type="radio"
-                                   onclick="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$radANTI_HtnNo\',\'\')', 0)"
-                                   value="radANTI_HtnNo" name="ctl00$ContentPlaceHolder1$ANTI_HTN2"
-                                   id="ctl00_ContentPlaceHolder1_radANTI_HtnNo"><label
-                                for="ctl00_ContentPlaceHolder1_radANTI_HtnNo">No</label>
-
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                Antihypertensive
+                            </td>
+                            <td align="center" class="style15" wicket:id="antihypertensive"/>
+                            <td align="center" wicket:id="antihypertensivePrior"/>
+                        </tr>
 
 
-                    <tr id="ctl00_ContentPlaceHolder1_rowInsulin">
-                        <td>
-                            Insulin
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdINSULIN">
-                            <input type="radio" value="radP_InsulinYes" name="ctl00$ContentPlaceHolder1$INSULIN"
-                                   id="ctl00_ContentPlaceHolder1_radP_InsulinYes"><label
-                                for="ctl00_ContentPlaceHolder1_radP_InsulinYes">Yes</label> &nbsp;
-                            <input type="radio" value="radP_InsulinNo" name="ctl00$ContentPlaceHolder1$INSULIN"
-                                   id="ctl00_ContentPlaceHolder1_radP_InsulinNo"><label
-                                for="ctl00_ContentPlaceHolder1_radP_InsulinNo">No</label>
+                        <tr>
+                            <td>
+                                ACE Inhibitor
+                            </td>
+                            <td align="center" class="style15" wicket:id="aceInhibitor"/>
+                            <td align="center" wicket:id="aceInhibitorPrior"/>
+                        </tr>
 
-                        </td>
-                        <td align="center">
-                            <input type="radio" value="radInsulinYes" name="ctl00$ContentPlaceHolder1$INSULIN2"
-                                   id="ctl00_ContentPlaceHolder1_radInsulinYes"><label
-                                for="ctl00_ContentPlaceHolder1_radInsulinYes">Yes</label> &nbsp;
-                            <input type="radio" value="radInsulinNo" name="ctl00$ContentPlaceHolder1$INSULIN2"
-                                   id="ctl00_ContentPlaceHolder1_radInsulinNo"><label
-                                for="ctl00_ContentPlaceHolder1_radInsulinNo">No</label>
 
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                ARB-1 Antagonist
+                            </td>
+                            <td align="center" class="style15" wicket:id="arb1Antagonist"/>
+                            <td align="center" wicket:id="arb1AntagonistPrior"/>
+                        </tr>
 
-                    <tr id="ctl00_ContentPlaceHolder1_rowLipid">
-                        <td>
-                            Lipid lowering agent
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdLIPID_LOWER">
 
-                            <input type="radio" value="radP_LIP_LOWER_AgYes" name="ctl00$ContentPlaceHolder1$LIP_LOWER"
-                                   id="ctl00_ContentPlaceHolder1_radP_LIP_LOWER_AgYes"><label
-                                for="ctl00_ContentPlaceHolder1_radP_LIP_LOWER_AgYes">Yes</label> &nbsp;
-                            <input type="radio" value="radP_LIP_LOWER_AgNo" name="ctl00$ContentPlaceHolder1$LIP_LOWER"
-                                   id="ctl00_ContentPlaceHolder1_radP_LIP_LOWER_AgNo"><label
-                                for="ctl00_ContentPlaceHolder1_radP_LIP_LOWER_AgNo">No</label>
-                        </td>
-                        <td align="center">
-                            <input type="radio" value="radLIP_LOWER_AgYes" name="ctl00$ContentPlaceHolder1$LIP_LOWER2"
-                                   id="ctl00_ContentPlaceHolder1_radLIP_LOWER_AgYes"><label
-                                for="ctl00_ContentPlaceHolder1_radLIP_LOWER_AgYes">Yes</label> &nbsp;
-                            <input type="radio" value="radLIP_LOWER_AgNo" name="ctl00$ContentPlaceHolder1$LIP_LOWER2"
-                                   id="ctl00_ContentPlaceHolder1_radLIP_LOWER_AgNo"><label
-                                for="ctl00_ContentPlaceHolder1_radLIP_LOWER_AgNo">No</label>
+                        <tr>
+                            <td>
+                                Calcium Channel Blocker
+                            </td>
+                            <td align="center" class="style15" wicket:id="calciumChannelBlocker"/>
+                            <td align="center" wicket:id="calciumChannelBlockerPrior"/>
+                        </tr>
 
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>
-                            EPO
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdEPO">
+                        <tr>
+                            <td>
+                                β Blocker
+                            </td>
+                            <td align="center" class="style15" wicket:id="betaBlocker"/>
+                            <td align="center" wicket:id="betaBlockerPrior"/>
+                        </tr>
 
-                            <input type="radio" value="radP_EPOYes" name="ctl00$ContentPlaceHolder1$EPO"
-                                   id="ctl00_ContentPlaceHolder1_radP_EPOYes"><label
-                                for="ctl00_ContentPlaceHolder1_radP_EPOYes">Yes</label> &nbsp; <input type="radio"
-                                                                                                      value="radP_EPONo"
-                                                                                                      name="ctl00$ContentPlaceHolder1$EPO"
-                                                                                                      id="ctl00_ContentPlaceHolder1_radP_EPONo"><label
-                                for="ctl00_ContentPlaceHolder1_radP_EPONo">No</label>
 
-                        </td>
+                        <tr>
+                            <td>
+                                Other Antihypertensive
+                            </td>
+                            <td align="center" class="style15" wicket:id="otherAntihypertensive"/>
+                            <td align="center" wicket:id="otherAntihypertensivePrior"/>
+                        </tr>
 
-                        <td align="center">
-                            <input type="radio" value="radEPOYes" name="ctl00$ContentPlaceHolder1$EPO2"
-                                   id="ctl00_ContentPlaceHolder1_radEPOYes"><label
-                                for="ctl00_ContentPlaceHolder1_radEPOYes">Yes</label> &nbsp;
-                            <input type="radio" value="radEPONo" name="ctl00$ContentPlaceHolder1$EPO2"
-                                   id="ctl00_ContentPlaceHolder1_radEPONo"><label
-                                for="ctl00_ContentPlaceHolder1_radEPONo">No</label>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Other 1
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtP_OTHER_DRUG1"
-                                   name="ctl00$ContentPlaceHolder1$txtP_OTHER_DRUG1"></td>
+                        <tr id="ctl00_ContentPlaceHolder1_rowInsulin">
+                            <td>
+                                Insulin
+                            </td>
+                            <td align="center" class="style15" wicket:id="insulin"/>
+                            <td align="center" wicket:id="insulinPrior"/>
+                        </tr>
 
-                        <td align="center">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtOTHER_DRUG1"
-                                   name="ctl00$ContentPlaceHolder1$txtOTHER_DRUG1"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Other 2
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG2">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtP_OTHER_DRUG2"
-                                   name="ctl00$ContentPlaceHolder1$txtP_OTHER_DRUG2"></td>
+                        <tr id="ctl00_ContentPlaceHolder1_rowLipid">
+                            <td>
+                                Lipid lowering agent
+                            </td>
+                            <td align="center" class="style15" wicket:id="lipidLoweringAgent"/>
+                            <td align="center" wicket:id="lipidLoweringAgentPrior"/>
+                        </tr>
 
-                        <td align="center">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtOTHER_DRUG2"
-                                   name="ctl00$ContentPlaceHolder1$txtOTHER_DRUG2"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Other 3
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG3">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtP_OTHER_DRUG3"
-                                   name="ctl00$ContentPlaceHolder1$txtP_OTHER_DRUG3">
-                        </td>
+                        <tr>
+                            <td>
+                                EPO
+                            </td>
+                            <td align="center" class="style15" wicket:id="epo"/>
+                            <td align="center" wicket:id="epoPrior"/>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 1
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other1"></td>
 
-                        <td align="center">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtOTHER_DRUG3"
-                                   name="ctl00$ContentPlaceHolder1$txtOTHER_DRUG3">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Other 4
-                        </td>
-                        <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG4">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtP_OTHER_DRUG4"
-                                   name="ctl00$ContentPlaceHolder1$txtP_OTHER_DRUG4">
-                        </td>
+                            <td align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other1Prior"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 2
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other2"></td>
 
-                        <td align="center">
-                            <input type="text" style="border-width:1px;border-style:solid;width:105px;"
-                                   id="ctl00_ContentPlaceHolder1_txtOTHER_DRUG4"
-                                   name="ctl00$ContentPlaceHolder1$txtOTHER_DRUG4">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <br><br>
+                            <td align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other2Prior"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 3
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other3"></td>
 
-            </fieldset>
+                            <td align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other3Prior"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 4
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other4"></td>
+
+                            <td align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other4Prior"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br><br>
+
+                </fieldset>
+            </form>
             &nbsp;</div>
     </td>
     <td style="vertical-align:top;">
     </td>
 </tr>
 <tr>
-    <td>
-        <fieldset>
-            <legend>Plasmapheresis</legend>
+<td>
+<fieldset>
+    <legend>Plasmapheresis</legend>
+    <br>
+
+    <div>
+
+        <table border="1" cellspacing="0" cellpadding="3"
+               style="font-size:85%;width:95%;border-collapse:collapse;" rules="all">
+            <tbody>
+            <tr style="color:#3C982D;">
+                <th scope="col">Date Started</th>
+                <th scope="col">Date Stopped</th>
+                <th scope="col">No of Exchanges</th>
+                <th scope="col">Response</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr wicket:id="plasmapheresis">
+                <td wicket:id="dateStarted"/>
+                <td wicket:id="dateStopped"/>
+                <td wicket:id="plasmapheresisExchanges.name"/>
+                <td wicket:id="response"/>
+                <td>
+                    <input type="submit" value="Delete" wicket:id="deleteLink"
+                           onclick="return confirm('Are you sure you want to delete this record?');"/>
+                    <input type="submit" value="Edit" wicket:id="editLink"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+    <br>
+
+    <div wicket:id="editPlasmapheresisContainer">
+        <form wicket:id="form">
+            <fieldset style="border-color:Red">
+                <legend>Edit</legend>
+                <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
+                    <tbody>
+                    <tr>
+                        <td>Date Started<br>
+                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator3">&gt; today</span>
+                        </td>
+                        <td>Date Stopped
+                            <br>
+
+                            &nbsp;<span style="color:Red;display:none;"
+                                        id="ctl00_ContentPlaceHolder1_CompareValidator9">&gt; today</span>
+                            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblPlasmaStopEditWarn"></span>
+                        </td>
+                        <td>No of Exchanges</td>
+                        <td>&nbsp;</td>
+                        <td>
+                            Response
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" style="width:70px;" wicket:id="startDate"/>
+                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                   id="ctl00_ContentPlaceHolder1_ImageButton3"
+                                   name="ctl00$ContentPlaceHolder1$ImageButton3">
+                        </td>
+                        <td>
+                            <input type="text" style="width:70px;" wicket:id="endDate">
+                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                   id="ctl00_ContentPlaceHolder1_ImageButton4"
+                                   name="ctl00$ContentPlaceHolder1$ImageButton4">
+                        </td>
+                        <td>
+                            <select wicket:id="plasmapheresisExchanges"/>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <select wicket:id="response"/>
+                        </td>
+                        <td>
+                            <input type="submit" value="Save" wicket:id="save"/>
+                            <input type="submit" value="Cancel" wicket:id="cancel"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblPlasmaEditWarn"></span></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+    <br>
+
+    <form wicket:id="addPlasmapheresisForm">
+        <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
+            <tbody>
+            <tr>
+                <td>Date Started<br>
+                <span style="color:Red;visibility:hidden;"
+                      id="ctl00_ContentPlaceHolder1_CompareValidator7">&gt; today</span>
+                </td>
+                <td>Date Stopped
+                    <br>
+                    &nbsp;
+                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span></td>
+                <td>No of Exchanges</td>
+                <td>&nbsp;</td>
+                <td>
+                    Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info"
+                                           id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                           id="ctl00_ContentPlaceHolder1_ImageButton15"
+                           name="ctl00$ContentPlaceHolder1$ImageButton15">
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                           id="ctl00_ContentPlaceHolder1_ImageButton16"
+                           name="ctl00$ContentPlaceHolder1$ImageButton16">
+                </td>
+                <td>
+                    <select wicket:id="plasmapheresisExchanges"/>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                    <select wicket:id="response"/>
+                </td>
+                <td>
+                    <input type="submit" value="Add" wicket:id="save"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span></td>
+                <td>&nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</fieldset>
+<br><br>
+<fieldset>
+    <legend>Dialysis</legend>
+    <br>
+
+    <div>
+        <table border="1" cellspacing="0" cellpadding="3" style="font-size:85%;width:100%;border-collapse:collapse;"
+               id="ctl00_ContentPlaceHolder1_GridView2" rules="all" disabled="disabled">
+            <tbody>
+            <tr style="color:#3C982D;">
+                <th scope="col">Dialysis Type</th>
+                <th scope="col">Date Started</th>
+                <th scope="col">Date Stopped</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr wicket:id="dialysis">
+                <td wicket:id="modality.type"/>
+                <td wicket:id="dateStarted"/>
+                <td wicket:id="dateStopped"/>
+                <td>
+                    <input type="submit" disabled="disabled" value="Delete" wicket:id="deleteLink"/>
+                    <input type="submit" disabled="disabled" value="Edit" wicket:id="editLink"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div wicket:id="editDialysisContainer">
+        <form wicket:id="editDialysisForm">
             <br>
+            <fieldset style="width:650px; border:1px solid red;">
+                <legend>Edit</legend>
+                <table width="100%" style="margin-top:10px; font-size:85%; " class="style4">
+                    <tbody>
+                    <tr>
+                        <td style="width:290px">Dialysis Type<br>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblDialEditWarn"></span>
+                            <br>
+                        </td>
+                        <td style="width:100px;">Date Started</td>
+                        <td>Date Stopped</td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblEditStartWarn"></span></td>
+                        <td>
+                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator8">&gt;today</span>
+                        </td>
+                        <td>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblEditStopWarn"></span></td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select wicket:id="modality"/>
+                        </td>
+                        <td>
+                            <input type="text" style="width:80px;" wicket:id="startDate"/>
+                            <img style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                 id="ctl00_ContentPlaceHolder1_imgDialEditStart">
+                        </td>
+                        <td>
+                            <input type="text" style="width:80px;" wicket:id="endDate"/>
+                            <img style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                 id="ctl00_ContentPlaceHolder1_imgDialEditStop">
+                        </td>
+                        <td style="text-align:right;">
+                            <input type="submit" value="Save" wicket:id="save"/>
+                            &nbsp;
+                            <input type="submit" value="Cancel" wicket:id="cancel"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+    </div>
 
-            <div>
+    <form wicket:id="addDialysisForm">
+        <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px;" class="style2">
+            <tbody>
+            <tr>
+                <td>Dialysis Type
+                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarn"></span></td>
+                <td>Date Started
 
-            </div>
-            <br>
-            <br>
-            <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
-                <tbody>
-                <tr>
-                    <td>Date Started<br>
-                        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator7">&gt; today</span>
-                    </td>
-                    <td>Date Stopped
-                        <br>
-                        &nbsp;
-                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span></td>
-                    <td>No of Exchanges</td>
-                    <td>&nbsp;</td>
-                    <td>
-                        Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info"
-                                               id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
-                    </td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDATE_START_PLASMAPH"
-                               name="ctl00$ContentPlaceHolder1$txtDATE_START_PLASMAPH">
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_ImageButton15"
-                               name="ctl00$ContentPlaceHolder1$ImageButton15">
-                    </td>
-                    <td>
-                        <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDATE_STOP_PLASMAPH"
-                               name="ctl00$ContentPlaceHolder1$txtDATE_STOP_PLASMAPH">
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_ImageButton16"
-                               name="ctl00$ContentPlaceHolder1$ImageButton16">
-                    </td>
-                    <td>
-                        <select id="ctl00_ContentPlaceHolder1_ddlPlasmaExch"
-                                name="ctl00$ContentPlaceHolder1$ddlPlasmaExch">
-                            <option value="">Select</option>
-                            <option value="1">Daily</option>
-                            <option value="2">x5/wk</option>
-                            <option value="3">x4/wk</option>
-                            <option value="4">x3/wk</option>
-                            <option value="5">x2/wk</option>
-                            <option value="6">x1/wk</option>
-                            <option value="7">x1/2wks</option>
-                            <option value="8">x1/4wks</option>
+                    <br>
 
-                        </select>
-                    </td>
-                    <td>
-                        &nbsp;</td>
-                    <td>
-                        <select id="ctl00_ContentPlaceHolder1_ddlPlasResponse"
-                                name="ctl00$ContentPlaceHolder1$ddlPlasResponse">
-                            <option value="" selected="selected">Select</option>
-                            <option value="1">Complete</option>
-                            <option value="2">Partial</option>
-                            <option value="3">None</option>
-
-                        </select>
-                    </td>
-                    <td>
-                        <input type="submit" id="ctl00_ContentPlaceHolder1_btnPlasmaAdd" value="Add"
-                               name="ctl00$ContentPlaceHolder1$btnPlasmaAdd">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span></td>
-                    <td>&nbsp;</td>
-                    <td>
-                        &nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                </tbody>
-            </table>
-        </fieldset>
-        <br><br>
-        <fieldset>
-            <legend>Dialysis</legend>
-            <br>
-
-            <div>
-
-            </div>
-
-
-            <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px;" class="style2">
-                <tbody>
-                <tr>
-                    <td>Dialysis Type
-                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarn"></span></td>
-                    <td>Date Started
-
-                        <br>
-
-                        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator1">&gt; today</span>
-                    </td>
-                    <td>Date Stopped
-                        <br>
-                        &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarn"></span></td>
-                    <td>
-                        &nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <select style="font-size:100%;" id="ctl00_ContentPlaceHolder1_ddlHD"
-                                name="ctl00$ContentPlaceHolder1$ddlHD">
-                            <option value="">Select</option>
-                            <option value="1">Haemodialysis</option>
-                            <option value="2">Haemofiltration</option>
-                            <option value="3">Haemodiafiltration</option>
-                            <option value="4">Haemodialysis &gt; 4 days per week / daily</option>
-                            <option value="5">Ultrafiltration</option>
-                            <option value="9">Haemodialysis &ndash; type unknown</option>
-                            <option value="10">CAPD connect</option>
-                            <option value="11">CAPD disconnect</option>
-                            <option value="12">Cycling PD &gt;= 6 nights/wk dry</option>
-                            <option value="13">Cycling PD &lt; 6 nights /wk dry</option>
-                            <option value="14">Cycling PD &gt;= 6 nights/wk wet (day dwell)</option>
-                            <option value="15">Cycling PD &lt; 6 nights /wk wet (day dwell)</option>
-                            <option value="16">Assisted Cycling PD &gt;=6 nights/wk dry</option>
-                            <option value="17">Assisted Cycling PD &gt;=6 nights/wk wet (day dwell)</option>
-                            <option value="19">Peritoneal dialysis &ndash; type unknown</option>
-
-                        </select></td>
-                    <td>
-                        <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDATE_START_DIAL"
-                               name="ctl00$ContentPlaceHolder1$txtDATE_START_DIAL">
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_ImageButton12"
-                               name="ctl00$ContentPlaceHolder1$ImageButton12">
-                    </td>
-                    <td>
-                        <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDATE_STOP_DIAL"
-                               name="ctl00$ContentPlaceHolder1$txtDATE_STOP_DIAL">
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_ImageButton13"
-                               name="ctl00$ContentPlaceHolder1$ImageButton13">
-                    </td>
-                    <td>
-                        <input type="submit" id="ctl00_ContentPlaceHolder1_btnHDAdd" value="Add"
-                               name="ctl00$ContentPlaceHolder1$btnHDAdd">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </fieldset>
-        <br><br>
-    </td>
+                <span style="color:Red;visibility:hidden;"
+                      id="ctl00_ContentPlaceHolder1_RangeValidator1">&gt; today</span>
+                </td>
+                <td>Date Stopped
+                    <br>
+                    &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarn"></span></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <select style="font-size:100%;" wicket:id="modality"/>
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                           id="ctl00_ContentPlaceHolder1_ImageButton12"
+                           name="ctl00$ContentPlaceHolder1$ImageButton12">
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                           id="ctl00_ContentPlaceHolder1_ImageButton13"
+                           name="ctl00$ContentPlaceHolder1$ImageButton13">
+                </td>
+                <td>
+                    <input type="submit" value="Add" wicket:id="save"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</fieldset>
+<br><br>
+</td>
 </tr>
 <tr>
     <td colspan="2"><input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSave"

@@ -1,6 +1,32 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
+import com.solidstategroup.radar.model.Immunosuppression;
+import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
+import com.solidstategroup.radar.model.Modality;
+import com.solidstategroup.radar.model.Plasmapheresis;
+import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
+import com.solidstategroup.radar.model.Therapy;
+import com.solidstategroup.radar.model.Treatment;
+import com.solidstategroup.radar.model.enums.RemissionAchieved;
+import com.solidstategroup.radar.web.dataproviders.DialysisDataProvider;
+import com.solidstategroup.radar.web.dataproviders.ImmunosuppressionTreatmentDataProvider;
+import com.solidstategroup.radar.web.dataproviders.PlasmapheresisDataProvider;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 public class TreatmentPanel extends Panel {
 
@@ -8,6 +34,269 @@ public class TreatmentPanel extends Panel {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        // Immunosuppression including Monoclonals
+
+        add(new DataView<ImmunosuppressionTreatment>("immunosuppressions",
+                new ImmunosuppressionTreatmentDataProvider()) {
+            @Override
+            protected void populateItem(Item<ImmunosuppressionTreatment> item) {
+                item.add(DateLabel.forDatePattern("startDate", "dd-MMM-yyyy"));
+                item.add(DateLabel.forDatePattern("endDate", "dd-MMM-yyyy"));
+                item.add(new Label("immunosuppression.description"));
+                item.add(new AjaxLink("deleteLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        // Todo: Implement
+                    }
+                });
+                item.add(new AjaxLink("editLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        // Todo: Implement
+                    }
+                });
+            }
+        });
+
+        // For showing edit from ajax call
+        MarkupContainer editContainer = new WebMarkupContainer("editContainer");
+        editContainer.setOutputMarkupPlaceholderTag(true);
+        editContainer.setVisible(false);
+
+        // Construct the form
+        ImmunosuppressionTreatmentForm editImmunosuppressionForm =
+                new ImmunosuppressionTreatmentForm("editImmunosuppressionForm",
+                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()));
+        editImmunosuppressionForm.add(new AjaxSubmitLink("save") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
+        editImmunosuppressionForm.add(new AjaxLink("cancel") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                // Todo: Implement
+            }
+        });
+        editContainer.add(editImmunosuppressionForm);
+        add(editContainer);
+
+        // Construct the add form
+        ImmunosuppressionTreatmentForm addImmunosuppressionForm =
+                new ImmunosuppressionTreatmentForm("addImmunosuppressionForm",
+                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()));
+        addImmunosuppressionForm.add(new AjaxSubmitLink("submit") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
+        add(addImmunosuppressionForm);
+
+        // Drugs
+        Form<Therapy> therapyForm = new Form<Therapy>("therapyForm", new CompoundPropertyModel<Therapy>(new Therapy()));
+        therapyForm.add(new YesNoRadioGroup("nsaid"));
+        therapyForm.add(new YesNoRadioGroup("nsaidPrior"));
+        therapyForm.add(new YesNoRadioGroup("diuretic"));
+        therapyForm.add(new YesNoRadioGroup("diureticPrior"));
+        therapyForm.add(new YesNoRadioGroup("antihypertensive"));
+        therapyForm.add(new YesNoRadioGroup("antihypertensivePrior"));
+        therapyForm.add(new YesNoRadioGroup("aceInhibitor"));
+        therapyForm.add(new YesNoRadioGroup("aceInhibitorPrior"));
+        therapyForm.add(new YesNoRadioGroup("arb1Antagonist"));
+        therapyForm.add(new YesNoRadioGroup("arb1AntagonistPrior"));
+        therapyForm.add(new YesNoRadioGroup("calciumChannelBlocker"));
+        therapyForm.add(new YesNoRadioGroup("calciumChannelBlockerPrior"));
+        therapyForm.add(new YesNoRadioGroup("betaBlocker"));
+        therapyForm.add(new YesNoRadioGroup("betaBlockerPrior"));
+        therapyForm.add(new YesNoRadioGroup("otherAntihypertensive"));
+        therapyForm.add(new YesNoRadioGroup("otherAntihypertensivePrior"));
+        therapyForm.add(new YesNoRadioGroup("insulin"));
+        therapyForm.add(new YesNoRadioGroup("insulinPrior"));
+        therapyForm.add(new YesNoRadioGroup("lipidLoweringAgent"));
+        therapyForm.add(new YesNoRadioGroup("lipidLoweringAgentPrior"));
+        therapyForm.add(new YesNoRadioGroup("epo"));
+        therapyForm.add(new YesNoRadioGroup("epoPrior"));
+
+        therapyForm.add(new TextField("other1"));
+        therapyForm.add(new TextField("other1Prior"));
+        therapyForm.add(new TextField("other2"));
+        therapyForm.add(new TextField("other2Prior"));
+        therapyForm.add(new TextField("other3"));
+        therapyForm.add(new TextField("other3Prior"));
+        therapyForm.add(new TextField("other4"));
+        therapyForm.add(new TextField("other4Prior"));
+
+        add(therapyForm);
+
+        // Plasmapheresis
+        add(new DataView<Plasmapheresis>("plasmapheresis", new PlasmapheresisDataProvider()) {
+            @Override
+            protected void populateItem(Item<Plasmapheresis> item) {
+                item.add(DateLabel.forDatePattern("dateStarted", "dd-MMM-yyyy"));
+                item.add(DateLabel.forDatePattern("dateStopped", "dd-MMM-yyyy"));
+                item.add(new Label("plasmapheresisExchanges.name"));
+                item.add(new Label("response"));
+                item.add(new AjaxLink("deleteLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        // Todo: Implement
+                    }
+                });
+                item.add(new AjaxLink("editLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        // Todo: Implement
+                    }
+                });
+            }
+        });
+
+        MarkupContainer editPlasmapheresisContainer = new WebMarkupContainer("editPlasmapheresisContainer");
+        editPlasmapheresisContainer.setVisible(false);
+
+        // Add the form
+        PlasmapheresisForm editPlasmapheresisForm = new PlasmapheresisForm("editPlasmapheresisForm",
+                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()));
+        editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
+        editPlasmapheresisForm.add(new AjaxLink("cancel") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                // Todo: Implement
+            }
+        });
+        add(editPlasmapheresisContainer);
+
+        // Add the add plasmapheresis form
+        PlasmapheresisForm addPlasmapheresisForm = new PlasmapheresisForm("addPlasmapheresisForm",
+                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()));
+        addPlasmapheresisForm.add(new AjaxSubmitLink("save") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
+        add(addPlasmapheresisForm);
+
+        // Dialysis
+        add(new DataView<Treatment>("dialysis", new DialysisDataProvider()) {
+            @Override
+            protected void populateItem(Item<Treatment> item) {
+                item.add(new Label("modality.type"));
+                item.add(DateLabel.forDatePattern("dateStarted", "dd-MMM-yyyy"));
+                item.add(DateLabel.forDatePattern("dateStopped", "dd-MMM-yyyy"));
+                item.add(new AjaxLink("deleteLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        // Todo: Implement
+                    }
+                });
+                item.add(new AjaxLink("editLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        // Todo: Implement
+                    }
+                });
+            }
+        });
+
+        // Edit dialysis container
+        MarkupContainer editDialysisContainer = new WebMarkupContainer("editDialysisContainer");
+        editDialysisContainer.setOutputMarkupPlaceholderTag(true);
+        editDialysisContainer.setVisible(false);
+        add(editDialysisContainer);
+
+        DialysisForm editDialysisForm =
+                new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()));
+        editDialysisForm.add(new AjaxSubmitLink("save") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
+        editDialysisForm.add(new AjaxLink("cancel") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                // Todo: Implement
+            }
+        });
+        editDialysisContainer.add(editDialysisForm);
+
+        // Add dialysis form
+        DialysisForm addDialysisForm =
+                new DialysisForm("addDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()));
+        addDialysisForm.add(new AjaxSubmitLink("save") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
+        add(addDialysisForm);
+    }
+
+    private class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
+        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model) {
+            super(id, model);
+            add(DateTextField.forDatePattern("startDate", "dd-MMM-yyyy"));
+            add(new DropDownChoice<Immunosuppression>("immunosuppression"));
+            add(DateTextField.forDatePattern("endDate", "dd-MMM-yyyy"));
+        }
+    }
+
+    private class PlasmapheresisForm extends Form<Plasmapheresis> {
+        private PlasmapheresisForm(String id, IModel<Plasmapheresis> model) {
+            super(id, model);
+            add(DateTextField.forDatePattern("startDate", "dd-MMM-yyyy"));
+            add(DateTextField.forDatePattern("endDate", "dd-MMM-yyyy"));
+            add(new DropDownChoice<PlasmapheresisExchangeUnit>("plasmapheresisExchanges"));
+            add(new DropDownChoice<RemissionAchieved>("response"));
+        }
+    }
+
+    private class DialysisForm extends Form<Treatment> {
+        private DialysisForm(String id, IModel<Treatment> treatmentIModel) {
+            super(id, treatmentIModel);
+            add(new DropDownChoice<Modality>("modality"));
+            add(DateTextField.forDatePattern("startDate", "dd-MMM-yyyy"));
+            add(DateTextField.forDatePattern("endDate", "dd-MMM-yyyy"));
+        }
     }
 
     @Override
