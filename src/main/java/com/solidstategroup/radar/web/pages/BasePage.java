@@ -1,5 +1,9 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
+import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
+import com.solidstategroup.radar.web.pages.content.MpgnPage;
+import com.solidstategroup.radar.web.pages.content.SrnsPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -19,7 +23,7 @@ public abstract class BasePage extends WebPage {
                 // Todo: This is wrong for now
                 new BookmarkablePageLink("demographicsPage", PatientPage.class),
 
-                new BookmarkablePageLink("patientsListingPage", PatientsListingPage.class),
+                new BookmarkablePageLink("patientsListingPage", ExistingPatientsPage.class),
                 new BookmarkablePageLink("recruitmentPage", RecruitmentPage.class),
                 new BookmarkablePageLink("mpgnPage", MpgnPage.class),
                 new BookmarkablePageLink("srnsPage", SrnsPage.class),

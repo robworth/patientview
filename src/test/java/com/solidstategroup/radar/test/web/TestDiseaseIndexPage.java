@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.test.web;
 
-import com.solidstategroup.radar.web.pages.DiseaseIndexPage;
+import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import org.junit.Test;
 
 /**
