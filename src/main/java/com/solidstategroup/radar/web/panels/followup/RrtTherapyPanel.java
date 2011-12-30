@@ -4,6 +4,7 @@ import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.dataproviders.TransplantDataProvider;
+import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;

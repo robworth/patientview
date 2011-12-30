@@ -1,12 +1,12 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.web.panels.FirstVisitPanel;
+import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.PatientDemographicsPanel;
 import com.solidstategroup.radar.web.panels.PatientDiagnosisPanel;
 import com.solidstategroup.radar.web.panels.PatientHospitalisationPanel;
 import com.solidstategroup.radar.web.panels.PatientPathologyPanel;
 import com.solidstategroup.radar.web.panels.PatientRelapsePanel;
-import com.solidstategroup.radar.web.panels.firstvisit.FirstVisitPanel;
-import com.solidstategroup.radar.web.panels.followup.FollowUpPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 

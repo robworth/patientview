@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
+import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.subtabs.LaboratoryResultsPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 

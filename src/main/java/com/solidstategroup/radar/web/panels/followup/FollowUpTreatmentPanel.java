@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.panels.followup;
 
+import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.subtabs.TreatmentPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
