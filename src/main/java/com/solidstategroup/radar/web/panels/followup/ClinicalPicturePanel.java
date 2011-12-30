@@ -124,7 +124,7 @@ public class ClinicalPicturePanel extends Panel {
         form.add(saveLinkBottom);
     }
 
-    private class CkdStageRadioGroup extends RadioGroup<ClinicalData.CkdStage> {
+    private final class CkdStageRadioGroup extends RadioGroup<ClinicalData.CkdStage> {
         private CkdStageRadioGroup(String id) {
             super(id);
 

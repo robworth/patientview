@@ -140,7 +140,7 @@ public class LaboratoryResultsPanel extends Panel {
         });
     }
 
-    private class YesNoNdRadioGroup extends RadioGroup<Boolean> {
+    private final class YesNoNdRadioGroup extends RadioGroup<Boolean> {
         private YesNoNdRadioGroup(String id) {
             super(id);
             // Yes

@@ -91,7 +91,7 @@ public class DialysisTablePanel extends Panel {
         add(addDialysisForm);
     }
 
-    private class DialysisForm extends Form<Treatment> {
+    private final class DialysisForm extends Form<Treatment> {
         private DialysisForm(String id, IModel<Treatment> treatmentIModel) {
             super(id, treatmentIModel);
             add(new DropDownChoice<Modality>("modality"));

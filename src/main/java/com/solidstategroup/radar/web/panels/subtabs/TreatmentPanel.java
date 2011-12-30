@@ -206,7 +206,7 @@ public class TreatmentPanel extends Panel {
 
     }
 
-    private class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
+    private final class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
         private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model) {
             super(id, model);
             add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
@@ -215,7 +215,7 @@ public class TreatmentPanel extends Panel {
         }
     }
 
-    private class PlasmapheresisForm extends Form<Plasmapheresis> {
+    private final class PlasmapheresisForm extends Form<Plasmapheresis> {
         private PlasmapheresisForm(String id, IModel<Plasmapheresis> model) {
             super(id, model);
             add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));

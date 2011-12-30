@@ -148,7 +148,7 @@ public class RrtTherapyPanel extends Panel {
         add(addTransplantForm);
     }
 
-    private class TransplantForm extends Form<Transplant> {
+    private final class TransplantForm extends Form<Transplant> {
         private TransplantForm(String id, IModel<Transplant> transplantIModel) {
             super(id, transplantIModel);
             add(new DateTextField("date"));
