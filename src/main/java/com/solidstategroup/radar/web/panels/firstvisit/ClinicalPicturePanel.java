@@ -2,20 +2,17 @@ package com.solidstategroup.radar.web.panels.firstvisit;
 
 import com.solidstategroup.radar.model.ClinicalData;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
+import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponentLabel;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 
 public class ClinicalPicturePanel extends Panel {
 
@@ -58,13 +55,13 @@ public class ClinicalPicturePanel extends Panel {
         form.add(new TextField("significantDiagnosis2"));
 
         // Yes/No/Unknown for the following
-        form.add(new YesNoUnkownRadioGroup("oedema"));
-        form.add(new YesNoUnkownRadioGroup("hypovalaemia"));
-        form.add(new YesNoUnkownRadioGroup("fever"));
-        form.add(new YesNoUnkownRadioGroup("thrombosis"));
-        form.add(new YesNoUnkownRadioGroup("peritonitis"));
-        form.add(new YesNoUnkownRadioGroup("pulmonaryOedema"));
-        form.add(new YesNoUnkownRadioGroup("hypertension"));
+        form.add(new YesNoRadioGroup("oedema", true));
+        form.add(new YesNoRadioGroup("hypovalaemia", true));
+        form.add(new YesNoRadioGroup("fever", true));
+        form.add(new YesNoRadioGroup("thrombosis", true));
+        form.add(new YesNoRadioGroup("peritonitis", true));
+        form.add(new YesNoRadioGroup("pulmonaryOedema", true));
+        form.add(new YesNoRadioGroup("hypertension", true));
 
         // Diabetes
         form.add(new DropDownChoice<ClinicalData.DiabetesType>("diabetesType"));
@@ -72,12 +69,12 @@ public class ClinicalPicturePanel extends Panel {
         // Todo: Visibilities depend on the diagnosis - see first-clinical.aspx.vb:287
 
         // More yes/no options
-        form.add(new YesNoUnkownRadioGroup("rash"));
-        form.add(new YesNoUnkownRadioGroup("possibleImmunisationTrigger"));
-        form.add(new YesNoUnkownRadioGroup("partialLipodystrophy"));
-        form.add(new YesNoUnkownRadioGroup("preceedingInfection"));
-        form.add(new YesNoUnkownRadioGroup("chronicInfection"));
-        form.add(new YesNoUnkownRadioGroup("ophthalmoscopy"));
+        form.add(new YesNoRadioGroup("rash", true));
+        form.add(new YesNoRadioGroup("possibleImmunisationTrigger", true));
+        form.add(new YesNoRadioGroup("partialLipodystrophy", true));
+        form.add(new YesNoRadioGroup("preceedingInfection", true));
+        form.add(new YesNoRadioGroup("chronicInfection", true));
+        form.add(new YesNoRadioGroup("ophthalmoscopy", true));
 
         // Rash details needs show/hide
         MarkupContainer rashDetailContainer = new WebMarkupContainer("rashDetailContainer") {
@@ -128,21 +125,4 @@ public class ClinicalPicturePanel extends Panel {
         return ((FirstVisitPanel) getParent()).getCurrentTab().equals(FirstVisitPanel.CurrentTab.CLINICAL_PICTURE);
     }
 
-    private class YesNoUnkownRadioGroup extends RadioGroup<Boolean> {
-        private YesNoUnkownRadioGroup(String id) {
-            super(id);
-
-            // Option for yes
-            Radio<Boolean> yes = new Radio<Boolean>("yes", new Model<Boolean>(Boolean.TRUE));
-            add(yes, new FormComponentLabel("yesLabel", yes));
-
-            // Option for no
-            Radio<Boolean> no = new Radio<Boolean>("no", new Model<Boolean>(Boolean.TRUE));
-            add(no, new FormComponentLabel("noLabel", no));
-
-            // Option for unknown (null)
-            Radio<Boolean> unknown = new Radio<Boolean>("unknown", new Model<Boolean>(Boolean.TRUE));
-            add(unknown, new FormComponentLabel("unknownLabel", unknown));
-        }
-    }
 }

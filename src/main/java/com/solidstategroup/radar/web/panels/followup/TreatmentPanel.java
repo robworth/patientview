@@ -12,6 +12,6 @@ public class TreatmentPanel extends Panel {
 
     @Override
     public boolean isVisible() {
-        return ((FollowUpPanel) getParent()).getCurrentTab().equals(FollowUpPanel.CurrentTab.RRT_THERAPY);
+        return ((FollowUpPanel) getParent()).getCurrentTab().equals(FollowUpPanel.CurrentTab.TREATMENT);
     }
 }

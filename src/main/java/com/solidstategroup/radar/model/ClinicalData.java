@@ -11,6 +11,24 @@ public class ClinicalData extends BaseModel {
         }
     }
 
+    public enum CourseOfDisease {
+        ACUTE(1), CHRONIC(2), UNKNOWN(9);
+        private int id;
+
+        CourseOfDisease(int id) {
+            this.id = id;
+        }
+    }
+
+    public enum CkdStage {
+        ONE(1), TWO(2), THREE(3), FOUR(4), FIVE(5), UNKNOWN(0);
+        private int id;
+
+        CkdStage(int id) {
+            this.id = id;
+        }
+    }
+
     private int sequenceNumber;
     private Double height, weight; // Height in cm Weight in Kg
 
@@ -21,6 +39,7 @@ public class ClinicalData extends BaseModel {
 
     private String comments;
 
+    private CourseOfDisease courseOfDisease;
     private String significantDiagnosis1, significantDiagnosis2;
 
     private Boolean oedema, hypovalaemia, fever, thrombosis, peritonitis, pulmonaryOedema, hypertension;
@@ -29,6 +48,13 @@ public class ClinicalData extends BaseModel {
             ophthalmoscopy;
 
     private String rashDetail, preceedingInfectionDetail, chronicInfectionDetail, ophthalmoscopyDetail;
+
+    // For follow up page
+    private Boolean infectionNecessitatingHospitalisation, complicationThrombosis;
+    private String infectionDetail, complicationThrombosisDetail;
+
+    private CkdStage ckdStage;
+    private Boolean listedForTransplant;
 
     public Double getMeanArterialPressure() {
         // Got this from wikipedia
@@ -116,6 +142,14 @@ public class ClinicalData extends BaseModel {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public CourseOfDisease getCourseOfDisease() {
+        return courseOfDisease;
+    }
+
+    public void setCourseOfDisease(CourseOfDisease courseOfDisease) {
+        this.courseOfDisease = courseOfDisease;
     }
 
     public String getSignificantDiagnosis1() {
@@ -276,5 +310,53 @@ public class ClinicalData extends BaseModel {
 
     public void setOphthalmoscopyDetail(String ophthalmoscopyDetail) {
         this.ophthalmoscopyDetail = ophthalmoscopyDetail;
+    }
+
+    public Boolean getInfectionNecessitatingHospitalisation() {
+        return infectionNecessitatingHospitalisation;
+    }
+
+    public void setInfectionNecessitatingHospitalisation(Boolean infectionNecessitatingHospitalisation) {
+        this.infectionNecessitatingHospitalisation = infectionNecessitatingHospitalisation;
+    }
+
+    public Boolean getComplicationThrombosis() {
+        return complicationThrombosis;
+    }
+
+    public void setComplicationThrombosis(Boolean complicationThrombosis) {
+        this.complicationThrombosis = complicationThrombosis;
+    }
+
+    public String getInfectionDetail() {
+        return infectionDetail;
+    }
+
+    public void setInfectionDetail(String infectionDetail) {
+        this.infectionDetail = infectionDetail;
+    }
+
+    public String getComplicationThrombosisDetail() {
+        return complicationThrombosisDetail;
+    }
+
+    public void setComplicationThrombosisDetail(String complicationThrombosisDetail) {
+        this.complicationThrombosisDetail = complicationThrombosisDetail;
+    }
+
+    public CkdStage getCkdStage() {
+        return ckdStage;
+    }
+
+    public void setCkdStage(CkdStage ckdStage) {
+        this.ckdStage = ckdStage;
+    }
+
+    public Boolean getListedForTransplant() {
+        return listedForTransplant;
+    }
+
+    public void setListedForTransplant(Boolean listedForTransplant) {
+        this.listedForTransplant = listedForTransplant;
     }
 }
