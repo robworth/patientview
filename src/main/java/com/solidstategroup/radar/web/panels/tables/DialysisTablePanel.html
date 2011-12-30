@@ -1,0 +1,125 @@
+<wicket:panel>
+
+    <legend>Dialysis</legend>
+    <br>
+
+    <div>
+        <table border="1" cellspacing="0" cellpadding="3" style="font-size:85%;width:100%;border-collapse:collapse;"
+               id="ctl00_ContentPlaceHolder1_GridView2" rules="all" disabled="disabled">
+            <tbody>
+            <tr style="color:#3C982D;">
+                <th scope="col">Dialysis Type</th>
+                <th scope="col">Date Started</th>
+                <th scope="col">Date Stopped</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr wicket:id="dialysis">
+                <td wicket:id="modality.type"/>
+                <td wicket:id="dateStarted"/>
+                <td wicket:id="dateStopped"/>
+                <td>
+                    <input type="submit" disabled="disabled" value="Delete" wicket:id="deleteLink"/>
+                    <input type="submit" disabled="disabled" value="Edit" wicket:id="editLink"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div wicket:id="editDialysisContainer">
+        <form wicket:id="editDialysisForm">
+            <br>
+            <fieldset style="width:650px; border:1px solid red;">
+                <legend>Edit</legend>
+                <table width="100%" style="margin-top:10px; font-size:85%; " class="style4">
+                    <tbody>
+                    <tr>
+                        <td style="width:290px">Dialysis Type<br>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblDialEditWarn"></span>
+                            <br>
+                        </td>
+                        <td style="width:100px;">Date Started</td>
+                        <td>Date Stopped</td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblEditStartWarn"></span></td>
+                        <td>
+                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator8">&gt;today</span>
+                        </td>
+                        <td>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblEditStopWarn"></span></td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select wicket:id="modality"/>
+                        </td>
+                        <td>
+                            <input type="text" style="width:80px;" wicket:id="startDate"/>
+                            <img style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                 id="ctl00_ContentPlaceHolder1_imgDialEditStart">
+                        </td>
+                        <td>
+                            <input type="text" style="width:80px;" wicket:id="endDate"/>
+                            <img style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                                 id="ctl00_ContentPlaceHolder1_imgDialEditStop">
+                        </td>
+                        <td style="text-align:right;">
+                            <input type="submit" value="Save" wicket:id="save"/>
+                            &nbsp;
+                            <input type="submit" value="Cancel" wicket:id="cancel"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <form wicket:id="addDialysisForm">
+        <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px;" class="style2">
+            <tbody>
+            <tr>
+                <td>Dialysis Type
+                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarn"></span></td>
+                <td>Date Started
+
+                    <br>
+
+                <span style="color:Red;visibility:hidden;"
+                      id="ctl00_ContentPlaceHolder1_RangeValidator1">&gt; today</span>
+                </td>
+                <td>Date Stopped
+                    <br>
+                    &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarn"></span></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <select style="font-size:100%;" wicket:id="modality"/>
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                           id="ctl00_ContentPlaceHolder1_ImageButton12"
+                           name="ctl00$ContentPlaceHolder1$ImageButton12">
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                           id="ctl00_ContentPlaceHolder1_ImageButton13"
+                           name="ctl00$ContentPlaceHolder1$ImageButton13">
+                </td>
+                <td>
+                    <input type="submit" value="Add" wicket:id="save"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</wicket:panel>

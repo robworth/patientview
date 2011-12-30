@@ -2,16 +2,15 @@ package com.solidstategroup.radar.web.panels.subtabs;
 
 import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
-import com.solidstategroup.radar.model.Modality;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.Therapy;
-import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
-import com.solidstategroup.radar.web.dataproviders.DialysisDataProvider;
+import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.dataproviders.ImmunosuppressionTreatmentDataProvider;
 import com.solidstategroup.radar.web.dataproviders.PlasmapheresisDataProvider;
 import com.solidstategroup.radar.web.panels.firstvisit.YesNoRadioGroupPanel;
+import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -39,8 +38,8 @@ public class TreatmentPanel extends Panel {
                 new ImmunosuppressionTreatmentDataProvider()) {
             @Override
             protected void populateItem(Item<ImmunosuppressionTreatment> item) {
-                item.add(DateLabel.forDatePattern("startDate", "dd-MMM-yyyy"));
-                item.add(DateLabel.forDatePattern("endDate", "dd-MMM-yyyy"));
+                item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
                 item.add(new Label("immunosuppression.description"));
                 item.add(new AjaxLink("deleteLink") {
                     @Override
@@ -143,8 +142,8 @@ public class TreatmentPanel extends Panel {
         add(new DataView<Plasmapheresis>("plasmapheresis", new PlasmapheresisDataProvider()) {
             @Override
             protected void populateItem(Item<Plasmapheresis> item) {
-                item.add(DateLabel.forDatePattern("dateStarted", "dd-MMM-yyyy"));
-                item.add(DateLabel.forDatePattern("dateStopped", "dd-MMM-yyyy"));
+                item.add(DateLabel.forDatePattern("dateStarted", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("dateStopped", RadarApplication.DATE_PATTERN));
                 item.add(new Label("plasmapheresisExchanges.name"));
                 item.add(new Label("response"));
                 item.add(new AjaxLink("deleteLink") {
@@ -203,97 +202,26 @@ public class TreatmentPanel extends Panel {
         });
         add(addPlasmapheresisForm);
 
-        // Dialysis
-        add(new DataView<Treatment>("dialysis", new DialysisDataProvider()) {
-            @Override
-            protected void populateItem(Item<Treatment> item) {
-                item.add(new Label("modality.type"));
-                item.add(DateLabel.forDatePattern("dateStarted", "dd-MMM-yyyy"));
-                item.add(DateLabel.forDatePattern("dateStopped", "dd-MMM-yyyy"));
-                item.add(new AjaxLink("deleteLink") {
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        // Todo: Implement
-                    }
-                });
-                item.add(new AjaxLink("editLink") {
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        // Todo: Implement
-                    }
-                });
-            }
-        });
+        add(new DialysisTablePanel("dialysisContainer"));
 
-        // Edit dialysis container
-        MarkupContainer editDialysisContainer = new WebMarkupContainer("editDialysisContainer");
-        editDialysisContainer.setOutputMarkupPlaceholderTag(true);
-        editDialysisContainer.setVisible(false);
-        add(editDialysisContainer);
-
-        DialysisForm editDialysisForm =
-                new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()));
-        editDialysisForm.add(new AjaxSubmitLink("save") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-        });
-        editDialysisForm.add(new AjaxLink("cancel") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                // Todo: Implement
-            }
-        });
-        editDialysisContainer.add(editDialysisForm);
-
-        // Add dialysis form
-        DialysisForm addDialysisForm =
-                new DialysisForm("addDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()));
-        addDialysisForm.add(new AjaxSubmitLink("save") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-        });
-        add(addDialysisForm);
     }
 
     private class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
         private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model) {
             super(id, model);
-            add(DateTextField.forDatePattern("startDate", "dd-MMM-yyyy"));
+            add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
             add(new DropDownChoice<Immunosuppression>("immunosuppression"));
-            add(DateTextField.forDatePattern("endDate", "dd-MMM-yyyy"));
+            add(DateTextField.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
         }
     }
 
     private class PlasmapheresisForm extends Form<Plasmapheresis> {
         private PlasmapheresisForm(String id, IModel<Plasmapheresis> model) {
             super(id, model);
-            add(DateTextField.forDatePattern("startDate", "dd-MMM-yyyy"));
-            add(DateTextField.forDatePattern("endDate", "dd-MMM-yyyy"));
+            add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
+            add(DateTextField.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
             add(new DropDownChoice<PlasmapheresisExchangeUnit>("plasmapheresisExchanges"));
             add(new DropDownChoice<RemissionAchieved>("response"));
-        }
-    }
-
-    private class DialysisForm extends Form<Treatment> {
-        private DialysisForm(String id, IModel<Treatment> treatmentIModel) {
-            super(id, treatmentIModel);
-            add(new DropDownChoice<Modality>("modality"));
-            add(DateTextField.forDatePattern("startDate", "dd-MMM-yyyy"));
-            add(DateTextField.forDatePattern("endDate", "dd-MMM-yyyy"));
         }
     }
 

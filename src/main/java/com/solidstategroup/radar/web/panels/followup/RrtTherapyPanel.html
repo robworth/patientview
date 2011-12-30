@@ -54,221 +54,289 @@
 </table>
 <table cellspacing="10" cellpadding="0" style="width: 100%; background-color:#EEF6ED; border:0px solid red;"
        id="ctl00_ContentPlaceHolder1_tblMain">
+<tbody>
+<tr>
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblLogAll">Log ALL treatments in last six months</span>
+    </td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65%;">
+
+<br>
+<fieldset wicket:id="dialysisContainer"/>
+<br><br>
+
+
+<fieldset>
+<legend>Transplant</legend>
+
+<div>
+    <table border="1" cellspacing="0" cellpadding="5" style="font-size:80%;border-collapse:collapse;"
+           id="ctl00_ContentPlaceHolder1_GridView3" rules="all" disabled="disabled">
+        <tbody>
+        <tr style="color:#3C982D;">
+            <th scope="col">Date Tx</th>
+            <th align="left" scope="col">Type</th>
+            <th scope="col">Recurr</th>
+            <th scope="col">Date Recurr</th>
+            <th scope="col">Date Failure</th>
+            <th align="left" style="font-size:95%;" scope="col">Date Reject &nbsp;&nbsp; Date Biopsy</th>
+            <th scope="col">&nbsp;</th>
+        </tr>
+        <tr valign="top" wicket:id="transplants">
+            <td wicket:id="date"/>
+            <td wicket:id="type"/>
+            <td align="center" style="width:45px;"><span wicket:id="recurr"/></td>
+            <td wicket:id="dateRecurr"/>
+            <td wicket:id="dateFailure"/>
+            <td class="zeroPadd">
+                <span wicket:id="dateRejected"/>
+                <span wicket:id="dateBiopsy"/>
+            </td>
+            <td style="width:170px;">
+                <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;"
+                       disabled="disabled" value="Delete"
+                       wicket:id="deleteLink"/>
+                <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;"
+                       disabled="disabled" value="Edit"
+                       wicket:id="editLink"/>
+                <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;"
+                       title="Add Reject Data" disabled="disabled" value="Add Reject"
+                       wicket:id="addRejectLink"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div wicket:id="rejectDataContainer">
+
+    <form wicket:id="form">
+        <fieldset style="border:1px solid red; width:550px;">
+            <legend> Add reject data</legend>
+            <table cellpadding="5" style="font-size:85%;" class="style1">
+                <tbody>
+                <tr>
+                    <td>Date reject</td>
+                    <td>Date biopsy</td>
+
+                    <td>
+                        <input type="text"
+                               style="color:#EEF6ED;background-color:#EEF6ED;border-color:#EEF6ED;width:30px;"
+                               id="ctl00_ContentPlaceHolder1_txtTrID" value="42"
+                               name="ctl00$ContentPlaceHolder1$txtTrID">
+                    </td>
+                    <td>
+                        <input type="text" style="color:#EEF6ED;background-color:#EEF6ED;border-color:#EEF6ED;"
+                               id="ctl00_ContentPlaceHolder1_txtDateTxCompare" value="25/12/2011"
+                               name="ctl00$ContentPlaceHolder1$txtDateTxCompare">
+                    </td>
+                    <td>
+                        <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblTxDate">Date of Tx</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" style="width:80px;" wicket:id="dateRejected"/>
+                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                               id="ctl00_ContentPlaceHolder1_imgCal1" name="ctl00$ContentPlaceHolder1$imgCal1">
+                    </td>
+                    <td>
+                        <input type="text" style="width:80px;" wicket:id="dateBiopsy"/>
+                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                               id="ctl00_ContentPlaceHolder1_imgCal2" name="ctl00$ContentPlaceHolder1$imgCal2">
+                    </td>
+
+                    <td>
+                        <input type="submit" wicket:id="add" value="Add"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="Cancel" wicket:id="cancel"/>
+                    </td>
+                    <td>
+                        <span style="font-weight:bold;" wicket:id="transplantDate">25/12/2011</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <span style="color:Red;display:none;"
+                          id="ctl00_ContentPlaceHolder1_CompareValidator22">&lt; Tx date</span>
+                        &nbsp;</td>
+
+                    <td>
+                    <span style="color:Red;display:none;"
+                          id="ctl00_ContentPlaceHolder1_CompareValidator23">&lt; Tx date</span>
+                    </td>
+                    <td>
+                        &nbsp;</td>
+                    <td colspan="2">
+
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
+</div>
+
+<div wicket:id="editTransplantContainer">
+
+    <form wicket:id="form">
+        <fieldset style="border:1px solid red">
+            <legend>Edit</legend>
+            <table cellpadding="5" style="width: 100%; font-size:80%; margin-top:10px; " class="style2" id="Table1">
+                <tbody>
+                <tr>
+                    <td style="height:30px; vertical-align:top;">Date Tx<span style="color:Red;visibility:hidden;"
+                                                                              id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
+                        <br><span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator9">&gt; today</span>
+                    </td>
+                    <td valign="top">Type<span style="color:Red;visibility:hidden;"
+                                               id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2">*</span>
+                    </td>
+
+                    <td valign="top">Recurr</td>
+                    <td width="85px">Date Recurr<br>
+                        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator12">&gt; today</span>
+                    </td>
+
+                    <td width="85px">
+                        Date Failure<br>
+                        <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator25">&gt; today</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" style="width:70px;" wicket:id="date"/>
+                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                               id="ctl00_ContentPlaceHolder1_ImageButton4"
+                               name="ctl00$ContentPlaceHolder1$ImageButton4">
+                    </td>
+                    <td><select wicket:id="type"/></td>
+
+                    <td wicket:id="recurr">
+                        <input type="radio" wicket:id="yes"/><label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label>
+                    </td>
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="dateRecurr"/>
+                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                               id="ctl00_ContentPlaceHolder1_ImageButton8"
+                               name="ctl00$ContentPlaceHolder1$ImageButton8">
+                    </td>
+
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="dateFailure"/>
+                        <input type="image" style="border-width:0px;"
+                               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$imgBtn22&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+                               src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_imgBtn22"
+                               name="ctl00$ContentPlaceHolder1$imgBtn22">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <span style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_CompareValidator18">Date Recurrence must be later than Tx</span>
+                        &nbsp;
+                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblEditTxWarn"></span>
+                    </td>
+
+                    <td align="right">
+                        <input type="submit" value="Save" wicket:id="save"/>
+                        <input type="submit" value="Cancel" wicket:id="cancel"/>
+                        <br>
+                        <span style="color:#EEF6ED;" id="ctl00_ContentPlaceHolder1_lblTxID">42</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </fieldset>
+    </form>
+</div>
+
+<form wicket:id="addTransplantForm">
+<table cellpadding="5" style="font-size:80%; margin-top:10px; " class="style2" id="txEntry">
     <tbody>
     <tr>
-        <td>
-            <span id="ctl00_ContentPlaceHolder1_lblLogAll">Log ALL treatments in last six months</span>
+        <td style="height:30px; vertical-align:top; width:120px">Date Tx<span
+                style="color:Red;visibility:hidden;"
+                id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4">*</span>
+            <br><span style="color:Red;visibility:hidden;"
+                      id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt; today</span>
         </td>
-    </tr>
-    <tr>
-        <td style="vertical-align:top; width:65%;">
-
-            <br>
-            <fieldset>
-                <legend>Dialysis</legend>
-                <br>
-
-                <div>
-                    <table border="1" cellspacing="0" cellpadding="3"
-                           style="font-size:85%;width:100%;border-collapse:collapse;"
-                           id="ctl00_ContentPlaceHolder1_GridView2" rules="all">
-                        <tbody>
-                        <tr>
-
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <table cellpadding="5" style="font-size:85%; margin-top:10px" class="style3">
-                    <tbody>
-                    <tr>
-                        <td width="320px">Dialysis Type<br>
-                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarn"></span>
-                        </td>
-                        <td width="170px">Date Started
-                            <br>
-                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator5">&gt; today</span>
-                        </td>
-                        <td>Date Stopped
-                            <br>
-                            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarn"></span>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select style="font-size:100%;" id="ctl00_ContentPlaceHolder1_ddlPD"
-                                    name="ctl00$ContentPlaceHolder1$ddlPD">
-                                <option value="">Select</option>
-                                <option value="1">Haemodialysis</option>
-                                <option value="2">Haemofiltration</option>
-                                <option value="3">Haemodiafiltration</option>
-                                <option value="4">Haemodialysis &gt; 4 days per week / daily</option>
-                                <option value="5">Ultrafiltration</option>
-                                <option value="9">Haemodialysis &ndash; type unknown</option>
-                                <option value="10">CAPD connect</option>
-                                <option value="11">CAPD disconnect</option>
-                                <option value="12">Cycling PD &gt;= 6 nights/wk dry</option>
-                                <option value="13">Cycling PD &lt; 6 nights /wk dry</option>
-                                <option value="14">Cycling PD &gt;= 6 nights/wk wet (day dwell)</option>
-                                <option value="15">Cycling PD &lt; 6 nights /wk wet (day dwell)</option>
-                                <option value="16">Assisted Cycling PD &gt;=6 nights/wk dry</option>
-                                <option value="17">Assisted Cycling PD &gt;=6 nights/wk wet (day dwell)</option>
-                                <option value="19">Peritoneal dialysis &ndash; type unknown</option>
-
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDATE_START_DIAL"
-                                   name="ctl00$ContentPlaceHolder1$txtDATE_START_DIAL">
-
-
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton11"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton11">
-                        </td>
-                        <td>
-                            <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDATE_STOP_DIAL"
-                                   name="ctl00$ContentPlaceHolder1$txtDATE_STOP_DIAL">
-
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton14"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton14">
-                        </td>
-                        <td align="right">
-                            <input type="submit" id="ctl00_ContentPlaceHolder1_btnDialAdd"
-                                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnDialAdd&quot;, &quot;&quot;, true, &quot;dial&quot;, &quot;&quot;, false, false))"
-                                   value="Add" name="ctl00$ContentPlaceHolder1$btnDialAdd">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </fieldset>
-            <br><br>
-
-
-            <fieldset>
-                <legend>Transplant</legend>
-                <p>
-
-
-                </p>
-
-                <div>
-
-                </div>
-
-                <p></p>
-
-                <p></p>
-
-
-                <table cellpadding="5" style="font-size:80%; margin-top:10px; " class="style2" id="txEntry">
-                    <tbody>
-                    <tr>
-                        <td style="height:30px; vertical-align:top; width:120px">Date Tx<span
-                                style="color:Red;visibility:hidden;"
-                                id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4">*</span>
-                            <br><span style="color:Red;visibility:hidden;"
-                                      id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt; today</span>
-                        </td>
-                        <td style="width:260px;">Type<span style="color:Red;visibility:hidden;"
-                                                           id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5">*</span>
-                        </td>
-                        <td class="style4">Recurr</td>
-                        <td class="style5">Date Recurr<br>
-                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator6">&gt; today</span>
-                        </td>
-                        <td class="style5">
-                            Date Failure<br>
+        <td style="width:260px;">Type<span style="color:Red;visibility:hidden;"
+                                           id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5">*</span>
+        </td>
+        <td class="style4">Recurr</td>
+        <td class="style5">Date Recurr<br>
+            <span style="color:Red;visibility:hidden;"
+                  id="ctl00_ContentPlaceHolder1_CompareValidator6">&gt; today</span>
+        </td>
+        <td class="style5">
+            Date Failure<br>
                             <span style="color:Red;visibility:hidden;"
                                   id="ctl00_ContentPlaceHolder1_CompareValidator24">&gt; today</span>
-                        </td>
-                        <td>&nbsp;</td>
-
-                    </tr>
-                    <tr>
-                        <td valign="top"><input type="text" style="height:15px;width:70px;"
-                                                id="ctl00_ContentPlaceHolder1_txtDateTx"
-                                                name="ctl00$ContentPlaceHolder1$txtDateTx">
-
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton1"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton1">
-                        </td>
-                        <td valign="middle"><select id="ctl00_ContentPlaceHolder1_DropDownList1"
-                                                    name="ctl00$ContentPlaceHolder1$DropDownList1">
-                            <option value="">Select</option>
-                            <option value="20">Tx : Cadaver donor</option>
-                            <option value="21">Tx : Live related &ndash; sibling</option>
-                            <option value="22">Tx : Live related &ndash; parent or child</option>
-                            <option value="23">Tx : Live related &ndash; other</option>
-                            <option value="24">Tx : Live genetically unrelated</option>
-                            <option value="25">Tx : Cadaver donor + transp other organ</option>
-                            <option value="26">Tx : Live donor + transplant other organ</option>
-                            <option value="27">Tx : Live donor non-UK transplant</option>
-                            <option value="28">Tx : Non-heart-beating donor</option>
-                            <option value="29">Tx : type unknown</option>
-
-                        </select>
-                        </td>
-                        <td class="style4" id="radCell"><input type="radio" value="RadYes"
-                                                               name="ctl00$ContentPlaceHolder1$radRecurr"
-                                                               id="ctl00_ContentPlaceHolder1_RadYes"><label
-                                for="ctl00_ContentPlaceHolder1_RadYes">Yes</label>&nbsp;<input type="radio"
-                                                                                               value="RadNo"
-                                                                                               name="ctl00$ContentPlaceHolder1$radRecurr"
-                                                                                               id="ctl00_ContentPlaceHolder1_RadNo"><label
-                                for="ctl00_ContentPlaceHolder1_RadNo">No</label></td>
-                        <td valign="baseline" class="style5"><input type="text" style="height:15px;width:70px;"
-                                                                    id="ctl00_ContentPlaceHolder1_txtDateRecurr"
-                                                                    name="ctl00$ContentPlaceHolder1$txtDateRecurr">
-
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton2"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton2"></td>
-                        <td class="style5">
-                            <input type="text" style="height:15px;width:70px;"
-                                   id="ctl00_ContentPlaceHolder1_txtDATE_NEPHRECT"
-                                   name="ctl00$ContentPlaceHolder1$txtDATE_NEPHRECT">
-
-                            <input type="image" style="border-width:0px;"
-                                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$imgBtn23&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                                   src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_imgBtn23"
-                                   name="ctl00$ContentPlaceHolder1$imgBtn23">
-                        </td>
-                        <td><input type="submit" id="ctl00_ContentPlaceHolder1_btnAddTx"
-                                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnAddTx&quot;, &quot;&quot;, true, &quot;tx&quot;, &quot;&quot;, false, false))"
-                                   value="Add" name="ctl00$ContentPlaceHolder1$btnAddTx">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <span style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_CompareValidator20">Date Recurrence must be later than Tx</span>
-                            <br>
-                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblTxWarn"></span>
-                            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblTxDialWarn"></span>
-                            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblTxOpenWarn"></span>
-                        </td>
-
-                        <td>
-                            &nbsp;</td>
-
-                        <td align="right"> &nbsp;</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <br>
-
-
-            </fieldset>
-
         </td>
+        <td>&nbsp;</td>
+
+    </tr>
+    <tr>
+        <td valign="top">
+            <input type="text" style="height:15px;width:70px;" wicket:id="date"/>
+            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                   id="ctl00_ContentPlaceHolder1_ImageButton1"
+                   name="ctl00$ContentPlaceHolder1$ImageButton1">
+        </td>
+        <td valign="middle"><select wicket:id="type"/></td>
+
+        <td class="style4" wicket:id="recurr">
+            <input type="radio" wicket:id="yes"/><label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label>
+        </td>
+
+        <td valign="baseline" class="style5">
+            <input type="text" style="height:15px;width:70px;" wicket:id="dateRecurr"/>
+            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                   id="ctl00_ContentPlaceHolder1_ImageButton2"
+                   name="ctl00$ContentPlaceHolder1$ImageButton2"></td>
+        <td class="style5">
+            <input type="text" style="height:15px;width:70px;" wicket:id="dateFailure"/>
+            <input type="image" style="border-width:0px;"
+                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$imgBtn23&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
+                   src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_imgBtn23"
+                   name="ctl00$ContentPlaceHolder1$imgBtn23">
+        </td>
+        <td><input type="submit" value="Add" wicket:id="add"/></td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <span style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_CompareValidator20">Date Recurrence must be later than Tx</span>
+            <br>
+            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblTxWarn"></span>
+            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblTxDialWarn"></span>
+            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblTxOpenWarn"></span>
+        </td>
+
+        <td>
+            &nbsp;</td>
+
+        <td align="right"> &nbsp;</td>
     </tr>
     </tbody>
+</table>
+</form>
+
+<br>
+
+
+</fieldset>
+
+</td>
+</tr>
+</tbody>
 </table>
 
 <br>
