@@ -13,16 +13,13 @@ public abstract class BasePage extends WebPage {
     public BasePage() {
         add(new Label("title", getTitle()));
 
-        BookmarkablePageLink[] naviationPages = {
+        BookmarkablePageLink[] navigationPages = {
                 new BookmarkablePageLink("homePage", HomePage.class),
                 new BookmarkablePageLink("proRegistrationPage", RegistrationProfessionalPage.class),
                 new BookmarkablePageLink("professionalsPage", ProfessionalsPage.class),
-                new BookmarkablePageLink("patientsPage", PatientPage.class),
+                new BookmarkablePageLink("patientsPage", PatientsPage.class),
                 new BookmarkablePageLink("diseaseIndexPage", DiseaseIndexPage.class),
-
-                // Todo: This is wrong for now
                 new BookmarkablePageLink("demographicsPage", PatientPage.class),
-
                 new BookmarkablePageLink("patientsListingPage", ExistingPatientsPage.class),
                 new BookmarkablePageLink("recruitmentPage", RecruitmentPage.class),
                 new BookmarkablePageLink("mpgnPage", MpgnPage.class),
@@ -30,7 +27,7 @@ public abstract class BasePage extends WebPage {
                 new BookmarkablePageLink("consentFormsPage", ConsentFormsPage.class)
         };
 
-        add(naviationPages);
+        add(navigationPages);
     }
 
     public String getTitle() {
