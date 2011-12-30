@@ -18,7 +18,8 @@ public class TestPatientFirstVisitPage extends BasePageTest {
         tester.assertRenderedPage(PatientPage.class);
 
         // Try Ajax refresh
-        tester.clickLink("firstVisitLink");
+        Component firstVisitLink = tester.getLastRenderedPage().get("linksContainer").get("firstVisitLink");
+        tester.clickLink(firstVisitLink.getPageRelativePath());
 
         // View the lab results tab
         Component labResultsLink = tester.getLastRenderedPage().get("firstVisitPanel").get("laboratoryResultsLink");

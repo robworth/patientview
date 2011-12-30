@@ -18,7 +18,8 @@ public class TestPatientFollowUpPage extends BasePageTest {
         tester.assertRenderedPage(PatientPage.class);
 
         // Try Ajax refresh
-        tester.clickLink("followUpLink");
+        Component followUpLink = tester.getLastRenderedPage().get("linksContainer").get("followUpLink");
+        tester.clickLink(followUpLink.getPageRelativePath());
 
         // View the lab results tab
         Component labResultsLink = tester.getLastRenderedPage().get("followUpPanel").get("laboratoryResultsLink");
