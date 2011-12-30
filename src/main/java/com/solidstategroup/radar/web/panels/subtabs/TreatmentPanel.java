@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.panels.firstvisit;
+package com.solidstategroup.radar.web.panels.subtabs;
 
 import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
@@ -11,6 +11,7 @@ import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.web.dataproviders.DialysisDataProvider;
 import com.solidstategroup.radar.web.dataproviders.ImmunosuppressionTreatmentDataProvider;
 import com.solidstategroup.radar.web.dataproviders.PlasmapheresisDataProvider;
+import com.solidstategroup.radar.web.panels.firstvisit.YesNoRadioGroupPanel;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -29,11 +30,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
 public class TreatmentPanel extends Panel {
-
     public TreatmentPanel(String id) {
         super(id);
-        setOutputMarkupId(true);
-        setOutputMarkupPlaceholderTag(true);
 
         // Immunosuppression including Monoclonals
 
@@ -299,8 +297,4 @@ public class TreatmentPanel extends Panel {
         }
     }
 
-    @Override
-    public boolean isVisible() {
-        return ((FirstVisitPanel) getParent()).getCurrentTab().equals(FirstVisitPanel.CurrentTab.TREATMENT);
-    }
 }

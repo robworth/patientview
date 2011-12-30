@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.panels.firstvisit;
+package com.solidstategroup.radar.web.panels.subtabs;
 
 import com.solidstategroup.radar.model.LabData;
 import org.apache.wicket.MarkupContainer;
@@ -21,11 +21,22 @@ public class LaboratoryResultsPanel extends Panel {
 
     public LaboratoryResultsPanel(String id) {
         super(id);
-        setOutputMarkupId(true);
-        setOutputMarkupPlaceholderTag(true);
 
         final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(new LabData()));
         add(form);
+
+        // Save button at the top
+        form.add(new AjaxSubmitLink("saveLink") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Todo: Implement
+            }
+        });
 
         // Blood fields
         form.add(new TextField("hb"));
@@ -146,8 +157,4 @@ public class LaboratoryResultsPanel extends Panel {
         }
     }
 
-    @Override
-    public boolean isVisible() {
-        return ((FirstVisitPanel) getParent()).getCurrentTab().equals(FirstVisitPanel.CurrentTab.LABORATORY_RESULTS);
-    }
 }

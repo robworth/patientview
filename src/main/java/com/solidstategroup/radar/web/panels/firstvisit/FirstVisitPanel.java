@@ -8,8 +8,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 public class FirstVisitPanel extends Panel {
 
     private ClinicalPicturePanel clinicalPicturePanel;
-    private LaboratoryResultsPanel laboratoryResults;
-    private TreatmentPanel treatmentPanel;
+    private FirstVisitLaboratoryResultsPanel laboratoryResults;
+    private FirstVisitTreatmentPanel treatmentPanel;
 
     public enum CurrentTab {
         CLINICAL_PICTURE, LABORATORY_RESULTS, TREATMENT
@@ -27,8 +27,8 @@ public class FirstVisitPanel extends Panel {
         add(new TabAjaxLink("treatmentLink", CurrentTab.TREATMENT));
 
         clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel");
-        laboratoryResults = new LaboratoryResultsPanel("laboratoryResultsPanel");
-        treatmentPanel = new TreatmentPanel("treatmentPanel");
+        laboratoryResults = new FirstVisitLaboratoryResultsPanel("laboratoryResultsPanel");
+        treatmentPanel = new FirstVisitTreatmentPanel("treatmentPanel");
         add(clinicalPicturePanel, laboratoryResults, treatmentPanel);
     }
 

@@ -1,13 +1,16 @@
 package com.solidstategroup.radar.web.panels.followup;
 
+import com.solidstategroup.radar.web.panels.subtabs.LaboratoryResultsPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class LaboratoryResultsPanel extends Panel {
+public class FollowUpLaboratoryResultsPanel extends Panel {
 
-    public LaboratoryResultsPanel(String id) {
+    public FollowUpLaboratoryResultsPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        add(new LaboratoryResultsPanel("formContainer"));
     }
 
     @Override

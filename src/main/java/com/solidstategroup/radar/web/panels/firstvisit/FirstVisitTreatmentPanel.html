@@ -1,0 +1,53 @@
+<wicket:panel>
+
+<div id="subBlock">
+
+<table cellpadding="4" id="tblHeader" style="width: 100%;" class="style1">
+    <tbody>
+    <tr>
+        <td>
+            <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblTitle">First Visit - Treatment</span></td>
+        <td style="width:100px; text-align:right;">RADAR No:</td>
+        <td style="width:160px;padding-right:10px;">
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly"
+                   value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO"></td>
+    </tr>
+    <tr>
+        <td>Name
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtFNAME" readonly="readonly"
+                   value="jane" name="ctl00$ContentPlaceHolder1$txtFNAME">&nbsp;<input type="text" style="width:120px;"
+                                                                                       id="ctl00_ContentPlaceHolder1_txtSNAME"
+                                                                                       readonly="readonly" value="lady"
+                                                                                       name="ctl00$ContentPlaceHolder1$txtSNAME">&nbsp;
+            DoB
+            <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtDOB" readonly="readonly"
+                   value="11-Nov-1992" name="ctl00$ContentPlaceHolder1$txtDOB">&nbsp;</td>
+        <td class="style9" style="text-align:right;">Hospital No:</td>
+        <td>
+            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly"
+                   value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO"></td>
+    </tr>
+    <tr>
+        <td><span class="inline">Date of Treatment record &nbsp;<input type="text" style="width:70px;"
+                                                                       id="ctl00_ContentPlaceHolder1_txtDateTmt"
+                                                                       name="ctl00$ContentPlaceHolder1$txtDateTmt">&nbsp;<input
+                type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
+                &nbsp;</span><span style="color:Red;display:none;"
+                                   id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>&nbsp;
+            <input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
+                   id="ctl00_ContentPlaceHolder1_txtDateToday" value="28/12/2011 16:53:20"
+                   name="ctl00$ContentPlaceHolder1$txtDateToday"></td>
+        <td style="width:100px; text-align:right;">Diagnosis</td>
+        <td>
+            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAG"
+                   readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAG"></td>
+    </tr>
+    </tbody>
+</table>
+
+<wicket:container wicket:id="treatmentPanel"/>
+
+</div>
+
+</wicket:panel>
