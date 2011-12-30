@@ -10,9 +10,9 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-public class PatientPathologyPanel extends Panel {
+public class PathologyPanel extends Panel {
 
-    public PatientPathologyPanel(String id) {
+    public PathologyPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);

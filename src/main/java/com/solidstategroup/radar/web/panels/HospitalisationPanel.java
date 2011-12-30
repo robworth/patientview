@@ -10,8 +10,8 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-public class PatientHospitalisationPanel extends Panel {
-    public PatientHospitalisationPanel(String id) {
+public class HospitalisationPanel extends Panel {
+    public HospitalisationPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);

@@ -17,8 +17,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
-public class PatientRelapsePanel extends Panel {
-    public PatientRelapsePanel(String id) {
+public class RelapsePanel extends Panel {
+    public RelapsePanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);

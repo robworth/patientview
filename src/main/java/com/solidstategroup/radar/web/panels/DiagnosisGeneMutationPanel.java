@@ -2,9 +2,9 @@ package com.solidstategroup.radar.web.panels;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class PatientDiagnosisGeneMutationPanel extends Panel {
+public class DiagnosisGeneMutationPanel extends Panel {
 
-    public PatientDiagnosisGeneMutationPanel(String id) {
+    public DiagnosisGeneMutationPanel(String id) {
         super(id);
     }
     

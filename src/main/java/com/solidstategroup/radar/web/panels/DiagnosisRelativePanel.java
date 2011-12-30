@@ -8,9 +8,9 @@ import org.apache.wicket.model.ComponentPropertyModel;
 
 import java.util.Collections;
 
-public class PatientDiagnosisRelativePanel extends Panel {
+public class DiagnosisRelativePanel extends Panel {
 
-    public PatientDiagnosisRelativePanel(String id, int i) {
+    public DiagnosisRelativePanel(String id, int i) {
         super(id);
         add(new DropDownChoice<Relative>("relative", new ComponentPropertyModel("relativeWithDiseaseRadarNumber" + i),
                 Collections.<Relative>emptyList()));

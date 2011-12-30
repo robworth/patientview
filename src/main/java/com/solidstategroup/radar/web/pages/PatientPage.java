@@ -1,12 +1,12 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.web.panels.DemographicsPanel;
+import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
-import com.solidstategroup.radar.web.panels.PatientDemographicsPanel;
-import com.solidstategroup.radar.web.panels.PatientDiagnosisPanel;
-import com.solidstategroup.radar.web.panels.PatientHospitalisationPanel;
-import com.solidstategroup.radar.web.panels.PatientPathologyPanel;
-import com.solidstategroup.radar.web.panels.PatientRelapsePanel;
+import com.solidstategroup.radar.web.panels.HospitalisationPanel;
+import com.solidstategroup.radar.web.panels.PathologyPanel;
+import com.solidstategroup.radar.web.panels.RelapsePanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 
@@ -18,26 +18,26 @@ public class PatientPage extends BasePage {
         DEMOGRAPHICS, DIAGNOSIS, FIRST_VISIT, FOLLOW_UP, PATHOLOGY, RELAPSE, HOSPITALISATION
     }
 
-    private PatientDemographicsPanel demographicsPanel;
-    private PatientDiagnosisPanel diagnosisPanel;
+    private DemographicsPanel demographicsPanel;
+    private DiagnosisPanel diagnosisPanel;
     private FirstVisitPanel firstVisitPanel;
     private FollowUpPanel followUpPanel;
-    private PatientPathologyPanel pathologyPanel;
-    private PatientRelapsePanel relapsePanel;
-    private PatientHospitalisationPanel hospitalisationPanel;
+    private PathologyPanel pathologyPanel;
+    private RelapsePanel relapsePanel;
+    private HospitalisationPanel hospitalisationPanel;
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
     public PatientPage() {
 
         // Construct panels for each of the tabs
-        demographicsPanel = new PatientDemographicsPanel("demographicsPanel");
-        diagnosisPanel = new PatientDiagnosisPanel("diagnosisPanel");
+        demographicsPanel = new DemographicsPanel("demographicsPanel");
+        diagnosisPanel = new DiagnosisPanel("diagnosisPanel");
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel");
         followUpPanel = new FollowUpPanel("followUpPanel");
-        pathologyPanel = new PatientPathologyPanel("pathologyPanel");
-        relapsePanel = new PatientRelapsePanel("relapsePanel");
-        hospitalisationPanel = new PatientHospitalisationPanel("hospitalisationPanel");
+        pathologyPanel = new PathologyPanel("pathologyPanel");
+        relapsePanel = new RelapsePanel("relapsePanel");
+        hospitalisationPanel = new HospitalisationPanel("hospitalisationPanel");
 
         // Add them all to the page
         add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,

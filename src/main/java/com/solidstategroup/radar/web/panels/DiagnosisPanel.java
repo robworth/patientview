@@ -17,9 +17,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
-public class PatientDiagnosisPanel extends Panel {
+public class DiagnosisPanel extends Panel {
 
-    public PatientDiagnosisPanel(String id) {
+    public DiagnosisPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
@@ -59,27 +59,27 @@ public class PatientDiagnosisPanel extends Panel {
         form.add(biopsyDiagnosis, biopsyDiagnosisLabel);
 
         // Gene mutations
-        form.add(new PatientDiagnosisGeneMutationPanel("nphs1Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("nphs2Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("nphs3Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("wt1Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("cd2apContainer"));
-        form.add(new PatientDiagnosisGeneMutationPanel("trpc6Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("actn4Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("lamb2Container"));
-        form.add(new PatientDiagnosisGeneMutationPanel("otherContainer"));
+        form.add(new DiagnosisGeneMutationPanel("nphs1Container"));
+        form.add(new DiagnosisGeneMutationPanel("nphs2Container"));
+        form.add(new DiagnosisGeneMutationPanel("nphs3Container"));
+        form.add(new DiagnosisGeneMutationPanel("wt1Container"));
+        form.add(new DiagnosisGeneMutationPanel("cd2apContainer"));
+        form.add(new DiagnosisGeneMutationPanel("trpc6Container"));
+        form.add(new DiagnosisGeneMutationPanel("actn4Container"));
+        form.add(new DiagnosisGeneMutationPanel("lamb2Container"));
+        form.add(new DiagnosisGeneMutationPanel("otherContainer"));
 
         // Parental consanguinity and family history
         form.add(new DropDownChoice("parentalConsanguinity"));
         form.add(new DropDownChoice("familyHistory"));
 
         // Family history containers
-        form.add(new PatientDiagnosisRelativePanel("relative1Container", 1));
-        form.add(new PatientDiagnosisRelativePanel("relative2Container", 2));
-        form.add(new PatientDiagnosisRelativePanel("relative3Container", 3));
-        form.add(new PatientDiagnosisRelativePanel("relative4Container", 4));
-        form.add(new PatientDiagnosisRelativePanel("relative5Container", 5));
-        form.add(new PatientDiagnosisRelativePanel("relative6Container", 6));
+        form.add(new DiagnosisRelativePanel("relative1Container", 1));
+        form.add(new DiagnosisRelativePanel("relative2Container", 2));
+        form.add(new DiagnosisRelativePanel("relative3Container", 3));
+        form.add(new DiagnosisRelativePanel("relative4Container", 4));
+        form.add(new DiagnosisRelativePanel("relative5Container", 5));
+        form.add(new DiagnosisRelativePanel("relative6Container", 6));
     }
 
     @Override

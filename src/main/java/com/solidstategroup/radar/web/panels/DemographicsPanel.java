@@ -14,9 +14,9 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-public class PatientDemographicsPanel extends Panel {
+public class DemographicsPanel extends Panel {
 
-    public PatientDemographicsPanel(String id) {
+    public DemographicsPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
