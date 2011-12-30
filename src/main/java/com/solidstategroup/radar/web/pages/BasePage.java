@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.web.behaviours.RadarStyleBehaviour;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
@@ -11,6 +12,9 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 public abstract class BasePage extends WebPage {
 
     public BasePage() {
+        // Attach styles
+        add(new RadarStyleBehaviour());
+
         add(new Label("title", getTitle()));
 
         BookmarkablePageLink[] navigationPages = {
