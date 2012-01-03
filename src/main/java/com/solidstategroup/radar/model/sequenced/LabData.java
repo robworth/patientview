@@ -1,6 +1,6 @@
-package com.solidstategroup.radar.model;
+package com.solidstategroup.radar.model.sequenced;
 
-public class LabData extends BaseModel {
+public class LabData extends SequencedModel {
 
     public enum UrineVolumeCondition {
         NORMAL(0), ANURIA(1), OLIGURIA(2), POLYURIA(3);

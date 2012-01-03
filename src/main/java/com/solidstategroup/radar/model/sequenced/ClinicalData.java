@@ -1,6 +1,8 @@
-package com.solidstategroup.radar.model;
+package com.solidstategroup.radar.model.sequenced;
 
-public class ClinicalData extends BaseModel {
+import com.solidstategroup.radar.model.Phenotype;
+
+public class ClinicalData extends SequencedModel {
 
     public enum DiabetesType {
         TYPE_I(1), TYPE_II(2), NO(99);
@@ -29,7 +31,6 @@ public class ClinicalData extends BaseModel {
         }
     }
 
-    private int sequenceNumber;
     private Double height, weight; // Height in cm Weight in Kg
 
     // Check it out http://en.wikipedia.org/wiki/Blood_pressure
@@ -62,14 +63,6 @@ public class ClinicalData extends BaseModel {
             return (double) diastolicBloodPressure + (1D / 3D) * (systolicBloodPressure - diastolicBloodPressure);
         }
         return null;
-    }
-
-    public int getSequenceNumber() {
-        return sequenceNumber;
-    }
-
-    public void setSequenceNumber(int sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
     }
 
     public Double getHeight() {

@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
-import com.solidstategroup.radar.model.ClinicalData;
+import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;

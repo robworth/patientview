@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.model.Pathology;
+import com.solidstategroup.radar.model.sequenced.Pathology;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
