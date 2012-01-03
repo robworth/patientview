@@ -1,6 +1,6 @@
-package com.solidstategroup.radar.model;
+package com.solidstategroup.radar.model.sequenced;
 
-public class Therapy extends BaseModel {
+public class Therapy extends SequencedModel {
 
     private Boolean nsaid, nsaidPrior;
     private Boolean diuretic, diureticPrior;

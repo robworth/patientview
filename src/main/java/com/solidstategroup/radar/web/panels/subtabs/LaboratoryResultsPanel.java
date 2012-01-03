@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.web.panels.subtabs;
 
-import com.solidstategroup.radar.model.LabData;
+import com.solidstategroup.radar.model.sequenced.LabData;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;

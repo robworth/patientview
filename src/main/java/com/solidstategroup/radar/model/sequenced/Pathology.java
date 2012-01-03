@@ -1,10 +1,10 @@
-package com.solidstategroup.radar.model;
+package com.solidstategroup.radar.model.sequenced;
 
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 
 import java.util.Date;
 
-public class Pathology extends BaseModel {
+public class Pathology extends SequencedModel {
 
     public enum Side {LEFT, RIGHT}
 
