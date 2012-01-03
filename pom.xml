@@ -37,7 +37,7 @@
             </activation>
             <properties>
                 <env>dev</env>
-                <tomcatmanagerurl>http://dev.solidstategroup.com:9080/manager/html</tomcatmanagerurl>
+                <tomcatmanagerurl>http://dev.solidstategroup.com:10080/manager/html</tomcatmanagerurl>
             </properties>
         </profile>
         <profile>
@@ -51,7 +51,7 @@
             <id>production</id>
             <properties>
                 <env>production</env>
-                <!--Not necessary but I think we need it-->
+                <!--Not necessary but I think we need the property for all profiles-->
                 <tomcatmanagerurl>http://localhost:8080/manager/html</tomcatmanagerurl>
             </properties>
         </profile>
