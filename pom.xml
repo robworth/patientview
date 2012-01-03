@@ -37,7 +37,7 @@
             </activation>
             <properties>
                 <env>dev</env>
-                <tomcatmanagerurl>http://dev.solidstategroup.com:10080/manager/html</tomcatmanagerurl>
+                <tomcatmanagerurl>http://dev.solidstategroup.com:10080/manager/text</tomcatmanagerurl>
             </properties>
         </profile>
         <profile>
