@@ -14,7 +14,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // Get the user by their email
-        User user = userDao.getUser(authentication.getName());
+        User user = userDao.getProfessionalUser(authentication.getName());
         if (user != null) {
             // Get the password hash
             try {
