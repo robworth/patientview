@@ -1,7 +1,8 @@
 package com.solidstategroup.radar.model;
 
 
-public class Centre extends BaseModel{
+public class Centre extends BaseModel {
+    
     private String name;
     private String abbreviation;
     private Country country;
