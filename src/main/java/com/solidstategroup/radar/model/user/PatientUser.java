@@ -2,7 +2,7 @@ package com.solidstategroup.radar.model.user;
 
 import java.util.Date;
 
-public class PatientUser extends BaseUser {
+public class PatientUser extends User {
 
     private int radarNumber;
     private Date dateOfBirth;

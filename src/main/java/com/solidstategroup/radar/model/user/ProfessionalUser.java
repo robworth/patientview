@@ -2,7 +2,7 @@ package com.solidstategroup.radar.model.user;
 
 import com.solidstategroup.radar.model.Centre;
 
-public class ProfessionalUser extends BaseUser {
+public class ProfessionalUser extends User {
 
     private String surname, forename, title;
     private String gmc;

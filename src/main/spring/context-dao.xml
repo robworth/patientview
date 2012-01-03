@@ -6,9 +6,6 @@
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <!--Imports-->
-    <import resource="context-dao.xml"/>
-    <import resource="context-security.xml"/>
-    <import resource="context-service.xml"/>
+    <bean id="userDao" class="com.solidstategroup.radar.dao.impl.UserDaoImpl"/>
 
 </beans>
