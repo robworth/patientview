@@ -16,13 +16,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     public PatientUser getPatientUser(String email) {
-        return null;  // Todo: Implement
+        try {
+            // Return a patient user object queried for using given email
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Patient_Users WHERE pUserName = ?",
+                    new Object[]{email}, new PatientUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            // Add debug logging
+            LOGGER.debug("Could not find row in table tbl_Patient_Users with pUserName {}", email);
+        }
+        return null;
     }
 
     public ProfessionalUser getProfessionalUser(String email) {
         try {
             // Return a professional user object queried for using given email
-            return jdbcTemplate.queryForObject("SELECT * FROM tbl_users WHERE uEmail = ?", new Object[]{email},
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Users WHERE uEmail = ?", new Object[]{email},
                     new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             // Add debug logging
@@ -50,6 +58,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             // Todo: Centre
 
             return professionalUser;
+        }
+    }
+
+    private class PatientUserRowMapper implements RowMapper<PatientUser> {
+        public PatientUser mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct a patient user and set all the fields, pretty trivial
+            PatientUser patientUser = new PatientUser();
+            patientUser.setUsername(resultSet.getString("pUserName"));
+            patientUser.setPassword(resultSet.getString("pPassWord"));
+            patientUser.setDateOfBirth(resultSet.getDate("pDOB"));
+            patientUser.setDateRegistered(resultSet.getDate("pDateReg"));
+            return patientUser;
         }
     }
 }

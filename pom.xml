@@ -103,7 +103,7 @@
                 <directory>src/main/sql</directory>
             </testResource>
         </testResources>
-        
+
         <plugins>
             <plugin>
                 <inherited>true</inherited>
@@ -155,6 +155,31 @@
                     <server>tomcatmanager</server>
                     <path>/radar</path>
                 </configuration>
+            </plugin>
+
+            <!--For producing datasets for DBUnit-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dbunit-maven-plugin</artifactId>
+                <configuration>
+                    <driver>net.sourceforge.jtds.jdbc.Driver</driver>
+                    <url>jdbc:jtds:sqlserver://192.168.1.20/rpv</url>
+
+                    <!--Settings key is used to match up the username/password in the maven settings.xml-->
+                    <settingsKey>ssg-mssql</settingsKey>
+
+                    <dataTypeFactoryName>org.dbunit.ext.mssql.MsSqlDataTypeFactory</dataTypeFactoryName>
+                    <escapePattern>[?]</escapePattern>
+                    <!--<useQualifiedTableNames>true</useQualifiedTableNames>-->
+                </configuration>
+                <dependencies>
+                    <!--MS SQL driver for DBUnit-->
+                    <dependency>
+                        <groupId>net.sourceforge.jtds</groupId>
+                        <artifactId>jtds</artifactId>
+                        <version>1.2.4</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -265,6 +290,11 @@
 
         <!--Commons-->
         <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>
             <version>1.3.2</version>
@@ -298,6 +328,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!--DBUnit for testing-->
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.4.8</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--Spring testing-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -313,6 +351,7 @@
             <version>${jetty.version}</version>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 
 </project>
