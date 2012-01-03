@@ -14,7 +14,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException, DataAccessException {
         // Pull the user from the DAO
-        User user = userDao.getUser(email);
+        User user = userDao.getProfessionalUser(email);
         if (user != null) {
             return user;
         }
