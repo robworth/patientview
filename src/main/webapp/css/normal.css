@@ -140,3 +140,15 @@ color: White;
     display:none !important;
     height: 0px !important;
 }
+
+.feedback ul.feedbackPanel {
+   display: inline;
+   padding-left: 5px;
+}
+
+.feedback ul.feedbackPanel li.feedbackPanelERROR {
+    display: inline;
+    list-style-type: none;
+    padding-right: 5px;
+    color: red;
+}
