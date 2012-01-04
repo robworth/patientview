@@ -20,12 +20,9 @@ import org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndica
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.PatternValidator;
-import sun.util.resources.LocaleNames_da;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +43,8 @@ public class DemographicsPanel extends Panel {
         DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
         dateRegistered.setEnabled(false);
 
-        DropDownChoice diagnosis = new DropDownChoice("diagnosis", new Model<String>(), Arrays.asList("MPGN/DDD", "SRNS"));
+        DropDownChoice diagnosis =
+                new DropDownChoice("diagnosis", new Model<String>(), Arrays.asList("MPGN/DDD", "SRNS"));
         diagnosis.setRequired(true);
 
         // Basic fields
@@ -63,22 +61,26 @@ public class DemographicsPanel extends Panel {
 
         form.add(diagnosis, surname, forename, dateOfBirth);
 
-        final FormComponentFeedbackIndicator surnameErrorIndicator = new FormComponentFeedbackIndicator("surnameErrorIndicator");
+        final FormComponentFeedbackIndicator surnameErrorIndicator =
+                new FormComponentFeedbackIndicator("surnameErrorIndicator");
         surnameErrorIndicator.setIndicatorFor(surname);
         surnameErrorIndicator.setOutputMarkupId(true);
         surnameErrorIndicator.setOutputMarkupPlaceholderTag(true);
 
-        final FormComponentFeedbackIndicator foreNameErrorIndicator = new FormComponentFeedbackIndicator("forenameErrorIndicator");
+        final FormComponentFeedbackIndicator foreNameErrorIndicator =
+                new FormComponentFeedbackIndicator("forenameErrorIndicator");
         foreNameErrorIndicator.setIndicatorFor(forename);
         foreNameErrorIndicator.setOutputMarkupId(true);
         foreNameErrorIndicator.setOutputMarkupPlaceholderTag(true);
 
-        final FormComponentFeedbackIndicator dobErrorIndicator = new FormComponentFeedbackIndicator("dobErrorIndicator");
+        final FormComponentFeedbackIndicator dobErrorIndicator =
+                new FormComponentFeedbackIndicator("dobErrorIndicator");
         dobErrorIndicator.setIndicatorFor(dateOfBirth);
         dobErrorIndicator.setOutputMarkupId(true);
         dobErrorIndicator.setOutputMarkupPlaceholderTag(true);
 
-        final FormComponentFeedbackIndicator diagnosisErrorIndicator = new FormComponentFeedbackIndicator("diagnosisErrorIndicator");
+        final FormComponentFeedbackIndicator diagnosisErrorIndicator =
+                new FormComponentFeedbackIndicator("diagnosisErrorIndicator");
         diagnosisErrorIndicator.setIndicatorFor(diagnosis);
         diagnosisErrorIndicator.setOutputMarkupId(true);
         diagnosisErrorIndicator.setOutputMarkupPlaceholderTag(true);
@@ -91,7 +93,7 @@ public class DemographicsPanel extends Panel {
             @Override
             public boolean isVisible() {
                 List<FeedbackMessage> feedbackMessages = getCurrentMessages();
-                for(FeedbackMessage feedbackMessage : feedbackMessages) {
+                for (FeedbackMessage feedbackMessage : feedbackMessages) {
                     if (feedbackMessage.getMessage().toString().contains("required")) {
                         return false;
                     }
@@ -105,18 +107,19 @@ public class DemographicsPanel extends Panel {
         form.add(dobFeedbackPanel);
 
 
-
         // Drop downs for sex and ethnicity
         Sex tempSex = new Sex();
         tempSex.setType("temp");
         tempSex.setId(Long.valueOf(1));
 
-        DropDownChoice<Sex> sex = new DropDownChoice<Sex>("sex", Arrays.asList(tempSex), new ChoiceRenderer<Sex>("type"));
+        DropDownChoice<Sex> sex =
+                new DropDownChoice<Sex>("sex", Arrays.asList(tempSex), new ChoiceRenderer<Sex>("type"));
         sex.setRequired(true);
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity");
         form.add(sex, ethnicity);
 
-        final FormComponentFeedbackIndicator sexErrorIndicator = new FormComponentFeedbackIndicator("sexErrorIndicator");
+        final FormComponentFeedbackIndicator sexErrorIndicator =
+                new FormComponentFeedbackIndicator("sexErrorIndicator");
         sexErrorIndicator.setIndicatorFor(sex);
         sexErrorIndicator.setOutputMarkupId(true);
         sexErrorIndicator.setOutputMarkupPlaceholderTag(true);
@@ -151,7 +154,8 @@ public class DemographicsPanel extends Panel {
         TextField chiNumber = new TextField("chiNumber");
         form.add(hospitalNumber, nhsNumber, renalRegistryNumber, ukTransplantNumber, chiNumber);
 
-        final FormComponentFeedbackIndicator hospitalNumberErrorIndicator = new FormComponentFeedbackIndicator("hospitalNumberErrorIndicator");
+        final FormComponentFeedbackIndicator hospitalNumberErrorIndicator =
+                new FormComponentFeedbackIndicator("hospitalNumberErrorIndicator");
         hospitalNumberErrorIndicator.setIndicatorFor(hospitalNumber);
         hospitalNumberErrorIndicator.setOutputMarkupId(true);
         hospitalNumberErrorIndicator.setOutputMarkupPlaceholderTag(true);
@@ -176,7 +180,9 @@ public class DemographicsPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(diagnosisErrorIndicator, surnameErrorIndicator, foreNameErrorIndicator, dobErrorIndicator, dobFeedbackPanel, sexErrorIndicator, hospitalNumberErrorIndicator, postcodeFeedback);
+                ajaxRequestTarget
+                        .add(diagnosisErrorIndicator, surnameErrorIndicator, foreNameErrorIndicator, dobErrorIndicator,
+                                dobFeedbackPanel, sexErrorIndicator, hospitalNumberErrorIndicator, postcodeFeedback);
                 dobFeedbackPanel.getFeedbackMessages();
 
             }
