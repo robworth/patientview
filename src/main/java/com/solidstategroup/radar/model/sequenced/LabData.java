@@ -9,6 +9,10 @@ public class LabData extends SequencedModel {
         UrineVolumeCondition(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum Haematuria {
@@ -17,6 +21,10 @@ public class LabData extends SequencedModel {
 
         Haematuria(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -27,6 +35,10 @@ public class LabData extends SequencedModel {
         Proteinuria(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum Albuminuria {
@@ -35,6 +47,10 @@ public class LabData extends SequencedModel {
 
         Albuminuria(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -45,6 +61,10 @@ public class LabData extends SequencedModel {
         Present(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum Anca {
@@ -53,6 +73,10 @@ public class LabData extends SequencedModel {
 
         Anca(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -63,6 +87,10 @@ public class LabData extends SequencedModel {
         PositiveNegativeNotDone(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum PositiveNegativeUnknown {
@@ -71,6 +99,10 @@ public class LabData extends SequencedModel {
 
         PositiveNegativeUnknown(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -84,6 +116,10 @@ public class LabData extends SequencedModel {
 
         Immunoglobulins(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -305,6 +341,14 @@ public class LabData extends SequencedModel {
 
     public void setProteinuria(Proteinuria proteinuria) {
         this.proteinuria = proteinuria;
+    }
+
+    public Albuminuria getAlbuminuria() {
+        return albuminuria;
+    }
+
+    public void setAlbuminuria(Albuminuria albuminuria) {
+        this.albuminuria = albuminuria;
     }
 
     public Boolean getLeucocytesUrine() {
