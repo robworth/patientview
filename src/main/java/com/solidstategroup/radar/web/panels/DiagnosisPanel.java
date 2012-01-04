@@ -13,9 +13,11 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentLabel;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -37,11 +39,27 @@ public class DiagnosisPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
+        ClinicalPresentation tempClinicalPresentation = new ClinicalPresentation();
+        tempClinicalPresentation.setName("temp");
+        List<ClinicalPresentation> clinicalPresentationList = Arrays.asList(tempClinicalPresentation);
+
+        IChoiceRenderer<ClinicalPresentation> clinicalPresentationChoiceRenderer = new ChoiceRenderer<ClinicalPresentation>("name");
+
+        final DropDownChoice <ClinicalPresentation> clinicalPresentationA = new DropDownChoice<ClinicalPresentation>("clinicalPresentationA", clinicalPresentationList, clinicalPresentationChoiceRenderer);
+        clinicalPresentationA.setOutputMarkupId(true);
+        clinicalPresentationA.setOutputMarkupPlaceholderTag(true);
+
         Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis())) {
             @Override
             protected void onValidateModelObjects() {
                 super.onValidateModelObjects();
-                // validate same clinical presentation here
+                Diagnosis diagnosis = (Diagnosis) getModelObject();
+                ClinicalPresentation cpa = diagnosis.getClinicalPresentationA();
+                ClinicalPresentation cpb = diagnosis.getClinicalPresentationB();
+
+                if(cpa != null && cpb != null && cpa == cpb) {
+                    clinicalPresentationA.error("A and B cannot be the same");
+                }
             }
         };
         add(form);
@@ -87,21 +105,17 @@ public class DiagnosisPanel extends Panel {
         heightAtDiagnosisFeedback.setOutputMarkupPlaceholderTag(true);
         form.add(heightAtDiagnosisFeedback);
 
-        ClinicalPresentation tempClinicalPresentation = new ClinicalPresentation();
-        tempClinicalPresentation.setName("temp");
-        List<ClinicalPresentation> clinicalPresentationList = Arrays.asList(tempClinicalPresentation);
-
-
-        final DropDownChoice <ClinicalPresentation> clinicalPresentationA = new DropDownChoice<ClinicalPresentation>("clinicalPresentationA", clinicalPresentationList);
-        clinicalPresentationA.setOutputMarkupId(true);
-        clinicalPresentationA.setOutputMarkupPlaceholderTag(true);
-
-        final DropDownChoice <ClinicalPresentation> clinicalPresentationB = new DropDownChoice<ClinicalPresentation>("clinicalPresentationB", clinicalPresentationList);
+        final DropDownChoice <ClinicalPresentation> clinicalPresentationB = new DropDownChoice<ClinicalPresentation>("clinicalPresentationB", clinicalPresentationList, clinicalPresentationChoiceRenderer);
         clinicalPresentationB.setOutputMarkupId(true);
         clinicalPresentationB.setOutputMarkupPlaceholderTag(true);
 
         form.add(clinicalPresentationA, clinicalPresentationB);
         form.add(DateTextField.forDatePattern("onsetSymptomsDate", RadarApplication.DATE_PATTERN));
+
+        ComponentFeedbackPanel clinicalPresentationFeedback = new ComponentFeedbackPanel("clinicalPresentationFeedback", clinicalPresentationA);
+        clinicalPresentationFeedback.setOutputMarkupId(true);
+        clinicalPresentationFeedback.setOutputMarkupPlaceholderTag(true);
+        form.add(clinicalPresentationFeedback);
 
         // Steroid resistance radio groups
         RadioGroup steroidContainer = new RadioGroup("steroidResistance");
@@ -144,20 +158,20 @@ public class DiagnosisPanel extends Panel {
         form.add(new DiagnosisRelativePanel("relative5Container", 5));
         form.add(new DiagnosisRelativePanel("relative6Container", 6));
 
-        final List<? extends Component> componentsToUpdateOnError = Arrays.asList(heightAtDiagnosisFeedback, biopsyDateFeedback, esrfDateFeedback);
+        final List<? extends Component> componentsToUpdate = Arrays.asList(heightAtDiagnosisFeedback, biopsyDateFeedback, esrfDateFeedback, clinicalPresentationFeedback);
 
         DiagnosisAjaxSubmitLink save = new DiagnosisAjaxSubmitLink("save") {
             @Override
-            protected List<? extends Component> getComponentsToUpdateOnError() {
-                return componentsToUpdateOnError;
+            protected List<? extends Component> getComponentsToUpdate() {
+                return componentsToUpdate;
             }
         };
 
         DiagnosisAjaxSubmitLink saveDown = new DiagnosisAjaxSubmitLink("saveDown") {
 
             @Override
-            protected List<? extends Component> getComponentsToUpdateOnError() {
-                return componentsToUpdateOnError;
+            protected List<? extends Component> getComponentsToUpdate() {
+                return componentsToUpdate;
             }
         };
 
@@ -179,13 +193,14 @@ public class DiagnosisPanel extends Panel {
 
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
         }
 
         @Override
         protected void onError(AjaxRequestTarget target, Form<?> form) {
-            target.add(getComponentsToUpdateOnError().toArray(new Component[getComponentsToUpdateOnError().size()]));
+            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
         }
 
-        protected abstract List<? extends Component> getComponentsToUpdateOnError();
+        protected abstract List<? extends Component> getComponentsToUpdate();
     }
 }
