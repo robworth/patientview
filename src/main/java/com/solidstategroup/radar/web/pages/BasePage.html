@@ -36,21 +36,27 @@
                         <a wicket:id="patientsPage" title="Patients Page" href="#">| Patients</a>
                     </li>
 
-                    <li class="" style="position: static; ">
-                        <a wicket:id="demographicsPage" title="Enter new patients" href="#">| Enter New Patient |</a>
-                    </li>
-                    <li class="" style="position: static; ">
-                        <a title="Existing Patients" class="ajxsub" href="#">Existing Patients</a>
-                        <ul style="display: none; ">
-                            <li class="sfirst" style="position: static; ">
-                                <a wicket:id="patientsListingPage" href="#" title="Modify Existing Patients">Modify Patients</a>
-                            </li>
-                            <li class="" style="position: static; ">
-                                <a wicket:id="recruitmentPage" href="#" title="Recruitment">Recruitment</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <wicket:enclosure>
+                        <li class="" style="position: static; ">
+                            <a wicket:id="enterNewPatientLink" title="Enter new patients" href="#">| Enter New Patient
+                                |</a>
+                        </li>
+                    </wicket:enclosure>
 
+                    <wicket:container wicket:id="existingPatientsContainer">
+                        <li class="" style="position: static; ">
+                            <a title="Existing Patients" class="ajxsub" href="#">Existing Patients</a>
+                            <ul style="display: none; ">
+                                <li class="sfirst" style="position: static; ">
+                                    <a wicket:id="patientsListingPage" href="#" title="Modify Existing Patients">Modify
+                                        Patients</a>
+                                </li>
+                                <li class="" style="position: static; ">
+                                    <a wicket:id="recruitmentPage" href="#" title="Recruitment">Recruitment</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </wicket:container>
 
                     <li class="" style="position: static; ">
                         <a wicket:id="diseaseIndexPage" title="Disease Information for patients" href="#">| Disease
