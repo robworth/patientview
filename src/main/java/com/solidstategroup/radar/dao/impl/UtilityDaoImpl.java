@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Country;
 import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Relative;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -27,6 +28,10 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public List<Ethnicity> getEthnicities() {
         return jdbcTemplate.query("SELECT * FROM tbl_Ethnicity", new EthnicityRowMapper());
+    }
+
+    public List<Relative> getRelatives() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Relative", new RelativeRowMapper());
     }
 
     private class CentreRowMapper implements RowMapper<Centre> {
@@ -60,6 +65,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             ethnicity.setName(resultSet.getString("eName"));
             ethnicity.setCode(resultSet.getString("eCode"));
             return ethnicity;
+        }
+    }
+
+    private class RelativeRowMapper implements RowMapper<Relative> {
+        public Relative mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct a relative object and set all the fields
+            Relative relative = new Relative();
+            relative.setId(resultSet.getLong("rID"));
+            relative.setName(resultSet.getString("RELATIVE"));
+            return relative;
         }
     }
 }
