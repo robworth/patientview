@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.pages;
 
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.web.SecuredSession;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -23,7 +24,7 @@ public class ProfessionalsLoginPage extends BasePage {
             @Override
             protected void onSubmit() {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
-                AuthenticatedWebSession session = AuthenticatedWebSession.get();
+                AuthenticatedWebSession session = SecuredSession.get();
                 ProfessionalUser user = getModelObject();
                 if (session.signIn(user.getEmail(), user.getPassword())) {
                     // If we haven't been diverted here from a page request (i.e. we clicked login),

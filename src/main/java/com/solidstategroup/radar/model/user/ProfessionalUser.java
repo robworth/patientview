@@ -11,6 +11,11 @@ public class ProfessionalUser extends User {
     private String phone;
     private Centre centre;
 
+    @Override
+    public String getSecurityRole() {
+        return User.ROLE_PROFESSIONAL;
+    }
+
     public String getSurname() {
         return surname;
     }
