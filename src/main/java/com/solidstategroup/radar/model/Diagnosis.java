@@ -55,7 +55,7 @@ public class Diagnosis extends BaseModel {
     private YesNo parentalConsanguinity;
     private YesNo familyHistory;
 
-    private int relativeWithDiseaseRadarNumber1, relativeWithDiseaseRadarNumber2, relativeWithDiseaseRadarNumber3,
+    private Integer relativeWithDiseaseRadarNumber1, relativeWithDiseaseRadarNumber2, relativeWithDiseaseRadarNumber3,
             relativeWithDiseaseRadarNumber4, relativeWithDiseaseRadarNumber5, relativeWithDiseaseRadarNumber6;
     private Relative relativeWithDisease1, relativeWithDisease2, relativeWithDisease3, relativeWithDisease4,
             relativeWithDisease5, relativeWithDisease6;
@@ -340,51 +340,51 @@ public class Diagnosis extends BaseModel {
         this.familyHistory = familyHistory;
     }
 
-    public int getRelativeWithDiseaseRadarNumber1() {
+    public Integer getRelativeWithDiseaseRadarNumber1() {
         return relativeWithDiseaseRadarNumber1;
     }
 
-    public void setRelativeWithDiseaseRadarNumber1(int relativeWithDiseaseRadarNumber1) {
+    public void setRelativeWithDiseaseRadarNumber1(Integer relativeWithDiseaseRadarNumber1) {
         this.relativeWithDiseaseRadarNumber1 = relativeWithDiseaseRadarNumber1;
     }
 
-    public int getRelativeWithDiseaseRadarNumber2() {
+    public Integer getRelativeWithDiseaseRadarNumber2() {
         return relativeWithDiseaseRadarNumber2;
     }
 
-    public void setRelativeWithDiseaseRadarNumber2(int relativeWithDiseaseRadarNumber2) {
+    public void setRelativeWithDiseaseRadarNumber2(Integer relativeWithDiseaseRadarNumber2) {
         this.relativeWithDiseaseRadarNumber2 = relativeWithDiseaseRadarNumber2;
     }
 
-    public int getRelativeWithDiseaseRadarNumber3() {
+    public Integer getRelativeWithDiseaseRadarNumber3() {
         return relativeWithDiseaseRadarNumber3;
     }
 
-    public void setRelativeWithDiseaseRadarNumber3(int relativeWithDiseaseRadarNumber3) {
+    public void setRelativeWithDiseaseRadarNumber3(Integer relativeWithDiseaseRadarNumber3) {
         this.relativeWithDiseaseRadarNumber3 = relativeWithDiseaseRadarNumber3;
     }
 
-    public int getRelativeWithDiseaseRadarNumber4() {
+    public Integer getRelativeWithDiseaseRadarNumber4() {
         return relativeWithDiseaseRadarNumber4;
     }
 
-    public void setRelativeWithDiseaseRadarNumber4(int relativeWithDiseaseRadarNumber4) {
+    public void setRelativeWithDiseaseRadarNumber4(Integer relativeWithDiseaseRadarNumber4) {
         this.relativeWithDiseaseRadarNumber4 = relativeWithDiseaseRadarNumber4;
     }
 
-    public int getRelativeWithDiseaseRadarNumber5() {
+    public Integer getRelativeWithDiseaseRadarNumber5() {
         return relativeWithDiseaseRadarNumber5;
     }
 
-    public void setRelativeWithDiseaseRadarNumber5(int relativeWithDiseaseRadarNumber5) {
+    public void setRelativeWithDiseaseRadarNumber5(Integer relativeWithDiseaseRadarNumber5) {
         this.relativeWithDiseaseRadarNumber5 = relativeWithDiseaseRadarNumber5;
     }
 
-    public int getRelativeWithDiseaseRadarNumber6() {
+    public Integer getRelativeWithDiseaseRadarNumber6() {
         return relativeWithDiseaseRadarNumber6;
     }
 
-    public void setRelativeWithDiseaseRadarNumber6(int relativeWithDiseaseRadarNumber6) {
+    public void setRelativeWithDiseaseRadarNumber6(Integer relativeWithDiseaseRadarNumber6) {
         this.relativeWithDiseaseRadarNumber6 = relativeWithDiseaseRadarNumber6;
     }
 
