@@ -7,6 +7,11 @@ public class PatientUser extends User {
     private int radarNumber;
     private Date dateOfBirth;
 
+    @Override
+    public String getSecurityRole() {
+        return User.ROLE_PATIENT;
+    }
+
     public int getRadarNumber() {
         return radarNumber;
     }
