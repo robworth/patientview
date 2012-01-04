@@ -18,17 +18,16 @@
     </tr>
     <tr>
         <td style="height:30px;">
-            <label for="ctl00_ContentPlaceHolder1_DropDownList7" id="ctl00_ContentPlaceHolder1_lblDiag" class="lblPad"
+            <label  class="lblPad"
                    style="font-weight:bold;width:150px;">&nbsp;Diagnosis</label>
-            <select name="ctl00$ContentPlaceHolder1$DropDownList7" id="ctl00_ContentPlaceHolder1_DropDownList7">
+            <select wicket:id="diagnosis">
                 <option value="">Select</option>
                 <option value="2">MPGN/DDD</option>
                 <option value="1">SRNS</option>
 
             </select>
 
-            <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator8" style="color:Red;visibility:hidden;">*</span>
-
+            <span wicket:id="diagnosisErrorIndicator"></span>
         </td>
         <td style="text-align:right; padding-right:10px;">Date Registered</td>
         <td><input name="ctl00$ContentPlaceHolder1$DATE_REGTextBox" type="text" value="Today's date" readonly="readonly"
@@ -53,38 +52,33 @@
             <td>Surname</td>
             <td>
                 <input type="text" wicket:id="surname"/>
-                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1" style="color:Red;visibility:hidden;">*</span>
+                <span wicket:id="surnameErrorIndicator"></span>
             </td>
         </tr>
         <tr>
             <td>First Name</td>
             <td>
                 <input type="text" wicket:id="forename"/>
-                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2" style="color:Red;visibility:hidden;">*</span>
+                <span wicket:id="forenameErrorIndicator"></span>
             </td>
         </tr>
         <tr>
-            <td>Date of Birth&nbsp;&nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator6" class="inline"
-                                               style="color:Red;visibility:hidden;">*</span>
+            <td>Date of Birth <span wicket:id="dobErrorIndicator"></span>
                 &nbsp;</td>
             <td>
                 <input type="text" wicket:id="dateOfBirth" style="width:70px;"/>
-                <input type="image" name="ctl00$ContentPlaceHolder1$ImageButton1"
-                       id="ctl00_ContentPlaceHolder1_ImageButton1" src="images/Calendar_scheduleHS.png"
-                       style="border-width:0px;"/>
-                &nbsp;
-                <span id="ctl00_ContentPlaceHolder1_CompareValidator1" style="color:Red;display:none;">> today</span>
-                &nbsp;<a href="#" class="info"><em>Help</em><span>To select a different month in the
-                date picker, click the current month at the top.<br/><br/> Click again to select
-                a year.</span> </a>
+
+               <a href="#" class="info"><em>Help</em><span>To select a different month or year in the
+                date picker, click the current month or year at the top.<br/><br/></span> </a>
+
+                <span class="feedback" wicket:id="dobFeedbackPanel"></span>
             </td>
         </tr>
         <tr>
             <td>Sex</td>
             <td>
                 <select wicket:id="sex"/>
-                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4"
-                            style="color:Red;visibility:hidden;">*</span>
+                <span wicket:id="sexErrorIndicator"></span>
             </td>
         </tr>
         <tr>
@@ -109,7 +103,7 @@
             <td>Postcode</td>
             <td>
                 <input type="text" wicket:id="postcode" style="width:70px;"/>
-                &nbsp;<span id="ctl00_ContentPlaceHolder1_CustomValidator1" style="color:Red;visibility:hidden;">Invalid postcode</span>
+                <span class="feedback" wicket:id="postcodeFeedback"/>
             </td>
         </tr>
         <tr>
@@ -170,7 +164,7 @@
             <td>Hospital Number</td>
             <td>
                 <input type="text" wicket:id="hospitalNumber" style="width:80px;"/>
-                &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator7" style="color:Red;visibility:hidden;">*</span>
+                <span wicket:id="hospitalNumberErrorIndicator"></span>
             </td>
         </tr>
         <tr>
