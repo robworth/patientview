@@ -51,9 +51,7 @@
     <tbody>
     <tr>
         <td style="height:35px;" colspan="2">
-            <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnUpdate2"
-                   value="Save" name="ctl00$ContentPlaceHolder1$btnUpdate2">
-            &nbsp;<span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+            <input class="saveBtn" wicket:id="save" type="button" value="Save" />
         </td>
     </tr>
     <tr>
@@ -82,14 +80,12 @@
                       wicket:id="text"></textarea></td>
     </tr>
     <tr>
-        <td><span id="ctl00_ContentPlaceHolder1_lblDateDiag">Date of original biopsy</span>&nbsp;&nbsp;
+        <td><span wicket:id="diagnosisOrBiopsy">Date of original biopsy</span>
             &nbsp;</td>
-        <td><input type="text" style="width:80px;" wicket:id="biopsyDate">
-
-            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                   id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
-
-            &nbsp;</td>
+        <td>
+            <input type="text" style="width:80px;" wicket:id="biopsyDate">
+            <span class="feedback" wicket:id="biopsyDateFeedback"></span>
+        </td>
     </tr>
     <tr>
         <td>
@@ -97,10 +93,8 @@
         </td>
         <td>
             <input type="text" style="width:80px;" wicket:id="esrfDate">
+            <span class="feedback" wicket:id="esrfDateFeedback"></span>
 
-            <input type="image" style="border-width:0px;"
-                   src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_imgBtnDATE_ESRF"
-                   name="ctl00$ContentPlaceHolder1$imgBtnDATE_ESRF">
         </td>
     </tr>
     <tr>
@@ -124,9 +118,8 @@
             <label id="ctl00_ContentPlaceHolder1_lblHeight" for="ctl00_ContentPlaceHolder1_TextBox11">Height at
                 diagnosis in cm</label>
         </td>
-        <td><input type="text" style="width:50px;" tabindex="6" wicket:id="heightAtDiagnosis">&nbsp;<span
-                style="color:Red;visibility:hidden;"
-                id="ctl00_ContentPlaceHolder1_RangeValidator1">35.0 - 185.0 cm</span>
+        <td><input type="text" style="width:50px;" tabindex="6" wicket:id="heightAtDiagnosis"/>
+            <span class="feedback" wicket:id="heightAtDiagnosisFeedback"></span>
         </td>
     </tr>
     <tr>
@@ -266,8 +259,7 @@
 </fieldset>
 
 <br><br>
-&nbsp;<input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_UpdateButton"
-             value="Save" name="ctl00$ContentPlaceHolder1$UpdateButton">
+<input class="saveBtn" wicket:id="saveDown" type="button" value="Save" />
 
 &nbsp;
 <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
