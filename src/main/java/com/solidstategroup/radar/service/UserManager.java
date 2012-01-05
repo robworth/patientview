@@ -7,4 +7,5 @@ public interface UserManager {
 
     void registerPatient(PatientUser patientUser) throws RegistrationException;
 
+    void sendForgottenPassword(String username);
 }

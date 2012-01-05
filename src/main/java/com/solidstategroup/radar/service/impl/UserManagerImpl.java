@@ -8,6 +8,7 @@ import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -67,6 +68,19 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             // If there wasn't a demographic record for that radar number, or the date of birth didn't match
             throw new RegistrationException("Could not register patient - " +
                     "date of birth incorrect for given radar number");
+        }
+    }
+
+    public void sendForgottenPassword(String username) {
+        // In theory this could just go in the email manager but we need to query for user first
+        PatientUser patientUser = userDao.getPatientUser(username);
+        if (patientUser != null) {
+            try {
+                String password = TripleDes.decrypt(patientUser.getPasswordHash());
+                emailManager.sendForgottenPassword(patientUser, password);
+            } catch (Exception e) {
+                LOGGER.error("Could not decrypt password for forgotten password email for {}", username, e);
+            }
         }
     }
 

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h1 style="display:inline">Patient Log-In</h1>&nbsp;&nbsp;&nbsp;
+ <span style="margin-left:400px;"><a href="javascript:bookmarksite('RADAR', 'http://www.renal-test.org/patients.aspx')">Bookmark
+     this page</a>
+</span>
+
+    <p>Please enter your username, password and date of birth</p>
+
+    <form wicket:id="form">
+        <div wicket:id="feedback"/>
+        <table cellpadding="5" class="style2">
+            <tr>
+
+                <td>
+                    <label for="ctl00_ContentPlaceHolder1_txtUserName" style="width:120px;">Username</label>
+                </td>
+                <td>
+                    <input type="text" wicket:id="username"
+                           id="ctl00_ContentPlaceHolder1_txtUserName" autocomplete="off" style="width:250px;"/>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <label for="ctl00_ContentPlaceHolder1_txtPwd" style="width:120px;">Password</label>
+                </td>
+                <td>
+                    <input type="password" id="ctl00_ContentPlaceHolder1_txtPwd" wicket:id="password"
+                           autocomplete="off"/>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <label for="ctl00_ContentPlaceHolder1_txtDOB" style="width:120px;">DoB</label>
+                </td>
+                <td>
+                    <input type="text" id="ctl00_ContentPlaceHolder1_txtDOB" wicket:id="dateOfBirth"/>
+                    &nbsp;&nbsp;
+
+                    <a href="#" class="info" style="background-color:White"><em>Help</em><span>To select a different month in the
+                date picker, click the current month at the top.<br/><br/> Click again to select
+                a year.</span> </a></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" wicket:id="submit" value="Enter" />
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </form>
+
+    <p><a wicket:id="forgottenPasswordLink">Forgotten your password?</a></p>
+
+    <p><a wicket:id="registerLink">Not yet registered?</a></p>
+
+    <p>
+        <span id="ctl00_ContentPlaceHolder1_lblOutMsg"></span>
+    </p>
+
+</wicket:extend>
+
+</body>
+</html>

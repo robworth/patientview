@@ -55,7 +55,7 @@ public abstract class BasePage extends WebPage {
                 new BookmarkablePageLink("patientRegistrationLink", PatientRegistrationPage.class),
                 new BookmarkablePageLink("proRegistrationPage", RegistrationProfessionalPage.class),
                 new BookmarkablePageLink("professionalsPage", ProfessionalsPage.class),
-                new BookmarkablePageLink("patientsPage", PatientsPage.class),
+                new BookmarkablePageLink("patientsPage", PatientsLoginPage.class),
                 new BookmarkablePageLink("diseaseIndexPage", DiseaseIndexPage.class),
                 enterNewPatientLink
         };
