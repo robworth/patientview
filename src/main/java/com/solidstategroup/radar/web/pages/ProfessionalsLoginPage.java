@@ -10,6 +10,8 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 public class ProfessionalsLoginPage extends BasePage {
 
@@ -18,6 +20,8 @@ public class ProfessionalsLoginPage extends BasePage {
         // Construct model for the form
         CompoundPropertyModel<ProfessionalUser> model =
                 new CompoundPropertyModel<ProfessionalUser>(new ProfessionalUser());
+        // Model for the password
+        final IModel<String> passwordModel = new Model<String>();
 
         // Construct the form and add the fields
         Form<ProfessionalUser> form = new Form<ProfessionalUser>("form", model) {
@@ -26,7 +30,7 @@ public class ProfessionalsLoginPage extends BasePage {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
                 AuthenticatedWebSession session = SecuredSession.get();
                 ProfessionalUser user = getModelObject();
-                if (session.signIn(user.getEmail(), user.getPassword())) {
+                if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                     // If we haven't been diverted here from a page request (i.e. we clicked login),
                     // redirect to logged in page
                     if (!continueToOriginalDestination()) {
@@ -47,7 +51,7 @@ public class ProfessionalsLoginPage extends BasePage {
         form.add(feedbackPanel);
 
         form.add(new RequiredTextField("email"));
-        form.add(new PasswordTextField("password"));
+        form.add(new PasswordTextField("password", passwordModel));
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
