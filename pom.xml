@@ -95,6 +95,9 @@
                 <directory>src/main/spring</directory>
             </resource>
             <resource>
+                <directory>src/main/emailtemplates</directory>
+            </resource>
+            <resource>
                 <filtering>false</filtering>
                 <directory>src/main/java</directory>
                 <includes>
