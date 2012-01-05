@@ -31,6 +31,7 @@ public class PatientRegistrationPage extends BasePage {
                 }
             }
         };
+        add(form);
 
         // Construct feedback panel
         final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
@@ -39,7 +40,7 @@ public class PatientRegistrationPage extends BasePage {
 
         // Add fields
         form.add(new RequiredTextField("radarNumber"));
-        form.add(new RequiredTextField("email"));
+        form.add(new RequiredTextField("username"));
         form.add(new DateTextField("dateOfBirth", "dd-MM-yyyy"));
 
         // Ajax submit link
