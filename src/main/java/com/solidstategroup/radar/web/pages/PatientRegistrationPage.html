@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta id="ctl00_IE8CompatibilityMeta" http-equiv="X-UA-Compatible" content="IE=7"/>
+</head>
+<body id="ctl00_body">
+<wicket:extend>
+
+    <h1>Patient Registration</h1>
+
+    <p>To be able to register on the RaDaR website and view your details and
+        treatment information, you need you RaDaR number, supplied to you by your
+        doctor, your date of birth and a valid email address. Please enter these below.
+        When you have done this a password will be emailed to you and you can then enter
+        the site.</p>
+
+    <form wicket:id="form">
+        <fieldset style="width:550px; padding:10px">
+            <div wicket:id="feedback"/>
+
+            <table cellpadding="5" style="width: 500px" class="style2">
+                <tbody>
+                <tr>
+                    <td>
+                        <label for="ctl00_ContentPlaceHolder1_txtRadarNo">Radar Number</label>
+                    </td>
+                    <td>
+                        <input type="text" id="ctl00_ContentPlaceHolder1_txtRadarNo" wicket:id="radarNumber"/>
+                        &nbsp;
+                    <span style="color:Red;visibility:hidden;"
+                          id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ctl00_ContentPlaceHolder1_txtEmail">Email Address</label>
+                    </td>
+                    <td>
+                        <input type="text" style="width:250px;" autocomplete="off"
+                               id="ctl00_ContentPlaceHolder1_txtEmail"
+                               wicket:id="email">
+                        &nbsp;
+                    <span style="color:Red;visibility:hidden;"
+                          id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="ctl00_ContentPlaceHolder1_lblDOB" for="ctl00_ContentPlaceHolder1_txtDOB">Date of
+                            birth</label>
+                    </td>
+                    <td>
+                        <input type="text" id="ctl00_ContentPlaceHolder1_txtDOB" wicket:id="dateOfBirth"
+                               class="feint">
+                        <input type="hidden" id="ctl00_ContentPlaceHolder1_txtDOB_TextBoxWatermarkExtender_ClientState"
+                               name="ctl00$ContentPlaceHolder1$txtDOB_TextBoxWatermarkExtender_ClientState">
+                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
+                               id="ctl00_ContentPlaceHolder1_ImageButton1"
+                               name="ctl00$ContentPlaceHolder1$ImageButton1">
+                        &nbsp;<span style="color:Red;visibility:hidden;"
+                                    id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3">*</span>
+                        &nbsp;<a style="background-color:White" class="info" href="#"><em>Help</em><span>To select a different month in the
+                date picker, click the current month at the top.<br><br> Click again to select
+                a year.</span> </a></td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;</td>
+                    <td>
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Register" wicket:id="submit"/>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+            <p>&nbsp;</p>
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblSuccess"></span></p>
+        </fieldset>
+    </form>
+
+</wicket:extend>
+</body>
+</html>

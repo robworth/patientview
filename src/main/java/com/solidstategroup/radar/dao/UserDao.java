@@ -7,6 +7,7 @@ public interface UserDao {
 
     PatientUser getPatientUser(String email);
 
-    ProfessionalUser getProfessionalUser(String email);
+    void savePatientUser(PatientUser patientUser);
 
+    ProfessionalUser getProfessionalUser(String email);
 }

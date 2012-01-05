@@ -17,7 +17,7 @@ public abstract class User extends BaseModel implements UserDetails {
     public static final String ROLE_PATIENT = "ROLE_PATIENT";
 
     private String username;
-    private Date dateRegistered;
+    private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
     private byte[] passwordHash;
 
     public abstract String getSecurityRole();

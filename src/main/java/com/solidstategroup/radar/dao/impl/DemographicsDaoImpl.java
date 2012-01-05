@@ -7,6 +7,7 @@ import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -22,9 +23,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private UtilityDao utilityDao;
 
     public Demographics getDemographicsByRadarNumber(long radarNumber) {
-        return jdbcTemplate
-                .queryForObject("SELECT * FROM tbl_Demographics WHERE RADAR_NO = ?", new Object[]{radarNumber},
-                        new DemographicsRowMapper());
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Demographics WHERE RADAR_NO = ?", new Object[]{radarNumber},
+                            new DemographicsRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No demographic record found for radar number {}", radarNumber);
+            return null;
+        }
     }
 
     private class DemographicsRowMapper implements RowMapper<Demographics> {

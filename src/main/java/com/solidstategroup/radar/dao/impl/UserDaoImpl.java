@@ -9,15 +9,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private UtilityDao utilityDao;
+    private SimpleJdbcInsert patientUsersInsert;
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        patientUsersInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Patient_Users")
+                .usingGeneratedKeyColumns("pID")
+                .usingColumns("RADAR_NO", "pUserName", "pPassWord", "pDOB", "pDateReg"
+                );
+    }
 
     public PatientUser getPatientUser(String email) {
         try {
@@ -29,6 +44,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             LOGGER.debug("Could not find row in table tbl_Patient_Users with pUserName {}", email);
         }
         return null;
+    }
+
+    public void savePatientUser(final PatientUser patientUser) {
+        Number id = patientUsersInsert.executeAndReturnKey(new HashMap<String, Object>() {
+            {
+                put("RADAR_NO", patientUser.getRadarNumber());
+                put("pUserName", patientUser.getUsername());
+                put("pPassWord", patientUser.getPasswordHash());
+                put("pDOB", patientUser.getDateOfBirth());
+                put("pDateReg", patientUser.getDateRegistered());
+            }
+        });
+        patientUser.setId(id.longValue());
     }
 
     public ProfessionalUser getProfessionalUser(String email) {

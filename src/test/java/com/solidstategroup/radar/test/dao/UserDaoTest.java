@@ -3,11 +3,13 @@ package com.solidstategroup.radar.test.dao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 public class UserDaoTest extends BaseDaoTest {
 
@@ -21,6 +23,28 @@ public class UserDaoTest extends BaseDaoTest {
 
         // This patient should exist in our test dataset
         assertNotNull(patientUser);
+    }
+
+    @Test
+    public void testSavePatientUser() throws Exception {
+        // Construct the user
+        PatientUser patientUser = new PatientUser();
+        patientUser.setUsername("test_user");
+        patientUser.setRadarNumber(123);
+        patientUser.setDateOfBirth(new Date());
+        patientUser.setPasswordHash(User.getPasswordHash("password12"));
+
+        // Save
+        userDao.savePatientUser(patientUser);
+
+        // Make sure we have an ID and a date registered
+        assertTrue("Saved user doesn't have an ID", patientUser.getId() > 0);
+        // Make sure it has a date registered
+        assertNotNull("No date registered", patientUser.getDateRegistered());
+
+        // Try and get the patient user - should get our new user
+        patientUser = userDao.getPatientUser("test_user");
+        assertNotNull("Saved user was null on getting frmo DAO", patientUser);
     }
 
     @Test
