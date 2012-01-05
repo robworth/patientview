@@ -14,4 +14,7 @@ public class EmailManagerImpl implements EmailManager {
         // Todo: Sends to fiona.braddon@nhs.net but put this in radar.properties
     }
 
+    public void sendForgottenPassword(PatientUser patientUser, String password) {
+        // Todo: Implement
+    }
 }
