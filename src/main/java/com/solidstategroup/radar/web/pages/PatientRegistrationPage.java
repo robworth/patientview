@@ -6,10 +6,12 @@ import com.solidstategroup.radar.service.UserManager;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class PatientRegistrationPage extends BasePage {
@@ -21,11 +23,20 @@ public class PatientRegistrationPage extends BasePage {
 
         // Construct our model and the form
         CompoundPropertyModel<PatientUser> model = new CompoundPropertyModel<PatientUser>(new PatientUser());
+        // Radar number is primitive so have separate model
+        final Model<Long> radarNumberModel = new Model<Long>();
+
         Form<PatientUser> form = new Form<PatientUser>("form", model) {
             @Override
             protected void onSubmit() {
                 try {
-                    userManager.registerPatient(getModelObject());
+                    PatientUser patientUser = getModelObject();
+
+                    // Set radar number on user model
+                    patientUser.setRadarNumber(radarNumberModel.getObject());
+
+                    // Register
+                    userManager.registerPatient(patientUser);
                 } catch (RegistrationException e) {
                     error("Could not register - please check the radar number and date of birth are correct");
                 }
@@ -39,9 +50,13 @@ public class PatientRegistrationPage extends BasePage {
         form.add(feedbackPanel);
 
         // Add fields
-        form.add(new RequiredTextField("radarNumber"));
+        form.add(new RequiredTextField<Long>("radarNumber", radarNumberModel, Long.class));
         form.add(new RequiredTextField("username"));
-        form.add(new DateTextField("dateOfBirth", "dd-MM-yyyy"));
+
+        // Required date field
+        DateTextField dateOfBirth = new DateTextField("dateOfBirth", "dd-MM-yyyy");
+        dateOfBirth.setRequired(true);
+        form.add(dateOfBirth.add(new DatePicker()));
 
         // Ajax submit link
         form.add(new AjaxSubmitLink("submit") {
