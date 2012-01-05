@@ -8,6 +8,7 @@ import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.service.UserManager;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +40,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         Demographics demographics = demographicsDao.getDemographicsByRadarNumber(patientUser.getRadarNumber());
 
         // If we get a demographic check the date of birth matches
-        if (demographics != null && demographics.getDateOfBirth().equals(patientUser.getDateOfBirth())) {
+        if (demographics != null && demographics.getDateOfBirth() != null
+                && demographics.getDateOfBirth().equals(patientUser.getDateOfBirth())) {
 
             // Generate the password - 8 random characters
-            String password = "asdas";
+            String password = generateRandomPassword();
             try {
                 patientUser.setPasswordHash(User.getPasswordHash(password));
 
@@ -66,6 +68,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new RegistrationException("Could not register patient - " +
                     "date of birth incorrect for given radar number");
         }
+    }
+
+    private String generateRandomPassword() {
+        // I love you Apache commons
+        return RandomStringUtils.random(8);
     }
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException, DataAccessException {

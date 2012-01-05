@@ -49,11 +49,23 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             // Date needs to be decrypted to string, then parsed
             String dateOfBirthString = getDecryptedString(resultSet, "DOB");
             if (StringUtils.isNotBlank(dateOfBirthString)) {
-                try {
-                    Date dateOfBirth = new SimpleDateFormat("dd.MM.yyyy").parse(dateOfBirthString);
+                Date dateOfBirth = null;
+
+                // It seems that the encrypted strings in the DB have different date formats, nice.
+                for (String dateFormat : new String[]{"dd.MM.yyyy", "dd-MM-yyyy"}) {
+                    try {
+                        dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
+                    } catch (ParseException e) {
+                        LOGGER.debug("Could not parse date of birth {}", dateOfBirthString);
+                    }
+                }
+
+                // If after trying those formats we don't have anything then log as error
+                if (dateOfBirth != null) {
                     demographics.setDateOfBirth(dateOfBirth);
-                } catch (ParseException e) {
-                    LOGGER.error("Could not parse date of birth {}", dateOfBirthString);
+                } else {
+                    LOGGER.error("Could not parse date of birth from any format for radar number {}",
+                            demographics.getId());
                 }
             }
 
