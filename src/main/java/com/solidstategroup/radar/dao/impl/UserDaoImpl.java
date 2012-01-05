@@ -1,8 +1,10 @@
 package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.util.TripleDes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +16,8 @@ import java.sql.SQLException;
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+
+    private UtilityDao utilityDao;
 
     public PatientUser getPatientUser(String email) {
         try {
@@ -52,10 +56,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             professionalUser.setEmail(resultSet.getString("uEmail"));
             professionalUser.setPhone(resultSet.getString("uPhone"));
             professionalUser.setDateRegistered(resultSet.getDate("uDateJoin"));
-            professionalUser.setPassword(resultSet.getString("uPass"));
-            professionalUser.setUsername(resultSet.getString("uUserName"));
+            professionalUser.setPasswordHash(resultSet.getBytes("uPass"));
 
-            // Todo: Centre
+            // Have to decrypt the username
+            try {
+                professionalUser.setUsername(TripleDes.decrypt(resultSet.getBytes("uUserName")));
+            } catch (Exception e) {
+                LOGGER.error("Could not set username for user {}, decryption failed", professionalUser.getEmail(), e);
+            }
+
+            // Set the centre
+            Long centreId = resultSet.getLong("uCentre");
+            if (centreId != null) {
+                professionalUser.setCentre(utilityDao.getCentre(centreId));
+            }
 
             return professionalUser;
         }
@@ -66,10 +80,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             // Construct a patient user and set all the fields, pretty trivial
             PatientUser patientUser = new PatientUser();
             patientUser.setUsername(resultSet.getString("pUserName"));
-            patientUser.setPassword(resultSet.getString("pPassWord"));
+            patientUser.setPasswordHash(resultSet.getBytes("pPassWord"));
             patientUser.setDateOfBirth(resultSet.getDate("pDOB"));
             patientUser.setDateRegistered(resultSet.getDate("pDateReg"));
             return patientUser;
         }
+    }
+
+    public void setUtilityDao(UtilityDao utilityDao) {
+        this.utilityDao = utilityDao;
     }
 }

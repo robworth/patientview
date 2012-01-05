@@ -10,12 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class UtilityDaoTest extends BaseDaoTest {
 
     @Autowired
     private UtilityDao utilityDao;
+
+    @Test
+    public void testGetCentre() {
+        Centre centre = utilityDao.getCentre(3L);
+        assertNotNull("Centre is null", centre);
+        assertEquals("Centre ID is wrong", new Long(3), centre.getId());
+        assertEquals("Name is wrong", "Bristol Royal Hospital for Children", centre.getName());
+        assertEquals("Abbreviation is wrong", "Bristol", centre.getAbbreviation());
+
+        // Check country
+        assertNotNull("Country is null", centre.getCountry());
+        assertEquals("Country name is wrong", "GB and Ireland", centre.getCountry().getName());
+    }
 
     @Test
     public void testGetCentres() {

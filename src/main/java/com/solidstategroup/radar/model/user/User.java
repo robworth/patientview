@@ -16,12 +16,17 @@ public abstract class User extends BaseModel implements UserDetails {
     public static final String ROLE_PROFESSIONAL = "ROLE_PROFESSIONAL";
     public static final String ROLE_PATIENT = "ROLE_PATIENT";
 
-    private String username, password;
+    private String username;
     private Date dateRegistered;
+    private byte[] passwordHash;
 
     public abstract String getSecurityRole();
 
-    public static String getPasswordHash(String password) throws Exception {
+    public String getPassword() {
+        return null;  // Todo: Implement
+    }
+
+    public static byte[] getPasswordHash(String password) throws Exception {
         return TripleDes.encrypt(password);
     }
 
@@ -53,19 +58,19 @@ public abstract class User extends BaseModel implements UserDetails {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Date getDateRegistered() {
         return dateRegistered;
     }
 
     public void setDateRegistered(Date dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public byte[] getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(byte[] passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }
