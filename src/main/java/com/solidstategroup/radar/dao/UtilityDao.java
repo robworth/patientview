@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface UtilityDao {
 
+    Centre getCentre(long id);
+
     List<Centre> getCentres();
 
     Country getCountry(long id);

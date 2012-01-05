@@ -30,8 +30,10 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         if (user != null) {
             // Get the password hash
             try {
-                String passwordHash = User.getPasswordHash((String) authentication.getCredentials());
-                if (user.getPassword().equals(passwordHash)) {
+                // Didn't want to store plain text password in memory, even tho probably safe
+                // Instead password hash is set on user from DAO, then we compare the two hashes
+                byte[] passwordHash = User.getPasswordHash((String) authentication.getCredentials());
+                if (Arrays.equals(user.getPasswordHash(), passwordHash)) {
                     // Authenticated
                     List<GrantedAuthorityImpl> authorities =
                             Arrays.asList(new GrantedAuthorityImpl(user.getSecurityRole()));

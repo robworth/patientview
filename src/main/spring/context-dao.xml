@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="demographicsDao" class="com.solidstategroup.radar.dao.impl.DemographicsDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
     <bean id="utilityDao" class="com.solidstategroup.radar.dao.impl.UtilityDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="userDao" class="com.solidstategroup.radar.dao.impl.UserDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
 

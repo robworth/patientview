@@ -13,6 +13,11 @@ import java.util.List;
 
 public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
+    public Centre getCentre(long id) {
+        return jdbcTemplate
+                .queryForObject("SELECT * FROM tbl_Centres WHERE cID = ?", new Object[]{id}, new CentreRowMapper());
+    }
+
     public List<Centre> getCentres() {
         return jdbcTemplate.query("SELECT * FROM tbl_Centres", new CentreRowMapper());
     }

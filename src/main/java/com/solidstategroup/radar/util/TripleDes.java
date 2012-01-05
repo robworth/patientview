@@ -1,8 +1,5 @@
 package com.solidstategroup.radar.util;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -28,18 +25,20 @@ public class TripleDes {
     // I think the last few values overflow and that's how they were in VB, going to try same here
     private static final byte[] ivBytes = {65, 110, 68, 26, 69, (byte) 178, (byte) 200, (byte) 219};
 
-    public static String encrypt(String message) throws Exception {
+    public static byte[] encrypt(String message) throws Exception {
         final Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
         final byte[] plainTextBytes = message.getBytes(CHARSET_NAME);
-        byte[] cipherText = cipher.doFinal(plainTextBytes);
-        return new BASE64Encoder().encode(cipherText);
+        return cipher.doFinal(plainTextBytes);
+    }
+
+    public static String decrypt(byte[] bytes) throws Exception {
+        final Cipher decipher = getCipher(Cipher.DECRYPT_MODE);
+        return new String(decipher.doFinal(bytes), CHARSET_NAME);
     }
 
     public static String decrypt(String message) throws Exception {
-        byte[] messageBytes = new BASE64Decoder().decodeBuffer(message);
-
-        final Cipher decipher = getCipher(Cipher.DECRYPT_MODE);
-        return new String(decipher.doFinal(messageBytes), CHARSET_NAME);
+        byte[] messageBytes = message.getBytes("UTF-8");
+        return decrypt(messageBytes);
     }
 
     private static Cipher getCipher(int mode)

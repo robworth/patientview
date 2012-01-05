@@ -5,7 +5,8 @@ import java.util.Date;
 
 public class Demographics extends BaseModel {
 
-    private Long radarNumber;
+    // Radar number is ID
+
     private Date dateRegistered;
     private String surname;
     private String forename;
@@ -29,6 +30,14 @@ public class Demographics extends BaseModel {
 
     private boolean consent;
     private Centre renalUnitAuthorised;
+
+    public Date getDateRegistered() {
+        return dateRegistered;
+    }
+
+    public void setDateRegistered(Date dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
 
     public String getSurname() {
         return surname;
@@ -204,21 +213,5 @@ public class Demographics extends BaseModel {
 
     public void setRenalUnitAuthorised(Centre renalUnitAuthorised) {
         this.renalUnitAuthorised = renalUnitAuthorised;
-    }
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
-    }
-
-    public Date getDateRegistered() {
-        return dateRegistered;
-    }
-
-    public void setDateRegistered(Date dateRegistered) {
-        this.dateRegistered = dateRegistered;
     }
 }
