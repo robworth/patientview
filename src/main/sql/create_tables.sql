@@ -393,7 +393,7 @@ CREATE TABLE tbl_Pathology (
 );
 
 CREATE TABLE tbl_Patient_Users (
-	pID int NOT NULL,
+	pID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (pID),
 	RADAR_NO int,
 	pUserName varchar(50),
 	pPassWord varbinary(50),

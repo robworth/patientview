@@ -17,6 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public abstract class BasePage extends WebPage {
 
     public BasePage() {
+        this(false);
+    }
+
+    public BasePage(boolean showCliniciansContainer) {
         // Attach styles
         add(new RadarStyleBehaviour());
 
@@ -35,16 +39,25 @@ public abstract class BasePage extends WebPage {
         );
         add(existingPatientsContainer);
 
+        // Container for clinicians links
+        MarkupContainer cliniciansContainer = new WebMarkupContainer("cliniciansContainer");
+        cliniciansContainer.setVisible(showCliniciansContainer);
+        cliniciansContainer.add(
+                new BookmarkablePageLink("mpgnPage", MpgnPage.class),
+                new BookmarkablePageLink("srnsPage", SrnsPage.class),
+                new BookmarkablePageLink("consentFormsPage", ConsentFormsPage.class)
+        );
+        add(cliniciansContainer);
+
+        // Generic links
         BookmarkablePageLink[] navigationPages = {
                 new BookmarkablePageLink("homePage", HomePage.class),
+                new BookmarkablePageLink("patientRegistrationLink", PatientRegistrationPage.class),
                 new BookmarkablePageLink("proRegistrationPage", RegistrationProfessionalPage.class),
                 new BookmarkablePageLink("professionalsPage", ProfessionalsPage.class),
                 new BookmarkablePageLink("patientsPage", PatientsPage.class),
                 new BookmarkablePageLink("diseaseIndexPage", DiseaseIndexPage.class),
-                enterNewPatientLink,
-                new BookmarkablePageLink("mpgnPage", MpgnPage.class),
-                new BookmarkablePageLink("srnsPage", SrnsPage.class),
-                new BookmarkablePageLink("consentFormsPage", ConsentFormsPage.class)
+                enterNewPatientLink
         };
 
         add(navigationPages);
