@@ -35,7 +35,7 @@ public class Diagnosis extends BaseModel {
     private Date esrfDate;
     private int ageAtDiagnosis;
     private boolean prepubertalAtDiagnosis;
-    private double heightAtDiagnosis; // In cm
+    private Double heightAtDiagnosis; // In cm
 
     private ClinicalPresentation clinicalPresentationA, clinicalPresentationB;
     private SteroidResistance steroidResistance;
@@ -108,11 +108,11 @@ public class Diagnosis extends BaseModel {
         this.prepubertalAtDiagnosis = prepubertalAtDiagnosis;
     }
 
-    public double getHeightAtDiagnosis() {
+    public Double getHeightAtDiagnosis() {
         return heightAtDiagnosis;
     }
 
-    public void setHeightAtDiagnosis(double heightAtDiagnosis) {
+    public void setHeightAtDiagnosis(Double heightAtDiagnosis) {
         this.heightAtDiagnosis = heightAtDiagnosis;
     }
 

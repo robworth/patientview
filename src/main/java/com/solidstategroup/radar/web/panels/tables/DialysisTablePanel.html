@@ -102,18 +102,17 @@
             <tr>
                 <td>
                     <select style="font-size:100%;" wicket:id="modality"/>
+                    <span wicket:id="modalityFeedbackIndicator"/>
                 </td>
                 <td>
                     <input type="text" style="width:70px;" wicket:id="startDate"/>
-                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                           id="ctl00_ContentPlaceHolder1_ImageButton12"
-                           name="ctl00$ContentPlaceHolder1$ImageButton12">
+                   <span class="feedback" wicket:id="startDateFeedback"/>
+                    <span wicket:id="startDateFeedbackIndicator"/>
                 </td>
                 <td>
                     <input type="text" style="width:70px;" wicket:id="endDate"/>
-                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                           id="ctl00_ContentPlaceHolder1_ImageButton13"
-                           name="ctl00$ContentPlaceHolder1$ImageButton13">
+                    <span class="feedback" wicket:id="endDateFeedback"/>
+
                 </td>
                 <td>
                     <input type="submit" value="Add" wicket:id="save"/>

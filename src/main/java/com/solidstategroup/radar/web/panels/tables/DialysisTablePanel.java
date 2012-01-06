@@ -1,9 +1,14 @@
 package com.solidstategroup.radar.web.panels.tables;
 
 import com.solidstategroup.radar.model.Modality;
+import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.components.RadarDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.dataproviders.DialysisDataProvider;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -12,6 +17,7 @@ import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -19,6 +25,9 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DialysisTablePanel extends Panel {
 
@@ -54,7 +63,7 @@ public class DialysisTablePanel extends Panel {
         add(editDialysisContainer);
 
         DialysisForm editDialysisForm =
-                new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()));
+                new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()), new ArrayList<Component>());
         editDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -74,29 +83,38 @@ public class DialysisTablePanel extends Panel {
         });
         editDialysisContainer.add(editDialysisForm);
 
+
+        final List<Component> addDialysisFormComponentsToUpdate =  new ArrayList<Component>();
         // Add dialysis form
         DialysisForm addDialysisForm =
-                new DialysisForm("addDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()));
+                new DialysisForm("addDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()), addDialysisFormComponentsToUpdate );
         addDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(addDialysisFormComponentsToUpdate.toArray(new Component[addDialysisFormComponentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                 target.add(addDialysisFormComponentsToUpdate.toArray(new Component[addDialysisFormComponentsToUpdate.size()]));
             }
         });
         add(addDialysisForm);
     }
 
     private final class DialysisForm extends Form<Treatment> {
-        private DialysisForm(String id, IModel<Treatment> treatmentIModel) {
+        private DialysisForm(String id, IModel<Treatment> treatmentIModel, List<Component> componentsToUpdate) {
             super(id, treatmentIModel);
-            add(new DropDownChoice<Modality>("modality"));
-            add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
-            add(DateTextField.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
+
+            List<Modality> modalityList =
+                    new ArrayList<Modality>();
+            Modality modality = new Modality();
+            modality.setType("temp");
+            modalityList.add(modality);
+
+            add(new RadarRequiredDropdownChoice("modality", modalityList, new ChoiceRenderer("type"), this, componentsToUpdate));
+            add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
+            add(new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
         }
     }
 

@@ -5,18 +5,8 @@
 <tbody>
 <tr>
     <td style="vertical-align:top">
-
-        <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSave2"
-               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSave2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-               value="Save" name="ctl00$ContentPlaceHolder1$btnSave2">
-        &nbsp;
-        <span id="ctl00_ContentPlaceHolder1_lblSucess2"></span>
-
-        <br><br>
         <fieldset style="width:650px;">
             <legend>Immunosuppression including Monoclonals</legend>
-            <br>
-
             <div>
                 <table border="1" cellspacing="0" cellpadding="3"
                        style="font-size:85%;width:600px;border-collapse:collapse;" rules="all">
@@ -77,18 +67,12 @@
                             <tr>
                                 <td class="style7">
                                     <input type="text" style="width:70px;" wicket:id="startDate"/>
-                                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                           id="ctl00_ContentPlaceHolder1_ImageButton20"
-                                           name="ctl00$ContentPlaceHolder1$ImageButton20">
                                 </td>
                                 <td class="style7">
                                     <select wicket:id="immunosuppression"/>
                                 </td>
                                 <td class="style7">
                                     <input type="text" style="width:70px;" wicket:id="endDate"/>
-                                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                           id="ctl00_ContentPlaceHolder1_ImageButton5"
-                                           name="ctl00$ContentPlaceHolder1$ImageButton5">
                                 </td>
                                 <td valign="bottom" style="width:90px">
                                     &nbsp;&nbsp;
@@ -146,23 +130,22 @@
                     <tr>
                         <td class="style7">
                             <input type="text" style="width:70px;" wicket:id="startDate">
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton11"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton11">
+                            <span wicket:id="startDateFeedbackIndicator"></span>
+                            <span class="feedback" wicket:id="startDateFeedback"></span>
                         </td>
                         <td class="style7">
                             <select wicket:id="immunosuppression"/>
+                            <span wicket:id="immunosuppressionFeedbackIndicator"></span>
                         </td>
                         <td class="style7">
                             <input type="text" style="width:70px;" wicket:id="endDate"/>
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton2"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton2">
+                            <span class="endDateFeedbackIndicator"></span>
+                            <span class="feedback" wicket:id="endDateFeedback"></span>
                         </td>
                         <td align="center" class="style11">
                         </td>
                         <td class="style7">
-                            <input type="submit" disabled="disabled" value="Add" wicket:id="submit"/>
+                            <input type="submit" value="Add" wicket:id="submit"/>
                         </td>
                     </tr>
                     <tr>
@@ -186,6 +169,10 @@
                 <fieldset>
                     <legend>Drugs</legend>
                     <br>
+                    Date of Treatment record &nbsp;
+                    <input wicket:id="treatmentRecordDate" type="text" style="width:70px;">
+                    <span wicket:id="treatmentRecordDateFeedbackIndicator"></span>
+                    <span class="feedback" wicket:id="treatmentRecordDateFeedback"></span>
                     <table border="1px" cellpadding="5" id="tblDrugs" class="style13">
                         <tbody>
                         <tr>
@@ -342,8 +329,8 @@
                         </tr>
                         </tbody>
                     </table>
-                    <br><br>
-
+                    <br />
+                    <input wicket:id="save" type="button" class="saveBtn" value="Save">
                 </fieldset>
             </form>
             &nbsp;</div>
@@ -475,22 +462,21 @@
             <tr>
                 <td>
                     <input type="text" style="width:70px;" wicket:id="startDate"/>
-                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                           id="ctl00_ContentPlaceHolder1_ImageButton15"
-                           name="ctl00$ContentPlaceHolder1$ImageButton15">
+                    <span class="feedback" wicket:id="startDateFeedback"/>
+                    <span wicket:id="startDateFeedbackIndicator"/>
                 </td>
                 <td>
                     <input type="text" style="width:70px;" wicket:id="endDate"/>
-                    <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                           id="ctl00_ContentPlaceHolder1_ImageButton16"
-                           name="ctl00$ContentPlaceHolder1$ImageButton16">
+                     <span class="feedback" wicket:id="endDateFeedback"/>
                 </td>
                 <td>
                     <select wicket:id="plasmapheresisExchanges"/>
+                    <span wicket:id="plasmapheresisExchangesFeedbackIndicator"/>
                 </td>
                 <td>&nbsp;</td>
                 <td>
                     <select wicket:id="response"/>
+                    <span wicket:id="responseFeedbackIndicator"/>
                 </td>
                 <td>
                     <input type="submit" value="Add" wicket:id="save"/>
@@ -516,13 +502,7 @@
 </td>
 </tr>
 <tr>
-    <td colspan="2"><input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSave"
-                           onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSave&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                           value="Save" name="ctl00$ContentPlaceHolder1$btnSave">&nbsp;
-        <div style="color:Red;display:none;" class="inline" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
-
-        </div>
-        <span class="inline" id="ctl00_ContentPlaceHolder1_lblSucess"></span>
+    <td colspan="2">
     </td>
 </tr>
 </tbody>

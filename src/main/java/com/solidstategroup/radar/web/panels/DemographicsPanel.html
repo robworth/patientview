@@ -27,7 +27,7 @@
 
             </select>
 
-            <span wicket:id="diagnosisErrorIndicator"></span>
+            <span wicket:id="diagnosisFeedbackIndicator"></span>
         </td>
         <td style="text-align:right; padding-right:10px;">Date Registered</td>
         <td><input name="ctl00$ContentPlaceHolder1$DATE_REGTextBox" type="text" value="Today's date" readonly="readonly"
@@ -52,18 +52,18 @@
             <td>Surname</td>
             <td>
                 <input type="text" wicket:id="surname"/>
-                <span wicket:id="surnameErrorIndicator"></span>
+                <span wicket:id="surnameFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
             <td>First Name</td>
             <td>
                 <input type="text" wicket:id="forename"/>
-                <span wicket:id="forenameErrorIndicator"></span>
+                <span wicket:id="forenameFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
-            <td>Date of Birth <span wicket:id="dobErrorIndicator"></span>
+            <td>Date of Birth <span wicket:id="dateOfBirthFeedbackIndicator"></span>
                 &nbsp;</td>
             <td>
                 <input type="text" wicket:id="dateOfBirth" style="width:70px;"/>
@@ -71,14 +71,14 @@
                <a href="#" class="info"><em>Help</em><span>To select a different month or year in the
                 date picker, click the current month or year at the top.<br/><br/></span> </a>
 
-                <span class="feedback" wicket:id="dobFeedbackPanel"></span>
+                <span class="feedback" wicket:id="dateOfBirthFeedback"></span>
             </td>
         </tr>
         <tr>
             <td>Sex</td>
             <td>
                 <select wicket:id="sex"/>
-                <span wicket:id="sexErrorIndicator"></span>
+                <span wicket:id="sexFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
@@ -164,7 +164,7 @@
             <td>Hospital Number</td>
             <td>
                 <input type="text" wicket:id="hospitalNumber" style="width:80px;"/>
-                <span wicket:id="hospitalNumberErrorIndicator"></span>
+                <span wicket:id="hospitalNumberFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>

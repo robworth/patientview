@@ -7,10 +7,16 @@ import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.components.RadarDatePicker;
+import com.solidstategroup.radar.web.components.RadarDateTextField;
+import com.solidstategroup.radar.web.components.RadarFormComponentFeedbackIndicator;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.dataproviders.ImmunosuppressionTreatmentDataProvider;
 import com.solidstategroup.radar.web.dataproviders.PlasmapheresisDataProvider;
 import com.solidstategroup.radar.web.panels.firstvisit.YesNoRadioGroupPanel;
 import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -19,14 +25,22 @@ import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class TreatmentPanel extends Panel {
     public TreatmentPanel(String id) {
@@ -61,10 +75,12 @@ public class TreatmentPanel extends Panel {
         editContainer.setOutputMarkupPlaceholderTag(true);
         editContainer.setVisible(false);
 
+        final List<Component> editImmunoSuppressComponentsToUpdate = new ArrayList<Component>();
+
         // Construct the form
         ImmunosuppressionTreatmentForm editImmunosuppressionForm =
                 new ImmunosuppressionTreatmentForm("editImmunosuppressionForm",
-                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()));
+                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()), new ArrayList<Component>());
         editImmunosuppressionForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -73,7 +89,7 @@ public class TreatmentPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+
             }
         });
         editImmunosuppressionForm.add(new AjaxLink("cancel") {
@@ -88,22 +104,33 @@ public class TreatmentPanel extends Panel {
         // Construct the add form
         ImmunosuppressionTreatmentForm addImmunosuppressionForm =
                 new ImmunosuppressionTreatmentForm("addImmunosuppressionForm",
-                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()));
+                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()), editImmunoSuppressComponentsToUpdate);
+
+
         addImmunosuppressionForm.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(editImmunoSuppressComponentsToUpdate.toArray(new Component[editImmunoSuppressComponentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(editImmunoSuppressComponentsToUpdate.toArray(new Component[editImmunoSuppressComponentsToUpdate.size()]));
             }
         });
         add(addImmunosuppressionForm);
 
+
         // Drugs
+        final List<Component> therapyFormComponentsToUpdate = new ArrayList<Component>();
+
         Form<Therapy> therapyForm = new Form<Therapy>("therapyForm", new CompoundPropertyModel<Therapy>(new Therapy()));
+
+        RadarRequiredDateTextField treatmentRecordDate = new RadarRequiredDateTextField("treatmentRecordDate",
+                new Model<Date>(),
+                RadarApplication.DATE_PATTERN, therapyForm, therapyFormComponentsToUpdate);
+
+        therapyForm.add(treatmentRecordDate);
         therapyForm.add(new YesNoRadioGroupPanel("nsaid", true));
         therapyForm.add(new YesNoRadioGroupPanel("nsaidPrior", true));
         therapyForm.add(new YesNoRadioGroupPanel("diuretic", true));
@@ -136,6 +163,21 @@ public class TreatmentPanel extends Panel {
         therapyForm.add(new TextField("other4"));
         therapyForm.add(new TextField("other4Prior"));
 
+
+        AjaxSubmitLink save = new AjaxSubmitLink("save", therapyForm) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
+            }
+        };
+
+        therapyForm.add(save);
+
         add(therapyForm);
 
         // Plasmapheresis
@@ -166,7 +208,7 @@ public class TreatmentPanel extends Panel {
 
         // Add the form
         PlasmapheresisForm editPlasmapheresisForm = new PlasmapheresisForm("editPlasmapheresisForm",
-                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()));
+                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()), new ArrayList<Component>());
         editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -186,18 +228,20 @@ public class TreatmentPanel extends Panel {
         });
         add(editPlasmapheresisContainer);
 
+        final List<Component> plasmapheresisComponentsToUpdate = new ArrayList<Component>();
         // Add the add plasmapheresis form
         PlasmapheresisForm addPlasmapheresisForm = new PlasmapheresisForm("addPlasmapheresisForm",
-                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()));
+                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()), plasmapheresisComponentsToUpdate);
+
         addPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(plasmapheresisComponentsToUpdate.toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+               target.add(plasmapheresisComponentsToUpdate.toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
             }
         });
         add(addPlasmapheresisForm);
@@ -207,21 +251,47 @@ public class TreatmentPanel extends Panel {
     }
 
     private final class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
-        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model) {
+        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model, List<Component> componentsToUpdate) {
             super(id, model);
-            add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
-            add(new DropDownChoice<Immunosuppression>("immunosuppression"));
-            add(DateTextField.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
+            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            add(startDate);
+
+            List<Immunosuppression> immunosuppressionList = new ArrayList<Immunosuppression>();
+            Immunosuppression immunosuppression = new Immunosuppression();
+            immunosuppression.setDescription("temp");
+            immunosuppressionList.add(immunosuppression);
+
+            RadarRequiredDropdownChoice immunoSuppression = new RadarRequiredDropdownChoice("immunosuppression", immunosuppressionList, new ChoiceRenderer("description"), this, componentsToUpdate);
+            add(immunoSuppression);
+
+            RadarDateTextField endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            add(endDate);
+
         }
     }
 
     private final class PlasmapheresisForm extends Form<Plasmapheresis> {
-        private PlasmapheresisForm(String id, IModel<Plasmapheresis> model) {
+        private PlasmapheresisForm(String id, IModel<Plasmapheresis> model, List<Component> componentsToUpdate) {
             super(id, model);
-            add(DateTextField.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
-            add(DateTextField.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
-            add(new DropDownChoice<PlasmapheresisExchangeUnit>("plasmapheresisExchanges"));
-            add(new DropDownChoice<RemissionAchieved>("response"));
+            add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
+            add(new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
+
+            List<PlasmapheresisExchangeUnit> plasmapheresisExchangeUnitList =
+                    new ArrayList<PlasmapheresisExchangeUnit>();
+            PlasmapheresisExchangeUnit plasmapheresisExchangeUnit = new PlasmapheresisExchangeUnit();
+            plasmapheresisExchangeUnit.setName("temp");
+            plasmapheresisExchangeUnitList.add(plasmapheresisExchangeUnit);
+
+            add(new RadarRequiredDropdownChoice("plasmapheresisExchanges", plasmapheresisExchangeUnitList,
+                    new ChoiceRenderer("name"), this, componentsToUpdate));
+
+            List<RemissionAchieved> remissionAchievedList =
+                    new ArrayList<RemissionAchieved>();
+            RemissionAchieved remissionAchieved = RemissionAchieved.COMPLETE;
+            remissionAchievedList.add(remissionAchieved);
+
+            add(new RadarRequiredDropdownChoice("response", remissionAchievedList, new ChoiceRenderer(),
+                    this, componentsToUpdate ));
         }
     }
 
