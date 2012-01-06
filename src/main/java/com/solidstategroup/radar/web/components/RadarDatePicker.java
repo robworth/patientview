@@ -7,6 +7,8 @@ public class RadarDatePicker extends DatePicker{
     public RadarDatePicker() {
         super();
         setShowOnFieldClick(true);
+        setAutoHide(true);
+        hideOnSelect();
     }
 
     @Override
