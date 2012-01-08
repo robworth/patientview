@@ -2,6 +2,7 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
@@ -20,6 +21,15 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public List<Centre> getCentres() {
         return jdbcTemplate.query("SELECT * FROM tbl_Centres", new CentreRowMapper());
+    }
+
+    public Consultant getConsultant(long id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM tbl_Consultants WHERE cID = ?", new Object[]{id},
+                new ConsultantRowMapper());
+    }
+
+    public List<Consultant> getConsultants() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Consultants", new ConsultantRowMapper());
     }
 
     public Country getCountry(long id) {
@@ -80,6 +90,24 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             relative.setId(resultSet.getLong("rID"));
             relative.setName(resultSet.getString("RELATIVE"));
             return relative;
+        }
+    }
+
+    private class ConsultantRowMapper implements RowMapper<Consultant> {
+        public Consultant mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct a consultant object and set all the fields
+            Consultant consultant = new Consultant();
+            consultant.setId(resultSet.getLong("cID"));
+            consultant.setSurname(resultSet.getString("cSNAME"));
+            consultant.setForename(resultSet.getString("cFNAME"));
+
+            // Centre could be null, in which case we get a 0 returned by getLong
+            long centreId = resultSet.getLong("cCentre");
+            if (centreId > 0) {
+                consultant.setCentre(getCentre(centreId));
+            }
+
+            return consultant;
         }
     }
 }

@@ -1,9 +1,10 @@
 package com.solidstategroup.radar.model;
 
 
-public class Consultant extends BaseModel{
+public class Consultant extends BaseModel {
+
     private String surname;
-    private String firstName;
+    private String forename;
     private Centre centre;
 
     public String getSurname() {
@@ -14,12 +15,12 @@ public class Consultant extends BaseModel{
         this.surname = surname;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getForename() {
+        return forename;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setForename(String forename) {
+        this.forename = forename;
     }
 
     public Centre getCentre() {
