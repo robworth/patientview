@@ -46,7 +46,7 @@ CREATE TABLE tbl_6Month (
 );
 
 CREATE TABLE tbl_AdminUsers (
-	uID int NOT NULL,
+	uID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (uID),
 	uName varchar(30),
 	uEmail varchar(50),
 	uPass varbinary(50),
@@ -54,19 +54,19 @@ CREATE TABLE tbl_AdminUsers (
 );
 
 CREATE TABLE tbl_Centres (
-	cID int NOT NULL,
+	cID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (cID),
 	cName varchar(80),
 	cAbbrev varchar(15),
 	cCountry int
 );
 
 CREATE TABLE tbl_Clin_Pres (
-	cID int,
+	cID int AUTO_INCREMENT, PRIMARY KEY (cID),
 	CLIN_PRES varchar(20)
 );
 
 CREATE TABLE tbl_ClinicalData (
-	cID int NOT NULL,
+	cID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (cID),
 	RADAR_NO int NOT NULL,
 	DATE_CLIN_PIC TIMESTAMP,
 	HEIGHT decimal(8,1),
@@ -116,24 +116,24 @@ CREATE TABLE tbl_ClinicalData (
 );
 
 CREATE TABLE tbl_Complication (
-	cmpID int NOT NULL,
+	cmpID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (cmpID),
 	cmpDesc varchar(50)
 );
 
 CREATE TABLE tbl_Consultants (
-	cID int NOT NULL,
+	cID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (cID),
 	cSNAME varchar(50),
 	cFNAME varchar(50),
 	cCentre int
 );
 
 CREATE TABLE tbl_Country (
-	cID int NOT NULL,
+	cID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (cID),
 	cName varchar(50)
 );
 
 CREATE TABLE tbl_Demographics (
-	RADAR_NO int NOT NULL,
+	RADAR_NO int NOT NULL AUTO_INCREMENT, PRIMARY KEY (RADAR_NO),
 	RR_NO varchar(10),
 	DATE_REG TIMESTAMP,
 	NHS_NO varbinary(50),
@@ -162,13 +162,13 @@ CREATE TABLE tbl_Demographics (
 );
 
 CREATE TABLE tbl_DiagCode (
-	dcID int NOT NULL,
+	dcID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (dcID),
 	dcDesc varchar(70),
 	dcAbbr varchar(15)
 );
 
 CREATE TABLE tbl_Diagnosis (
-	dID int NOT NULL,
+	dID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (dID),
 	RADAR_NO int,
 	DATE_DIAG TIMESTAMP,
 	DIAG int,
@@ -223,34 +223,34 @@ CREATE TABLE tbl_Diagnosis (
 );
 
 CREATE TABLE tbl_DiseaseData (
-	dID int NOT NULL,
+	dID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (dID),
 	dText text
 );
 
 CREATE TABLE tbl_Ethnicity (
-	eID int NOT NULL,
+	eID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (eID),
 	eName varchar(50),
 	eCode varchar(50)
 );
 
 CREATE TABLE tbl_GeneMutation (
-	gmID int NOT NULL,
+	gmID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (gmID),
 	GENE_MUTATION varchar(30)
 );
 
 CREATE TABLE tbl_HD_MODALITY (
-	hdID int,
+	hdID int AUTO_INCREMENT, PRIMARY KEY (hdID),
 	hdType varchar(75)
 );
 
 CREATE TABLE tbl_HDial (
-	hdID int NOT NULL,
+	hdID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (hdID),
 	RADAR_NO int,
 	DATE_START_HDIAL datetime
 );
 
 CREATE TABLE tbl_Hospitalisation (
-	hID int NOT NULL,
+	hID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (hID),
 	RADAR_NO int,
 	DATE_ADMIT TIMESTAMP,
 	DATE_DISCHARGE TIMESTAMP,
@@ -259,13 +259,13 @@ CREATE TABLE tbl_Hospitalisation (
 );
 
 CREATE TABLE tbl_ImmunoSupp (
-	imID int NOT NULL,
+	imID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (imID),
 	imDesc varchar(50),
 	`Group` int
 );
 
 CREATE TABLE tbl_IMMUNSUP_TREATMENT (
-	tID int NOT NULL,
+	tID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (tID),
 	RADAR_NO int,
 	IMMUNSUP_DRUG_STARTDATE datetime,
 	IMMUNSUP_DRUG_ENDDATE datetime,
@@ -275,12 +275,12 @@ CREATE TABLE tbl_IMMUNSUP_TREATMENT (
 );
 
 CREATE TABLE tbl_Karyotype (
-	kID int,
+	kID int AUTO_INCREMENT, PRIMARY KEY (kID),
 	KARYOTYPE varchar(50)
 );
 
 CREATE TABLE tbl_LabData (
-	labID int NOT NULL,
+	labID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (labID),
 	RADAR_NO int,
 	DATE_LAB_RES datetime,
 	CREAT_SER int,
@@ -356,12 +356,12 @@ CREATE TABLE tbl_LabData (
 );
 
 CREATE TABLE tbl_MONOCLONAL (
-	mID int NOT NULL,
+	mID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (mID),
 	mDesc varchar(20)
 );
 
 CREATE TABLE tbl_Pathology (
-	pID int NOT NULL,
+	pID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (pID),
 	RADAR_NO int,
 	BX_DATE TIMESTAMP,
 	NAT_TRANSP_KID int,
@@ -402,22 +402,22 @@ CREATE TABLE tbl_Patient_Users (
 );
 
 CREATE TABLE tbl_PD_MODALITY (
-	pdID int,
+	pdID int AUTO_INCREMENT, PRIMARY KEY (pdID),
 	pdType varchar(75)
 );
 
 CREATE TABLE tbl_PDial (
-	pdID int NOT NULL,
+	pdID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (pdID),
 	RADAR_NO int,
 	DATE_START_PDIAL datetime
 );
 CREATE TABLE tbl_PHENOTYPES (
-	pID int NOT NULL,
+	pID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (pID),
 	pDesc varchar(75)
 );
 
 CREATE TABLE tbl_Plasmaph (
-	plID int NOT NULL,
+	plID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (plID),
 	RENAL_NO int,
 	DATE_STARTED_PLASMAPH datetime,
 	DUR_PLASMAPH int,
@@ -425,7 +425,7 @@ CREATE TABLE tbl_Plasmaph (
 );
 
 CREATE TABLE tbl_Relapse (
-	relID int NOT NULL,
+	relID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (relID),
 	RADAR_NO int,
 	DATE_ONSET_RELAP datetime,
 	RELAP_TX_NAT bit,
@@ -441,12 +441,12 @@ CREATE TABLE tbl_Relapse (
 );
 
 CREATE TABLE tbl_Relative (
-	rID int NOT NULL,
+	rID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (rID),
 	RELATIVE varchar(20)
 );
 
 CREATE TABLE tbl_RRT_HD (
-	hID int NOT NULL,
+	hID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (hID),
 	RADAR_NO int,
 	HD_TMT_MODALITY int,
 	DATE_START_HDIAL TIMESTAMP,
@@ -454,13 +454,13 @@ CREATE TABLE tbl_RRT_HD (
 );
 
 CREATE TABLE tbl_RRT_MODALITY (
-	mID int,
+	mID int AUTO_INCREMENT, PRIMARY KEY (mID),
 	mType varchar(50),
 	`Group` int
 );
 
 CREATE TABLE tbl_RRT_PD (
-	pID int NOT NULL,
+	pID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (pID),
 	RADAR_NO int,
 	PD_TMT_MODALITY int,
 	DATE_START_PD TIMESTAMP,
@@ -468,7 +468,7 @@ CREATE TABLE tbl_RRT_PD (
 );
 
 CREATE TABLE tbl_RRT_PLASMA (
-	plID int NOT NULL,
+	plID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (plID),
 	RADAR_NO int,
 	PLASMAPH varchar(20),
 	DATE_START_PLASMAPH TIMESTAMP,
@@ -479,12 +479,12 @@ CREATE TABLE tbl_RRT_PLASMA (
 );
 
 CREATE TABLE tbl_RRT_PLASMA_LU (
-	exID int NOT NULL,
+	exID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (exID),
 	exDesc varchar(50)
 );
 
 CREATE TABLE tbl_RRT_TREATMENT (
-	tID int NOT NULL,
+	tID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (tID),
 	RADAR_NO int,
 	MODALITY int,
 	DATE_START TIMESTAMP,
@@ -494,30 +494,30 @@ CREATE TABLE tbl_RRT_TREATMENT (
 );
 
 CREATE TABLE tbl_RT_Modality (
-	mID int NOT NULL,
+	mID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (mID),
 	mDesc varchar(50)
 );
 
 CREATE TABLE tbl_Sex (
-	sID int,
+	sID int AUTO_INCREMENT, PRIMARY KEY (sID),
 	sType varchar(14)
 );
 
 CREATE TABLE tbl_Status (
-	sID int NOT NULL,
+	sID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (sID),
 	sDesc varchar(50),
 	sAbbrev varchar(20)
 );
 
 CREATE TABLE tbl_Test (
-	tID smallint NOT NULL,
+	tID smallint NOT NULL AUTO_INCREMENT, PRIMARY KEY (tID),
 	tOne bit,
 	tTwo bit,
 	tThree nchar(10)
 );
 
 CREATE TABLE tbl_Therapy (
-	tID int NOT NULL,
+	tID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (tID),
 	RADAR_NO int,
 	SIG_CHANGE_STATUS varchar(20),
 	P_NSAID bit,
@@ -562,7 +562,7 @@ CREATE TABLE tbl_Therapy (
 );
 
 CREATE TABLE tbl_Transplant (
-	trID int NOT NULL,
+	trID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (trID),
 	RADAR_NO int,
 	DATE_TRANSPLANT datetime,
 	TRANS_TYPE varchar(50),
@@ -575,12 +575,12 @@ CREATE TABLE tbl_Transplant (
 );
 
 CREATE TABLE tbl_TRANSPLANT_MODALITY (
-	trID int,
+	trID int AUTO_INCREMENT, PRIMARY KEY (trID),
 	trDesc varchar(75)
 );
 
 CREATE TABLE tbl_Transplant_Reject (
-	recID int NOT NULL,
+	recID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (recID),
 	trID int NOT NULL,
 	trRejectDate TIMESTAMP,
 	trBiopsyDate TIMESTAMP,
@@ -588,7 +588,7 @@ CREATE TABLE tbl_Transplant_Reject (
 );
 
 CREATE TABLE tbl_Users (
-	uID int NOT NULL,
+	uID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (uID),
 	uSurname varchar(50),
 	uForename varchar(50),
 	uTitle varchar(50),
