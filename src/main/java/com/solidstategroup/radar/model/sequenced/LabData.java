@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.model.sequenced;
 
+import java.util.Date;
+
 public class LabData extends SequencedModel {
 
     public enum UrineVolumeCondition {
@@ -123,6 +125,9 @@ public class LabData extends SequencedModel {
         }
     }
 
+    private Long radarNumber;
+    private Date date;
+    
     // Blood fields
     private Double hb, wbc, neutrophils, platelets, sodium, potassium, bun, serumCreatinine, protein, albumin, crp;
     private Double totalCholesterol, hdlCholesterol, ldlCholesterol;
@@ -158,6 +163,22 @@ public class LabData extends SequencedModel {
     private Boolean cmvSymptomatic;
     private PositiveNegativeNotDone parvovirusAntibody;
     private Boolean otherInfection;
+
+    public Long getRadarNumber() {
+        return radarNumber;
+    }
+
+    public void setRadarNumber(Long radarNumber) {
+        this.radarNumber = radarNumber;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Double getHb() {
         return hb;
