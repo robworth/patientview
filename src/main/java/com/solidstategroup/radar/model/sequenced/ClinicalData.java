@@ -11,6 +11,10 @@ public class ClinicalData extends SequencedModel {
         DiabetesType(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum CourseOfDisease {
@@ -20,6 +24,10 @@ public class ClinicalData extends SequencedModel {
         CourseOfDisease(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum CkdStage {
@@ -28,6 +36,10 @@ public class ClinicalData extends SequencedModel {
 
         CkdStage(int id) {
             this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -43,7 +55,7 @@ public class ClinicalData extends SequencedModel {
     private CourseOfDisease courseOfDisease;
     private String significantDiagnosis1, significantDiagnosis2;
 
-    private Boolean oedema, hypovalaemia, fever, thrombosis, peritonitis, pulmonaryOedema, hypertension;
+    private Boolean oedema, anaemia, hypovalaemia, fever, thrombosis, peritonitis, pulmonaryOedema, hypertension;
     private DiabetesType diabetesType;
     private Boolean rash, possibleImmunisationTrigger, partialLipodystrophy, preceedingInfection, chronicInfection,
             ophthalmoscopy;
@@ -167,6 +179,14 @@ public class ClinicalData extends SequencedModel {
 
     public void setOedema(Boolean oedema) {
         this.oedema = oedema;
+    }
+
+    public Boolean getAnaemia() {
+        return anaemia;
+    }
+
+    public void setAnaemia(Boolean anaemia) {
+        this.anaemia = anaemia;
     }
 
     public Boolean getHypovalaemia() {
