@@ -1,7 +1,10 @@
 package com.solidstategroup.radar.model.sequenced;
 
+import java.util.Date;
+
 public class Therapy extends SequencedModel {
 
+    private Date date;
     private Boolean nsaid, nsaidPrior;
     private Boolean diuretic, diureticPrior;
     private Boolean antihypertensive, antihypertensivePrior;
@@ -18,6 +21,14 @@ public class Therapy extends SequencedModel {
 
     private String other1, other2, other3, other4;
     private String other1Prior, other2Prior, other3Prior, other4Prior;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Boolean getNsaid() {
         return nsaid;
