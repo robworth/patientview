@@ -26,7 +26,10 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.PatternValidator;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> b500e94b2682c2dff215646d903405e52a2339e3
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,6 +53,7 @@ public class DemographicsPanel extends Panel {
         dateRegistered.setEnabled(false);
 
         RadarRequiredDropdownChoice diagnosis = new RadarRequiredDropdownChoice("diagnosis", new Model<String>(), Arrays.asList("MPGN/DDD", "SRNS"), form, componentsToUpdateList);
+
         diagnosis.setRequired(true);
 
         // Basic fields
@@ -61,14 +65,12 @@ public class DemographicsPanel extends Panel {
         form.add(diagnosis, surname, forename, dateOfBirth);
 
 
-        // Drop downs for sex and ethnicity
-        Sex tempSex = new Sex();
-        tempSex.setType("temp");
-        tempSex.setId(Long.valueOf(1));
+
 
         RadarRequiredDropdownChoice sex = new RadarRequiredDropdownChoice("sex", Arrays.asList(tempSex), new ChoiceRenderer<Sex>("type"), form, componentsToUpdateList);
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity");
         form.add(sex, ethnicity);
+
 
         // Address fields
         TextField address1 = new TextField("address1");
@@ -91,6 +93,7 @@ public class DemographicsPanel extends Panel {
         TextField chiNumber = new TextField("chiNumber");
         form.add(hospitalNumber, nhsNumber, renalRegistryNumber, ukTransplantNumber, chiNumber);
 
+
         DropDownChoice status = new DropDownChoice("status");
         DropDownChoice consultant = new DropDownChoice("consultant");
         DropDownChoice renalUnit = new DropDownChoice("renalUnit");
@@ -109,6 +112,7 @@ public class DemographicsPanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+
             }
         });
     }

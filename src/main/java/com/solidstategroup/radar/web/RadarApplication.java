@@ -3,7 +3,7 @@ package com.solidstategroup.radar.web;
 import com.solidstategroup.radar.web.pages.ExistingPatientsPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
-import com.solidstategroup.radar.web.pages.PatientsPage;
+import com.solidstategroup.radar.web.pages.PatientsLoginPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
@@ -47,7 +47,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
         // Mount nice URLs for pages - patient pages
         mountPage("patient", PatientPage.class);
         mountPage("patients", ExistingPatientsPage.class);
-        mountPage("login", PatientsPage.class);
+        mountPage("login", PatientsLoginPage.class);
 
         mountPage("registration", RegistrationProfessionalPage.class);
         mountPage("professionals", ProfessionalsPage.class);

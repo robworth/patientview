@@ -55,6 +55,34 @@
                 <tomcatmanagerurl>http://localhost:8080/manager/html</tomcatmanagerurl>
             </properties>
         </profile>
+
+        <!--These are used by the DBUnit plugin for export/import from XML-->
+        <profile>
+            <id>dbunit-mssql</id>
+            <properties>
+                <dbunit.driver>net.sourceforge.jtds.jdbc.Driver</dbunit.driver>
+                <dbunit.url>jdbc:jtds:sqlserver://192.168.1.20/rpv</dbunit.url>
+
+                <!--Settings key is used to match up the username/password in the maven settings.xml-->
+                <dbunit.settingsKey>ssg-mssql</dbunit.settingsKey>
+
+                <dbunit.dataTypeFactoryName>org.dbunit.ext.mssql.MsSqlDataTypeFactory</dbunit.dataTypeFactoryName>
+                <dbunit.escapePattern>[?]</dbunit.escapePattern>
+            </properties>
+        </profile>
+        <profile>
+            <id>dbunit-mysql</id>
+            <properties>
+                <dbunit.driver>com.mysql.jdbc.Driver</dbunit.driver>
+                <dbunit.url>jdbc:mysql://dev.solidstategroup.com/radar?jdbcCompliantTruncation=false&amp;zeroDateTimeBehavior=convertToNull</dbunit.url>
+
+                <!--Settings key is used to match up the username/password in the maven settings.xml-->
+                <dbunit.settingsKey>ssg-mysql</dbunit.settingsKey>
+
+                <dbunit.dataTypeFactoryName>org.dbunit.ext.mysql.MySqlDataTypeFactory</dbunit.dataTypeFactoryName>
+                <dbunit.escapePattern>`?`</dbunit.escapePattern>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
@@ -65,6 +93,9 @@
             </resource>
             <resource>
                 <directory>src/main/spring</directory>
+            </resource>
+            <resource>
+                <directory>src/main/emailtemplates</directory>
             </resource>
             <resource>
                 <filtering>false</filtering>
@@ -162,15 +193,14 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dbunit-maven-plugin</artifactId>
                 <configuration>
-                    <driver>net.sourceforge.jtds.jdbc.Driver</driver>
-                    <url>jdbc:jtds:sqlserver://192.168.1.20/rpv</url>
+                    <driver>${dbunit.driver}</driver>
+                    <url>${dbunit.url}</url>
 
                     <!--Settings key is used to match up the username/password in the maven settings.xml-->
-                    <settingsKey>ssg-mssql</settingsKey>
+                    <settingsKey>${dbunit.settingsKey}</settingsKey>
 
-                    <dataTypeFactoryName>org.dbunit.ext.mssql.MsSqlDataTypeFactory</dataTypeFactoryName>
-                    <escapePattern>[?]</escapePattern>
-                    <!--<useQualifiedTableNames>true</useQualifiedTableNames>-->
+                    <dataTypeFactoryName>${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
+                    <escapePattern>${dbunit.escapePattern}</escapePattern>
                 </configuration>
                 <dependencies>
                     <!--MS SQL driver for DBUnit-->
@@ -178,6 +208,12 @@
                         <groupId>net.sourceforge.jtds</groupId>
                         <artifactId>jtds</artifactId>
                         <version>1.2.4</version>
+                    </dependency>
+                    <!--MySQL driver for import-->
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.18</version>
                     </dependency>
                 </dependencies>
             </plugin>
