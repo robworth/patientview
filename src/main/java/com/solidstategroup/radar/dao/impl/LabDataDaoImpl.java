@@ -95,46 +95,72 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
 
             labData.setComplementC3(resultSet.getDouble("COMP_C3"));
             labData.setComplementC4(resultSet.getDouble("COMP_C4"));
+            labData.setComplementOtherDetail(resultSet.getString("COMP_OTHER"));
 
-            /*
+            labData.setC3NephriticFactor(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("C3_NEPH_FAC")));
 
-   COMP_OTHER text,
-   C3_NEPH_FAC int,
-   ANTI_SLT int,
-   INR numeric(2,1),
-   CRP int,
-   ANTI_STREP_O int,
-   HEP_B int,
-   HEP_C int,
-   HIV int,
-   DNA_FACTOR_H bit,
-   EBV int,
-   CMV int,
-   CMV_SYM bit,
-   BKV bit,
-   BKV_SYM bit,
-   HANTAVIRUS bit,
-   PARVO_ANTIB int,
-   OTHER_INFECT bit,
-   OTHER_INFECT_SP varchar(50),
-   UR_VOL_24H int,
-   UR_VOL_24H_COND int,
-   HAEMATURIA int,
-   ALBUMINURIA int,
-   DYS_ERYTH_URINE int,
-   RED_CCASTS_URINE int,
-   WBC_CASTS_URINE int,
-   LEUC_URINE bit,
-   NITRITE bit,
-   BACT_URINE bit,
-   GLUC_URINE bit,
-   OSMOLARITY varchar(50),
-   PROTEINURIA_DIP int,
-   SEQ_NO int,
-   ANTI_CLQ numeric(4,1)
+            // There is an ANTI_SLT column that doesn't seem to be used within legacy code
 
-            */
+            labData.setInr(resultSet.getDouble("INR"));
+            labData.setCrp(resultSet.getDouble("CRP"));
 
+            labData.setAntistreptolysin(resultSet.getDouble("ANTI_STREP_O"));
+
+            labData.setHepatitisB(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("HEP_B")));
+            labData.setHepatitisC(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("HEP_C")));
+
+            labData.setHivAntibody(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("HIV")));
+
+            labData.setDnaTakenFactorH(resultSet.getBoolean("DNA_FACTOR_H"));
+
+            labData.setEbv(LabDataDaoImpl.this
+                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, resultSet.getInt("EBV")));
+            labData.setCmvSerology(LabDataDaoImpl.this.<LabData.Immunoglobulins>getEnumValue(
+                    LabData.Immunoglobulins.class, resultSet.getInt("CMV")));
+            labData.setCmvSymptomatic(resultSet.getBoolean("CMV_SYM"));
+
+            // Three more commented within code: BKV and BKV_SYM and HANTAVIRUS
+
+            labData.setParvovirusAntibody(LabDataDaoImpl.this.<LabData.PositiveNegativeNotDone>getEnumValue(
+                    LabData.PositiveNegativeNotDone.class, resultSet.getInt("PARVO_ANTIB")));
+            labData.setOtherInfection(resultSet.getBoolean("OTHER_INFECT"));
+            labData.setOtherInfectionDetail(resultSet.getString("OTHER_INFECT_SP"));
+
+            labData.setUrineVolume(resultSet.getDouble("UR_VOL_24H"));
+            labData.setUrineVolumeCondition(LabDataDaoImpl.this
+                    .<LabData.UrineVolumeCondition>getEnumValue(LabData.UrineVolumeCondition.class,
+                            resultSet.getInt("UR_VOL_24H_COND")));
+
+            labData.setHaematuria(LabDataDaoImpl.this
+                    .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, resultSet.getInt("HAEMATURIA")));
+            labData.setAlbuminuria(LabDataDaoImpl.this
+                    .<LabData.Albuminuria>getEnumValue(LabData.Albuminuria.class, resultSet.getInt("HAEMATURIA")));
+
+            labData.setDysmorphicErythrocytes(LabDataDaoImpl.this
+                    .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("DYS_ERYTH_URINE")));
+            labData.setRedCellCast(LabDataDaoImpl.this
+                    .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("RED_CCASTS_URINE")));
+            labData.setWhiteCellCasts(LabDataDaoImpl.this
+                    .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("WBC_CASTS_URINE")));
+
+            labData.setLeucocytesUrine(resultSet.getBoolean("LEUC_URINE"));
+            labData.setNitrite(resultSet.getBoolean("NITRITE"));
+            labData.setBacteria(resultSet.getBoolean("BACT_URINE"));
+            labData.setGlucose(resultSet.getBoolean("GLUC_URINE"));
+
+            // Osmolarity is within the database as varchar but validated on legacy frontend as integer
+            // So within our model keep it as a double and do the conversion here
+            labData.setOsmolality(resultSet.getDouble("OSMOLARITY"));
+
+            labData.setProteinuria(LabDataDaoImpl.this
+                    .<LabData.Proteinuria>getEnumValue(LabData.Proteinuria.class, resultSet.getInt("PROTEINURIA_DIP")));
+
+            labData.setSequenceNumber(resultSet.getInt("SEQ_NO"));
+            labData.setAntiClqAntibodies(resultSet.getDouble("ANTI_CLQ"));
 
             return labData;
         }
