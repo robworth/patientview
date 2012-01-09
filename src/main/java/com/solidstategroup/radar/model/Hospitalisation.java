@@ -4,8 +4,17 @@ import java.util.Date;
 
 public class Hospitalisation extends BaseModel {
 
+    private Long radarNumber;
     private Date dateOfAdmission, dateOfDischarge;
     private String reason, comments;
+
+    public Long getRadarNumber() {
+        return radarNumber;
+    }
+
+    public void setRadarNumber(Long radarNumber) {
+        this.radarNumber = radarNumber;
+    }
 
     public Date getDateOfAdmission() {
         return dateOfAdmission;
