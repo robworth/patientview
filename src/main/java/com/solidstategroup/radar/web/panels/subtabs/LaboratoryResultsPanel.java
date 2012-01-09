@@ -38,7 +38,7 @@ public class LaboratoryResultsPanel extends Panel {
         final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(new LabData()));
         add(form);
 
-        RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("labResultsDate", new Model<Date>(), RadarApplication.DATE_PATTERN, form, feedbackList);
+        RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("date", RadarApplication.DATE_PATTERN, form, feedbackList);
         form.add(labResultsDate);
 
         // Blood fields

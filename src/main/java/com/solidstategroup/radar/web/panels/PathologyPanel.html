@@ -55,22 +55,9 @@
     </tr>
     <tr>
         <td>Date of Biopsy
-            <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtBX_DATE"
-                   name="ctl00$ContentPlaceHolder1$txtBX_DATE">
-
-            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                   id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
-
-            <span style="color:Red;font-weight:bold;visibility:hidden;"
-                  id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>&nbsp;<span
-                    style="color:Red;display:none;"
-                    id="ctl00_ContentPlaceHolder1_CompareValidator1">Date of Biopsy</span>
-            &nbsp;<input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
-                         id="ctl00_ContentPlaceHolder1_txtDateToday" value="22-12-2011"
-                         name="ctl00$ContentPlaceHolder1$txtDateToday">
-            &nbsp;<span style="color:#B6DF9F;background-color:#B6DF9F;" id="ctl00_ContentPlaceHolder1_lblPid"></span>
-            &nbsp;<input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
-                         id="ctl00_ContentPlaceHolder1_txtSEQ_NO" value="0" name="ctl00$ContentPlaceHolder1$txtSEQ_NO">
+            <input wicket:id="biopsyDate" type="text" style="width:70px;">
+            <span class="feedback" wicket:id="biopsyDateFeedback"></span>
+            <span wicket:id="biopsyDateFeedbackIndicator"></span>
         </td>
         <td class="style2"><strong>Diagnosis</strong></td>
         <td class="style2">
@@ -85,8 +72,7 @@
 <tbody>
 <tr>
     <td style="height:40px;" colspan="3">
-        <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew2"
-               value="Save" name="ctl00$ContentPlaceHolder1$btnSaveNew2">
+        <input type="button" class="saveBtn" wicket:id="save" value="Save">
         &nbsp;
 
         &nbsp;
@@ -254,9 +240,9 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td><input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSaveNew"
-                       value="Save" wicket:id="save">
-                <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span></td>
+            <td><input type="button" class="saveBtn" wicket:id="saveDown"
+                       value="Save">
+             </td>
         </tr>
         </tbody>
     </table>
@@ -419,8 +405,7 @@
             <tr>
                 <td>
                     Total No
-                    <span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_RangeValidator1">0-150</span>
+                    <span class="feedback" wicket:id="totalNumberFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_TOTAL_NO"
@@ -430,8 +415,7 @@
             <tr>
                 <td>
                     No globally Sclerosed&nbsp;
-                    <span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_RangeValidator2">0-150</span>
+                    <span class="feedback" wicket:id="numberSclerosedFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_GLOB_SCL"
@@ -441,7 +425,7 @@
             <tr>
                 <td>
                     No segmentally sclerosed&nbsp;
-                    <span style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_RangeValidator3">0-150</span>
+                    <span class="feedback" wicket:id="numberSegmentallySclerosedFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_SEQ_SCL"
@@ -451,20 +435,18 @@
             <tr>
                 <td>
                     No with cellular/fibrocellular crescents<br>
-                    &nbsp;<span style="color:Red;display:none;"
-                                id="ctl00_ContentPlaceHolder1_RangeValidator4">0-150</span>
+                    <span class="feedback" wicket:id="numberCellularCrescentsFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150"
-                           id="ctl00_ContentPlaceHolder1_txtGLOM_CELL_CRES" maxlength="3"
+                            maxlength="3"
                             wicket:id="numberCellularCrescents"/>
                 </td>
             </tr>
             <tr>
                 <td>
                     No with fibrous crescents&nbsp;
-                    <span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_RangeValidator5">0-150</span>
+                    <span class="feedback" wicket:id="numberFibrousCrescentsFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIB_CRES"
@@ -474,20 +456,17 @@
             <tr>
                 <td>
                     No with endocapillary hypercellularity<br>
-                    &nbsp;<span style="color:Red;display:none;"
-                                id="ctl00_ContentPlaceHolder1_RangeValidator6">0-150</span>
+                    <span class="feedback" wicket:id="numberEndocapillaryHypercelluarityFeedback"></span>
                 </td>
                 <td>
-                    <input type="text" style="width:50px;" title="0-150"
-                           id="ctl00_ContentPlaceHolder1_txtGLOM_END_HYPER" maxlength="3"
+                    <input type="text" style="width:50px;" title="0-150" maxlength="3"
                            wicket:id="numberEndocapillaryHypercelluarity"/>
                 </td>
             </tr>
             <tr>
                 <td>
                     No with fibrinoid necrosis&nbsp;
-                    <span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_RangeValidator7">1-150</span>
+                    <span class="feedback" wicket:id="numberFibrinoidNecrosisFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIN_NEC"
