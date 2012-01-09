@@ -275,7 +275,7 @@ public class TreatmentPanel extends Panel {
             ImmunosuppressionTreatment treatment = getModelObject();
             Date start = treatment.getStartDate();
             Date end = treatment.getEndDate();
-            if(start != null && end != null && start.compareTo(end) < 0) {
+            if(start != null && end != null && start.compareTo(end) == 1) {
                 endDate.error("End date cannot be less than start date");
             }
         }
@@ -313,7 +313,7 @@ public class TreatmentPanel extends Panel {
             Plasmapheresis plasmapheresis = getModelObject();
             Date start = plasmapheresis.getStartDate();
             Date end = plasmapheresis.getEndDate();
-            if(start != null && end != null && start.compareTo(end) < 0) {
+            if(start != null && end != null && start.compareTo(end) == 1) {
                 endDate.error("End date cannot be less than start date");
             }
         }

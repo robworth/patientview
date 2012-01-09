@@ -19,6 +19,8 @@
 
 <div wicket:id="clinicalFeaturesContainer">
 
+<form wicket:id="form">
+
 <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;" class="style1">
 
     <tbody>
@@ -44,21 +46,9 @@
     </tr>
     <tr>
         <td>Date of Clinical Picture
-            <input type="text" style="width:70px;" id="ctl00_ContentPlaceHolder1_txtDateClinicalPic" value="09/11/2010"
-                   name="ctl00$ContentPlaceHolder1$txtDateClinicalPic">
-
-            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                   id="ctl00_ContentPlaceHolder1_ImageButton1" name="ctl00$ContentPlaceHolder1$ImageButton1">
-
-            <span style="color:Red;font-weight:bold;visibility:hidden;"
-                  id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>&nbsp;<span
-                    style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_CompareValidator1">&lt;=Today</span>
-            &nbsp;<input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
-                         id="ctl00_ContentPlaceHolder1_txtDateToday" value="28-12-2011"
-                         name="ctl00$ContentPlaceHolder1$txtDateToday">
-            &nbsp;
-            <input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
-                   id="ctl00_ContentPlaceHolder1_txtSEQ_NO" value="1" name="ctl00$ContentPlaceHolder1$txtSEQ_NO">
+            <input wicket:id="clinicalPictureDate" type="text" style="width:70px;">
+            <span class="feedback" wicket:id="clinicalPictureDateFeedback"></span>
+            <span class="feedback" wicket:id="clinicalPictureDateFeedbackIndicator"></span>
         </td>
         <td class="style2"><strong>Diagnosis</strong></td>
         <td class="style2">
@@ -69,7 +59,6 @@
     </tbody>
 </table>
 
-<form wicket:id="form">
 
 <table class="style1" style="width: 100%; background-color:#EEF6ED;">
 <tbody>
@@ -79,9 +68,7 @@
         <tbody>
         <tr>
             <td colspan="2" class="style7">
-                <input type="submit" class="saveBtn" value="Save" wicket:id="saveLink"/>
-                &nbsp;
-                <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+                <input type="submit" class="saveBtn" value="Save" wicket:id="save"/>
             </td>
         </tr>
         <tr>
@@ -92,22 +79,24 @@
             <td class="style4">Height cm</td>
             <td>
                 <input type="text" style="width:40px;" wicket:id="height"/>
-                &nbsp;<span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator1">35.0-185.0</span>
+                <span class="feedback" wicket:id="heightFeedback"></span>
             </td>
         </tr>
         <tr>
             <td class="style4">Weight Kg</td>
             <td>
                 <input type="text" style="width:40px;" wicket:id="weight"/>
+                <span class="feedback" wicket:id="weightFeedback"></span>
             </td>
         </tr>
         <tr>
             <td class="style4">BP</td>
             <td>
                 <input type="text" style="width:40px;" wicket:id="systolicBloodPressure">
+                <span class="feedback" wicket:id="systolicBloodPressureFeedback"></span>
                 &nbsp;<strong>/</strong>&nbsp;
                 <input type="text" style="width:40px;" wicket:id="diastolicBloodPressure"/>
-                &nbsp;
+                <span class="feedback" wicket:id="diastolicBloodPressureFeedback"></span>
                 <input type="text" style="font-style:italic;width:40px;" disabled="disabled" readonly="readonly"
                        wicket:id="meanArterialPressure"/>
                 &nbsp;MAP
@@ -283,12 +272,7 @@
 </tr>
 <tr>
     <td>
-        <input type="submit" style="height: 24px" class="saveBtn" value="Save" wicket:id="saveLinkBottom"/>
-        &nbsp;&nbsp;
-        &nbsp;<span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
-
-        <div style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
-        </div>
+        <input type="submit" style="height: 24px" class="saveBtn" value="Save" wicket:id="saveDown"/>
     </td>
     <td>&nbsp;</td>
 </tr>
