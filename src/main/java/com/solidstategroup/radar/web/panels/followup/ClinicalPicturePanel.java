@@ -1,9 +1,13 @@
 package com.solidstategroup.radar.web.panels.followup;
 
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
+import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
+import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -16,9 +20,15 @@ import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.validation.validator.RangeValidator;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class ClinicalPicturePanel extends Panel {
 
@@ -26,6 +36,26 @@ public class ClinicalPicturePanel extends Panel {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+
+        final TextField diastolicBloodPressure = new TextField("diastolicBloodPressure");
+
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
+        Form<ClinicalData> form =
+                new Form<ClinicalData>("form", new CompoundPropertyModel<ClinicalData>(new ClinicalData())) {
+                   protected void onValidateModelObjects() {
+                        super.onValidateModelObjects();
+                        ClinicalData clinicalData = getModelObject();
+                        Integer systolicBloodPressureVal = clinicalData.getSystolicBloodPressure();
+                        Integer diastolicBloodPressureVal = clinicalData.getDiastolicBloodPressure();
+                        if (systolicBloodPressureVal != null && diastolicBloodPressureVal != null) {
+                            if (!(systolicBloodPressureVal.compareTo(diastolicBloodPressureVal) > 0)) {
+                                diastolicBloodPressure.error("This value has to be less than the first value");
+                            }
+                        }
+
+                    }
+                };
 
         // Add the visits drop down
         add(new DropDownChoice("previousVisits"));
@@ -41,30 +71,36 @@ public class ClinicalPicturePanel extends Panel {
         MarkupContainer clinicalFeaturesContainer = new WebMarkupContainer("clinicalFeaturesContainer");
         add(clinicalFeaturesContainer);
 
-        Form<ClinicalData> form =
-                new Form<ClinicalData>("form", new CompoundPropertyModel<ClinicalData>(new ClinicalData()));
         clinicalFeaturesContainer.add(form);
 
-        // Save button
-        AjaxSubmitLink saveLink = new AjaxSubmitLink("saveLink") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-        };
-        form.add(saveLink);
+        RadarRequiredDateTextField clinicalPictureDate = new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+        form.add(clinicalPictureDate);
 
         // Height, weight, blood pressure
-        form.add(new TextField("height"));
-        form.add(new TextField("weight"));
-        form.add(new TextField("systolicBloodPressure"));
-        form.add(new TextField("diastolicBloodPressure"));
-        form.add(new TextField("meanArterialPressure"));
+        RadarTextFieldWithValidation height = new RadarTextFieldWithValidation("height", new RangeValidator<Double>(35.0, 185.0), form, componentsToUpdate);
+        form.add(height);
+
+        RadarTextFieldWithValidation weight = new RadarTextFieldWithValidation("weight", new RangeValidator<Double>(3.0, 100.0), form, componentsToUpdate);
+        form.add(weight);
+        // Blood pressure
+        TextField<Double> systolicBloodPressure = new TextField("systolicBloodPressure");
+        systolicBloodPressure.add(new RangeValidator<Integer>(50, 200));
+        form.add(systolicBloodPressure);
+
+        final ComponentFeedbackPanel systolicBloodPressureFeedback = new ComponentFeedbackPanel("systolicBloodPressureFeedback", systolicBloodPressure);
+        systolicBloodPressureFeedback.setOutputMarkupId(true);
+        systolicBloodPressureFeedback.setOutputMarkupPlaceholderTag(true);
+        form.add(systolicBloodPressureFeedback);
+
+        diastolicBloodPressure.add(new RangeValidator<Integer>(20, 150));
+        form.add(diastolicBloodPressure);
+
+        final ComponentFeedbackPanel diastolicBloodPressureFeedback = new ComponentFeedbackPanel("diastolicBloodPressureFeedback", diastolicBloodPressure);
+        diastolicBloodPressureFeedback.setOutputMarkupId(true);
+        diastolicBloodPressureFeedback.setOutputMarkupPlaceholderTag(true);
+        form.add(diastolicBloodPressureFeedback);
+
+        form.add(new TextField("meanArterialPressure").setEnabled(false));
 
         // Phenotypes
         // Todo: Only visible for certain diagnosis
@@ -109,19 +145,25 @@ public class ClinicalPicturePanel extends Panel {
         // Listed for transplant?
         form.add(new YesNoRadioGroup("listedForTransplant"));
 
-        // Save button at bottom of page
-        AjaxSubmitLink saveLinkBottom = new AjaxSubmitLink("saveLinkBottom") {
+        ClinicalAjaxSubmitLink save = new ClinicalAjaxSubmitLink("save") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+            protected List<? extends Component> getComponentsToUpdate() {
+                return componentsToUpdate;
             }
         };
-        form.add(saveLinkBottom);
+
+        ClinicalAjaxSubmitLink saveDown = new ClinicalAjaxSubmitLink("saveDown") {
+            @Override
+            protected List<? extends Component> getComponentsToUpdate() {
+                return componentsToUpdate;
+            }
+        };
+
+       componentsToUpdate.add(systolicBloodPressureFeedback);
+       componentsToUpdate.add(diastolicBloodPressureFeedback);
+
+        form.add(save, saveDown);
+
     }
 
     private final class CkdStageRadioGroup extends RadioGroup<ClinicalData.CkdStage> {
@@ -161,5 +203,24 @@ public class ClinicalPicturePanel extends Panel {
     @Override
     public boolean isVisible() {
         return ((FollowUpPanel) getParent()).getCurrentTab().equals(FollowUpPanel.CurrentTab.CLINICAL_PICTURE);
+    }
+
+         private abstract class ClinicalAjaxSubmitLink extends AjaxSubmitLink{
+
+        public ClinicalAjaxSubmitLink(String id) {
+            super(id);
+        }
+
+        @Override
+        public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+        }
+
+        @Override
+        protected void onError(AjaxRequestTarget target, Form<?> form) {
+            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+        }
+
+        protected abstract List<? extends Component> getComponentsToUpdate();
     }
 }

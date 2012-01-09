@@ -33,9 +33,6 @@
     </tr>
     <tr>
         <td>
-            <input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
-                   id="ctl00_ContentPlaceHolder1_txtDateToday" value="28-12-2011"
-                   name="ctl00$ContentPlaceHolder1$txtDateToday">
         </td>
         <td style="width:100px; text-align:right;">Diagnosis</td>
         <td>
@@ -285,29 +282,29 @@
     <tr>
         <td valign="top">
             <input type="text" style="height:15px;width:70px;" wicket:id="date"/>
-            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                   id="ctl00_ContentPlaceHolder1_ImageButton1"
-                   name="ctl00$ContentPlaceHolder1$ImageButton1">
+            <span class="feedback" wicket:id="dateFeedback"></span>
+            <span wicket:id="dateFeedbackIndicator"></span>
         </td>
-        <td valign="middle"><select wicket:id="type"/></td>
+        <td valign="middle">
+            <select wicket:id="type"/>
+            <span wicket:id="typeFeedbackIndicator"></span>
+        </td>
 
-        <td class="style4" wicket:id="recurr">
+        <td class="style4">
+            <span wicket:id="recurr">
             <input type="radio" wicket:id="yes"/><label wicket:id="yesLabel">Yes</label>
             &nbsp;
             <input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label>
+            </span>
         </td>
 
         <td valign="baseline" class="style5">
             <input type="text" style="height:15px;width:70px;" wicket:id="dateRecurr"/>
-            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                   id="ctl00_ContentPlaceHolder1_ImageButton2"
-                   name="ctl00$ContentPlaceHolder1$ImageButton2"></td>
+            <span class="feedback" wicket:id="dateRecurrFeedback"></span>
+        </td>
         <td class="style5">
             <input type="text" style="height:15px;width:70px;" wicket:id="dateFailure"/>
-            <input type="image" style="border-width:0px;"
-                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$imgBtn23&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                   src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_imgBtn23"
-                   name="ctl00$ContentPlaceHolder1$imgBtn23">
+            <span class="feedback" wicket:id="dateFailureFeedback"></span>
         </td>
         <td><input type="submit" value="Add" wicket:id="add"/></td>
     </tr>
