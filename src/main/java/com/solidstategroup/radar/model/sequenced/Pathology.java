@@ -6,7 +6,18 @@ import java.util.Date;
 
 public class Pathology extends SequencedModel {
 
-    public enum Side {LEFT, RIGHT}
+    public enum Side {
+        LEFT(1), RIGHT(2);
+        private int id;
+
+        Side(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
 
     private Date biopsyDate;
 

@@ -17,6 +17,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="pathologyDao" class="com.solidstategroup.radar.dao.impl.PathologyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="therapyDao" class="com.solidstategroup.radar.dao.impl.TherapyDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
