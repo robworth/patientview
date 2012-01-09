@@ -5,6 +5,9 @@ import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.RadarDatePicker;
+import com.solidstategroup.radar.web.components.RadarDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredTextField;
+import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -28,6 +31,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.RangeValidator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,60 +61,38 @@ public class DiagnosisPanel extends Panel {
                 ClinicalPresentation cpa = diagnosis.getClinicalPresentationA();
                 ClinicalPresentation cpb = diagnosis.getClinicalPresentationB();
 
-                if(cpa != null && cpb != null && cpa == cpb) {
+                if(cpa != null && cpb != null && cpa.equals(cpb)) {
                     clinicalPresentationA.error("A and B cannot be the same");
                 }
             }
         };
         add(form);
 
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
+
         form.add(new DropDownChoice<DiagnosisCode>("diagnosisCode"));
         form.add(new TextArea("text"));
         form.add(new Label("diagnosisOrBiopsy", "Date of original biopsy"));
 
-        DateTextField biopsyDate = DateTextField.forDatePattern("biopsyDate", RadarApplication.DATE_PATTERN);
-        biopsyDate.add(new RadarDatePicker());
+        RadarDateTextField biopsyDate = new RadarDateTextField("biopsyDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
         form.add(biopsyDate);
 
-        final ComponentFeedbackPanel biopsyDateFeedback = new ComponentFeedbackPanel("biopsyDateFeedback", biopsyDate);
-        biopsyDateFeedback.setOutputMarkupId(true);
-        biopsyDateFeedback.setOutputMarkupPlaceholderTag(true);
-        form.add(biopsyDateFeedback);
-
-
-        DateTextField esrfDate = DateTextField.forDatePattern("esrfDate", RadarApplication.DATE_PATTERN);
+        RadarDateTextField esrfDate = new RadarDateTextField("esrfDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
         form.add(esrfDate);
-        esrfDate.add(new RadarDatePicker());
-
-        final ComponentFeedbackPanel esrfDateFeedback = new ComponentFeedbackPanel("esrfDateFeedback", esrfDate);
-        esrfDateFeedback.setOutputMarkupId(true);
-        esrfDateFeedback.setOutputMarkupPlaceholderTag(true);
-        form.add(esrfDateFeedback);
 
         form.add(new TextField("ageAtDiagnosis"));
         form.add(new CheckBox("prepubertalAtDiagnosis"));
-        final TextField heightAtDiagnosis = new TextField("heightAtDiagnosis");
 
-        heightAtDiagnosis.add(new AjaxEventBehavior("onchange") {
-            @Override
-            protected void onEvent(AjaxRequestTarget target) {
-                heightAtDiagnosis.add(new RangeValidator<Double>(35.0, 185.0));
-            }
-        });
-
+        final RadarTextFieldWithValidation heightAtDiagnosis = new RadarTextFieldWithValidation("heightAtDiagnosis", new RangeValidator<Double>(35.0, 185.0), form, componentsToUpdate);
         form.add(heightAtDiagnosis);
 
-        final ComponentFeedbackPanel heightAtDiagnosisFeedback = new ComponentFeedbackPanel("heightAtDiagnosisFeedback", heightAtDiagnosis);
-        heightAtDiagnosisFeedback.setOutputMarkupId(true);
-        heightAtDiagnosisFeedback.setOutputMarkupPlaceholderTag(true);
-        form.add(heightAtDiagnosisFeedback);
 
         final DropDownChoice <ClinicalPresentation> clinicalPresentationB = new DropDownChoice<ClinicalPresentation>("clinicalPresentationB", clinicalPresentationList, clinicalPresentationChoiceRenderer);
         clinicalPresentationB.setOutputMarkupId(true);
         clinicalPresentationB.setOutputMarkupPlaceholderTag(true);
 
         form.add(clinicalPresentationA, clinicalPresentationB);
-        form.add(DateTextField.forDatePattern("onsetSymptomsDate", RadarApplication.DATE_PATTERN));
+        form.add(new RadarDateTextField("onsetSymptomsDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate));
 
         ComponentFeedbackPanel clinicalPresentationFeedback = new ComponentFeedbackPanel("clinicalPresentationFeedback", clinicalPresentationA);
         clinicalPresentationFeedback.setOutputMarkupId(true);
@@ -158,7 +140,7 @@ public class DiagnosisPanel extends Panel {
         form.add(new DiagnosisRelativePanel("relative5Container", 5));
         form.add(new DiagnosisRelativePanel("relative6Container", 6));
 
-        final List<? extends Component> componentsToUpdate = Arrays.asList(heightAtDiagnosisFeedback, biopsyDateFeedback, esrfDateFeedback, clinicalPresentationFeedback);
+        componentsToUpdate.add(clinicalPresentationFeedback);
 
         DiagnosisAjaxSubmitLink save = new DiagnosisAjaxSubmitLink("save") {
             @Override
