@@ -1,0 +1,16 @@
+package com.solidstategroup.radar.test.web;
+
+import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
+import org.junit.Test;
+
+public class TestPatientRegistrationPage extends BasePageTest {
+
+    @Test
+    public void testPatientRegistrationPage() throws Exception {
+        // Start and render registration page
+        tester.startPage(PatientRegistrationPage.class);
+
+        // Assert rendered
+        tester.assertRenderedPage(PatientRegistrationPage.class);
+    }
+}

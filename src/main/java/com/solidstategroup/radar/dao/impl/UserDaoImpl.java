@@ -1,19 +1,38 @@
 package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.util.TripleDes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+
+    private UtilityDao utilityDao;
+    private SimpleJdbcInsert patientUsersInsert;
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        patientUsersInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Patient_Users")
+                .usingGeneratedKeyColumns("pID")
+                .usingColumns("RADAR_NO", "pUserName", "pPassWord", "pDOB", "pDateReg"
+                );
+    }
 
     public PatientUser getPatientUser(String email) {
         try {
@@ -25,6 +44,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             LOGGER.debug("Could not find row in table tbl_Patient_Users with pUserName {}", email);
         }
         return null;
+    }
+
+    public void savePatientUser(final PatientUser patientUser) {
+        Number id = patientUsersInsert.executeAndReturnKey(new HashMap<String, Object>() {
+            {
+                put("RADAR_NO", patientUser.getRadarNumber());
+                put("pUserName", patientUser.getUsername());
+                put("pPassWord", patientUser.getPasswordHash());
+                put("pDOB", patientUser.getDateOfBirth());
+                put("pDateReg", patientUser.getDateRegistered());
+            }
+        });
+        patientUser.setId(id.longValue());
     }
 
     public ProfessionalUser getProfessionalUser(String email) {
@@ -52,10 +84,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             professionalUser.setEmail(resultSet.getString("uEmail"));
             professionalUser.setPhone(resultSet.getString("uPhone"));
             professionalUser.setDateRegistered(resultSet.getDate("uDateJoin"));
-            professionalUser.setPassword(resultSet.getString("uPass"));
-            professionalUser.setUsername(resultSet.getString("uUserName"));
+            professionalUser.setPasswordHash(resultSet.getBytes("uPass"));
 
-            // Todo: Centre
+            // Have to decrypt the username
+            try {
+                professionalUser.setUsername(TripleDes.decrypt(resultSet.getBytes("uUserName")));
+            } catch (Exception e) {
+                LOGGER.error("Could not set username for user {}, decryption failed", professionalUser.getEmail(), e);
+            }
+
+            // Set the centre
+            Long centreId = resultSet.getLong("uCentre");
+            if (centreId != null) {
+                professionalUser.setCentre(utilityDao.getCentre(centreId));
+            }
 
             return professionalUser;
         }
@@ -66,10 +108,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             // Construct a patient user and set all the fields, pretty trivial
             PatientUser patientUser = new PatientUser();
             patientUser.setUsername(resultSet.getString("pUserName"));
-            patientUser.setPassword(resultSet.getString("pPassWord"));
+            patientUser.setPasswordHash(resultSet.getBytes("pPassWord"));
             patientUser.setDateOfBirth(resultSet.getDate("pDOB"));
             patientUser.setDateRegistered(resultSet.getDate("pDateReg"));
             return patientUser;
         }
+    }
+
+    public void setUtilityDao(UtilityDao utilityDao) {
+        this.utilityDao = utilityDao;
     }
 }

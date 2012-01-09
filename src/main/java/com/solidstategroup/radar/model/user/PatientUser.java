@@ -4,14 +4,19 @@ import java.util.Date;
 
 public class PatientUser extends User {
 
-    private int radarNumber;
+    private long radarNumber;
     private Date dateOfBirth;
 
-    public int getRadarNumber() {
+    @Override
+    public String getSecurityRole() {
+        return User.ROLE_PATIENT;
+    }
+
+    public long getRadarNumber() {
         return radarNumber;
     }
 
-    public void setRadarNumber(int radarNumber) {
+    public void setRadarNumber(long radarNumber) {
         this.radarNumber = radarNumber;
     }
 
