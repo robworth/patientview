@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -65,27 +64,26 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
             labData.setThyroxine(resultSet.getDouble("THYROX"));
             labData.setTsh(resultSet.getDouble("TSH"));
 
-            labData.setAnca(
-                    LabDataDaoImpl.this.<LabData.Anca>getEnumValue(LabData.Anca.class, resultSet.getInt("ANCA")));
+            labData.setAnca(BaseDaoImpl.<LabData.Anca>getEnumValue(LabData.Anca.class, resultSet.getInt("ANCA")));
 
             // There is a row ELISA_ASS but again it is all commented out in current code
 
-            labData.setEna(LabDataDaoImpl.this
+            labData.setEna(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
                             resultSet.getInt("ENA")));
-            labData.setAna(LabDataDaoImpl.this
+            labData.setAna(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
                             resultSet.getInt("ANA")));
 
             labData.setDnaAntibodies(resultSet.getString("DNA_ANTIB"));
-            labData.setAntiDsDna(LabDataDaoImpl.this
+            labData.setAntiDsDna(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
                             resultSet.getInt("DNA_ANTI_DS")));
 
-            labData.setCryoglobulins(LabDataDaoImpl.this
+            labData.setCryoglobulins(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
                             resultSet.getInt("CRYOGLOB")));
-            labData.setAntiGbm(LabDataDaoImpl.this
+            labData.setAntiGbm(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
                             resultSet.getInt("ANTI_GBM")));
 
@@ -97,8 +95,9 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
             labData.setComplementC4(resultSet.getDouble("COMP_C4"));
             labData.setComplementOtherDetail(resultSet.getString("COMP_OTHER"));
 
-            labData.setC3NephriticFactor(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
-                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("C3_NEPH_FAC")));
+            labData.setC3NephriticFactor(BaseDaoImpl
+                    .<LabData.PositiveNegativeUnknown>getEnumValue(LabData.PositiveNegativeUnknown.class,
+                            resultSet.getInt("C3_NEPH_FAC")));
 
             // There is an ANTI_SLT column that doesn't seem to be used within legacy code
 
@@ -107,44 +106,43 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
 
             labData.setAntistreptolysin(resultSet.getDouble("ANTI_STREP_O"));
 
-            labData.setHepatitisB(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+            labData.setHepatitisB(BaseDaoImpl.<LabData.PositiveNegativeUnknown>getEnumValue(
                     LabData.PositiveNegativeUnknown.class, resultSet.getInt("HEP_B")));
-            labData.setHepatitisC(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+            labData.setHepatitisC(BaseDaoImpl.<LabData.PositiveNegativeUnknown>getEnumValue(
                     LabData.PositiveNegativeUnknown.class, resultSet.getInt("HEP_C")));
 
-            labData.setHivAntibody(LabDataDaoImpl.this.<LabData.PositiveNegativeUnknown>getEnumValue(
+            labData.setHivAntibody(BaseDaoImpl.<LabData.PositiveNegativeUnknown>getEnumValue(
                     LabData.PositiveNegativeUnknown.class, resultSet.getInt("HIV")));
 
             labData.setDnaTakenFactorH(resultSet.getBoolean("DNA_FACTOR_H"));
 
-            labData.setEbv(LabDataDaoImpl.this
+            labData.setEbv(BaseDaoImpl
                     .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, resultSet.getInt("EBV")));
-            labData.setCmvSerology(LabDataDaoImpl.this.<LabData.Immunoglobulins>getEnumValue(
-                    LabData.Immunoglobulins.class, resultSet.getInt("CMV")));
+            labData.setCmvSerology(BaseDaoImpl
+                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, resultSet.getInt("CMV")));
             labData.setCmvSymptomatic(resultSet.getBoolean("CMV_SYM"));
 
             // Three more commented within code: BKV and BKV_SYM and HANTAVIRUS
 
-            labData.setParvovirusAntibody(LabDataDaoImpl.this.<LabData.PositiveNegativeNotDone>getEnumValue(
+            labData.setParvovirusAntibody(BaseDaoImpl.<LabData.PositiveNegativeNotDone>getEnumValue(
                     LabData.PositiveNegativeNotDone.class, resultSet.getInt("PARVO_ANTIB")));
             labData.setOtherInfection(resultSet.getBoolean("OTHER_INFECT"));
             labData.setOtherInfectionDetail(resultSet.getString("OTHER_INFECT_SP"));
 
             labData.setUrineVolume(resultSet.getDouble("UR_VOL_24H"));
-            labData.setUrineVolumeCondition(LabDataDaoImpl.this
-                    .<LabData.UrineVolumeCondition>getEnumValue(LabData.UrineVolumeCondition.class,
-                            resultSet.getInt("UR_VOL_24H_COND")));
+            labData.setUrineVolumeCondition(BaseDaoImpl.<LabData.UrineVolumeCondition>getEnumValue(
+                    LabData.UrineVolumeCondition.class, resultSet.getInt("UR_VOL_24H_COND")));
 
-            labData.setHaematuria(LabDataDaoImpl.this
+            labData.setHaematuria(BaseDaoImpl
                     .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, resultSet.getInt("HAEMATURIA")));
-            labData.setAlbuminuria(LabDataDaoImpl.this
+            labData.setAlbuminuria(BaseDaoImpl
                     .<LabData.Albuminuria>getEnumValue(LabData.Albuminuria.class, resultSet.getInt("HAEMATURIA")));
 
-            labData.setDysmorphicErythrocytes(LabDataDaoImpl.this
+            labData.setDysmorphicErythrocytes(BaseDaoImpl
                     .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("DYS_ERYTH_URINE")));
-            labData.setRedCellCast(LabDataDaoImpl.this
+            labData.setRedCellCast(BaseDaoImpl
                     .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("RED_CCASTS_URINE")));
-            labData.setWhiteCellCasts(LabDataDaoImpl.this
+            labData.setWhiteCellCasts(BaseDaoImpl
                     .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("WBC_CASTS_URINE")));
 
             labData.setLeucocytesUrine(resultSet.getBoolean("LEUC_URINE"));
@@ -156,41 +154,13 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
             // So within our model keep it as a double and do the conversion here
             labData.setOsmolality(resultSet.getDouble("OSMOLARITY"));
 
-            labData.setProteinuria(LabDataDaoImpl.this
-                    .<LabData.Proteinuria>getEnumValue(LabData.Proteinuria.class, resultSet.getInt("PROTEINURIA_DIP")));
+            labData.setProteinuria(BaseDaoImpl.<LabData.Proteinuria>getEnumValue(LabData.Proteinuria.class,
+                    resultSet.getInt("PROTEINURIA_DIP")));
 
             labData.setSequenceNumber(resultSet.getInt("SEQ_NO"));
             labData.setAntiClqAntibodies(resultSet.getDouble("ANTI_CLQ"));
 
             return labData;
-        }
-    }
-
-    private <T> T getEnumValue(Class<T> enumClass, int id) {
-        try {
-            // Assume we've been supplied an enum with an ID field, so get the accessor method
-            Method getId = enumClass.getMethod("getId");
-            // All enums have a static values method to get an array of the possible values
-            Method method = enumClass.getMethod("values");
-
-            // Use the static method to get an array of all the possible values
-            T[] values = (T[]) method.invoke(null);
-            for (T t : values) {
-                // Get the ID field value
-                Integer thisId = (Integer) getId.invoke(t);
-                if (id == thisId) {
-                    return t;
-                }
-            }
-
-            // If we looped all the ID's and didn't find a value then return null
-            LOGGER.debug("Could not find matching value for enum {} with ID {}", enumClass, id);
-            return null;
-
-        } catch (Exception e) {
-            // This is pretty bad so lets throw a runtime exception
-            LOGGER.error("Could not get values for enum {}", enumClass);
-            throw new RuntimeException(e);
         }
     }
 

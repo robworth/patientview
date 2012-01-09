@@ -125,7 +125,6 @@ public class LabData extends SequencedModel {
         }
     }
 
-    private Long radarNumber;
     private Date date;
     
     // Blood fields
@@ -165,14 +164,6 @@ public class LabData extends SequencedModel {
 
     private Boolean otherInfection;
     private String otherInfectionDetail;
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
-    }
 
     public Date getDate() {
         return date;
