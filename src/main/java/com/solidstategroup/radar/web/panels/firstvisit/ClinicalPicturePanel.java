@@ -48,7 +48,7 @@ public class ClinicalPicturePanel extends Panel {
                         ClinicalData clinicalData = getModelObject();
                         Integer systolicBloodPressureVal = clinicalData.getSystolicBloodPressure();
                         Integer diastolicBloodPressureVal = clinicalData.getDiastolicBloodPressure();
-                        if (systolicBloodPressureVal != null && diastolicBloodPressure != null) {
+                        if (systolicBloodPressureVal != null && diastolicBloodPressureVal != null) {
                             if (!(systolicBloodPressureVal.compareTo(diastolicBloodPressureVal) > 0)) {
                                 diastolicBloodPressure.error("This value has to be less than the first value");
                             }
