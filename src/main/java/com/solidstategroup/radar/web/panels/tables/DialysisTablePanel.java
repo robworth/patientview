@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.panels.tables;
 
 import com.solidstategroup.radar.model.Modality;
+import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -27,6 +28,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DialysisTablePanel extends Panel {
@@ -103,6 +105,7 @@ public class DialysisTablePanel extends Panel {
     }
 
     private final class DialysisForm extends Form<Treatment> {
+        private RadarDateTextField endDate;
         private DialysisForm(String id, IModel<Treatment> treatmentIModel, List<Component> componentsToUpdate) {
             super(id, treatmentIModel);
 
@@ -114,7 +117,19 @@ public class DialysisTablePanel extends Panel {
 
             add(new RadarRequiredDropdownChoice("modality", modalityList, new ChoiceRenderer("type"), this, componentsToUpdate));
             add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
-            add(new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
+            endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            add(endDate);
+        }
+
+        @Override
+        protected void onValidateModelObjects() {
+            super.onValidateModelObjects();
+            Treatment treatment = getModelObject();
+            Date start = treatment.getStartDate();
+            Date end = treatment.getEndDate();
+            if (start != null && end != null && start.compareTo(end) < 0) {
+                endDate.error("End date cannot be less than start date");
+            }
         }
     }
 
