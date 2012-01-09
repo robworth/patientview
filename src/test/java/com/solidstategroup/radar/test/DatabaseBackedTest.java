@@ -82,6 +82,9 @@ public abstract class DatabaseBackedTest {
 
         // Insert, cleanly (remove everything first)
         DatabaseOperation.CLEAN_INSERT.execute(databaseDataSourceConnection, dataSet);
+
+        // Have to close the database connection
+        databaseDataSourceConnection.close();
     }
 
     private InputStream readFile(String filename) {
