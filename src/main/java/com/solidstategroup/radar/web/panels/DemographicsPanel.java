@@ -26,10 +26,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.PatternValidator;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
->>>>>>> b500e94b2682c2dff215646d903405e52a2339e3
 import java.util.Arrays;
 import java.util.List;
 

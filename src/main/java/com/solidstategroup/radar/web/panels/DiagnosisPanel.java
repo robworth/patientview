@@ -61,7 +61,7 @@ public class DiagnosisPanel extends Panel {
                 ClinicalPresentation cpa = diagnosis.getClinicalPresentationA();
                 ClinicalPresentation cpb = diagnosis.getClinicalPresentationB();
 
-                if(cpa != null && cpb != null && cpa == cpb) {
+                if(cpa != null && cpb != null && cpa.equals(cpb)) {
                     clinicalPresentationA.error("A and B cannot be the same");
                 }
             }
