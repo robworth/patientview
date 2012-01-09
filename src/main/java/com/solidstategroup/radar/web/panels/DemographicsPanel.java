@@ -64,8 +64,9 @@ public class DemographicsPanel extends Panel {
 
         form.add(diagnosis, surname, forename, dateOfBirth);
 
-
-
+        Sex tempSex = new Sex();
+        tempSex.setType("temp");
+        tempSex.setId(Long.valueOf(1));
 
         RadarRequiredDropdownChoice sex = new RadarRequiredDropdownChoice("sex", Arrays.asList(tempSex), new ChoiceRenderer<Sex>("type"), form, componentsToUpdateList);
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity");
