@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Plasmapheresis;
-import com.solidstategroup.radar.model.Relapse;
+import com.solidstategroup.radar.model.sequenced.Relapse;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.web.pages.PatientPage;
