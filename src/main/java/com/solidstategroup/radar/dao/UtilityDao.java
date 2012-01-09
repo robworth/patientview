@@ -24,5 +24,7 @@ public interface UtilityDao {
 
     List<Ethnicity> getEthnicities();
 
+    Relative getRelative(long id);
+
     List<Relative> getRelatives();
 }

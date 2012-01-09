@@ -6,6 +6,9 @@ import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,6 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilityDaoImpl.class);
 
     public Centre getCentre(long id) {
         return jdbcTemplate
@@ -43,6 +48,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public List<Ethnicity> getEthnicities() {
         return jdbcTemplate.query("SELECT * FROM tbl_Ethnicity", new EthnicityRowMapper());
+    }
+
+    public Relative getRelative(long id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Relative WHERE rID = ?", new Object[]{id},
+                    new RelativeRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get relative with ID {}", id);
+            return null;
+        }
     }
 
     public List<Relative> getRelatives() {

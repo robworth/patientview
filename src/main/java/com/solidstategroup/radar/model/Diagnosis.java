@@ -12,11 +12,30 @@ public class Diagnosis extends BaseModel {
     }
 
     public enum MutationYorN {
-        Y, N
+        Y(1), N(0);
+        private int id;
+
+        MutationYorN(int id) {
+            // This is actually a bit in the DB, but use this to avoid any more code
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum MutationSorSN {
-        S, SN
+        S(1), SN(0);
+        private int id;
+
+        MutationSorSN(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum SteroidResistance {
@@ -29,7 +48,9 @@ public class Diagnosis extends BaseModel {
         }
     }
 
+    private Long radarNumber;
     private DiagnosisCode diagnosisCode;
+
     private String text;
     private Date biopsyDate;
     private Date esrfDate;
@@ -59,6 +80,14 @@ public class Diagnosis extends BaseModel {
             relativeWithDiseaseRadarNumber4, relativeWithDiseaseRadarNumber5, relativeWithDiseaseRadarNumber6;
     private Relative relativeWithDisease1, relativeWithDisease2, relativeWithDisease3, relativeWithDisease4,
             relativeWithDisease5, relativeWithDisease6;
+
+    public Long getRadarNumber() {
+        return radarNumber;
+    }
+
+    public void setRadarNumber(Long radarNumber) {
+        this.radarNumber = radarNumber;
+    }
 
     public DiagnosisCode getDiagnosisCode() {
         return diagnosisCode;
