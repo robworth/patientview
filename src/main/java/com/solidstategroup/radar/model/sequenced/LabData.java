@@ -162,7 +162,9 @@ public class LabData extends SequencedModel {
     private Immunoglobulins ebv, cmvSerology;
     private Boolean cmvSymptomatic;
     private PositiveNegativeNotDone parvovirusAntibody;
+
     private Boolean otherInfection;
+    private String otherInfectionDetail;
 
     public Long getRadarNumber() {
         return radarNumber;
@@ -674,5 +676,13 @@ public class LabData extends SequencedModel {
 
     public void setOtherInfection(Boolean otherInfection) {
         this.otherInfection = otherInfection;
+    }
+
+    public String getOtherInfectionDetail() {
+        return otherInfectionDetail;
+    }
+
+    public void setOtherInfectionDetail(String otherInfectionDetail) {
+        this.otherInfectionDetail = otherInfectionDetail;
     }
 }
