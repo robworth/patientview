@@ -65,7 +65,7 @@ public class PathologyDaoImpl extends BaseDaoImpl implements PathologyDao {
 
             pathology.setEstimatedTubules(resultSet.getDouble("TUB_ATROP_IF_EST"));
             pathology.setMeasuredTubules(resultSet.getDouble("TUB_ATROP_IF_MEAS"));
-            pathology.setOtherFeature(resultSet.getString("TUB_OTHER_FEAT"));
+            pathology.setTubulesOtherFeature(resultSet.getString("TUB_OTHER_FEAT"));
 
             pathology.setElectronMicroscopicFindings(resultSet.getString("ELECT_MSCOPE_FIND"));
 
