@@ -25,6 +25,10 @@ public class TripleDes {
     // I think the last few values overflow and that's how they were in VB, going to try same here
     private static final byte[] ivBytes = {65, 110, 68, 26, 69, (byte) 178, (byte) 200, (byte) 219};
 
+    private TripleDes() {
+        // Hide constructor for utility class
+    }
+
     public static byte[] encrypt(String message) throws Exception {
         final Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
         final byte[] plainTextBytes = message.getBytes(CHARSET_NAME);
