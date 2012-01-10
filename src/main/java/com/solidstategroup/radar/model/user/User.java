@@ -71,6 +71,7 @@ public abstract class User extends BaseModel implements UserDetails {
     }
 
     public void setPasswordHash(byte[] passwordHash) {
-        this.passwordHash = passwordHash;
+        // Copy array
+        this.passwordHash = Arrays.copyOf(passwordHash, passwordHash.length);
     }
 }
