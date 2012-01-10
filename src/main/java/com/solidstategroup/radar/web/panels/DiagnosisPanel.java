@@ -3,17 +3,16 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.model.ClinicalPresentation;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.Karotype;
 import com.solidstategroup.radar.web.RadarApplication;
-import com.solidstategroup.radar.web.components.RadarDatePicker;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
-import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -47,25 +46,30 @@ public class DiagnosisPanel extends Panel {
         tempClinicalPresentation.setName("temp");
         List<ClinicalPresentation> clinicalPresentationList = Arrays.asList(tempClinicalPresentation);
 
-        IChoiceRenderer<ClinicalPresentation> clinicalPresentationChoiceRenderer = new ChoiceRenderer<ClinicalPresentation>("name");
+        IChoiceRenderer<ClinicalPresentation> clinicalPresentationChoiceRenderer =
+                new ChoiceRenderer<ClinicalPresentation>("name");
 
-        final DropDownChoice <ClinicalPresentation> clinicalPresentationA = new DropDownChoice<ClinicalPresentation>("clinicalPresentationA", clinicalPresentationList, clinicalPresentationChoiceRenderer);
+        final DropDownChoice<ClinicalPresentation> clinicalPresentationA =
+                new DropDownChoice<ClinicalPresentation>("clinicalPresentationA", clinicalPresentationList,
+                        clinicalPresentationChoiceRenderer);
         clinicalPresentationA.setOutputMarkupId(true);
         clinicalPresentationA.setOutputMarkupPlaceholderTag(true);
 
-        Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis())) {
-            @Override
-            protected void onValidateModelObjects() {
-                super.onValidateModelObjects();
-                Diagnosis diagnosis = (Diagnosis) getModelObject();
-                ClinicalPresentation cpa = diagnosis.getClinicalPresentationA();
-                ClinicalPresentation cpb = diagnosis.getClinicalPresentationB();
+        final Form<Diagnosis> form =
+                new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis())) {
+                    @Override
+                    protected void onValidateModelObjects() {
+                        super.onValidateModelObjects();
+                        Diagnosis diagnosis = getModelObject();
+                        ClinicalPresentation presentationA = diagnosis.getClinicalPresentationA();
+                        ClinicalPresentation presentationB = diagnosis.getClinicalPresentationB();
 
-                if(cpa != null && cpb != null && cpa.equals(cpb)) {
-                    clinicalPresentationA.error("A and B cannot be the same");
-                }
-            }
-        };
+                        // Validate that the two aren't the same
+                        if (presentationA != null && presentationB != null && presentationA.equals(presentationB)) {
+                            clinicalPresentationA.error("A and B cannot be the same");
+                        }
+                    }
+                };
         add(form);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
@@ -74,27 +78,34 @@ public class DiagnosisPanel extends Panel {
         form.add(new TextArea("text"));
         form.add(new Label("diagnosisOrBiopsy", "Date of original biopsy"));
 
-        RadarDateTextField biopsyDate = new RadarDateTextField("biopsyDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+        RadarDateTextField biopsyDate =
+                new RadarDateTextField("biopsyDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
         form.add(biopsyDate);
 
-        RadarDateTextField esrfDate = new RadarDateTextField("esrfDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+        RadarDateTextField esrfDate =
+                new RadarDateTextField("esrfDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
         form.add(esrfDate);
 
         form.add(new TextField("ageAtDiagnosis"));
         form.add(new CheckBox("prepubertalAtDiagnosis"));
 
-        final RadarTextFieldWithValidation heightAtDiagnosis = new RadarTextFieldWithValidation("heightAtDiagnosis", new RangeValidator<Double>(35.0, 185.0), form, componentsToUpdate);
+        final RadarTextFieldWithValidation heightAtDiagnosis =
+                new RadarTextFieldWithValidation("heightAtDiagnosis", new RangeValidator<Double>(35.0, 185.0), form,
+                        componentsToUpdate);
         form.add(heightAtDiagnosis);
 
 
-        final DropDownChoice <ClinicalPresentation> clinicalPresentationB = new DropDownChoice<ClinicalPresentation>("clinicalPresentationB", clinicalPresentationList, clinicalPresentationChoiceRenderer);
+        final DropDownChoice<ClinicalPresentation> clinicalPresentationB =
+                new DropDownChoice<ClinicalPresentation>("clinicalPresentationB", clinicalPresentationList,
+                        clinicalPresentationChoiceRenderer);
         clinicalPresentationB.setOutputMarkupId(true);
         clinicalPresentationB.setOutputMarkupPlaceholderTag(true);
 
         form.add(clinicalPresentationA, clinicalPresentationB);
         form.add(new RadarDateTextField("onsetSymptomsDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate));
 
-        ComponentFeedbackPanel clinicalPresentationFeedback = new ComponentFeedbackPanel("clinicalPresentationFeedback", clinicalPresentationA);
+        ComponentFeedbackPanel clinicalPresentationFeedback =
+                new ComponentFeedbackPanel("clinicalPresentationFeedback", clinicalPresentationA);
         clinicalPresentationFeedback.setOutputMarkupId(true);
         clinicalPresentationFeedback.setOutputMarkupPlaceholderTag(true);
         form.add(clinicalPresentationFeedback);
@@ -127,6 +138,22 @@ public class DiagnosisPanel extends Panel {
         form.add(new DiagnosisGeneMutationPanel("actn4Container"));
         form.add(new DiagnosisGeneMutationPanel("lamb2Container"));
         form.add(new DiagnosisGeneMutationPanel("otherContainer"));
+
+        // Other gene mutation container
+        MarkupContainer otherGeneMutationContainer = new WebMarkupContainer("otherGeneMutationContainer") {
+            @Override
+            public boolean isVisible() {
+                // Only show if other is checked Y
+                return Diagnosis.MutationYorN.Y.equals(form.getModelObject().getMutationYorN9());
+            }
+        };
+        otherGeneMutationContainer.setOutputMarkupId(true);
+        otherGeneMutationContainer.setOutputMarkupPlaceholderTag(true);
+        otherGeneMutationContainer.add(new TextArea("otherGeneMutation"));
+        form.add(otherGeneMutationContainer);
+
+        // Add Karotype
+        form.add(new DropDownChoice<Karotype>("karotype"));
 
         // Parental consanguinity and family history
         form.add(new DropDownChoice("parentalConsanguinity"));
@@ -167,7 +194,7 @@ public class DiagnosisPanel extends Panel {
         return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.DIAGNOSIS);
     }
 
-    private abstract class DiagnosisAjaxSubmitLink extends AjaxSubmitLink{
+    private abstract class DiagnosisAjaxSubmitLink extends AjaxSubmitLink {
 
         public DiagnosisAjaxSubmitLink(String id) {
             super(id);
