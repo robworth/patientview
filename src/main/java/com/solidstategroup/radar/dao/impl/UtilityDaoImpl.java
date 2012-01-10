@@ -46,6 +46,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         return jdbcTemplate.query("SELECT * FROM tbl_Country", new CountryRowMapper());
     }
 
+    public Ethnicity getEthnicityByCode(String ethnicityCode) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Ethnicity WHERE eCode = ?",
+                    new Object[]{ethnicityCode}, new EthnicityRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get ethnicity with code {}", ethnicityCode);
+            return null;
+        }
+    }
+
     public List<Ethnicity> getEthnicities() {
         return jdbcTemplate.query("SELECT * FROM tbl_Ethnicity", new EthnicityRowMapper());
     }
