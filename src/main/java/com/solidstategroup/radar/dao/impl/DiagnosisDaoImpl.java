@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.ClinicalPresentation;
 import com.solidstategroup.radar.model.Diagnosis;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -29,6 +30,20 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
         }
     }
 
+    public DiagnosisCode getDiagnosisCode(long id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_DiagCode WHERE dcID = ?", new Object[]{id},
+                    new DiagnosisCodeRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get diagnosis result for ID {}", id);
+            return null;
+        }
+    }
+
+    public List<DiagnosisCode> getDiagnosisCodes() {
+        return jdbcTemplate.query("SELECT * FROM tbl_DiagCode", new DiagnosisCodeRowMapper());
+    }
+
     public ClinicalPresentation getClinicalPresentation(long id) {
         try {
             return jdbcTemplate.queryForObject("SELECT * FROM tbl_Clin_Pres WHERE cID = ?", new Object[]{id},
@@ -50,6 +65,10 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
 
             diagnosis.setId(resultSet.getLong("dID"));
             diagnosis.setRadarNumber(resultSet.getLong("RADAR_NO"));
+
+            // Set the diagnosis code
+
+            diagnosis.setDiagnosisCode(getDiagnosisCode(resultSet.getLong("DIAG")));
 
             diagnosis.setAgeAtDiagnosis(resultSet.getInt("AGE_AT_DIAG"));
             diagnosis.setHeightAtDiagnosis(resultSet.getDouble("HEIGHT_FIRST_VISIT"));
@@ -129,7 +148,6 @@ CREATE TABLE tbl_Diagnosis (
    dID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (dID),
    
     DATE_DIAG TIMESTAMP,
-   DIAG int,
    DIAG_TXT varchar(100),
    
    BX_PROVEN_DIAG varchar(1),
@@ -152,6 +170,17 @@ CREATE TABLE tbl_Diagnosis (
         }
     }
 
+    private class DiagnosisCodeRowMapper implements RowMapper<DiagnosisCode> {
+        public DiagnosisCode mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct object and set values
+            DiagnosisCode diagnosisCode = new DiagnosisCode();
+            diagnosisCode.setId(resultSet.getLong("dcID"));
+            diagnosisCode.setDescription(resultSet.getString("dcDesc"));
+            diagnosisCode.setAbbreviation(resultSet.getString("dcAbbr"));
+            return diagnosisCode;
+        }
+    }
+
     private class ClinicalPresentationRowMapper implements RowMapper<ClinicalPresentation> {
         public ClinicalPresentation mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct Clinical presentation object and set fields
@@ -165,4 +194,5 @@ CREATE TABLE tbl_Diagnosis (
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;
     }
+
 }
