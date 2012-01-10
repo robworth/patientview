@@ -14,7 +14,7 @@
                 <th scope="col">&nbsp;</th>
             </tr>
             <tr wicket:id="dialysis">
-                <td wicket:id="modality.type"/>
+                <td wicket:id="treatmentModality.type"/>
                 <td wicket:id="dateStarted"/>
                 <td wicket:id="dateStopped"/>
                 <td>
@@ -56,7 +56,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <select wicket:id="modality"/>
+                            <select wicket:id="treatmentModality"/>
                         </td>
                         <td>
                             <input type="text" style="width:80px;" wicket:id="startDate"/>
@@ -101,8 +101,8 @@
             </tr>
             <tr>
                 <td>
-                    <select style="font-size:100%;" wicket:id="modality"/>
-                    <span wicket:id="modalityFeedbackIndicator"/>
+                    <select style="font-size:100%;" wicket:id="treatmentModality"/>
+                    <span wicket:id="treatmentModalityFeedbackIndicator"/>
                 </td>
                 <td>
                     <input type="text" style="width:70px;" wicket:id="startDate"/>
