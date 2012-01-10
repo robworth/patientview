@@ -22,6 +22,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="immunosuppressionDao" class="com.solidstategroup.radar.dao.impl.ImmunosuppressionDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="labDataDao" class="com.solidstategroup.radar.dao.impl.LabDataDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
