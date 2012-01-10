@@ -2,10 +2,9 @@ package com.solidstategroup.radar.model;
 
 import java.util.Date;
 
-public class ImmunosuppressionTreatment extends BaseModel {
+public class ImmunosuppressionTreatment extends RadarModel {
 
     private Immunosuppression immunosuppression;
-    private Long radarNumber;
     private Date startDate, endDate;
     private Double cyclophosphamideTotalDose; // in g
     private boolean firstFlag; // Not sure what this is for...
@@ -16,14 +15,6 @@ public class ImmunosuppressionTreatment extends BaseModel {
 
     public void setImmunosuppression(Immunosuppression immunosuppression) {
         this.immunosuppression = immunosuppression;
-    }
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
     }
 
     public Date getStartDate() {

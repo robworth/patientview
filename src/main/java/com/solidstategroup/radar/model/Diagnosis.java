@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Corresponds to the tbl_Diagnosis table within the database.
  */
-public class Diagnosis extends BaseModel {
+public class Diagnosis extends RadarModel {
 
     public enum YesNo {
         YES, NO, UNKNOWN
@@ -48,7 +48,6 @@ public class Diagnosis extends BaseModel {
         }
     }
 
-    private Long radarNumber;
     private DiagnosisCode diagnosisCode;
 
     private String text;
@@ -80,14 +79,6 @@ public class Diagnosis extends BaseModel {
             relativeWithDiseaseRadarNumber4, relativeWithDiseaseRadarNumber5, relativeWithDiseaseRadarNumber6;
     private Relative relativeWithDisease1, relativeWithDisease2, relativeWithDisease3, relativeWithDisease4,
             relativeWithDisease5, relativeWithDisease6;
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
-    }
 
     public DiagnosisCode getDiagnosisCode() {
         return diagnosisCode;

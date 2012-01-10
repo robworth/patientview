@@ -4,20 +4,11 @@ import com.solidstategroup.radar.model.enums.RemissionAchieved;
 
 import java.util.Date;
 
-public class Plasmapheresis extends BaseModel {
+public class Plasmapheresis extends RadarModel {
 
-    private Long radarNumber;
     private Date startDate, endDate;
     private PlasmapheresisExchangeUnit plasmapheresisExchanges;
     private RemissionAchieved response;
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
-    }
 
     public Date getStartDate() {
         return startDate;
@@ -55,7 +46,7 @@ public class Plasmapheresis extends BaseModel {
     public String toString() {
         return "Plasmapheresis{" +
                 "id=" + getId() +
-                ", radarNumber=" + radarNumber +
+                ", radarNumber=" + getRadarNumber() +
                 '}';
     }
 }
