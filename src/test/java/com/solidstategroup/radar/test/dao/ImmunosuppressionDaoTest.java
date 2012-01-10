@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ImmunosuppressionDaoTest extends BaseDaoTest {
 
@@ -24,6 +23,13 @@ public class ImmunosuppressionDaoTest extends BaseDaoTest {
         assertNotNull("Immuno object was null", immunosuppressionTreatment.getImmunosuppression());
         assertEquals("Wrong immuno", "Cyclophosphamide",
                 immunosuppressionTreatment.getImmunosuppression().getDescription());
+    }
+
+    @Test
+    public void testGetImmunosuppressionTreatmentUnknown() {
+        ImmunosuppressionTreatment immunosuppressionTreatment =
+                immunosuppressionDao.getImmunosuppressionTreatment(1234L);
+        assertNull("Immunosuppression was not null", immunosuppressionTreatment);
     }
 
     @Test

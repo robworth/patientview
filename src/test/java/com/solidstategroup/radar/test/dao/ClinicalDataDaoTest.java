@@ -22,6 +22,12 @@ public class ClinicalDataDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetClinicalDataUnknown() {
+        ClinicalData clinicalData = clinicalDataDao.getClinicalData(132325L);
+        assertNull("Clinical data is not null for ID", clinicalData);
+    }
+
+    @Test
     public void testGetClinicalDataByRadarNumber() {
         List<ClinicalData> clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber(244L);
         assertNotNull("List of clinical datas was null", clinicalDatas);

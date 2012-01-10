@@ -2,6 +2,9 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.HospitalisationDao;
 import com.solidstategroup.radar.model.Hospitalisation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -10,9 +13,16 @@ import java.util.List;
 
 public class HospitalisationDaoImpl extends BaseDaoImpl implements HospitalisationDao {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HospitalisationDaoImpl.class);
+
     public Hospitalisation getHospitalisation(long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_Hospitalisation WHERE hID = ?", new Object[]{id},
-                new HospitalisationRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Hospitalisation WHERE hID = ?", new Object[]{id},
+                    new HospitalisationRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No hospitalisation record with ID {}", id);
+            return null;
+        }
     }
 
     public List<Hospitalisation> getHospitalisationsByRadarNumber(long radarNumber) {

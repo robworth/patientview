@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.LabDataDao;
 import com.solidstategroup.radar.model.sequenced.LabData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -15,8 +16,13 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(LabDataDaoImpl.class);
 
     public LabData getLabData(long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_LabData WHERE labID = ?",
-                new Object[]{id}, new LabDataRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_LabData WHERE labID = ?",
+                    new Object[]{id}, new LabDataRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get record for lab data with ID {}", id);
+            return null;
+        }
     }
 
     public List<LabData> getLabDataByRadarNumber(long id) {

@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class DiagnosisDaoTest extends BaseDaoTest {
 
@@ -25,12 +24,24 @@ public class DiagnosisDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetDiagnosisUnknown() {
+        Diagnosis diagnosis = diagnosisDao.getDiagnosis(1172323L);
+        assertNull("Diagnosis is not null", diagnosis);
+    }
+
+    @Test
     public void testGetDiagnosisCode() {
         DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
         assertNotNull("Diagnosis code was null", diagnosisCode);
         assertEquals("Wrong ID", new Long(1), diagnosisCode.getId());
         assertEquals("Wrong desc", "Steroid Resistant Nephrotic Syndrome ", diagnosisCode.getDescription());
         assertEquals("Wrong abbr", "SRNS", diagnosisCode.getAbbreviation());
+    }
+
+    @Test
+    public void testGetDiagnosisCodeUnknown() {
+        DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1231L);
+        assertNull("Diagnosis code was not null", diagnosisCode);
     }
 
     @Test
@@ -46,6 +57,12 @@ public class DiagnosisDaoTest extends BaseDaoTest {
         assertNotNull("Karotype is null", karotype);
         assertEquals("Wrong ID", new Long(1), karotype.getId());
         assertEquals("Wrong description", "XX", karotype.getDescription());
+    }
+
+    @Test
+    public void testGetKarotypeUnknown() {
+        Karotype karotype = diagnosisDao.getKarotype(123L);
+        assertNull("Karotype is not null", karotype);
     }
 
     @Test
