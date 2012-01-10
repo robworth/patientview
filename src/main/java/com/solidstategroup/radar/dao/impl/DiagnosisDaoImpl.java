@@ -60,8 +60,13 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
     }
 
     public Karotype getKarotype(long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_Karyotype WHERE kID = ?", new Object[]{id},
-                new KarotypeRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Karyotype WHERE kID = ?", new Object[]{id},
+                    new KarotypeRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No record for Karyotype with ID {}", id);
+            return null;
+        }
     }
 
     public List<Karotype> getKarotypes() {

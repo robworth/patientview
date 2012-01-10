@@ -3,6 +3,9 @@ package com.solidstategroup.radar.dao.impl;
 import com.solidstategroup.radar.dao.ImmunosuppressionDao;
 import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -10,6 +13,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements ImmunosuppressionDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImmunosuppressionDaoImpl.class);
 
     public Immunosuppression getImmunosuppression(long id) {
         return jdbcTemplate.queryForObject("SELECT * FROM tbl_ImmunoSupp WHERE imID = ?", new Object[]{id},
@@ -27,9 +32,13 @@ public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements Immunosuppr
         // INNER JOIN tbl_ImmunoSupp ON tbl_IMMUNSUP_TREATMENT.IMMUNSUP_DRUG = tbl_ImmunoSupp.imID
         // WHERE (tbl_IMMUNSUP_TREATMENT.RADAR_NO = @RADAR_NO )
         // ORDER BY tbl_IMMUNSUP_TREATMENT.IMMUNSUP_DRUG_STARTDATE DESC
-
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_IMMUNSUP_TREATMENT WHERE tID = ?", new Object[]{id},
-                new ImmunosuppressionTreatmentRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_IMMUNSUP_TREATMENT WHERE tID = ?", new Object[]{id},
+                    new ImmunosuppressionTreatmentRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get result for tbl_IMMUNSUP_TREATMENT with ID {}", id);
+            return null;
+        }
     }
 
     public List<ImmunosuppressionTreatment> getImmunosuppressionTreatmentByRadarNumber(long radarNumber) {

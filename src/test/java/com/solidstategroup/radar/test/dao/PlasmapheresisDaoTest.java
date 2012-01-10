@@ -2,6 +2,7 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
+import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,4 +38,10 @@ public class PlasmapheresisDaoTest extends BaseDaoTest {
         }
     }
 
+    @Test
+    public void testGetPlasmapheresisExchangeUnits() {
+        List<PlasmapheresisExchangeUnit> exchangeUnits = plasmapheresisDao.getPlasmapheresisExchangeUnits();
+        assertNotNull("List null", exchangeUnits);
+        assertEquals("List is wrong size", 8, exchangeUnits.size());
+    }
 }
