@@ -6,9 +6,18 @@ import java.util.Date;
 
 public class Plasmapheresis extends BaseModel {
 
+    private Long radarNumber;
     private Date startDate, endDate;
     private PlasmapheresisExchangeUnit plasmapheresisExchanges;
     private RemissionAchieved response;
+
+    public Long getRadarNumber() {
+        return radarNumber;
+    }
+
+    public void setRadarNumber(Long radarNumber) {
+        this.radarNumber = radarNumber;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -40,5 +49,13 @@ public class Plasmapheresis extends BaseModel {
 
     public void setResponse(RemissionAchieved response) {
         this.response = response;
+    }
+
+    @Override
+    public String toString() {
+        return "Plasmapheresis{" +
+                "id=" + getId() +
+                ", radarNumber=" + radarNumber +
+                '}';
     }
 }

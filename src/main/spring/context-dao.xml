@@ -30,6 +30,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="plasmapheresisDao" class="com.solidstategroup.radar.dao.impl.PlasmapheresisDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="relapseDao" class="com.solidstategroup.radar.dao.impl.RelapseDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>

@@ -11,4 +11,12 @@ public class PlasmapheresisExchangeUnit extends BaseModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "PlasmapheresisExchangeUnit{" +
+                "id='" + getId() + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
