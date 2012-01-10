@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -47,6 +48,20 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     public List<Sex> getSexes() {
         return jdbcTemplate.query("SELECT * FROM tbl_Sex", new SexRowMapper());
+    }
+
+    public Status getStatus(long id) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Status WHERE sID = ?", new Object[]{id}, new StatusRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No status found for ID {}", id);
+            return null;
+        }
+    }
+
+    public List<Status> getStatuses() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Status", new StatusRowMapper());
     }
 
     private class DemographicsRowMapper implements RowMapper<Demographics> {
@@ -105,9 +120,15 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             demographics.setConsent(resultSet.getBoolean("CONSENT"));
 
             // Set the centre if we have an ID
-            Long renalUnitId = resultSet.getLong("RENAL_UNIT");
-            if (renalUnitId != null) {
+            long renalUnitId = resultSet.getLong("RENAL_UNIT");
+            if (renalUnitId > 0) {
                 demographics.setRenalUnit(utilityDao.getCentre(renalUnitId));
+            }
+
+            // Set status
+            long statusId = resultSet.getLong("STATUS");
+            if (statusId > 0) {
+                demographics.setStatus(getStatus(statusId));
             }
 
             return demographics;
@@ -120,6 +141,17 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             sex.setId(resultSet.getLong("sID"));
             sex.setType(resultSet.getString("sType"));
             return sex;
+        }
+    }
+
+    private class StatusRowMapper implements RowMapper<Status> {
+        public Status mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Contruct new status object
+            Status status = new Status();
+            status.setId(resultSet.getLong("sID"));
+            status.setDescription(resultSet.getString("sDesc"));
+            status.setAbbreviation(resultSet.getString("sAbbrev"));
+            return status;
         }
     }
 
