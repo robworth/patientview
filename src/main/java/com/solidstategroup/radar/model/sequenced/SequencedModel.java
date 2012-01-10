@@ -1,19 +1,10 @@
 package com.solidstategroup.radar.model.sequenced;
 
-import com.solidstategroup.radar.model.BaseModel;
+import com.solidstategroup.radar.model.RadarModel;
 
-public class SequencedModel extends BaseModel {
+public class SequencedModel extends RadarModel {
 
-    private Long radarNumber;
     private int sequenceNumber;
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
-    }
 
     public int getSequenceNumber() {
         return sequenceNumber;

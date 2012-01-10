@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.model.sequenced;
 
-import com.solidstategroup.radar.model.BaseModel;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 
@@ -8,7 +7,6 @@ import java.util.Date;
 
 public class Relapse extends SequencedModel {
 
-    private Long radarNumber;
     private Date dateOfRelapse;
     private KidneyTransplantedNative transplantedNative;
     private String viralTrigger, immunisationTrigger, otherTrigger;
@@ -16,14 +14,6 @@ public class Relapse extends SequencedModel {
 
     private RemissionAchieved remissionAchieved;
     private Date dateOfRemission;
-
-    public Long getRadarNumber() {
-        return radarNumber;
-    }
-
-    public void setRadarNumber(Long radarNumber) {
-        this.radarNumber = radarNumber;
-    }
 
     public Date getDateOfRelapse() {
         return dateOfRelapse;
