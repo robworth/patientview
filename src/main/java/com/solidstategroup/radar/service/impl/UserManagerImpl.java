@@ -61,7 +61,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             } catch (Exception e) {
                 // If we get an exception getting password hash then log and throw an exception
                 LOGGER.error("Could not get password hash when registering user {}", patientUser.getUsername(), e);
-                throw new RegistrationException("Could not register patient - exception generating password");
+                throw new RegistrationException("Could not register patient - exception generating password", e);
             }
 
         } else {
