@@ -1,12 +1,9 @@
 package com.solidstategroup.radar.model;
 
+public class Status extends BaseModel {
 
-
-public class Status extends BaseModel{
     private String description;
     private String abbreviation;
-
-
 
     public String getDescription() {
         return description;
