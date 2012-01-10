@@ -3,6 +3,7 @@ package com.solidstategroup.radar.test.dao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.Karotype;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,4 +40,18 @@ public class DiagnosisDaoTest extends BaseDaoTest {
         assertEquals("Wrong size", 2, diagnosisCodes.size());
     }
 
+    @Test
+    public void testGetKarotype() {
+        Karotype karotype = diagnosisDao.getKarotype(1L);
+        assertNotNull("Karotype is null", karotype);
+        assertEquals("Wrong ID", new Long(1), karotype.getId());
+        assertEquals("Wrong description", "XX", karotype.getDescription());
+    }
+
+    @Test
+    public void testGetKarotypes() {
+        List<Karotype> karotypes = diagnosisDao.getKarotypes();
+        assertNotNull("Karotype list is null", karotypes);
+        assertEquals("List is wrong size", 4, karotypes.size());
+    }
 }

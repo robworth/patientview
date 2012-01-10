@@ -5,6 +5,7 @@ import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.ClinicalPresentation;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.Karotype;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -58,6 +59,15 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
         return jdbcTemplate.query("SELECT * FROM tbl_Clin_Pres WHERE cID = ?", new ClinicalPresentationRowMapper());
     }
 
+    public Karotype getKarotype(long id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM tbl_Karyotype WHERE kID = ?", new Object[]{id},
+                new KarotypeRowMapper());
+    }
+
+    public List<Karotype> getKarotypes() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Karyotype", new KarotypeRowMapper());
+    }
+
     private class DiagnosisRowMapper implements RowMapper<Diagnosis> {
         public Diagnosis mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a diagnosis object and populate the fields
@@ -67,8 +77,10 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
             diagnosis.setRadarNumber(resultSet.getLong("RADAR_NO"));
 
             // Set the diagnosis code
-
             diagnosis.setDiagnosisCode(getDiagnosisCode(resultSet.getLong("DIAG")));
+            diagnosis.setText(resultSet.getString("DIAG_TXT"));
+
+            diagnosis.setBiopsyDate(resultSet.getDate("DATE_DIAG"));
 
             diagnosis.setAgeAtDiagnosis(resultSet.getInt("AGE_AT_DIAG"));
             diagnosis.setHeightAtDiagnosis(resultSet.getDouble("HEIGHT_FIRST_VISIT"));
@@ -142,29 +154,34 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
             diagnosis.setSignificantDiagnosis1(resultSet.getString("SIG_DIAG1"));
             diagnosis.setSignificantDiagnosis2(resultSet.getString("SIG_DIAG2"));
 
-            /*
-           
-CREATE TABLE tbl_Diagnosis (
-   dID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (dID),
-   
-    DATE_DIAG TIMESTAMP,
-   DIAG_TXT varchar(100),
-   
-   BX_PROVEN_DIAG varchar(1),
-   PREPUB_DIAG bit,
-   
-   GENE_MUT varchar(50),
-   GENE_MUT_TEXT varchar(100),
-   KARYOTYPE varchar(50),
-   KARYOTYPE_OTHER varchar(100),
-   DATE_ONSET_RENALDIS TIMESTAMP,
-   CONSANGUINITY int,
-   FAM_HIST int,
+            // This is a bit in DB, lets hope it works
+            diagnosis.setBiopsyProvenDiagnosis(
+                    BaseDaoImpl.getEnumValue(Diagnosis.YesNo.class, resultSet.getInt("BX_PROVEN_DIAG")));
+            diagnosis.setPrepubertalAtDiagnosis(resultSet.getBoolean("PREPUB_DIAG"));
 
-   STEROID_RESIST int,
-   DATE_ESRF TIMESTAMP,
-);
-            */
+            // From what I can tell this GENE_MUT varchar(50)
+            // Are all commented in current code and used to be used instead of diagnosis code
+
+            // Set extra gene mutation text
+            diagnosis.setOtherGeneMutation(resultSet.getString("GENE_MUT_TEXT"));
+
+            // As per usual we get a long but this is a varchar, links to other table though
+            long karotypeId = resultSet.getLong("KARYOTYPE");
+            if (karotypeId > 0) {
+                diagnosis.setKarotype(getKarotype(karotypeId));
+            }
+            // There is a KARYOTYPE_OTHER varchar(100) but it isn't referenced in legacy code
+
+            diagnosis.setOnsetSymptomsDate(resultSet.getDate("DATE_ONSET_RENALDIS"));
+
+            diagnosis.setParentalConsanguinity(
+                    BaseDaoImpl.getEnumValue(Diagnosis.YesNo.class, resultSet.getInt("CONSANGUINITY")));
+            diagnosis.setFamilyHistory(BaseDaoImpl.getEnumValue(Diagnosis.YesNo.class, resultSet.getInt("FAM_HIST")));
+
+            diagnosis.setSteroidResistance(
+                    BaseDaoImpl.getEnumValue(Diagnosis.SteroidResistance.class, resultSet.getInt("STEROID_RESIST")));
+
+            diagnosis.setEsrfDate(resultSet.getDate("DATE_ESRF"));
 
             return diagnosis;
         }
@@ -191,8 +208,17 @@ CREATE TABLE tbl_Diagnosis (
         }
     }
 
+    private class KarotypeRowMapper implements RowMapper<Karotype> {
+        public Karotype mapRow(ResultSet resultSet, int i) throws SQLException {
+            // This is an easy one
+            Karotype karotype = new Karotype();
+            karotype.setId(resultSet.getLong("kID"));
+            karotype.setDescription(resultSet.getString("KARYOTYPE"));
+            return karotype;
+        }
+    }
+
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;
     }
-
 }
