@@ -3,6 +3,7 @@ package com.solidstategroup.radar.dao.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -31,6 +33,20 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             LOGGER.debug("No demographic record found for radar number {}", radarNumber);
             return null;
         }
+    }
+
+    public Sex getSex(long id) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Sex WHERE sID = ?", new Object[]{id}, new SexRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No sex found for ID {}", id);
+            return null;
+        }
+    }
+
+    public List<Sex> getSexes() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Sex", new SexRowMapper());
     }
 
     private class DemographicsRowMapper implements RowMapper<Demographics> {
@@ -77,8 +93,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             demographics.setPostcode(getDecryptedString(resultSet, "POSTCODE"));
             demographics.setPreviousPostcode(getDecryptedString(resultSet, "POSTCODE_OLD"));
 
-//            demographics.setEthnicity();
-//            demographics.setSex();
+            // Set sex
+            demographics.setSex(getSex(resultSet.getLong("SEX")));
+
+            // Try and get ethnicity
+            String ethnicityCode = resultSet.getString("ETHNIC_GP");
+            if (StringUtils.isNotBlank(ethnicityCode)) {
+                demographics.setEthnicity(utilityDao.getEthnicityByCode(ethnicityCode));
+            }
 
             demographics.setConsent(resultSet.getBoolean("CONSENT"));
 
@@ -88,8 +110,16 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 demographics.setRenalUnit(utilityDao.getCentre(renalUnitId));
             }
 
-            // Todo: Some more fields...
             return demographics;
+        }
+    }
+
+    private class SexRowMapper implements RowMapper<Sex> {
+        public Sex mapRow(ResultSet resultSet, int i) throws SQLException {
+            Sex sex = new Sex();
+            sex.setId(resultSet.getLong("sID"));
+            sex.setType(resultSet.getString("sType"));
+            return sex;
         }
     }
 
@@ -106,4 +136,5 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;
     }
+
 }
