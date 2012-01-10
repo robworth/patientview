@@ -1,8 +1,6 @@
 package com.solidstategroup.radar.web.panels.tables;
 
 import com.solidstategroup.radar.model.Modality;
-import com.solidstategroup.radar.model.Plasmapheresis;
-import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
@@ -15,11 +13,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -40,7 +36,7 @@ public class DialysisTablePanel extends Panel {
         add(new DataView<Treatment>("dialysis", new DialysisDataProvider()) {
             @Override
             protected void populateItem(Item<Treatment> item) {
-                item.add(new Label("modality.type"));
+                item.add(new Label("treatmentModality.type"));
                 item.add(DateLabel.forDatePattern("dateStarted", RadarApplication.DATE_PATTERN));
                 item.add(DateLabel.forDatePattern("dateStopped", RadarApplication.DATE_PATTERN));
                 item.add(new AjaxLink("deleteLink") {
@@ -65,7 +61,8 @@ public class DialysisTablePanel extends Panel {
         add(editDialysisContainer);
 
         DialysisForm editDialysisForm =
-                new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()), new ArrayList<Component>());
+                new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()),
+                        new ArrayList<Component>());
         editDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -86,19 +83,22 @@ public class DialysisTablePanel extends Panel {
         editDialysisContainer.add(editDialysisForm);
 
 
-        final List<Component> addDialysisFormComponentsToUpdate =  new ArrayList<Component>();
+        final List<Component> addDialysisFormComponentsToUpdate = new ArrayList<Component>();
         // Add dialysis form
         DialysisForm addDialysisForm =
-                new DialysisForm("addDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()), addDialysisFormComponentsToUpdate );
+                new DialysisForm("addDialysisForm", new CompoundPropertyModel<Treatment>(new Treatment()),
+                        addDialysisFormComponentsToUpdate);
         addDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                target.add(addDialysisFormComponentsToUpdate.toArray(new Component[addDialysisFormComponentsToUpdate.size()]));
+                target.add(addDialysisFormComponentsToUpdate
+                        .toArray(new Component[addDialysisFormComponentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                 target.add(addDialysisFormComponentsToUpdate.toArray(new Component[addDialysisFormComponentsToUpdate.size()]));
+                target.add(addDialysisFormComponentsToUpdate
+                        .toArray(new Component[addDialysisFormComponentsToUpdate.size()]));
             }
         });
         add(addDialysisForm);
@@ -106,16 +106,17 @@ public class DialysisTablePanel extends Panel {
 
     private final class DialysisForm extends Form<Treatment> {
         private RadarDateTextField endDate;
+
         private DialysisForm(String id, IModel<Treatment> treatmentIModel, List<Component> componentsToUpdate) {
             super(id, treatmentIModel);
 
-            List<Modality> modalityList =
-                    new ArrayList<Modality>();
+            List<Modality> modalityList = new ArrayList<Modality>();
             Modality modality = new Modality();
             modality.setType("temp");
             modalityList.add(modality);
 
-            add(new RadarRequiredDropdownChoice("modality", modalityList, new ChoiceRenderer("type"), this, componentsToUpdate));
+            add(new RadarRequiredDropdownChoice("treatmentModality", modalityList, new ChoiceRenderer("type"), this,
+                    componentsToUpdate));
             add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
             endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
             add(endDate);
