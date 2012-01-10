@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 
-public class BaseDaoImpl {
+public abstract class BaseDaoImpl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseDaoImpl.class);
 
