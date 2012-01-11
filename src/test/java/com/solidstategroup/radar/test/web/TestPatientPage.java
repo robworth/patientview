@@ -3,7 +3,10 @@ package com.solidstategroup.radar.test.web;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.form.TextField;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Simple test using the WicketTester
@@ -11,25 +14,25 @@ import org.junit.Test;
 public class TestPatientPage extends BasePageTest {
 
     @Test
-    public void renderPatientPageNewPatient() {
+    public void renderPatientPageExistingPatient() {
         // Construct demographics to get page parameters
         Demographics demographics = new Demographics();
         demographics.setId(238L);
 
         // Start and render the test page with page parameters
         tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));
-        clickTabsAndAssert();
+        clickTabsAndAssert(true);
     }
 
     @Test
-    public void renderPatientPageExistingPatient() {
+    public void renderPatientPageNewPatient() {
         //start and render the test page
         tester.startPage(PatientPage.class);
 
-        clickTabsAndAssert();
+        clickTabsAndAssert(false);
     }
 
-    private void clickTabsAndAssert() {
+    private void clickTabsAndAssert(boolean hasPatient) {
         //assert rendered page class
         tester.assertRenderedPage(PatientPage.class);
 
@@ -41,6 +44,13 @@ public class TestPatientPage extends BasePageTest {
         tester.assertInvisible("pathologyPanel");
         tester.assertInvisible("relapsePanel");
         tester.assertInvisible("hospitalisationPanel");
+
+        // If we've got patient then make sure the fields have values set
+        if (hasPatient) {
+            TextField surnameField =
+                    (TextField) tester.getLastRenderedPage().get("demographicsPanel").get("form").get("surname");
+            assertEquals("Wrong value on surname", "Mouse", surnameField.getValue());
+        }
 
         tester.clickLink(getLink("diagnosisLink").getPageRelativePath());
         tester.assertVisible("diagnosisPanel");
