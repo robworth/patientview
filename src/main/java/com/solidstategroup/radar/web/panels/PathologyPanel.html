@@ -1,33 +1,25 @@
 <wicket:panel>
 
-<form wicket:id="form">
-
-
 <div id="mainBlock">
 
 <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
     <tbody>
     <tr>
-
         <td class="btmBorder">
-            <select id="ctl00_ContentPlaceHolder1_DropDownListBXDate"
-                    name="ctl00$ContentPlaceHolder1$DropDownListBXDate">
-                <option value="" selected="selected">Select</option>
-
-            </select>
-
+            <select wicket:id="records"/>
 
             &nbsp;Select previous record by date&nbsp;
-            <input type="submit" id="ctl00_ContentPlaceHolder1_btnAdd" value="Add new record"
-                   name="ctl00$ContentPlaceHolder1$btnAdd">
+            <input type="submit" value="Add new record" wicket:id="addNew"/>
         </td>
         <td class="btmBorder">&nbsp;</td>
-        <td style="width:120px" class="btmBorder">
-            <strong>Pathology</strong></td>
+        <td style="width:120px" class="btmBorder"><strong>Pathology</strong></td>
     </tr>
     </tbody>
 </table>
-<div id="ctl00_ContentPlaceHolder1_pnlAdd">
+
+<div wicket:id="pathologyContainer">
+
+<form wicket:id="form">
 
 <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
 
@@ -124,8 +116,7 @@
                                  id="ctl00_ContentPlaceHolder1_txtSAMPLE_LAB_NO"
                                  wicket:id="sampleLabNumber">
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             </tbody>
         </table>
@@ -135,10 +126,8 @@
         <table cellspacing="0" cellpadding="5" class="style3">
             <tbody>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -153,10 +142,8 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -171,10 +158,8 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -189,10 +174,8 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -207,29 +190,22 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td>
 
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             </tbody>
         </table>
@@ -240,9 +216,7 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td><input type="button" class="saveBtn" wicket:id="saveDown"
-                       value="Save">
-             </td>
+            <td><input type="button" class="saveBtn" wicket:id="saveDown" value="Save"></td>
         </tr>
         </tbody>
     </table>
@@ -256,8 +230,7 @@
             <tr>
                 <td>
                     <b>Diagnosis</b></td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             </tbody>
         </table>
@@ -439,8 +412,8 @@
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-150"
-                            maxlength="3"
-                            wicket:id="numberCellularCrescents"/>
+                           maxlength="3"
+                           wicket:id="numberCellularCrescents"/>
                 </td>
             </tr>
             <tr>
@@ -478,8 +451,7 @@
                     <label id="ctl00_ContentPlaceHolder1_lblGLOM_OTHER"
                            for="ctl00_ContentPlaceHolder1_txtGLOM_ANY_OTH_FEAT">Other feature</label>
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -488,10 +460,8 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             </tbody>
         </table>
@@ -505,8 +475,7 @@
                 <td>
                     <span id="ctl00_ContentPlaceHolder1_lblPATH_TEXT">Histological Summary</span>
                 </td>
-                <td>
-                    &nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -522,18 +491,13 @@
 </tbody>
 </table>
 
+</form>
 
 </div>
-<p><span id="ctl00_ContentPlaceHolder1_lblDebug"></span>&nbsp;</p>
 
-<div style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
-
-</div>
 <br>
 <span id="ctl00_ContentPlaceHolder1_lblPage">11B</span>
+
 </div>
-
-
-</form>
 
 </wicket:panel>

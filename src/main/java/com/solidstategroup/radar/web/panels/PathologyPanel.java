@@ -6,9 +6,15 @@ import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
@@ -16,10 +22,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PathologyPanel extends Panel {
@@ -32,26 +40,74 @@ public class PathologyPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        final List<Component> componentsToUpdate = new ArrayList<Component>();
+        // Model for tha pathology container, the pathology ID
+        final IModel<Pathology> pathologyModel = new Model<Pathology>();
 
+        // Add previous results switcher
+        List<Pathology> pathologies;
+        if (radarNumberModel.getObject() != null) {
+            pathologies = pathologyDao.getPathologyByRadarNumber(radarNumberModel.getObject());
+        } else {
+            pathologies = Collections.emptyList();
+        }
+
+        // Container for form, so we can hide and first then show
+        final MarkupContainer pathologyContainer = new WebMarkupContainer("pathologyContainer");
+        pathologyContainer.setVisible(false);
+        pathologyContainer.setOutputMarkupId(true);
+        pathologyContainer.setOutputMarkupPlaceholderTag(true);
+        add(pathologyContainer);
+
+        // Switcheroo
+        DropDownChoice<Pathology> switcher =
+                new DropDownChoice<Pathology>("records", pathologyModel, pathologies, new IChoiceRenderer<Pathology>() {
+                    public Object getDisplayValue(Pathology object) {
+                        // Todo: Format
+                        return object.getBiopsyDate();
+                    }
+
+                    public String getIdValue(Pathology object, int index) {
+                        return String.valueOf(object.getId());
+                    }
+                });
+        add(switcher);
+
+        // Add new
+        add(new AjaxLink("addNew") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                pathologyContainer.setVisible(true);
+                target.add(pathologyContainer);
+            }
+        });
+
+        // Add Ajax behaviour to switch the container on change
+        switcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                pathologyContainer.setVisible(true);
+                target.add(pathologyContainer);
+            }
+        });
+
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
         CompoundPropertyModel<Pathology> model;
 
         // Set up model
         model = new CompoundPropertyModel<Pathology>(new LoadableDetachableModel<Pathology>() {
             @Override
             protected Pathology load() {
-                if (radarNumberModel.getObject() != null) {
-                    List<Pathology> pathologies = pathologyDao.getPathologyByRadarNumber(radarNumberModel.getObject());
-                    if (!pathologies.isEmpty()) {
-                        // This shouldn't just return the first result
-                        return pathologies.get(0);
-                    }
+                if (pathologyModel.getObject() != null) {
+                    // Return the pathology by the ID from the drop down choice
+                    return pathologyDao.getPathology(pathologyModel.getObject().getId());
                 }
+                // Otherwise we'll create a new one
                 return new Pathology();
             }
         });
 
         Form<Pathology> form = new Form<Pathology>("form", model);
+        pathologyContainer.add(form);
 
         // Add inputs
         form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));
@@ -103,8 +159,6 @@ public class PathologyPanel extends Panel {
                 return componentsToUpdate;
             }
         });
-
-        add(form);
     }
 
     @Override
