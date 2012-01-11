@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.test.web;
 
+import com.solidstategroup.radar.test.DatabaseBackedTest;
 import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
@@ -11,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:context.xml"})
-public abstract class BasePageTest {
+public abstract class BasePageTest extends DatabaseBackedTest {
 
     protected WicketTester tester;
 

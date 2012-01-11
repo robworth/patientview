@@ -30,6 +30,20 @@ public class DiagnosisDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetDiagnosisByRadar() {
+        Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(239);
+        assertNotNull("Diagnosis is null", diagnosis);
+        assertEquals("ID is wrong on diagnosis", new Long(114), diagnosis.getId());
+        assertEquals("Radar number is wrong", new Long(239), diagnosis.getRadarNumber());
+    }
+
+    @Test
+    public void testGetDiagnosisByRadarUnknown() {
+        Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(1172323L);
+        assertNull("Diagnosis is not null", diagnosis);
+    }
+
+    @Test
     public void testGetDiagnosisCode() {
         DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
         assertNotNull("Diagnosis code was null", diagnosisCode);

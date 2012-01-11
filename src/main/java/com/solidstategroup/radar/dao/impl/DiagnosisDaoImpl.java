@@ -31,6 +31,17 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
         }
     }
 
+    public Diagnosis getDiagnosisByRadarNumber(long radarNumber) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Diagnosis WHERE RADAR_NO = ?", new Object[]{radarNumber},
+                            new DiagnosisRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get diagnosis result for radar number {}", radarNumber);
+            return null;
+        }
+    }
+
     public DiagnosisCode getDiagnosisCode(long id) {
         try {
             return jdbcTemplate.queryForObject("SELECT * FROM tbl_DiagCode WHERE dcID = ?", new Object[]{id},
@@ -56,7 +67,7 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
     }
 
     public List<ClinicalPresentation> getClinicalPresentations() {
-        return jdbcTemplate.query("SELECT * FROM tbl_Clin_Pres WHERE cID = ?", new ClinicalPresentationRowMapper());
+        return jdbcTemplate.query("SELECT * FROM tbl_Clin_Pres", new ClinicalPresentationRowMapper());
     }
 
     public Karotype getKarotype(long id) {
