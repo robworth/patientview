@@ -1,6 +1,7 @@
 // document ready
 jQuery(function() {
    srnsPage.init();
+   recruitmentPage.init();
 })
 
 
@@ -34,4 +35,12 @@ var srnsPage = {
         })
     }
 
+}
+
+var recruitmentPage = {
+    init: function() {
+       jQuery(".sortableTable").tablesorter({
+           sortList: [[0,0]]
+       });
+    }
 }
