@@ -59,7 +59,7 @@ public class ClinicalPicturePanel extends Panel {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        RadarRequiredDateTextField clinicalPictureDate = new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+        RadarRequiredDateTextField clinicalPictureDate = new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), form, componentsToUpdate);
         form.add(clinicalPictureDate);
 
         RadarTextFieldWithValidation height = new RadarTextFieldWithValidation("height", new RangeValidator<Double>(35.0, 185.0), form, componentsToUpdate);

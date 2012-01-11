@@ -38,7 +38,7 @@ public class RelapsePanel extends Panel {
 
         Form<Relapse> form = new Form<Relapse>("form", new CompoundPropertyModel<Relapse>(new Relapse()));
 
-        form.add(new RadarRequiredDateTextField("dateOfRelapse", RadarApplication.DATE_PATTERN, form, componentsToUpdate));
+        form.add(new RadarRequiredDateTextField("dateOfRelapse", form, componentsToUpdate));
 
         // Transplanted / native radio options
         RadioGroup<KidneyTransplantedNative> transplantedNative =
@@ -72,15 +72,15 @@ public class RelapsePanel extends Panel {
                         Plasmapheresis plasmapheresis = getModelObject();
                         Date startDate = plasmapheresis.getStartDate();
                         Date endDate = plasmapheresis.getEndDate();
-                        if(startDate != null && endDate != null && startDate.compareTo(endDate) ==1) {
+                        if(startDate != null && endDate != null && startDate.compareTo(endDate)  != -1) {
                           Component endDateComp =  get("endDate");
                             endDateComp.error("End date cannot be before start date.");
                         }
                     }
                 };
 
-        plasmapheresisForm.add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, plasmapheresisForm, plasmapheresisComponentsToUpdate));
-        final RadarDateTextField endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, plasmapheresisForm, plasmapheresisComponentsToUpdate);
+        plasmapheresisForm.add(new RadarRequiredDateTextField("startDate", plasmapheresisForm, plasmapheresisComponentsToUpdate));
+        final RadarDateTextField endDate = new RadarDateTextField("endDate", plasmapheresisForm, plasmapheresisComponentsToUpdate);
         plasmapheresisForm.add(endDate);
 
         PlasmapheresisExchangeUnit plasmapheresisTemp = new PlasmapheresisExchangeUnit();
@@ -113,7 +113,7 @@ public class RelapsePanel extends Panel {
                 .add(new Radio<RemissionAchieved>("none", new Model<RemissionAchieved>(RemissionAchieved.NONE)));
         form.add(remissionAchieved);
 
-        form.add(new RadarDateTextField("dateOfRemission", RadarApplication.DATE_PATTERN, form, componentsToUpdate));
+        form.add(new RadarDateTextField("dateOfRemission", form, componentsToUpdate));
 
         form.add(new AjaxSubmitLink("submit") {
             @Override

@@ -1,7 +1,11 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Hospitalisation;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.components.RadarDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.pages.PatientPage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -10,29 +14,47 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class HospitalisationPanel extends Panel {
     public HospitalisationPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
+
         Form<Hospitalisation> form =
-                new Form<Hospitalisation>("form", new CompoundPropertyModel<Hospitalisation>(new Hospitalisation()));
+                new Form<Hospitalisation>("form", new CompoundPropertyModel<Hospitalisation>(new Hospitalisation())){
+                    @Override
+                    protected void onValidateModelObjects() {
+                        super.onValidateModelObjects();
+                        Hospitalisation hospitalisation = getModelObject();
+                        Date dateofAdmission = hospitalisation.getDateOfAdmission();
+                        Date dateofDischarge= hospitalisation.getDateOfDischarge();
+                        if(dateofAdmission != null && dateofDischarge != null
+                                && dateofAdmission.compareTo(dateofDischarge) != -1) {
+                            get("dateOfDischarge").error("Date has to be after admission date");
+                        }
+                    }
+                };
         add(form);
 
-        form.add(new DateTextField("dateOfAdmission"));
-        form.add(new DateTextField("dateOfDischarge"));
+        form.add(new RadarRequiredDateTextField("dateOfAdmission", form, componentsToUpdate));
+        form.add(new RadarDateTextField("dateOfDischarge", form, componentsToUpdate));
         form.add(new TextArea("reason"));
         form.add(new TextArea("comments"));
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                // Todo: Implement
+                 ajaxRequestTarget.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                // Todo: Implement
+                 ajaxRequestTarget.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
         });
     }
