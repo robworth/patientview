@@ -66,9 +66,17 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     private class DemographicsRowMapper implements RowMapper<Demographics> {
         public Demographics mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct object and set radar number
             Demographics demographics = new Demographics();
             demographics.setId(resultSet.getLong("RADAR_NO"));
             demographics.setDateRegistered(resultSet.getDate("DATE_REG"));
+
+            // Renal registry number
+            demographics.setRenalRegistryNumber(resultSet.getString("RR_NO"));
+
+            // UK transplant number and chiNumber
+            demographics.setUkTransplantNumber(resultSet.getString("UKT_NO"));
+            demographics.setChiNumber(resultSet.getString("CHI_NO"));
 
             // These need to be decrypted from the database
             demographics.setNhsNumber(getDecryptedString(resultSet, "NHS_NO"));
@@ -130,6 +138,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             if (statusId > 0) {
                 demographics.setStatus(getStatus(statusId));
             }
+
+            // Fields to finish: ukTransplantNumber, chiNumber, consultant, renalUnitAuthorised
 
             return demographics;
         }
