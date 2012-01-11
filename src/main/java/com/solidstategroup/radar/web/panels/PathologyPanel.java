@@ -11,6 +11,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
@@ -95,6 +96,8 @@ public class PathologyPanel extends Panel {
         @Override
         protected void onError(AjaxRequestTarget target, Form<?> form) {
             target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            ComponentFeedbackPanel a = (ComponentFeedbackPanel) getParent().get("totalNumberFeedback");
+             a.getFeedbackMessages();
         }
 
         protected abstract List<Component> getComponentsToUpdate();
