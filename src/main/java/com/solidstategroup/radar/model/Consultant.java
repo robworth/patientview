@@ -1,11 +1,14 @@
 package com.solidstategroup.radar.model;
 
-
 public class Consultant extends BaseModel {
 
     private String surname;
     private String forename;
     private Centre centre;
+
+    public String getFullName() {
+        return forename + " " + surname;
+    }
 
     public String getSurname() {
         return surname;

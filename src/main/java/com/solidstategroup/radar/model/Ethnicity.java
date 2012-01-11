@@ -1,10 +1,9 @@
 package com.solidstategroup.radar.model;
 
+public class Ethnicity extends BaseModel {
 
-public class Ethnicity extends BaseModel{
     private String name;
     private String code;
-
 
     public String getName() {
         return name;
