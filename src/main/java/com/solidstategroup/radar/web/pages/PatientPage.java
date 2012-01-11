@@ -14,6 +14,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 
@@ -41,16 +43,18 @@ public class PatientPage extends BasePage {
     public PatientPage(PageParameters parameters) {
         super();
 
+        // Set up our radar number model used by all of our panels
+        IModel<Long> radarNumberModel = new Model<Long>();
+        
         // Get radar number from parameters - we might not have one for new patients
-        Long radarNumber = null;
         StringValue idValue = parameters.get(PARAM_ID);
         if (!idValue.isEmpty()) {
-            radarNumber = idValue.toLongObject();
+            radarNumberModel.setObject(idValue.toLongObject());
         }
 
         // Construct panels for each of the tabs
-        demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumber);
-        diagnosisPanel = new DiagnosisPanel("diagnosisPanel");
+        demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
+        diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel");
         followUpPanel = new FollowUpPanel("followUpPanel");
         pathologyPanel = new PathologyPanel("pathologyPanel");

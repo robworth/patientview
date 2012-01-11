@@ -11,6 +11,8 @@ public interface DiagnosisDao {
 
     Diagnosis getDiagnosis(long id);
 
+    Diagnosis getDiagnosisByRadarNumber(long radarNumber);
+
     DiagnosisCode getDiagnosisCode(long id);
 
     List<DiagnosisCode> getDiagnosisCodes();

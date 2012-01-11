@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -43,7 +44,7 @@ public class DemographicsPanel extends Panel {
     @SpringBean
     private UtilityDao utilityDao;
 
-    public DemographicsPanel(String id, final Long radarNumber) {
+    public DemographicsPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
@@ -51,16 +52,16 @@ public class DemographicsPanel extends Panel {
         CompoundPropertyModel<Demographics> model;
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
-        if (radarNumber != null) {
-            model = new CompoundPropertyModel<Demographics>(new LoadableDetachableModel<Demographics>() {
-                @Override
-                protected Demographics load() {
-                    return demographicsDao.getDemographicsByRadarNumber(radarNumber);
+        model = new CompoundPropertyModel<Demographics>(new LoadableDetachableModel<Demographics>() {
+            @Override
+            protected Demographics load() {
+                if (radarNumberModel.getObject() != null) {
+                    return demographicsDao.getDemographicsByRadarNumber(radarNumberModel.getObject());
+                } else {
+                    return new Demographics();
                 }
-            });
-        } else {
-            model = new CompoundPropertyModel<Demographics>(new Demographics());
-        }
+            }
+        });
 
         // Set up form
         Form<Demographics> form = new Form<Demographics>("form", model);
@@ -141,7 +142,7 @@ public class DemographicsPanel extends Panel {
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-               ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
 
             @Override

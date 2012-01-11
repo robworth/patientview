@@ -45,13 +45,14 @@ public class ExistingPatientsPage extends BasePage {
                 item.add(new Label("surname"), new Label("forename"));
                 item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN));
                 item.add(new Label("id"));
+
                 // Todo: Complete
                 item.add(new Label("diagnosis", "TODO"));
+
                 item.add(new Label("nhsNumber"));
                 item.add(new Label("hospitalNumber"));
                 item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN));
-                // Todo: Complete
-                item.add(new Label("status", "TODO"));
+                item.add(new Label("status.abbreviation"));
             }
         });
 
