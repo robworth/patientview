@@ -79,11 +79,11 @@ public class DiagnosisPanel extends Panel {
         form.add(new Label("diagnosisOrBiopsy", "Date of original biopsy"));
 
         RadarDateTextField biopsyDate =
-                new RadarDateTextField("biopsyDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+                new RadarDateTextField("biopsyDate", form, componentsToUpdate);
         form.add(biopsyDate);
 
         RadarDateTextField esrfDate =
-                new RadarDateTextField("esrfDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+                new RadarDateTextField("esrfDate", form, componentsToUpdate);
         form.add(esrfDate);
 
         form.add(new TextField("ageAtDiagnosis"));
@@ -102,7 +102,7 @@ public class DiagnosisPanel extends Panel {
         clinicalPresentationB.setOutputMarkupPlaceholderTag(true);
 
         form.add(clinicalPresentationA, clinicalPresentationB);
-        form.add(new RadarDateTextField("onsetSymptomsDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate));
+        form.add(new RadarDateTextField("onsetSymptomsDate", form, componentsToUpdate));
 
         ComponentFeedbackPanel clinicalPresentationFeedback =
                 new ComponentFeedbackPanel("clinicalPresentationFeedback", clinicalPresentationA);

@@ -56,7 +56,7 @@ public class DemographicsPanel extends Panel {
         // Basic fields
         RadarRequiredTextField surname = new RadarRequiredTextField("surname", form, componentsToUpdateList);
         RadarRequiredTextField forename = new RadarRequiredTextField("forename", form, componentsToUpdateList);
-        RadarRequiredDateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", RadarApplication.DATE_PATTERN, form, componentsToUpdateList);
+        RadarRequiredDateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form, componentsToUpdateList);
         dateOfBirth.setRequired(true);
 
         form.add(diagnosis, surname, forename, dateOfBirth);

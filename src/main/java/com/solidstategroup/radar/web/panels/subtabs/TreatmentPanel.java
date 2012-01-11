@@ -121,8 +121,7 @@ public class TreatmentPanel extends Panel {
         Form<Therapy> therapyForm = new Form<Therapy>("therapyForm", new CompoundPropertyModel<Therapy>(new Therapy()));
 
         RadarRequiredDateTextField treatmentRecordDate = new RadarRequiredDateTextField("treatmentRecordDate",
-                new Model<Date>(),
-                RadarApplication.DATE_PATTERN, therapyForm, therapyFormComponentsToUpdate);
+                new Model<Date>(), therapyForm, therapyFormComponentsToUpdate);
 
         therapyForm.add(treatmentRecordDate);
         therapyForm.add(new YesNoRadioGroupPanel("nsaid", true));
@@ -248,7 +247,7 @@ public class TreatmentPanel extends Panel {
         private RadarDateTextField endDate;
         private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model, List<Component> componentsToUpdate) {
             super(id, model);
-            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
             add(startDate);
 
             List<Immunosuppression> immunosuppressionList = new ArrayList<Immunosuppression>();
@@ -259,7 +258,7 @@ public class TreatmentPanel extends Panel {
             RadarRequiredDropdownChoice immunoSuppression = new RadarRequiredDropdownChoice("immunosuppression", immunosuppressionList, new ChoiceRenderer("description"), this, componentsToUpdate);
             add(immunoSuppression);
 
-            endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);
         }
 
@@ -269,7 +268,7 @@ public class TreatmentPanel extends Panel {
             ImmunosuppressionTreatment treatment = getModelObject();
             Date start = treatment.getStartDate();
             Date end = treatment.getEndDate();
-            if(start != null && end != null && start.compareTo(end) == 1) {
+            if(start != null && end != null && start.compareTo(end)  != -1) {
                 endDate.error("End date cannot be less than start date");
             }
         }
@@ -279,8 +278,8 @@ public class TreatmentPanel extends Panel {
         private RadarDateTextField endDate;
         private PlasmapheresisForm(String id, IModel<Plasmapheresis> model, List<Component> componentsToUpdate) {
             super(id, model);
-            add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
-            endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            add(new RadarRequiredDateTextField("startDate", this, componentsToUpdate));
+            endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);
 
             List<PlasmapheresisExchangeUnit> plasmapheresisExchangeUnitList =
@@ -307,7 +306,7 @@ public class TreatmentPanel extends Panel {
             Plasmapheresis plasmapheresis = getModelObject();
             Date start = plasmapheresis.getStartDate();
             Date end = plasmapheresis.getEndDate();
-            if(start != null && end != null && start.compareTo(end) == 1) {
+            if(start != null && end != null && start.compareTo(end)  != -1) {
                 endDate.error("End date cannot be less than start date");
             }
         }

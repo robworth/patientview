@@ -117,8 +117,8 @@ public class DialysisTablePanel extends Panel {
 
             add(new RadarRequiredDropdownChoice("treatmentModality", modalityList, new ChoiceRenderer("type"), this,
                     componentsToUpdate));
-            add(new RadarRequiredDateTextField("startDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
-            endDate = new RadarDateTextField("endDate", RadarApplication.DATE_PATTERN, this, componentsToUpdate);
+            add(new RadarRequiredDateTextField("startDate", this, componentsToUpdate));
+            endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);
         }
 
@@ -128,7 +128,7 @@ public class DialysisTablePanel extends Panel {
             Treatment treatment = getModelObject();
             Date start = treatment.getStartDate();
             Date end = treatment.getEndDate();
-            if (start != null && end != null && start.compareTo(end) == 1) {
+            if (start != null && end != null && start.compareTo(end) != -1) {
                 endDate.error("End date cannot be less than start date");
             }
         }

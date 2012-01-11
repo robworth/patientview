@@ -30,7 +30,7 @@ public class PathologyPanel extends Panel {
         Form<Pathology> form = new Form<Pathology>("form", new CompoundPropertyModel<Pathology>(new Pathology()));
 
         // Add inputs
-        form.add(new RadarRequiredDateTextField("biopsyDate", RadarApplication.DATE_PATTERN, form, componentsToUpdate));
+        form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));
         form.add(new TextField("sampleLabNumber"));
         form.add(new TextArea("interstitalInflmatoryInfilitrate"));
         form.add(new TextArea("arterialAbnormalities"));
