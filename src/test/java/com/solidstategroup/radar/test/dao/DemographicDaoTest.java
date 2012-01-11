@@ -47,10 +47,22 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetSexUnknown() throws Exception {
+        Sex sex = demographicDao.getSex(23232L);
+        assertNull("Sex not null for unknown", sex);
+    }
+
+    @Test
     public void testGetSexes() throws Exception {
         List<Sex> sexes = demographicDao.getSexes();
         assertNotNull("Sexes was null", sexes);
         assertEquals("Wrong size", 3, sexes.size());
+    }
+
+    @Test
+    public void testGetStatusUnknown() throws Exception {
+        Status status = demographicDao.getStatus(23232L);
+        assertNull("Status not null for unknown", status);
     }
 
     @Test
