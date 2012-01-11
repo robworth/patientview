@@ -97,15 +97,8 @@
                                         </td>
                                         <td>
                                             <input type="text" style="width:80px;" wicket:id="dateOfAdmission"/>
-
-                                            <input type="image" style="border-width:0px;"
-                                                   src="images/Calendar_scheduleHS.png"
-                                                   id="ctl00_ContentPlaceHolder1_imgCal1"
-                                                   name="ctl00$ContentPlaceHolder1$imgCal1">
-                                            &nbsp;<span style="color:Red;display:none;"
-                                                        id="ctl00_ContentPlaceHolder1_CompareValidator1">&gt;today</span>
-                                            &nbsp;<span style="color:Red;display:none;"
-                                                        id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
+                                            <span class="feedback" wicket:id="dateOfAdmissionFeedback"></span>
+                                            <span wicket:id="dateOfAdmissionFeedbackIndicator"></span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -114,13 +107,8 @@
                                         </td>
                                         <td>
                                             <input type="text" style="width:80px;" wicket:id="dateOfDischarge"/>
+                                            <span class="feedback" wicket:id="dateOfDischargeFeedback"></span>
 
-                                            <input type="image" style="border-width:0px;"
-                                                   src="images/Calendar_scheduleHS.png"
-                                                   id="ctl00_ContentPlaceHolder1_imgCal2"
-                                                   name="ctl00$ContentPlaceHolder1$imgCal2">
-                                            &nbsp;<span style="color:Red;visibility:hidden;"
-                                                        id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt;today</span>
                                         </td>
                                     </tr>
                                     </tbody>
