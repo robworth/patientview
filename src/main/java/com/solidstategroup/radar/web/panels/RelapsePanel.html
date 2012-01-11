@@ -1,250 +1,251 @@
 <wicket:panel>
-
-<form wicket:id="form">
 <div id="mainBlock">
+<form wicket:id="form">
 
-<div id="ctl00_ContentPlaceHolder1_pnlAdd">
+    <div id="ctl00_ContentPlaceHolder1_pnlAdd">
 
-<table cellpadding="4" id="tblHeader" style="width: 100%;">
-    <tbody>
+        <table cellpadding="4" id="tblHeader" style="width: 100%;">
+            <tbody>
+            <tr>
+                <td align="left" class="style4"><b>Relapse Records</b></td>
+                <td class="style2" style="text-align:right; ">RADAR No.</td>
+                <td class="style3">
+                    <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO"
+                           readonly="readonly"
+                           value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+                </td>
+            </tr>
+            <tr>
+                <td align="left">Name
+                    <input type="text" id="ctl00_ContentPlaceHolder1_txtFNAME" readonly="readonly" value="jane"
+                           name="ctl00$ContentPlaceHolder1$txtFNAME">
+                    &nbsp;<input type="text" id="ctl00_ContentPlaceHolder1_txtSNAME" readonly="readonly" value="lady"
+                                 name="ctl00$ContentPlaceHolder1$txtSNAME">
+                    &nbsp;DoB
+                    <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtDOB" readonly="readonly"
+                           value="11-Nov-1992" name="ctl00$ContentPlaceHolder1$txtDOB">
+
+                </td>
+                <td class="style5" style="text-align:right; ">Hospital No.</td>
+                <td>
+                    <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO"
+                           readonly="readonly"
+                           value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:left;">
+                </td>
+                <td class="style5" style="text-align:right; ">Diagnosis</td>
+                <td>
+                    <input type="text" style="background-color:#FFFF99;width:100px;"
+                           id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
+                           readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="ctl00_ContentPlaceHolder1_pnlMain">
+
+            <table cellpadding="10" style="width:100%; background-color:#eef6ed; font-size:85%"
+                   id="ctl00_ContentPlaceHolder1_tblMain">
+                <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;"
+                                   id="ctl00_ContentPlaceHolder1_GridView1" rules="all">
+                                <tbody>
+                                <tr>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br><br>
+
+
+                        <fieldset style="border:1px solid green;" id="ctl00_ContentPlaceHolder1_fieldsetAdd">
+                            <table cellpadding="8"
+                                   style="width: 100%; border-collapse:collapse; table-layout:fixed; font-size:95%; margin-top:10px;"
+                                   id="ctl00_ContentPlaceHolder1_tblRelapseAdd">
+                                <tbody>
+                                <tr>
+                                    <td width="150">Date of relapse</td>
+                                    <td>
+                                        <input type="text" style="width:80px;" wicket:id="dateOfRelapse">
+                                        <span class="feedback" wicket:id="dateOfRelapseFeedback"></span>
+                                        <span wicket:id="dateOfRelapseFeedbackIndicator"></span>
+
+                                    </td>
+                                </tr>
+                                <tr id="ctl00_ContentPlaceHolder1_rowTx">
+                                    <td>Transplanted / Native</td>
+                                    <td>
+
+                                      <span wicket:id="transplantedNative">
+                                        <input type="radio" wicket:id="tx"
+                                               id="ctl00_ContentPlaceHolder1_radTxYes"><label
+                                            for="ctl00_ContentPlaceHolder1_radTxYes">Tx</label>
+                                        &nbsp;
+                                        <input type="radio" wicket:id="native"
+                                               id="ctl00_ContentPlaceHolder1_radTxNo"><label
+                                            for="ctl00_ContentPlaceHolder1_radTxNo">Nat</label>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Viral trigger&nbsp;
+                                        <input type="text" style="width:80px;" wicket:id="viralTrigger"/>
+                                        &nbsp; Immunisation trigger&nbsp;
+                                        <input type="text" style="width:80px;" wicket:id="immunisationTrigger"/>
+                                        &nbsp; Other trigger&nbsp;
+                                        <input type="text" style="width:80px;" wicket:id="otherTrigger"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Drugs given specifically for relapse</td>
+                                    <td>Drug 1&nbsp;
+                                        <input type="text" style="width:80px;" wicket:id="drug1">
+                                        &nbsp; Drug 2&nbsp;
+                                        <input type="text" style="width:80px;" wicket:id="drug2">
+                                        &nbsp; Drug 3&nbsp;
+                                        <input type="text" style="width:80px;" wicket:id="drug3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+
+                                    </td>
+                                </tr>
+                                <tr id="ctl00_ContentPlaceHolder1_rowAchieved">
+                                    <td>
+                                        Remission achieved?
+                                    </td>
+                                    <td>
+
+                                       <span wicket:id="remissionAchieved">
+                                        <input type="radio" wicket:id="complete"
+                                               id="ctl00_ContentPlaceHolder1_radAchievedYes"><label
+                                            for="ctl00_ContentPlaceHolder1_radAchievedYes">Complete</label>
+                                        &nbsp;<input type="radio" wicket:id="partial"
+                                                     id="ctl00_ContentPlaceHolder1_radAchievePartial"><label
+                                            for="ctl00_ContentPlaceHolder1_radAchievePartial">Partial</label>
+                                        &nbsp;<input type="radio" wicket:id="none"
+                                                     id="ctl00_ContentPlaceHolder1_radAchieveNo"><label
+                                            for="ctl00_ContentPlaceHolder1_radAchieveNo">None</label>
+                                        &nbsp;
+                                        <a style="color:Green;font-weight:bold;" href="#" class="info"
+                                           id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Date of remission</td>
+                                    <td valign="middle">
+                                        <input type="text" style="width:80px;" wicket:id="dateOfRemission"/>
+                                        <span class="feedback" wicket:id="dateOfRemissionFeedback"></span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="button" class="saveBtn" wicket:id="submit" value="Add">
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </fieldset>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+</form>
+
+<table cellpadding="10" style="width:100%; background-color:#eef6ed; font-size:85%">
     <tr>
-        <td align="left" class="style4"><b>Relapse Records</b></td>
-        <td class="style2" style="text-align:right; ">RADAR No.</td>
-        <td class="style3">
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly"
-                   value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
-        </td>
-    </tr>
-    <tr>
-        <td align="left">Name
-            <input type="text" id="ctl00_ContentPlaceHolder1_txtFNAME" readonly="readonly" value="jane"
-                   name="ctl00$ContentPlaceHolder1$txtFNAME">
-            &nbsp;<input type="text" id="ctl00_ContentPlaceHolder1_txtSNAME" readonly="readonly" value="lady"
-                         name="ctl00$ContentPlaceHolder1$txtSNAME">
-            &nbsp;DoB
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtDOB" readonly="readonly"
-                   value="11-Nov-1992" name="ctl00$ContentPlaceHolder1$txtDOB">
+        <td colspan="2">
+            <fieldset style="border:1px solid Green; padding:5px;">
+                <p><strong>Plasmapheresis</strong></p>
 
-        </td>
-        <td class="style5" style="text-align:right; ">Hospital No.</td>
-        <td>
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly"
-                   value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align:left;">&nbsp;<input type="text"
-                                                  style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"
-                                                  id="ctl00_ContentPlaceHolder1_txtDateToday" value="28-12-2011"
-                                                  name="ctl00$ContentPlaceHolder1$txtDateToday">
-        </td>
-        <td class="style5" style="text-align:right; ">Diagnosis</td>
-        <td>
-            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
-                   readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
-        </td>
-    </tr>
-    </tbody>
-</table>
-<div id="ctl00_ContentPlaceHolder1_pnlMain">
+                <div>
 
-<table cellpadding="10" style="width:100%; background-color:#eef6ed; font-size:85%"
-       id="ctl00_ContentPlaceHolder1_tblMain">
-<tbody>
-<tr>
-<td>
-<div>
-    <table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;"
-           id="ctl00_ContentPlaceHolder1_GridView1" rules="all">
-        <tbody>
-        <tr>
+                </div>
 
-        </tr>
-        </tbody>
-    </table>
-</div>
-<br><br>
-
-
-<fieldset style="border:1px solid green;" id="ctl00_ContentPlaceHolder1_fieldsetAdd">
-    <table cellpadding="8"
-           style="width: 100%; border-collapse:collapse; table-layout:fixed; font-size:95%; margin-top:10px;"
-           id="ctl00_ContentPlaceHolder1_tblRelapseAdd">
-        <tbody>
-        <tr>
-            <td width="150">Date of relapse</td>
-            <td>
-                <input type="text" style="width:80px;" wicket:id="dateOfRelapse">
-
-                <input type="image" style="border-width:0px;"
-                       onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$calImage1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                       src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_calImage1"
-                       name="ctl00$ContentPlaceHolder1$calImage1">&nbsp;<span
-                    style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_CompareValidator1">&gt; today</span>
-                &nbsp;<span style="color:Red;visibility:hidden;"
-                            id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
-            </td>
-        </tr>
-        <tr id="ctl00_ContentPlaceHolder1_rowTx">
-            <td>Transplanted / Native</td>
-            <td wicket:id="transplantedNative">
-                <input type="radio" wicket:id="tx"
-                       id="ctl00_ContentPlaceHolder1_radTxYes"><label
-                    for="ctl00_ContentPlaceHolder1_radTxYes">Tx</label>
-                &nbsp;
-                <input type="radio" wicket:id="native"
-                       id="ctl00_ContentPlaceHolder1_radTxNo"><label
-                    for="ctl00_ContentPlaceHolder1_radTxNo">Nat</label>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">Viral trigger&nbsp;
-                <input type="text" style="width:80px;" wicket:id="viralTrigger"/>
-                &nbsp; Immunisation trigger&nbsp;
-                <input type="text" style="width:80px;" wicket:id="immunisationTrigger"/>
-                &nbsp; Other trigger&nbsp;
-                <input type="text" style="width:80px;" wicket:id="otherTrigger"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Drugs given specifically for relapse</td>
-            <td>Drug 1&nbsp;
-                <input type="text" style="width:80px;" wicket:id="drug1">
-                &nbsp; Drug 2&nbsp;
-                <input type="text" style="width:80px;" wicket:id="drug2">
-                &nbsp; Drug 3&nbsp;
-                <input type="text" style="width:80px;" wicket:id="drug3">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <fieldset style="border:1px solid Green; padding:5px;">
-                    <p><strong>Plasmapheresis</strong></p>
-
-                    <div>
-
-                    </div>
-
-                    <form wicket:id="form">
-                        <table cellpadding="5" style="width: 100%; font-size:100%; margin-top:10px"
-                               id="ctl00_ContentPlaceHolder1_tblAddPlasma">
-                            <tbody>
-                            <tr>
-                                <td>Date Started<br>
+                <form wicket:id="plasmapheresisForm">
+                    <table cellpadding="5" style="width: 100%; font-size:100%; margin-top:10px"
+                           id="ctl00_ContentPlaceHolder1_tblAddPlasma">
+                        <tbody>
+                        <tr>
+                            <td>Date Started<br>
                                                 <span style="color:Red;visibility:hidden;"
                                                       id="ctl00_ContentPlaceHolder1_CompareValidator7">&gt; today</span>
-                                </td>
-                                <td>Date Stopped
-                                    <br>
+                            </td>
+                            <td>Date Stopped
+                                <br>
 
-                                    &nbsp;<span style="color:Red;"
-                                                id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span>
-                                </td>
-                                <td>No of Exchanges</td>
-                                <td>&nbsp;</td>
-                                <td>
-                                    Response
-                                </td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                &nbsp;<span style="color:Red;"
+                                            id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span>
+                            </td>
+                            <td>No of Exchanges</td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Response
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                <span class="feedback" wicket:id="startDateFeedback"></span>
+                                <span wicket:id="startDateFeedbackIndicator"></span>
 
-                                    <input type="image" style="border-width:0px;"
-                                           src="images/Calendar_scheduleHS.png"
-                                           id="ctl00_ContentPlaceHolder1_ImageButton15"
-                                           name="ctl00$ContentPlaceHolder1$ImageButton15">
-                                </td>
-                                <td>
-                                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+                            </td>
+                            <td>
+                                <input type="text" style="width:70px;" wicket:id="endDate"/>
+                                <span class="feedback" wicket:id="endDateFeedback"></span>
+                            </td>
+                            <td>
+                                <select wicket:id="plasmapheresisExchanges"/>
+                                <span wicket:id="plasmapheresisExchangesFeedbackIndicator"></span>
+                            </td>
+                            <td>
+                                &nbsp;</td>
+                            <td>
+                                <select wicket:id="response"/>
+                                <span wicket:id="responseFeedbackIndicator"></span>
+                            </td>
+                            <td>
+                                <input wicket:id="savePlasmapheresis" type="button"
+                                       value="Add">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                &nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
 
-                                    <input type="image" style="border-width:0px;"
-                                           src="images/Calendar_scheduleHS.png"
-                                           id="ctl00_ContentPlaceHolder1_ImageButton16"
-                                           name="ctl00$ContentPlaceHolder1$ImageButton16">
-                                </td>
-                                <td>
-                                    <select wicket:id="plasmapheresisExchanges"/>
-                                </td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>
-                                    <select wicket:id="response"/>
-                                </td>
-                                <td>
-                                    <input type="submit" id="ctl00_ContentPlaceHolder1_btnPlasmaAdd"
-                                           value="Add" name="ctl00$ContentPlaceHolder1$btnPlasmaAdd">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td>
-                                    &nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
+            </fieldset>
 
-                </fieldset>
-
-            </td>
-        </tr>
-        <tr id="ctl00_ContentPlaceHolder1_rowAchieved">
-            <td>
-                Remission achieved?
-            </td>
-            <td wicket:id="remissionAchieved">
-                <input type="radio" wicket:id="complete"
-                       id="ctl00_ContentPlaceHolder1_radAchievedYes"><label
-                    for="ctl00_ContentPlaceHolder1_radAchievedYes">Complete</label>
-                &nbsp;<input type="radio" wicket:id="partial"
-                             id="ctl00_ContentPlaceHolder1_radAchievePartial"><label
-                    for="ctl00_ContentPlaceHolder1_radAchievePartial">Partial</label>
-                &nbsp;<input type="radio" wicket:id="none"
-                             id="ctl00_ContentPlaceHolder1_radAchieveNo"><label
-                    for="ctl00_ContentPlaceHolder1_radAchieveNo">None</label>
-                &nbsp;
-                <a style="color:Green;font-weight:bold;" href="#" class="info"
-                   id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
-            </td>
-        </tr>
-        <tr>
-            <td>Date of remission</td>
-            <td valign="middle">
-                <input type="text" style="width:80px;" wicket:id="dateOfRemission"/>
-
-                <input type="image" style="border-width:0px;"
-                       onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$calImage2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                       src="images/Calendar_scheduleHS.png" id="ctl00_ContentPlaceHolder1_calImage2"
-                       name="ctl00$ContentPlaceHolder1$calImage2"></td>
-        </tr>
-        <tr>
-            <td>
-                <input type="submit" class="saveBtn" wicket:id="submit" value="Add">
-            </td>
-            <td>&nbsp;</td>
-        </tr>
-        </tbody>
-    </table>
-
-</fieldset>
-</td>
-</tr>
-</tbody>
+        </td>
+    </tr>
 </table>
-
-
+    <span id="ctl00_ContentPlaceHolder1_lblPage">12B</span>
 </div>
 
-</div>
-<br><br><br>
-<span id="ctl00_ContentPlaceHolder1_lblPage">12B</span>
-</div>
-
-</form>
 </wicket:panel>
