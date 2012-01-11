@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
@@ -44,6 +45,28 @@ public class DemographicDaoTest extends BaseDaoTest {
         // Centre should be set as 3, Bristol
         assertNotNull("Centre was null", demographics.getRenalUnit());
         assertEquals("Centre was not Bristol", demographics.getRenalUnit().getAbbreviation(), "Bristol");
+    }
+
+    @Test
+    public void testGetAllDemographics() throws Exception {
+        List<Demographics> demographics = demographicDao.getDemographics();
+        assertNotNull("List was null", demographics);
+        assertEquals("Wrong size", 34, demographics.size());
+    }
+
+    @Test
+    public void testGetDemographicsByCentre() throws Exception {
+        // Construct centre
+        Centre centre = new Centre();
+        centre.setId(14L);
+
+        // Call DAO
+        List<Demographics> demographics = demographicDao.getDemographicsByRenalUnit(centre);
+        assertNotNull("List was null", demographics);
+        assertEquals("Wrong size", 1, demographics.size());
+        for (Demographics de : demographics) {
+            assertEquals("Wrong centre", new Long(14), de.getRenalUnit().getId());
+        }
     }
 
     @Test
