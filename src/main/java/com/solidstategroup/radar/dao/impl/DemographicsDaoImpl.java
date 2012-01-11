@@ -2,6 +2,7 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
@@ -34,6 +35,15 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             LOGGER.debug("No demographic record found for radar number {}", radarNumber);
             return null;
         }
+    }
+
+    public List<Demographics> getDemographicsByRenalUnit(Centre centre) {
+        return jdbcTemplate.query("SELECT * FROM tbl_Demographics WHERE RENAL_UNIT = ?", new Object[]{centre.getId()},
+                new DemographicsRowMapper());
+    }
+
+    public List<Demographics> getDemographics() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Demographics", new DemographicsRowMapper());
     }
 
     public Sex getSex(long id) {
