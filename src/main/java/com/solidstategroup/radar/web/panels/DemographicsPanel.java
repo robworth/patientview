@@ -141,7 +141,7 @@ public class DemographicsPanel extends Panel {
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                // Todo: Implement
+               ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
 
             @Override
