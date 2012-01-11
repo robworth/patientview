@@ -1,10 +1,8 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
+import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
-import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
-import com.solidstategroup.radar.web.components.RadarDatePicker;
-import com.solidstategroup.radar.web.components.RadarFormComponentFeedbackIndicator;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
@@ -13,7 +11,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -22,57 +19,85 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class ClinicalPicturePanel extends Panel {
 
-    public ClinicalPicturePanel(String id) {
+    @SpringBean
+    private ClinicalDataDao clinicalDataDao;
+
+    public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        final TextField<Double> diastolicBloodPressure = new TextField("diastolicBloodPressure");
+        final TextField<Double> diastolicBloodPressure = new TextField<Double>("diastolicBloodPressure");
 
-        final Form<ClinicalData> form =
-                new Form<ClinicalData>("form", new CompoundPropertyModel<ClinicalData>(new ClinicalData())) {
+        CompoundPropertyModel<ClinicalData> model =
+                new CompoundPropertyModel<ClinicalData>(new LoadableDetachableModel<ClinicalData>() {
                     @Override
-                    protected void onValidateModelObjects() {
-                        super.onValidateModelObjects();
-                        ClinicalData clinicalData = getModelObject();
-                        Integer systolicBloodPressureVal = clinicalData.getSystolicBloodPressure();
-                        Integer diastolicBloodPressureVal = clinicalData.getDiastolicBloodPressure();
-                        if (systolicBloodPressureVal != null && diastolicBloodPressureVal != null) {
-                            if (!(systolicBloodPressureVal.compareTo(diastolicBloodPressureVal) > 0)) {
-                                diastolicBloodPressure.error("This value has to be less than the first value");
+                    protected ClinicalData load() {
+                        if (radarNumberModel.getObject() != null) {
+                            // If we have a radar number get the list from DAO
+                            List<ClinicalData> clinicalDatas =
+                                    clinicalDataDao.getClinicalDataByRadarNumber(radarNumberModel.getObject());
+                            if (!clinicalDatas.isEmpty()) {
+                                // This is first visit so return the first
+                                return clinicalDatas.get(0);
                             }
                         }
-
+                        // By default just return new one
+                        return new ClinicalData();
                     }
-                };
+                });
+
+
+        final Form<ClinicalData> form = new Form<ClinicalData>("form", model) {
+            @Override
+            protected void onValidateModelObjects() {
+                super.onValidateModelObjects();
+                ClinicalData clinicalData = getModelObject();
+                Integer systolicBloodPressureVal = clinicalData.getSystolicBloodPressure();
+                Integer diastolicBloodPressureVal = clinicalData.getDiastolicBloodPressure();
+                if (systolicBloodPressureVal != null && diastolicBloodPressureVal != null) {
+                    if (!(systolicBloodPressureVal.compareTo(diastolicBloodPressureVal) > 0)) {
+                        diastolicBloodPressure.error("This value has to be less than the first value");
+                    }
+                }
+
+            }
+        };
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        RadarRequiredDateTextField clinicalPictureDate = new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), form, componentsToUpdate);
+        RadarRequiredDateTextField clinicalPictureDate =
+                new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), form, componentsToUpdate);
         form.add(clinicalPictureDate);
 
-        RadarTextFieldWithValidation height = new RadarTextFieldWithValidation("height", new RangeValidator<Double>(35.0, 185.0), form, componentsToUpdate);
+        RadarTextFieldWithValidation height =
+                new RadarTextFieldWithValidation("height", new RangeValidator<Double>(35.0, 185.0), form,
+                        componentsToUpdate);
         form.add(height);
 
-        RadarTextFieldWithValidation weight = new RadarTextFieldWithValidation("weight", new RangeValidator<Double>(3.0, 100.0), form, componentsToUpdate);
+        RadarTextFieldWithValidation weight =
+                new RadarTextFieldWithValidation("weight", new RangeValidator<Double>(3.0, 100.0), form,
+                        componentsToUpdate);
         form.add(weight);
         // Blood pressure
         TextField<Double> systolicBloodPressure = new TextField("systolicBloodPressure");
         systolicBloodPressure.add(new RangeValidator<Integer>(50, 200));
         form.add(systolicBloodPressure);
 
-        final ComponentFeedbackPanel systolicBloodPressureFeedback = new ComponentFeedbackPanel("systolicBloodPressureFeedback", systolicBloodPressure);
+        final ComponentFeedbackPanel systolicBloodPressureFeedback =
+                new ComponentFeedbackPanel("systolicBloodPressureFeedback", systolicBloodPressure);
         systolicBloodPressureFeedback.setOutputMarkupId(true);
         systolicBloodPressureFeedback.setOutputMarkupPlaceholderTag(true);
         form.add(systolicBloodPressureFeedback);
@@ -80,7 +105,8 @@ public class ClinicalPicturePanel extends Panel {
         diastolicBloodPressure.add(new RangeValidator<Integer>(20, 150));
         form.add(diastolicBloodPressure);
 
-        final ComponentFeedbackPanel diastolicBloodPressureFeedback = new ComponentFeedbackPanel("diastolicBloodPressureFeedback", diastolicBloodPressure);
+        final ComponentFeedbackPanel diastolicBloodPressureFeedback =
+                new ComponentFeedbackPanel("diastolicBloodPressureFeedback", diastolicBloodPressure);
         diastolicBloodPressureFeedback.setOutputMarkupId(true);
         diastolicBloodPressureFeedback.setOutputMarkupPlaceholderTag(true);
         form.add(diastolicBloodPressureFeedback);
@@ -161,8 +187,8 @@ public class ClinicalPicturePanel extends Panel {
 
         add(form);
 
-       componentsToUpdate.add(systolicBloodPressureFeedback);
-       componentsToUpdate.add(diastolicBloodPressureFeedback);
+        componentsToUpdate.add(systolicBloodPressureFeedback);
+        componentsToUpdate.add(diastolicBloodPressureFeedback);
 
         ClinicalAjaxSubmitLink save = new ClinicalAjaxSubmitLink("save") {
             @Override
@@ -186,7 +212,7 @@ public class ClinicalPicturePanel extends Panel {
         return ((FirstVisitPanel) getParent()).getCurrentTab().equals(FirstVisitPanel.CurrentTab.CLINICAL_PICTURE);
     }
 
-     private abstract class ClinicalAjaxSubmitLink extends AjaxSubmitLink{
+    private abstract class ClinicalAjaxSubmitLink extends AjaxSubmitLink {
 
         public ClinicalAjaxSubmitLink(String id) {
             super(id);

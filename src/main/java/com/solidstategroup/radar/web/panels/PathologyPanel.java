@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.PathologyDao;
 import com.solidstategroup.radar.model.sequenced.Pathology;
-import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.pages.PatientPage;
@@ -14,6 +14,9 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
@@ -21,14 +24,34 @@ import java.util.List;
 
 public class PathologyPanel extends Panel {
 
-    public PathologyPanel(String id) {
+    @SpringBean
+    private PathologyDao pathologyDao;
+
+    public PathologyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        Form<Pathology> form = new Form<Pathology>("form", new CompoundPropertyModel<Pathology>(new Pathology()));
+        CompoundPropertyModel<Pathology> model;
+
+        // Set up model
+        model = new CompoundPropertyModel<Pathology>(new LoadableDetachableModel<Pathology>() {
+            @Override
+            protected Pathology load() {
+                if (radarNumberModel.getObject() != null) {
+                    List<Pathology> pathologies = pathologyDao.getPathologyByRadarNumber(radarNumberModel.getObject());
+                    if (!pathologies.isEmpty()) {
+                        // This shouldn't just return the first result
+                        return pathologies.get(0);
+                    }
+                }
+                return new Pathology();
+            }
+        });
+
+        Form<Pathology> form = new Form<Pathology>("form", model);
 
         // Add inputs
         form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));
@@ -48,13 +71,20 @@ public class PathologyPanel extends Panel {
         form.add(new TextField("imageUrl4"));
         form.add(new TextField("imageUrl5"));
 
-        form.add(new RadarTextFieldWithValidation("totalNumber", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("numberSclerosed", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("numberSegmentallySclerosed", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("numberCellularCrescents", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("numberFibrousCrescents", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("numberEndocapillaryHypercelluarity", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("numberFibrinoidNecrosis", new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("totalNumber", new RangeValidator<Integer>(0, 150), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("numberSclerosed", new RangeValidator<Integer>(0, 150), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("numberSegmentallySclerosed", new RangeValidator<Integer>(0, 150),
+                form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("numberCellularCrescents", new RangeValidator<Integer>(0, 150), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("numberFibrousCrescents", new RangeValidator<Integer>(0, 150), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("numberEndocapillaryHypercelluarity",
+                new RangeValidator<Integer>(0, 150), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("numberFibrinoidNecrosis", new RangeValidator<Integer>(0, 150), form,
+                componentsToUpdate));
 
         form.add(new TextArea("otherFeature"));
 
@@ -97,7 +127,7 @@ public class PathologyPanel extends Panel {
         protected void onError(AjaxRequestTarget target, Form<?> form) {
             target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
             ComponentFeedbackPanel a = (ComponentFeedbackPanel) getParent().get("totalNumberFeedback");
-             a.getFeedbackMessages();
+            a.getFeedbackMessages();
         }
 
         protected abstract List<Component> getComponentsToUpdate();
