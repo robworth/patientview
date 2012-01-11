@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -13,8 +14,12 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
 
 public class PatientPage extends BasePage {
+
+    private static final String PARAM_ID = "id";
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -33,10 +38,18 @@ public class PatientPage extends BasePage {
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
-    public PatientPage() {
+    public PatientPage(PageParameters parameters) {
+        super();
+
+        // Get radar number from parameters - we might not have one for new patients
+        Long radarNumber = null;
+        StringValue idValue = parameters.get(PARAM_ID);
+        if (!idValue.isEmpty()) {
+            radarNumber = idValue.toLongObject();
+        }
 
         // Construct panels for each of the tabs
-        demographicsPanel = new DemographicsPanel("demographicsPanel");
+        demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumber);
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel");
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel");
         followUpPanel = new FollowUpPanel("followUpPanel");
@@ -94,4 +107,9 @@ public class PatientPage extends BasePage {
                     hospitalisationPanel);
         }
     }
+
+    public static PageParameters getParameters(Demographics demographics) {
+        return new PageParameters().set(PARAM_ID, demographics.getId());
+    }
+
 }
