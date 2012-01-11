@@ -2,7 +2,7 @@ package com.solidstategroup.radar.model;
 
 import java.util.Date;
 
-public class ImmunosuppressionTreatment extends BaseModel {
+public class ImmunosuppressionTreatment extends RadarModel {
 
     private Immunosuppression immunosuppression;
     private Date startDate, endDate;

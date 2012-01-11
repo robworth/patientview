@@ -26,6 +26,13 @@ public class UserDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetUnknownPatientUser() {
+        // Get a user that doesn't exist
+        PatientUser patientUser = userDao.getPatientUser("doesnt@exist.com");
+        assertNull(patientUser);
+    }
+
+    @Test
     public void testSavePatientUser() throws Exception {
         // Construct the user
         PatientUser patientUser = new PatientUser();
@@ -71,4 +78,10 @@ public class UserDaoTest extends BaseDaoTest {
         assertNotNull("Password hash is null", professionalUser.getPasswordHash());
     }
 
+    @Test
+    public void testGetUnknownProfessionalUser() {
+        // Get an unknown user
+        ProfessionalUser professionalUser = userDao.getProfessionalUser("no@no.com");
+        assertNull("Unknown user isn't null", professionalUser);
+    }
 }

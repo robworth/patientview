@@ -4,12 +4,53 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <bean id="clinicalDataDao" class="com.solidstategroup.radar.dao.impl.ClinicalDataDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="demographicsDao" class="com.solidstategroup.radar.dao.impl.DemographicsDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="diagnosisDao" class="com.solidstategroup.radar.dao.impl.DiagnosisDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="hospitalisationDao" class="com.solidstategroup.radar.dao.impl.HospitalisationDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="immunosuppressionDao" class="com.solidstategroup.radar.dao.impl.ImmunosuppressionDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="labDataDao" class="com.solidstategroup.radar.dao.impl.LabDataDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="pathologyDao" class="com.solidstategroup.radar.dao.impl.PathologyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="plasmapheresisDao" class="com.solidstategroup.radar.dao.impl.PlasmapheresisDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="relapseDao" class="com.solidstategroup.radar.dao.impl.RelapseDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="therapyDao" class="com.solidstategroup.radar.dao.impl.TherapyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transplantDao" class="com.solidstategroup.radar.dao.impl.TransplantDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="treatmentDao" class="com.solidstategroup.radar.dao.impl.TreatmentDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 

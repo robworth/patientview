@@ -5,18 +5,46 @@ import java.util.Date;
 /**
  * Corresponds to the tbl_Diagnosis table within the database.
  */
-public class Diagnosis extends BaseModel {
+public class Diagnosis extends RadarModel {
 
     public enum YesNo {
-        YES, NO, UNKNOWN
+        YES(1), NO(0), UNKNOWN(9);
+        private int id;
+
+        YesNo(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum MutationYorN {
-        Y, N
+        Y(1), N(0);
+        private int id;
+
+        MutationYorN(int id) {
+            // This is actually a bit in the DB, but use this to avoid any more code
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum MutationSorSN {
-        S, SN
+        S(1), SN(0);
+        private int id;
+
+        MutationSorSN(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     public enum SteroidResistance {
@@ -27,9 +55,14 @@ public class Diagnosis extends BaseModel {
         SteroidResistance(int id) {
             this.id = id;
         }
+
+        public int getId() {
+            return id;
+        }
     }
 
     private DiagnosisCode diagnosisCode;
+
     private String text;
     private Date biopsyDate;
     private Date esrfDate;
@@ -50,7 +83,8 @@ public class Diagnosis extends BaseModel {
             mutationYorN7, mutationYorN8, mutationYorN9;
     private MutationSorSN mutationSorSN1, mutationSorSN2, mutationSorSN3, mutationSorSN4, mutationSorSN5,
             mutationSorSN6, mutationSorSN7, mutationSorSN8, mutationSorSN9;
-
+    private String otherGeneMutation;
+    
     private Karotype karotype;
     private YesNo parentalConsanguinity;
     private YesNo familyHistory;
@@ -314,6 +348,14 @@ public class Diagnosis extends BaseModel {
 
     public void setMutationSorSN9(MutationSorSN mutationSorSN9) {
         this.mutationSorSN9 = mutationSorSN9;
+    }
+
+    public String getOtherGeneMutation() {
+        return otherGeneMutation;
+    }
+
+    public void setOtherGeneMutation(String otherGeneMutation) {
+        this.otherGeneMutation = otherGeneMutation;
     }
 
     public Karotype getKarotype() {

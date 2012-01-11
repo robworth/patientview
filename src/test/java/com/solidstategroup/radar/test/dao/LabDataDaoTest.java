@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class LabDataDaoTest extends BaseDaoTest {
 
@@ -21,6 +20,13 @@ public class LabDataDaoTest extends BaseDaoTest {
         LabData labData = labDataDao.getLabData(16L);
 
         assertNotNull("Lab data object was null", labData);
+        assertEquals("Wrong ID", new Long(16), labData.getId());
+    }
+
+    @Test
+    public void getLabDataUnknown() {
+        LabData labData = labDataDao.getLabData(1236L);
+        assertNull("Lab data object was not null", labData);
     }
 
     @Test

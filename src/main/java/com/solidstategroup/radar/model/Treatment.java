@@ -2,17 +2,17 @@ package com.solidstategroup.radar.model;
 
 import java.util.Date;
 
-public class Treatment extends BaseModel {
+public class Treatment extends RadarModel {
 
-    private Modality modality;
+    private TreatmentModality treatmentModality;
     private Date startDate, endDate;
 
-    public Modality getModality() {
-        return modality;
+    public TreatmentModality getTreatmentModality() {
+        return treatmentModality;
     }
 
-    public void setModality(Modality modality) {
-        this.modality = modality;
+    public void setTreatmentModality(TreatmentModality treatmentModality) {
+        this.treatmentModality = treatmentModality;
     }
 
     public Date getStartDate() {

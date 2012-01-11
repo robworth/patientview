@@ -3,6 +3,8 @@ package com.solidstategroup.radar.dao.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -33,11 +36,47 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         }
     }
 
+    public Sex getSex(long id) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Sex WHERE sID = ?", new Object[]{id}, new SexRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No sex found for ID {}", id);
+            return null;
+        }
+    }
+
+    public List<Sex> getSexes() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Sex", new SexRowMapper());
+    }
+
+    public Status getStatus(long id) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Status WHERE sID = ?", new Object[]{id}, new StatusRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No status found for ID {}", id);
+            return null;
+        }
+    }
+
+    public List<Status> getStatuses() {
+        return jdbcTemplate.query("SELECT * FROM tbl_Status", new StatusRowMapper());
+    }
+
     private class DemographicsRowMapper implements RowMapper<Demographics> {
         public Demographics mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct object and set radar number
             Demographics demographics = new Demographics();
             demographics.setId(resultSet.getLong("RADAR_NO"));
             demographics.setDateRegistered(resultSet.getDate("DATE_REG"));
+
+            // Renal registry number
+            demographics.setRenalRegistryNumber(resultSet.getString("RR_NO"));
+
+            // UK transplant number and chiNumber
+            demographics.setUkTransplantNumber(resultSet.getString("UKT_NO"));
+            demographics.setChiNumber(resultSet.getString("CHI_NO"));
 
             // These need to be decrypted from the database
             demographics.setNhsNumber(getDecryptedString(resultSet, "NHS_NO"));
@@ -77,19 +116,52 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             demographics.setPostcode(getDecryptedString(resultSet, "POSTCODE"));
             demographics.setPreviousPostcode(getDecryptedString(resultSet, "POSTCODE_OLD"));
 
-//            demographics.setEthnicity();
-//            demographics.setSex();
+            // Set sex
+            demographics.setSex(getSex(resultSet.getLong("SEX")));
+
+            // Try and get ethnicity
+            String ethnicityCode = resultSet.getString("ETHNIC_GP");
+            if (StringUtils.isNotBlank(ethnicityCode)) {
+                demographics.setEthnicity(utilityDao.getEthnicityByCode(ethnicityCode));
+            }
 
             demographics.setConsent(resultSet.getBoolean("CONSENT"));
 
             // Set the centre if we have an ID
-            Long renalUnitId = resultSet.getLong("RENAL_UNIT");
-            if (renalUnitId != null) {
+            long renalUnitId = resultSet.getLong("RENAL_UNIT");
+            if (renalUnitId > 0) {
                 demographics.setRenalUnit(utilityDao.getCentre(renalUnitId));
             }
 
-            // Todo: Some more fields...
+            // Set status
+            long statusId = resultSet.getLong("STATUS");
+            if (statusId > 0) {
+                demographics.setStatus(getStatus(statusId));
+            }
+
+            // Fields to finish: ukTransplantNumber, chiNumber, consultant, renalUnitAuthorised
+
             return demographics;
+        }
+    }
+
+    private class SexRowMapper implements RowMapper<Sex> {
+        public Sex mapRow(ResultSet resultSet, int i) throws SQLException {
+            Sex sex = new Sex();
+            sex.setId(resultSet.getLong("sID"));
+            sex.setType(resultSet.getString("sType"));
+            return sex;
+        }
+    }
+
+    private class StatusRowMapper implements RowMapper<Status> {
+        public Status mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Contruct new status object
+            Status status = new Status();
+            status.setId(resultSet.getLong("sID"));
+            status.setDescription(resultSet.getString("sDesc"));
+            status.setAbbreviation(resultSet.getString("sAbbrev"));
+            return status;
         }
     }
 
@@ -106,4 +178,5 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;
     }
+
 }

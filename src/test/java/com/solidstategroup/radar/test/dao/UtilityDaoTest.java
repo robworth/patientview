@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class UtilityDaoTest extends BaseDaoTest {
 
@@ -74,6 +72,12 @@ public class UtilityDaoTest extends BaseDaoTest {
     public void testGetEthnicities() {
         List<Ethnicity> ethnicities = utilityDao.getEthnicities();
         assertNotNull("Ethnicities list is null", ethnicities);
+    }
+
+    @Test
+    public void testGetEthnicityUnknown() throws Exception {
+        Ethnicity ethnicity = utilityDao.getEthnicityByCode("asasda");
+        assertNull("Ethnicity not null", ethnicity);
     }
 
     @Test
