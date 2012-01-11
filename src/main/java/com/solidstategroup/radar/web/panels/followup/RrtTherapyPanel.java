@@ -2,7 +2,6 @@ package com.solidstategroup.radar.web.panels.followup;
 
 import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.web.RadarApplication;
-import com.solidstategroup.radar.web.components.RadarDatePicker;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
@@ -16,12 +15,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -37,7 +34,7 @@ import java.util.List;
 
 public class RrtTherapyPanel extends Panel {
 
-    public RrtTherapyPanel(String id) {
+    public RrtTherapyPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
@@ -46,7 +43,7 @@ public class RrtTherapyPanel extends Panel {
         add(new DialysisTablePanel("dialysisContainer"));
 
         // Transplants table
-        add(new DataView<Transplant>("transplants", new TransplantDataProvider()) {
+        add(new DataView<Transplant>("transplants", new TransplantDataProvider(radarNumberModel)) {
             @Override
             protected void populateItem(Item<Transplant> item) {
                 item.add(DateLabel.forDatePattern("date", RadarApplication.DATE_PATTERN));
@@ -116,10 +113,10 @@ public class RrtTherapyPanel extends Panel {
         editTransplantContainer.setOutputMarkupPlaceholderTag(true);
         add(editTransplantContainer);
 
-
         // Edit transplant form
         Form<Transplant> editTransplantForm =
-                new TransplantForm("form", new CompoundPropertyModel<Transplant>(new Transplant()), new ArrayList<Component>());
+                new TransplantForm("form", new CompoundPropertyModel<Transplant>(new Transplant()),
+                        new ArrayList<Component>());
         editTransplantContainer.add(editTransplantForm);
 
         editTransplantForm.add(new AjaxSubmitLink("save") {
@@ -141,10 +138,11 @@ public class RrtTherapyPanel extends Panel {
             }
         });
 
-         final List<Component> addFormComponentsToUpdate = new ArrayList<Component>();
+        final List<Component> addFormComponentsToUpdate = new ArrayList<Component>();
         // Add transplant form
         Form<Transplant> addTransplantForm =
-                new TransplantForm("addTransplantForm", new CompoundPropertyModel<Transplant>(new Transplant()), addFormComponentsToUpdate);
+                new TransplantForm("addTransplantForm", new CompoundPropertyModel<Transplant>(new Transplant()),
+                        addFormComponentsToUpdate);
         addTransplantForm.add(new AjaxSubmitLink("add") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -163,9 +161,10 @@ public class RrtTherapyPanel extends Panel {
         private TransplantForm(String id, IModel<Transplant> transplantIModel, List<Component> componentsToUpdate) {
             super(id, transplantIModel);
             add(new RadarRequiredDateTextField("date", this, componentsToUpdate));
-            add(new RadarRequiredDropdownChoice("type", Arrays.asList("temp"), new ChoiceRenderer(), this, componentsToUpdate));
+            add(new RadarRequiredDropdownChoice("type", Arrays.asList("temp"), new ChoiceRenderer(), this,
+                    componentsToUpdate));
             add(new YesNoRadioGroup("recurr"));
-            add(new RadarDateTextField("dateRecurr",this, componentsToUpdate));
+            add(new RadarDateTextField("dateRecurr", this, componentsToUpdate));
             add(new RadarDateTextField("dateFailure", this, componentsToUpdate));
         }
     }

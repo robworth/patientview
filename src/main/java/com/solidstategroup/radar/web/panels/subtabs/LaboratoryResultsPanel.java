@@ -1,16 +1,12 @@
 package com.solidstategroup.radar.web.panels.subtabs;
 
 import com.solidstategroup.radar.model.sequenced.LabData;
-import com.solidstategroup.radar.web.RadarApplication;
-import com.solidstategroup.radar.web.components.RadarDatePicker;
-import com.solidstategroup.radar.web.components.RadarFormComponentFeedbackIndicator;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -22,16 +18,16 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class LaboratoryResultsPanel extends Panel {
 
-    public LaboratoryResultsPanel(String id) {
+    public LaboratoryResultsPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
 
         List<Component> feedbackList = new ArrayList<Component>();

@@ -1,12 +1,11 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.RelapseDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
-
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
-import com.solidstategroup.radar.model.sequenced.Relapse;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
-import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.model.sequenced.Relapse;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
@@ -21,7 +20,10 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,14 +31,34 @@ import java.util.Date;
 import java.util.List;
 
 public class RelapsePanel extends Panel {
-    public RelapsePanel(String id) {
+
+    @SpringBean
+    private RelapseDao relapseDao;
+
+    public RelapsePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        Form<Relapse> form = new Form<Relapse>("form", new CompoundPropertyModel<Relapse>(new Relapse()));
+        CompoundPropertyModel<Relapse> model;
+
+        // Set up model
+        model = new CompoundPropertyModel<Relapse>(new LoadableDetachableModel<Relapse>() {
+            @Override
+            protected Relapse load() {
+                if (radarNumberModel.getObject() != null) {
+                    List<Relapse> relapses = relapseDao.getRelapsesByRadarNumber(radarNumberModel.getObject());
+                    if (!relapses.isEmpty()) {
+                        // Todo: This shouldn't just get the first result
+                        return relapses.get(0);
+                    }
+                }
+                return new Relapse();
+            }
+        });
+        Form<Relapse> form = new Form<Relapse>("form", model);
 
         form.add(new RadarRequiredDateTextField("dateOfRelapse", form, componentsToUpdate));
 
@@ -65,42 +87,48 @@ public class RelapsePanel extends Panel {
         // Inner form for plasmapheresis
         Form<Plasmapheresis> plasmapheresisForm =
                 new Form<Plasmapheresis>("plasmapheresisForm",
-                        new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis())){
+                        new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis())) {
                     @Override
                     protected void onValidateModelObjects() {
                         super.onValidateModelObjects();
                         Plasmapheresis plasmapheresis = getModelObject();
                         Date startDate = plasmapheresis.getStartDate();
                         Date endDate = plasmapheresis.getEndDate();
-                        if(startDate != null && endDate != null && startDate.compareTo(endDate)  != -1) {
-                          Component endDateComp =  get("endDate");
+                        if (startDate != null && endDate != null && startDate.compareTo(endDate) != -1) {
+                            Component endDateComp = get("endDate");
                             endDateComp.error("End date cannot be before start date.");
                         }
                     }
                 };
 
-        plasmapheresisForm.add(new RadarRequiredDateTextField("startDate", plasmapheresisForm, plasmapheresisComponentsToUpdate));
-        final RadarDateTextField endDate = new RadarDateTextField("endDate", plasmapheresisForm, plasmapheresisComponentsToUpdate);
+        plasmapheresisForm
+                .add(new RadarRequiredDateTextField("startDate", plasmapheresisForm, plasmapheresisComponentsToUpdate));
+        final RadarDateTextField endDate =
+                new RadarDateTextField("endDate", plasmapheresisForm, plasmapheresisComponentsToUpdate);
         plasmapheresisForm.add(endDate);
 
         PlasmapheresisExchangeUnit plasmapheresisTemp = new PlasmapheresisExchangeUnit();
         plasmapheresisTemp.setName("temp");
 
-        plasmapheresisForm.add(new RadarRequiredDropdownChoice("plasmapheresisExchanges", Arrays.asList(plasmapheresisTemp), new ChoiceRenderer("name"), plasmapheresisForm, plasmapheresisComponentsToUpdate));
-        plasmapheresisForm.add(new RadarRequiredDropdownChoice("response", Arrays.asList(RemissionAchieved.PARTIAL), new ChoiceRenderer(), plasmapheresisForm, plasmapheresisComponentsToUpdate));
+        plasmapheresisForm
+                .add(new RadarRequiredDropdownChoice("plasmapheresisExchanges", Arrays.asList(plasmapheresisTemp),
+                        new ChoiceRenderer("name"), plasmapheresisForm, plasmapheresisComponentsToUpdate));
+        plasmapheresisForm.add(new RadarRequiredDropdownChoice("response", Arrays.asList(RemissionAchieved.PARTIAL),
+                new ChoiceRenderer(), plasmapheresisForm, plasmapheresisComponentsToUpdate));
         plasmapheresisForm.add(new AjaxSubmitLink("savePlasmapheresis") {
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(plasmapheresisComponentsToUpdate.toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
+                ajaxRequestTarget.add(plasmapheresisComponentsToUpdate
+                        .toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-               ajaxRequestTarget.add(plasmapheresisComponentsToUpdate.toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
+                ajaxRequestTarget.add(plasmapheresisComponentsToUpdate
+                        .toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
 
             }
         });
-
 
 
         // Remission radio group

@@ -9,6 +9,7 @@ import com.solidstategroup.radar.web.panels.followup.RrtTherapyPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 public class FollowUpPanel extends Panel {
 
@@ -23,7 +24,7 @@ public class FollowUpPanel extends Panel {
 
     private CurrentTab currentTab = CurrentTab.CLINICAL_PICTURE;
 
-    public FollowUpPanel(String id) {
+    public FollowUpPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
@@ -33,10 +34,10 @@ public class FollowUpPanel extends Panel {
         add(new TabAjaxLink("treatmentLink", CurrentTab.TREATMENT));
         add(new TabAjaxLink("rrtTherapyLink", CurrentTab.RRT_THERAPY));
 
-        clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel");
-        laboratoryResults = new FollowUpLaboratoryResultsPanel("laboratoryResultsPanel");
-        treatmentPanel = new FollowUpTreatmentPanel("treatmentPanel");
-        rrtTherapyPanel = new RrtTherapyPanel("rrtTherapyPanel");
+        clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel", radarNumberModel);
+        laboratoryResults = new FollowUpLaboratoryResultsPanel("laboratoryResultsPanel", radarNumberModel);
+        treatmentPanel = new FollowUpTreatmentPanel("treatmentPanel", radarNumberModel);
+        rrtTherapyPanel = new RrtTherapyPanel("rrtTherapyPanel", radarNumberModel);
         add(clinicalPicturePanel, laboratoryResults, treatmentPanel, rrtTherapyPanel);
     }
 
