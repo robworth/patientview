@@ -1,0 +1,36 @@
+package com.solidstategroup.radar.test.dao;
+
+import com.solidstategroup.radar.dao.HospitalisationDao;
+import com.solidstategroup.radar.model.Hospitalisation;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+public class HospitalisationDaoTest extends BaseDaoTest {
+
+    @Autowired
+    private HospitalisationDao hospitalisationDao;
+
+    @Test
+    public void testGetHospitalisation() {
+        Hospitalisation hospitalisation = hospitalisationDao.getHospitalisation(3L);
+        assertNotNull("Hospitalisation was null", hospitalisation);
+        assertEquals("Wrong ID", new Long(3), hospitalisation.getId());
+    }
+
+    @Test
+    public void testGetHospitalisationUnknown() {
+        Hospitalisation hospitalisation = hospitalisationDao.getHospitalisation(3232L);
+        assertNull("Hospitalisation null", hospitalisation);
+    }
+
+    @Test
+    public void testGetHospitalisationByRadarNumber() {
+        List<Hospitalisation> hospitalisations = hospitalisationDao.getHospitalisationsByRadarNumber(250L);
+        assertNotNull("Hospitalisations list was null");
+        assertEquals("Wrong size", 1, hospitalisations.size());
+    }
+}

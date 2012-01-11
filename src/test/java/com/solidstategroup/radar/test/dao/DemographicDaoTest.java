@@ -2,9 +2,13 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.Status;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -42,5 +46,29 @@ public class DemographicDaoTest extends BaseDaoTest {
         assertEquals("Centre was not Bristol", demographics.getRenalUnit().getAbbreviation(), "Bristol");
     }
 
+    @Test
+    public void testGetSexUnknown() throws Exception {
+        Sex sex = demographicDao.getSex(23232L);
+        assertNull("Sex not null for unknown", sex);
+    }
 
+    @Test
+    public void testGetSexes() throws Exception {
+        List<Sex> sexes = demographicDao.getSexes();
+        assertNotNull("Sexes was null", sexes);
+        assertEquals("Wrong size", 3, sexes.size());
+    }
+
+    @Test
+    public void testGetStatusUnknown() throws Exception {
+        Status status = demographicDao.getStatus(23232L);
+        assertNull("Status not null for unknown", status);
+    }
+
+    @Test
+    public void testGetStatuses() throws Exception {
+        List<Status> statuses = demographicDao.getStatuses();
+        assertNotNull("Statuses was null", statuses);
+        assertEquals("Wrong size", 6, statuses.size());
+    }
 }

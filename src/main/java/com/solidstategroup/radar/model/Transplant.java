@@ -2,7 +2,7 @@ package com.solidstategroup.radar.model;
 
 import java.util.Date;
 
-public class Transplant extends BaseModel {
+public class Transplant extends RadarModel {
 
     private Date date;
     // This should maybe be TransplantModality?

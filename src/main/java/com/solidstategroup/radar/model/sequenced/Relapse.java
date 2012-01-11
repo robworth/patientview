@@ -1,11 +1,11 @@
-package com.solidstategroup.radar.model;
+package com.solidstategroup.radar.model.sequenced;
 
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 
 import java.util.Date;
 
-public class Relapse extends BaseModel {
+public class Relapse extends SequencedModel {
 
     private Date dateOfRelapse;
     private KidneyTransplantedNative transplantedNative;

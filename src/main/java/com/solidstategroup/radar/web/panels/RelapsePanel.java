@@ -1,8 +1,9 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Plasmapheresis;
+
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
-import com.solidstategroup.radar.model.Relapse;
+import com.solidstategroup.radar.model.sequenced.Relapse;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -13,9 +14,7 @@ import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -24,7 +23,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;

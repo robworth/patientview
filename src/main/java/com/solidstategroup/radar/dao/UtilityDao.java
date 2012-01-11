@@ -22,7 +22,11 @@ public interface UtilityDao {
 
     List<Country> getCountries();
 
+    Ethnicity getEthnicityByCode(String ethnicityCode);
+
     List<Ethnicity> getEthnicities();
+
+    Relative getRelative(long id);
 
     List<Relative> getRelatives();
 }

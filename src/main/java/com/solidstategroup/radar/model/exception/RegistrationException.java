@@ -9,4 +9,8 @@ public class RegistrationException extends Exception {
         super(message);
     }
 
+    public RegistrationException(String message, Exception e) {
+        super(message, e);
+    }
+
 }

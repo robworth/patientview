@@ -2,7 +2,7 @@ package com.solidstategroup.radar.model;
 
 import java.util.Date;
 
-public class Hospitalisation extends BaseModel {
+public class Hospitalisation extends RadarModel {
 
     private Date dateOfAdmission, dateOfDischarge;
     private String reason, comments;

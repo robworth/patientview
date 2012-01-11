@@ -43,7 +43,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             } catch (Exception e) {
                 LoggerFactory.getLogger(AuthenticationProviderImpl.class)
                         .error("Could not log user {} in", authentication.getName(), e);
-                throw new AuthenticationServiceException("Could not log in user - " + e.getMessage());
+                throw new AuthenticationServiceException("Could not log in user", e);
             }
         }
 
