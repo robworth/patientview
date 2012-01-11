@@ -1,30 +1,25 @@
 <wicket:panel>
 
-    <form wicket:id="form">
-        <div id="mainBlock">
-            <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
-                <tbody>
-                <tr>
+    <div id="mainBlock">
+        <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+            <tbody>
+            <tr>
+                <td class="btmBorder">
+                    <select wicket:id="switcher"/>
+                    &nbsp;Select previous record by admission date&nbsp;
+                    <input type="submit" value="Add new record" wicket:id="addNew"/>
+                </td>
+                <td class="btmBorder">&nbsp;</td>
+                <td style="width:120px" class="btmBorder">
+                    <strong>Hospitalisation</strong>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-                    <td class="btmBorder">
-                        <select id="ctl00_ContentPlaceHolder1_DropDownListAdminDate"
-                                onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownListAdminDate\',\'\')', 0)"
-                                name="ctl00$ContentPlaceHolder1$DropDownListAdminDate">
-                            <option value="" selected="selected">Select</option>
+        <div wicket:id="hospitalisationContainer">
 
-                        </select>
-                        &nbsp;Select previous record by admission date&nbsp;
-                        <input type="submit" id="ctl00_ContentPlaceHolder1_btnAdd" value="Add new record"
-                               name="ctl00$ContentPlaceHolder1$btnAdd">
-                    </td>
-                    <td class="btmBorder">&nbsp;</td>
-                    <td style="width:120px" class="btmBorder">
-                        <strong>Hospitalisation</strong></td>
-                </tr>
-                </tbody>
-            </table>
-            <div id="ctl00_ContentPlaceHolder1_pnlAdd">
-
+            <form wicket:id="form">
                 <table cellpadding="4" id="tblHeader" style="width: 100%;">
                     <tbody>
                     <tr>
@@ -143,20 +138,11 @@
                     </tbody>
                 </table>
 
-                <p></p>
-                &nbsp;<input type="submit" class="saveBtn" value="Save" wicket:id="submit">
-                &nbsp;
-                <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+                <input type="submit" class="saveBtn" value="Save" wicket:id="submit">
+            </form>
 
-
-            </div>
-            <p>
-                <span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
-            </p>
-
-            <p>
-                <span id="ctl00_ContentPlaceHolder1_lblPage">16B</span></p>
         </div>
 
-    </form>
+    </div>
+
 </wicket:panel>
