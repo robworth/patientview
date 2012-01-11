@@ -2,6 +2,7 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.TreatmentDao;
 import com.solidstategroup.radar.model.Treatment;
+import com.solidstategroup.radar.model.TreatmentModality;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,4 +35,10 @@ public class TreatmentDaoTest extends BaseDaoTest {
         assertEquals("Wrong size", 3, treatments.size());
     }
 
+    @Test
+    public void testGetTreatmentModalities() throws Exception {
+        List<TreatmentModality> treatmentModalities = treatmentDao.getTreatmentModalities();
+        assertNotNull("List was null", treatmentModalities);
+        assertEquals("Wrong size", 5, treatmentModalities.size());
+    }
 }
