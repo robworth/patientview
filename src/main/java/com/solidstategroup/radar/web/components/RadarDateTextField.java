@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.components;
 
+import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.FeedbackMessage;
@@ -11,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 public class RadarDateTextField extends DateTextField{
-    public RadarDateTextField(String id, String datePattern, Form form, List<Component> componentsToUpdate) {
-        super(id, datePattern);
+    public RadarDateTextField(String id, Form form, List<Component> componentsToUpdate) {
+        super(id, RadarApplication.DATE_PATTERN);
         init(form, componentsToUpdate);
     }
 

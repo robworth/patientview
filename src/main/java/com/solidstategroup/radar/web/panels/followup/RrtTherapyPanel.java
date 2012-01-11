@@ -162,11 +162,11 @@ public class RrtTherapyPanel extends Panel {
     private final class TransplantForm extends Form<Transplant> {
         private TransplantForm(String id, IModel<Transplant> transplantIModel, List<Component> componentsToUpdate) {
             super(id, transplantIModel);
-            add(new RadarRequiredDateTextField("date", RadarDatePicker.FORMAT_DATE, this, componentsToUpdate));
+            add(new RadarRequiredDateTextField("date", this, componentsToUpdate));
             add(new RadarRequiredDropdownChoice("type", Arrays.asList("temp"), new ChoiceRenderer(), this, componentsToUpdate));
             add(new YesNoRadioGroup("recurr"));
-            add(new RadarDateTextField("dateRecurr", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
-            add(new RadarDateTextField("dateFailure", RadarApplication.DATE_PATTERN, this, componentsToUpdate));
+            add(new RadarDateTextField("dateRecurr",this, componentsToUpdate));
+            add(new RadarDateTextField("dateFailure", this, componentsToUpdate));
         }
     }
 

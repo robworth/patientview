@@ -73,7 +73,7 @@ public class ClinicalPicturePanel extends Panel {
 
         clinicalFeaturesContainer.add(form);
 
-        RadarRequiredDateTextField clinicalPictureDate = new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), RadarApplication.DATE_PATTERN, form, componentsToUpdate);
+        RadarRequiredDateTextField clinicalPictureDate = new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), form, componentsToUpdate);
         form.add(clinicalPictureDate);
 
         // Height, weight, blood pressure
