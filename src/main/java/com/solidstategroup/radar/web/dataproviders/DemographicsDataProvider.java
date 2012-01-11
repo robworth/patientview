@@ -20,6 +20,10 @@ public class DemographicsDataProvider implements IDataProvider<Demographics> {
         this.centre = centre;
     }
 
+    public DemographicsDataProvider(DemographicsDao demographicsDao) {
+        this.demographicsDao = demographicsDao;
+    }
+
     public Iterator<? extends Demographics> iterator(int first, int count) {
         // Todo: Paging
         return getResults().iterator();
