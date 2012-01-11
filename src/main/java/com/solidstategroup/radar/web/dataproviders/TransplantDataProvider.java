@@ -7,6 +7,11 @@ import org.apache.wicket.model.IModel;
 import java.util.Iterator;
 
 public class TransplantDataProvider implements IDataProvider<Transplant> {
+
+    public TransplantDataProvider(IModel<Long> radarNumberModel) {
+        // Todo: Implement
+    }
+
     public Iterator<? extends Transplant> iterator(int first, int count) {
         return null;  // Todo: Implement
     }

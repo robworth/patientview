@@ -7,6 +7,7 @@ import com.solidstategroup.radar.web.panels.firstvisit.FirstVisitTreatmentPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 public class FirstVisitPanel extends Panel {
 
@@ -20,7 +21,7 @@ public class FirstVisitPanel extends Panel {
 
     private CurrentTab currentTab = CurrentTab.CLINICAL_PICTURE;
 
-    public FirstVisitPanel(String id) {
+    public FirstVisitPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
@@ -29,9 +30,9 @@ public class FirstVisitPanel extends Panel {
         add(new TabAjaxLink("laboratoryResultsLink", CurrentTab.LABORATORY_RESULTS));
         add(new TabAjaxLink("treatmentLink", CurrentTab.TREATMENT));
 
-        clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel");
-        laboratoryResults = new FirstVisitLaboratoryResultsPanel("laboratoryResultsPanel");
-        treatmentPanel = new FirstVisitTreatmentPanel("treatmentPanel");
+        clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel", radarNumberModel);
+        laboratoryResults = new FirstVisitLaboratoryResultsPanel("laboratoryResultsPanel", radarNumberModel);
+        treatmentPanel = new FirstVisitTreatmentPanel("treatmentPanel", radarNumberModel);
         add(clinicalPicturePanel, laboratoryResults, treatmentPanel);
     }
 

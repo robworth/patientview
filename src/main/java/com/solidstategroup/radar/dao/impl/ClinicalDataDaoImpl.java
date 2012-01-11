@@ -27,8 +27,8 @@ public class ClinicalDataDaoImpl extends BaseDaoImpl implements ClinicalDataDao 
     }
 
     public List<ClinicalData> getClinicalDataByRadarNumber(long radarNumber) {
-        return jdbcTemplate.query("SELECT * FROM tbl_ClinicalData WHERE RADAR_NO = ?", new Object[]{radarNumber},
-                new ClinicalDataRowMapper());
+        return jdbcTemplate.query("SELECT * FROM tbl_ClinicalData WHERE RADAR_NO = ? ORDER BY SEQ_NO",
+                new Object[]{radarNumber}, new ClinicalDataRowMapper());
     }
 
     public Phenotype getPhenotype(long id) {
