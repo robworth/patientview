@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TreatmentPanel extends Panel {
-    public TreatmentPanel(String id) {
+    public TreatmentPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
 
         // Immunosuppression including Monoclonals

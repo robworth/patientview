@@ -45,7 +45,7 @@ public class PatientPage extends BasePage {
 
         // Set up our radar number model used by all of our panels
         IModel<Long> radarNumberModel = new Model<Long>();
-        
+
         // Get radar number from parameters - we might not have one for new patients
         StringValue idValue = parameters.get(PARAM_ID);
         if (!idValue.isEmpty()) {
@@ -55,11 +55,11 @@ public class PatientPage extends BasePage {
         // Construct panels for each of the tabs
         demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
-        firstVisitPanel = new FirstVisitPanel("firstVisitPanel");
-        followUpPanel = new FollowUpPanel("followUpPanel");
-        pathologyPanel = new PathologyPanel("pathologyPanel");
-        relapsePanel = new RelapsePanel("relapsePanel");
-        hospitalisationPanel = new HospitalisationPanel("hospitalisationPanel");
+        firstVisitPanel = new FirstVisitPanel("firstVisitPanel", radarNumberModel);
+        followUpPanel = new FollowUpPanel("followUpPanel", radarNumberModel);
+        pathologyPanel = new PathologyPanel("pathologyPanel", radarNumberModel);
+        relapsePanel = new RelapsePanel("relapsePanel", radarNumberModel);
+        hospitalisationPanel = new HospitalisationPanel("hospitalisationPanel", radarNumberModel);
 
         // Add them all to the page
         add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
