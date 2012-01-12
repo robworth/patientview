@@ -28,6 +28,8 @@ public class PatientPage extends BasePage {
         DEMOGRAPHICS, DIAGNOSIS, FIRST_VISIT, FOLLOW_UP, PATHOLOGY, RELAPSE, HOSPITALISATION
     }
 
+    private IModel<Long> radarNumberModel;
+
     private DemographicsPanel demographicsPanel;
     private DiagnosisPanel diagnosisPanel;
     private FirstVisitPanel firstVisitPanel;
@@ -44,7 +46,7 @@ public class PatientPage extends BasePage {
         super();
 
         // Set up our radar number model used by all of our panels
-        IModel<Long> radarNumberModel = new Model<Long>();
+        radarNumberModel = new Model<Long>();
 
         // Get radar number from parameters - we might not have one for new patients
         StringValue idValue = parameters.get(PARAM_ID);
@@ -104,11 +106,14 @@ public class PatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            currentTab = tab;
-            // Add the links container to update hover class
-            target.add(linksContainer);
-            target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
-                    hospitalisationPanel);
+            if (radarNumberModel.getObject() != null) {
+                currentTab = tab;
+                // Add the links container to update hover class
+                target.add(linksContainer);
+                target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
+                        hospitalisationPanel);
+            }
+
         }
     }
 

@@ -91,6 +91,8 @@ public class DiagnosisPanel extends Panel {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
+        //form.add
+
         form.add(new DropDownChoice<DiagnosisCode>("diagnosisCode", diagnosisDao.getDiagnosisCodes(),
                 new ChoiceRenderer<DiagnosisCode>("abbreviation", "id")));
         form.add(new TextArea("text"));

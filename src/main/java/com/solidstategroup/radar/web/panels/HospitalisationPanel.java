@@ -17,6 +17,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -24,6 +25,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -46,8 +48,17 @@ public class HospitalisationPanel extends Panel {
 
         // Set up models for the previous results switcher
         final IModel<Hospitalisation> hospitalisationModel = new Model<Hospitalisation>();
-        final List<Hospitalisation> hospitalisations =
-                hospitalisationDao.getHospitalisationsByRadarNumber(radarNumberModel.getObject());
+
+        IModel<List<Hospitalisation>> hospitalisations = new AbstractReadOnlyModel<List<Hospitalisation>>() {
+            @Override
+            public List<Hospitalisation> getObject() {
+                if (radarNumberModel.getObject() == null) {
+                    return Collections.emptyList();
+                } else {
+                    return hospitalisationDao.getHospitalisationsByRadarNumber(radarNumberModel.getObject());
+                }
+            }
+        };
 
         // Previous results switcher
         DropDownChoice<Hospitalisation> switcher =
