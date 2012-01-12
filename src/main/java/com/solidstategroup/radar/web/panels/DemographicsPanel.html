@@ -8,13 +8,12 @@
 
 <table cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
     <tr>
-        <td style="height:30px;"><span id="ctl00_ContentPlaceHolder1_lblNew" style="font-weight:bold;"> Add a New Patient</span>
+        <td style="height:30px;"><span wicket:id="addNewPatientLabel" style="font-weight:bold;">Add a New Patient</span>
         </td>
-        <td style="text-align:right; padding-right:10px;"><b>RADAR Number</b></td>
-        <td style="width:150px;"><input name="ctl00$ContentPlaceHolder1$RADAR_NOTextBox" type="text"
-                                        value="Auto allocated" readonly="readonly"
-                                        id="ctl00_ContentPlaceHolder1_RADAR_NOTextBox"
-                                        style="background-color:#EEF6ED;font-style:italic;"/></td>
+        <td style="text-align:right; padding-right:10px;"> <b>RADAR Number</b></td>
+        <td style="width:150px;">
+            <input wicket:id="id" type="text" readonly="readonly"
+                   style="background-color:#EEF6ED;font-style:italic;"/></td>
     </tr>
     <tr>
         <td style="height:30px;">
@@ -24,14 +23,13 @@
                 <option value="">Select</option>
                 <option value="2">MPGN/DDD</option>
                 <option value="1">SRNS</option>
-
             </select>
 
             <span wicket:id="diagnosisFeedbackIndicator"></span>
         </td>
         <td style="text-align:right; padding-right:10px;">Date Registered</td>
-        <td><input name="ctl00$ContentPlaceHolder1$DATE_REGTextBox" type="text" value="Today's date" readonly="readonly"
-                   id="ctl00_ContentPlaceHolder1_DATE_REGTextBox" style="background-color:#EEF6ED;font-style:italic;"/>
+        <td><input wicket:id="dateRegistered" type="text" readonly="readonly"
+                   style="background-color:#EEF6ED;font-style:italic;"/>
         </td>
     </tr>
 </table>
@@ -146,7 +144,7 @@
 
     </div>
     <br/><br/>
-    <input type="submit" wicket:id="submit" value="Add this Patient" class="saveBtn"/>
+    <input type="button" wicket:id="submit" value="Add this Patient" class="saveBtn"/>
     &nbsp;
 
 
