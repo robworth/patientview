@@ -477,4 +477,6 @@ public class Diagnosis extends RadarModel {
     public void setRelativeWithDisease6(Relative relativeWithDisease6) {
         this.relativeWithDisease6 = relativeWithDisease6;
     }
+
+
 }
