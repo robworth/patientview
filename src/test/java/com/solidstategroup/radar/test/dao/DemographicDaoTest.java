@@ -19,6 +19,15 @@ public class DemographicDaoTest extends BaseDaoTest {
     private DemographicsDao demographicDao;
 
     @Test
+    public void testSaveDemographics() {
+        Demographics demographics = new Demographics();
+        demographics.setForename("Test");
+        demographics.setSurname("User");
+
+        demographicDao.saveDemographics(demographics);
+    }
+
+    @Test
     public void testGetDemographic() {
         Demographics demographics = demographicDao.getDemographicsByRadarNumber(241L);
 

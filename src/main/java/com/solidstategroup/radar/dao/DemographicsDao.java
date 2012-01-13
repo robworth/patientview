@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface DemographicsDao {
 
+    void saveDemographics(Demographics demographics);
+
     Demographics getDemographicsByRadarNumber(long radarNumber);
 
     List<Demographics> getDemographicsByRenalUnit(Centre centre);
@@ -22,4 +24,5 @@ public interface DemographicsDao {
     Status getStatus(long id);
 
     List<Status> getStatuses();
+
 }
