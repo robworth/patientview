@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.ClinicalPresentation;
 import com.solidstategroup.radar.model.Diagnosis;
@@ -15,6 +16,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -29,6 +31,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -45,6 +48,8 @@ public class DiagnosisPanel extends Panel {
 
     @SpringBean
     private DiagnosisDao diagnosisDao;
+    @SpringBean
+    private DemographicsDao demographicsDao;
 
     public DiagnosisPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -91,10 +96,59 @@ public class DiagnosisPanel extends Panel {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        //form.add
+        TextField radarNumber = new TextField("radarNumber");
+        form.add(radarNumber);
 
-        form.add(new DropDownChoice<DiagnosisCode>("diagnosisCode", diagnosisDao.getDiagnosisCodes(),
-                new ChoiceRenderer<DiagnosisCode>("abbreviation", "id")));
+        IModel hospitalNumberModel = new AbstractReadOnlyModel() {
+            @Override
+            public Object getObject() {
+                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
+                        radarNumberModel.getObject()).getHospitalNumber() : null;
+            }
+        };
+
+        IModel firstNameModel = new AbstractReadOnlyModel() {
+            @Override
+            public Object getObject() {
+                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
+                        radarNumberModel.getObject()).getForename() : null;
+            }
+        };
+
+        IModel surnameModel = new AbstractReadOnlyModel() {
+            @Override
+            public Object getObject() {
+                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
+                        radarNumberModel.getObject()).getSurname() : null;
+            }
+        };
+
+        IModel dobModel = new AbstractReadOnlyModel() {
+            @Override
+            public Object getObject() {
+                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
+                        radarNumberModel.getObject()).getDateOfBirth() : null;
+            }
+        };
+
+        TextField hospitalNumber = new TextField("hospitalNumber", hospitalNumberModel);
+        form.add(hospitalNumber);
+
+        TextField firstName = new TextField("firstName", firstNameModel);
+        form.add(firstName);
+
+        TextField surname = new TextField("surname", surnameModel);
+        form.add(surname);
+
+        TextField dob = new DateTextField("dateOfBirth", dobModel, RadarApplication.DATE_PATTERN);
+        form.add(dob);
+
+        DropDownChoice<DiagnosisCode> diagnosisCodeDropDownChoice = new DropDownChoice<DiagnosisCode>("diagnosisCode", diagnosisDao.getDiagnosisCodes(),
+                new ChoiceRenderer<DiagnosisCode>("abbreviation", "id"));
+        diagnosisCodeDropDownChoice.setEnabled(false);
+        form.add(diagnosisCodeDropDownChoice);
+
+
         form.add(new TextArea("text"));
         form.add(new Label("diagnosisOrBiopsy", "Date of original biopsy"));
 

@@ -6,7 +6,6 @@ import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
@@ -36,13 +35,10 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
-import javax.naming.RefAddr;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -100,25 +96,34 @@ public class DemographicsPanel extends Panel {
         form.add(radarNumberField);
 
         DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
-        if(radarNumberModel.getObject() == null) {
+        if (radarNumberModel.getObject() == null) {
             model.getObject().setDateRegistered(new Date());
         }
         form.add(dateRegistered);
 
-        Model<DiagnosisCode> diagnosisCodeModel = new Model<DiagnosisCode>();
-        if(radarNumberModel.getObject() != null) {
-            diagnosisCodeModel.setObject(diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject())
-                    .getDiagnosisCode());
-        }
+        final IModel<DiagnosisCode> diagnosisCodeModel = new AbstractReadOnlyModel<DiagnosisCode>() {
+            @Override
+            public DiagnosisCode getObject() {
+                DiagnosisCode diagnosisCode = radarNumberModel.getObject() != null ?
+                        diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject()).getDiagnosisCode() : null;
+                return diagnosisCode;
+            }
+
+            ;
+        };
 
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", diagnosisCodeModel, diagnosisDao.getDiagnosisCodes(),
-                        new ChoiceRenderer("abbreviation"),
-                        form, componentsToUpdateList);
+                        new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
+                    @Override
+                    public boolean isEnabled() {
+                        if (radarNumberModel.getObject() != null) {
+                            return false;
+                        }
+                        return super.isEnabled();
+                    }
+                };
 
-        if(radarNumberModel.getObject() != null) {
-            diagnosis.setEnabled(false);
-        }
 
         // Basic fields
         RadarRequiredTextField surname = new RadarRequiredTextField("surname", form, componentsToUpdateList);

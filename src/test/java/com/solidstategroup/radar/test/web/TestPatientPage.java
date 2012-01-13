@@ -51,8 +51,8 @@ public class TestPatientPage extends BasePageTest {
                     (TextField) tester.getLastRenderedPage().get("demographicsPanel").get("form").get("surname");
             assertEquals("Wrong value on surname", "Mouse", surnameField.getValue());
         }
-
-        tester.clickLink(getLink("diagnosisLink").getPageRelativePath());
+        if(hasPatient) {
+                    tester.clickLink(getLink("diagnosisLink").getPageRelativePath());
         tester.assertVisible("diagnosisPanel");
         tester.assertInvisible("demographicsPanel");
         tester.assertInvisible("pathologyPanel");
@@ -82,6 +82,8 @@ public class TestPatientPage extends BasePageTest {
         tester.assertVisible("relapsePanel");
         tester.assertInvisible("hospitalisationPanel");
         tester.assertInvisible("diagnosisPanel");
+
+        }
     }
 
     private Component getLink(String id) {
