@@ -12,25 +12,118 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsDaoImpl.class);
 
+    private static final String DATE_FORMAT = "dd.MM.yyyy";
+    private static final String DATE_FORMAT_2 = "dd-MM-yyyy";
+
+    private SimpleJdbcInsert demographicsInsert;
+
     private UtilityDao utilityDao;
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        // Call super
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        demographicsInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Demographics")
+                .usingGeneratedKeyColumns("RADAR_NO")
+                .usingColumns(
+                        "RR_NO", "DATE_REG", "NHS_NO", "HOSP_NO", "UKT_NO", "CHI_NO", "SNAME", "SNAME_ALIAS",
+                        "FNAME", "DOB", "AGE", "SEX", "ETHNIC_GP", "ADD1", "ADD2", "ADD3", "ADD4", "POSTCODE",
+                        "POSTCODE_OLD", "CONSENT", "DATE_BAPN_REG", "CONS_NEPH", "RENAL_UNIT", "RENAL_UNIT_2", "STATUS"
+                );
+    }
+
+    public void saveDemographics(final Demographics demographics) {
+        // If we have an ID then update, otherwise insert new and set the ID
+        if (demographics.hasValidId()) {
+            jdbcTemplate.update(
+                    "UPDATE tbl_Demographics SET RR_NO = ?, DATE_REG = ?, NHS_NO = ?, HOSP_NO = ?, UKT_NO = ?, " +
+                            "CHI_NO = ?, SNAME = ?, SNAME_ALIAS = ?, FNAME = ?, DOB = ?, AGE = ?, SEX = ?, " +
+                            "ETHNIC_GP = ?, ADD1 = ?, ADD2 = ?, ADD3 = ?, ADD4 = ?, POSTCODE = ?, POSTCODE_OLD = ?," +
+                            "CONSENT = ?, DATE_BAPN_REG = ?, CONS_NEPH = ?, RENAL_UNIT = ?, RENAL_UNIT_2 = ?, " +
+                            "STATUS = ?",
+                    demographics.getRenalRegistryNumber(),
+                    demographics.getDateRegistered(),
+                    getEncryptedString(demographics.getNhsNumber()),
+                    getEncryptedString(demographics.getHospitalNumber()),
+                    demographics.getUkTransplantNumber(),
+                    demographics.getChiNumber(),
+                    getEncryptedString(demographics.getSurname()),
+                    getEncryptedString(demographics.getSurnameAlias()),
+                    getEncryptedString(demographics.getForename()),
+                    getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())),
+                    demographics.getAge(),
+                    demographics.getSex().getId(),
+                    demographics.getEthnicity().getId(),
+                    getEncryptedString(demographics.getAddress1()),
+                    getEncryptedString(demographics.getAddress2()),
+                    getEncryptedString(demographics.getAddress3()),
+                    getEncryptedString(demographics.getAddress4()),
+                    getEncryptedString(demographics.getPostcode()),
+                    getEncryptedString(demographics.getPreviousPostcode()),
+                    null, // Todo: demographics.getConsent(),
+                    demographics.getDateRegistered(),
+                    null, // Todo: Not sure what this should be,
+                    demographics.getRenalUnit().getId(),
+                    demographics.getRenalUnitAuthorised().getId(),
+                    demographics.getStatus().getId()
+            );
+        } else {
+            Number id = demographicsInsert.executeAndReturnKey(new HashMap<String, Object>() {
+                {
+                    put("RR_NO", demographics.getRenalRegistryNumber());
+                    put("DATE_REG", demographics.getDateRegistered());
+                    put("NHS_NO", demographics.getNhsNumber());
+                    put("HOSP_NO", demographics.getHospitalNumber());
+                    put("UKT_NO", demographics.getUkTransplantNumber());
+                    put("CHI_NO", demographics.getChiNumber());
+                    put("SNAME", getEncryptedString(demographics.getSurname()));
+                    put("SNAME_ALIAS", getEncryptedString(demographics.getSurnameAlias()));
+                    put("FNAME", getEncryptedString(demographics.getForename()));
+                    put("DOB", demographics.getDateOfBirth());
+                    put("AGE", demographics.getAge());
+                    put("SEX", demographics.getSex() != null ? demographics.getSex().getId() : null);
+                    put("ETHNIC_GP",
+                            demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null);
+                    put("ADD1", demographics.getAddress1());
+                    put("ADD2", demographics.getAddress2());
+                    put("ADD3", demographics.getAddress3());
+                    put("ADD4", demographics.getAddress4());
+                    put("POSTCODE", demographics.getPostcode());
+                    put("POSTCODE_OLD", demographics.getPreviousPostcode());
+                    put("CONSENT", null); // Todo: Fix demographics.getC());
+                    put("DATE_BAPN_REG", null); // Todo: Fix
+                    put("CONS_NEPH", null); // Todo: Fix demographics.get());
+                    put("RENAL_UNIT", demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null);
+                    put("RENAL_UNIT_2", demographics.getRenalUnitAuthorised() != null ?
+                            demographics.getRenalUnitAuthorised().getId() : null);
+                    put("STATUS", demographics.getStatus() != null ? demographics.getStatus().getId() : null);
+                }
+            });
+            demographics.setId(id.longValue());
+        }
+    }
 
     public Demographics getDemographicsByRadarNumber(long radarNumber) {
         try {
-            return jdbcTemplate
-                    .queryForObject("SELECT * FROM tbl_Demographics WHERE RADAR_NO = ?", new Object[]{radarNumber},
-                            new DemographicsRowMapper());
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Demographics WHERE RADAR_NO = ?",
+                    new Object[]{radarNumber}, new DemographicsRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("No demographic record found for radar number {}", radarNumber);
             return null;
@@ -48,8 +141,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     public Sex getSex(long id) {
         try {
-            return jdbcTemplate
-                    .queryForObject("SELECT * FROM tbl_Sex WHERE sID = ?", new Object[]{id}, new SexRowMapper());
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Sex WHERE sID = ?", new Object[]{id},
+                    new SexRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("No sex found for ID {}", id);
             return null;
@@ -101,7 +194,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 Date dateOfBirth = null;
 
                 // It seems that the encrypted strings in the DB have different date formats, nice.
-                for (String dateFormat : new String[]{"dd.MM.yyyy", "dd-MM-yyyy"}) {
+                for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2}) {
                     try {
                         dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
                     } catch (ParseException e) {
@@ -183,6 +276,11 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             LOGGER.error("Could not decrypt column data {} - {}", column, e.getMessage());
             return null;
         }
+    }
+
+    private byte[] getEncryptedString(String string) {
+        // Todo: Implement
+        return new byte[0];
     }
 
     public void setUtilityDao(UtilityDao utilityDao) {

@@ -1,6 +1,9 @@
 package com.solidstategroup.radar.model;
 
 
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+
 import java.util.Date;
 
 public class Demographics extends BaseModel {
@@ -30,6 +33,14 @@ public class Demographics extends BaseModel {
 
     private boolean consent;
     private Centre renalUnitAuthorised;
+
+    public Integer getAge() {
+        // Return the difference between now and the date of birth
+        if (dateOfBirth != null) {
+            return Years.yearsBetween(new DateTime(dateOfBirth), new DateTime(new Date())).getYears();
+        }
+        return null;
+    }
 
     public Date getDateRegistered() {
         return dateRegistered;

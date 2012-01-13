@@ -6,6 +6,10 @@ public abstract class BaseModel implements Serializable {
 
     private Long id;
 
+    public boolean hasValidId() {
+        return id != null && id > 0;
+    }
+
     public Long getId() {
         return id;
     }
