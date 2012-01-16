@@ -1,9 +1,12 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.HospitalisationDao;
 import com.solidstategroup.radar.model.Hospitalisation;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -16,12 +19,14 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -33,6 +38,11 @@ public class HospitalisationPanel extends Panel {
 
     @SpringBean
     private HospitalisationDao hospitalisationDao;
+    @SpringBean
+    private DemographicsDao demographicsDao;
+    @SpringBean
+    private DiagnosisDao diagnosisDao;
+
 
     public HospitalisationPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -123,6 +133,19 @@ public class HospitalisationPanel extends Panel {
                 }
             }
         };
+
+               // General details
+        form.add(new TextField("radarNumber", radarNumberModel));
+
+        form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
+                demographicsDao)));
+
+        form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                diagnosisDao), "abbreviation")));
+
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         form.add(new RadarRequiredDateTextField("dateOfAdmission", form, componentsToUpdate));
         form.add(new RadarDateTextField("dateOfDischarge", form, componentsToUpdate));

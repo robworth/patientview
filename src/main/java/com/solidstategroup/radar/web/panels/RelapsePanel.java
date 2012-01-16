@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.RelapseDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
@@ -9,6 +11,7 @@ import com.solidstategroup.radar.model.sequenced.Relapse;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,6 +26,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -34,6 +38,10 @@ public class RelapsePanel extends Panel {
 
     @SpringBean
     private RelapseDao relapseDao;
+    @SpringBean
+    private DemographicsDao demographicsDao;
+    @SpringBean
+    private DiagnosisDao diagnosisDao;
 
     public RelapsePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -59,6 +67,19 @@ public class RelapsePanel extends Panel {
             }
         });
         Form<Relapse> form = new Form<Relapse>("form", model);
+
+        // General details
+        form.add(new TextField("radarNumber", radarNumberModel));
+
+        form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
+                demographicsDao)));
+
+        form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                diagnosisDao), "abbreviation")));
+
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         form.add(new RadarRequiredDateTextField("dateOfRelapse", form, componentsToUpdate));
 

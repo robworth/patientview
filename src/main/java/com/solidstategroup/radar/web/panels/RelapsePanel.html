@@ -10,27 +10,20 @@
                 <td align="left" class="style4"><b>Relapse Records</b></td>
                 <td class="style2" style="text-align:right; ">RADAR No.</td>
                 <td class="style3">
-                    <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO"
-                           readonly="readonly"
-                           value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+                    <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly">
                 </td>
             </tr>
             <tr>
                 <td align="left">Name
-                    <input type="text" id="ctl00_ContentPlaceHolder1_txtFNAME" readonly="readonly" value="jane"
-                           name="ctl00$ContentPlaceHolder1$txtFNAME">
-                    &nbsp;<input type="text" id="ctl00_ContentPlaceHolder1_txtSNAME" readonly="readonly" value="lady"
-                                 name="ctl00$ContentPlaceHolder1$txtSNAME">
+                    <input type="text" wicket:id="firstName" readonly="readonly"/>
+                    <input wicket:id="surname" type="text" readonly="readonly"/>
                     &nbsp;DoB
-                    <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtDOB" readonly="readonly"
-                           value="11-Nov-1992" name="ctl00$ContentPlaceHolder1$txtDOB">
+                    <input wicket:id="dob" type="text" style="width:100px;" readonly="readonly"/>
 
                 </td>
                 <td class="style5" style="text-align:right; ">Hospital No.</td>
                 <td>
-                    <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO"
-                           readonly="readonly"
-                           value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+                    <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly"/>
                 </td>
             </tr>
             <tr>
@@ -38,9 +31,9 @@
                 </td>
                 <td class="style5" style="text-align:right; ">Diagnosis</td>
                 <td>
-                    <input type="text" style="background-color:#FFFF99;width:100px;"
-                           id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
-                           readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+
+                    <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;"
+                           readonly="readonly"/>
                 </td>
             </tr>
             </tbody>
@@ -86,11 +79,11 @@
                                       <span wicket:id="transplantedNative">
                                         <input type="radio" wicket:id="tx"
                                                id="ctl00_ContentPlaceHolder1_radTxYes"><label
-                                            for="ctl00_ContentPlaceHolder1_radTxYes">Tx</label>
+                                              for="ctl00_ContentPlaceHolder1_radTxYes">Tx</label>
                                         &nbsp;
                                         <input type="radio" wicket:id="native"
                                                id="ctl00_ContentPlaceHolder1_radTxNo"><label
-                                            for="ctl00_ContentPlaceHolder1_radTxNo">Nat</label>
+                                              for="ctl00_ContentPlaceHolder1_radTxNo">Nat</label>
                                         </span>
                                     </td>
                                 </tr>
@@ -127,13 +120,13 @@
                                        <span wicket:id="remissionAchieved">
                                         <input type="radio" wicket:id="complete"
                                                id="ctl00_ContentPlaceHolder1_radAchievedYes"><label
-                                            for="ctl00_ContentPlaceHolder1_radAchievedYes">Complete</label>
+                                               for="ctl00_ContentPlaceHolder1_radAchievedYes">Complete</label>
                                         &nbsp;<input type="radio" wicket:id="partial"
                                                      id="ctl00_ContentPlaceHolder1_radAchievePartial"><label
-                                            for="ctl00_ContentPlaceHolder1_radAchievePartial">Partial</label>
+                                               for="ctl00_ContentPlaceHolder1_radAchievePartial">Partial</label>
                                         &nbsp;<input type="radio" wicket:id="none"
                                                      id="ctl00_ContentPlaceHolder1_radAchieveNo"><label
-                                            for="ctl00_ContentPlaceHolder1_radAchieveNo">None</label>
+                                               for="ctl00_ContentPlaceHolder1_radAchieveNo">None</label>
                                         &nbsp;
                                         <a style="color:Green;font-weight:bold;" href="#" class="info"
                                            id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
@@ -245,7 +238,7 @@
         </td>
     </tr>
 </table>
-    <span id="ctl00_ContentPlaceHolder1_lblPage">12B</span>
+<span id="ctl00_ContentPlaceHolder1_lblPage">12B</span>
 </div>
 
 </wicket:panel>

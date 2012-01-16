@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ComponentPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class DiagnosisRelativePanel extends Panel {
@@ -18,15 +20,19 @@ public class DiagnosisRelativePanel extends Panel {
         super(id);
 
         // Set the model of this drop down to reflect the relative with number i
-        ComponentPropertyModel<Relative> model = new ComponentPropertyModel<Relative>("relativeWithDisease" + i);
+        IModel<Relative> model = new ComponentPropertyModel<Relative>("relativeWithDisease" + i);
 
         // Drop down with choices and choice renderer setup
         add(new DropDownChoice<Relative>("relative", model, utilityDao.getRelatives(),
                 new ChoiceRenderer<Relative>("name", "id")));
 
         // Add the radar number text field too
-        add(new TextField<String>("radarNumber",
-                new ComponentPropertyModel<String>("relativeWithDiseaseRadarNumber" + i)));
+      /*  add(new TextField<Integer>("radarNumber", new ComponentPropertyModel<Integer>("relativeWithDiseaseRadarNumber"
+                + i)));  */
+
+        add(new TextField<Integer>("radarNumber", new Model<Integer>()));   // todo change this back
+
+
     }
 
 }

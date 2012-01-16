@@ -1,11 +1,14 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
 import com.solidstategroup.radar.dao.ClinicalDataDao;
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -22,6 +25,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
@@ -33,6 +37,10 @@ public class ClinicalPicturePanel extends Panel {
 
     @SpringBean
     private ClinicalDataDao clinicalDataDao;
+    @SpringBean
+    private DemographicsDao demographicsDao;
+    @SpringBean
+    private DiagnosisDao diagnosisDao;
 
     public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -47,8 +55,15 @@ public class ClinicalPicturePanel extends Panel {
                     protected ClinicalData load() {
                         if (radarNumberModel.getObject() != null) {
                             // If we have a radar number get the list from DAO
-                            List<ClinicalData> clinicalDatas =
-                                    clinicalDataDao.getClinicalDataByRadarNumber(radarNumberModel.getObject());
+                            List<ClinicalData> clinicalDatas;
+                            try {
+                                 clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber(radarNumberModel.getObject());
+                            } catch(ClassCastException e) {
+                                Object obj = radarNumberModel.getObject();
+                               clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber((
+                                       Long.parseLong((String)obj)));
+                            }
+
                             if (!clinicalDatas.isEmpty()) {
                                 // This is first visit so return the first
                                 return clinicalDatas.get(0);
@@ -77,6 +92,23 @@ public class ClinicalPicturePanel extends Panel {
         };
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
+
+        form.add(new TextField("radarNumber", radarNumberModel));
+
+        form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
+                demographicsDao)));
+
+
+
+        form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                diagnosisDao), "abbreviation")));
+
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+
+
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         RadarRequiredDateTextField clinicalPictureDate =
                 new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), form, componentsToUpdate);

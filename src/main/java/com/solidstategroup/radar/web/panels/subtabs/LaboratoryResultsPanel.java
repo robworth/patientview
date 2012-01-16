@@ -1,8 +1,11 @@
 package com.solidstategroup.radar.web.panels.subtabs;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.sequenced.LabData;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -20,6 +23,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
@@ -30,34 +35,34 @@ public class LaboratoryResultsPanel extends Panel {
     public LaboratoryResultsPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
 
-        List<Component> feedbackList = new ArrayList<Component>();
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
         final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(new LabData()));
         add(form);
 
-        RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("date", form, feedbackList);
+        RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("date", form, componentsToUpdate);
         form.add(labResultsDate);
 
         // Blood fields
-        form.add(new RadarTextFieldWithValidation("hb", new RangeValidator<Double>(2.0, 20.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("wbc", new RangeValidator<Double>(0.1, 30.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("neutrophils", new RangeValidator<Double>(0.1, 80.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("platelets", new RangeValidator<Double>(1.0, 800.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("sodium", new RangeValidator<Double>(90.0, 180.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("potassium", new RangeValidator<Double>(1.0, 9.9), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("bun", new RangeValidator<Double>(1.0, 100.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("serumCreatinine", new RangeValidator<Double>(10.0, 2800.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("protein", new RangeValidator<Double>(5.0, 90.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("albumin", new RangeValidator<Double>(5.0, 60.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("crp", new RangeValidator<Double>(0.0, 200.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("totalCholesterol", new RangeValidator<Double>(1.0, 30.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("hdlCholesterol", new RangeValidator<Double>(0.1, 30.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("ldlCholesterol", new RangeValidator<Double>(1.0, 30.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("triglycerides", new RangeValidator<Double>(0.0, 30.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("thyroxine", new RangeValidator<Double>(0.0, 30.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("tsh", new RangeValidator<Double>(0.0, 50.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("phosphate", new RangeValidator<Double>(0.1, 5.6), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("ferritin", new RangeValidator<Double>(1.0, 5000.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("inr", new RangeValidator<Double>(0.5, 5.0), form, feedbackList));
+        form.add(new RadarTextFieldWithValidation("hb", new RangeValidator<Double>(2.0, 20.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("wbc", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("neutrophils", new RangeValidator<Double>(0.1, 80.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("platelets", new RangeValidator<Double>(1.0, 800.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("sodium", new RangeValidator<Double>(90.0, 180.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("potassium", new RangeValidator<Double>(1.0, 9.9), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("bun", new RangeValidator<Double>(1.0, 100.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("serumCreatinine", new RangeValidator<Double>(10.0, 2800.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("protein", new RangeValidator<Double>(5.0, 90.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("albumin", new RangeValidator<Double>(5.0, 60.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("crp", new RangeValidator<Double>(0.0, 200.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("totalCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("hdlCholesterol", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("ldlCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("triglycerides", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("thyroxine", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("tsh", new RangeValidator<Double>(0.0, 50.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("phosphate", new RangeValidator<Double>(0.1, 5.6), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("ferritin", new RangeValidator<Double>(1.0, 5000.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("inr", new RangeValidator<Double>(0.5, 5.0), form, componentsToUpdate));
 
         // Urinalysis - dipstick
         form.add(new DropDownChoice<LabData.UrineVolumeCondition>("urineVolumeCondition"));
@@ -70,10 +75,10 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new YesNoNdRadioGroup("glucose"));
 
         // Urinalysis - lab
-        form.add(new RadarTextFieldWithValidation("urineVolume", new RangeValidator<Double>(0.0, 4000.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("osmolality", new RangeValidator<Double>(200.0, 350.0), form, feedbackList));
+        form.add(new RadarTextFieldWithValidation("urineVolume", new RangeValidator<Double>(0.0, 4000.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("osmolality", new RangeValidator<Double>(200.0, 350.0), form, componentsToUpdate));
         form.add(new CheckBox("bacteria"));
         form.add(new DropDownChoice<LabData.Present>("dysmorphicErythrocytes"));
         form.add(new DropDownChoice<LabData.Present>("redCellCast"));
@@ -90,11 +95,11 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new DropDownChoice<LabData.PositiveNegativeNotDone>("cryoglobulins"));
         form.add(new DropDownChoice<LabData.PositiveNegativeNotDone>("antiGbm"));
         form.add(new TextArea("dnaAntibodies"));
-        form.add(new RadarTextFieldWithValidation("igG", new RangeValidator<Double>(0.0, 20.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("igA", new RangeValidator<Double>(0.0, 10.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("igM", new RangeValidator<Double>(0.0, 10.0), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("complementC3", new RangeValidator<Double>(0.01, 9.99), form, feedbackList));
-        form.add(new RadarTextFieldWithValidation("complementC4", new RangeValidator<Double>(0.01, 9.99), form, feedbackList));
+        form.add(new RadarTextFieldWithValidation("igG", new RangeValidator<Double>(0.0, 20.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("igA", new RangeValidator<Double>(0.0, 10.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("igM", new RangeValidator<Double>(0.0, 10.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("complementC3", new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("complementC4", new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate));
         form.add(new CheckBox("complementOther"));
 
         // Complement other details
@@ -108,7 +113,7 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(complementOtherDetailContainer);
 
         form.add(new DropDownChoice<LabData.PositiveNegativeUnknown>("c3NephriticFactor"));
-        form.add(new RadarTextFieldWithValidation("antiClqAntibodies", new RangeValidator<Double>(0.0, 150.0), form, feedbackList));
+        form.add(new RadarTextFieldWithValidation("antiClqAntibodies", new RangeValidator<Double>(0.0, 150.0), form, componentsToUpdate));
         form.add(new TextField("antistreptolysin"));
 
         form.add(new DropDownChoice<LabData.PositiveNegativeUnknown>("hepatitisB"));
@@ -126,12 +131,6 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new DropDownChoice<LabData.PositiveNegativeNotDone>("parvovirusAntibody"));
         form.add(new CheckBox("otherInfection"));
 
-
-        final List<Component> componentsToUpdate = new ArrayList<Component>();
-
-        for(Component component : feedbackList) {
-            componentsToUpdate.add(component);
-        }
 
         LaboratoryAjaxSubmitLink save = new LaboratoryAjaxSubmitLink("save") {
             @Override

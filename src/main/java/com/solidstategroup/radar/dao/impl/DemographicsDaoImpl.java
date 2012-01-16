@@ -57,7 +57,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "CHI_NO = ?, SNAME = ?, SNAME_ALIAS = ?, FNAME = ?, DOB = ?, AGE = ?, SEX = ?, " +
                             "ETHNIC_GP = ?, ADD1 = ?, ADD2 = ?, ADD3 = ?, ADD4 = ?, POSTCODE = ?, POSTCODE_OLD = ?," +
                             "CONSENT = ?, DATE_BAPN_REG = ?, CONS_NEPH = ?, RENAL_UNIT = ?, RENAL_UNIT_2 = ?, " +
-                            "STATUS = ?",
+                            "STATUS = ? WHERE RADAR_NO = ?",
                     demographics.getRenalRegistryNumber(),
                     demographics.getDateRegistered(),
                     getEncryptedString(demographics.getNhsNumber()),

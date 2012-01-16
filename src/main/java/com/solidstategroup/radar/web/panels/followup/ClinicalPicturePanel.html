@@ -28,20 +28,18 @@
         <td><b>Clinical Features - Follow Up Visit</b></td>
         <td class="style2"><strong>RADAR No.</strong></td>
         <td style="width:120px" class="style2">
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO" readonly="readonly"
-                   value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly">
         </td>
     </tr>
     <tr>
         <td><b>Name:</b>
-            <span id="ctl00_ContentPlaceHolder1_lblFirstName">jane</span>&nbsp;<span
-                    style="display:inline-block;width:120px;" id="ctl00_ContentPlaceHolder1_lblSurname">lady</span>
-            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDOB">11-Nov-92</span>
+            <input wicket:id="firstName" readonly="readonly" type="text"/>
+            <input wicket:id="surname" readonly="readonly" type="text"/>
+            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<input wicket:id="dob" readonly="readonly" type="text"/>
         </td>
         <td class="style2"><strong>Hospital No.</strong></td>
         <td class="style2">
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly"
-                   value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+            <input type="text" wicket:id="hospitalNumber" style="width:100px;"readonly="readonly">
         </td>
     </tr>
     <tr>
@@ -52,8 +50,7 @@
         </td>
         <td class="style2"><strong>Diagnosis</strong></td>
         <td class="style2">
-            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
-                   readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;"readonly="readonly"/>
         </td>
     </tr>
     </tbody>

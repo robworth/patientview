@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.web.panels.followup;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
@@ -7,6 +9,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.dataproviders.TransplantDataProvider;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
 import org.apache.wicket.Component;
@@ -20,12 +23,15 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,11 +39,28 @@ import java.util.Date;
 import java.util.List;
 
 public class RrtTherapyPanel extends Panel {
+    @SpringBean
+    private DemographicsDao demographicsDao;
+    @SpringBean
+    private DiagnosisDao diagnosisDao;
 
     public RrtTherapyPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        // General details
+        add(new TextField("radarNumber", radarNumberModel));
+
+        add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
+                demographicsDao)));
+
+        add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                diagnosisDao), "abbreviation")));
+
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         // Reusable panel for the dialysis table
         add(new DialysisTablePanel("dialysisContainer"));

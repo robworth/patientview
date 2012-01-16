@@ -1,9 +1,12 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.PathologyDao;
 import com.solidstategroup.radar.model.sequenced.Pathology;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -23,6 +26,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
@@ -34,6 +38,10 @@ public class PathologyPanel extends Panel {
 
     @SpringBean
     private PathologyDao pathologyDao;
+    @SpringBean
+    private DemographicsDao demographicsDao;
+    @SpringBean
+    private DiagnosisDao diagnosisDao;
 
     public PathologyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -108,6 +116,19 @@ public class PathologyPanel extends Panel {
 
         Form<Pathology> form = new Form<Pathology>("form", model);
         pathologyContainer.add(form);
+
+        // General details
+        form.add(new TextField("radarNumber", radarNumberModel));
+
+        form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
+                demographicsDao)));
+
+        form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                diagnosisDao), "abbreviation")));
+
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         // Add inputs
         form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));
