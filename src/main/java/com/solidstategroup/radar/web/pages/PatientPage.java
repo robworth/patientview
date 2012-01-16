@@ -1,6 +1,9 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -17,11 +20,16 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 
 public class PatientPage extends BasePage {
 
     private static final String PARAM_ID = "id";
+    @SpringBean
+    DiagnosisDao diagnosisDao;
+    @SpringBean
+    DemographicsDao demographicsDao;
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -38,6 +46,7 @@ public class PatientPage extends BasePage {
     private RelapsePanel relapsePanel;
     private HospitalisationPanel hospitalisationPanel;
 
+
     private MarkupContainer linksContainer;
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
@@ -53,6 +62,7 @@ public class PatientPage extends BasePage {
         if (!idValue.isEmpty()) {
             radarNumberModel.setObject(idValue.toLongObject());
         }
+
 
         // Construct panels for each of the tabs
         demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
@@ -120,5 +130,4 @@ public class PatientPage extends BasePage {
     public static PageParameters getParameters(Demographics demographics) {
         return new PageParameters().set(PARAM_ID, demographics.getId());
     }
-
 }

@@ -13,19 +13,18 @@
         </td>
         <td class="style2"><strong>RADAR No.</strong></td>
         <td style="width:120px;" class="style2">
-            <input wicket:id="radarNo" type="text" style="width:100px;" readonly="readonly">
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly">
         </td>
     </tr>
     <tr>
         <td><b>Name:</b>
-            <span id="ctl00_ContentPlaceHolder1_lblFirstName">jane</span>&nbsp;<span
-                    style="display:inline-block;width:120px;" id="ctl00_ContentPlaceHolder1_lblSurname">lady</span>
-            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDOB">11-Nov-92</span>
+            <input readonly="readonly" wicket:id="firstName"/>&nbsp;
+            <input readonly="readonly" style="display:inline-block;width:120px;" wicket:id="surname"/>
+            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<input readonly="readonly" wicket:id="dob"/>
         </td>
         <td class="style2"><strong>Hospital No.</strong></td>
         <td class="style2">
-            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO" readonly="readonly"
-                   value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly">
         </td>
     </tr>
     <tr>
@@ -36,8 +35,7 @@
         </td>
         <td class="style2"><strong>Diagnosis</strong></td>
         <td class="style2">
-            <input type="text" style="background-color:#FFFF99;width:100px;" id="ctl00_ContentPlaceHolder1_txtDIAGNOSIS"
-                   readonly="readonly" value="SRNS" name="ctl00$ContentPlaceHolder1$txtDIAGNOSIS">
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly">
         </td>
     </tr>
     </tbody>

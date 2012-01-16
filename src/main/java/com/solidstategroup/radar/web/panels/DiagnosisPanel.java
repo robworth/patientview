@@ -10,6 +10,7 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.ClinicalPresentationDropDownChoice;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
@@ -31,7 +32,6 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -99,48 +99,20 @@ public class DiagnosisPanel extends Panel {
         TextField radarNumber = new TextField("radarNumber");
         form.add(radarNumber);
 
-        IModel hospitalNumberModel = new AbstractReadOnlyModel() {
-            @Override
-            public Object getObject() {
-                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
-                        radarNumberModel.getObject()).getHospitalNumber() : null;
-            }
-        };
-
-        IModel firstNameModel = new AbstractReadOnlyModel() {
-            @Override
-            public Object getObject() {
-                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
-                        radarNumberModel.getObject()).getForename() : null;
-            }
-        };
-
-        IModel surnameModel = new AbstractReadOnlyModel() {
-            @Override
-            public Object getObject() {
-                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
-                        radarNumberModel.getObject()).getSurname() : null;
-            }
-        };
-
-        IModel dobModel = new AbstractReadOnlyModel() {
-            @Override
-            public Object getObject() {
-                return radarNumberModel.getObject() != null ? demographicsDao.getDemographicsByRadarNumber(
-                        radarNumberModel.getObject()).getDateOfBirth() : null;
-            }
-        };
-
-        TextField hospitalNumber = new TextField("hospitalNumber", hospitalNumberModel);
+        TextField hospitalNumber = new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
+                radarNumberModel, demographicsDao));
         form.add(hospitalNumber);
 
-        TextField firstName = new TextField("firstName", firstNameModel);
+        TextField firstName = new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
+                demographicsDao));
         form.add(firstName);
 
-        TextField surname = new TextField("surname", surnameModel);
+        TextField surname = new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
+                demographicsDao));
         form.add(surname);
 
-        TextField dob = new DateTextField("dateOfBirth", dobModel, RadarApplication.DATE_PATTERN);
+        TextField dob = new DateTextField("dateOfBirth", RadarModelFactory.getDobModel(radarNumberModel,
+                demographicsDao), RadarApplication.DATE_PATTERN);
         form.add(dob);
 
         DropDownChoice<DiagnosisCode> diagnosisCodeDropDownChoice = new DropDownChoice<DiagnosisCode>("diagnosisCode", diagnosisDao.getDiagnosisCodes(),

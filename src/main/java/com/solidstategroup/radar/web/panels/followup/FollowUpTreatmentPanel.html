@@ -32,25 +32,20 @@
                         <b>Follow Up Treatment</b></td>
                     <td style="width:100px; text-align:right;">RADAR No:</td>
                     <td style="width:120px;padding-right:10px;">
-                        <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO"
-                               readonly="readonly" value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+                        <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly" />
                     </td>
                 </tr>
                 <tr>
                     <td class="style11">Name
-                        <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtFNAME" value="jane"
-                               name="ctl00$ContentPlaceHolder1$txtFNAME">
-                        &nbsp;<input type="text" style="width:120px;" id="ctl00_ContentPlaceHolder1_txtSNAME"
-                                     value="lady" name="ctl00$ContentPlaceHolder1$txtSNAME">
+                        <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly"/>
+                        &nbsp;<input wicket:id="surname" type="text" style="width:120px;" readonly="readonly"/>
                         &nbsp; DoB
-                        <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtDOB" value="11-Nov-1992"
-                               name="ctl00$ContentPlaceHolder1$txtDOB">
+                        <input wicket:id="dob"  type="text" style="width:80px;" readonly="readonly"/>
                         &nbsp;
                     </td>
                     <td class="style11" style="text-align:right;">Hospital No:</td>
                     <td class="style11">
-                        <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtHOSP_NO"
-                               readonly="readonly" value="b123445" name="ctl00$ContentPlaceHolder1$txtHOSP_NO">
+                        <input wicket:id="hospitalNumber"  type="text" style="width:100px;" readonly="readonly"/>
                     </td>
                 </tr>
                 <tr>
@@ -58,9 +53,7 @@
                         </td>
                     <td style="width:100px; text-align:right;">Diagnosis</td>
                     <td>
-                        <input type="text" style="background-color:#FFFF99;width:100px;"
-                               id="ctl00_ContentPlaceHolder1_txtDIAG" readonly="readonly" value="SRNS"
-                               name="ctl00$ContentPlaceHolder1$txtDIAG">
+                        <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly">
                     </td>
                 </tr>
                 <tr>

@@ -26,21 +26,21 @@
                         <td align="left" class="style4"><b>Hospitalisation Record</b></td>
                         <td class="style2" style="text-align:right; ">RADAR No.</td>
                         <td>
-                            <input type="text" style="width:100px;" id="ctl00_ContentPlaceHolder1_txtRADAR_NO"
-                                   readonly="readonly" value="333" name="ctl00$ContentPlaceHolder1$txtRADAR_NO">
+                            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly"/>
                         </td>
                     </tr>
                     <tr>
                         <td align="left">Name
-                            <input type="text" readonly="readonly" value="jane"/>
-                            &nbsp;
-                            <input type="text" readonly="readonly" value="lady"/>
+                            <input type="text" wicket:id="firstName" readonly="readonly"/>
+
+                            <input wicket:id="surname" type="text" readonly="readonly"/>
                             &nbsp;DoB
-                            <input type="text" style="width:100px;" readonly="readonly" value="11-Nov-1992"/>
+
+                            <input wicket:id="dob" type="text" style="width:100px;" readonly="readonly"/>
                         </td>
                         <td style="text-align:right; ">Hospital No.</td>
                         <td>
-                            <input type="text" style="width:100px;" readonly="readonly" value="b123445"/>
+                            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly"/>
                         </td>
                     </tr>
                     <tr>
@@ -49,7 +49,7 @@
                         </td>
                         <td style="text-align:right; ">Diagnosis</td>
                         <td>
-                            <input type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly" value="SRNS"/>
+                            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly"/>
                         </td>
                     </tr>
                     </tbody>

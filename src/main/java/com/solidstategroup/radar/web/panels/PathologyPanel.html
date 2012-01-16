@@ -28,18 +28,23 @@
         <td><b>Biopsy Record</b></td>
         <td class="style2"><strong>RADAR No.</strong></td>
         <td style="width:120px" class="style2">
-            <input type="text" style="width:100px;" readonly="readonly" value="511" >
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly" value="511">
         </td>
     </tr>
     <tr>
         <td>
-            <b>Name:</b> Test Demo
-            &nbsp;&nbsp;
-            <b>DoB:</b> 01-Jun-1999
+            <b>Name:</b>
+
+            <input type="text" wicket:id="firstName" readonly="readonly"/>
+            <input wicket:id="surname" type="text" readonly="readonly"/>
+
+            <b>DoB:</b>
+            <input wicket:id="dob" type="text" style="width:100px;" readonly="readonly"/>
+
         </td>
         <td class="style2"><strong>Hospital No.</strong></td>
         <td class="style2">
-            <input type="text" style="width:100px;" readonly="readonly" value="987654B"/>
+            <input wicket:id="hospitalNumber"  type="text" style="width:100px;" readonly="readonly"/>
         </td>
     </tr>
     <tr>
@@ -51,7 +56,7 @@
         </td>
         <td class="style2"><strong>Diagnosis</strong></td>
         <td class="style2">
-            <input type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly" value="SRNS"/>
+            <input wicket:id="diagnosis"  type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly" />
         </td>
     </tr>
     </tbody>
