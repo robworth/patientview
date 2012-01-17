@@ -3,12 +3,19 @@ package com.solidstategroup.radar.web.models;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
+import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RadarModelFactory {
 
@@ -17,13 +24,24 @@ public class RadarModelFactory {
         return new Model<DiagnosisCode>() {
             @Override
             public DiagnosisCode getObject() {
-                try {
-                    return radarNumberModel.getObject() != null ?
-                            diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject()).getDiagnosisCode() : null;
-                } catch (ClassCastException e) {
-                    Object obj = radarNumberModel.getObject();
-                    return obj != null ? diagnosisDao.getDiagnosisByRadarNumber(
-                            Long.parseLong((String)obj)).getDiagnosisCode() : null;
+                Long radarNumber;
+                if (radarNumberModel.getObject() != null) {
+                    try {
+                        radarNumber = radarNumberModel.getObject();
+                    } catch (ClassCastException e) {
+                        Object obj = radarNumberModel.getObject();
+                        Long.parseLong((String) obj);
+                    }
+
+                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                    if (diagnosis != null) {
+                        return diagnosis.getDiagnosisCode();
+                    } else {
+                        return null;
+                    }
+
+                } else {
+                    return null;
                 }
 
             }
@@ -93,5 +111,15 @@ public class RadarModelFactory {
                 }
             }
         };
+    }
+
+
+    public static IModel getSuccessMessageModel(final Form form) {
+       return new LoadableDetachableModel() {
+           @Override
+           protected Object load() {
+               return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").format(new Date());
+           }
+       };
     }
 }

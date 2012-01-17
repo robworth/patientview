@@ -41,7 +41,8 @@ public abstract class BaseDaoImpl {
         }
     }
 
-    public void setDataSource(DataSource dataSource) {
+    public void
+    setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 }
