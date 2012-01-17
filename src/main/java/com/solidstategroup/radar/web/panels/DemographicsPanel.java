@@ -9,7 +9,6 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
-import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
@@ -69,10 +68,11 @@ public class DemographicsPanel extends Panel {
         });
 
         // Set up form
-        Form<Demographics> form = new Form<Demographics>("form", model) {
+        final Form<Demographics> form = new Form<Demographics>("form", model) {
             @Override
             protected void onSubmit() {
-                demographicsDao.saveDemographics(getModelObject());
+                Demographics demographics = getModelObject();
+                demographicsDao.saveDemographics(demographics);
             }
         };
         add(form);
@@ -103,10 +103,7 @@ public class DemographicsPanel extends Panel {
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
                     @Override
                     public boolean isEnabled() {
-                        if (radarNumberModel.getObject() != null) {
-                            return false;
-                        }
-                        return super.isEnabled();
+                        return getModelObject() == null;
                     }
                 };
 
@@ -121,7 +118,8 @@ public class DemographicsPanel extends Panel {
 
         // Sex
         RadarRequiredDropdownChoice sex =
-                new RadarRequiredDropdownChoice("sex", demographicsDao.getSexes(), new ChoiceRenderer<Sex>("type"),
+                new RadarRequiredDropdownChoice("sex", demographicsDao.getSexes(), new ChoiceRenderer<Sex>("type",
+                        "id"),
                         form, componentsToUpdateList);
 
         // Ethnicity
@@ -166,17 +164,26 @@ public class DemographicsPanel extends Panel {
         CheckBox consent = new CheckBox("consent");
         DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
         form.add(consent, renalUnitAuthorised);
+        final Label successMessage = new Label("successMessage", RadarModelFactory.getSuccessMessageModel(form));
+        form.add(successMessage);
+        successMessage.setVisible(false);
+        successMessage.setOutputMarkupId(true);
+        successMessage.setOutputMarkupPlaceholderTag(true);
 
         AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("submit") {
 
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                successMessage.setVisible(true);
+                ajaxRequestTarget.add(successMessage);
             }
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                successMessage.setVisible(false);
+                ajaxRequestTarget.add(successMessage);
             }
         };
 

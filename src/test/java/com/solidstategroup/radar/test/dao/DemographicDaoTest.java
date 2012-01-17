@@ -23,8 +23,8 @@ public class DemographicDaoTest extends BaseDaoTest {
         Demographics demographics = new Demographics();
         demographics.setForename("Test");
         demographics.setSurname("User");
-
         demographicDao.saveDemographics(demographics);
+        assertNotNull(demographics.getId());
     }
 
     @Test

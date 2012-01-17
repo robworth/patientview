@@ -3,6 +3,7 @@ package com.solidstategroup.radar.dao.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
@@ -53,11 +54,33 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         // If we have an ID then update, otherwise insert new and set the ID
         if (demographics.hasValidId()) {
             jdbcTemplate.update(
-                    "UPDATE tbl_Demographics SET RR_NO = ?, DATE_REG = ?, NHS_NO = ?, HOSP_NO = ?, UKT_NO = ?, " +
-                            "CHI_NO = ?, SNAME = ?, SNAME_ALIAS = ?, FNAME = ?, DOB = ?, AGE = ?, SEX = ?, " +
-                            "ETHNIC_GP = ?, ADD1 = ?, ADD2 = ?, ADD3 = ?, ADD4 = ?, POSTCODE = ?, POSTCODE_OLD = ?," +
-                            "CONSENT = ?, DATE_BAPN_REG = ?, CONS_NEPH = ?, RENAL_UNIT = ?, RENAL_UNIT_2 = ?, " +
-                            "STATUS = ? WHERE RADAR_NO = ?",
+                    "UPDATE tbl_Demographics SET " +
+                            "RR_NO = ?, " +
+                            "DATE_REG = ?, " +
+                            "NHS_NO = ?, " +
+                            "HOSP_NO = ?, " +
+                            "UKT_NO = ?, " +
+                            "CHI_NO = ?, " +
+                            "SNAME = ?, " +
+                            "SNAME_ALIAS = ?, " +
+                            "FNAME = ?, " +
+                            "DOB = ?, " +
+                            "AGE = ?, " +
+                            "SEX = ?, " +
+                            "ETHNIC_GP = ?, " +
+                            "ADD1 = ?, " +
+                            "ADD2 = ?, " +
+                            "ADD3 = ?, " +
+                            "ADD4 = ?, " +
+                            "POSTCODE = ?, " +
+                            "POSTCODE_OLD = ?," +
+                            "CONSENT = ?, " +
+                            "DATE_BAPN_REG = ?, " +
+                            "CONS_NEPH = ?, " +
+                            "RENAL_UNIT = ?, " +
+                            "RENAL_UNIT_2 = ?, " +
+                            "STATUS = ? " +
+                            "WHERE RADAR_NO = ?",
                     demographics.getRenalRegistryNumber(),
                     demographics.getDateRegistered(),
                     getEncryptedString(demographics.getNhsNumber()),
@@ -69,47 +92,50 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     getEncryptedString(demographics.getForename()),
                     getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())),
                     demographics.getAge(),
-                    demographics.getSex().getId(),
-                    demographics.getEthnicity().getId(),
+                    demographics.getSex() != null ? demographics.getSex().getId() : null,
+                    demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null,
                     getEncryptedString(demographics.getAddress1()),
                     getEncryptedString(demographics.getAddress2()),
                     getEncryptedString(demographics.getAddress3()),
                     getEncryptedString(demographics.getAddress4()),
                     getEncryptedString(demographics.getPostcode()),
                     getEncryptedString(demographics.getPreviousPostcode()),
-                    null, // Todo: demographics.getConsent(),
+                    demographics.isConsent(),
                     demographics.getDateRegistered(),
-                    null, // Todo: Not sure what this should be,
-                    demographics.getRenalUnit().getId(),
-                    demographics.getRenalUnitAuthorised().getId(),
-                    demographics.getStatus().getId()
+                    demographics.getConsultant() != null ? demographics.getConsultant().getId() : null,
+                    demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null,
+                    demographics.getRenalUnitAuthorised() != null ?
+                            demographics.getRenalUnitAuthorised().getId() : null,
+                    demographics.getStatus() != null ? demographics.getStatus().getId() : null,
+                    demographics.getId()
             );
         } else {
             Number id = demographicsInsert.executeAndReturnKey(new HashMap<String, Object>() {
                 {
                     put("RR_NO", demographics.getRenalRegistryNumber());
                     put("DATE_REG", demographics.getDateRegistered());
-                    put("NHS_NO", demographics.getNhsNumber());
-                    put("HOSP_NO", demographics.getHospitalNumber());
+                    put("NHS_NO", getEncryptedString(demographics.getNhsNumber()));
+                    put("HOSP_NO", getEncryptedString(demographics.getHospitalNumber()));
                     put("UKT_NO", demographics.getUkTransplantNumber());
                     put("CHI_NO", demographics.getChiNumber());
                     put("SNAME", getEncryptedString(demographics.getSurname()));
                     put("SNAME_ALIAS", getEncryptedString(demographics.getSurnameAlias()));
                     put("FNAME", getEncryptedString(demographics.getForename()));
-                    put("DOB", demographics.getDateOfBirth());
+                    put("DOB", getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())));
                     put("AGE", demographics.getAge());
                     put("SEX", demographics.getSex() != null ? demographics.getSex().getId() : null);
                     put("ETHNIC_GP",
                             demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null);
-                    put("ADD1", demographics.getAddress1());
-                    put("ADD2", demographics.getAddress2());
-                    put("ADD3", demographics.getAddress3());
-                    put("ADD4", demographics.getAddress4());
-                    put("POSTCODE", demographics.getPostcode());
-                    put("POSTCODE_OLD", demographics.getPreviousPostcode());
-                    put("CONSENT", null); // Todo: Fix demographics.getC());
+                    put("ADD1", getEncryptedString(demographics.getAddress1()));
+                    put("ADD2", getEncryptedString(demographics.getAddress2()));
+                    put("ADD3", getEncryptedString(demographics.getAddress3()));
+                    put("ADD4", getEncryptedString(demographics.getAddress4()));
+                    put("POSTCODE", getEncryptedString(demographics.getPostcode()));
+                    put("POSTCODE_OLD", getEncryptedString(demographics.getPreviousPostcode()));
+                    put("CONSENT", demographics.isConsent());
                     put("DATE_BAPN_REG", null); // Todo: Fix
-                    put("CONS_NEPH", null); // Todo: Fix demographics.get());
+                    put("CONS_NEPH", demographics.getConsultant() != null ? demographics.getConsultant().getId()
+                            : null);
                     put("RENAL_UNIT", demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null);
                     put("RENAL_UNIT_2", demographics.getRenalUnitAuthorised() != null ?
                             demographics.getRenalUnitAuthorised().getId() : null);
@@ -242,7 +268,17 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 demographics.setStatus(getStatus(statusId));
             }
 
-            // Fields to finish: ukTransplantNumber, chiNumber, consultant, renalUnitAuthorised
+            Long consultantId = resultSet.getLong("CONS_NEPH");
+            if (!resultSet.wasNull()) {
+                Consultant consultant = utilityDao.getConsultant(consultantId);
+                demographics.setConsultant(consultant);
+            }
+
+            Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");
+            if (!resultSet.wasNull()) {
+                Centre centre = utilityDao.getCentre(renalUnitAuthorisedId);
+                demographics.setRenalUnitAuthorised(centre);
+            }
 
             return demographics;
         }
@@ -279,8 +315,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     }
 
     private byte[] getEncryptedString(String string) {
-        // Todo: Implement
-        return new byte[0];
+        try {
+            // Catch the exception and log rather than throwing from entire row mapper
+            return TripleDes.encrypt(string);
+        } catch (Exception e) {
+            LOGGER.error("Could not decrypt data {}", e.getMessage());
+            return null;
+        }
     }
 
     public void setUtilityDao(UtilityDao utilityDao) {

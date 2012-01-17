@@ -210,13 +210,6 @@ public class Demographics extends BaseModel {
         this.renalUnit = renalUnit;
     }
 
-    public boolean isConsent() {
-        return consent;
-    }
-
-    public void setConsent(boolean consent) {
-        this.consent = consent;
-    }
 
     public Centre getRenalUnitAuthorised() {
         return renalUnitAuthorised;
@@ -224,5 +217,13 @@ public class Demographics extends BaseModel {
 
     public void setRenalUnitAuthorised(Centre renalUnitAuthorised) {
         this.renalUnitAuthorised = renalUnitAuthorised;
+    }
+
+    public boolean isConsent() {
+        return consent;
+    }
+
+    public void setConsent(boolean consent) {
+        this.consent = consent;
     }
 }
