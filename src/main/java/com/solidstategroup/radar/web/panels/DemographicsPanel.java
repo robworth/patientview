@@ -6,6 +6,8 @@ import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Diagnosis;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
@@ -73,6 +75,15 @@ public class DemographicsPanel extends Panel {
             protected void onSubmit() {
                 Demographics demographics = getModelObject();
                 demographicsDao.saveDemographics(demographics);
+                radarNumberModel.setObject(demographics.getId());
+                Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(demographics.getId());
+                if (diagnosis == null) {
+                    Diagnosis diagnosis_new = new Diagnosis();
+                    diagnosis_new.setRadarNumber(demographics.getId());
+                    DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice)get("diagnosis")).getModelObject();
+                    diagnosis_new.setDiagnosisCode(diagnosisCode);
+                    diagnosisDao.saveDiagnosis(diagnosis_new);
+                }
             }
         };
         add(form);

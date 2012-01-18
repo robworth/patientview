@@ -17,7 +17,8 @@
     <tr>
         <td>Name
             <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly">&nbsp;
-            <input wicket:id="surname" type="text" style="width:100px;" readonly="readonly"> <!-- this one is surname -->
+            <input wicket:id="surname" type="text" style="width:100px;" readonly="readonly">
+            <!-- this one is surname -->
             &nbsp;DoB&nbsp;
             <input wicket:id="dateOfBirth" type="text" style="width:80px;" readonly="readonly">
         </td>
@@ -39,7 +40,8 @@
     <tbody>
     <tr>
         <td style="height:35px;" colspan="2">
-            <input class="saveBtn" wicket:id="save" type="button" value="Save" />
+            <input class="saveBtn" wicket:id="save" type="button" value="Save"/>
+            <span style="font-weight: bold;" wicket:id="successMessage"></span>
         </td>
     </tr>
     <tr>
@@ -68,7 +70,7 @@
                       wicket:id="text"></textarea></td>
     </tr>
     <tr>
-        <td><span wicket:id="diagnosisOrBiopsy">Date of original biopsy</span>
+        <td>Date of <span wicket:id="diagnosisOrBiopsy">original biopsy</span>
             &nbsp;</td>
         <td>
             <input type="text" style="width:80px;" wicket:id="biopsyDate">
@@ -90,7 +92,7 @@
             <label id="ctl00_ContentPlaceHolder1_lblAge" for="ctl00_ContentPlaceHolder1_AGE_AT_DIAGTextbox">Age at
                 Diagnosis</label>
         </td>
-        <td><input type="text" style="width:50px;" wicket:id="ageAtDiagnosis">&nbsp;
+        <td><input readonly="readonly" type="text" style="width:50px;" wicket:id="ageAtDiagnosis">&nbsp;
             <span style="font-style:italic;" id="ctl00_ContentPlaceHolder1_lblCalc">calc</span>
         </td>
     </tr>
@@ -246,7 +248,8 @@
 </fieldset>
 
 <br><br>
-<input class="saveBtn" wicket:id="saveDown" type="button" value="Save" />
+<input class="saveBtn" wicket:id="saveDown" type="button" value="Save"/>
+<span style="font-weight: bold;" wicket:id="successMessageDown"></span>
 
 &nbsp;
 <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
@@ -275,12 +278,12 @@
     </td>
 </tr>
 <tr id="ctl00_ContentPlaceHolder1_rowGeneLabel">
-    <td colspan="2">Gene Mutation</td>
+    <td colspan="2"><span wicket:id="geneMutationLabel">Gene Mutation</span></td>
 </tr>
 
 <tr id="ctl00_ContentPlaceHolder1_rowGeneMutateA">
     <td style="padding-left:30px;" colspan="2">
-        <table cellpadding="3" id="tblGeneMutate" class="style4">
+        <table wicket:id="mutationContainer" cellpadding="3" id="tblGeneMutate" class="style4">
             <tbody>
             <tr align="center" valign="baseline" style="font-weight:bold; color:Green; text-align:center">
                 <td style="font-weight:normal; color:#000; text-align:left">
@@ -355,11 +358,19 @@
 <tr wicket:id="otherGeneMutationContainer">
     <td colspan="2" style="margin-left:20px;">
         Details of other Gene Mutation
-        <br />
-        <textarea style="font-size:95%;width:90%;" tabindex="3" cols="20" rows="3" wicket:id="otherGeneMutation"></textarea>
+        <br/>
+        <textarea style="font-size:95%;width:90%;" tabindex="3" cols="20" rows="3"
+                  wicket:id="otherGeneMutation"></textarea>
     </td>
 </tr>
-<tr>
+<tr wicket:id="moreDetailsContainer">
+    <td colspan="2" style="margin-left:20px;">
+        More details
+        <br/>
+        <textarea style="font-size:95%;width:90%;" tabindex="3" cols="20" rows="3" wicket:id="moreDetails"></textarea>
+    </td>
+</tr>
+<tr wicket:id="karoTypeContainer">
     <td>
         Karyotype
     </td>
@@ -369,11 +380,11 @@
 </tr>
 
 <tr>
-    <td>
-
-    </td>
-    <td>
-
+    <td colspan="2">
+        <span wicket:id="karoTypeOtherContainer">
+        Details of other Karyotype<br>
+        <textarea rows="5" cols="20" wicket:id="karoTypeOtherText" style="width:85%;">other ka</textarea>
+        </span>
     </td>
 </tr>
 
@@ -407,12 +418,36 @@
     </td>
 </tr>
 
-<tr wicket:id="relative1Container"/>
-<tr wicket:id="relative2Container"/>
-<tr wicket:id="relative3Container"/>
-<tr wicket:id="relative4Container"/>
-<tr wicket:id="relative5Container"/>
-<tr wicket:id="relative6Container"/>
+<tr>
+    <td>&nbsp;</td>
+    <td>
+        <span wicket:id="radarFamilyLabel" class="relRADAR">RADAR No</span>
+    </td>
+</tr>
+
+
+<tr wicket:id="relative1Container">
+
+</tr>
+
+<tr wicket:id="relative2Container">
+</tr>
+
+<tr wicket:id="relative3Container">
+
+</tr>
+
+<tr wicket:id="relative4Container">
+
+</tr>
+
+<tr  wicket:id="relative5Container">
+</tr>
+
+<tr  wicket:id="relative6Container">
+
+</tr>
+
 
 <tr>
     <td>&nbsp;</td>

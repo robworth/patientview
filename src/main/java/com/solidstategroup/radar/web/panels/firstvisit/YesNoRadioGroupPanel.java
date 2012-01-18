@@ -12,7 +12,8 @@ public class YesNoRadioGroupPanel extends Panel {
     public YesNoRadioGroupPanel(String id, boolean addLabels) {
         super(id);
 
-        RadioGroup<Boolean> radioGroup = new RadioGroup<Boolean>("group", new ComponentPropertyModel<Boolean>(id));
+        RadioGroup<Boolean> radioGroup = new RadioGroup<Boolean>("group", new Model<Boolean>());
+                //new ComponentPropertyModel<Boolean>(id));
         add(radioGroup);
 
         // Yes, No

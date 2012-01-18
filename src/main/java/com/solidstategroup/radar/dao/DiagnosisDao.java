@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface DiagnosisDao {
 
+    void saveDiagnosis(Diagnosis diagnosis);
+
     Diagnosis getDiagnosis(long id);
 
     Diagnosis getDiagnosisByRadarNumber(long radarNumber);

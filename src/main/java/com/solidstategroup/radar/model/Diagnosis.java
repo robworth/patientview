@@ -18,6 +18,7 @@ public class Diagnosis extends RadarModel {
         public int getId() {
             return id;
         }
+
     }
 
     public enum MutationYorN {
@@ -61,12 +62,45 @@ public class Diagnosis extends RadarModel {
         }
     }
 
+    public enum BiopsyDiagnosis {
+        NO(0, "No"),
+        YES(1, "Yes"),
+        MINIMAL_CHANGE(2, "Minimal change"),
+        FSGS(3, "FSGS"),
+        MESANGIAL_HYPERTROPHY(4, "Mesangial hypertrophy"),
+        OTHER(5, "other");
+
+        private int id;
+        private String label;
+
+        BiopsyDiagnosis(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+    }
+
     private DiagnosisCode diagnosisCode;
 
     private String text;
     private Date biopsyDate;
     private Date esrfDate;
-    private int ageAtDiagnosis;
+    private Integer ageAtDiagnosis;
     private boolean prepubertalAtDiagnosis;
     private Double heightAtDiagnosis; // In cm
 
@@ -77,15 +111,16 @@ public class Diagnosis extends RadarModel {
 
     private String significantDiagnosis1, significantDiagnosis2;
 
-    private YesNo biopsyProvenDiagnosis; // BX_PROVEN_DIAG in database
+    private BiopsyDiagnosis biopsyProvenDiagnosis; // BX_PROVEN_DIAG in database
 
     private MutationYorN mutationYorN1, mutationYorN2, mutationYorN3, mutationYorN4, mutationYorN5, mutationYorN6,
             mutationYorN7, mutationYorN8, mutationYorN9;
     private MutationSorSN mutationSorSN1, mutationSorSN2, mutationSorSN3, mutationSorSN4, mutationSorSN5,
             mutationSorSN6, mutationSorSN7, mutationSorSN8, mutationSorSN9;
     private String otherGeneMutation;
-    
+
     private Karotype karotype;
+    private String karoTypeOtherText;
     private YesNo parentalConsanguinity;
     private YesNo familyHistory;
 
@@ -126,11 +161,11 @@ public class Diagnosis extends RadarModel {
         this.esrfDate = esrfDate;
     }
 
-    public int getAgeAtDiagnosis() {
+    public Integer getAgeAtDiagnosis() {
         return ageAtDiagnosis;
     }
 
-    public void setAgeAtDiagnosis(int ageAtDiagnosis) {
+    public void setAgeAtDiagnosis(Integer ageAtDiagnosis) {
         this.ageAtDiagnosis = ageAtDiagnosis;
     }
 
@@ -198,11 +233,11 @@ public class Diagnosis extends RadarModel {
         this.significantDiagnosis2 = significantDiagnosis2;
     }
 
-    public YesNo getBiopsyProvenDiagnosis() {
+    public BiopsyDiagnosis getBiopsyProvenDiagnosis() {
         return biopsyProvenDiagnosis;
     }
 
-    public void setBiopsyProvenDiagnosis(YesNo biopsyProvenDiagnosis) {
+    public void setBiopsyProvenDiagnosis(BiopsyDiagnosis biopsyProvenDiagnosis) {
         this.biopsyProvenDiagnosis = biopsyProvenDiagnosis;
     }
 
@@ -478,5 +513,11 @@ public class Diagnosis extends RadarModel {
         this.relativeWithDisease6 = relativeWithDisease6;
     }
 
+    public String getKaroTypeOtherText() {
+        return karoTypeOtherText;
+    }
 
+    public void setKaroTypeOtherText(String karoTypeOtherText) {
+        this.karoTypeOtherText = karoTypeOtherText;
+    }
 }

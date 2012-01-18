@@ -3,6 +3,7 @@ package com.solidstategroup.radar.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
@@ -12,6 +13,7 @@ public abstract class BaseDaoImpl {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseDaoImpl.class);
 
     protected JdbcTemplate jdbcTemplate;
+    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public static <T> T getEnumValue(Class<T> enumClass, int id) {
         try {
@@ -44,5 +46,6 @@ public abstract class BaseDaoImpl {
     public void
     setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
+        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 }

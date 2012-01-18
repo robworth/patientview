@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DiagnosisDao;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
@@ -17,6 +18,21 @@ public class DiagnosisDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiagnosisDao diagnosisDao;
+
+    @Test
+    public void testSaveDiagnosis() {
+        // test save
+        Diagnosis diagnosis = new Diagnosis();
+        diagnosis.setText("Testing");
+        diagnosisDao.saveDiagnosis(diagnosis);
+        assertNotNull(diagnosis.getId());
+
+        // test update
+        Diagnosis diagnosis2 = new Diagnosis();
+        diagnosis2.setId(new Long(139));
+        diagnosis2.setText("Testing");
+        diagnosisDao.saveDiagnosis(diagnosis2);
+    }
 
     @Test
     public void testGetDiagnosis() {
