@@ -3,11 +3,13 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.ClinicalPresentation;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.ClinicalPresentationDropDownChoice;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
@@ -16,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -24,7 +27,6 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -41,11 +43,17 @@ import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
 public class DiagnosisPanel extends Panel {
 
+    public static final Long SRNS_ID = new Long(1);
+    public static final String OTHER_CONTAINER_ID = "otherContainer";
+    public static final Long KAROTYPE_OTHER_ID = new Long(8);
     @SpringBean
     private DiagnosisDao diagnosisDao;
     @SpringBean
@@ -57,14 +65,17 @@ public class DiagnosisPanel extends Panel {
         setOutputMarkupPlaceholderTag(true);
 
         // Set up model
-        CompoundPropertyModel<Diagnosis> model;
-
         // Set up loadable detachable, working for null radar numbers (new patients) and existing
-        model = new CompoundPropertyModel<Diagnosis>(new LoadableDetachableModel<Diagnosis>() {
+        final CompoundPropertyModel<Diagnosis> model = new CompoundPropertyModel<Diagnosis>(new LoadableDetachableModel<Diagnosis>() {
             @Override
             protected Diagnosis load() {
                 if (radarNumberModel.getObject() != null) {
-                    return diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                    if (diagnosis != null) {
+                        return diagnosis;
+                    } else {
+                        return new Diagnosis();
+                    }
                 } else {
                     return new Diagnosis();
                 }
@@ -91,10 +102,45 @@ public class DiagnosisPanel extends Panel {
                             clinicalPresentationA.error("A and B cannot be the same");
                         }
                     }
+
+                    @Override
+                    protected void onSubmit() {
+                        Diagnosis diagnosis = getModelObject();
+                        super.onSubmit();
+                        Date dateOfDiagnosis = diagnosis.getBiopsyDate();
+                        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(
+                                radarNumberModel.getObject());
+                        Date dob = demographics.getDateOfBirth();
+                        if (dateOfDiagnosis != null && dob != null) {
+                            Calendar diagCalendar = Calendar.getInstance();
+                            diagCalendar.setTime(dateOfDiagnosis);
+
+                            Calendar dobCalendar = Calendar.getInstance();
+                            dobCalendar.setTime(dob);
+
+                            diagCalendar.add(Calendar.YEAR, -dobCalendar.get(Calendar.YEAR));
+                            diagCalendar.add(Calendar.MONTH, -dobCalendar.get(Calendar.MONTH));
+                            diagCalendar.add(Calendar.DAY_OF_MONTH, -dobCalendar.get(Calendar.DAY_OF_MONTH));
+
+                            int age = diagCalendar.get(Calendar.YEAR);
+                            diagnosis.setAgeAtDiagnosis(age);
+                        }
+                        diagnosisDao.saveDiagnosis(diagnosis);
+                        if (!hasError()) {
+                            get("successMessage").setVisible(true);
+                            get("successMessageDown").setVisible(true);
+                        } else {
+                            get("successMessage").setVisible(false);
+                            get("successMessageDown").setVisible(false);
+                        }
+                    }
                 };
         add(form);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
+
+        final Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
+        final Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form, componentsToUpdate);
 
         TextField radarNumber = new TextField("radarNumber");
         form.add(radarNumber);
@@ -122,17 +168,33 @@ public class DiagnosisPanel extends Panel {
 
 
         form.add(new TextArea("text"));
-        form.add(new Label("diagnosisOrBiopsy", "Date of original biopsy"));
 
+        form.add(new Label("diagnosisOrBiopsy", new LoadableDetachableModel<Object>() {
+            @Override
+            protected Object load() {
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getDiagnosisCode() != null) {
+                    return diagnosis.getDiagnosisCode().getId().equals(SRNS_ID) ? "diagnosis" : "original biopsy";
+                }
+                return "";
+            }
+        }));
+
+        // this field is also used for date of diagnosis
         RadarDateTextField biopsyDate =
                 new RadarDateTextField("biopsyDate", form, componentsToUpdate);
+
         form.add(biopsyDate);
 
         RadarDateTextField esrfDate =
                 new RadarDateTextField("esrfDate", form, componentsToUpdate);
         form.add(esrfDate);
 
-        form.add(new TextField("ageAtDiagnosis"));
+        TextField ageAtDiagnosis = new TextField("ageAtDiagnosis");
+        ageAtDiagnosis.setOutputMarkupId(true);
+        ageAtDiagnosis.setOutputMarkupPlaceholderTag(true);
+        form.add(ageAtDiagnosis);
+        componentsToUpdate.add(ageAtDiagnosis);
         form.add(new CheckBox("prepubertalAtDiagnosis"));
 
         final RadarTextFieldWithValidation heightAtDiagnosis =
@@ -156,7 +218,18 @@ public class DiagnosisPanel extends Panel {
         form.add(clinicalPresentationFeedback);
 
         // Steroid resistance radio groups
-        RadioGroup steroidContainer = new RadioGroup("steroidResistance");
+        RadioGroup steroidContainer = new RadioGroup("steroidResistance") {
+            @Override
+            public boolean isVisible() {
+                DiagnosisCode diagnosisCode = model.getObject().getDiagnosisCode();
+                if (diagnosisCode != null) {
+                    return diagnosisCode.getId().equals(SRNS_ID);
+                } else {
+                    return false;
+                }
+
+            }
+        };
         steroidContainer.add(new Radio<Diagnosis.SteroidResistance>("primarySteroidResistance",
                 new Model<Diagnosis.SteroidResistance>(Diagnosis.SteroidResistance.PRIMARY)));
         steroidContainer.add(new Radio<Diagnosis.SteroidResistance>("secondarySteroidResistance",
@@ -171,53 +244,258 @@ public class DiagnosisPanel extends Panel {
         form.add(new TextField("significantDiagnosis1"));
         form.add(new TextField("significantDiagnosis2"));
 
-        // Biopsy Diagnosis visibilities...
-        // The label changes according to some logic, will finish later
-        DropDownChoice biopsyDiagnosis = new YesNoDropDownChoice("biopsyProvenDiagnosis");
-        FormComponentLabel biopsyDiagnosisLabel = new FormComponentLabel("biopsyDiagnosisLabel", biopsyDiagnosis);
+
+        // Biopsy Diagnosis visibilities
+        IModel<String> biopsyLabelModel = new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getDiagnosisCode() != null) {
+                    if (diagnosis.getDiagnosisCode().getId().equals(SRNS_ID)) {
+                        return "Biopsy Diagnosis";
+                    } else {
+                        return "Biopsy Proven Diagnosis";
+                    }
+                } else {
+                    return "";
+                }
+            }
+        };
+
+        IModel<List> biopsyDiagnosisModel = new LoadableDetachableModel<List>() {
+            @Override
+            protected List load() {
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getDiagnosisCode() != null) {
+                    if (diagnosis.getDiagnosisCode().getId().equals(SRNS_ID)) {
+                        return Arrays.asList(Diagnosis.BiopsyDiagnosis.MINIMAL_CHANGE, Diagnosis.BiopsyDiagnosis.FSGS,
+                                Diagnosis.BiopsyDiagnosis.MESANGIAL_HYPERTROPHY, Diagnosis.BiopsyDiagnosis.OTHER);
+                    } else {
+                        return Arrays.asList(Diagnosis.BiopsyDiagnosis.YES, Diagnosis.BiopsyDiagnosis.NO);
+                    }
+                }
+                return Collections.emptyList();
+            }
+        };
+
+        DropDownChoice biopsyDiagnosis = new DropDownChoice("biopsyProvenDiagnosis", biopsyDiagnosisModel,
+                new ChoiceRenderer("label", "id"));
+
+        Label biopsyDiagnosisLabel = new Label("biopsyDiagnosisLabel", biopsyLabelModel);
+
         form.add(biopsyDiagnosis, biopsyDiagnosisLabel);
 
+
+        Diagnosis diagnosis = model.getObject();
+        boolean showOtherDetailsOnInit = false;
+        showOtherDetailsOnInit = diagnosis.getMutationYorN9() == Diagnosis.MutationYorN.Y;
+        final IModel<Boolean> otherDetailsVisibilityModel = new Model<Boolean>(showOtherDetailsOnInit);
+
+        boolean showMoreDetailsOnInit = false;
+        if (diagnosis.getMutationYorN1() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN2() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN3() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN4() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN5() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN6() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN7() == Diagnosis.MutationYorN.Y
+                || diagnosis.getMutationYorN8() == Diagnosis.MutationYorN.Y) {
+
+            showMoreDetailsOnInit = true;
+        }
+
+        final IModel<Boolean> moreDetailsVisibilityModel = new Model<Boolean>(showMoreDetailsOnInit);
+        final IModel<Boolean> mutationVisibilityModel = new LoadableDetachableModel<Boolean>() {
+            @Override
+            protected Boolean load() {
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getDiagnosisCode() != null) {
+                    return diagnosis.getDiagnosisCode().getId().equals(SRNS_ID);
+                }
+                return false;
+            }
+        };
+
+        WebMarkupContainer mutationContainer = new WebMarkupContainer("mutationContainer") {
+            @Override
+            public boolean isVisible() {
+                return mutationVisibilityModel.getObject();
+            }
+        };
+
+        Label geneMutationLabel = new Label("geneMutationLabel", "Gene Mutation") {
+            @Override
+            public boolean isVisible() {
+                return mutationVisibilityModel.getObject();
+            }
+        };
+
+        form.add(geneMutationLabel);
+
+        form.add(mutationContainer);
+
         // Gene mutations
-        form.add(new DiagnosisGeneMutationPanel("nphs1Container", 1));
-        form.add(new DiagnosisGeneMutationPanel("nphs2Container", 2));
-        form.add(new DiagnosisGeneMutationPanel("nphs3Container", 3));
-        form.add(new DiagnosisGeneMutationPanel("wt1Container", 4));
-        form.add(new DiagnosisGeneMutationPanel("cd2apContainer", 5));
-        form.add(new DiagnosisGeneMutationPanel("trpc6Container", 6));
-        form.add(new DiagnosisGeneMutationPanel("actn4Container", 7));
-        form.add(new DiagnosisGeneMutationPanel("lamb2Container", 8));
-        form.add(new DiagnosisGeneMutationPanel("otherContainer", 9));
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs1Container", 1, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs2Container", 2, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs3Container", 3, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("wt1Container", 4, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("cd2apContainer", 5, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("trpc6Container", 6, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("actn4Container", 7, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel("lamb2Container", 8, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
+
+        mutationContainer.add(new DiagnosisGeneMutationPanel(OTHER_CONTAINER_ID, 9, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+                otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
         // Other gene mutation container
         MarkupContainer otherGeneMutationContainer = new WebMarkupContainer("otherGeneMutationContainer") {
+
             @Override
             public boolean isVisible() {
-                // Only show if other is checked Y
-                return Diagnosis.MutationYorN.Y.equals(form.getModelObject().getMutationYorN9());
+                return otherDetailsVisibilityModel.getObject();
             }
         };
+
+
         otherGeneMutationContainer.setOutputMarkupId(true);
         otherGeneMutationContainer.setOutputMarkupPlaceholderTag(true);
         otherGeneMutationContainer.add(new TextArea("otherGeneMutation"));
         form.add(otherGeneMutationContainer);
 
+
+        // more details
+        MarkupContainer moreDetailsContainer = new WebMarkupContainer("moreDetailsContainer") {
+
+            @Override
+            public boolean isVisible() {
+                return moreDetailsVisibilityModel.getObject();
+            }
+        };
+        moreDetailsContainer.setOutputMarkupId(true);
+        moreDetailsContainer.setOutputMarkupPlaceholderTag(true);
+        moreDetailsContainer.add(new TextArea("moreDetails", new Model()));
+        form.add(moreDetailsContainer);
+        componentsToUpdate.add(moreDetailsContainer);
+
+
+        componentsToUpdate.add(otherGeneMutationContainer);
+
+        boolean showKaroTypeOtherOnInit = false;
+        if (diagnosis.getKarotype() != null) {
+            showKaroTypeOtherOnInit = diagnosis.getKarotype().getId().equals(KAROTYPE_OTHER_ID);
+        }
+        final IModel<Boolean> karoTypeOtherVisibilityModel = new Model<Boolean>(showKaroTypeOtherOnInit);
+
         // Add Karotype
-        form.add(new DropDownChoice<Karotype>("karotype", diagnosisDao.getKarotypes(),
-                new ChoiceRenderer<Karotype>("description", "id")));
+        DropDownChoice<Karotype> karotypeDropDownChoice = new DropDownChoice<Karotype>("karotype", diagnosisDao.getKarotypes(),
+                new ChoiceRenderer<Karotype>("description", "id"));
+
+        WebMarkupContainer karoTypeContainer = new WebMarkupContainer("karoTypeContainer") {
+            @Override
+            public boolean isVisible() {
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getDiagnosisCode() != null) {
+                    return diagnosis.getDiagnosisCode().getId().equals(SRNS_ID);
+                }
+                return false;
+            }
+        };
+        karoTypeContainer.add(karotypeDropDownChoice);
+        form.add(karoTypeContainer);
+
+
+        karotypeDropDownChoice.add(new AjaxFormComponentUpdatingBehavior("onChange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Diagnosis diagnosis = model.getObject();
+                Karotype karotype = diagnosis.getKarotype();
+                if (karotype != null) {
+                    karoTypeOtherVisibilityModel.setObject(karotype.getId().equals(KAROTYPE_OTHER_ID));
+                    target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                }
+            }
+        });
+
+        // karotype other
+        MarkupContainer karoTypeOtherContainer = new WebMarkupContainer("karoTypeOtherContainer") {
+            @Override
+            public boolean isVisible() {
+                return karoTypeOtherVisibilityModel.getObject();
+            }
+        };
+        karoTypeOtherContainer.setOutputMarkupId(true);
+        karoTypeOtherContainer.setOutputMarkupPlaceholderTag(true);
+        karoTypeOtherContainer.add(new TextArea("karoTypeOtherText"));
+        componentsToUpdate.add(karoTypeOtherContainer);
+        form.add(karoTypeOtherContainer);
 
         // Parental consanguinity and family history
         form.add(new YesNoDropDownChoice("parentalConsanguinity"));
-        form.add(new YesNoDropDownChoice("familyHistory"));
 
+
+        YesNoDropDownChoice familyHistory = new YesNoDropDownChoice("familyHistory");
+
+        //
+        boolean showFamilyOnInit = false;
+        showFamilyOnInit = diagnosis.getFamilyHistory() == Diagnosis.YesNo.YES;
+        final IModel<Boolean> familyVisibilityModel = new Model<Boolean>(showFamilyOnInit);
+        //
+
+        familyHistory.add(new AjaxFormComponentUpdatingBehavior("onChange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getFamilyHistory() != null) {
+                    familyVisibilityModel.setObject(diagnosis.getFamilyHistory() == Diagnosis.YesNo.YES);
+                }
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+
+        form.add(familyHistory);
         // Family history containers
-        form.add(new DiagnosisRelativePanel("relative1Container", 1));
-        form.add(new DiagnosisRelativePanel("relative2Container", 2));
-        form.add(new DiagnosisRelativePanel("relative3Container", 3));
-        form.add(new DiagnosisRelativePanel("relative4Container", 4));
-        form.add(new DiagnosisRelativePanel("relative5Container", 5));
-        form.add(new DiagnosisRelativePanel("relative6Container", 6));
+        form.add(new DiagnosisRelativePanel("relative1Container", 1, (CompoundPropertyModel) form.getModel(),
+                familyVisibilityModel, componentsToUpdate));
+        form.add(new DiagnosisRelativePanel("relative2Container", 2, (CompoundPropertyModel) form.getModel(),
+                familyVisibilityModel, componentsToUpdate));
+        form.add(new DiagnosisRelativePanel("relative3Container", 3, (CompoundPropertyModel) form.getModel(),
+                familyVisibilityModel, componentsToUpdate));
+        form.add(new DiagnosisRelativePanel("relative4Container", 4, (CompoundPropertyModel) form.getModel(),
+                familyVisibilityModel, componentsToUpdate));
+        form.add(new DiagnosisRelativePanel("relative5Container", 5, (CompoundPropertyModel) form.getModel(),
+                familyVisibilityModel, componentsToUpdate));
+        form.add(new DiagnosisRelativePanel("relative6Container", 6, (CompoundPropertyModel) form.getModel(),
+                familyVisibilityModel, componentsToUpdate));
 
         componentsToUpdate.add(clinicalPresentationFeedback);
+
+        Label radarFamilyLabel = new Label("radarFamilyLabel", "RADAR No") {
+
+            @Override
+            public boolean isVisible() {
+                return familyVisibilityModel.getObject();
+            }
+        };
+        radarFamilyLabel.setOutputMarkupId(true);
+        radarFamilyLabel.setOutputMarkupPlaceholderTag(true);
+        componentsToUpdate.add(radarFamilyLabel);
+        form.add(radarFamilyLabel);
+
 
         DiagnosisAjaxSubmitLink save = new DiagnosisAjaxSubmitLink("save") {
             @Override
@@ -233,7 +511,6 @@ public class DiagnosisPanel extends Panel {
                 return componentsToUpdate;
             }
         };
-
 
         form.add(save, saveDown);
     }

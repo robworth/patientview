@@ -2,37 +2,43 @@ package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Relative;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ComponentPropertyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 public class DiagnosisRelativePanel extends Panel {
 
     @SpringBean
     private UtilityDao utilityDao;
+    private IModel<Boolean> isVisibleModel;
 
-    public DiagnosisRelativePanel(String id, int i) {
+    public DiagnosisRelativePanel(String id, int i, CompoundPropertyModel model, IModel<Boolean> isVisibleModel,
+                                  List<Component> componentsToUpdate) {
         super(id);
-
-        // Set the model of this drop down to reflect the relative with number i
-        IModel<Relative> model = new ComponentPropertyModel<Relative>("relativeWithDisease" + i);
-
+        this.isVisibleModel = isVisibleModel;
         // Drop down with choices and choice renderer setup
-        add(new DropDownChoice<Relative>("relative", model, utilityDao.getRelatives(),
+        add(new DropDownChoice<Relative>("relative", model.bind("relativeWithDisease" + i), utilityDao.getRelatives(),
                 new ChoiceRenderer<Relative>("name", "id")));
 
         // Add the radar number text field too
-      /*  add(new TextField<Integer>("radarNumber", new ComponentPropertyModel<Integer>("relativeWithDiseaseRadarNumber"
-                + i)));  */
+        add(new TextField<Integer>("radarNumber", model.bind("relativeWithDiseaseRadarNumber" + i)));
+        setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
 
-        add(new TextField<Integer>("radarNumber", new Model<Integer>()));   // todo change this back
-
-
+        componentsToUpdate.add(this);
     }
 
+    @Override
+    public boolean isVisible() {
+        return isVisibleModel.getObject();
+    }
 }

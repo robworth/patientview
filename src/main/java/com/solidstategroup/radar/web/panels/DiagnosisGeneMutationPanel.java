@@ -1,41 +1,76 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Diagnosis;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.ComponentPropertyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import java.util.List;
+
 public class DiagnosisGeneMutationPanel extends Panel {
+    private IModel<Boolean> isVisibleModel;
 
-    public DiagnosisGeneMutationPanel(String id, int i) {
+    public DiagnosisGeneMutationPanel(final String id, int i, IModel<Boolean> isVisibleModel, CompoundPropertyModel model, final IModel<Boolean>
+            otherDetailsVisibilityModel, final IModel<Boolean> moreDetailsVisibilityModel,
+                                      final List<Component> componentsToUpdateList) {
         super(id);
-
-        // Models have to use component model as this is reusable and have to use different model fields
-        IModel<Diagnosis.MutationYorN> yOrNModel =
-                new ComponentPropertyModel<Diagnosis.MutationYorN>("mutationYorN" + i);
-        IModel<Diagnosis.MutationSorSN> sOrSNModel =
-                new ComponentPropertyModel<Diagnosis.MutationSorSN>("mutationSorSN" + i);
+        this.isVisibleModel = isVisibleModel;
 
         // Add the field for mutationYorN
         RadioGroup<Diagnosis.MutationYorN> mutationYorN =
-                new RadioGroup<Diagnosis.MutationYorN>("mutationYorN", yOrNModel);
-        mutationYorN.add(new Radio<Diagnosis.MutationYorN>("y",
-                new Model<Diagnosis.MutationYorN>(Diagnosis.MutationYorN.Y)));
-        mutationYorN.add(new Radio<Diagnosis.MutationYorN>("n",
-                new Model<Diagnosis.MutationYorN>(Diagnosis.MutationYorN.N)));
+                new RadioGroup<Diagnosis.MutationYorN>("mutationYorN", model.bind("mutationYorN" + i));
+
+        Radio<Diagnosis.MutationYorN> y = new Radio<Diagnosis.MutationYorN>("y",
+                new Model<Diagnosis.MutationYorN>(Diagnosis.MutationYorN.Y));
+        mutationYorN.add(y);
+        y.add(new AjaxEventBehavior("onClick") {
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                if (id.equals(DiagnosisPanel.OTHER_CONTAINER_ID)) {
+                    otherDetailsVisibilityModel.setObject(true);
+                } else {
+                    moreDetailsVisibilityModel.setObject(true);
+
+                }
+                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+            }
+        });
+
+
+        Radio<Diagnosis.MutationYorN> n = new Radio<Diagnosis.MutationYorN>("n",
+                new Model<Diagnosis.MutationYorN>(Diagnosis.MutationYorN.N));
+        mutationYorN.add(n);
+        n.add(new AjaxEventBehavior("onClick") {
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                if (id.equals(DiagnosisPanel.OTHER_CONTAINER_ID)) {
+                    otherDetailsVisibilityModel.setObject(false);
+                    target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                }
+            }
+        });
         add(mutationYorN);
 
         // Add the field for mutationSorSN
         RadioGroup<Diagnosis.MutationSorSN> mutationSorSN =
-                new RadioGroup<Diagnosis.MutationSorSN>("mutationSorSN", sOrSNModel);
+                new RadioGroup<Diagnosis.MutationSorSN>("mutationSorSN", model.bind("mutationSorSN" + i));
+
         mutationSorSN.add(new Radio<Diagnosis.MutationSorSN>("s",
                 new Model<Diagnosis.MutationSorSN>(Diagnosis.MutationSorSN.S)));
+
         mutationSorSN.add(new Radio<Diagnosis.MutationSorSN>("sn",
                 new Model<Diagnosis.MutationSorSN>(Diagnosis.MutationSorSN.SN)));
         add(mutationSorSN);
     }
 
+    @Override
+    public boolean isVisible() {
+        return isVisibleModel.getObject();
+    }
 }

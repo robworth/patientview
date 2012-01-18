@@ -21,9 +21,9 @@ public class RadarModelFactory {
 
 
     public static IModel getDiagnosisCodeModel(final IModel<Long> radarNumberModel, final DiagnosisDao diagnosisDao) {
-        return new Model<DiagnosisCode>() {
+        return new LoadableDetachableModel<DiagnosisCode>() {
             @Override
-            public DiagnosisCode getObject() {
+            public DiagnosisCode load() {
                 Long radarNumber;
                 if (radarNumberModel.getObject() != null) {
                     try {
