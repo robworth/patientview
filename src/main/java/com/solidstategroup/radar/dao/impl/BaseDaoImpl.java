@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public abstract class BaseDaoImpl {
 
@@ -43,9 +45,32 @@ public abstract class BaseDaoImpl {
         }
     }
 
-    public void
-    setDataSource(DataSource dataSource) {
+    public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    public Boolean getBooleanWithNullCheck(String column, ResultSet resultSet) throws SQLException {
+        boolean value = resultSet.getBoolean(column);
+        if (resultSet.wasNull()) {
+            return null;
+        }
+        return value;
+    }
+
+    public Double getDoubleWithNullCheck(String column, ResultSet resultSet) throws SQLException {
+        double value = resultSet.getLong(column);
+        if (resultSet.wasNull()) {
+            return null;
+        }
+        return value;
+    }
+
+    public Integer getIntegerWithNullCheck(String column, ResultSet resultSet) throws SQLException {
+        int value = resultSet.getInt(column);
+        if (resultSet.wasNull()) {
+            return null;
+        }
+        return value;
     }
 }

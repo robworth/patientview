@@ -256,8 +256,15 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
 
             diagnosis.setBiopsyDate(resultSet.getDate("DATE_DIAG"));
 
-            diagnosis.setAgeAtDiagnosis(resultSet.getInt("AGE_AT_DIAG"));
-            diagnosis.setHeightAtDiagnosis(resultSet.getDouble("HEIGHT_FIRST_VISIT"));
+            int age = resultSet.getInt("AGE_AT_DIAG");
+            if(!resultSet.wasNull()) {
+              diagnosis.setAgeAtDiagnosis(age);
+            }
+
+            double height = resultSet.getDouble("HEIGHT_FIRST_VISIT");
+            if(! resultSet.wasNull()) {
+                 diagnosis.setHeightAtDiagnosis(height);
+            }
 
             // Null check
             long clinicalPresentationA = resultSet.getLong("CLIN_PRES");

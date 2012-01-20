@@ -3,6 +3,7 @@ package com.solidstategroup.radar.web.components;
 import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 public class YesNoRadioGroup extends RadioGroup<Boolean> {
@@ -20,8 +21,10 @@ public class YesNoRadioGroup extends RadioGroup<Boolean> {
 
         // Option for yes and no
         Radio<Boolean> yes = new Radio<Boolean>("yes", new Model<Boolean>(Boolean.TRUE));
-        Radio<Boolean> no = new Radio<Boolean>("no", new Model<Boolean>(Boolean.TRUE));
+        Radio<Boolean> no = new Radio<Boolean>("no", new Model<Boolean>(Boolean.FALSE));
         add(yes, no);
+
+
 
         // Only put in labels if we're told to
         if (includeLabels) {
@@ -31,7 +34,7 @@ public class YesNoRadioGroup extends RadioGroup<Boolean> {
 
         if (includeUnknownOption) {
             // Option for unknown (null)
-            Radio<Boolean> unknown = new Radio<Boolean>("unknown", new Model<Boolean>(Boolean.TRUE));
+            Radio<Boolean> unknown = new Radio<Boolean>("unknown", new Model<Boolean>(null));
             add(unknown, new FormComponentLabel("unknownLabel", unknown));
         }
     }

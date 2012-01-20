@@ -2,18 +2,28 @@ package com.solidstategroup.radar.model.sequenced;
 
 import com.solidstategroup.radar.model.Phenotype;
 
+import java.util.Date;
+
 public class ClinicalData extends SequencedModel {
 
     public enum DiabetesType {
-        TYPE_I(1), TYPE_II(2), NO(99);
+        TYPE_I(1, "Type I IDDM"),
+        TYPE_II(2, "Type II NIDDM"),
+        NO(99, "No");
         private int id;
+        private String label;
 
-        DiabetesType(int id) {
+        DiabetesType(int id, String label) {
             this.id = id;
+            this.label = label;
         }
 
         public int getId() {
             return id;
+        }
+
+        public String getLabel() {
+            return label;
         }
     }
 
@@ -43,6 +53,8 @@ public class ClinicalData extends SequencedModel {
         }
     }
 
+    private Date clinicalPictureDate;
+
     private Double height, weight; // Height in cm Weight in Kg
 
     // Check it out http://en.wikipedia.org/wiki/Blood_pressure
@@ -55,7 +67,8 @@ public class ClinicalData extends SequencedModel {
     private CourseOfDisease courseOfDisease;
     private String significantDiagnosis1, significantDiagnosis2;
 
-    private Boolean oedema, anaemia, hypovalaemia, fever, thrombosis, peritonitis, pulmonaryOedema, hypertension;
+    private Boolean oedema, anaemia, hypovalaemia, fever, thrombosis, peritonitis, pulmonaryOedema, hypertension,
+            urticaria;
     private DiabetesType diabetesType;
     private Boolean rash, possibleImmunisationTrigger, partialLipodystrophy, preceedingInfection, chronicInfection,
             ophthalmoscopy;
@@ -75,6 +88,14 @@ public class ClinicalData extends SequencedModel {
             return (double) diastolicBloodPressure + (1D / 3D) * (systolicBloodPressure - diastolicBloodPressure);
         }
         return null;
+    }
+
+    public Date getClinicalPictureDate() {
+        return clinicalPictureDate;
+    }
+
+    public void setClinicalPictureDate(Date clinicalPictureDate) {
+        this.clinicalPictureDate = clinicalPictureDate;
     }
 
     public Double getHeight() {
@@ -235,6 +256,14 @@ public class ClinicalData extends SequencedModel {
 
     public void setHypertension(Boolean hypertension) {
         this.hypertension = hypertension;
+    }
+
+    public Boolean getUrticaria() {
+        return urticaria;
+    }
+
+    public void setUrticaria(Boolean urticaria) {
+        this.urticaria = urticaria;
     }
 
     public DiabetesType getDiabetesType() {

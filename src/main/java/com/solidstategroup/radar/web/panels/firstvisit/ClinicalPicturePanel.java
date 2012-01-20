@@ -3,24 +3,31 @@ package com.solidstategroup.radar.web.panels.firstvisit;
 import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -30,7 +37,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClinicalPicturePanel extends Panel {
@@ -49,7 +56,7 @@ public class ClinicalPicturePanel extends Panel {
 
         final TextField<Double> diastolicBloodPressure = new TextField<Double>("diastolicBloodPressure");
 
-        CompoundPropertyModel<ClinicalData> model =
+        final CompoundPropertyModel<ClinicalData> model =
                 new CompoundPropertyModel<ClinicalData>(new LoadableDetachableModel<ClinicalData>() {
                     @Override
                     protected ClinicalData load() {
@@ -57,11 +64,11 @@ public class ClinicalPicturePanel extends Panel {
                             // If we have a radar number get the list from DAO
                             List<ClinicalData> clinicalDatas;
                             try {
-                                 clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber(radarNumberModel.getObject());
-                            } catch(ClassCastException e) {
+                                clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber(radarNumberModel.getObject());
+                            } catch (ClassCastException e) {
                                 Object obj = radarNumberModel.getObject();
-                               clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber((
-                                       Long.parseLong((String)obj)));
+                                clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber((
+                                        Long.parseLong((String) obj)));
                             }
 
                             if (!clinicalDatas.isEmpty()) {
@@ -70,7 +77,9 @@ public class ClinicalPicturePanel extends Panel {
                             }
                         }
                         // By default just return new one
-                        return new ClinicalData();
+                        ClinicalData clinicalDataNew = new ClinicalData();
+                        clinicalDataNew.setSequenceNumber(1);
+                        return clinicalDataNew;
                     }
                 });
 
@@ -89,15 +98,52 @@ public class ClinicalPicturePanel extends Panel {
                 }
 
             }
+
+            @Override
+            protected void onSubmit() {
+                ClinicalData clinicalData = getModelObject();
+                Long radarNumber;
+
+                if (clinicalData.getRadarNumber() == null) {
+                    try {
+                        radarNumber = radarNumberModel.getObject();
+                    } catch (ClassCastException e) {
+                        Object obj = radarNumberModel.getObject();
+                        radarNumber = Long.parseLong((String) obj);
+                    }
+
+                    clinicalData.setRadarNumber(radarNumber);
+                }
+                clinicalDataDao.saveClinicalDate(clinicalData);
+                get("successMessage").setVisible(!hasError());
+                get("successMessageDown").setVisible(!hasError());
+            }
         };
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
+
+        final IModel<Boolean> isSrnsModel = new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                DiagnosisCode diagnosisCode = (DiagnosisCode) RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                        diagnosisDao).getObject();
+                if (diagnosisCode != null) {
+                    return diagnosisCode.getId().equals(DiagnosisPanel.SRNS_ID);
+                }
+                return false;
+            }
+        };
+
+
+        Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
+        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
+                componentsToUpdate);
+
 
         form.add(new TextField("radarNumber", radarNumberModel));
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));
-
 
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
@@ -111,7 +157,7 @@ public class ClinicalPicturePanel extends Panel {
         form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         RadarRequiredDateTextField clinicalPictureDate =
-                new RadarRequiredDateTextField("clinicalPictureDate", new Model<Date>(), form, componentsToUpdate);
+                new RadarRequiredDateTextField("clinicalPictureDate", form, componentsToUpdate);
         form.add(clinicalPictureDate);
 
         RadarTextFieldWithValidation height =
@@ -143,7 +189,11 @@ public class ClinicalPicturePanel extends Panel {
         diastolicBloodPressureFeedback.setOutputMarkupPlaceholderTag(true);
         form.add(diastolicBloodPressureFeedback);
 
-        form.add(new TextField("meanArterialPressure").setEnabled(false));
+        Component meanArterialPressure = new TextField("meanArterialPressure").setEnabled(false);
+        meanArterialPressure.setOutputMarkupPlaceholderTag(true);
+        meanArterialPressure.setOutputMarkupId(true);
+        form.add(meanArterialPressure);
+        componentsToUpdate.add(meanArterialPressure);
 
         form.add(new PhenotypeChooser("phenotype1"));
         form.add(new PhenotypeChooser("phenotype2"));
@@ -158,64 +208,271 @@ public class ClinicalPicturePanel extends Panel {
         form.add(new YesNoRadioGroup("oedema", true));
         form.add(new YesNoRadioGroup("hypovalaemia", true));
         form.add(new YesNoRadioGroup("fever", true));
-        form.add(new YesNoRadioGroup("thrombosis", true));
-        form.add(new YesNoRadioGroup("peritonitis", true));
-        form.add(new YesNoRadioGroup("pulmonaryOedema", true));
+
+        WebMarkupContainer thrombosisContainer = new WebMarkupContainer("thrombosisContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        YesNoRadioGroup thrombosis = new YesNoRadioGroup("thrombosis", true);
+        thrombosisContainer.add(thrombosis);
+        form.add(thrombosisContainer);
+
+        WebMarkupContainer peritonitisContainer = new WebMarkupContainer("peritonitisContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        peritonitisContainer.add(new YesNoRadioGroup("peritonitis", true));
+        form.add(peritonitisContainer);
+
+        WebMarkupContainer pulmonaryOedemaContainer = new WebMarkupContainer("pulmonaryOedemaContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        pulmonaryOedemaContainer.add(new YesNoRadioGroup("pulmonaryOedema", true));
+        form.add(pulmonaryOedemaContainer);
         form.add(new YesNoRadioGroup("hypertension", true));
 
-        // Diabetes
-        form.add(new DropDownChoice<ClinicalData.DiabetesType>("diabetesType"));
+        //urticaria
+        boolean showUrticariaOnInit = model.getObject().getUrticaria() != null ? model.getObject().getUrticaria() :
+                false;
 
-        // Todo: Visibilities depend on the diagnosis - see first-clinical.aspx.vb:287
+        // only show if diag is mpgn/dd
+        if (isSrnsModel.getObject().equals(true)) {
+            showUrticariaOnInit = false;
+        }
+
+        final IModel<Boolean> showUrticariaIModel = new Model<Boolean>(showUrticariaOnInit);
+
+        MarkupContainer urticariaDetailContainer = new WebMarkupContainer("urticariaDetailContainer") {
+            @Override
+            public boolean isVisible() {
+                return showUrticariaIModel.getObject();
+            }
+        };
+        componentsToUpdate.add(urticariaDetailContainer);
+
+        urticariaDetailContainer.add(new TextArea("rashDetail")); // shares same field in db as rash detail It seems
+        form.add(urticariaDetailContainer);
+        urticariaDetailContainer.setOutputMarkupId(true);
+        urticariaDetailContainer.setOutputMarkupPlaceholderTag(true);
 
         // More yes/no options
-        form.add(new YesNoRadioGroup("rash", true));
-        form.add(new YesNoRadioGroup("possibleImmunisationTrigger", true));
-        form.add(new YesNoRadioGroup("partialLipodystrophy", true));
-        form.add(new YesNoRadioGroup("preceedingInfection", true));
-        form.add(new YesNoRadioGroup("chronicInfection", true));
-        form.add(new YesNoRadioGroup("ophthalmoscopy", true));
+        WebMarkupContainer urticariaContainer = new WebMarkupContainer("urticariaContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject().equals(false);
+            }
+        };
+        YesNoRadioGroup urticaria = new YesNoRadioGroup("urticaria", true);
+        urticariaContainer.add(urticaria);
+        form.add(urticariaContainer);
+        urticaria.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                showUrticariaIModel.setObject(Boolean.TRUE.equals(model.getObject().getUrticaria()));
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+
+        // Diabetes
+        WebMarkupContainer diabetesTypeContainer = new WebMarkupContainer("diabetesTypeContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        diabetesTypeContainer.add(new DropDownChoice<ClinicalData.DiabetesType>("diabetesType",
+                Arrays.asList(ClinicalData.DiabetesType.TYPE_I, ClinicalData.DiabetesType.TYPE_II,
+                        ClinicalData.DiabetesType.NO), new ChoiceRenderer<ClinicalData.DiabetesType>("label", "id")));
+        form.add(diabetesTypeContainer);
+
+        boolean showRashDetailsOnInit = model.getObject().getRash() != null ? model.getObject().getRash() : false;
+        final IModel<Boolean> showRashDetailsIModel = new Model<Boolean>(showRashDetailsOnInit);
+        // only show if diag is srns
+        if(isSrnsModel.getObject().equals(false)) {
+           showRashDetailsOnInit = false;
+        }
+
 
         // Rash details needs show/hide
         MarkupContainer rashDetailContainer = new WebMarkupContainer("rashDetailContainer") {
             @Override
             public boolean isVisible() {
-                return Boolean.TRUE.equals(form.getModelObject().getRash());
+                return showRashDetailsIModel.getObject();
             }
         };
+        componentsToUpdate.add(rashDetailContainer);
+
         rashDetailContainer.add(new TextArea("rashDetail"));
         form.add(rashDetailContainer);
+        rashDetailContainer.setOutputMarkupId(true);
+        rashDetailContainer.setOutputMarkupPlaceholderTag(true);
 
-        // Ophthalmoscopy show/hide
-        MarkupContainer ophthalmoscopyDetailContainer = new WebMarkupContainer("ophthalmoscopyDetailContainer") {
+        // More yes/no options
+        WebMarkupContainer rashContainer = new WebMarkupContainer("rashContainer") {
             @Override
             public boolean isVisible() {
-                return Boolean.TRUE.equals(form.getModelObject().getOphthalmoscopy());
+                return isSrnsModel.getObject();
             }
         };
-        ophthalmoscopyDetailContainer.add(new TextArea("ophthalmoscopyDetail"));
-        form.add(ophthalmoscopyDetailContainer);
+        YesNoRadioGroup rash = new YesNoRadioGroup("rash", true);
+        rashContainer.add(rash);
+        form.add(rashContainer);
+        rash.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                showRashDetailsIModel.setObject(Boolean.TRUE.equals(model.getObject().getRash()));
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+
+        WebMarkupContainer possibleImmunisationTriggerContainer = new WebMarkupContainer
+                ("possibleImmunisationTriggerContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject().equals(true);
+            }
+        };
+
+        YesNoRadioGroup possibleImmunisationTrigger = new YesNoRadioGroup("possibleImmunisationTrigger", true);
+        possibleImmunisationTriggerContainer.add(possibleImmunisationTrigger);
+        form.add(possibleImmunisationTriggerContainer);
+
+
+        WebMarkupContainer partialLipodystrophyContainer = new WebMarkupContainer("partialLipodystrophyContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject().equals(false);
+            }
+        };
+
+        YesNoRadioGroup partialLipodystrophy = new YesNoRadioGroup("partialLipodystrophy", true);
+
+        partialLipodystrophyContainer.add(partialLipodystrophy);
+        form.add(partialLipodystrophyContainer);
+
+        WebMarkupContainer preceedingInfectionContainer = new WebMarkupContainer("preceedingInfectionContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject().equals(false);
+            }
+        };
+
+        // preceding infection
+        boolean showPrecedingInfectionOnInit = model.getObject().getPreceedingInfection() != null ?
+                model.getObject().getPreceedingInfection() : false;
+
+        // only show if diag is mpgn/dd
+        if (isSrnsModel.getObject().equals(true)) {
+            showPrecedingInfectionOnInit = false;
+        }
+
+        final IModel<Boolean> showPrecedingInfectioModel = new Model<Boolean>(showPrecedingInfectionOnInit);
+
+
+        YesNoRadioGroup preceedingInfection = new YesNoRadioGroup("preceedingInfection", true);
+        preceedingInfectionContainer.add(preceedingInfection);
+        preceedingInfection.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                showPrecedingInfectioModel.setObject(Boolean.TRUE.equals(model.getObject().getPreceedingInfection()));
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+        form.add(preceedingInfectionContainer);
 
         // Preceeding infection show/hide
         MarkupContainer preceedingInfectionDetailContainer =
                 new WebMarkupContainer("preceedingInfectionDetailContainer") {
                     @Override
                     public boolean isVisible() {
-                        return Boolean.TRUE.equals(form.getModelObject().getPreceedingInfection());
+                        return showPrecedingInfectioModel.getObject();
                     }
                 };
         preceedingInfectionDetailContainer.add(new TextArea("preceedingInfectionDetail"));
         form.add(preceedingInfectionDetailContainer);
+        componentsToUpdate.add(preceedingInfectionDetailContainer);
+        preceedingInfectionDetailContainer.setOutputMarkupId(true);
+        preceedingInfectionDetailContainer.setOutputMarkupPlaceholderTag(true);
+
+        // chronic infection
+        boolean showChronicOnInit = model.getObject().getChronicInfection() != null ? model.getObject().
+                getChronicInfection() : false;
+
+        // only show if diag is mpgn/dd
+        if (isSrnsModel.getObject().equals(true)) {
+            showChronicOnInit = false;
+        }
+
+        final IModel<Boolean> showChronicModel = new Model<Boolean>(showChronicOnInit);
+
+        WebMarkupContainer chronicInfectionActiveContainer = new WebMarkupContainer("chronicInfectionActiveContainer") {
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject().equals(false);
+            }
+        };
+
+        YesNoRadioGroup chronicInfection = new YesNoRadioGroup("chronicInfection", true);
+        chronicInfection.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                showChronicModel.setObject(Boolean.TRUE.equals(model.getObject().getChronicInfection()));
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+        chronicInfectionActiveContainer.add(chronicInfection);
+        form.add(chronicInfectionActiveContainer);
 
         // Chronic infection show/hide
         MarkupContainer chronicInfectionDetailContainer = new WebMarkupContainer("chronicInfectionDetailContainer") {
             @Override
             public boolean isVisible() {
-                return Boolean.TRUE.equals(form.getModelObject().getChronicInfection());
+                return showChronicModel.getObject();
             }
         };
-        ophthalmoscopyDetailContainer.add(new TextArea("chronicInfectionDetail"));
+        chronicInfectionDetailContainer.add(new TextArea("chronicInfectionDetail"));
+        componentsToUpdate.add(chronicInfectionDetailContainer);
+        chronicInfectionDetailContainer.setOutputMarkupId(true);
+        chronicInfectionDetailContainer.setOutputMarkupPlaceholderTag(true);
+
         form.add(chronicInfectionDetailContainer);
+
+        boolean showOphthalmoscopyDetailsOnInit = model.getObject().getOphthalmoscopy() != null ?
+                model.getObject().getOphthalmoscopy() : false;
+        final IModel<Boolean> showOphthalmoscopyDetailsIModel = new Model<Boolean>(showOphthalmoscopyDetailsOnInit);
+
+        YesNoRadioGroup ophthalmoscopy = new YesNoRadioGroup("ophthalmoscopy", true);
+        form.add(ophthalmoscopy);
+        ophthalmoscopy.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                showOphthalmoscopyDetailsIModel.setObject(Boolean.TRUE.equals(model.getObject().getOphthalmoscopy()));
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+
+
+        // Ophthalmoscopy show/hide
+
+        MarkupContainer ophthalmoscopyDetailContainer = new WebMarkupContainer("ophthalmoscopyDetailContainer") {
+            @Override
+            public boolean isVisible() {
+                return showOphthalmoscopyDetailsIModel.getObject();
+            }
+        };
+        ophthalmoscopyDetailContainer.setOutputMarkupId(true);
+        ophthalmoscopyDetailContainer.setOutputMarkupPlaceholderTag(true);
+        componentsToUpdate.add(ophthalmoscopyDetailContainer);
+
+        ophthalmoscopyDetailContainer.add(new TextArea("ophthalmoscopyDetail"));
+        form.add(ophthalmoscopyDetailContainer);
 
         add(form);
 

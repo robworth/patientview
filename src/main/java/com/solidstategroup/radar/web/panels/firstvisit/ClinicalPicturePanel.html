@@ -49,6 +49,7 @@
         <tr>
             <td style="height:40px; vertical-align:top;" colspan="2">
                 <input wicket:id="save" type="button" class="saveBtn" value="Save">
+                <span style="font-weight:bold;" wicket:id="successMessage"></span>
 
             </td>
         </tr>
@@ -171,10 +172,8 @@
         </tr>
         <tr>
             <td colspan="2">
-                 <input wicket:id="saveDown" type="button" class="saveBtn" value="Save">
-                <div style="color:Red;display:none;" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
-
-                </div>
+                <input wicket:id="saveDown" type="button" class="saveBtn" value="Save">
+                <span style="font-weight:bold;" wicket:id="successMessageDown"></span>
             </td>
         </tr>
         <tr>
@@ -228,89 +227,109 @@
 </tr>
 <tr>
     <td class="indent">Oedema</td>
-    <td class="style6" wicket:id="oedema">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td class="style6">
+        <span wicket:id="oedema">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+
+        </span>
+
     </td>
 </tr>
 
 <tr>
     <td class="indent">Hypovalaemia</td>
-    <td wicket:id="hypovalaemia">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="hypovalaemia">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+             <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
     </td>
 </tr>
 <tr>
     <td class="indent">Fever &gt; 38°C</td>
-    <td wicket:id="fever">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+    <td>
+        <span wicket:id="fever">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
             <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
     </td>
 </tr>
-<tr id="ctl00_ContentPlaceHolder1_rowThrombosis">
+<tr wicket:id="thrombosisContainer">
     <td class="indent">Thrombosis</td>
-    <td wicket:id="thrombosis">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+    <td>
+        <span wicket:id="thrombosis">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
             <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
     </td>
 </tr>
 
-<tr id="ctl00_ContentPlaceHolder1_rowPeritonitis">
+<tr wicket:id="peritonitisContainer">
     <td class="indent">Peritonitis</td>
-    <td wicket:id="peritonitis">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="peritonitis">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
     </td>
 </tr>
 
-<tr id="ctl00_ContentPlaceHolder1_rowPulmonary">
+<tr wicket:id="pulmonaryOedemaContainer">
     <td class="indent">Pulmonary Oedema</td>
-    <td wicket:id="pulmonaryOedema">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+    <td>
+       <span wicket:id="pulmonaryOedema">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
             <label wicket:id="unknownLabel">Un</label></span>
+       </span>
+
     </td>
 </tr>
 
 <tr id="ctl00_ContentPlaceHolder1_rowHyperten">
     <td class="indent">Hypertension, req Rx</td>
-    <td wicket:id="hypertension">
+    <td>
+     <span wicket:id="hypertension">
         <input type="radio" wicket:id="yes"/>
         <label wicket:id="yesLabel">Yes</label>
         &nbsp;
@@ -318,30 +337,56 @@
         <label wicket:id="noLabel">No</label>
         &nbsp;
         <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+        <label wicket:id="unknownLabel">Un</label></span>
+    </span>
+
     </td>
 </tr>
 
-<tr id="ctl00_ContentPlaceHolder1_rowDiabetes">
+<tr wicket:id="urticariaContainer">
+    <td class="indent">Urticaria</td>
+    <td>
+        <span wicket:id="urticaria">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+
+<tr wicket:id="urticariaDetailContainer">
+    <td colspan="2" class="indent">
+        <textarea style="width:350px;" cols="20" rows="4" wicket:id="rashDetail"></textarea>
+    </td>
+</tr>
+
+<tr wicket:id="diabetesTypeContainer">
     <td class="indent">Diabetes: Type</td>
     <td>
         <select wicket:id="diabetesType"/>
     </td>
 </tr>
 
-<tr>
+<tr wicket:id="rashContainer">
     <td valign="top" class="indent">
         <span id="ctl00_ContentPlaceHolder1_lblRash">Rash</span>
     </td>
-    <td wicket:id="rash">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="rash">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
     </td>
 </tr>
 
@@ -352,44 +397,50 @@
     </td>
 </tr>
 
-<tr>
+<tr wicket:id="possibleImmunisationTriggerContainer">
     <td class="indent">Possible Immunisation trigger</td>
-    <td wicket:id="possibleImmunisationTrigger">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="possibleImmunisationTrigger">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
     </td>
 </tr>
 
-<tr>
+<tr wicket:id="partialLipodystrophyContainer">
     <td class="indent">Partial Lipodystrophy</td>
-    <td wicket:id="partialLipodystrophy">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="partialLipodystrophy">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
     </td>
 </tr>
-<tr>
+<tr wicket:id="preceedingInfectionContainer">
     <td class="indent">Preceeding Infection ( inactive)</td>
-    <td wicket:id="preceedingInfection">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="preceedingInfection">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
     </td>
 </tr>
 <tr wicket:id="preceedingInfectionDetailContainer">
@@ -397,17 +448,19 @@
         <textarea style="width:350px;" cols="20" rows="5" wicket:id="preceedingInfectionDetail" class="grey"></textarea>
     </td>
 </tr>
-<tr>
+<tr wicket:id="chronicInfectionActiveContainer">
     <td class="indent">Chronic infection (active)</td>
-    <td wicket:id="chronicInfection">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="chronicInfection">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
     </td>
 </tr>
 <tr wicket:id="chronicInfectionDetailContainer">
@@ -420,15 +473,17 @@
     <td class="indent">
         <span id="ctl00_ContentPlaceHolder1_lblOpth">Ophthalmoscopy</span>
     </td>
-    <td wicket:id="ophthalmoscopy">
-        <input type="radio" wicket:id="yes"/>
-        <label wicket:id="yesLabel">Yes</label>
-        &nbsp;
-        <input type="radio" wicket:id="no"/>
-        <label wicket:id="noLabel">No</label>
-        &nbsp;
-        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
-            <label wicket:id="unknownLabel">Un</label></span>
+    <td>
+        <span wicket:id="ophthalmoscopy">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
     </td>
 </tr>
 
