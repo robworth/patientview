@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.UtilityDao;
@@ -11,6 +12,7 @@ import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
@@ -50,6 +52,8 @@ public class DemographicsPanel extends Panel {
     @SpringBean
     private DiagnosisDao diagnosisDao;
     @SpringBean
+    private ClinicalDataDao clinicalDataDao;
+    @SpringBean
     private UtilityDao utilityDao;
 
     public DemographicsPanel(String id, final IModel<Long> radarNumberModel) {
@@ -60,12 +64,16 @@ public class DemographicsPanel extends Panel {
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Demographics> model = new CompoundPropertyModel<Demographics>(new LoadableDetachableModel<Demographics>() {
             @Override
-            protected Demographics load() {
+            public Demographics load() {
+                Demographics demographicsModelObject = null;
                 if (radarNumberModel.getObject() != null) {
-                    return demographicsDao.getDemographicsByRadarNumber(radarNumberModel.getObject());
-                } else {
-                    return new Demographics();
+                    demographicsModelObject = demographicsDao.getDemographicsByRadarNumber(radarNumberModel.getObject());
                 }
+
+                if (demographicsModelObject == null) {
+                    demographicsModelObject = new Demographics();
+                }
+                return demographicsModelObject;
             }
         });
 
@@ -74,15 +82,29 @@ public class DemographicsPanel extends Panel {
             @Override
             protected void onSubmit() {
                 Demographics demographics = getModelObject();
+                // shouldnt need to do this but for some reason the id comes back with null!
+                if (radarNumberModel.getObject() != null) {
+                    demographics.setId(radarNumberModel.getObject());
+                }
                 demographicsDao.saveDemographics(demographics);
                 radarNumberModel.setObject(demographics.getId());
+
+                // create new diagnosis if it doesnt exist
                 Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(demographics.getId());
                 if (diagnosis == null) {
                     Diagnosis diagnosis_new = new Diagnosis();
                     diagnosis_new.setRadarNumber(demographics.getId());
-                    DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice)get("diagnosis")).getModelObject();
+                    DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis")).getModelObject();
                     diagnosis_new.setDiagnosisCode(diagnosisCode);
                     diagnosisDao.saveDiagnosis(diagnosis_new);
+                }
+
+                // create new clinical date if it doesnt exist
+                if(clinicalDataDao.getClinicalDataByRadarNumber(demographics.getId()).size() == 0) {
+                  ClinicalData  clinicalData = new ClinicalData();
+                  clinicalData.setRadarNumber(demographics.getId());
+                  clinicalData.setSequenceNumber(1);
+                  clinicalDataDao.saveClinicalDate(clinicalData);
                 }
             }
         };

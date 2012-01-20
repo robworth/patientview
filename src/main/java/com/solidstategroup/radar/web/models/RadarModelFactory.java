@@ -24,16 +24,16 @@ public class RadarModelFactory {
         return new LoadableDetachableModel<DiagnosisCode>() {
             @Override
             public DiagnosisCode load() {
-                Long radarNumber;
+                Long radarNumber = null;
                 if (radarNumberModel.getObject() != null) {
                     try {
                         radarNumber = radarNumberModel.getObject();
                     } catch (ClassCastException e) {
                         Object obj = radarNumberModel.getObject();
-                        Long.parseLong((String) obj);
+                        radarNumber = Long.parseLong((String) obj);
                     }
 
-                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumber);
                     if (diagnosis != null) {
                         return diagnosis.getDiagnosisCode();
                     } else {

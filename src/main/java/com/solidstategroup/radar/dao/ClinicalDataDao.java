@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ClinicalDataDao {
 
+    void saveClinicalDate(ClinicalData clinicalData);
+
     ClinicalData getClinicalData(long id);
 
     List<ClinicalData> getClinicalDataByRadarNumber(long radarNumber);
