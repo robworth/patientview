@@ -83,7 +83,7 @@ height:100%;
 
 #outerWrapper #header {
   /*line-height: 15px;*/
-  background-image:url(/images/header-bg.png);
+  background-image:url(header-bg.png);
   background-position:right;
   background-repeat:repeat-y;
   background-color: #8ab573;
