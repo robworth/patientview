@@ -3,6 +3,7 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
+import com.solidstategroup.radar.dao.LabDataDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
@@ -13,6 +14,7 @@ import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
+import com.solidstategroup.radar.model.sequenced.LabData;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
@@ -53,6 +55,8 @@ public class DemographicsPanel extends Panel {
     private DiagnosisDao diagnosisDao;
     @SpringBean
     private ClinicalDataDao clinicalDataDao;
+    @SpringBean
+    private LabDataDao labDataDao;
     @SpringBean
     private UtilityDao utilityDao;
 
@@ -100,11 +104,18 @@ public class DemographicsPanel extends Panel {
                 }
 
                 // create new clinical date if it doesnt exist
-                if(clinicalDataDao.getClinicalDataByRadarNumber(demographics.getId()).size() == 0) {
-                  ClinicalData  clinicalData = new ClinicalData();
-                  clinicalData.setRadarNumber(demographics.getId());
-                  clinicalData.setSequenceNumber(1);
-                  clinicalDataDao.saveClinicalDate(clinicalData);
+                if (clinicalDataDao.getClinicalDataByRadarNumber(demographics.getId()).size() == 0) {
+                    ClinicalData clinicalData = new ClinicalData();
+                    clinicalData.setRadarNumber(demographics.getId());
+                    clinicalData.setSequenceNumber(1);
+                    clinicalDataDao.saveClinicalDate(clinicalData);
+                }
+
+                if (labDataDao.getLabDataByRadarNumber(demographics.getId()).isEmpty()) {
+                    LabData labData = new LabData();
+                    labData.setRadarNumber(demographics.getId());
+                    labData.setSequenceNumber(1);
+                    labDataDao.saveLabDate(labData);
                 }
             }
         };

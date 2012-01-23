@@ -5,7 +5,6 @@ import com.solidstategroup.radar.model.Phenotype;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.util.resources.LocaleNames_da;
 
 import java.util.List;
 

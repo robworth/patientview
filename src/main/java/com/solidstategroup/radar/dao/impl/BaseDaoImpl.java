@@ -17,7 +17,7 @@ public abstract class BaseDaoImpl {
     protected JdbcTemplate jdbcTemplate;
     protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public static <T> T getEnumValue(Class<T> enumClass, int id) {
+    public static <T> T getEnumValue(Class<T> enumClass, Integer id) {
         try {
             // Assume we've been supplied an enum with an ID field, so get the accessor method
             Method getId = enumClass.getMethod("getId");
@@ -29,7 +29,7 @@ public abstract class BaseDaoImpl {
             for (T t : values) {
                 // Get the ID field value
                 Integer thisId = (Integer) getId.invoke(t);
-                if (id == thisId) {
+                if (thisId.equals(id)) {
                     return t;
                 }
             }

@@ -122,11 +122,19 @@ public class ClinicalPicturePanel extends Panel {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
+
         final IModel<Boolean> isSrnsModel = new AbstractReadOnlyModel<Boolean>() {
+            private DiagnosisCode diagnosisCode = null;
+
             @Override
             public Boolean getObject() {
-                DiagnosisCode diagnosisCode = (DiagnosisCode) RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                        diagnosisDao).getObject();
+                if (diagnosisCode == null) {
+                    if (radarNumberModel.getObject() != null) {
+                        diagnosisCode = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject())
+                                .getDiagnosisCode();
+                    }
+                }
+
                 if (diagnosisCode != null) {
                     return diagnosisCode.getId().equals(DiagnosisPanel.SRNS_ID);
                 }
@@ -295,8 +303,8 @@ public class ClinicalPicturePanel extends Panel {
         boolean showRashDetailsOnInit = model.getObject().getRash() != null ? model.getObject().getRash() : false;
         final IModel<Boolean> showRashDetailsIModel = new Model<Boolean>(showRashDetailsOnInit);
         // only show if diag is srns
-        if(isSrnsModel.getObject().equals(false)) {
-           showRashDetailsOnInit = false;
+        if (isSrnsModel.getObject().equals(false)) {
+            showRashDetailsOnInit = false;
         }
 
 

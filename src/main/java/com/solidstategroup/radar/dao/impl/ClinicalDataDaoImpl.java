@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ClinicalDataDaoImpl extends BaseDaoImpl implements ClinicalDataDao {
 
-    private SimpleJdbcInsert clinicalDateInsert;
+    private SimpleJdbcInsert clinicalDataInsert;
     private static final Logger LOGGER = LoggerFactory.getLogger(ClinicalDataDaoImpl.class);
 
     @Override
@@ -27,7 +27,7 @@ public class ClinicalDataDaoImpl extends BaseDaoImpl implements ClinicalDataDao 
         super.setDataSource(dataSource);
 
         // Initialise a simple JDBC insert to be able to get the allocated ID
-        clinicalDateInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_clinicalData")
+        clinicalDataInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_clinicalData")
                 .usingGeneratedKeyColumns("cID").usingColumns("RADAR_NO", "DATE_CLIN_PIC", "HEIGHT", "WEIGHT",
                         "COURSE_DIS", "SYS_BP", "DIA_BP", "MAP_BP", "DIALYSIS_REQ", "DATE_BX", "OEDEMA", "ANAEMIA",
                         "HYPOVAL", "FEVER", "INFECTION", "INFECTION_DETAIL", "INFECTION_TYPE", "THROMBOSIS",
@@ -144,7 +144,7 @@ public class ClinicalDataDaoImpl extends BaseDaoImpl implements ClinicalDataDao 
                     "SEQ_NO = :SEQ_NO " +
                     "WHERE cID = :cID;", clinicalDataMap);
         } else {
-            Number id = clinicalDateInsert.executeAndReturnKey(clinicalDataMap);
+            Number id = clinicalDataInsert.executeAndReturnKey(clinicalDataMap);
             clinicalData.setId(id.longValue());
         }
     }

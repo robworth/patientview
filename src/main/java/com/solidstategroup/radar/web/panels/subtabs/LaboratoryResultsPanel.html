@@ -7,7 +7,9 @@
 <tbody>
 <tr>
     <td colspan="3">
-        <input type="submit" class="saveBtn" value="Save" wicket:id="save"> <br />
+        <input type="submit" class="saveBtn" value="Save" wicket:id="save">
+        <span style="font-weight:bold;" wicket:id="successMessage"></span>
+        <br/>
         Date of LAB Results&nbsp;<input wicket:id="date" type="text" style="width:70px;"/>
         <span class="feedback" wicket:id="dateFeedback"></span>
         <span wicket:id="dateFeedbackIndicator"></span>
@@ -162,7 +164,7 @@
 
 <tr id="ctl00_ContentPlaceHolder1_rowLDL">
     <td>LDL Cholesterol mmol/L<br>
-       <span class="feedback" wicket:id="ldlCholesterolFeedback"></span>
+        <span class="feedback" wicket:id="ldlCholesterolFeedback"></span>
     </td>
     <td>
         <input type="text" style="width:50px;" title="1.0-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_LDL" maxlength="4"
@@ -257,14 +259,14 @@
         <table style="width: 100%; margin-top:15px;">
 
             <tbody>
-            <tr>
-                <td class="style2">Urine Volume Condition</td>
+            <tr style="display:none">
+                <td>Urine Volume Condition</td>
                 <td>
                     <select wicket:id="urineVolumeCondition"/>
                 </td>
             </tr>
             <tr>
-                <td class="style2">Haematuria</td>
+                <td>Haematuria</td>
                 <td>
                     <select wicket:id="haematuria"/>
                 </td>
@@ -273,58 +275,67 @@
                 <td>Proteinuria</td>
                 <td><select wicket:id="proteinuria"/></td>
             </tr>
-            <tr id="ctl00_ContentPlaceHolder1_rowAlbuminaria">
-                <td class="style2">Albuminuria</td>
+            <tr style="display:none" id="ctl00_ContentPlaceHolder1_rowAlbuminaria">
+                <td>Albuminuria</td>
                 <td>
                     <select wicket:id="albuminuria"/>
                 </td>
             </tr>
             <tr>
-                <td class="style2">Leucocytes in urine &gt;50</td>
-                <td style="height: 26px" wicket:id="leucocytesUrine">
-                    <input type="radio" wicket:id="yes">
-                    <label wicket:id="yesLabel">Yes</label>
-                    &nbsp;
-                    <input type="radio" wicket:id="no">
-                    <label wicket:id="noLabel">No</label>
-                    &nbsp;
-                    <input type="radio" wicket:id="nd">
-                    <label wicket:id="ndLabel">ND</label>
+                <td>Leucocytes in urine &gt;50</td>
+                <td style="height: 26px">
+                    <span wicket:id="leucocytesUrine">
+                        <input type="radio" wicket:id="yes">
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no">
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="nd">
+                        <label wicket:id="ndLabel">ND</label>
+                    </span>
+
                 </td>
             </tr>
             <tr id="ctl00_ContentPlaceHolder1_rowNitrite">
-                <td class="style2">
+                <td>
                     <span id="ctl00_ContentPlaceHolder1_lblNITRITE">Nitrite</span>
                 </td>
-                <td wicket:id="nitrite">
-                    <input type="radio" wicket:id="yes">
-                    <label wicket:id="yesLabel">Yes</label>
-                    &nbsp;
-                    <input type="radio" wicket:id="no">
-                    <label wicket:id="noLabel">No</label>
-                    &nbsp;
-                    <input type="radio" wicket:id="nd">
-                    <label wicket:id="ndLabel">ND</label>
+                <td>
+                    <span wicket:id="nitrite">
+                        <input type="radio" wicket:id="yes">
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no">
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="nd">
+                        <label wicket:id="ndLabel">ND</label>
+                    </span>
+
                 </td>
             </tr>
 
 
             <tr>
-                <td class="style2">Glucose in urine</td>
-                <td wicket:id="glucose">
-                    <input type="radio" wicket:id="yes">
-                    <label wicket:id="yesLabel">Yes</label>
-                    &nbsp;
-                    <input type="radio" wicket:id="no">
-                    <label wicket:id="noLabel">No</label>
-                    &nbsp;
-                    <input type="radio" wicket:id="nd">
-                    <label wicket:id="ndLabel">ND</label>
+                <td>Glucose in urine</td>
+                <td>
+                    <span wicket:id="glucose">
+                        <input type="radio" wicket:id="yes">
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no">
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="nd">
+                        <label wicket:id="ndLabel">ND</label>
+                    </span>
+
                 </td>
             </tr>
 
             <tr>
-                <td class="style2">&nbsp;</td>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
             </tbody>
@@ -336,8 +347,8 @@
 
             <tbody>
             <tr>
-                <td class="style2">Urine Volume ml/24hr
-                   <span class="feedback" wicket:id="urineVolumeFeedback"></span>
+                <td>Urine Volume ml/24hr
+                    <span class="feedback" wicket:id="urineVolumeFeedback"></span>
                 </td>
                 <td>
                     <input type="text" style="width:50px;" title="0-4000" id="ctl00_ContentPlaceHolder1_txtUR_VOL_24H"
@@ -345,7 +356,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2">Protein Creatinine Ratio mg/mmol&nbsp;
+                <td>Protein Creatinine Ratio mg/mmol&nbsp;
                     <span class="feedback" wicket:id="proteinCreatinineRatioFeedback"></span>
                 </td>
                 <td>
@@ -356,7 +367,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2">Albumin Creatinine Ratio mg/mmol&nbsp;
+                <td>Albumin Creatinine Ratio mg/mmol&nbsp;
                     <span class="feedback" wicket:id="albuminCreatinineRatioFeedback"></span>
                 </td>
                 <td>
@@ -367,7 +378,7 @@
                 </td>
             </tr>
             <tr id="ctl00_ContentPlaceHolder1_rowBacteria">
-                <td class="style2">Bacteria in urine &gt;10<sup>5</sup>/ml</td>
+                <td>Bacteria in urine &gt;10<sup>5</sup>/ml</td>
                 <td>
                     <input type="checkbox" name="ctl00$ContentPlaceHolder1$chkBACT_URINE"
                            wicket:id="bacteria">
@@ -375,7 +386,7 @@
             </tr>
 
             <tr id="ctl00_ContentPlaceHolder1_rowOsmolarity">
-                <td class="style2">Osmolality&nbsp;
+                <td>Osmolality&nbsp;
                     <span class="feedback" wicket:id="osmolalityFeedback"></span>
                 </td>
                 <td>
@@ -386,19 +397,19 @@
             </tr>
 
             <tr id="ctl00_ContentPlaceHolder1_rowDysmorphic">
-                <td class="style2">Dysmorphic Erythrocytes in urine</td>
+                <td>Dysmorphic Erythrocytes in urine</td>
                 <td>
                     <select wicket:id="dysmorphicErythrocytes"/>
                 </td>
             </tr>
             <tr id="ctl00_ContentPlaceHolder1_rowRedCells">
-                <td class="style2">Red Cell Cast in urine</td>
+                <td>Red Cell Cast in urine</td>
                 <td>
                     <select wicket:id="redCellCast"/>
                 </td>
             </tr>
             <tr id="ctl00_ContentPlaceHolder1_rowWhiteCells">
-                <td class="style2">White Cell Casts in urine &gt;50<br></td>
+                <td>White Cell Casts in urine &gt;50<br></td>
                 <td>
                     <select wicket:id="whiteCellCasts"/>
                 </td>
@@ -423,8 +434,7 @@
             </tr>
             <tr>
                 <td>
-
-                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblHeightWarn"></span>
+                    <span style="color:Red;" wicket:id="creatanineClearanceInfo"></span>
                 </td>
             </tr>
 
@@ -521,7 +531,7 @@
                maxlength="4"
                wicket:id="complementC3">&nbsp;
 
-       <span class="feedback" wicket:id="complementC3Feedback"></span>
+        <span class="feedback" wicket:id="complementC3Feedback"></span>
     </td>
 </tr>
 <tr>
@@ -530,7 +540,7 @@
         <input type="text" style="width:50px;" title="0.01-9.99" id="ctl00_ContentPlaceHolder1_txtCOMP_C4"
                maxlength="4"
                wicket:id="complementC4">&nbsp;
-      <span class="feedback" wicket:id="complementC4Feedback"></span>
+        <span class="feedback" wicket:id="complementC4Feedback"></span>
     </td>
 </tr>
 <tr>
@@ -539,14 +549,14 @@
     </td>
     <td>
         &nbsp;
-        <input type="checkbox" wicket:id="complementOther"/>
+        <input type="checkbox" wicket:id="complementOtherSelected"/>
     </td>
 </tr>
 
 <tr wicket:id="complementOtherDetailContainer">
     <td colspan="2">
         Other detail<br>
-        <textarea style="width:257px;" cols="20" rows="5" wicket:id="complementOtherDetail"></textarea>
+        <textarea style="width:257px;" cols="20" rows="5" wicket:id="complementOther"></textarea>
     </td>
 </tr>
 
@@ -647,6 +657,7 @@
 <tr>
     <td colspan="3">
         <input type="submit" class="saveBtn" value="Save" wicket:id="saveDown"/>
+        <span style="font-weight:bold;" wicket:id="successMessageDown"></span>
     </td>
 </tr>
 </tbody>

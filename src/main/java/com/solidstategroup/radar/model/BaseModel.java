@@ -17,4 +17,18 @@ public abstract class BaseModel implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public static String getLabelFromEnum(String enumString) {
+        String label = enumString;
+        label = label.replace("_", " ");
+        String[] parts = label.split(" ");
+        label = "";
+        for (String part : parts) {
+            String formatted = part.toLowerCase();
+            formatted = Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
+            label += formatted;
+            label += " ";
+        }
+        return label;
+    }
 }
