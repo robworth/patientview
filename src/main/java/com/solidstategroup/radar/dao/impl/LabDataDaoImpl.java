@@ -6,14 +6,203 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
-
+    private SimpleJdbcInsert labDataInsert;
     private static final Logger LOGGER = LoggerFactory.getLogger(LabDataDaoImpl.class);
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        // Call super
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        labDataInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_LabData")
+                .usingGeneratedKeyColumns("labID").usingColumns("RADAR_NO", "DATE_LAB_RES", "CREAT_SER", "PROTEIN",
+                        "ALBUMIN", "UREA_SER", "SODIUM", "POTASSIUM", "PHOS", "PROT_CREAT_RAT", "ALB_CREAT_RAT",
+                        "WBC", "HB", "NEUTRO", "PLATELETS", "FERRITIN", "CHOL_TOTAL", "CHOL_HDL", "CHOL_LDL", "TRIG",
+                        "CREAT_CLEAR_24_URINE", "CREAT_CLEAR_RADIO", "CREAT_CLEAR_SCHZ", "THYROX", "TSH", "ANCA",
+                        "ELISA_ASS", "ENA", "ANA", "DNA_ANTIB", "DNA_ANTI_DS", "CRYOGLOB", "ANTI_GBM", "IGG", "IGA",
+                        "IGM", "COMP_C3", "COMP_C4", "COMP_OTHER", "C3_NEPH_FAC", "ANTI_SLT", "INR", "CRP",
+                        "ANTI_STREP_O", "HEP_B", "HEP_C", "HIV", "DNA_FACTOR_H", "EBV", "CMV", "CMV_SYM", "BKV",
+                        "BKV_SYM", "HANTAVIRUS", "PARVO_ANTIB", "OTHER_INFECT", "OTHER_INFECT_SP",
+                        "UR_VOL_24H", "UR_VOL_24H_COND", "HAEMATURIA", "ALBUMINURIA", "DYS_ERYTH_URINE",
+                        "RED_CCASTS_URINE", "WBC_CASTS_URINE", "LEUC_URINE", "NITRITE", "BACT_URINE", "GLUC_URINE",
+                        "OSMOLARITY", "PROTEINURIA_DIP", "SEQ_NO", "ANTI_CLQ");
+    }
+
+    public void saveLabDate(final LabData labData) {
+        Map<String, Object> labDataMap = new HashMap<String, Object>() {
+            {
+                put("RADAR_NO", labData.getRadarNumber());
+                put("DATE_LAB_RES", labData.getDate());
+                put("CREAT_SER", labData.getSerumCreatinine());
+                put("PROTEIN", labData.getProtein());
+                put("ALBUMIN", labData.getAlbumin());
+                put("UREA_SER", labData.getBun());
+                put("SODIUM", labData.getSodium());
+                put("POTASSIUM", labData.getPotassium());
+                put("PHOS", labData.getPhosphate());
+                put("PROT_CREAT_RAT", labData.getProteinCreatinineRatio());
+                put("ALB_CREAT_RAT", labData.getAlbuminCreatinineRatio());
+                put("WBC", labData.getWbc());
+                put("HB", labData.getHb());
+                put("NEUTRO", labData.getNeutrophils());
+                put("PLATELETS", labData.getPlatelets());
+                put("FERRITIN", labData.getFerritin());
+                put("CHOL_TOTAL", labData.getTotalCholesterol());
+                put("CHOL_HDL", labData.getHdlCholesterol());
+                put("CHOL_LDL", labData.getLdlCholesterol());
+                put("TRIG", labData.getTriglycerides());
+                put("CREAT_CLEAR_24_URINE", null);
+                put("CREAT_CLEAR_RADIO", null);
+                put("CREAT_CLEAR_SCHZ", labData.getCreatinineClearance());
+                put("THYROX", labData.getThyroxine());
+                put("TSH", labData.getTsh());
+                put("ANCA", labData.getAnca() != null ? labData.getAnca().getId() : null);
+                put("ELISA_ASS", null);
+                put("ENA", labData.getEna() != null ? labData.getEna().getId() : null);
+                put("ANA", labData.getAna() != null ? labData.getAna().getId() : null);
+                put("DNA_ANTIB", labData.getDnaAntibodies());
+                put("DNA_ANTI_DS", labData.getAntiDsDna() != null ? labData.getAntiDsDna().getId() : null);
+                put("CRYOGLOB", labData.getCryoglobulins() != null ? labData.getCryoglobulins().getId() : null);
+                put("ANTI_GBM", labData.getAntiGbm() != null ? labData.getAntiGbm().getId() : null);
+                put("IGG", labData.getIgG());
+                put("IGA", labData.getIgA());
+                put("IGM", labData.getIgM());
+                put("COMP_C3", labData.getComplementC3());
+                put("COMP_C4", labData.getComplementC4());
+                put("COMP_OTHER", labData.getComplementOther());
+                put("C3_NEPH_FAC", labData.getC3NephriticFactor() != null ? labData.getC3NephriticFactor().getId() :
+                        null);
+                put("ANTI_SLT", null);
+                put("INR", labData.getInr());
+                put("CRP", labData.getCrp());
+                put("ANTI_STREP_O", labData.getAntistreptolysin());
+                put("HEP_B", labData.getHepatitisB() != null ? labData.getHepatitisB().getId() : null);
+                put("HEP_C", labData.getHepatitisC() != null ? labData.getHepatitisC().getId() : null);
+                put("HIV", labData.getHivAntibody() != null ? labData.getHivAntibody().getId() : null);
+                put("DNA_FACTOR_H", labData.getDnaTakenFactorH());
+                put("EBV", labData.getEbv() != null ? labData.getEbv().getId() : null);
+                put("CMV", labData.getCmvSerology() != null ? labData.getCmvSerology().getId() : null);
+                put("CMV_SYM", labData.getCmvSymptomatic());
+                put("BKV", null);
+                put("BKV_SYM", null);
+                put("HANTAVIRUS", null);
+                put("PARVO_ANTIB", labData.getParvovirusAntibody() != null ? labData.getParvovirusAntibody().getId() :
+                        null);
+                put("OTHER_INFECT", labData.getOtherInfection());
+                put("OTHER_INFECT_SP", labData.getOtherInfectionDetail());
+                put("UR_VOL_24H", labData.getUrineVolume());
+                put("UR_VOL_24H_COND", labData.getUrineVolumeCondition() != null ?
+                        labData.getUrineVolumeCondition().getId() : null);
+                put("HAEMATURIA", labData.getHaematuria() != null ? labData.getHaematuria().getId() : null);
+                put("ALBUMINURIA", labData.getAlbuminuria() != null ? labData.getAlbuminuria().getId() : null);
+                put("DYS_ERYTH_URINE", labData.getDysmorphicErythrocytes() != null ?
+                        labData.getDysmorphicErythrocytes().getId() : null);
+                put("RED_CCASTS_URINE", labData.getRedCellCast() != null ? labData.getRedCellCast().getId() : null);
+                put("WBC_CASTS_URINE", labData.getWhiteCellCasts() != null ? labData.getWhiteCellCasts().getId() : null);
+                put("LEUC_URINE", labData.getLeucocytesUrine());
+                put("NITRITE", labData.getNitrite());
+                put("BACT_URINE", labData.getBacteria());
+                put("GLUC_URINE", labData.getGlucose());
+                put("OSMOLARITY", labData.getOsmolality());
+                put("PROTEINURIA_DIP", labData.getProteinuria() != null ? labData.getProteinuria().getId() : null);
+                put("SEQ_NO", labData.getSequenceNumber());
+                put("ANTI_CLQ", labData.getAntiClqAntibodies());
+            }
+        };
+
+        if (labData.hasValidId()) {
+            labDataMap.put("labID", labData.getId());
+            namedParameterJdbcTemplate.update("UPDATE tbl_LabData " +
+                    "SET " +
+                    "RADAR_NO = :RADAR_NO, " +
+                    "DATE_LAB_RES = :DATE_LAB_RES, " +
+                    "CREAT_SER = :CREAT_SER, " +
+                    "PROTEIN = :PROTEIN, " +
+                    "ALBUMIN = :ALBUMIN, " +
+                    "UREA_SER = :UREA_SER, " +
+                    "SODIUM = :SODIUM, " +
+                    "POTASSIUM = :POTASSIUM, " +
+                    "PHOS = :PHOS, " +
+                    "PROT_CREAT_RAT = :PROT_CREAT_RAT, " +
+                    "ALB_CREAT_RAT = :ALB_CREAT_RAT, " +
+                    "WBC = :WBC, " +
+                    "HB = :HB, " +
+                    "NEUTRO = :NEUTRO, " +
+                    "PLATELETS = :PLATELETS, " +
+                    "FERRITIN = :FERRITIN, " +
+                    "CHOL_TOTAL = :CHOL_TOTAL, " +
+                    "CHOL_HDL = :CHOL_HDL, " +
+                    "CHOL_LDL = :CHOL_LDL, " +
+                    "TRIG = :TRIG, " +
+                    "CREAT_CLEAR_24_URINE = :CREAT_CLEAR_24_URINE, " +
+                    "CREAT_CLEAR_RADIO = :CREAT_CLEAR_RADIO, " +
+                    "CREAT_CLEAR_SCHZ = :CREAT_CLEAR_SCHZ, " +
+                    "THYROX = :THYROX, " +
+                    "TSH = :TSH, " +
+                    "ANCA = :ANCA," +
+                    "ELISA_ASS = :ELISA_ASS, " +
+                    "ENA = :ENA, " +
+                    "ANA = :ANA, " +
+                    "DNA_ANTIB = :DNA_ANTIB, " +
+                    "DNA_ANTI_DS = :DNA_ANTI_DS, " +
+                    "CRYOGLOB = :CRYOGLOB, " +
+                    "ANTI_GBM = :ANTI_GBM, " +
+                    "IGG = :IGG, " +
+                    "IGA = :IGA, " +
+                    "IGM = :IGM, " +
+                    "COMP_C3 = :COMP_C3, " +
+                    "COMP_C4 = :COMP_C4, " +
+                    "COMP_OTHER = :COMP_OTHER, " +
+                    "C3_NEPH_FAC = :C3_NEPH_FAC, " +
+                    "ANTI_SLT = :ANTI_SLT, " +
+                    "INR = :INR, " +
+                    "CRP = :CRP, " +
+                    "ANTI_STREP_O = :ANTI_STREP_O, " +
+                    "HEP_B = :HEP_B, " +
+                    "HEP_C = :HEP_C, " +
+                    "HIV = :HIV, " +
+                    "DNA_FACTOR_H = :DNA_FACTOR_H, " +
+                    "EBV = :EBV, " +
+                    "CMV = :CMV, " +
+                    "CMV_SYM = :CMV_SYM, " +
+                    "BKV = :BKV, " +
+                    "BKV_SYM = :BKV_SYM, " +
+                    "HANTAVIRUS = :HANTAVIRUS, " +
+                    "PARVO_ANTIB = :PARVO_ANTIB, " +
+                    "OTHER_INFECT = :OTHER_INFECT, " +
+                    "OTHER_INFECT_SP = :OTHER_INFECT_SP, " +
+                    "UR_VOL_24H = :UR_VOL_24H, " +
+                    "UR_VOL_24H_COND = :UR_VOL_24H_COND, " +
+                    "HAEMATURIA = :HAEMATURIA, " +
+                    "ALBUMINURIA = :ALBUMINURIA, " +
+                    "DYS_ERYTH_URINE = :DYS_ERYTH_URINE, " +
+                    "RED_CCASTS_URINE = :RED_CCASTS_URINE, " +
+                    "WBC_CASTS_URINE = :WBC_CASTS_URINE, " +
+                    "LEUC_URINE = :LEUC_URINE, " +
+                    "NITRITE = :NITRITE, " +
+                    "BACT_URINE = :BACT_URINE, " +
+                    "GLUC_URINE = :GLUC_URINE, " +
+                    "OSMOLARITY = :OSMOLARITY, " +
+                    "PROTEINURIA_DIP = :PROTEINURIA_DIP, " +
+                    "SEQ_NO = :SEQ_NO, " +
+                    "ANTI_CLQ = :ANTI_CLQ " +
+                    " WHERE labID = :labID; ", labDataMap);
+        } else {
+            Number id = labDataInsert.executeAndReturnKey(labDataMap);
+            labData.setId(id.longValue());
+        }
+    }
 
     public LabData getLabData(long id) {
         try {
@@ -40,131 +229,133 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
             labData.setDate(resultSet.getDate("DATE_LAB_RES"));
 
             // Blood bits
-            labData.setSerumCreatinine(resultSet.getDouble("CREAT_SER"));
-            labData.setProtein(resultSet.getDouble("PROTEIN"));
-            labData.setAlbumin(resultSet.getDouble("ALBUMIN"));
-            labData.setBun(resultSet.getDouble("UREA_SER"));
-            labData.setSodium(resultSet.getDouble("SODIUM"));
-            labData.setPotassium(resultSet.getDouble("POTASSIUM"));
-            labData.setPhosphate(resultSet.getDouble("PHOS"));
-            labData.setProteinCreatinineRatio(resultSet.getDouble("PROT_CREAT_RAT"));
-            labData.setAlbuminCreatinineRatio(resultSet.getDouble("ALB_CREAT_RAT"));
-            labData.setWbc(resultSet.getDouble("WBC"));
-            labData.setHb(resultSet.getDouble("HB"));
-            labData.setNeutrophils(resultSet.getDouble("NEUTRO"));
-            labData.setPlatelets(resultSet.getDouble("PLATELETS"));
-            labData.setFerritin(resultSet.getDouble("FERRITIN"));
+            labData.setSerumCreatinine(getDoubleWithNullCheck("CREAT_SER", resultSet));
+            labData.setProtein(getDoubleWithNullCheck("PROTEIN", resultSet));
+            labData.setAlbumin(getDoubleWithNullCheck("ALBUMIN", resultSet));
+            labData.setBun(getDoubleWithNullCheck("UREA_SER", resultSet));
+            labData.setSodium(getDoubleWithNullCheck("SODIUM", resultSet));
+            labData.setPotassium(getDoubleWithNullCheck("POTASSIUM", resultSet));
+            labData.setPhosphate(getDoubleWithNullCheck("PHOS", resultSet));
+            labData.setProteinCreatinineRatio(getDoubleWithNullCheck("PROT_CREAT_RAT", resultSet));
+            labData.setAlbuminCreatinineRatio(getDoubleWithNullCheck("ALB_CREAT_RAT", resultSet));
+            labData.setWbc(getDoubleWithNullCheck("WBC", resultSet));
+            labData.setHb(getDoubleWithNullCheck("HB", resultSet));
+            labData.setNeutrophils(getDoubleWithNullCheck("NEUTRO", resultSet));
+            labData.setPlatelets(getDoubleWithNullCheck("PLATELETS", resultSet));
+            labData.setFerritin(getDoubleWithNullCheck("FERRITIN", resultSet));
 
             // Cholesterol
-            labData.setTotalCholesterol(resultSet.getDouble("CHOL_TOTAL"));
-            labData.setHdlCholesterol(resultSet.getDouble("CHOL_HDL"));
-            labData.setLdlCholesterol(resultSet.getDouble("CHOL_HDL"));
+            labData.setTotalCholesterol(getDoubleWithNullCheck("CHOL_TOTAL", resultSet));
+            labData.setHdlCholesterol(getDoubleWithNullCheck("CHOL_HDL", resultSet));
+            labData.setLdlCholesterol(getDoubleWithNullCheck("CHOL_HDL", resultSet));
 
-            labData.setTriglycerides(resultSet.getDouble("TRIG"));
+            labData.setTriglycerides(getDoubleWithNullCheck("TRIG", resultSet));
 
             // There is a row CREAT_CLEAR_24_URINE but all references are commented out in legacy ASP code
             // Same goes for CREAT_CLEAR_RADIO
 
-            labData.setCreatinineClearance(resultSet.getDouble("CREAT_CLEAR_SCHZ"));
+            labData.setCreatinineClearance(getDoubleWithNullCheck("CREAT_CLEAR_SCHZ", resultSet));
 
-            labData.setThyroxine(resultSet.getDouble("THYROX"));
-            labData.setTsh(resultSet.getDouble("TSH"));
+            labData.setThyroxine(getDoubleWithNullCheck("THYROX", resultSet));
+            labData.setTsh(getDoubleWithNullCheck("TSH", resultSet));
 
-            labData.setAnca(BaseDaoImpl.<LabData.Anca>getEnumValue(LabData.Anca.class, resultSet.getInt("ANCA")));
+            labData.setAnca(BaseDaoImpl.<LabData.Anca>getEnumValue(LabData.Anca.class, getIntegerWithNullCheck("ANCA", resultSet)));
 
             // There is a row ELISA_ASS but again it is all commented out in current code
 
             labData.setEna(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
-                            resultSet.getInt("ENA")));
+                            getIntegerWithNullCheck("ENA", resultSet)));
             labData.setAna(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
-                            resultSet.getInt("ANA")));
+                            getIntegerWithNullCheck("ANA", resultSet)));
 
             labData.setDnaAntibodies(resultSet.getString("DNA_ANTIB"));
             labData.setAntiDsDna(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
-                            resultSet.getInt("DNA_ANTI_DS")));
+                            getIntegerWithNullCheck("DNA_ANTI_DS", resultSet)));
 
             labData.setCryoglobulins(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
-                            resultSet.getInt("CRYOGLOB")));
+                            getIntegerWithNullCheck("CRYOGLOB", resultSet)));
             labData.setAntiGbm(BaseDaoImpl
                     .<LabData.PositiveNegativeNotDone>getEnumValue(LabData.PositiveNegativeNotDone.class,
-                            resultSet.getInt("ANTI_GBM")));
+                            getIntegerWithNullCheck("ANTI_GBM", resultSet)));
 
-            labData.setIgG(resultSet.getDouble("IGG"));
-            labData.setIgA(resultSet.getDouble("IGA"));
-            labData.setIgM(resultSet.getDouble("IGM"));
+            labData.setIgG(getDoubleWithNullCheck("IGG", resultSet));
+            labData.setIgA(getDoubleWithNullCheck("IGA", resultSet));
+            labData.setIgM(getDoubleWithNullCheck("IGM", resultSet));
 
-            labData.setComplementC3(resultSet.getDouble("COMP_C3"));
-            labData.setComplementC4(resultSet.getDouble("COMP_C4"));
-            labData.setComplementOtherDetail(resultSet.getString("COMP_OTHER"));
+            labData.setComplementC3(getDoubleWithNullCheck("COMP_C3", resultSet));
+            labData.setComplementC4(getDoubleWithNullCheck("COMP_C4", resultSet));
+            labData.setComplementOther(resultSet.getString("COMP_OTHER"));
+            labData.setComplementOtherSelected(resultSet.getString("COMP_OTHER") != null);
 
             labData.setC3NephriticFactor(BaseDaoImpl
                     .<LabData.PositiveNegativeUnknown>getEnumValue(LabData.PositiveNegativeUnknown.class,
-                            resultSet.getInt("C3_NEPH_FAC")));
+                            getIntegerWithNullCheck("C3_NEPH_FAC", resultSet)));
 
             // There is an ANTI_SLT column that doesn't seem to be used within legacy code
 
-            labData.setInr(resultSet.getDouble("INR"));
-            labData.setCrp(resultSet.getDouble("CRP"));
+            labData.setInr(getDoubleWithNullCheck("INR", resultSet));
+            labData.setCrp(getDoubleWithNullCheck("CRP", resultSet));
 
-            labData.setAntistreptolysin(resultSet.getDouble("ANTI_STREP_O"));
+            labData.setAntistreptolysin(getDoubleWithNullCheck("ANTI_STREP_O", resultSet));
 
             labData.setHepatitisB(BaseDaoImpl.<LabData.PositiveNegativeUnknown>getEnumValue(
-                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("HEP_B")));
+                    LabData.PositiveNegativeUnknown.class, getIntegerWithNullCheck("HEP_B", resultSet)));
             labData.setHepatitisC(BaseDaoImpl.<LabData.PositiveNegativeUnknown>getEnumValue(
-                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("HEP_C")));
+                    LabData.PositiveNegativeUnknown.class, getIntegerWithNullCheck("HEP_C", resultSet)));
 
             labData.setHivAntibody(BaseDaoImpl.<LabData.PositiveNegativeUnknown>getEnumValue(
-                    LabData.PositiveNegativeUnknown.class, resultSet.getInt("HIV")));
+                    LabData.PositiveNegativeUnknown.class, getIntegerWithNullCheck("HIV", resultSet)));
 
             labData.setDnaTakenFactorH(resultSet.getBoolean("DNA_FACTOR_H"));
 
             labData.setEbv(BaseDaoImpl
-                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, resultSet.getInt("EBV")));
+                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, getIntegerWithNullCheck("EBV", resultSet)));
             labData.setCmvSerology(BaseDaoImpl
-                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, resultSet.getInt("CMV")));
+                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, getIntegerWithNullCheck("CMV", resultSet)));
             labData.setCmvSymptomatic(resultSet.getBoolean("CMV_SYM"));
 
             // Three more commented within code: BKV and BKV_SYM and HANTAVIRUS
 
             labData.setParvovirusAntibody(BaseDaoImpl.<LabData.PositiveNegativeNotDone>getEnumValue(
-                    LabData.PositiveNegativeNotDone.class, resultSet.getInt("PARVO_ANTIB")));
+                    LabData.PositiveNegativeNotDone.class, getIntegerWithNullCheck("PARVO_ANTIB", resultSet)));
             labData.setOtherInfection(resultSet.getBoolean("OTHER_INFECT"));
             labData.setOtherInfectionDetail(resultSet.getString("OTHER_INFECT_SP"));
 
-            labData.setUrineVolume(resultSet.getDouble("UR_VOL_24H"));
+            labData.setUrineVolume(getDoubleWithNullCheck("UR_VOL_24H", resultSet));
             labData.setUrineVolumeCondition(BaseDaoImpl.<LabData.UrineVolumeCondition>getEnumValue(
-                    LabData.UrineVolumeCondition.class, resultSet.getInt("UR_VOL_24H_COND")));
+                    LabData.UrineVolumeCondition.class, getIntegerWithNullCheck("UR_VOL_24H_COND", resultSet)));
 
             labData.setHaematuria(BaseDaoImpl
-                    .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, resultSet.getInt("HAEMATURIA")));
+                    .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, getIntegerWithNullCheck("HAEMATURIA", resultSet)));
             labData.setAlbuminuria(BaseDaoImpl
-                    .<LabData.Albuminuria>getEnumValue(LabData.Albuminuria.class, resultSet.getInt("HAEMATURIA")));
+                    .<LabData.Albuminuria>getEnumValue(LabData.Albuminuria.class, getIntegerWithNullCheck("ALBUMINURIA"
+                    , resultSet)));
 
             labData.setDysmorphicErythrocytes(BaseDaoImpl
-                    .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("DYS_ERYTH_URINE")));
+                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("DYS_ERYTH_URINE", resultSet)));
             labData.setRedCellCast(BaseDaoImpl
-                    .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("RED_CCASTS_URINE")));
+                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("RED_CCASTS_URINE", resultSet)));
             labData.setWhiteCellCasts(BaseDaoImpl
-                    .<LabData.Present>getEnumValue(LabData.Present.class, resultSet.getInt("WBC_CASTS_URINE")));
+                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("WBC_CASTS_URINE", resultSet)));
 
-            labData.setLeucocytesUrine(resultSet.getBoolean("LEUC_URINE"));
-            labData.setNitrite(resultSet.getBoolean("NITRITE"));
+            labData.setLeucocytesUrine(getBooleanWithNullCheck("LEUC_URINE", resultSet));
+            labData.setNitrite(getBooleanWithNullCheck("NITRITE", resultSet));
             labData.setBacteria(resultSet.getBoolean("BACT_URINE"));
-            labData.setGlucose(resultSet.getBoolean("GLUC_URINE"));
+            labData.setGlucose(getBooleanWithNullCheck("GLUC_URINE", resultSet));
 
             // Osmolarity is within the database as varchar but validated on legacy frontend as integer
             // So within our model keep it as a double and do the conversion here
-            labData.setOsmolality(resultSet.getDouble("OSMOLARITY"));
+            labData.setOsmolality(getDoubleWithNullCheck("OSMOLARITY", resultSet));
 
             labData.setProteinuria(BaseDaoImpl.<LabData.Proteinuria>getEnumValue(LabData.Proteinuria.class,
-                    resultSet.getInt("PROTEINURIA_DIP")));
+                    getIntegerWithNullCheck("PROTEINURIA_DIP", resultSet)));
 
-            labData.setSequenceNumber(resultSet.getInt("SEQ_NO"));
-            labData.setAntiClqAntibodies(resultSet.getDouble("ANTI_CLQ"));
+            labData.setSequenceNumber(getIntegerWithNullCheck("SEQ_NO", resultSet));
+            labData.setAntiClqAntibodies(getDoubleWithNullCheck("ANTI_CLQ", resultSet));
 
             return labData;
         }

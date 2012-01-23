@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.model.sequenced;
 
+import com.solidstategroup.radar.model.BaseModel;
+
 import java.util.Date;
 
 public class LabData extends SequencedModel {
@@ -18,7 +20,7 @@ public class LabData extends SequencedModel {
     }
 
     public enum Haematuria {
-        NOT_TESTED(9), MICROSCOPIC(1), MACROSCOPIC(2);
+        NOT_TESTED(9), MICROSCOPIC(1), MACROSCOPIC(2), NEGATIVE(3);
         private int id;
 
         Haematuria(int id) {
@@ -27,6 +29,10 @@ public class LabData extends SequencedModel {
 
         public int getId() {
             return id;
+        }
+
+        public String getLabel() {
+            return BaseModel.getLabelFromEnum(toString());
         }
     }
 
@@ -40,6 +46,21 @@ public class LabData extends SequencedModel {
 
         public int getId() {
             return id;
+        }
+
+        public String getLabel() {
+            String label = toString();
+            label = label.replace("_PLUS", "+");
+            label = label.replace("_", " ");
+            String[] parts = label.split(" ");
+            label = "";
+            for (String part : parts) {
+                String formatted = part.toLowerCase();
+                formatted = Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
+                label += formatted;
+                label += " ";
+            }
+            return label;
         }
     }
 
@@ -67,18 +88,33 @@ public class LabData extends SequencedModel {
         public int getId() {
             return id;
         }
+
+        public String getLabel() {
+            return BaseModel.getLabelFromEnum(toString());
+        }
     }
 
     public enum Anca {
-        C_PR3(1), P_MPO(2), C_P(3), CANCA(4), PANCA(5), NEGATIVE(6), NOT_DONE(7);
+        C_PR3(1, "C(PR3)"), P_MPO(2, "P(MPO)"), C_P(3, "C+P"), CANCA(4, "CANCA"), PANCA(5, "PANCA"),
+        NEGATIVE(6, "Negative"), NOT_DONE(9, "Not done");
         private int id;
+        String label;
 
-        Anca(int id) {
+        Anca(int id, String label) {
             this.id = id;
+            this.label = label;
         }
 
         public int getId() {
             return id;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
         }
     }
 
@@ -93,6 +129,10 @@ public class LabData extends SequencedModel {
         public int getId() {
             return id;
         }
+
+        public String getLabel() {
+            return BaseModel.getLabelFromEnum(toString());
+        }
     }
 
     public enum PositiveNegativeUnknown {
@@ -106,6 +146,10 @@ public class LabData extends SequencedModel {
         public int getId() {
             return id;
         }
+
+        public String getLabel() {
+            return BaseModel.getLabelFromEnum(toString());
+        }
     }
 
     /**
@@ -113,20 +157,27 @@ public class LabData extends SequencedModel {
      * http://kidshealth.org/parent/system/medical/test_immunoglobulins.html
      */
     public enum Immunoglobulins {
-        NEGATIVE(1), IGG_POS(2), IGM_POS(3), IGG_IGM_POS(4), NOT_DONE(9);
+        NEGATIVE(1, "Neg"), IGG_POS(2, "IgG Pos"), IGM_POS(3, "IgM Pos"), IGG_IGM_POS(4, "IgG + IgM Pos"),
+        NOT_DONE(9, "Not done");
         private int id;
+        private String label;
 
-        Immunoglobulins(int id) {
+        Immunoglobulins(int id, String label) {
             this.id = id;
+            this.label = label;
         }
 
         public int getId() {
             return id;
         }
+
+        public String getLabel() {
+            return label;
+        }
     }
 
     private Date date;
-    
+
     // Blood fields
     private Double hb, wbc, neutrophils, platelets, sodium, potassium, bun, serumCreatinine, protein, albumin, crp;
     private Double totalCholesterol, hdlCholesterol, ldlCholesterol;
@@ -152,8 +203,8 @@ public class LabData extends SequencedModel {
     private PositiveNegativeNotDone ena, ana, antiDsDna, cryoglobulins, antiGbm;
     private String dnaAntibodies;
     private Double igG, igA, igM, complementC3, complementC4;
-    private Boolean complementOther;
-    private String complementOtherDetail;
+    private String complementOther;
+    private Boolean complementOtherSelected;
     private PositiveNegativeUnknown c3NephriticFactor;
     private Double antiClqAntibodies, antistreptolysin;
     private PositiveNegativeUnknown hepatitisB, hepatitisC, hivAntibody;
@@ -557,21 +608,6 @@ public class LabData extends SequencedModel {
         this.complementC4 = complementC4;
     }
 
-    public Boolean getComplementOther() {
-        return complementOther;
-    }
-
-    public void setComplementOther(Boolean complementOther) {
-        this.complementOther = complementOther;
-    }
-
-    public String getComplementOtherDetail() {
-        return complementOtherDetail;
-    }
-
-    public void setComplementOtherDetail(String complementOtherDetail) {
-        this.complementOtherDetail = complementOtherDetail;
-    }
 
     public PositiveNegativeUnknown getC3NephriticFactor() {
         return c3NephriticFactor;
@@ -675,5 +711,21 @@ public class LabData extends SequencedModel {
 
     public void setOtherInfectionDetail(String otherInfectionDetail) {
         this.otherInfectionDetail = otherInfectionDetail;
+    }
+
+    public String getComplementOther() {
+        return complementOther;
+    }
+
+    public void setComplementOther(String complementOther) {
+        this.complementOther = complementOther;
+    }
+
+    public Boolean getComplementOtherSelected() {
+        return complementOtherSelected;
+    }
+
+    public void setComplementOtherSelected(Boolean complementOtherSelected) {
+        this.complementOtherSelected = complementOtherSelected;
     }
 }

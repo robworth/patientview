@@ -1,29 +1,81 @@
 package com.solidstategroup.radar.web.models;
 
 
+import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
-import org.apache.commons.lang.time.DateFormatUtils;
+import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class RadarModelFactory {
 
+
+    public static IModel<Diagnosis> getDiagnosisModel(final IModel<Long> radarNumberModel, final DiagnosisDao diagnosisDao) {
+        return new AbstractReadOnlyModel<Diagnosis>() {
+            private Diagnosis diagnosis;
+
+            @Override
+            public Diagnosis getObject() {
+                if (diagnosis == null) {
+                    Long radarNumber;
+                    if (radarNumberModel.getObject() != null) {
+                        try {
+                            radarNumber = radarNumberModel.getObject();
+                        } catch (ClassCastException e) {
+                            Object obj = radarNumberModel.getObject();
+                            radarNumber = Long.parseLong((String) obj);
+                        }
+                        diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumber);
+                    }
+                }
+
+                return diagnosis;
+            }
+        };
+    }
+
+    public static IModel<ClinicalData> getFirstClinicalDataModel(final IModel<Long> radarNumberModel, final ClinicalDataDao clinicalDataDao) {
+        return new AbstractReadOnlyModel<ClinicalData>() {
+            private ClinicalData clinicalData;
+
+            @Override
+            public ClinicalData getObject() {
+                if (clinicalData == null) {
+                    Long radarNumber;
+                    if (radarNumberModel.getObject() != null) {
+                        try {
+                            radarNumber = radarNumberModel.getObject();
+                        } catch (ClassCastException e) {
+                            Object obj = radarNumberModel.getObject();
+                            radarNumber = Long.parseLong((String) obj);
+                        }
+                        List<ClinicalData> clinicalDatas = clinicalDataDao.getClinicalDataByRadarNumber(radarNumber);
+                        if (!clinicalDatas.isEmpty()) {
+                            clinicalData = clinicalDatas.get(0);
+                        }
+                    }
+                }
+                return clinicalData;
+            }
+        };
+    }
 
     public static IModel getDiagnosisCodeModel(final IModel<Long> radarNumberModel, final DiagnosisDao diagnosisDao) {
         return new LoadableDetachableModel<DiagnosisCode>() {
             @Override
             public DiagnosisCode load() {
+
                 Long radarNumber = null;
                 if (radarNumberModel.getObject() != null) {
                     try {
@@ -115,11 +167,11 @@ public class RadarModelFactory {
 
 
     public static IModel getSuccessMessageModel(final Form form) {
-       return new LoadableDetachableModel() {
-           @Override
-           protected Object load() {
-               return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").format(new Date());
-           }
-       };
+        return new LoadableDetachableModel() {
+            @Override
+            protected Object load() {
+                return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").format(new Date());
+            }
+        };
     }
 }

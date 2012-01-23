@@ -121,7 +121,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("SNAME", getEncryptedString(demographics.getSurname()));
                     put("SNAME_ALIAS", getEncryptedString(demographics.getSurnameAlias()));
                     put("FNAME", getEncryptedString(demographics.getForename()));
-                    put("DOB", getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())));
+                    put("DOB", demographics.getDateOfBirth() != null ?
+                            getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())) : null);
                     put("AGE", demographics.getAge());
                     put("SEX", demographics.getSex() != null ? demographics.getSex().getId() : null);
                     put("ETHNIC_GP",

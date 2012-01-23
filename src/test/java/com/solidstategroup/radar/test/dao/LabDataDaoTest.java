@@ -15,6 +15,20 @@ public class LabDataDaoTest extends BaseDaoTest {
     private LabDataDao labDataDao;
 
     @Test
+    public void testSaveLabData () {
+
+       // test creating a new object
+       LabData labData = new LabData();
+       labDataDao.saveLabDate(labData);
+       assertNotNull(labData.getId());
+
+       // test update
+       LabData labData_update = new LabData();
+       labData_update.setId(new Long(16));
+       labDataDao.saveLabDate(labData_update);
+    }
+
+    @Test
     public void getLabData() {
         // We have a lab data with ID 16 in the test dataset
         LabData labData = labDataDao.getLabData(16L);

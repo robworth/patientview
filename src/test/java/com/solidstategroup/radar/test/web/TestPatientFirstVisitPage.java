@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.test.web;
 
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
 import org.junit.Test;
@@ -11,8 +12,11 @@ public class TestPatientFirstVisitPage extends BasePageTest {
 
     @Test
     public void renderPatientPage() {
+        Demographics demographics = new Demographics();
+        demographics.setId(new Long(238));
+
         // Start and render the test page
-        tester.startPage(PatientPage.class);
+        tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));
 
         // Assert rendered page class
         tester.assertRenderedPage(PatientPage.class);
