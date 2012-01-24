@@ -103,7 +103,7 @@ public class LaboratoryResultsPanel extends Panel {
                     if (height != null && serumCreatanine != null) {
                         creatnineClearance = height * 40 / serumCreatanine;
                         get("creatanineClearanceInfo").setVisible(false);
-                    } else{
+                    } else {
                         get("creatanineClearanceInfo").setVisible(true);
                     }
                     labData.setCreatinineClearance(creatnineClearance);
@@ -123,6 +123,8 @@ public class LaboratoryResultsPanel extends Panel {
         RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("date", form, componentsToUpdate);
         form.add(labResultsDate);
 
+        final IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisDao);
+
         // Blood fields
         form.add(new RadarTextFieldWithValidation("hb", new RangeValidator<Double>(2.0, 20.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("wbc", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate));
@@ -136,14 +138,62 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation("albumin", new RangeValidator<Double>(5.0, 60.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("crp", new RangeValidator<Double>(0.0, 200.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("totalCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("hdlCholesterol", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("ldlCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate));
+
+        WebMarkupContainer hdlCholesterolContainer = new WebMarkupContainer("hdlCholesterolContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation hdlCholesterol = new RadarTextFieldWithValidation("hdlCholesterol", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate);
+        hdlCholesterolContainer.add(hdlCholesterol);
+        form.add(hdlCholesterolContainer);
+
+        WebMarkupContainer ldlCholesterolContainer = new WebMarkupContainer("ldlCholesterolContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation ldlCholesterol = new RadarTextFieldWithValidation("ldlCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate);
+        ldlCholesterolContainer.add(ldlCholesterol);
+        form.add(ldlCholesterolContainer);
+
         form.add(new RadarTextFieldWithValidation("triglycerides", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("thyroxine", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("tsh", new RangeValidator<Double>(0.0, 50.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("phosphate", new RangeValidator<Double>(0.1, 5.6), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("ferritin", new RangeValidator<Double>(1.0, 5000.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("inr", new RangeValidator<Double>(0.5, 5.0), form, componentsToUpdate));
+
+        WebMarkupContainer phosphateContainer = new WebMarkupContainer("phosphateContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation phosphate = new RadarTextFieldWithValidation("phosphate",
+                new RangeValidator<Double>(0.1, 5.6), form, componentsToUpdate);
+        phosphateContainer.add(phosphate);
+        form.add(phosphateContainer);
+
+        WebMarkupContainer ferritinContainer = new WebMarkupContainer("ferritinContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation ferritin = new RadarTextFieldWithValidation("ferritin", new RangeValidator<Double>(1.0, 5000.0), form, componentsToUpdate);
+        ferritinContainer.add(ferritin);
+        form.add(ferritinContainer);
+
+        WebMarkupContainer inrContainer = new WebMarkupContainer("inrContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation inr =
+                new RadarTextFieldWithValidation("inr", new RangeValidator<Double>(0.5, 5.0), form, componentsToUpdate);
+        inrContainer.add(inr);
+        form.add(inrContainer);
 
         // Urinalysis - dipstick
         DropDownChoice<LabData.UrineVolumeCondition> urineVolumeCondition =
@@ -165,17 +215,70 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new YesNoNdRadioGroup("glucose"));
 
         // Urinalysis - lab
-        form.add(new RadarTextFieldWithValidation("urineVolume", new RangeValidator<Double>(0.0, 4000.0), form, componentsToUpdate));
+        RadarTextFieldWithValidation urineVolume = new RadarTextFieldWithValidation("urineVolume",
+                new RangeValidator<Double>(0.0, 4000.0), form, componentsToUpdate);
+        urineVolume.setVisible(false); // no longer used
+        form.add(urineVolume);
         form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("osmolality", new RangeValidator<Double>(200.0, 350.0), form, componentsToUpdate));
-        form.add(new CheckBox("bacteria"));
-        form.add(new DropDownChoice<LabData.Present>("dysmorphicErythrocytes",
-                Arrays.asList(LabData.Present.values()), new ChoiceRenderer<LabData.Present>("label", "id")));
-        form.add(new DropDownChoice<LabData.Present>("redCellCast", Arrays.asList(LabData.Present.values()),
-                new ChoiceRenderer<LabData.Present>("label", "id")));
-        form.add(new DropDownChoice<LabData.Present>("whiteCellCasts", Arrays.asList(LabData.Present.values()),
-                new ChoiceRenderer<LabData.Present>("label", "id")));
+
+        WebMarkupContainer osmolalityContainer = new WebMarkupContainer("osmolalityContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation osmolality = new RadarTextFieldWithValidation("osmolality",
+                new RangeValidator<Double>(200.0, 350.0), form, componentsToUpdate);
+        osmolalityContainer.add(osmolality);
+        form.add(osmolalityContainer);
+
+        WebMarkupContainer bacteriaContainer = new WebMarkupContainer("bacteriaContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        CheckBox bacteria = new CheckBox("bacteria");
+        bacteriaContainer.add(bacteria);
+        form.add(bacteriaContainer);
+
+        WebMarkupContainer dysmorphicErythrocytesContainer = new WebMarkupContainer("dysmorphicErythrocytesContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+        DropDownChoice<LabData.Present> dysmorphicErythrocytes = new DropDownChoice<LabData.Present>("dysmorphicErythrocytes",
+                Arrays.asList(LabData.Present.values()), new ChoiceRenderer<LabData.Present>("label", "id")) {
+        };
+        dysmorphicErythrocytesContainer.add(dysmorphicErythrocytes);
+        form.add(dysmorphicErythrocytesContainer);
+
+        WebMarkupContainer redCellCastContainer = new WebMarkupContainer("redCellCastContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+        DropDownChoice<LabData.Present> redCellCaset = new DropDownChoice<LabData.Present>("redCellCast", Arrays.asList(LabData.Present.values()),
+                new ChoiceRenderer<LabData.Present>("label", "id"));
+        redCellCastContainer.add(redCellCaset);
+        form.add(redCellCastContainer);
+
+        WebMarkupContainer whiteCellCastsContainer = new WebMarkupContainer("whiteCellCastsContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+        DropDownChoice<LabData.Present> whiteCellCasts = new DropDownChoice<LabData.Present>("whiteCellCasts",
+                Arrays.asList(LabData.Present.values()),
+                new ChoiceRenderer<LabData.Present>("label", "id")) {
+        };
+
+        whiteCellCastsContainer.add(whiteCellCasts);
+        form.add(whiteCellCastsContainer);
 
         // Creatinine clearance
         TextField creatinineClearance = new TextField("creatinineClearance");
@@ -210,7 +313,13 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation("igG", new RangeValidator<Double>(0.0, 20.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("igA", new RangeValidator<Double>(0.0, 10.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("igM", new RangeValidator<Double>(0.0, 10.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("complementC3", new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate));
+
+        WebMarkupContainer complementC3Container = new WebMarkupContainer("complementC3Container");
+        RadarTextFieldWithValidation complementC3 = new RadarTextFieldWithValidation("complementC3",
+                new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate);
+        complementC3Container.add(complementC3);
+        form.add(complementC3Container);
+
         form.add(new RadarTextFieldWithValidation("complementC4", new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate));
 
         final IModel<Boolean> complementOtherDetailsVisibility = new Model<Boolean>(false);
@@ -241,10 +350,37 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(complementOtherSelected);
 
 
-        form.add(new DropDownChoice<LabData.PositiveNegativeUnknown>("c3NephriticFactor",
+        WebMarkupContainer c3NephriticFactorContainer = new WebMarkupContainer("c3NephriticFactorContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+        c3NephriticFactorContainer.add(new DropDownChoice<LabData.PositiveNegativeUnknown>("c3NephriticFactor",
                 Arrays.asList(LabData.PositiveNegativeUnknown.values()), new ChoiceRenderer("label", "id")));
-        form.add(new RadarTextFieldWithValidation("antiClqAntibodies", new RangeValidator<Double>(0.0, 150.0), form, componentsToUpdate));
-        form.add(new TextField("antistreptolysin"));
+
+        form.add(c3NephriticFactorContainer);
+
+        WebMarkupContainer antiClqAntibodiesContainer = new WebMarkupContainer("antiClqAntibodiesContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+        RadarTextFieldWithValidation antiClqAntibodies = new RadarTextFieldWithValidation("antiClqAntibodies",
+                new RangeValidator<Double>(0.0, 150.0), form, componentsToUpdate);
+        antiClqAntibodiesContainer.add(antiClqAntibodies);
+        form.add(antiClqAntibodiesContainer);
+
+        WebMarkupContainer antistreptolysinContainer = new WebMarkupContainer("antistreptolysinContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+        TextField antistreptolysin = new TextField("antistreptolysin");
+        antistreptolysinContainer.add(antistreptolysin);
+        form.add(antistreptolysinContainer);
 
         form.add(new DropDownChoice<LabData.PositiveNegativeUnknown>("hepatitisB",
                 Arrays.asList(LabData.PositiveNegativeUnknown.values()), new ChoiceRenderer("label", "id")));
@@ -253,20 +389,78 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new DropDownChoice<LabData.PositiveNegativeUnknown>("hivAntibody",
                 Arrays.asList(LabData.PositiveNegativeUnknown.values()), new ChoiceRenderer("label", "id")));
 
+        WebMarkupContainer dnaTakenFactorHContainer = new WebMarkupContainer("dnaTakenFactorHContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
         RadioGroup<Boolean> dnaTakenFactorH = new RadioGroup<Boolean>("dnaTakenFactorH");
         dnaTakenFactorH.add(new Radio<Boolean>("yes", new Model<Boolean>(Boolean.TRUE)));
+        form.add(dnaTakenFactorHContainer);
+
         dnaTakenFactorH.add(new Radio<Boolean>("no", new Model<Boolean>(Boolean.FALSE)));
-        form.add(dnaTakenFactorH);
+        dnaTakenFactorHContainer.add(dnaTakenFactorH);
 
         form.add(new DropDownChoice<LabData.Immunoglobulins>("ebv", Arrays.asList(LabData.Immunoglobulins.values()),
                 new ChoiceRenderer("label", "id")));
         form.add(new DropDownChoice<LabData.Immunoglobulins>("cmvSerology", Arrays.asList(
                 LabData.Immunoglobulins.values()),
                 new ChoiceRenderer("label", "id")));
-        form.add(new CheckBox("cmvSymptomatic"));
-        form.add(new DropDownChoice<LabData.PositiveNegativeNotDone>("parvovirusAntibody",
-                Arrays.asList(LabData.PositiveNegativeNotDone.values()), new ChoiceRenderer("label", "id")));
-        form.add(new CheckBox("otherInfection"));
+
+        WebMarkupContainer cmvSymptomaticContainer = new WebMarkupContainer("cmvSymptomaticContainer"){
+            @Override
+            public boolean isVisible() {
+                return isSrnsModel.getObject();
+            }
+        };
+        CheckBox cmvSymptomatic = new CheckBox("cmvSymptomatic");
+        cmvSymptomaticContainer.add(cmvSymptomatic);
+        form.add(cmvSymptomaticContainer);
+
+        WebMarkupContainer parvovirusAntibodyContainer = new WebMarkupContainer("parvovirusAntibodyContainer") {
+            @Override
+            public boolean isVisible() {
+                return !isSrnsModel.getObject();
+            }
+        };
+
+        DropDownChoice<LabData.PositiveNegativeNotDone> parvovirusAntibody =
+                new DropDownChoice<LabData.PositiveNegativeNotDone>("parvovirusAntibody",
+                        Arrays.asList(LabData.PositiveNegativeNotDone.values()), new ChoiceRenderer("label", "id"));
+        parvovirusAntibodyContainer.add(parvovirusAntibody);
+        form.add(parvovirusAntibodyContainer);
+
+
+        boolean showOtherInfectionDetailsOnInit = model.getObject().getOtherInfection() != null ?
+                model.getObject().getOtherInfection() : false;
+
+        final IModel<Boolean> showInfectionDetailsIModel = new Model<Boolean>(showOtherInfectionDetailsOnInit);
+
+        CheckBox otherInfection = new CheckBox("otherInfection");
+        otherInfection.add(new AjaxFormComponentUpdatingBehavior("onClick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                showInfectionDetailsIModel.setObject(model.getObject().getOtherInfection());
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            }
+        });
+        form.add(otherInfection);
+
+        WebMarkupContainer otherInfectionDetailContainer = new WebMarkupContainer("otherInfectionDetailContainer"){
+            @Override
+            public boolean isVisible() {
+                return showInfectionDetailsIModel.getObject();
+            }
+        };
+        componentsToUpdate.add(otherInfectionDetailContainer);
+        otherInfectionDetailContainer.setOutputMarkupId(true);
+        otherInfectionDetailContainer.setOutputMarkupPlaceholderTag(true);
+
+
+        TextArea otherInfectionDetails = new TextArea("otherInfectionDetail");
+        otherInfectionDetailContainer.add(otherInfectionDetails);
+        form.add(otherInfectionDetailContainer);
 
         LaboratoryAjaxSubmitLink save = new LaboratoryAjaxSubmitLink("save") {
             @Override

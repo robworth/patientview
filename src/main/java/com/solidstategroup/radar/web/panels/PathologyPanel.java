@@ -118,7 +118,9 @@ public class PathologyPanel extends Panel {
         pathologyContainer.add(form);
 
         // General details
-        form.add(new TextField("radarNumber", radarNumberModel));
+        TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
+        radarNumber.setEnabled(false);
+        form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));

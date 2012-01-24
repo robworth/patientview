@@ -50,7 +50,9 @@ public class RrtTherapyPanel extends Panel {
         setOutputMarkupPlaceholderTag(true);
 
         // General details
-        add(new TextField("radarNumber", radarNumberModel));
+        TextField radarNumber = new TextField("radarNumber", radarNumberModel);
+        radarNumber.setEnabled(false);
+        add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));

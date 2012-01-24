@@ -71,7 +71,14 @@ public class DemographicsPanel extends Panel {
             public Demographics load() {
                 Demographics demographicsModelObject = null;
                 if (radarNumberModel.getObject() != null) {
-                    demographicsModelObject = demographicsDao.getDemographicsByRadarNumber(radarNumberModel.getObject());
+                    Long radarNumber;
+                    try {
+                        radarNumber = radarNumberModel.getObject();
+                    } catch (ClassCastException e) {
+                        Object obj = radarNumberModel.getObject();
+                        radarNumber = Long.parseLong((String) obj);
+                    }
+                    demographicsModelObject = demographicsDao.getDemographicsByRadarNumber(radarNumber);
                 }
 
                 if (demographicsModelObject == null) {
@@ -130,7 +137,8 @@ public class DemographicsPanel extends Panel {
             }
         });
 
-        TextField radarNumberField = new TextField("id");
+        TextField<Long> radarNumberField = new TextField<Long>("id");
+        radarNumberField.setEnabled(false);
         form.add(radarNumberField);
 
         DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
