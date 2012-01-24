@@ -70,7 +70,14 @@ public class DiagnosisPanel extends Panel {
             @Override
             protected Diagnosis load() {
                 if (radarNumberModel.getObject() != null) {
-                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                    Long radarNumber;
+                    try {
+                        radarNumber = radarNumberModel.getObject();
+                    } catch (ClassCastException e) {
+                        Object obj = radarNumberModel.getObject();
+                        radarNumber = Long.parseLong((String) obj);
+                    }
+                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumber);
                     if (diagnosis != null) {
                         return diagnosis;
                     } else {
@@ -108,8 +115,15 @@ public class DiagnosisPanel extends Panel {
                         Diagnosis diagnosis = getModelObject();
                         super.onSubmit();
                         Date dateOfDiagnosis = diagnosis.getBiopsyDate();
-                        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(
-                                radarNumberModel.getObject());
+                        Long radarNumber;
+                        try {
+                            radarNumber = radarNumberModel.getObject();
+                        } catch (ClassCastException e) {
+                            Object obj = radarNumberModel.getObject();
+                            radarNumber = Long.parseLong((String) obj);
+                        }
+
+                        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(radarNumber);
                         Date dob = demographics.getDateOfBirth();
                         if (dateOfDiagnosis != null && dob != null) {
                             Calendar diagCalendar = Calendar.getInstance();
@@ -142,7 +156,8 @@ public class DiagnosisPanel extends Panel {
         final Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
         final Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form, componentsToUpdate);
 
-        TextField radarNumber = new TextField("radarNumber");
+        TextField<Long> radarNumber = new TextField<Long>("radarNumber");
+        radarNumber.setEnabled(false);
         form.add(radarNumber);
 
         TextField hospitalNumber = new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(

@@ -7,6 +7,7 @@ import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
+import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -45,6 +46,29 @@ public class RadarModelFactory {
         };
     }
 
+    public static IModel<Boolean> getIsSrnsModel(final IModel radarNumberModel, final DiagnosisDao diagnosisDao) {
+        return new AbstractReadOnlyModel<Boolean>() {
+            private DiagnosisCode diagnosisCode = null;
+
+            @Override
+            public Boolean getObject() {
+                if (diagnosisCode == null) {
+
+                    if (radarNumberModel.getObject() != null) {
+
+                        diagnosisCode = getDiagnosisCodeModel(radarNumberModel, diagnosisDao).getObject();
+                    }
+                }
+
+
+                if (diagnosisCode != null) {
+                    return diagnosisCode.getId().equals(DiagnosisPanel.SRNS_ID);
+                }
+                return false;
+            }
+        };
+    }
+
     public static IModel<ClinicalData> getFirstClinicalDataModel(final IModel<Long> radarNumberModel, final ClinicalDataDao clinicalDataDao) {
         return new AbstractReadOnlyModel<ClinicalData>() {
             private ClinicalData clinicalData;
@@ -71,7 +95,7 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel getDiagnosisCodeModel(final IModel<Long> radarNumberModel, final DiagnosisDao diagnosisDao) {
+    public static IModel<DiagnosisCode> getDiagnosisCodeModel(final IModel<Long> radarNumberModel, final DiagnosisDao diagnosisDao) {
         return new LoadableDetachableModel<DiagnosisCode>() {
             @Override
             public DiagnosisCode load() {

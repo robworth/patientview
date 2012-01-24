@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
@@ -148,7 +149,9 @@ public class ClinicalPicturePanel extends Panel {
                 componentsToUpdate);
 
 
-        form.add(new TextField("radarNumber", radarNumberModel));
+        TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
+        radarNumber.setEnabled(false);
+        form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));

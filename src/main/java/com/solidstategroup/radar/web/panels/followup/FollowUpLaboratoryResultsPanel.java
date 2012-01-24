@@ -23,7 +23,9 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         setOutputMarkupPlaceholderTag(true);
 
         // General details
-        add(new TextField("radarNumber", radarNumberModel));
+        TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
+        radarNumber.setEnabled(false);
+        add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));

@@ -69,7 +69,9 @@ public class RelapsePanel extends Panel {
         Form<Relapse> form = new Form<Relapse>("form", model);
 
         // General details
-        form.add(new TextField("radarNumber", radarNumberModel));
+        TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
+        radarNumber.setEnabled(false);
+        form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));
