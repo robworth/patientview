@@ -17,7 +17,7 @@
       }
     #tabsC a {
       float:left;
-      background:url("/images/tableftC.gif") no-repeat left top;
+      background:url("tableftC.gif") no-repeat left top;
       margin:0;
       padding:0 0 0 4px;
       text-decoration:none;

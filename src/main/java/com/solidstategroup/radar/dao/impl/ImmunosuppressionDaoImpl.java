@@ -26,7 +26,8 @@ public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements Immunosuppr
 
         // Initialise a simple JDBC insert to be able to get the allocated ID
         diagnosisInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_immunsup_treatment")
-                .usingGeneratedKeyColumns("tID").usingColumns();
+                .usingGeneratedKeyColumns("tID").usingColumns("RADAR_NO", "IMMUNSUP_DRUG_STARTDATE",
+                        "IMMUNSUP_DRUG_ENDDATE", "IMMUNSUP_DRUG", "CYCLOPHOS_TOT_DOSE", "FIRST_FLAG");
     }
 
     public void saveImmunoSuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) {

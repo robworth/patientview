@@ -28,11 +28,11 @@ public abstract class BasePage extends WebPage {
 
         // Enter new patient - only visible when a professional is logged in
         BookmarkablePageLink enterNewPatientLink = new BookmarkablePageLink("enterNewPatientLink", PatientPage.class);
-        enterNewPatientLink.setVisible(isProfessionalUserLoggedIn());
+        //enterNewPatientLink.setVisible(isProfessionalUserLoggedIn());
 
         // Container for existing patients links, only visible when a professional is logged in
         MarkupContainer existingPatientsContainer = new WebMarkupContainer("existingPatientsContainer");
-        existingPatientsContainer.setVisible(isProfessionalUserLoggedIn());
+        //existingPatientsContainer.setVisible(isProfessionalUserLoggedIn());
         existingPatientsContainer.add(
                 new BookmarkablePageLink("patientsListingPage", ExistingPatientsPage.class),
                 new BookmarkablePageLink("recruitmentPage", RecruitmentPage.class)
@@ -41,7 +41,7 @@ public abstract class BasePage extends WebPage {
 
         // Container for clinicians links
         MarkupContainer cliniciansContainer = new WebMarkupContainer("cliniciansContainer");
-        cliniciansContainer.setVisible(showCliniciansContainer);
+        //cliniciansContainer.setVisible(showCliniciansContainer);
         cliniciansContainer.add(
                 new BookmarkablePageLink("mpgnPage", MpgnPage.class),
                 new BookmarkablePageLink("srnsPage", SrnsPage.class),
