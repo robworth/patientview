@@ -39,7 +39,7 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                         "OSMOLARITY", "PROTEINURIA_DIP", "SEQ_NO", "ANTI_CLQ");
     }
 
-    public void saveLabDate(final LabData labData) {
+    public void saveLabData(final LabData labData) {
         Map<String, Object> labDataMap = new HashMap<String, Object>() {
             {
                 put("RADAR_NO", labData.getRadarNumber());

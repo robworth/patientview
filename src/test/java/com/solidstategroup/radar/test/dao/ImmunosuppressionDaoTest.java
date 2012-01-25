@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.ImmunosuppressionDao;
+import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,11 @@ public class ImmunosuppressionDaoTest extends BaseDaoTest {
                 immunosuppressionDao.getImmunosuppressionTreatmentByRadarNumber(218L);
         assertNotNull("List was null", immunosuppressions);
         assertEquals("Wrong size", 5, immunosuppressions.size());
+    }
+
+    @Test
+    public void testGetImmunosuppressions() throws Exception {
+        List<Immunosuppression> immunosuppressions = immunosuppressionDao.getImmunosuppressions();
+        assertTrue(!immunosuppressions.isEmpty());
     }
 }

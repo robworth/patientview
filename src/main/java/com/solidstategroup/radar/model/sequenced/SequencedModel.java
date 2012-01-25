@@ -4,13 +4,13 @@ import com.solidstategroup.radar.model.RadarModel;
 
 public class SequencedModel extends RadarModel {
 
-    private int sequenceNumber;
+    private Integer sequenceNumber;
 
-    public int getSequenceNumber() {
+    public Integer getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public void setSequenceNumber(int sequenceNumber) {
+    public void setSequenceNumber(Integer sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 }

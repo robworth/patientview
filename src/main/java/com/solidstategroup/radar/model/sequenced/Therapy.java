@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Therapy extends SequencedModel {
 
-    private Date date;
+    private Date treatmentRecordDate;
     private Boolean nsaid, nsaidPrior;
     private Boolean diuretic, diureticPrior;
     private Boolean antihypertensive, antihypertensivePrior;
@@ -22,12 +22,12 @@ public class Therapy extends SequencedModel {
     private String other1, other2, other3, other4;
     private String other1Prior, other2Prior, other3Prior, other4Prior;
 
-    public Date getDate() {
-        return date;
+    public Date getTreatmentRecordDate() {
+        return treatmentRecordDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTreatmentRecordDate(Date treatmentRecordDate) {
+        this.treatmentRecordDate = treatmentRecordDate;
     }
 
     public Boolean getNsaid() {
