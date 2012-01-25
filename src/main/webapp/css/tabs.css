@@ -25,7 +25,7 @@
     #tabsC a span {
       float:left;
       display:block;
-      background:url("/images/tabrightCb.gif") no-repeat right top;
+      background:url("tabrightCb.gif") no-repeat right top;
       padding:5px 15px 4px 6px;
       color:#464E42;
       }

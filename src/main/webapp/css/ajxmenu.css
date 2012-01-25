@@ -49,10 +49,10 @@
 }
 .AJXCSSMenuCeGKRNA a.ajxsub {
 	padding: 10px 20px 0 0px;
-	background: url(/images/bbdown.gif) no-repeat center right;
+	background: url(bbdown.gif) no-repeat center right;
 }
 .AJXCSSMenuCeGKRNA li:hover a.ajxsub, .AJXCSSMenuCeGKRNA .ajxover a.ajxsub {
-	background: #EEF6ED url(/images/bbdown.gif) no-repeat center right;
+	background: #EEF6ED url(bbdown.gif) no-repeat center right;
 }
 .AJXCSSMenuCeGKRNA ul ul {
 	position: absolute;
