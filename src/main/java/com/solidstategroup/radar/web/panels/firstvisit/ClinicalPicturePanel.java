@@ -23,7 +23,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
@@ -116,8 +115,6 @@ public class ClinicalPicturePanel extends Panel {
                     clinicalData.setRadarNumber(radarNumber);
                 }
                 clinicalDataDao.saveClinicalDate(clinicalData);
-                get("successMessage").setVisible(!hasError());
-                get("successMessageDown").setVisible(!hasError());
             }
         };
 
@@ -146,6 +143,10 @@ public class ClinicalPicturePanel extends Panel {
 
         Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
         Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
+                componentsToUpdate);
+
+        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
+        Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form,
                 componentsToUpdate);
 
 

@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.LabDataDao;
+import com.solidstategroup.radar.dao.TherapyDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
@@ -15,9 +16,11 @@ import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.model.sequenced.LabData;
+import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
@@ -57,6 +60,8 @@ public class DemographicsPanel extends Panel {
     private ClinicalDataDao clinicalDataDao;
     @SpringBean
     private LabDataDao labDataDao;
+    @SpringBean
+    private TherapyDao therapyDao;
     @SpringBean
     private UtilityDao utilityDao;
 
@@ -122,7 +127,14 @@ public class DemographicsPanel extends Panel {
                     LabData labData = new LabData();
                     labData.setRadarNumber(demographics.getId());
                     labData.setSequenceNumber(1);
-                    labDataDao.saveLabDate(labData);
+                    labDataDao.saveLabData(labData);
+                }
+
+                if(therapyDao.getTherapyByRadarNumber(demographics.getId()).isEmpty()){
+                    Therapy therapy = new Therapy();
+                    therapy.setRadarNumber(demographics.getId());
+                    therapy.setSequenceNumber(1);
+                    therapyDao.saveTherapy(therapy);
                 }
             }
         };
@@ -216,11 +228,10 @@ public class DemographicsPanel extends Panel {
         CheckBox consent = new CheckBox("consent");
         DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
         form.add(consent, renalUnitAuthorised);
-        final Label successMessage = new Label("successMessage", RadarModelFactory.getSuccessMessageModel(form));
-        form.add(successMessage);
-        successMessage.setVisible(false);
-        successMessage.setOutputMarkupId(true);
-        successMessage.setOutputMarkupPlaceholderTag(true);
+        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+                componentsToUpdateList);
+
+        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
 
         AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("submit") {
 

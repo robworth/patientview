@@ -16,6 +16,20 @@ public class TherapyDaoTest extends BaseDaoTest {
     private TherapyDao therapyDao;
 
     @Test
+    public void testSaveTherapy() throws Exception {
+        // save new
+        Therapy therapy = new Therapy();
+        therapy.setAceInhibitor(false);
+        therapyDao.saveTherapy(therapy);
+        assertNotNull(therapy.getId());
+
+        // update
+        Therapy therapy_update = new Therapy();
+        therapy_update.setId(new Long(3));
+        therapyDao.saveTherapy(therapy_update);
+    }
+
+    @Test
     public void testGetTherapy() {
         Therapy therapy = therapyDao.getTherapy(6L);
         assertNotNull("Therapy object was null", therapy);

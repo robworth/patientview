@@ -108,16 +108,17 @@ public class LaboratoryResultsPanel extends Panel {
                     }
                     labData.setCreatinineClearance(creatnineClearance);
                 }
-                labDataDao.saveLabDate(labData);
-                get("successMessage").setVisible(!hasError());
-                get("successMessageDown").setVisible(!hasError());
-
+                labDataDao.saveLabData(labData);
             }
         };
         add(form);
 
         Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
         Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
+                componentsToUpdate);
+
+        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
+        Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form,
                 componentsToUpdate);
 
         RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("date", form, componentsToUpdate);
@@ -139,7 +140,7 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation("crp", new RangeValidator<Double>(0.0, 200.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("totalCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate));
 
-        WebMarkupContainer hdlCholesterolContainer = new WebMarkupContainer("hdlCholesterolContainer"){
+        WebMarkupContainer hdlCholesterolContainer = new WebMarkupContainer("hdlCholesterolContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -149,7 +150,7 @@ public class LaboratoryResultsPanel extends Panel {
         hdlCholesterolContainer.add(hdlCholesterol);
         form.add(hdlCholesterolContainer);
 
-        WebMarkupContainer ldlCholesterolContainer = new WebMarkupContainer("ldlCholesterolContainer"){
+        WebMarkupContainer ldlCholesterolContainer = new WebMarkupContainer("ldlCholesterolContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -163,7 +164,7 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation("thyroxine", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("tsh", new RangeValidator<Double>(0.0, 50.0), form, componentsToUpdate));
 
-        WebMarkupContainer phosphateContainer = new WebMarkupContainer("phosphateContainer"){
+        WebMarkupContainer phosphateContainer = new WebMarkupContainer("phosphateContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -174,7 +175,7 @@ public class LaboratoryResultsPanel extends Panel {
         phosphateContainer.add(phosphate);
         form.add(phosphateContainer);
 
-        WebMarkupContainer ferritinContainer = new WebMarkupContainer("ferritinContainer"){
+        WebMarkupContainer ferritinContainer = new WebMarkupContainer("ferritinContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -184,7 +185,7 @@ public class LaboratoryResultsPanel extends Panel {
         ferritinContainer.add(ferritin);
         form.add(ferritinContainer);
 
-        WebMarkupContainer inrContainer = new WebMarkupContainer("inrContainer"){
+        WebMarkupContainer inrContainer = new WebMarkupContainer("inrContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -222,7 +223,7 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0), form, componentsToUpdate));
 
-        WebMarkupContainer osmolalityContainer = new WebMarkupContainer("osmolalityContainer"){
+        WebMarkupContainer osmolalityContainer = new WebMarkupContainer("osmolalityContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -233,7 +234,7 @@ public class LaboratoryResultsPanel extends Panel {
         osmolalityContainer.add(osmolality);
         form.add(osmolalityContainer);
 
-        WebMarkupContainer bacteriaContainer = new WebMarkupContainer("bacteriaContainer"){
+        WebMarkupContainer bacteriaContainer = new WebMarkupContainer("bacteriaContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -408,7 +409,7 @@ public class LaboratoryResultsPanel extends Panel {
                 LabData.Immunoglobulins.values()),
                 new ChoiceRenderer("label", "id")));
 
-        WebMarkupContainer cmvSymptomaticContainer = new WebMarkupContainer("cmvSymptomaticContainer"){
+        WebMarkupContainer cmvSymptomaticContainer = new WebMarkupContainer("cmvSymptomaticContainer") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -447,7 +448,7 @@ public class LaboratoryResultsPanel extends Panel {
         });
         form.add(otherInfection);
 
-        WebMarkupContainer otherInfectionDetailContainer = new WebMarkupContainer("otherInfectionDetailContainer"){
+        WebMarkupContainer otherInfectionDetailContainer = new WebMarkupContainer("otherInfectionDetailContainer") {
             @Override
             public boolean isVisible() {
                 return showInfectionDetailsIModel.getObject();

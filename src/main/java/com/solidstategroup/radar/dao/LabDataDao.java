@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LabDataDao {
 
-    void saveLabDate(LabData labData);
+    void saveLabData(LabData labData);
 
     LabData getLabData(long id);
 

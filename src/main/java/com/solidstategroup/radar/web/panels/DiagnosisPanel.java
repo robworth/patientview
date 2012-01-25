@@ -140,21 +140,17 @@ public class DiagnosisPanel extends Panel {
                             diagnosis.setAgeAtDiagnosis(age);
                         }
                         diagnosisDao.saveDiagnosis(diagnosis);
-                        if (!hasError()) {
-                            get("successMessage").setVisible(true);
-                            get("successMessageDown").setVisible(true);
-                        } else {
-                            get("successMessage").setVisible(false);
-                            get("successMessageDown").setVisible(false);
-                        }
                     }
                 };
         add(form);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        final Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
-        final Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form, componentsToUpdate);
+        Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
+        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form, componentsToUpdate);
+
+        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
+        Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form, componentsToUpdate);
 
         TextField<Long> radarNumber = new TextField<Long>("radarNumber");
         radarNumber.setEnabled(false);

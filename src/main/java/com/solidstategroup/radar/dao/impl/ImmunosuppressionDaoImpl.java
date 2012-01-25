@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,10 +17,20 @@ import java.util.List;
 public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements ImmunosuppressionDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImmunosuppressionDaoImpl.class);
+    private SimpleJdbcInsert diagnosisInsert;
 
-    public Immunosuppression getImmunosuppression(long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_ImmunoSupp WHERE imID = ?", new Object[]{id},
-                new ImmunosuppressionRowMapper());
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        // Call super
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        diagnosisInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_immunsup_treatment")
+                .usingGeneratedKeyColumns("tID").usingColumns();
+    }
+
+    public void saveImmunoSuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) {
+
     }
 
     public ImmunosuppressionTreatment getImmunosuppressionTreatment(long id) {
@@ -44,6 +56,16 @@ public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements Immunosuppr
     public List<ImmunosuppressionTreatment> getImmunosuppressionTreatmentByRadarNumber(long radarNumber) {
         return jdbcTemplate.query("SELECT * FROM tbl_IMMUNSUP_TREATMENT WHERE RADAR_NO = ?", new Object[]{radarNumber},
                 new ImmunosuppressionTreatmentRowMapper());
+    }
+
+    public List<Immunosuppression> getImmunosuppressions() {
+        return jdbcTemplate.query("SELECT * FROM tbl_ImmunoSupp", new ImmunosuppressionRowMapper());
+    }
+
+
+    public Immunosuppression getImmunosuppression(long id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM tbl_ImmunoSupp WHERE imID = ?", new Object[]{id},
+                new ImmunosuppressionRowMapper());
     }
 
     private class ImmunosuppressionRowMapper implements RowMapper<Immunosuppression> {

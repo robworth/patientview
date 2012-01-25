@@ -179,80 +179,80 @@
                             <td width="200px">
                                 &nbsp;</td>
                             <td align="center" class="style17" id="ctl00_ContentPlaceHolder1_tdPrior">
-                                Prior to Referral
+                                <span wicket:id="firstColumnLabel" style="font-weight:bold;">Prior to Referral</span>
                             </td>
 
-                            <td align="center" width="150px" class="style16">
+                            <td wicket:id="currentContainer" align="center" width="150px" class="style16">
                                 <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblCurrent">Current</span>
                             </td>
                         </tr>
-                        <tr id="ctl00_ContentPlaceHolder1_rowNSAID">
+                        <tr wicket:id="nsaidContainerParent">
                             <td>
                                 NSAID
                             </td>
-                            <td align="center" class="style15" wicket:id="nsaid"/>
-                            <td align="center" wicket:id="nsaidPrior"/>
+                            <td align="center" class="style15" wicket:id="nsaidContainer"/>
+                            <td align="center" wicket:id="nsaidPriorContainer"/>
                         </tr>
 
-                        <tr id="ctl00_ContentPlaceHolder1_rowDiuretic">
+                        <tr wicket:id="diureticContainerParent">
                             <td>
                                 Diuretic
                             </td>
-                            <td align="center" class="style15" wicket:id="diuretic"/>
-                            <td align="center" wicket:id="diureticPrior"/>
+                            <td align="center" class="style15" wicket:id="diureticContainer"/>
+                            <td align="center" wicket:id="diureticPriorContainer"/>
                         </tr>
 
                         <tr>
                             <td>
                                 Antihypertensive
                             </td>
-                            <td align="center" class="style15" wicket:id="antihypertensive"/>
-                            <td align="center" wicket:id="antihypertensivePrior"/>
+                            <td align="center" class="style15" wicket:id="antihypertensiveContainer"/>
+                            <td align="center" wicket:id="antihypertensivePriorContainer"/>
                         </tr>
 
 
-                        <tr>
+                        <tr wicket:id="aceInhibitorContainer">
                             <td>
                                 ACE Inhibitor
                             </td>
-                            <td align="center" class="style15" wicket:id="aceInhibitor"/>
-                            <td align="center" wicket:id="aceInhibitorPrior"/>
+                            <td align="center" class="style15" wicket:id="aceInhibitorRadioGroup"/>
+                            <td align="center" wicket:id="aceInhibitorPriorRadioGroup"/>
                         </tr>
 
 
-                        <tr>
+                        <tr wicket:id="arb1AntagonistContainer">
                             <td>
                                 ARB-1 Antagonist
                             </td>
-                            <td align="center" class="style15" wicket:id="arb1Antagonist"/>
-                            <td align="center" wicket:id="arb1AntagonistPrior"/>
+                            <td align="center" class="style15" wicket:id="arb1AntagonistRadioGroup"/>
+                            <td align="center" wicket:id="arb1AntagonistPriorRadioGroup"/>
                         </tr>
 
 
-                        <tr>
+                        <tr wicket:id="calciumChannelBlockerContainer">
                             <td>
                                 Calcium Channel Blocker
                             </td>
-                            <td align="center" class="style15" wicket:id="calciumChannelBlocker"/>
-                            <td align="center" wicket:id="calciumChannelBlockerPrior"/>
+                            <td align="center" class="style15" wicket:id="calciumChannelBlockerRadioGroup"/>
+                            <td align="center" wicket:id="calciumChannelBlockerPriorRadioGroup"/>
                         </tr>
 
 
-                        <tr>
+                        <tr wicket:id="betaBlockerContainer">
                             <td>
                                 β Blocker
                             </td>
-                            <td align="center" class="style15" wicket:id="betaBlocker"/>
-                            <td align="center" wicket:id="betaBlockerPrior"/>
+                            <td align="center" class="style15" wicket:id="betaBlockerRadioGroup"/>
+                            <td align="center" wicket:id="betaBlockerPriorRadioGroup"/>
                         </tr>
 
 
-                        <tr>
+                        <tr wicket:id="otherAntihypertensiveContainer">
                             <td>
                                 Other Antihypertensive
                             </td>
-                            <td align="center" class="style15" wicket:id="otherAntihypertensive"/>
-                            <td align="center" wicket:id="otherAntihypertensivePrior"/>
+                            <td align="center" class="style15" wicket:id="otherAntihypertensiveRadioGroup"/>
+                            <td align="center" wicket:id="otherAntihypertensivePriorRadioGroup"/>
                         </tr>
 
 
@@ -260,24 +260,24 @@
                             <td>
                                 Insulin
                             </td>
-                            <td align="center" class="style15" wicket:id="insulin"/>
-                            <td align="center" wicket:id="insulinPrior"/>
+                            <td align="center" class="style15" wicket:id="insulinContainer"/>
+                            <td align="center" wicket:id="insulinPriorContainer"/>
                         </tr>
 
-                        <tr id="ctl00_ContentPlaceHolder1_rowLipid">
+                        <tr wicket:id="lipidLoweringAgentContainerParent">
                             <td>
                                 Lipid lowering agent
                             </td>
-                            <td align="center" class="style15" wicket:id="lipidLoweringAgent"/>
-                            <td align="center" wicket:id="lipidLoweringAgentPrior"/>
+                            <td align="center" class="style15" wicket:id="lipidLoweringAgentContainer"/>
+                            <td align="center" wicket:id="lipidLoweringAgentPriorContainer"/>
                         </tr>
 
                         <tr>
                             <td>
                                 EPO
                             </td>
-                            <td align="center" class="style15" wicket:id="epo"/>
-                            <td align="center" wicket:id="epoPrior"/>
+                            <td align="center" class="style15" wicket:id="epoContainer"/>
+                            <td align="center" wicket:id="epoPriorContainer"/>
                         </tr>
                         <tr>
                             <td>
@@ -287,7 +287,7 @@
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other1"></td>
 
-                            <td align="center">
+                            <td wicket:id="other1PriorContainer" align="center">
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other1Prior"></td>
                         </tr>
@@ -299,7 +299,7 @@
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other2"></td>
 
-                            <td align="center">
+                            <td wicket:id="other2PriorContainer" align="center">
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other2Prior"></td>
                         </tr>
@@ -311,7 +311,7 @@
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other3"></td>
 
-                            <td align="center">
+                            <td wicket:id="other3PriorContainer" align="center">
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other3Prior"></td>
                         </tr>
@@ -323,7 +323,7 @@
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other4"></td>
 
-                            <td align="center">
+                            <td wicket:id="other4PriorContainer" align="center">
                                 <input type="text" style="border-width:1px;border-style:solid;width:105px;"
                                        wicket:id="other4Prior"></td>
                         </tr>
@@ -331,6 +331,8 @@
                     </table>
                     <br />
                     <input wicket:id="save" type="button" class="saveBtn" value="Save">
+                    <span style="font-weight: bold;" wicket:id="successMessage"></span>
+                    <span style="font-weight: bold; color: red;" wicket:id="errorMessage"></span>
                 </fieldset>
             </form>
             &nbsp;</div>
