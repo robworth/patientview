@@ -4,7 +4,8 @@
     <br>
 
     <div>
-        <table border="1" cellspacing="0" cellpadding="3" style="font-size:85%;width:100%;border-collapse:collapse;"
+        <table wicket:id="dialysisContainer" border="1" cellspacing="0" cellpadding="3"
+               style="font-size:85%;width:100%;border-collapse:collapse;"
                id="ctl00_ContentPlaceHolder1_GridView2" rules="all" disabled="disabled">
             <tbody>
             <tr style="color:#3C982D;">
@@ -14,12 +15,12 @@
                 <th scope="col">&nbsp;</th>
             </tr>
             <tr wicket:id="dialysis">
-                <td wicket:id="treatmentModality.type"/>
-                <td wicket:id="dateStarted"/>
-                <td wicket:id="dateStopped"/>
+                <td wicket:id="treatmentModality.description"/>
+                <td wicket:id="startDate"/>
+                <td wicket:id="endDate"/>
                 <td>
-                    <input type="submit" disabled="disabled" value="Delete" wicket:id="deleteLink"/>
-                    <input type="submit" disabled="disabled" value="Edit" wicket:id="editLink"/>
+                    <input type="submit" value="Delete" wicket:id="deleteLink"/>
+                    <input type="submit" value="Edit" wicket:id="editLink"/>
                 </td>
             </tr>
             </tbody>
@@ -57,16 +58,17 @@
                     <tr>
                         <td>
                             <select wicket:id="treatmentModality"/>
+                            <span wicket:id="treatmentModalityFeedbackIndicator"></span>
                         </td>
                         <td>
                             <input type="text" style="width:80px;" wicket:id="startDate"/>
-                            <img style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                 id="ctl00_ContentPlaceHolder1_imgDialEditStart">
+                            <span wicket:id="startDateFeedbackIndicator"></span>
+                            <span class="feedback" wicket:id="startDateFeedback"></span>
                         </td>
                         <td>
                             <input type="text" style="width:80px;" wicket:id="endDate"/>
-                            <img style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                 id="ctl00_ContentPlaceHolder1_imgDialEditStop">
+                            <span class="endDateFeedbackIndicator"></span>
+                            <span class="feedback" wicket:id="endDateFeedback"></span>
                         </td>
                         <td style="text-align:right;">
                             <input type="submit" value="Save" wicket:id="save"/>
@@ -106,7 +108,7 @@
                 </td>
                 <td>
                     <input type="text" style="width:70px;" wicket:id="startDate"/>
-                   <span class="feedback" wicket:id="startDateFeedback"/>
+                    <span class="feedback" wicket:id="startDateFeedback"/>
                     <span wicket:id="startDateFeedbackIndicator"/>
                 </td>
                 <td>

@@ -8,12 +8,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class ImmunosuppressionDaoTest extends BaseDaoTest {
 
     @Autowired
     private ImmunosuppressionDao immunosuppressionDao;
+
+    @Test
+    public void testSaveImmunoSuppressionTreatment() throws Exception {
+        // save
+        ImmunosuppressionTreatment immunosuppressionTreatment = new ImmunosuppressionTreatment();
+        immunosuppressionTreatment.setFirstFlag(false);
+        immunosuppressionDao.saveImmunosuppressionTreatment(immunosuppressionTreatment);
+        assertNotNull(immunosuppressionTreatment.getId());
+
+        // update
+        ImmunosuppressionTreatment immunosuppressionTreatment_update = new ImmunosuppressionTreatment();
+        immunosuppressionTreatment_update.setId(new Long(1));
+        immunosuppressionDao.saveImmunosuppressionTreatment(immunosuppressionTreatment_update);
+    }
+
+    @Test
+    public void testImmunosuppressionDelete() throws Exception {
+        ImmunosuppressionTreatment immunosuppressionTreatment =
+                immunosuppressionDao.getImmunosuppressionTreatment(new Long(1));
+        assertNotNull(immunosuppressionTreatment);
+
+        immunosuppressionDao.deleteImmunosuppressionTreatment(immunosuppressionTreatment);
+        immunosuppressionTreatment = immunosuppressionDao.getImmunosuppressionTreatment(new Long(1));
+        assertNull(immunosuppressionTreatment);
+    }
 
     @Test
     public void testGetImmunosuppressionTreatment() {

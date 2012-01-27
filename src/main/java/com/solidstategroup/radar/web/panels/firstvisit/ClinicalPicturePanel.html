@@ -2,6 +2,24 @@
 
 <div id="subBlock">
 
+<table cellpadding="5" class="style1" style="width: 100%; background-color: #B6DF9F;">
+    <tbody>
+    <tr>
+        <td class="btmBorder">
+            <select wicket:id="clinicalPictures">
+            </select>
+
+            &nbsp;Select previous visit record by date&nbsp;
+            <input wicket:id="addNew" type="button" value="Add new visit record">
+        </td>
+        <td class="style2, btmBorder">&nbsp;</td>
+        <td class="style2, btmBorder" style="width:120px">
+            <strong>Clinical</strong></td>
+    </tr>
+    </tbody>
+</table>
+
+<div wicket:id="clinicalPictureContainer">
 <form wicket:id="form">
 <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;" class="style1">
     <tbody>
@@ -501,6 +519,103 @@
                name="ctl00$ContentPlaceHolder1$txtOpDetail_TextBoxWatermarkExtender_ClientState">
     </td>
 </tr>
+<tr wicket:id="complicationsContainer">
+    <td colspan="2">
+        <fieldset>
+            <legend>Complications</legend>
+            <br>
+            <table cellpadding="4" class="style5">
+
+                <tbody>
+                <tr>
+                    <td colspan="2">
+                        <span wicket:id="infectionNecessitatingHospitalisation">
+                                                  Infection necessitating hospitalisation
+                        <input type="radio" wicket:id="yes"/>
+                        Yes
+                        <input type="radio" wicket:id="no"/>
+                        No
+                        </span>
+
+                    </td>
+                </tr>
+                <tr wicket:id="infectionDetailContainer">
+                    <td colspan="2">
+                        <textarea style="width:100%;" cols="20" rows="4"
+                                  wicket:id="infectionDetail"></textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <span wicket:id="complicationThrombosis">
+                                                  Thrombosis
+                                    <span style="display:inline-block;border-width:0px;">
+                                        <input type="radio" wicket:id="yes"/></span>
+                        &nbsp;Yes
+                                    <span style="display:inline-block;border-width:0px;"><input type="radio"
+                                                                                                wicket:id="no"/></span>
+                        &nbsp;No
+                        </span>
+
+                    </td>
+                </tr>
+                <tr wicket:id="complicationThrombosisContainer">
+                    <td colspan="2">
+                        <textarea style="width:100%;" cols="20" rows="4"
+                                  wicket:id="complicationThrombosisDetail"></textarea>
+                    </td>
+                </tr>
+                <tr id="ctl00_ContentPlaceHolder1_rowHypertension">
+                    <td colspan="2">
+                        <span wicket:id="hypertension">
+                                              Hypertension requiring RX:&nbsp;&nbsp;
+                        <input type="radio" wicket:id="yes"/>
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no"/>
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                                <span title="Unknown"><input type="radio" wicket:id="unknown">
+                                    <label wicket:id="unknownLabel">Un</label></span>
+                        </span>
+
+                    </td>
+                </tr>
+
+                <tr id="ctl00_ContentPlaceHolder1_rowCKD">
+                    <td colspan="2">
+                        <span wicket:id="ckdStage">
+                        CKD Stage:&nbsp;&nbsp;
+                        <input type="radio" wicket:id="one"/><label wicket:id="oneLabel">1</label>&nbsp;
+                        <input type="radio" wicket:id="two"/><label wicket:id="twoLabel">2</label>&nbsp;
+                        <input type="radio" wicket:id="three"/><label wicket:id="threeLabel">3</label>&nbsp;
+                        <input type="radio" wicket:id="four"/><label wicket:id="fourLabel">4</label>&nbsp;
+                        <input type="radio" wicket:id="five"/><label wicket:id="fiveLabel">5</label>&nbsp;
+                        <input type="radio" wicket:id="unknown"/><label wicket:id="unknownLabel">Un</label>&nbsp;
+                        </span>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </td>
+</tr>
+<tr wicket:id="listedForTransplantContainer">
+    <td>
+        <span class="indent" id="ctl00_ContentPlaceHolder1_lblTx">Listed for Transplant</span> ?
+    </td>
+    <td>
+        <span wicket:id="listedForTransplant">
+        <span title="Yes"><input type="radio" wicket:id="yes"/><label
+          wicket:id="yesLabel">Yes</label></span>
+        &nbsp;
+        <span title="No"><input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label></span>
+        </span>
+
+    </td>
+</tr>
 </tbody>
 </table>
 </td>
@@ -508,6 +623,7 @@
 </tbody>
 </table>
 </form>
+</div>
 &nbsp;&nbsp;<span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
 
 

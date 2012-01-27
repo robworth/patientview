@@ -16,7 +16,7 @@ public class FirstVisitPanel extends Panel {
     private FirstVisitTreatmentPanel treatmentPanel;
 
     public enum CurrentTab {
-        CLINICAL_PICTURE, LABORATORY_RESULTS, TREATMENT
+        CLINICAL_PICTURE, LABORATORY_RESULTS, TREATMENT, RRT_THERAPY
     }
 
     private CurrentTab currentTab = CurrentTab.CLINICAL_PICTURE;
@@ -30,7 +30,7 @@ public class FirstVisitPanel extends Panel {
         add(new TabAjaxLink("laboratoryResultsLink", CurrentTab.LABORATORY_RESULTS));
         add(new TabAjaxLink("treatmentLink", CurrentTab.TREATMENT));
 
-        clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel", radarNumberModel);
+        clinicalPicturePanel = new ClinicalPicturePanel("clinicalPicturePanel", radarNumberModel, true);
         laboratoryResults = new FirstVisitLaboratoryResultsPanel("laboratoryResultsPanel", radarNumberModel);
         treatmentPanel = new FirstVisitTreatmentPanel("treatmentPanel", radarNumberModel);
         add(clinicalPicturePanel, laboratoryResults, treatmentPanel);

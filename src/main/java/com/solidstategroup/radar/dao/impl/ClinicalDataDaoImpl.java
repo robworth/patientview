@@ -160,8 +160,18 @@ public class ClinicalDataDaoImpl extends BaseDaoImpl implements ClinicalDataDao 
     }
 
     public List<ClinicalData> getClinicalDataByRadarNumber(long radarNumber) {
-        return jdbcTemplate.query("SELECT * FROM tbl_ClinicalData WHERE RADAR_NO = ? ORDER BY SEQ_NO",
+        return jdbcTemplate.query("SELECT * FROM tbl_ClinicalData WHERE RADAR_NO = ?",
                 new Object[]{radarNumber}, new ClinicalDataRowMapper());
+    }
+
+    public ClinicalData getFirstClinicalDataByRadarNumber(long radarNumber) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_ClinicalData WHERE RADAR_NO = ? AND SEQ_NO = 1",
+                    new Object[]{radarNumber}, new ClinicalDataRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
 
     public Phenotype getPhenotype(long id) {
@@ -205,7 +215,7 @@ public class ClinicalDataDaoImpl extends BaseDaoImpl implements ClinicalDataDao 
             clinicalData.setAnaemia(getBooleanWithNullCheck("ANAEMIA", resultSet));
             clinicalData.setHypovalaemia(getBooleanWithNullCheck("HYPOVAL", resultSet));
             clinicalData.setFever(getBooleanWithNullCheck("FEVER", resultSet));
-            clinicalData.setInfectionNecessitatingHospitalisation(getBooleanWithNullCheck("INFECTION",resultSet));
+            clinicalData.setInfectionNecessitatingHospitalisation(getBooleanWithNullCheck("INFECTION", resultSet));
             clinicalData.setInfectionDetail(resultSet.getString("INFECTION_DETAIL"));
             // INFECTION_TYPE - not used within legacy code
 

@@ -3,6 +3,7 @@ package com.solidstategroup.radar.web.panels.followup;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.subtabs.LaboratoryResultsPanel;
 import org.apache.wicket.markup.html.form.TextField;
@@ -43,5 +44,6 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
     @Override
     public boolean isVisible() {
         return ((FollowUpPanel) getParent()).getCurrentTab().equals(FollowUpPanel.CurrentTab.LABORATORY_RESULTS);
+
     }
 }

@@ -50,7 +50,7 @@ public class RadarRequiredDateTextField extends DateTextField{
                         if(feedbackPanel.isVisible()) {
                           return false;
                         }
-                        return super.isVisible();    //To change body of overridden methods use File | Settings | File Templates.
+                        return super.isVisible();
                     }
                 };
         form.add(radarFormComponentFeedbackIndicator);

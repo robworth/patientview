@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.PlasmapheresisDao;
+import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import org.junit.Test;
@@ -10,11 +11,36 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class PlasmapheresisDaoTest extends BaseDaoTest {
 
     @Autowired
     private PlasmapheresisDao plasmapheresisDao;
+
+    @Test
+    public void testSavePlasmapheresis() throws Exception {
+        // save
+        Plasmapheresis plasmapheresis = new Plasmapheresis();
+        plasmapheresisDao.savePlasmapheresis(plasmapheresis);
+        assertNotNull(plasmapheresis.getId());
+
+        // update
+        Plasmapheresis plasmapheresisUpdate = new Plasmapheresis();
+        plasmapheresisUpdate.setId(new Long(1));
+        plasmapheresisDao.savePlasmapheresis(plasmapheresisUpdate);
+    }
+
+    @Test
+    public void testPlasmapheresisDelete() throws Exception {
+        Plasmapheresis plasmapheresis =
+                plasmapheresisDao.getPlasmapheresis(new Long(1));
+        assertNotNull(plasmapheresis);
+
+        plasmapheresisDao.deletePlasmaPheresis(plasmapheresis);
+        plasmapheresis = plasmapheresisDao.getPlasmapheresis(new Long(1));
+        assertNull(plasmapheresis);
+    }
 
     @Test
     public void testGetPlasmapheresis() {

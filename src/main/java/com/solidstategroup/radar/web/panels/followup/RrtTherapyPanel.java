@@ -10,6 +10,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.dataproviders.TransplantDataProvider;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
 import org.apache.wicket.Component;
@@ -65,7 +66,7 @@ public class RrtTherapyPanel extends Panel {
         add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
         // Reusable panel for the dialysis table
-        add(new DialysisTablePanel("dialysisContainer"));
+        add(new DialysisTablePanel("dialysisContainer", radarNumberModel));
 
         // Transplants table
         add(new DataView<Transplant>("transplants", new TransplantDataProvider(radarNumberModel)) {
