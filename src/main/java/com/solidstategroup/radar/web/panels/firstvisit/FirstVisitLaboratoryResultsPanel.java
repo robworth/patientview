@@ -37,7 +37,7 @@ public class FirstVisitLaboratoryResultsPanel extends Panel {
         add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
         add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
-        add(new LaboratoryResultsPanel("formContainer", radarNumberModel));
+        add(new LaboratoryResultsPanel("formContainer", radarNumberModel, true, null, null));
     }
 
     @Override

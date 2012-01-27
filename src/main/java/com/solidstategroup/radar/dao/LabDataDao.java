@@ -11,4 +11,6 @@ public interface LabDataDao {
     LabData getLabData(long id);
 
     List<LabData> getLabDataByRadarNumber(long id);
+
+    LabData getFirstLabDataByRadarNumber(Long id);
 }
