@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class FollowUpLaboratoryResultsPanel extends Panel {
-    public static final String LAB_RESULTS_SELECT_ID = "labResultsSelect";
     @SpringBean
     private DemographicsDao demographicsDao;
     @SpringBean
@@ -75,7 +74,7 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
             }
         };
 
-        final DropDownChoice<LabData> labResultsDropdown = new DropDownChoice(LAB_RESULTS_SELECT_ID, followUpModel,
+        final DropDownChoice<LabData> labResultsDropdown = new DropDownChoice("labResultsSelect", followUpModel,
                 labResultsListModel, new ChoiceRenderer("date", "id"));
 
         final LaboratoryResultsPanel formContainer = new LaboratoryResultsPanel("formContainer", radarNumberModel,

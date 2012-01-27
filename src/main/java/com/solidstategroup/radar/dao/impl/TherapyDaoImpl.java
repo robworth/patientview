@@ -152,6 +152,16 @@ public class TherapyDaoImpl extends BaseDaoImpl implements TherapyDao {
                 new TherapyRowMapper());
     }
 
+    public Therapy getFirstTherapyByRadarNumber(long radarNumber) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Therapy WHERE RADAR_NO = ? AND SEQ_NO = 1",
+                    new Object[]{radarNumber}, new TherapyRowMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+             return null;
+        }
+    }
+
     private class TherapyRowMapper implements RowMapper<Therapy> {
         public Therapy mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a therapy object and populate the fields
