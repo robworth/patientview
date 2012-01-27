@@ -219,6 +219,15 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                 new Object[]{id}, new LabDataRowMapper());
     }
 
+    public LabData getFirstLabDataByRadarNumber(Long id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_LabData WHERE RADAR_NO = ? AND SEQ_NO = 1",
+                    new Object[]{id}, new LabDataRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     private class LabDataRowMapper implements RowMapper<LabData> {
         public LabData mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a lab data object and set all the fields
@@ -333,7 +342,7 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                     .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, getIntegerWithNullCheck("HAEMATURIA", resultSet)));
             labData.setAlbuminuria(BaseDaoImpl
                     .<LabData.Albuminuria>getEnumValue(LabData.Albuminuria.class, getIntegerWithNullCheck("ALBUMINURIA"
-                    , resultSet)));
+                            , resultSet)));
 
             labData.setDysmorphicErythrocytes(BaseDaoImpl
                     .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("DYS_ERYTH_URINE", resultSet)));

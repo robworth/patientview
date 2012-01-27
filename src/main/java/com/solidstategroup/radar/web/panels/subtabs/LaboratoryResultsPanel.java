@@ -9,6 +9,7 @@ import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.panels.followup.FollowUpLaboratoryResultsPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -45,12 +46,13 @@ public class LaboratoryResultsPanel extends Panel {
     @SpringBean
     private ClinicalDataDao clinicalDataDao;
 
-    public LaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel) {
+    public LaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel, boolean firstVisit,
+                                  IModel<LabData> followingVisitModel, List<Component> followingVisitComponentsToUpdate) {
         super(id);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        final CompoundPropertyModel<LabData> model = new CompoundPropertyModel<LabData>(new LoadableDetachableModel<LabData>() {
+        final CompoundPropertyModel<LabData> firsVisitModel = new CompoundPropertyModel<LabData>(new LoadableDetachableModel<LabData>() {
             @Override
             public LabData load() {
                 LabData labDataModelObject = null;
@@ -63,8 +65,8 @@ public class LaboratoryResultsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    List<LabData> labDatas = labDataDao.getLabDataByRadarNumber(radarNumber);
-                    labDataModelObject = !labDatas.isEmpty() ? labDatas.get(0) : null;
+                    labDataModelObject = labDataDao.getFirstLabDataByRadarNumber(radarNumber);
+
                 }
 
                 if (labDataModelObject == null) {
@@ -75,9 +77,16 @@ public class LaboratoryResultsPanel extends Panel {
             }
         });
 
+        IModel<LabData> formModel;
+        if(firstVisit) {
+            formModel = firsVisitModel;
+        } else {
+            formModel =  new CompoundPropertyModel<LabData>(followingVisitModel);
+        }
+
         final IModel<ClinicalData> clinicalDataModel = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel, clinicalDataDao);
 
-        final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(model)) {
+        final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(formModel)) {
             @Override
             protected void onSubmit() {
                 LabData labData = getModelObject();
@@ -324,13 +333,13 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation("complementC4", new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate));
 
         final IModel<Boolean> complementOtherDetailsVisibility = new Model<Boolean>(false);
-        complementOtherDetailsVisibility.setObject(model.getObject().getComplementOther() != null);
+        complementOtherDetailsVisibility.setObject(form.getModelObject().getComplementOther() != null);
 
         CheckBox complementOtherSelected = new CheckBox("complementOtherSelected");
         complementOtherSelected.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                complementOtherDetailsVisibility.setObject(model.getObject().getComplementOtherSelected());
+                complementOtherDetailsVisibility.setObject(form.getModelObject().getComplementOtherSelected());
                 target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
         });
@@ -433,8 +442,8 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(parvovirusAntibodyContainer);
 
 
-        boolean showOtherInfectionDetailsOnInit = model.getObject().getOtherInfection() != null ?
-                model.getObject().getOtherInfection() : false;
+        boolean showOtherInfectionDetailsOnInit = form.getModelObject().getOtherInfection() != null ?
+                form.getModelObject().getOtherInfection() : false;
 
         final IModel<Boolean> showInfectionDetailsIModel = new Model<Boolean>(showOtherInfectionDetailsOnInit);
 
@@ -442,7 +451,7 @@ public class LaboratoryResultsPanel extends Panel {
         otherInfection.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                showInfectionDetailsIModel.setObject(model.getObject().getOtherInfection());
+                showInfectionDetailsIModel.setObject(form.getModelObject().getOtherInfection());
                 target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
         });
@@ -479,6 +488,13 @@ public class LaboratoryResultsPanel extends Panel {
         };
 
         form.add(save, saveDown);
+
+        if(!firstVisit) {
+            for(Component component : followingVisitComponentsToUpdate) {
+              componentsToUpdate.add(component);
+            }
+
+        }
     }
 
     private final class YesNoNdRadioGroup extends RadioGroup<Boolean> {

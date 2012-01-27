@@ -115,27 +115,6 @@ public class DemographicsPanel extends Panel {
                     diagnosisDao.saveDiagnosis(diagnosis_new);
                 }
 
-                // create new clinical date if it doesnt exist
-                if (clinicalDataDao.getClinicalDataByRadarNumber(demographics.getId()).size() == 0) {
-                    ClinicalData clinicalData = new ClinicalData();
-                    clinicalData.setRadarNumber(demographics.getId());
-                    clinicalData.setSequenceNumber(1);
-                    clinicalDataDao.saveClinicalDate(clinicalData);
-                }
-
-                if (labDataDao.getLabDataByRadarNumber(demographics.getId()).isEmpty()) {
-                    LabData labData = new LabData();
-                    labData.setRadarNumber(demographics.getId());
-                    labData.setSequenceNumber(1);
-                    labDataDao.saveLabData(labData);
-                }
-
-                if(therapyDao.getTherapyByRadarNumber(demographics.getId()).isEmpty()){
-                    Therapy therapy = new Therapy();
-                    therapy.setRadarNumber(demographics.getId());
-                    therapy.setSequenceNumber(1);
-                    therapyDao.saveTherapy(therapy);
-                }
             }
         };
         add(form);
