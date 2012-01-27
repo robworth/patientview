@@ -5,17 +5,11 @@
             <tbody>
             <tr>
                 <td class="btmBorder">
-                    <select id="ctl00_ContentPlaceHolder1_DropDownList4"
-                            onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList4\',\'\')', 0)"
-                            name="ctl00$ContentPlaceHolder1$DropDownList4">
-                        <option value="" selected="selected">Select</option>
-                        <option value="1"></option>
-
+                    <select wicket:id="treatmentDropdown">
                     </select>
 
                     &nbsp;Select previous visit record by date&nbsp;
-                    <input type="submit" id="ctl00_ContentPlaceHolder1_btnAdd" value="Add new visit record"
-                           name="ctl00$ContentPlaceHolder1$btnAdd">
+                    <input type="submit" wicket:id="addNew" value="Add new visit record">
                 </td>
                 <td class="style2, btmBorder">&nbsp;</td>
                 <td style="width:120px" class="style2, btmBorder">
@@ -25,7 +19,7 @@
         </table>
         <div id="ctl00_ContentPlaceHolder1_pnlAdd">
 
-            <table cellpadding="4" id="tblHeader" style="width: 100%;" class="style1">
+            <table wicket:id="treatmentContainer" cellpadding="4" id="tblHeader" style="width: 100%;" class="style1">
                 <tbody>
                 <tr>
                     <td>
@@ -64,7 +58,7 @@
             </table>
 
 
-            <wicket:container wicket:id="treatmentPanel"/>
+            <div wicket:id="treatmentPanel"/>
         </div>
     </div>
 

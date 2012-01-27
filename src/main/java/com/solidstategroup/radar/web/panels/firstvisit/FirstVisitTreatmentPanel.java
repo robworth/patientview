@@ -36,7 +36,7 @@ public class FirstVisitTreatmentPanel extends Panel {
         add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
         add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
-        add(new TreatmentPanel("treatmentPanel", radarNumberModel));
+        add(new TreatmentPanel("treatmentPanel", radarNumberModel, true, null, null));
     }
 
     @Override

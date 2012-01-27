@@ -12,4 +12,5 @@ public interface TherapyDao {
 
     List<Therapy> getTherapyByRadarNumber(long radarNumber);
 
+    Therapy getFirstTherapyByRadarNumber(long radarNumber);
 }

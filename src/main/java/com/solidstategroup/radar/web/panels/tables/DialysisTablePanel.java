@@ -48,7 +48,6 @@ public class DialysisTablePanel extends Panel {
         };
 
         final WebMarkupContainer dialysisContainer = new WebMarkupContainer("dialysisContainer");
-        dialysisContainer.setVisible(!((List)dialysisListModel.getObject()).isEmpty());
         add(dialysisContainer);
 
         final List<Component> addDialysisFormComponentsToUpdate = new ArrayList<Component>();
@@ -82,8 +81,6 @@ public class DialysisTablePanel extends Panel {
                         treatmentDao.deleteTreatment(treatment);
                         target.add(addDialysisFormComponentsToUpdate.toArray(new Component[
                                 addDialysisFormComponentsToUpdate.size()]));
-
-                        dialysisContainer.setVisible(!((List)dialysisListModel.getObject()).isEmpty());
                         target.add(dialysisContainer);
 
                     }

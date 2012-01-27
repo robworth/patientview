@@ -6,6 +6,7 @@ import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.dao.TherapyDao;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.Plasmapheresis;
+import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -59,7 +60,8 @@ public class TreatmentPanel extends Panel {
 
     private IModel<ImmunosuppressionTreatment> editImmunosuppressionTreatmentIModel;
 
-    public TreatmentPanel(String id, final IModel<Long> radarNumberModel) {
+    public TreatmentPanel(String id, final IModel<Long> radarNumberModel, boolean firstVisit,
+                          IModel<Therapy> followingVisitTherapyModel, List<Component> followingVisitComponentsToUpdate) {
         super(id);
 
         // Immunosuppression including Monoclonals
@@ -84,9 +86,6 @@ public class TreatmentPanel extends Panel {
 
         final WebMarkupContainer immunosuppressionTreatmentsContainer =
                 new WebMarkupContainer("immunosuppressionTreatmentsContainer");
-
-        immunosuppressionTreatmentsContainer.setVisible(!((List) immunosuppressionTreatmentListModel.getObject())
-                .isEmpty());
 
         // For showing edit from ajax call
         final MarkupContainer editContainer = new WebMarkupContainer("editContainer") {
@@ -114,9 +113,6 @@ public class TreatmentPanel extends Panel {
                                 immunosuppressionDao.deleteImmunosuppressionTreatment(item.getModelObject());
                                 ajaxRequestTarget.add(addImmunoSuppressComponentsToUpdate.toArray(
                                         new Component[addImmunoSuppressComponentsToUpdate.size()]));
-                                if (((List) immunosuppressionTreatmentListModel.getObject()).isEmpty()) {
-                                    immunosuppressionTreatmentsContainer.setVisible(false);
-                                }
                                 ajaxRequestTarget.add(immunosuppressionTreatmentsContainer);
                             }
                         });
@@ -127,6 +123,8 @@ public class TreatmentPanel extends Panel {
                                 ajaxRequestTarget.add(editContainer);
                             }
                         });
+
+                        immunosuppressionTreatmentsContainer.setVisible(true);
                     }
                 };
 
@@ -201,15 +199,14 @@ public class TreatmentPanel extends Panel {
         // Drugs
         final List<Component> therapyFormComponentsToUpdate = new ArrayList<Component>();
 
-        final CompoundPropertyModel<Therapy> therapyFormModel = new CompoundPropertyModel<Therapy>(new LoadableDetachableModel
-                <Therapy>() {
+        final CompoundPropertyModel<Therapy> firstVisitTherapyFormModel = new CompoundPropertyModel
+                <Therapy>(new LoadableDetachableModel <Therapy>() {
             @Override
             public Therapy load() {
                 Therapy therapyModelObject = null;
 
                 if (radarNumberModel.getObject() != null) {
-                    List<Therapy> therapies = therapyDao.getTherapyByRadarNumber(radarNumberModel.getObject());
-                    therapyModelObject = !therapies.isEmpty() ? therapies.get(0) : null;
+                    therapyModelObject = therapyDao.getFirstTherapyByRadarNumber(radarNumberModel.getObject());
                 }
 
                 if (therapyModelObject == null) {
@@ -219,7 +216,15 @@ public class TreatmentPanel extends Panel {
                 return therapyModelObject;
             }
         });
-        Form<Therapy> therapyForm = new Form<Therapy>("therapyForm", therapyFormModel) {
+
+        CompoundPropertyModel<Therapy> therapyFormModel;
+        if (firstVisit) {
+            therapyFormModel = firstVisitTherapyFormModel;
+        } else {
+            therapyFormModel = new CompoundPropertyModel<Therapy>(followingVisitTherapyModel);
+        }
+
+        final Form<Therapy> therapyForm = new Form<Therapy>("therapyForm", therapyFormModel) {
             @Override
             protected void onSubmit() {
                 Therapy therapy = getModelObject();
@@ -264,11 +269,14 @@ public class TreatmentPanel extends Panel {
                 return isSrnsModel.getObject();
             }
         };
-        YesNoRadioGroupPanel nsaidContainer = new YesNoRadioGroupPanel("nsaidContainer", true, therapyFormModel, "nsaid");
+        YesNoRadioGroupPanel nsaidContainer = new YesNoRadioGroupPanel("nsaidContainer", true,
+                (CompoundPropertyModel) therapyFormModel,
+                "nsaid");
         nsaidContainerParent.add(nsaidContainer);
         therapyForm.add(nsaidContainerParent);
 
-        nsaidContainerParent.add(new YesNoRadioGroupPanel("nsaidPriorContainer", true, therapyFormModel, "nsaidPrior") {
+        nsaidContainerParent.add(new YesNoRadioGroupPanel("nsaidPriorContainer", true,
+                (CompoundPropertyModel) therapyFormModel, "nsaidPrior") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -282,31 +290,32 @@ public class TreatmentPanel extends Panel {
             }
         };
         ;
-        YesNoRadioGroupPanel diureticContainer = new YesNoRadioGroupPanel("diureticContainer", true, therapyFormModel,
+        YesNoRadioGroupPanel diureticContainer = new YesNoRadioGroupPanel("diureticContainer", true,
+                (CompoundPropertyModel) therapyFormModel,
                 "diuretic");
 
         diureticContainerParent.add(diureticContainer);
         therapyForm.add(diureticContainerParent);
 
         diureticContainerParent.add(new YesNoRadioGroupPanel("diureticPriorContainer",
-                true, therapyFormModel, "diureticPrior") {
+                true, (CompoundPropertyModel) therapyFormModel, "diureticPrior") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
             }
         });
 
-        boolean antihypertensiveToggleInit = (Boolean.FALSE.equals(therapyFormModel.getObject().getAntihypertensive())
-                && Boolean.FALSE.equals(therapyFormModel.getObject().getAntihypertensivePrior())) ||
-                (therapyFormModel.getObject().getAntihypertensive() == null &&
-                        therapyFormModel.getObject().getAntihypertensivePrior() == null)
+        boolean antihypertensiveToggleInit = (Boolean.FALSE.equals(therapyForm.getModelObject().getAntihypertensive())
+                && Boolean.FALSE.equals(therapyForm.getModelObject().getAntihypertensivePrior())) ||
+                (therapyForm.getModelObject().getAntihypertensive() == null &&
+                        therapyForm.getModelObject().getAntihypertensivePrior() == null)
                 ? false : true;
         final IModel<Boolean> antihypertensiveToggleModel = new Model<Boolean>(antihypertensiveToggleInit);
 
         AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour = new AjaxFormChoiceComponentUpdatingBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                antihypertensiveToggleModel.setObject(therapyFormModel.getObject().getAntihypertensive());
+                antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensive());
 
                 target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
             }
@@ -315,13 +324,14 @@ public class TreatmentPanel extends Panel {
         AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour2 = new AjaxFormChoiceComponentUpdatingBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                antihypertensiveToggleModel.setObject(therapyFormModel.getObject().getAntihypertensivePrior());
+                antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensivePrior());
 
                 target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
             }
         };
 
-        YesNoRadioGroupPanel antihypertensiveContainer = new YesNoRadioGroupPanel("antihypertensiveContainer", true, therapyFormModel,
+        YesNoRadioGroupPanel antihypertensiveContainer = new YesNoRadioGroupPanel("antihypertensiveContainer", true,
+                therapyFormModel,
                 "antihypertensive", antihypertensiveToggleBehaviour);
         therapyForm.add(antihypertensiveContainer);
 
@@ -550,8 +560,6 @@ public class TreatmentPanel extends Panel {
         };
 
         final WebMarkupContainer plasmapheresisContainer = new WebMarkupContainer("plasmapheresisContainer");
-        plasmapheresisContainer.setVisible(!((List) plasmapheresisListModel.getObject())
-                .isEmpty());
 
         plasmapheresisContainer.setOutputMarkupId(true);
         plasmapheresisContainer.setOutputMarkupPlaceholderTag(true);
@@ -587,9 +595,6 @@ public class TreatmentPanel extends Panel {
                         plasmapheresisDao.deletePlasmaPheresis(plasmapheresis);
                         target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
                                 addPlasmapheresisComponentsToUpdate.size()]));
-                        if (((List) plasmapheresisListModel.getObject()).isEmpty()) {
-                            plasmapheresisContainer.setVisible(false);
-                        }
                         target.add(plasmapheresisContainer);
                     }
                 });
@@ -661,6 +666,12 @@ public class TreatmentPanel extends Panel {
         add(addPlasmapheresisForm);
 
         add(new DialysisTablePanel("dialysisContainer", radarNumberModel));
+
+       if(!firstVisit) {
+           for(Component component : followingVisitComponentsToUpdate) {
+              therapyFormComponentsToUpdate.add(component);
+           }
+       }
 
     }
 
