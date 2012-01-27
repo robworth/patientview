@@ -4,13 +4,74 @@ import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlasmapheresisDaoImpl extends BaseDaoImpl implements PlasmapheresisDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlasmapheresisDaoImpl.class);
+    private SimpleJdbcInsert plasmapheresisInsert;
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        // Call super
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        plasmapheresisInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_rrt_plasma")
+                .usingGeneratedKeyColumns("plID").usingColumns("RADAR_NO", "PLASMAPH", "DATE_START_PLASMAPH",
+                        "DATE_STOP_PLASMAPH", "NO_EXCH_PLASMAPH", "DUR_PLASMAPH", "RESPONSE_TO_PLASMA");
+    }
+
+    public void savePlasmapheresis(final Plasmapheresis plasmapheresis) {
+        Map<String, Object> plasmapheresisMap = new HashMap<String, Object>() {
+            {
+                put("RADAR_NO", plasmapheresis.getRadarNumber());
+                put("PLASMAPH", null);
+                put("DATE_START_PLASMAPH", plasmapheresis.getStartDate());
+                put("DATE_STOP_PLASMAPH", plasmapheresis.getEndDate());
+                put("NO_EXCH_PLASMAPH", plasmapheresis.getPlasmapheresisExchanges() != null ?
+                        plasmapheresis.getPlasmapheresisExchanges().getId() : null);
+                put("DUR_PLASMAPH", null);
+                put("RESPONSE_TO_PLASMA", plasmapheresis.getResponse() != null ? plasmapheresis.getResponse().getId() :
+                        null);
+            }
+        };
+
+        if (plasmapheresis.hasValidId()) {
+            plasmapheresisMap.put("plID", plasmapheresis.getId());
+            namedParameterJdbcTemplate.update("UPDATE tbl_rrt_plasma " +
+                    "SET RADAR_NO = :RADAR_NO, " +
+                    "PLASMAPH = :PLASMAPH, " +
+                    "DATE_START_PLASMAPH = :DATE_START_PLASMAPH, " +
+                    "DATE_STOP_PLASMAPH = :DATE_STOP_PLASMAPH, " +
+                    "NO_EXCH_PLASMAPH = :NO_EXCH_PLASMAPH, " +
+                    "DUR_PLASMAPH = :DUR_PLASMAPH, " +
+                    "RESPONSE_TO_PLASMA = :RESPONSE_TO_PLASMA " +
+                    " WHERE plID = :plID;", plasmapheresisMap);
+
+        } else {
+            Number id = plasmapheresisInsert.executeAndReturnKey(plasmapheresisMap);
+            plasmapheresis.setId(id.longValue());
+        }
+    }
+
+    public void deletePlasmaPheresis(Plasmapheresis plasmapheresis) {
+        Map<String, Object> plasmapheresisMap = new HashMap<String, Object>();
+        plasmapheresisMap.put("plID", plasmapheresis.getId());
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_rrt_plasma " +
+                "WHERE plID = :plID;", plasmapheresisMap);
+    }
 
     public Plasmapheresis getPlasmapheresis(long id) {
 
@@ -23,9 +84,13 @@ public class PlasmapheresisDaoImpl extends BaseDaoImpl implements Plasmapheresis
         // WHERE (tbl_RRT_PLASMA.RADAR_NO = @RADAR_NO) ORDER BY tbl_RRT_PLASMA.DATE_START_PLASMAPH DESC
 
         // Rather than joins lets do n+1 tho, slight performance hit means better testing, more reusable code
-
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_RRT_PLASMA WHERE plID = ?", new Object[]{id},
-                new PlasmapheresisRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_RRT_PLASMA WHERE plID = ?", new Object[]{id},
+                    new PlasmapheresisRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get result for tbl_rrt_plasmawith ID {}", id);
+            return null;
+        }
     }
 
     public List<Plasmapheresis> getPlasmapheresisByRadarNumber(long radarNumber) {

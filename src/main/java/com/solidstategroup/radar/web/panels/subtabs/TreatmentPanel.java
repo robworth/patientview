@@ -2,11 +2,10 @@ package com.solidstategroup.radar.web.panels.subtabs;
 
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.ImmunosuppressionDao;
+import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.dao.TherapyDao;
-import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.Plasmapheresis;
-import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -14,8 +13,7 @@ import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
-import com.solidstategroup.radar.web.dataproviders.ImmunosuppressionTreatmentDataProvider;
-import com.solidstategroup.radar.web.dataproviders.PlasmapheresisDataProvider;
+import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.firstvisit.YesNoRadioGroupPanel;
 import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
@@ -23,6 +21,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
@@ -31,16 +30,20 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -51,60 +54,115 @@ public class TreatmentPanel extends Panel {
     private DiagnosisDao diagnosisDao;
     @SpringBean
     private ImmunosuppressionDao immunosuppressionDao;
+    @SpringBean
+    private PlasmapheresisDao plasmapheresisDao;
+
+    private IModel<ImmunosuppressionTreatment> editImmunosuppressionTreatmentIModel;
 
     public TreatmentPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
 
         // Immunosuppression including Monoclonals
 
-        add(new DataView<ImmunosuppressionTreatment>("immunosuppressions",
-                new ImmunosuppressionTreatmentDataProvider()) {
+        final IModel immunosuppressionTreatmentListModel = new AbstractReadOnlyModel<List>() {
             @Override
-            protected void populateItem(Item<ImmunosuppressionTreatment> item) {
-                item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
-                item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
-                item.add(new Label("immunosuppression.description"));
-                item.add(new AjaxLink("deleteLink") {
-                    @Override
-                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        // Todo: Implement
-                    }
-                });
-                item.add(new AjaxLink("editLink") {
-                    @Override
-                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        // Todo: Implement
-                    }
-                });
-            }
-        });
+            public List getObject() {
 
-        // For showing edit from ajax call
-        MarkupContainer editContainer = new WebMarkupContainer("editContainer");
-        editContainer.setOutputMarkupPlaceholderTag(true);
-        editContainer.setVisible(false);
+                if (radarNumberModel.getObject() != null) {
+                    return immunosuppressionDao.getImmunosuppressionTreatmentByRadarNumber(
+                            radarNumberModel.getObject());
+                }
+                return Collections.emptyList();
+
+            }
+        };
+
+        editImmunosuppressionTreatmentIModel = new Model<ImmunosuppressionTreatment>();
 
         final List<Component> addImmunoSuppressComponentsToUpdate = new ArrayList<Component>();
+        final List<Component> editImmunoSuppressComponentsToUpdate = new ArrayList<Component>();
+
+        final WebMarkupContainer immunosuppressionTreatmentsContainer =
+                new WebMarkupContainer("immunosuppressionTreatmentsContainer");
+
+        immunosuppressionTreatmentsContainer.setVisible(!((List) immunosuppressionTreatmentListModel.getObject())
+                .isEmpty());
+
+        // For showing edit from ajax call
+        final MarkupContainer editContainer = new WebMarkupContainer("editContainer") {
+            @Override
+            public boolean isVisible() {
+                return editImmunosuppressionTreatmentIModel.getObject() != null;
+            }
+        };
+        editContainer.setOutputMarkupId(true);
+        editContainer.setOutputMarkupPlaceholderTag(true);
+
+        ListView<ImmunosuppressionTreatment> immunosuppressionTreatmentListView =
+                new ListView<ImmunosuppressionTreatment>("immunosuppressionTreatments",
+                        immunosuppressionTreatmentListModel) {
+                    @Override
+                    protected void populateItem(final ListItem<ImmunosuppressionTreatment> item) {
+                        item.setModel(new CompoundPropertyModel<ImmunosuppressionTreatment>(item.getModelObject()));
+                        item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
+                        item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
+                        item.add(new Label("immunosuppression.description"));
+                        item.add(new Label("cyclophosphamideTotalDose"));
+                        item.add(new AjaxLink("deleteLink") {
+                            @Override
+                            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                                immunosuppressionDao.deleteImmunosuppressionTreatment(item.getModelObject());
+                                ajaxRequestTarget.add(addImmunoSuppressComponentsToUpdate.toArray(
+                                        new Component[addImmunoSuppressComponentsToUpdate.size()]));
+                                if (((List) immunosuppressionTreatmentListModel.getObject()).isEmpty()) {
+                                    immunosuppressionTreatmentsContainer.setVisible(false);
+                                }
+                                ajaxRequestTarget.add(immunosuppressionTreatmentsContainer);
+                            }
+                        });
+                        item.add(new AjaxLink("editLink") {
+                            @Override
+                            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                                editImmunosuppressionTreatmentIModel.setObject(item.getModelObject());
+                                ajaxRequestTarget.add(editContainer);
+                            }
+                        });
+                    }
+                };
+
+        immunosuppressionTreatmentsContainer.add(immunosuppressionTreatmentListView);
+        add(immunosuppressionTreatmentsContainer);
+
+
+        immunosuppressionTreatmentsContainer.setOutputMarkupId(true);
+        immunosuppressionTreatmentsContainer.setOutputMarkupPlaceholderTag(true);
 
         // Construct the form
         ImmunosuppressionTreatmentForm editImmunosuppressionForm =
                 new ImmunosuppressionTreatmentForm("editImmunosuppressionForm",
-                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()), new ArrayList<Component>());
+                        new CompoundPropertyModel<ImmunosuppressionTreatment>(editImmunosuppressionTreatmentIModel),
+                        editImmunoSuppressComponentsToUpdate);
+
         editImmunosuppressionForm.add(new AjaxSubmitLink("save") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                immunosuppressionDao.saveImmunosuppressionTreatment((ImmunosuppressionTreatment) form.getModelObject());
+                editImmunosuppressionTreatmentIModel.setObject(null);
+                target.add(editContainer);
+                target.add(immunosuppressionTreatmentsContainer);
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-
+                target.add(editImmunoSuppressComponentsToUpdate.toArray(
+                        new Component[editImmunoSuppressComponentsToUpdate.size()]));
             }
         });
         editImmunosuppressionForm.add(new AjaxLink("cancel") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                // Todo: Implement
+                editImmunosuppressionTreatmentIModel.setObject(null);
+                target.add(editContainer);
             }
         });
         editContainer.add(editImmunosuppressionForm);
@@ -119,9 +177,16 @@ public class TreatmentPanel extends Panel {
 
         addImmunosuppressionForm.add(new AjaxSubmitLink("submit") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
                 target.add(addImmunoSuppressComponentsToUpdate.toArray(
                         new Component[addImmunoSuppressComponentsToUpdate.size()]));
+                ImmunosuppressionTreatment immunosuppressionTreatment = (ImmunosuppressionTreatment)
+                        form.getModelObject();
+                immunosuppressionTreatment.setRadarNumber(radarNumberModel.getObject());
+                immunosuppressionDao.saveImmunosuppressionTreatment(immunosuppressionTreatment);
+                form.getModel().setObject(new ImmunosuppressionTreatment());
+                immunosuppressionTreatmentsContainer.setVisible(true);
+                target.add(immunosuppressionTreatmentsContainer);
             }
 
             @Override
@@ -471,85 +536,141 @@ public class TreatmentPanel extends Panel {
         };
 
         therapyForm.add(save);
-
         add(therapyForm);
 
-        // Plasmapheresis
-        add(new DataView<Plasmapheresis>("plasmapheresis", new PlasmapheresisDataProvider()) {
+        final IModel plasmapheresisListModel = new AbstractReadOnlyModel<List>() {
             @Override
-            protected void populateItem(Item<Plasmapheresis> item) {
-                item.add(DateLabel.forDatePattern("dateStarted", RadarApplication.DATE_PATTERN));
-                item.add(DateLabel.forDatePattern("dateStopped", RadarApplication.DATE_PATTERN));
+            public List getObject() {
+
+                if (radarNumberModel.getObject() != null) {
+                    return plasmapheresisDao.getPlasmapheresisByRadarNumber(radarNumberModel.getObject());
+                }
+                return Collections.emptyList();
+            }
+        };
+
+        final WebMarkupContainer plasmapheresisContainer = new WebMarkupContainer("plasmapheresisContainer");
+        plasmapheresisContainer.setVisible(!((List) plasmapheresisListModel.getObject())
+                .isEmpty());
+
+        plasmapheresisContainer.setOutputMarkupId(true);
+        plasmapheresisContainer.setOutputMarkupPlaceholderTag(true);
+        add(plasmapheresisContainer);
+
+        final List<Component> addPlasmapheresisComponentsToUpdate = new ArrayList<Component>();
+        final List<Component> editPlasmapheresisComponentsToUpdate = new ArrayList<Component>();
+
+        final IModel editPlasmapheresisModel = new Model<Plasmapheresis>();
+        final MarkupContainer editPlasmapheresisContainer = new WebMarkupContainer("editPlasmapheresisContainer") {
+            @Override
+            public boolean isVisible() {
+                return editPlasmapheresisModel.getObject() != null;
+            }
+        };
+        editPlasmapheresisContainer.setOutputMarkupPlaceholderTag(true);
+        editPlasmapheresisContainer.setOutputMarkupId(true);
+
+        // Plasmapheresis
+        ListView<Plasmapheresis> plasmapheresisListViewlistView = new ListView<Plasmapheresis>("plasmapheresis",
+                plasmapheresisListModel) {
+            @Override
+            protected void populateItem(final ListItem<Plasmapheresis> item) {
+                item.setModel(new CompoundPropertyModel<Plasmapheresis>(item.getModelObject()));
+                item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
                 item.add(new Label("plasmapheresisExchanges.name"));
-                item.add(new Label("response"));
+                item.add(new Label("response.label"));
                 item.add(new AjaxLink("deleteLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        // Todo: Implement
+                        Plasmapheresis plasmapheresis = item.getModelObject();
+                        plasmapheresisDao.deletePlasmaPheresis(plasmapheresis);
+                        target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
+                                addPlasmapheresisComponentsToUpdate.size()]));
+                        if (((List) plasmapheresisListModel.getObject()).isEmpty()) {
+                            plasmapheresisContainer.setVisible(false);
+                        }
+                        target.add(plasmapheresisContainer);
                     }
                 });
                 item.add(new AjaxLink("editLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        // Todo: Implement
+                        editPlasmapheresisModel.setObject(item.getModelObject());
+                        target.add(editPlasmapheresisContainer);
                     }
                 });
             }
-        });
-
-        MarkupContainer editPlasmapheresisContainer = new WebMarkupContainer("editPlasmapheresisContainer");
-        editPlasmapheresisContainer.setVisible(false);
+        };
+        plasmapheresisContainer.add(plasmapheresisListViewlistView);
 
         // Add the form
         PlasmapheresisForm editPlasmapheresisForm = new PlasmapheresisForm("editPlasmapheresisForm",
-                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()), new ArrayList<Component>());
+                new CompoundPropertyModel<Plasmapheresis>(editPlasmapheresisModel),
+                editPlasmapheresisComponentsToUpdate);
+        editPlasmapheresisContainer.add(editPlasmapheresisForm);
+
         editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                plasmapheresisDao.savePlasmapheresis((Plasmapheresis) form.getModelObject());
+                form.getModel().setObject(null);
+                target.add(editPlasmapheresisContainer);
+                target.add(plasmapheresisContainer);
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(editPlasmapheresisComponentsToUpdate.toArray(new Component[
+                        editPlasmapheresisComponentsToUpdate.size()]));
             }
         });
         editPlasmapheresisForm.add(new AjaxLink("cancel") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                // Todo: Implement
+                editPlasmapheresisModel.setObject(null);
+                target.add(editPlasmapheresisContainer);
             }
         });
         add(editPlasmapheresisContainer);
 
-        final List<Component> plasmapheresisComponentsToUpdate = new ArrayList<Component>();
         // Add the add plasmapheresis form
         PlasmapheresisForm addPlasmapheresisForm = new PlasmapheresisForm("addPlasmapheresisForm",
-                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()), plasmapheresisComponentsToUpdate);
+                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()), addPlasmapheresisComponentsToUpdate);
 
         addPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                target.add(plasmapheresisComponentsToUpdate.toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                Plasmapheresis plasmapheresis = (Plasmapheresis) form.getModelObject();
+                plasmapheresis.setRadarNumber(radarNumberModel.getObject());
+                plasmapheresisDao.savePlasmapheresis(plasmapheresis);
+                target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
+                        addPlasmapheresisComponentsToUpdate.size()]));
+                plasmapheresisContainer.setVisible(true);
+                target.add(plasmapheresisContainer);
+                form.getModel().setObject(new Plasmapheresis());
+
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.add(plasmapheresisComponentsToUpdate.toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
+                target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
+                        addPlasmapheresisComponentsToUpdate.size()]));
             }
         });
         add(addPlasmapheresisForm);
 
-        add(new DialysisTablePanel("dialysisContainer"));
+        add(new DialysisTablePanel("dialysisContainer", radarNumberModel));
 
     }
 
     private final class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
+        public static final long CYCLOPHOSPHAMIDE_ID = 8;
         private RadarDateTextField endDate;
         @SpringBean
         private ImmunosuppressionDao immunosuppressionDao;
 
-        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model, List<Component> componentsToUpdate) {
+        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model, final List<Component> componentsToUpdate) {
             super(id, model);
             RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
             add(startDate);
@@ -557,10 +678,69 @@ public class TreatmentPanel extends Panel {
             RadarRequiredDropdownChoice immunoSuppression = new RadarRequiredDropdownChoice("immunosuppression",
                     immunosuppressionDao.getImmunosuppressions(), new ChoiceRenderer("description", "id"),
                     this, componentsToUpdate);
+
+            final Label totalDoseLabel = new Label("totalDoseLabel", "Total dose of course in g") {
+                @Override
+                public boolean isVisible() {
+                    if (ImmunosuppressionTreatmentForm.this.getModelObject() != null) {
+                        return ImmunosuppressionTreatmentForm.this.getModelObject().getImmunosuppression() != null ?
+                                ImmunosuppressionTreatmentForm.this.getModelObject().getImmunosuppression().getId().
+                                        equals(CYCLOPHOSPHAMIDE_ID) : false;
+                    }
+
+                    return false;
+                }
+            };
+            add(totalDoseLabel);
+
+            final TextField cyclophosphamideTotalDose = new RadarTextFieldWithValidation("cyclophosphamideTotalDose",
+                    new RangeValidator<Double>(0.010, 9.999), true, this, componentsToUpdate) {
+                @Override
+                public boolean isVisible() {
+                    if (ImmunosuppressionTreatmentForm.this.getModelObject() != null) {
+                        return ImmunosuppressionTreatmentForm.this.getModelObject().getImmunosuppression() != null ?
+                                ImmunosuppressionTreatmentForm.this.getModelObject().getImmunosuppression().getId().
+                                        equals(CYCLOPHOSPHAMIDE_ID) :
+                                false;
+                    }
+
+                    return false;
+                }
+            };
+            add(cyclophosphamideTotalDose);
+
+            totalDoseLabel.setOutputMarkupId(true);
+            totalDoseLabel.setOutputMarkupPlaceholderTag(true);
+            cyclophosphamideTotalDose.setOutputMarkupId(true);
+            cyclophosphamideTotalDose.setOutputMarkupPlaceholderTag(true);
+
+            immunoSuppression.add(new AjaxFormComponentUpdatingBehavior("onChange") {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
+                    target.add(totalDoseLabel);
+                    target.add(cyclophosphamideTotalDose);
+                }
+            });
+
             add(immunoSuppression);
 
             endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);
+
+            startDate.setOutputMarkupId(true);
+            startDate.setOutputMarkupPlaceholderTag(true);
+            endDate.setOutputMarkupPlaceholderTag(true);
+            endDate.setOutputMarkupId(true);
+            immunoSuppression.setOutputMarkupId(true);
+            immunoSuppression.setOutputMarkupPlaceholderTag(true);
+            cyclophosphamideTotalDose.setOutputMarkupId(true);
+            cyclophosphamideTotalDose.setOutputMarkupPlaceholderTag(true);
+
+            componentsToUpdate.add(startDate);
+            componentsToUpdate.add(endDate);
+            componentsToUpdate.add(immunoSuppression);
+            componentsToUpdate.add(cyclophosphamideTotalDose);
+            componentsToUpdate.add(totalDoseLabel);
         }
 
         @Override
@@ -577,29 +757,44 @@ public class TreatmentPanel extends Panel {
 
     private final class PlasmapheresisForm extends Form<Plasmapheresis> {
         private RadarDateTextField endDate;
+        @SpringBean
+        private PlasmapheresisDao plasmapheresisDao;
 
         private PlasmapheresisForm(String id, IModel<Plasmapheresis> model, List<Component> componentsToUpdate) {
             super(id, model);
-            add(new RadarRequiredDateTextField("startDate", this, componentsToUpdate));
+            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
+            add(startDate);
             endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);
 
-            List<PlasmapheresisExchangeUnit> plasmapheresisExchangeUnitList =
-                    new ArrayList<PlasmapheresisExchangeUnit>();
-            PlasmapheresisExchangeUnit plasmapheresisExchangeUnit = new PlasmapheresisExchangeUnit();
-            plasmapheresisExchangeUnit.setName("temp");
-            plasmapheresisExchangeUnitList.add(plasmapheresisExchangeUnit);
 
-            add(new RadarRequiredDropdownChoice("plasmapheresisExchanges", plasmapheresisExchangeUnitList,
-                    new ChoiceRenderer("name"), this, componentsToUpdate));
+            RadarRequiredDropdownChoice plasmapheresisExchanges = new RadarRequiredDropdownChoice("plasmapheresisExchanges",
+                    plasmapheresisDao.getPlasmapheresisExchangeUnits(),
+                    new ChoiceRenderer("name", "id"), this, componentsToUpdate);
+            add(plasmapheresisExchanges);
 
-            List<RemissionAchieved> remissionAchievedList =
-                    new ArrayList<RemissionAchieved>();
-            RemissionAchieved remissionAchieved = RemissionAchieved.COMPLETE;
-            remissionAchievedList.add(remissionAchieved);
+            RadarRequiredDropdownChoice response = new RadarRequiredDropdownChoice("response", Arrays.asList(RemissionAchieved.COMPLETE,
+                    RemissionAchieved.PARTIAL, RemissionAchieved.NONE), new ChoiceRenderer("label", "id"),
+                    this, componentsToUpdate);
+            add(response);
 
-            add(new RadarRequiredDropdownChoice("response", remissionAchievedList, new ChoiceRenderer(),
-                    this, componentsToUpdate));
+            componentsToUpdate.add(startDate);
+            componentsToUpdate.add(endDate);
+            componentsToUpdate.add(plasmapheresisExchanges);
+            componentsToUpdate.add(response);
+
+            endDate.setOutputMarkupId(true);
+            endDate.setOutputMarkupPlaceholderTag(true);
+
+            startDate.setOutputMarkupId(true);
+            startDate.setOutputMarkupPlaceholderTag(true);
+
+            plasmapheresisExchanges.setOutputMarkupId(true);
+            plasmapheresisExchanges.setOutputMarkupPlaceholderTag(true);
+
+            response.setOutputMarkupId(true);
+            response.setOutputMarkupPlaceholderTag(true);
+
         }
 
         @Override

@@ -13,6 +13,8 @@ public interface ClinicalDataDao {
 
     List<ClinicalData> getClinicalDataByRadarNumber(long radarNumber);
 
+    ClinicalData getFirstClinicalDataByRadarNumber(long radarNumber);
+
     Phenotype getPhenotype(long id);
     
     List<Phenotype> getPhenotypes();

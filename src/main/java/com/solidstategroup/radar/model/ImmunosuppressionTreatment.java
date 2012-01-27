@@ -7,7 +7,7 @@ public class ImmunosuppressionTreatment extends RadarModel {
     private Immunosuppression immunosuppression;
     private Date startDate, endDate;
     private Double cyclophosphamideTotalDose; // in g
-    private boolean firstFlag; // Not sure what this is for...
+    private Boolean firstFlag; // Not sure what this is for...
 
     public Immunosuppression getImmunosuppression() {
         return immunosuppression;
@@ -41,11 +41,11 @@ public class ImmunosuppressionTreatment extends RadarModel {
         this.cyclophosphamideTotalDose = cyclophosphamideTotalDose;
     }
 
-    public boolean isFirstFlag() {
+    public Boolean getFirstFlag() {
         return firstFlag;
     }
 
-    public void setFirstFlag(boolean firstFlag) {
+    public void setFirstFlag(Boolean firstFlag) {
         this.firstFlag = firstFlag;
     }
 }

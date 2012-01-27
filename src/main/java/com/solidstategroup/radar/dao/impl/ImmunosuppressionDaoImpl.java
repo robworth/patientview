@@ -12,12 +12,14 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements ImmunosuppressionDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImmunosuppressionDaoImpl.class);
-    private SimpleJdbcInsert diagnosisInsert;
+    private SimpleJdbcInsert immunoSuppressionTreatmentInsert;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -25,13 +27,46 @@ public class ImmunosuppressionDaoImpl extends BaseDaoImpl implements Immunosuppr
         super.setDataSource(dataSource);
 
         // Initialise a simple JDBC insert to be able to get the allocated ID
-        diagnosisInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_immunsup_treatment")
+        immunoSuppressionTreatmentInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_immunsup_treatment")
                 .usingGeneratedKeyColumns("tID").usingColumns("RADAR_NO", "IMMUNSUP_DRUG_STARTDATE",
                         "IMMUNSUP_DRUG_ENDDATE", "IMMUNSUP_DRUG", "CYCLOPHOS_TOT_DOSE", "FIRST_FLAG");
     }
 
-    public void saveImmunoSuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) {
+    public void saveImmunosuppressionTreatment(final ImmunosuppressionTreatment immunosuppressionTreatment) {
+        Map<String, Object> immunoSuppressionTreatmentMap = new HashMap<String, Object>() {
+            {
+                put("RADAR_NO", immunosuppressionTreatment.getRadarNumber());
+                put("IMMUNSUP_DRUG_STARTDATE", immunosuppressionTreatment.getStartDate());
+                put("IMMUNSUP_DRUG_ENDDATE", immunosuppressionTreatment.getEndDate());
+                put("IMMUNSUP_DRUG", immunosuppressionTreatment.getImmunosuppression() != null ?
+                        immunosuppressionTreatment.getImmunosuppression().getId() : null);
+                put("CYCLOPHOS_TOT_DOSE", immunosuppressionTreatment.getCyclophosphamideTotalDose());
+                put("FIRST_FLAG", immunosuppressionTreatment.getFirstFlag());
+            }
+        };
 
+        if (immunosuppressionTreatment.hasValidId()) {
+            immunoSuppressionTreatmentMap.put("tID", immunosuppressionTreatment.getId());
+            namedParameterJdbcTemplate.update("UPDATE tbl_immunsup_treatment " +
+                    "SET RADAR_NO = :RADAR_NO, " +
+                    "IMMUNSUP_DRUG_STARTDATE = :IMMUNSUP_DRUG_STARTDATE, " +
+                    "IMMUNSUP_DRUG_ENDDATE = :IMMUNSUP_DRUG_ENDDATE, " +
+                    "IMMUNSUP_DRUG = :IMMUNSUP_DRUG, " +
+                    "CYCLOPHOS_TOT_DOSE = :CYCLOPHOS_TOT_DOSE, " +
+                    "FIRST_FLAG = :FIRST_FLAG " +
+                    " WHERE tID = :tID;", immunoSuppressionTreatmentMap);
+
+        } else {
+            Number id = immunoSuppressionTreatmentInsert.executeAndReturnKey(immunoSuppressionTreatmentMap);
+            immunosuppressionTreatment.setId(id.longValue());
+        }
+    }
+
+    public void deleteImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) {
+        Map<String, Object> immunoSuppressionTreatmentMap = new HashMap<String, Object>();
+        immunoSuppressionTreatmentMap.put("tID", immunosuppressionTreatment.getId());
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_immunsup_treatment " +
+                "WHERE tID = :tID;", immunoSuppressionTreatmentMap);
     }
 
     public ImmunosuppressionTreatment getImmunosuppressionTreatment(long id) {

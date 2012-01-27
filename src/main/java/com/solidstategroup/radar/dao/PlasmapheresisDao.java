@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface PlasmapheresisDao {
 
+    void savePlasmapheresis(Plasmapheresis plasmapheresis);
+
+    void deletePlasmaPheresis(Plasmapheresis plasmapheresis);
+
     Plasmapheresis getPlasmapheresis(long id);
 
     List<Plasmapheresis> getPlasmapheresisByRadarNumber(long radarNumber);

@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ImmunosuppressionDao {
 
-    void saveImmunoSuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment);
+    void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment);
+
+    void deleteImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment);
 
     ImmunosuppressionTreatment getImmunosuppressionTreatment(long id);
 

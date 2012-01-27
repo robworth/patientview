@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.model.enums;
 
+import com.solidstategroup.radar.model.BaseModel;
+
 public enum RemissionAchieved {
 
     COMPLETE(1), PARTIAL(2), NONE(3);
@@ -11,5 +13,9 @@ public enum RemissionAchieved {
 
     public int getId() {
         return id;
+    }
+
+    public String getLabel() {
+        return BaseModel.getLabelFromEnum(toString());
     }
 }

@@ -1,6 +1,6 @@
 <wicket:panel>
 
-    <table cellspacing="10" cellpadding="0" style="width: 100%; background-color:#EEF6ED; border:0px solid red;"
+<table cellspacing="10" cellpadding="0" style="width: 100%; background-color:#EEF6ED; border:0px solid red;"
        id="ctl00_ContentPlaceHolder1_tblMain">
 <tbody>
 <tr>
@@ -8,7 +8,7 @@
         <fieldset style="width:650px;">
             <legend>Immunosuppression including Monoclonals</legend>
             <div>
-                <table border="1" cellspacing="0" cellpadding="3"
+                <table wicket:id="immunosuppressionTreatmentsContainer" border="1" cellspacing="0" cellpadding="3"
                        style="font-size:85%;width:600px;border-collapse:collapse;" rules="all">
                     <tbody>
                     <tr style="color:#3C982D;">
@@ -18,7 +18,7 @@
                         <th style="width:120px;" scope="col">Total Dose g Cyclophosphamide only</th>
                         <th scope="col">&nbsp;</th>
                     </tr>
-                    <tr wicket:id="immunosuppressions">
+                    <tr wicket:id="immunosuppressionTreatments">
                         <td wicket:id="startDate"/>
                         <td wicket:id="endDate"/>
                         <td wicket:id="immunosuppression.description"/>
@@ -47,32 +47,29 @@
                                 <td>Start Date</td>
                                 <td>Name</td>
                                 <td>End Date</td>
+                                <td wicket:id="totalDoseLabel">Total dose of course in g</td>
                                 <td style="width:180px"></td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>
-                                <span style="color:Red;visibility:hidden;"
-                                      id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt; today</span></td>
-                                <td>
-                                    &nbsp;</td>
-                                <td class="style7">
-                                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblMonoEDEditWarn"></span>
-                                </td>
-                                <td class="style7">
-                                <span style="color:Red;visibility:hidden;"
-                                      id="ctl00_ContentPlaceHolder1_RangeValidator3">0.010-9.999</span></td>
-                                <td class="style7">&nbsp;</td>
-                            </tr>
-                            <tr>
                                 <td class="style7">
                                     <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                    <span wicket:id="startDateFeedbackIndicator"></span>
+                                    <span class="feedback" wicket:id="startDateFeedback"></span>
                                 </td>
                                 <td class="style7">
                                     <select wicket:id="immunosuppression"/>
+                                    <span wicket:id="immunosuppressionFeedbackIndicator"></span>
                                 </td>
                                 <td class="style7">
                                     <input type="text" style="width:70px;" wicket:id="endDate"/>
+                                    <span class="endDateFeedbackIndicator"></span>
+                                    <span class="feedback" wicket:id="endDateFeedback"></span>
+                                </td>
+                                <td>
+                                    <input wicket:id="cyclophosphamideTotalDose" type="text" style="width:70px;">
+                                    <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
+                                    <span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span>
                                 </td>
                                 <td valign="bottom" style="width:90px">
                                     &nbsp;&nbsp;
@@ -111,7 +108,7 @@
                         <td class="style10">Start Date</td>
                         <td class="style10">Name</td>
                         <td class="style10">End Date</td>
-                        <td class="style12"></td>
+                        <td wicket:id="totalDoseLabel">Total dose of course in g</td>
                         <td class="style10">&nbsp;</td>
                     </tr>
                     <tr>
@@ -141,6 +138,11 @@
                             <input type="text" style="width:70px;" wicket:id="endDate"/>
                             <span class="endDateFeedbackIndicator"></span>
                             <span class="feedback" wicket:id="endDateFeedback"></span>
+                        </td>
+                        <td>
+                            <input wicket:id="cyclophosphamideTotalDose" type="text" style="width:70px;">
+                            <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
+                            <span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span>
                         </td>
                         <td align="center" class="style11">
                         </td>
@@ -329,7 +331,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <br />
+                    <br/>
                     <input wicket:id="save" type="button" class="saveBtn" value="Save">
                     <span style="font-weight: bold;" wicket:id="successMessage"></span>
                     <span style="font-weight: bold; color: red;" wicket:id="errorMessage"></span>
@@ -341,167 +343,171 @@
     </td>
 </tr>
 <tr>
-<td>
-<fieldset>
-    <legend>Plasmapheresis</legend>
-    <br>
+    <td>
+        <fieldset>
+            <legend>Plasmapheresis</legend>
+            <br>
 
-    <div>
+            <div>
 
-        <table border="1" cellspacing="0" cellpadding="3"
-               style="font-size:85%;width:95%;border-collapse:collapse;" rules="all">
-            <tbody>
-            <tr style="color:#3C982D;">
-                <th scope="col">Date Started</th>
-                <th scope="col">Date Stopped</th>
-                <th scope="col">No of Exchanges</th>
-                <th scope="col">Response</th>
-                <th scope="col">&nbsp;</th>
-            </tr>
-            <tr wicket:id="plasmapheresis">
-                <td wicket:id="dateStarted"/>
-                <td wicket:id="dateStopped"/>
-                <td wicket:id="plasmapheresisExchanges.name"/>
-                <td wicket:id="response"/>
-                <td>
-                    <input type="submit" value="Delete" wicket:id="deleteLink"
-                           onclick="return confirm('Are you sure you want to delete this record?');"/>
-                    <input type="submit" value="Edit" wicket:id="editLink"/>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                <table wicket:id="plasmapheresisContainer" border="1" cellspacing="0" cellpadding="3"
+                       style="font-size:85%;width:95%;border-collapse:collapse;" rules="all">
+                    <tbody>
+                    <tr style="color:#3C982D;">
+                        <th scope="col">Date Started</th>
+                        <th scope="col">Date Stopped</th>
+                        <th scope="col">No of Exchanges</th>
+                        <th scope="col">Response</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    <tr wicket:id="plasmapheresis">
+                        <td wicket:id="startDate"/>
+                        <td wicket:id="endDate"/>
+                        <td wicket:id="plasmapheresisExchanges.name"/>
+                        <td wicket:id="response.label"/>
+                        <td>
+                            <input type="submit" value="Delete" wicket:id="deleteLink"
+                                   onclick="return confirm('Are you sure you want to delete this record?');"/>
+                            <input type="submit" value="Edit" wicket:id="editLink"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
 
-    </div>
-    <br>
+            </div>
+            <br>
 
-    <div wicket:id="editPlasmapheresisContainer">
-        <form wicket:id="form">
-            <fieldset style="border-color:Red">
-                <legend>Edit</legend>
+            <div wicket:id="editPlasmapheresisContainer">
+                <form wicket:id="editPlasmapheresisForm">
+                    <fieldset style="border-color:Red">
+                        <legend>Edit</legend>
+                        <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
+                            <tbody>
+                            <tr>
+                                <td>Date Started<br>
+                                    <span style="color:Red;visibility:hidden;"
+                                          id="ctl00_ContentPlaceHolder1_CompareValidator3">&gt; today</span>
+                                </td>
+                                <td>Date Stopped
+                                    <br>
+                                    <br>
+
+                                    &nbsp;<span style="color:Red;display:none;"
+                                                id="ctl00_ContentPlaceHolder1_CompareValidator9">&gt; today</span>
+                                    &nbsp;<span style="color:Red;"
+                                                id="ctl00_ContentPlaceHolder1_lblPlasmaStopEditWarn"></span>
+                                </td>
+                                <td>No of Exchanges</td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    Response
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                    <span class="feedback" wicket:id="startDateFeedback"/>
+                                    <span wicket:id="startDateFeedbackIndicator"/>
+
+                                </td>
+                                <td>
+                                    <input type="text" style="width:70px;" wicket:id="endDate">
+                                    <span class="feedback" wicket:id="endDateFeedback"/>
+                                </td>
+                                <td>
+                                    <select wicket:id="plasmapheresisExchanges"/>
+                                    <span wicket:id="plasmapheresisExchangesFeedbackIndicator"/>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <select wicket:id="response"/>
+                                    <span wicket:id="responseFeedbackIndicator"/>
+                                </td>
+                                <td>
+                                    <input type="submit" value="Save" wicket:id="save"/>
+                                    <input type="submit" value="Cancel" wicket:id="cancel"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblPlasmaEditWarn"></span>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form>
+            </div>
+            <br>
+
+            <form wicket:id="addPlasmapheresisForm">
                 <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
                     <tbody>
                     <tr>
                         <td>Date Started<br>
-                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_CompareValidator3">&gt; today</span>
+                <span style="color:Red;visibility:hidden;"
+                      id="ctl00_ContentPlaceHolder1_CompareValidator7">&gt; today</span>
                         </td>
                         <td>Date Stopped
                             <br>
-
-                            &nbsp;<span style="color:Red;display:none;"
-                                        id="ctl00_ContentPlaceHolder1_CompareValidator9">&gt; today</span>
-                            &nbsp;<span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblPlasmaStopEditWarn"></span>
-                        </td>
+                            &nbsp;
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span></td>
                         <td>No of Exchanges</td>
                         <td>&nbsp;</td>
                         <td>
-                            Response
+                            Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info"
+                                                   id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
                         </td>
-                        <td>
-
-                        </td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>
                             <input type="text" style="width:70px;" wicket:id="startDate"/>
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton3"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton3">
+                            <span class="feedback" wicket:id="startDateFeedback"/>
+                            <span wicket:id="startDateFeedbackIndicator"/>
                         </td>
                         <td>
-                            <input type="text" style="width:70px;" wicket:id="endDate">
-                            <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                                   id="ctl00_ContentPlaceHolder1_ImageButton4"
-                                   name="ctl00$ContentPlaceHolder1$ImageButton4">
+                            <input type="text" style="width:70px;" wicket:id="endDate"/>
+                            <span class="feedback" wicket:id="endDateFeedback"/>
                         </td>
                         <td>
                             <select wicket:id="plasmapheresisExchanges"/>
+                            <span wicket:id="plasmapheresisExchangesFeedbackIndicator"/>
                         </td>
                         <td>&nbsp;</td>
                         <td>
                             <select wicket:id="response"/>
+                            <span wicket:id="responseFeedbackIndicator"/>
                         </td>
                         <td>
-                            <input type="submit" value="Save" wicket:id="save"/>
-                            <input type="submit" value="Cancel" wicket:id="cancel"/>
+                            <input type="submit" value="Add" wicket:id="save"/>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblPlasmaEditWarn"></span></td>
+                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span></td>
                         <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <td>
+                            &nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
                     </tbody>
                 </table>
-            </fieldset>
-        </form>
-    </div>
-    <br>
+            </form>
+        </fieldset>
+        <br><br>
 
-    <form wicket:id="addPlasmapheresisForm">
-        <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
-            <tbody>
-            <tr>
-                <td>Date Started<br>
-                <span style="color:Red;visibility:hidden;"
-                      id="ctl00_ContentPlaceHolder1_CompareValidator7">&gt; today</span>
-                </td>
-                <td>Date Stopped
-                    <br>
-                    &nbsp;
-                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span></td>
-                <td>No of Exchanges</td>
-                <td>&nbsp;</td>
-                <td>
-                    Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info"
-                                           id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="text" style="width:70px;" wicket:id="startDate"/>
-                    <span class="feedback" wicket:id="startDateFeedback"/>
-                    <span wicket:id="startDateFeedbackIndicator"/>
-                </td>
-                <td>
-                    <input type="text" style="width:70px;" wicket:id="endDate"/>
-                     <span class="feedback" wicket:id="endDateFeedback"/>
-                </td>
-                <td>
-                    <select wicket:id="plasmapheresisExchanges"/>
-                    <span wicket:id="plasmapheresisExchangesFeedbackIndicator"/>
-                </td>
-                <td>&nbsp;</td>
-                <td>
-                    <select wicket:id="response"/>
-                    <span wicket:id="responseFeedbackIndicator"/>
-                </td>
-                <td>
-                    <input type="submit" value="Add" wicket:id="save"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span></td>
-                <td>&nbsp;</td>
-                <td>
-                    &nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            </tbody>
-        </table>
-    </form>
-</fieldset>
-<br><br>
+        <fieldset wicket:id="dialysisContainer"/>
 
-<fieldset wicket:id="dialysisContainer"/>
-
-<br><br>
-</td>
+        <br><br>
+    </td>
 </tr>
 <tr>
     <td colspan="2">
