@@ -131,7 +131,6 @@ public class TreatmentPanel extends Panel {
         immunosuppressionTreatmentsContainer.add(immunosuppressionTreatmentListView);
         add(immunosuppressionTreatmentsContainer);
 
-
         immunosuppressionTreatmentsContainer.setOutputMarkupId(true);
         immunosuppressionTreatmentsContainer.setOutputMarkupPlaceholderTag(true);
 
@@ -665,7 +664,9 @@ public class TreatmentPanel extends Panel {
         });
         add(addPlasmapheresisForm);
 
-        add(new DialysisTablePanel("dialysisContainer", radarNumberModel));
+        DialysisTablePanel dialysisTablePanel = new DialysisTablePanel("dialysisContainer", radarNumberModel);
+        dialysisTablePanel.setVisible(firstVisit);
+        add(dialysisTablePanel);
 
        if(!firstVisit) {
            for(Component component : followingVisitComponentsToUpdate) {

@@ -494,7 +494,7 @@ CREATE TABLE tbl_RRT_TREATMENT (
 );
 
 CREATE TABLE tbl_RT_Modality (
-	mID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (mID),
+	mID int NOT NULL, PRIMARY KEY (mID),
 	mDesc varchar(50)
 );
 
@@ -582,9 +582,9 @@ CREATE TABLE tbl_TRANSPLANT_MODALITY (
 CREATE TABLE tbl_Transplant_Reject (
 	recID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (recID),
 	trID int NOT NULL,
-	trRejectDate TIMESTAMP,
-	trBiopsyDate TIMESTAMP,
-	trFailureDate TIMESTAMP
+	trRejectDate datetime,
+	trBiopsyDate datetime,
+	trFailureDate datetime
 );
 
 CREATE TABLE tbl_Users (
