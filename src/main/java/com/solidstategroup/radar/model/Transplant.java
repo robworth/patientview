@@ -5,11 +5,62 @@ import java.util.Date;
 public class Transplant extends RadarModel {
 
     private Date date;
-    // This should maybe be TransplantModality?
-    private String type;
+    private Modality modality;
     private int counter;
     private Boolean recurr;
     private Date dateRecurr, dateFailure, dateRejected, dateBiopsy;
+
+    public static class Modality extends BaseModel{
+        private Long id;
+        private String description;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
+    public static class RejectData extends BaseModel{
+        private Long transplantId;
+        private Date rejectedDate;
+        private Date biopsyDate;
+        private Date failureDate;
+
+        public Long getTransplantId() {
+            return transplantId;
+        }
+
+        public void setTransplantId(Long transplantId) {
+            this.transplantId = transplantId;
+        }
+
+        public Date getRejectedDate() {
+            return rejectedDate;
+        }
+
+        public void setRejectedDate(Date rejectedDate) {
+            this.rejectedDate = rejectedDate;
+        }
+
+        public Date getBiopsyDate() {
+            return biopsyDate;
+        }
+
+        public void setBiopsyDate(Date biopsyDate) {
+            this.biopsyDate = biopsyDate;
+        }
+
+        public Date getFailureDate() {
+            return failureDate;
+        }
+
+        public void setFailureDate(Date failureDate) {
+            this.failureDate = failureDate;
+        }
+    }
 
     public Date getDate() {
         return date;
@@ -19,12 +70,12 @@ public class Transplant extends RadarModel {
         this.date = date;
     }
 
-    public String getType() {
-        return type;
+    public Modality getModality() {
+        return modality;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setModality(Modality modality) {
+        this.modality = modality;
     }
 
     public int getCounter() {
