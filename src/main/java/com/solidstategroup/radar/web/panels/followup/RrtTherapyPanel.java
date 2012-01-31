@@ -18,7 +18,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -28,7 +27,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -36,7 +34,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -105,6 +102,20 @@ public class RrtTherapyPanel extends Panel {
         editTransplantContainer.setOutputMarkupPlaceholderTag(true);
         add(editTransplantContainer);
 
+        final IModel<Transplant.RejectData> addRejectModel = new CompoundPropertyModel<Transplant.RejectData>(
+                new Model<Transplant.RejectData>());
+        // Container for reject transplants
+        final MarkupContainer rejectDataContainer = new WebMarkupContainer("rejectDataContainer") {
+            @Override
+            public boolean isVisible() {
+                return addRejectModel.getObject() != null;
+            }
+        };
+        rejectDataContainer.setOutputMarkupPlaceholderTag(true);
+        rejectDataContainer.setOutputMarkupId(true);
+
+        add(rejectDataContainer);
+
         // Transplants table
         transplantsContainer.add(new ListView<Transplant>("transplants", transplantListModel) {
             @Override
@@ -114,9 +125,35 @@ public class RrtTherapyPanel extends Panel {
                 item.add(new Label("modality.description"));
                 item.add(new Label("recurr"));
                 item.add(DateLabel.forDatePattern("dateRecurr", RadarApplication.DATE_PATTERN));
-                item.add(DateLabel.forDatePattern("dateFailure", RadarApplication.DATE_PATTERN));
-                item.add(DateLabel.forDatePattern("dateRejected", RadarApplication.DATE_PATTERN));
-                item.add(DateLabel.forDatePattern("dateBiopsy", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("dateFailureRejectData.failureDate", RadarApplication.DATE_PATTERN));
+
+                IModel rejectDataListModel = new AbstractReadOnlyModel<List>() {
+                    @Override
+                    public List getObject() {
+                        return transplantDao.getRejectDataByTransplantNumber(item.getModelObject().getId());
+                    }
+                };
+                final WebMarkupContainer rejectDataListContainer = new WebMarkupContainer("rejectDataListContainer");
+                rejectDataListContainer.setOutputMarkupId(true);
+                rejectDataContainer.setOutputMarkupPlaceholderTag(true);
+                rejectDataListContainer.add(new ListView<Transplant.RejectData>("rejectDataList", rejectDataListModel) {
+                    @Override
+                    protected void populateItem(final ListItem<Transplant.RejectData> rejectDataListItem) {
+                        rejectDataListItem.setModel(new CompoundPropertyModel<Transplant.RejectData>(
+                                rejectDataListItem.getModelObject()));
+                        rejectDataListItem.add(DateLabel.forDatePattern("rejectedDate", RadarApplication.DATE_PATTERN));
+                        rejectDataListItem.add(DateLabel.forDatePattern("biopsyDate", RadarApplication.DATE_PATTERN));
+                        rejectDataListItem.add(new AjaxLink("deleteLink") {
+                            @Override
+                            public void onClick(AjaxRequestTarget target) {
+                                transplantDao.deleteRejectData(rejectDataListItem.getModelObject());
+                                target.add(rejectDataListContainer);
+                            }
+                        });
+                    }
+                });
+
+                item.add(rejectDataListContainer);
 
                 // Delete, edit and add reject buttons
                 item.add(new AjaxLink("deleteLink") {
@@ -139,36 +176,39 @@ public class RrtTherapyPanel extends Panel {
                 item.add(new AjaxLink("addRejectLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
+                        Transplant.RejectData rejectData = new Transplant.RejectData();
+                        rejectData.setTransplantId(item.getModelObject().getId());
+                        addRejectModel.setObject(rejectData);
+                        target.add(rejectDataContainer);
                     }
                 });
             }
         });
 
-        // Container for reject transplants
-        final MarkupContainer rejectDataContainer = new WebMarkupContainer("rejectDataContainer");
-        rejectDataContainer.setVisible(false);
-        rejectDataContainer.setOutputMarkupPlaceholderTag(true);
-        add(rejectDataContainer);
-
+        final List<Component> rejectDataComponentsToUpdate = new ArrayList<Component>();
         // Form for adding reject data - model probably needs changing
-        Form<Transplant> rejectDataForm = new Form<Transplant>("form");
-        rejectDataForm.add(new DateTimeField("dateRejected"));
-        rejectDataForm.add(new DateTimeField("dateBiopsy"));
+        Form<Transplant.RejectData> rejectDataForm = new Form<Transplant.RejectData>("form", addRejectModel);
+        rejectDataForm.add(new RadarDateTextField("rejectedDate", rejectDataForm, rejectDataComponentsToUpdate));
+        rejectDataForm.add(new RadarDateTextField("biopsyDate", rejectDataForm, rejectDataComponentsToUpdate));
         rejectDataForm.add(new AjaxSubmitLink("add") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(rejectDataComponentsToUpdate.toArray(new Component[rejectDataComponentsToUpdate.size()]));
+                transplantDao.saveRejectData((Transplant.RejectData) form.getModelObject());
+                addRejectModel.setObject(null);
+                target.add(rejectDataContainer);
+                target.add(transplantsContainer);
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                // Todo: Implement
+                target.add(rejectDataComponentsToUpdate.toArray(new Component[rejectDataComponentsToUpdate.size()]));
             }
         });
         rejectDataForm.add(new AjaxLink("cancel") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                rejectDataContainer.setVisible(false);
+                addRejectModel.setObject(null);
                 target.add(rejectDataContainer);
             }
         });
@@ -238,14 +278,16 @@ public class RrtTherapyPanel extends Panel {
             super(id, transplantIModel);
             RadarRequiredDateTextField date = new RadarRequiredDateTextField("date", this, componentsToUpdate);
             add(date);
-            RadarRequiredDropdownChoice modality = new RadarRequiredDropdownChoice("modality", transplantDao.getTransplantModalitites(),
-                    new ChoiceRenderer("description", "id"), this, componentsToUpdate);
+            RadarRequiredDropdownChoice modality = new RadarRequiredDropdownChoice("modality",
+                    transplantDao.getTransplantModalitites(), new ChoiceRenderer("description", "id"), this,
+                    componentsToUpdate);
             add(modality);
             YesNoRadioGroup recurr = new YesNoRadioGroup("recurr");
             add(recurr);
             RadarDateTextField dateRecurr = new RadarDateTextField("dateRecurr", this, componentsToUpdate);
             add(dateRecurr);
-            RadarDateTextField dateFailure = new RadarDateTextField("dateFailure", this, componentsToUpdate);
+            RadarDateTextField dateFailure = new RadarDateTextField("dateFailureRejectData.failureDate", this,
+                    componentsToUpdate);
             add(dateFailure);
         }
     }

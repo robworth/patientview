@@ -25,7 +25,7 @@
     </licenses>
     <properties>
         <wicket.version>1.5.3</wicket.version>
-        <jetty.version>7.5.0.v20110901</jetty.version>
+        <jetty.version>8.0.1.v20110908</jetty.version>
         <spring.version>3.0.5.RELEASE</spring.version>
     </properties>
 
