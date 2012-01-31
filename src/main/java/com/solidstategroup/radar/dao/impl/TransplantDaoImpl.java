@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,11 +70,9 @@ public class TransplantDaoImpl extends BaseDaoImpl implements TransplantDao {
             Number id = transplantInsert.executeAndReturnKey(transplantMap);
             transplant.setId(id.longValue());
         }
-
-        if (transplant.getDateFailure() != null) {
-            Transplant.RejectData rejectData = new Transplant.RejectData();
+        Transplant.RejectData rejectData = transplant.getDateFailureRejectData();
+        if (rejectData.getFailureDate() != null) {
             rejectData.setTransplantId(transplant.getId());
-            rejectData.setFailureDate(transplant.getDateFailure());
             saveRejectData(rejectData);
         }
     }
@@ -131,7 +128,7 @@ public class TransplantDaoImpl extends BaseDaoImpl implements TransplantDao {
                     " WHERE recID = :recID;", rejectDataMap);
 
         } else {
-            Number id = transplantInsert.executeAndReturnKey(rejectDataMap);
+            Number id = rejectDataInsert.executeAndReturnKey(rejectDataMap);
             rejectData.setId(id.longValue());
         }
     }
@@ -158,11 +155,10 @@ public class TransplantDaoImpl extends BaseDaoImpl implements TransplantDao {
     }
 
 
-    private Date getFailureDateByTransplantNumber(Long transplantId) {
+    private Transplant.RejectData getFailureDateRejectDataByTransplantNumber(Long transplantId) {
         try {
-            Transplant.RejectData rejectData = jdbcTemplate.queryForObject("SELECT * FROM tbl_transplant_reject WHERE trID = ? AND " +
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_transplant_reject WHERE trID = ? AND " +
                     "trFailureDate IS NOT NULL", new Object[]{transplantId}, new TransplantRejectRowMapper());
-            return rejectData.getFailureDate();
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -190,8 +186,14 @@ public class TransplantDaoImpl extends BaseDaoImpl implements TransplantDao {
             transplant.setDateRecurr(resultSet.getDate("DATE_RECURR_TXK"));
             transplant.setDateRejected(resultSet.getDate("DATE_TX_REJECT"));
             transplant.setDateBiopsy(resultSet.getDate("DATE_BX_TXK"));
-            transplant.setDateFailure(getFailureDateByTransplantNumber(transplant.getId()));
-            // todo get failure date
+            Transplant.RejectData failureDateRejectData = getFailureDateRejectDataByTransplantNumber(
+                    transplant.getId());
+
+            if (failureDateRejectData == null) {
+                failureDateRejectData = new Transplant.RejectData();
+                failureDateRejectData.setTransplantId(transplant.getId());
+            }
+            transplant.setDateFailureRejectData(failureDateRejectData);
 
             return transplant;
         }

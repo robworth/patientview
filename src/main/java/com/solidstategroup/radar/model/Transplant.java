@@ -8,7 +8,8 @@ public class Transplant extends RadarModel {
     private Modality modality;
     private int counter;
     private Boolean recurr;
-    private Date dateRecurr, dateFailure, dateRejected, dateBiopsy;
+    private Date dateRecurr, dateRejected, dateBiopsy;
+    private RejectData dateFailureRejectData = new RejectData();
 
     public static class Modality extends BaseModel{
         private Long id;
@@ -102,12 +103,12 @@ public class Transplant extends RadarModel {
         this.dateRecurr = dateRecurr;
     }
 
-    public Date getDateFailure() {
-        return dateFailure;
+    public RejectData getDateFailureRejectData() {
+        return dateFailureRejectData;
     }
 
-    public void setDateFailure(Date dateFailure) {
-        this.dateFailure = dateFailure;
+    public void setDateFailureRejectData(RejectData dateFailureRejectData) {
+        this.dateFailureRejectData = dateFailureRejectData;
     }
 
     public Date getDateRejected() {

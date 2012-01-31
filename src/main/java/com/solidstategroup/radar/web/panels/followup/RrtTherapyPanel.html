@@ -80,10 +80,29 @@
             <td wicket:id="modality.description"/>
             <td align="center" style="width:45px;"><span wicket:id="recurr"/></td>
             <td wicket:id="dateRecurr"/>
-            <td wicket:id="dateFailure"/>
-            <td class="zeroPadd">
-                <span wicket:id="dateRejected"/>
-                <span wicket:id="dateBiopsy"/>
+            <td wicket:id="dateFailureRejectData.failureDate"/>
+            <td style="padding: 0;">
+                <div wicket:id="rejectDataListContainer">
+                    <table class="zeroPadd" cellspacing="0" cellpadding="5" rules="all" border="0"
+                           id="ctl00_ContentPlaceHolder1_GridView3_ctl02_GridView4"
+                           style="border-width:0px;font-size:100%;border-collapse:collapse;">
+                        <tbody>
+                        <tr>
+                            <th scope="col" style="color:#EEF6ED;">Date Reject</th>
+                            <th scope="col" style="color:#EEF6ED;">Date Biopsy</th>
+                            <th scope="col" style="color:#EEF6ED;">xxx</th>
+                        </tr>
+                        <tr wicket:id="rejectDataList">
+                            <td wicket:id="rejectedDate"></td>
+                            <td wicket:id="biopsyDate"></td>
+                            <td>
+                                <input type="submit" value="X" wicket:id="deleteLink" title="Delete"
+                                       style="color:Red;background-color:#EEF6ED;border-width:0px;font-weight:bold;"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </td>
             <td style="width:170px;">
                 <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;" value="Delete"
@@ -127,14 +146,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" style="width:80px;" wicket:id="dateRejected"/>
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_imgCal1" name="ctl00$ContentPlaceHolder1$imgCal1">
+                        <input type="text" style="width:80px;" wicket:id="rejectedDate"/>
+                        <span class="feedback" wicket:id="rejectedDateFeedback"></span>
                     </td>
                     <td>
-                        <input type="text" style="width:80px;" wicket:id="dateBiopsy"/>
-                        <input type="image" style="border-width:0px;" src="images/Calendar_scheduleHS.png"
-                               id="ctl00_ContentPlaceHolder1_imgCal2" name="ctl00$ContentPlaceHolder1$imgCal2">
+                        <input type="text" style="width:80px;" wicket:id="biopsyDate"/>
+                        <span class="feedback" wicket:id="biopsyDateFeedback"></span>
                     </td>
 
                     <td>
@@ -148,15 +165,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                    <span style="color:Red;display:none;"
-                          id="ctl00_ContentPlaceHolder1_CompareValidator22">&lt; Tx date</span>
-                        &nbsp;</td>
 
-                    <td>
-                    <span style="color:Red;display:none;"
-                          id="ctl00_ContentPlaceHolder1_CompareValidator23">&lt; Tx date</span>
-                    </td>
                     <td>
                         &nbsp;</td>
                     <td colspan="2">
@@ -218,8 +227,8 @@
                     </td>
 
                     <td>
-                        <input type="text" style="width:70px;" wicket:id="dateFailure"/>
-                        <span class="feedback" wicket:id="dateFailureFeedback"></span>
+                        <input type="text" style="width:70px;" wicket:id="dateFailureRejectData.failureDate"/>
+                        <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
 
                     </td>
                 </tr>
@@ -286,8 +295,8 @@
                 <span class="feedback" wicket:id="dateRecurrFeedback"></span>
             </td>
             <td class="style5">
-                <input type="text" style="height:15px;width:70px;" wicket:id="dateFailure"/>
-                <span class="feedback" wicket:id="dateFailureFeedback"></span>
+                <input type="text" style="height:15px;width:70px;" wicket:id="dateFailureRejectData.failureDate"/>
+                <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
             </td>
             <td><input type="submit" value="Add" wicket:id="add"/></td>
         </tr>
