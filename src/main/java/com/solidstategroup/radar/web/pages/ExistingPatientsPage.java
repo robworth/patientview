@@ -3,8 +3,10 @@ package com.solidstategroup.radar.web.pages;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -12,13 +14,13 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+@AuthorizeInstantiation(User.ROLE_PROFESSIONAL)
 public class ExistingPatientsPage extends BasePage {
 
     @SpringBean
     private DemographicsDao demographicsDao;
 
     public ExistingPatientsPage() {
-
         // Current page see src/legacy/ASP/view.aspx.vb
         // Does a branch on user ID being certain things, this implementation works on the else branch
 
@@ -55,6 +57,5 @@ public class ExistingPatientsPage extends BasePage {
                 item.add(new Label("status.abbreviation"));
             }
         });
-
     }
 }
