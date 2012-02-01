@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.RelapseDao;
+import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.sequenced.Relapse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,35 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class RelapseDaoTest extends BaseDaoTest {
 
     @Autowired
     private RelapseDao relapseDao;
+
+    @Test
+    public void testSaveRelapse() throws Exception {
+        // save
+        Relapse relapse = new Relapse();
+        relapseDao.saveRelapse(relapse);
+        assertNotNull(relapse.getId());
+
+        // update
+        Relapse relapseUpdate = new Relapse();
+        relapseUpdate.setId(new Long(1));
+        relapseDao.saveRelapse(relapseUpdate);
+    }
+
+    @Test
+    public void testDeleteRelapse() throws Exception {
+        Relapse relapse = relapseDao.getRelapse(new Long(1));
+        assertNotNull(relapse);
+
+        relapseDao.deleteRelapse(relapse);
+        relapse = relapseDao.getRelapse(new Long(1));
+        assertNull(relapse);
+    }
 
     @Test
     public void getLabData() {

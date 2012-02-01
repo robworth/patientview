@@ -17,6 +17,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.panels.PlasmaPheresisPanel;
 import com.solidstategroup.radar.web.panels.firstvisit.YesNoRadioGroupPanel;
 import com.solidstategroup.radar.web.panels.tables.DialysisTablePanel;
 import org.apache.wicket.Component;
@@ -550,124 +551,9 @@ public class TreatmentPanel extends Panel {
         therapyForm.add(save);
         add(therapyForm);
 
-        final IModel plasmapheresisListModel = new AbstractReadOnlyModel<List>() {
-            @Override
-            public List getObject() {
-
-                if (radarNumberModel.getObject() != null) {
-                    return plasmapheresisDao.getPlasmapheresisByRadarNumber(radarNumberModel.getObject());
-                }
-                return Collections.emptyList();
-            }
-        };
-
-        final WebMarkupContainer plasmapheresisContainer = new WebMarkupContainer("plasmapheresisContainer");
-
-        plasmapheresisContainer.setOutputMarkupId(true);
-        plasmapheresisContainer.setOutputMarkupPlaceholderTag(true);
-        add(plasmapheresisContainer);
-
-        final List<Component> addPlasmapheresisComponentsToUpdate = new ArrayList<Component>();
-        final List<Component> editPlasmapheresisComponentsToUpdate = new ArrayList<Component>();
-
-        final IModel editPlasmapheresisModel = new Model<Plasmapheresis>();
-        final MarkupContainer editPlasmapheresisContainer = new WebMarkupContainer("editPlasmapheresisContainer") {
-            @Override
-            public boolean isVisible() {
-                return editPlasmapheresisModel.getObject() != null;
-            }
-        };
-        editPlasmapheresisContainer.setOutputMarkupPlaceholderTag(true);
-        editPlasmapheresisContainer.setOutputMarkupId(true);
-
         // Plasmapheresis
-        ListView<Plasmapheresis> plasmapheresisListViewlistView = new ListView<Plasmapheresis>("plasmapheresis",
-                plasmapheresisListModel) {
-            @Override
-            protected void populateItem(final ListItem<Plasmapheresis> item) {
-                item.setModel(new CompoundPropertyModel<Plasmapheresis>(item.getModelObject()));
-                item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
-                item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
-                item.add(new Label("plasmapheresisExchanges.name"));
-                item.add(new Label("response.label"));
-                AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        Plasmapheresis plasmapheresis = item.getModelObject();
-                        plasmapheresisDao.deletePlasmaPheresis(plasmapheresis);
-                        target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
-                                addPlasmapheresisComponentsToUpdate.size()]));
-                        target.add(plasmapheresisContainer);
-                    }
-                };
-                item.add(ajaxDeleteLink);
-                ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
-                item.add(new AjaxLink("editLink") {
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        editPlasmapheresisModel.setObject(item.getModelObject());
-                        target.add(editPlasmapheresisContainer);
-                    }
-                });
-            }
-        };
-        plasmapheresisContainer.add(plasmapheresisListViewlistView);
-
-        // Add the form
-        PlasmapheresisForm editPlasmapheresisForm = new PlasmapheresisForm("editPlasmapheresisForm",
-                new CompoundPropertyModel<Plasmapheresis>(editPlasmapheresisModel),
-                editPlasmapheresisComponentsToUpdate);
-        editPlasmapheresisContainer.add(editPlasmapheresisForm);
-
-        editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                plasmapheresisDao.savePlasmapheresis((Plasmapheresis) form.getModelObject());
-                form.getModel().setObject(null);
-                target.add(editPlasmapheresisContainer);
-                target.add(plasmapheresisContainer);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.add(editPlasmapheresisComponentsToUpdate.toArray(new Component[
-                        editPlasmapheresisComponentsToUpdate.size()]));
-            }
-        });
-        editPlasmapheresisForm.add(new AjaxLink("cancel") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                editPlasmapheresisModel.setObject(null);
-                target.add(editPlasmapheresisContainer);
-            }
-        });
-        add(editPlasmapheresisContainer);
-
-        // Add the add plasmapheresis form
-        PlasmapheresisForm addPlasmapheresisForm = new PlasmapheresisForm("addPlasmapheresisForm",
-                new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis()), addPlasmapheresisComponentsToUpdate);
-
-        addPlasmapheresisForm.add(new AjaxSubmitLink("save") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form form) {
-                Plasmapheresis plasmapheresis = (Plasmapheresis) form.getModelObject();
-                plasmapheresis.setRadarNumber(radarNumberModel.getObject());
-                plasmapheresisDao.savePlasmapheresis(plasmapheresis);
-                target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
-                        addPlasmapheresisComponentsToUpdate.size()]));
-                plasmapheresisContainer.setVisible(true);
-                target.add(plasmapheresisContainer);
-                form.getModel().setObject(new Plasmapheresis());
-
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
-                        addPlasmapheresisComponentsToUpdate.size()]));
-            }
-        });
-        add(addPlasmapheresisForm);
+        PlasmaPheresisPanel plasmaPheresisPanel = new PlasmaPheresisPanel("plasmapheresisPanel", radarNumberModel);
+        add(plasmaPheresisPanel);
 
         DialysisTablePanel dialysisTablePanel = new DialysisTablePanel("dialysisContainer", radarNumberModel);
         dialysisTablePanel.setVisible(firstVisit);
@@ -771,59 +657,4 @@ public class TreatmentPanel extends Panel {
             }
         }
     }
-
-    private final class PlasmapheresisForm extends Form<Plasmapheresis> {
-        private RadarDateTextField endDate;
-        @SpringBean
-        private PlasmapheresisDao plasmapheresisDao;
-
-        private PlasmapheresisForm(String id, IModel<Plasmapheresis> model, List<Component> componentsToUpdate) {
-            super(id, model);
-            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
-            add(startDate);
-            endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
-            add(endDate);
-
-
-            RadarRequiredDropdownChoice plasmapheresisExchanges = new RadarRequiredDropdownChoice("plasmapheresisExchanges",
-                    plasmapheresisDao.getPlasmapheresisExchangeUnits(),
-                    new ChoiceRenderer("name", "id"), this, componentsToUpdate);
-            add(plasmapheresisExchanges);
-
-            RadarRequiredDropdownChoice response = new RadarRequiredDropdownChoice("response", Arrays.asList(RemissionAchieved.COMPLETE,
-                    RemissionAchieved.PARTIAL, RemissionAchieved.NONE), new ChoiceRenderer("label", "id"),
-                    this, componentsToUpdate);
-            add(response);
-
-            componentsToUpdate.add(startDate);
-            componentsToUpdate.add(endDate);
-            componentsToUpdate.add(plasmapheresisExchanges);
-            componentsToUpdate.add(response);
-
-            endDate.setOutputMarkupId(true);
-            endDate.setOutputMarkupPlaceholderTag(true);
-
-            startDate.setOutputMarkupId(true);
-            startDate.setOutputMarkupPlaceholderTag(true);
-
-            plasmapheresisExchanges.setOutputMarkupId(true);
-            plasmapheresisExchanges.setOutputMarkupPlaceholderTag(true);
-
-            response.setOutputMarkupId(true);
-            response.setOutputMarkupPlaceholderTag(true);
-
-        }
-
-        @Override
-        protected void onValidateModelObjects() {
-            super.onValidateModelObjects();
-            Plasmapheresis plasmapheresis = getModelObject();
-            Date start = plasmapheresis.getStartDate();
-            Date end = plasmapheresis.getEndDate();
-            if (start != null && end != null && start.compareTo(end) != -1) {
-                endDate.error("End date cannot be less than start date");
-            }
-        }
-    }
-
 }
