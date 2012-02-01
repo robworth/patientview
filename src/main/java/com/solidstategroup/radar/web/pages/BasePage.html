@@ -19,31 +19,26 @@
 
 
     <div id="topNavigation">
-        <a wicket:id="homePage" href="#">Home</a>
-        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a wicket:id="proRegistrationPage" href="#">Health Professional Registration</a>
-        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a>Log-out</a>
+        <a wicket:id="homePageLink" href="#">Home </a>
+        <a wicket:id="professionalRegistrationPageLink" href="#">| Health Professional Registration </a>
+        <a wicket:id="patientRegistrationPageLink" title="Patients Page">| Patient Registration </a>
+        <a wicket:id="logoutLink">| Log-out</a>
 
         <div id="rightNav">
             <div class="AJXCSSMenuCeGKRNA"><!-- AJXFILE:menu/ajxmenu.css -->
                 <ul>
 
                     <li class="" style="position: static; ">
-                        <a wicket:id="professionalsPage" title="Professionals Page" href="#">Professionals</a>
+                        <a wicket:id="professionalsPageLink" title="Professionals Page" href="#">Professionals</a>
                     </li>
 
                     <li class="" style="position: static; ">
-                        <a wicket:id="patientsPage" title="Patients Page" href="#">| Patients</a>
-                    </li>
-
-                    <li class="" style="position: static; ">
-                        <a wicket:id="patientRegistrationLink" title="Patients Page">| Patient Registration </a>
+                        <a wicket:id="patientsPageLink" title="Patients Page" href="#">| Patients</a>
                     </li>
 
                     <wicket:enclosure>
                         <li class="" style="position: static; ">
-                            <a wicket:id="enterNewPatientLink" title="Enter new patients" href="#">| Enter New Patient
+                            <a wicket:id="enterNewPatientPageLink" title="Enter new patients" href="#">| Enter New Patient
                                 |</a>
                         </li>
                     </wicket:enclosure>
@@ -52,31 +47,31 @@
                         <a title="Existing Patients" class="ajxsub" href="#">Existing Patients</a>
                         <ul style="display: none; ">
                             <li class="sfirst" style="position: static; ">
-                                <a wicket:id="patientsListingPage" href="#" title="Modify Existing Patients">Modify
+                                <a wicket:id="patientsListingPageLink" href="#" title="Modify Existing Patients">Modify
                                     Patients</a>
                             </li>
                             <li class="" style="position: static; ">
-                                <a wicket:id="recruitmentPage" href="#" title="Recruitment">Recruitment</a>
+                                <a wicket:id="recruitmentPageLink" href="#" title="Recruitment">Recruitment</a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="" style="position: static; ">
-                        <a wicket:id="diseaseIndexPage" title="Disease Information for patients" href="#">| Disease
+                        <a wicket:id="diseaseIndexPageLink" title="Disease Information for patients" href="#">| Disease
                             Index</a>
                     </li>
 
                     <li class="" style="position: static; " wicket:id="cliniciansContainer">
-                        <a id="ctl00_lnkClinicianInfo" class="ajxsub" href="#">|Information for Clinicians</a>
+                        <a id="ctl00_lnkClinicianInfo" class="ajxsub" href="#">| Information for Clinicians</a>
                         <ul style="display: none; ">
                             <li class="sfirst" style="position: static; ">
-                                <a wicket:id="mpgnPage" href="#" title="MPGN/DDD">MPGN/DDD</a>
+                                <a wicket:id="mpgnPageLink" href="#" title="MPGN/DDD">MPGN/DDD</a>
                             </li>
                             <li class="" style="position: static; ">
-                                <a wicket:id="srnsPage" href="#" title="SRNS">SRNS</a>
+                                <a wicket:id="srnsPageLink" href="#" title="SRNS">SRNS</a>
                             </li>
                             <li class="slast" style="position: static; ">
-                                <a wicket:id="consentFormsPage" href="#" title="Consent Forms">Consent Forms</a>
+                                <a wicket:id="consentFormsPageLink" href="#" title="Consent Forms">Consent Forms</a>
                             </li>
                         </ul>
                     </li>
