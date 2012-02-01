@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.model.enums;
 
+import com.solidstategroup.radar.model.BaseModel;
+
 public enum KidneyTransplantedNative {
 
     // These are used as bits in the database but hopefully it'll convert to an int
@@ -12,5 +14,9 @@ public enum KidneyTransplantedNative {
 
     public int getId() {
         return id;
+    }
+
+    public String getLabel() {
+        return BaseModel.getLabelFromEnum(toString());
     }
 }

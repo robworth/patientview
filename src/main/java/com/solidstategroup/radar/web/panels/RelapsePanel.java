@@ -4,34 +4,41 @@ import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.RelapseDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
-import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
+import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Relapse;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
-import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 public class RelapsePanel extends Panel {
@@ -48,144 +55,208 @@ public class RelapsePanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        CompoundPropertyModel<Relapse> model;
+        final IModel<Boolean> relapseListVisibilityModel = new Model<Boolean>();
+        if(radarNumberModel.getObject() != null) {
+            relapseListVisibilityModel.setObject(!relapseDao.getRelapsesByRadarNumber(
+                    radarNumberModel.getObject()).isEmpty());
+        }
 
-        // Set up model
-        model = new CompoundPropertyModel<Relapse>(new LoadableDetachableModel<Relapse>() {
+        final WebMarkupContainer relapseListViewContainer = new WebMarkupContainer("relapseListViewContainer"){
             @Override
-            protected Relapse load() {
-                if (radarNumberModel.getObject() != null) {
-                    List<Relapse> relapses = relapseDao.getRelapsesByRadarNumber(radarNumberModel.getObject());
-                    if (!relapses.isEmpty()) {
-                        // Todo: This shouldn't just get the first result
-                        return relapses.get(0);
-                    }
-                }
-                return new Relapse();
+            public boolean isVisible() {
+                return relapseListVisibilityModel.getObject();
             }
-        });
-        Form<Relapse> form = new Form<Relapse>("form", model);
+        };
+
+        relapseListViewContainer.setOutputMarkupId(true);
+        relapseListViewContainer.setOutputMarkupPlaceholderTag(true);
+        add(relapseListViewContainer);
+
+        final List<Component> addRelapseComponentsToUpdate = new ArrayList<Component>();
+        final List<Component> editRelapseComponentsToUpdate = new ArrayList<Component>();
+
+        final IModel relapseListModel = new AbstractReadOnlyModel<List>() {
+            @Override
+            public List getObject() {
+
+                if (radarNumberModel.getObject() != null) {
+                    return relapseDao.getRelapsesByRadarNumber(radarNumberModel.getObject());
+                }
+                return Collections.emptyList();
+            }
+        };
+
+        //
+        final IModel editRelapseModel = new Model<Relapse>();
+        final MarkupContainer editRelapseContainer = new WebMarkupContainer("editRelapseContainer") {
+            @Override
+            public boolean isVisible() {
+                return editRelapseModel.getObject() != null;
+            }
+        };
+        editRelapseContainer.setOutputMarkupPlaceholderTag(true);
+        editRelapseContainer.setOutputMarkupId(true);
+
+        ListView<Relapse> relapseListView = new ListView<Relapse>("relapseListView",
+                relapseListModel) {
+            @Override
+            protected void populateItem(final ListItem<Relapse> item) {
+                item.setModel(new CompoundPropertyModel<Relapse>(item.getModelObject()));
+                item.add(DateLabel.forDatePattern("dateOfRelapse", RadarApplication.DATE_PATTERN));
+                item.add(new Label("transplantedNative.label"));
+                item.add(new Label("viralTrigger"));
+                item.add(new Label("immunisationTrigger"));
+                item.add(new Label("otherTrigger"));
+                item.add(new Label("drug1"));
+                item.add(new Label("drug2"));
+                item.add(new Label("drug3"));
+                item.add(new Label("remissionAchieved.label"));
+                item.add(DateLabel.forDatePattern("dateOfRemission", RadarApplication.DATE_PATTERN));
+
+                AjaxLink ajaxDeleteLink = new AjaxLink("delete") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        Relapse relapse = item.getModelObject();
+                        relapseDao.deleteRelapse(relapse);
+                        target.add(addRelapseComponentsToUpdate.toArray(new Component[
+                                addRelapseComponentsToUpdate.size()]));
+                        target.add(relapseListViewContainer);
+                        relapseListVisibilityModel.setObject(!relapseDao.getRelapsesByRadarNumber(
+                    radarNumberModel.getObject()).isEmpty());
+                    }
+                };
+                item.add(ajaxDeleteLink);
+                ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
+                item.add(new AjaxLink("edit") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        editRelapseModel.setObject(item.getModelObject());
+                        target.add(editRelapseContainer);
+                    }
+                });
+            }
+        };
+        relapseListViewContainer.add(relapseListView);
 
         // General details
         TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
         radarNumber.setEnabled(false);
-        form.add(radarNumber);
+        add(radarNumber);
 
-        form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
+        add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
                 demographicsDao)));
 
-        form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+        add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisDao), "abbreviation")));
 
-        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
-
-        form.add(new RadarRequiredDateTextField("dateOfRelapse", form, componentsToUpdate));
-
-        // Transplanted / native radio options
-        RadioGroup<KidneyTransplantedNative> transplantedNative =
-                new RadioGroup<KidneyTransplantedNative>("transplantedNative");
-        transplantedNative.add(new Radio<KidneyTransplantedNative>("tx",
-                new Model<KidneyTransplantedNative>(KidneyTransplantedNative.TRANSPLANTED)));
-        transplantedNative.add(new Radio<KidneyTransplantedNative>("native",
-                new Model<KidneyTransplantedNative>(KidneyTransplantedNative.NATIVE)));
-        form.add(transplantedNative);
-
-        // Triggers
-        form.add(new TextField("viralTrigger"));
-        form.add(new TextField("immunisationTrigger"));
-        form.add(new TextField("otherTrigger"));
-
-        // Drugs
-        form.add(new TextField("drug1"));
-        form.add(new TextField("drug2"));
-        form.add(new TextField("drug3"));
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
 
 
-        final List<Component> plasmapheresisComponentsToUpdate = new ArrayList<Component>();
+        RelapseForm editRelapseForm = new RelapseForm("editRelapseForm",
+                new CompoundPropertyModel<Relapse>(editRelapseModel), editRelapseComponentsToUpdate);
 
-        // Inner form for plasmapheresis
-        Form<Plasmapheresis> plasmapheresisForm =
-                new Form<Plasmapheresis>("plasmapheresisForm",
-                        new CompoundPropertyModel<Plasmapheresis>(new Plasmapheresis())) {
-                    @Override
-                    protected void onValidateModelObjects() {
-                        super.onValidateModelObjects();
-                        Plasmapheresis plasmapheresis = getModelObject();
-                        Date startDate = plasmapheresis.getStartDate();
-                        Date endDate = plasmapheresis.getEndDate();
-                        if (startDate != null && endDate != null && startDate.compareTo(endDate) != -1) {
-                            Component endDateComp = get("endDate");
-                            endDateComp.error("End date cannot be before start date.");
-                        }
-                    }
-                };
-
-        plasmapheresisForm
-                .add(new RadarRequiredDateTextField("startDate", plasmapheresisForm, plasmapheresisComponentsToUpdate));
-        final RadarDateTextField endDate =
-                new RadarDateTextField("endDate", plasmapheresisForm, plasmapheresisComponentsToUpdate);
-        plasmapheresisForm.add(endDate);
-
-        PlasmapheresisExchangeUnit plasmapheresisTemp = new PlasmapheresisExchangeUnit();
-        plasmapheresisTemp.setName("temp");
-
-        plasmapheresisForm
-                .add(new RadarRequiredDropdownChoice("plasmapheresisExchanges", Arrays.asList(plasmapheresisTemp),
-                        new ChoiceRenderer("name"), plasmapheresisForm, plasmapheresisComponentsToUpdate));
-        plasmapheresisForm.add(new RadarRequiredDropdownChoice("response", Arrays.asList(RemissionAchieved.PARTIAL),
-                new ChoiceRenderer(), plasmapheresisForm, plasmapheresisComponentsToUpdate));
-        plasmapheresisForm.add(new AjaxSubmitLink("savePlasmapheresis") {
+        editRelapseForm.add(new AjaxSubmitLink("save") {
             @Override
-            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(plasmapheresisComponentsToUpdate
-                        .toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                relapseDao.saveRelapse((Relapse) form.getModelObject());
+                form.getModel().setObject(null);
+                target.add(editRelapseContainer);
+                target.add(relapseListViewContainer);
+                target.add(form);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(editRelapseComponentsToUpdate.toArray(new Component[
+                        editRelapseComponentsToUpdate.size()]));
+            }
+        });
+        editRelapseForm.add(new AjaxLink("cancel") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                editRelapseModel.setObject(null);
+                target.add(editRelapseContainer);
+            }
+        });
+
+        editRelapseContainer.add(editRelapseForm);
+        add(editRelapseContainer);
+
+        Form<Relapse> addRelapseform = new RelapseForm("addRelapseform", new CompoundPropertyModel<Relapse>(new Relapse()),
+                addRelapseComponentsToUpdate);
+
+        addRelapseform.add(new AjaxSubmitLink("submit") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                Relapse relapse = (Relapse) form.getModelObject();
+                relapse.setRadarNumber(radarNumberModel.getObject());
+                relapseDao.saveRelapse(relapse);
+                target.add(addRelapseComponentsToUpdate.toArray(new Component[
+                        addRelapseComponentsToUpdate.size()]));
+                relapseListVisibilityModel.setObject(true);
+                target.add(relapseListViewContainer);
+                form.getModel().setObject(new Relapse());
             }
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(plasmapheresisComponentsToUpdate
-                        .toArray(new Component[plasmapheresisComponentsToUpdate.size()]));
+                ajaxRequestTarget.add(addRelapseComponentsToUpdate.toArray(new Component[addRelapseComponentsToUpdate.size()]));
 
             }
         });
 
+        add(addRelapseform);
 
-        // Remission radio group
-        RadioGroup<RemissionAchieved> remissionAchieved = new RadioGroup<RemissionAchieved>("remissionAchieved");
-        remissionAchieved.add(new Radio<RemissionAchieved>("complete",
-                new Model<RemissionAchieved>(RemissionAchieved.COMPLETE)));
-        remissionAchieved
-                .add(new Radio<RemissionAchieved>("partial", new Model<RemissionAchieved>(RemissionAchieved.PARTIAL)));
-        remissionAchieved
-                .add(new Radio<RemissionAchieved>("none", new Model<RemissionAchieved>(RemissionAchieved.NONE)));
-        form.add(remissionAchieved);
-
-        form.add(new RadarDateTextField("dateOfRemission", form, componentsToUpdate));
-
-        form.add(new AjaxSubmitLink("submit") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
-
-            }
-        });
-
-        add(form);
-        add(plasmapheresisForm);
-
+        PlasmaPheresisPanel plasmaPheresisPanel = new PlasmaPheresisPanel("plasmapheresisPanel", radarNumberModel);
+        add(plasmaPheresisPanel);
     }
 
     @Override
     public boolean isVisible() {
         return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.RELAPSE);
+    }
+
+    private static class RelapseForm extends Form<Relapse> {
+        private RelapseForm(String id, IModel<Relapse> model, List<Component> componentsToUpdate) {
+            super(id, model);
+            add(new RadarRequiredDateTextField("dateOfRelapse", this, componentsToUpdate));
+
+            // Transplanted / native radio options
+            RadioGroup<KidneyTransplantedNative> transplantedNative =
+                    new RadioGroup<KidneyTransplantedNative>("transplantedNative");
+            transplantedNative.add(new Radio<KidneyTransplantedNative>("tx",
+                    new Model<KidneyTransplantedNative>(KidneyTransplantedNative.TRANSPLANTED)));
+            transplantedNative.add(new Radio<KidneyTransplantedNative>("native",
+                    new Model<KidneyTransplantedNative>(KidneyTransplantedNative.NATIVE)));
+            add(transplantedNative);
+
+            // Triggers
+            add(new TextField("viralTrigger"));
+            add(new TextField("immunisationTrigger"));
+            add(new TextField("otherTrigger"));
+
+            // Drugs
+            add(new TextField("drug1"));
+            add(new TextField("drug2"));
+            add(new TextField("drug3"));
+
+            // Remission radio group
+            RadioGroup<RemissionAchieved> remissionAchieved = new RadioGroup<RemissionAchieved>("remissionAchieved");
+            remissionAchieved.add(new Radio<RemissionAchieved>("complete",
+                    new Model<RemissionAchieved>(RemissionAchieved.COMPLETE)));
+            remissionAchieved
+                    .add(new Radio<RemissionAchieved>("partial", new Model<RemissionAchieved>(RemissionAchieved.PARTIAL)));
+            remissionAchieved
+                    .add(new Radio<RemissionAchieved>("none", new Model<RemissionAchieved>(RemissionAchieved.NONE)));
+            add(remissionAchieved);
+
+            add(new RadarDateTextField("dateOfRemission", this, componentsToUpdate));
+
+            add(RadarComponentFactory.getSuccessMessageLabel("successMessage", this, componentsToUpdate));
+            add(RadarComponentFactory.getErrorMessageLabel("errorMessage", this, componentsToUpdate));
+        }
     }
 }
