@@ -36,9 +36,14 @@
     </tr>
     <tr>
         <td style="font-size:85%;" colspan="3">
-            <strong>Date of ESRF:</strong> <span id="ctl00_ContentPlaceHolder1_lblESRF"><em>Not entered</em></span>
+            <strong>Date of ESRF:</strong>
+            <span wicket:id="esrfNotEnteredContainer">
+               <span id="ctl00_ContentPlaceHolder1_lblESRF"><em>Not entered</em></span>
+            &nbsp; (Can be entered/amended on the <a class="diagnosisRedirect" href="javascript:void(0)">Diagnosis page
+            </a>)
+            </span>
+            <span wicket:id="esrfDate"></span>
 
-            &nbsp; (Can be entered/amended on the <a href="diagnosis.aspx">Diagnosis page</a>)
         </td>
     </tr>
     </tbody>

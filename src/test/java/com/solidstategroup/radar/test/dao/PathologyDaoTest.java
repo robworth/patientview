@@ -1,18 +1,35 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.PathologyDao;
+import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.sequenced.Pathology;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PathologyDaoTest extends BaseDaoTest {
 
     @Autowired
     private PathologyDao pathologyDao;
+
+    @Test
+    public void testSavePathology() throws Exception {
+        // test save
+        Pathology pathology = new Pathology();
+        pathologyDao.savePathology(pathology);
+        assertNotNull(pathology.getId());
+
+        // test update
+        Pathology pathologyUpdate = new Pathology();
+        pathologyUpdate.setId(new Long(1));
+        pathologyDao.savePathology(pathologyUpdate);
+    }
 
     @Test
     public void testGetPathology() {

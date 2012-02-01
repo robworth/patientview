@@ -3,6 +3,7 @@ package com.solidstategroup.radar.web.panels.tables;
 import com.solidstategroup.radar.dao.TreatmentDao;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
@@ -74,7 +75,7 @@ public class DialysisTablePanel extends Panel {
                 item.add(new Label("treatmentModality.description"));
                 item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
                 item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
-                item.add(new AjaxLink("deleteLink") {
+                AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Treatment treatment = item.getModelObject();
@@ -84,7 +85,9 @@ public class DialysisTablePanel extends Panel {
                         target.add(dialysisContainer);
 
                     }
-                });
+                };
+                item.add(ajaxDeleteLink);
+                ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
                 item.add(new AjaxLink("editLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {

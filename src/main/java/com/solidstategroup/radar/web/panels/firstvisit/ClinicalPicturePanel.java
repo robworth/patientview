@@ -121,8 +121,9 @@ public class ClinicalPicturePanel extends Panel {
         clinicalPicturesDropdown.add(new AjaxFormComponentUpdatingBehavior("onChange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                target.add(clinicalPictureContainer);
                 clinicalPictureContainer.setVisible(true);
+                target.add(clinicalPictureContainer);
+
             }
         });
 
@@ -131,7 +132,8 @@ public class ClinicalPicturePanel extends Panel {
             public void onClick(AjaxRequestTarget target) {
                 formModel.setObject(new ClinicalData());
                 clinicalPictureContainer.setVisible(true);
-                target.add(clinicalPictureContainer);
+                clinicalPicturesDropdown.clearInput();
+                target.add(clinicalPictureContainer,clinicalPicturesDropdown);
             }
         };
 
