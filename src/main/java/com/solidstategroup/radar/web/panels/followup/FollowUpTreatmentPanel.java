@@ -87,13 +87,13 @@ public class FollowUpTreatmentPanel extends Panel {
         treatmentPanel.setOutputMarkupId(true);
         treatmentPanel.setOutputMarkupPlaceholderTag(true);
 
-        treatmentDropdown.add(new AjaxFormComponentUpdatingBehavior("onChange") {
+        treatmentDropdown.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                target.add(treatmentContainer);
-                target.add(treatmentPanel);
                 treatmentContainer.setVisible(true);
                 treatmentPanel.setVisible(true);
+                target.add(treatmentContainer);
+                target.add(treatmentPanel);
             }
         });
 
@@ -101,10 +101,12 @@ public class FollowUpTreatmentPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 followUpModel.setObject(new Therapy());
-                target.add(treatmentContainer);
-                target.add(treatmentPanel);
                 treatmentContainer.setVisible(true);
                 treatmentPanel.setVisible(true);
+                treatmentDropdown.clearInput();
+                target.add(treatmentContainer);
+                target.add(treatmentPanel);
+                target.add(treatmentDropdown);
             }
         };
 

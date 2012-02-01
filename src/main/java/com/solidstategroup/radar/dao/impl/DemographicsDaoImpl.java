@@ -30,9 +30,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     private static final String DATE_FORMAT = "dd.MM.yyyy";
     private static final String DATE_FORMAT_2 = "dd-MM-yyyy";
-
     private SimpleJdbcInsert demographicsInsert;
-
     private UtilityDao utilityDao;
 
     @Override

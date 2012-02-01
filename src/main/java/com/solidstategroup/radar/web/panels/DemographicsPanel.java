@@ -105,7 +105,7 @@ public class DemographicsPanel extends Panel {
                 demographicsDao.saveDemographics(demographics);
                 radarNumberModel.setObject(demographics.getId());
 
-                // create new diagnosis if it doesnt exist
+                // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
                 Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(demographics.getId());
                 if (diagnosis == null) {
                     Diagnosis diagnosis_new = new Diagnosis();

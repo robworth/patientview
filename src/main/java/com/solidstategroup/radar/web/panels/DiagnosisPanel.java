@@ -113,7 +113,6 @@ public class DiagnosisPanel extends Panel {
                     @Override
                     protected void onSubmit() {
                         Diagnosis diagnosis = getModelObject();
-                        super.onSubmit();
                         Date dateOfDiagnosis = diagnosis.getBiopsyDate();
                         Long radarNumber;
                         try {
@@ -147,7 +146,8 @@ public class DiagnosisPanel extends Panel {
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
         Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
-        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form, componentsToUpdate);
+        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
+                componentsToUpdate);
 
         Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
         Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form, componentsToUpdate);

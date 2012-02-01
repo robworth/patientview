@@ -50,6 +50,11 @@ public abstract class BaseDaoImpl {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    /**
+     * GetXWithNullCheck methods added because ResultSet.getInt or ResultSet.getDouble will return
+     * 0 if null in db but we want it to return null
+     */
+
     public Boolean getBooleanWithNullCheck(String column, ResultSet resultSet) throws SQLException {
         boolean value = resultSet.getBoolean(column);
         if (resultSet.wasNull()) {

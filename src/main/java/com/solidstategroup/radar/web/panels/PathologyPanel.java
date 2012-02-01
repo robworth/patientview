@@ -3,7 +3,9 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.PathologyDao;
+import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.sequenced.Pathology;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
@@ -15,16 +17,19 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -51,13 +56,16 @@ public class PathologyPanel extends Panel {
         // Model for tha pathology container, the pathology ID
         final IModel<Pathology> pathologyModel = new Model<Pathology>();
 
-        // Add previous results switcher
-        List<Pathology> pathologies;
-        if (radarNumberModel.getObject() != null) {
-            pathologies = pathologyDao.getPathologyByRadarNumber(radarNumberModel.getObject());
-        } else {
-            pathologies = Collections.emptyList();
-        }
+        IModel pathologiesListModel = new AbstractReadOnlyModel<List>() {
+            @Override
+            public List getObject() {
+                if (radarNumberModel.getObject() != null) {
+                    List list = pathologyDao.getPathologyByRadarNumber(radarNumberModel.getObject());
+                    return !list.isEmpty() ? list : Collections.emptyList();
+                }
+                return Collections.emptyList();
+            }
+        };
 
         // Container for form, so we can hide and first then show
         final MarkupContainer pathologyContainer = new WebMarkupContainer("pathologyContainer");
@@ -67,17 +75,11 @@ public class PathologyPanel extends Panel {
         add(pathologyContainer);
 
         // Switcheroo
-        DropDownChoice<Pathology> switcher =
-                new DropDownChoice<Pathology>("records", pathologyModel, pathologies, new IChoiceRenderer<Pathology>() {
-                    public Object getDisplayValue(Pathology object) {
-                        // Todo: Format
-                        return object.getBiopsyDate();
-                    }
-
-                    public String getIdValue(Pathology object, int index) {
-                        return String.valueOf(object.getId());
-                    }
-                });
+        final DropDownChoice<Pathology> switcher =
+                new DropDownChoice<Pathology>("records", pathologyModel, pathologiesListModel,
+                        new ChoiceRenderer<Pathology>("biopsyDate", "id"));
+        switcher.setOutputMarkupId(true);
+        switcher.setOutputMarkupPlaceholderTag(true);
         add(switcher);
 
         // Add new
@@ -85,7 +87,9 @@ public class PathologyPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 pathologyContainer.setVisible(true);
-                target.add(pathologyContainer);
+                pathologyModel.setObject(new Pathology());
+                switcher.clearInput();
+                target.add(pathologyContainer, switcher);
             }
         });
 
@@ -99,23 +103,26 @@ public class PathologyPanel extends Panel {
         });
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
+        componentsToUpdate.add(switcher);
         CompoundPropertyModel<Pathology> model;
 
         // Set up model
-        model = new CompoundPropertyModel<Pathology>(new LoadableDetachableModel<Pathology>() {
+        Form<Pathology> form = new Form<Pathology>("form", new CompoundPropertyModel<Pathology>(pathologyModel)) {
             @Override
-            protected Pathology load() {
-                if (pathologyModel.getObject() != null) {
-                    // Return the pathology by the ID from the drop down choice
-                    return pathologyDao.getPathology(pathologyModel.getObject().getId());
-                }
-                // Otherwise we'll create a new one
-                return new Pathology();
+            protected void onSubmit() {
+                Pathology pathology = getModelObject();
+                pathology.setRadarNumber(radarNumberModel.getObject());
+                pathologyDao.savePathology(pathology);
             }
-        });
-
-        Form<Pathology> form = new Form<Pathology>("form", model);
+        };
         pathologyContainer.add(form);
+
+        Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
+        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
+                componentsToUpdate);
+
+        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
+        Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form, componentsToUpdate);
 
         // General details
         TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
@@ -134,6 +141,22 @@ public class PathologyPanel extends Panel {
 
         // Add inputs
         form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));
+
+        RadioGroup<KidneyTransplantedNative> kideneyTransplant =
+                new RadioGroup<KidneyTransplantedNative>("KidneyTransplantedNative");
+
+        kideneyTransplant.add(new Radio<KidneyTransplantedNative>("native",
+                new Model<KidneyTransplantedNative>(KidneyTransplantedNative.NATIVE)));
+        kideneyTransplant.add(new Radio<KidneyTransplantedNative>("txKidney",
+                new Model<KidneyTransplantedNative>(KidneyTransplantedNative.TRANSPLANTED)));
+
+        form.add(kideneyTransplant);
+
+        RadioGroup<Pathology.Side> side = new RadioGroup<Pathology.Side>("side");
+        side.add(new Radio<Pathology.Side>("left", new Model<Pathology.Side>(Pathology.Side.LEFT)));
+        side.add(new Radio<Pathology.Side>("right", new Model<Pathology.Side>(Pathology.Side.RIGHT)));
+        form.add(side);
+
         form.add(new TextField("sampleLabNumber"));
         form.add(new TextArea("interstitalInflmatoryInfilitrate"));
         form.add(new TextArea("arterialAbnormalities"));
