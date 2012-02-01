@@ -83,11 +83,11 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         labResultsContainer.add(formContainer);
         add(labResultsContainer);
 
-        labResultsDropdown.add(new AjaxFormComponentUpdatingBehavior("onChange") {
+        labResultsDropdown.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                target.add(labResultsContainer);
                 labResultsContainer.setVisible(true);
+                target.add(labResultsContainer);
             }
         });
 
@@ -97,8 +97,9 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 followUpModel.setObject(new LabData());
-                target.add(labResultsContainer);
                 labResultsContainer.setVisible(true);
+                labResultsDropdown.clearInput();
+                target.add(labResultsContainer, labResultsDropdown);
             }
         };
 
