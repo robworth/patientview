@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -15,6 +16,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -23,6 +25,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 
+@AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_PATIENT})
 public class PatientPage extends BasePage {
 
     private static final String PARAM_ID = "id";
@@ -46,18 +49,19 @@ public class PatientPage extends BasePage {
     private RelapsePanel relapsePanel;
     private HospitalisationPanel hospitalisationPanel;
 
-
     private MarkupContainer linksContainer;
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
     public PatientPage(PageParameters parameters) {
         super();
+
         // Get radar number from parameters - we might not have one for new patients
         StringValue idValue = parameters.get(PARAM_ID);
         if (!idValue.isEmpty()) {
             radarNumberModel.setObject(idValue.toLongObject());
         }
+
         // Construct panels for each of the tabs
         demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
