@@ -24,7 +24,7 @@
 <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
 
     <tbody>
-    <tr>1
+    <tr>
         <td><b>Biopsy Record</b></td>
         <td class="style2"><strong>RADAR No.</strong></td>
         <td style="width:120px" class="style2">
@@ -44,7 +44,7 @@
         </td>
         <td class="style2"><strong>Hospital No.</strong></td>
         <td class="style2">
-            <input wicket:id="hospitalNumber"  type="text" style="width:100px;" readonly="readonly"/>
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly"/>
         </td>
     </tr>
     <tr>
@@ -56,7 +56,7 @@
         </td>
         <td class="style2"><strong>Diagnosis</strong></td>
         <td class="style2">
-            <input wicket:id="diagnosis"  type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly" />
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly"/>
         </td>
     </tr>
     </tbody>
@@ -67,6 +67,8 @@
 <tr>
     <td style="height:40px;" colspan="3">
         <input type="button" class="saveBtn" wicket:id="save" value="Save">
+        <span style="font-weight: bold;" wicket:id="successMessage"></span>
+        <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
         &nbsp;
 
         &nbsp;
@@ -88,25 +90,26 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="radio" value="radNat" name="ctl00$ContentPlaceHolder1$radNatTx"
-                           id="ctl00_ContentPlaceHolder1_radNat"><label
-                        for="ctl00_ContentPlaceHolder1_radNat">Native</label>
-                    &nbsp;
-                    <input type="radio" value="radTX" name="ctl00$ContentPlaceHolder1$radNatTx"
-                           id="ctl00_ContentPlaceHolder1_radTX"><label for="ctl00_ContentPlaceHolder1_radTX">Tx
-                    Kidney</label>
+                    <span wicket:id="KidneyTransplantedNative">
+                        <input type="radio" wicket:id="native">
+                        <label>Native</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="txKidney">
+                        <label>Tx Kidney</label>
+                    </span>
+
                 </td>
             </tr>
             <tr>
                 <td>
-                    Side:&nbsp;
-                    <input type="radio" value="radLeft" name="ctl00$ContentPlaceHolder1$radSide"
-                           id="ctl00_ContentPlaceHolder1_radLeft"><label
-                        for="ctl00_ContentPlaceHolder1_radLeft">Left</label>
-                    &nbsp;
-                    <input type="radio" value="radRight" name="ctl00$ContentPlaceHolder1$radSide"
-                           id="ctl00_ContentPlaceHolder1_radRight"><label
-                        for="ctl00_ContentPlaceHolder1_radRight">Right</label>
+                    <span wicket:id="side">
+                         Side:&nbsp;
+                        <input type="radio" wicket:id="left">
+                        <label>Left</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="right">
+                        <label>Right</label>
+                    </span>
                 </td>
                 <td>
                     &nbsp;</td>
@@ -218,7 +221,12 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td><input type="button" class="saveBtn" wicket:id="saveDown" value="Save"></td>
+            <td>
+                <input type="button" class="saveBtn" wicket:id="saveDown" value="Save">
+                <span style="font-weight: bold;" wicket:id="successMessageDown"></span>
+                <span style="font-weight: bold; color: red" wicket:id="errorMessageDown"></span>
+
+            </td>
         </tr>
         </tbody>
     </table>
@@ -383,8 +391,7 @@
                     <span class="feedback" wicket:id="totalNumberFeedback"></span>
                 </td>
                 <td>
-                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_TOTAL_NO"
-                           maxlength="3" wicket:id="totalNumber"/>
+                    <input type="text" style="width:50px;" title="0-150" maxlength="3" wicket:id="totalNumber"/>
                 </td>
             </tr>
             <tr>
@@ -498,7 +505,6 @@
 </div>
 
 <br>
-<span id="ctl00_ContentPlaceHolder1_lblPage">11B</span>
 
 </div>
 

@@ -10,6 +10,7 @@ import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -107,7 +108,7 @@ public class TreatmentPanel extends Panel {
                         item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
                         item.add(new Label("immunosuppression.description"));
                         item.add(new Label("cyclophosphamideTotalDose"));
-                        item.add(new AjaxLink("deleteLink") {
+                        AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                             @Override
                             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                                 immunosuppressionDao.deleteImmunosuppressionTreatment(item.getModelObject());
@@ -115,7 +116,9 @@ public class TreatmentPanel extends Panel {
                                         new Component[addImmunoSuppressComponentsToUpdate.size()]));
                                 ajaxRequestTarget.add(immunosuppressionTreatmentsContainer);
                             }
-                        });
+                        };
+                        item.add(ajaxDeleteLink);
+                        ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
                         item.add(new AjaxLink("editLink") {
                             @Override
                             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
@@ -587,7 +590,7 @@ public class TreatmentPanel extends Panel {
                 item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
                 item.add(new Label("plasmapheresisExchanges.name"));
                 item.add(new Label("response.label"));
-                item.add(new AjaxLink("deleteLink") {
+                AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Plasmapheresis plasmapheresis = item.getModelObject();
@@ -596,7 +599,9 @@ public class TreatmentPanel extends Panel {
                                 addPlasmapheresisComponentsToUpdate.size()]));
                         target.add(plasmapheresisContainer);
                     }
-                });
+                };
+                item.add(ajaxDeleteLink);
+                ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
                 item.add(new AjaxLink("editLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
