@@ -18,7 +18,6 @@ import org.apache.wicket.model.Model;
 public class PatientsLoginPage extends BasePage {
 
     public PatientsLoginPage() {
-
         // Patients log in form
         CompoundPropertyModel<PatientUser> model = new CompoundPropertyModel<PatientUser>(new PatientUser());
         final Model<String> passwordModel = new Model<String>();
@@ -35,8 +34,8 @@ public class PatientsLoginPage extends BasePage {
                     // If we haven't been diverted here from a page request (i.e. we clicked login),
                     // redirect to logged in page
                     if (!continueToOriginalDestination()) {
-                        // Todo: Figure out where this should go
-                        setResponsePage(ProfessionalsPage.class);
+                        // Todo: Figure out where this should go, I think we need to pass the users radar id
+                        setResponsePage(PatientPage.class);
                     }
                 } else {
                     // Show that the login failed if we couldn't authenticate
@@ -74,7 +73,7 @@ public class PatientsLoginPage extends BasePage {
         });
 
         // Add links for forgotten password and register
-        add(new BookmarkablePageLink("forgottenPasswordLink", ForgottenPasswordPage.class));
-        add(new BookmarkablePageLink("registerLink", PatientRegistrationPage.class));
+        add(new BookmarkablePageLink<ForgottenPasswordPage>("forgottenPasswordLink", ForgottenPasswordPage.class));
+        add(new BookmarkablePageLink<PatientRegistrationPage>("registerLink", PatientRegistrationPage.class));
     }
 }
