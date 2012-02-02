@@ -2,6 +2,7 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.HospitalisationDao;
 import com.solidstategroup.radar.model.Hospitalisation;
+import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +14,20 @@ public class HospitalisationDaoTest extends BaseDaoTest {
 
     @Autowired
     private HospitalisationDao hospitalisationDao;
+
+    @Test
+    public void testSaveHospitilisation() throws Exception {
+
+        // save
+        Hospitalisation hospitalisation = new Hospitalisation();
+        hospitalisationDao.saveHospitilsation(hospitalisation);
+        assertNotNull(hospitalisation.getId());
+
+        // update
+        Hospitalisation hospitalisationUpdate = new Hospitalisation();
+        hospitalisationUpdate.setId(new Long(1));
+        hospitalisationDao.saveHospitilsation(hospitalisationUpdate);
+    }
 
     @Test
     public void testGetHospitalisation() {
