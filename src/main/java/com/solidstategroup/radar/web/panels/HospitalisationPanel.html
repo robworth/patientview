@@ -49,7 +49,8 @@
                         </td>
                         <td style="text-align:right; ">Diagnosis</td>
                         <td>
-                            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly"/>
+                            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;"
+                                   readonly="readonly"/>
                         </td>
                     </tr>
                     </tbody>
@@ -59,13 +60,9 @@
                     <tbody>
                     <tr>
                         <td style="height:40px;" colspan="2">
-                            <input type="submit" class="saveBtn" id="ctl00_ContentPlaceHolder1_btnSave2"
-                                   onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSave2&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                                   value="Save" name="ctl00$ContentPlaceHolder1$btnSave2">
-                            &nbsp;
-
-                            &nbsp;
-                            <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+                            <input wicket:id="save" type="submit" class="saveBtn" value="Save">
+                            <span style="font-weight: bold;" wicket:id="successMessage"></span>
+                            <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
                         </td>
                     </tr>
                     <tr>
@@ -131,7 +128,9 @@
                     </tbody>
                 </table>
 
-                <input type="submit" class="saveBtn" value="Save" wicket:id="submit">
+                <input type="submit" class="saveBtn" value="Save" wicket:id="saveDown">
+                <span style="font-weight: bold;" wicket:id="successMessageDown"></span>
+                <span style="font-weight: bold; color: red" wicket:id="errorMessageDown"></span>
             </form>
 
         </div>

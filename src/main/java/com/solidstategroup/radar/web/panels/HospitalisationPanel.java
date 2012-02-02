@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.HospitalisationDao;
 import com.solidstategroup.radar.model.Hospitalisation;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
@@ -15,16 +16,16 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -71,18 +72,9 @@ public class HospitalisationPanel extends Panel {
         };
 
         // Previous results switcher
-        DropDownChoice<Hospitalisation> switcher =
+        final DropDownChoice<Hospitalisation> switcher =
                 new DropDownChoice<Hospitalisation>("switcher", hospitalisationModel, hospitalisations,
-                        new IChoiceRenderer<Hospitalisation>() {
-                            public Object getDisplayValue(Hospitalisation object) {
-                                // Todo: Figure out what this should show
-                                return object.getId();
-                            }
-
-                            public String getIdValue(Hospitalisation object, int index) {
-                                return String.valueOf(object.getId());
-                            }
-                        });
+                        new ChoiceRenderer<Hospitalisation>("dateOfAdmission", "id"));
         add(switcher);
 
         // Add ajax behaviour to update form
@@ -99,28 +91,18 @@ public class HospitalisationPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 hospitalisationContainer.setVisible(true);
-                target.add(hospitalisationContainer);
+                hospitalisationModel.setObject(new Hospitalisation());
+                switcher.clearInput();
+                target.add(hospitalisationContainer, switcher);
             }
         });
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
-
-        // Set up model
-        CompoundPropertyModel<Hospitalisation> model;
-        model = new CompoundPropertyModel<Hospitalisation>(new LoadableDetachableModel<Hospitalisation>() {
-            @Override
-            protected Hospitalisation load() {
-                // If we've got a selected record use that model
-                if (hospitalisationModel.getObject() != null) {
-                    return hospitalisationDao.getHospitalisation(hospitalisationModel.getObject().getId());
-                }
-                // Otherwise just return a new object
-                return new Hospitalisation();
-            }
-        });
+        componentsToUpdate.add(switcher);
 
         // Set up the form
-        Form<Hospitalisation> form = new Form<Hospitalisation>("form", model) {
+        Form<Hospitalisation> form = new Form<Hospitalisation>("form",
+                new CompoundPropertyModel<Hospitalisation>(hospitalisationModel)) {
             @Override
             protected void onValidateModelObjects() {
                 super.onValidateModelObjects();
@@ -132,9 +114,23 @@ public class HospitalisationPanel extends Panel {
                     get("dateOfDischarge").error("Date has to be after admission date");
                 }
             }
+
+            @Override
+            protected void onSubmit() {
+                Hospitalisation hospitalisation = getModelObject();
+                hospitalisation.setRadarNumber(radarNumberModel.getObject());
+                hospitalisationDao.saveHospitilsation(hospitalisation);
+            }
         };
 
-               // General details
+        Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
+        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
+                componentsToUpdate);
+
+        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
+        Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form, componentsToUpdate);
+
+        // General details
         TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
         radarNumber.setEnabled(false);
         form.add(radarNumber);
@@ -153,15 +149,17 @@ public class HospitalisationPanel extends Panel {
         form.add(new RadarDateTextField("dateOfDischarge", form, componentsToUpdate));
         form.add(new TextArea("reason"));
         form.add(new TextArea("comments"));
-        form.add(new AjaxSubmitLink("submit") {
+        form.add(new HospitilisationAjaxSubmitLink("save") {
             @Override
-            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            protected List<? extends Component> getComponentsToUpdate() {
+                return componentsToUpdate;
             }
+        });
 
+        form.add(new HospitilisationAjaxSubmitLink("saveDown") {
             @Override
-            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+            protected List<? extends Component> getComponentsToUpdate() {
+                return componentsToUpdate;
             }
         });
         hospitalisationContainer.add(form);
@@ -170,5 +168,24 @@ public class HospitalisationPanel extends Panel {
     @Override
     public boolean isVisible() {
         return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.HOSPITALISATION);
+    }
+
+    private abstract class HospitilisationAjaxSubmitLink extends AjaxSubmitLink {
+
+        protected HospitilisationAjaxSubmitLink(String id) {
+            super(id);
+        }
+
+        @Override
+        public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+        }
+
+        @Override
+        protected void onError(AjaxRequestTarget target, Form<?> form) {
+            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+        }
+
+        protected abstract List<? extends Component> getComponentsToUpdate();
     }
 }
