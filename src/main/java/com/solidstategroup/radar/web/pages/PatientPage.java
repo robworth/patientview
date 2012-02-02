@@ -118,8 +118,8 @@ public class PatientPage extends BasePage {
                 currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
-                target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
-                        hospitalisationPanel);
+                target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
+                        relapsePanel, hospitalisationPanel);
             }
 
         }
