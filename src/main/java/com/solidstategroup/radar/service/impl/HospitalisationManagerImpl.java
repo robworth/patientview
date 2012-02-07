@@ -1,0 +1,27 @@
+package com.solidstategroup.radar.service.impl;
+
+import com.solidstategroup.radar.dao.HospitalisationDao;
+import com.solidstategroup.radar.model.Hospitalisation;
+import com.solidstategroup.radar.service.HospitalisationManager;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
+
+
+public class HospitalisationManagerImpl implements HospitalisationManager {
+
+    @SpringBean
+    private HospitalisationDao hospitalisationDao;
+
+    public void saveHospitilsation(Hospitalisation hospitalisation) {
+        hospitalisationDao.saveHospitilsation(hospitalisation);
+    }
+
+    public Hospitalisation getHospitalisation(long id) {
+        return hospitalisationDao.getHospitalisation(id);
+    }
+
+    public List<Hospitalisation> getHospitalisationsByRadarNumber(long radarNumber) {
+        return hospitalisationDao.getHospitalisationsByRadarNumber(radarNumber);
+    }
+}
