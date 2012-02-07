@@ -1,5 +1,8 @@
 package com.solidstategroup.radar.web;
 
+import com.solidstategroup.radar.web.pages.AdminsBasePage;
+import com.solidstategroup.radar.web.pages.AdminsLoginPage;
+import com.solidstategroup.radar.web.pages.AdminsPage;
 import com.solidstategroup.radar.web.pages.ExistingPatientsPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
@@ -56,7 +59,9 @@ public class RadarApplication extends AuthenticatedWebApplication {
                 new IUnauthorizedComponentInstantiationListener() {
                     public void onUnauthorizedInstantiation(final Component component) {
                         if (component instanceof Page) {
-                            if (component.getClass() == PatientPage.class) {
+                            if (component instanceof AdminsBasePage) {
+                                throw new RestartResponseAtInterceptPageException(AdminsLoginPage.class);
+                            } else if (component.getClass() == PatientPage.class) {
                                 throw new RestartResponseAtInterceptPageException(PatientsLoginPage.class);
                             }
 
@@ -66,6 +71,9 @@ public class RadarApplication extends AuthenticatedWebApplication {
                         }
                     }
         });
+        
+        mountPage("admins", AdminsPage.class);
+
         // Mount nice URLs for pages - patient pages
         mountPage("patient", PatientPage.class);
         mountPage("patients", ExistingPatientsPage.class);
