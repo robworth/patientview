@@ -15,6 +15,9 @@ public abstract class User extends BaseModel implements UserDetails {
     // Roles, avoid an enum to make it a bit easier with Spring security
     public static final String ROLE_PROFESSIONAL = "ROLE_PROFESSIONAL";
     public static final String ROLE_PATIENT = "ROLE_PATIENT";
+    public static final String ROLE_SUPER_USER = "ROLE_SUPER_USER";
+    // super users are hardcoded by id in the previous implementation
+    protected static final long[] SUPER_USER_IDS = {28,15};
 
     private String username;
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value

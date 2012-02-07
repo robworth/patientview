@@ -5,7 +5,9 @@ import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.TransplantDao;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.Transplant;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -19,7 +21,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.datetime.DateConverter;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -37,13 +39,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class RrtTherapyPanel extends Panel {
     @SpringBean
@@ -77,19 +77,19 @@ public class RrtTherapyPanel extends Panel {
             @Override
             protected Date load() {
                 Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisDao).getObject();
-                if(diagnosis != null) {
+                if (diagnosis != null) {
                     return diagnosis.getEsrfDate();
                 }
                 return null;
             }
         };
-        add(new DateLabel("esrfDate", esrfDateModel, new PatternDateConverter(RadarApplication.DATE_PATTERN, true)){
+        add(new DateLabel("esrfDate", esrfDateModel, new PatternDateConverter(RadarApplication.DATE_PATTERN, true)) {
             @Override
             public boolean isVisible() {
                 return esrfDateModel.getObject() != null;
             }
         });
-        add(new WebMarkupContainer("esrfNotEnteredContainer"){
+        add(new WebMarkupContainer("esrfNotEnteredContainer") {
             @Override
             public boolean isVisible() {
                 return esrfDateModel.getObject() == null;
@@ -182,6 +182,14 @@ public class RrtTherapyPanel extends Panel {
                         };
                         rejectDataListItem.add(ajaxDeleteLink);
                         ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
+
+                        AuthenticatedWebSession session = RadarSecuredSession.get();
+                        if (session.isSignedIn()) {
+                            if (session.getRoles().hasRole(User.ROLE_PATIENT)) {
+                                ajaxDeleteLink.setVisible(false);
+                            }
+                        }
+
                     }
                 });
 
@@ -200,14 +208,15 @@ public class RrtTherapyPanel extends Panel {
                 };
                 item.add(ajaxDeleteLink);
                 ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
-                item.add(new AjaxLink("editLink") {
+                AjaxLink ajaxEditLink = new AjaxLink("editLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         editTransplantModel.setObject(item.getModelObject());
                         target.add(editTransplantContainer);
                     }
-                });
-                item.add(new AjaxLink("addRejectLink") {
+                };
+                item.add(ajaxEditLink);
+                AjaxLink ajaxAddRejectLink = new AjaxLink("addRejectLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Transplant.RejectData rejectData = new Transplant.RejectData();
@@ -215,7 +224,17 @@ public class RrtTherapyPanel extends Panel {
                         addRejectModel.setObject(rejectData);
                         target.add(rejectDataContainer);
                     }
-                });
+                };
+                item.add(ajaxAddRejectLink);
+
+                AuthenticatedWebSession session = RadarSecuredSession.get();
+                if (session.isSignedIn()) {
+                    if (session.getRoles().hasRole(User.ROLE_PATIENT)) {
+                        ajaxDeleteLink.setVisible(false);
+                        ajaxEditLink.setVisible(false);
+                        ajaxAddRejectLink.setVisible(false);
+                    }
+                }
             }
         });
 

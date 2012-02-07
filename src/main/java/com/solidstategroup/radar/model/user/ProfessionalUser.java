@@ -13,6 +13,11 @@ public class ProfessionalUser extends User {
 
     @Override
     public String getSecurityRole() {
+        for(long id : User.SUPER_USER_IDS) {
+            if(getId().equals(id)) {
+                return User.ROLE_SUPER_USER;
+            }
+        }
         return User.ROLE_PROFESSIONAL;
     }
 

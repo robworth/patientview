@@ -4,8 +4,12 @@ import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.util.TripleDes;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.event.LoggerListener;
 
 import java.util.Date;
 
@@ -13,6 +17,7 @@ import static org.junit.Assert.*;
 
 public class UserDaoTest extends BaseDaoTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoTest.class);
     @Autowired
     private UserDao userDao;
 
@@ -84,4 +89,26 @@ public class UserDaoTest extends BaseDaoTest {
         ProfessionalUser professionalUser = userDao.getProfessionalUser("no@no.com");
         assertNull("Unknown user isn't null", professionalUser);
     }
+
+    /**
+     * Used for outputting login details for test db - not really a test - uncomment and use if you need
+     */
+
+
+    @Test
+    public void outputLoginDetails() {
+
+        LOGGER.info("Login details for test db only");
+
+        // super user
+        String email = "hugh.mccarthy@UHBristol.nhs.uk";
+        ProfessionalUser professionalUser = userDao.getProfessionalUser(email);
+        try {
+            String password = TripleDes.decrypt(professionalUser.getPasswordHash());
+            LOGGER.info("super user | email: " + email + " | password: " + password);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
 }

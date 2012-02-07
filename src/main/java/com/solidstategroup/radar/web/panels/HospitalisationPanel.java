@@ -72,13 +72,13 @@ public class HospitalisationPanel extends Panel {
         };
 
         // Previous results switcher
-        final DropDownChoice<Hospitalisation> switcher =
-                new DropDownChoice<Hospitalisation>("switcher", hospitalisationModel, hospitalisations,
+        final DropDownChoice<Hospitalisation> hospitilisationSwitcher =
+                new DropDownChoice<Hospitalisation>("hospitilisationSwitcher", hospitalisationModel, hospitalisations,
                         new ChoiceRenderer<Hospitalisation>("dateOfAdmission", "id"));
-        add(switcher);
+        add(hospitilisationSwitcher);
 
         // Add ajax behaviour to update form
-        switcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        hospitilisationSwitcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 hospitalisationContainer.setVisible(true);
@@ -92,13 +92,13 @@ public class HospitalisationPanel extends Panel {
             public void onClick(AjaxRequestTarget target) {
                 hospitalisationContainer.setVisible(true);
                 hospitalisationModel.setObject(new Hospitalisation());
-                switcher.clearInput();
-                target.add(hospitalisationContainer, switcher);
+                hospitilisationSwitcher.clearInput();
+                target.add(hospitalisationContainer, hospitilisationSwitcher);
             }
         });
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
-        componentsToUpdate.add(switcher);
+        componentsToUpdate.add(hospitilisationSwitcher);
 
         // Set up the form
         Form<Hospitalisation> form = new Form<Hospitalisation>("form",

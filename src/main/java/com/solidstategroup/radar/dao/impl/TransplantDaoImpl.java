@@ -104,8 +104,14 @@ public class TransplantDaoImpl extends BaseDaoImpl implements TransplantDao {
     }
 
     public Transplant.Modality getTransplantModality(long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM tbl_transplant_modality WHERE trID = ?", new Object[]{id},
-                new TransplantModalityRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_transplant_modality WHERE trID = ?", new Object[]{id},
+                    new TransplantModalityRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
+
     }
 
     public void saveRejectData(final Transplant.RejectData rejectData) {

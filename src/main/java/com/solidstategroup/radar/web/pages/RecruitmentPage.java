@@ -14,7 +14,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-@AuthorizeInstantiation(User.ROLE_PROFESSIONAL)
+@AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class RecruitmentPage extends BasePage{
 
     @SpringBean
