@@ -1,6 +1,16 @@
 package com.solidstategroup.radar.web;
 
 import com.solidstategroup.radar.web.pages.*;
+import com.solidstategroup.radar.web.pages.AdminsBasePage;
+import com.solidstategroup.radar.web.pages.AdminsLoginPage;
+import com.solidstategroup.radar.web.pages.AdminsPage;
+import com.solidstategroup.radar.web.pages.HomePage;
+import com.solidstategroup.radar.web.pages.PatientPage;
+import com.solidstategroup.radar.web.pages.PatientsLoginPage;
+import com.solidstategroup.radar.web.pages.ProfessionalsLoginPage;
+import com.solidstategroup.radar.web.pages.ProfessionalsPage;
+import com.solidstategroup.radar.web.pages.RecruitmentPage;
+import com.solidstategroup.radar.web.pages.ProfessionalRegistrationPage;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
@@ -49,7 +59,9 @@ public class RadarApplication extends AuthenticatedWebApplication {
                 new IUnauthorizedComponentInstantiationListener() {
                     public void onUnauthorizedInstantiation(final Component component) {
                         if (component instanceof Page) {
-                            if (component.getClass() == PatientPageReadOnly.class) {
+                            if (component instanceof AdminsBasePage) {
+                                throw new RestartResponseAtInterceptPageException(AdminsLoginPage.class);
+                            } else if (component.getClass() == PatientPageReadOnly.class) {
                                 throw new RestartResponseAtInterceptPageException(PatientsLoginPage.class);
                             }
 
@@ -58,7 +70,10 @@ public class RadarApplication extends AuthenticatedWebApplication {
                             throw new UnauthorizedInstantiationException(component.getClass());
                         }
                     }
-        });
+                });
+
+        mountPage("admins", AdminsPage.class);
+
         // Mount nice URLs for pages - patient pages
         mountPage("patient/edit", PatientPage.class);
         mountPage("patient/view", PatientPageReadOnly.class);
