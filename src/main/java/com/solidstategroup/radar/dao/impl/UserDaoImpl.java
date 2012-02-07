@@ -2,6 +2,7 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.util.TripleDes;
@@ -32,6 +33,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns("pID")
                 .usingColumns("RADAR_NO", "pUserName", "pPassWord", "pDOB", "pDateReg"
                 );
+    }
+
+    public AdminUser getAdminUser(String email) {
+        try {
+            // Return a patient user object queried for using given email
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_adminusers WHERE uEmail = ?",
+                    new Object[]{email}, new AdminUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            // Add debug logging
+            LOGGER.debug("Could not find row in table tbl_adminusers with uEmail {}", email);
+        }
+        return null;
     }
 
     public PatientUser getPatientUser(String email) {
@@ -100,6 +113,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
 
             return professionalUser;
+        }
+    }
+    
+    private class AdminUserRowMapper implements RowMapper<AdminUser> {
+        public AdminUser mapRow(ResultSet resultSet, int i) throws SQLException {
+            AdminUser adminUser = new AdminUser();
+            adminUser.setName(resultSet.getString("uName"));
+            adminUser.setEmail(resultSet.getString("uEmail"));
+            adminUser.setPasswordHash(resultSet.getBytes("uPass"));
+            adminUser.setUsername(resultSet.getString("uUserName"));
+            return adminUser;
         }
     }
 
