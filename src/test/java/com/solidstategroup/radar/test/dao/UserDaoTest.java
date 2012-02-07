@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
@@ -16,6 +17,12 @@ public class UserDaoTest extends BaseDaoTest {
     @Autowired
     private UserDao userDao;
 
+    @Test
+    public void testGetAdminUser() {
+        AdminUser adminUser = userDao.getAdminUser("ihaynes@data-insite.co.uk");
+        assertNotNull(adminUser);
+    }
+    
     @Test
     public void testGetPatientUser() {
         // Get a user
