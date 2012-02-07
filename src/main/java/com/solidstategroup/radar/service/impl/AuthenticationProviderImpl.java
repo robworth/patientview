@@ -19,8 +19,11 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // Get the user by their email, try admin, then professional, then patient
-        // Todo: Get Admin user
-        User user = userDao.getProfessionalUser(authentication.getName());
+        User user = userDao.getAdminUser(authentication.getName());
+        
+        if (user == null) {
+            user = userDao.getProfessionalUser(authentication.getName());
+        }
 
         if (user == null) {
             user = userDao.getPatientUser(authentication.getName());
