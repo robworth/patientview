@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class PatientUser extends User {
 
-    private long radarNumber;
+    private Long radarNumber;
     private Date dateOfBirth;
 
     @Override
@@ -12,7 +12,7 @@ public class PatientUser extends User {
         return User.ROLE_PATIENT;
     }
 
-    public long getRadarNumber() {
+    public Long getRadarNumber() {
         return radarNumber;
     }
 

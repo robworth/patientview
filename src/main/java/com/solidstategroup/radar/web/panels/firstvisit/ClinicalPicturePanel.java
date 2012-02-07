@@ -3,6 +3,7 @@ package com.solidstategroup.radar.web.panels.firstvisit;
 import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
+import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
@@ -13,7 +14,6 @@ import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -112,13 +112,13 @@ public class ClinicalPicturePanel extends Panel {
             }
         };
 
-        final DropDownChoice clinicalPicturesDropdown = new DropDownChoice("clinicalPictures", followUpModel,
+        final DropDownChoice clinicalPicturesSwitcher = new DropDownChoice("clinicalPicturesSwitcher", followUpModel,
                 clinicalPictureListModel, new ChoiceRenderer("clinicalPictureDate", "id"));
-        clinicalPicturesDropdown.setOutputMarkupId(true);
+        clinicalPicturesSwitcher.setOutputMarkupId(true);
         clinicalPictureContainer.setOutputMarkupPlaceholderTag(true);
-        clinicalPicturesDropdown.setVisible(!firstVisit);
-        add(clinicalPicturesDropdown);
-        clinicalPicturesDropdown.add(new AjaxFormComponentUpdatingBehavior("onChange") {
+        clinicalPicturesSwitcher.setVisible(!firstVisit);
+        add(clinicalPicturesSwitcher);
+        clinicalPicturesSwitcher.add(new AjaxFormComponentUpdatingBehavior("onChange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 clinicalPictureContainer.setVisible(true);
@@ -132,8 +132,8 @@ public class ClinicalPicturePanel extends Panel {
             public void onClick(AjaxRequestTarget target) {
                 formModel.setObject(new ClinicalData());
                 clinicalPictureContainer.setVisible(true);
-                clinicalPicturesDropdown.clearInput();
-                target.add(clinicalPictureContainer,clinicalPicturesDropdown);
+                clinicalPicturesSwitcher.clearInput();
+                target.add(clinicalPictureContainer,clinicalPicturesSwitcher);
             }
         };
 
@@ -141,8 +141,8 @@ public class ClinicalPicturePanel extends Panel {
         add(addNew);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
-        if (clinicalPicturesDropdown.isVisible()) {
-            componentsToUpdate.add(clinicalPicturesDropdown);
+        if (clinicalPicturesSwitcher.isVisible()) {
+            componentsToUpdate.add(clinicalPicturesSwitcher);
         }
 
         final Form<ClinicalData> form = new Form<ClinicalData>("form", formModel) {
@@ -188,8 +188,8 @@ public class ClinicalPicturePanel extends Panel {
             public Boolean getObject() {
                 if (diagnosisCode == null) {
                     if (radarNumberModel.getObject() != null) {
-                        diagnosisCode = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject())
-                                .getDiagnosisCode();
+                        Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                        diagnosisCode = diagnosis != null ? diagnosis.getDiagnosisCode() : null;
                     }
                 }
 

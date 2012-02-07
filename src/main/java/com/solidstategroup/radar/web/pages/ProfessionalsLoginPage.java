@@ -1,7 +1,8 @@
 package com.solidstategroup.radar.web.pages;
 
 import com.solidstategroup.radar.model.user.ProfessionalUser;
-import com.solidstategroup.radar.web.SecuredSession;
+import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -12,8 +13,12 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProfessionalsLoginPage extends BasePage {
+
+    @SpringBean
+    private UserManager userManager;
 
     public ProfessionalsLoginPage() {
 
@@ -28,15 +33,26 @@ public class ProfessionalsLoginPage extends BasePage {
             @Override
             protected void onSubmit() {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
-                AuthenticatedWebSession session = SecuredSession.get();
+                AuthenticatedWebSession session = RadarSecuredSession.get();
                 ProfessionalUser user = getModelObject();
-                if (session.signIn(user.getEmail(), passwordModel.getObject())) {
-                    // If we haven't been diverted here from a page request (i.e. we clicked login),
-                    // redirect to logged in page
-                    if (!continueToOriginalDestination()) {
-                        setResponsePage(ProfessionalsPage.class);
+                boolean loginFailed = false;
+                ProfessionalUser professionalUser = userManager.getProfessionalUser(user.getEmail());
+                if (professionalUser != null) {
+                    if (session.signIn(user.getEmail(), passwordModel.getObject())) {
+                        // If we haven't been diverted here from a page request (i.e. we clicked login),
+                        // redirect to logged in page
+                        if (!continueToOriginalDestination()) {
+                            setResponsePage(ProfessionalsPage.class);
+                        }
+                    } else {
+
+                        loginFailed = true;
                     }
                 } else {
+
+                    loginFailed = true;
+                }
+                if (loginFailed) {
                     // Show that the login failed if we couldn't authenticate
                     error("Login failed");
                 }

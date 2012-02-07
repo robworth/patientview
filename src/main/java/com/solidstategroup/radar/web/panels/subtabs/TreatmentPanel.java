@@ -9,7 +9,9 @@ import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Therapy;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
@@ -27,6 +29,7 @@ import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -120,13 +123,22 @@ public class TreatmentPanel extends Panel {
                         };
                         item.add(ajaxDeleteLink);
                         ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
-                        item.add(new AjaxLink("editLink") {
+                        AjaxLink ajaxEditLink = new AjaxLink("editLink") {
                             @Override
                             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                                 editImmunosuppressionTreatmentIModel.setObject(item.getModelObject());
                                 ajaxRequestTarget.add(editContainer);
                             }
-                        });
+                        };
+                        item.add(ajaxEditLink);
+
+                        AuthenticatedWebSession session = RadarSecuredSession.get();
+                        if(session.isSignedIn()) {
+                            if(session.getRoles().hasRole(User.ROLE_PATIENT)){
+                                 ajaxDeleteLink.setVisible(false);
+                                 ajaxEditLink.setVisible(false);
+                            }
+                        }
 
                         immunosuppressionTreatmentsContainer.setVisible(true);
                     }

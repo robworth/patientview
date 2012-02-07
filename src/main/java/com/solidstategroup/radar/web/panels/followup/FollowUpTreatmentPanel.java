@@ -76,18 +76,18 @@ public class FollowUpTreatmentPanel extends Panel {
             }
         };
 
-        final DropDownChoice<Therapy> treatmentDropdown = new DropDownChoice("treatmentDropdown", followUpModel,
+        final DropDownChoice<Therapy> treatmentSwitcher = new DropDownChoice("treatmentSwitcher", followUpModel,
                 therapiesListModel, new ChoiceRenderer("treatmentRecordDate", "id"));
-        add(treatmentDropdown);
+        add(treatmentSwitcher);
 
         final TreatmentPanel treatmentPanel = new TreatmentPanel("treatmentPanel", radarNumberModel, false, followUpModel,
-                Arrays.<Component>asList(treatmentDropdown));
+                Arrays.<Component>asList(treatmentSwitcher));
         treatmentPanel.setVisible(false);
         add(treatmentPanel);
         treatmentPanel.setOutputMarkupId(true);
         treatmentPanel.setOutputMarkupPlaceholderTag(true);
 
-        treatmentDropdown.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        treatmentSwitcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 treatmentContainer.setVisible(true);
@@ -103,10 +103,10 @@ public class FollowUpTreatmentPanel extends Panel {
                 followUpModel.setObject(new Therapy());
                 treatmentContainer.setVisible(true);
                 treatmentPanel.setVisible(true);
-                treatmentDropdown.clearInput();
+                treatmentSwitcher.clearInput();
                 target.add(treatmentContainer);
                 target.add(treatmentPanel);
-                target.add(treatmentDropdown);
+                target.add(treatmentSwitcher);
             }
         };
 

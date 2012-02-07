@@ -75,12 +75,12 @@ public class PathologyPanel extends Panel {
         add(pathologyContainer);
 
         // Switcheroo
-        final DropDownChoice<Pathology> switcher =
-                new DropDownChoice<Pathology>("records", pathologyModel, pathologiesListModel,
+        final DropDownChoice<Pathology> pathologySwitcher =
+                new DropDownChoice<Pathology>("pathologySwitcher", pathologyModel, pathologiesListModel,
                         new ChoiceRenderer<Pathology>("biopsyDate", "id"));
-        switcher.setOutputMarkupId(true);
-        switcher.setOutputMarkupPlaceholderTag(true);
-        add(switcher);
+        pathologySwitcher.setOutputMarkupId(true);
+        pathologySwitcher.setOutputMarkupPlaceholderTag(true);
+        add(pathologySwitcher);
 
         // Add new
         add(new AjaxLink("addNew") {
@@ -88,13 +88,13 @@ public class PathologyPanel extends Panel {
             public void onClick(AjaxRequestTarget target) {
                 pathologyContainer.setVisible(true);
                 pathologyModel.setObject(new Pathology());
-                switcher.clearInput();
-                target.add(pathologyContainer, switcher);
+                pathologySwitcher.clearInput();
+                target.add(pathologyContainer, pathologySwitcher);
             }
         });
 
         // Add Ajax behaviour to switch the container on change
-        switcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        pathologySwitcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 pathologyContainer.setVisible(true);
@@ -103,7 +103,7 @@ public class PathologyPanel extends Panel {
         });
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
-        componentsToUpdate.add(switcher);
+        componentsToUpdate.add(pathologySwitcher);
         CompoundPropertyModel<Pathology> model;
 
         // Set up model

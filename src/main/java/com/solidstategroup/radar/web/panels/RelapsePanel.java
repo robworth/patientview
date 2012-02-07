@@ -3,12 +3,12 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.RelapseDao;
-import com.solidstategroup.radar.model.Plasmapheresis;
-import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Relapse;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
@@ -20,6 +20,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -57,12 +58,12 @@ public class RelapsePanel extends Panel {
 
 
         final IModel<Boolean> relapseListVisibilityModel = new Model<Boolean>();
-        if(radarNumberModel.getObject() != null) {
+        if (radarNumberModel.getObject() != null) {
             relapseListVisibilityModel.setObject(!relapseDao.getRelapsesByRadarNumber(
                     radarNumberModel.getObject()).isEmpty());
         }
 
-        final WebMarkupContainer relapseListViewContainer = new WebMarkupContainer("relapseListViewContainer"){
+        final WebMarkupContainer relapseListViewContainer = new WebMarkupContainer("relapseListViewContainer") {
             @Override
             public boolean isVisible() {
                 return relapseListVisibilityModel.getObject();
@@ -123,18 +124,26 @@ public class RelapsePanel extends Panel {
                                 addRelapseComponentsToUpdate.size()]));
                         target.add(relapseListViewContainer);
                         relapseListVisibilityModel.setObject(!relapseDao.getRelapsesByRadarNumber(
-                    radarNumberModel.getObject()).isEmpty());
+                                radarNumberModel.getObject()).isEmpty());
                     }
                 };
                 item.add(ajaxDeleteLink);
                 ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
-                item.add(new AjaxLink("edit") {
+                AjaxLink ajaxEditLink = new AjaxLink("edit") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         editRelapseModel.setObject(item.getModelObject());
                         target.add(editRelapseContainer);
                     }
-                });
+                };
+                item.add(ajaxEditLink);
+                AuthenticatedWebSession session = RadarSecuredSession.get();
+                if (session.isSignedIn()) {
+                    if (session.getRoles().hasRole(User.ROLE_PATIENT)) {
+                        ajaxDeleteLink.setVisible(false);
+                        ajaxEditLink.setVisible(false);
+                    }
+                }
             }
         };
         relapseListViewContainer.add(relapseListView);
@@ -185,7 +194,9 @@ public class RelapsePanel extends Panel {
         editRelapseContainer.add(editRelapseForm);
         add(editRelapseContainer);
 
-        Form<Relapse> addRelapseform = new RelapseForm("addRelapseform", new CompoundPropertyModel<Relapse>(new Relapse()),
+        WebMarkupContainer addRelapseFormContainer = new WebMarkupContainer("addRelapseFormContainer");
+
+        Form<Relapse> addRelapseform = new RelapseForm("addRelapseForm", new CompoundPropertyModel<Relapse>(new Relapse()),
                 addRelapseComponentsToUpdate);
 
         addRelapseform.add(new AjaxSubmitLink("submit") {
@@ -208,7 +219,8 @@ public class RelapsePanel extends Panel {
             }
         });
 
-        add(addRelapseform);
+        addRelapseFormContainer.add(addRelapseform);
+        add(addRelapseFormContainer);
 
         PlasmaPheresisPanel plasmaPheresisPanel = new PlasmaPheresisPanel("plasmapheresisPanel", radarNumberModel);
         add(plasmaPheresisPanel);

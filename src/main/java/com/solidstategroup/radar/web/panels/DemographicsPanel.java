@@ -17,7 +17,9 @@ import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.model.sequenced.LabData;
 import com.solidstategroup.radar.model.sequenced.Therapy;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
@@ -146,6 +148,10 @@ public class DemographicsPanel extends Panel {
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
                     @Override
                     public boolean isEnabled() {
+                        RadarSecuredSession securedSession = RadarSecuredSession.get();
+                        if(securedSession.getRoles().hasRole(User.ROLE_PATIENT)) {
+                           return false;
+                        }
                         return getModelObject() == null;
                     }
                 };

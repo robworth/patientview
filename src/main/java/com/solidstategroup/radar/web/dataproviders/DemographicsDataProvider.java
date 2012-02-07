@@ -34,6 +34,7 @@ public class DemographicsDataProvider implements IDataProvider<Demographics> {
     }
 
     private List<Demographics> getResults() {
+
         if (centre != null) {
             return demographicsDao.getDemographicsByRenalUnit(centre);
         } else {

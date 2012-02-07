@@ -74,16 +74,16 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
             }
         };
 
-        final DropDownChoice<LabData> labResultsDropdown = new DropDownChoice("labResultsSelect", followUpModel,
+        final DropDownChoice<LabData> labResultsSwitcher = new DropDownChoice("labResultsSwitcher", followUpModel,
                 labResultsListModel, new ChoiceRenderer("date", "id"));
 
         final LaboratoryResultsPanel formContainer = new LaboratoryResultsPanel("formContainer", radarNumberModel,
-                false, followUpModel, Arrays.<Component>asList(labResultsDropdown));
+                false, followUpModel, Arrays.<Component>asList(labResultsSwitcher));
 
         labResultsContainer.add(formContainer);
         add(labResultsContainer);
 
-        labResultsDropdown.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        labResultsSwitcher.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 labResultsContainer.setVisible(true);
@@ -91,15 +91,15 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
             }
         });
 
-        add(labResultsDropdown);
+        add(labResultsSwitcher);
 
         AjaxLink addNew = new AjaxLink("addNew") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 followUpModel.setObject(new LabData());
                 labResultsContainer.setVisible(true);
-                labResultsDropdown.clearInput();
-                target.add(labResultsContainer, labResultsDropdown);
+                labResultsSwitcher.clearInput();
+                target.add(labResultsContainer, labResultsSwitcher);
             }
         };
 
