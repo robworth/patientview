@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -90,5 +92,28 @@ public class UserDaoTest extends BaseDaoTest {
         // Get an unknown user
         ProfessionalUser professionalUser = userDao.getProfessionalUser("no@no.com");
         assertNull("Unknown user isn't null", professionalUser);
+    }
+    
+    @Test
+    public void testGetProfessionalUsers() {
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers();
+        assertNotNull(professionalUsers);
+        assertTrue(professionalUsers.size() > 0);
+    }
+
+    @Test
+    public void testGetProfessionalUsersPage1() {
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(null, 2, 1);
+        assertNotNull(professionalUsers);
+        assertTrue(professionalUsers.size() == 1);
+    }
+    
+    @Test
+    public void testSearchProfessionalUsers() {
+        ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
+        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME, "fiona");
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter);
+        assertNotNull(professionalUsers);
+        assertTrue(professionalUsers.size() > 0);
     }
 }
