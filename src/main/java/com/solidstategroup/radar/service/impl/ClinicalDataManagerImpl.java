@@ -9,8 +9,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 public class ClinicalDataManagerImpl implements ClinicalDataManager {
-    @SpringBean
+
     private ClinicalDataDao clinicalDataDao;
+
     public void saveClinicalDate(ClinicalData clinicalData) {
         clinicalDataDao.saveClinicalDate(clinicalData);
     }
@@ -33,5 +34,13 @@ public class ClinicalDataManagerImpl implements ClinicalDataManager {
 
     public List<Phenotype> getPhenotypes() {
         return clinicalDataDao.getPhenotypes();
+    }
+
+    public ClinicalDataDao getClinicalDataDao() {
+        return clinicalDataDao;
+    }
+
+    public void setClinicalDataDao(ClinicalDataDao clinicalDataDao) {
+        this.clinicalDataDao = clinicalDataDao;
     }
 }

@@ -4,7 +4,57 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="demographicsManager" class="com.solidstategroup.radar.service.impl.DemographicsManagerImpl"/>
+    <bean id="clinicalDataManager" class="com.solidstategroup.radar.service.impl.ClinicalDataManagerImpl">
+        <property name="clinicalDataDao" ref="clinicalDataDao"/>
+    </bean>
+
+    <bean id="demographicsManager" class="com.solidstategroup.radar.service.impl.DemographicsManagerImpl">
+        <property name="demographicsDao" ref="demographicsDao"/>
+    </bean>
+
+    <bean id="diagnosisManager" class="com.solidstategroup.radar.service.impl.DiagnosisManagerImpl">
+        <property name="diagnosisDao" ref="diagnosisDao"/>
+    </bean>
+
+    <bean id="hospitalisationManager" class="com.solidstategroup.radar.service.impl.HospitalisationManagerImpl">
+        <property name="hospitalisationDao" ref="hospitalisationDao"/>
+    </bean>
+
+    <bean id="immunosuppressionManager" class="com.solidstategroup.radar.service.impl.ImmunosuppressionManagerImpl">
+        <property name="immunosuppressionDao" ref="immunosuppressionDao"/>
+    </bean>
+
+    <bean id="labDataManager" class="com.solidstategroup.radar.service.impl.LabDataManagerImpl">
+        <property name="labDataDao" ref="labDataDao"/>
+    </bean>
+
+    <bean id="pathologyManager" class="com.solidstategroup.radar.service.impl.PathologyManagerImpl">
+        <property name="pathologyDao" ref="pathologyDao"/>
+    </bean>
+
+    <bean id="plasmapheresisManager" class="com.solidstategroup.radar.service.impl.PlasmapheresisManagerImpl">
+        <property name="plasmapheresisDao" ref="plasmapheresisDao"/>
+    </bean>
+
+    <bean id="relapseManager" class="com.solidstategroup.radar.service.impl.RelapseManagerImpl">
+        <property name="relapseDao" ref="relapseDao"/>
+    </bean>
+
+    <bean id="therapyManager" class="com.solidstategroup.radar.service.impl.TherapyManagerImpl">
+        <property name="therapyDao" ref="therapyDao"/>
+    </bean>
+
+    <bean id="transplantManager" class="com.solidstategroup.radar.service.impl.TransplantManagerImpl">
+        <property name="transplantDao" ref="transplantDao"/>
+    </bean>
+
+    <bean id="treatmentManager" class="com.solidstategroup.radar.service.impl.TreatmentManagerImpl">
+        <property name="treatmentDao" ref="treatmentDao"/>
+    </bean>
+
+    <bean id="utilityManager" class="com.solidstategroup.radar.service.impl.UtilityManagerImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+    </bean>
 
     <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl"/>
 

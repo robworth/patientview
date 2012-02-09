@@ -12,7 +12,6 @@ import java.util.List;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
-    @SpringBean
     private DemographicsDao demographicsDao;
 
     public void saveDemographics(Demographics demographics) {
@@ -48,4 +47,11 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getStatuses();
     }
 
+    public DemographicsDao getDemographicsDao() {
+        return demographicsDao;
+    }
+
+    public void setDemographicsDao(DemographicsDao demographicsDao) {
+        this.demographicsDao = demographicsDao;
+    }
 }

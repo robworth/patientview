@@ -1,9 +1,9 @@
 package com.solidstategroup.radar.web.panels.followup;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.LabDataDao;
 import com.solidstategroup.radar.model.sequenced.LabData;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.LabDataManager;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.subtabs.LaboratoryResultsPanel;
@@ -28,11 +28,11 @@ import java.util.List;
 
 public class FollowUpLaboratoryResultsPanel extends Panel {
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private LabDataDao labDataDao;
+    private LabDataManager labDataManager;
 
     public FollowUpLaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -49,15 +49,15 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         radarNumber.setEnabled(false);
         labResultsContainer.add(radarNumber);
 
-        labResultsContainer.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+        labResultsContainer.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
+                radarNumberModel, demographicsManager)));
 
         labResultsContainer.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        labResultsContainer.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        labResultsContainer.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         final IModel<LabData> followUpModel = new Model<LabData>(new LabData());
 
@@ -66,7 +66,7 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    List list = labDataDao.getLabDataByRadarNumber(radarNumberModel.getObject());
+                    List list = labDataManager.getLabDataByRadarNumber(radarNumberModel.getObject());
                     return !list.isEmpty() ? list : Collections.emptyList();
                 }
 

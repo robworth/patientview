@@ -1,12 +1,12 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.ClinicalPresentation;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.ClinicalPresentationDropDownChoice;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
@@ -55,9 +55,9 @@ public class DiagnosisPanel extends Panel {
     public static final String OTHER_CONTAINER_ID = "otherContainer";
     public static final Long KAROTYPE_OTHER_ID = new Long(8);
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
 
     public DiagnosisPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -77,7 +77,7 @@ public class DiagnosisPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumber);
+                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(radarNumber);
                     if (diagnosis != null) {
                         return diagnosis;
                     } else {
@@ -122,7 +122,7 @@ public class DiagnosisPanel extends Panel {
                             radarNumber = Long.parseLong((String) obj);
                         }
 
-                        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(radarNumber);
+                        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                         Date dob = demographics.getDateOfBirth();
                         if (dateOfDiagnosis != null && dob != null) {
                             Calendar diagCalendar = Calendar.getInstance();
@@ -138,7 +138,7 @@ public class DiagnosisPanel extends Panel {
                             int age = diagCalendar.get(Calendar.YEAR);
                             diagnosis.setAgeAtDiagnosis(age);
                         }
-                        diagnosisDao.saveDiagnosis(diagnosis);
+                        diagnosisManager.saveDiagnosis(diagnosis);
                     }
                 };
         add(form);
@@ -157,22 +157,23 @@ public class DiagnosisPanel extends Panel {
         form.add(radarNumber);
 
         TextField hospitalNumber = new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
-                radarNumberModel, demographicsDao));
+                radarNumberModel, demographicsManager));
         form.add(hospitalNumber);
 
         TextField firstName = new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsDao));
+                demographicsManager));
         form.add(firstName);
 
         TextField surname = new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
-                demographicsDao));
+                demographicsManager));
         form.add(surname);
 
         TextField dob = new DateTextField("dateOfBirth", RadarModelFactory.getDobModel(radarNumberModel,
-                demographicsDao), RadarApplication.DATE_PATTERN);
+                demographicsManager), RadarApplication.DATE_PATTERN);
         form.add(dob);
 
-        DropDownChoice<DiagnosisCode> diagnosisCodeDropDownChoice = new DropDownChoice<DiagnosisCode>("diagnosisCode", diagnosisDao.getDiagnosisCodes(),
+        DropDownChoice<DiagnosisCode> diagnosisCodeDropDownChoice = new DropDownChoice<DiagnosisCode>("diagnosisCode",
+                diagnosisManager.getDiagnosisCodes(),
                 new ChoiceRenderer<DiagnosisCode>("abbreviation", "id"));
         diagnosisCodeDropDownChoice.setEnabled(false);
         form.add(diagnosisCodeDropDownChoice);
@@ -413,7 +414,7 @@ public class DiagnosisPanel extends Panel {
         final IModel<Boolean> karoTypeOtherVisibilityModel = new Model<Boolean>(showKaroTypeOtherOnInit);
 
         // Add Karotype
-        DropDownChoice<Karotype> karotypeDropDownChoice = new DropDownChoice<Karotype>("karotype", diagnosisDao.getKarotypes(),
+        DropDownChoice<Karotype> karotypeDropDownChoice = new DropDownChoice<Karotype>("karotype", diagnosisManager.getKarotypes(),
                 new ChoiceRenderer<Karotype>("description", "id"));
 
         WebMarkupContainer karoTypeContainer = new WebMarkupContainer("karoTypeContainer") {

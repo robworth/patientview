@@ -1,15 +1,14 @@
 package com.solidstategroup.radar.web.panels.subtabs;
 
-import com.solidstategroup.radar.dao.ClinicalDataDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.LabDataDao;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.model.sequenced.LabData;
+import com.solidstategroup.radar.service.ClinicalDataManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.LabDataManager;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
-import com.solidstategroup.radar.web.panels.followup.FollowUpLaboratoryResultsPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -40,11 +39,11 @@ import java.util.List;
 
 public class LaboratoryResultsPanel extends Panel {
     @SpringBean
-    private LabDataDao labDataDao;
+    private LabDataManager labDataManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private ClinicalDataDao clinicalDataDao;
+    private ClinicalDataManager clinicalDataManager;
 
     public LaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel, boolean firstVisit,
                                   IModel<LabData> followingVisitModel, List<Component> followingVisitComponentsToUpdate) {
@@ -65,7 +64,7 @@ public class LaboratoryResultsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    labDataModelObject = labDataDao.getFirstLabDataByRadarNumber(radarNumber);
+                    labDataModelObject = labDataManager.getFirstLabDataByRadarNumber(radarNumber);
 
                 }
 
@@ -84,7 +83,7 @@ public class LaboratoryResultsPanel extends Panel {
             formModel =  new CompoundPropertyModel<LabData>(followingVisitModel);
         }
 
-        final IModel<ClinicalData> clinicalDataModel = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel, clinicalDataDao);
+        final IModel<ClinicalData> clinicalDataModel = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel, clinicalDataManager);
 
         final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(formModel)) {
             @Override
@@ -117,7 +116,7 @@ public class LaboratoryResultsPanel extends Panel {
                     }
                     labData.setCreatinineClearance(creatnineClearance);
                 }
-                labDataDao.saveLabData(labData);
+                labDataManager.saveLabData(labData);
             }
         };
         add(form);
@@ -133,7 +132,7 @@ public class LaboratoryResultsPanel extends Panel {
         RadarRequiredDateTextField labResultsDate = new RadarRequiredDateTextField("date", form, componentsToUpdate);
         form.add(labResultsDate);
 
-        final IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisDao);
+        final IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisManager);
 
         // Blood fields
         form.add(new RadarTextFieldWithValidation("hb", new RangeValidator<Double>(2.0, 20.0), form, componentsToUpdate));

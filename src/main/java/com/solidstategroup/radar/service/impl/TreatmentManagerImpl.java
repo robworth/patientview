@@ -11,7 +11,6 @@ import java.util.List;
 
 public class TreatmentManagerImpl implements TreatmentManager {
 
-    @SpringBean
     TreatmentDao treatmentDao;
 
     public void saveTreatment(Treatment treatment) {
@@ -36,5 +35,13 @@ public class TreatmentManagerImpl implements TreatmentManager {
 
     public List<TreatmentModality> getTreatmentModalities() {
         return treatmentDao.getTreatmentModalities();
+    }
+
+    public TreatmentDao getTreatmentDao() {
+        return treatmentDao;
+    }
+
+    public void setTreatmentDao(TreatmentDao treatmentDao) {
+        this.treatmentDao = treatmentDao;
     }
 }

@@ -1,10 +1,10 @@
 package com.solidstategroup.radar.web.panels;
 
 
-import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.PlasmapheresisManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -39,7 +39,7 @@ import java.util.List;
 
 public class PlasmaPheresisPanel extends Panel {
     @SpringBean
-    private PlasmapheresisDao plasmapheresisDao;
+    private PlasmapheresisManager plasmapheresisManager;
 
     public PlasmaPheresisPanel(String id, final IModel<Long> radarNumberModel) {
 
@@ -58,7 +58,7 @@ public class PlasmaPheresisPanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    return plasmapheresisDao.getPlasmapheresisByRadarNumber(radarNumberModel.getObject());
+                    return plasmapheresisManager.getPlasmapheresisByRadarNumber(radarNumberModel.getObject());
                 }
                 return Collections.emptyList();
             }
@@ -87,7 +87,7 @@ public class PlasmaPheresisPanel extends Panel {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Plasmapheresis plasmapheresis = item.getModelObject();
-                        plasmapheresisDao.deletePlasmaPheresis(plasmapheresis);
+                        plasmapheresisManager.deletePlasmaPheresis(plasmapheresis);
                         target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
                                 addPlasmapheresisComponentsToUpdate.size()]));
                         target.add(plasmapheresisContainer);
@@ -123,7 +123,7 @@ public class PlasmaPheresisPanel extends Panel {
         editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                plasmapheresisDao.savePlasmapheresis((Plasmapheresis) form.getModelObject());
+                plasmapheresisManager.savePlasmapheresis((Plasmapheresis) form.getModelObject());
                 form.getModel().setObject(null);
                 target.add(editPlasmapheresisContainer);
                 target.add(plasmapheresisContainer);
@@ -155,7 +155,7 @@ public class PlasmaPheresisPanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
                 Plasmapheresis plasmapheresis = (Plasmapheresis) form.getModelObject();
                 plasmapheresis.setRadarNumber(radarNumberModel.getObject());
-                plasmapheresisDao.savePlasmapheresis(plasmapheresis);
+                plasmapheresisManager.savePlasmapheresis(plasmapheresis);
                 target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
                         addPlasmapheresisComponentsToUpdate.size()]));
                 plasmapheresisContainer.setVisible(true);
@@ -175,7 +175,7 @@ public class PlasmaPheresisPanel extends Panel {
     private final class PlasmapheresisForm extends Form<Plasmapheresis> {
         private RadarDateTextField endDate;
         @SpringBean
-        private PlasmapheresisDao plasmapheresisDao;
+        private PlasmapheresisManager plasmapheresisManager;
 
         private PlasmapheresisForm(String id, IModel<Plasmapheresis> model, List<Component> componentsToUpdate) {
             super(id, model);
@@ -186,7 +186,7 @@ public class PlasmaPheresisPanel extends Panel {
 
 
             RadarRequiredDropdownChoice plasmapheresisExchanges = new RadarRequiredDropdownChoice("plasmapheresisExchanges",
-                    plasmapheresisDao.getPlasmapheresisExchangeUnits(),
+                    plasmapheresisManager.getPlasmapheresisExchangeUnits(),
                     new ChoiceRenderer("name", "id"), this, componentsToUpdate);
             add(plasmapheresisExchanges);
 

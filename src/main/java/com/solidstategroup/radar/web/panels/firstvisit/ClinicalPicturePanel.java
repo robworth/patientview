@@ -1,11 +1,11 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
-import com.solidstategroup.radar.dao.ClinicalDataDao;
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
+import com.solidstategroup.radar.service.ClinicalDataManager;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -50,11 +50,11 @@ import java.util.List;
 public class ClinicalPicturePanel extends Panel {
 
     @SpringBean
-    private ClinicalDataDao clinicalDataDao;
+    private ClinicalDataManager clinicalDataManager;
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
     public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel, final boolean firstVisit) {
         super(id);
@@ -76,7 +76,7 @@ public class ClinicalPicturePanel extends Panel {
                         if (radarNumberModel.getObject() != null) {
                             // If we have a radar number get the list from DAO
                             ClinicalData clinicalData;
-                            clinicalData = clinicalDataDao.getFirstClinicalDataByRadarNumber(radarNumberModel.
+                            clinicalData = clinicalDataManager.getFirstClinicalDataByRadarNumber(radarNumberModel.
                                     getObject());
 
                             if (clinicalData != null) {
@@ -104,7 +104,7 @@ public class ClinicalPicturePanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    List list = clinicalDataDao.getClinicalDataByRadarNumber(radarNumberModel.getObject());
+                    List list = clinicalDataManager.getClinicalDataByRadarNumber(radarNumberModel.getObject());
                     return !list.isEmpty() ? list : Collections.emptyList();
                 }
 
@@ -175,7 +175,7 @@ public class ClinicalPicturePanel extends Panel {
 
                     clinicalData.setRadarNumber(radarNumber);
                 }
-                clinicalDataDao.saveClinicalDate(clinicalData);
+                clinicalDataManager.saveClinicalDate(clinicalData);
             }
         };
 
@@ -188,7 +188,7 @@ public class ClinicalPicturePanel extends Panel {
             public Boolean getObject() {
                 if (diagnosisCode == null) {
                     if (radarNumberModel.getObject() != null) {
-                        Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(radarNumberModel.getObject());
+                        Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(radarNumberModel.getObject());
                         diagnosisCode = diagnosis != null ? diagnosis.getDiagnosisCode() : null;
                     }
                 }
@@ -214,18 +214,18 @@ public class ClinicalPicturePanel extends Panel {
         form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
 
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
 
 
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         RadarRequiredDateTextField clinicalPictureDate =
                 new RadarRequiredDateTextField("clinicalPictureDate", form, componentsToUpdate);

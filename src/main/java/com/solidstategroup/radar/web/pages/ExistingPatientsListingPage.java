@@ -1,12 +1,12 @@
 package com.solidstategroup.radar.web.pages;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
@@ -18,7 +18,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,9 +26,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class ExistingPatientsListingPage extends BasePage {
 
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
 
     public ExistingPatientsListingPage() {
@@ -48,7 +47,7 @@ public class ExistingPatientsListingPage extends BasePage {
             }
         }
 
-        DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsDao, centre);
+        DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager, centre);
 
         // List existing patients
         add(new DataView<Demographics>("patients", demographicsDataProvider) {
@@ -61,7 +60,7 @@ public class ExistingPatientsListingPage extends BasePage {
                 item.add(new Label("id"));
 
                 IModel<DiagnosisCode> diagnosisCodeModel = RadarModelFactory.getDiagnosisCodeModel(new Model<Long>(
-                        item.getModelObject().getId()), diagnosisDao);
+                        item.getModelObject().getId()), diagnosisManager);
 
                 DiagnosisCode diagnosisCode = diagnosisCodeModel.getObject();
 

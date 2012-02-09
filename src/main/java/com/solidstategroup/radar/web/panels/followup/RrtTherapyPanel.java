@@ -1,11 +1,11 @@
 package com.solidstategroup.radar.web.panels.followup;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.TransplantDao;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.TransplantManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -47,11 +47,11 @@ import java.util.List;
 
 public class RrtTherapyPanel extends Panel {
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private TransplantDao transplantDao;
+    private TransplantManager transplantManager;
 
     public RrtTherapyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -64,19 +64,19 @@ public class RrtTherapyPanel extends Panel {
         add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
         add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         final IModel<Date> esrfDateModel = new LoadableDetachableModel<Date>() {
             @Override
             protected Date load() {
-                Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisDao).getObject();
+                Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisManager).getObject();
                 if (diagnosis != null) {
                     return diagnosis.getEsrfDate();
                 }
@@ -104,7 +104,7 @@ public class RrtTherapyPanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    return transplantDao.getTransplantsByRadarNumber(radarNumberModel.getObject());
+                    return transplantManager.getTransplantsByRadarNumber(radarNumberModel.getObject());
                 }
                 return Collections.emptyList();
 
@@ -160,7 +160,7 @@ public class RrtTherapyPanel extends Panel {
                 IModel rejectDataListModel = new AbstractReadOnlyModel<List>() {
                     @Override
                     public List getObject() {
-                        return transplantDao.getRejectDataByTransplantNumber(item.getModelObject().getId());
+                        return transplantManager.getRejectDataByTransplantNumber(item.getModelObject().getId());
                     }
                 };
                 final WebMarkupContainer rejectDataListContainer = new WebMarkupContainer("rejectDataListContainer");
@@ -176,7 +176,7 @@ public class RrtTherapyPanel extends Panel {
                         AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                             @Override
                             public void onClick(AjaxRequestTarget target) {
-                                transplantDao.deleteRejectData(rejectDataListItem.getModelObject());
+                                transplantManager.deleteRejectData(rejectDataListItem.getModelObject());
                                 target.add(rejectDataListContainer);
                             }
                         };
@@ -200,7 +200,7 @@ public class RrtTherapyPanel extends Panel {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Transplant transplant = item.getModelObject();
-                        transplantDao.deleteTransplant(transplant);
+                        transplantManager.deleteTransplant(transplant);
                         target.add(addTransplantFormComponentsToUpdate.toArray(new Component[
                                 addTransplantFormComponentsToUpdate.size()]));
                         target.add(transplantsContainer);
@@ -247,7 +247,7 @@ public class RrtTherapyPanel extends Panel {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(rejectDataComponentsToUpdate.toArray(new Component[rejectDataComponentsToUpdate.size()]));
-                transplantDao.saveRejectData((Transplant.RejectData) form.getModelObject());
+                transplantManager.saveRejectData((Transplant.RejectData) form.getModelObject());
                 addRejectModel.setObject(null);
                 target.add(rejectDataContainer);
                 target.add(transplantsContainer);
@@ -276,7 +276,7 @@ public class RrtTherapyPanel extends Panel {
         editTransplantForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                transplantDao.saveTransplant((Transplant) form.getModelObject());
+                transplantManager.saveTransplant((Transplant) form.getModelObject());
                 editTransplantModel.setObject(null);
                 target.add(editTransplantContainer);
                 target.add(transplantsContainer);
@@ -307,7 +307,7 @@ public class RrtTherapyPanel extends Panel {
                 target.add(form);
                 Transplant transplant = (Transplant) form.getModelObject();
                 transplant.setRadarNumber(radarNumberModel.getObject());
-                transplantDao.saveTransplant(transplant);
+                transplantManager.saveTransplant(transplant);
                 form.getModel().setObject(new Transplant());
                 transplantsContainer.setVisible(true);
                 target.add(transplantsContainer);
@@ -325,14 +325,14 @@ public class RrtTherapyPanel extends Panel {
 
     private final class TransplantForm extends Form<Transplant> {
         @SpringBean
-        private TransplantDao transplantDao;
+        private TransplantManager transplantManager;
 
         private TransplantForm(String id, IModel<Transplant> transplantIModel, List<Component> componentsToUpdate) {
             super(id, transplantIModel);
             RadarRequiredDateTextField date = new RadarRequiredDateTextField("date", this, componentsToUpdate);
             add(date);
             RadarRequiredDropdownChoice modality = new RadarRequiredDropdownChoice("modality",
-                    transplantDao.getTransplantModalitites(), new ChoiceRenderer("description", "id"), this,
+                    transplantManager.getTransplantModalitites(), new ChoiceRenderer("description", "id"), this,
                     componentsToUpdate);
             add(modality);
             YesNoRadioGroup recurr = new YesNoRadioGroup("recurr");

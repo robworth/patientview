@@ -13,7 +13,6 @@ import java.util.List;
 
 public class DiagnosisManagerImpl implements DiagnosisManager {
 
-    @SpringBean
     private DiagnosisDao diagnosisDao;
 
     public void saveDiagnosis(Diagnosis diagnosis) {
@@ -50,5 +49,13 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
 
     public List<Karotype> getKarotypes() {
         return diagnosisDao.getKarotypes();
+    }
+
+    public DiagnosisDao getDiagnosisDao() {
+        return diagnosisDao;
+    }
+
+    public void setDiagnosisDao(DiagnosisDao diagnosisDao) {
+        this.diagnosisDao = diagnosisDao;
     }
 }
