@@ -1,11 +1,9 @@
 package com.solidstategroup.radar.web.pages;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.User;
-import com.solidstategroup.radar.web.RadarSecuredSession;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -14,35 +12,26 @@ import com.solidstategroup.radar.web.panels.HospitalisationPanel;
 import com.solidstategroup.radar.web.panels.PathologyPanel;
 import com.solidstategroup.radar.web.panels.RelapsePanel;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
-import org.apache.wicket.util.visit.IVisit;
-import org.apache.wicket.util.visit.IVisitor;
-
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class PatientPage extends BasePage {
 
     protected static final String PARAM_ID = "id";
     @SpringBean
-    DiagnosisDao diagnosisDao;
+    DiagnosisManager diagnosisManager;
     @SpringBean
-    DemographicsDao demographicsDao;
+    DemographicsManager demographicsManager;
 
     public enum CurrentTab {
         // Used for storing the current tab

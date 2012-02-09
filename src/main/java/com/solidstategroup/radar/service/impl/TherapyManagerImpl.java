@@ -10,7 +10,6 @@ import java.util.List;
 
 public class TherapyManagerImpl implements TherapyManager {
 
-    @SpringBean
     TherapyDao therapyDao;
 
     public void saveTherapy(Therapy therapy) {
@@ -27,5 +26,13 @@ public class TherapyManagerImpl implements TherapyManager {
 
     public Therapy getFirstTherapyByRadarNumber(long radarNumber) {
         return therapyDao.getFirstTherapyByRadarNumber(radarNumber);
+    }
+
+    public TherapyDao getTherapyDao() {
+        return therapyDao;
+    }
+
+    public void setTherapyDao(TherapyDao therapyDao) {
+        this.therapyDao = therapyDao;
     }
 }

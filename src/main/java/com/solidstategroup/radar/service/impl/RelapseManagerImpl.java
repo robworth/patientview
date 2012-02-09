@@ -25,4 +25,12 @@ public class RelapseManagerImpl implements RelapseManager {
     public List<Relapse> getRelapsesByRadarNumber(long radarNumber) {
         return relapseDao.getRelapsesByRadarNumber(radarNumber);
     }
+
+    public RelapseDao getRelapseDao() {
+        return relapseDao;
+    }
+
+    public void setRelapseDao(RelapseDao relapseDao) {
+        this.relapseDao = relapseDao;
+    }
 }

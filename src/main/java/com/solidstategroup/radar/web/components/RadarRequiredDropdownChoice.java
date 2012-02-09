@@ -23,7 +23,8 @@ public class RadarRequiredDropdownChoice extends DropDownChoice {
         init(form, componentsToUpdateList);
     }
 
-    public RadarRequiredDropdownChoice(String id, IModel iModel, List choices, Form form, List<Component> componentsToUpdateList) {
+    public RadarRequiredDropdownChoice(String id, IModel iModel, List choices, Form form,
+                                       List<Component> componentsToUpdateList) {
         super(id, iModel, choices);
         init(form, componentsToUpdateList);
     }

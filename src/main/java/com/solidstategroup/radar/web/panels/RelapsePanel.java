@@ -1,12 +1,12 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.RelapseDao;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Relapse;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.RelapseManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -45,11 +45,11 @@ import java.util.List;
 public class RelapsePanel extends Panel {
 
     @SpringBean
-    private RelapseDao relapseDao;
+    private RelapseManager relapseManager;
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
     public RelapsePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -57,9 +57,9 @@ public class RelapsePanel extends Panel {
         setOutputMarkupPlaceholderTag(true);
 
 
-        final IModel<Boolean> relapseListVisibilityModel = new Model<Boolean>();
+        final IModel<Boolean> relapseListVisibilityModel = new Model<Boolean>(false);
         if (radarNumberModel.getObject() != null) {
-            relapseListVisibilityModel.setObject(!relapseDao.getRelapsesByRadarNumber(
+            relapseListVisibilityModel.setObject(!relapseManager.getRelapsesByRadarNumber(
                     radarNumberModel.getObject()).isEmpty());
         }
 
@@ -82,7 +82,7 @@ public class RelapsePanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    return relapseDao.getRelapsesByRadarNumber(radarNumberModel.getObject());
+                    return relapseManager.getRelapsesByRadarNumber(radarNumberModel.getObject());
                 }
                 return Collections.emptyList();
             }
@@ -119,11 +119,11 @@ public class RelapsePanel extends Panel {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Relapse relapse = item.getModelObject();
-                        relapseDao.deleteRelapse(relapse);
+                        relapseManager.deleteRelapse(relapse);
                         target.add(addRelapseComponentsToUpdate.toArray(new Component[
                                 addRelapseComponentsToUpdate.size()]));
                         target.add(relapseListViewContainer);
-                        relapseListVisibilityModel.setObject(!relapseDao.getRelapsesByRadarNumber(
+                        relapseListVisibilityModel.setObject(!relapseManager.getRelapsesByRadarNumber(
                                 radarNumberModel.getObject()).isEmpty());
                     }
                 };
@@ -154,14 +154,14 @@ public class RelapsePanel extends Panel {
         add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
         add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
 
         RelapseForm editRelapseForm = new RelapseForm("editRelapseForm",
@@ -170,7 +170,7 @@ public class RelapsePanel extends Panel {
         editRelapseForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                relapseDao.saveRelapse((Relapse) form.getModelObject());
+                relapseManager.saveRelapse((Relapse) form.getModelObject());
                 form.getModel().setObject(null);
                 target.add(editRelapseContainer);
                 target.add(relapseListViewContainer);
@@ -199,17 +199,21 @@ public class RelapsePanel extends Panel {
         Form<Relapse> addRelapseform = new RelapseForm("addRelapseForm", new CompoundPropertyModel<Relapse>(new Relapse()),
                 addRelapseComponentsToUpdate);
 
+        addRelapseform.setOutputMarkupId(true);
+        addRelapseform.setOutputMarkupPlaceholderTag(true);
+
         addRelapseform.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
                 Relapse relapse = (Relapse) form.getModelObject();
                 relapse.setRadarNumber(radarNumberModel.getObject());
-                relapseDao.saveRelapse(relapse);
+                relapseManager.saveRelapse(relapse);
                 target.add(addRelapseComponentsToUpdate.toArray(new Component[
                         addRelapseComponentsToUpdate.size()]));
                 relapseListVisibilityModel.setObject(true);
                 target.add(relapseListViewContainer);
                 form.getModel().setObject(new Relapse());
+                target.add(form);
             }
 
             @Override

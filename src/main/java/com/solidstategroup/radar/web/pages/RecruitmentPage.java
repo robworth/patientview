@@ -1,10 +1,10 @@
 package com.solidstategroup.radar.web.pages;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -18,20 +18,20 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class RecruitmentPage extends BasePage{
 
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
     public RecruitmentPage() {
         DataView<Demographics> demographicsDataView = new DataView<Demographics>("recruitmenItem",
-                new DemographicsDataProvider(demographicsDao)) {
+                new DemographicsDataProvider(demographicsManager)) {
             @Override
             protected void populateItem(Item<Demographics> item) {
                 Demographics demographics = item.getModelObject();
                 item.add(new Label("renalUnit.name"));
                 item.add(new Label("id"));
 
-                Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(demographics.getId());
+                Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
 
                 if(diagnosis.getDiagnosisCode() != null) {
                     item.add(new Label("diagnosis", diagnosis.getDiagnosisCode().getAbbreviation()));

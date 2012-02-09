@@ -10,7 +10,6 @@ import java.util.List;
 
 public class LabDataManagerImpl implements LabDataManager {
 
-    @SpringBean
     private LabDataDao labDataDao;
 
     public void saveLabData(LabData labData) {
@@ -27,5 +26,13 @@ public class LabDataManagerImpl implements LabDataManager {
 
     public LabData getFirstLabDataByRadarNumber(Long id) {
         return labDataDao.getFirstLabDataByRadarNumber(id);
+    }
+
+    public LabDataDao getLabDataDao() {
+        return labDataDao;
+    }
+
+    public void setLabDataDao(LabDataDao labDataDao) {
+        this.labDataDao = labDataDao;
     }
 }

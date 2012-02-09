@@ -1,10 +1,10 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.PathologyDao;
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
 import com.solidstategroup.radar.model.sequenced.Pathology;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.PathologyManager;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
@@ -42,11 +42,11 @@ import java.util.List;
 public class PathologyPanel extends Panel {
 
     @SpringBean
-    private PathologyDao pathologyDao;
+    private PathologyManager pathologyManager;
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
     public PathologyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -60,7 +60,7 @@ public class PathologyPanel extends Panel {
             @Override
             public List getObject() {
                 if (radarNumberModel.getObject() != null) {
-                    List list = pathologyDao.getPathologyByRadarNumber(radarNumberModel.getObject());
+                    List list = pathologyManager.getPathologyByRadarNumber(radarNumberModel.getObject());
                     return !list.isEmpty() ? list : Collections.emptyList();
                 }
                 return Collections.emptyList();
@@ -112,7 +112,7 @@ public class PathologyPanel extends Panel {
             protected void onSubmit() {
                 Pathology pathology = getModelObject();
                 pathology.setRadarNumber(radarNumberModel.getObject());
-                pathologyDao.savePathology(pathology);
+                pathologyManager.savePathology(pathology);
             }
         };
         pathologyContainer.add(form);
@@ -130,14 +130,14 @@ public class PathologyPanel extends Panel {
         form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         // Add inputs
         form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));

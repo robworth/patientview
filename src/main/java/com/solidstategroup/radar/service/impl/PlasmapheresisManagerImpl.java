@@ -11,7 +11,6 @@ import java.util.List;
 
 public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
-    @SpringBean
     private PlasmapheresisDao plasmapheresisDao;
 
     public void savePlasmapheresis(Plasmapheresis plasmapheresis) {
@@ -36,5 +35,13 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
     public List<PlasmapheresisExchangeUnit> getPlasmapheresisExchangeUnits() {
         return plasmapheresisDao.getPlasmapheresisExchangeUnits();
+    }
+
+    public PlasmapheresisDao getPlasmapheresisDao() {
+        return plasmapheresisDao;
+    }
+
+    public void setPlasmapheresisDao(PlasmapheresisDao plasmapheresisDao) {
+        this.plasmapheresisDao = plasmapheresisDao;
     }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 public class PathologyManagerImpl implements PathologyManager {
 
-    @SpringBean
     private PathologyDao pathologyDao;
 
     public void savePathology(Pathology pathology) {
@@ -22,5 +21,13 @@ public class PathologyManagerImpl implements PathologyManager {
 
     public List<Pathology> getPathologyByRadarNumber(long radarNumber) {
         return pathologyDao.getPathologyByRadarNumber(radarNumber);
+    }
+
+    public PathologyDao getPathologyDao() {
+        return pathologyDao;
+    }
+
+    public void setPathologyDao(PathologyDao pathologyDao) {
+        this.pathologyDao = pathologyDao;
     }
 }

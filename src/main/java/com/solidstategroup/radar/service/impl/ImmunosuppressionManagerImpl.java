@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
 
-    @SpringBean
     ImmunosuppressionDao immunosuppressionDao;
 
     public void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) {
@@ -36,5 +35,13 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
 
     public Immunosuppression getImmunosuppression(long id) {
         return immunosuppressionDao.getImmunosuppression(id);
+    }
+
+    public ImmunosuppressionDao getImmunosuppressionDao() {
+        return immunosuppressionDao;
+    }
+
+    public void setImmunosuppressionDao(ImmunosuppressionDao immunosuppressionDao) {
+        this.immunosuppressionDao = immunosuppressionDao;
     }
 }

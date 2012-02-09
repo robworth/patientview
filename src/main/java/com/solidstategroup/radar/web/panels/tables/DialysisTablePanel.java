@@ -1,8 +1,8 @@
 package com.solidstategroup.radar.web.panels.tables;
 
-import com.solidstategroup.radar.dao.TreatmentDao;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -36,7 +36,7 @@ import java.util.List;
 
 public class DialysisTablePanel extends Panel {
     @SpringBean
-    private TreatmentDao treatmentDao;
+    private TreatmentManager treatmentManager;
 
     public DialysisTablePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -45,7 +45,7 @@ public class DialysisTablePanel extends Panel {
             @Override
             public List getObject() {
                 if (radarNumberModel.getObject() != null) {
-                    return treatmentDao.getTreatmentsByRadarNumber(radarNumberModel.getObject());
+                    return treatmentManager.getTreatmentsByRadarNumber(radarNumberModel.getObject());
                 }
                 return Collections.emptyList();
             }
@@ -82,7 +82,7 @@ public class DialysisTablePanel extends Panel {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Treatment treatment = item.getModelObject();
-                        treatmentDao.deleteTreatment(treatment);
+                        treatmentManager.deleteTreatment(treatment);
                         target.add(addDialysisFormComponentsToUpdate.toArray(new Component[
                                 addDialysisFormComponentsToUpdate.size()]));
                         target.add(dialysisContainer);
@@ -119,7 +119,7 @@ public class DialysisTablePanel extends Panel {
         editDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                treatmentDao.saveTreatment((Treatment) form.getModelObject());
+                treatmentManager.saveTreatment((Treatment) form.getModelObject());
                 form.getModel().setObject(null);
                 target.add(editDialysisContainer);
                 target.add(dialysisContainer);
@@ -150,7 +150,7 @@ public class DialysisTablePanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form form) {
                 Treatment treatment = (Treatment) form.getModelObject();
                 treatment.setRadarNumber(radarNumberModel.getObject());
-                treatmentDao.saveTreatment(treatment);
+                treatmentManager.saveTreatment(treatment);
                 target.add(addDialysisFormComponentsToUpdate.toArray(new Component[
                         addDialysisFormComponentsToUpdate.size()]));
                 form.getModel().setObject(new Treatment());
@@ -170,12 +170,12 @@ public class DialysisTablePanel extends Panel {
     private final class DialysisForm extends Form<Treatment> {
         private RadarDateTextField endDate;
         @SpringBean
-        private TreatmentDao treatmentDao;
+        private TreatmentManager treatmentManager;
 
         private DialysisForm(String id, IModel<Treatment> treatmentIModel, List<Component> componentsToUpdate) {
             super(id, treatmentIModel);
 
-            RadarRequiredDropdownChoice treatmentModality = new RadarRequiredDropdownChoice("treatmentModality", treatmentDao.getTreatmentModalities(),
+            RadarRequiredDropdownChoice treatmentModality = new RadarRequiredDropdownChoice("treatmentModality", treatmentManager.getTreatmentModalities(),
                     new ChoiceRenderer("description", "id"), this,
                     componentsToUpdate);
             add(treatmentModality);

@@ -10,7 +10,6 @@ import java.util.List;
 
 public class HospitalisationManagerImpl implements HospitalisationManager {
 
-    @SpringBean
     private HospitalisationDao hospitalisationDao;
 
     public void saveHospitilsation(Hospitalisation hospitalisation) {
@@ -23,5 +22,13 @@ public class HospitalisationManagerImpl implements HospitalisationManager {
 
     public List<Hospitalisation> getHospitalisationsByRadarNumber(long radarNumber) {
         return hospitalisationDao.getHospitalisationsByRadarNumber(radarNumber);
+    }
+
+    public HospitalisationDao getHospitalisationDao() {
+        return hospitalisationDao;
+    }
+
+    public void setHospitalisationDao(HospitalisationDao hospitalisationDao) {
+        this.hospitalisationDao = hospitalisationDao;
     }
 }

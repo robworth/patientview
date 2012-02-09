@@ -1,9 +1,9 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.HospitalisationDao;
 import com.solidstategroup.radar.model.Hospitalisation;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.HospitalisationManager;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -38,11 +38,11 @@ import java.util.List;
 public class HospitalisationPanel extends Panel {
 
     @SpringBean
-    private HospitalisationDao hospitalisationDao;
+    private HospitalisationManager hospitalisationManager;
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
 
     public HospitalisationPanel(String id, final IModel<Long> radarNumberModel) {
@@ -66,7 +66,7 @@ public class HospitalisationPanel extends Panel {
                 if (radarNumberModel.getObject() == null) {
                     return Collections.emptyList();
                 } else {
-                    return hospitalisationDao.getHospitalisationsByRadarNumber(radarNumberModel.getObject());
+                    return hospitalisationManager.getHospitalisationsByRadarNumber(radarNumberModel.getObject());
                 }
             }
         };
@@ -119,7 +119,7 @@ public class HospitalisationPanel extends Panel {
             protected void onSubmit() {
                 Hospitalisation hospitalisation = getModelObject();
                 hospitalisation.setRadarNumber(radarNumberModel.getObject());
-                hospitalisationDao.saveHospitilsation(hospitalisation);
+                hospitalisationManager.saveHospitilsation(hospitalisation);
             }
         };
 
@@ -136,14 +136,14 @@ public class HospitalisationPanel extends Panel {
         form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         form.add(new RadarRequiredDateTextField("dateOfAdmission", form, componentsToUpdate));
         form.add(new RadarDateTextField("dateOfDischarge", form, componentsToUpdate));

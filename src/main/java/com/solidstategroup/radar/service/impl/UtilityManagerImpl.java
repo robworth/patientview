@@ -10,7 +10,6 @@ import java.util.List;
 
 public class UtilityManagerImpl implements UtilityManager {
 
-    @SpringBean
     private UtilityDao utilityDao;
 
     public Centre getCentre(long id) {
@@ -51,5 +50,13 @@ public class UtilityManagerImpl implements UtilityManager {
 
     public List<Relative> getRelatives() {
         return utilityDao.getRelatives();
+    }
+
+    public UtilityDao getUtilityDao() {
+        return utilityDao;
+    }
+
+    public void setUtilityDao(UtilityDao utilityDao) {
+        this.utilityDao = utilityDao;
     }
 }

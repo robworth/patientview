@@ -1,15 +1,13 @@
 package com.solidstategroup.radar.web.panels.subtabs;
 
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.ImmunosuppressionDao;
 import com.solidstategroup.radar.dao.PlasmapheresisDao;
-import com.solidstategroup.radar.dao.TherapyDao;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
-import com.solidstategroup.radar.model.Plasmapheresis;
-import com.solidstategroup.radar.model.Treatment;
-import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.ImmunosuppressionManager;
+import com.solidstategroup.radar.service.PlasmapheresisManager;
+import com.solidstategroup.radar.service.TherapyManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -48,20 +46,19 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class TreatmentPanel extends Panel {
     @SpringBean
-    private TherapyDao therapyDao;
+    private TherapyManager therapyManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private ImmunosuppressionDao immunosuppressionDao;
+    private ImmunosuppressionManager immunosuppressionManager;
     @SpringBean
-    private PlasmapheresisDao plasmapheresisDao;
+    private PlasmapheresisManager plasmapheresisManager;
 
     private IModel<ImmunosuppressionTreatment> editImmunosuppressionTreatmentIModel;
 
@@ -76,7 +73,7 @@ public class TreatmentPanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    return immunosuppressionDao.getImmunosuppressionTreatmentByRadarNumber(
+                    return immunosuppressionManager.getImmunosuppressionTreatmentByRadarNumber(
                             radarNumberModel.getObject());
                 }
                 return Collections.emptyList();
@@ -115,7 +112,7 @@ public class TreatmentPanel extends Panel {
                         AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                             @Override
                             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                                immunosuppressionDao.deleteImmunosuppressionTreatment(item.getModelObject());
+                                immunosuppressionManager.deleteImmunosuppressionTreatment(item.getModelObject());
                                 ajaxRequestTarget.add(addImmunoSuppressComponentsToUpdate.toArray(
                                         new Component[addImmunoSuppressComponentsToUpdate.size()]));
                                 ajaxRequestTarget.add(immunosuppressionTreatmentsContainer);
@@ -159,7 +156,7 @@ public class TreatmentPanel extends Panel {
         editImmunosuppressionForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
-                immunosuppressionDao.saveImmunosuppressionTreatment((ImmunosuppressionTreatment) form.getModelObject());
+                immunosuppressionManager.saveImmunosuppressionTreatment((ImmunosuppressionTreatment) form.getModelObject());
                 editImmunosuppressionTreatmentIModel.setObject(null);
                 target.add(editContainer);
                 target.add(immunosuppressionTreatmentsContainer);
@@ -196,7 +193,7 @@ public class TreatmentPanel extends Panel {
                 ImmunosuppressionTreatment immunosuppressionTreatment = (ImmunosuppressionTreatment)
                         form.getModelObject();
                 immunosuppressionTreatment.setRadarNumber(radarNumberModel.getObject());
-                immunosuppressionDao.saveImmunosuppressionTreatment(immunosuppressionTreatment);
+                immunosuppressionManager.saveImmunosuppressionTreatment(immunosuppressionTreatment);
                 form.getModel().setObject(new ImmunosuppressionTreatment());
                 immunosuppressionTreatmentsContainer.setVisible(true);
                 target.add(immunosuppressionTreatmentsContainer);
@@ -221,7 +218,7 @@ public class TreatmentPanel extends Panel {
                 Therapy therapyModelObject = null;
 
                 if (radarNumberModel.getObject() != null) {
-                    therapyModelObject = therapyDao.getFirstTherapyByRadarNumber(radarNumberModel.getObject());
+                    therapyModelObject = therapyManager.getFirstTherapyByRadarNumber(radarNumberModel.getObject());
                 }
 
                 if (therapyModelObject == null) {
@@ -244,11 +241,11 @@ public class TreatmentPanel extends Panel {
             protected void onSubmit() {
                 Therapy therapy = getModelObject();
                 therapy.setRadarNumber(radarNumberModel.getObject());
-                therapyDao.saveTherapy(therapy);
+                therapyManager.saveTherapy(therapy);
             }
         };
 
-        final IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisDao);
+        final IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisManager);
         IModel firstColumnLabelModel = new LoadableDetachableModel() {
             @Override
             protected Object load() {
@@ -583,7 +580,7 @@ public class TreatmentPanel extends Panel {
         public static final long CYCLOPHOSPHAMIDE_ID = 8;
         private RadarDateTextField endDate;
         @SpringBean
-        private ImmunosuppressionDao immunosuppressionDao;
+        private ImmunosuppressionManager immunosuppressionManager;
 
         private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model, final List<Component> componentsToUpdate) {
             super(id, model);
@@ -591,7 +588,7 @@ public class TreatmentPanel extends Panel {
             add(startDate);
 
             RadarRequiredDropdownChoice immunoSuppression = new RadarRequiredDropdownChoice("immunosuppression",
-                    immunosuppressionDao.getImmunosuppressions(), new ChoiceRenderer("description", "id"),
+                    immunosuppressionManager.getImmunosuppressions(), new ChoiceRenderer("description", "id"),
                     this, componentsToUpdate);
 
             final Label totalDoseLabel = new Label("totalDoseLabel", "Total dose of course in g") {

@@ -10,7 +10,6 @@ import java.util.List;
 
 public class TransplantManagerImpl implements TransplantManager {
 
-    @SpringBean
     TransplantDao transplantDao;
 
     public void saveTransplant(Transplant transplant) {
@@ -51,5 +50,13 @@ public class TransplantManagerImpl implements TransplantManager {
 
     public Transplant.RejectData getRejectData(Long id) {
         return transplantDao.getRejectData(id);
+    }
+
+    public TransplantDao getTransplantDao() {
+        return transplantDao;
+    }
+
+    public void setTransplantDao(TransplantDao transplantDao) {
+        this.transplantDao = transplantDao;
     }
 }
