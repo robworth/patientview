@@ -1,7 +1,8 @@
 package com.solidstategroup.radar.web.pages;
 
 import com.solidstategroup.radar.model.user.PatientUser;
-import com.solidstategroup.radar.web.SecuredSession;
+import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -14,8 +15,12 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class PatientsLoginPage extends BasePage {
+
+    @SpringBean
+    private UserManager userManager;
 
     public PatientsLoginPage() {
         // Patients log in form
@@ -26,18 +31,26 @@ public class PatientsLoginPage extends BasePage {
             @Override
             protected void onSubmit() {
                 // Todo: This needs to do checks on date of birth too
-
                 // Get the wicket authentication session and ask to sign the user in with Spring security
-                AuthenticatedWebSession session = SecuredSession.get();
+                AuthenticatedWebSession session = RadarSecuredSession.get();
                 PatientUser user = getModelObject();
-                if (session.signIn(user.getUsername(), passwordModel.getObject())) {
-                    // If we haven't been diverted here from a page request (i.e. we clicked login),
-                    // redirect to logged in page
-                    if (!continueToOriginalDestination()) {
-                        // Todo: Figure out where this should go, I think we need to pass the users radar id
-                        setResponsePage(PatientPage.class);
+                boolean loginFailed = false;
+                if (userManager.getPatientUser(user.getUsername(), user.getDateOfBirth()) != null) {
+                    if (session.signIn(user.getUsername(), passwordModel.getObject())) {
+                        PatientUser patientUser = userManager.getPatientUser(user.getUsername());
+                        // If we haven't been diverted here from a page request (i.e. we clicked login),
+                        // redirect to logged in page
+                        setResponsePage(PatientPageReadOnly.class, PatientPageReadOnly.getParameters(
+                                patientUser.getRadarNumber()));
+
+                    } else {
+                        loginFailed = true;
                     }
                 } else {
+                    loginFailed = true;
+                }
+
+                if (loginFailed) {
                     // Show that the login failed if we couldn't authenticate
                     error("Login failed");
                 }

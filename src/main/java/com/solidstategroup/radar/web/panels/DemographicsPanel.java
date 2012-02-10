@@ -1,11 +1,5 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.dao.ClinicalDataDao;
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.LabDataDao;
-import com.solidstategroup.radar.dao.TherapyDao;
-import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
@@ -14,10 +8,10 @@ import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
-import com.solidstategroup.radar.model.sequenced.ClinicalData;
-import com.solidstategroup.radar.model.sequenced.LabData;
-import com.solidstategroup.radar.model.sequenced.Therapy;
+import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.*;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
@@ -53,17 +47,17 @@ import java.util.List;
 public class DemographicsPanel extends Panel {
 
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private ClinicalDataDao clinicalDataDao;
+    private ClinicalDataManager clinicalDataManager;
     @SpringBean
-    private LabDataDao labDataDao;
+    private LabDataManager labDataManager;
     @SpringBean
-    private TherapyDao therapyDao;
+    private TherapyManager therapyManager;
     @SpringBean
-    private UtilityDao utilityDao;
+    private UtilityManager utilityManager;
 
     public DemographicsPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -83,7 +77,7 @@ public class DemographicsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    demographicsModelObject = demographicsDao.getDemographicsByRadarNumber(radarNumber);
+                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                 }
 
                 if (demographicsModelObject == null) {
@@ -102,17 +96,17 @@ public class DemographicsPanel extends Panel {
                 if (radarNumberModel.getObject() != null) {
                     demographics.setId(radarNumberModel.getObject());
                 }
-                demographicsDao.saveDemographics(demographics);
+                demographicsManager.saveDemographics(demographics);
                 radarNumberModel.setObject(demographics.getId());
 
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
-                Diagnosis diagnosis = diagnosisDao.getDiagnosisByRadarNumber(demographics.getId());
+                Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
                 if (diagnosis == null) {
                     Diagnosis diagnosis_new = new Diagnosis();
                     diagnosis_new.setRadarNumber(demographics.getId());
                     DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis")).getModelObject();
                     diagnosis_new.setDiagnosisCode(diagnosisCode);
-                    diagnosisDao.saveDiagnosis(diagnosis_new);
+                    diagnosisManager.saveDiagnosis(diagnosis_new);
                 }
 
             }
@@ -141,11 +135,15 @@ public class DemographicsPanel extends Panel {
 
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                        diagnosisDao),
-                        diagnosisDao.getDiagnosisCodes(),
+                        diagnosisManager),
+                        diagnosisManager.getDiagnosisCodes(),
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
                     @Override
                     public boolean isEnabled() {
+                        RadarSecuredSession securedSession = RadarSecuredSession.get();
+                        if(securedSession.getRoles().hasRole(User.ROLE_PATIENT)) {
+                           return false;
+                        }
                         return getModelObject() == null;
                     }
                 };
@@ -161,12 +159,12 @@ public class DemographicsPanel extends Panel {
 
         // Sex
         RadarRequiredDropdownChoice sex =
-                new RadarRequiredDropdownChoice("sex", demographicsDao.getSexes(), new ChoiceRenderer<Sex>("type",
+                new RadarRequiredDropdownChoice("sex", demographicsManager.getSexes(), new ChoiceRenderer<Sex>("type",
                         "id"),
                         form, componentsToUpdateList);
 
         // Ethnicity
-        DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityDao.getEthnicities(),
+        DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.getEthnicities(),
                 new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
 
@@ -195,7 +193,7 @@ public class DemographicsPanel extends Panel {
         form.add(hospitalNumber, nhsNumber, renalRegistryNumber, ukTransplantNumber, chiNumber);
 
         // Status, consultants and centres drop down boxes
-        DropDownChoice<Status> status = new DropDownChoice<Status>("status", demographicsDao.getStatuses(),
+        DropDownChoice<Status> status = new DropDownChoice<Status>("status", demographicsManager.getStatuses(),
                 new ChoiceRenderer<Status>("abbreviation", "id"));
 
         // Consultant and renal unit

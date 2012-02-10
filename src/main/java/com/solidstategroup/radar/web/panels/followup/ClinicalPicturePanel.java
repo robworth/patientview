@@ -4,6 +4,9 @@ import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
+import com.solidstategroup.radar.service.ClinicalDataManager;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
@@ -40,11 +43,11 @@ import java.util.List;
 public class ClinicalPicturePanel extends Panel {
 
     @SpringBean
-    private ClinicalDataDao clinicalDataDao;
+    private ClinicalDataManager clinicalDataManager;
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
     public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel) {
         super(id);

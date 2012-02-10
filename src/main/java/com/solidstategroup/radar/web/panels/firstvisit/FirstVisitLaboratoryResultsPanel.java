@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.web.panels.firstvisit;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.subtabs.LaboratoryResultsPanel;
@@ -13,9 +13,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class FirstVisitLaboratoryResultsPanel extends Panel {
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
 
     public FirstVisitLaboratoryResultsPanel(String id, IModel<Long> radarNumberModel) {
         super(id);
@@ -28,14 +28,14 @@ public class FirstVisitLaboratoryResultsPanel extends Panel {
         add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
        add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-               diagnosisDao), "abbreviation")));
+               diagnosisManager), "abbreviation")));
 
-        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         add(new LaboratoryResultsPanel("formContainer", radarNumberModel, true, null, null));
     }

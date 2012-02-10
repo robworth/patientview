@@ -14,9 +14,9 @@
 </p>
 
 <div>
-<table cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
+<table class="tableSorter patientsLisitingTable" cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
        style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;">
-<tbody>
+<thead>
 <tr style="background-color:#EEF6ED;">
     <th scope="col">View / Edit</th>
     <th scope="col">Surname</th>
@@ -37,6 +37,9 @@
             href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1','Sort$sAbbrev')">Status</a>
     </th>
 </tr>
+</thead>
+
+<tbody>
 <tr wicket:id="patients">
     <td align="center"><a wicket:id="edit">Edit</a></td>
     <td wicket:id="surname"/>
@@ -61,7 +64,7 @@
 <p></p>
 
 <p>
-    <span id="ctl00_ContentPlaceHolder1_lblPage">15</span></p>
+</p>
 </wicket:extend>
 </body>
 </html>

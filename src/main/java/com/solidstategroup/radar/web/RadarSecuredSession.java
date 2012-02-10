@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.web;
 
+import com.solidstategroup.radar.model.user.User;
+import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -14,11 +16,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-public class SecuredSession extends AuthenticatedWebSession {
+public class RadarSecuredSession extends AuthenticatedWebSession {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecuredSession.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadarSecuredSession.class);
 
-    public SecuredSession(Request request) {
+    public RadarSecuredSession(Request request) {
         super(request);
     }
 
@@ -55,4 +57,15 @@ public class SecuredSession extends AuthenticatedWebSession {
                 WebApplication.get().getServletContext()).getBean("authenticationManager");
     }
 
+    public User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (User) authentication.getPrincipal();
+        }
+        return null;
+    }
+
+    public static RadarSecuredSession get() {
+        return (RadarSecuredSession) Session.get();
+    }
 }

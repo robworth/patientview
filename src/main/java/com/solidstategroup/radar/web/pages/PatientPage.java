@@ -1,10 +1,9 @@
 package com.solidstategroup.radar.web.pages;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -25,14 +24,14 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 
-@AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_PATIENT})
+@AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class PatientPage extends BasePage {
 
-    private static final String PARAM_ID = "id";
+    protected static final String PARAM_ID = "id";
     @SpringBean
-    DiagnosisDao diagnosisDao;
+    DiagnosisManager diagnosisManager;
     @SpringBean
-    DemographicsDao demographicsDao;
+    DemographicsManager demographicsManager;
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -88,6 +87,7 @@ public class PatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("relapseLink", CurrentTab.RELAPSE));
         linksContainer.add(new TabAjaxLink("hospitalisationLink", CurrentTab.HOSPITALISATION));
         add(linksContainer);
+
     }
 
     public CurrentTab getCurrentTab() {
@@ -128,4 +128,5 @@ public class PatientPage extends BasePage {
     public static PageParameters getParameters(Demographics demographics) {
         return new PageParameters().set(PARAM_ID, demographics.getId());
     }
+
 }

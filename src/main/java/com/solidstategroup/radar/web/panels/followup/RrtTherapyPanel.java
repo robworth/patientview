@@ -1,11 +1,13 @@
 package com.solidstategroup.radar.web.panels.followup;
 
-import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.dao.TransplantDao;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.Transplant;
+import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.TransplantManager;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -19,7 +21,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.datetime.DateConverter;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -37,21 +39,19 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class RrtTherapyPanel extends Panel {
     @SpringBean
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
     @SpringBean
-    private DiagnosisDao diagnosisDao;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    private TransplantDao transplantDao;
+    private TransplantManager transplantManager;
 
     public RrtTherapyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -64,32 +64,32 @@ public class RrtTherapyPanel extends Panel {
         add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsDao)));
+                demographicsManager)));
 
         add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisDao), "abbreviation")));
+                diagnosisManager), "abbreviation")));
 
-        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsDao)));
-        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsDao)));
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
 
         final IModel<Date> esrfDateModel = new LoadableDetachableModel<Date>() {
             @Override
             protected Date load() {
-                Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisDao).getObject();
-                if(diagnosis != null) {
+                Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisManager).getObject();
+                if (diagnosis != null) {
                     return diagnosis.getEsrfDate();
                 }
                 return null;
             }
         };
-        add(new DateLabel("esrfDate", esrfDateModel, new PatternDateConverter(RadarApplication.DATE_PATTERN, true)){
+        add(new DateLabel("esrfDate", esrfDateModel, new PatternDateConverter(RadarApplication.DATE_PATTERN, true)) {
             @Override
             public boolean isVisible() {
                 return esrfDateModel.getObject() != null;
             }
         });
-        add(new WebMarkupContainer("esrfNotEnteredContainer"){
+        add(new WebMarkupContainer("esrfNotEnteredContainer") {
             @Override
             public boolean isVisible() {
                 return esrfDateModel.getObject() == null;
@@ -104,7 +104,7 @@ public class RrtTherapyPanel extends Panel {
             public List getObject() {
 
                 if (radarNumberModel.getObject() != null) {
-                    return transplantDao.getTransplantsByRadarNumber(radarNumberModel.getObject());
+                    return transplantManager.getTransplantsByRadarNumber(radarNumberModel.getObject());
                 }
                 return Collections.emptyList();
 
@@ -160,7 +160,7 @@ public class RrtTherapyPanel extends Panel {
                 IModel rejectDataListModel = new AbstractReadOnlyModel<List>() {
                     @Override
                     public List getObject() {
-                        return transplantDao.getRejectDataByTransplantNumber(item.getModelObject().getId());
+                        return transplantManager.getRejectDataByTransplantNumber(item.getModelObject().getId());
                     }
                 };
                 final WebMarkupContainer rejectDataListContainer = new WebMarkupContainer("rejectDataListContainer");
@@ -176,12 +176,20 @@ public class RrtTherapyPanel extends Panel {
                         AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                             @Override
                             public void onClick(AjaxRequestTarget target) {
-                                transplantDao.deleteRejectData(rejectDataListItem.getModelObject());
+                                transplantManager.deleteRejectData(rejectDataListItem.getModelObject());
                                 target.add(rejectDataListContainer);
                             }
                         };
                         rejectDataListItem.add(ajaxDeleteLink);
                         ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
+
+                        AuthenticatedWebSession session = RadarSecuredSession.get();
+                        if (session.isSignedIn()) {
+                            if (session.getRoles().hasRole(User.ROLE_PATIENT)) {
+                                ajaxDeleteLink.setVisible(false);
+                            }
+                        }
+
                     }
                 });
 
@@ -192,7 +200,7 @@ public class RrtTherapyPanel extends Panel {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Transplant transplant = item.getModelObject();
-                        transplantDao.deleteTransplant(transplant);
+                        transplantManager.deleteTransplant(transplant);
                         target.add(addTransplantFormComponentsToUpdate.toArray(new Component[
                                 addTransplantFormComponentsToUpdate.size()]));
                         target.add(transplantsContainer);
@@ -200,14 +208,15 @@ public class RrtTherapyPanel extends Panel {
                 };
                 item.add(ajaxDeleteLink);
                 ajaxDeleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
-                item.add(new AjaxLink("editLink") {
+                AjaxLink ajaxEditLink = new AjaxLink("editLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         editTransplantModel.setObject(item.getModelObject());
                         target.add(editTransplantContainer);
                     }
-                });
-                item.add(new AjaxLink("addRejectLink") {
+                };
+                item.add(ajaxEditLink);
+                AjaxLink ajaxAddRejectLink = new AjaxLink("addRejectLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Transplant.RejectData rejectData = new Transplant.RejectData();
@@ -215,7 +224,17 @@ public class RrtTherapyPanel extends Panel {
                         addRejectModel.setObject(rejectData);
                         target.add(rejectDataContainer);
                     }
-                });
+                };
+                item.add(ajaxAddRejectLink);
+
+                AuthenticatedWebSession session = RadarSecuredSession.get();
+                if (session.isSignedIn()) {
+                    if (session.getRoles().hasRole(User.ROLE_PATIENT)) {
+                        ajaxDeleteLink.setVisible(false);
+                        ajaxEditLink.setVisible(false);
+                        ajaxAddRejectLink.setVisible(false);
+                    }
+                }
             }
         });
 
@@ -228,7 +247,7 @@ public class RrtTherapyPanel extends Panel {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(rejectDataComponentsToUpdate.toArray(new Component[rejectDataComponentsToUpdate.size()]));
-                transplantDao.saveRejectData((Transplant.RejectData) form.getModelObject());
+                transplantManager.saveRejectData((Transplant.RejectData) form.getModelObject());
                 addRejectModel.setObject(null);
                 target.add(rejectDataContainer);
                 target.add(transplantsContainer);
@@ -257,7 +276,7 @@ public class RrtTherapyPanel extends Panel {
         editTransplantForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                transplantDao.saveTransplant((Transplant) form.getModelObject());
+                transplantManager.saveTransplant((Transplant) form.getModelObject());
                 editTransplantModel.setObject(null);
                 target.add(editTransplantContainer);
                 target.add(transplantsContainer);
@@ -288,7 +307,7 @@ public class RrtTherapyPanel extends Panel {
                 target.add(form);
                 Transplant transplant = (Transplant) form.getModelObject();
                 transplant.setRadarNumber(radarNumberModel.getObject());
-                transplantDao.saveTransplant(transplant);
+                transplantManager.saveTransplant(transplant);
                 form.getModel().setObject(new Transplant());
                 transplantsContainer.setVisible(true);
                 target.add(transplantsContainer);
@@ -306,14 +325,14 @@ public class RrtTherapyPanel extends Panel {
 
     private final class TransplantForm extends Form<Transplant> {
         @SpringBean
-        private TransplantDao transplantDao;
+        private TransplantManager transplantManager;
 
         private TransplantForm(String id, IModel<Transplant> transplantIModel, List<Component> componentsToUpdate) {
             super(id, transplantIModel);
             RadarRequiredDateTextField date = new RadarRequiredDateTextField("date", this, componentsToUpdate);
             add(date);
             RadarRequiredDropdownChoice modality = new RadarRequiredDropdownChoice("modality",
-                    transplantDao.getTransplantModalitites(), new ChoiceRenderer("description", "id"), this,
+                    transplantManager.getTransplantModalitites(), new ChoiceRenderer("description", "id"), this,
                     componentsToUpdate);
             add(modality);
             YesNoRadioGroup recurr = new YesNoRadioGroup("recurr");

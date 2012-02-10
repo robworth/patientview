@@ -1,9 +1,11 @@
 package com.solidstategroup.radar.web;
 
+import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.admin.AdminsBasePage;
 import com.solidstategroup.radar.web.pages.admin.AdminsLoginPage;
 import com.solidstategroup.radar.web.pages.admin.AdminsPage;
-import com.solidstategroup.radar.web.pages.ExistingPatientsPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.pages.PatientsLoginPage;
@@ -36,7 +38,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
 
     @Override
     protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
-        return SecuredSession.class;
+        return RadarSecuredSession.class;
     }
 
     @Override
@@ -54,14 +56,14 @@ public class RadarApplication extends AuthenticatedWebApplication {
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 
         // set a security listener for checks on pages and what logins they should go to
-        // TODO: may have an issue with this as professional and patients both use the PatientPage
+        // TODO: may have an issue with this as professional and patients both use the .PatientPage
         getSecuritySettings().setUnauthorizedComponentInstantiationListener(
                 new IUnauthorizedComponentInstantiationListener() {
                     public void onUnauthorizedInstantiation(final Component component) {
                         if (component instanceof Page) {
                             if (component instanceof AdminsBasePage) {
                                 throw new RestartResponseAtInterceptPageException(AdminsLoginPage.class);
-                            } else if (component.getClass() == PatientPage.class) {
+                            } else if (component.getClass() == PatientPageReadOnly.class) {
                                 throw new RestartResponseAtInterceptPageException(PatientsLoginPage.class);
                             }
 
@@ -70,16 +72,20 @@ public class RadarApplication extends AuthenticatedWebApplication {
                             throw new UnauthorizedInstantiationException(component.getClass());
                         }
                     }
-        });
-        
+                });
+
         mountPage("admins", AdminsPage.class);
 
         // Mount nice URLs for pages - patient pages
-        mountPage("patient", PatientPage.class);
-        mountPage("patients", ExistingPatientsPage.class);
-        mountPage("login", PatientsLoginPage.class);
+        mountPage("patient/edit", PatientPage.class);
+        mountPage("patient/view", PatientPageReadOnly.class);
+        mountPage("patients", ExistingPatientsListingPage.class);
+        mountPage("registration/patient", PatientRegistrationPage.class);
 
-        mountPage("registration", ProfessionalRegistrationPage.class);
+        mountPage("login/patient", PatientsLoginPage.class);
+        mountPage("login/professional", ProfessionalsLoginPage.class);
+
+        mountPage("registration/professional", ProfessionalRegistrationPage.class);
         mountPage("professionals", ProfessionalsPage.class);
         mountPage("recruitment", RecruitmentPage.class);
 
