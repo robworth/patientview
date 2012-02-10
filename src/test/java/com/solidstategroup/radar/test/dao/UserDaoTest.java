@@ -6,6 +6,7 @@ import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.util.TripleDes;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -66,6 +67,32 @@ public class UserDaoTest extends BaseDaoTest {
         // Try and get the patient user - should get our new user
         patientUser = userDao.getPatientUser("test_user");
         assertNotNull("Saved user was null on getting frmo DAO", patientUser);
+    }
+
+    @Test
+    public void testSaveProfessionalUser() throws Exception {
+        ProfessionalUser professionalUser = new ProfessionalUser();
+        professionalUser.setUsernameHash(User.getUsernameHash("test_admin_user"));
+        professionalUser.setPasswordHash(User.getPasswordHash("password12"));
+        professionalUser.setSurname("test_surname");
+        professionalUser.setForename("test_forename");
+        professionalUser.setTitle("test_title");
+        professionalUser.setRole("test_role");
+        professionalUser.setGmc("test_gmc");
+        professionalUser.setEmail("test_email");
+        professionalUser.setPhone("test_phone");
+
+        Centre centre = new Centre();
+        centre.setId((long) 10);
+        professionalUser.setCentre(centre);
+
+        userDao.saveProfessionalUser(professionalUser);
+
+        assertTrue("Saved user doesn't have an ID", professionalUser.getId() > 0);
+        assertNotNull("No date registered", professionalUser.getDateRegistered());
+
+        professionalUser = userDao.getProfessionalUser("test_email");
+        assertNotNull("Saved user was null on getting from DAO", professionalUser);
     }
 
     @Test
