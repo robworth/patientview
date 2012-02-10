@@ -6,7 +6,6 @@ import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
-import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +27,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private UtilityDao utilityDao;
     private SimpleJdbcInsert patientUsersInsert;
+    private SimpleJdbcInsert professionalUsersInsert;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -38,6 +38,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns("pID")
                 .usingColumns("RADAR_NO", "pUserName", "pPassWord", "pDOB", "pDateReg"
                 );
+
+        professionalUsersInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Users")
+                .usingGeneratedKeyColumns("uID")
+                .usingColumns("uSurname", "uForename", "uTitle", "uGMC", "uRole",
+                        "uEmail", "uPhone", "uCentre", "uDateJoin", "uUserName", "uPass");
     }
 
     public AdminUser getAdminUser(String email) {
@@ -101,6 +106,25 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             LOGGER.debug("Could not find row in table tbl_users with uEmail {}", email);
         }
         return null;
+    }
+
+    public void saveProfessionalUser(final ProfessionalUser professionalUser) {
+        Number id = professionalUsersInsert.executeAndReturnKey(new HashMap<String, Object>() {
+            {
+                put("uSurname", professionalUser.getSurname());
+                put("uForename", professionalUser.getForename());
+                put("uTitle", professionalUser.getTitle());
+                put("uGMC", professionalUser.getGmc());
+                put("uRole", professionalUser.getRole());
+                put("uEmail", professionalUser.getEmail());
+                put("uPhone", professionalUser.getPhone());
+                put("uCentre", professionalUser.getCentre().getId());
+                put("uDateJoin", professionalUser.getDateRegistered());
+                put("uUserName", professionalUser.getUsernameHash());
+                put("uPass", professionalUser.getPasswordHash());
+            }
+        });
+        professionalUser.setId(id.longValue());
     }
 
     public List<ProfessionalUser> getProfessionalUsers() {
@@ -188,13 +212,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             professionalUser.setPhone(resultSet.getString("uPhone"));
             professionalUser.setDateRegistered(resultSet.getDate("uDateJoin"));
             professionalUser.setPasswordHash(resultSet.getBytes("uPass"));
-
-            // Have to decrypt the username
-            try {
-                professionalUser.setUsername(TripleDes.decrypt(resultSet.getBytes("uUserName")));
-            } catch (Exception e) {
-                LOGGER.error("Could not set username for user {}, decryption failed", professionalUser.getEmail(), e);
-            }
+            professionalUser.setUsernameHash(resultSet.getBytes("uUserName"));
 
             // Set the centre
             Long centreId = resultSet.getLong("uCentre");
