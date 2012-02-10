@@ -17,7 +17,7 @@ public class ErrorPage extends BasePage {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorPage.class);
 
     public ErrorPage(Exception e) {
-        LOGGER.error("An error occured: {}" + e);
+        LOGGER.error("An error occured: {}", e);
         init(generalErrorMessage);
     }
 
