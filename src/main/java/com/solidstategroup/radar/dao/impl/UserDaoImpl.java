@@ -77,6 +77,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         patientUser.setId(id.longValue());
     }
 
+    public ProfessionalUser getProfessionalUser(Long id) {
+        if (id != null) {
+            try {
+                return jdbcTemplate.queryForObject("SELECT * FROM tbl_Users WHERE uID = ?", new Object[]{id},
+                        new ProfessionalUserRowMapper());
+            } catch (EmptyResultDataAccessException e) {
+                // Add debug logging
+                LOGGER.debug("Could not find row in table tbl_users with uID {}", id);
+            }
+        }
+
+        return null;
+    }
+
     public ProfessionalUser getProfessionalUser(String email) {
         try {
             // Return a professional user object queried for using given email
@@ -106,38 +120,53 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add("SELECT * FROM tbl_Users");
+        sqlQueries.add("SELECT " +
+                "   tbl_Users.*, " +
+                "   tbl_Centres.cName AS cName " +
+                "FROM " +
+                "   tbl_Users " +
+                "INNER JOIN " +
+                "   tbl_Centres " +
+                "ON " +
+                "   tbl_Users.uCentre = tbl_Centres.cID");
 
         if (filter.hasSearchFilter()) {
             // if there a search fields in the filter then create where clause
             sqlQueries.add("WHERE");
 
             int count = 1;
-            for (Map.Entry<ProfessionalUserFilter.UserField, String> entry : filter.getSearchFields().entrySet()) {
-                // converting the field values to uppercase so I dont have to faff around
-                // probably bite me in the ass at some point
-                sqlQueries.add("UPPER(" + entry.getKey().getFieldName() + ") LIKE ?");
-                params.add("%" + entry.getValue().toUpperCase() + "%");
+            for (Map.Entry<ProfessionalUserFilter.UserField, String> entry : filter.getSearchFields()
+                    .entrySet()) {
+                if (entry.getValue().length() > 0) {
+                    // converting the field values to uppercase so I dont have to faff around
+                    // probably bite me in the ass at some point
+                    sqlQueries.add("UPPER(" + entry.getKey().getDatabaseFieldName() + ") LIKE ?");
+                    params.add("%" + entry.getValue().toUpperCase() + "%");
 
-                // if there are more than one field being search AND them
-                if (count < filter.getSearchFields().size()) {
-                    sqlQueries.add("AND");
+                    // if there are more than one field being search AND them
+                    if (count < filter.getSearchFields().size()) {
+                        sqlQueries.add("AND");
+                    }
+
+                    count++;
                 }
-
-                count++;
             }
         }
 
         // if the filter has a sort then order by it
         if (filter.hasSortFilter()) {
-            sqlQueries.add("ORDER BY " + filter.getSortField().getFieldName());
+            sqlQueries.add("ORDER BY " + filter.getSortField().getDatabaseFieldName());
             sqlQueries.add(filter.isReverse() ? "ASC" : "DESC");
         }
 
         // if a range has been set limit the results
         if (page > 0 && numberPerPage > 0) {
             sqlQueries.add("LIMIT ?, ?");
-            params.add(page - 1); // rows start from zero in db so minus 1 to get correct row
+
+            // work out the row to start from
+            int start = ((page * numberPerPage) - numberPerPage);
+
+            params.add(start);
             params.add(numberPerPage);
         }
 
