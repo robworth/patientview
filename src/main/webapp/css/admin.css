@@ -1,16 +1,14 @@
 .dxgvControl,
-.dxgvDisabled
-{
+.dxgvDisabled {
     border: Solid 1px #9F9F9F;
     font: 11px Tahoma;
     background-color: #F2F2F2;
     color: Black;
     cursor: default;
 }
-.dxgvDisabled
-{
-    color: Gray;
-}
+
+.dxgvDisabled { color: Gray; }
+
 .dxgvControl a
 {
     color: #5555FF;
