@@ -18,6 +18,8 @@ public interface UserDao {
     ProfessionalUser getProfessionalUser(Long id);
 
     ProfessionalUser getProfessionalUser(String email);
+
+    void saveProfessionalUser(ProfessionalUser professionalUser);
     
     List<ProfessionalUser> getProfessionalUsers();
     
