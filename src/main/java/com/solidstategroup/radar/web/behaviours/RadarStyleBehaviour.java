@@ -20,6 +20,7 @@ public class RadarStyleBehaviour extends Behavior {
         response.renderCSSReference(path + "normal.css");
         response.renderCSSReference(path + "layout.css");
         response.renderCSSReference(path + "ajxmenu.css");
+        response.renderCSSReference(path + "admin.css");
         response.renderCSSReference(path + "tabs_lab.css");
     }
 }
