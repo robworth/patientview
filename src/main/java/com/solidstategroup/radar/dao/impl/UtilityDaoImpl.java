@@ -1,11 +1,8 @@
 package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Consultant;
-import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.Ethnicity;
-import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.*;
+import com.solidstategroup.radar.util.TripleDes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,7 +10,9 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
@@ -72,6 +71,28 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public List<Relative> getRelatives() {
         return jdbcTemplate.query("SELECT * FROM tbl_Relative", new RelativeRowMapper());
+    }
+
+    public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
+        List<PatientCountItem> patientCountList = jdbcTemplate.query("SELECT COUNT(*) as \"count\", renal_unit " +
+                "FROM tbl_demographics demographics INNER JOIN tbl_diagnosis diagnosis ON demographics.radar_no = " +
+                "diagnosis.radar_no WHERE diag = ? " +
+                "GROUP BY renal_unit;", new Object[]{diagnosisCode.getId()},
+                new PatientCountByUnitRowMapper());
+
+        Map<Long, Integer> patientCountMap = new HashMap<Long, Integer>();
+
+        for (PatientCountItem item : patientCountList) {
+            patientCountMap.put(item.getHospitalId(), item.getCount());
+        }
+        return patientCountMap;
+    }
+
+    public int getPatientCountByUnit(Centre centre) {
+        return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
+                "FROM tbl_demographics " +
+                "WHERE renal_unit = ? " +
+                "GROUP BY renal_unit;", new Object[]{centre.getId()});
     }
 
     private class CentreRowMapper implements RowMapper<Centre> {
@@ -135,4 +156,38 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             return consultant;
         }
     }
+
+    private class PatientCountByUnitRowMapper implements RowMapper<PatientCountItem> {
+        public PatientCountItem mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            return new PatientCountItem(resultSet.getLong("renal_unit"), resultSet.getInt("count"));
+        }
+    }
+
+    private class PatientCountItem {
+        long hospitalId;
+        int count;
+
+        private PatientCountItem(long hospitalId, int count) {
+            this.hospitalId = hospitalId;
+            this.count = count;
+        }
+
+        public long getHospitalId() {
+            return hospitalId;
+        }
+
+        public void setHospitalId(long hospitalId) {
+            this.hospitalId = hospitalId;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+    }
+
 }

@@ -1,15 +1,14 @@
 package com.solidstategroup.radar.test.dao;
 
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Consultant;
-import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.Ethnicity;
-import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.dao.impl.DiagnosisDaoImpl;
+import com.solidstategroup.radar.model.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -17,6 +16,8 @@ public class UtilityDaoTest extends BaseDaoTest {
 
     @Autowired
     private UtilityDao utilityDao;
+    @Autowired
+    private DiagnosisDao diagnosisDao;
 
     @Test
     public void testGetCentre() {
@@ -86,4 +87,18 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertNotNull("Relatives list is null", relatives);
     }
 
+    @Test
+    public void testGetPatientCountPerUnitByDiagnosisCode() throws Exception {
+        DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
+        Map<Long, Integer> patientCountMap = utilityDao.getPatientCountPerUnitByDiagnosisCode(diagnosisCode);
+        assertTrue(patientCountMap.get(3L).equals(8));
+    }
+
+    @Test
+    public void testGetPatientCountByUnit() throws Exception {
+        Centre centre = new Centre();
+        centre.setId(3L);
+        int count = utilityDao.getPatientCountByUnit(centre);
+        assertTrue(count == 10);
+    }
 }
