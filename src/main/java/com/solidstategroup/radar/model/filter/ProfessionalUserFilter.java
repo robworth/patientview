@@ -1,9 +1,10 @@
 package com.solidstategroup.radar.model.filter;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfessionalUserFilter {
+public class ProfessionalUserFilter  implements Serializable {
 
     public enum UserField {
         SURNAME("uSurname"),
@@ -11,18 +12,18 @@ public class ProfessionalUserFilter {
         TITLE("uTitle"),
         ROLE("uRole"),
         EMAIL("uEmail"),
-        CENTRE("uCentre"),
+        CENTRE("cName"),
         REGISTRATION_DATE("uDateJoin"),
         GMC("uGMC");
 
-        private String fieldName;
+        private String databaseFieldName;
 
-        private UserField(String fieldName) {
-            this.fieldName = fieldName;
+        private UserField(String databaseFieldName) {
+            this.databaseFieldName = databaseFieldName;
         }
 
-        public String getFieldName() {
-            return fieldName;
+        public String getDatabaseFieldName() {
+            return databaseFieldName;
         }
     }
     
@@ -41,9 +42,13 @@ public class ProfessionalUserFilter {
         this.sortField = sortField;
         this.reverse = reverse;
     }
-    
+
     public void addSearchCriteria(UserField userField, String searchTerm) {
         searchFields.put(userField, searchTerm);
+    }
+    
+    public void removeSearchCriteria(UserField userField) {
+        searchFields.remove(userField);
     }
 
     public boolean hasSearchFilter() {
