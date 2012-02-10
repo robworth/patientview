@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -10,15 +11,16 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.event.LoggerListener;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class UserDaoTest extends BaseDaoTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoTest.class);
+    
     @Autowired
     private UserDao userDao;
 
@@ -27,7 +29,7 @@ public class UserDaoTest extends BaseDaoTest {
         AdminUser adminUser = userDao.getAdminUser("ihaynes@data-insite.co.uk");
         assertNotNull(adminUser);
     }
-    
+
     @Test
     public void testGetPatientUser() {
         // Get a user
@@ -96,12 +98,30 @@ public class UserDaoTest extends BaseDaoTest {
         ProfessionalUser professionalUser = userDao.getProfessionalUser("no@no.com");
         assertNull("Unknown user isn't null", professionalUser);
     }
+    
+    @Test
+    public void testGetProfessionalUsers() {
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers();
+        assertNotNull(professionalUsers);
+        assertTrue(professionalUsers.size() > 0);
+    }
 
-    /**
-     * Used for outputting login details for test db - not really a test - uncomment and use if you need
-     */
-
-
+    @Test
+    public void testGetProfessionalUsersPage1() {
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(null, 2, 1);
+        assertNotNull(professionalUsers);
+        assertTrue(professionalUsers.size() == 1);
+    }
+    
+    @Test
+    public void testSearchProfessionalUsers() {
+        ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
+        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME, "fiona");
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter);
+        assertNotNull(professionalUsers);
+        assertTrue(professionalUsers.size() > 0);
+    }
+    
     @Test
     public void outputLoginDetails() {
 
@@ -114,7 +134,7 @@ public class UserDaoTest extends BaseDaoTest {
             String password = TripleDes.decrypt(professionalUser.getPasswordHash());
             LOGGER.info("super user | email: " + email + " | password: " + password);
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e.toString());
         }
     }
 

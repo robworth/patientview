@@ -2,10 +2,12 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.util.TripleDes;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,7 +17,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
@@ -72,6 +77,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         patientUser.setId(id.longValue());
     }
 
+    public ProfessionalUser getProfessionalUser(Long id) {
+        if (id != null) {
+            try {
+                return jdbcTemplate.queryForObject("SELECT * FROM tbl_Users WHERE uID = ?", new Object[]{id},
+                        new ProfessionalUserRowMapper());
+            } catch (EmptyResultDataAccessException e) {
+                // Add debug logging
+                LOGGER.debug("Could not find row in table tbl_users with uID {}", id);
+            }
+        }
+
+        return null;
+    }
+
     public ProfessionalUser getProfessionalUser(String email) {
         try {
             // Return a professional user object queried for using given email
@@ -82,6 +101,77 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             LOGGER.debug("Could not find row in table tbl_users with uEmail {}", email);
         }
         return null;
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers() {
+        return getProfessionalUsers(new ProfessionalUserFilter(), -1, -1);
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter) {
+        return getProfessionalUsers(filter, -1, -1);
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage) {
+        if (filter == null) {
+            filter = new ProfessionalUserFilter();
+        }
+
+        List<String> sqlQueries = new ArrayList<String>();
+        List<Object> params = new ArrayList<Object>();
+
+        // normal sql query without any filter options
+        sqlQueries.add("SELECT " +
+                "   tbl_Users.*, " +
+                "   tbl_Centres.cName AS cName " +
+                "FROM " +
+                "   tbl_Users " +
+                "INNER JOIN " +
+                "   tbl_Centres " +
+                "ON " +
+                "   tbl_Users.uCentre = tbl_Centres.cID");
+
+        if (filter.hasSearchFilter()) {
+            // if there a search fields in the filter then create where clause
+            sqlQueries.add("WHERE");
+
+            int count = 1;
+            for (Map.Entry<ProfessionalUserFilter.UserField, String> entry : filter.getSearchFields()
+                    .entrySet()) {
+                if (entry.getValue().length() > 0) {
+                    // converting the field values to uppercase so I dont have to faff around
+                    // probably bite me in the ass at some point
+                    sqlQueries.add("UPPER(" + entry.getKey().getDatabaseFieldName() + ") LIKE ?");
+                    params.add("%" + entry.getValue().toUpperCase() + "%");
+
+                    // if there are more than one field being search AND them
+                    if (count < filter.getSearchFields().size()) {
+                        sqlQueries.add("AND");
+                    }
+
+                    count++;
+                }
+            }
+        }
+
+        // if the filter has a sort then order by it
+        if (filter.hasSortFilter()) {
+            sqlQueries.add("ORDER BY " + filter.getSortField().getDatabaseFieldName());
+            sqlQueries.add(filter.isReverse() ? "ASC" : "DESC");
+        }
+
+        // if a range has been set limit the results
+        if (page > 0 && numberPerPage > 0) {
+            sqlQueries.add("LIMIT ?, ?");
+
+            // work out the row to start from
+            int start = ((page * numberPerPage) - numberPerPage);
+
+            params.add(start);
+            params.add(numberPerPage);
+        }
+
+        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
+                new ProfessionalUserRowMapper());
     }
 
     private class ProfessionalUserRowMapper implements RowMapper<ProfessionalUser> {

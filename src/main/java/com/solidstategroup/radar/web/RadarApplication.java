@@ -1,9 +1,11 @@
 package com.solidstategroup.radar.web;
 
-import com.solidstategroup.radar.web.pages.*;
-import com.solidstategroup.radar.web.pages.AdminsBasePage;
-import com.solidstategroup.radar.web.pages.AdminsLoginPage;
-import com.solidstategroup.radar.web.pages.AdminsPage;
+import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
+import com.solidstategroup.radar.web.pages.admin.AdminsBasePage;
+import com.solidstategroup.radar.web.pages.admin.AdminsLoginPage;
+import com.solidstategroup.radar.web.pages.admin.AdminsPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.pages.PatientsLoginPage;
