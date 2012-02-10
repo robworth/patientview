@@ -1,12 +1,9 @@
 package com.solidstategroup.radar.dao;
 
-import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Consultant;
-import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.Ethnicity;
-import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UtilityDao {
 
@@ -29,4 +26,8 @@ public interface UtilityDao {
     Relative getRelative(long id);
 
     List<Relative> getRelatives();
+
+    Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode);
+
+    int getPatientCountByUnit(Centre centre);
 }

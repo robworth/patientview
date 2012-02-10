@@ -25,18 +25,12 @@
 
         <p>&nbsp;</p>
 
-        <div id="ctl00_ContentPlaceHolder1_regPatients" style="width:750px; border: 1px solid green; padding:20px;">
+        <div style="width:750px; border: 1px solid green; padding:20px;">
 
-            <div id="ctl00_ContentPlaceHolder1_UpdatePanel2">
-
-                <p><span id="ctl00_ContentPlaceHolder1_lblCentre" style="font-weight:bold;">Demonstration Entries</span>
-                </p>
-
-                <p>The number of patients currently registered at this unit is: <span
-                        id="ctl00_ContentPlaceHolder1_lblReg">9</span>
+            <div>
+                <p>The number of patients currently registered at this unit is: <span wicket:id="count">9</span>
                     &nbsp;
-                    <input type="submit" name="ctl00$ContentPlaceHolder1$btnGraph" value="Graph"
-                           id="ctl00_ContentPlaceHolder1_btnGraph">
+                    <input wicket:id="showGraph" type="button" value="Graph">
                 </p>
 
                 <p>
@@ -44,8 +38,8 @@
                 </p>
 
             </div>
-            <div id="ctl00_ContentPlaceHolder1_UpdateProgress1" style="display:none;">
-                <p><img src="images/chart-load.gif" title="Chart loading" alt="Chart loading"></p>
+            <div>
+                <img wicket:id="graph">
             </div>
         </div>
         <p>
@@ -60,8 +54,6 @@
 
     </div>
     <p></p>
-
-    <p><span id="ctl00_ContentPlaceHolder1_lblPage" class="pageLabel">17</span></p>
 
 </wicket:extend>
 </body>
