@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.model.user.AdminUser;
-import com.solidstategroup.radar.web.SecuredSession;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -28,7 +28,7 @@ public class AdminsLoginPage extends BasePage {
             @Override
             protected void onSubmit() {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
-                AuthenticatedWebSession session = SecuredSession.get();
+                AuthenticatedWebSession session = RadarSecuredSession.get();
                 AdminUser user = getModelObject();
                 if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                     // If we haven't been diverted here from a page request (i.e. we clicked login),

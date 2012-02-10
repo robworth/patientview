@@ -225,6 +225,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             patientUser.setPasswordHash(resultSet.getBytes("pPassWord"));
             patientUser.setDateOfBirth(resultSet.getDate("pDOB"));
             patientUser.setDateRegistered(resultSet.getDate("pDateReg"));
+            patientUser.setRadarNumber(resultSet.getLong("radar_no"));
             return patientUser;
         }
     }

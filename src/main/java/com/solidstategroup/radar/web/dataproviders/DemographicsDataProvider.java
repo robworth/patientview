@@ -3,6 +3,7 @@ package com.solidstategroup.radar.web.dataproviders;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.service.DemographicsManager;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -13,15 +14,15 @@ import java.util.List;
 public class DemographicsDataProvider implements IDataProvider<Demographics> {
 
     private Centre centre;
-    private DemographicsDao demographicsDao;
+    private DemographicsManager demographicsManager;
 
-    public DemographicsDataProvider(DemographicsDao demographicsDao, Centre centre) {
-        this.demographicsDao = demographicsDao;
+    public DemographicsDataProvider(DemographicsManager demographicsManager, Centre centre) {
+        this.demographicsManager = demographicsManager;
         this.centre = centre;
     }
 
-    public DemographicsDataProvider(DemographicsDao demographicsDao) {
-        this.demographicsDao = demographicsDao;
+    public DemographicsDataProvider(DemographicsManager demographicsManager) {
+        this.demographicsManager = demographicsManager;
     }
 
     public Iterator<? extends Demographics> iterator(int first, int count) {
@@ -34,10 +35,11 @@ public class DemographicsDataProvider implements IDataProvider<Demographics> {
     }
 
     private List<Demographics> getResults() {
+
         if (centre != null) {
-            return demographicsDao.getDemographicsByRenalUnit(centre);
+            return demographicsManager.getDemographicsByRenalUnit(centre);
         } else {
-            return demographicsDao.getDemographics();
+            return demographicsManager.getDemographics();
         }
     }
 

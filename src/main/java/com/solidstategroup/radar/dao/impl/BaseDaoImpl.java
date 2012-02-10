@@ -78,4 +78,14 @@ public abstract class BaseDaoImpl {
         }
         return value;
     }
+
+    public Long getLongWithNullCheck(String column, ResultSet resultSet) throws SQLException {
+        long value = resultSet.getLong(column);
+        if (resultSet.wasNull()) {
+            return null;
+        }
+        return value;
+    }
+
+
 }

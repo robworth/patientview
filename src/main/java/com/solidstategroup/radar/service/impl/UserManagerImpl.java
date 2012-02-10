@@ -5,6 +5,7 @@ import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.service.UserManager;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Date;
+
 public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
@@ -26,6 +29,26 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private DemographicsDao demographicsDao;
     private UserDao userDao;
+
+    public PatientUser getPatientUser(String email) {
+        return userDao.getPatientUser(email);
+    }
+
+    public PatientUser getPatientUser(String email, Date dateOfBirth) {
+        PatientUser user = userDao.getPatientUser(email);
+        if(user != null) {
+            return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
+        }
+        return null;
+    }
+
+    public void savePatientUser(PatientUser patientUser) {
+        userDao.savePatientUser(patientUser);
+    }
+
+    public ProfessionalUser getProfessionalUser(String email) {
+        return userDao.getProfessionalUser(email);
+    }
 
     public void registerPatient(PatientUser patientUser) throws RegistrationException {
         // Check we have a valid radar number, email address and date of birth

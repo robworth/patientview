@@ -1,16 +1,14 @@
 package com.solidstategroup.radar.web.panels;
 
-import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.service.UtilityManager;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 public class DiagnosisRelativePanel extends Panel {
 
     @SpringBean
-    private UtilityDao utilityDao;
+    private UtilityManager utilityManager;
     private IModel<Boolean> isVisibleModel;
 
     public DiagnosisRelativePanel(String id, int i, CompoundPropertyModel model, IModel<Boolean> isVisibleModel,
@@ -26,7 +24,7 @@ public class DiagnosisRelativePanel extends Panel {
         super(id);
         this.isVisibleModel = isVisibleModel;
         // Drop down with choices and choice renderer setup
-        add(new DropDownChoice<Relative>("relative", model.bind("relativeWithDisease" + i), utilityDao.getRelatives(),
+        add(new DropDownChoice<Relative>("relative", model.bind("relativeWithDisease" + i), utilityManager.getRelatives(),
                 new ChoiceRenderer<Relative>("name", "id")));
 
         // Add the radar number text field too
