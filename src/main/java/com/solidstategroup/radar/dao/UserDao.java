@@ -15,6 +15,8 @@ public interface UserDao {
 
     void savePatientUser(PatientUser patientUser);
 
+    ProfessionalUser getProfessionalUser(Long id);
+
     ProfessionalUser getProfessionalUser(String email);
     
     List<ProfessionalUser> getProfessionalUsers();
