@@ -3,11 +3,12 @@ package com.solidstategroup.radar.web.pages;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.RadarSecuredSession;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -16,6 +17,9 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientsLoginPage extends BasePage {
 
@@ -68,20 +72,21 @@ public class PatientsLoginPage extends BasePage {
         form.add(new PasswordTextField("password", passwordModel));
 
         // Date of birth with picker
-        DateTextField dateOfBirth = DateTextField.forDatePattern("dateOfBirth", "dd-MM-yyyy");
-        dateOfBirth.setRequired(true);
-        dateOfBirth.add(new DatePicker());
+        final List<Component> componentsToUpdateList = new ArrayList<Component>();
+        DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form, componentsToUpdateList);
         form.add(dateOfBirth);
 
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(feedbackPanel);
+                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.add(feedbackPanel);
+                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
         });
 

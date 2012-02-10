@@ -21,6 +21,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.PatientPage;
+import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,6 +33,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -205,6 +207,9 @@ public class DemographicsPanel extends Panel {
         CheckBox consent = new CheckBox("consent");
         DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
         form.add(consent, renalUnitAuthorised);
+
+        form.add(new BookmarkablePageLink("consentFormsLink", ConsentFormsPage.class));
+
         final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
                 componentsToUpdateList);
 
