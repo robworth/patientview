@@ -1,7 +1,8 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.web.SecuredSession;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
