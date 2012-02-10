@@ -3,9 +3,22 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.*;
 import com.solidstategroup.radar.service.UtilityManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
+import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 
 public class UtilityManagerImpl implements UtilityManager {
@@ -50,6 +63,104 @@ public class UtilityManagerImpl implements UtilityManager {
 
     public List<Relative> getRelatives() {
         return utilityDao.getRelatives();
+    }
+
+    public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
+        return utilityDao.getPatientCountPerUnitByDiagnosisCode(diagnosisCode);
+    }
+
+    public int getPatientCountByUnit(Centre centre) {
+        return utilityDao.getPatientCountByUnit(centre);
+    }
+
+    public JFreeChart getPatientCountPerUnitChart() {
+        // create dataset
+        String srnsSeries = "SRNS";
+        String mpgnSeries = "MPGN";
+
+        DiagnosisCode srnsCode = new DiagnosisCode();
+        srnsCode.setId(DiagnosisCode.SRNS_ID);
+
+        DiagnosisCode mpgnCode = new DiagnosisCode();
+        mpgnCode.setId(DiagnosisCode.MPGN_ID);
+
+        Map<Long, Integer> srnsPatientCountMap = getPatientCountPerUnitByDiagnosisCode(srnsCode);
+        Map<Long, Integer> mpgnPatientCountMap = getPatientCountPerUnitByDiagnosisCode(mpgnCode);
+
+        java.util.List<Centre> centreList = getCentres();
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (Centre centre : centreList) {
+
+            String centreCategory = centre.getAbbreviation() != null ? centre.getAbbreviation() : centre.getName();
+
+            Integer srnsCount = srnsPatientCountMap.containsKey(centre.getId()) ?
+                    srnsPatientCountMap.get(centre.getId()) : null;
+            dataset.addValue(srnsCount, srnsSeries, centreCategory);
+
+            Integer mpgnCount = mpgnPatientCountMap.containsKey(centre.getId()) ?
+                    mpgnPatientCountMap.get(centre.getId()) : null;
+            dataset.addValue(mpgnCount, mpgnSeries, centreCategory);
+        }
+
+        // create chart
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Total number of registered patients by unit",         // chart title
+                "",               // domain axis label
+                "",                  // range axis label
+                dataset,                  // data
+                PlotOrientation.VERTICAL, // orientation
+                true,                     // include legend
+                true,                     // tooltips?
+                false                     // URLs?
+        );
+
+        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+        // set the background color for the chart...
+        chart.setBackgroundPaint(Color.white);
+
+        // get a reference to the plot for further customisation...
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setDomainGridlinesVisible(true);
+        plot.setRangeGridlinePaint(Color.white);
+
+        // set the range axis to display integers only...
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+        // disable bar outlines...
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        DecimalFormat decimalformat1 = new DecimalFormat("##,###");
+        renderer.setItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", decimalformat1));
+        renderer.setItemLabelsVisible(true);
+        renderer.setBaseItemLabelsVisible(true);
+
+        // set up gradient paints for series...
+        GradientPaint gp0 = new GradientPaint(
+                0.0f, 0.0f, Color.blue,
+                0.0f, 0.0f, new Color(0, 0, 64)
+        );
+        GradientPaint gp1 = new GradientPaint(
+                0.0f, 0.0f, Color.green,
+                0.0f, 0.0f, new Color(0, 64, 0)
+        );
+        GradientPaint gp2 = new GradientPaint(
+                0.0f, 0.0f, Color.red,
+                0.0f, 0.0f, new Color(64, 0, 0)
+        );
+        renderer.setSeriesPaint(0, gp0);
+        renderer.setSeriesPaint(1, gp1);
+        renderer.setSeriesPaint(2, gp2);
+
+        CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setLabelFont(new Font("Times New Roman", Font.PLAIN, 12));
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
+        // OPTIONAL CUSTOMISATION COMPLETED.
+
+        return chart;
     }
 
     public UtilityDao getUtilityDao() {
