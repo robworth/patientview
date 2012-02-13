@@ -4,10 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="messageManager" class="com.solidstategroup.radar.service.impl.MessageManagerImpl">
-        <property name="javaMailSender" ref="javaMailSender"/>
-    </bean>
-
     <bean id="clinicalDataManager" class="com.solidstategroup.radar.service.impl.ClinicalDataManagerImpl">
         <property name="clinicalDataDao" ref="clinicalDataDao"/>
     </bean>
@@ -60,7 +56,9 @@
         <property name="utilityDao" ref="utilityDao"/>
     </bean>
 
-    <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl"/>
+    <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl">
+        <property name="javaMailSender" ref="javaMailSender"/>
+    </bean>
 
     <bean id="userManager" class="com.solidstategroup.radar.service.impl.UserManagerImpl">
         <property name="emailManager" ref="emailManager"/>
