@@ -1,11 +1,11 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.dataproviders.ProfessionalUserDataProvider;
+import com.solidstategroup.radar.service.UserManager;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -30,12 +30,12 @@ import java.util.Map;
 public class AdminUsersPage extends AdminsBasePage {
 
     @SpringBean
-    private UserDao userDao;
+    private UserManager userManager;
     
     private static final int RESULTS_PER_PAGE = 10;
 
     public AdminUsersPage() {
-        final ProfessionalUserDataProvider professionalUserDataProvider = new ProfessionalUserDataProvider(userDao);
+        final ProfessionalUserDataProvider professionalUserDataProvider = new ProfessionalUserDataProvider(userManager);
 
         add(new BookmarkablePageLink<AdminUserPage>("addNewUser", AdminUserPage.class));
 
@@ -59,7 +59,15 @@ public class AdminUsersPage extends AdminsBasePage {
                 item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(user.getDateRegistered()),
                         RadarApplication.DATE_PATTERN));
                 item.add(new Label("GMC", user.getGmc()));
-                item.add(new Label("username", user.getUsername()));
+
+                String username;
+                try {
+                    username = TripleDes.decrypt(user.getUsernameHash());
+                } catch (Exception e) {
+                    username = "";
+                }
+
+                item.add(new Label("username", username));
 
                 String password;
                 try {

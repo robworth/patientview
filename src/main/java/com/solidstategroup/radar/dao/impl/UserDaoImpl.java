@@ -108,8 +108,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
-    public void saveProfessionalUser(final ProfessionalUser professionalUser) {
-        Number id = professionalUsersInsert.executeAndReturnKey(new HashMap<String, Object>() {
+    public void saveProfessionalUser(final ProfessionalUser professionalUser) throws Exception {
+        Map<String, Object> professionalUserMap = new HashMap<String, Object>() {
             {
                 put("uSurname", professionalUser.getSurname());
                 put("uForename", professionalUser.getForename());
@@ -123,16 +123,36 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 put("uUserName", professionalUser.getUsernameHash());
                 put("uPass", professionalUser.getPasswordHash());
             }
-        });
-        professionalUser.setId(id.longValue());
+        };
+
+        if (professionalUser.hasValidId()) {
+            String updateSql = "UPDATE tbl_Users SET ";
+
+            int count = 1;
+            for (String field : professionalUserMap.keySet()) {
+                updateSql += " " + field + " = :" + field;
+
+                if (count < professionalUserMap.size()) {
+                    updateSql += ", ";
+                }
+
+                count++;
+            }
+
+            updateSql += " WHERE uID = :uID";
+
+            professionalUserMap.put("uID", professionalUser.getId());
+            namedParameterJdbcTemplate.update(updateSql, professionalUserMap);
+        } else {
+            Number id = professionalUsersInsert.executeAndReturnKey(professionalUserMap);
+            professionalUser.setId(id.longValue());
+        }
     }
 
-    public List<ProfessionalUser> getProfessionalUsers() {
-        return getProfessionalUsers(new ProfessionalUserFilter(), -1, -1);
-    }
-
-    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter) {
-        return getProfessionalUsers(filter, -1, -1);
+    public void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception {
+        Map<String, Object> professionalUserMap = new HashMap<String, Object>();
+        professionalUserMap.put("uID", professionalUser.getId());
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_Users WHERE uID = :uID;", professionalUserMap);        
     }
 
     public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage) {
