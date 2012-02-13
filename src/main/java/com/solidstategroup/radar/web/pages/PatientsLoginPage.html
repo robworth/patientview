@@ -44,16 +44,15 @@
                 </td>
                 <td>
                     <input type="text" id="ctl00_ContentPlaceHolder1_txtDOB" wicket:id="dateOfBirth"/>
-                    &nbsp;&nbsp;
-
-                    <a href="#" class="info" style="background-color:White"><em>Help</em><span>To select a different month in the
-                date picker, click the current month at the top.<br/><br/> Click again to select
-                a year.</span> </a></td>
+                    <span class="feedback" wicket:id="dateOfBirthFeedback"></span>
+                    <span wicket:id="dateOfBirthFeedbackIndicator"></span>
+                    <span></span>
+                </td>
 
             </tr>
             <tr>
                 <td>
-                    <input type="submit" wicket:id="submit" value="Enter" />
+                    <input type="submit" wicket:id="submit" value="Enter"/>
                 </td>
                 <td>&nbsp;</td>
             </tr>

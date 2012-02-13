@@ -26,14 +26,16 @@ public class TestPatientFirstVisitPage extends BasePageTest {
         tester.clickLink(firstVisitLink.getPageRelativePath());
 
         // View the lab results tab
-        Component labResultsLink = tester.getLastRenderedPage().get("firstVisitPanel").get("laboratoryResultsLink");
+        Component labResultsLink = tester.getLastRenderedPage().get("firstVisitPanel").get("linksContainer").
+                get("laboratoryResultsLink");
         tester.clickLink(labResultsLink.getPageRelativePath());
 
         Component labResultsPanel = tester.getLastRenderedPage().get("firstVisitPanel").get("laboratoryResultsPanel");
         tester.assertVisible(labResultsPanel.getPageRelativePath());
 
         // View the treatment tab
-        Component treatmentLink = tester.getLastRenderedPage().get("firstVisitPanel").get("treatmentLink");
+        Component treatmentLink = tester.getLastRenderedPage().get("firstVisitPanel").get("linksContainer").
+                get("treatmentLink");
         tester.clickLink(treatmentLink.getPageRelativePath());
 
         Component treatmentPanel = tester.getLastRenderedPage().get("firstVisitPanel").get("treatmentPanel");
