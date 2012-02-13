@@ -18,26 +18,26 @@
     </p>
 
     <div>
-        <table cellspacing="0" class="dxgvTable" style="width: 100%">
+        <table cellspacing="0" cellpadding="0" class="dxgvTable" style="width: 100%">
             <thead>
                 <tr>
-                    <th class="dxgvHeader" style="width: 34px;">#</th>
-                    <th class="dxgvHeader" style="width: 35px;">Edit</th>
-                    <th class="dxgvHeader" wicket:id="orderBySurname" style="width: 80px;">Surname</th>
-                    <th class="dxgvHeader" wicket:id="orderByForename" style="width: 80px;">Forename</th>
-                    <th class="dxgvHeader" wicket:id="orderByTitle" style="width: 50px;">Title</th>
-                    <th class="dxgvHeader" wicket:id="orderByRole" style="width: 100px;">Role</th>
-                    <th class="dxgvHeader" wicket:id="orderByEmail">Email</th>
-                    <th class="dxgvHeader" wicket:id="orderByCentre">Centre</th>
-                    <th class="dxgvHeader" wicket:id="orderByDateRegistered" style="width: 70px;">Date Reg</th>
-                    <th class="dxgvHeader" wicket:id="orderByGMC" style="width: 65px;">GMC</th>
-                    <th class="dxgvHeader" >Username</th>
-                    <th class="dxgvHeader" style="width: 65px;">Password</th>
+                    <th class="dxgvHeader firstCell" style="width: 34px;">#<span></span></th>
+                    <th class="dxgvHeader" style="width: 35px;">Edit<span></span></th>
+                    <th class="dxgvHeader sortAsc" wicket:id="orderBySurname" style="width: 80px;">Surname<span></span></th>
+                    <th class="dxgvHeader sortDesc" wicket:id="orderByForename" style="width: 80px;">Forename<span></span></th>
+                    <th class="dxgvHeader" wicket:id="orderByTitle" style="width: 50px;">Title<span></span></th>
+                    <th class="dxgvHeader" wicket:id="orderByRole" style="width: 100px;">Role<span></span></th>
+                    <th class="dxgvHeader" wicket:id="orderByEmail">Email<span></span></th>
+                    <th class="dxgvHeader" wicket:id="orderByCentre">Centre<span></span></th>
+                    <th class="dxgvHeader" wicket:id="orderByDateRegistered" style="width: 70px;">Date Reg<span></span></th>
+                    <th class="dxgvHeader" wicket:id="orderByGMC" style="width: 65px;">GMC<span></span></th>
+                    <th class="dxgvHeader" >Username<span></span></th>
+                    <th class="dxgvHeader" style="width: 65px;">Password<span></span></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="dxgvFilterRow" id="filterRow">
-                    <td class="dxgv"><a wicket:id="clearButton">Clear</a></td>
+                    <td class="dxgv firstCell"><a wicket:id="clearButton">Clear</a></td>
                     <td class="dxgv">&nbsp;</td>
                     <td class="dxgv">
                         <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
@@ -81,7 +81,7 @@
             </tbody>
             <tbody wicket:id="usersContainer">
                 <tr class="dxgvDataRow" wicket:id="users">
-                    <td class="dxgv">&nbsp;</td>
+                    <td class="dxgv firstCell">&nbsp;</td>
                     <td class="dxgv"><a wicket:id="edit">Edit</a></td>
                     <td class="dxgv"><span wicket:id="surname">surname</span></td>
                     <td class="dxgv"><span wicket:id="forename">forename</span></td>
@@ -95,7 +95,29 @@
                     <td class="dxgv"><span wicket:id="password">password</span></td>
                 </tr>
                 <tr>
-                    <td colspan="12"><span wicket:id="navigator">[dataview navigator]</span></td>
+
+
+
+                    <td class="dxgv firstCell" colspan="12">
+                        <span wicket:id="navigator" class="paging">
+                            <!--
+                                todo: update currentPage / totalPages / totalResults on page change
+                                todo: add brackets around current page i.e. [1]
+
+                                <span class="summary">Page <span wicket:id="currentPage">1</span> of <span wicket:id="totalPages">4</span> (<span wicket:id="totalResults">96</span> items)</span>
+                                <span wicket:id="first" class="first" title="Go to first page"><em>&lt;&lt;</em></span>
+                                <span wicket:id="prev" class="prev" title="Go to previous page"><em>&lt;</em></span>
+                                <span wicket:id="navigation" class="goto">
+                                    <span wicket:id="pageLink" title="Go to page 1">
+                                        <em><span wicket:id="pageNumber">[1]</span></em>
+                                    </span>
+                                </span>
+                                <span wicket:id="next" class="next" title="Go to next page"><em>&gt;</em></span>
+                                <span wicket:id="last" class="last"title="Go to last page"><em>&gt;&gt;</em></span>
+                            -->
+                        </span>
+                    </td>
+
                 </tr>
             </tbody>
         </table>
