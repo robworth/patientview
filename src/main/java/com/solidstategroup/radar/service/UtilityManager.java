@@ -1,8 +1,10 @@
 package com.solidstategroup.radar.service;
 
 import com.solidstategroup.radar.model.*;
+import org.jfree.chart.JFreeChart;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UtilityManager {
 
@@ -25,4 +27,10 @@ public interface UtilityManager {
     Relative getRelative(long id);
 
     List<Relative> getRelatives();
+
+    Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode);
+
+    int getPatientCountByUnit(Centre centre);
+
+    JFreeChart getPatientCountPerUnitChart();
 }

@@ -3,9 +3,6 @@ package com.solidstategroup.radar.web;
 import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
-import com.solidstategroup.radar.web.pages.admin.AdminsBasePage;
-import com.solidstategroup.radar.web.pages.admin.AdminsLoginPage;
-import com.solidstategroup.radar.web.pages.admin.AdminsPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.pages.PatientsLoginPage;
@@ -13,8 +10,12 @@ import com.solidstategroup.radar.web.pages.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
 import com.solidstategroup.radar.web.pages.ProfessionalRegistrationPage;
+import com.solidstategroup.radar.web.pages.admin.AdminsBasePage;
+import com.solidstategroup.radar.web.pages.admin.AdminsLoginPage;
+import com.solidstategroup.radar.web.pages.admin.AdminsPage;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
+import com.solidstategroup.radar.web.pages.content.ErrorPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
 import org.apache.wicket.Component;
@@ -25,6 +26,11 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.handler.PageProvider;
+import org.apache.wicket.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 public class RadarApplication extends AuthenticatedWebApplication {
@@ -74,6 +80,13 @@ public class RadarApplication extends AuthenticatedWebApplication {
                     }
                 });
 
+        getRequestCycleListeners().add(new AbstractRequestCycleListener() {
+            @Override
+            public IRequestHandler onException(RequestCycle cycle, Exception ex) {
+                return new RenderPageRequestHandler(new PageProvider(new ErrorPage(ex)));
+            }
+        });
+
         mountPage("admins", AdminsPage.class);
 
         // Mount nice URLs for pages - patient pages
@@ -94,5 +107,8 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("mpgn", MpgnPage.class);
         mountPage("srns", SrnsPage.class);
         mountPage("consentforms", ConsentFormsPage.class);
+
+        mountPage("error", ErrorPage.class);
     }
+
 }

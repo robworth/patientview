@@ -1,16 +1,14 @@
 .dxgvControl,
-.dxgvDisabled
-{
+.dxgvDisabled {
     border: Solid 1px #9F9F9F;
     font: 11px Tahoma;
     background-color: #F2F2F2;
     color: Black;
     cursor: default;
 }
-.dxgvDisabled
-{
-    color: Gray;
-}
+
+.dxgvDisabled { color: Gray; }
+
 .dxgvControl a
 {
     color: #5555FF;
@@ -84,10 +82,9 @@
     color: White;
 }
 
-.dxgvTable
-{
+.dxgvTable {
     background-color: White;
-    border: 0;
+    border: 1px solid #9f9f9f;
     border-collapse: separate!important;
     overflow: hidden;
     font: 9pt Tahoma;
@@ -189,11 +186,10 @@
 .dxgvSelectedRow td.dxgv,
 .dxgvFocusedRow td.dxgv
 {
+    border-color: #cfcfcf;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
     overflow: hidden;
-    border-bottom: Solid 1px #CFCFCF;
-    border-right: Solid 1px #CFCFCF;
-    border-top: 0;
-    border-left: 0;
     padding: 3px 6px 4px 6px;
 }
 .dxgvEditFormDisplayRow
@@ -218,12 +214,10 @@
     padding: 6px 10px 6px 10px;
 }
 
-.dxgvFilterRow td.dxgv
-{
-    border-bottom: Solid 1px #C1C1C1;
-    border-right: Solid 1px #C1C1C1;
-    border-top: 0;
-    border-left: 0;
+.dxgvFilterRow td.dxgv {
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
     padding: 2px 2px 2px 2px;
 }
 .dxgvGroupRow
@@ -260,15 +254,38 @@
 }
 
 .dxgvHeader {
+    background-color: #dcdcdc;
+    border-left: 1px solid #9f9f9f;
+    border-bottom: 1px solid #9f9f9f;
     cursor: pointer;
-    white-space: nowrap;
-    padding: 4px 6px 5px 6px;
-    border: Solid 1px #9F9F9F;
-    background-color: #DCDCDC;
-    overflow: hidden;
     font-weight: normal;
+    overflow: hidden;
+    padding: 4px 6px 5px 6px;
+    position: relative;
     text-align: left;
+    white-space: nowrap;
 }
+
+    .firstCell,
+    .dxgvFilterRow .dxgv.firstCell,
+    .dxgvDataRow .dxgv.firstCell {
+        border-left: none;
+    }
+
+    .sortAsc > span,
+    .sortDesc > span {
+        display: block;
+        height: 10px;
+        position: absolute;
+        right: 5px;
+        top: 7px;
+        width: 9px;
+    }
+
+        .sortAsc > span { background: #dcdcdc url('../images/sort-asc.gif') no-repeat scroll 0 0; }
+
+        .sortDesc > span { background: #dcdcdc url('../images/sort-desc.gif') no-repeat scroll 0 0; }
+
 .dxgvHeader, .dxgvHeader table {
     color: Black;
     font: 9pt Tahoma;
@@ -1130,3 +1147,58 @@ a.dxfcValue
 {
     color: #818181;
 }
+
+/* Paging */
+
+.paging {
+    background-color: #f2f2f2;
+    display: block;
+    line-height: 18px;
+    overflow: hidden;
+    padding: 4px 2px 5px;
+}
+
+    .paging .first,
+    .paging .last {
+        display: none;
+    }
+
+    .paging span,
+    .paging .prev,
+    .paging .next,
+    .paging .summary {
+        display: block;
+        float: left;
+    }
+
+    .paging .goto span,
+    .paging .goto a {
+        padding: 0 3px;
+    }
+
+    .paging .goto a {
+        color: #394EA2;
+        display: block;
+        font-weight: normal;
+        text-decoration: underline;
+    }
+
+        .paging .goto em {
+            font-style: normal;
+            font-weight: bold;
+        }
+
+    .paging .summary { margin: 0 8px 0 4px; }
+
+    .paging .prev,
+    .paging .next {
+        height: 17px;
+        text-indent: -9999em;
+        width: 16px;
+    }
+
+    .paging .prev { background: transparent url('../images/prev-disabled.png') no-repeat scroll 0 0; margin-right: 4px; }
+    .paging a.prev { background: transparent url('../images/prev.png') no-repeat scroll 0 0; }
+
+    .paging .next { background: transparent url('../images/next-disabled.png') no-repeat scroll 0 0; margin-left: 4px; }
+    .paging a.next { background: transparent url('../images/next.png') no-repeat scroll 0 0; }

@@ -15,14 +15,14 @@
     padding: 0;
 }
 #tabsLab a {
-    background: url("tableftC.gif") no-repeat scroll left top transparent;
+    background: url("../images/tableftC.gif") no-repeat scroll left top transparent;
     float: left;
     margin: 0;
     padding: 0 0 0 4px;
     text-decoration: none;
 }
 #tabsLab a span {
-    background: url("tabrightCb.gif") no-repeat scroll right top transparent;
+    background: url("../images/tabrightCb.gif") no-repeat scroll right top transparent;
     color: #464E42;
     display: block;
     float: left;

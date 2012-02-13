@@ -54,12 +54,8 @@
                     <td>
                         <input type="text" id="ctl00_ContentPlaceHolder1_txtDOB" wicket:id="dateOfBirth"
                                class="feint">
-                        &nbsp;<span style="color:Red;visibility:hidden;"
-                                    id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3">*</span>
-                        &nbsp;
-                        <a style="background-color:White" class="info" href="#"><em>Help</em>
-                            <span>To select a different month in the date picker, click the current month at the top.
-                                <br><br> Click again to select a year.</span> </a>
+                        <span class="feedback" wicket:id="dateOfBirthFeedback"></span>
+                        <span wicket:id="dateOfBirthFeedbackIndicator"></span>
                     </td>
                 </tr>
                 <tr>

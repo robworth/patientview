@@ -25,21 +25,23 @@ public class TestPatientFollowUpPage extends BasePageTest {
         tester.clickLink(followUpLink.getPageRelativePath());
 
         // View the lab results tab
-        Component labResultsLink = tester.getLastRenderedPage().get("followUpPanel").get("laboratoryResultsLink");
+        Component labResultsLink = tester.getLastRenderedPage().get("followUpPanel").get("linksContainer").get("laboratoryResultsLink");
         tester.clickLink(labResultsLink.getPageRelativePath());
 
         Component labResultsPanel = tester.getLastRenderedPage().get("followUpPanel").get("laboratoryResultsPanel");
         tester.assertVisible(labResultsPanel.getPageRelativePath());
 
         // View the treatment tab
-        Component treatmentLink = tester.getLastRenderedPage().get("followUpPanel").get("treatmentLink");
+        Component treatmentLink = tester.getLastRenderedPage().get("followUpPanel").get("linksContainer")
+                .get("treatmentLink");
         tester.clickLink(treatmentLink.getPageRelativePath());
 
         Component treatmentPanel = tester.getLastRenderedPage().get("followUpPanel").get("treatmentPanel");
         tester.assertVisible(treatmentPanel.getPageRelativePath());
 
         // View the RRT panel
-        Component rrtLink = tester.getLastRenderedPage().get("followUpPanel").get("rrtTherapyLink");
+        Component rrtLink = tester.getLastRenderedPage().get("followUpPanel").get("linksContainer").
+                get("rrtTherapyLink");
         tester.clickLink(rrtLink.getPageRelativePath());
 
         Component rrtPanel = tester.getLastRenderedPage().get("followUpPanel").get("rrtTherapyPanel");
