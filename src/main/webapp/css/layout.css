@@ -77,18 +77,13 @@ a:active {
   height:100%; /* ##*/
 }
 
-* html #outerWrapper {
-height:100%;
-}
+* html #outerWrapper { height: 100%; }
 
 #outerWrapper #header {
   /*line-height: 15px;*/
-  background-image:url(header-bg.png);
-  background-position:right;
-  background-repeat:repeat-y;
-  background-color: #8ab573;
+  background: #8ab573 url(../images/header-bg.png) repeat-y right center;
   font-size: 100%;
-  padding: 10px 10px 10px 0px; /*top was 10*/
+  padding: 10px 10px 10px 0; /*top was 10*/
   font-weight: bold;
   border-bottom: solid 1px #8ab573;
   height:80px; /*was 80*/

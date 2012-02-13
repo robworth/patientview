@@ -17,7 +17,7 @@
       }
     #tabsC a {
       float:left;
-      background:url("tableftC.gif") no-repeat left top;
+      background:url("../images/tableftC.gif") no-repeat left top;
       margin:0;
       padding:0 0 0 4px;
       text-decoration:none;
@@ -25,7 +25,7 @@
     #tabsC a span {
       float:left;
       display:block;
-      background:url("tabrightCb.gif") no-repeat right top;
+      background:url("../images/tabrightCb.gif") no-repeat right top;
       padding:5px 15px 4px 6px;
       color:#464E42;
       }
