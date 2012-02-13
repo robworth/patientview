@@ -3,6 +3,7 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserManagerImpl implements UserManager, UserDetailsService {
 
@@ -44,10 +46,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public void savePatientUser(PatientUser patientUser) {
         userDao.savePatientUser(patientUser);
-    }
-
-    public ProfessionalUser getProfessionalUser(String email) {
-        return userDao.getProfessionalUser(email);
     }
 
     public void registerPatient(PatientUser patientUser) throws RegistrationException {
@@ -92,6 +90,41 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new RegistrationException("Could not register patient - " +
                     "date of birth incorrect for given radar number");
         }
+    }
+
+    public ProfessionalUser getProfessionalUser(Long id) {
+        return userDao.getProfessionalUser(id);
+    }
+
+    public ProfessionalUser getProfessionalUser(String email) {
+        return userDao.getProfessionalUser(email);
+    }
+
+    public void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception {
+        // if its a new user generate a password
+        if (!professionalUser.hasValidId()) {
+            String password = generateRandomPassword();
+            professionalUser.setPasswordHash(ProfessionalUser.getPasswordHash(password));
+            professionalUser.setUsernameHash(ProfessionalUser.getUsernameHash(professionalUser.getEmail()));
+        }
+
+        userDao.saveProfessionalUser(professionalUser);
+    }
+
+    public void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception {
+        userDao.deleteProfessionalUser(professionalUser);
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers() {
+        return getProfessionalUsers(new ProfessionalUserFilter(), -1, -1);
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter) {
+        return getProfessionalUsers(filter, -1, -1);
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage) {
+        return userDao.getProfessionalUsers(filter, page, numberPerPage);
     }
 
     public void sendForgottenPassword(String username) {

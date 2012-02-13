@@ -70,7 +70,7 @@ public class UserDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testSaveProfessionalUser() throws Exception {
+    public void testSaveNewProfessionalUser() throws Exception {
         ProfessionalUser professionalUser = new ProfessionalUser();
         professionalUser.setUsernameHash(User.getUsernameHash("test_admin_user"));
         professionalUser.setPasswordHash(User.getPasswordHash("password12"));
@@ -93,6 +93,18 @@ public class UserDaoTest extends BaseDaoTest {
 
         professionalUser = userDao.getProfessionalUser("test_email");
         assertNotNull("Saved user was null on getting from DAO", professionalUser);
+    }
+
+    @Test
+    public void testSaveExistingProfessionalUser() throws Exception {
+        // have to make a user first
+        ProfessionalUser professionalUser = userDao.getProfessionalUser("marklittle@nhs.net");
+        professionalUser.setSurname("edit 3");
+
+        userDao.saveProfessionalUser(professionalUser);
+
+        professionalUser = userDao.getProfessionalUser("marklittle@nhs.net");
+        assertTrue("User surname has not been updated", professionalUser.getSurname().equals("edit 3"));
     }
 
     @Test
@@ -128,14 +140,14 @@ public class UserDaoTest extends BaseDaoTest {
     
     @Test
     public void testGetProfessionalUsers() {
-        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers();
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(new ProfessionalUserFilter(), -1, -1);
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() > 0);
     }
 
     @Test
     public void testGetProfessionalUsersPage1() {
-        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(null, 2, 1);
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(new ProfessionalUserFilter(), 1, 1);
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() == 1);
     }
@@ -144,7 +156,7 @@ public class UserDaoTest extends BaseDaoTest {
     public void testSearchProfessionalUsers() {
         ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
         userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME, "fiona");
-        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter);
+        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() > 0);
     }
