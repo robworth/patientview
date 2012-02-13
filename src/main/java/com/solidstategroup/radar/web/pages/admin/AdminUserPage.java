@@ -1,11 +1,9 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
-import com.solidstategroup.radar.model.user.User;
-import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
@@ -149,7 +147,7 @@ public class AdminUserPage extends AdminsBasePage {
             }
         });
 
-        userOptions.add(new AjaxLink("delete") {
+        AjaxLink deleteLink = new AjaxLink("delete") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 try {
                     userManager.deleteProfessionalUser(user);
@@ -159,7 +157,9 @@ public class AdminUserPage extends AdminsBasePage {
                     error("Could not delete user: " + e.toString());
                 }
             }
-        });
+        };
+        userOptions.add(deleteLink);
+        deleteLink.add(RadarBehaviourFactory.getDeleteConfirmationBehaviour());
 
         /**
          * Add a container to hold the options for when the page is in edit mode
@@ -246,7 +246,7 @@ public class AdminUserPage extends AdminsBasePage {
             return editMode;
         }
     }
-    
+
     public static PageParameters getPageParameters(ProfessionalUser user) {
         return new PageParameters().set(PARAM_ID, user.getId());
     }
