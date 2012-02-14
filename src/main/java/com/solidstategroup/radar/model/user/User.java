@@ -23,7 +23,7 @@ public abstract class User extends BaseModel implements UserDetails {
 
     private String username;
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
-    private byte[] passwordHash;
+    private byte[] passwordHash, usernameHash;
 
     public abstract String getSecurityRole();
 
@@ -33,6 +33,10 @@ public abstract class User extends BaseModel implements UserDetails {
 
     public static byte[] getPasswordHash(String password) throws Exception {
         return TripleDes.encrypt(password);
+    }
+
+    public static byte[] getUsernameHash(String username) throws Exception {
+        return TripleDes.encrypt(username);
     }
 
     public Collection<GrantedAuthority> getAuthorities() {
@@ -78,5 +82,13 @@ public abstract class User extends BaseModel implements UserDetails {
     public void setPasswordHash(byte[] passwordHash) {
         // Copy array
         this.passwordHash = Arrays.copyOf(passwordHash, passwordHash.length);
+    }
+
+    public byte[] getUsernameHash() {
+        return usernameHash;
+    }
+
+    public void setUsernameHash(byte[] usernameHash) {
+        this.usernameHash = Arrays.copyOf(usernameHash, usernameHash.length);
     }
 }

@@ -56,7 +56,9 @@
         <property name="utilityDao" ref="utilityDao"/>
     </bean>
 
-    <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl"/>
+    <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl">
+        <property name="javaMailSender" ref="javaMailSender"/>
+    </bean>
 
     <bean id="userManager" class="com.solidstategroup.radar.service.impl.UserManagerImpl">
         <property name="emailManager" ref="emailManager"/>

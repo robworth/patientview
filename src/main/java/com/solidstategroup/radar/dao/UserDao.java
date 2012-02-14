@@ -18,10 +18,10 @@ public interface UserDao {
     ProfessionalUser getProfessionalUser(Long id);
 
     ProfessionalUser getProfessionalUser(String email);
-    
-    List<ProfessionalUser> getProfessionalUsers();
-    
-    List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter);
-    
+
+    void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
+
+    void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception;
+
     List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage);
 }

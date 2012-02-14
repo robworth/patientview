@@ -10,6 +10,7 @@
     <import resource="context-dao.xml"/>
     <import resource="context-security.xml"/>
     <import resource="context-service.xml"/>
+    <import resource="context-smtp.xml"/>
 
     <!--Properties Placeholder-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

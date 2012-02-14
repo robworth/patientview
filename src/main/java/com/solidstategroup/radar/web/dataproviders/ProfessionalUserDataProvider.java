@@ -1,8 +1,8 @@
 package com.solidstategroup.radar.web.dataproviders;
 
-import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.service.UserManager;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -12,11 +12,11 @@ import java.util.List;
 
 public class ProfessionalUserDataProvider implements IDataProvider<ProfessionalUser> {
 
-    private UserDao userDao;
+    private UserManager userManager;
     private ProfessionalUserFilter userFilter;
 
-    public ProfessionalUserDataProvider(UserDao userDao) {
-        this.userDao = userDao;
+    public ProfessionalUserDataProvider(UserManager userManager) {
+        this.userManager = userManager;
         userFilter = new ProfessionalUserFilter();
     }
 
@@ -38,7 +38,7 @@ public class ProfessionalUserDataProvider implements IDataProvider<ProfessionalU
     }
 
     private List<ProfessionalUser> getResults(int page, int resultsPerPage) {
-        return userDao.getProfessionalUsers(userFilter, page, resultsPerPage);
+        return userManager.getProfessionalUsers(userFilter, page, resultsPerPage);
     }
 
     public ProfessionalUserFilter getUserFilter() {

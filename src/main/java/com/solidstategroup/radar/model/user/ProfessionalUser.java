@@ -4,12 +4,8 @@ import com.solidstategroup.radar.model.Centre;
 
 public class ProfessionalUser extends User {
 
-    private String surname, forename, title;
-    private String gmc;
-    private String role;
-    private String email;
-    private String phone;
-    private Centre centre;
+    private String surname = "", forename = "", title = "", gmc = "", role = "", email = "", phone = "";
+    private Centre centre = new Centre();
 
     @Override
     public String getSecurityRole() {
