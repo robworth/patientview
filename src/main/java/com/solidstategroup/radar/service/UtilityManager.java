@@ -1,6 +1,12 @@
 package com.solidstategroup.radar.service;
 
-import com.solidstategroup.radar.model.*;
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.Consultant;
+import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import org.jfree.chart.JFreeChart;
 
 import java.util.List;
@@ -15,6 +21,10 @@ public interface UtilityManager {
     Consultant getConsultant(long id);
 
     List<Consultant> getConsultants();
+
+    List<Consultant> getConsultants(ConsultantFilter filter);
+
+    List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
     Country getCountry(long id);
 
