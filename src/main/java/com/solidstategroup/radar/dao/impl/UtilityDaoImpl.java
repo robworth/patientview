@@ -13,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.apache.commons.lang.StringUtils;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -25,6 +27,16 @@ import java.util.ArrayList;
 public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilityDaoImpl.class);
+
+    private SimpleJdbcInsert consultantsInsert;
+
+    public void setDataSource(DataSource dataSource) {
+        super.setDataSource(dataSource);
+
+        consultantsInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Consultants")
+                .usingGeneratedKeyColumns("cID")
+                .usingColumns("cSNAME", "cFNAME", "cCentre");
+    }
 
     public Centre getCentre(long id) {
         return jdbcTemplate
@@ -101,6 +113,45 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
         return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
                 new ConsultantRowMapper());
+    }
+
+    public void saveConsultant(final Consultant consultant) throws Exception {
+        Map<String, Object> consultantMap = new HashMap<String, Object>() {
+            {
+                put("cSNAME", consultant.getSurname());
+                put("cFNAME", consultant.getForename());
+                put("cCentre", consultant.getCentre().getId());
+            }
+        };
+
+        if (consultant.hasValidId()) {
+            String updateSql = "UPDATE tbl_Consultants SET ";
+
+            int count = 1;
+            for (String field : consultantMap.keySet()) {
+                updateSql += " " + field + " = :" + field;
+
+                if (count < consultantMap.size()) {
+                    updateSql += ", ";
+                }
+
+                count++;
+            }
+
+            updateSql += " WHERE cID = :cID";
+
+            consultantMap.put("cID", consultant.getId());
+            namedParameterJdbcTemplate.update(updateSql, consultantMap);
+        } else {
+            Number id = consultantsInsert.executeAndReturnKey(consultantMap);
+            consultant.setId(id.longValue());
+        }
+    }
+
+    public void deleteConsultant(Consultant consultant) throws Exception {
+        Map<String, Object> consultantMap = new HashMap<String, Object>();
+        consultantMap.put("cID", consultant.getId());
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_Consultants WHERE cID = :cID;", consultantMap);
     }
 
     public Country getCountry(long id) {
