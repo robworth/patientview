@@ -272,19 +272,9 @@
         border-left: none;
     }
 
-    .sortAsc > span,
-    .sortDesc > span {
-        display: block;
-        height: 10px;
-        position: absolute;
-        right: 5px;
-        top: 7px;
-        width: 9px;
-    }
+    .sortAsc { background: #dcdcdc url('../images/sort-asc.gif') no-repeat scroll right center; }
 
-        .sortAsc > span { background: #dcdcdc url('../images/sort-asc.gif') no-repeat scroll 0 0; }
-
-        .sortDesc > span { background: #dcdcdc url('../images/sort-desc.gif') no-repeat scroll 0 0; }
+    .sortDesc { background: #dcdcdc url('../images/sort-desc.gif') no-repeat scroll right center; }
 
 .dxgvHeader, .dxgvHeader table {
     color: Black;
