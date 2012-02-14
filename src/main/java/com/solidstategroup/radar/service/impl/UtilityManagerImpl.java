@@ -1,7 +1,14 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.*;
+
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Consultant;
+import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.service.UtilityManager;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -12,14 +19,12 @@ import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Map;
-
+import java.util.List;
+import java.awt.*;
 
 public class UtilityManagerImpl implements UtilityManager {
 
@@ -38,7 +43,15 @@ public class UtilityManagerImpl implements UtilityManager {
     }
 
     public List<Consultant> getConsultants() {
-        return utilityDao.getConsultants();
+        return getConsultants(new ConsultantFilter(), -1, -1);
+    }
+
+    public List<Consultant> getConsultants(ConsultantFilter filter) {
+        return getConsultants(filter, -1, -1);
+    }
+
+    public List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage) {
+        return utilityDao.getConsultants(filter, page, numberPerPage);
     }
 
     public Country getCountry(long id) {
