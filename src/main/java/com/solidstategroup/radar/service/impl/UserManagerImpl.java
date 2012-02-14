@@ -3,6 +3,7 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
@@ -38,7 +39,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public PatientUser getPatientUser(String email, Date dateOfBirth) {
         PatientUser user = userDao.getPatientUser(email);
-        if(user != null) {
+        if (user != null) {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
         return null;
@@ -90,6 +91,22 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new RegistrationException("Could not register patient - " +
                     "date of birth incorrect for given radar number");
         }
+    }
+
+    public void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists,
+            RegistrationException {
+        User user = userDao.getProfessionalUser(professionalUser.getEmail());
+        if (user != null) {
+            throw new ProfessionalUserEmailAlreadyExists("Email address already exists");
+        }
+
+        try {
+            saveProfessionalUser(professionalUser);
+        } catch (Exception e) {
+            LOGGER.error("Could not register professional", e);
+            throw new RegistrationException("Could not register professional", e);
+        }
+        // todo send emails
     }
 
     public ProfessionalUser getProfessionalUser(Long id) {
