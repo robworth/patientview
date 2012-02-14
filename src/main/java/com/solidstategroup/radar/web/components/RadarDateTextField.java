@@ -11,13 +11,14 @@ import org.apache.wicket.model.IModel;
 import java.util.Date;
 import java.util.List;
 
-public class RadarDateTextField extends DateTextField{
+public class RadarDateTextField extends DateTextField {
     public RadarDateTextField(String id, Form form, List<Component> componentsToUpdate) {
         super(id, RadarApplication.DATE_PATTERN);
         init(form, componentsToUpdate);
     }
 
-    public RadarDateTextField(String id, IModel<Date> model, String datePattern, Form form, List<Component> componentsToUpdate) {
+    public RadarDateTextField(String id, IModel<Date> model, String datePattern, Form form,
+                              List<Component> componentsToUpdate) {
         super(id, model, datePattern);
         init(form, componentsToUpdate);
     }
@@ -29,7 +30,7 @@ public class RadarDateTextField extends DateTextField{
             @Override
             public boolean isVisible() {
                 List<FeedbackMessage> feedbackMessages = getCurrentMessages();
-                for(FeedbackMessage feedbackMessage : feedbackMessages) {
+                for (FeedbackMessage feedbackMessage : feedbackMessages) {
                     if (feedbackMessage.getMessage().toString().contains("required")) {
                         return false;
                     }
@@ -42,5 +43,4 @@ public class RadarDateTextField extends DateTextField{
         form.add(feedbackPanel);
         componentsToUpdate.add(feedbackPanel);
     }
-
 }
