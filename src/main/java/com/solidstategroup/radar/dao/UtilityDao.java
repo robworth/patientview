@@ -1,6 +1,12 @@
 package com.solidstategroup.radar.dao;
 
-import com.solidstategroup.radar.model.*;
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
+import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Consultant;
+import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.DiagnosisCode;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +19,7 @@ public interface UtilityDao {
 
     Consultant getConsultant(long id);
 
-    List<Consultant> getConsultants();
+    List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
     Country getCountry(long id);
 

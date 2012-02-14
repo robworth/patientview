@@ -1,15 +1,10 @@
 package com.solidstategroup.radar.model.filter;
 
-public class ProfessionalUserFilter extends BaseFilter {
+public class ConsultantFilter extends BaseFilter {
     public enum UserField {
-        SURNAME("uSurname"),
-        FORENAME("uForename"),
-        TITLE("uTitle"),
-        ROLE("uRole"),
-        EMAIL("uEmail"),
-        CENTRE("cName"),
-        REGISTRATION_DATE("uDateJoin"),
-        GMC("uGMC");
+        SURNAME("cSNAME"),
+        FORENAME("cFNAME"),
+        CENTRE("cName");
 
         private String databaseFieldName;
 
@@ -32,7 +27,7 @@ public class ProfessionalUserFilter extends BaseFilter {
         }
     }
 
-    public ProfessionalUserFilter() {
+    public ConsultantFilter() {
         super();
         sortField = UserField.SURNAME.getDatabaseFieldName();
     }
