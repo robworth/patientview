@@ -2,13 +2,19 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.dao.impl.DiagnosisDaoImpl;
-import com.solidstategroup.radar.model.*;
+
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
+import com.solidstategroup.radar.model.Consultant;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Relative;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -39,18 +45,34 @@ public class UtilityDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetConsultants() {
-        List<Consultant> consultants = utilityDao.getConsultants();
-        assertNotNull("Consultants list is null", consultants);
-    }
-
-    @Test
     public void testGetConsultant() {
         Consultant consultant = utilityDao.getConsultant(4L);
         assertNotNull("Consultant is null");
         assertEquals("Surname is wrong", "ANBU", consultant.getSurname());
         assertEquals("Forename is wrong", "Dr A Theodore", consultant.getForename());
         assertNull("Centre is not null", consultant.getCentre());
+    }
+
+    @Test
+    public void testGetConsultants() {
+        List<Consultant> consultants = utilityDao.getConsultants(new ConsultantFilter(), -1, -1);
+        assertNotNull("Consultants list is null", consultants);
+    }
+
+    @Test
+    public void testGetConsultantsPage1() {
+        List<Consultant> consultants = utilityDao.getConsultants(new ConsultantFilter(), 1, 1);
+        assertNotNull(consultants);
+        assertTrue(consultants.size() == 1);
+    }
+
+    @Test
+    public void testSearchConsultants() {
+        ConsultantFilter consultantFlter = new ConsultantFilter();
+        consultantFlter.addSearchCriteria(ConsultantFilter.UserField.FORENAME.getDatabaseFieldName(), "Sonbol");
+        List<Consultant> consultants = utilityDao.getConsultants(consultantFlter, -1, -1);
+        assertNotNull(consultants);
+        assertTrue(consultants.size() > 0);
     }
 
     @Test

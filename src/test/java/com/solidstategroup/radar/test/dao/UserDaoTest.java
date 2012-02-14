@@ -155,7 +155,7 @@ public class UserDaoTest extends BaseDaoTest {
     @Test
     public void testSearchProfessionalUsers() {
         ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
-        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME, "fiona");
+        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME.getDatabaseFieldName(), "fiona");
         List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() > 0);
