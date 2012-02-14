@@ -174,17 +174,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 "ON " +
                 "   tbl_Users.uCentre = tbl_Centres.cID");
 
-        if (filter.hasSearchFilter()) {
+        if (filter.hasSearchCriteria()) {
             // if there a search fields in the filter then create where clause
             sqlQueries.add("WHERE");
 
             int count = 1;
-            for (Map.Entry<ProfessionalUserFilter.UserField, String> entry : filter.getSearchFields()
+            for (Map.Entry<String, String> entry : filter.getSearchFields()
                     .entrySet()) {
                 if (entry.getValue().length() > 0) {
                     // converting the field values to uppercase so I dont have to faff around
                     // probably bite me in the ass at some point
-                    sqlQueries.add("UPPER(" + entry.getKey().getDatabaseFieldName() + ") LIKE ?");
+                    sqlQueries.add("UPPER(" + entry.getKey() + ") LIKE ?");
                     params.add("%" + entry.getValue().toUpperCase() + "%");
 
                     // if there are more than one field being search AND them
@@ -199,7 +199,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         // if the filter has a sort then order by it
         if (filter.hasSortFilter()) {
-            sqlQueries.add("ORDER BY " + filter.getSortField().getDatabaseFieldName());
+            sqlQueries.add("ORDER BY " + filter.getSortField());
             sqlQueries.add(filter.isReverse() ? "ASC" : "DESC");
         }
 
