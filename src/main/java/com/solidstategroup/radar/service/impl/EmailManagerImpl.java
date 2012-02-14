@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.model.user.PatientUser;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.EmailManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,10 @@ public class EmailManagerImpl implements EmailManager {
     public void sendAdminPatientRegistrationEmail(PatientUser patientUser) {
         // Todo: Same but for admin-patient-registration.vm
         // Todo: Sends to fiona.braddon@nhs.net but put this in radar.properties
+    }
+
+    public void sendAdminProfessionalRegistrationEmail(ProfessionalUser professionalUser) {
+        // todo
     }
 
     public void sendForgottenPassword(PatientUser patientUser, String password) {

@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.service;
 
+import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -18,11 +19,17 @@ public interface UserManager {
 
     void registerPatient(PatientUser patientUser) throws RegistrationException;
 
+    void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists,
+            RegistrationException;
+
     ProfessionalUser getProfessionalUser(Long id);
 
     ProfessionalUser getProfessionalUser(String email);
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
+
+
+    void sendForgottenPassword(String username);
 
     void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
@@ -32,6 +39,5 @@ public interface UserManager {
 
     List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage);
 
-    void sendForgottenPassword(String username);
 
 }

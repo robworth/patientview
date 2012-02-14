@@ -19,99 +19,126 @@
         <p>
             Once
             validated you will be given a username and password to enter the site</p>
-        <fieldset style="padding:10px; width:760px;">
-            <table cellpadding="4" class="style1">
-                <tbody>
-                <tr>
-                    <td style="width:140px;">
-                        <label for="ctl00_ContentPlaceHolder1_txtSurname" id="ctl00_ContentPlaceHolder1_lblSurname">Surname:</label>
-                    </td>
-                    <td>
-                        <input name="ctl00$ContentPlaceHolder1$txtSurname" type="text"
-                               id="ctl00_ContentPlaceHolder1_txtSurname" style="width:230px;">
-                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1"
-                              style="color:Red;visibility:hidden;">*</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="ctl00_ContentPlaceHolder1_txtForename" id="ctl00_ContentPlaceHolder1_lblForename">Forename:</label>
-                    </td>
-                    <td>
-                        <input name="ctl00$ContentPlaceHolder1$txtForename" type="text"
-                               id="ctl00_ContentPlaceHolder1_txtForename" style="width:230px;">
-                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2"
-                              style="color:Red;visibility:hidden;">*</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="ctl00_ContentPlaceHolder1_txtGMC"
-                               id="ctl00_ContentPlaceHolder1_lblTitle">Title:</label>
-                    </td>
-                    <td>
-                        <select name="ctl00$ContentPlaceHolder1$DropDownList2"
-                                id="ctl00_ContentPlaceHolder1_DropDownList2">
-                            <option value="">Select</option>
-                            <option value="Dr">Dr</option>
-                            <option value="Professor">Professor</option>
-                            <option value="Mr">Mr</option>
-                            <option value="Mrs">Mrs</option>
-                            <option value="Miss">Miss</option>
 
-                        </select>
-                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3"
-                              style="color:Red;visibility:hidden;">*</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Geographic area
-                    </td>
-                    <td>
-                        <select name="ctl00$ContentPlaceHolder1$DropDownList3"
-                                onchange="javascript:setTimeout('__doPostBack(\'ctl00$ContentPlaceHolder1$DropDownList3\',\'\')', 0)"
-                                id="ctl00_ContentPlaceHolder1_DropDownList3">
-                            <option selected="selected" value="">Select</option>
-                            <option value="1">GB and Ireland</option>
-                            <option value="2">Outside GB and Ireland</option>
+        <form wicket:id="form">
+            <fieldset style="padding:10px; width:760px;">
+                <table cellpadding="4" class="style1">
+                    <tbody>
+                    <tr>
+                        <td style="width:140px;">
+                            <label>Surname:</label>
+                        </td>
+                        <td>
+                            <input wicket:id="surname" type="text" style="width:230px;">
+                            <span wicket:id="surnameFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Forename:</label>
+                        </td>
+                        <td>
+                            <input wicket:id="forename" type="text" style="width:230px;">
+                            <span wicket:id="forenameFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Title:</label>
+                        </td>
+                        <td>
+                            <select wicket:id="title">
+                            </select>
+                            <span wicket:id="titleFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Geographic area
+                        </td>
+                        <td>
+                            <select wicket:id="areaDropDown">
+                            </select>
+                            <span wicket:id="areaDropDownFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr wicket:id="gmcContainer">
+                        <td>
+                            <span>GMC/NMC No.:</span>
+                        </td>
+                        <td>
+                            <input type="text" wicket:id="gmc" style="width:230px;">
+                            <span wicket:id="gmcFeedbackIndicator"></span>
+                        </td>
+                    </tr>
 
-                        </select>
+                    <tr wicket:id="roleContainer">
+                        <td>
+                            <label>Role:</label>
+                        </td>
+                        <td>
+                            <input wicket:id="role" type="text" style="width:230px;">
+                            <span wicket:id="roleFeedbackIndicator"></span>
+                        </td>
+                    </tr>
 
-                        &nbsp;<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator9"
-                                    style="color:Red;visibility:hidden;">*</span>
+                    <tr wicket:id="emailContainer">
+                        <td>
+                            <label>Email
+                                Address</label>
+                        </td>
+                        <td >
+                            <input wicket:id="email" type="text" style="width:230px;">
+                            <span wicket:id="emailFeedbackIndicator"></span>
+                            <span class="feedback" wicket:id="emailFeedback"></span>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="phoneContainer">
+                        <td>
+                            Telephone number:
+                        </td>
+                        <td >
+                            <input wicket:id="phone" type="text" style="width:230px;">
+                            <span wicket:id="phoneFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="centreContainer">
+                        <td>
+                            <label>Centre:</label>
+                        </td>
+                        <td >
+                            <select wicket:id="centre"/>
+                            <span wicket:id="centreFeedbackIndicator"></span>
+                        </td>
+                    </tr>
 
 
-                <tr>
-                    <td>
-                        &nbsp;</td>
-                    <td>
-                        &nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="submit" name="ctl00$ContentPlaceHolder1$btnSubmit" value="Continue"
-                               onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))"
-                               id="ctl00_ContentPlaceHolder1_btnSubmit" class="inline">
-                    </td>
-                    <td>
-                        <div id="ctl00_ContentPlaceHolder1_ValidationSummary1" class="inline"
-                             style="color:Red;display:none;">
+                    <tr>
+                        <td>
+                            &nbsp;</td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button wicket:id="submit" type="button" value="Register" class="inline">
+                                <label wicket:id="submitLabel">Continue</label>
+                            </button>
 
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <p>
-                <span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
-            &nbsp;</fieldset>
-        <p><span id="ctl00_ContentPlaceHolder1_lblDebug"></span></p>
-
-
+                        </td>
+                        <td>
+                            <span class="successMessage" wicket:id="successMessage"></span>
+                            <span class="feedback" wicket:id="errorFeedback"></span>
+                            <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                &nbsp;</fieldset>
+        </form>
     </div>
 
 </wicket:extend>
