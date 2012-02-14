@@ -3,6 +3,7 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -36,7 +37,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public PatientUser getPatientUser(String email, Date dateOfBirth) {
         PatientUser user = userDao.getPatientUser(email);
-        if(user != null) {
+        if (user != null) {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
         return null;
@@ -92,6 +93,27 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new RegistrationException("Could not register patient - " +
                     "date of birth incorrect for given radar number");
         }
+    }
+
+    public void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists,
+            RegistrationException {
+        User user = userDao.getProfessionalUser(professionalUser.getEmail());
+        if (user != null) {
+            throw new ProfessionalUserEmailAlreadyExists("Email address already exists");
+        }
+
+        // Generate the password - 8 random characters
+        String password = generateRandomPassword();
+        try {
+            professionalUser.setPasswordHash(User.getPasswordHash(password));
+        } catch (Exception e) {
+            LOGGER.error("Could not register professional user", e);
+            throw new RegistrationException("Could not register professional user");
+        }
+
+        // Save the patient user to the patient user table
+        // todo save user
+        // todo send emails
     }
 
     public void sendForgottenPassword(String username) {

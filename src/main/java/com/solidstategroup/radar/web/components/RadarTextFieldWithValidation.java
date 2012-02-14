@@ -22,7 +22,9 @@ public class RadarTextFieldWithValidation extends TextField {
     }
 
     private void init(String id, WebMarkupContainer form, IValidator validator, boolean required, List<Component> componentsToUpdate) {
-        add(validator);
+        if(validator != null) {
+             add(validator);
+        }
         final ComponentFeedbackPanel feedbackPanel = new ComponentFeedbackPanel(id + "Feedback", this) {
             @Override
             public boolean isVisible() {
