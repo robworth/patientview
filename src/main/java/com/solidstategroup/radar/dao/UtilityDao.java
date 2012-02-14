@@ -36,4 +36,5 @@ public interface UtilityDao {
     Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode);
 
     int getPatientCountByUnit(Centre centre);
+
 }

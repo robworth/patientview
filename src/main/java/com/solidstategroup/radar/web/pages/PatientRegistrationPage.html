@@ -18,8 +18,6 @@
 
     <form wicket:id="form">
         <fieldset style="width:550px; padding:10px">
-            <div wicket:id="feedback"/>
-
             <table cellpadding="5" style="width: 500px" class="style2">
                 <tbody>
                 <tr>
@@ -29,31 +27,27 @@
                     <td>
                         <input type="text" id="ctl00_ContentPlaceHolder1_txtRadarNo" wicket:id="radarNumber"/>
                         &nbsp;
-                    <span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1">*</span>
+                        <span wicket:id="radarNumberFeedbackIndicator"></span>
+                        <span class="feedback" wicket:id="radarNumberFeedback"></span>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="ctl00_ContentPlaceHolder1_txtEmail">Email Address</label>
+                        <label>Email Address</label>
                     </td>
                     <td>
-                        <input type="text" style="width:250px;" autocomplete="off"
-                               id="ctl00_ContentPlaceHolder1_txtEmail"
-                               wicket:id="username">
+                        <input type="text" style="width:250px;" autocomplete="off" wicket:id="username">
                         &nbsp;
-                    <span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_RequiredFieldValidator2">*</span>
+                        <span wicket:id="usernameFeedbackIndicator"></span>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label id="ctl00_ContentPlaceHolder1_lblDOB" for="ctl00_ContentPlaceHolder1_txtDOB">Date of
+                        <label id="ctl00_ContentPlaceHolder1_lblDOB">Date of
                             birth</label>
                     </td>
                     <td>
-                        <input type="text" id="ctl00_ContentPlaceHolder1_txtDOB" wicket:id="dateOfBirth"
-                               class="feint">
+                        <input type="text" wicket:id="dateOfBirth" class="feint">
                         <span class="feedback" wicket:id="dateOfBirthFeedback"></span>
                         <span wicket:id="dateOfBirthFeedbackIndicator"></span>
                     </td>
@@ -67,14 +61,21 @@
                 <tr>
                     <td>
                         <input type="submit" value="Register" wicket:id="submit"/>
+
                     </td>
-                    <td>&nbsp;</td>
+                    <td>
+                        <span class="feedback" wicket:id="feedback"></span>
+                        <span wicket:id="success">
+                         <span class="successMessage" wicket:id="successMessage"></span>
+                         <a wicket:id="patientLink" href="#">here</a>.
+                        </span>
+
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <p>&nbsp;</p>
 
-            <p><span id="ctl00_ContentPlaceHolder1_lblSuccess"></span></p>
         </fieldset>
     </form>
 
