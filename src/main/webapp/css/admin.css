@@ -257,13 +257,16 @@
     background-color: #dcdcdc;
     border-left: 1px solid #9f9f9f;
     border-bottom: 1px solid #9f9f9f;
-    cursor: pointer;
     font-weight: normal;
     overflow: hidden;
     padding: 4px 6px 5px 6px;
     position: relative;
     text-align: left;
     white-space: nowrap;
+}
+
+.sortLink {
+    cursor: pointer;    
 }
 
     .firstCell,

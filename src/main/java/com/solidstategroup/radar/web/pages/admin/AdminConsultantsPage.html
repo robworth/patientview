@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Consultants</h2>
+
+    <p>
+        <button wicket:id="addNewConsultant" type="submit" value="Add a new consultant" class="button">Add a new Consultant</button>
+    </p>
+
+    <p>
+        Click column headings to sort.
+    </p>
+
+    <div>
+        <table cellspacing="0" cellpadding="0" class="dxgvTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="dxgvHeader" style="width: 35px;">Edit</th>
+                    <th class="dxgvHeader" wicket:id="orderBySurname" style="width: 80px;">Surname</th>
+                    <th class="dxgvHeader" wicket:id="orderByForename" style="width: 80px;">Forename</th>
+                    <th class="dxgvHeader" wicket:id="orderByCentre">Centre</th>
+                    <th class="dxgvHeader">No of patients</th>
+                </tr>
+            </thead>
+            <tbody wicket:id="consultantsContainer">
+                <tr class="dxgvDataRow" wicket:id="consultants">
+                    <td class="dxgv"><a wicket:id="edit">Edit</a></td>
+                    <td class="dxgv"><span wicket:id="surname">surname</span></td>
+                    <td class="dxgv"><span wicket:id="forename">forename</span></td>
+                    <td class="dxgv"><span wicket:id="centre">centre</span></td>
+                    <td class="dxgv"><span wicket:id="numberOfPatients">numberOfPatients</span></td>
+                </tr>
+                <tr>
+                    <td class="dxgv firstCell" colspan="5">
+                        <span wicket:id="navigator" class="paging">
+                            <!--
+                                todo: update currentPage / totalPages / totalResults on page change
+                                todo: add brackets around current page i.e. [1]
+
+                                <span class="summary">Page <span wicket:id="currentPage">1</span> of <span wicket:id="totalPages">4</span> (<span wicket:id="totalResults">96</span> items)</span>
+                                <span wicket:id="first" class="first" title="Go to first page"><em>&lt;&lt;</em></span>
+                                <span wicket:id="prev" class="prev" title="Go to previous page"><em>&lt;</em></span>
+                                <span wicket:id="navigation" class="goto">
+                                    <span wicket:id="pageLink" title="Go to page 1">
+                                        <em><span wicket:id="pageNumber">[1]</span></em>
+                                    </span>
+                                </span>
+                                <span wicket:id="next" class="next" title="Go to next page"><em>&gt;</em></span>
+                                <span wicket:id="last" class="last"title="Go to last page"><em>&gt;&gt;</em></span>
+                            -->
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>
