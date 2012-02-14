@@ -76,6 +76,50 @@ public class UtilityDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testSaveNewConsultant() throws Exception {
+        Consultant consultant = new Consultant();
+        consultant.setSurname("test_surname");
+        consultant.setForename("test_forename");
+
+        Centre centre = new Centre();
+        centre.setId((long) 10);
+        consultant.setCentre(centre);
+
+        utilityDao.saveConsultant(consultant);
+
+        assertTrue("Saved consultant doesn't have an ID", consultant.getId() > 0);
+
+        consultant = utilityDao.getConsultant(consultant.getId());
+        assertNotNull("Saved consultant was null on getting from DAO", consultant);
+    }
+
+    @Test
+    public void testSaveExistingConsultant() throws Exception {
+        // have to make a user first
+        Consultant consultant = utilityDao.getConsultant(1);
+        consultant.setSurname("test_surname");
+
+        utilityDao.saveConsultant(consultant);
+
+        consultant = utilityDao.getConsultant(consultant.getId());
+        assertTrue("Consultant surname has not been updated", consultant.getSurname().equals("test_surname"));
+    }
+
+    @Test
+    public void deleteConsultant() throws Exception {
+        utilityDao.deleteConsultant(utilityDao.getConsultant(1));
+
+        Consultant consultant;
+        try {
+            consultant = utilityDao.getConsultant(1);
+        } catch (Exception e) {
+            consultant = null;
+        }
+
+        assertNull("Consultant was not deleted", consultant);
+    }
+
+    @Test
     public void testGetConsultantWithCentre() {
         Consultant consultant = utilityDao.getConsultant(5L);
         assertNotNull("Consultant is null");
