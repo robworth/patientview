@@ -21,6 +21,10 @@ public interface UtilityDao {
 
     List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
+    void saveConsultant(Consultant consultant) throws Exception;
+
+    void deleteConsultant(Consultant consultant) throws Exception;
+
     Country getCountry(long id);
 
     List<Country> getCountries();
