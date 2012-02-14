@@ -19,13 +19,15 @@ public interface UserManager {
 
     void registerPatient(PatientUser patientUser) throws RegistrationException;
 
+    void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists,
+            RegistrationException;
+
     ProfessionalUser getProfessionalUser(Long id);
 
     ProfessionalUser getProfessionalUser(String email);
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
-    void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists, RegistrationException;
 
     void sendForgottenPassword(String username);
 

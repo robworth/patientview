@@ -100,17 +100,12 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new ProfessionalUserEmailAlreadyExists("Email address already exists");
         }
 
-        // Generate the password - 8 random characters
-        String password = generateRandomPassword();
         try {
-            professionalUser.setPasswordHash(User.getPasswordHash(password));
+            saveProfessionalUser(professionalUser);
         } catch (Exception e) {
-            LOGGER.error("Could not register professional user", e);
-            throw new RegistrationException("Could not register professional user");
+            LOGGER.error("Could not register professional", e);
+            throw new RegistrationException("Could not register professional", e);
         }
-
-        // Save the patient user to the patient user table
-        // todo save user
         // todo send emails
     }
 

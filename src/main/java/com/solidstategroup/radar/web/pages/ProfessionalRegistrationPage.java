@@ -1,7 +1,10 @@
 package com.solidstategroup.radar.web.pages;
 
 
+import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
+import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
@@ -36,16 +39,27 @@ public class ProfessionalRegistrationPage extends BasePage {
 
     public static final String AREA1 = "GB and Ireland";
     public static final String AREA2 = "Outside GB and Ireland";
+    public static final String ERROR_MESSAGE = "An unexpected error has occurred";
     @SpringBean
     UtilityManager utilityManager;
+    @SpringBean
+    UserManager userManager;
 
     public ProfessionalRegistrationPage() {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        final Form form = new Form("form", new CompoundPropertyModel<ProfessionalUser>(new ProfessionalUser())) {
+        final Form<ProfessionalUser> form = new Form<ProfessionalUser>("form",
+                new CompoundPropertyModel<ProfessionalUser>(new ProfessionalUser())) {
             @Override
             protected void onSubmit() {
+                try {
+                    userManager.registerProfessional(getModelObject());
+                } catch (ProfessionalUserEmailAlreadyExists professionalUserEmailAlreadyExists) {
+                    get("emailContainer").get("email").error("This email address has already been taken");
+                } catch (RegistrationException e) {
+                    error(ERROR_MESSAGE);
+                }
             }
         };
 
@@ -56,7 +70,8 @@ public class ProfessionalRegistrationPage extends BasePage {
         form.add(new RadarRequiredDropdownChoice("title", Arrays.asList("Dr", "Professor", "Mr", "Mrs", "Miss"),
                 new ChoiceRenderer(), form, componentsToUpdate));
 
-        DropDownChoice areaDropDown = new RadarRequiredDropdownChoice("areaDropDown", areaModel, Arrays.asList(AREA1, AREA2),
+        DropDownChoice areaDropDown = new RadarRequiredDropdownChoice("areaDropDown", areaModel,
+                Arrays.asList(AREA1, AREA2),
                 new ChoiceRenderer(), form, componentsToUpdate);
 
         form.add(areaDropDown);
@@ -114,7 +129,7 @@ public class ProfessionalRegistrationPage extends BasePage {
         };
 
         RadarTextFieldWithValidation email = new RadarTextFieldWithValidation("email",
-                new PatternValidator("nhs.(uk|net)$"), true, emailContainer,
+                new PatternValidator(".+nhs\\.(uk|net)$"), true, emailContainer,
                 componentsToUpdate);
         emailContainer.add(email);
         form.add(emailContainer);
@@ -185,8 +200,22 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
+        // Construct feedback panel
+        // for errors not specific to a particular component
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("errorFeedback", new IFeedbackMessageFilter() {
+            public boolean accept(FeedbackMessage feedbackMessage) {
+                String message = feedbackMessage.getMessage().toString();
+                return message.contains(ERROR_MESSAGE);
+            }
+        });
+
+        form.add(feedbackPanel);
+
 
         AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
+            {
+                componentsToUpdate.add(this);
+            }
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
@@ -196,6 +225,14 @@ public class ProfessionalRegistrationPage extends BasePage {
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
+
+            @Override
+            public boolean isVisible() {
+                if (form.isSubmitted() && !form.hasError()) {
+                    return false;
+                }
+                return super.isVisible();
+            }
         };
         form.add(submit);
         submit.add(new Label("submitLabel", new AbstractReadOnlyModel<Object>() {
@@ -203,13 +240,11 @@ public class ProfessionalRegistrationPage extends BasePage {
             public Object getObject() {
                 return areaModel.getObject() == null ? "Continue" : "Register";
             }
-        }) {
-            {
-                setOutputMarkupId(true);
-                setOutputMarkupPlaceholderTag(true);
-                componentsToUpdate.add(this);
-            }
-        });
+        }));
+
+        submit.setOutputMarkupId(true);
+        submit.setOutputMarkupPlaceholderTag(true);
+        componentsToUpdate.add(submit);
 
         add(form);
 
