@@ -122,26 +122,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 put("uDateJoin", professionalUser.getDateRegistered());
                 put("uUserName", professionalUser.getUsernameHash());
                 put("uPass", professionalUser.getPasswordHash());
+                put("uID", professionalUser.getId());
             }
         };
 
         if (professionalUser.hasValidId()) {
-            String updateSql = "UPDATE tbl_Users SET ";
-
-            int count = 1;
-            for (String field : professionalUserMap.keySet()) {
-                updateSql += " " + field + " = :" + field;
-
-                if (count < professionalUserMap.size()) {
-                    updateSql += ", ";
-                }
-
-                count++;
-            }
-
-            updateSql += " WHERE uID = :uID";
-
-            professionalUserMap.put("uID", professionalUser.getId());
+            String updateSql = buildUpdateQuery("tbl_Users", "uID", professionalUserMap);
             namedParameterJdbcTemplate.update(updateSql, professionalUserMap);
         } else {
             Number id = professionalUsersInsert.executeAndReturnKey(professionalUserMap);
@@ -174,46 +160,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 "ON " +
                 "   tbl_Users.uCentre = tbl_Centres.cID");
 
+        // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
-            // if there a search fields in the filter then create where clause
-            sqlQueries.add("WHERE");
-
-            int count = 1;
-            for (Map.Entry<String, String> entry : filter.getSearchFields()
-                    .entrySet()) {
-                if (entry.getValue().length() > 0) {
-                    // converting the field values to uppercase so I dont have to faff around
-                    // probably bite me in the ass at some point
-                    sqlQueries.add("UPPER(" + entry.getKey() + ") LIKE ?");
-                    params.add("%" + entry.getValue().toUpperCase() + "%");
-
-                    // if there are more than one field being search AND them
-                    if (count < filter.getSearchFields().size()) {
-                        sqlQueries.add("AND");
-                    }
-
-                    count++;
-                }
-            }
+            sqlQueries.add(buildWhereQuery(filter.getSearchFields(), true, params));
         }
 
         // if the filter has a sort then order by it
         if (filter.hasSortFilter()) {
-            sqlQueries.add("ORDER BY " + filter.getSortField());
-            sqlQueries.add(filter.isReverse() ? "ASC" : "DESC");
+            sqlQueries.add(buildOrderQuery(filter.getSortField(), filter.isReverse()));
         }
 
         // if a range has been set limit the results
-        if (page > 0 && numberPerPage > 0) {
-            sqlQueries.add("LIMIT ?, ?");
+        sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
 
-            // work out the row to start from
-            int start = ((page * numberPerPage) - numberPerPage);
-
-            params.add(start);
-            params.add(numberPerPage);
-        }
-
+        // combine the statement and return result
         return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
                 new ProfessionalUserRowMapper());
     }

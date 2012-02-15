@@ -1,8 +1,8 @@
 package com.solidstategroup.radar.model;
 
+import java.util.Comparator;
 
 public class Centre extends BaseModel {
-    
     private String name;
     private String abbreviation;
     private Country country;
@@ -29,5 +29,13 @@ public class Centre extends BaseModel {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public static Comparator<Centre> getComparator() {
+        return new Comparator<Centre>() {
+            public int compare(Centre o1, Centre o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        };
     }
 }
