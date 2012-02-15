@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web;
 
 import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.ForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.HomePage;
@@ -101,6 +102,8 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("registration/professional", ProfessionalRegistrationPage.class);
         mountPage("professionals", ProfessionalsPage.class);
         mountPage("recruitment", RecruitmentPage.class);
+
+        mountPage("patient/recover", ForgottenPasswordPage.class);
 
         // Static content pages
         mountPage("diseaseindex", DiseaseIndexPage.class);

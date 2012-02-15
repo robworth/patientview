@@ -2,6 +2,7 @@ package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public class EmailManagerImpl implements EmailManager {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("patientUser", patientUser);
         map.put("password", password);
-        String emailBody = render(map, "patient-registration.vm");
+        String emailBody = renderTemplate(map, "patient-registration.vm");
         sendEmail(emailAddressApplication, new String[]{patientUser.getUsername()},
                 new String[]{emailAddressAdmin1}, "Your RaDaR website registration", emailBody);
     }
@@ -59,7 +60,7 @@ public class EmailManagerImpl implements EmailManager {
     public void sendPatientRegistrationAdminNotificationEmail(PatientUser patientUser) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("patientUser", patientUser);
-        String emailBody = render(map, "patient-registration-admin-notification.vm");
+        String emailBody = renderTemplate(map, "patient-registration-admin-notification.vm");
         sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
                 new String[]{emailAddressAdmin1}, "New Radar patient registrant on: " +
                 new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(patientUser.getDateRegistered()),
@@ -69,7 +70,7 @@ public class EmailManagerImpl implements EmailManager {
     public void sendProfessionalRegistrationAdminNotificationEmail(ProfessionalUser professionalUser) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("user", professionalUser);
-        String emailBody = render(map, "professional-registration-admin-notification.vm");
+        String emailBody = renderTemplate(map, "professional-registration-admin-notification.vm");
         sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
                 new String[]{emailAddressAdmin1}, "New Radar site registrant on: " +
                 new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(professionalUser.getDateRegistered()),
@@ -77,7 +78,20 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     public void sendForgottenPassword(PatientUser patientUser, String password) {
-        // Todo: Implement
+        sendPassword(patientUser, password);
+    }
+
+    public void sendForgottenPassword(ProfessionalUser professionalUser, String password) {
+        sendPassword(professionalUser, password);
+    }
+
+    private void sendPassword(User user, String password) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("password", password);
+        map.put("isProfessionalUser", user instanceof ProfessionalUser);
+        String emailBody = renderTemplate(map, "forgotten-password.vm");
+        sendEmail(emailAddressApplication, new String[]{user.getUsername(), emailAddressAdmin1},
+                new String[]{emailAddressAdmin1}, "RADAR website password", emailBody);
     }
 
 
@@ -105,19 +119,19 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     // this method is public to allow for testing
-    public String render(Map<String, Object> map, String template) {
+    public String renderTemplate(Map<String, Object> map, String template) {
         // build our context map
         VelocityContext velocityContext = new VelocityContext();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             velocityContext.put(entry.getKey(), entry.getValue());
         }
 
-        // Try the render, log any problems
+        // Try the renderTemplate, log any problems
         final Writer writer = new StringWriter();
         try {
             velocityEngine.mergeTemplate(template, velocityContext, writer);
         } catch (Exception e) {
-            LOGGER.error("Could not render template {}", "email", e);
+            LOGGER.error("Could not renderTemplate template {}", "email", e);
         }
 
         return writer.toString();

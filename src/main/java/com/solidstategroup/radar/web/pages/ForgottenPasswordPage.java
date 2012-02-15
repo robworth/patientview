@@ -1,47 +1,72 @@
 package com.solidstategroup.radar.web.pages;
 
+import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.web.components.RadarRequiredTextField;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ForgottenPasswordPage extends BasePage {
 
+    public static final String EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE = "Email address not recognised";
+    public static final String ERROR_MESSAGE = "An unexpected error occured";
     @SpringBean
     private UserManager userManager;
 
     public ForgottenPasswordPage() {
 
+        // components to update on ajax submit
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
         // Construct form
         Form<String> form = new Form<String>("form", new Model<String>()) {
             @Override
             protected void onSubmit() {
-                userManager.sendForgottenPassword(getModelObject());
+                try {
+                    userManager.sendForgottenPasswordToPatient(getModelObject());
+                } catch (EmailAddressNotFoundException e) {
+                    error(EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE);
+                }
             }
         };
         add(form);
 
         // Feedback
-        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback", new IFeedbackMessageFilter() {
+            public boolean accept(FeedbackMessage feedbackMessage) {
+                String message = feedbackMessage.getMessage().toString();
+                return message.contains(ERROR_MESSAGE) || message.contains(EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE);
+            }
+        });
         form.add(feedbackPanel);
+        componentsToUpdate.add(feedbackPanel);
+        feedbackPanel.setOutputMarkupId(true);
+        feedbackPanel.setOutputMarkupPlaceholderTag(true);
 
         // Email - can use same model as the form
-        form.add(new RequiredTextField<String>("email", form.getModel()));
+        RadarRequiredTextField email = new RadarRequiredTextField("email", form, componentsToUpdate);
+        email.setModel(form.getModel());
+        form.add(email);
 
         // Submit link
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                target.add(feedbackPanel);
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.add(feedbackPanel);
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
         });
     }
