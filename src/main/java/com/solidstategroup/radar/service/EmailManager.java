@@ -3,15 +3,23 @@ package com.solidstategroup.radar.service;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 
-public interface EmailManager {
+import java.util.Map;
 
-    boolean sendTestEmail();
+public interface EmailManager {
 
     void sendPatientRegistrationEmail(PatientUser patientUser, String password);
 
-    void sendAdminPatientRegistrationEmail(PatientUser patientUser);
+    void sendPatientRegistrationAdminNotificationEmail(PatientUser patientUser);
 
-    void sendAdminProfessionalRegistrationEmail(ProfessionalUser professionalUser);
+    void sendProfessionalRegistrationAdminNotificationEmail(ProfessionalUser professionalUser);
 
     void sendForgottenPassword(PatientUser patientUser, String password);
+
+    // to allow for testing, this method is in the interface
+    String render(Map<String, Object> map, String template);
+
+    // to allow for testing, this method is in the interface
+    void sendEmail(String from, String[] to, String[] bbc, String subject, String body);
+
+
 }

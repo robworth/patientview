@@ -78,7 +78,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                 emailManager.sendPatientRegistrationEmail(patientUser, password);
 
                 // Send the registration email to the admin
-                emailManager.sendAdminPatientRegistrationEmail(patientUser);
+                emailManager.sendPatientRegistrationAdminNotificationEmail(patientUser);
 
             } catch (Exception e) {
                 // If we get an exception getting password hash then log and throw an exception
@@ -106,7 +106,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             LOGGER.error("Could not register professional", e);
             throw new RegistrationException("Could not register professional", e);
         }
-        // todo send emails
+        emailManager.sendProfessionalRegistrationAdminNotificationEmail(professionalUser);
     }
 
     public ProfessionalUser getProfessionalUser(Long id) {
@@ -159,7 +159,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private String generateRandomPassword() {
         // I love you Apache commons
-        return RandomStringUtils.random(8);
+        return RandomStringUtils.randomAlphanumeric(8);
     }
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException, DataAccessException {
