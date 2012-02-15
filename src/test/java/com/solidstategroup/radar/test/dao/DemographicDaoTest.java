@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +58,26 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetAllDemographics() throws Exception {
-        List<Demographics> demographics = demographicDao.getDemographics();
+    public void testGetDemographics() throws Exception {
+        List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), -1, -1);
         assertNotNull("List was null", demographics);
-        assertEquals("Wrong size", 34, demographics.size());
+        assertTrue(demographics.size() > 0);
+    }
+
+    @Test
+    public void testGetDemographicsPage1() {
+        List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), 1, 1);
+        assertNotNull(demographics);
+        assertTrue(demographics.size() == 1);
+    }
+
+    @Test
+    public void testSearchDemographics() {
+        DemographicsFilter demographicsFilter = new DemographicsFilter();
+        demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.DIAGNOSIS.getDatabaseFieldName(), "srns");
+        List<Demographics> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
+        assertNotNull(demographics);
+        assertTrue(demographics.size() > 0);
     }
 
     @Test
