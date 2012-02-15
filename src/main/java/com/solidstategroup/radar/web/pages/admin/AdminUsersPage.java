@@ -17,6 +17,7 @@ import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
@@ -36,6 +37,10 @@ public class AdminUsersPage extends AdminsBasePage {
     public AdminUsersPage() {
         final ProfessionalUserDataProvider professionalUserDataProvider = new ProfessionalUserDataProvider(userManager);
 
+        // TODO: need to hook these up
+        add(new ExternalLink("exportPdf", ""));
+        add(new ExternalLink("exportExcel", ""));
+        
         add(new BookmarkablePageLink<AdminUserPage>("addNewUser", AdminUserPage.class));
 
         final WebMarkupContainer usersContainer = new WebMarkupContainer("usersContainer");
