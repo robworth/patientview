@@ -19,14 +19,14 @@ public class TestPatientPage extends BasePageTest {
         Demographics demographics = new Demographics();
         demographics.setId(238L);
 
-        // Start and render the test page with page parameters
+        // Start and renderTemplate the test page with page parameters
         tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));
         clickTabsAndAssert(true);
     }
 
     @Test
     public void renderPatientPageNewPatient() {
-        //start and render the test page
+        //start and renderTemplate the test page
         tester.startPage(PatientPage.class);
 
         clickTabsAndAssert(false);

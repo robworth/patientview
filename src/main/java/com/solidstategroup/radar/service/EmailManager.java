@@ -15,8 +15,10 @@ public interface EmailManager {
 
     void sendForgottenPassword(PatientUser patientUser, String password);
 
+    void sendForgottenPassword(ProfessionalUser professionalUser, String password);
+
     // to allow for testing, this method is in the interface
-    String render(Map<String, Object> map, String template);
+    String renderTemplate(Map<String, Object> map, String template);
 
     // to allow for testing, this method is in the interface
     void sendEmail(String from, String[] to, String[] bbc, String subject, String body);

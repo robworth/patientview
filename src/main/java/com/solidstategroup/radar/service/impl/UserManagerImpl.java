@@ -3,6 +3,7 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
@@ -144,7 +145,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getProfessionalUsers(filter, page, numberPerPage);
     }
 
-    public void sendForgottenPassword(String username) {
+    public void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException {
         // In theory this could just go in the email manager but we need to query for user first
         PatientUser patientUser = userDao.getPatientUser(username);
         if (patientUser != null) {
@@ -154,6 +155,9 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt password for forgotten password email for {}", username, e);
             }
+        } else {
+            LOGGER.error("Could not find user with email {}", username);
+            throw new EmailAddressNotFoundException("Email Address not found");
         }
     }
 

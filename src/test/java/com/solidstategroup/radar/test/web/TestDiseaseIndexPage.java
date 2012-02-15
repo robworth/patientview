@@ -10,7 +10,7 @@ public class TestDiseaseIndexPage extends BasePageTest {
 
     @Test
     public void homepageRendersSuccessfully() {
-        //start and render the test page
+        //start and renderTemplate the test page
         tester.startPage(DiseaseIndexPage.class);
 
         //assert rendered page class
