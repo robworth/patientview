@@ -161,6 +161,22 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
     }
 
+    public void sendForgottenPasswordToProfessional(String username) throws EmailAddressNotFoundException {
+        // In theory this could just go in the email manager but we need to query for user first
+        ProfessionalUser professionalUseruser = userDao.getProfessionalUser(username);
+        if (professionalUseruser != null) {
+            try {
+                String password = TripleDes.decrypt(professionalUseruser.getPasswordHash());
+                emailManager.sendForgottenPassword(professionalUseruser, password);
+            } catch (Exception e) {
+                LOGGER.error("Could not decrypt password for forgotten password email for {}", username, e);
+            }
+        } else {
+            LOGGER.error("Could not find user with email {}", username);
+            throw new EmailAddressNotFoundException("Email Address not found");
+        }
+    }
+
     private String generateRandomPassword() {
         // I love you Apache commons
         return RandomStringUtils.randomAlphanumeric(8);

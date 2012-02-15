@@ -32,6 +32,8 @@ public interface UserManager {
 
     void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException;
 
+    void sendForgottenPasswordToProfessional(String username) throws EmailAddressNotFoundException;
+
     void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
     List<ProfessionalUser> getProfessionalUsers();
