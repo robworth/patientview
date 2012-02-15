@@ -123,10 +123,6 @@ public class UserDaoTest extends BaseDaoTest {
 
         assertEquals("Wrong email", "marklittle@nhs.net", professionalUser.getEmail());
 
-        // Username should have been set
-        assertNotNull("Username is null", professionalUser.getUsername());
-        assertEquals("Username is wrong", "marklittle@nhs.net", professionalUser.getUsername());
-
         // Password should have been set
         assertNotNull("Password hash is null", professionalUser.getPasswordHash());
     }
