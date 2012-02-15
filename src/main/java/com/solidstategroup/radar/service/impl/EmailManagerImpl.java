@@ -4,6 +4,7 @@ import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.EmailManager;
+import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.RadarApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +82,13 @@ public class EmailManagerImpl implements EmailManager {
         sendPassword(patientUser, password);
     }
 
-    public void sendForgottenPassword(ProfessionalUser professionalUser, String password) {
+    public void sendForgottenPassword(ProfessionalUser professionalUser, String password) throws Exception {
+        try {
+            professionalUser.setUsername(TripleDes.decrypt(professionalUser.getUsernameHash()));
+        } catch (Exception e) {
+           LOGGER.error("Could not decrypt username", e);
+           throw e;
+        }
         sendPassword(professionalUser, password);
     }
 

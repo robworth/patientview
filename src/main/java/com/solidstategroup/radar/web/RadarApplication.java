@@ -2,11 +2,13 @@ package com.solidstategroup.radar.web;
 
 import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.ForgottenPasswordPage;
+import com.solidstategroup.radar.web.pages.PatientForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.pages.PatientsLoginPage;
+import com.solidstategroup.radar.web.pages.ProfessionalForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
@@ -91,19 +93,25 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("admins", AdminsPage.class);
 
         // Mount nice URLs for pages - patient pages
+
+        // patient pages
         mountPage("patient/edit", PatientPage.class);
         mountPage("patient/view", PatientPageReadOnly.class);
         mountPage("patients", ExistingPatientsListingPage.class);
         mountPage("registration/patient", PatientRegistrationPage.class);
 
-        mountPage("login/patient", PatientsLoginPage.class);
-        mountPage("login/professional", ProfessionalsLoginPage.class);
-
+        // professional pages
         mountPage("registration/professional", ProfessionalRegistrationPage.class);
         mountPage("professionals", ProfessionalsPage.class);
         mountPage("recruitment", RecruitmentPage.class);
 
-        mountPage("patient/recover", ForgottenPasswordPage.class);
+        // login pages
+        mountPage("login/patient", PatientsLoginPage.class);
+        mountPage("login/professional", ProfessionalsLoginPage.class);
+
+        // foreget password pages
+        mountPage("patient/recover", PatientForgottenPasswordPage.class);
+        mountPage("professional/recover", ProfessionalForgottenPasswordPage.class);
 
         // Static content pages
         mountPage("diseaseindex", DiseaseIndexPage.class);

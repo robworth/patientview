@@ -20,7 +20,7 @@ public class EmailManagerTest extends DatabaseBackedTest {
 
     @Test
     public void testSendEmail() throws Exception {
-        emailManager.sendEmail("abul@solidstategroup.com", new String[]{"abul@solidstategroup.com"},
+        emailManager.sendEmail("test@solidstategroup.com", new String[]{"test@solidstategroup.com"},
                 new String[]{"test@test.com"}, "Test subject","Test Body");
     }
 

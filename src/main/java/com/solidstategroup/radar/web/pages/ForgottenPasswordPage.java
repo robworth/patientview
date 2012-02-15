@@ -23,9 +23,12 @@ public abstract class ForgottenPasswordPage extends BasePage {
     public static final String EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE = "Email address not recognised";
     public static final String ERROR_MESSAGE = "An unexpected error occured";
     @SpringBean
-    private UserManager userManager;
+    protected UserManager userManager;
 
     public ForgottenPasswordPage() {
+
+        Label userType = new Label("userType", getUsesType());
+        add(userType);
 
         // components to update on ajax submit
         final List<Component> componentsToUpdate = new ArrayList<Component>();
@@ -34,7 +37,7 @@ public abstract class ForgottenPasswordPage extends BasePage {
             @Override
             protected void onSubmit() {
                 try {
-                    userManager.sendForgottenPasswordToPatient(getModelObject());
+                    sendPassword(getModelObject());
                 } catch (EmailAddressNotFoundException e) {
                     error(EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE);
                 }
@@ -98,7 +101,10 @@ public abstract class ForgottenPasswordPage extends BasePage {
             }
         });
 
-
     }
+
+    protected abstract String getUsesType();
+
+    public abstract void sendPassword(String username) throws EmailAddressNotFoundException;
 
 }

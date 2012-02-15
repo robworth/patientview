@@ -15,7 +15,7 @@ public interface EmailManager {
 
     void sendForgottenPassword(PatientUser patientUser, String password);
 
-    void sendForgottenPassword(ProfessionalUser professionalUser, String password);
+    void sendForgottenPassword(ProfessionalUser professionalUser, String password) throws Exception;
 
     // to allow for testing, this method is in the interface
     String renderTemplate(Map<String, Object> map, String template);

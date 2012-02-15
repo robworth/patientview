@@ -91,7 +91,8 @@ public class PatientsLoginPage extends BasePage {
         });
 
         // Add links for forgotten password and register
-        add(new BookmarkablePageLink<ForgottenPasswordPage>("forgottenPasswordLink", ForgottenPasswordPage.class));
+        add(new BookmarkablePageLink<PatientForgottenPasswordPage>("forgottenPasswordLink",
+                PatientForgottenPasswordPage.class));
         add(new BookmarkablePageLink<PatientRegistrationPage>("registerLink", PatientRegistrationPage.class));
     }
 }
