@@ -7,6 +7,7 @@ import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -160,8 +162,56 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 new DemographicsRowMapper());
     }
 
-    public List<Demographics> getDemographics() {
-        return jdbcTemplate.query("SELECT * FROM tbl_Demographics", new DemographicsRowMapper());
+    public List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
+        if (filter == null) {
+            filter = new DemographicsFilter();
+        }
+
+        List<String> sqlQueries = new ArrayList<String>();
+        List<Object> params = new ArrayList<Object>();
+
+        // normal sql query without any filter options
+        sqlQueries.add("SELECT " +
+                "   tbl_Demographics.*, " +
+                "   tbl_Consultants.cFNAME, " +
+                "   tbl_Consultants.cSNAME, " +
+                "   tbl_Centres.cAbbrev, " +
+                "   tbl_DiagCode.dcAbbr " +
+                "FROM " +
+                "   tbl_DiagCode " +
+                "INNER JOIN " +
+                "   tbl_Diagnosis " +
+                "ON " +
+                "   tbl_DiagCode.dcID = tbl_Diagnosis.DIAG " +
+                "RIGHT OUTER JOIN " +
+                "   tbl_Demographics " +
+                "ON " +
+                "   tbl_Diagnosis.RADAR_NO = tbl_Demographics.RADAR_NO " +
+                "LEFT OUTER JOIN " +
+                "   tbl_Centres " +
+                "INNER JOIN " +
+                "   tbl_Consultants " +
+                "ON " +
+                "   tbl_Centres.cID = tbl_Consultants.cCentre " +
+                "ON " +
+                "   tbl_Demographics.CONS_NEPH = tbl_Consultants.cID");
+
+        // if there are search queries then build the where
+        if (filter.hasSearchCriteria()) {
+            sqlQueries.add(buildWhereQuery(filter.getSearchFields(), true, params));
+        }
+
+        // if the filter has a sort then order by it
+        if (filter.hasSortFilter()) {
+            sqlQueries.add(buildOrderQuery(filter.getSortField(), filter.isReverse()));
+        }
+
+        // if a range has been set limit the results
+        sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
+
+        // combine the statement and return result
+        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
+                new DemographicsRowMapper());
     }
 
     public Sex getSex(long id) {
