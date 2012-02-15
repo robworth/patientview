@@ -14,10 +14,10 @@ public class RadarStyleBehaviour extends Behavior {
         super.renderHead(component, response);
 
         // Render these like this so any paths we have still renderTemplate CSS URLs correctly
-        response.renderCSSReference("normal.css");
-        response.renderCSSReference("layout.css");
-        response.renderCSSReference("ajxmenu.css");
-        response.renderCSSReference("admin.css");
-        response.renderCSSReference("tabs_lab.css");
+        response.renderCSSReference(CSS_PATH + "normal.css");
+        response.renderCSSReference(CSS_PATH + "layout.css");
+        response.renderCSSReference(CSS_PATH + "ajxmenu.css");
+        response.renderCSSReference(CSS_PATH + "admin.css");
+        response.renderCSSReference(CSS_PATH + "tabs_lab.css");
     }
 }
