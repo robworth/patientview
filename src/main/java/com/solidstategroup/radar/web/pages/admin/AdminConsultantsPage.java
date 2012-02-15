@@ -2,6 +2,7 @@ package com.solidstategroup.radar.web.pages.admin;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -27,7 +28,11 @@ public class AdminConsultantsPage extends AdminsBasePage {
     public AdminConsultantsPage() {
         final ConsultantsDataProvider consultantsDataProvider = new ConsultantsDataProvider(utilityManager);
 
-        add(new BookmarkablePageLink<AdminConsultantsPage>("addNewConsultant", AdminConsultantsPage.class));
+        // TODO: need to hook these up
+        add(new ExternalLink("exportPdf", ""));
+        add(new ExternalLink("exportExcel", ""));
+        
+        add(new BookmarkablePageLink<AdminConsultantPage>("addNewConsultant", AdminConsultantPage.class));
 
         final WebMarkupContainer consultantsContainer = new WebMarkupContainer("consultantsContainer");
         consultantsContainer.setOutputMarkupId(true);
@@ -65,7 +70,8 @@ public class AdminConsultantsPage extends AdminsBasePage {
     private void builtDataViewRow(Item<Consultant> item) {
         Consultant consultant = item.getModelObject();
 
-        item.add(new BookmarkablePageLink<AdminConsultantsPage>("edit", AdminUserPage.class));
+        item.add(new BookmarkablePageLink<AdminConsultantPage>("edit", AdminConsultantPage.class,
+                AdminConsultantPage.getPageParameters(consultant)));
         item.add(new Label("surname", consultant.getSurname()));
         item.add(new Label("forename", consultant.getForename()));
 
