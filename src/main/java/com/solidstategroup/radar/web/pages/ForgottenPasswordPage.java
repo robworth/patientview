@@ -8,6 +8,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
@@ -16,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForgottenPasswordPage extends BasePage {
+public abstract class ForgottenPasswordPage extends BasePage {
 
     public static final String EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE = "Email address not recognised";
     public static final String ERROR_MESSAGE = "An unexpected error occured";
@@ -28,7 +30,7 @@ public class ForgottenPasswordPage extends BasePage {
         // components to update on ajax submit
         final List<Component> componentsToUpdate = new ArrayList<Component>();
         // Construct form
-        Form<String> form = new Form<String>("form", new Model<String>()) {
+        final Form<String> form = new Form<String>("form", new Model<String>()) {
             @Override
             protected void onSubmit() {
                 try {
@@ -47,6 +49,21 @@ public class ForgottenPasswordPage extends BasePage {
                 return message.contains(ERROR_MESSAGE) || message.contains(EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE);
             }
         });
+
+        // success message
+        Label successMessage = new Label("successMessage", "Your password has been emailed to you") {
+            {
+                setOutputMarkupId(true);
+                setOutputMarkupPlaceholderTag(true);
+                form.add(this);
+                componentsToUpdate.add(this);
+            }
+
+            @Override
+            public boolean isVisible() {
+                return form.isSubmitted() && !form.hasError();
+            }
+        };
         form.add(feedbackPanel);
         componentsToUpdate.add(feedbackPanel);
         feedbackPanel.setOutputMarkupId(true);
@@ -59,6 +76,9 @@ public class ForgottenPasswordPage extends BasePage {
 
         // Submit link
         form.add(new AjaxSubmitLink("submit") {
+            {
+                componentsToUpdate.add(this);
+            }
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
@@ -68,7 +88,17 @@ public class ForgottenPasswordPage extends BasePage {
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
+
+            @Override
+            public boolean isVisible() {
+                if(form.isSubmitted() && !form.hasError()) {
+                     return false;
+                }
+                return super.isVisible();
+            }
         });
+
+
     }
 
 }
