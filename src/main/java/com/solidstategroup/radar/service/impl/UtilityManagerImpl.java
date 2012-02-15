@@ -54,6 +54,14 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getConsultants(filter, page, numberPerPage);
     }
 
+    public void saveConsultant(Consultant consultant) throws Exception {
+        utilityDao.saveConsultant(consultant);
+    }
+
+    public void deleteConsultant(Consultant consultant) throws Exception {
+        utilityDao.deleteConsultant(consultant);
+    }
+
     public Country getCountry(long id) {
         return utilityDao.getCountry(id);
     }
