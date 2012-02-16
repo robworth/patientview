@@ -12,7 +12,7 @@ public class TestPatientFollowUpPage extends BasePageTest {
 
     @Test
     public void renderFollowUpPage() {
-        // Start and render the test page
+        // Start and renderTemplate the test page
         Demographics demographics = new Demographics();
         demographics.setId(new Long(238));
         tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));

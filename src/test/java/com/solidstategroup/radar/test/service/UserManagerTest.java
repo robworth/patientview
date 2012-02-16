@@ -4,6 +4,7 @@ import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.test.DatabaseBackedTest;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,5 @@ public class UserManagerTest extends DatabaseBackedTest {
         // Try and register - this should complete successfully as the data matches up
         userManager.registerPatient(patientUser);
     }
-
 
 }

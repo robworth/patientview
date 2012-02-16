@@ -129,8 +129,7 @@ public class ProfessionalRegistrationPage extends BasePage {
         };
 
         RadarTextFieldWithValidation email = new RadarTextFieldWithValidation("email",
-                new PatternValidator(".+nhs\\.(uk|net)$"), true, emailContainer,
-                componentsToUpdate);
+                new PatternValidator(".+nhs\\.(uk|net)$"), true, emailContainer, componentsToUpdate);
         emailContainer.add(email);
         form.add(emailContainer);
         componentsToUpdate.add(emailContainer);

@@ -7,7 +7,7 @@ public class TestPatientRegistrationPage extends BasePageTest {
 
     @Test
     public void testPatientRegistrationPage() throws Exception {
-        // Start and render registration page
+        // Start and renderTemplate registration page
         tester.startPage(PatientRegistrationPage.class);
 
         // Assert rendered
