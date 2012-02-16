@@ -33,6 +33,8 @@ public class EmailManagerImpl implements EmailManager {
     private JavaMailSender javaMailSender;
     private VelocityEngine velocityEngine;
 
+    private boolean debug;
+
     public EmailManagerImpl() {
         try {
             velocityEngine = new VelocityEngine();
@@ -63,8 +65,10 @@ public class EmailManagerImpl implements EmailManager {
         map.put("patientUser", patientUser);
         map.put("password", TripleDes.decrypt(patientUser.getPasswordHash()));
         String emailBody = renderTemplate(map, "patient-registration-reminder.vm");
-        sendEmail(emailAddressApplication, new String[]{patientUser.getUsername()},
-                new String[]{emailAddressAdmin1}, "Registration reminder for the RADAR website", emailBody);
+        if (!debug) {
+            sendEmail(emailAddressApplication, new String[]{patientUser.getUsername()},
+                    new String[]{emailAddressAdmin1}, "Registration reminder for the RADAR website", emailBody);
+        }
     }
 
     public void sendPatientRegistrationAdminNotificationEmail(PatientUser patientUser) {
@@ -179,5 +183,9 @@ public class EmailManagerImpl implements EmailManager {
 
     public void setEmailAddressAdmin2(String emailAddressAdmin2) {
         this.emailAddressAdmin2 = emailAddressAdmin2;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 }
