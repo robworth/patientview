@@ -21,9 +21,6 @@ public abstract class BasePage extends WebPage {
 
         boolean userLoggedIn = (isProfessionalOrSuperUserLoggedIn() || isPatientUserLoggedIn());
 
-        // Attach styles
-        add(new RadarStyleBehaviour());
-
         add(new Label("title", getTitle()));
 
         // Generic links
