@@ -12,11 +12,15 @@ public interface UserDao {
 
     AdminUser getAdminUser(String email);
 
+    PatientUser getPatientUser(Long id);
+
     PatientUser getPatientUser(String email);
 
     List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
-    void savePatientUser(PatientUser patientUser);
+    void savePatientUser(PatientUser patientUser) throws Exception;
+
+    void deletePatientUser(PatientUser patientUser) throws Exception;
 
     ProfessionalUser getProfessionalUser(Long id);
 
