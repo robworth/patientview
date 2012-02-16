@@ -2,7 +2,6 @@ package com.solidstategroup.radar.web.pages;
 
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarSecuredSession;
-import com.solidstategroup.radar.web.behaviours.RadarStyleBehaviour;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
