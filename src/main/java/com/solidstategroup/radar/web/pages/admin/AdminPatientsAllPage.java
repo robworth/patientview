@@ -1,12 +1,14 @@
 package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 public class AdminPatientsAllPage extends AdminsBasePage {
     @SpringBean
     private DemographicsManager demographicsManager;
+    @SpringBean
+    private DiagnosisManager diagnosisManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -122,7 +126,15 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         }
 
         item.add(new Label("address", StringUtils.join(addressValues, ", ")));
-        item.add(new Label("diagnosis", "")); // TODO: where does this come from
+
+        String diagnosisAbbrev = "";
+        Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
+
+        if (diagnosis != null && diagnosis.getDiagnosisCode() != null) {
+            diagnosisAbbrev = diagnosis.getDiagnosisCode().getAbbreviation();
+        }
+
+        item.add(new Label("diagnosis", diagnosisAbbrev));
 
         String consultantSurname = "", consultantForename = "", centreAbbrv = "";
 
@@ -154,7 +166,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
                 put("orderByAddress", DemographicsFilter.UserField.ADDRESS.getDatabaseFieldName());
                 put("orderByDiagnosis", DemographicsFilter.UserField.DIAGNOSIS.getDatabaseFieldName());
                 put("orderByConsultantSurname", DemographicsFilter.UserField.CONSULTANT_SURNAME.getDatabaseFieldName());
-                put("orderByConsultantForename", DemographicsFilter.UserField.CONSULTANT_FORNAME.getDatabaseFieldName());
+                put("orderByConsultantForename",
+                        DemographicsFilter.UserField.CONSULTANT_FORNAME.getDatabaseFieldName());
                 put("orderByCentre", DemographicsFilter.UserField.CENTRE.getDatabaseFieldName());
             }
         };
