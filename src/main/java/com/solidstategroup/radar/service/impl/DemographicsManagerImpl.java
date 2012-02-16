@@ -5,8 +5,8 @@ import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.service.DemographicsManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 
@@ -28,7 +28,15 @@ public class DemographicsManagerImpl implements DemographicsManager {
     }
 
     public List<Demographics> getDemographics() {
-        return demographicsDao.getDemographics();
+        return getDemographics(new DemographicsFilter(), -1, -1);
+    }
+
+    public List<Demographics> getDemographics(DemographicsFilter filter) {
+        return getDemographics(filter, -1, -1);
+    }
+
+    public List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
+        return demographicsDao.getDemographics(filter, page, numberPerPage);
     }
 
     public Sex getSex(long id) {
