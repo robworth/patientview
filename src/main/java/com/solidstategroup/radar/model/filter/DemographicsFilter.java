@@ -2,15 +2,16 @@ package com.solidstategroup.radar.model.filter;
 
 public class DemographicsFilter extends BaseFilter {
     public enum UserField {
-        RADAR_NO("RADAR_NO"),
-        SURNAME("uSurname"),
-        FORENAME("uForename"),
-        REGISTRATION_DATE("DATE_REG"),
-        ADDRESS("ADD1,ADD2,ADD3,ADD4,POSTCODE"),
-        DIAGNOSIS("dcAbbr"),
-        CONSULTANT_FORNAME("cFNAME"),
-        CONSULTANT_SURNAME("cSNAME"),
-        CENTRE("cAbbrev");
+        RADAR_NO("tbl_Demographics.RADAR_NO"),
+        SURNAME("tbl_Demographics.SNAME"),
+        FORENAME("tbl_Demographics.FNAME"),
+        REGISTRATION_DATE("tbl_Demographics.DATE_REG"),
+        ADDRESS("tbl_Demographics.ADD1,tbl_Demographics.ADD2," +
+                "tbl_Demographics.ADD3,tbl_Demographics.ADD4,tbl_Demographics.POSTCODE"),
+        DIAGNOSIS("tbl_DiagCode.dcAbbr"),
+        CONSULTANT_FORNAME("tbl_Consultants.cFNAME"),
+        CONSULTANT_SURNAME("tbl_Consultants.cSNAME"),
+        CENTRE("tbl_Centres.cAbbrev");
 
         private String databaseFieldName;
 
