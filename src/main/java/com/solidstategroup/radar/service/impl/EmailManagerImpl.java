@@ -58,6 +58,15 @@ public class EmailManagerImpl implements EmailManager {
                 new String[]{emailAddressAdmin1}, "Your RaDaR website registration", emailBody);
     }
 
+    public void sendPatientRegistrationReminderEmail(PatientUser patientUser) throws Exception {       
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("patientUser", patientUser);
+        map.put("password", TripleDes.decrypt(patientUser.getPasswordHash()));
+        String emailBody = renderTemplate(map, "patient-registration-reminder.vm");
+        sendEmail(emailAddressApplication, new String[]{patientUser.getUsername()},
+                new String[]{emailAddressAdmin1}, "Registration reminder for the RADAR website", emailBody);
+    }
+
     public void sendPatientRegistrationAdminNotificationEmail(PatientUser patientUser) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("patientUser", patientUser);
