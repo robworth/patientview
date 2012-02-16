@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.dao;
 
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -12,6 +13,8 @@ public interface UserDao {
     AdminUser getAdminUser(String email);
 
     PatientUser getPatientUser(String email);
+
+    List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
     void savePatientUser(PatientUser patientUser);
 
