@@ -3,6 +3,7 @@ package com.solidstategroup.radar.dao.impl;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -67,6 +68,44 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             LOGGER.debug("Could not find row in table tbl_Patient_Users with pUserName {}", email);
         }
         return null;
+    }
+
+    public List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage) {
+        if (filter == null) {
+            filter = new PatientUserFilter();
+        }
+
+        List<String> sqlQueries = new ArrayList<String>();
+        List<Object> params = new ArrayList<Object>();
+
+        // normal sql query without any filter options
+        sqlQueries.add("SELECT " +
+                "   tbl_Patient_Users.*, " +
+                "   tbl_Demographics.sName, " +
+                "   tbl_Demographics.fName " +
+                "FROM " +
+                "   tbl_Patient_Users " +
+                "INNER JOIN " +
+                "   tbl_Demographics " +
+                "ON " +
+                "   tbl_Patient_Users.RADAR_NO = tbl_Demographics.RADAR_NO");
+
+        // if there are search queries then build the where
+        if (filter.hasSearchCriteria()) {
+            sqlQueries.add(buildWhereQuery(filter.getSearchFields(), true, params));
+        }
+
+        // if the filter has a sort then order by it
+        if (filter.hasSortFilter()) {
+            sqlQueries.add(buildOrderQuery(filter.getSortField(), filter.isReverse()));
+        }
+
+        // if a range has been set limit the results
+        sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
+
+        // combine the statement and return result
+        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
+                new PatientUserRowMapper());
     }
 
     public void savePatientUser(final PatientUser patientUser) {
