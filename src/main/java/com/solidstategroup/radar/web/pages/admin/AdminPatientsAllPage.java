@@ -95,7 +95,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
      */
     private void builtDataViewRow(Item<Demographics> item) {
         Demographics demographics = item.getModelObject();
-        item.add(new BookmarkablePageLink<AdminPatientsAllPage>("edit", AdminPatientsAllPage.class));
+        item.add(new BookmarkablePageLink<AdminPatientsAllPage>("edit", AdminPatientAllPage.class,
+                AdminPatientAllPage.getPageParameters(demographics)));
         item.add(new Label("radarNo", demographics.getId().toString()));
         item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(demographics.getDateRegistered()),
                 RadarApplication.DATE_PATTERN));
