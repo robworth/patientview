@@ -67,6 +67,7 @@
         <property name="emailManager" ref="emailManager"/>
         <property name="demographicsDao" ref="demographicsDao"/>
         <property name="userDao" ref="userDao"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
 </beans>
