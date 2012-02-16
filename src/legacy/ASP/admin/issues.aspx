@@ -107,7 +107,7 @@ width:400px;
         ConnectionString="<%$ ConnectionStrings:RadarConnectionString %>" 
         DeleteCommand="DELETE FROM [tbl_IssueTracker] WHERE [bID] = @bID" 
         InsertCommand="INSERT INTO [tbl_IssueTracker] ([bType], [bPage], [bDateLogged], [bDateResolved], [bDesc], [bComment], [bPriority], [bStatus], [bUpdated]) VALUES (@bType, @bPage, @bDateLogged, @bDateResolved, @bDesc, @bComment, @bPriority, @bStatus, @bUpdated)" 
-        SelectCommand="SELECT * FROM [tbl_IssueTracker] ORDER BY [bID]" 
+        SelectCommand="SELECT * FROM [tbl_IssueTracker] ORDER BY [bID] DESC" 
         
         UpdateCommand="UPDATE [tbl_IssueTracker] SET [bType] = @bType, [bPage] = @bPage, [bDateLogged] = @bDateLogged, [bDateResolved] = @bDateResolved, [bDesc] = @bDesc, [bComment] = @bComment, [bPriority] = @bPriority, [bStatus] = @bStatus, [bUpdated] = @bUpdated WHERE [bID] = @bID">
         <DeleteParameters>
