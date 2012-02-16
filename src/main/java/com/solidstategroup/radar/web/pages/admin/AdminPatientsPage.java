@@ -5,6 +5,7 @@ import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
@@ -30,6 +31,8 @@ public class AdminPatientsPage extends AdminsBasePage {
     private UserManager userManager;
     @SpringBean
     private DemographicsManager demographicsManager;
+    @SpringBean
+    private EmailManager emailManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -125,7 +128,12 @@ public class AdminPatientsPage extends AdminsBasePage {
 
         item.add(new AjaxLink("emailLink") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-             // TODO:
+                try {
+                    emailManager.sendPatientRegistrationReminderEmail(patientUser);
+                } catch (Exception e) {
+                    error("There was an error sending reminder email to patient " + e);
+                    ajaxRequestTarget.add(feedback);
+                }
             }
         });
     }
