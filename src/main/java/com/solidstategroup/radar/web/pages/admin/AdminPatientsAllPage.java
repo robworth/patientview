@@ -84,6 +84,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
                 public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
                     demographicsList.setCurrentPage(0);
                     ajaxRequestTarget.add(demographicsContainer);
+                    ajaxRequestTarget.add(clearButton);
                 }
             });
         }

@@ -81,6 +81,7 @@ public class AdminUsersPage extends AdminsBasePage {
                 public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
                     userList.setCurrentPage(0);
                     ajaxRequestTarget.add(usersContainer);
+                    ajaxRequestTarget.add(clearButton);
                 }
             });
         }
