@@ -81,9 +81,11 @@ public class AdminPatientsPage extends AdminsBasePage {
      */
     private void builtDataViewRow(final Item<PatientUser> item, final FeedbackPanel feedback) {
         final PatientUser patientUser = item.getModelObject();
-        final Demographics demographics = demographicsManager.getDemographicsByRadarNumber(patientUser.getRadarNumber());
+        final Demographics demographics = demographicsManager.getDemographicsByRadarNumber(
+                patientUser.getRadarNumber());
 
-        item.add(new BookmarkablePageLink<AdminConsultantPage>("edit", AdminPatientsPage.class)); // TODO: make page and pass params
+        item.add(new BookmarkablePageLink<AdminConsultantPage>("edit", AdminPatientPage.class,
+                AdminPatientPage.getPageParameters(patientUser))); //
 
         item.add(new Label("radarNo", patientUser.getRadarNumber().toString()));
         item.add(new Label("forename", demographics.getForename()));
@@ -110,8 +112,7 @@ public class AdminPatientsPage extends AdminsBasePage {
         AjaxLink deleteLink = new AjaxLink("deleteLink") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 try {
-                    // todo: implement delete patient user
-                    //userManager.deletePatientUser(patientUser);
+                    userManager.deletePatientUser(patientUser);
                     setResponsePage(AdminPatientsPage.class);
                 } catch (Exception e) {
                     error("Could not delete patient " + e);
