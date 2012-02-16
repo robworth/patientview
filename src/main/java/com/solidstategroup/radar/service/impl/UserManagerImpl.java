@@ -35,6 +35,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private DemographicsDao demographicsDao;
     private UserDao userDao;
 
+    public PatientUser getPatientUser(Long id) {
+        return userDao.getPatientUser(id);
+    }
+
     public PatientUser getPatientUser(String email) {
         return userDao.getPatientUser(email);
     }
@@ -59,8 +63,17 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getPatientUsers(filter, page, numberPerPage);
     }
 
-    public void savePatientUser(PatientUser patientUser) {
+    public void savePatientUser(PatientUser patientUser) throws Exception {
+        // if the password prop set then encrypt it
+        if (patientUser.getPassword() != null && patientUser.getPassword().length() > 0) {
+            patientUser.setPasswordHash(PatientUser.getPasswordHash(patientUser.getPassword()));
+        }
+
         userDao.savePatientUser(patientUser);
+    }
+
+    public void deletePatientUser(PatientUser patientUser) throws Exception {
+        userDao.deletePatientUser(patientUser);
     }
 
     public void registerPatient(PatientUser patientUser) throws RegistrationException {
