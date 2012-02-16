@@ -21,14 +21,18 @@ public abstract class User extends BaseModel implements UserDetails {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 
-    private String username;
+    private String username, password;
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
     private byte[] passwordHash, usernameHash;
 
     public abstract String getSecurityRole();
 
     public String getPassword() {
-        return null;  // Todo: Implement
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public static byte[] getPasswordHash(String password) throws Exception {
