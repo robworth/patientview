@@ -3,7 +3,7 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.exception.DecryptionException;
+import com.solidstategroup.radar.model.exception.DaoException;import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
@@ -19,6 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +35,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
 
     private EmailManager emailManager;
+    private ProviderManager authenticationManager;
 
     private DemographicsDao demographicsDao;
     private UserDao userDao;
@@ -146,6 +151,38 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getProfessionalUsers(filter, page, numberPerPage);
     }
 
+    public boolean authenticateProfessionalUser(String username, String password) throws AuthenticationException {
+        ProfessionalUser professionalUser = userDao.getProfessionalUser(username);
+        if (professionalUser != null) {
+            try {
+                Authentication authentication = authenticationManager.
+                        authenticate(new UsernamePasswordAuthenticationToken(username, password));
+                return authentication.isAuthenticated();
+            } catch (AuthenticationException e) {
+                LOGGER.warn("Authentication failed for user {} and password {}", username, e.getMessage());
+                throw e;
+            }
+        }
+        return false;
+    }
+
+    public void changeUserPassword(String username, String password) throws DecryptionException, DaoException {
+        ProfessionalUser professionalUser = getProfessionalUser(username);
+        try {
+            professionalUser.setPasswordHash(User.getPasswordHash(password));
+
+        } catch (Exception e) {
+            LOGGER.error("could not get password hash for password", e);
+            throw new DecryptionException("could not get password hash for password");
+        }
+        try {
+            userDao.saveProfessionalUser(professionalUser);
+        } catch (Exception e) {
+            LOGGER.error("could not save professional user", e);
+            throw new DaoException("Could not save professional user");
+        }
+    }
+
     public void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException,
             DecryptionException {
         // In theory this could just go in the email manager but we need to query for user first
@@ -209,4 +246,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         this.userDao = userDao;
     }
 
+    public void setAuthenticationManager(ProviderManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 }

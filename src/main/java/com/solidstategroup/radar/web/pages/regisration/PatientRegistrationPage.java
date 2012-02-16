@@ -28,6 +28,8 @@ import java.util.List;
 public class PatientRegistrationPage extends BasePage {
 
     public static final String FIX_ERRORS_MESSAGE = "Please fix all errors";
+    public static final String COULD_NOT_REGISTER_MESSAGE = "Could not register - please check the radar number " +
+            "and date of birth are correct";
     @SpringBean
     private UserManager userManager;
 
@@ -47,7 +49,7 @@ public class PatientRegistrationPage extends BasePage {
                     userManager.registerPatient(patientUser);
                     get("submit").setVisible(false);
                 } catch (RegistrationException e) {
-                    error("Could not register - please check the radar number and date of birth are correct");
+                    error(COULD_NOT_REGISTER_MESSAGE);
                 }
             }
         };
@@ -75,7 +77,7 @@ public class PatientRegistrationPage extends BasePage {
         final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback", new IFeedbackMessageFilter() {
             public boolean accept(FeedbackMessage feedbackMessage) {
                 String message = feedbackMessage.getMessage().toString();
-                return message.contains("Could not register") || message.contains(FIX_ERRORS_MESSAGE);
+                return message.contains(COULD_NOT_REGISTER_MESSAGE) || message.contains(FIX_ERRORS_MESSAGE);
             }
         });
         feedbackPanel.setOutputMarkupPlaceholderTag(true);

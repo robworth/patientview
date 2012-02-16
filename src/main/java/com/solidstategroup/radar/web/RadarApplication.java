@@ -4,6 +4,7 @@ import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
 import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
@@ -103,6 +104,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("registration/professional", ProfessionalRegistrationPage.class);
         mountPage("professionals", ProfessionalsPage.class);
         mountPage("recruitment", RecruitmentPage.class);
+        mountPage("change-details", ChangeRegistrationDetails.class);
 
         // login pages
         mountPage("login/patient", PatientsLoginPage.class);
