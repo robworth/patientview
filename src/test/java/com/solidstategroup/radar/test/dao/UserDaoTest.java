@@ -2,6 +2,7 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -67,6 +68,29 @@ public class UserDaoTest extends BaseDaoTest {
         // Try and get the patient user - should get our new user
         patientUser = userDao.getPatientUser("test_user");
         assertNotNull("Saved user was null on getting frmo DAO", patientUser);
+    }
+
+    @Test
+    public void testGetPatientUsers() {
+        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), -1, -1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() > 0);
+    }
+
+    @Test
+    public void testGetPatientUsersPage1() {
+        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), 1, 1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() == 1);
+    }
+
+    @Test
+    public void testSearchPatientUsers() {
+        PatientUserFilter userFilter = new PatientUserFilter();
+        userFilter.addSearchCriteria(PatientUserFilter.UserField.RADAR_NO.getDatabaseFieldName(), "246");
+        List<PatientUser> patientUsers = userDao.getPatientUsers(userFilter, -1, -1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() > 0);
     }
 
     @Test
