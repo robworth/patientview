@@ -6,6 +6,7 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -44,6 +45,18 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
         return null;
+    }
+
+    public List<PatientUser> getPatientUsers() {
+        return getPatientUsers(new PatientUserFilter(), -1, -1);
+    }
+
+    public List<PatientUser> getPatientUsers(PatientUserFilter filter) {
+        return getPatientUsers(filter, -1, -1);
+    }
+
+    public List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage) {
+        return userDao.getPatientUsers(filter, page, numberPerPage);
     }
 
     public void savePatientUser(PatientUser patientUser) {

@@ -6,6 +6,7 @@ import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,12 @@ public interface UserManager {
     PatientUser getPatientUser(String email);
 
     PatientUser getPatientUser(String email, Date dateOfBirth);
+
+    List<PatientUser> getPatientUsers();
+
+    List<PatientUser> getPatientUsers(PatientUserFilter filter);
+
+    List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
     void savePatientUser(PatientUser patientUser);
 
@@ -29,7 +36,6 @@ public interface UserManager {
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
-
     void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException;
 
     void sendForgottenPasswordToProfessional(String username) throws EmailAddressNotFoundException;
@@ -41,6 +47,5 @@ public interface UserManager {
     List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter);
 
     List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage);
-
 
 }
