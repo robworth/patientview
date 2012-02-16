@@ -13,6 +13,8 @@ import java.util.List;
 
 public interface UserManager {
 
+    PatientUser getPatientUser(Long id);
+
     PatientUser getPatientUser(String email);
 
     PatientUser getPatientUser(String email, Date dateOfBirth);
@@ -23,7 +25,9 @@ public interface UserManager {
 
     List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
-    void savePatientUser(PatientUser patientUser);
+    void savePatientUser(PatientUser patientUser) throws Exception;
+
+    void deletePatientUser(PatientUser patientUser) throws Exception;
 
     void registerPatient(PatientUser patientUser) throws RegistrationException;
 
