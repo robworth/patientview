@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.regisration;
 
 
 import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
@@ -10,6 +10,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;

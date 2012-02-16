@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.test.web;
 
-import com.solidstategroup.radar.web.pages.ForgottenPasswordPage;
-import com.solidstategroup.radar.web.pages.PatientForgottenPasswordPage;
+import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
 import org.junit.Test;
 
 public class TestForgottenPasswordPage extends BasePageTest {
