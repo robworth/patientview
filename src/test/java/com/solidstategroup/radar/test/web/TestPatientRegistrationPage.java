@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.test.web;
 
-import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
+import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import org.junit.Test;
 
 public class TestPatientRegistrationPage extends BasePageTest {

@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.regisration;
 
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
@@ -6,6 +6,8 @@ import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.pages.BasePage;
+import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;

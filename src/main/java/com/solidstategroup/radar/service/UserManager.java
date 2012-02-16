@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.service;
 
+import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
@@ -30,9 +31,9 @@ public interface UserManager {
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
 
-    void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException;
+    void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException, DecryptionException;
 
-    void sendForgottenPasswordToProfessional(String username) throws EmailAddressNotFoundException;
+    void sendForgottenPasswordToProfessional(String username) throws EmailAddressNotFoundException, DecryptionException;
 
     void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
