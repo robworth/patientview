@@ -13,14 +13,11 @@ public class RadarStyleBehaviour extends Behavior {
     public void renderHead(Component component, IHeaderResponse response) {
         super.renderHead(component, response);
 
-        // Get the context path we're deployed on
-        String path = WebApplication.get().getServletContext().getContextPath() + CSS_PATH;
-
-        // Render these like this so any paths we have still render CSS URLs correctly
-        response.renderCSSReference(path + "normal.css");
-        response.renderCSSReference(path + "layout.css");
-        response.renderCSSReference(path + "ajxmenu.css");
-        response.renderCSSReference(path + "admin.css");
-        response.renderCSSReference(path + "tabs_lab.css");
+        // Render these like this so any paths we have still renderTemplate CSS URLs correctly
+        response.renderCSSReference(CSS_PATH + "normal.css");
+        response.renderCSSReference(CSS_PATH + "layout.css");
+        response.renderCSSReference(CSS_PATH + "ajxmenu.css");
+        response.renderCSSReference(CSS_PATH + "admin.css");
+        response.renderCSSReference(CSS_PATH + "tabs_lab.css");
     }
 }

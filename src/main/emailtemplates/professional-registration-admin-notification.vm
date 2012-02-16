@@ -1,0 +1,9 @@
+
+<style> p, td {
+    font-family: verdana;
+    color: #000000;
+    font-size: 12px;
+} </style>
+<p>A new user has registered with the Radar website as follows:</p>
+<p>${user.title} ${user.forename} ${user.surname} of:</p>
+<p>${user.centre.name}</p>

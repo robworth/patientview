@@ -15,7 +15,7 @@ public class TestPatientFirstVisitPage extends BasePageTest {
         Demographics demographics = new Demographics();
         demographics.setId(new Long(238));
 
-        // Start and render the test page
+        // Start and renderTemplate the test page
         tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));
 
         // Assert rendered page class
