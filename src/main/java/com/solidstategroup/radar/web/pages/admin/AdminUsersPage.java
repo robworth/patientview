@@ -6,12 +6,10 @@ import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SortLink;
+import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.dataproviders.user.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -72,41 +70,8 @@ public class AdminUsersPage extends AdminsBasePage {
         }
 
         // button to clear all the filter fields for each colum
-        final AjaxLink clearButton = new AjaxLink("clearButton") {
-            @Override
-            protected IAjaxCallDecorator getAjaxCallDecorator() {
-                return new IAjaxCallDecorator() {
-                    public CharSequence decorateScript(Component component, CharSequence charSequence) {
-                        return "$('input.dxeEditArea').val(''); " + charSequence;
-                    }
-
-                    public CharSequence decorateOnSuccessScript(Component component, CharSequence charSequence) {
-                        return charSequence;
-                    }
-
-                    public CharSequence decorateOnFailureScript(Component component, CharSequence charSequence) {
-                        return charSequence;
-                    }
-                };
-            }
-
-            @Override
-            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                if (professionalUserDataProvider.hasSearchCriteria()) {
-                    professionalUserDataProvider.clearSearchCriteria();
-                    userList.setCurrentPage(0);
-                    ajaxRequestTarget.add(usersContainer);
-                    ajaxRequestTarget.add(this);
-                }
-            }
-
-            @Override
-            public boolean isVisible() {
-                return professionalUserDataProvider.hasSearchCriteria();
-            }
-        };
-        clearButton.setOutputMarkupId(true);
-        clearButton.setOutputMarkupPlaceholderTag(true);
+        final ClearLink clearButton = new ClearLink("clearButton", professionalUserDataProvider, userList,
+                usersContainer);
         add(clearButton);
 
         // add a search field to the top of each column - these will AND each search
@@ -116,7 +81,6 @@ public class AdminUsersPage extends AdminsBasePage {
                 public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
                     userList.setCurrentPage(0);
                     ajaxRequestTarget.add(usersContainer);
-                    ajaxRequestTarget.add(clearButton);
                 }
             });
         }

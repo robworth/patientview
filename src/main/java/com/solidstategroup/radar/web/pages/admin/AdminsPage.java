@@ -7,5 +7,6 @@ public class AdminsPage extends AdminsBasePage {
     public AdminsPage() {
         add(new BookmarkablePageLink<AdminUsersPage>("usersPageLink", AdminUsersPage.class));
         add(new BookmarkablePageLink<AdminConsultantsPage>("consultantsPageLink", AdminConsultantsPage.class));
+        add(new BookmarkablePageLink<AdminPatientsAllPage>("patientsAllPageLink", AdminPatientsAllPage.class));
     }
 }
