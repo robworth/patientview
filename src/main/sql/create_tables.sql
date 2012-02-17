@@ -274,6 +274,19 @@ CREATE TABLE tbl_IMMUNSUP_TREATMENT (
 	FIRST_FLAG bit
 );
 
+CREATE TABLE tbl_IssueTracker (
+  bID int(11) NOT NULL auto_increment, PRIMARY KEY  (bID),
+  bType varchar(50) default NULL,
+  bPage varchar(50) default NULL,
+  bDateLogged datetime default NULL,
+  bDateResolved datetime default NULL,
+  bDesc text,
+  bComment text,
+  bPriority varchar(20) default NULL,
+  bStatus varchar(50) default NULL,
+  bUpdated datetime default NULL
+);
+
 CREATE TABLE tbl_Karyotype (
 	kID int AUTO_INCREMENT, PRIMARY KEY (kID),
 	KARYOTYPE varchar(50)
