@@ -3,6 +3,7 @@ package com.solidstategroup.radar.dao.impl;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -57,6 +58,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
+    public PatientUser getPatientUser(Long id) {
+        try {
+            // Return a patient user object queried for using given email
+            return jdbcTemplate.queryForObject("SELECT * FROM tbl_Patient_Users WHERE pID = ?",
+                    new Object[]{id}, new PatientUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            // Add debug logging
+            LOGGER.debug("Could not find row in table tbl_Patient_Users with pID {}", id);
+        }
+        return null;
+    }
+
     public PatientUser getPatientUser(String email) {
         try {
             // Return a patient user object queried for using given email
@@ -69,17 +82,71 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
-    public void savePatientUser(final PatientUser patientUser) {
-        Number id = patientUsersInsert.executeAndReturnKey(new HashMap<String, Object>() {
+    public List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage) {
+        if (filter == null) {
+            filter = new PatientUserFilter();
+        }
+
+        List<String> sqlQueries = new ArrayList<String>();
+        List<Object> params = new ArrayList<Object>();
+
+        // normal sql query without any filter options
+        sqlQueries.add("SELECT " +
+                "   tbl_Patient_Users.*, " +
+                "   tbl_Demographics.sName, " +
+                "   tbl_Demographics.fName " +
+                "FROM " +
+                "   tbl_Patient_Users " +
+                "INNER JOIN " +
+                "   tbl_Demographics " +
+                "ON " +
+                "   tbl_Patient_Users.RADAR_NO = tbl_Demographics.RADAR_NO");
+
+        // if there are search queries then build the where
+        if (filter.hasSearchCriteria()) {
+            sqlQueries.add(buildWhereQuery(filter.getSearchFields(), true, params));
+        }
+
+        // if the filter has a sort then order by it
+        if (filter.hasSortFilter()) {
+            sqlQueries.add(buildOrderQuery(filter.getSortField(), filter.isReverse()));
+        }
+
+        // if a range has been set limit the results
+        sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
+
+        // combine the statement and return result
+        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
+                new PatientUserRowMapper());
+    }
+
+    public void savePatientUser(final PatientUser patientUser) throws Exception {
+        Map<String, Object> patientUserMap = new HashMap<String, Object>() {
             {
                 put("RADAR_NO", patientUser.getRadarNumber());
                 put("pUserName", patientUser.getUsername());
                 put("pPassWord", patientUser.getPasswordHash());
                 put("pDOB", patientUser.getDateOfBirth());
                 put("pDateReg", patientUser.getDateRegistered());
+                put("pID", patientUser.getId());
             }
-        });
-        patientUser.setId(id.longValue());
+        };
+        
+        if (patientUser.hasValidId()) {
+            String updateSql = buildUpdateQuery("tbl_Patient_Users", "pID", patientUserMap);
+            namedParameterJdbcTemplate.update(updateSql, patientUserMap);
+        } else {
+            Number id = patientUsersInsert.executeAndReturnKey(patientUserMap);
+            patientUser.setId(id.longValue());
+        }
+    }
+
+    public void deletePatientUser(PatientUser patientUser) throws Exception {
+        Map<String, Object> patientUserMap = new HashMap<String, Object>();
+        patientUserMap.put("pID", patientUser.getId());
+        patientUserMap.put("RADAR_NO", patientUser.getRadarNumber());
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_Demographics WHERE RADAR_NO = :RADAR_NO;", patientUserMap);
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_Patient_Users WHERE pID = :pID;", patientUserMap);
     }
 
     public ProfessionalUser getProfessionalUser(Long id) {
@@ -219,6 +286,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         public PatientUser mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a patient user and set all the fields, pretty trivial
             PatientUser patientUser = new PatientUser();
+            patientUser.setId(resultSet.getLong("pID"));
             patientUser.setUsername(resultSet.getString("pUserName"));
             patientUser.setPasswordHash(resultSet.getBytes("pPassWord"));
             patientUser.setDateOfBirth(resultSet.getDate("pDOB"));

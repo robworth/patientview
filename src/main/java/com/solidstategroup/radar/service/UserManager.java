@@ -9,17 +9,28 @@ import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import org.springframework.security.core.AuthenticationException;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 
 import java.util.Date;
 import java.util.List;
 
 public interface UserManager {
 
+    PatientUser getPatientUser(Long id);
+
     PatientUser getPatientUser(String email);
 
     PatientUser getPatientUser(String email, Date dateOfBirth);
 
-    void savePatientUser(PatientUser patientUser);
+    List<PatientUser> getPatientUsers();
+
+    List<PatientUser> getPatientUsers(PatientUserFilter filter);
+
+    List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
+
+    void savePatientUser(PatientUser patientUser) throws Exception;
+
+    void deletePatientUser(PatientUser patientUser) throws Exception;
 
     void registerPatient(PatientUser patientUser) throws RegistrationException, UserEmailAlreadyExists;
 
@@ -31,7 +42,6 @@ public interface UserManager {
     ProfessionalUser getProfessionalUser(String email);
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
-
 
     void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException, DecryptionException;
 
@@ -52,6 +62,6 @@ public interface UserManager {
      */
     boolean authenticateProfessionalUser(String username, String password) throws AuthenticationException;
 
-
     void changeUserPassword(String username, String password) throws DecryptionException, DaoException;
+
 }

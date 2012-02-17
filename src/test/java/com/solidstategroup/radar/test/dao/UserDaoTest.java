@@ -1,12 +1,15 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.util.TripleDes;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -24,6 +27,9 @@ public class UserDaoTest extends BaseDaoTest {
     
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private DemographicsDao demographicsDao;
 
     @Test
     public void testGetAdminUser() {
@@ -67,6 +73,44 @@ public class UserDaoTest extends BaseDaoTest {
         // Try and get the patient user - should get our new user
         patientUser = userDao.getPatientUser("test_user");
         assertNotNull("Saved user was null on getting frmo DAO", patientUser);
+    }
+
+    @Test
+    public void testGetPatientUsers() {
+        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), -1, -1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() > 0);
+    }
+
+    @Test
+    public void testGetPatientUsersPage1() {
+        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), 1, 1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() == 1);
+    }
+
+    @Test
+    public void testSearchPatientUsers() {
+        PatientUserFilter userFilter = new PatientUserFilter();
+        userFilter.addSearchCriteria(PatientUserFilter.UserField.RADAR_NO.getDatabaseFieldName(), "246");
+        List<PatientUser> patientUsers = userDao.getPatientUsers(userFilter, -1, -1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() > 0);
+    }
+
+    @Test
+    public void testDeletePatientUser() throws Exception {
+        PatientUser patientUser = userDao.getPatientUser(1L);
+        Long radarNo = patientUser.getRadarNumber();
+
+        userDao.deletePatientUser(patientUser);
+
+        // have to check the user was deleted and their demographics record
+        patientUser = userDao.getPatientUser(1L);
+        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(radarNo);
+
+        assertNull("User was found after being deleted", patientUser);
+        assertNull("Demographics for user was found after being deleted", demographics);
     }
 
     @Test
@@ -158,6 +202,13 @@ public class UserDaoTest extends BaseDaoTest {
         List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() > 0);
+    }
+
+    @Test
+    public void testDeleteProfessionalUser() throws Exception {
+        userDao.deleteProfessionalUser(userDao.getProfessionalUser(16L));
+        ProfessionalUser professionalUser = userDao.getProfessionalUser(16L);
+        assertNull("User was found after being deleted", professionalUser);
     }
     
     @Test
