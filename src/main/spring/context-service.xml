@@ -4,6 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <bean id="issueManager" class="com.solidstategroup.radar.service.impl.IssueManagerImpl">
+        <property name="issueDao" ref="issueDao"/>
+    </bean>
+
     <bean id="clinicalDataManager" class="com.solidstategroup.radar.service.impl.ClinicalDataManagerImpl">
         <property name="clinicalDataDao" ref="clinicalDataDao"/>
     </bean>
