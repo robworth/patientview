@@ -40,4 +40,8 @@ public class IssueManagerImpl implements IssueManager {
         return issueDao.getIssues(filter, page, numberPerPage);
     }
 
+    public void setIssueDao(IssueDao issueDao) {
+        this.issueDao = issueDao;
+    }
+
 }
