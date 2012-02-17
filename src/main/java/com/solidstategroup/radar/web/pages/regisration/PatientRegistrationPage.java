@@ -1,10 +1,10 @@
 package com.solidstategroup.radar.web.pages.regisration;
 
 import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
-import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
@@ -17,10 +17,13 @@ import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,8 @@ public class PatientRegistrationPage extends BasePage {
                     get("submit").setVisible(false);
                 } catch (RegistrationException e) {
                     error(COULD_NOT_REGISTER_MESSAGE);
+                } catch (UserEmailAlreadyExists userEmailAlreadyExists) {
+                    get("username").error("Email address already exists");
                 }
             }
         };
@@ -85,7 +90,16 @@ public class PatientRegistrationPage extends BasePage {
 
         // Add fields
         form.add(new RadarTextFieldWithValidation("radarNumber", null, true, form, componentsToUpdateList));
-        form.add(new RadarRequiredTextField("username", form, componentsToUpdateList));
+        TextField username = new RadarTextFieldWithValidation("username", new StringValidator(){
+            @Override
+            protected void onValidate(IValidatable<String> stringIValidatable) {
+                /*
+                  this does not do anything, pass a dummy validator so u can use this component with
+                 adds a component feedback and component feedback indicator
+                 */
+            }
+        }, true, form, componentsToUpdateList);
+        form.add(username);
 
         // Required date field
         DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form, componentsToUpdateList);

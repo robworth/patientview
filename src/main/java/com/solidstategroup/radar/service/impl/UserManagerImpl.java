@@ -5,7 +5,7 @@ import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.exception.DaoException;import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
-import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
@@ -56,7 +56,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.savePatientUser(patientUser);
     }
 
-    public void registerPatient(PatientUser patientUser) throws RegistrationException {
+    public void registerPatient(PatientUser patientUser) throws RegistrationException, UserEmailAlreadyExists {
         // Check we have a valid radar number, email address and date of birth
         if (patientUser == null ||
                 patientUser.getRadarNumber() <= 0L ||
@@ -64,6 +64,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                 patientUser.getDateOfBirth() == null) {
             throw new IllegalArgumentException("Must supply a non null patient user " +
                     "with valid radar number, username and date of birth for registration");
+        }
+
+        PatientUser dupliatePatientUser = getPatientUser(patientUser.getUsername());
+        if(dupliatePatientUser != null) {
+            throw new UserEmailAlreadyExists("User email already exists");
         }
 
         // First we need to try and get a demographics user with the supplied radar number
@@ -100,11 +105,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
     }
 
-    public void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists,
+    public void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
             RegistrationException {
         User user = userDao.getProfessionalUser(professionalUser.getEmail());
         if (user != null) {
-            throw new ProfessionalUserEmailAlreadyExists("Email address already exists");
+            throw new UserEmailAlreadyExists("Email address already exists");
         }
 
         try {

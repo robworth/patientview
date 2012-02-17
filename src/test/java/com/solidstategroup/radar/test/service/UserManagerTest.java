@@ -1,10 +1,10 @@
 package com.solidstategroup.radar.test.service;
 
 import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.test.DatabaseBackedTest;
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class UserManagerTest extends DatabaseBackedTest {
     private UserManager userManager;
 
     @Test(expected = RegistrationException.class)
-    public void testPatientUserRegistrationUnknownRadarNumber() throws RegistrationException {
+    public void testPatientUserRegistrationUnknownRadarNumber() throws RegistrationException, UserEmailAlreadyExists {
 
         // Construct a patient user
         PatientUser patientUser = new PatientUser();
@@ -36,7 +36,7 @@ public class UserManagerTest extends DatabaseBackedTest {
     }
 
     @Test(expected = RegistrationException.class)
-    public void testPatientUserRegistrationUnkownDateOfBirth() throws RegistrationException {
+    public void testPatientUserRegistrationUnkownDateOfBirth() throws RegistrationException, UserEmailAlreadyExists {
 
         // Construct a patient user
         PatientUser patientUser = new PatientUser();
@@ -49,7 +49,7 @@ public class UserManagerTest extends DatabaseBackedTest {
     }
 
     @Test
-    public void testPatientUserRegistration() throws RegistrationException, ParseException {
+    public void testPatientUserRegistration() throws RegistrationException, ParseException, UserEmailAlreadyExists {
 
         // Construct a patient user
         PatientUser patientUser = new PatientUser();
