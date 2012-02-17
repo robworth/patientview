@@ -22,6 +22,7 @@ import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.model.user.User;
 
+// TODO: this could be split into patient, professional and no one logged in
 public class DefaultNavigationPanel extends BaseNavigationPanel {
     public DefaultNavigationPanel(Class<? extends org.apache.wicket.Page> pageClass) {
         boolean userLoggedIn = (isProfessionalOrSuperUserLoggedIn() || isPatientUserLoggedIn());
