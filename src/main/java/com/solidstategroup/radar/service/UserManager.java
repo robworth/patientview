@@ -3,7 +3,7 @@ package com.solidstategroup.radar.service;
 import com.solidstategroup.radar.model.exception.DaoException;
 import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
-import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -21,9 +21,9 @@ public interface UserManager {
 
     void savePatientUser(PatientUser patientUser);
 
-    void registerPatient(PatientUser patientUser) throws RegistrationException;
+    void registerPatient(PatientUser patientUser) throws RegistrationException, UserEmailAlreadyExists;
 
-    void registerProfessional(ProfessionalUser professionalUser) throws ProfessionalUserEmailAlreadyExists,
+    void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
             RegistrationException;
 
     ProfessionalUser getProfessionalUser(Long id);
