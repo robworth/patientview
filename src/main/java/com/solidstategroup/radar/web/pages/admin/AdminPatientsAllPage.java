@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SortLink;
@@ -8,6 +9,8 @@ import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
+import com.solidstategroup.radar.web.resources.CsvResource;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -30,6 +33,8 @@ import java.util.ArrayList;
 public class AdminPatientsAllPage extends AdminsBasePage {
     @SpringBean
     private DemographicsManager demographicsManager;
+    @SpringBean
+    private ExportManager exportManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -38,7 +43,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
         // TODO: need to hook these up
         add(new ExternalLink("exportPdf", ""));
-        add(new ExternalLink("exportExcel", ""));
+        add(new ResourceLink("exportCsv", new CsvResource(exportManager.getDemographicsExportData(ExportManager.
+                ExportType.CSV),"patients-all" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
 
         final WebMarkupContainer demographicsContainer = new WebMarkupContainer("demographicsContainer");
         demographicsContainer.setOutputMarkupId(true);
@@ -87,6 +93,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
     /**
      * Build a row in the dataview from the object
+     *
      * @param item Item<Demographics>
      */
     private void builtDataViewRow(Item<Demographics> item) {
@@ -142,6 +149,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
     /**
      * List of columns that can be used to sort the results - will return ID of el to be bound to and the field to sort
+     *
      * @return Map<String, DemographicsFilter.UserField>
      */
     private Map<String, String> getSortFields() {
@@ -162,6 +170,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
     /**
      * List of column filters - will return ID of el to be bound to and the field to filter
+     *
      * @return Map<String, DemographicsFilter.UserField>
      */
     private Map<String, String> getFilterFields() {
