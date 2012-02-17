@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.model;
 
+import java.util.Comparator;
+
 public class DiagnosisCode extends BaseModel {
 
     private String description;
@@ -22,5 +24,13 @@ public class DiagnosisCode extends BaseModel {
 
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    public static Comparator<DiagnosisCode> getComparator() {
+        return new Comparator<DiagnosisCode>() {
+            public int compare(DiagnosisCode o1, DiagnosisCode o2) {
+                return o1.getAbbreviation().compareToIgnoreCase(o2.getAbbreviation());
+            }
+        };
     }
 }

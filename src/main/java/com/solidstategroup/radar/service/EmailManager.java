@@ -9,6 +9,8 @@ public interface EmailManager {
 
     void sendPatientRegistrationEmail(PatientUser patientUser, String password);
 
+    void sendPatientRegistrationReminderEmail(PatientUser patientUser) throws Exception;
+
     void sendPatientRegistrationAdminNotificationEmail(PatientUser patientUser);
 
     void sendProfessionalRegistrationAdminNotificationEmail(ProfessionalUser professionalUser);
@@ -22,6 +24,5 @@ public interface EmailManager {
 
     // to allow for testing, this method is in the interface
     void sendEmail(String from, String[] to, String[] bbc, String subject, String body);
-
 
 }

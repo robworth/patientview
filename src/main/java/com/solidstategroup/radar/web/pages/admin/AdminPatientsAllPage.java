@@ -2,12 +2,14 @@ package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.ExportManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.web.resources.CsvResource;
 import org.apache.wicket.markup.html.link.ResourceLink;
@@ -35,6 +37,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
     private DemographicsManager demographicsManager;
     @SpringBean
     private ExportManager exportManager;
+    @SpringBean
+    private DiagnosisManager diagnosisManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -44,7 +48,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         // TODO: need to hook these up
         add(new ExternalLink("exportPdf", ""));
         add(new ResourceLink("exportCsv", new CsvResource(exportManager.getDemographicsExportData(ExportManager.
-                ExportType.CSV),"patients-all" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
+                ExportType.CSV), "patients-all" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
 
         final WebMarkupContainer demographicsContainer = new WebMarkupContainer("demographicsContainer");
         demographicsContainer.setOutputMarkupId(true);
@@ -86,6 +90,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
                 public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
                     demographicsList.setCurrentPage(0);
                     ajaxRequestTarget.add(demographicsContainer);
+                    ajaxRequestTarget.add(clearButton);
                 }
             });
         }
@@ -98,7 +103,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
      */
     private void builtDataViewRow(Item<Demographics> item) {
         Demographics demographics = item.getModelObject();
-        item.add(new BookmarkablePageLink<AdminPatientsAllPage>("edit", AdminPatientsAllPage.class));
+        item.add(new BookmarkablePageLink<AdminPatientsAllPage>("edit", AdminPatientAllPage.class,
+                AdminPatientAllPage.getPageParameters(demographics)));
         item.add(new Label("radarNo", demographics.getId().toString()));
         item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(demographics.getDateRegistered()),
                 RadarApplication.DATE_PATTERN));
@@ -129,7 +135,15 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         }
 
         item.add(new Label("address", StringUtils.join(addressValues, ", ")));
-        item.add(new Label("diagnosis", "")); // TODO: where does this come from
+
+        String diagnosisAbbrev = "";
+        Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
+
+        if (diagnosis != null && diagnosis.getDiagnosisCode() != null) {
+            diagnosisAbbrev = diagnosis.getDiagnosisCode().getAbbreviation();
+        }
+
+        item.add(new Label("diagnosis", diagnosisAbbrev));
 
         String consultantSurname = "", consultantForename = "", centreAbbrv = "";
 
@@ -162,7 +176,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
                 put("orderByAddress", DemographicsFilter.UserField.ADDRESS.getDatabaseFieldName());
                 put("orderByDiagnosis", DemographicsFilter.UserField.DIAGNOSIS.getDatabaseFieldName());
                 put("orderByConsultantSurname", DemographicsFilter.UserField.CONSULTANT_SURNAME.getDatabaseFieldName());
-                put("orderByConsultantForename", DemographicsFilter.UserField.CONSULTANT_FORNAME.getDatabaseFieldName());
+                put("orderByConsultantForename",
+                        DemographicsFilter.UserField.CONSULTANT_FORNAME.getDatabaseFieldName());
                 put("orderByCentre", DemographicsFilter.UserField.CENTRE.getDatabaseFieldName());
             }
         };

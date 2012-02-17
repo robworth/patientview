@@ -1,0 +1,10 @@
+<style> p, td {
+    font-family: verdana;
+    color: #000000;
+    font-size: 12px;
+} </style>
+<p>Your registration details for the RADAR website are as follows:</p>
+<p>Your access details are as follows:</p>
+<span>Username: ${patientUser.username}</span> <br />
+<span>Password: ${password}</span>
+<p>RADAR Website Admin</p>
