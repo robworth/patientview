@@ -2,6 +2,8 @@ package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.service.ExportManager;
+import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SearchField;
@@ -9,6 +11,7 @@ import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.dataproviders.user.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.web.resources.CsvResource;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
@@ -16,6 +19,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
@@ -29,7 +33,9 @@ public class AdminUsersPage extends AdminsBasePage {
 
     @SpringBean
     private UserManager userManager;
-    
+    @SpringBean
+    private ExportManager exportManager;
+
     private static final int RESULTS_PER_PAGE = 10;
 
     public AdminUsersPage() {
@@ -37,8 +43,10 @@ public class AdminUsersPage extends AdminsBasePage {
 
         // TODO: need to hook these up
         add(new ExternalLink("exportPdf", ""));
-        add(new ExternalLink("exportExcel", ""));
-        
+        add(new ResourceLink("exportCsv", new CsvResource(exportManager.
+                getProfessionalUsersExportData(ExportManager.ExportType.CSV),
+                "users" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
+
         add(new BookmarkablePageLink<AdminUserPage>("addNewUser", AdminUserPage.class));
 
         final WebMarkupContainer usersContainer = new WebMarkupContainer("usersContainer");
@@ -88,6 +96,7 @@ public class AdminUsersPage extends AdminsBasePage {
 
     /**
      * Build a row in the dataview from the object
+     *
      * @param item Item<ProfessionalUser>
      */
     private void builtDataViewRow(Item<ProfessionalUser> item) {
@@ -125,6 +134,7 @@ public class AdminUsersPage extends AdminsBasePage {
 
     /**
      * List of columns that can be used to sort the results - will return ID of el to be bound to and the field to sort
+     *
      * @return Map<String, ProfessionalUserFilter.UserField>
      */
     private Map<String, String> getSortFields() {
@@ -144,6 +154,7 @@ public class AdminUsersPage extends AdminsBasePage {
 
     /**
      * List of column filters - will return ID of el to be bound to and the field to filter
+     *
      * @return Map<String, ProfessionalUserFilter.UserField>
      */
     private Map<String, String> getFilterFields() {

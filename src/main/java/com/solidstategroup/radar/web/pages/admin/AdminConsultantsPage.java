@@ -1,5 +1,8 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.service.ExportManager;
+import com.solidstategroup.radar.web.resources.CsvResource;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -22,6 +25,8 @@ public class AdminConsultantsPage extends AdminsBasePage {
 
     @SpringBean
     private UtilityManager utilityManager;
+    @SpringBean
+    private ExportManager exportManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -30,8 +35,10 @@ public class AdminConsultantsPage extends AdminsBasePage {
 
         // TODO: need to hook these up
         add(new ExternalLink("exportPdf", ""));
-        add(new ExternalLink("exportExcel", ""));
-        
+        add(new ResourceLink("exportCsv", new CsvResource(exportManager.
+                getConsultantsExportData(ExportManager.ExportType.CSV),
+                "consultants" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
+
         add(new BookmarkablePageLink<AdminConsultantPage>("addNewConsultant", AdminConsultantPage.class));
 
         final WebMarkupContainer consultantsContainer = new WebMarkupContainer("consultantsContainer");
@@ -60,11 +67,12 @@ public class AdminConsultantsPage extends AdminsBasePage {
                     ajaxRequestTarget.add(consultantsContainer);
                 }
             });
-        }        
+        }
     }
 
     /**
      * Build a row in the dataview from the object
+     *
      * @param item Item<Consultant>
      */
     private void builtDataViewRow(Item<Consultant> item) {
@@ -90,12 +98,13 @@ public class AdminConsultantsPage extends AdminsBasePage {
         } catch (Exception e) {
             numberOfPatients = 0;
         }
-        
+
         item.add(new Label("numberOfPatients", Integer.toString(numberOfPatients)));
     }
 
     /**
      * List of columns that can be used to sort the results - will return ID of el to be bound to and the field to sort
+     *
      * @return Map<String, ProfessionalUserFilter.UserField>
      */
     private Map<String, String> getSortFields() {

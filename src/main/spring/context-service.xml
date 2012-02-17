@@ -70,4 +70,11 @@
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
+    <bean id="exportManager" class="com.solidstategroup.radar.service.ExportManagerImpl">
+        <property name="userManager" ref="userManager"/>
+        <property name="utilityManager" ref="utilityManager"/>
+        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="diagnosisManager" ref="diagnosisManager"/>
+    </bean>
+
 </beans>
