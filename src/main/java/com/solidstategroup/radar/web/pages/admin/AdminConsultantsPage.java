@@ -10,7 +10,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import com.solidstategroup.radar.service.UtilityManager;
-import com.solidstategroup.radar.web.dataproviders.user.ConsultantsDataProvider;
+import com.solidstategroup.radar.web.dataproviders.ConsultantsDataProvider;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
