@@ -33,7 +33,7 @@ public class AdminIssuesPage extends AdminsBasePage {
     public AdminIssuesPage() {
         final IssuesDataProvider issuesDataProvider = new IssuesDataProvider(issueManager);
 
-        add(new BookmarkablePageLink<AdminIssuesPage>("addNewIssue", AdminIssuesPage.class));
+        add(new BookmarkablePageLink<AdminIssuesPage>("addNewIssue", AdminIssuePage.class));
 
         final WebMarkupContainer issuesContainer = new WebMarkupContainer("issuesContainer");
         issuesContainer.setOutputMarkupId(true);
@@ -96,7 +96,7 @@ public class AdminIssuesPage extends AdminsBasePage {
         item.add(DateLabel.forDatePattern("dateResolved", new Model<Date>(issue.getDateLogged()),
                 RadarApplication.DATE_PATTERN));
         item.add(new Label("description", issue.getDescription()));
-        item.add(new Label("comment", issue.getComment()));
+        item.add(new Label("comment", issue.getComments()));
         item.add(new Label("priority", issue.getPriority().getName()));
         item.add(new Label("status", issue.getStatus().getName()));
         item.add(DateLabel.forDatePattern("updated", new Model<Date>(issue.getUpdated()),
@@ -116,7 +116,7 @@ public class AdminIssuesPage extends AdminsBasePage {
                 put("orderByDateLogged", IssueFilter.Field.DATE_LOGGED.getDatabaseFieldName());
                 put("orderByDateResolved", IssueFilter.Field.DATE_RESOLVED.getDatabaseFieldName());
                 put("orderByDescription", IssueFilter.Field.DESC.getDatabaseFieldName());
-                put("orderByComment", IssueFilter.Field.COMMENT.getDatabaseFieldName());
+                put("orderByComment", IssueFilter.Field.COMMENTS.getDatabaseFieldName());
                 put("orderByPriority", IssueFilter.Field.PRIORITY.getDatabaseFieldName());
                 put("orderByStatus", IssueFilter.Field.STATUS.getDatabaseFieldName());
                 put("orderByUpdated", IssueFilter.Field.UPDATED.getDatabaseFieldName());
@@ -135,7 +135,7 @@ public class AdminIssuesPage extends AdminsBasePage {
                 //put("searchType", IssueFilter.Field.TYPE.getDatabaseFieldName());
                 put("searchPage", IssueFilter.Field.PAGE.getDatabaseFieldName());
                 put("searchDescription", IssueFilter.Field.DESC.getDatabaseFieldName());
-                put("searchComment", IssueFilter.Field.COMMENT.getDatabaseFieldName());
+                put("searchComment", IssueFilter.Field.COMMENTS.getDatabaseFieldName());
                 //put("searchPriority", IssueFilter.Field.PRIORITY.getDatabaseFieldName());
                 //put("searchStatus", IssueFilter.Field.STATUS.getDatabaseFieldName());
                 // TODO: add the dateLogged, dateResolved, updated
