@@ -86,7 +86,8 @@ public class AdminIssuesPage extends AdminsBasePage {
      */
     private void builtDataViewRow(Item<Issue> item) {
         Issue issue = item.getModelObject();
-        item.add(new BookmarkablePageLink<AdminUserPage>("edit", AdminIssuesPage.class)); // TODO
+        item.add(new BookmarkablePageLink<AdminIssuePage>("edit", AdminIssuePage.class,
+                AdminIssuePage.getPageParameters(issue)));
         item.add(new Label("id", issue.getId().toString()));
         item.add(new Label("type", issue.getType().getName()));
         item.add(new Label("page", issue.getPage()));
