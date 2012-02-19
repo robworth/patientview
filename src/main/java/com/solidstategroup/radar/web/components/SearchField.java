@@ -4,7 +4,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.solidstategroup.radar.web.dataproviders.user.SortableProvider;
+import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
 
 /**
 * TextField bound to a Data field - this will update the filter when user puts anything int he field
@@ -12,10 +12,10 @@ import com.solidstategroup.radar.web.dataproviders.user.SortableProvider;
 * on the page
 */
 public abstract class SearchField extends TextField<String> {
-    private SortableProvider dataProvider;
+    private SortableDataProvider dataProvider;
     private String searchField;
 
-    public SearchField(final String id, final String searchField, final SortableProvider dataProvider) {
+    public SearchField(final String id, final String searchField, final SortableDataProvider dataProvider) {
         super(id, new Model<String>(""));
 
         this.dataProvider = dataProvider;

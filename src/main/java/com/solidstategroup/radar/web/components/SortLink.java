@@ -4,7 +4,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.Model;
-import com.solidstategroup.radar.web.dataproviders.user.SortableProvider;
+import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
 
 /**
  * AjaxLink bound to a Data field - this will update the filter when user clicks and set the sort
@@ -19,9 +19,9 @@ public abstract class SortLink extends AjaxLink {
             + SORT_ASC_CLASS + " " + SORT_DESC_CLASS + "');";
 
     private String sortField;
-    private SortableProvider dataProvider;
+    private SortableDataProvider dataProvider;
 
-    public SortLink(final String id, final String sortField, final SortableProvider dataProvider) {
+    public SortLink(final String id, final String sortField, final SortableDataProvider dataProvider) {
         super(id);
         this.sortField = sortField;
         this.dataProvider = dataProvider;

@@ -6,14 +6,14 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import com.solidstategroup.radar.web.dataproviders.user.SortableProvider;
+import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
 
 public class ClearLink extends AjaxLink {
-    private SortableProvider sortableProvider;
+    private SortableDataProvider sortableProvider;
     private DataView dataView;
     private WebMarkupContainer container;
 
-    public ClearLink(String s, SortableProvider sortableProvider, DataView dataView, WebMarkupContainer container) {
+    public ClearLink(String s, SortableDataProvider sortableProvider, DataView dataView, WebMarkupContainer container) {
         super(s);
         this.sortableProvider = sortableProvider;
         this.dataView = dataView;
