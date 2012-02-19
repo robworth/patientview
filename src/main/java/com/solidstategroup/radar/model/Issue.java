@@ -9,7 +9,7 @@ import java.util.Date;
 public class Issue extends BaseModel {
 
     private IssueType type;
-    private String page, description, comment;
+    private String page, description, comments;
     private Date dateLogged  = new Date(), dateResolved, updated;
     private IssuePriority priority;
     private IssueStatus status = IssueStatus.OPEN;
@@ -20,6 +20,10 @@ public class Issue extends BaseModel {
 
     public void setType(IssueType type) {
         this.type = type;
+    }
+
+    public void setType(String type) {
+        this.type = IssueType.getIssueType(type);
     }
 
     public String getPage() {
@@ -38,12 +42,12 @@ public class Issue extends BaseModel {
         this.description = description;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComments() {
+        return comments;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public Date getDateResolved() {
@@ -78,11 +82,19 @@ public class Issue extends BaseModel {
         this.priority = priority;
     }
 
+    public void setPriority(String priority) {
+        this.priority = IssuePriority.getIssuePriority(priority);
+    }
+
     public IssueStatus getStatus() {
         return status;
     }
 
     public void setStatus(IssueStatus status) {
         this.status = status;
+    }
+
+    public void setStatus(String status) {
+        this.status = IssueStatus.getIssueStatus(status);
     }
 }
