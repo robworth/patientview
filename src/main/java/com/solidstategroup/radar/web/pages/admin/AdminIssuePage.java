@@ -6,11 +6,23 @@ import org.apache.wicket.util.string.*;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import com.solidstategroup.radar.service.IssueManager;
 import com.solidstategroup.radar.model.Issue;
+import com.solidstategroup.radar.model.enums.IssueType;
+import com.solidstategroup.radar.model.enums.IssuePriority;
+import com.solidstategroup.radar.model.enums.IssueStatus;
+import com.solidstategroup.radar.web.RadarApplication;
+
+import java.util.Arrays;
 
 public class AdminIssuePage extends AdminsBasePage {
 
@@ -18,7 +30,6 @@ public class AdminIssuePage extends AdminsBasePage {
     private IssueManager issueManager;
 
     private static final String PARAM_ID = "ID";
-    private boolean newIssue = false;
 
     public AdminIssuePage(PageParameters parameters) {
         super();
@@ -29,7 +40,6 @@ public class AdminIssuePage extends AdminsBasePage {
         StringValue idValue = parameters.get(PARAM_ID);
         if (idValue.isEmpty() || idValue.toLong() == -1) {
             issue = new Issue();
-            newIssue = true;
         } else {
             issue = issueManager.getIssue(idValue.toLongObject());
         }
@@ -42,39 +52,58 @@ public class AdminIssuePage extends AdminsBasePage {
         feedback.setOutputMarkupPlaceholderTag(true);
         add(feedback);
 
-        final Form<Issue> userForm = new Form<Issue>("issueForm", issueModel) {
+        final Form<Issue> issueForm = new Form<Issue>("issueForm", issueModel) {
             protected void onSubmit() {
                 try {
                     issueManager.saveIssue(getModelObject());
-
-                    if (newIssue) {
-                        setResponsePage(AdminIssuesPage.class);
-                    }
+                    setResponsePage(AdminIssuesPage.class);
                 } catch (Exception e) {
                     error("Could not save issue: " + e.toString());
                 }
             }
         };
-        add(userForm);
+        add(issueForm);
 
-        // TODO: add form elements
+        DropDownChoice<IssueType> type = new DropDownChoice<IssueType>("type", Arrays.asList(IssueType.values()),
+                new ChoiceRenderer<IssueType>("name", "name"));
+        type.setRequired(true);
+        issueForm.add(type);
 
-        AjaxLink delete = new AjaxLink("delete") {
-            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                try {
-                    issueManager.deleteIssue(issue);
-                    setResponsePage(AdminIssuesPage.class);
-                } catch (Exception e) {
-                    error("Could not delete issue " + e);
-                    ajaxRequestTarget.add(feedback);
-                }
+        issueForm.add(new RequiredTextField("page"));
 
-            }
-        };
-        delete.setVisible(!newIssue);
-        userForm.add(delete);
+        DateTextField dateLogged = new DateTextField("dateLogged", RadarApplication.DATE_PATTERN);
+        dateLogged.setRequired(true);
+        dateLogged.add(new DatePicker());
+        issueForm.add(dateLogged);
 
-        userForm.add(new AjaxSubmitLink("save") {
+        DateTextField dateResolved = new DateTextField("dateResolved", RadarApplication.DATE_PATTERN);
+        dateResolved.add(new DatePicker());
+        issueForm.add(dateResolved);
+
+        TextArea description = new TextArea("description");
+        description.setRequired(true);
+        issueForm.add(description);
+
+        TextArea comments = new TextArea("comments");
+        issueForm.add(comments);
+
+        DropDownChoice<IssuePriority> priority = new DropDownChoice<IssuePriority>("priority",
+                Arrays.asList(IssuePriority.values()),
+                new ChoiceRenderer<IssuePriority>("name", "name"));
+        priority.setRequired(true);
+        issueForm.add(priority);
+
+        DropDownChoice<IssueStatus> status = new DropDownChoice<IssueStatus>("status",
+                Arrays.asList(IssueStatus.values()),
+                new ChoiceRenderer<IssueStatus>("name", "name"));
+        status.setRequired(true);
+        issueForm.add(status);
+
+        DateTextField updated = new DateTextField("updated", RadarApplication.DATE_PATTERN);
+        updated.add(new DatePicker());
+        issueForm.add(updated);
+
+        issueForm.add(new AjaxSubmitLink("save") {
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 setResponsePage(AdminIssuesPage.class);
             }
@@ -84,7 +113,7 @@ public class AdminIssuePage extends AdminsBasePage {
             }
         });
 
-        userForm.add(new AjaxLink("cancel") {
+        issueForm.add(new AjaxLink("cancel") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 setResponsePage(AdminIssuesPage.class);
             }
