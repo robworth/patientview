@@ -58,7 +58,7 @@ public class IssueDaoImpl extends BaseDaoImpl implements IssueDao {
                 put("bDateLogged", issue.getDateLogged());
                 put("bDateResolved", issue.getDateResolved());
                 put("bDesc", issue.getDescription());
-                put("bComment", issue.getComment());
+                put("bComment", issue.getComments());
                 put("bPriority", issue.getPriority().getName());
                 put("bStatus", issue.getStatus().getName());
                 put("bUpdated", issue.getUpdated());
@@ -121,7 +121,7 @@ public class IssueDaoImpl extends BaseDaoImpl implements IssueDao {
             issue.setType(IssueType.getIssueType(resultSet.getString("bType")));
             issue.setPage(resultSet.getString("bPage"));
             issue.setDescription(resultSet.getString("bDesc"));
-            issue.setComment(resultSet.getString("bComment"));
+            issue.setComments(resultSet.getString("bComment"));
             issue.setDateLogged(resultSet.getDate("bDateLogged"));
             issue.setDateResolved(resultSet.getDate("bDateResolved"));
             issue.setUpdated(resultSet.getDate("bUpdated"));
