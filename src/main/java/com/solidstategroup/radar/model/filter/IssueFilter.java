@@ -8,7 +8,7 @@ public class IssueFilter extends BaseFilter {
         DATE_LOGGED("bDateLogged"),
         DATE_RESOLVED("bDateResolved"),
         DESC("bDesc"),
-        COMMENT("bComment"),
+        COMMENTS("bComment"),
         PRIORITY("bPriority"),
         STATUS("bStatus"),
         UPDATED("bUpdated");
