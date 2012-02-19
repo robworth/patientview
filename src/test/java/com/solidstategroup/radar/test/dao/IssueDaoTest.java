@@ -58,7 +58,7 @@ public class IssueDaoTest extends BaseDaoTest {
         issue.setPage("Test page");
         issue.setDescription("Test description");
         issue.setDescription("Test description");
-        issue.setComment("Test comment");
+        issue.setComments("Test comment");
         issue.setPriority(IssuePriority.HIGH);
         issue.setStatus(IssueStatus.OPEN);
 
