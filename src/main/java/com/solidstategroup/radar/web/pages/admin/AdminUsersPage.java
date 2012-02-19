@@ -7,7 +7,7 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
-import com.solidstategroup.radar.web.dataproviders.user.ProfessionalUserDataProvider;
+import com.solidstategroup.radar.web.dataproviders.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;

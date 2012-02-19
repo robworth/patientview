@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-import com.solidstategroup.radar.web.dataproviders.user.PatientUserDataProvider;
+import com.solidstategroup.radar.web.dataproviders.PatientUserDataProvider;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.service.UserManager;
