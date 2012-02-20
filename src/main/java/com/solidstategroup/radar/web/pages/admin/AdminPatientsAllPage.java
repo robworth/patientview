@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
@@ -11,10 +12,9 @@ import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
-import com.solidstategroup.radar.web.resources.CsvResource;
+import com.solidstategroup.radar.web.resources.RadarResourceFactory;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -45,10 +45,13 @@ public class AdminPatientsAllPage extends AdminsBasePage {
     public AdminPatientsAllPage() {
         final DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager);
 
-        // TODO: need to hook these up
-        add(new ExternalLink("exportPdf", ""));
-        add(new ResourceLink("exportCsv", new CsvResource(exportManager.getDemographicsExportData(ExportManager.
-                ExportType.CSV), "patients-all" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
+        add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
+                exportManager.getDemographicsExportData(ExportType.PDF), "patients-all" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
+
+        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
+                exportManager.getDemographicsExportData(ExportType.CSV), "patients-all" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
 
         final WebMarkupContainer demographicsContainer = new WebMarkupContainer("demographicsContainer");
         demographicsContainer.setOutputMarkupId(true);
