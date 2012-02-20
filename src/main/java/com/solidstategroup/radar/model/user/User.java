@@ -20,7 +20,6 @@ public abstract class User extends BaseModel implements UserDetails {
     protected static final long[] SUPER_USER_IDS = {28,15};
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-
     private String username, password;
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
     private byte[] passwordHash, usernameHash;

@@ -1,6 +1,8 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -10,8 +12,9 @@ import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
+import com.solidstategroup.radar.web.resources.RadarResourceFactory;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -34,6 +37,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
     @SpringBean
     private DemographicsManager demographicsManager;
     @SpringBean
+    private ExportManager exportManager;
+    @SpringBean
     private DiagnosisManager diagnosisManager;
 
     private static final int RESULTS_PER_PAGE = 10;
@@ -41,9 +46,13 @@ public class AdminPatientsAllPage extends AdminsBasePage {
     public AdminPatientsAllPage() {
         final DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager);
 
-        // TODO: need to hook these up
-        add(new ExternalLink("exportPdf", ""));
-        add(new ExternalLink("exportExcel", ""));
+        add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
+                exportManager.getDemographicsExportData(ExportType.PDF), "patients-all" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
+
+        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
+                exportManager.getDemographicsExportData(ExportType.CSV), "patients-all" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
 
         final WebMarkupContainer demographicsContainer = new WebMarkupContainer("demographicsContainer");
         demographicsContainer.setOutputMarkupId(true);
@@ -82,6 +91,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
     /**
      * Build a row in the dataview from the object
+     *
      * @param item Item<Demographics>
      */
     private void builtDataViewRow(Item<Demographics> item) {
@@ -146,6 +156,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
     /**
      * List of columns that can be used to sort the results - will return ID of el to be bound to and the field to sort
+     *
      * @return Map<String, DemographicsFilter.UserField>
      */
     private Map<String, String> getSortFields() {
@@ -167,6 +178,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
     /**
      * List of column filters - will return ID of el to be bound to and the field to filter
+     *
      * @return Map<String, DemographicsFilter.UserField>
      */
     private Map<String, String> getFilterFields() {

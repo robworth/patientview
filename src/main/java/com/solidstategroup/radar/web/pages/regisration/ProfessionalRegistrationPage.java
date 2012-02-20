@@ -1,15 +1,15 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.regisration;
 
 
-import com.solidstategroup.radar.model.exception.ProfessionalUserEmailAlreadyExists;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.service.UtilityManager;
-import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -17,7 +17,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.*;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -30,7 +29,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +53,7 @@ public class ProfessionalRegistrationPage extends BasePage {
             protected void onSubmit() {
                 try {
                     userManager.registerProfessional(getModelObject());
-                } catch (ProfessionalUserEmailAlreadyExists professionalUserEmailAlreadyExists) {
+                } catch (UserEmailAlreadyExists professionalUserEmailAlreadyExists) {
                     get("emailContainer").get("email").error("This email address has already been taken");
                 } catch (RegistrationException e) {
                     error(ERROR_MESSAGE);

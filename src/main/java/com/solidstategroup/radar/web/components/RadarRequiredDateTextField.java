@@ -11,14 +11,14 @@ import org.apache.wicket.model.IModel;
 import java.util.Date;
 import java.util.List;
 
-public class RadarRequiredDateTextField extends DateTextField{
+public class RadarRequiredDateTextField extends DateTextField {
     public RadarRequiredDateTextField(String id, Form form, List<Component> componentsToUpdate) {
-        super(id, RadarApplication.DATE_PATTERN);
+        super(id, RadarApplication.DATE_PATTERN2);
         init(form, componentsToUpdate);
     }
 
     public RadarRequiredDateTextField(String id, IModel<Date> model, Form form, List<Component> componentsToUpdate) {
-        super(id, model, RadarApplication.DATE_PATTERN);
+        super(id, model, RadarApplication.DATE_PATTERN2);
         init(form, componentsToUpdate);
     }
 
@@ -29,7 +29,7 @@ public class RadarRequiredDateTextField extends DateTextField{
             @Override
             public boolean isVisible() {
                 List<FeedbackMessage> feedbackMessages = getCurrentMessages();
-                for(FeedbackMessage feedbackMessage : feedbackMessages) {
+                for (FeedbackMessage feedbackMessage : feedbackMessages) {
                     if (feedbackMessage.getMessage().toString().contains("required")) {
                         return false;
                     }
@@ -44,11 +44,11 @@ public class RadarRequiredDateTextField extends DateTextField{
 
         setRequired(true);
         RadarFormComponentFeedbackIndicator radarFormComponentFeedbackIndicator =
-                new RadarFormComponentFeedbackIndicator(getId() + "FeedbackIndicator", this){
+                new RadarFormComponentFeedbackIndicator(getId() + "FeedbackIndicator", this) {
                     @Override
                     public boolean isVisible() {
-                        if(feedbackPanel.isVisible()) {
-                          return false;
+                        if (feedbackPanel.isVisible()) {
+                            return false;
                         }
                         return super.isVisible();
                     }

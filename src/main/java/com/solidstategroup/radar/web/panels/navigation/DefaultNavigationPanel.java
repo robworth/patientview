@@ -1,18 +1,16 @@
 package com.solidstategroup.radar.web.panels.navigation;
 
+import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
+import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
+import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
+import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.MarkupContainer;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
-import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
-import com.solidstategroup.radar.web.pages.PatientsLoginPage;
-import com.solidstategroup.radar.web.pages.ProfessionalRegistrationPage;
-import com.solidstategroup.radar.web.pages.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;

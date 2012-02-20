@@ -7,6 +7,7 @@ import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.JFreeChartImage;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
