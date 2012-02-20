@@ -6,7 +6,11 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.components.SearchField;
+import com.solidstategroup.radar.web.components.SearchDropDownChoice;
 import com.solidstategroup.radar.model.Issue;
+import com.solidstategroup.radar.model.enums.IssueType;
+import com.solidstategroup.radar.model.enums.IssuePriority;
+import com.solidstategroup.radar.model.enums.IssueStatus;
 import com.solidstategroup.radar.model.filter.IssueFilter;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -15,13 +19,13 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class AdminIssuesPage extends AdminsBasePage {
 
@@ -52,32 +56,35 @@ public class AdminIssuesPage extends AdminsBasePage {
         // add paging element
         issuesContainer.add(new AjaxPagingNavigator("navigator", issueList));
 
-        // add sort links to the table column headers
-        for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
-            add(new SortLink(entry.getKey(), entry.getValue(), issuesDataProvider) {
-                @Override
-                public void onClicked(AjaxRequestTarget ajaxRequestTarget) {
-                    issueList.setCurrentPage(0);
-                    ajaxRequestTarget.add(issuesContainer);
-                }
-            });
-        }
-
         // button to clear all the filter fields for each colum
         final ClearLink clearButton = new ClearLink("clearButton", issuesDataProvider, issueList, issuesContainer);
         add(clearButton);
 
+        // add sort links to the table column headers
+        for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
+            add(new SortLink(entry.getKey(), entry.getValue(), issuesDataProvider, issueList, 
+                    Arrays.asList(issuesContainer)));
+        }
+
         // add a search field to the top of each column - these will AND each search
         for (Map.Entry<String, String> entry : getFilterFields().entrySet()) {
-            add(new SearchField(entry.getKey(), entry.getValue(), issuesDataProvider) {
-                @Override
-                public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
-                    issueList.setCurrentPage(0);
-                    ajaxRequestTarget.add(issuesContainer);
-                    ajaxRequestTarget.add(clearButton);
-                }
-            });
+            add(new SearchField(entry.getKey(), entry.getValue(), issuesDataProvider, issueList,
+                    Arrays.asList(issuesContainer, clearButton)));
         }
+
+        // some of the sort fields are drop downs so add these
+        add(new SearchDropDownChoice<IssueType>("searchType", Arrays.asList(IssueType.values()),
+                IssueFilter.Field.TYPE.getDatabaseFieldName(), issuesDataProvider, issueList,
+                Arrays.asList(issuesContainer, clearButton)));
+
+
+        add(new SearchDropDownChoice<IssuePriority>("searchPriority", Arrays.asList(IssuePriority.values()),
+                IssueFilter.Field.PRIORITY.getDatabaseFieldName(), issuesDataProvider, issueList,
+                Arrays.asList(issuesContainer, clearButton)));
+
+        add(new SearchDropDownChoice<IssueStatus>("searchStatus", Arrays.asList(IssueStatus.values()),
+                IssueFilter.Field.STATUS.getDatabaseFieldName(), issuesDataProvider, issueList,
+                Arrays.asList(issuesContainer, clearButton)));
     }
 
     /**
@@ -132,12 +139,9 @@ public class AdminIssuesPage extends AdminsBasePage {
         return new HashMap<String, String>() {
             {
                 put("searchId", IssueFilter.Field.ID.getDatabaseFieldName());
-                //put("searchType", IssueFilter.Field.TYPE.getDatabaseFieldName());
                 put("searchPage", IssueFilter.Field.PAGE.getDatabaseFieldName());
                 put("searchDescription", IssueFilter.Field.DESC.getDatabaseFieldName());
                 put("searchComment", IssueFilter.Field.COMMENTS.getDatabaseFieldName());
-                //put("searchPriority", IssueFilter.Field.PRIORITY.getDatabaseFieldName());
-                //put("searchStatus", IssueFilter.Field.STATUS.getDatabaseFieldName());
                 // TODO: add the dateLogged, dateResolved, updated
             }
         };
