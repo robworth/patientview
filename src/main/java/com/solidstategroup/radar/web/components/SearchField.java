@@ -41,7 +41,7 @@ public class SearchField extends TextField<String> {
     }
 
     private void changed(final AjaxRequestTarget ajaxRequestTarget) {
-        final String value = getModelObject();
+        String value = getSearchValue();
 
         if (value == null || value.length() == 0) {
             // if they type nothing in then just bring back all the results
@@ -57,5 +57,15 @@ public class SearchField extends TextField<String> {
                 ajaxRequestTarget.add(component);
             }
         }
+    }
+
+    protected String getSearchValue() {
+        String value = "";
+
+        if (getModelObject() != null) {
+            value = getModelObject();
+        }
+
+        return value;
     }
 }
