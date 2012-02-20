@@ -18,11 +18,11 @@ public class EmailManagerTest extends DatabaseBackedTest {
     @Autowired
     private EmailManager emailManager;
 
-    @Test
-    public void testSendEmail() throws Exception {
-        emailManager.sendEmail("test@solidstategroup.com", new String[]{"test@solidstategroup.com"},
-                new String[]{"test@test.com"}, "Test subject","Test Body");
-    }
+//    @Test
+//    public void testSendEmail() throws Exception {
+//        emailManager.sendEmail("test@solidstategroup.com", new String[]{"test@solidstategroup.com"},
+//                new String[]{"test@test.com"}, "Test subject","Test Body");
+//    }
 
     @Test
     public void testRender() throws Exception {
