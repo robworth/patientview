@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.model.user.AdminUser;
+import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,8 +14,13 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class AdminsLoginPage extends BasePage {
+
+    @SpringBean
+    private UserManager userManager;
+
     public AdminsLoginPage() {
 
         // Construct model for the form
@@ -30,17 +36,27 @@ public class AdminsLoginPage extends BasePage {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
                 AuthenticatedWebSession session = RadarSecuredSession.get();
                 AdminUser user = getModelObject();
-                if (session.signIn(user.getEmail(), passwordModel.getObject())) {
-                    // If we haven't been diverted here from a page request (i.e. we clicked login),
-                    // redirect to logged in page
-                    if (!continueToOriginalDestination()) {
-                        setResponsePage(AdminsPage.class);
+                boolean loginFailed = false;
+                // do an extra check to that an admin user exists with the username
+                if (userManager.getAdminUser(user.getEmail()) != null) {
+                    if (session.signIn(user.getEmail(), passwordModel.getObject())) {
+                        // If we haven't been diverted here from a page request (i.e. we clicked login),
+                        // redirect to logged in page
+                        if (!continueToOriginalDestination()) {
+                            setResponsePage(AdminsPage.class);
+                        }
+                    } else {
+                        loginFailed = true;
                     }
+
                 } else {
+                    loginFailed = true;
+                }
+
+                if (loginFailed) {
                     // Show that the login failed if we couldn't authenticate
                     error("Login failed");
                 }
-
             }
         };
 

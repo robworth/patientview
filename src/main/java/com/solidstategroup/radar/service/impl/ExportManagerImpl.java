@@ -1,10 +1,15 @@
-package com.solidstategroup.radar.service;
+package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
-import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.ExportManager;
+import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.util.TripleDes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,16 +84,39 @@ public class ExportManagerImpl implements ExportManager {
                             getAbbreviation() : "";
                 }
                 String dateRegistered = "";
-                dateRegistered = demographics.getDateRegistered() != null ?  new SimpleDateFormat(DATE_PATTERN).
-                            format(demographics.getDateRegistered()) : "";
+                dateRegistered = demographics.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
+                        format(demographics.getDateRegistered()) : "";
 
-                    exportData.addRow(Arrays.asList(demographics.getId().toString(), dateRegistered,
-                            demographics.getForename(), demographics.getSurname(),
-                            demographics.getAddress1() + ", " + demographics.getAddress2() + ", " +
-                            demographics.getAddress3() + ". " + demographics.getAddress4(), diagnosisCodeAbbr,
-                            demographics.getConsultant() != null ? demographics.getConsultant().getForename() : "",
-                            demographics.getConsultant() != null ? demographics.getConsultant().getSurname() : "",
-                            demographics.getRenalUnit() != null ? demographics.getRenalUnit().getAbbreviation() : ""));
+                exportData.addRow(Arrays.asList(demographics.getId().toString(), dateRegistered,
+                        demographics.getForename(), demographics.getSurname(),
+                        demographics.getAddress1() + ", " + demographics.getAddress2() + ", " +
+                                demographics.getAddress3() + ". " + demographics.getAddress4(), diagnosisCodeAbbr,
+                        demographics.getConsultant() != null ? demographics.getConsultant().getForename() : "",
+                        demographics.getConsultant() != null ? demographics.getConsultant().getSurname() : "",
+                        demographics.getRenalUnit() != null ? demographics.getRenalUnit().getAbbreviation() : ""));
+            }
+            return getCsvData(exportData);
+        }
+        // else do the other cases
+        return null;
+    }
+
+    public byte[] getPatientsExportData(ExportType exportType) {
+        if (exportType.equals(ExportType.CSV)) {
+            List<PatientUser> patients = userManager.getPatientUsers();
+            ExportData exportData = new ExportData();
+            exportData.setHeaders(Arrays.asList("RadarNO", "User Name", "DOB", "Date Reg"));
+
+            for (PatientUser user : patients) {
+                String dob = "";
+                dob = user.getDateOfBirth() != null ? new SimpleDateFormat(DATE_PATTERN).
+                        format(user.getDateOfBirth()) : "";
+
+                String dateRegistered = "";
+                dateRegistered = user.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
+                        format(user.getDateRegistered()) : "";
+
+                exportData.addRow(Arrays.asList(user.getRadarNumber().toString(), user.getUsername(), dob, dateRegistered));
             }
             return getCsvData(exportData);
         }

@@ -9,6 +9,7 @@ import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
@@ -40,6 +41,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private DemographicsDao demographicsDao;
     private UserDao userDao;
+
+    public AdminUser getAdminUser(String email) {
+        return userDao.getAdminUser(email);
+    }
 
     public PatientUser getPatientUser(Long id) {
         return userDao.getPatientUser(id);
