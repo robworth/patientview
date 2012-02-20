@@ -1,8 +1,12 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.model.enums.ExportType;
+import com.solidstategroup.radar.service.ExportManager;
+import com.solidstategroup.radar.web.dataproviders.ConsultantsDataProvider;
+import com.solidstategroup.radar.web.resources.RadarResourceFactory;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -10,19 +14,19 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import com.solidstategroup.radar.service.UtilityManager;
-import com.solidstategroup.radar.web.dataproviders.ConsultantsDataProvider;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Arrays;
 
 public class AdminConsultantsPage extends AdminsBasePage {
 
     @SpringBean
     private UtilityManager utilityManager;
+    @SpringBean
+    private ExportManager exportManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -30,9 +34,14 @@ public class AdminConsultantsPage extends AdminsBasePage {
         final ConsultantsDataProvider consultantsDataProvider = new ConsultantsDataProvider(utilityManager);
 
         // TODO: need to hook these up
-        add(new ExternalLink("exportPdf", ""));
-        add(new ExternalLink("exportExcel", ""));
-        
+        add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
+                exportManager.getConsultantsExportData(ExportType.PDF), "consultants" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
+
+        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
+                exportManager.getConsultantsExportData(ExportType.CSV), "consultants" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
+
         add(new BookmarkablePageLink<AdminConsultantPage>("addNewConsultant", AdminConsultantPage.class));
 
         final WebMarkupContainer consultantsContainer = new WebMarkupContainer("consultantsContainer");
@@ -52,15 +61,23 @@ public class AdminConsultantsPage extends AdminsBasePage {
         // add paging element
         consultantsContainer.add(new AjaxPagingNavigator("navigator", consultantList));
 
+        /* todo commented out for now as instructed by david
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
-            add(new SortLink(entry.getKey(), entry.getValue(), consultantsDataProvider,
-                    consultantList, Arrays.asList(consultantsContainer)));
-        }        
+            add(new SortLink(entry.getKey(), entry.getValue(), consultantsDataProvider) {
+                @Override
+                public void onClicked(AjaxRequestTarget ajaxRequestTarget) {
+                    consultantList.setCurrentPage(0);
+                    ajaxRequestTarget.add(consultantsContainer);
+                }
+            });
+        }
+        */
     }
 
     /**
      * Build a row in the dataview from the object
+     *
      * @param item Item<Consultant>
      */
     private void builtDataViewRow(Item<Consultant> item) {
@@ -86,12 +103,13 @@ public class AdminConsultantsPage extends AdminsBasePage {
         } catch (Exception e) {
             numberOfPatients = 0;
         }
-        
+
         item.add(new Label("numberOfPatients", Integer.toString(numberOfPatients)));
     }
 
     /**
      * List of columns that can be used to sort the results - will return ID of el to be bound to and the field to sort
+     *
      * @return Map<String, ProfessionalUserFilter.UserField>
      */
     private Map<String, String> getSortFields() {

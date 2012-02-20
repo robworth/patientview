@@ -8,6 +8,8 @@ import org.apache.wicket.Page;
 
 @AuthorizeInstantiation({User.ROLE_ADMIN})
 public class AdminsBasePage extends BasePage {
+
+    protected static final String EXPORT_FILE_NAME_SUFFIX = "-export";
     public AdminsBasePage() {
         super();
     }

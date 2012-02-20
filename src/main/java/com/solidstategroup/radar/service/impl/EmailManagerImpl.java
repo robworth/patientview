@@ -96,12 +96,6 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     public void sendForgottenPassword(ProfessionalUser professionalUser, String password) throws Exception {
-        try {
-            professionalUser.setUsername(TripleDes.decrypt(professionalUser.getUsernameHash()));
-        } catch (Exception e) {
-           LOGGER.error("Could not decrypt username", e);
-           throw e;
-        }
         sendPassword(professionalUser, password);
     }
 

@@ -1,98 +1,92 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.login;
 
-import com.solidstategroup.radar.model.user.PatientUser;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.RadarSecuredSession;
-import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
-import org.apache.wicket.Component;
+import com.solidstategroup.radar.web.pages.BasePage;
+import com.solidstategroup.radar.web.pages.ProfessionalsPage;
+import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class PatientsLoginPage extends BasePage {
+public class ProfessionalsLoginPage extends BasePage {
 
     @SpringBean
     private UserManager userManager;
 
-    public PatientsLoginPage() {
-        // Patients log in form
-        CompoundPropertyModel<PatientUser> model = new CompoundPropertyModel<PatientUser>(new PatientUser());
-        final Model<String> passwordModel = new Model<String>();
+    public ProfessionalsLoginPage() {
 
-        Form<PatientUser> form = new Form<PatientUser>("form", model) {
+        // Construct model for the form
+        CompoundPropertyModel<ProfessionalUser> model =
+                new CompoundPropertyModel<ProfessionalUser>(new ProfessionalUser());
+        // Model for the password
+        final IModel<String> passwordModel = new Model<String>();
+
+        // Construct the form and add the fields
+        Form<ProfessionalUser> form = new Form<ProfessionalUser>("form", model) {
             @Override
             protected void onSubmit() {
-                // Todo: This needs to do checks on date of birth too
                 // Get the wicket authentication session and ask to sign the user in with Spring security
                 AuthenticatedWebSession session = RadarSecuredSession.get();
-                PatientUser user = getModelObject();
+                ProfessionalUser user = getModelObject();
                 boolean loginFailed = false;
-                if (userManager.getPatientUser(user.getUsername(), user.getDateOfBirth()) != null) {
-                    if (session.signIn(user.getUsername(), passwordModel.getObject())) {
-                        PatientUser patientUser = userManager.getPatientUser(user.getUsername());
+                ProfessionalUser professionalUser = userManager.getProfessionalUser(user.getEmail());
+                if (professionalUser != null) {
+                    if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
-                        setResponsePage(PatientPageReadOnly.class, PatientPageReadOnly.getParameters(
-                                patientUser.getRadarNumber()));
-
+                        if (!continueToOriginalDestination()) {
+                            setResponsePage(ProfessionalsPage.class);
+                        }
                     } else {
+
                         loginFailed = true;
                     }
                 } else {
+
                     loginFailed = true;
                 }
-
                 if (loginFailed) {
                     // Show that the login failed if we couldn't authenticate
                     error("Login failed");
                 }
+
             }
         };
-        add(form);
 
-        // Feedback panel
+        // Construct a feedback panel for validation messages
         final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        feedbackPanel.setOutputMarkupId(true);
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
         form.add(feedbackPanel);
 
-        // Add components to form
-        form.add(new RequiredTextField("username"));
+        form.add(new RequiredTextField("email"));
         form.add(new PasswordTextField("password", passwordModel));
-
-        // Date of birth with picker
-        final List<Component> componentsToUpdateList = new ArrayList<Component>();
-        DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form, componentsToUpdateList);
-        form.add(dateOfBirth);
-
         form.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                // Might need to clear any old messages
                 target.add(feedbackPanel);
-                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // Update feedback panel with any validation messages
                 target.add(feedbackPanel);
-                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
         });
-
-        // Add links for forgotten password and register
-        add(new BookmarkablePageLink<PatientForgottenPasswordPage>("forgottenPasswordLink",
-                PatientForgottenPasswordPage.class));
-        add(new BookmarkablePageLink<PatientRegistrationPage>("registerLink", PatientRegistrationPage.class));
+        add(form);
+        add(new BookmarkablePageLink("forgotPasswordLink", ProfessionalForgottenPasswordPage.class));
+        add(new BookmarkablePageLink("changeDetailsLink", ChangeRegistrationDetails.class));
     }
 }

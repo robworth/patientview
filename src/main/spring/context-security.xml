@@ -14,7 +14,7 @@
     </security:authentication-manager>
 
     <bean id="authenticationProvider" class="com.solidstategroup.radar.service.impl.AuthenticationProviderImpl">
-        <property name="userDao" ref="userDao"/>
+        <property name="userManager" ref="userManager"/>
     </bean>
 
     <security:global-method-security secured-annotations="enabled"/>

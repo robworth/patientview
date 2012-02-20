@@ -1,8 +1,10 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.login;
 
+import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -40,6 +42,8 @@ public abstract class ForgottenPasswordPage extends BasePage {
                     sendPassword(getModelObject());
                 } catch (EmailAddressNotFoundException e) {
                     error(EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE);
+                } catch (DecryptionException e) {
+                    error(ERROR_MESSAGE);
                 }
             }
         };
@@ -105,6 +109,6 @@ public abstract class ForgottenPasswordPage extends BasePage {
 
     protected abstract String getUsesType();
 
-    public abstract void sendPassword(String username) throws EmailAddressNotFoundException;
+    public abstract void sendPassword(String username) throws EmailAddressNotFoundException, DecryptionException;
 
 }

@@ -1,18 +1,18 @@
 package com.solidstategroup.radar.web;
 
 import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
-import com.solidstategroup.radar.web.pages.ForgottenPasswordPage;
-import com.solidstategroup.radar.web.pages.PatientForgottenPasswordPage;
+import com.solidstategroup.radar.web.pages.ProfessionalsPage;
+import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
-import com.solidstategroup.radar.web.pages.PatientRegistrationPage;
+import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
+import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.PatientPage;
-import com.solidstategroup.radar.web.pages.PatientsLoginPage;
-import com.solidstategroup.radar.web.pages.ProfessionalForgottenPasswordPage;
-import com.solidstategroup.radar.web.pages.ProfessionalsLoginPage;
-import com.solidstategroup.radar.web.pages.ProfessionalsPage;
+import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
+import com.solidstategroup.radar.web.pages.login.ProfessionalForgottenPasswordPage;
+import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
-import com.solidstategroup.radar.web.pages.ProfessionalRegistrationPage;
+import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import com.solidstategroup.radar.web.pages.admin.AdminsBasePage;
 import com.solidstategroup.radar.web.pages.admin.AdminsLoginPage;
 import com.solidstategroup.radar.web.pages.admin.AdminsPage;
@@ -37,8 +37,10 @@ import org.apache.wicket.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 public class RadarApplication extends AuthenticatedWebApplication {
-
+    // mainly used for display
     public static final String DATE_PATTERN = "dd-MMM-yyyy";
+    // mainly usef for form input
+    public static final String DATE_PATTERN2 = "dd-MM-yyyy";
 
     @Override
     public Class<? extends WebPage> getHomePage() {
@@ -104,6 +106,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("registration/professional", ProfessionalRegistrationPage.class);
         mountPage("professionals", ProfessionalsPage.class);
         mountPage("recruitment", RecruitmentPage.class);
+        mountPage("change-details", ChangeRegistrationDetails.class);
 
         // login pages
         mountPage("login/patient", PatientsLoginPage.class);
