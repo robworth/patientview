@@ -1,11 +1,11 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.service.ExportManager;
-import com.solidstategroup.radar.web.resources.CsvResource;
+import com.solidstategroup.radar.web.resources.RadarResourceFactory;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -34,10 +34,13 @@ public class AdminConsultantsPage extends AdminsBasePage {
         final ConsultantsDataProvider consultantsDataProvider = new ConsultantsDataProvider(utilityManager);
 
         // TODO: need to hook these up
-        add(new ExternalLink("exportPdf", ""));
-        add(new ResourceLink("exportCsv", new CsvResource(exportManager.
-                getConsultantsExportData(ExportManager.ExportType.CSV),
-                "consultants" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
+        add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
+                exportManager.getConsultantsExportData(ExportType.PDF), "consultants" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
+
+        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
+                exportManager.getConsultantsExportData(ExportType.CSV), "consultants" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
 
         add(new BookmarkablePageLink<AdminConsultantPage>("addNewConsultant", AdminConsultantPage.class));
 

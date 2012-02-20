@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.service;
 
-import java.io.InputStream;
+import com.solidstategroup.radar.model.enums.ExportType;
 
 public interface ExportManager {
 
@@ -12,9 +12,4 @@ public interface ExportManager {
 
     byte[] getPatientsExportData(ExportType type);
 
-    public enum ExportType {
-        CSV,
-        EXCEL,
-        PDF
-    }
 }

@@ -76,6 +76,14 @@
         <property name="utilityManager" ref="utilityManager"/>
         <property name="demographicsManager" ref="demographicsManager"/>
         <property name="diagnosisManager" ref="diagnosisManager"/>
+
+        <property name="csvDocumentDataBuilder" ref="csvDocumentDataBuilder"/>
+        <property name="excelDocumentDataBuilder" ref="excelDocumentDataBuilder"/>
+        <property name="pdfDocumentDataBuilder" ref="pdfDocumentDataBuilder"/>
     </bean>
+
+    <bean id="csvDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.CsvDocumentDataBuilder"/>
+    <bean id="excelDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.ExcelDocumentDataBuilder"/>
+    <bean id="pdfDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.PdfDocumentDataBuilder"/>
 
 </beans>

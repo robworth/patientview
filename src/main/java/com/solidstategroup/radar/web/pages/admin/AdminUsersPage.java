@@ -1,9 +1,9 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.ExportManager;
-import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SearchField;
@@ -11,14 +11,13 @@ import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.dataproviders.user.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
-import com.solidstategroup.radar.web.resources.CsvResource;
+import com.solidstategroup.radar.web.resources.RadarResourceFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -42,10 +41,13 @@ public class AdminUsersPage extends AdminsBasePage {
         final ProfessionalUserDataProvider professionalUserDataProvider = new ProfessionalUserDataProvider(userManager);
 
         // TODO: need to hook these up
-        add(new ExternalLink("exportPdf", ""));
-        add(new ResourceLink("exportCsv", new CsvResource(exportManager.
-                getProfessionalUsersExportData(ExportManager.ExportType.CSV),
-                "users" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
+        add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
+                exportManager.getProfessionalUsersExportData(ExportType.PDF), "users" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
+
+        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
+                exportManager.getProfessionalUsersExportData(ExportType.CSV), "users" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
 
         add(new BookmarkablePageLink<AdminUserPage>("addNewUser", AdminUserPage.class));
 
