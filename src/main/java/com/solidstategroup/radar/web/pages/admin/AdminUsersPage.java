@@ -9,6 +9,7 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
+import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.web.dataproviders.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.resources.RadarResourceFactory;
@@ -41,7 +42,6 @@ public class AdminUsersPage extends AdminsBasePage {
     public AdminUsersPage() {
         final ProfessionalUserDataProvider professionalUserDataProvider = new ProfessionalUserDataProvider(userManager);
 
-        // TODO: need to hook these up
         add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
                 exportManager.getProfessionalUsersExportData(ExportType.PDF), "users" +
                 AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
@@ -85,6 +85,11 @@ public class AdminUsersPage extends AdminsBasePage {
             add(new SearchField(entry.getKey(), entry.getValue(), professionalUserDataProvider, userList,
                     Arrays.asList(usersContainer, clearButton)));
         }
+
+        // add a date filter
+        add(new SearchDateField("searchDateRegistered",
+                ProfessionalUserFilter.UserField.REGISTRATION_DATE.getDatabaseFieldName(),
+                professionalUserDataProvider, userList, Arrays.asList(usersContainer, clearButton)));
     }
 
     /**
@@ -103,7 +108,7 @@ public class AdminUsersPage extends AdminsBasePage {
         item.add(new Label("email", user.getEmail()));
         item.add(new Label("centre", user.getCentre().getName()));
         item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(user.getDateRegistered()),
-                RadarApplication.DATE_PATTERN));
+                SearchDateField.DATABASE_DATE_PATTERN));
         item.add(new Label("GMC", user.getGmc()));
 
         String username;
@@ -160,7 +165,6 @@ public class AdminUsersPage extends AdminsBasePage {
                 put("searchEmail", ProfessionalUserFilter.UserField.EMAIL.getDatabaseFieldName());
                 put("searchCentre", ProfessionalUserFilter.UserField.CENTRE.getDatabaseFieldName());
                 put("searchGMC", ProfessionalUserFilter.UserField.GMC.getDatabaseFieldName());
-                // TODO: add the date filter
             }
         };
     }

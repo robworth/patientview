@@ -5,10 +5,10 @@ import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
-import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.ClearLink;
+import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
@@ -21,7 +21,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
 import org.apache.commons.lang.StringUtils;
@@ -87,6 +86,11 @@ public class AdminPatientsAllPage extends AdminsBasePage {
             add(new SearchField(entry.getKey(), entry.getValue(), demographicsDataProvider, demographicsList,
                     Arrays.asList(demographicsContainer, clearButton)));
         }
+
+        // add a date filter
+        add(new SearchDateField("searchDateRegistered",
+                DemographicsFilter.UserField.REGISTRATION_DATE.getDatabaseFieldName(),
+                demographicsDataProvider, demographicsList, Arrays.asList(demographicsContainer, clearButton)));        
     }
 
     /**
@@ -100,7 +104,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
                 AdminPatientAllPage.getPageParameters(demographics)));
         item.add(new Label("radarNo", demographics.getId().toString()));
         item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(demographics.getDateRegistered()),
-                RadarApplication.DATE_PATTERN));
+                SearchDateField.DATABASE_DATE_PATTERN));
         item.add(new Label("forename", demographics.getForename()));
         item.add(new Label("surname", demographics.getSurname()));
 
