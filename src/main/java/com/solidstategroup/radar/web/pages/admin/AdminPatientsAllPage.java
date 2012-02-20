@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AdminPatientsAllPage extends AdminsBasePage {
     @SpringBean
@@ -63,13 +64,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
-            add(new SortLink(entry.getKey(), entry.getValue(), demographicsDataProvider) {
-                @Override
-                public void onClicked(AjaxRequestTarget ajaxRequestTarget) {
-                    demographicsList.setCurrentPage(0);
-                    ajaxRequestTarget.add(demographicsContainer);
-                }
-            });
+            add(new SortLink(entry.getKey(), entry.getValue(), demographicsDataProvider, demographicsList,
+                    Arrays.asList(demographicsContainer)));
         }
 
         // button to clear all the filter fields for each colum
@@ -79,14 +75,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
         // add a search field to the top of each column - these will AND each search
         for (Map.Entry<String, String> entry : getFilterFields().entrySet()) {
-            add(new SearchField(entry.getKey(), entry.getValue(), demographicsDataProvider) {
-                @Override
-                public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
-                    demographicsList.setCurrentPage(0);
-                    ajaxRequestTarget.add(demographicsContainer);
-                    ajaxRequestTarget.add(clearButton);
-                }
-            });
+            add(new SearchField(entry.getKey(), entry.getValue(), demographicsDataProvider, demographicsList,
+                    Arrays.asList(demographicsContainer, clearButton)));
         }
     }
 

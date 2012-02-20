@@ -24,6 +24,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class AdminPatientsPage extends AdminsBasePage {
 
@@ -37,7 +38,7 @@ public class AdminPatientsPage extends AdminsBasePage {
     private static final int RESULTS_PER_PAGE = 10;
 
     public AdminPatientsPage() {
-        final PatientUserDataProvider consultantsDataProvider = new PatientUserDataProvider(userManager);
+        final PatientUserDataProvider patientsDataProvider = new PatientUserDataProvider(userManager);
 
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         feedback.setOutputMarkupId(true);
@@ -53,7 +54,7 @@ public class AdminPatientsPage extends AdminsBasePage {
         add(patientsContainer);
 
         final DataView<PatientUser> patientList = new DataView<PatientUser>("patients",
-                consultantsDataProvider) {
+                patientsDataProvider) {
             @Override
             protected void populateItem(Item<PatientUser> item) {
                 builtDataViewRow(item, feedback);
@@ -67,13 +68,8 @@ public class AdminPatientsPage extends AdminsBasePage {
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
-            add(new SortLink(entry.getKey(), entry.getValue(), consultantsDataProvider) {
-                @Override
-                public void onClicked(AjaxRequestTarget ajaxRequestTarget) {
-                    patientList.setCurrentPage(0);
-                    ajaxRequestTarget.add(patientsContainer);
-                }
-            });
+            add(new SortLink(entry.getKey(), entry.getValue(), patientsDataProvider, patientList,
+                    Arrays.asList(patientsContainer)));
         }
     }
 
