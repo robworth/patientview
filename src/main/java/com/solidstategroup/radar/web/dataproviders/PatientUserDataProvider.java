@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.dataproviders.user;
+package com.solidstategroup.radar.web.dataproviders;
 
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
@@ -10,7 +10,7 @@ import org.apache.wicket.model.Model;
 import java.util.Iterator;
 import java.util.List;
 
-public class PatientUserDataProvider implements IDataProvider<PatientUser>, SortableProvider {
+public class PatientUserDataProvider implements IDataProvider<PatientUser>, SortableDataProvider {
 
     private UserManager userManager;
     private PatientUserFilter patientUserFilter;

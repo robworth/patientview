@@ -180,19 +180,17 @@ public abstract class BaseDaoImpl {
             
             int count = 1;
             for (Map.Entry<String, String> entry : searchMap.entrySet()) {
-                if (entry.getValue().length() > 0) {
-                    // converting the field values to uppercase so I dont have to faff around
-                    // probably bite me in the ass at some point
-                    searchQueries.add("UPPER(" + entry.getKey() + ") LIKE ?");
-                    paramList.add("%" + entry.getValue().toUpperCase() + "%");
+                // converting the field values to uppercase so I dont have to faff around
+                // probably bite me in the ass at some point
+                searchQueries.add("UPPER(" + entry.getKey() + ") LIKE ?");
+                paramList.add("%" + entry.getValue().toUpperCase() + "%");
 
-                    // if there are more than one field being search AND them
-                    if (count < paramList.size()) {
-                        searchQueries.add((and ? "AND" : "OR"));
-                    }
-
-                    count++;
+                // if there are more than one field being search AND them
+                if (count < searchMap.size()) {
+                    searchQueries.add((and ? "AND" : "OR"));
                 }
+
+                count++;
             }
 
             return StringUtils.join(searchQueries.toArray(), " ");
@@ -214,14 +212,16 @@ public abstract class BaseDaoImpl {
         for (Map.Entry<String, String> entry : searchMap.entrySet()) {
             String searchValue = entry.getValue().trim();
 
-            if (entry.getKey().indexOf(",") > -1) {
-                String[] fields = entry.getKey().split(",");
+            if (entry.getValue().length() > 0) {
+                if (entry.getKey().indexOf(",") > -1) {
+                    String[] fields = entry.getKey().split(",");
 
-                for (String s : fields) {
-                    newSearchMap.put(s.trim(), searchValue);
+                    for (String s : fields) {
+                        newSearchMap.put(s.trim(), searchValue);
+                    }
+                } else {
+                    newSearchMap.put(entry.getKey().trim(), searchValue);
                 }
-            } else {
-                newSearchMap.put(entry.getKey().trim(), searchValue);
             }
         }
 

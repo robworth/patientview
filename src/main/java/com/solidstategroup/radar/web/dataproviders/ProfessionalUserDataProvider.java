@@ -3,21 +3,21 @@ package com.solidstategroup.radar.web.dataproviders;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.UserManager;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class ProfessionalUserDataProvider implements IDataProvider<ProfessionalUser> {
+public class ProfessionalUserDataProvider implements IDataProvider<ProfessionalUser>, SortableDataProvider {
 
     private UserManager userManager;
-    private ProfessionalUserFilter userFilter;
+    private ProfessionalUserFilter professionalUserFilter;
 
     public ProfessionalUserDataProvider(UserManager userManager) {
         this.userManager = userManager;
-        userFilter = new ProfessionalUserFilter();
+        professionalUserFilter = new ProfessionalUserFilter();
     }
 
     public Iterator<? extends ProfessionalUser> iterator(int i, int i1) {
@@ -37,16 +37,39 @@ public class ProfessionalUserDataProvider implements IDataProvider<ProfessionalU
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private List<ProfessionalUser> getResults(int page, int resultsPerPage) {
-        return userManager.getProfessionalUsers(userFilter, page, resultsPerPage);
-    }
-
-    public ProfessionalUserFilter getUserFilter() {
-        return userFilter;
-    }
-
     public void setAscending(boolean ascending) {
-        userFilter.setReverse(ascending);
+        professionalUserFilter.setReverse(ascending);
     }
 
+    public boolean isAscending() {
+        return professionalUserFilter.isReverse();
+    }
+
+    public void setSortField(String sortField) {
+        professionalUserFilter.setSortField(sortField);
+    }
+
+    public String getSortField() {
+        return professionalUserFilter.getSortField();
+    }
+
+    public boolean hasSearchCriteria() {
+        return professionalUserFilter.hasSearchCriteria();
+    }
+
+    public void addSearchCriteria(String searchField, String searchText) {
+        professionalUserFilter.addSearchCriteria(searchField, searchText);
+    }
+
+    public void removeSearchCriteria(String searchField) {
+        professionalUserFilter.removeSearchCriteria(searchField);
+    }
+
+    public void clearSearchCriteria() {
+        professionalUserFilter.getSearchFields().clear();
+    }
+
+    private List<ProfessionalUser> getResults(int page, int resultsPerPage) {
+        return userManager.getProfessionalUsers(professionalUserFilter, page, resultsPerPage);
+    }
 }

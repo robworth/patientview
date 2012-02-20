@@ -9,7 +9,7 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
-import com.solidstategroup.radar.web.dataproviders.user.ProfessionalUserDataProvider;
+import com.solidstategroup.radar.web.dataproviders.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.resources.RadarResourceFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -27,6 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 public class AdminUsersPage extends AdminsBasePage {
 
@@ -70,13 +71,8 @@ public class AdminUsersPage extends AdminsBasePage {
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
-            add(new SortLink(entry.getKey(), entry.getValue(), professionalUserDataProvider) {
-                @Override
-                public void onClicked(AjaxRequestTarget ajaxRequestTarget) {
-                    userList.setCurrentPage(0);
-                    ajaxRequestTarget.add(usersContainer);
-                }
-            });
+            add(new SortLink(entry.getKey(), entry.getValue(), professionalUserDataProvider, userList,
+                    Arrays.asList(usersContainer)));
         }
 
         // button to clear all the filter fields for each colum
@@ -86,14 +82,8 @@ public class AdminUsersPage extends AdminsBasePage {
 
         // add a search field to the top of each column - these will AND each search
         for (Map.Entry<String, String> entry : getFilterFields().entrySet()) {
-            add(new SearchField(entry.getKey(), entry.getValue(), professionalUserDataProvider) {
-                @Override
-                public void onChanged(AjaxRequestTarget ajaxRequestTarget) {
-                    userList.setCurrentPage(0);
-                    ajaxRequestTarget.add(usersContainer);
-                    ajaxRequestTarget.add(clearButton);
-                }
-            });
+            add(new SearchField(entry.getKey(), entry.getValue(), professionalUserDataProvider, userList,
+                    Arrays.asList(usersContainer, clearButton)));
         }
     }
 
