@@ -20,6 +20,7 @@ import com.solidstategroup.radar.model.filter.ConsultantFilter;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class AdminConsultantsPage extends AdminsBasePage {
 
@@ -61,18 +62,11 @@ public class AdminConsultantsPage extends AdminsBasePage {
         // add paging element
         consultantsContainer.add(new AjaxPagingNavigator("navigator", consultantList));
 
-        /* todo commented out for now as instructed by david
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
-            add(new SortLink(entry.getKey(), entry.getValue(), consultantsDataProvider) {
-                @Override
-                public void onClicked(AjaxRequestTarget ajaxRequestTarget) {
-                    consultantList.setCurrentPage(0);
-                    ajaxRequestTarget.add(consultantsContainer);
-                }
-            });
+            add(new SortLink(entry.getKey(), entry.getValue(), consultantsDataProvider,
+                    consultantList, Arrays.asList(consultantsContainer)));
         }
-        */
     }
 
     /**
