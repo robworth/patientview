@@ -2,7 +2,6 @@ package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.service.IssueManager;
 import com.solidstategroup.radar.web.dataproviders.IssuesDataProvider;
-import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.components.SearchField;
@@ -22,14 +21,11 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
-import java.text.SimpleDateFormat;
 
 public class AdminIssuesPage extends AdminsBasePage {
 
