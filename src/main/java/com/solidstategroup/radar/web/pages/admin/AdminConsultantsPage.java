@@ -34,7 +34,6 @@ public class AdminConsultantsPage extends AdminsBasePage {
     public AdminConsultantsPage() {
         final ConsultantsDataProvider consultantsDataProvider = new ConsultantsDataProvider(utilityManager);
 
-        // TODO: need to hook these up
         add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
                 exportManager.getConsultantsExportData(ExportType.PDF), "consultants" +
                 AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
