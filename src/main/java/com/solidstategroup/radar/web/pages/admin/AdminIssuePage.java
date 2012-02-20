@@ -64,8 +64,7 @@ public class AdminIssuePage extends AdminsBasePage {
         };
         add(issueForm);
 
-        DropDownChoice<IssueType> type = new DropDownChoice<IssueType>("type", Arrays.asList(IssueType.values()),
-                new ChoiceRenderer<IssueType>("name", "name"));
+        DropDownChoice<IssueType> type = new DropDownChoice<IssueType>("type", Arrays.asList(IssueType.values()));
         type.setRequired(true);
         issueForm.add(type);
 
@@ -88,14 +87,12 @@ public class AdminIssuePage extends AdminsBasePage {
         issueForm.add(comments);
 
         DropDownChoice<IssuePriority> priority = new DropDownChoice<IssuePriority>("priority",
-                Arrays.asList(IssuePriority.values()),
-                new ChoiceRenderer<IssuePriority>("name", "name"));
+                Arrays.asList(IssuePriority.values()));
         priority.setRequired(true);
         issueForm.add(priority);
 
         DropDownChoice<IssueStatus> status = new DropDownChoice<IssueStatus>("status",
-                Arrays.asList(IssueStatus.values()),
-                new ChoiceRenderer<IssueStatus>("name", "name"));
+                Arrays.asList(IssueStatus.values()));
         status.setRequired(true);
         issueForm.add(status);
 
