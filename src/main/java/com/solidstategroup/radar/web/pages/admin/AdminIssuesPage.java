@@ -155,7 +155,6 @@ public class AdminIssuesPage extends AdminsBasePage {
                 put("searchPage", IssueFilter.Field.PAGE.getDatabaseFieldName());
                 put("searchDescription", IssueFilter.Field.DESC.getDatabaseFieldName());
                 put("searchComment", IssueFilter.Field.COMMENTS.getDatabaseFieldName());
-                // TODO: add the dateLogged, dateResolved, updated
             }
         };
     }
