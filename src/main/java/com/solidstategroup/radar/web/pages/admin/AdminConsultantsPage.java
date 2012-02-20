@@ -7,7 +7,6 @@ import com.solidstategroup.radar.web.resources.RadarResourceFactory;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -62,6 +61,7 @@ public class AdminConsultantsPage extends AdminsBasePage {
         // add paging element
         consultantsContainer.add(new AjaxPagingNavigator("navigator", consultantList));
 
+        /* todo commented out for now as instructed by david
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
             add(new SortLink(entry.getKey(), entry.getValue(), consultantsDataProvider) {
@@ -72,6 +72,7 @@ public class AdminConsultantsPage extends AdminsBasePage {
                 }
             });
         }
+        */
     }
 
     /**
