@@ -7,6 +7,7 @@ import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SearchDropDownChoice;
+import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.model.Issue;
 import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.enums.IssuePriority;
@@ -21,11 +22,14 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
+import java.text.SimpleDateFormat;
 
 public class AdminIssuesPage extends AdminsBasePage {
 
@@ -85,6 +89,15 @@ public class AdminIssuesPage extends AdminsBasePage {
         add(new SearchDropDownChoice<IssueStatus>("searchStatus", Arrays.asList(IssueStatus.values()),
                 IssueFilter.Field.STATUS.getDatabaseFieldName(), issuesDataProvider, issueList,
                 Arrays.asList(issuesContainer, clearButton)));
+
+        add(new SearchDateField("searchDateLogged", IssueFilter.Field.DATE_LOGGED.getDatabaseFieldName(),
+                issuesDataProvider, issueList, Arrays.asList(issuesContainer, clearButton)));
+
+        add(new SearchDateField("searchDateResolved", IssueFilter.Field.DATE_RESOLVED.getDatabaseFieldName(),
+                issuesDataProvider, issueList, Arrays.asList(issuesContainer, clearButton)));
+
+        add(new SearchDateField("searchUpdated", IssueFilter.Field.UPDATED.getDatabaseFieldName(),
+                issuesDataProvider, issueList, Arrays.asList(issuesContainer, clearButton)));
     }
 
     /**
@@ -99,15 +112,15 @@ public class AdminIssuesPage extends AdminsBasePage {
         item.add(new Label("type", issue.getType().getName()));
         item.add(new Label("page", issue.getPage()));
         item.add(DateLabel.forDatePattern("dateLogged", new Model<Date>(issue.getDateLogged()),
-                RadarApplication.DATE_PATTERN));
+                SearchDateField.DATABASE_DATE_PATTERN));
         item.add(DateLabel.forDatePattern("dateResolved", new Model<Date>(issue.getDateLogged()),
-                RadarApplication.DATE_PATTERN));
+                SearchDateField.DATABASE_DATE_PATTERN));
         item.add(new Label("description", issue.getDescription()));
         item.add(new Label("comment", issue.getComments()));
         item.add(new Label("priority", issue.getPriority().getName()));
         item.add(new Label("status", issue.getStatus().getName()));
         item.add(DateLabel.forDatePattern("updated", new Model<Date>(issue.getUpdated()),
-                RadarApplication.DATE_PATTERN));
+                SearchDateField.DATABASE_DATE_PATTERN));
     }
 
     /**
