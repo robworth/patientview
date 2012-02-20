@@ -10,8 +10,11 @@ public interface ExportManager {
 
     byte[] getDemographicsExportData(ExportType type);
 
+    byte[] getPatientsExportData(ExportType type);
+
     public enum ExportType {
         CSV,
+        EXCEL,
         PDF
     }
 }

@@ -2,6 +2,7 @@ package com.solidstategroup.radar.web.pages.login;
 
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
@@ -37,8 +38,6 @@ public class PatientsLoginPage extends BasePage {
         Form<PatientUser> form = new Form<PatientUser>("form", model) {
             @Override
             protected void onSubmit() {
-                // Todo: This needs to do checks on date of birth too
-                // Get the wicket authentication session and ask to sign the user in with Spring security
                 AuthenticatedWebSession session = RadarSecuredSession.get();
                 PatientUser user = getModelObject();
                 boolean loginFailed = false;
@@ -76,7 +75,8 @@ public class PatientsLoginPage extends BasePage {
 
         // Date of birth with picker
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
-        DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form, componentsToUpdateList);
+        DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth",
+                form, componentsToUpdateList);
         form.add(dateOfBirth);
 
         form.add(new AjaxSubmitLink("submit") {

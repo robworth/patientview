@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface UserManager {
+
+    AdminUser getAdminUser(String email);
 
     PatientUser getPatientUser(Long id);
 

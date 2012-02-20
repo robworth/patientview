@@ -71,7 +71,7 @@
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
-    <bean id="exportManager" class="com.solidstategroup.radar.service.ExportManagerImpl">
+    <bean id="exportManager" class="com.solidstategroup.radar.service.impl.ExportManagerImpl">
         <property name="userManager" ref="userManager"/>
         <property name="utilityManager" ref="utilityManager"/>
         <property name="demographicsManager" ref="demographicsManager"/>

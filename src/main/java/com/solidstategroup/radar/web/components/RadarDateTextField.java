@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RadarDateTextField extends DateTextField {
     public RadarDateTextField(String id, Form form, List<Component> componentsToUpdate) {
-        super(id, RadarApplication.DATE_PATTERN);
+        super(id, RadarApplication.DATE_PATTERN2);
         init(form, componentsToUpdate);
     }
 

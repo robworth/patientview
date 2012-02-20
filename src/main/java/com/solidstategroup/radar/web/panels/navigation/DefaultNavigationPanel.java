@@ -66,8 +66,7 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
         // only want to show on professional login page or homepage
         BookmarkablePageLink professionalRegistrationPageLink = new BookmarkablePageLink<ProfessionalRegistrationPage>(
                 "professionalRegistrationPageLink", ProfessionalRegistrationPage.class);
-        professionalRegistrationPageLink.setVisible(pageClass == Professionals
-                LoginPage.class
+        professionalRegistrationPageLink.setVisible(pageClass == ProfessionalsLoginPage.class
                 || pageClass == HomePage.class);
         add(professionalRegistrationPageLink);
 

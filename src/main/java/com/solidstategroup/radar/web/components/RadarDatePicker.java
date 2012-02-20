@@ -6,7 +6,7 @@ import org.apache.wicket.extensions.yui.calendar.DatePicker;
 public class RadarDatePicker extends DatePicker{
     public RadarDatePicker() {
         super();
-        setShowOnFieldClick(true);
+        setShowOnFieldClick(false);
         setAutoHide(true);
         hideOnSelect();
     }

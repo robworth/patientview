@@ -37,8 +37,10 @@ import org.apache.wicket.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 public class RadarApplication extends AuthenticatedWebApplication {
-
+    // mainly used for display
     public static final String DATE_PATTERN = "dd-MMM-yyyy";
+    // mainly usef for form input
+    public static final String DATE_PATTERN2 = "dd-MM-yyyy";
 
     @Override
     public Class<? extends WebPage> getHomePage() {

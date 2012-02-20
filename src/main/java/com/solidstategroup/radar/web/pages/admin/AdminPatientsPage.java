@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.pages.admin;
 
+import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.web.dataproviders.user.PatientUserDataProvider;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.SortLink;
@@ -10,6 +11,8 @@ import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.util.TripleDes;
+import com.solidstategroup.radar.web.resources.CsvResource;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -33,6 +36,8 @@ public class AdminPatientsPage extends AdminsBasePage {
     private DemographicsManager demographicsManager;
     @SpringBean
     private EmailManager emailManager;
+    @SpringBean
+    private ExportManager exportManager;
 
     private static final int RESULTS_PER_PAGE = 10;
 
@@ -46,7 +51,8 @@ public class AdminPatientsPage extends AdminsBasePage {
 
         // TODO: need to hook these up
         add(new ExternalLink("exportPdf", ""));
-        add(new ExternalLink("exportExcel", ""));
+        add(new ResourceLink("exportCsv", new CsvResource(exportManager.getPatientsExportData(ExportManager.
+                ExportType.CSV), "patients-users" + AdminsBasePage.EXPORT_FILE_NAME_SUFFIX)));
 
         final WebMarkupContainer patientsContainer = new WebMarkupContainer("patientsContainer");
         patientsContainer.setOutputMarkupId(true);
@@ -79,7 +85,8 @@ public class AdminPatientsPage extends AdminsBasePage {
 
     /**
      * Build a row in the dataview from the object
-     * @param item Item<PatientUser>
+     *
+     * @param item     Item<PatientUser>
      * @param feedback
      */
     private void builtDataViewRow(final Item<PatientUser> item, final FeedbackPanel feedback) {
@@ -140,6 +147,7 @@ public class AdminPatientsPage extends AdminsBasePage {
 
     /**
      * List of columns that can be used to sort the results - will return ID of el to be bound to and the field to sort
+     *
      * @return Map<String, PatientUserFilter.UserField>
      */
     private Map<String, String> getSortFields() {
