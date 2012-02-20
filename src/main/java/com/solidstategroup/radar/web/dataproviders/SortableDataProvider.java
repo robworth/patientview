@@ -1,6 +1,6 @@
-package com.solidstategroup.radar.web.dataproviders.user;
+package com.solidstategroup.radar.web.dataproviders;
 
-public interface SortableProvider {
+public interface SortableDataProvider {
     void setAscending(boolean ascending);
 
     boolean isAscending();

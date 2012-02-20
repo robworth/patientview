@@ -4,7 +4,6 @@ import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.service.DemographicsManager;
-import com.solidstategroup.radar.web.dataproviders.user.SortableProvider;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -12,7 +11,7 @@ import org.apache.wicket.model.IModel;
 import java.util.Iterator;
 import java.util.List;
 
-public class DemographicsDataProvider implements IDataProvider<Demographics>, SortableProvider {
+public class DemographicsDataProvider implements IDataProvider<Demographics>, SortableDataProvider {
 
     private Centre centre;
     private DemographicsManager demographicsManager;

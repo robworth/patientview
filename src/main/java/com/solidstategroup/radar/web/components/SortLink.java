@@ -4,14 +4,16 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.Model;
-import com.solidstategroup.radar.web.dataproviders.user.SortableProvider;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.Component;
+import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
+
+import java.util.List;
 
 /**
- * AjaxLink bound to a Data field - this will update the filter when user clicks and set the sort
- * This will only update the settings in the provider the onChanged has to be overridden to update the objects
- * on the page
+ * AjaxLink bound to a Data field - this will update the filter when user clicks and set the sort on the page
  */
-public abstract class SortLink extends AjaxLink {
+public class SortLink extends AjaxLink {
     private static final String SORT_LINK_CLASS = "sortLink";
     private static final String SORT_ASC_CLASS = "sortAsc";
     private static final String SORT_DESC_CLASS = "sortDesc";
@@ -19,12 +21,17 @@ public abstract class SortLink extends AjaxLink {
             + SORT_ASC_CLASS + " " + SORT_DESC_CLASS + "');";
 
     private String sortField;
-    private SortableProvider dataProvider;
+    private SortableDataProvider dataProvider;
+    private DataView dataView;
+    private List<? extends Component> componentsToUpdate;
 
-    public SortLink(final String id, final String sortField, final SortableProvider dataProvider) {
+    public SortLink(final String id, final String sortField, final SortableDataProvider dataProvider,
+                    final DataView dataView, final List<? extends Component> componentsToUpdate) {
         super(id);
         this.sortField = sortField;
         this.dataProvider = dataProvider;
+        this.dataView = dataView;
+        this.componentsToUpdate = componentsToUpdate;
 
         String classValue = SORT_LINK_CLASS;
 
@@ -53,8 +60,13 @@ public abstract class SortLink extends AjaxLink {
         }
 
         dataProvider.setSortField(sortField);
-        onClicked(ajaxRequestTarget);
-    }
 
-    public abstract void onClicked(final AjaxRequestTarget ajaxRequestTarget);
+        dataView.setCurrentPage(0);
+
+        if (componentsToUpdate != null) {
+            for (Component component : componentsToUpdate) {
+                ajaxRequestTarget.add(component);
+            }
+        }
+    }
 }

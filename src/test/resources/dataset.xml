@@ -8804,6 +8804,42 @@ Treatment conservative & distraction]]></value>
       <value>true</value>
     </row>
   </table>
+  <table name="tbl_IssueTracker">
+    <column>bID</column>
+    <column>bType</column>
+    <column>bPage</column>
+    <column>bDateLogged</column>
+    <column>bDateResolved</column>
+    <column>bDesc</column>
+    <column>bComment</column>
+    <column>bPriority</column>
+    <column>bStatus</column>
+    <column>bUpdated</column>
+    <row>
+      <value>1</value>
+      <value><![CDATA[Addition]]></value>
+      <value><![CDATA[Consultants page]]></value>
+      <value><![CDATA[2012-02-16 00:00:00.0]]></value>
+      <null/>
+      <value><![CDATA[Its not working]]></value>
+      <value><![CDATA[Make it work]]></value>
+      <value><![CDATA[Low]]></value>
+      <value><![CDATA[Open]]></value>
+      <null/>
+    </row>
+    <row>
+      <value>2</value>
+      <value><![CDATA[Addition]]></value>
+      <value><![CDATA[Admins page]]></value>
+      <value><![CDATA[2012-02-16 00:00:00.0]]></value>
+      <null/>
+      <value><![CDATA[Its still not working]]></value>
+      <value><![CDATA[Make it work]]></value>
+      <value><![CDATA[Low]]></value>
+      <value><![CDATA[Closed]]></value>
+      <null/>
+    </row>
+  </table>
   <table name="tbl_Karyotype">
     <column>kID</column>
     <column>KARYOTYPE</column>
