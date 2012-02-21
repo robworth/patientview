@@ -64,15 +64,19 @@ public class SearchDateField extends DateTextField {
     }
 
     protected String getSearchValue() {
-        Date date = getModelObject();
+        if (getModelObject() != null) {
+            Date date = getModelObject();
 
-        // try to parse the string into a date and convert to the datebase format
-        try {
-            return DATABASE_DATE_FORMAT.format(date);
-        } catch (Exception e) {
-            // user may have just typed some numbers so just try and filter on that
+            // try to parse the string into a date and convert to the datebase format
+            try {
+                return DATABASE_DATE_FORMAT.format(date);
+            } catch (Exception e) {
+                // user may have just typed some numbers so just try and filter on that
+            }
+
+            return getModelObject().toString();
         }
 
-        return getModelObject().toString();
+        return "";
     }
 }
