@@ -1,29 +1,31 @@
 package com.solidstategroup.radar.web.components;
 
-import org.apache.wicket.markup.html.form.TextField;
+import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.Component;
-import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
-/**
-* TextField bound to a Data field - this will update the filter when user puts anything int he field
-* This will only update the settings in the provider the onChanged has to be overridden to update the objects
-* on the page
-*/
-public class SearchField extends TextField<String> {
+public class SearchDateField extends DateTextField {
+    public static final String DATABASE_DATE_PATTERN = "yyyy-MM-dd";
+    public static final SimpleDateFormat DATABASE_DATE_FORMAT = new SimpleDateFormat(DATABASE_DATE_PATTERN);
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy");
+
     private SortableDataProvider dataProvider;
     private String searchField;
     private DataView dataView;
     private List<? extends Component> componentsToUpdate;
 
-    public SearchField(final String id, final String searchField, final SortableDataProvider dataProvider,
-                       final DataView dataView, final List<? extends Component> componentsToUpdate) {
-        super(id, new Model<String>(""));
+    public SearchDateField(String id, String searchField, SortableDataProvider dataProvider, DataView dataView,
+                           List<? extends Component> componentsToUpdate) {
+        super(id, new Model<Date>(null), DATABASE_DATE_PATTERN);
 
         this.dataProvider = dataProvider;
         this.searchField = searchField;
@@ -38,6 +40,8 @@ public class SearchField extends TextField<String> {
                 }
             });
         }
+
+        add(new DatePicker());
     }
 
     private void changed(final AjaxRequestTarget ajaxRequestTarget) {
@@ -60,12 +64,15 @@ public class SearchField extends TextField<String> {
     }
 
     protected String getSearchValue() {
-        String value = "";
+        Date date = getModelObject();
 
-        if (getModelObject() != null) {
-            value = getModelObject();
+        // try to parse the string into a date and convert to the datebase format
+        try {
+            return DATABASE_DATE_FORMAT.format(date);
+        } catch (Exception e) {
+            // user may have just typed some numbers so just try and filter on that
         }
 
-        return value;
+        return getModelObject().toString();
     }
 }
