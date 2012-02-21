@@ -13,6 +13,7 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.web.resources.RadarResourceFactory;
+import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -20,7 +21,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
 import org.apache.commons.lang.StringUtils;
@@ -68,7 +68,8 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         demographicsContainer.add(demographicsList);
 
         // add paging element
-        demographicsContainer.add(new AjaxPagingNavigator("navigator", demographicsList));
+        demographicsContainer.add(new RadarAjaxPagingNavigator("navigator", demographicsList,
+                demographicsDataProvider.size()));
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
