@@ -8,9 +8,9 @@ import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -29,7 +29,7 @@ public abstract class ForgottenPasswordPage extends BasePage {
 
     public ForgottenPasswordPage() {
 
-        Label userType = new Label("userType", getUsesType());
+        Label userType = new Label("userType", getUserType());
         add(userType);
 
         // components to update on ajax submit
@@ -82,7 +82,7 @@ public abstract class ForgottenPasswordPage extends BasePage {
         form.add(email);
 
         // Submit link
-        form.add(new AjaxSubmitLink("submit") {
+        form.add(new IndicatingAjaxButton("submit") {
             {
                 componentsToUpdate.add(this);
             }
@@ -107,7 +107,7 @@ public abstract class ForgottenPasswordPage extends BasePage {
 
     }
 
-    protected abstract String getUsesType();
+    protected abstract String getUserType();
 
     public abstract void sendPassword(String username) throws EmailAddressNotFoundException, DecryptionException;
 

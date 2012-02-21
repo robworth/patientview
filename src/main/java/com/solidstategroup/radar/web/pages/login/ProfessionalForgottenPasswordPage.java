@@ -7,7 +7,7 @@ import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 public class ProfessionalForgottenPasswordPage extends ForgottenPasswordPage{
 
     @Override
-    protected String getUsesType() {
+    protected String getUserType() {
         return "Clinicians";
     }
 

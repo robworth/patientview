@@ -10,7 +10,9 @@ import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -165,7 +167,7 @@ public class ChangeRegistrationDetails extends BasePage {
         };
 
         final PasswordTextField password1 = RadarComponentFactory.getRadarPasswordTextFieldWithValidation("password1",
-                StringValidator.lengthBetween(6, 8), true, changeDetailsForm, changeDetailsComponentsToUpdate);
+                StringValidator.lengthBetween(6, 10), true, changeDetailsForm, changeDetailsComponentsToUpdate);
         changeDetailsForm.add(password1);
 
         final PasswordTextField password2 = RadarComponentFactory.getRequiredPasswordTextField("password2",
@@ -183,7 +185,7 @@ public class ChangeRegistrationDetails extends BasePage {
         changeDetailsComponentsToUpdate.add(password1);
         changeDetailsComponentsToUpdate.add(password2);
 
-        AjaxSubmitLink changeDetailsSubmit = new AjaxSubmitLink("changeDetailsSubmit") {
+        AjaxButton changeDetailsSubmit = new IndicatingAjaxButton("changeDetailsSubmit") {
             {
                 setOutputMarkupId(true);
                 setOutputMarkupPlaceholderTag(true);
