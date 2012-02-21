@@ -11,7 +11,6 @@ import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.FeedbackMessage;
@@ -87,6 +86,7 @@ public class PatientRegistrationPage extends BasePage {
                 return message.contains(COULD_NOT_REGISTER_MESSAGE) || message.contains(FIX_ERRORS_MESSAGE);
             }
         });
+
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
         form.add(feedbackPanel);
 
