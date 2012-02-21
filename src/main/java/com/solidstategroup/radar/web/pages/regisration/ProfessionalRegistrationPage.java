@@ -13,7 +13,9 @@ import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -209,7 +211,7 @@ public class ProfessionalRegistrationPage extends BasePage {
         form.add(feedbackPanel);
 
 
-        AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
+        AjaxButton submit = new IndicatingAjaxButton("submit") {
             {
                 componentsToUpdate.add(this);
             }
