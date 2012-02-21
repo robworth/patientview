@@ -38,9 +38,9 @@ public class AdminConsultantsPage extends AdminsBasePage {
                 exportManager.getConsultantsExportData(ExportType.PDF), "consultants" +
                 AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
 
-        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
-                exportManager.getConsultantsExportData(ExportType.CSV), "consultants" +
-                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
+        add(new ResourceLink("exportExcel", RadarResourceFactory.getExportResource(
+                exportManager.getConsultantsExportData(ExportType.EXCEL), "consultants" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.EXCEL)));
 
         add(new BookmarkablePageLink<AdminConsultantPage>("addNewConsultant", AdminConsultantPage.class));
 

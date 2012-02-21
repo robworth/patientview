@@ -46,9 +46,9 @@ public class AdminUsersPage extends AdminsBasePage {
                 exportManager.getProfessionalUsersExportData(ExportType.PDF), "users" +
                 AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
 
-        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
-                exportManager.getProfessionalUsersExportData(ExportType.CSV), "users" +
-                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
+        add(new ResourceLink("exportExcel", RadarResourceFactory.getExportResource(
+                exportManager.getProfessionalUsersExportData(ExportType.EXCEL), "users" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.EXCEL)));
 
         add(new BookmarkablePageLink<AdminUserPage>("addNewUser", AdminUserPage.class));
 

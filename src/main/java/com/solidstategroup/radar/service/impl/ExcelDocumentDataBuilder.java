@@ -2,17 +2,74 @@ package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.model.DocumentData;
 import com.solidstategroup.radar.service.DocumentDataBuilder;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
 
 
 public class ExcelDocumentDataBuilder implements DocumentDataBuilder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelDocumentDataBuilder.class);
 
     public byte[] build(DocumentData documentData) {
-        // todo see CsvDocumentDataBuilder.class as example
-        return null;
+
+        Workbook workbook = new HSSFWorkbook();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        Sheet sheet = workbook.createSheet("data");
+
+        // add the headers/columns
+        Row headerRow = sheet.createRow((short) 0);
+        sheet.autoSizeColumn(0);
+        CellStyle headerStyle = workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+        headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        headerStyle.setFont(headerFont);
+        List<String> headers = documentData.getHeaders();
+        int headerColumnIndex = 0;
+        for (String header : headers) {
+            sheet.autoSizeColumn(headerColumnIndex);
+            Cell cell = headerRow.createCell(headerColumnIndex);
+            cell.setCellStyle(headerStyle);
+            cell.setCellValue(header);
+            headerColumnIndex++;
+        }
+
+        // add the row data
+        int columnIndex = 0;
+        int rowIndex = 1;
+        for (List<String> row : documentData.getRows()) {
+            Row spreadSheetRow = sheet.createRow((short) rowIndex++);
+            for (String data : row) {
+                spreadSheetRow.createCell(columnIndex++).setCellValue(data);
+            }
+            columnIndex = 0;
+        }
+
+        // set the column width to fit the contents - this must be done after the data is added
+        headerColumnIndex = 0;
+        for (String header : headers) {
+            sheet.autoSizeColumn(headerColumnIndex);
+            headerColumnIndex++;
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            workbook.write(outputStream);
+            outputStream.close();
+            outputStream.flush();
+        } catch (IOException e) {
+            LOGGER.error("Unable to write workbook to output stream");
+        }
+
+        return outputStream.toByteArray();
     }
 }

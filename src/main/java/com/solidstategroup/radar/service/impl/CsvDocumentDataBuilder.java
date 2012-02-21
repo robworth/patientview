@@ -27,8 +27,8 @@ public class CsvDocumentDataBuilder implements DocumentDataBuilder {
             ListIterator<String> rowIterator = row.listIterator();
             while (rowIterator.hasNext()) {
                 String value = rowIterator.next();
-                // escape any commas
-                value = "\"" + value + "\"";
+                // change any commas
+                value = value!= null ? value.replace(",", " - ") : "";
                 printWriter.write(value + (rowIterator.hasNext() ? ", " : ""));
             }
             printWriter.write("\n");
