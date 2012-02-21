@@ -49,9 +49,9 @@ public class AdminPatientsAllPage extends AdminsBasePage {
                 exportManager.getDemographicsExportData(ExportType.PDF), "patients-all" +
                 AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
 
-        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
-                exportManager.getDemographicsExportData(ExportType.CSV), "patients-all" +
-                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
+        add(new ResourceLink("exportExcel", RadarResourceFactory.getExportResource(
+                exportManager.getDemographicsExportData(ExportType.EXCEL), "patients-all" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.EXCEL)));
 
         final WebMarkupContainer demographicsContainer = new WebMarkupContainer("demographicsContainer");
         demographicsContainer.setOutputMarkupId(true);

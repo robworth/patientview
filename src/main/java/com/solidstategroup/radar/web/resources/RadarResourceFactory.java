@@ -1,8 +1,10 @@
 package com.solidstategroup.radar.web.resources;
 
 import com.solidstategroup.radar.model.enums.ExportType;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.request.resource.ContentDisposition;
+import org.apache.wicket.util.time.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,8 +34,8 @@ public class RadarResourceFactory {
 
         private String mimeType;
 
-        private RadarExportResource(byte[] array, String filename, String contentType, String mimeType) {
-            super(contentType, array, filename);
+        private RadarExportResource(byte[] array, String filename, String extension, String contentType, String mimeType) {
+            super(contentType, array, filename + extension);
             this.mimeType = mimeType;
         }
 
@@ -41,26 +43,26 @@ public class RadarResourceFactory {
         protected void configureResponse(ResourceResponse response, Attributes attributes) {
             response.setContentType(mimeType);
             response.setContentDisposition(ContentDisposition.ATTACHMENT);
-            response.disableCaching();
+            response.setCacheDuration(Duration.NONE);
 
         }
     }
 
     private static class CsvExportResource extends RadarExportResource {
         private CsvExportResource(byte[] array, String filename) {
-            super(array, filename + ".csv", "UTF-8", "text/csv");
+            super(array, filename, ".csv", "UTF-8", "text/csv");
         }
     }
 
     private static class ExcelExportResource extends RadarExportResource {
         private ExcelExportResource(byte[] array, String filename) {
-            super(array, filename + ".xls", "UTF-8", "application/vnd.ms-excel");
+            super(array, filename, ".xls", "UTF-8", "application/vnd.ms-excel");
         }
     }
 
     private static class PdfExportResource extends RadarExportResource {
         private PdfExportResource(byte[] array, String filename) {
-            super(array, filename + ".pdf", "UTF-8", "application/pdf");
+            super(array, filename, ".pdf", "UTF-8", "application/pdf");
         }
     }
 
