@@ -49,6 +49,28 @@ import java.util.List;
 
 public class ClinicalPicturePanel extends Panel {
 
+    // ids of elements where the id is referenced more than once
+    private static final String URTICARIA_CONTAINER_ID = "urticariaContainer";
+    private static final String URTICARIA_DETAIL_CONTAINER_ID = "urticariaDetailContainer";
+    private static final String PARTIAL_LIPODYSTROPHY_CONTAINER_ID = "partialLipodystrophyContainer";
+    private static final String PRECEEDING_INFECTION_CONTAINER_ID = "preceedingInfectionContainer";
+    private static final String PRECEEDING_INFECTION_DETAIL_CONTAINER_ID = "preceedingInfectionDetailContainer";
+    private static final String CHRONIC_INFECTION_ACTIVE_CONTAINER_ID = "chronicInfectionActiveContainer";
+    private static final String CHRONIC_INFECTION_DETAIL_CONTAINER_ID = "chronicInfectionDetailContainer";
+    private static final String THROMBOSIS_CONTAINER_ID = "thrombosisContainer";
+    private static final String PERITONITIS_CONTAINER_ID = "peritonitisContainer";
+    private static final String PULMONARY_OEDEMA_CONTAINER_ID = "pulmonaryOedemaContainer";
+    private static final String DIABETES_TYPE_CONTAINER_ID = "diabetesTypeContainer";
+    private static final String RASH_CONTAINER_ID = "rashContainer";
+    private static final String RASH_DETAIL_CONTAINER_ID = "rashDetailContainer";
+    private static final String POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID = "possibleImmunisationTriggerContainer";
+
+    // elements to hide if diagnosis is srns
+    private List<String> srnsElementsToHide;
+
+    // elements to hide if diagnosis is mpgn
+    private List<String> mpgnElementsToHide;
+
     @SpringBean
     private ClinicalDataManager clinicalDataManager;
     @SpringBean
@@ -56,13 +78,25 @@ public class ClinicalPicturePanel extends Panel {
     @SpringBean
     private DiagnosisManager diagnosisManager;
 
-    public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel, final boolean firstVisit) {
+    public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel, final boolean isFirstVisit) {
+
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
+        // set srns elements to hide
+        srnsElementsToHide = Arrays.asList(URTICARIA_CONTAINER_ID, URTICARIA_DETAIL_CONTAINER_ID,
+                PARTIAL_LIPODYSTROPHY_CONTAINER_ID, PRECEEDING_INFECTION_CONTAINER_ID,
+                PRECEEDING_INFECTION_DETAIL_CONTAINER_ID, CHRONIC_INFECTION_ACTIVE_CONTAINER_ID,
+                CHRONIC_INFECTION_DETAIL_CONTAINER_ID);
+
+        // set mpgn elements to hide
+        mpgnElementsToHide = Arrays.asList(THROMBOSIS_CONTAINER_ID, PERITONITIS_CONTAINER_ID,
+                PULMONARY_OEDEMA_CONTAINER_ID, DIABETES_TYPE_CONTAINER_ID, RASH_CONTAINER_ID, RASH_DETAIL_CONTAINER_ID,
+                POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID);
+
         final WebMarkupContainer clinicalPictureContainer = new WebMarkupContainer("clinicalPictureContainer");
-        clinicalPictureContainer.setVisible(firstVisit);
+        clinicalPictureContainer.setVisible(isFirstVisit);
         clinicalPictureContainer.setOutputMarkupId(true);
         clinicalPictureContainer.setOutputMarkupPlaceholderTag(true);
         add(clinicalPictureContainer);
@@ -93,7 +127,7 @@ public class ClinicalPicturePanel extends Panel {
         final IModel<ClinicalData> followUpModel = new Model<ClinicalData>(new ClinicalData());
 
         final IModel<ClinicalData> formModel;
-        if (firstVisit) {
+        if (isFirstVisit) {
             formModel = firstVisitModel;
         } else {
             formModel = new CompoundPropertyModel(followUpModel);
@@ -116,7 +150,7 @@ public class ClinicalPicturePanel extends Panel {
                 clinicalPictureListModel, new ChoiceRenderer("clinicalPictureDate", "id"));
         clinicalPicturesSwitcher.setOutputMarkupId(true);
         clinicalPictureContainer.setOutputMarkupPlaceholderTag(true);
-        clinicalPicturesSwitcher.setVisible(!firstVisit);
+        clinicalPicturesSwitcher.setVisible(!isFirstVisit);
         add(clinicalPicturesSwitcher);
         clinicalPicturesSwitcher.add(new AjaxFormComponentUpdatingBehavior("onChange") {
             @Override
@@ -133,11 +167,11 @@ public class ClinicalPicturePanel extends Panel {
                 formModel.setObject(new ClinicalData());
                 clinicalPictureContainer.setVisible(true);
                 clinicalPicturesSwitcher.clearInput();
-                target.add(clinicalPictureContainer,clinicalPicturesSwitcher);
+                target.add(clinicalPictureContainer, clinicalPicturesSwitcher);
             }
         };
 
-        addNew.setVisible(!firstVisit);
+        addNew.setVisible(!isFirstVisit);
         add(addNew);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
@@ -280,26 +314,26 @@ public class ClinicalPicturePanel extends Panel {
         form.add(new YesNoRadioGroup("hypovalaemia", true));
         form.add(new YesNoRadioGroup("fever", true));
 
-        WebMarkupContainer thrombosisContainer = new WebMarkupContainer("thrombosisContainer") {
+        WebMarkupContainer thrombosisContainer = new WebMarkupContainer(THROMBOSIS_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject();
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
         YesNoRadioGroup thrombosis = new YesNoRadioGroup("thrombosis", true);
         thrombosisContainer.add(thrombosis);
         form.add(thrombosisContainer);
 
-        WebMarkupContainer peritonitisContainer = new WebMarkupContainer("peritonitisContainer") {
+        WebMarkupContainer peritonitisContainer = new WebMarkupContainer(PERITONITIS_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject();
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
         peritonitisContainer.add(new YesNoRadioGroup("peritonitis", true));
         form.add(peritonitisContainer);
 
-        WebMarkupContainer pulmonaryOedemaContainer = new WebMarkupContainer("pulmonaryOedemaContainer") {
+        WebMarkupContainer pulmonaryOedemaContainer = new WebMarkupContainer(PULMONARY_OEDEMA_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
@@ -320,10 +354,13 @@ public class ClinicalPicturePanel extends Panel {
 
         final IModel<Boolean> showUrticariaIModel = new Model<Boolean>(showUrticariaOnInit);
 
-        MarkupContainer urticariaDetailContainer = new WebMarkupContainer("urticariaDetailContainer") {
+        MarkupContainer urticariaDetailContainer = new WebMarkupContainer(URTICARIA_DETAIL_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return showUrticariaIModel.getObject();
+                if (!hideElement(isFirstVisit, isSrnsModel.getObject(), getId())) {
+                    return showUrticariaIModel.getObject();
+                }
+                return false;
             }
         };
         componentsToUpdate.add(urticariaDetailContainer);
@@ -334,10 +371,10 @@ public class ClinicalPicturePanel extends Panel {
         urticariaDetailContainer.setOutputMarkupPlaceholderTag(true);
 
         // More yes/no options
-        WebMarkupContainer urticariaContainer = new WebMarkupContainer("urticariaContainer") {
+        WebMarkupContainer urticariaContainer = new WebMarkupContainer(URTICARIA_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject().equals(false);
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
         YesNoRadioGroup urticaria = new YesNoRadioGroup("urticaria", true);
@@ -352,10 +389,10 @@ public class ClinicalPicturePanel extends Panel {
         });
 
         // Diabetes
-        WebMarkupContainer diabetesTypeContainer = new WebMarkupContainer("diabetesTypeContainer") {
+        WebMarkupContainer diabetesTypeContainer = new WebMarkupContainer(DIABETES_TYPE_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject();
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
         diabetesTypeContainer.add(new DropDownChoice<ClinicalData.DiabetesType>("diabetesType",
@@ -374,10 +411,13 @@ public class ClinicalPicturePanel extends Panel {
 
 
         // Rash details needs show/hide
-        final MarkupContainer rashDetailContainer = new WebMarkupContainer("rashDetailContainer") {
+        final MarkupContainer rashDetailContainer = new WebMarkupContainer(RASH_DETAIL_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return showRashDetailsIModel.getObject();
+                if (!hideElement(isFirstVisit, isSrnsModel.getObject(), getId())) {
+                    return showRashDetailsIModel.getObject();
+                }
+                return false;
             }
         };
 
@@ -388,10 +428,10 @@ public class ClinicalPicturePanel extends Panel {
         componentsToUpdate.add(rashDetailContainer);
 
         // More yes/no options
-        WebMarkupContainer rashContainer = new WebMarkupContainer("rashContainer") {
+        WebMarkupContainer rashContainer = new WebMarkupContainer(RASH_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject();
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
         YesNoRadioGroup rash = new YesNoRadioGroup("rash", true);
@@ -407,10 +447,10 @@ public class ClinicalPicturePanel extends Panel {
         });
 
         WebMarkupContainer possibleImmunisationTriggerContainer = new WebMarkupContainer
-                ("possibleImmunisationTriggerContainer") {
+                (POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject().equals(true);
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
 
@@ -419,10 +459,10 @@ public class ClinicalPicturePanel extends Panel {
         form.add(possibleImmunisationTriggerContainer);
 
 
-        WebMarkupContainer partialLipodystrophyContainer = new WebMarkupContainer("partialLipodystrophyContainer") {
+        WebMarkupContainer partialLipodystrophyContainer = new WebMarkupContainer(PARTIAL_LIPODYSTROPHY_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject().equals(false);
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
 
@@ -431,10 +471,10 @@ public class ClinicalPicturePanel extends Panel {
         partialLipodystrophyContainer.add(partialLipodystrophy);
         form.add(partialLipodystrophyContainer);
 
-        WebMarkupContainer preceedingInfectionContainer = new WebMarkupContainer("preceedingInfectionContainer") {
+        WebMarkupContainer preceedingInfectionContainer = new WebMarkupContainer(PRECEEDING_INFECTION_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject().equals(false);
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
 
@@ -449,7 +489,6 @@ public class ClinicalPicturePanel extends Panel {
 
         final IModel<Boolean> showPrecedingInfectioModel = new Model<Boolean>(showPrecedingInfectionOnInit);
 
-
         YesNoRadioGroup preceedingInfection = new YesNoRadioGroup("preceedingInfection", true);
         preceedingInfectionContainer.add(preceedingInfection);
         preceedingInfection.add(new AjaxFormChoiceComponentUpdatingBehavior() {
@@ -463,7 +502,7 @@ public class ClinicalPicturePanel extends Panel {
 
         // Preceeding infection show/hide
         MarkupContainer preceedingInfectionDetailContainer =
-                new WebMarkupContainer("preceedingInfectionDetailContainer") {
+                new WebMarkupContainer(PRECEEDING_INFECTION_DETAIL_CONTAINER_ID) {
                     @Override
                     public boolean isVisible() {
                         return showPrecedingInfectioModel.getObject();
@@ -486,10 +525,10 @@ public class ClinicalPicturePanel extends Panel {
 
         final IModel<Boolean> showChronicModel = new Model<Boolean>(showChronicOnInit);
 
-        WebMarkupContainer chronicInfectionActiveContainer = new WebMarkupContainer("chronicInfectionActiveContainer") {
+        WebMarkupContainer chronicInfectionActiveContainer = new WebMarkupContainer(CHRONIC_INFECTION_ACTIVE_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return isSrnsModel.getObject().equals(false);
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
             }
         };
 
@@ -505,10 +544,13 @@ public class ClinicalPicturePanel extends Panel {
         form.add(chronicInfectionActiveContainer);
 
         // Chronic infection show/hide
-        MarkupContainer chronicInfectionDetailContainer = new WebMarkupContainer("chronicInfectionDetailContainer") {
+        MarkupContainer chronicInfectionDetailContainer = new WebMarkupContainer(CHRONIC_INFECTION_DETAIL_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
-                return showChronicModel.getObject();
+                if (!hideElement(isFirstVisit, isSrnsModel.getObject(), getId())) {
+                    return showChronicModel.getObject();
+                }
+                return false;
             }
         };
         chronicInfectionDetailContainer.add(new TextArea("chronicInfectionDetail"));
@@ -551,10 +593,10 @@ public class ClinicalPicturePanel extends Panel {
         componentsToUpdate.add(diastolicBloodPressureFeedback);
 
         // Complications
-        WebMarkupContainer complicationsContainer = new WebMarkupContainer("complicationsContainer"){
+        WebMarkupContainer complicationsContainer = new WebMarkupContainer("complicationsContainer") {
             @Override
             public boolean isVisible() {
-                return !firstVisit;
+                return !isFirstVisit;
             }
         };
         complicationsContainer.add(new YesNoRadioGroup("infectionNecessitatingHospitalisation", false, false));
@@ -577,10 +619,10 @@ public class ClinicalPicturePanel extends Panel {
 
         // Listed for transplant?
 
-        WebMarkupContainer listedForTransplantContainer = new WebMarkupContainer("listedForTransplantContainer"){
+        WebMarkupContainer listedForTransplantContainer = new WebMarkupContainer("listedForTransplantContainer") {
             @Override
             public boolean isVisible() {
-                return !firstVisit && isSrnsModel.getObject();
+                return !isFirstVisit && isSrnsModel.getObject();
             }
         };
 
@@ -610,6 +652,15 @@ public class ClinicalPicturePanel extends Panel {
             return ((FirstVisitPanel) getParent()).getCurrentTab().equals(FirstVisitPanel.CurrentTab.CLINICAL_PICTURE);
         } else if (getParent() instanceof com.solidstategroup.radar.web.panels.followup.ClinicalPicturePanel) {
             return true;
+        }
+        return false;
+    }
+
+    private boolean hideElement(boolean isFirstVisit, boolean isSrns, String componenetId) {
+        if (isSrns) {
+            return srnsElementsToHide.contains(componenetId);
+        } else if (!isSrns) {
+            return mpgnElementsToHide.contains(componenetId);
         }
         return false;
     }
