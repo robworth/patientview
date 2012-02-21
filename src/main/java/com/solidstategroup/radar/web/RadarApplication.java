@@ -92,9 +92,11 @@ public class RadarApplication extends AuthenticatedWebApplication {
             }
         });
 
-        mountPage("admins", AdminsPage.class);
-
         // Mount nice URLs for pages - patient pages
+
+        // admins
+        mountPage("admins", AdminsPage.class);
+        mountPage("login/admins", AdminsLoginPage.class);
 
         // patient pages
         mountPage("patient/edit", PatientPage.class);
@@ -112,7 +114,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("login/patient", PatientsLoginPage.class);
         mountPage("login/professional", ProfessionalsLoginPage.class);
 
-        // foreget password pages
+        // forget password pages
         mountPage("patient/recover", PatientForgottenPasswordPage.class);
         mountPage("professional/recover", ProfessionalForgottenPasswordPage.class);
 

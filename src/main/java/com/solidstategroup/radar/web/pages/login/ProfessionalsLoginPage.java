@@ -3,16 +3,18 @@ package com.solidstategroup.radar.web.pages.login;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.RadarSecuredSession;
+import com.solidstategroup.radar.web.components.RadarRequiredPasswordTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -20,10 +22,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProfessionalsLoginPage extends BasePage {
 
     @SpringBean
     private UserManager userManager;
+    private static final String LOGIN_FAILED_MESSAGE = "Login failed";
 
     public ProfessionalsLoginPage() {
 
@@ -32,6 +38,9 @@ public class ProfessionalsLoginPage extends BasePage {
                 new CompoundPropertyModel<ProfessionalUser>(new ProfessionalUser());
         // Model for the password
         final IModel<String> passwordModel = new Model<String>();
+
+        // components to update on ajax
+        final List<Component> componentsToUpdate = new ArrayList<Component>();
 
         // Construct the form and add the fields
         Form<ProfessionalUser> form = new Form<ProfessionalUser>("form", model) {
@@ -59,31 +68,40 @@ public class ProfessionalsLoginPage extends BasePage {
                 }
                 if (loginFailed) {
                     // Show that the login failed if we couldn't authenticate
-                    error("Login failed");
+                    error(LOGIN_FAILED_MESSAGE);
                 }
 
             }
         };
 
-        // Construct a feedback panel for validation messages
-        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        // Construct feedback panel
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback", new IFeedbackMessageFilter() {
+            public boolean accept(FeedbackMessage feedbackMessage) {
+                String message = feedbackMessage.getMessage().toString();
+                return message.contains(LOGIN_FAILED_MESSAGE);
+            }
+        });
         feedbackPanel.setOutputMarkupId(true);
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
         form.add(feedbackPanel);
+        componentsToUpdate.add(feedbackPanel);
 
-        form.add(new RequiredTextField("email"));
-        form.add(new PasswordTextField("password", passwordModel));
+        form.add(new RadarRequiredTextField("email", form, componentsToUpdate));
+        RadarRequiredPasswordTextField password = new RadarRequiredPasswordTextField("password", form, componentsToUpdate);
+        form.add(password);
+        password.setModel(passwordModel);
+
         form.add(new IndicatingAjaxButton("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 // Might need to clear any old messages
-                target.add(feedbackPanel);
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 // Update feedback panel with any validation messages
-                target.add(feedbackPanel);
+                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
             }
         });
         add(form);

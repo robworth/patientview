@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -30,10 +31,25 @@ public class ExcelDocumentDataBuilder implements DocumentDataBuilder {
         // add the headers/columns
         Row headerRow = sheet.createRow((short) 0);
         sheet.autoSizeColumn(0);
+
         CellStyle headerStyle = workbook.createCellStyle();
+
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        headerStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        headerStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+
+        headerStyle.setLeftBorderColor(CellStyle.BORDER_THIN);
+        headerStyle.setRightBorderColor(CellStyle.BORDER_THIN);
+        headerStyle.setTopBorderColor(CellStyle.BORDER_THIN);
+        headerStyle.setBottomBorderColor(CellStyle.BORDER_THIN);
+
         Font headerFont = workbook.createFont();
         headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
         headerStyle.setFont(headerFont);
+
         List<String> headers = documentData.getHeaders();
         int headerColumnIndex = 0;
         for (String header : headers) {
@@ -67,7 +83,7 @@ public class ExcelDocumentDataBuilder implements DocumentDataBuilder {
             outputStream.close();
             outputStream.flush();
         } catch (IOException e) {
-            LOGGER.error("Unable to write workbook to output stream");
+            LOGGER.error("Unable to write workbook to output stream " + e.getMessage(), e);
         }
 
         return outputStream.toByteArray();
