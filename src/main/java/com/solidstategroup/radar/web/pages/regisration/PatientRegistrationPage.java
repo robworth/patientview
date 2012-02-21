@@ -10,7 +10,9 @@ import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
@@ -106,7 +108,7 @@ public class PatientRegistrationPage extends BasePage {
         form.add(dateOfBirth);
 
         // Ajax submit link
-        AjaxSubmitLink submitLink = new AjaxSubmitLink("submit") {
+        AjaxButton submitLink = new IndicatingAjaxButton("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(feedbackPanel);

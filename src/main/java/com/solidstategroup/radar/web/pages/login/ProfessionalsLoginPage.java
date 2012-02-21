@@ -9,6 +9,7 @@ import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -72,7 +73,7 @@ public class ProfessionalsLoginPage extends BasePage {
 
         form.add(new RequiredTextField("email"));
         form.add(new PasswordTextField("password", passwordModel));
-        form.add(new AjaxSubmitLink("submit") {
+        form.add(new IndicatingAjaxButton("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 // Might need to clear any old messages
