@@ -240,8 +240,8 @@
             <artifactId>javax.mail</artifactId>
             <version>1.4.4</version>
         </dependency>
-            
-        
+
+
         <!--  WICKET DEPENDENCIES -->
         <dependency>
             <groupId>org.apache.wicket</groupId>
@@ -419,6 +419,13 @@
             <groupId>jfreechart</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.0</version>
+        </dependency>
+
+        <!-- POI - USED FOR EXCEL API -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.7</version>
         </dependency>
 
     </dependencies>
