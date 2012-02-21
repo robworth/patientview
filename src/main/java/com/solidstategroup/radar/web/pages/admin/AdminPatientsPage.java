@@ -56,9 +56,9 @@ public class AdminPatientsPage extends AdminsBasePage {
                 exportManager.getPatientsExportData(ExportType.PDF), "patients-users" +
                 AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF) ));
 
-        add(new ResourceLink("exportCsv", RadarResourceFactory.getExportResource(
-                exportManager.getPatientsExportData(ExportType.CSV), "patients-users" +
-                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.CSV)));
+        add(new ResourceLink("exportExcel", RadarResourceFactory.getExportResource(
+                exportManager.getPatientsExportData(ExportType.EXCEL), "patients-users" +
+                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.EXCEL)));
 
         final WebMarkupContainer patientsContainer = new WebMarkupContainer("patientsContainer");
         patientsContainer.setOutputMarkupId(true);
