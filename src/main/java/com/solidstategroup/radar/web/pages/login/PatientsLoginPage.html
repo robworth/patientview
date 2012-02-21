@@ -15,26 +15,25 @@
     <p>Please enter your username, password and date of birth</p>
 
     <form wicket:id="form">
-        <div wicket:id="feedback"/>
         <table cellpadding="5" class="style2">
             <tr>
 
                 <td>
-                    <label for="ctl00_ContentPlaceHolder1_txtUserName" style="width:120px;">Username</label>
+                    <label style="width:120px;">Username</label>
                 </td>
                 <td>
-                    <input type="text" wicket:id="username"
-                           id="ctl00_ContentPlaceHolder1_txtUserName" autocomplete="off" style="width:250px;"/>
+                    <input type="text" wicket:id="username" autocomplete="off" style="width:250px;"/>
+                    <span wicket:id="usernameFeedbackIndicator"></span>
                 </td>
             </tr>
             <tr>
 
                 <td>
-                    <label for="ctl00_ContentPlaceHolder1_txtPwd" style="width:120px;">Password</label>
+                    <label style="width:120px;">Password</label>
                 </td>
                 <td>
-                    <input type="password" id="ctl00_ContentPlaceHolder1_txtPwd" wicket:id="password"
-                           autocomplete="off"/>
+                    <input type="password" wicket:id="password" autocomplete="off"/>
+                    <span wicket:id="passwordFeedbackIndicator"></span>
                 </td>
             </tr>
             <tr>
@@ -54,7 +53,7 @@
                 <td>
                     <input type="submit" wicket:id="submit" value="Enter"/>
                 </td>
-                <td>&nbsp;</td>
+                <td><span class="feedback" wicket:id="feedback"></span></td>
             </tr>
         </table>
     </form>
