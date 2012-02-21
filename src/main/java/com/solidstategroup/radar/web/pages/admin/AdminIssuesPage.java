@@ -7,6 +7,7 @@ import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SearchDropDownChoice;
 import com.solidstategroup.radar.web.components.SearchDateField;
+import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import com.solidstategroup.radar.model.Issue;
 import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.enums.IssuePriority;
@@ -18,7 +19,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
 
@@ -54,7 +54,7 @@ public class AdminIssuesPage extends AdminsBasePage {
         issuesContainer.add(issueList);
 
         // add paging element
-        issuesContainer.add(new AjaxPagingNavigator("navigator", issueList));
+        issuesContainer.add(new RadarAjaxPagingNavigator("navigator", issueList, issuesDataProvider.size()));
 
         // button to clear all the filter fields for each colum
         final ClearLink clearButton = new ClearLink("clearButton", issuesDataProvider, issueList, issuesContainer);

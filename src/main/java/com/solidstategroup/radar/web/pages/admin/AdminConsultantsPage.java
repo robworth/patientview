@@ -11,10 +11,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.web.components.SortLink;
+import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
 
@@ -59,7 +58,8 @@ public class AdminConsultantsPage extends AdminsBasePage {
         consultantsContainer.add(consultantList);
 
         // add paging element
-        consultantsContainer.add(new AjaxPagingNavigator("navigator", consultantList));
+        consultantsContainer.add(new RadarAjaxPagingNavigator("navigator", consultantList,
+                consultantsDataProvider.size()));
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
