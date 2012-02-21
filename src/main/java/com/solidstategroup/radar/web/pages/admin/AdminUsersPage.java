@@ -5,7 +5,7 @@ import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.util.TripleDes;
-import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import com.solidstategroup.radar.web.components.SearchField;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.ClearLink;
@@ -13,8 +13,6 @@ import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.web.dataproviders.ProfessionalUserDataProvider;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.resources.RadarResourceFactory;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -67,7 +65,7 @@ public class AdminUsersPage extends AdminsBasePage {
         usersContainer.add(userList);
 
         // add paging element
-        usersContainer.add(new AjaxPagingNavigator("navigator", userList));
+        usersContainer.add(new RadarAjaxPagingNavigator("navigator", userList, professionalUserDataProvider.size()));
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
