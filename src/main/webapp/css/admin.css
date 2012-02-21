@@ -1183,6 +1183,8 @@ a.dxfcValue
 
     .paging .summary { margin: 0 8px 0 4px; }
 
+        .paging .summary span { float: none; display: inline; }
+
     .paging .prev,
     .paging .next {
         height: 17px;
