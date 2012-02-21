@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-
 import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.web.dataproviders.PatientUserDataProvider;
@@ -14,6 +13,7 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.resources.RadarResourceFactory;
+import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -22,7 +22,6 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
@@ -75,7 +74,7 @@ public class AdminPatientsPage extends AdminsBasePage {
         patientsContainer.add(patientList);
 
         // add paging element
-        patientsContainer.add(new AjaxPagingNavigator("navigator", patientList));
+        patientsContainer.add(new RadarAjaxPagingNavigator("navigator", patientList, patientsDataProvider.size()));
 
         // add sort links to the table column headers
         for (Map.Entry<String, String> entry : getSortFields().entrySet()) {
