@@ -24,6 +24,7 @@
                     <td>
                         <input wicket:id="email" type="text" id="ctl00_ContentPlaceHolder1_txtUid"
                                style="width:200px;"/>
+                        <span wicket:id="emailFeedbackIndicator"></span>
                     </td>
                 </tr>
                 <tr>
@@ -33,24 +34,20 @@
                                id="ctl00_ContentPlaceHolder1_lblPass">Password</label>
                     </td>
                     <td>
-                        <input wicket:id="password" type="password"
-                               id="ctl00_ContentPlaceHolder1_txtPwd"/>
+                        <input wicket:id="password" type="password" id="ctl00_ContentPlaceHolder1_txtPwd"/>
+                        <span wicket:id="passwordFeedbackIndicator"></span>
                     </td>
                 </tr>
             </table>
 
-            <div wicket:id="feedback"/>
 
-            <p><input type="submit" value="Enter" wicket:id="submit"/></p>
+            <p>
+                <input type="submit" value="Enter" wicket:id="submit"/>
+                <span class="feedback" wicket:id="feedback"/>
+            </p>
+
         </form>
 
-        <p>
-            <span id="ctl00_ContentPlaceHolder1_outMsg"></span>
-        </p>
-
-        <p>
-            <span id="ctl00_ContentPlaceHolder1_warnMsg"></span>
-        </p>
 
     </div>
 
