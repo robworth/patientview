@@ -115,6 +115,8 @@ public class LaboratoryResultsPanel extends Panel {
                         get("creatanineClearanceInfo").setVisible(true);
                     }
                     labData.setCreatinineClearance(creatnineClearance);
+                } else {
+                    get("creatanineClearanceInfo").setVisible(true);
                 }
                 labDataManager.saveLabData(labData);
             }
