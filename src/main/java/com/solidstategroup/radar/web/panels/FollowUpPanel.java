@@ -1,12 +1,15 @@
 package com.solidstategroup.radar.web.panels;
 
 
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.models.PageNumberModel;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.panels.followup.ClinicalPicturePanel;
 import com.solidstategroup.radar.web.panels.followup.FollowUpLaboratoryResultsPanel;
 import com.solidstategroup.radar.web.panels.followup.FollowUpTreatmentPanel;
 import com.solidstategroup.radar.web.panels.followup.RrtTherapyPanel;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -25,7 +28,20 @@ public class FollowUpPanel extends Panel {
     private MarkupContainer linksContainer;
 
     public enum CurrentTab {
-        CLINICAL_PICTURE, LABORATORY_RESULTS, TREATMENT, RRT_THERAPY
+        CLINICAL_PICTURE(RadarApplication.CLINICAL_FOLLOW_UP_PAGE_NO),
+        LABORATORY_RESULTS(RadarApplication.LABORATORY_FOLLOW_UP_PAGE_NO),
+        TREATMENT(RadarApplication.TREATMENT_FOLLOW_UP_PAGE_NO),
+        RRT_THERAPY(RadarApplication.RRT_THERAPY_PAGE_NO);
+
+        private int pageNumber;
+
+        CurrentTab(int pageNumber) {
+            this.pageNumber = pageNumber;
+        }
+
+        public int getPageNumber() {
+            return pageNumber;
+        }
     }
 
     private CurrentTab currentTab = CurrentTab.CLINICAL_PICTURE;
@@ -74,10 +90,15 @@ public class FollowUpPanel extends Panel {
         }
 
         @Override
-        public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+        public void onClick(AjaxRequestTarget target) {
             currentTab = tab;
-            ajaxRequestTarget.add(linksContainer, clinicalPicturePanel, laboratoryResults, treatmentPanel,
+            target.add(linksContainer, clinicalPicturePanel, laboratoryResults, treatmentPanel,
                     rrtTherapyPanel);
+
+            Component pageNumber = getPage().get("pageNumber");
+            PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
+            pageNumberModel.setPageNumber(currentTab.getPageNumber());
+            target.add(pageNumber);
         }
     }
 
@@ -85,4 +106,5 @@ public class FollowUpPanel extends Panel {
     public boolean isVisible() {
         return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.FOLLOW_UP);
     }
+
 }

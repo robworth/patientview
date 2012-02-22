@@ -49,19 +49,16 @@ public class RadarModelFactory {
 
     public static IModel<Boolean> getIsSrnsModel(final IModel radarNumberModel, final DiagnosisManager diagnosisManager) {
         return new AbstractReadOnlyModel<Boolean>() {
+
             private DiagnosisCode diagnosisCode = null;
 
             @Override
             public Boolean getObject() {
                 if (diagnosisCode == null) {
-
                     if (radarNumberModel.getObject() != null) {
-
                         diagnosisCode = getDiagnosisCodeModel(radarNumberModel, diagnosisManager).getObject();
                     }
                 }
-
-
                 if (diagnosisCode != null) {
                     return diagnosisCode.getId().equals(DiagnosisPanel.SRNS_ID);
                 }
@@ -199,6 +196,18 @@ public class RadarModelFactory {
             @Override
             protected Object load() {
                 return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").format(new Date());
+            }
+        };
+    }
+
+    public static PageNumberModel getPageNumberModel(final int pageNo, IModel radarNumberModel, DiagnosisManager
+            diagnosisManager) {
+
+        final IModel<Boolean> isSrnsModel = getIsSrnsModel(radarNumberModel, diagnosisManager);
+        return new PageNumberModel(pageNo) {
+            @Override
+            public String getObject() {
+                return getPageNumber() + " " + (isSrnsModel.getObject() ? "B" : "A");
             }
         };
     }
