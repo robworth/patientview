@@ -224,10 +224,6 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new YesNoNdRadioGroup("glucose"));
 
         // Urinalysis - lab
-        RadarTextFieldWithValidation urineVolume = new RadarTextFieldWithValidation("urineVolume",
-                new RangeValidator<Double>(0.0, 4000.0), form, componentsToUpdate);
-        urineVolume.setVisible(false); // no longer used
-        form.add(urineVolume);
         form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0), form, componentsToUpdate));
 
