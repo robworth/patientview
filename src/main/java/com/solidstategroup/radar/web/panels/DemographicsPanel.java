@@ -124,7 +124,7 @@ public class DemographicsPanel extends Panel {
             }
         });
 
-        TextField<Long> radarNumberField = new TextField<Long>("id");
+        TextField<Long> radarNumberField = new TextField<Long>("radarNumber", radarNumberModel);
         radarNumberField.setEnabled(false);
         form.add(radarNumberField);
 
@@ -215,7 +215,7 @@ public class DemographicsPanel extends Panel {
 
         Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
 
-        AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("submit") {
+        AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("save") {
 
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
