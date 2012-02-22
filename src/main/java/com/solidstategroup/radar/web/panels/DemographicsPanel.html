@@ -8,8 +8,9 @@
 
 <table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
     <tr>
-        <td style="height:30px;"><span wicket:id="addNewPatientLabel" style="font-weight:bold;">Add a New Patient</span>
-        </td>
+        <td style="height:30px;">
+            <span style="font-weight:bold;">Demographics</span>
+            <span wicket:id="addNewPatientLabel">Add a New Patient</span></td>
         <td style="text-align:right; padding-right:10px;"><b>RADAR Number</b></td>
         <td style="width:150px;">
             <input wicket:id="radarNumber" type="text" readonly="readonly"
@@ -210,7 +211,7 @@
                 <td>Consent (RaDaR only)</td>
                 <td>
                     <input type="checkbox" wicket:id="consent"/> <a wicket:id="consentFormsLink" href="#"
-                        target="_blank">Consent Forms</a>
+                                                                    target="_blank">Consent Forms</a>
                 </td>
             </tr>
             <tr id="ctl00_ContentPlaceHolder1_rowConsent">
