@@ -156,5 +156,11 @@ color: White;
 
 /* Table column width */
 .col500 { width: 500px; }
+.col250 { width: 250px; }
+.col190 { width: 190px; }
+.col170 { width: 170px; }
 .col130 { width: 130px; }
 .col120 { width: 120px; }
+.col100 { width: 100px; }
+.col80 { width: 80px; }
+.col45 { width: 45px; }
