@@ -72,13 +72,13 @@
            style="font-size:80%;border-collapse:collapse;">
         <tbody>
         <tr style="color:#3C982D;">
-            <th scope="col">Date Tx</th>
-            <th align="left" scope="col">Type</th>
-            <th scope="col">Recurr</th>
-            <th scope="col">Date Recurr</th>
-            <th scope="col">Date Failure</th>
-            <th align="left" style="font-size:95%;" scope="col">Date Reject &nbsp;&nbsp; Date Biopsy</th>
-            <th scope="col">&nbsp;</th>
+            <th scope="col" class="col120">Date Tx</th>
+            <th align="left" scope="col" class="col250">Type</th>
+            <th scope="col" class="col45">Recurr</th>
+            <th scope="col" class="col120">Date Recurr</th>
+            <th scope="col" class="col120">Date Failure</th>
+            <th align="left" style="font-size:95%;" scope="col" class="col190">Date Reject &nbsp;&nbsp; Date Biopsy</th>
+            <th scope="col" class="col80">&nbsp;</th>
         </tr>
         <tr valign="top" wicket:id="transplants">
             <td wicket:id="date"/>
@@ -92,7 +92,7 @@
                            id="ctl00_ContentPlaceHolder1_GridView3_ctl02_GridView4"
                            style="border-width:0px;font-size:100%;border-collapse:collapse;">
                         <tbody>
-                        <tr>
+                        <tr style="display:none;">
                             <th scope="col" style="color:#EEF6ED;">Date Reject</th>
                             <th scope="col" style="color:#EEF6ED;">Date Biopsy</th>
                             <th scope="col" style="color:#EEF6ED;">xxx</th>
@@ -109,12 +109,13 @@
                     </table>
                 </div>
             </td>
-            <td style="width:170px;">
+            <td>
                 <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;" value="Delete"
                        wicket:id="deleteLink"/>
                 <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;" value="Edit"
                        wicket:id="editLink"/>
-                <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;"
+                <br/>
+                <input type="submit" style="border: 1px solid Gray; margin-top: 4px;"
                        title="Add Reject Data" value="Add Reject"
                        wicket:id="addRejectLink"/>
             </td>
@@ -192,8 +193,7 @@
             <table cellpadding="5" style="width: 100%; font-size:80%; margin-top:10px; " class="style2" id="Table1">
                 <tbody>
                 <tr>
-                    <td style="height:30px; vertical-align:top;">Date Tx
-                    </td>
+                    <td style="height:30px; vertical-align:top;">Date Tx</td>
                     <td valign="top">Type
                     </td>
 
@@ -220,7 +220,7 @@
                         <span wicket:id="recurr">
                             <input type="radio" wicket:id="yes"/>
                             <label wicket:id="yesLabel">Yes</label>
-                            &nbsp;
+                            <br/>
                             <input type="radio" wicket:id="no"/>
                             <label wicket:id="noLabel">No</label>
                         </span>
@@ -254,21 +254,21 @@
     <table cellpadding="5" style="font-size:80%; margin-top:10px; " class="style2" id="txEntry">
         <tbody>
         <tr>
-            <td style="height:30px; vertical-align:top; width:120px">Date Tx<span
+            <td style="height:30px; vertical-align:top;" class="col100">Date Tx<span
                     style="color:Red;visibility:hidden;"
                     id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4">*</span>
                 <br><span style="color:Red;visibility:hidden;"
                           id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt; today</span>
             </td>
-            <td style="width:260px;">Type<span style="color:Red;visibility:hidden;"
+            <td class="col130">Type<span style="color:Red;visibility:hidden;"
                                                id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5">*</span>
             </td>
-            <td class="style4">Recurr</td>
-            <td class="style5">Date Recurr<br>
-            <span style="color:Red;visibility:hidden;"
+            <td class="style4 col45">Recurr</td>
+            <td class="style5 col120">Date Recurr<br>
+                <span style="color:Red;visibility:hidden;"
                   id="ctl00_ContentPlaceHolder1_CompareValidator6">&gt; today</span>
             </td>
-            <td class="style5">
+            <td class="style5 col120">
                 Date Failure<br>
                             <span style="color:Red;visibility:hidden;"
                                   id="ctl00_ContentPlaceHolder1_CompareValidator24">&gt; today</span>
@@ -290,7 +290,7 @@
             <td class="style4">
             <span wicket:id="recurr">
             <input type="radio" wicket:id="yes"/><label wicket:id="yesLabel">Yes</label>
-            &nbsp;
+            <br/>
             <input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label>
             </span>
             </td>
