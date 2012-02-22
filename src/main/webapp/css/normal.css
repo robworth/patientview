@@ -153,3 +153,8 @@ color: White;
     color: red;
 }
 #tblHeader { background-color: #B6DF9F; }
+
+/* Table column width */
+.col500 { width: 500px; }
+.col130 { width: 130px; }
+.col120 { width: 120px; }
