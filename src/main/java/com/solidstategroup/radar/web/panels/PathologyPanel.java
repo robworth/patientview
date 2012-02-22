@@ -104,7 +104,6 @@ public class PathologyPanel extends Panel {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
         componentsToUpdate.add(pathologySwitcher);
-        CompoundPropertyModel<Pathology> model;
 
         // Set up model
         Form<Pathology> form = new Form<Pathology>("form", new CompoundPropertyModel<Pathology>(pathologyModel)) {
@@ -117,12 +116,11 @@ public class PathologyPanel extends Panel {
         };
         pathologyContainer.add(form);
 
-        Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
-        Label successLabelDown = RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form,
-                componentsToUpdate);
+        RadarComponentFactory.getSuccessMessageLabel("successMessage", form, componentsToUpdate);
+        RadarComponentFactory.getSuccessMessageLabel("successMessageDown", form, componentsToUpdate);
 
-        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
-        Label errorLabelDown = RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form, componentsToUpdate);
+        RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdate);
+        RadarComponentFactory.getErrorMessageLabel("errorMessageDown", form, componentsToUpdate);
 
         // General details
         TextField<Long> radarNumber = new TextField<Long>("radarNumber", radarNumberModel);
