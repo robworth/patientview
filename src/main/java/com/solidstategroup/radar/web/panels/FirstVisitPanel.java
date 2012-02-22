@@ -1,10 +1,13 @@
 package com.solidstategroup.radar.web.panels;
 
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.models.PageNumberModel;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.panels.firstvisit.ClinicalPicturePanel;
 import com.solidstategroup.radar.web.panels.firstvisit.FirstVisitLaboratoryResultsPanel;
 import com.solidstategroup.radar.web.panels.firstvisit.FirstVisitTreatmentPanel;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -20,9 +23,20 @@ public class FirstVisitPanel extends Panel {
     private FirstVisitTreatmentPanel treatmentPanel;
     private WebMarkupContainer linksContainer;
 
-
     public enum CurrentTab {
-        CLINICAL_PICTURE, LABORATORY_RESULTS, TREATMENT, RRT_THERAPY
+        CLINICAL_PICTURE(RadarApplication.CLINICAL_FIRST_VISIT_PAGE_NO),
+        LABORATORY_RESULTS(RadarApplication.LABORATORY_FIRST_VISIT_PAGE_NO),
+        TREATMENT(RadarApplication.TREATMENT_FIRST_VISIT_PAGE_NO),
+        RRT_THERAPY(RadarApplication.RRT_THERAPY_PAGE_NO);
+        private int pageNumber;
+
+        CurrentTab(int pageNumber) {
+            this.pageNumber = pageNumber;
+        }
+
+        public int getPageNumber() {
+            return pageNumber;
+        }
     }
 
     private CurrentTab currentTab = CurrentTab.CLINICAL_PICTURE;
@@ -51,6 +65,7 @@ public class FirstVisitPanel extends Panel {
         return currentTab;
     }
 
+
     private class TabAjaxLink extends AjaxLink {
         private CurrentTab tab;
 
@@ -68,10 +83,15 @@ public class FirstVisitPanel extends Panel {
         }
 
         @Override
-        public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+        public void onClick(AjaxRequestTarget target) {
             currentTab = tab;
-            ajaxRequestTarget.add(clinicalPicturePanel, laboratoryResults, treatmentPanel);
-            ajaxRequestTarget.add(linksContainer);
+            target.add(clinicalPicturePanel, laboratoryResults, treatmentPanel);
+            target.add(linksContainer);
+
+            Component pageNumber = getPage().get("pageNumber");
+            PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
+            pageNumberModel.setPageNumber(currentTab.getPageNumber());
+            target.add(pageNumber);
         }
     }
 
@@ -79,4 +99,6 @@ public class FirstVisitPanel extends Panel {
     public boolean isVisible() {
         return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.FIRST_VISIT);
     }
+
+
 }

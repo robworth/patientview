@@ -4,6 +4,9 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.models.PageNumberModel;
+import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -12,11 +15,13 @@ import com.solidstategroup.radar.web.panels.HospitalisationPanel;
 import com.solidstategroup.radar.web.panels.PathologyPanel;
 import com.solidstategroup.radar.web.panels.RelapsePanel;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -29,13 +34,29 @@ public class PatientPage extends BasePage {
 
     protected static final String PARAM_ID = "id";
     @SpringBean
-    DiagnosisManager diagnosisManager;
+    private DiagnosisManager diagnosisManager;
     @SpringBean
-    DemographicsManager demographicsManager;
+    private DemographicsManager demographicsManager;
 
     public enum CurrentTab {
         // Used for storing the current tab
-        DEMOGRAPHICS, DIAGNOSIS, FIRST_VISIT, FOLLOW_UP, PATHOLOGY, RELAPSE, HOSPITALISATION
+        DEMOGRAPHICS(RadarApplication.DEMOGRAPHICS_PAGE_NO),
+        DIAGNOSIS(RadarApplication.DIAGNOSIS_PAGE_NO),
+        FIRST_VISIT(RadarApplication.CLINICAL_FIRST_VISIT_PAGE_NO),
+        FOLLOW_UP(RadarApplication.CLINICAL_FOLLOW_UP_PAGE_NO),
+        PATHOLOGY(RadarApplication.PATHOLOGY_PAGE_NO),
+        RELAPSE(RadarApplication.RELAPSE_PAGE_NO),
+        HOSPITALISATION(RadarApplication.HOSPITALISATION_PAGE_NO);
+
+        private int pageNumber;
+
+        CurrentTab(int pageNumber) {
+            this.pageNumber = pageNumber;
+        }
+
+        public int getPageNumber() {
+            return pageNumber;
+        }
     }
 
     private IModel<Long> radarNumberModel = new Model<Long>();
@@ -88,6 +109,12 @@ public class PatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("hospitalisationLink", CurrentTab.HOSPITALISATION));
         add(linksContainer);
 
+        IModel pageNumberModel = RadarModelFactory.getPageNumberModel(RadarApplication.DEMOGRAPHICS_PAGE_NO,
+                radarNumberModel, diagnosisManager);
+
+        Label pageNumber = new Label("pageNumber", pageNumberModel);
+        pageNumber.setOutputMarkupPlaceholderTag(true);
+        add(pageNumber);
     }
 
     public CurrentTab getCurrentTab() {
@@ -120,6 +147,20 @@ public class PatientPage extends BasePage {
                 target.add(linksContainer);
                 target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
                         relapsePanel, hospitalisationPanel);
+
+                Component pageNumber = getPage().get("pageNumber");
+                PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
+
+                // if a tab has sub tabs then get the current selected page number of the sub tab
+                if (currentTab.equals(CurrentTab.FIRST_VISIT)) {
+                    pageNumberModel.setPageNumber(firstVisitPanel.getCurrentTab().getPageNumber());
+                } else if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
+                    pageNumberModel.setPageNumber(followUpPanel.getCurrentTab().getPageNumber());
+                } else {
+                    pageNumberModel.setPageNumber(currentTab.getPageNumber());
+                }
+
+                target.add(pageNumber);
             }
 
         }
@@ -129,4 +170,7 @@ public class PatientPage extends BasePage {
         return new PageParameters().set(PARAM_ID, demographics.getId());
     }
 
+    public IModel<Long> getRadarNumberModel() {
+        return radarNumberModel;
+    }
 }

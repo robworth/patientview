@@ -42,6 +42,20 @@ public class RadarApplication extends AuthenticatedWebApplication {
     // mainly usef for form input
     public static final String DATE_PATTERN2 = "dd-MM-yyyy";
 
+    // page numbers - declare them all in once place so can easily be changed
+    public static final int DEMOGRAPHICS_PAGE_NO = 1;
+    public static final int DIAGNOSIS_PAGE_NO = 2;
+    public static final int CLINICAL_FIRST_VISIT_PAGE_NO = 3;
+    public static final int LABORATORY_FIRST_VISIT_PAGE_NO = 4;
+    public static final int TREATMENT_FIRST_VISIT_PAGE_NO = 5;
+    public static final int CLINICAL_FOLLOW_UP_PAGE_NO = 6;
+    public static final int LABORATORY_FOLLOW_UP_PAGE_NO = 7;
+    public static final int TREATMENT_FOLLOW_UP_PAGE_NO = 8;
+    public static final int RRT_THERAPY_PAGE_NO = 9;
+    public static final int PATHOLOGY_PAGE_NO = 11;
+    public static final int RELAPSE_PAGE_NO = 12;
+    public static final int HOSPITALISATION_PAGE_NO = 16;
+
     @Override
     public Class<? extends WebPage> getHomePage() {
         return HomePage.class;
@@ -62,7 +76,6 @@ public class RadarApplication extends AuthenticatedWebApplication {
     @Override
     public void init() {
         super.init();
-
         // This allows our SpringBean annotations to work
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 
