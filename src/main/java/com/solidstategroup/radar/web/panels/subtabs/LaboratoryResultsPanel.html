@@ -360,36 +360,36 @@
 <td valign="top" style="width:41%">
 
 
-<fieldset>
-    <legend style="font-weight:bold;">Urinalysis - Dipstick</legend>
-    <table style="width: 100%; margin-top:15px;">
+    <fieldset>
+        <legend style="font-weight:bold;">Urinalysis - Dipstick</legend>
+        <table style="width: 100%; margin-top:15px;">
 
-        <tbody>
-        <tr style="display:none">
-            <td>Urine Volume Condition</td>
-            <td>
-                <select wicket:id="urineVolumeCondition"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Haematuria</td>
-            <td>
-                <select wicket:id="haematuria"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Proteinuria</td>
-            <td><select wicket:id="proteinuria"/></td>
-        </tr>
-        <tr style="display:none" id="ctl00_ContentPlaceHolder1_rowAlbuminaria">
-            <td>Albuminuria</td>
-            <td>
-                <select wicket:id="albuminuria"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Leucocytes in urine &gt;50</td>
-            <td style="height: 26px">
+            <tbody>
+            <tr style="display:none">
+                <td>Urine Volume Condition</td>
+                <td>
+                    <select wicket:id="urineVolumeCondition"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Haematuria</td>
+                <td>
+                    <select wicket:id="haematuria"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Proteinuria</td>
+                <td><select wicket:id="proteinuria"/></td>
+            </tr>
+            <tr style="display:none" id="ctl00_ContentPlaceHolder1_rowAlbuminaria">
+                <td>Albuminuria</td>
+                <td>
+                    <select wicket:id="albuminuria"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Leucocytes in urine &gt;50</td>
+                <td style="height: 26px">
                     <span wicket:id="leucocytesUrine">
                         <input type="radio" wicket:id="yes">
                         <label wicket:id="yesLabel">Yes</label>
@@ -401,13 +401,13 @@
                         <label wicket:id="ndLabel">ND</label>
                     </span>
 
-            </td>
-        </tr>
-        <tr id="ctl00_ContentPlaceHolder1_rowNitrite">
-            <td>
-                <span id="ctl00_ContentPlaceHolder1_lblNITRITE">Nitrite</span>
-            </td>
-            <td>
+                </td>
+            </tr>
+            <tr id="ctl00_ContentPlaceHolder1_rowNitrite">
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblNITRITE">Nitrite</span>
+                </td>
+                <td>
                     <span wicket:id="nitrite">
                         <input type="radio" wicket:id="yes">
                         <label wicket:id="yesLabel">Yes</label>
@@ -419,13 +419,13 @@
                         <label wicket:id="ndLabel">ND</label>
                     </span>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
 
 
-        <tr>
-            <td>Glucose in urine</td>
-            <td>
+            <tr>
+                <td>Glucose in urine</td>
+                <td>
                     <span wicket:id="glucose">
                         <input type="radio" wicket:id="yes">
                         <label wicket:id="yesLabel">Yes</label>
@@ -437,123 +437,125 @@
                         <label wicket:id="ndLabel">ND</label>
                     </span>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
 
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        </tbody>
-    </table>
-</fieldset>
-<fieldset>
-    <legend style="font-weight:bold;">Urinalysis - Lab</legend>
-    <table style="width: 100%; margin-top:15px;">
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend style="font-weight:bold;">Urinalysis - Lab</legend>
+        <table style="width: 100%; margin-top:15px;">
 
-        <tbody>
-        <tr>
-            <td>Protein Creatinine Ratio mg/mmol&nbsp;
-            </td>
-            <td>
-                <input type="text" style="width:50px;" title="0.0-15000"
-                       id="ctl00_ContentPlaceHolder1_txtPROT_CREAT_RAT" maxlength="6"
-                       wicket:id="proteinCreatinineRatio">
+            <tbody>
+            <tr>
+                <td>Protein Creatinine Ratio mg/mmol&nbsp;
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.0-15000"
+                           id="ctl00_ContentPlaceHolder1_txtPROT_CREAT_RAT" maxlength="6"
+                           wicket:id="proteinCreatinineRatio">
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="feedback" wicket:id="proteinCreatinineRatioFeedback"></span>
-            </td>
-        </tr>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="feedback" wicket:id="proteinCreatinineRatioFeedback"></span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>Albumin Creatinine Ratio mg/mmol&nbsp;
-            </td>
-            <td>
-                <input type="text" style="width:50px;" title="1.0-3000"
-                       id="ctl00_ContentPlaceHolder1_txtALB_CREAT_RAT" maxlength="6"
-                       wicket:id="albuminCreatinineRatio">
+            <tr>
+                <td>Albumin Creatinine Ratio mg/mmol&nbsp;
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="1.0-3000"
+                           id="ctl00_ContentPlaceHolder1_txtALB_CREAT_RAT" maxlength="6"
+                           wicket:id="albuminCreatinineRatio">
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="feedback" wicket:id="albuminCreatinineRatioFeedback"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="feedback" wicket:id="albuminCreatinineRatioFeedback"></span>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
 
 
-        <tr wicket:id="bacteriaContainer">
-            <td>Bacteria in urine &gt;10<sup>5</sup>/ml</td>
-            <td>
-                <input type="checkbox" name="ctl00$ContentPlaceHolder1$chkBACT_URINE"
-                       wicket:id="bacteria">
-            </td>
-        </tr>
+            <tr wicket:id="bacteriaContainer">
+                <td>Bacteria in urine &gt;10<sup>5</sup>/ml</td>
+                <td>
+                    <input type="checkbox" name="ctl00$ContentPlaceHolder1$chkBACT_URINE"
+                           wicket:id="bacteria">
+                </td>
+            </tr>
 
-        <tr wicket:id="osmolalityContainer">
-            <td>Osmolality&nbsp;
-            </td>
-            <td>
-                <input type="text" style="width:50px;" title="200-350" id="ctl00_ContentPlaceHolder1_txtOSMOLALITY"
-                       maxlength="3" wicket:id="osmolality">
+            <tr wicket:id="osmolalityContainer">
+                <td>Osmolality&nbsp;
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="200-350" id="ctl00_ContentPlaceHolder1_txtOSMOLALITY"
+                           maxlength="3" wicket:id="osmolality">
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="feedback" wicket:id="osmolalityFeedback"></span>
-            </td>
-        </tr>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="feedback" wicket:id="osmolalityFeedback"></span>
+                </td>
+            </tr>
 
-        <tr wicket:id="dysmorphicErythrocytesContainer">
-            <td>Dysmorphic Erythrocytes in urine</td>
-            <td>
-                <select wicket:id="dysmorphicErythrocytes"/>
-            </td>
-        </tr>
-        <tr wicket:id="redCellCastContainer">
-            <td>Red Cell Cast in urine</td>
-            <td>
-                <select wicket:id="redCellCast"/>
-            </td>
-        </tr>
-        <tr wicket:id="whiteCellCastsContainer">
-            <td>White Cell Casts in urine &gt;50<br></td>
-            <td>
-                <select wicket:id="whiteCellCasts"/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</fieldset>
-<br>
-<fieldset>
-    <legend style="font-weight:bold;">Creatinine Clearance</legend>
-    <table style="width: 100%; margin-top:15px;">
+            <tr wicket:id="dysmorphicErythrocytesContainer">
+                <td>Dysmorphic Erythrocytes in urine</td>
+                <td>
+                    <select wicket:id="dysmorphicErythrocytes"/>
+                </td>
+            </tr>
+            <tr wicket:id="redCellCastContainer">
+                <td>Red Cell Cast in urine</td>
+                <td>
+                    <select wicket:id="redCellCast"/>
+                </td>
+            </tr>
+            <tr wicket:id="whiteCellCastsContainer">
+                <td>White Cell Casts in urine &gt;50<br></td>
+                <td>
+                    <select wicket:id="whiteCellCasts"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend style="font-weight:bold;">Creatinine Clearance</legend>
+        <table style="width: 100%; margin-top:15px;">
 
-        <tbody>
-        <tr>
-            <td>Creatinine Clearance Schwartz Method ml/min/per 1.73m<sup>2</sup>
-            </td>
-            <td>
-                <input type="text" style="color:Gray;font-style:italic;width:50px;" title="Calculated"
-                       id="ctl00_ContentPlaceHolder1_txtCREAT_CLEAR_SCHZ" readonly="readonly" value="Calc"
-                       wicket:id="creatinineClearance">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span style="color:Red;" wicket:id="creatanineClearanceInfo"></span>
-            </td>
-        </tr>
+            <tbody>
+            <tr>
+                <td>Creatinine Clearance Schwartz Method ml/min/per 1.73m<sup>2</sup>
+                </td>
+                <td>
+                    <input type="text" style="color:Gray;font-style:italic;width:50px;" title="Calculated"
+                           id="ctl00_ContentPlaceHolder1_txtCREAT_CLEAR_SCHZ" readonly="readonly" value="Calc"
+                           wicket:id="creatinineClearance">
+                    <a href="javascript:void(0)" class="info"><em>Help</em><span>Calculated using height entered in
+                        the Clinical Picture section and Serum Creatanine on the left<br><br></span> </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="color:Red;" wicket:id="creatanineClearanceInfo"></span>
+                </td>
+            </tr>
 
-        </tbody>
-    </table>
-</fieldset>
+            </tbody>
+        </table>
+    </fieldset>
 
 </td>
 <td valign="top">
@@ -620,7 +622,7 @@
 
 <tr>
     <td>
-       <span class="feedback" wicket:id="igGFeedback"></span>
+        <span class="feedback" wicket:id="igGFeedback"></span>
     </td>
 </tr>
 
