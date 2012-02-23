@@ -39,7 +39,7 @@ public class RecruitmentPage extends BasePage{
                    item.add(new Label("diagnosis", ""));
                 }
 
-                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
             }
         };
