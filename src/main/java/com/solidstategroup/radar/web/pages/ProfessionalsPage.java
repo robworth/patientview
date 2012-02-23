@@ -12,6 +12,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jfree.chart.ChartFactory;
@@ -51,22 +53,44 @@ public class ProfessionalsPage extends BasePage {
         graph.setOutputMarkupPlaceholderTag(true);
         add(graph);
 
+        final AuthenticatedWebSession session = RadarSecuredSession.get();
+
+        IModel<Integer> patientCountModel = new LoadableDetachableModel<Integer>() {
+            @Override
+            protected Integer load() {
+                int count = 0;
+                if (session.isSignedIn()) {
+                    if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles().hasRole(User.ROLE_SUPER_USER)) {
+                        ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
+                        count = utilityManager.getPatientCountByUnit(user.getCentre());
+                    }
+                }
+                return count;
+            }
+        };
+
+        final Label countLabel = new Label("count", patientCountModel);
+        countLabel.setOutputMarkupPlaceholderTag(true);
+        add(countLabel);
+
+        String renalUnit = "";
+        if (session.isSignedIn()) {
+            if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles().hasRole(User.ROLE_SUPER_USER)) {
+                ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
+                renalUnit = user.getCentre() != null ? user.getCentre().getName() : "";
+            }
+        }
+
+        add(new Label ("renalUnit", renalUnit));
+
         add(new AjaxLink("showGraph") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 graph.setVisible(true);
                 target.add(graph);
+                target.add(countLabel);
             }
         });
-        int count = 0;
-        AuthenticatedWebSession session = RadarSecuredSession.get();
-        if (session.isSignedIn()) {
-            if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles().hasRole(User.ROLE_SUPER_USER)) {
-                ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
-                count = utilityManager.getPatientCountByUnit(user.getCentre());
-            }
-        }
 
-        add(new Label("count", new Model<Integer>(count)));
     }
 }
