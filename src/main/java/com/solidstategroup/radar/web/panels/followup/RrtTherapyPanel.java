@@ -153,7 +153,12 @@ public class RrtTherapyPanel extends Panel {
                 item.setModel(new CompoundPropertyModel<Transplant>(item.getModelObject()));
                 item.add(DateLabel.forDatePattern("date", RadarApplication.DATE_PATTERN));
                 item.add(new Label("modality.description"));
-                item.add(new Label("recurr"));
+                item.add(new Label("recurr", new AbstractReadOnlyModel<Object>() {
+                    @Override
+                    public Object getObject() {
+                        return Boolean.TRUE.equals(item.getModelObject().getRecurr()) ? "yes" : "no";
+                    }
+                }));
                 item.add(DateLabel.forDatePattern("dateRecurr", RadarApplication.DATE_PATTERN));
                 item.add(DateLabel.forDatePattern("dateFailureRejectData.failureDate", RadarApplication.DATE_PATTERN));
 
