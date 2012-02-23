@@ -73,7 +73,7 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
 
         BookmarkablePageLink professionalsPageLink = new BookmarkablePageLink<ProfessionalsPage>(
                 "professionalsPageLink", ProfessionalsPage.class);
-        professionalsPageLink.setVisible(!userLoggedIn);
+        professionalsPageLink.setVisible(!userLoggedIn || isProfessionalOrSuperUserLoggedIn());
         add(professionalsPageLink);
 
         BookmarkablePageLink patientsPageLink = new BookmarkablePageLink<PatientPageReadOnly>("patientsPageLink",
