@@ -296,7 +296,7 @@ public class LaboratoryResultsPanel extends Panel {
 
         Label creatanineClearanceInfo = new Label("creatanineClearanceInfo",
                 "Make sure values have been entered for height on the Clinical Picture section and " +
-                        "Serum Creatanine");
+                        "Serum Creatanine on the left");
         creatanineClearanceInfo.setVisible(false);
         form.add(creatanineClearanceInfo);
         componentsToUpdate.add(creatanineClearanceInfo);

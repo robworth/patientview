@@ -5,6 +5,8 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
+import com.solidstategroup.radar.model.sequenced.ClinicalData;
+import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -58,6 +60,8 @@ public class DiagnosisPanel extends Panel {
     private DiagnosisManager diagnosisManager;
     @SpringBean
     private DemographicsManager demographicsManager;
+    @SpringBean
+    private ClinicalDataManager clinicalDataManager;
 
     public DiagnosisPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -139,6 +143,27 @@ public class DiagnosisPanel extends Panel {
                             diagnosis.setAgeAtDiagnosis(age);
                         }
                         diagnosisManager.saveDiagnosis(diagnosis);
+
+                        // additional significant diagnosis needs to carry through to clinical data
+                        // so create the first clinical data if it does not exist alread and set values
+                        ClinicalData clinicalData = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel,
+                                clinicalDataManager).getObject();
+                        if (clinicalData == null) {
+                            clinicalData = new ClinicalData();
+                            clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
+                            clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
+                            clinicalData.setSequenceNumber(1);
+                            clinicalData.setRadarNumber(diagnosis.getRadarNumber());
+                        } else {
+                            if (clinicalData.getSignificantDiagnosis1().isEmpty()) {
+                                clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
+                            }
+
+                            if (clinicalData.getSignificantDiagnosis2().isEmpty()) {
+                                clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis1());
+                            }
+                        }
+                        clinicalDataManager.saveClinicalDate(clinicalData);
                     }
                 };
         add(form);
