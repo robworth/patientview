@@ -39,7 +39,7 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 public class RadarApplication extends AuthenticatedWebApplication {
     // mainly used for display
     public static final String DATE_PATTERN = "dd-MMM-yyyy";
-    // mainly usef for form input
+    // mainly used for form input
     public static final String DATE_PATTERN2 = "dd-MM-yyyy";
 
     // page numbers - declare them all in once place so can easily be changed

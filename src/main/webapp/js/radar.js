@@ -41,7 +41,8 @@ var recruitmentPage = {
         jQuery(".recruitmentTable").tablesorter({
             sortList: [
                 [0,0]
-            ]
+            ],
+            dateFormat: "uk"
         });
     }
 }
