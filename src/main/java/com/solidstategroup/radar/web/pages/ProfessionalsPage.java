@@ -54,22 +54,15 @@ public class ProfessionalsPage extends BasePage {
         add(graph);
 
         final AuthenticatedWebSession session = RadarSecuredSession.get();
-
-        IModel<Integer> patientCountModel = new LoadableDetachableModel<Integer>() {
-            @Override
-            protected Integer load() {
-                int count = 0;
-                if (session.isSignedIn()) {
-                    if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles().hasRole(User.ROLE_SUPER_USER)) {
-                        ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
-                        count = utilityManager.getPatientCountByUnit(user.getCentre());
-                    }
-                }
-                return count;
+        int patientCount = 0;
+        if (session.isSignedIn()) {
+            if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles().hasRole(User.ROLE_SUPER_USER)) {
+                ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
+                patientCount = utilityManager.getPatientCountByUnit(user.getCentre());
             }
-        };
+        }
 
-        final Label countLabel = new Label("count", patientCountModel);
+        final Label countLabel = new Label("count", new Model<Integer>(patientCount));
         countLabel.setOutputMarkupPlaceholderTag(true);
         add(countLabel);
 
@@ -81,7 +74,7 @@ public class ProfessionalsPage extends BasePage {
             }
         }
 
-        add(new Label ("renalUnit", renalUnit));
+        add(new Label("renalUnit", renalUnit));
 
         add(new AjaxLink("showGraph") {
             @Override
