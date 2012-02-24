@@ -168,7 +168,7 @@ public class DiagnosisPanel extends Panel {
                                     clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
                                 }
                             } else {
-                                 clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
+                                clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
                             }
 
                         }
@@ -264,7 +264,7 @@ public class DiagnosisPanel extends Panel {
         form.add(clinicalPresentationFeedback);
 
         // Steroid resistance radio groups
-        RadioGroup steroidContainer = new RadioGroup("steroidResistance") {
+        RadioGroup steroidRadioGroup = new RadioGroup("steroidResistance") {
             @Override
             public boolean isVisible() {
                 DiagnosisCode diagnosisCode = model.getObject().getDiagnosisCode();
@@ -276,20 +276,29 @@ public class DiagnosisPanel extends Panel {
 
             }
         };
-        steroidContainer.add(new Radio<Diagnosis.SteroidResistance>("primarySteroidResistance",
+        steroidRadioGroup.setRequired(true);
+        steroidRadioGroup.add(new Radio<Diagnosis.SteroidResistance>("primarySteroidResistance",
                 new Model<Diagnosis.SteroidResistance>(Diagnosis.SteroidResistance.PRIMARY)));
-        steroidContainer.add(new Radio<Diagnosis.SteroidResistance>("secondarySteroidResistance",
+        steroidRadioGroup.add(new Radio<Diagnosis.SteroidResistance>("secondarySteroidResistance",
                 new Model<Diagnosis.SteroidResistance>(Diagnosis.SteroidResistance.SECONDARY)));
-        steroidContainer.add(new Radio<Diagnosis.SteroidResistance>("presumedSteroidResistance",
+        steroidRadioGroup.add(new Radio<Diagnosis.SteroidResistance>("presumedSteroidResistance",
                 new Model<Diagnosis.SteroidResistance>(Diagnosis.SteroidResistance.PRESUMED)));
-        steroidContainer.add(new Radio<Diagnosis.SteroidResistance>("biopsyProven",
+        steroidRadioGroup.add(new Radio<Diagnosis.SteroidResistance>("biopsyProven",
                 new Model<Diagnosis.SteroidResistance>(Diagnosis.SteroidResistance.BPS)));
-        form.add(steroidContainer);
+        form.add(steroidRadioGroup);
+
+
+        // Construct feedback panel
+        final ComponentFeedbackPanel steroidFeedbackPanel = new ComponentFeedbackPanel("steroidResistanceFeedback",
+                steroidRadioGroup);
+        form.add(steroidFeedbackPanel);
+        componentsToUpdate.add(steroidFeedbackPanel);
+        steroidFeedbackPanel.setOutputMarkupPlaceholderTag(true);
+        steroidRadioGroup.add(steroidFeedbackPanel);
 
         // Additional significant diagnosis
         form.add(new TextField("significantDiagnosis1"));
         form.add(new TextField("significantDiagnosis2"));
-
 
         // Biopsy Diagnosis visibilities
         IModel<String> biopsyLabelModel = new LoadableDetachableModel<String>() {
