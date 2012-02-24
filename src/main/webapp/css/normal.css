@@ -164,3 +164,35 @@ color: White;
 .col100 { width: 100px; }
 .col80 { width: 80px; }
 .col45 { width: 45px; }
+
+/* Homepage */
+#pnlLogos {
+    margin: 0 auto;
+    text-align: center;
+    width: 90%; 
+}
+
+    #pnlLogos img { margin-right: 25px; }
+
+        #roLogo {
+            height: 90px;
+            margin: 0 38px 47px 15px;
+        }
+
+        #bapnLogo {
+            height: 150px;
+            margin: 13px 14px 0 0;
+            width: 150px;
+        }
+
+        #ukrrLogo {
+            height: 90px;
+            margin: 0 50px 42px 0;
+        }
+
+        #bkpaLogo {
+            height: 80px;
+            margin: 0 40px 47px 0;
+        }
+
+        #krukLogo { margin-bottom: 47px; }
