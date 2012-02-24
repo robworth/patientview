@@ -158,8 +158,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     }
 
     public List<Demographics> getDemographicsByRenalUnit(Centre centre) {
-        return jdbcTemplate.query("SELECT * FROM tbl_Demographics WHERE RENAL_UNIT = ?", new Object[]{centre.getId()},
-                new DemographicsRowMapper());
+        return jdbcTemplate.query("SELECT * FROM tbl_Demographics WHERE RENAL_UNIT = ? OR RENAL_UNIT_2 = ? ",
+                new Object[]{centre.getId(), centre.getId()}, new DemographicsRowMapper());
     }
 
     public List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
