@@ -25,11 +25,11 @@ color:Red;
 }
 
 #outerWrapper #rightNav {
-position:absolute;
-top:112px; /* was 112pc */
-right:40px;
-width:700px;
-text-align:right;
+    position: absolute;
+    right: 40px;
+    text-align: right;
+    top: 112px; /* was 112pc */
+    /*width: 700px;*/
 }
 
 a.info, a.info:visited {
