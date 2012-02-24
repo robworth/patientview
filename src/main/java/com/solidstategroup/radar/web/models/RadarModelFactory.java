@@ -25,11 +25,10 @@ public class RadarModelFactory {
     public static IModel<Diagnosis> getDiagnosisModel(final IModel<Long> radarNumberModel,
                                                       final DiagnosisManager diagnosisManager) {
         return new AbstractReadOnlyModel<Diagnosis>() {
-            private Diagnosis diagnosis;
 
             @Override
             public Diagnosis getObject() {
-                if (diagnosis == null) {
+                    Diagnosis diagnosis = null;
                     Long radarNumber;
                     if (radarNumberModel.getObject() != null) {
                         try {
@@ -40,7 +39,6 @@ public class RadarModelFactory {
                         }
                         diagnosis = diagnosisManager.getDiagnosisByRadarNumber(radarNumber);
                     }
-                }
 
                 return diagnosis;
             }
@@ -70,11 +68,9 @@ public class RadarModelFactory {
     public static IModel<ClinicalData> getFirstClinicalDataModel(final IModel<Long> radarNumberModel,
                                                                  final ClinicalDataManager clinicalDataManager) {
         return new AbstractReadOnlyModel<ClinicalData>() {
-            private ClinicalData clinicalData;
-
             @Override
             public ClinicalData getObject() {
-                if (clinicalData == null) {
+                ClinicalData clinicalData = null;
                     Long radarNumber;
                     if (radarNumberModel.getObject() != null) {
                         try {
@@ -88,7 +84,6 @@ public class RadarModelFactory {
                             clinicalData = clinicalDatas.get(0);
                         }
                     }
-                }
                 return clinicalData;
             }
         };
