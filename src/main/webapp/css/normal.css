@@ -25,11 +25,11 @@ color:Red;
 }
 
 #outerWrapper #rightNav {
-position:absolute;
-top:112px; /* was 112pc */
-right:40px;
-width:700px;
-text-align:right;
+    position: absolute;
+    right: 40px;
+    text-align: right;
+    top: 112px; /* was 112pc */
+    /*width: 700px;*/
 }
 
 a.info, a.info:visited {
@@ -164,3 +164,38 @@ color: White;
 .col100 { width: 100px; }
 .col80 { width: 80px; }
 .col45 { width: 45px; }
+
+/* Homepage */
+#pnlLogos {
+    margin: 0 auto;
+    text-align: center;
+    width: 90%; 
+}
+
+    #pnlLogos img { margin-right: 25px; }
+
+        #roLogo {
+            height: 90px;
+            margin: 0 38px 47px 15px;
+        }
+
+        #bapnLogo {
+            height: 150px;
+            margin: 13px 14px 0 0;
+            width: 150px;
+        }
+
+        #ukrrLogo {
+            height: 90px;
+            margin: 0 50px 42px 0;
+        }
+
+        #bkpaLogo {
+            height: 80px;
+            margin: 0 40px 47px 0;
+        }
+
+        #krukLogo { margin-bottom: 47px; }
+
+/* Patient page */
+.style3 textarea, fieldset table.style3 { width: 100%; }
