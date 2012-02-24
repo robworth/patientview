@@ -81,7 +81,8 @@ var patientsListingPage = {
                     sorter: false
                 }
             },
-            cancelSelection: false
+            cancelSelection: false,
+            dateFormat: "uk"
         });
     }
 }
