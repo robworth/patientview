@@ -33,7 +33,6 @@ public class ExistingPatientsListingPage extends BasePage {
 
     public ExistingPatientsListingPage() {
 
-
         Centre centre = null;
         AuthenticatedWebSession session = RadarSecuredSession.get();
         if (session.isSignedIn()) {
@@ -56,7 +55,7 @@ public class ExistingPatientsListingPage extends BasePage {
                 // Populate fields
                 item.add(new BookmarkablePageLink<PatientPage>("edit", PatientPage.class, PatientPage.getParameters(item.getModelObject())));
                 item.add(new Label("surname"), new Label("forename"));
-                item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("id"));
 
                 IModel<DiagnosisCode> diagnosisCodeModel = RadarModelFactory.getDiagnosisCodeModel(new Model<Long>(
@@ -67,8 +66,9 @@ public class ExistingPatientsListingPage extends BasePage {
                 item.add(new Label("diagnosis", diagnosisCode != null ? diagnosisCode.getAbbreviation() : null));
                 item.add(new Label("nhsNumber"));
                 item.add(new Label("hospitalNumber"));
-                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN));
+                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
+                item.add(new Label("renalUnit.name"));
             }
         });
     }

@@ -48,6 +48,8 @@ public class RadarModelFactory {
     public static IModel<Boolean> getIsSrnsModel(final IModel radarNumberModel, final DiagnosisManager diagnosisManager) {
         return new AbstractReadOnlyModel<Boolean>() {
 
+            // cache the result as this model will be used on isVisible methods which are called
+            // many times and querying the db will slow down the system too much
             private DiagnosisCode diagnosisCode = null;
 
             @Override
