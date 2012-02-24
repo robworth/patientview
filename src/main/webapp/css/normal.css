@@ -196,3 +196,6 @@ color: White;
         }
 
         #krukLogo { margin-bottom: 47px; }
+
+/* Patient page */
+.style3 textarea, fieldset table.style3 { width: 100%; }
