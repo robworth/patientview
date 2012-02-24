@@ -155,13 +155,22 @@ public class DiagnosisPanel extends Panel {
                             clinicalData.setSequenceNumber(1);
                             clinicalData.setRadarNumber(diagnosis.getRadarNumber());
                         } else {
-                            if (clinicalData.getSignificantDiagnosis1().isEmpty()) {
+                            if (clinicalData.getSignificantDiagnosis1() != null) {
+                                if (clinicalData.getSignificantDiagnosis1().isEmpty()) {
+                                    clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
+                                }
+                            } else {
                                 clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
                             }
 
-                            if (clinicalData.getSignificantDiagnosis2().isEmpty()) {
-                                clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis1());
+                            if (clinicalData.getSignificantDiagnosis2() != null) {
+                                if (clinicalData.getSignificantDiagnosis2().isEmpty()) {
+                                    clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
+                                }
+                            } else {
+                                 clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
                             }
+
                         }
                         clinicalDataManager.saveClinicalDate(clinicalData);
                     }

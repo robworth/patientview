@@ -109,7 +109,7 @@ public class LaboratoryResultsPanel extends Panel {
                     Double serumCreatanine = getModelObject().getSerumCreatinine();
                     Double creatnineClearance = null;
                     if (height != null && serumCreatanine != null) {
-                        creatnineClearance = height * 40 / serumCreatanine;
+                        creatnineClearance = (double) Math.round(height * 40 / serumCreatanine);
                         get("creatanineClearanceInfo").setVisible(false);
                     } else {
                         get("creatanineClearanceInfo").setVisible(true);
