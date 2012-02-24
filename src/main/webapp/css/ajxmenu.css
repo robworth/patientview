@@ -4,16 +4,16 @@
  http://www.ajatix.com
 */
 .AJXCSSMenuCeGKRNA {
-	position: relative;
-	margin-left: auto;
-	z-index: 100;
-	width: 760px;
-	height: 33px;
-	border: 0px solid #98b1c4;
-	background:#EEF6ED;
-	text-align:right;
-	top:-11px;
-	right:55px;
+    background: #EEF6ED;
+    border: 0;
+    height: 33px;
+    margin-left: auto;
+    position: relative;
+    /*right: 55px;*/
+    text-align: right;
+    top: -11px;
+    /*width: 760px;*/
+    z-index: 100;
 }
 .AJXCSSMenuCeGKRNA ul {
 	position: relative;
