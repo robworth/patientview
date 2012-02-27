@@ -11,6 +11,7 @@ public interface TransplantManager {
     public static final String BEFORE_PREVIOUS_FAILURE_DATE = "Cannot add transplant before a previous transplant "
             + "failure date";
     public static final String TRANSPLANTS_INTERVAL_ERROR = "Transplants must be greater than 14 days apart";
+    public static final String RECURRANCE_DATE_ERROR = "Recurrance date must be greate than transplant date";
 
     void saveTransplant(Transplant transplant) throws InvalidModelException;
 

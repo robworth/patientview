@@ -31,7 +31,7 @@ public class TransplantManagerImpl implements TransplantManager {
         // date of recurrance must be greater than transplant date
         if (transplant.getDateRecurr() != null) {
             if (transplant.getDate().compareTo(transplant.getDateRecurr()) >= 0) {
-                errors.add("Recurrance date must be greate than transplant date");
+                errors.add(RECURRANCE_DATE_ERROR);
             }
         }
 
