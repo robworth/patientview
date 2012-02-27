@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.web.panels.subtabs;
 
-import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DiagnosisManager;
@@ -29,6 +29,8 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -36,6 +38,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -46,6 +49,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -130,10 +134,10 @@ public class TreatmentPanel extends Panel {
                         item.add(ajaxEditLink);
 
                         AuthenticatedWebSession session = RadarSecuredSession.get();
-                        if(session.isSignedIn()) {
-                            if(session.getRoles().hasRole(User.ROLE_PATIENT)){
-                                 ajaxDeleteLink.setVisible(false);
-                                 ajaxEditLink.setVisible(false);
+                        if (session.isSignedIn()) {
+                            if (session.getRoles().hasRole(User.ROLE_PATIENT)) {
+                                ajaxDeleteLink.setVisible(false);
+                                ajaxEditLink.setVisible(false);
                             }
                         }
 
@@ -156,10 +160,18 @@ public class TreatmentPanel extends Panel {
         editImmunosuppressionForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
-                immunosuppressionManager.saveImmunosuppressionTreatment((ImmunosuppressionTreatment) form.getModelObject());
-                editImmunosuppressionTreatmentIModel.setObject(null);
                 target.add(editContainer);
                 target.add(immunosuppressionTreatmentsContainer);
+                try {
+                    immunosuppressionManager.saveImmunosuppressionTreatment((ImmunosuppressionTreatment)
+                            form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+                editImmunosuppressionTreatmentIModel.setObject(null);
             }
 
             @Override
@@ -188,15 +200,22 @@ public class TreatmentPanel extends Panel {
         addImmunosuppressionForm.add(new AjaxSubmitLink("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
+                target.add(immunosuppressionTreatmentsContainer);
                 target.add(addImmunoSuppressComponentsToUpdate.toArray(
                         new Component[addImmunoSuppressComponentsToUpdate.size()]));
                 ImmunosuppressionTreatment immunosuppressionTreatment = (ImmunosuppressionTreatment)
                         form.getModelObject();
                 immunosuppressionTreatment.setRadarNumber(radarNumberModel.getObject());
-                immunosuppressionManager.saveImmunosuppressionTreatment(immunosuppressionTreatment);
+                try {
+                    immunosuppressionManager.saveImmunosuppressionTreatment(immunosuppressionTreatment);
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
                 form.getModel().setObject(new ImmunosuppressionTreatment());
                 immunosuppressionTreatmentsContainer.setVisible(true);
-                target.add(immunosuppressionTreatmentsContainer);
             }
 
             @Override
@@ -212,7 +231,7 @@ public class TreatmentPanel extends Panel {
         final List<Component> therapyFormComponentsToUpdate = new ArrayList<Component>();
 
         final CompoundPropertyModel<Therapy> firstVisitTherapyFormModel = new CompoundPropertyModel
-                <Therapy>(new LoadableDetachableModel <Therapy>() {
+                <Therapy>(new LoadableDetachableModel<Therapy>() {
             @Override
             public Therapy load() {
                 Therapy therapyModelObject = null;
@@ -568,11 +587,11 @@ public class TreatmentPanel extends Panel {
         dialysisTablePanel.setVisible(firstVisit);
         add(dialysisTablePanel);
 
-       if(!firstVisit) {
-           for(Component component : followingVisitComponentsToUpdate) {
-              therapyFormComponentsToUpdate.add(component);
-           }
-       }
+        if (!firstVisit) {
+            for (Component component : followingVisitComponentsToUpdate) {
+                therapyFormComponentsToUpdate.add(component);
+            }
+        }
 
     }
 
@@ -653,6 +672,23 @@ public class TreatmentPanel extends Panel {
             componentsToUpdate.add(immunoSuppression);
             componentsToUpdate.add(cyclophosphamideTotalDose);
             componentsToUpdate.add(totalDoseLabel);
+
+            FeedbackPanel treatmentFeedback = new FeedbackPanel("immunosupressionFeedback",
+                    new IFeedbackMessageFilter() {
+                        public boolean accept(FeedbackMessage feedbackMessage) {
+                            for (String errorMessage : Arrays.asList(ImmunosuppressionManager.OVERLAPPING_ERROR,
+                                    ImmunosuppressionManager.PREVIOUS_TREATMENT_NOT_STOPPED_ERROR)) {
+                                if (feedbackMessage.getMessage().equals(errorMessage)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    });
+
+            add(treatmentFeedback);
+            treatmentFeedback.setOutputMarkupPlaceholderTag(true);
+            componentsToUpdate.add(treatmentFeedback);
         }
 
         @Override
