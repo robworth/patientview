@@ -25,6 +25,8 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -43,10 +45,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class RrtTherapyPanel extends Panel {
     @SpringBean
@@ -322,11 +324,6 @@ public class RrtTherapyPanel extends Panel {
             }
         });
 
-        FeedbackPanel editTransplantFeedback = new FeedbackPanel("editTransplantFeedback");
-        editTransplantForm.add(editTransplantFeedback);
-        editTransplantFeedback.setOutputMarkupId(true);
-        editTransplantFormComponentsToUpdate.add(editTransplantFeedback);
-
         // Add transplant form
         Form<Transplant> addTransplantForm =
                 new TransplantForm("addTransplantForm", new CompoundPropertyModel<Transplant>(new Transplant()),
@@ -359,10 +356,6 @@ public class RrtTherapyPanel extends Panel {
         addTransplantForm.setOutputMarkupPlaceholderTag(true);
         add(addTransplantForm);
 
-        FeedbackPanel addTransplantFeedback = new FeedbackPanel("addTransplantFeedback");
-        addTransplantForm.add(addTransplantFeedback);
-        addTransplantFeedback.setOutputMarkupPlaceholderTag(true);
-        addTransplantFormComponentsToUpdate.add(addTransplantFeedback);
     }
 
     private final class TransplantForm extends Form<Transplant> {
@@ -416,6 +409,22 @@ public class RrtTherapyPanel extends Panel {
             RadarDateTextField dateFailure = new RadarDateTextField("dateFailureRejectData.failureDate", this,
                     componentsToUpdate);
             add(dateFailure);
+
+            FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback", new IFeedbackMessageFilter() {
+                public boolean accept(FeedbackMessage feedbackMessage) {
+                    for(String errorMessage : Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
+                            TransplantManager.PREVIOUS_TRANSPLANT_NOT_FAILED_ERROR,
+                            TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR)) {
+                        if(feedbackMessage.getMessage().equals(errorMessage)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
+            add(editTransplantFeedback);
+            editTransplantFeedback.setOutputMarkupPlaceholderTag(true);
+            componentsToUpdate.add(editTransplantFeedback);
         }
     }
 
