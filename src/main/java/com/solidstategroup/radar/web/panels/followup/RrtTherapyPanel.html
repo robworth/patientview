@@ -245,8 +245,9 @@
                 </tr>
                 </tbody>
             </table>
-
         </fieldset>
+        <span wicket:id="editTransplantFeedback"></span>
+
     </form>
 </div>
 
@@ -254,27 +255,17 @@
     <table cellpadding="5" style="font-size:80%; margin-top:10px; " class="style2" id="txEntry">
         <tbody>
         <tr>
-            <td style="height:30px; vertical-align:top;" class="col100">Date Tx<span
-                    style="color:Red;visibility:hidden;"
-                    id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4">*</span>
-                <br><span style="color:Red;visibility:hidden;"
-                          id="ctl00_ContentPlaceHolder1_CompareValidator2">&gt; today</span>
+            <td style="height:30px; vertical-align:top;" class="col100">Date Tx
             </td>
-            <td class="col130">Type<span style="color:Red;visibility:hidden;"
-                                               id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5">*</span>
+            <td class="col130">Type
             </td>
             <td class="style4 col45">Recurr</td>
-            <td class="style5 col120">Date Recurr<br>
-                <span style="color:Red;visibility:hidden;"
-                  id="ctl00_ContentPlaceHolder1_CompareValidator6">&gt; today</span>
+            <td class="style5 col120">Date Recurr
             </td>
             <td class="style5 col120">
-                Date Failure<br>
-                            <span style="color:Red;visibility:hidden;"
-                                  id="ctl00_ContentPlaceHolder1_CompareValidator24">&gt; today</span>
+                Date Failure
             </td>
             <td>&nbsp;</td>
-
         </tr>
         <tr>
             <td valign="top">
@@ -305,15 +296,9 @@
             </td>
             <td><input type="submit" value="Add" wicket:id="add"/></td>
         </tr>
-        <tr>
-
-            <td>
-                &nbsp;</td>
-
-            <td align="right"> &nbsp;</td>
-        </tr>
         </tbody>
     </table>
+    <span wicket:id="addTransplantFeedback"></span>
 </form>
 
 <br>
