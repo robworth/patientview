@@ -422,6 +422,7 @@ public class RrtTherapyPanel extends Panel {
                     return false;
                 }
             });
+
             add(editTransplantFeedback);
             editTransplantFeedback.setOutputMarkupPlaceholderTag(true);
             componentsToUpdate.add(editTransplantFeedback);

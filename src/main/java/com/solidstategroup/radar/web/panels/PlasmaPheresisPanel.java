@@ -3,8 +3,10 @@ package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.enums.RemissionAchieved;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.PlasmapheresisManager;
+import com.solidstategroup.radar.service.TransplantManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -18,12 +20,15 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -123,10 +128,17 @@ public class PlasmaPheresisPanel extends Panel {
         editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                plasmapheresisManager.savePlasmapheresis((Plasmapheresis) form.getModelObject());
-                form.getModel().setObject(null);
                 target.add(editPlasmapheresisContainer);
                 target.add(plasmapheresisContainer);
+                try {
+                    plasmapheresisManager.savePlasmapheresis((Plasmapheresis) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+                form.getModel().setObject(null);
             }
 
             @Override
@@ -153,14 +165,23 @@ public class PlasmaPheresisPanel extends Panel {
         addPlasmapheresisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
-                Plasmapheresis plasmapheresis = (Plasmapheresis) form.getModelObject();
-                plasmapheresis.setRadarNumber(radarNumberModel.getObject());
-                plasmapheresisManager.savePlasmapheresis(plasmapheresis);
                 target.add(addPlasmapheresisComponentsToUpdate.toArray(new Component[
                         addPlasmapheresisComponentsToUpdate.size()]));
-                plasmapheresisContainer.setVisible(true);
                 target.add(plasmapheresisContainer);
+
+                Plasmapheresis plasmapheresis = (Plasmapheresis) form.getModelObject();
+                plasmapheresis.setRadarNumber(radarNumberModel.getObject());
+                try {
+                    plasmapheresisManager.savePlasmapheresis(plasmapheresis);
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+
                 form.getModel().setObject(new Plasmapheresis());
+                plasmapheresisContainer.setVisible(true);
             }
 
             @Override
@@ -212,6 +233,22 @@ public class PlasmaPheresisPanel extends Panel {
             response.setOutputMarkupId(true);
             response.setOutputMarkupPlaceholderTag(true);
 
+            FeedbackPanel plasmapheresisFeedback = new FeedbackPanel("plasmapheresisFeedback",
+                    new IFeedbackMessageFilter() {
+                        public boolean accept(FeedbackMessage feedbackMessage) {
+                            for (String errorMessage : Arrays.asList(PlasmapheresisManager.OVERLAPPING_ERROR,
+                                    PlasmapheresisManager.PREVIOUS_TREATMENT_NOT_STOPPED_ERROR)) {
+                                if (feedbackMessage.getMessage().equals(errorMessage)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    });
+
+            add(plasmapheresisFeedback);
+            plasmapheresisFeedback.setOutputMarkupPlaceholderTag(true);
+            componentsToUpdate.add(plasmapheresisFeedback);
         }
 
         @Override

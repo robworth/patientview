@@ -3,9 +3,10 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.PlasmapheresisDao;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.PlasmapheresisManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,7 +14,51 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
     private PlasmapheresisDao plasmapheresisDao;
 
-    public void savePlasmapheresis(Plasmapheresis plasmapheresis) {
+    public void savePlasmapheresis(Plasmapheresis plasmapheresis) throws InvalidModelException {
+
+        // validation
+        List<String> errors = new ArrayList<String>();
+        List<Plasmapheresis> plasmapheresisList = plasmapheresisDao.
+                getPlasmapheresisByRadarNumber(plasmapheresis.getRadarNumber());
+
+        //  must have finish date before you can start it again
+        for (Plasmapheresis existingPlasmapheresis : plasmapheresisList) {
+            if (existingPlasmapheresis.getId().equals(plasmapheresis.getId())) {
+                continue;
+            }
+            if (existingPlasmapheresis.getEndDate() == null) {
+                errors.add(PREVIOUS_TREATMENT_NOT_STOPPED_ERROR);
+                break;
+            }
+        }
+
+        // dates must not overlap
+        for (Plasmapheresis existingPlasmapheresis : plasmapheresisList) {
+            if (existingPlasmapheresis.getId().equals(plasmapheresis.getId())) {
+                continue;
+            }
+            if (existingPlasmapheresis.getEndDate() != null) {
+                if (plasmapheresis.getStartDate().compareTo(existingPlasmapheresis.getStartDate()) >= 0 &&
+                        plasmapheresis.getStartDate().compareTo(existingPlasmapheresis.getEndDate()) < 1) {
+                    errors.add(OVERLAPPING_ERROR);
+                    break;
+                }
+                if (plasmapheresis.getEndDate() != null) {
+                    if (plasmapheresis.getEndDate().compareTo(existingPlasmapheresis.getStartDate()) >= 0 &&
+                           plasmapheresis.getEndDate().compareTo(existingPlasmapheresis.getEndDate()) < 1) {
+                        errors.add(OVERLAPPING_ERROR);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            InvalidModelException exception = new InvalidModelException("plasmapheresis model is not valid");
+            exception.setErrors(errors);
+            throw exception;
+        }
         plasmapheresisDao.savePlasmapheresis(plasmapheresis);
     }
 
