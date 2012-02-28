@@ -5,6 +5,8 @@ import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.components.RadarDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.models.PageNumberModel;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
@@ -28,6 +30,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class PatientPage extends BasePage {
@@ -115,6 +119,17 @@ public class PatientPage extends BasePage {
         Label pageNumber = new Label("pageNumber", pageNumberModel);
         pageNumber.setOutputMarkupPlaceholderTag(true);
         add(pageNumber);
+
+        //add onkeyup event to date to santise input - tried attaching behaviour in the componenet class itself
+        // but did not work
+        visitChildren(new IVisitor<Component, Object>() {
+            public void component(Component component, IVisit<Object> objectIVisit) {
+                if (component instanceof RadarDateTextField || component instanceof RadarRequiredDateTextField) {
+                    component.add(new AttributeModifier("onkeyup", "radarUtility.sanitiseDateInput(this);"));
+                }
+
+            }
+        });
     }
 
     public CurrentTab getCurrentTab() {
