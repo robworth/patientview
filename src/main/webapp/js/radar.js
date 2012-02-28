@@ -58,7 +58,9 @@ var editPatientPage = {
 var patientsListingPage = {
     init: function() {
         jQuery(".patientsLisitingTable").tablesorter({
-            sortList: [[4,1]],
+            sortList: [
+                [4,1]
+            ],
             // disable sorting on certain headers
             headers: {
                 0: {
@@ -84,6 +86,13 @@ var patientsListingPage = {
             cancelSelection: false,
             dateFormat: "uk"
         });
+    }
+}
+
+var radarUtility = {
+    sanitiseDateInput: function(input) {
+        var input = jQuery(input);
+        input.val(input.val().replace(".", "-").replace("/", "-"));
     }
 }
 
