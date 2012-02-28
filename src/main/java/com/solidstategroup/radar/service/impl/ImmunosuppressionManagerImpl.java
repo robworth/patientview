@@ -6,6 +6,7 @@ import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.ImmunosuppressionManager;
 import com.solidstategroup.radar.service.TreatmentManager;
+import com.solidstategroup.radar.util.RadarUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +42,11 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
                 continue;
             }
             if (existingImmunosuppression.getEndDate() != null) {
-                if (immunosuppression.getStartDate().compareTo(existingImmunosuppression.getStartDate()) >= 0 &&
-                        immunosuppression.getStartDate().compareTo(existingImmunosuppression.getEndDate()) < 1) {
+                if (RadarUtility.isEventsOverlapping(existingImmunosuppression.getStartDate(),
+                        existingImmunosuppression.getEndDate(), immunosuppression.getStartDate(),
+                        immunosuppression.getEndDate())) {
                     errors.add(TreatmentManager.OVERLAPPING_ERROR);
                     break;
-                }
-                if (immunosuppression.getEndDate() != null) {
-                    if (immunosuppression.getEndDate().compareTo(existingImmunosuppression.getStartDate()) >= 0 &&
-                            immunosuppression.getEndDate().compareTo(existingImmunosuppression.getEndDate()) < 1) {
-                        errors.add(TreatmentManager.OVERLAPPING_ERROR);
-                        break;
-                    }
                 }
             }
         }
