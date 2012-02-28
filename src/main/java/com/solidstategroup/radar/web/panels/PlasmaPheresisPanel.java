@@ -6,7 +6,7 @@ import com.solidstategroup.radar.model.enums.RemissionAchieved;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.PlasmapheresisManager;
-import com.solidstategroup.radar.service.TransplantManager;
+import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -236,8 +236,8 @@ public class PlasmaPheresisPanel extends Panel {
             FeedbackPanel plasmapheresisFeedback = new FeedbackPanel("plasmapheresisFeedback",
                     new IFeedbackMessageFilter() {
                         public boolean accept(FeedbackMessage feedbackMessage) {
-                            for (String errorMessage : Arrays.asList(PlasmapheresisManager.OVERLAPPING_ERROR,
-                                    PlasmapheresisManager.PREVIOUS_TREATMENT_NOT_STOPPED_ERROR)) {
+                            for (String errorMessage : Arrays.asList(TreatmentManager.OVERLAPPING_ERROR,
+                                    TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR)) {
                                 if (feedbackMessage.getMessage().equals(errorMessage)) {
                                     return true;
                                 }

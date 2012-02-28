@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.ImmunosuppressionManager;
+import com.solidstategroup.radar.service.TreatmentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
                 continue;
             }
             if (existingImmunosuppression.getEndDate() == null) {
-                errors.add(PREVIOUS_TREATMENT_NOT_STOPPED_ERROR);
+                errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
                 break;
             }
         }
@@ -42,13 +43,13 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
             if (existingImmunosuppression.getEndDate() != null) {
                 if (immunosuppression.getStartDate().compareTo(existingImmunosuppression.getStartDate()) >= 0 &&
                         immunosuppression.getStartDate().compareTo(existingImmunosuppression.getEndDate()) < 1) {
-                    errors.add(OVERLAPPING_ERROR);
+                    errors.add(TreatmentManager.OVERLAPPING_ERROR);
                     break;
                 }
                 if (immunosuppression.getEndDate() != null) {
                     if (immunosuppression.getEndDate().compareTo(existingImmunosuppression.getStartDate()) >= 0 &&
                             immunosuppression.getEndDate().compareTo(existingImmunosuppression.getEndDate()) < 1) {
-                        errors.add(OVERLAPPING_ERROR);
+                        errors.add(TreatmentManager.OVERLAPPING_ERROR);
                         break;
                     }
                 }

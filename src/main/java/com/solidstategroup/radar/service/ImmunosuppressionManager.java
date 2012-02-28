@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface ImmunosuppressionManager {
 
-    public static final String PREVIOUS_TREATMENT_NOT_STOPPED_ERROR = "Cannot start a new treatment whilst a " +
-            "previous " + "treament has not been stopped";
-    public static final String OVERLAPPING_ERROR = "Cannot add treatment overlapping with a previous entry";
-
-    void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) throws InvalidModelException;
+    void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment) throws
+            InvalidModelException;
 
     void deleteImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppressionTreatment);
 

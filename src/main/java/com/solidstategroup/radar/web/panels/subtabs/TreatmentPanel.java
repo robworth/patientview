@@ -8,6 +8,7 @@ import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.ImmunosuppressionManager;
 import com.solidstategroup.radar.service.PlasmapheresisManager;
 import com.solidstategroup.radar.service.TherapyManager;
+import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -676,8 +677,8 @@ public class TreatmentPanel extends Panel {
             FeedbackPanel treatmentFeedback = new FeedbackPanel("immunosupressionFeedback",
                     new IFeedbackMessageFilter() {
                         public boolean accept(FeedbackMessage feedbackMessage) {
-                            for (String errorMessage : Arrays.asList(ImmunosuppressionManager.OVERLAPPING_ERROR,
-                                    ImmunosuppressionManager.PREVIOUS_TREATMENT_NOT_STOPPED_ERROR)) {
+                            for (String errorMessage : Arrays.asList(TreatmentManager.OVERLAPPING_ERROR,
+                                    TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR)) {
                                 if (feedbackMessage.getMessage().equals(errorMessage)) {
                                     return true;
                                 }
