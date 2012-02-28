@@ -137,7 +137,7 @@ public class LaboratoryResultsPanel extends Panel {
         final IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisManager);
 
         // Blood fields
-        form.add(new RadarTextFieldWithValidation("hb", new RangeValidator<Double>(2.0, 20.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("hb", new RangeValidator(2.0, 20.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("wbc", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("neutrophils", new RangeValidator<Double>(0.1, 80.0), form, componentsToUpdate));
         form.add(new RadarTextFieldWithValidation("platelets", new RangeValidator<Double>(1.0, 800.0), form, componentsToUpdate));
@@ -226,8 +226,10 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new YesNoNdRadioGroup("glucose"));
 
         // Urinalysis - lab
-        form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("proteinCreatinineRatio", new RangeValidator<Double>(0.0, 15000.0),
+                form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("albuminCreatinineRatio", new RangeValidator<Double>(1.0, 3000.0),
+                form, componentsToUpdate));
 
         WebMarkupContainer osmolalityContainer = new WebMarkupContainer("osmolalityContainer") {
             @Override
