@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.TreatmentModality;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.TreatmentManager;
+import com.solidstategroup.radar.util.RadarUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,32 +26,10 @@ public class TreatmentManagerImpl implements TreatmentManager {
             if (existingTreatment.getId().equals(treatment.getId())) {
                 continue;
             }
-            if (existingTreatment.getEndDate() == null) {
-                if (treatment.getEndDate() == null) {
-                    if (treatment.getStartDate().compareTo(existingTreatment.getStartDate()) == 0) {
-                        errors.add(TreatmentManager.OVERLAPPING_ERROR);
-                        break;
-                    }
-                } else {
-                    if (existingTreatment.getStartDate().compareTo(treatment.getStartDate()) >= 0 &&
-                            existingTreatment.getStartDate().compareTo(treatment.getEndDate()) < 1) {
-                        errors.add(TreatmentManager.OVERLAPPING_ERROR);
-                        break;
-                    }
-                }
-            } else {
-                if (treatment.getStartDate().compareTo(existingTreatment.getStartDate()) >= 0 &&
-                        treatment.getStartDate().compareTo(existingTreatment.getEndDate()) < 1) {
-                    errors.add(TreatmentManager.OVERLAPPING_ERROR);
-                    break;
-                }
-                if (treatment.getEndDate() != null) {
-                    if (treatment.getEndDate().compareTo(existingTreatment.getStartDate()) >= 0 &&
-                            treatment.getEndDate().compareTo(existingTreatment.getEndDate()) < 1) {
-                        errors.add(TreatmentManager.OVERLAPPING_ERROR);
-                        break;
-                    }
-                }
+            if (RadarUtility.isEventsOverlapping(existingTreatment.getStartDate(), existingTreatment.getEndDate(),
+                    treatment.getStartDate(), treatment.getEndDate())) {
+                errors.add(TreatmentManager.OVERLAPPING_ERROR);
+                break;
             }
         }
 
