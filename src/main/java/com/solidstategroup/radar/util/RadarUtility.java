@@ -5,12 +5,11 @@ import com.solidstategroup.radar.service.TreatmentManager;
 import java.util.Date;
 
 /**
- * Radar Utility
+ * Radar Utility - miscellaneous utility methods go here
  */
 public class RadarUtility {
 
     /**
-     *
      * @param event1Start cannot be null
      * @param event2Start cannot be null
      * @return true if there is an overlap
