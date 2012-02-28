@@ -5,15 +5,13 @@ import com.solidstategroup.radar.dao.impl.TransplantDaoImpl;
 import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.TransplantManager;
-import org.jfree.data.time.Day;
+import com.solidstategroup.radar.service.TreatmentManager;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -54,11 +52,11 @@ public class TransplantManagerImpl implements TransplantManager {
             }
             if (existingTransplant.getDateFailureRejectData() != null) {
                 if (existingTransplant.getDateFailureRejectData().getFailureDate() == null) {
-                    errors.add(PREVIOUS_TRANSPLANT_NOT_FAILED_ERROR);
+                    errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
                     break;
                 }
             } else {
-                errors.add(PREVIOUS_TRANSPLANT_NOT_FAILED_ERROR);
+                errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
                 break;
             }
         }

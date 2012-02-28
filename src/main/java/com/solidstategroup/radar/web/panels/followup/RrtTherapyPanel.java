@@ -7,6 +7,7 @@ import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.TransplantManager;
+import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -413,7 +414,7 @@ public class RrtTherapyPanel extends Panel {
             FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback", new IFeedbackMessageFilter() {
                 public boolean accept(FeedbackMessage feedbackMessage) {
                     for(String errorMessage : Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
-                            TransplantManager.PREVIOUS_TRANSPLANT_NOT_FAILED_ERROR,
+                            TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR,
                             TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR)) {
                         if(feedbackMessage.getMessage().equals(errorMessage)) {
                             return true;

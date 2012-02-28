@@ -5,6 +5,8 @@ import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.PlasmapheresisManager;
+import com.solidstategroup.radar.service.TreatmentManager;
+import com.solidstategroup.radar.util.RadarUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,6 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
     private PlasmapheresisDao plasmapheresisDao;
 
     public void savePlasmapheresis(Plasmapheresis plasmapheresis) throws InvalidModelException {
-
         // validation
         List<String> errors = new ArrayList<String>();
         List<Plasmapheresis> plasmapheresisList = plasmapheresisDao.
@@ -27,7 +28,7 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
                 continue;
             }
             if (existingPlasmapheresis.getEndDate() == null) {
-                errors.add(PREVIOUS_TREATMENT_NOT_STOPPED_ERROR);
+                errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
                 break;
             }
         }
@@ -37,21 +38,13 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
             if (existingPlasmapheresis.getId().equals(plasmapheresis.getId())) {
                 continue;
             }
-            if (existingPlasmapheresis.getEndDate() != null) {
-                if (plasmapheresis.getStartDate().compareTo(existingPlasmapheresis.getStartDate()) >= 0 &&
-                        plasmapheresis.getStartDate().compareTo(existingPlasmapheresis.getEndDate()) < 1) {
-                    errors.add(OVERLAPPING_ERROR);
-                    break;
-                }
-                if (plasmapheresis.getEndDate() != null) {
-                    if (plasmapheresis.getEndDate().compareTo(existingPlasmapheresis.getStartDate()) >= 0 &&
-                           plasmapheresis.getEndDate().compareTo(existingPlasmapheresis.getEndDate()) < 1) {
-                        errors.add(OVERLAPPING_ERROR);
-                        break;
-                    }
-                }
-
+            if (RadarUtility.isEventsOverlapping(existingPlasmapheresis.getStartDate(),
+                    existingPlasmapheresis.getEndDate(), plasmapheresis.getStartDate(),
+                    plasmapheresis.getEndDate())) {
+                errors.add(TreatmentManager.OVERLAPPING_ERROR);
+                break;
             }
+
         }
 
         if (!errors.isEmpty()) {
