@@ -303,7 +303,7 @@ CREATE TABLE tbl_LabData (
 	SODIUM int,
 	POTASSIUM numeric(2,1),
 	PHOS numeric(3,2),
-	PROT_CREAT_RAT numeric(5,1),
+	PROT_CREAT_RAT numeric(6,1),
 	ALB_CREAT_RAT numeric(5,1),
 	WBC numeric(3,1),
 	HB numeric(3,1),

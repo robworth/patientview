@@ -69,7 +69,7 @@ public abstract class BaseDaoImpl {
     }
 
     public Double getDoubleWithNullCheck(String column, ResultSet resultSet) throws SQLException {
-        double value = resultSet.getLong(column);
+        double value = resultSet.getDouble(column);
         if (resultSet.wasNull()) {
             return null;
         }
