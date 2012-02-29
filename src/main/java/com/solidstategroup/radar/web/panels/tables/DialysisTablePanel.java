@@ -222,13 +222,7 @@ public class DialysisTablePanel extends Panel {
             FeedbackPanel dialysisFeedback = new FeedbackPanel("dialysisFeedback",
                     new IFeedbackMessageFilter() {
                         public boolean accept(FeedbackMessage feedbackMessage) {
-                            for (String errorMessage : Arrays.asList(TreatmentManager.OVERLAPPING_ERROR,
-                                    TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR)) {
-                                if (feedbackMessage.getMessage().equals(errorMessage)) {
-                                    return true;
-                                }
-                            }
-                            return false;
+                            return TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage());
                         }
                     });
 

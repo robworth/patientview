@@ -1,20 +1,25 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.PlasmapheresisDao;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
+import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.PlasmapheresisManager;
 import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.util.RadarUtility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
 public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
     private PlasmapheresisDao plasmapheresisDao;
+    DemographicsManager demographicsManager;
 
     public void savePlasmapheresis(Plasmapheresis plasmapheresis) throws InvalidModelException {
         // validation
@@ -45,6 +50,36 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
                 break;
             }
 
+        }
+
+        List<Date> datesToCheck = Arrays.asList(plasmapheresis.getStartDate(), plasmapheresis.getEndDate());
+
+        // cannot be before date of birth
+        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(plasmapheresis.getRadarNumber());
+        if (demographics != null) {
+            Date dob = demographics.getDateOfBirth();
+            if (dob != null) {
+                for (Date date : datesToCheck) {
+                    if (date != null) {
+                        if (dob.compareTo(date) > 0) {
+                            errors.add(TreatmentManager.BEFORE_DOB_ERROR);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // cannot be after today
+        Date today = new Date();
+        for (Date date : datesToCheck) {
+            if (date != null) {
+                if (today.compareTo(date) < 0) {
+                    errors.add(TreatmentManager.AFTER_TODAY_ERROR);
+                    break;
+                }
+            }
         }
 
         if (!errors.isEmpty()) {
@@ -81,5 +116,9 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
     public void setPlasmapheresisDao(PlasmapheresisDao plasmapheresisDao) {
         this.plasmapheresisDao = plasmapheresisDao;
+    }
+
+    public void setDemographicsManager(DemographicsManager demographicsManager) {
+        this.demographicsManager = demographicsManager;
     }
 }

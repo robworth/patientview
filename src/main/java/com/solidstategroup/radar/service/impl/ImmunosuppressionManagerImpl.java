@@ -1,20 +1,25 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.ImmunosuppressionDao;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Immunosuppression;
 import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
+import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.ImmunosuppressionManager;
 import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.util.RadarUtility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
 public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
 
     ImmunosuppressionDao immunosuppressionDao;
+    DemographicsManager demographicsManager;
 
     public void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppression) throws
             InvalidModelException {
@@ -46,6 +51,36 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
                         existingImmunosuppression.getEndDate(), immunosuppression.getStartDate(),
                         immunosuppression.getEndDate())) {
                     errors.add(TreatmentManager.OVERLAPPING_ERROR);
+                    break;
+                }
+            }
+        }
+
+        List<Date> datesToCheck = Arrays.asList(immunosuppression.getStartDate(), immunosuppression.getEndDate());
+
+        // cannot be before date of birth
+        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(immunosuppression.getRadarNumber());
+        if (demographics != null) {
+            Date dob = demographics.getDateOfBirth();
+            if (dob != null) {
+                for (Date date : datesToCheck) {
+                    if (date != null) {
+                        if (dob.compareTo(date) > 0) {
+                            errors.add(TreatmentManager.BEFORE_DOB_ERROR);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // cannot be after today
+        Date today = new Date();
+        for (Date date : datesToCheck) {
+            if (date != null) {
+                if (today.compareTo(date) < 0) {
+                    errors.add(TreatmentManager.AFTER_TODAY_ERROR);
                     break;
                 }
             }
@@ -85,5 +120,9 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
 
     public void setImmunosuppressionDao(ImmunosuppressionDao immunosuppressionDao) {
         this.immunosuppressionDao = immunosuppressionDao;
+    }
+
+    public void setDemographicsManager(DemographicsManager demographicsManager) {
+        this.demographicsManager = demographicsManager;
     }
 }

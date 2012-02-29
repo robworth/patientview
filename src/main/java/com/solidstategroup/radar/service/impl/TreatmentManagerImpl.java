@@ -1,19 +1,24 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.TreatmentDao;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.TreatmentModality;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
+import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.util.RadarUtility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
 public class TreatmentManagerImpl implements TreatmentManager {
 
     TreatmentDao treatmentDao;
+    DemographicsManager demographicsManager;
 
     public void saveTreatment(Treatment treatment) throws InvalidModelException {
 
@@ -33,8 +38,38 @@ public class TreatmentManagerImpl implements TreatmentManager {
             }
         }
 
+        List<Date> datesToCheck = Arrays.asList(treatment.getStartDate(), treatment.getEndDate());
+
+        // cannot be before date of birth
+        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(treatment.getRadarNumber());
+        if (demographics != null) {
+            Date dob = demographics.getDateOfBirth();
+            if (dob != null) {
+                for (Date date : datesToCheck) {
+                    if (date != null) {
+                        if (dob.compareTo(date) > 0) {
+                            errors.add(TreatmentManager.BEFORE_DOB_ERROR);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // cannot be after today
+        Date today = new Date();
+        for (Date date : datesToCheck) {
+            if (date != null) {
+                if (today.compareTo(date) < 0) {
+                    errors.add(TreatmentManager.AFTER_TODAY_ERROR);
+                    break;
+                }
+            }
+        }
+
         if (!errors.isEmpty()) {
-            InvalidModelException exception = new InvalidModelException("plasmapheresis model is not valid");
+            InvalidModelException exception = new InvalidModelException("treatment model is not valid");
             exception.setErrors(errors);
             throw exception;
         }
@@ -67,5 +102,9 @@ public class TreatmentManagerImpl implements TreatmentManager {
 
     public void setTreatmentDao(TreatmentDao treatmentDao) {
         this.treatmentDao = treatmentDao;
+    }
+
+    public void setDemographicsManager(DemographicsManager demographicsManager) {
+        this.demographicsManager = demographicsManager;
     }
 }
