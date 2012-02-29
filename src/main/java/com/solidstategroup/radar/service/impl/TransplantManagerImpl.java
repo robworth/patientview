@@ -2,8 +2,10 @@ package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.TransplantDao;
 import com.solidstategroup.radar.dao.impl.TransplantDaoImpl;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
+import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.TransplantManager;
 import com.solidstategroup.radar.service.TreatmentManager;
 import org.joda.time.DateTime;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import java.util.List;
 public class TransplantManagerImpl implements TransplantManager {
 
     TransplantDao transplantDao;
+    DemographicsManager demographicsManager;
     private static final Logger LOGGER = LoggerFactory.getLogger(TransplantDaoImpl.class);
 
     public void saveTransplant(Transplant transplant) throws InvalidModelException {
@@ -78,6 +82,38 @@ public class TransplantManagerImpl implements TransplantManager {
             }
         }
 
+        List<Date> datesToCheck = Arrays.asList(transplant.getDate(), transplant.getDateRecurr(),
+                transplant.getDateFailureRejectData() != null ? transplant.getDateFailureRejectData().
+                        getFailureDate() : null);
+
+        // cannot be before date of birth
+        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(transplant.getRadarNumber());
+        if (demographics != null) {
+            Date dob = demographics.getDateOfBirth();
+            if (dob != null) {
+                for (Date date : datesToCheck) {
+                    if (date != null) {
+                        if (dob.compareTo(date) > 0) {
+                            errors.add(TreatmentManager.BEFORE_DOB_ERROR);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // cannot be after today
+        Date today = new Date();
+        for (Date date : datesToCheck) {
+            if (date != null) {
+                if (today.compareTo(date) < 0) {
+                    errors.add(TreatmentManager.AFTER_TODAY_ERROR);
+                    break;
+                }
+            }
+        }
+
         if (!errors.isEmpty()) {
             InvalidModelException exception = new InvalidModelException("Transplant model is not valid");
             exception.setErrors(errors);
@@ -128,5 +164,9 @@ public class TransplantManagerImpl implements TransplantManager {
 
     public void setTransplantDao(TransplantDao transplantDao) {
         this.transplantDao = transplantDao;
+    }
+
+    public void setDemographicsManager(DemographicsManager demographicsManager) {
+        this.demographicsManager = demographicsManager;
     }
 }

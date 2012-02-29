@@ -413,15 +413,16 @@ public class RrtTherapyPanel extends Panel {
 
             FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback", new IFeedbackMessageFilter() {
                 public boolean accept(FeedbackMessage feedbackMessage) {
-                    for(String errorMessage : Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
-                            TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR,
-                            TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR)) {
-                        if(feedbackMessage.getMessage().equals(errorMessage)) {
-                            return true;
-                        }
-                    }
+                    List<String> acceptedErrorMessages = new ArrayList<String>();
+                    acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);
+                    acceptedErrorMessages.addAll(Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
+                            TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR));
+                   if(acceptedErrorMessages.contains(feedbackMessage.getMessage())) {
+                       return true;
+                   }
                     return false;
                 }
+
             });
 
             add(editTransplantFeedback);

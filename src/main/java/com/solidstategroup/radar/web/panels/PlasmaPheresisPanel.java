@@ -236,11 +236,8 @@ public class PlasmaPheresisPanel extends Panel {
             FeedbackPanel plasmapheresisFeedback = new FeedbackPanel("plasmapheresisFeedback",
                     new IFeedbackMessageFilter() {
                         public boolean accept(FeedbackMessage feedbackMessage) {
-                            for (String errorMessage : Arrays.asList(TreatmentManager.OVERLAPPING_ERROR,
-                                    TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR)) {
-                                if (feedbackMessage.getMessage().equals(errorMessage)) {
-                                    return true;
-                                }
+                            if(TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage())) {
+                                return true;
                             }
                             return false;
                         }
