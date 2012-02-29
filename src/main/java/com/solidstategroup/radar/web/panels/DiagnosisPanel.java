@@ -292,8 +292,7 @@ public class DiagnosisPanel extends Panel {
         final ComponentFeedbackPanel steroidFeedbackPanel = new ComponentFeedbackPanel("steroidResistanceFeedback",
                 steroidRadioGroup);
         form.add(steroidFeedbackPanel);
-        componentsToUpdate.add(steroidFeedbackPanel);
-        steroidFeedbackPanel.setOutputMarkupPlaceholderTag(true);
+        steroidRadioGroup.setOutputMarkupPlaceholderTag(true);
         steroidRadioGroup.add(steroidFeedbackPanel);
 
         // Additional significant diagnosis
@@ -429,7 +428,9 @@ public class DiagnosisPanel extends Panel {
 
         otherGeneMutationContainer.setOutputMarkupId(true);
         otherGeneMutationContainer.setOutputMarkupPlaceholderTag(true);
+
         otherGeneMutationContainer.add(new TextArea("otherGeneMutation"));
+
         form.add(otherGeneMutationContainer);
 
 
@@ -502,14 +503,11 @@ public class DiagnosisPanel extends Panel {
         // Parental consanguinity and family history
         form.add(new YesNoDropDownChoice("parentalConsanguinity"));
 
-
         YesNoDropDownChoice familyHistory = new YesNoDropDownChoice("familyHistory");
 
-        //
         boolean showFamilyOnInit = false;
         showFamilyOnInit = diagnosis.getFamilyHistory() == Diagnosis.YesNo.YES;
         final IModel<Boolean> familyVisibilityModel = new Model<Boolean>(showFamilyOnInit);
-        //
 
         familyHistory.add(new AjaxFormComponentUpdatingBehavior("onChange") {
             @Override
