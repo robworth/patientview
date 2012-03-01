@@ -236,10 +236,7 @@ public class PlasmaPheresisPanel extends Panel {
             FeedbackPanel plasmapheresisFeedback = new FeedbackPanel("plasmapheresisFeedback",
                     new IFeedbackMessageFilter() {
                         public boolean accept(FeedbackMessage feedbackMessage) {
-                            if(TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage())) {
-                                return true;
-                            }
-                            return false;
+                            return TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage());
                         }
                     });
 

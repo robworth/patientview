@@ -321,7 +321,6 @@ public class TreatmentPanel extends Panel {
                 return isSrnsModel.getObject();
             }
         };
-        ;
         YesNoRadioGroupPanel diureticContainer = new YesNoRadioGroupPanel("diureticContainer", true,
                 (CompoundPropertyModel) therapyFormModel,
                 "diuretic");

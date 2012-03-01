@@ -417,10 +417,7 @@ public class RrtTherapyPanel extends Panel {
                     acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);
                     acceptedErrorMessages.addAll(Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
                             TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR));
-                   if(acceptedErrorMessages.contains(feedbackMessage.getMessage())) {
-                       return true;
-                   }
-                    return false;
+                    return acceptedErrorMessages.contains(feedbackMessage.getMessage());
                 }
 
             });
