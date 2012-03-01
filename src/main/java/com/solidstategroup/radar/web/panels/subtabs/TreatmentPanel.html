@@ -52,10 +52,17 @@
                                 <td></td>
                             </tr>
                             <tr>
+                                <td><span class="feedback" wicket:id="startDateFeedback"></span></td>
+                                <td></td>
+                                <td><span class="feedback" wicket:id="endDateFeedback"></span></td>
+                                <td><span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
                                 <td class="style7">
                                     <input type="text" style="width:70px;" wicket:id="startDate"/>
                                     <span wicket:id="startDateFeedbackIndicator"></span>
-                                    <span class="feedback" wicket:id="startDateFeedback"></span>
                                 </td>
                                 <td class="style7">
                                     <select wicket:id="immunosuppression"/>
@@ -64,12 +71,10 @@
                                 <td class="style7">
                                     <input type="text" style="width:70px;" wicket:id="endDate"/>
                                     <span class="endDateFeedbackIndicator"></span>
-                                    <span class="feedback" wicket:id="endDateFeedback"></span>
                                 </td>
                                 <td>
                                     <input wicket:id="cyclophosphamideTotalDose" type="text" style="width:70px;">
                                     <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
-                                    <span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span>
                                 </td>
                                 <td valign="bottom" style="width:90px">
                                     &nbsp;&nbsp;
@@ -113,23 +118,17 @@
                         <td class="style10">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td>
-            <span style="color:Red;visibility:hidden;"
-                  id="ctl00_ContentPlaceHolder1_CompareValidator1">&gt; today</span>
-                        </td>
-                        <td>&nbsp;</td>
-                        <td class="style7">
-                            <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnImmuno"></span></td>
-                        <td align="center" class="style11">
-                            <span style="color:Red;visibility:hidden;" id="ctl00_ContentPlaceHolder1_RangeValidator2">0.010-9.999</span>
-                        </td>
-                        <td class="style7">&nbsp;</td>
+                        <td><span class="feedback" wicket:id="startDateFeedback"></span></td>
+                        <td></td>
+                        <td><span class="feedback" wicket:id="endDateFeedback"></span></td>
+                        <td><span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td class="style7">
                             <input type="text" style="width:70px;" wicket:id="startDate">
                             <span wicket:id="startDateFeedbackIndicator"></span>
-                            <span class="feedback" wicket:id="startDateFeedback"></span>
                         </td>
                         <td class="style7">
                             <select wicket:id="immunosuppression"/>
@@ -138,12 +137,10 @@
                         <td class="style7">
                             <input type="text" style="width:70px;" wicket:id="endDate"/>
                             <span class="endDateFeedbackIndicator"></span>
-                            <span class="feedback" wicket:id="endDateFeedback"></span>
                         </td>
                         <td>
                             <input wicket:id="cyclophosphamideTotalDose" type="text" style="width:70px;">
                             <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
-                            <span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span>
                         </td>
                         <td align="center" class="style11">
                         </td>
