@@ -98,7 +98,7 @@ var radarUtility = {
     // called onblur
     checkDetailsInput: function(element, defaultValue) {
         var element = jQuery(element);
-        if(jQuery.trim(element.val()) == "") {
+        if (jQuery.trim(element.val()) == "") {
             element.val(defaultValue);
             element.addClass("grey");
         }
@@ -107,7 +107,7 @@ var radarUtility = {
     // called on click
     removeDefaultValue: function(element, defaultValue) {
         var element = jQuery(element);
-        if(element.val() == defaultValue) {
+        if (element.val() == defaultValue) {
             element.val("");
             element.removeClass("grey");
         }

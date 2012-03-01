@@ -291,9 +291,11 @@ public class DiagnosisPanel extends Panel {
         // Construct feedback panel
         final ComponentFeedbackPanel steroidFeedbackPanel = new ComponentFeedbackPanel("steroidResistanceFeedback",
                 steroidRadioGroup);
+        steroidFeedbackPanel.setOutputMarkupPlaceholderTag(true);
         form.add(steroidFeedbackPanel);
         steroidRadioGroup.setOutputMarkupPlaceholderTag(true);
         steroidRadioGroup.add(steroidFeedbackPanel);
+        componentsToUpdate.add(steroidFeedbackPanel);
 
         // Additional significant diagnosis
         form.add(new TextField("significantDiagnosis1"));
