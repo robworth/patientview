@@ -29,8 +29,8 @@
                             <label>Surname:</label>
                         </td>
                         <td>
+                            <input wicket:id="surname" type="text" style="width:230px;"/>
                             <span wicket:id="surnameFeedbackIndicator"></span>
-                            <input wicket:id="surname" type="text" style="width:230px;">
                         </td>
                     </tr>
                     <tr>
@@ -38,8 +38,8 @@
                             <label>Forename:</label>
                         </td>
                         <td>
+                            <input wicket:id="forename" type="text" style="width:230px;"/>
                             <span wicket:id="forenameFeedbackIndicator"></span>
-                            <input wicket:id="forename" type="text" style="width:230px;">
                         </td>
                     </tr>
                     <tr>
@@ -47,9 +47,10 @@
                             <label>Title:</label>
                         </td>
                         <td>
-                            <span wicket:id="titleFeedbackIndicator"></span>
                             <select wicket:id="title">
                             </select>
+                            <span wicket:id="titleFeedbackIndicator"></span>
+
                         </td>
                     </tr>
                     <tr>
@@ -57,9 +58,9 @@
                             Geographic area
                         </td>
                         <td>
-                            <span wicket:id="areaDropDownFeedbackIndicator"></span>
                             <select wicket:id="areaDropDown">
                             </select>
+                            <span wicket:id="areaDropDownFeedbackIndicator"></span>
                         </td>
                     </tr>
                     <tr wicket:id="gmcContainer">
@@ -67,8 +68,8 @@
                             <span>GMC/NMC No.:</span>
                         </td>
                         <td>
+                            <input type="text" wicket:id="gmc" style="width:230px;"/>
                             <span wicket:id="gmcFeedbackIndicator"></span>
-                            <input type="text" wicket:id="gmc" style="width:230px;">
                         </td>
                     </tr>
 
@@ -77,8 +78,8 @@
                             <label>Role:</label>
                         </td>
                         <td>
+                            <input wicket:id="role" type="text" style="width:230px;"/>
                             <span wicket:id="roleFeedbackIndicator"></span>
-                            <input wicket:id="role" type="text" style="width:230px;">
                         </td>
                     </tr>
 
@@ -88,8 +89,8 @@
                                 Address</label>
                         </td>
                         <td>
+                            <input wicket:id="email" type="text" style="width:230px;"/>
                             <span wicket:id="emailFeedbackIndicator"></span>
-                            <input wicket:id="email" type="text" style="width:230px;">
                             <span class="feedback" wicket:id="emailFeedback"></span>
 
                         </td>
@@ -100,8 +101,8 @@
                             Telephone number:
                         </td>
                         <td>
-                            <span wicket:id="phoneFeedbackIndicator"></span>
                             <input wicket:id="phone" type="text" style="width:230px;">
+                            <span wicket:id="phoneFeedbackIndicator"></span>
                         </td>
                     </tr>
 
@@ -110,8 +111,8 @@
                             <label>Centre:</label>
                         </td>
                         <td>
-                            <span wicket:id="centreFeedbackIndicator"></span>
                             <select wicket:id="centre"/>
+                            <span wicket:id="centreFeedbackIndicator"></span>
                         </td>
                     </tr>
 
