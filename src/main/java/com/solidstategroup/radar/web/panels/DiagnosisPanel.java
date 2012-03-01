@@ -343,7 +343,7 @@ public class DiagnosisPanel extends Panel {
 
 
         Diagnosis diagnosis = model.getObject();
-        boolean showOtherDetailsOnInit = false;
+        boolean showOtherDetailsOnInit;
         showOtherDetailsOnInit = diagnosis.getMutationYorN9() == Diagnosis.MutationYorN.Y;
         final IModel<Boolean> otherDetailsVisibilityModel = new Model<Boolean>(showOtherDetailsOnInit);
 
