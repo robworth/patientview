@@ -193,23 +193,22 @@
             <table cellpadding="5" style="width: 100%; font-size:80%; margin-top:10px; " class="style2" id="Table1">
                 <tbody>
                 <tr>
-                    <td style="height:30px; vertical-align:top;">Date Tx</td>
-                    <td valign="top">Type
+                    <td style="height:30px; vertical-align:top;">Date Tx <br/>
+                       <span class="feedback" wicket:id="dateFeedback"></span>
                     </td>
-
+                    <td valign="top">Type</td>
                     <td valign="top">Recurr</td>
-                    <td width="85px">Date Recurr<br>
+                    <td width="85px">Date Recurr<br/>
+                      <span class="feedback" wicket:id="dateRecurrFeedback"></span>
                     </td>
-
-                    <td width="85px">
-                        Date Failure<br>
+                    <td width="85px">Date Failure<br/>
+                      <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <input type="text" style="width:70px;" wicket:id="date"/>
                         <span wicket:id="dateFeedbackIndicator"></span>
-                        <span class="feedback" wicket:id="dateFeedback"></span>
                     </td>
                     <td>
                         <select wicket:id="modality"/>
@@ -228,13 +227,10 @@
                     </td>
                     <td>
                         <input type="text" style="width:70px;" wicket:id="dateRecurr"/>
-                        <span class="feedback" wicket:id="dateRecurrFeedback"></span>
                     </td>
 
                     <td>
                         <input type="text" style="width:70px;" wicket:id="dateFailureRejectData.failureDate"/>
-                        <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
-
                     </td>
                 </tr>
                 <tr>
@@ -255,15 +251,17 @@
     <table cellpadding="5" style="font-size:80%; margin-top:10px; " class="style2" id="txEntry">
         <tbody>
         <tr>
-            <td style="height:30px; vertical-align:top;" class="col100">Date Tx
+            <td style="height:30px; vertical-align:top;" class="col100">Date Tx <br/>
+               <span class="feedback" wicket:id="dateFeedback"></span>
             </td>
             <td class="col130">Type
             </td>
             <td class="style4 col45">Recurr</td>
-            <td class="style5 col120">Date Recurr
+            <td class="style5 col120">Date Recurr <br/>
+                <span class="feedback" wicket:id="dateRecurrFeedback"></span>
             </td>
-            <td class="style5 col120">
-                Date Failure
+            <td class="style5 col120"> Date Failure <br/>
+               <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
             </td>
             <td>&nbsp;</td>
         </tr>
@@ -271,7 +269,6 @@
             <td valign="top">
                 <input type="text" style="height:15px;width:70px;" wicket:id="date"/>
                 <span wicket:id="dateFeedbackIndicator"></span>
-                <span class="feedback" wicket:id="dateFeedback"></span>
             </td>
             <td valign="middle">
                 <select wicket:id="modality"/>
@@ -288,11 +285,9 @@
 
             <td valign="baseline" class="style5">
                 <input type="text" style="height:15px;width:70px;" wicket:id="dateRecurr"/>
-                <span class="feedback" wicket:id="dateRecurrFeedback"></span>
             </td>
             <td class="style5">
                 <input type="text" style="height:15px;width:70px;" wicket:id="dateFailureRejectData.failureDate"/>
-                <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
             </td>
             <td><input type="submit" value="Add" wicket:id="add"/></td>
         </tr>

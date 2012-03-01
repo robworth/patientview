@@ -40,18 +40,11 @@
                     <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
                         <tbody>
                         <tr>
-                            <td>Date Started<br>
-                                    <span style="color:Red;visibility:hidden;"
-                                          id="ctl00_ContentPlaceHolder1_CompareValidator3">&gt; today</span>
+                            <td>Date Started<br/>
+                             <span class="feedback" wicket:id="startDateFeedback"/>
                             </td>
-                            <td>Date Stopped
-                                <br>
-                                <br>
-
-                                &nbsp;<span style="color:Red;display:none;"
-                                            id="ctl00_ContentPlaceHolder1_CompareValidator9">&gt; today</span>
-                                &nbsp;<span style="color:Red;"
-                                            id="ctl00_ContentPlaceHolder1_lblPlasmaStopEditWarn"></span>
+                            <td>Date Stopped<br/>
+                              <span class="feedback" wicket:id="endDateFeedback"/>
                             </td>
                             <td>No of Exchanges</td>
                             <td>&nbsp;</td>
@@ -66,12 +59,11 @@
                             <td>
                                 <input type="text" style="width:70px;" wicket:id="startDate"/>
                                 <span wicket:id="startDateFeedbackIndicator"/>
-                                <span class="feedback" wicket:id="startDateFeedback"/>
 
                             </td>
                             <td>
                                 <input type="text" style="width:70px;" wicket:id="endDate">
-                                <span class="feedback" wicket:id="endDateFeedback"/>
+
                             </td>
                             <td>
                                 <select wicket:id="plasmapheresisExchanges"/>
@@ -107,19 +99,17 @@
             <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
                 <tbody>
                 <tr>
-                    <td>Date Started<br>
-                <span style="color:Red;visibility:hidden;"
-                      id="ctl00_ContentPlaceHolder1_CompareValidator7">&gt; today</span>
+                    <td>Date Started<br/>
+                       <span class="feedback" wicket:id="startDateFeedback"/>
                     </td>
-                    <td>Date Stopped
-                        <br>
-                        &nbsp;
-                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblStopWarnP"></span></td>
+                    <td>Date Stopped<br/>
+                       <span class="feedback" wicket:id="endDateFeedback"/>
+                    </td>
                     <td>No of Exchanges</td>
                     <td>&nbsp;</td>
                     <td>
-                        Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info"
-                                               id="ctl00_ContentPlaceHolder1_hypRemission">Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
+                        Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info" id="ctl00_ContentPlaceHolder1_hypRemission">
+                        Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
                     </td>
                     <td>&nbsp;</td>
                 </tr>
@@ -127,11 +117,9 @@
                     <td>
                         <input type="text" style="width:70px;" wicket:id="startDate"/>
                         <span wicket:id="startDateFeedbackIndicator"/>
-                        <span class="feedback" wicket:id="startDateFeedback"/>
                     </td>
                     <td>
                         <input type="text" style="width:70px;" wicket:id="endDate"/>
-                        <span class="feedback" wicket:id="endDateFeedback"/>
                     </td>
                     <td>
                         <select wicket:id="plasmapheresisExchanges"/>
