@@ -16,6 +16,7 @@ import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.HospitalisationPanel;
 import com.solidstategroup.radar.web.panels.PathologyPanel;
 import com.solidstategroup.radar.web.panels.RelapsePanel;
+import com.solidstategroup.radar.web.validators.RadarDateValidator;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -120,12 +121,18 @@ public class PatientPage extends BasePage {
         pageNumber.setOutputMarkupPlaceholderTag(true);
         add(pageNumber);
 
-        //add onkeyup event to date to santise input - tried attaching behaviour in the componenet class itself
-        // but did not work
+
         visitChildren(new IVisitor<Component, Object>() {
             public void component(Component component, IVisit<Object> objectIVisit) {
+                //add onkeyup event to date to santise input - tried attaching behaviour in the componenet class itself
+                // but did not work
                 if (component instanceof RadarDateTextField || component instanceof RadarRequiredDateTextField) {
                     component.add(new AttributeModifier("onkeyup", "radarUtility.sanitiseDateInput(this);"));
+                }
+
+                // add validator to date components - adding it inside the component constructor does not work
+                if (component instanceof RadarDateTextField || component instanceof RadarRequiredDateTextField) {
+                    component.add(new RadarDateValidator());
                 }
 
             }
