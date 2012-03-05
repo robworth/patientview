@@ -83,7 +83,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                              <fieldset wicket:id="editRelapseContainer" style="border:1px solid red">
+                              <fieldset wicket:id="editRelapseContainer" style="border:2px solid red">
                                 <legend>Edit</legend>
                                 <form wicket:id="editRelapseForm">
                                     <table cellpadding="8"
@@ -171,7 +171,7 @@
                                                 <input type="button" wicket:id="save" value="Save">
                                                 <input type="button" wicket:id="cancel" value="Cancel">
                                                 <span style="font-weight: bold;" wicket:id="successMessage"/>
-                                                <span style="font-weight: bold; color: red;" wicket:id="errorMessage"/>
+                                                <p class="error" wicket:id="errorMessage"/>
                                             </td>
                                             <td>&nbsp;</td>
                                         </tr>
@@ -260,14 +260,13 @@
                                             <td valign="middle">
                                                 <input type="text" style="width:80px;" wicket:id="dateOfRemission"/>
                                                 <span class="feedback" wicket:id="dateOfRemissionFeedback"></span>
-
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <input type="button" class="saveBtn" wicket:id="submit" value="Add">
                                                 <span style="font-weight: bold;" wicket:id="successMessage"/>
-                                                <span style="font-weight: bold; color: red;" wicket:id="errorMessage"/>
+                                                <p class="error" wicket:id="errorMessage"/>
                                             </td>
                                             <td>&nbsp;</td>
                                         </tr>
