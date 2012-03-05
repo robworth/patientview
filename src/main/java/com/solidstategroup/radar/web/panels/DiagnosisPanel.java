@@ -244,7 +244,8 @@ public class DiagnosisPanel extends Panel {
         form.add(new CheckBox("prepubertalAtDiagnosis"));
 
         final RadarTextFieldWithValidation heightAtDiagnosis =
-                new RadarTextFieldWithValidation("heightAtDiagnosis", new RangeValidator<Double>(35.0, 185.0), form,
+                new RadarTextFieldWithValidation("heightAtDiagnosis", new RangeValidator<Double>(
+                        RadarApplication.MIN_HEIGHT, RadarApplication.MAX_HEIGHT), form,
                         componentsToUpdate);
         form.add(heightAtDiagnosis);
 
