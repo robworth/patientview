@@ -24,18 +24,18 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
     public void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppression) throws
             InvalidModelException {
 
-
         // validation
         List<String> errors = new ArrayList<String>();
         List<ImmunosuppressionTreatment> ummunosupressionList = immunosuppressionDao.
                 getImmunosuppressionTreatmentByRadarNumber(immunosuppression.getRadarNumber());
 
-        //  must have finish date before you can start it again
+        //  must have finish date before you can start the same treatment again
         for (ImmunosuppressionTreatment existingImmunosuppression : ummunosupressionList) {
             if (existingImmunosuppression.getId().equals(immunosuppression.getId())) {
                 continue;
             }
-            if (existingImmunosuppression.getEndDate() == null) {
+            if (existingImmunosuppression.getEndDate() == null && existingImmunosuppression.getImmunosuppression().
+                    getId().equals(immunosuppression.getImmunosuppression().getId())) {
                 errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
                 break;
             }
@@ -46,7 +46,8 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
             if (existingImmunosuppression.getId().equals(immunosuppression.getId())) {
                 continue;
             }
-            if (existingImmunosuppression.getEndDate() != null) {
+            if (existingImmunosuppression.getEndDate() != null && existingImmunosuppression.getImmunosuppression().
+                    getId().equals(immunosuppression.getImmunosuppression().getId())) {
                 if (RadarUtility.isEventsOverlapping(existingImmunosuppression.getStartDate(),
                         existingImmunosuppression.getEndDate(), immunosuppression.getStartDate(),
                         immunosuppression.getEndDate())) {
