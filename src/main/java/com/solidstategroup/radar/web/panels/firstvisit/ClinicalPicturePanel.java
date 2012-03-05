@@ -6,6 +6,7 @@ import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -267,7 +268,8 @@ public class ClinicalPicturePanel extends Panel {
         form.add(clinicalPictureDate);
 
         RadarTextFieldWithValidation height =
-                new RadarTextFieldWithValidation("height", new RangeValidator<Double>(35.0, 185.0), form,
+                new RadarTextFieldWithValidation("height", new RangeValidator<Double>(
+                        RadarApplication.MIN_HEIGHT, RadarApplication.MAX_HEIGHT), form,
                         componentsToUpdate);
         form.add(height);
 

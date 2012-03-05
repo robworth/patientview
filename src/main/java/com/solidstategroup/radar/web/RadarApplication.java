@@ -64,6 +64,10 @@ public class RadarApplication extends AuthenticatedWebApplication {
     public static final int RELAPSE_PAGE_NO = 12;
     public static final int HOSPITALISATION_PAGE_NO = 16;
 
+    // some global settings
+    public static final Double MIN_HEIGHT = 35.0;
+    public static final Double MAX_HEIGHT = 220.0;
+
     @Override
     public Class<? extends WebPage> getHomePage() {
         return HomePage.class;
