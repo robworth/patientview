@@ -16,11 +16,10 @@ import java.util.List;
 public class DiagnosisGeneMutationPanel extends Panel {
     private IModel<Boolean> isVisibleModel;
 
-    public DiagnosisGeneMutationPanel(final String id, int i, IModel<Boolean> isVisibleModel, CompoundPropertyModel model, final IModel<Boolean>
+    public DiagnosisGeneMutationPanel(final String id, int i, CompoundPropertyModel model, final IModel<Boolean>
             otherDetailsVisibilityModel, final IModel<Boolean> moreDetailsVisibilityModel,
                                       final List<Component> componentsToUpdateList) {
         super(id);
-        this.isVisibleModel = isVisibleModel;
 
         // Add the field for mutationYorN
         RadioGroup<Diagnosis.MutationYorN> mutationYorN =
@@ -67,10 +66,5 @@ public class DiagnosisGeneMutationPanel extends Panel {
         mutationSorSN.add(new Radio<Diagnosis.MutationSorSN>("sn",
                 new Model<Diagnosis.MutationSorSN>(Diagnosis.MutationSorSN.SN)));
         add(mutationSorSN);
-    }
-
-    @Override
-    public boolean isVisible() {
-        return isVisibleModel.getObject();
     }
 }
