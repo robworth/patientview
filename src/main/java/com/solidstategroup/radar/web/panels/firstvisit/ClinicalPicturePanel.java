@@ -66,6 +66,10 @@ public class ClinicalPicturePanel extends Panel {
     private static final String RASH_CONTAINER_ID = "rashContainer";
     private static final String RASH_DETAIL_CONTAINER_ID = "rashDetailContainer";
     private static final String POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID = "possibleImmunisationTriggerContainer";
+    public static final String PHENOTYPE_CONTAINER_1 = "phenotypeContainer1";
+    public static final String PHENOTYPE_CONTAINER_2 = "phenotypeContainer2";
+    public static final String PHENOTYPE_CONTAINER_3 = "phenotypeContainer3";
+    public static final String PHENOTYPE_CONTAINER_4 = "phenotypeContainer4";
 
     // elements to hide if diagnosis is srns
     private List<String> srnsElementsToHide;
@@ -95,7 +99,8 @@ public class ClinicalPicturePanel extends Panel {
         // set mpgn elements to hide
         mpgnElementsToHide = Arrays.asList(THROMBOSIS_CONTAINER_ID, PERITONITIS_CONTAINER_ID,
                 PULMONARY_OEDEMA_CONTAINER_ID, DIABETES_TYPE_CONTAINER_ID, RASH_CONTAINER_ID, RASH_DETAIL_CONTAINER_ID,
-                POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID);
+                POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID, PHENOTYPE_CONTAINER_1, PHENOTYPE_CONTAINER_2,
+                PHENOTYPE_CONTAINER_3, PHENOTYPE_CONTAINER_4);
 
         final WebMarkupContainer clinicalPictureContainer = new WebMarkupContainer("clinicalPictureContainer");
         clinicalPictureContainer.setVisible(isFirstVisit);
@@ -303,10 +308,43 @@ public class ClinicalPicturePanel extends Panel {
         form.add(meanArterialPressure);
         componentsToUpdate.add(meanArterialPressure);
 
-        form.add(new PhenotypeChooser("phenotype1"));
-        form.add(new PhenotypeChooser("phenotype2"));
-        form.add(new PhenotypeChooser("phenotype3"));
-        form.add(new PhenotypeChooser("phenotype4"));
+        WebMarkupContainer phenotypeContainer1 = new WebMarkupContainer(PHENOTYPE_CONTAINER_1){
+            @Override
+            public boolean isVisible() {
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
+            }
+        };
+
+        WebMarkupContainer phenotypeContainer2 = new WebMarkupContainer(PHENOTYPE_CONTAINER_2){
+            @Override
+            public boolean isVisible() {
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
+            }
+        };
+
+        WebMarkupContainer phenotypeContainer3 = new WebMarkupContainer(PHENOTYPE_CONTAINER_3){
+            @Override
+            public boolean isVisible() {
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
+            }
+        };
+
+        WebMarkupContainer phenotypeContainer4 = new WebMarkupContainer(PHENOTYPE_CONTAINER_4){
+            @Override
+            public boolean isVisible() {
+                return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
+            }
+        };
+
+        phenotypeContainer1.add(new PhenotypeChooser("phenotype1"));
+        phenotypeContainer2.add(new PhenotypeChooser("phenotype2"));
+        phenotypeContainer3.add(new PhenotypeChooser("phenotype3"));
+        phenotypeContainer4.add(new PhenotypeChooser("phenotype4"));
+
+        form.add(phenotypeContainer1);
+        form.add(phenotypeContainer2);
+        form.add(phenotypeContainer3);
+        form.add(phenotypeContainer4);
 
         form.add(new TextArea("comments"));
         form.add(new TextField("significantDiagnosis1"));
