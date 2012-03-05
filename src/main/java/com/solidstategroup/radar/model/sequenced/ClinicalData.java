@@ -5,7 +5,7 @@ import com.solidstategroup.radar.model.Phenotype;
 import java.util.Date;
 
 public class ClinicalData extends SequencedModel {
-    public static final String OPHTHALMOSCOPY_HELP_TEXT = "If anormal describe result, " +
+    public static final String OPHTHALMOSCOPY_HELP_TEXT = "If abnormal describe result, " +
             "eg hypertensive, retinopathy or Drusen";
 
     public enum DiabetesType {
