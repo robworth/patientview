@@ -136,7 +136,6 @@ public class DemographicsPanel extends Panel {
         }
         form.add(dateRegistered);
 
-
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                         diagnosisManager),
