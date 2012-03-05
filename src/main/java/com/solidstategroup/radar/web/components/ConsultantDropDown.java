@@ -1,10 +1,16 @@
 package com.solidstategroup.radar.web.components;
 
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.service.UtilityManager;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ConsultantDropDown extends DropDownChoice<Consultant> {
 
@@ -15,16 +21,25 @@ public class ConsultantDropDown extends DropDownChoice<Consultant> {
         super(id);
         setChoices(utilityManager.getConsultants());
         setChoiceRenderer(new ChoiceRenderer<Consultant>("fullName", "id"));
+        setOutputMarkupPlaceholderTag(true);
+    }
 
-        /*
-        setChoiceRenderer(new IChoiceRenderer<Consultant>() {
-            public Object getDisplayValue(Consultant object) {
-                return object.getFullName();
+    public ConsultantDropDown(String id, final IModel<Long> centreNumber) {
+        super(id);
+        LoadableDetachableModel<List<Consultant>> consultantsListModel = new LoadableDetachableModel<List<Consultant>>() {
+            @Override
+            protected List<Consultant> load() {
+                Centre centre = new Centre();
+                centre.setId(centreNumber.getObject() != null ? centreNumber.getObject() : null);
+                if (centre.getId() != null) {
+                    return utilityManager.getConsultantsByCentre(centre);
+                }
+                return Collections.<Consultant>emptyList();
             }
+        };
 
-            public String getIdValue(Consultant object, int index) {
-                return object.getId().toString();
-            }
-        }); */
+        setChoices(consultantsListModel);
+        setChoiceRenderer(new ChoiceRenderer<Consultant>("fullName", "id"));
+        setOutputMarkupPlaceholderTag(true);
     }
 }
