@@ -42,10 +42,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -129,17 +130,7 @@ public class DiagnosisPanel extends Panel {
                         Demographics demographics = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                         Date dob = demographics.getDateOfBirth();
                         if (dateOfDiagnosis != null && dob != null) {
-                            Calendar diagCalendar = Calendar.getInstance();
-                            diagCalendar.setTime(dateOfDiagnosis);
-
-                            Calendar dobCalendar = Calendar.getInstance();
-                            dobCalendar.setTime(dob);
-
-                            diagCalendar.add(Calendar.YEAR, -dobCalendar.get(Calendar.YEAR));
-                            diagCalendar.add(Calendar.MONTH, -dobCalendar.get(Calendar.MONTH));
-                            diagCalendar.add(Calendar.DAY_OF_MONTH, -dobCalendar.get(Calendar.DAY_OF_MONTH));
-
-                            int age = diagCalendar.get(Calendar.YEAR);
+                            int age = Years.yearsBetween(new DateTime(dob), new DateTime(dateOfDiagnosis)).getYears();
                             diagnosis.setAgeAtDiagnosis(age);
                         }
                         diagnosisManager.saveDiagnosis(diagnosis);
@@ -464,7 +455,11 @@ public class DiagnosisPanel extends Panel {
                 Karotype karotype = diagnosis.getKarotype();
                 if (karotype != null) {
                     karoTypeOtherVisibilityModel.setObject(karotype.getId().equals(KAROTYPE_OTHER_ID));
-                    target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                    for (Component component : componentsToUpdate) {
+                        if (component.isVisibleInHierarchy()) {
+                            target.add(component);
+                        }
+                    }
                 }
             }
         });
@@ -498,7 +493,11 @@ public class DiagnosisPanel extends Panel {
                 if (diagnosis.getFamilyHistory() != null) {
                     familyVisibilityModel.setObject(diagnosis.getFamilyHistory() == Diagnosis.YesNo.YES);
                 }
-                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                for (Component component : componentsToUpdate) {
+                    if (component.isVisibleInHierarchy()) {
+                        target.add(component);
+                    }
+                }
             }
         });
 
@@ -564,12 +563,20 @@ public class DiagnosisPanel extends Panel {
 
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            for (Component component : getComponentsToUpdate()) {
+                if (component.isVisibleInHierarchy()) {
+                    target.add(component);
+                }
+            }
         }
 
         @Override
         protected void onError(AjaxRequestTarget target, Form<?> form) {
-            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            for (Component component : getComponentsToUpdate()) {
+                if (component.isVisibleInHierarchy()) {
+                    target.add(component);
+                }
+            }
         }
 
         protected abstract List<? extends Component> getComponentsToUpdate();
