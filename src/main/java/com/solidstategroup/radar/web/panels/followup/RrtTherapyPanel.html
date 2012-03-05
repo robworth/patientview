@@ -188,22 +188,17 @@
 <div wicket:id="editTransplantContainer">
 
     <form wicket:id="form">
-        <fieldset style="border:1px solid red">
+        <fieldset style="border:2px solid red">
             <legend>Edit</legend>
             <table cellpadding="5" style="width: 100%; font-size:80%; margin-top:10px; " class="style2" id="Table1">
                 <tbody>
                 <tr>
-                    <td style="height:30px; vertical-align:top;">Date Tx</td>
-                    <td valign="top">Type
-                    </td>
-
-                    <td valign="top">Recurr</td>
-                    <td width="85px">Date Recurr<br>
-                    </td>
-
-                    <td width="85px">
-                        Date Failure<br>
-                    </td>
+                    <td class="col110">Date Tx</td>
+                    <td valign="top">Type</td>
+                    <td class="col45" valign="top">Recurr</td>
+                    <td class="col120">Date Recurr</td>
+                    <td class="col120">Date Failure</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>
@@ -218,10 +213,10 @@
 
                     <td>
                         <span wicket:id="recurr">
-                            <input type="radio" wicket:id="yes"/>
+                            <input type="radio" wicket:id="yes" class="nomargin"/>
                             <label wicket:id="yesLabel">Yes</label>
                             <br/>
-                            <input type="radio" wicket:id="no"/>
+                            <input type="radio" wicket:id="no" class="nomargin"/>
                             <label wicket:id="noLabel">No</label>
                         </span>
 
@@ -236,9 +231,7 @@
                         <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
 
                     </td>
-                </tr>
-                <tr>
-                    <td align="right">
+                    <td style="text-align:  right;">
                         <input type="submit" value="Save" wicket:id="save"/>
                         <input type="submit" value="Cancel" wicket:id="cancel"/>
                     </td>
