@@ -362,61 +362,40 @@ public class DiagnosisPanel extends Panel {
         }
 
         final IModel<Boolean> moreDetailsVisibilityModel = new Model<Boolean>(showMoreDetailsOnInit);
-        final IModel<Boolean> mutationVisibilityModel = new LoadableDetachableModel<Boolean>() {
-            @Override
-            protected Boolean load() {
-                Diagnosis diagnosis = model.getObject();
-                if (diagnosis.getDiagnosisCode() != null) {
-                    return diagnosis.getDiagnosisCode().getId().equals(SRNS_ID);
-                }
-                return false;
-            }
-        };
 
-        WebMarkupContainer mutationContainer = new WebMarkupContainer("mutationContainer") {
-            @Override
-            public boolean isVisible() {
-                return mutationVisibilityModel.getObject();
-            }
-        };
+        WebMarkupContainer mutationContainer = new WebMarkupContainer("mutationContainer");
 
-        Label geneMutationLabel = new Label("geneMutationLabel", "Gene Mutation") {
-            @Override
-            public boolean isVisible() {
-                return mutationVisibilityModel.getObject();
-            }
-        };
+        Label geneMutationLabel = new Label("geneMutationLabel", "Gene Mutation");
 
         form.add(geneMutationLabel);
-
         form.add(mutationContainer);
 
         // Gene mutations
-        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs1Container", 1, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs1Container", 1, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs2Container", 2, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs2Container", 2, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs3Container", 3, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs3Container", 3, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("wt1Container", 4, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("wt1Container", 4, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("cd2apContainer", 5, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("cd2apContainer", 5, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("trpc6Container", 6, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("trpc6Container", 6, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("actn4Container", 7, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("actn4Container", 7, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("lamb2Container", 8, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("lamb2Container", 8, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel(OTHER_CONTAINER_ID, 9, mutationVisibilityModel, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel(OTHER_CONTAINER_ID, 9, (CompoundPropertyModel) form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
         // Other gene mutation container
