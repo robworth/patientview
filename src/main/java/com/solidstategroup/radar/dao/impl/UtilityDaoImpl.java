@@ -115,8 +115,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Country getCountry(long id) {
-        return jdbcTemplate
-                .queryForObject("SELECT * FROM tbl_Country WHERE cID = ?", new Long[]{id}, new CountryRowMapper());
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM tbl_Country WHERE cID = ?", new Long[]{id}, new CountryRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get country with id {}", id);
+            return null;
+        }
+
     }
 
     public List<Country> getCountries() {
