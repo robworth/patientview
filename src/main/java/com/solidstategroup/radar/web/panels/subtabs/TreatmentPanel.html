@@ -44,24 +44,24 @@
                         <table style="margin-top:10px; font-size:85%; " class="style4">
                             <tbody>
                             <tr>
-                                <td>Start Date</td>
-                                <td>Name</td>
-                                <td>End Date</td>
+                                <td class="col170">Start Date</td>
+                                <td class="col190">Name</td>
+                                <td class="col170">End Date</td>
                                 <td wicket:id="totalDoseLabel">Total dose of course in g</td>
-                                <td style="width:180px"></td>
-                                <td></td>
+                                <td class="col45"></td>
+                                <td class="col250"></td>
                             </tr>
                             <tr>
-                                <td class="style7">
+                                <td class="col170">
                                     <input type="text" style="width:70px;" wicket:id="startDate"/>
                                     <span wicket:id="startDateFeedbackIndicator"></span>
                                     <span class="feedback" wicket:id="startDateFeedback"></span>
                                 </td>
-                                <td class="style7">
+                                <td class="col190">
                                     <select wicket:id="immunosuppression"/>
                                     <span wicket:id="immunosuppressionFeedbackIndicator"></span>
                                 </td>
-                                <td class="style7">
+                                <td class="col170">
                                     <input type="text" style="width:70px;" wicket:id="endDate"/>
                                     <span class="endDateFeedbackIndicator"></span>
                                     <span class="feedback" wicket:id="endDateFeedback"></span>
@@ -71,10 +71,8 @@
                                     <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
                                     <span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span>
                                 </td>
-                                <td valign="bottom" style="width:90px">
-                                    &nbsp;&nbsp;
-                                </td>
-                                <td class="style7">
+                                <td class="col45" valign="bottom"></td>
+                                <td class="col250">
                                     <input type="submit" value="Save" wicket:id="save"/>
                                     &nbsp;
                                     <input type="submit" value="Cancel" wicket:id="cancel"/>
