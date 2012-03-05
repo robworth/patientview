@@ -37,7 +37,11 @@ public class DiagnosisGeneMutationPanel extends Panel {
                     moreDetailsVisibilityModel.setObject(true);
 
                 }
-                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                for (Component component : componentsToUpdateList) {
+                    if (component.isVisibleInHierarchy()) {
+                        target.add(component);
+                    }
+                }
             }
         });
 
@@ -50,7 +54,11 @@ public class DiagnosisGeneMutationPanel extends Panel {
             protected void onEvent(AjaxRequestTarget target) {
                 if (id.equals(DiagnosisPanel.OTHER_CONTAINER_ID)) {
                     otherDetailsVisibilityModel.setObject(false);
-                    target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                    for (Component component : componentsToUpdateList) {
+                        if (component.isVisibleInHierarchy()) {
+                            target.add(component);
+                        }
+                    }
                 }
             }
         });
