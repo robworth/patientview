@@ -337,7 +337,8 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
 
             // This is a bit in DB, lets hope it works
             diagnosis.setBiopsyProvenDiagnosis(
-                    BaseDaoImpl.getEnumValue(Diagnosis.BiopsyDiagnosis.class, resultSet.getInt("BX_PROVEN_DIAG")));
+                    BaseDaoImpl.getEnumValue(Diagnosis.BiopsyDiagnosis.class, getIntegerWithNullCheck("BX_PROVEN_DIAG"
+                            , resultSet)));
             diagnosis.setPrepubertalAtDiagnosis(resultSet.getBoolean("PREPUB_DIAG"));
 
             // From what I can tell this GENE_MUT varchar(50)
