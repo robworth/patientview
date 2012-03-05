@@ -2,12 +2,13 @@ package com.solidstategroup.radar.service;
 
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 
 import java.util.List;
 
 public interface PlasmapheresisManager {
 
-    void savePlasmapheresis(Plasmapheresis plasmapheresis);
+    void savePlasmapheresis(Plasmapheresis plasmapheresis) throws InvalidModelException;
 
     void deletePlasmaPheresis(Plasmapheresis plasmapheresis);
 

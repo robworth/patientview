@@ -167,10 +167,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public int getPatientCountByUnit(Centre centre) {
-        return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
-                "FROM tbl_demographics " +
-                "WHERE renal_unit = ? " +
-                "GROUP BY renal_unit;", new Object[]{centre.getId()});
+        try {
+            return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
+                    "FROM tbl_demographics " +
+                    "WHERE renal_unit = ? " +
+                    "GROUP BY renal_unit;", new Object[]{centre.getId()});
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
     }
 
     private class CentreRowMapper implements RowMapper<Centre> {

@@ -10,6 +10,7 @@ import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.components.TextAreaWithHelpText;
 import com.solidstategroup.radar.web.components.YesNoRadioGroup;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
@@ -508,7 +509,25 @@ public class ClinicalPicturePanel extends Panel {
                         return showPrecedingInfectioModel.getObject();
                     }
                 };
-        preceedingInfectionDetailContainer.add(new TextArea("preceedingInfectionDetail"));
+        TextAreaWithHelpText preceedingInfectionDetail = new TextAreaWithHelpText("preceedingInfectionDetail",
+                "Enter details") {
+            @Override
+            public String getModelData() {
+                ClinicalData clinicalData = formModel.getObject();
+                return clinicalData != null ? clinicalData.getPreceedingInfectionDetail() != null ?
+                        clinicalData.getPreceedingInfectionDetail() : "" : "";
+            }
+
+            @Override
+            public void setModelData(String data) {
+                ClinicalData clinicalData = formModel.getObject();
+                if (clinicalData != null) {
+                    clinicalData.setPreceedingInfectionDetail(data);
+                }
+            }
+        };
+        preceedingInfectionDetail.initBehaviour();
+        preceedingInfectionDetailContainer.add(preceedingInfectionDetail);
         form.add(preceedingInfectionDetailContainer);
         componentsToUpdate.add(preceedingInfectionDetailContainer);
         preceedingInfectionDetailContainer.setOutputMarkupId(true);
@@ -553,7 +572,27 @@ public class ClinicalPicturePanel extends Panel {
                 return false;
             }
         };
-        chronicInfectionDetailContainer.add(new TextArea("chronicInfectionDetail"));
+        TextAreaWithHelpText chronicInfectionDetail = new TextAreaWithHelpText("chronicInfectionDetail",
+                "Enter Details") {
+            @Override
+            public String getModelData() {
+                ClinicalData clinicalData = formModel.getObject();
+                return clinicalData != null ? clinicalData.getChronicInfectionDetail() != null ?
+                        clinicalData.getChronicInfectionDetail() : "" : "";
+            }
+
+            @Override
+            public void setModelData(String data) {
+                ClinicalData clinicalData = formModel.getObject();
+                if (clinicalData != null) {
+                    clinicalData.setChronicInfectionDetail(data);
+                }
+            }
+        };
+
+        chronicInfectionDetail.initBehaviour();
+
+        chronicInfectionDetailContainer.add(chronicInfectionDetail);
         componentsToUpdate.add(chronicInfectionDetailContainer);
         chronicInfectionDetailContainer.setOutputMarkupId(true);
         chronicInfectionDetailContainer.setOutputMarkupPlaceholderTag(true);
@@ -586,7 +625,28 @@ public class ClinicalPicturePanel extends Panel {
         ophthalmoscopyDetailContainer.setOutputMarkupPlaceholderTag(true);
         componentsToUpdate.add(ophthalmoscopyDetailContainer);
 
-        ophthalmoscopyDetailContainer.add(new TextArea("ophthalmoscopyDetail"));
+        TextAreaWithHelpText ophthalmoscopyDetail = new TextAreaWithHelpText("ophthalmoscopyDetail", ClinicalData.
+                OPHTHALMOSCOPY_HELP_TEXT) {
+            @Override
+            public String getModelData() {
+                ClinicalData clinicalData = formModel.getObject();
+                return clinicalData != null ? clinicalData.getOphthalmoscopyDetail() != null ?
+                        clinicalData.getOphthalmoscopyDetail() : "" : "";
+            }
+
+            @Override
+            public void setModelData(String data) {
+                ClinicalData clinicalData = formModel.getObject();
+                if (clinicalData != null) {
+                    clinicalData.setOphthalmoscopyDetail(data);
+                }
+            }
+        };
+
+        ophthalmoscopyDetail.initBehaviour();
+
+        ophthalmoscopyDetailContainer.add(ophthalmoscopyDetail);
+
         form.add(ophthalmoscopyDetailContainer);
 
         componentsToUpdate.add(systolicBloodPressureFeedback);

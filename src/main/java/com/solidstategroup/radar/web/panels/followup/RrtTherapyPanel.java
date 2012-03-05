@@ -2,10 +2,12 @@ package com.solidstategroup.radar.web.panels.followup;
 
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.Transplant;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.TransplantManager;
+import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
@@ -24,6 +26,8 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -31,6 +35,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -41,6 +46,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -222,6 +228,14 @@ public class RrtTherapyPanel extends Panel {
                 };
                 item.add(ajaxEditLink);
                 AjaxLink ajaxAddRejectLink = new AjaxLink("addRejectLink") {
+                    {
+                        if (item.getModelObject().getDateFailureRejectData() != null) {
+                            if (item.getModelObject().getDateFailureRejectData().getFailureDate() != null) {
+                                setVisible(false);
+                            }
+                        }
+                    }
+
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         Transplant.RejectData rejectData = new Transplant.RejectData();
@@ -281,10 +295,20 @@ public class RrtTherapyPanel extends Panel {
         editTransplantForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                transplantManager.saveTransplant((Transplant) form.getModelObject());
-                editTransplantModel.setObject(null);
                 target.add(editTransplantContainer);
                 target.add(transplantsContainer);
+
+                try {
+                    transplantManager.saveTransplant((Transplant) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+
+                editTransplantModel.setObject(null);
+
             }
 
             @Override
@@ -301,7 +325,6 @@ public class RrtTherapyPanel extends Panel {
             }
         });
 
-
         // Add transplant form
         Form<Transplant> addTransplantForm =
                 new TransplantForm("addTransplantForm", new CompoundPropertyModel<Transplant>(new Transplant()),
@@ -312,7 +335,14 @@ public class RrtTherapyPanel extends Panel {
                 target.add(form);
                 Transplant transplant = (Transplant) form.getModelObject();
                 transplant.setRadarNumber(radarNumberModel.getObject());
-                transplantManager.saveTransplant(transplant);
+                try {
+                    transplantManager.saveTransplant(transplant);
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
                 form.getModel().setObject(new Transplant());
                 transplantsContainer.setVisible(true);
                 target.add(transplantsContainer);
@@ -326,6 +356,7 @@ public class RrtTherapyPanel extends Panel {
         addTransplantForm.setOutputMarkupId(true);
         addTransplantForm.setOutputMarkupPlaceholderTag(true);
         add(addTransplantForm);
+
     }
 
     private final class TransplantForm extends Form<Transplant> {
@@ -340,13 +371,60 @@ public class RrtTherapyPanel extends Panel {
                     transplantManager.getTransplantModalitites(), new ChoiceRenderer("description", "id"), this,
                     componentsToUpdate);
             add(modality);
-            YesNoRadioGroup recurr = new YesNoRadioGroup("recurr");
+            YesNoRadioGroup recurr = new YesNoRadioGroup("recurr") {
+                /**
+                 * disable input if editing and date of failure is set
+                 */
+                @Override
+                public boolean isEnabled() {
+                    Transplant transplant = TransplantForm.this.getModelObject();
+                    if (transplant != null) {
+                        if (transplant.getDateFailureRejectData() != null && transplant.getId() != null) {
+                            if (transplant.getDateFailureRejectData().getFailureDate() != null) {
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }
+            };
             add(recurr);
-            RadarDateTextField dateRecurr = new RadarDateTextField("dateRecurr", this, componentsToUpdate);
+            RadarDateTextField dateRecurr = new RadarDateTextField("dateRecurr", this, componentsToUpdate) {
+                /**
+                 * disable input if editing and date of failure is set
+                 */
+                @Override
+                public boolean isEnabled() {
+                    Transplant transplant = TransplantForm.this.getModelObject();
+                    if (transplant != null) {
+                        if (transplant.getDateFailureRejectData() != null && transplant.getId() != null) {
+                            if (transplant.getDateFailureRejectData().getFailureDate() != null) {
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }
+            };
             add(dateRecurr);
             RadarDateTextField dateFailure = new RadarDateTextField("dateFailureRejectData.failureDate", this,
                     componentsToUpdate);
             add(dateFailure);
+
+            FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback", new IFeedbackMessageFilter() {
+                public boolean accept(FeedbackMessage feedbackMessage) {
+                    List<String> acceptedErrorMessages = new ArrayList<String>();
+                    acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);
+                    acceptedErrorMessages.addAll(Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
+                            TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR));
+                    return acceptedErrorMessages.contains(feedbackMessage.getMessage());
+                }
+
+            });
+
+            add(editTransplantFeedback);
+            editTransplantFeedback.setOutputMarkupPlaceholderTag(true);
+            componentsToUpdate.add(editTransplantFeedback);
         }
     }
 

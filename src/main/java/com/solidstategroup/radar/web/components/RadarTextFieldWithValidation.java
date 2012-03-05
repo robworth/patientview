@@ -10,7 +10,7 @@ import org.apache.wicket.validation.IValidator;
 import java.util.List;
 
 
-public class RadarTextFieldWithValidation extends TextField {
+public class RadarTextFieldWithValidation<T> extends TextField<T> {
     public RadarTextFieldWithValidation(String id, IValidator validator, WebMarkupContainer container, List<Component> componentsToUpdate) {
         super(id);
         init(id, container, validator, false, componentsToUpdate);

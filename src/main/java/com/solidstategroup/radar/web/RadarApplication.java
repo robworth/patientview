@@ -22,6 +22,8 @@ import com.solidstategroup.radar.web.pages.content.ErrorPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
 import org.apache.wicket.Component;
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
@@ -35,6 +37,12 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.handler.PageProvider;
 import org.apache.wicket.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.convert.converter.DoubleConverter;
+import org.apache.wicket.util.convert.converter.IntegerConverter;
+import org.apache.wicket.util.convert.converter.LongConverter;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class RadarApplication extends AuthenticatedWebApplication {
     // mainly used for display
@@ -138,6 +146,39 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("consentforms", ConsentFormsPage.class);
 
         mountPage("error", ErrorPage.class);
+    }
+
+    protected IConverterLocator newConverterLocator() {
+        // change the number formatters do disable grouping e.g. the comma in 1,500
+
+        ConverterLocator converterLocator = new ConverterLocator();
+        converterLocator.set(Integer.class, new IntegerConverter() {
+            @Override
+            public NumberFormat getNumberFormat(Locale locale) {
+                NumberFormat numberFormat = super.getNumberFormat(Locale.getDefault());
+                numberFormat.setGroupingUsed(false);
+                return numberFormat;
+            }
+        });
+
+        converterLocator.set(Double.class, new DoubleConverter() {
+            @Override
+            public NumberFormat getNumberFormat(Locale locale) {
+                NumberFormat numberFormat = super.getNumberFormat(Locale.getDefault());
+                numberFormat.setGroupingUsed(false);
+                return numberFormat;
+            }
+        });
+
+        converterLocator.set(Long.class, new LongConverter() {
+            @Override
+            public NumberFormat getNumberFormat(Locale locale) {
+                NumberFormat numberFormat = super.getNumberFormat(Locale.getDefault());
+                numberFormat.setGroupingUsed(false);
+                return numberFormat;
+            }
+        });
+        return converterLocator;
     }
 
 }

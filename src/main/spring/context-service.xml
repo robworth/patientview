@@ -26,6 +26,7 @@
 
     <bean id="immunosuppressionManager" class="com.solidstategroup.radar.service.impl.ImmunosuppressionManagerImpl">
         <property name="immunosuppressionDao" ref="immunosuppressionDao"/>
+        <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
     <bean id="labDataManager" class="com.solidstategroup.radar.service.impl.LabDataManagerImpl">
@@ -38,6 +39,7 @@
 
     <bean id="plasmapheresisManager" class="com.solidstategroup.radar.service.impl.PlasmapheresisManagerImpl">
         <property name="plasmapheresisDao" ref="plasmapheresisDao"/>
+        <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
     <bean id="relapseManager" class="com.solidstategroup.radar.service.impl.RelapseManagerImpl">
@@ -50,10 +52,12 @@
 
     <bean id="transplantManager" class="com.solidstategroup.radar.service.impl.TransplantManagerImpl">
         <property name="transplantDao" ref="transplantDao"/>
+        <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
     <bean id="treatmentManager" class="com.solidstategroup.radar.service.impl.TreatmentManagerImpl">
         <property name="treatmentDao" ref="treatmentDao"/>
+        <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
     <bean id="utilityManager" class="com.solidstategroup.radar.service.impl.UtilityManagerImpl">

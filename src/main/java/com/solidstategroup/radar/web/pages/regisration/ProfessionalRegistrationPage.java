@@ -29,7 +29,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.PatternValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,8 +127,7 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-        RadarTextFieldWithValidation email = new RadarTextFieldWithValidation("email",
-                new PatternValidator(".+nhs\\.(uk|net)$"), true, emailContainer, componentsToUpdate);
+        RadarRequiredTextField email = new RadarRequiredTextField("email", emailContainer, componentsToUpdate);
         emailContainer.add(email);
         form.add(emailContainer);
         componentsToUpdate.add(emailContainer);
