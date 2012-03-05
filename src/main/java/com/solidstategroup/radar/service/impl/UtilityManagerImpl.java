@@ -54,6 +54,10 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getConsultants(filter, page, numberPerPage);
     }
 
+    public List<Consultant> getConsultantsByCentre(Centre centre) {
+        return utilityDao.getConsultantsByCentre(centre);
+    }
+
     public void saveConsultant(Consultant consultant) throws Exception {
         utilityDao.saveConsultant(consultant);
     }

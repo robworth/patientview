@@ -60,6 +60,14 @@ public class UtilityDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetConsultantsByCentre() throws Exception {
+        Centre centre = new Centre();
+        centre.setId(4L);
+        List<Consultant> consultants = utilityDao.getConsultantsByCentre(centre);
+        assertEquals(consultants.size(), 4);
+    }
+
+    @Test
     public void testGetConsultantsPage1() {
         List<Consultant> consultants = utilityDao.getConsultants(new ConsultantFilter(), 1, 1);
         assertNotNull(consultants);

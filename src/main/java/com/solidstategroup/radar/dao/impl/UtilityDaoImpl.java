@@ -89,6 +89,12 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 new ConsultantRowMapper());
     }
 
+    public List<Consultant> getConsultantsByCentre(Centre centre) {
+        return jdbcTemplate.query("SELECT * FROM tbl_Consultants WHERE cCentre = ?", new Object[]{centre.getId()},
+                new ConsultantRowMapper());
+
+    }
+
     public void saveConsultant(final Consultant consultant) throws Exception {
         Map<String, Object> consultantMap = new HashMap<String, Object>() {
             {

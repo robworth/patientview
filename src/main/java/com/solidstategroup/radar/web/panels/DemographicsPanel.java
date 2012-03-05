@@ -25,6 +25,7 @@ import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.basic.Label;
@@ -39,6 +40,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -143,8 +145,8 @@ public class DemographicsPanel extends Panel {
                     @Override
                     public boolean isEnabled() {
                         RadarSecuredSession securedSession = RadarSecuredSession.get();
-                        if(securedSession.getRoles().hasRole(User.ROLE_PATIENT)) {
-                           return false;
+                        if (securedSession.getRoles().hasRole(User.ROLE_PATIENT)) {
+                            return false;
                         }
                         return getModelObject() == null;
                     }
@@ -200,8 +202,22 @@ public class DemographicsPanel extends Panel {
                 new ChoiceRenderer<Status>("abbreviation", "id"));
 
         // Consultant and renal unit
-        DropDownChoice<Consultant> consultant = new ConsultantDropDown("consultant");
+        final IModel<Long> centreNumber = new Model<Long>();
         DropDownChoice<Centre> renalUnit = new CentreDropDown("renalUnit");
+        final DropDownChoice<Consultant> consultant = new ConsultantDropDown("consultant", centreNumber);
+        renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Demographics demographics = model.getObject();
+                if (demographics != null) {
+                    centreNumber.setObject(demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() :
+                            null);
+                }
+
+                consultant.clearInput();
+                target.add(consultant);
+            }
+        });
 
         form.add(status, consultant, renalUnit);
 

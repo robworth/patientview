@@ -26,6 +26,8 @@ public interface UtilityManager {
 
     List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
+    List<Consultant> getConsultantsByCentre(Centre centre);
+
     void saveConsultant(Consultant consultant) throws Exception;
 
     void deleteConsultant(Consultant consultant) throws Exception;
