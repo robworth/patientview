@@ -90,7 +90,7 @@ public class AdminConsultantsPage extends AdminsBasePage {
 
         item.add(new Label("centre", centreName));
 
-        int numberOfPatients = -1;
+        int numberOfPatients;
         try {
             numberOfPatients = utilityManager.getPatientCountByUnit(consultant.getCentre());
         } catch (Exception e) {

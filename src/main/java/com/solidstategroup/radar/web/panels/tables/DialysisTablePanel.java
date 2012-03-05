@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.panels.tables;
 
 import com.solidstategroup.radar.model.Treatment;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.TreatmentManager;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -16,12 +17,15 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -30,6 +34,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -119,10 +124,17 @@ public class DialysisTablePanel extends Panel {
         editDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                treatmentManager.saveTreatment((Treatment) form.getModelObject());
-                form.getModel().setObject(null);
                 target.add(editDialysisContainer);
                 target.add(dialysisContainer);
+                try {
+                    treatmentManager.saveTreatment((Treatment) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+                form.getModel().setObject(null);
             }
 
             @Override
@@ -148,14 +160,23 @@ public class DialysisTablePanel extends Panel {
         addDialysisForm.add(new AjaxSubmitLink("save") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
-                Treatment treatment = (Treatment) form.getModelObject();
-                treatment.setRadarNumber(radarNumberModel.getObject());
-                treatmentManager.saveTreatment(treatment);
                 target.add(addDialysisFormComponentsToUpdate.toArray(new Component[
                         addDialysisFormComponentsToUpdate.size()]));
+                target.add(dialysisContainer);
+                Treatment treatment = (Treatment) form.getModelObject();
+                treatment.setRadarNumber(radarNumberModel.getObject());
+                try {
+                    treatmentManager.saveTreatment(treatment);
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+
                 form.getModel().setObject(new Treatment());
                 dialysisContainer.setVisible(true);
-                target.add(dialysisContainer);
+
             }
 
             @Override
@@ -197,6 +218,17 @@ public class DialysisTablePanel extends Panel {
             componentsToUpdate.add(treatmentModality);
             componentsToUpdate.add(startDate);
             componentsToUpdate.add(endDate);
+
+            FeedbackPanel dialysisFeedback = new FeedbackPanel("dialysisFeedback",
+                    new IFeedbackMessageFilter() {
+                        public boolean accept(FeedbackMessage feedbackMessage) {
+                            return TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage());
+                        }
+                    });
+
+            add(dialysisFeedback);
+            dialysisFeedback.setOutputMarkupPlaceholderTag(true);
+            componentsToUpdate.add(dialysisFeedback);
         }
 
         @Override
