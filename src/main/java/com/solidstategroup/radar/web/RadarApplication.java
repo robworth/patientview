@@ -2,6 +2,16 @@ package com.solidstategroup.radar.web;
 
 import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
+import com.solidstategroup.radar.web.pages.admin.AdminConsultantPage;
+import com.solidstategroup.radar.web.pages.admin.AdminConsultantsPage;
+import com.solidstategroup.radar.web.pages.admin.AdminIssuePage;
+import com.solidstategroup.radar.web.pages.admin.AdminIssuesPage;
+import com.solidstategroup.radar.web.pages.admin.AdminPatientAllPage;
+import com.solidstategroup.radar.web.pages.admin.AdminPatientPage;
+import com.solidstategroup.radar.web.pages.admin.AdminPatientsAllPage;
+import com.solidstategroup.radar.web.pages.admin.AdminPatientsPage;
+import com.solidstategroup.radar.web.pages.admin.AdminUserPage;
+import com.solidstategroup.radar.web.pages.admin.AdminUsersPage;
 import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
@@ -67,6 +77,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
     // some global settings
     public static final Double MIN_HEIGHT = 35.0;
     public static final Double MAX_HEIGHT = 220.0;
+    public static final String ADMINS_BASE_URL = "admins";
 
     @Override
     public Class<? extends WebPage> getHomePage() {
@@ -120,8 +131,18 @@ public class RadarApplication extends AuthenticatedWebApplication {
         // Mount nice URLs for pages - patient pages
 
         // admins
-        mountPage("admins", AdminsPage.class);
+        mountPage(ADMINS_BASE_URL, AdminsPage.class);
         mountPage("login/admins", AdminsLoginPage.class);
+        mountPage(ADMINS_BASE_URL + "/consultants", AdminConsultantsPage.class);
+        mountPage(ADMINS_BASE_URL + "/consultants/edit", AdminConsultantPage.class);
+        mountPage(ADMINS_BASE_URL + "/issues", AdminIssuesPage.class);
+        mountPage(ADMINS_BASE_URL + "/issues/edit", AdminIssuePage.class);
+        mountPage(ADMINS_BASE_URL + "/patients-all", AdminPatientsAllPage.class);
+        mountPage(ADMINS_BASE_URL + "/patients-all/edit", AdminPatientAllPage.class);
+        mountPage(ADMINS_BASE_URL + "/patients-user", AdminPatientsPage.class);
+        mountPage(ADMINS_BASE_URL + "/patients-user/edit", AdminPatientPage.class);
+        mountPage(ADMINS_BASE_URL + "/users", AdminUsersPage.class);
+        mountPage(ADMINS_BASE_URL + "/users/edit", AdminUserPage.class);
 
         // patient pages
         mountPage("patient/edit", PatientPage.class);
