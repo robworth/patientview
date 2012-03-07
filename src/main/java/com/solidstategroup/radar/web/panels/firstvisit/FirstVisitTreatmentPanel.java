@@ -2,9 +2,11 @@ package com.solidstategroup.radar.web.panels.firstvisit;
 
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
 import com.solidstategroup.radar.web.panels.subtabs.TreatmentPanel;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -34,7 +36,8 @@ public class FirstVisitTreatmentPanel extends Panel {
 
         add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
         add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                RadarApplication.DATE_PATTERN));
 
         add(new TreatmentPanel("treatmentPanel", radarNumberModel, true, null, null));
     }

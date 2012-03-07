@@ -4,6 +4,8 @@ import com.solidstategroup.radar.model.sequenced.LabData;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.LabDataManager;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.choiceRenderers.DateChoiceRenderer;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.subtabs.LaboratoryResultsPanel;
@@ -11,8 +13,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -24,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class FollowUpLaboratoryResultsPanel extends Panel {
@@ -57,7 +60,8 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
 
         labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
         labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        labResultsContainer.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        labResultsContainer.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel,
+                demographicsManager), RadarApplication.DATE_PATTERN));
 
         final IModel<LabData> followUpModel = new Model<LabData>(new LabData());
 
@@ -75,7 +79,12 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         };
 
         final DropDownChoice<LabData> labResultsSwitcher = new DropDownChoice("labResultsSwitcher", followUpModel,
-                labResultsListModel, new ChoiceRenderer("date", "id"));
+                labResultsListModel, new DateChoiceRenderer("date", "id"){
+            @Override
+            protected Date getDate(Object object) {
+                return ((LabData)object).getDate();
+            }
+        });
 
         final LaboratoryResultsPanel formContainer = new LaboratoryResultsPanel("formContainer", radarNumberModel,
                 false, followUpModel, Arrays.<Component>asList(labResultsSwitcher));

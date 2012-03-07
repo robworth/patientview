@@ -4,6 +4,8 @@ import com.solidstategroup.radar.model.Hospitalisation;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.HospitalisationManager;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.choiceRenderers.DateChoiceRenderer;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -15,9 +17,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -74,7 +76,12 @@ public class HospitalisationPanel extends Panel {
         // Previous results switcher
         final DropDownChoice<Hospitalisation> hospitilisationSwitcher =
                 new DropDownChoice<Hospitalisation>("hospitilisationSwitcher", hospitalisationModel, hospitalisations,
-                        new ChoiceRenderer<Hospitalisation>("dateOfAdmission", "id"));
+                        new DateChoiceRenderer("dateOfAdmission", "id") {
+                            @Override
+                            protected Date getDate(Object object) {
+                                return ((Hospitalisation) object).getDateOfAdmission();
+                            }
+                        });
         add(hospitilisationSwitcher);
 
         // Add ajax behaviour to update form
@@ -143,7 +150,8 @@ public class HospitalisationPanel extends Panel {
 
         form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
         form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                RadarApplication.DATE_PATTERN));
 
         form.add(new RadarRequiredDateTextField("dateOfAdmission", form, componentsToUpdate));
         form.add(new RadarDateTextField("dateOfDischarge", form, componentsToUpdate));
