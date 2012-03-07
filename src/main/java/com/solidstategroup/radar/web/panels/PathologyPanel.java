@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.enums.KidneyTransplantedNative;
+import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.sequenced.Pathology;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
@@ -79,10 +80,10 @@ public class PathologyPanel extends Panel {
         // Switcheroo
         final DropDownChoice<Pathology> pathologySwitcher =
                 new DropDownChoice<Pathology>("pathologySwitcher", pathologyModel, pathologiesListModel,
-                        new DateChoiceRenderer("biopsyDate", "id"){
+                        new DateChoiceRenderer("biopsyDate", "id") {
                             @Override
                             protected Date getDate(Object object) {
-                                return ((Pathology)object).getBiopsyDate();
+                                return ((Pathology) object).getBiopsyDate();
                             }
                         });
         pathologySwitcher.setOutputMarkupId(true);
@@ -118,7 +119,15 @@ public class PathologyPanel extends Panel {
             protected void onSubmit() {
                 Pathology pathology = getModelObject();
                 pathology.setRadarNumber(radarNumberModel.getObject());
-                pathologyManager.savePathology(pathology);
+                try {
+                    pathologyManager.savePathology(pathology);
+                } catch (InvalidModelException e) {
+                    for (String message : e.getErrors()) {
+                        if (message.equals(PathologyManager.TOTAL_ERROR)) {
+                            get("totalNumber").error(PathologyManager.TOTAL_ERROR);
+                        }
+                    }
+                }
             }
         };
         pathologyContainer.add(form);
