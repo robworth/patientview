@@ -161,8 +161,10 @@ public class PathologyPanel extends Panel {
         form.add(new TextArea("immunohistologicalFindings"));
         form.add(new TextArea("electronMicroscopicFindings"));
 
-        form.add(new TextField("estimatedTubules"));
-        form.add(new TextField("measuredTubules"));
+        form.add(new RadarTextFieldWithValidation("estimatedTubules", new RangeValidator<Double>(0.0, 100.0),
+                form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("measuredTubules",
+                new RangeValidator<Double>(0.0, 100.0), form, componentsToUpdate));
         form.add(new TextArea("tubulesOtherFeature"));
 
         form.add(new TextField("imageUrl1"));
