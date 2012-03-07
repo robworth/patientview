@@ -696,7 +696,8 @@ public class ClinicalPicturePanel extends Panel {
         WebMarkupContainer complicationsContainer = new WebMarkupContainer("complicationsContainer") {
             @Override
             public boolean isVisible() {
-                return !isFirstVisit;
+                //return !isFirstVisit;
+                return false; // this is no longer used
             }
         };
         complicationsContainer.add(new YesNoRadioGroup("infectionNecessitatingHospitalisation", false, false));
