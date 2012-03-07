@@ -26,6 +26,17 @@ public class TreatmentManagerImpl implements TreatmentManager {
         List<String> errors = new ArrayList<String>();
         List<Treatment> treatmentsList = treatmentDao.getTreatmentsByRadarNumber(treatment.getRadarNumber());
 
+        //  must have finish date before you can start treatment again
+        for (Treatment existingTreatment : treatmentsList) {
+            if (existingTreatment.getId().equals(treatment.getId())) {
+                continue;
+            }
+            if (existingTreatment.getEndDate() == null) {
+                errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
+                break;
+            }
+        }
+
         // dates must not overlap
         for (Treatment existingTreatment : treatmentsList) {
             if (existingTreatment.getId().equals(treatment.getId())) {
