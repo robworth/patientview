@@ -214,35 +214,33 @@
     </table>
 </td>
 <td style="width:50%; vertical-align:top;">
-<table cellpadding="4" style="width: 100%" class="style1">
+<table>
+    <tbody>
+    <tr>
+        <td style="width:200px;">
+
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Additional Significant Diagnosis 1</td>
+        <td>
+            <input type="text" title="From Diagnosis page" wicket:id="significantDiagnosis1"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Additional Significant Diagnosis 2</td>
+        <td>
+            <input type="text" title="From Diagnosis page" wicket:id="significantDiagnosis2"/>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table wicket:id="patientDetailsContainer" cellpadding="4" style="width: 100%" class="style1">
 <tbody>
 <tr>
-    <td style="width:200px;">
-
-    </td>
-    <td>&nbsp;</td>
-</tr>
-<tr>
-    <td>
-        <span id="ctl00_ContentPlaceHolder1_lblCourseDisease"></span>
-    </td>
-    <td>
-    </td>
-</tr>
-<tr>
-    <td>Additional Significant Diagnosis 1</td>
-    <td>
-        <input type="text" title="From Diagnosis page" wicket:id="significantDiagnosis1"/>
-    </td>
-</tr>
-<tr>
-    <td>Additional Significant Diagnosis 2</td>
-    <td>
-        <input type="text" title="From Diagnosis page" wicket:id="significantDiagnosis2"/>
-    </td>
-</tr>
-<tr>
-    <td>&nbsp;</td>
+    <td style="width:200px;"></td>
     <td>&nbsp;</td>
 </tr>
 <tr>
@@ -602,22 +600,36 @@
         </fieldset>
     </td>
 </tr>
-<tr wicket:id="listedForTransplantContainer">
-    <td>
-        <span class="indent" id="ctl00_ContentPlaceHolder1_lblTx">Listed for Transplant</span> ?
-    </td>
-    <td>
+</tbody>
+</table>
+
+<table>
+    <tbody>
+    <tr>
+        <td style="width:200px;">
+
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+
+    <tr wicket:id="listedForTransplantContainer">
+        <td>
+            <span class="indent" id="ctl00_ContentPlaceHolder1_lblTx">Listed for Transplant</span> ?
+        </td>
+        <td>
         <span wicket:id="listedForTransplant">
         <span title="Yes"><input type="radio" wicket:id="yes"/><label
-          wicket:id="yesLabel">Yes</label></span>
+                wicket:id="yesLabel">Yes</label></span>
         &nbsp;
         <span title="No"><input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label></span>
         </span>
 
-    </td>
-</tr>
-</tbody>
+        </td>
+    </tr>
+
+    </tbody>
 </table>
+
 </td>
 </tr>
 </tbody>
