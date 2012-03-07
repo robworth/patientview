@@ -65,6 +65,8 @@ public class TreatmentPanel extends Panel {
     @SpringBean
     private PlasmapheresisManager plasmapheresisManager;
 
+    public static final long CYCLOPHOSPHAMIDE_ID = 8;
+
     private IModel<ImmunosuppressionTreatment> editImmunosuppressionTreatmentIModel;
 
     public TreatmentPanel(String id, final IModel<Long> radarNumberModel, boolean firstVisit,
@@ -113,7 +115,13 @@ public class TreatmentPanel extends Panel {
                         item.add(DateLabel.forDatePattern("startDate", RadarApplication.DATE_PATTERN));
                         item.add(DateLabel.forDatePattern("endDate", RadarApplication.DATE_PATTERN));
                         item.add(new Label("immunosuppression.description"));
-                        item.add(new Label("cyclophosphamideTotalDose"));
+                        item.add(new Label("cyclophosphamideTotalDose") {
+                            @Override
+                            public boolean isVisible() {
+                                return item.getModelObject().getImmunosuppression().getId().
+                                        equals(CYCLOPHOSPHAMIDE_ID);
+                            }
+                        });
                         AjaxLink ajaxDeleteLink = new AjaxLink("deleteLink") {
                             @Override
                             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
@@ -596,7 +604,6 @@ public class TreatmentPanel extends Panel {
     }
 
     private final class ImmunosuppressionTreatmentForm extends Form<ImmunosuppressionTreatment> {
-        public static final long CYCLOPHOSPHAMIDE_ID = 8;
         private RadarDateTextField endDate;
         @SpringBean
         private ImmunosuppressionManager immunosuppressionManager;
@@ -676,7 +683,7 @@ public class TreatmentPanel extends Panel {
             FeedbackPanel treatmentFeedback = new FeedbackPanel("immunosupressionFeedback",
                     new IFeedbackMessageFilter() {
                         public boolean accept(FeedbackMessage feedbackMessage) {
-                            if(TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage())) {
+                            if (TreatmentManager.ERROR_MESSAGES.contains(feedbackMessage.getMessage())) {
                                 return true;
                             }
                             return false;
