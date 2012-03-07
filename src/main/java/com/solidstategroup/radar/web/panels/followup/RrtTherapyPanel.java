@@ -26,6 +26,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -77,7 +78,8 @@ public class RrtTherapyPanel extends Panel {
 
         add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
         add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                RadarApplication.DATE_PATTERN));
 
         final IModel<Date> esrfDateModel = new LoadableDetachableModel<Date>() {
             @Override

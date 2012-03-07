@@ -4,6 +4,8 @@ import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.TherapyManager;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.choiceRenderers.DateChoiceRenderer;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.panels.FollowUpPanel;
 import com.solidstategroup.radar.web.panels.subtabs.TreatmentPanel;
@@ -11,8 +13,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -24,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class FollowUpTreatmentPanel extends Panel {
@@ -58,7 +61,8 @@ public class FollowUpTreatmentPanel extends Panel {
 
         treatmentContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
         treatmentContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        treatmentContainer.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        treatmentContainer.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel,
+                demographicsManager), RadarApplication.DATE_PATTERN));
 
 
         final IModel<Therapy> followUpModel = new Model<Therapy>(new Therapy());
@@ -77,7 +81,13 @@ public class FollowUpTreatmentPanel extends Panel {
         };
 
         final DropDownChoice<Therapy> treatmentSwitcher = new DropDownChoice("treatmentSwitcher", followUpModel,
-                therapiesListModel, new ChoiceRenderer("treatmentRecordDate", "id"));
+                therapiesListModel, new DateChoiceRenderer("treatmentRecordDate", "id"){
+
+            @Override
+            protected Date getDate(Object object) {
+                return ((Therapy)object).getTreatmentRecordDate();
+            }
+        });
         add(treatmentSwitcher);
 
         final TreatmentPanel treatmentPanel = new TreatmentPanel("treatmentPanel", radarNumberModel, false, followUpModel,

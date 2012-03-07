@@ -5,6 +5,8 @@ import com.solidstategroup.radar.model.sequenced.Pathology;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.PathologyManager;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.choiceRenderers.DateChoiceRenderer;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
@@ -16,9 +18,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
@@ -37,6 +38,7 @@ import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class PathologyPanel extends Panel {
@@ -77,7 +79,12 @@ public class PathologyPanel extends Panel {
         // Switcheroo
         final DropDownChoice<Pathology> pathologySwitcher =
                 new DropDownChoice<Pathology>("pathologySwitcher", pathologyModel, pathologiesListModel,
-                        new ChoiceRenderer<Pathology>("biopsyDate", "id"));
+                        new DateChoiceRenderer("biopsyDate", "id"){
+                            @Override
+                            protected Date getDate(Object object) {
+                                return ((Pathology)object).getBiopsyDate();
+                            }
+                        });
         pathologySwitcher.setOutputMarkupId(true);
         pathologySwitcher.setOutputMarkupPlaceholderTag(true);
         add(pathologySwitcher);
@@ -135,7 +142,8 @@ public class PathologyPanel extends Panel {
 
         form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
         form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                RadarApplication.DATE_PATTERN));
 
         // Add inputs
         form.add(new RadarRequiredDateTextField("biopsyDate", form, componentsToUpdate));

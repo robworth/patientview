@@ -7,6 +7,7 @@ import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.choiceRenderers.DateChoiceRenderer;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -23,6 +24,7 @@ import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -44,9 +46,11 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class ClinicalPicturePanel extends Panel {
@@ -161,7 +165,13 @@ public class ClinicalPicturePanel extends Panel {
         };
 
         final DropDownChoice clinicalPicturesSwitcher = new DropDownChoice("clinicalPicturesSwitcher", followUpModel,
-                clinicalPictureListModel, new ChoiceRenderer("clinicalPictureDate", "id"));
+                clinicalPictureListModel, new DateChoiceRenderer("clinicalPictureDate", "id") {
+            @Override
+            protected Date getDate(Object object) {
+                return ((ClinicalData) object).getClinicalPictureDate();
+            }
+        });
+
         clinicalPicturesSwitcher.setOutputMarkupId(true);
         clinicalPictureContainer.setOutputMarkupPlaceholderTag(true);
         clinicalPicturesSwitcher.setVisible(!isFirstVisit);
@@ -273,7 +283,8 @@ public class ClinicalPicturePanel extends Panel {
         form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
 
 
-        form.add(new TextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager)));
+        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                RadarApplication.DATE_PATTERN));
 
         RadarRequiredDateTextField clinicalPictureDate =
                 new RadarRequiredDateTextField("clinicalPictureDate", form, componentsToUpdate);
@@ -787,7 +798,7 @@ public class ClinicalPicturePanel extends Panel {
         if (!hideElement) {
             // hid only on srns follow up
             if (!isFirstVisit) {
-                if(isSrns) {
+                if (isSrns) {
                     hideElement = srnsElementsToHideFollowup.contains(componenetId);
                 }
             }

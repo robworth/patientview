@@ -203,6 +203,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
                 return numberFormat;
             }
         });
+
         return converterLocator;
     }
 
