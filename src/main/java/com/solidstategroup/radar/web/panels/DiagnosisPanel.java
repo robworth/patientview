@@ -11,6 +11,7 @@ import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.ClinicalPresentationDropDownChoice;
+import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
@@ -145,25 +146,9 @@ public class DiagnosisPanel extends Panel {
                             clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
                             clinicalData.setSequenceNumber(1);
                             clinicalData.setRadarNumber(diagnosis.getRadarNumber());
-                        } else {
-                            if (clinicalData.getSignificantDiagnosis1() != null) {
-                                if (clinicalData.getSignificantDiagnosis1().isEmpty()) {
-                                    clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
-                                }
-                            } else {
-                                clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
-                            }
-
-                            if (clinicalData.getSignificantDiagnosis2() != null) {
-                                if (clinicalData.getSignificantDiagnosis2().isEmpty()) {
-                                    clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
-                                }
-                            } else {
-                                clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
-                            }
-
+                            clinicalDataManager.saveClinicalDate(clinicalData);
                         }
-                        clinicalDataManager.saveClinicalDate(clinicalData);
+
                     }
                 };
         add(form);
@@ -455,11 +440,7 @@ public class DiagnosisPanel extends Panel {
                 Karotype karotype = diagnosis.getKarotype();
                 if (karotype != null) {
                     karoTypeOtherVisibilityModel.setObject(karotype.getId().equals(KAROTYPE_OTHER_ID));
-                    for (Component component : componentsToUpdate) {
-                        if (component.isVisibleInHierarchy()) {
-                            target.add(component);
-                        }
-                    }
+                    ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
                 }
             }
         });
@@ -493,11 +474,7 @@ public class DiagnosisPanel extends Panel {
                 if (diagnosis.getFamilyHistory() != null) {
                     familyVisibilityModel.setObject(diagnosis.getFamilyHistory() == Diagnosis.YesNo.YES);
                 }
-                for (Component component : componentsToUpdate) {
-                    if (component.isVisibleInHierarchy()) {
-                        target.add(component);
-                    }
-                }
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
 
@@ -563,20 +540,12 @@ public class DiagnosisPanel extends Panel {
 
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            for (Component component : getComponentsToUpdate()) {
-                if (component.isVisibleInHierarchy()) {
-                    target.add(component);
-                }
-            }
+            ComponentHelper.updateComponentsIfParentIsVisible(target, getComponentsToUpdate());
         }
 
         @Override
         protected void onError(AjaxRequestTarget target, Form<?> form) {
-            for (Component component : getComponentsToUpdate()) {
-                if (component.isVisibleInHierarchy()) {
-                    target.add(component);
-                }
-            }
+            ComponentHelper.updateComponentsIfParentIsVisible(target, getComponentsToUpdate());
         }
 
         protected abstract List<? extends Component> getComponentsToUpdate();

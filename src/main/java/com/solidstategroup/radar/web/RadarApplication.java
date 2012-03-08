@@ -103,7 +103,6 @@ public class RadarApplication extends AuthenticatedWebApplication {
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 
         // set a security listener for checks on pages and what logins they should go to
-        // TODO: may have an issue with this as professional and patients both use the .PatientPage
         getSecuritySettings().setUnauthorizedComponentInstantiationListener(
                 new IUnauthorizedComponentInstantiationListener() {
                     public void onUnauthorizedInstantiation(final Component component) {
