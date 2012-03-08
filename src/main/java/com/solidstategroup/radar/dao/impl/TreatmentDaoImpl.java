@@ -96,7 +96,7 @@ public class TreatmentDaoImpl extends BaseDaoImpl implements TreatmentDao {
 
 
     public List<TreatmentModality> getTreatmentModalities() {
-        return jdbcTemplate.query("SELECT * FROM tbl_RRT_Modality", new TreatmentModalityRowMapper());
+        return jdbcTemplate.query("SELECT * FROM tbl_RRT_Modality WHERE mID <= 19;", new TreatmentModalityRowMapper());
     }
 
     private class TreatmentRowMapper implements RowMapper<Treatment> {
