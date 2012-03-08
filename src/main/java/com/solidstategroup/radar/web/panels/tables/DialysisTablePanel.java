@@ -196,8 +196,8 @@ public class DialysisTablePanel extends Panel {
         private DialysisForm(String id, IModel<Treatment> treatmentIModel, List<Component> componentsToUpdate) {
             super(id, treatmentIModel);
 
-            RadarRequiredDropdownChoice treatmentModality = new RadarRequiredDropdownChoice("treatmentModality", treatmentManager.getTreatmentModalities(),
-                    new ChoiceRenderer("description", "id"), this,
+            RadarRequiredDropdownChoice treatmentModality = new RadarRequiredDropdownChoice("treatmentModality",
+                    treatmentManager.getTreatmentModalities(),new ChoiceRenderer("description", "id"), this,
                     componentsToUpdate);
             add(treatmentModality);
 
