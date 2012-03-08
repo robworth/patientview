@@ -30,12 +30,47 @@ public class TransplantManagerImpl implements TransplantManager {
         List<String> errors = new ArrayList<String>();
         List<Transplant> transplants = transplantDao.getTransplantsByRadarNumber(transplant.getRadarNumber());
 
-        // date of recurrance must be greater than transplant date
-        if (transplant.getDateRecurr() != null) {
-            if (transplant.getDate().compareTo(transplant.getDateRecurr()) >= 0) {
-                errors.add(RECURRANCE_DATE_ERROR);
+        // transplant date must be greater than reccur, failure date, date reject and date biopsy
+        List<Date> datesAfterStart = new ArrayList<Date>();
+        datesAfterStart.addAll(Arrays.asList(transplant.getDateRecurr(),
+                transplant.getDateFailureRejectData().getFailureDate()));
+        List<Transplant.RejectData> rejectDataList = transplantDao.getRejectDataByTransplantNumber(
+                transplant.getId());
+        for (Transplant.RejectData rejectData : rejectDataList) {
+            datesAfterStart.add(rejectData.getRejectedDate());
+            datesAfterStart.add(rejectData.getBiopsyDate());
+        }
+
+        for (Date dateAfterStart : datesAfterStart) {
+            if (dateAfterStart != null) {
+                if (transplant.getDate().compareTo(dateAfterStart) >= 0) {
+                    errors.add(START_DATE_ERROR);
+                    break;
+                }
             }
         }
+
+        // date of failure has to be after  reccur, date reject and date biopsy
+        List<Date> datesAfterEndDate = new ArrayList<Date>();
+        datesAfterEndDate.add(transplant.getDateRecurr());
+        for (Transplant.RejectData rejectData : rejectDataList) {
+            datesAfterEndDate.add(rejectData.getRejectedDate());
+            datesAfterEndDate.add(rejectData.getBiopsyDate());
+        }
+
+        Date failureDate = transplant.getDateFailureRejectData() != null ? transplant.
+                getDateFailureRejectData().getFailureDate() : null;
+        if (failureDate != null) {
+            for (Date dateAfterEndDate : datesAfterEndDate) {
+                if (dateAfterEndDate != null) {
+                    if (failureDate.compareTo(dateAfterEndDate) <= 0) {
+                        errors.add(FAILURE_DATE_ERROR);
+                        break;
+                    }
+                }
+            }
+        }
+
 
         // transplant must be 14 days apart
         for (Transplant existingTransplant : transplants) {
@@ -71,8 +106,7 @@ public class TransplantManagerImpl implements TransplantManager {
                 continue;
             }
             if (existingTransplant.getDateFailureRejectData() != null) {
-                if (existingTransplant.getDateFailureRejectData().getFailureDate() != null) {
-                    Date failureDate = existingTransplant.getDateFailureRejectData().getFailureDate();
+                if (failureDate != null) {
                     if (failureDate.compareTo(transplant.getDate()) > 0) {
                         errors.add(BEFORE_PREVIOUS_FAILURE_DATE);
                         break;
@@ -143,6 +177,44 @@ public class TransplantManagerImpl implements TransplantManager {
     }
 
     public void saveRejectData(Transplant.RejectData rejectData) {
+        transplantDao.saveRejectData(rejectData);
+    }
+
+    public void saveRejectDataWithValidation(Transplant.RejectData rejectData) throws InvalidModelException {
+        List<String> errors = new ArrayList<String>();
+        // validatation
+
+        // reject dates must be after transplant start date and before failure date
+        Long transplantId = rejectData.getTransplantId();
+        Transplant transplant = transplantDao.getTransplant(transplantId);
+        List<Date> rejectDates = Arrays.asList(rejectData.getBiopsyDate(), rejectData.getRejectedDate());
+
+        for (Date rejectDate : rejectDates) {
+            if (rejectDate != null) {
+                Date startDate = transplant.getDate();
+                Date failureDate = transplant.getDateFailureRejectData() != null ? transplant.getDateFailureRejectData().
+                        getFailureDate() : null;
+                if (startDate != null) {
+                    if (startDate.compareTo(rejectDate) >= 0) {
+                        errors.add(TransplantManager.REJECT_DATA_ERROR_MESSAGE);
+                        break;
+                    }
+                }
+                if (failureDate != null) {
+                    if (failureDate.compareTo(rejectDate) <= 0) {
+                        errors.add(TransplantManager.REJECT_DATA_ERROR_MESSAGE);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            InvalidModelException exception = new InvalidModelException("Transplant model is not valid");
+            exception.setErrors(errors);
+            throw exception;
+        }
         transplantDao.saveRejectData(rejectData);
     }
 

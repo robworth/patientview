@@ -267,11 +267,19 @@ public class RrtTherapyPanel extends Panel {
         rejectDataForm.add(new AjaxSubmitLink("add") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                target.add(rejectDataComponentsToUpdate.toArray(new Component[rejectDataComponentsToUpdate.size()]));
-                transplantManager.saveRejectData((Transplant.RejectData) form.getModelObject());
-                addRejectModel.setObject(null);
                 target.add(rejectDataContainer);
                 target.add(transplantsContainer);
+                target.add(rejectDataComponentsToUpdate.toArray(new Component[rejectDataComponentsToUpdate.size()]));
+                try {
+                    transplantManager.saveRejectDataWithValidation((Transplant.RejectData) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+
+                }
+                addRejectModel.setObject(null);
             }
 
             @Override
@@ -288,6 +296,13 @@ public class RrtTherapyPanel extends Panel {
         });
         rejectDataForm.add(DateLabel.forDatePattern("transplantDate", new Model<Date>(), "dd/MM/yyyy"));
         rejectDataContainer.add(rejectDataForm);
+        rejectDataForm.add(new FeedbackPanel("dateRejectFeedback", new IFeedbackMessageFilter() {
+            public boolean accept(FeedbackMessage feedbackMessage) {
+                List<String> acceptedErrorMessages = new ArrayList<String>();
+                acceptedErrorMessages.addAll(TransplantManager.REJECT_DATA_ERROR_MESSAGES);
+                return acceptedErrorMessages.contains(feedbackMessage.getMessage());
+            }
+        }));
 
         // Edit transplant form
         Form<Transplant> editTransplantForm =
@@ -417,11 +432,9 @@ public class RrtTherapyPanel extends Panel {
                 public boolean accept(FeedbackMessage feedbackMessage) {
                     List<String> acceptedErrorMessages = new ArrayList<String>();
                     acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);
-                    acceptedErrorMessages.addAll(Arrays.asList(TransplantManager.BEFORE_PREVIOUS_FAILURE_DATE,
-                            TransplantManager.TRANSPLANTS_INTERVAL_ERROR, TransplantManager.RECURRANCE_DATE_ERROR));
+                    acceptedErrorMessages.addAll(TransplantManager.ERROR_MESSAGES);
                     return acceptedErrorMessages.contains(feedbackMessage.getMessage());
                 }
-
             });
 
             add(editTransplantFeedback);
