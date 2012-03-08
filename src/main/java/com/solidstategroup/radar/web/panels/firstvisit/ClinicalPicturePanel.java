@@ -8,6 +8,7 @@ import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.choiceRenderers.DateChoiceRenderer;
+import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.PhenotypeChooser;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
@@ -46,7 +47,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -142,13 +142,14 @@ public class ClinicalPicturePanel extends Panel {
                     }
                 });
 
+
         final IModel<ClinicalData> followUpModel = new Model<ClinicalData>(new ClinicalData());
 
         final IModel<ClinicalData> formModel;
         if (isFirstVisit) {
             formModel = firstVisitModel;
         } else {
-            formModel = new CompoundPropertyModel(followUpModel);
+            formModel = new CompoundPropertyModel<ClinicalData>(followUpModel);
         }
 
         IModel<List> clinicalPictureListModel = new AbstractReadOnlyModel<List>() {
@@ -188,10 +189,19 @@ public class ClinicalPicturePanel extends Panel {
         AjaxLink addNew = new AjaxLink("addNew") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                formModel.setObject(new ClinicalData());
+                ClinicalData clinicalData = new ClinicalData();
+                Diagnosis daignosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisManager).
+                        getObject();
+                if(daignosis != null) {
+                    clinicalData.setSignificantDiagnosis1(daignosis.getSignificantDiagnosis1());
+                    clinicalData.setSignificantDiagnosis2(daignosis.getSignificantDiagnosis2());
+                }
+
+                formModel.setObject(clinicalData);
                 clinicalPictureContainer.setVisible(true);
                 clinicalPicturesSwitcher.clearInput();
                 target.add(clinicalPictureContainer, clinicalPicturesSwitcher);
+
             }
         };
 
@@ -452,7 +462,7 @@ public class ClinicalPicturePanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 showUrticariaIModel.setObject(Boolean.TRUE.equals(form.getModelObject().getUrticaria()));
-                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
 
@@ -510,7 +520,7 @@ public class ClinicalPicturePanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 showRashDetailsIModel.setObject(Boolean.TRUE.equals(form.getModelObject().getRash()));
-                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
 
@@ -563,7 +573,7 @@ public class ClinicalPicturePanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 showPrecedingInfectioModel.setObject(Boolean.TRUE.equals(form.getModelObject().getPreceedingInfection()));
-                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
         patientDetailsContainer.add(preceedingInfectionContainer);
@@ -623,7 +633,7 @@ public class ClinicalPicturePanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 showChronicModel.setObject(Boolean.TRUE.equals(form.getModelObject().getChronicInfection()));
-                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
         chronicInfectionActiveContainer.add(chronicInfection);
@@ -677,7 +687,7 @@ public class ClinicalPicturePanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 showOphthalmoscopyDetailsIModel.setObject(Boolean.TRUE.equals(form.getModelObject().getOphthalmoscopy()));
-                target.add(componentsToUpdate.toArray(new Component[componentsToUpdate.size()]));
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
 
@@ -815,12 +825,12 @@ public class ClinicalPicturePanel extends Panel {
 
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            ComponentHelper.updateComponentsIfParentIsVisible(target, getComponentsToUpdate());
         }
 
         @Override
         protected void onError(AjaxRequestTarget target, Form<?> form) {
-            target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            ComponentHelper.updateComponentsIfParentIsVisible(target, getComponentsToUpdate());
         }
 
         protected abstract List<? extends Component> getComponentsToUpdate();
