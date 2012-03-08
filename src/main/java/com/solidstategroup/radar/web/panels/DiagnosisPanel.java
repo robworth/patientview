@@ -339,12 +339,22 @@ public class DiagnosisPanel extends Panel {
 
         final IModel<Boolean> moreDetailsVisibilityModel = new Model<Boolean>(showMoreDetailsOnInit);
 
+        WebMarkupContainer geneMutationContainer = new WebMarkupContainer("geneMutationContainer") {
+            @Override
+            public boolean isVisible() {
+                IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisManager);
+                return isSrnsModel.getObject();
+            }
+        };
+
         WebMarkupContainer mutationContainer = new WebMarkupContainer("mutationContainer");
+
+        form.add(geneMutationContainer);
 
         Label geneMutationLabel = new Label("geneMutationLabel", "Gene Mutation");
 
-        form.add(geneMutationLabel);
-        form.add(mutationContainer);
+        geneMutationContainer.add(geneMutationLabel);
+        geneMutationContainer.add(mutationContainer);
 
         // Gene mutations
         mutationContainer.add(new DiagnosisGeneMutationPanel("nphs1Container", 1, (CompoundPropertyModel) form.getModel(),
@@ -389,7 +399,7 @@ public class DiagnosisPanel extends Panel {
 
         otherGeneMutationContainer.add(new TextArea("otherGeneMutation"));
 
-        form.add(otherGeneMutationContainer);
+        geneMutationContainer.add(otherGeneMutationContainer);
 
 
         // more details
@@ -403,7 +413,7 @@ public class DiagnosisPanel extends Panel {
         moreDetailsContainer.setOutputMarkupId(true);
         moreDetailsContainer.setOutputMarkupPlaceholderTag(true);
         moreDetailsContainer.add(new TextArea("moreDetails", new Model()));
-        form.add(moreDetailsContainer);
+        geneMutationContainer.add(moreDetailsContainer);
         componentsToUpdate.add(moreDetailsContainer);
 
 
