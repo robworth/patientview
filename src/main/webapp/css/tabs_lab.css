@@ -52,3 +52,7 @@
     padding: 30px 20px 20px;
     width: 90%;
 }
+
+/* First visit > Bloods or Follow up  Bloods */
+#bloodsResults .feedbackCell { padding: 0; }
+
