@@ -47,12 +47,13 @@ public class ProfessionalsLoginPage extends BasePage {
             @Override
             protected void onSubmit() {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
-                AuthenticatedWebSession session = RadarSecuredSession.get();
+                RadarSecuredSession session = RadarSecuredSession.get();
                 ProfessionalUser user = getModelObject();
                 boolean loginFailed = false;
                 ProfessionalUser professionalUser = userManager.getProfessionalUser(user.getEmail());
                 if (professionalUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {
+                        session.setUser(professionalUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
                         if (!continueToOriginalDestination()) {
@@ -70,7 +71,6 @@ public class ProfessionalsLoginPage extends BasePage {
                     // Show that the login failed if we couldn't authenticate
                     error(LOGIN_FAILED_MESSAGE);
                 }
-
             }
         };
 

@@ -43,12 +43,13 @@ public class PatientsLoginPage extends BasePage {
         Form<PatientUser> form = new Form<PatientUser>("form", model) {
             @Override
             protected void onSubmit() {
-                AuthenticatedWebSession session = RadarSecuredSession.get();
+                RadarSecuredSession session = RadarSecuredSession.get();
                 PatientUser user = getModelObject();
                 boolean loginFailed = false;
-                if (userManager.getPatientUser(user.getUsername(), user.getDateOfBirth()) != null) {
+                PatientUser patientUser = userManager.getPatientUser(user.getUsername(), user.getDateOfBirth());
+                if (patientUser != null) {
                     if (session.signIn(user.getUsername(), passwordModel.getObject())) {
-                        PatientUser patientUser = userManager.getPatientUser(user.getUsername());
+                        session.setUser(patientUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
                         setResponsePage(PatientPageReadOnly.class, PatientPageReadOnly.getParameters(

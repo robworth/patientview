@@ -12,13 +12,13 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class RadarSecuredSession extends AuthenticatedWebSession {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarSecuredSession.class);
+    private User user;
 
     public RadarSecuredSession(Request request) {
         super(request);
@@ -40,14 +40,13 @@ public class RadarSecuredSession extends AuthenticatedWebSession {
 
     @Override
     public Roles getRoles() {
+        /* get the user stored in session from login page. Did not use spring authentication.getPrincipal as the user
+          set in the spring authentication is not always correct if we have two users with same credentials  e.g. for
+          admin and professional with same credentials */
         Roles roles = new Roles();
-        if (isSignedIn()) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null) {
-                for (GrantedAuthority authority : authentication.getAuthorities()) {
-                    roles.add(authority.getAuthority());
-                }
-            }
+        if (isSignedIn() && user != null) {
+            roles.add(user.getSecurityRole());
+
         }
         return roles;
     }
@@ -58,11 +57,17 @@ public class RadarSecuredSession extends AuthenticatedWebSession {
     }
 
     public User getUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
+        /* get the user stored in session from login page. Did not use spring authentication.getPrincipal as the user
+        set in the spring authentication is not always correct if we have two users with same credentials e.g. for
+        admin and professional with same credentials */
+        if (isSignedIn() && user != null) {
+            return user;
         }
         return null;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public static RadarSecuredSession get() {

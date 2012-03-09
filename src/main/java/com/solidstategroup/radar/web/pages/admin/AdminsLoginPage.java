@@ -45,12 +45,14 @@ public class AdminsLoginPage extends BasePage {
             @Override
             protected void onSubmit() {
                 // Get the wicket authentication session and ask to sign the user in with Spring security
-                AuthenticatedWebSession session = RadarSecuredSession.get();
+                RadarSecuredSession session = RadarSecuredSession.get();
                 AdminUser user = getModelObject();
                 boolean loginFailed = false;
                 // do an extra check to that an admin user exists with the username
-                if (userManager.getAdminUser(user.getEmail()) != null) {
+                AdminUser adminUser = userManager.getAdminUser(user.getEmail());
+                if (adminUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {
+                        session.setUser(adminUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
                         if (!continueToOriginalDestination()) {
