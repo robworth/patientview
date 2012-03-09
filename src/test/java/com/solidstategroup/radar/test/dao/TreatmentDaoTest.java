@@ -66,6 +66,6 @@ public class TreatmentDaoTest extends BaseDaoTest {
     public void testGetTreatmentModalities() throws Exception {
         List<TreatmentModality> treatmentModalities = treatmentDao.getTreatmentModalities();
         assertNotNull("List was null", treatmentModalities);
-        assertEquals("Wrong size", 25, treatmentModalities.size());
+        assertEquals("Wrong size", 15, treatmentModalities.size());
     }
 }
