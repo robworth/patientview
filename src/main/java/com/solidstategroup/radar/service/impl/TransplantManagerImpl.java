@@ -81,6 +81,7 @@ public class TransplantManagerImpl implements TransplantManager {
                     new DateTime(transplant.getDate())).getDays());
             if (Math.abs(daysApart) <= 14) {
                 errors.add(TRANSPLANTS_INTERVAL_ERROR);
+                break;
             }
         }
 
