@@ -165,6 +165,10 @@ public class ClinicalPicturePanel extends Panel {
             }
         };
 
+        WebMarkupContainer followupContainer = new WebMarkupContainer("followupContainer");
+        followupContainer.setVisible(!isFirstVisit);
+        followupContainer.setOutputMarkupPlaceholderTag(true);
+
         final DropDownChoice clinicalPicturesSwitcher = new DropDownChoice("clinicalPicturesSwitcher", followUpModel,
                 clinicalPictureListModel, new DateChoiceRenderer("clinicalPictureDate", "id") {
             @Override
@@ -175,8 +179,7 @@ public class ClinicalPicturePanel extends Panel {
 
         clinicalPicturesSwitcher.setOutputMarkupId(true);
         clinicalPictureContainer.setOutputMarkupPlaceholderTag(true);
-        clinicalPicturesSwitcher.setVisible(!isFirstVisit);
-        add(clinicalPicturesSwitcher);
+        followupContainer.add(clinicalPicturesSwitcher);
         clinicalPicturesSwitcher.add(new AjaxFormComponentUpdatingBehavior("onChange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -205,8 +208,8 @@ public class ClinicalPicturePanel extends Panel {
             }
         };
 
-        addNew.setVisible(!isFirstVisit);
-        add(addNew);
+        followupContainer.add(addNew);
+        add(followupContainer);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
         if (clinicalPicturesSwitcher.isVisible()) {
