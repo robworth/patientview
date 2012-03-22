@@ -345,8 +345,11 @@ public class DiagnosisPanel extends Panel {
         WebMarkupContainer geneMutationContainer = new WebMarkupContainer("geneMutationContainer") {
             @Override
             public boolean isVisible() {
-                IModel<Boolean> isSrnsModel = RadarModelFactory.getIsSrnsModel(radarNumberModel, diagnosisManager);
-                return isSrnsModel.getObject();
+                Diagnosis diagnosis = model.getObject();
+                if (diagnosis.getDiagnosisCode() != null) {
+                    return diagnosis.getDiagnosisCode().getId().equals(SRNS_ID);
+                }
+                return false;
             }
         };
 
