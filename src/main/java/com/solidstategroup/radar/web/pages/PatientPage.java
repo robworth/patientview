@@ -182,6 +182,11 @@ public class PatientPage extends BasePage {
                     pageNumberModel.setPageNumber(currentTab.getPageNumber());
                 }
 
+                if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
+                    getPage().get("followUpPanel:clinicalPicturePanel:clinicalPicturePanel:clinicalPictureContainer").
+                            setVisible(false);
+                }
+
                 target.add(pageNumber);
             }
 

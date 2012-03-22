@@ -137,15 +137,18 @@ public class DiagnosisPanel extends Panel {
                         diagnosisManager.saveDiagnosis(diagnosis);
 
                         // additional significant diagnosis needs to carry through to clinical data
-                        // so create the first clinical data if it does not exist alread and set values
-                        ClinicalData clinicalData = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel,
-                                clinicalDataManager).getObject();
-                        if (clinicalData == null) {
-                            clinicalData = new ClinicalData();
-                            clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
-                            clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
+                        List<ClinicalData> clinicalDataList = clinicalDataManager.getClinicalDataByRadarNumber(
+                                diagnosis.getRadarNumber());
+                        if (clinicalDataList.isEmpty()) {
+                            ClinicalData clinicalData = new ClinicalData();
                             clinicalData.setSequenceNumber(1);
                             clinicalData.setRadarNumber(diagnosis.getRadarNumber());
+                            clinicalDataList.add(clinicalData);
+                        }
+
+                        for (ClinicalData clinicalData : clinicalDataList) {
+                            clinicalData.setSignificantDiagnosis1(diagnosis.getSignificantDiagnosis1());
+                            clinicalData.setSignificantDiagnosis2(diagnosis.getSignificantDiagnosis2());
                             clinicalDataManager.saveClinicalDate(clinicalData);
                         }
 
