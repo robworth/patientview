@@ -632,7 +632,7 @@ public class TreatmentPanel extends Panel {
             add(totalDoseLabel);
 
             final TextField cyclophosphamideTotalDose = new RadarTextFieldWithValidation("cyclophosphamideTotalDose",
-                    new RangeValidator<Double>(0.010, 9.999), true, this, componentsToUpdate) {
+                    new RangeValidator<Double>(0.01, 9.99), true, this, componentsToUpdate) {
                 @Override
                 public boolean isVisible() {
                     if (ImmunosuppressionTreatmentForm.this.getModelObject() != null) {
