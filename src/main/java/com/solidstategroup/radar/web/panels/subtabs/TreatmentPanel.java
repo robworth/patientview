@@ -161,6 +161,12 @@ public class TreatmentPanel extends Panel {
         immunosuppressionTreatmentsContainer.setOutputMarkupPlaceholderTag(true);
 
         // Construct the form
+        final ImmunosuppressionTreatmentForm addImmunosuppressionForm =
+                new ImmunosuppressionTreatmentForm("addImmunosuppressionForm",
+                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()),
+                        addImmunoSuppressComponentsToUpdate);
+
+
         ImmunosuppressionTreatmentForm editImmunosuppressionForm =
                 new ImmunosuppressionTreatmentForm("editImmunosuppressionForm",
                         new CompoundPropertyModel<ImmunosuppressionTreatment>(editImmunosuppressionTreatmentIModel),
@@ -181,6 +187,8 @@ public class TreatmentPanel extends Panel {
                     return;
                 }
                 editImmunosuppressionTreatmentIModel.setObject(null);
+                addImmunosuppressionForm.clearInput();
+                target.add(addImmunosuppressionForm);
             }
 
             @Override
@@ -198,13 +206,6 @@ public class TreatmentPanel extends Panel {
         });
         editContainer.add(editImmunosuppressionForm);
         add(editContainer);
-
-        // Construct the add form
-        ImmunosuppressionTreatmentForm addImmunosuppressionForm =
-                new ImmunosuppressionTreatmentForm("addImmunosuppressionForm",
-                        new CompoundPropertyModel<ImmunosuppressionTreatment>(new ImmunosuppressionTreatment()),
-                        addImmunoSuppressComponentsToUpdate);
-
 
         addImmunosuppressionForm.add(new AjaxSubmitLink("submit") {
             @Override
@@ -608,7 +609,8 @@ public class TreatmentPanel extends Panel {
         @SpringBean
         private ImmunosuppressionManager immunosuppressionManager;
 
-        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model, final List<Component> componentsToUpdate) {
+        private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model,
+                                               final List<Component> componentsToUpdate) {
             super(id, model);
             RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
             add(startDate);
