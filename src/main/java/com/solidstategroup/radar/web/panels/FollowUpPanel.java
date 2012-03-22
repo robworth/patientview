@@ -99,6 +99,10 @@ public class FollowUpPanel extends Panel {
             PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
             pageNumberModel.setPageNumber(currentTab.getPageNumber());
             target.add(pageNumber);
+            if(currentTab.equals(CurrentTab.CLINICAL_PICTURE)) {
+                getPage().get("followUpPanel:clinicalPicturePanel:clinicalPicturePanel:clinicalPictureContainer").
+                        setVisible(false);
+            }
         }
     }
 
