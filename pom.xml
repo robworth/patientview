@@ -61,7 +61,7 @@
             <id>dbunit-mssql</id>
             <properties>
                 <dbunit.driver>net.sourceforge.jtds.jdbc.Driver</dbunit.driver>
-                <dbunit.url>jdbc:jtds:sqlserver://192.168.1.20/rpv_live</dbunit.url>
+                <dbunit.url>jdbc:jtds:sqlserver://192.168.1.20/RPV_LIVE_20120330</dbunit.url>
 
                 <!--Settings key is used to match up the username/password in the maven settings.xml-->
                 <dbunit.settingsKey>ssg-mssql</dbunit.settingsKey>
@@ -74,7 +74,7 @@
             <id>dbunit-mysql</id>
             <properties>
                 <dbunit.driver>com.mysql.jdbc.Driver</dbunit.driver>
-                <dbunit.url>jdbc:mysql://dev.solidstategroup.com/radar_live?jdbcCompliantTruncation=false&amp;zeroDateTimeBehavior=convertToNull</dbunit.url>
+                <dbunit.url>jdbc:mysql://dev.solidstategroup.com/radar_golive?jdbcCompliantTruncation=false&amp;zeroDateTimeBehavior=convertToNull</dbunit.url>
 
                 <!--Settings key is used to match up the username/password in the maven settings.xml-->
                 <dbunit.settingsKey>ssg-mysql</dbunit.settingsKey>
