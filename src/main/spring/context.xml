@@ -17,4 +17,8 @@
         <property name="location" value="classpath:radar.properties"/>
     </bean>
 
+    <bean id="radarApplication" class="com.solidstategroup.radar.web.RadarApplication">
+        <property name="ajaxDebug" value="${ajax.debug}"/>
+    </bean>
+
 </beans>

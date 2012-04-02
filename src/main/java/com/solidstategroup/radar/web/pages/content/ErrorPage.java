@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class ErrorPage extends BasePage {
     private static final String typeParamKey = "type";
     private static final String error404Message = "The requested page could not be found";
-    private static final String generalErrorMessage = "An unexpected error has occured";
+    private static final String generalErrorMessage = "An unexpected error has occurred";
     public static final String ERROR_TYPE_404 = "404";
 
 
