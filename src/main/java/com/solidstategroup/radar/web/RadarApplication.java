@@ -79,6 +79,8 @@ public class RadarApplication extends AuthenticatedWebApplication {
     public static final Double MAX_HEIGHT = 220.0;
     public static final String ADMINS_BASE_URL = "admins";
 
+    private boolean ajaxDebug = true;
+
     @Override
     public Class<? extends WebPage> getHomePage() {
         return HomePage.class;
@@ -126,6 +128,9 @@ public class RadarApplication extends AuthenticatedWebApplication {
                 return new RenderPageRequestHandler(new PageProvider(new ErrorPage(ex)));
             }
         });
+
+        // remove ajax debug
+        getDebugSettings().setAjaxDebugModeEnabled(ajaxDebug);
 
         // Mount nice URLs for pages - patient pages
 
@@ -206,4 +211,11 @@ public class RadarApplication extends AuthenticatedWebApplication {
         return converterLocator;
     }
 
+    public boolean isAjaxDebug() {
+        return ajaxDebug;
+    }
+
+    public void setAjaxDebug(boolean ajaxDebug) {
+        this.ajaxDebug = ajaxDebug;
+    }
 }
