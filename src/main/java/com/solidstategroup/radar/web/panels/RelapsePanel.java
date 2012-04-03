@@ -176,6 +176,7 @@ public class RelapsePanel extends Panel {
                 target.add(editRelapseContainer);
                 target.add(relapseListViewContainer);
                 target.add(form);
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
             }
 
             @Override

@@ -577,6 +577,7 @@ public class TreatmentPanel extends Panel {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
             }
 
             @Override

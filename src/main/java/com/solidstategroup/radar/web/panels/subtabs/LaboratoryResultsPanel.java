@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.sequenced.LabData;
 import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.LabDataManager;
+import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
@@ -523,6 +524,7 @@ public class LaboratoryResultsPanel extends Panel {
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
             target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
         }
 
         @Override

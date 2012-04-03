@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.models.PageNumberModel;
@@ -21,10 +22,14 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -105,7 +110,8 @@ public class PatientPage extends BasePage {
         linksContainer.setOutputMarkupId(true);
 
         // Add the links to switch tab
-        linksContainer.add(new TabAjaxLink("demographicsLink", CurrentTab.DEMOGRAPHICS));
+        TabAjaxLink demographicsLink = new TabAjaxLink("demographicsLink", CurrentTab.DEMOGRAPHICS);
+        linksContainer.add(demographicsLink);
         linksContainer.add(new TabAjaxLink("diagnosisLink", CurrentTab.DIAGNOSIS));
         linksContainer.add(new TabAjaxLink("firstVisitLink", CurrentTab.FIRST_VISIT));
         linksContainer.add(new TabAjaxLink("followUpLink", CurrentTab.FOLLOW_UP));
@@ -135,8 +141,28 @@ public class PatientPage extends BasePage {
                     component.add(new RadarDateValidator());
                 }
 
+                //if form component - mark form as dirty onchange
+                if (component instanceof FormComponent || component instanceof Radio) {
+                    // ignore the subform components
+                    String[] ignoreParents = {"immunosuppression", "plasmapheresispanel", "dialysiscontainer",
+                    "transplantscontainer", "rejectDataContainer", "editTransplantContainer", "addTransplantForm" };
+                    boolean ignoreComponent = false;
+                    for(String ignore : ignoreParents) {
+                        if(component.getPath().toLowerCase().contains(ignore.toLowerCase())) {
+                            ignoreComponent = true;
+                            break;
+                        }
+                    }
+                    if(!ignoreComponent) {
+                        component.add(new AttributeAppender("onchange", RadarApplication.FORM_IS_DIRTY_TRUE_SCRIPT));
+                    }
+                }
+
             }
+
         });
+
+        add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
     }
 
     public CurrentTab getCurrentTab() {
@@ -190,6 +216,11 @@ public class PatientPage extends BasePage {
                 target.add(pageNumber);
             }
 
+        }
+
+        @Override
+        protected IAjaxCallDecorator getAjaxCallDecorator() {
+            return RadarBehaviourFactory.getWarningOnFormExitCallDecorator();
         }
     }
 
