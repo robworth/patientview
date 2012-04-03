@@ -79,6 +79,10 @@ public class RadarApplication extends AuthenticatedWebApplication {
     public static final Double MAX_HEIGHT = 220.0;
     public static final String ADMINS_BASE_URL = "admins";
 
+    // some script
+    public static final String FORM_IS_DIRTY_TRUE_SCRIPT = "editPatientPage.formIsDirty=true;";
+    public static final String FORM_IS_DIRTY_FALSE_SCRIPT = "editPatientPage.formIsDirty=false;";
+
     private boolean ajaxDebug = true;
 
     @Override

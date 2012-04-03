@@ -48,6 +48,7 @@ var recruitmentPage = {
 }
 
 var editPatientPage = {
+    formIsDirty:false,
     init: function() {
         $(document).on("click", ".diagnosisRedirect", null, function() {
             jQuery('[id*="diagnosisLink"]').click();
@@ -113,4 +114,5 @@ var radarUtility = {
         }
     }
 }
+
 

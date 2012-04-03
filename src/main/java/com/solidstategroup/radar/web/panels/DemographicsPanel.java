@@ -238,6 +238,7 @@ public class DemographicsPanel extends Panel {
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
                 successMessage.setVisible(true);
                 ajaxRequestTarget.add(successMessage);
+                ajaxRequestTarget.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
             }
 
             @Override

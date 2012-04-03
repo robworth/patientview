@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.models.PageNumberModel;
 import com.solidstategroup.radar.web.pages.PatientPage;
 import com.solidstategroup.radar.web.panels.firstvisit.ClinicalPicturePanel;
@@ -10,6 +11,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -92,6 +94,11 @@ public class FirstVisitPanel extends Panel {
             PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
             pageNumberModel.setPageNumber(currentTab.getPageNumber());
             target.add(pageNumber);
+        }
+
+        @Override
+        protected IAjaxCallDecorator getAjaxCallDecorator() {
+            return RadarBehaviourFactory.getWarningOnFormExitCallDecorator();
         }
     }
 

@@ -829,6 +829,7 @@ public class ClinicalPicturePanel extends Panel {
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
             ComponentHelper.updateComponentsIfParentIsVisible(target, getComponentsToUpdate());
+            target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
         }
 
         @Override

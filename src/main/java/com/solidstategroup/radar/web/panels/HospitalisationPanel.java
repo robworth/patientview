@@ -187,6 +187,7 @@ public class HospitalisationPanel extends Panel {
         @Override
         public void onSubmit(AjaxRequestTarget target, Form<?> form) {
             target.add(getComponentsToUpdate().toArray(new Component[getComponentsToUpdate().size()]));
+            target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
         }
 
         @Override
