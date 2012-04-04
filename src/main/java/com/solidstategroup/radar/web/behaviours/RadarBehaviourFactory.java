@@ -15,6 +15,9 @@ public class RadarBehaviourFactory {
                 "you want to delete this record?')){return false;}"));
     }
 
+    /**
+     * Adds form is dirty warning on form exit to ajax links
+     */
     public static AjaxCallDecorator getWarningOnFormExitCallDecorator() {
         return new AjaxCallDecorator() {
             @Override
@@ -31,6 +34,9 @@ public class RadarBehaviourFactory {
         };
     }
 
+    /**
+     * form is dirty warning on page exit - activated when you click on a page link navigating away from current page
+     */
     public static Behavior getWarningOnPatientPageExitBehaviour() {
         return new Behavior() {
             @Override
