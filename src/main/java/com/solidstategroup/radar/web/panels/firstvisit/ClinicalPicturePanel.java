@@ -736,10 +736,10 @@ public class ClinicalPicturePanel extends Panel {
         WebMarkupContainer complicationsContainer = new WebMarkupContainer("complicationsContainer") {
             @Override
             public boolean isVisible() {
-                //return !isFirstVisit;
-                return false; // this is no longer used
+                return !isFirstVisit && isSrnsModel.getObject();
             }
         };
+
         complicationsContainer.add(new YesNoRadioGroup("infectionNecessitatingHospitalisation", false, false));
         MarkupContainer infectionDetailContainer = new WebMarkupContainer("infectionDetailContainer");
         infectionDetailContainer.add(new TextArea("infectionDetail"));
@@ -756,7 +756,7 @@ public class ClinicalPicturePanel extends Panel {
 
         // CKD stage
         complicationsContainer.add(new CkdStageRadioGroup("ckdStage"));
-        patientDetailsContainer.add(complicationsContainer);
+        form.add(complicationsContainer);
 
         // Listed for transplant?
 

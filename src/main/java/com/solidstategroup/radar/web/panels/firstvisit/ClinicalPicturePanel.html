@@ -517,16 +517,20 @@
                name="ctl00$ContentPlaceHolder1$txtOpDetail_TextBoxWatermarkExtender_ClientState">
     </td>
 </tr>
-<tr wicket:id="complicationsContainer">
-    <td colspan="2">
-        <fieldset>
-            <legend>Complications</legend>
-            <br>
-            <table cellpadding="4" class="style5">
+</tbody>
+</table>
 
-                <tbody>
-                <tr>
-                    <td colspan="2">
+<table wicket:id="complicationsContainer" cellpadding="4" style="width: 100%" class="style1">
+    <tr>
+        <td colspan="2">
+            <fieldset>
+                <legend>Complications</legend>
+                <br>
+                <table cellpadding="4" class="style5">
+
+                    <tbody>
+                    <tr>
+                        <td colspan="2">
                         <span wicket:id="infectionNecessitatingHospitalisation">
                                                   Infection necessitating hospitalisation
                         <input type="radio" wicket:id="yes"/>
@@ -535,17 +539,17 @@
                         No
                         </span>
 
-                    </td>
-                </tr>
-                <tr wicket:id="infectionDetailContainer">
-                    <td colspan="2">
-                        <textarea style="width:100%;" cols="20" rows="4"
-                                  wicket:id="infectionDetail"></textarea>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr wicket:id="infectionDetailContainer">
+                        <td colspan="2">
+                            <textarea style="width:100%;" cols="20" rows="4"
+                                      wicket:id="infectionDetail"></textarea>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td colspan="2">
+                    <tr>
+                        <td colspan="2">
                         <span wicket:id="complicationThrombosis">
                                                   Thrombosis
                                     <span style="display:inline-block;border-width:0px;">
@@ -556,16 +560,16 @@
                         &nbsp;No
                         </span>
 
-                    </td>
-                </tr>
-                <tr wicket:id="complicationThrombosisContainer">
-                    <td colspan="2">
-                        <textarea style="width:100%;" cols="20" rows="4"
-                                  wicket:id="complicationThrombosisDetail"></textarea>
-                    </td>
-                </tr>
-                <tr id="ctl00_ContentPlaceHolder1_rowHypertension">
-                    <td colspan="2">
+                        </td>
+                    </tr>
+                    <tr wicket:id="complicationThrombosisContainer">
+                        <td colspan="2">
+                            <textarea style="width:100%;" cols="20" rows="4"
+                                      wicket:id="complicationThrombosisDetail"></textarea>
+                        </td>
+                    </tr>
+                    <tr id="ctl00_ContentPlaceHolder1_rowHypertension">
+                        <td colspan="2">
                         <span wicket:id="hypertension">
                                               Hypertension requiring RX:&nbsp;&nbsp;
                         <input type="radio" wicket:id="yes"/>
@@ -578,11 +582,11 @@
                                     <label wicket:id="unknownLabel">Un</label></span>
                         </span>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
-                <tr id="ctl00_ContentPlaceHolder1_rowCKD">
-                    <td colspan="2">
+                    <tr id="ctl00_ContentPlaceHolder1_rowCKD">
+                        <td colspan="2">
                         <span wicket:id="ckdStage">
                         CKD Stage:&nbsp;&nbsp;
                         <input type="radio" wicket:id="one"/><label wicket:id="oneLabel">1</label>&nbsp;
@@ -593,14 +597,13 @@
                         <input type="radio" wicket:id="unknown"/><label wicket:id="unknownLabel">Un</label>&nbsp;
                         </span>
 
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </fieldset>
-    </td>
-</tr>
-</tbody>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
 </table>
 
 <table>
