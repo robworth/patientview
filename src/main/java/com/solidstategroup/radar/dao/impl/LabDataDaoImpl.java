@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.sequenced.LabData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
@@ -225,7 +226,16 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                     new Object[]{id}, new LabDataRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            LOGGER.error("Multiple lab data records exists with sequence number 1 for radar number {}, " +
+                    "only one record should exist for sequence number 1", id);
+            List<LabData> labDatas = jdbcTemplate.query("SELECT * FROM tbl_LabData WHERE RADAR_NO = ? AND SEQ_NO = 1",
+                    new Object[]{id}, new LabDataRowMapper());
+            if(!labDatas.isEmpty()) {
+                return labDatas.get(0);
+            }
         }
+        return null;
     }
 
     private class LabDataRowMapper implements RowMapper<LabData> {
