@@ -221,6 +221,10 @@ public class PatientPage extends BasePage {
                 if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
                     getPage().get("followUpPanel:clinicalPicturePanel:clinicalPicturePanel:clinicalPictureContainer").
                             setVisible(false);
+                    FormComponent switcher = (FormComponent) getPage().get("followUpPanel:clinicalPicturePanel:" +
+                            "clinicalPicturePanel:followupContainer:clinicalPicturesSwitcher");
+                    switcher.clearInput();
+                    target.add(switcher);
                 }
 
                 target.add(pageNumber);

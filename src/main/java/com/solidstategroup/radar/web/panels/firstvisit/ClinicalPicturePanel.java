@@ -177,6 +177,8 @@ public class ClinicalPicturePanel extends Panel {
             }
         });
 
+        clinicalPicturesSwitcher.setNullValid(true);
+
         clinicalPicturesSwitcher.setOutputMarkupId(true);
         clinicalPictureContainer.setOutputMarkupPlaceholderTag(true);
         followupContainer.add(clinicalPicturesSwitcher);
