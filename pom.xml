@@ -74,7 +74,7 @@
             <id>dbunit-mysql</id>
             <properties>
                 <dbunit.driver>com.mysql.jdbc.Driver</dbunit.driver>
-                <dbunit.url>jdbc:mysql://dev.solidstategroup.com/radar_golive?jdbcCompliantTruncation=false&amp;zeroDateTimeBehavior=convertToNull</dbunit.url>
+                <dbunit.url>jdbc:mysql://dev.solidstategroup.com/radar_live_test?jdbcCompliantTruncation=false&amp;zeroDateTimeBehavior=convertToNull</dbunit.url>
 
                 <!--Settings key is used to match up the username/password in the maven settings.xml-->
                 <dbunit.settingsKey>ssg-mysql</dbunit.settingsKey>
