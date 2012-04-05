@@ -147,7 +147,7 @@ public class PatientPage extends BasePage {
                     String[] ignoreParents = {"immunosuppression", "plasmapheresispanel", "dialysiscontainer",
                             "transplantscontainer", "rejectDataContainer", "editTransplantContainer", "addTransplantForm"};
 
-                    // ignore recored switchers
+                    // ignore record switchers
                     String[] ignoreIds = {"switcher"};
 
                     boolean ignoreComponent = false;
