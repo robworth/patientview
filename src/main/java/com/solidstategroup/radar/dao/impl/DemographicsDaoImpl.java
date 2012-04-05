@@ -30,8 +30,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsDaoImpl.class);
 
-    private static final String DATE_FORMAT = "dd.MM.yyyy";
-    private static final String DATE_FORMAT_2 = "dd-MM-yyyy";
+    private static final String DATE_FORMAT = "dd.MM.y";
+    private static final String DATE_FORMAT_2 = "dd-MM-y";
+    private static final String DATE_FORMAT_3 = "dd/MM/y";
     private SimpleJdbcInsert demographicsInsert;
     private UtilityDao utilityDao;
 
@@ -269,7 +270,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 Date dateOfBirth = null;
 
                 // It seems that the encrypted strings in the DB have different date formats, nice.
-                for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2}) {
+                for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2, DATE_FORMAT_3}) {
                     try {
                         dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
                     } catch (ParseException e) {
@@ -281,8 +282,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 if (dateOfBirth != null) {
                     demographics.setDateOfBirth(dateOfBirth);
                 } else {
-                    LOGGER.error("Could not parse date of birth from any format for radar number {}",
-                            demographics.getId());
+                    LOGGER.error("Could not parse date of birth from any format for dob {}",
+                            dateOfBirthString);
+                    String a = "";
                 }
             }
 
