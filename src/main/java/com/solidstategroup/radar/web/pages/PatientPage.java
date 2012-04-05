@@ -145,15 +145,25 @@ public class PatientPage extends BasePage {
                 if (component instanceof FormComponent || component instanceof Radio) {
                     // ignore the subform components
                     String[] ignoreParents = {"immunosuppression", "plasmapheresispanel", "dialysiscontainer",
-                    "transplantscontainer", "rejectDataContainer", "editTransplantContainer", "addTransplantForm" };
+                            "transplantscontainer", "rejectDataContainer", "editTransplantContainer", "addTransplantForm"};
+
+                    // ignore recored switchers
+                    String[] ignoreIds = {"switcher"};
+
                     boolean ignoreComponent = false;
-                    for(String ignore : ignoreParents) {
-                        if(component.getPath().toLowerCase().contains(ignore.toLowerCase())) {
+                    for (String ignore : ignoreParents) {
+                        if (component.getPath().toLowerCase().contains(ignore.toLowerCase())) {
                             ignoreComponent = true;
                             break;
                         }
                     }
-                    if(!ignoreComponent) {
+                    for (String ignore : ignoreIds) {
+                        if (component.getId().toLowerCase().contains(ignore.toLowerCase())) {
+                            ignoreComponent = true;
+                            break;
+                        }
+                    }
+                    if (!ignoreComponent) {
                         component.add(new AttributeAppender("onchange", RadarApplication.FORM_IS_DIRTY_TRUE_SCRIPT));
                     }
                 }
