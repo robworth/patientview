@@ -4,6 +4,7 @@ import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.web.behaviours.AJAXDownload;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.components.SearchField;
@@ -12,9 +13,10 @@ import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
-import com.solidstategroup.radar.web.resources.RadarResourceFactory;
 import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
-import org.apache.wicket.markup.html.link.ResourceLink;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -24,6 +26,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.model.Model;
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
+import org.apache.wicket.util.resource.IResourceStream;
 
 import java.util.Date;
 import java.util.Map;
@@ -45,13 +49,62 @@ public class AdminPatientsAllPage extends AdminsBasePage {
     public AdminPatientsAllPage() {
         final DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager);
 
-        add(new ResourceLink("exportPdf", RadarResourceFactory.getExportResource(
-                exportManager.getDemographicsExportData(ExportType.PDF), "patients-all" +
-                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.PDF)));
+        // using ajax download - the data is created on request to speed up page load
+        final AJAXDownload exportPdf = new AJAXDownload() {
+            @Override
+            protected IResourceStream getResourceStream() {
+                return new AbstractResourceStreamWriter() {
+                    public void write(Response response) {
+                        response.write(exportManager.getDemographicsExportData(ExportType.PDF));
+                    }
+                };
+            }
 
-        add(new ResourceLink("exportExcel", RadarResourceFactory.getExportResource(
-                exportManager.getDemographicsExportData(ExportType.EXCEL), "patients-all" +
-                AdminsBasePage.EXPORT_FILE_NAME_SUFFIX, ExportType.EXCEL)));
+            @Override
+            protected String getFileName() {
+                return "patients-all.pdf";
+            }
+        };
+
+        // using ajax download - the data is created on request to speed up page load
+        final AJAXDownload exportExcel = new AJAXDownload() {
+            @Override
+            protected IResourceStream getResourceStream() {
+                return new AbstractResourceStreamWriter() {
+                    public void write(Response response) {
+                        response.write(exportManager.getDemographicsExportData(ExportType.EXCEL));
+                    }
+
+                    @Override
+                    public String getContentType() {
+                        return "application/pdf";
+                    }
+                };
+            }
+
+            @Override
+            protected String getFileName() {
+                return "patients-all.xls";
+            }
+        };
+
+        add(exportPdf);
+        add(exportExcel);
+
+
+        add(new AjaxLink("exportPdf") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                exportPdf.initiate(target);
+            }
+        });
+
+        add(new AjaxLink("exportExcel") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                exportExcel.initiate(target);
+            }
+        });
 
         final WebMarkupContainer demographicsContainer = new WebMarkupContainer("demographicsContainer");
         demographicsContainer.setOutputMarkupId(true);
@@ -91,7 +144,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         // add a date filter
         add(new SearchDateField("searchDateRegistered",
                 DemographicsFilter.UserField.REGISTRATION_DATE.getDatabaseFieldName(),
-                demographicsDataProvider, demographicsList, Arrays.asList(demographicsContainer, clearButton)));        
+                demographicsDataProvider, demographicsList, Arrays.asList(demographicsContainer, clearButton)));
     }
 
     /**
