@@ -30,6 +30,7 @@ color:Red;
     text-align: right;
     top: 112px; /* was 112pc */
     /*width: 700px;*/
+    width:70%;
 }
 
 a.info, a.info:visited {
