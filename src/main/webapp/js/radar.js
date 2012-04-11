@@ -91,12 +91,13 @@ var patientsListingPage = {
 }
 
 var radarUtility = {
+    // sanitise date input
     sanitiseDateInput: function(input) {
         var input = jQuery(input);
         input.val(input.val().replace(".", "-").replace("/", "-"));
     },
 
-    // called onblur
+    // called onblur - if blank replace with default value
     checkDetailsInput: function(element, defaultValue) {
         var element = jQuery(element);
         if (jQuery.trim(element.val()) == "") {
@@ -105,7 +106,7 @@ var radarUtility = {
         }
     },
 
-    // called on click
+    // called on click - if input has default value help text then remove on click
     removeDefaultValue: function(element, defaultValue) {
         var element = jQuery(element);
         if (element.val() == defaultValue) {
