@@ -2,6 +2,7 @@ package com.solidstategroup.radar.web.pages;
 
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -47,6 +48,8 @@ public class PatientPage extends BasePage {
     private DiagnosisManager diagnosisManager;
     @SpringBean
     private DemographicsManager demographicsManager;
+    @SpringBean
+    private ClinicalDataManager clinicalDataManager;
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -130,7 +133,7 @@ public class PatientPage extends BasePage {
 
         visitChildren(new IVisitor<Component, Object>() {
             public void component(Component component, IVisit<Object> objectIVisit) {
-                //add onkeyup event to date to santise input - tried attaching behaviour in the componenet class itself
+                //add onkeyup event to date to santise input - tried attaching behaviour in the component class itself
                 // but did not work
                 if (component instanceof RadarDateTextField || component instanceof RadarRequiredDateTextField) {
                     component.add(new AttributeModifier("onkeyup", "radarUtility.sanitiseDateInput(this);"));
@@ -216,15 +219,6 @@ public class PatientPage extends BasePage {
                     pageNumberModel.setPageNumber(followUpPanel.getCurrentTab().getPageNumber());
                 } else {
                     pageNumberModel.setPageNumber(currentTab.getPageNumber());
-                }
-
-                if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
-                    getPage().get("followUpPanel:clinicalPicturePanel:clinicalPicturePanel:clinicalPictureContainer").
-                            setVisible(false);
-                    FormComponent switcher = (FormComponent) getPage().get("followUpPanel:clinicalPicturePanel:" +
-                            "clinicalPicturePanel:followupContainer:clinicalPicturesSwitcher");
-                    switcher.clearInput();
-                    target.add(switcher);
                 }
 
                 target.add(pageNumber);

@@ -143,7 +143,27 @@ public class ClinicalPicturePanel extends Panel {
                 });
 
 
-        final IModel<ClinicalData> followUpModel = new Model<ClinicalData>(new ClinicalData());
+        final IModel<ClinicalData> followUpModel = new LoadableDetachableModel<ClinicalData>() {
+            private Long id;
+
+            @Override
+            protected ClinicalData load() {
+                if (id == null) {
+                    return new ClinicalData();
+                } else {
+                    return clinicalDataManager.getClinicalData(id);
+                }
+            }
+
+            @Override
+            public void detach() {
+                ClinicalData clinicalData = getObject();
+                if (clinicalData != null) {
+                    id = clinicalData.getId();
+                }
+                super.detach();
+            }
+        };
 
         final IModel<ClinicalData> formModel;
         if (isFirstVisit) {
@@ -197,9 +217,18 @@ public class ClinicalPicturePanel extends Panel {
                 ClinicalData clinicalData = new ClinicalData();
                 Diagnosis daignosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisManager).
                         getObject();
-                if(daignosis != null) {
+                if (daignosis != null) {
                     clinicalData.setSignificantDiagnosis1(daignosis.getSignificantDiagnosis1());
                     clinicalData.setSignificantDiagnosis2(daignosis.getSignificantDiagnosis2());
+                }
+
+                ClinicalData firstClinicalData = clinicalDataManager.getFirstClinicalDataByRadarNumber(radarNumberModel.
+                        getObject());
+                if (firstClinicalData != null) {
+                    clinicalData.setPhenotype1(firstClinicalData.getPhenotype1());
+                    clinicalData.setPhenotype2(firstClinicalData.getPhenotype2());
+                    clinicalData.setPhenotype3(firstClinicalData.getPhenotype3());
+                    clinicalData.setPhenotype4(firstClinicalData.getPhenotype4());
                 }
 
                 formModel.setObject(clinicalData);
@@ -249,6 +278,26 @@ public class ClinicalPicturePanel extends Panel {
                     clinicalData.setRadarNumber(radarNumber);
                 }
                 clinicalDataManager.saveClinicalDate(clinicalData);
+
+                // if first visit - follow through phenotypes to following visit records
+                if (isFirstVisit) {
+                    List<ClinicalData> clinicalDatas = clinicalDataManager.getClinicalDataByRadarNumber(
+                            clinicalData.getRadarNumber());
+
+                    for (ClinicalData cd : clinicalDatas) {
+                        // ignore first visit
+                        if (clinicalData.getId().equals(cd.getId())) {
+                            continue;
+                        }
+                        cd.setPhenotype1(clinicalData.getPhenotype1());
+                        cd.setPhenotype2(clinicalData.getPhenotype2());
+                        cd.setPhenotype3(clinicalData.getPhenotype3());
+                        cd.setPhenotype4(clinicalData.getPhenotype4());
+                        clinicalDataManager.saveClinicalDate(cd);
+                    }
+
+
+                }
             }
         };
 
