@@ -15,7 +15,7 @@ import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxLink;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -92,14 +92,14 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         add(exportExcel);
 
 
-        add(new AjaxLink("exportPdf") {
+        add(new IndicatingAjaxLink("exportPdf") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 exportPdf.initiate(target);
             }
         });
 
-        add(new AjaxLink("exportExcel") {
+        add(new IndicatingAjaxLink("exportExcel") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 exportExcel.initiate(target);
