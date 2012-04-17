@@ -238,7 +238,7 @@ public class DialysisTablePanel extends Panel {
             Date start = treatment.getStartDate();
             Date end = treatment.getEndDate();
             if (start != null && end != null && start.compareTo(end) != -1) {
-                endDate.error("End date cannot be less than start date");
+                endDate.error("End date has to be greater than start date");
             }
         }
     }

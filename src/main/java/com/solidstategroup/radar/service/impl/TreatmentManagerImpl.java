@@ -26,14 +26,20 @@ public class TreatmentManagerImpl implements TreatmentManager {
         List<String> errors = new ArrayList<String>();
         List<Treatment> treatmentsList = treatmentDao.getTreatmentsByRadarNumber(treatment.getRadarNumber());
 
-        //  must have finish date before you can start treatment again
+        //  Cannot start a new treatment after a previous treatment start date which has not been closed
         for (Treatment existingTreatment : treatmentsList) {
             if (existingTreatment.getId().equals(treatment.getId())) {
                 continue;
             }
-            if (existingTreatment.getEndDate() == null) {
-                errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
-                break;
+            if (existingTreatment.getEndDate() == null && treatment.getStartDate().compareTo(
+                    existingTreatment.getStartDate()) > 0) {
+                if (treatment.getEndDate() != null) {
+                    if (treatment.getEndDate().compareTo(existingTreatment.getStartDate())  > 0) {
+                        errors.add(TreatmentManager.PREVIOUS_TREATMENT_NOT_CLOSED_ERROR);
+                        break;
+                    }
+                }
+
             }
         }
 
