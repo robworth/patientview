@@ -295,8 +295,6 @@ public class ClinicalPicturePanel extends Panel {
                         cd.setPhenotype4(clinicalData.getPhenotype4());
                         clinicalDataManager.saveClinicalDate(cd);
                     }
-
-
                 }
             }
         };
