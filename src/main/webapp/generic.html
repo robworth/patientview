@@ -464,25 +464,74 @@ jQuery(function() {
                 </td>
             </tr>
             <tr>
-                <td>Identifying number</td>
-                <td>
-                    <input type="text" wicket:id="previousidentifyingnumber" value="" name="identifyingnumber" onchange="editPatientPage.formIsDirty=true;"/>
-                    <span id="forenameFeedbackIndicator21" style="display:none"></span>
-                    <a href="#" class="info">
-                        <em>Help</em>
-                        <span>E.g. NHS number - used in combination with below<br/><br/></span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>Identifying type</td>
-                <td>
-                    <input type="text" wicket:id="identifyingtype" value="" name="identifyingtype" onchange="editPatientPage.formIsDirty=true;"/>
-                    <span id="forenameFeedbackIndicator22" style="display:none"></span>
-                    <a href="#" class="info">
-                        <em>Help</em>
-                        <span>E.g. NHS No or CHI No - used in combination with above<br/><br/></span>
-                    </a>
+                <td colspan="2">
+                    <fieldset style="border:1px solid green; margin: 0 10px;">
+                        <legend><strong>Indentifying number &amp; type</strong></legend>
+                        <table style="width:95%; margin-left:5px;">
+                            <tr>
+                                <td>Identifying number</td>
+                                <td>
+                                    <input type="text" wicket:id="previousidentifyingnumber" value="" name="identifyingnumber" onchange="editPatientPage.formIsDirty=true;"/>
+                                    <span id="forenameFeedbackIndicator21" style="display:none"></span>
+                                    <a href="#" class="info">
+                                        <em>Help</em>
+                                        <span>E.g. NHS number - used in combination with below<br/><br/></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Identifying type</td>
+                                <td>
+                                    <select wicket:id="identifyingtype" name="identifyingtype" onchange="editPatientPage.formIsDirty=true;">
+                                        <option selected="selected" value="">Choose One</option>
+                                        <option value="1">NHS</option>
+                                        <option value="2">CHI</option>
+                                        <option value="3">UKBT</option>
+                                        <option value="4">Renal Reg</option>
+                                        <option value="5">UK Transplant</option>
+                                    </select>
+                                    <span id="forenameFeedbackIndicator22" style="display:none"></span>
+                                    <a href="#" class="info">
+                                        <em>Help</em>
+                                        <span>E.g. NHS No or CHI No - used in combination with above<br/><br/></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:right;">
+                                    <input type="button" wicket:id="save" value="Add" class="saveBtn"/>
+                                    <hr/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table border="1" cellspacing="0" cellpadding="3" style="font-size:85%;border-collapse:collapse;width:100%;">
+                                        <tbody>
+                                            <tr style="color:#3C982D;">
+                                                <th>Identifying number</th>
+                                                <th>Identifying type</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <td>1234567890</td>
+                                                <td>NHS</td>
+                                                <td style="text-align:right;">
+                                                    <input type="submit" wicket:id="deleteLink" value="Delete" id="deleteLink12b">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2384798729</td>
+                                                <td>CHI</td>
+                                                <td style="text-align:right;">
+                                                    <input type="submit" wicket:id="deleteLink" value="Delete" id="deleteLink12b">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
                 </td>
             </tr>
         </table>
@@ -490,7 +539,6 @@ jQuery(function() {
 
         </div>
         <br/><br/>
-        <input type="button" wicket:id="save" value="Update" class="saveBtn" id="save1e" onclick="var wcall=wicketSubmitFormById(&#039;form16&#039;, &#039;edit?3-2.IBehaviorListener.1-demographicsPanel-form-save&amp;id=296&#039;, &#039;save&#039; ,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$$(this)&amp;&amp;Wicket.$$(&#039;form16&#039;)}.bind(this));;; return false;"/>
 
     </td>
     <td style="vertical-align:top;">
