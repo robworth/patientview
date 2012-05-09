@@ -4,21 +4,22 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <base href="http://dev.solidstategroup.com/radar/"/>
     <meta http-equiv="X-UA-Compatible" content="IE=7"/>
     <title wicket:id="title">RADAR - National Renal Rare Disease Registry</title>
 
     <!-- javascript -->
-    <script src="../js/ajxmenu-formatted.js" type="text/javascript"></script>
-    <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
-    <script src="../js/jquery.tablesorter.min.js" type="text/javascript"></script>
-    <script src="../js/radar.js" type="text/javascript"></script>
+    <script src="js/ajxmenu-formatted.js" type="text/javascript"></script>
+    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="js/radar.js" type="text/javascript"></script>
 
     <!-- css -->
-    <link rel="stylesheet" type="text/css" href="../css/normal.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/layout.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/ajxmenu.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/admin.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/tabs_lab.css"/>
+    <link rel="stylesheet" type="text/css" href="css/normal.css"/>
+    <link rel="stylesheet" type="text/css" href="css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ajxmenu.css"/>
+    <link rel="stylesheet" type="text/css" href="css/admin.css"/>
+    <link rel="stylesheet" type="text/css" href="css/tabs_lab.css"/>
 
 
         <style type="text/css" id="com-solidstategroup-radar-web-pages-PatientPage-0">
@@ -73,7 +74,7 @@
 
 /*]]>*/
 </style>
-        <link href="../css/tabs.css" rel="stylesheet" type="text/css"/>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
 
         <!--[if IE]>
         <style type="text/css" id="com-solidstategroup-radar-web-pages-PatientPage-1">
@@ -91,14 +92,14 @@
 </style>
         <![endif]-->
 
-    <script type="text/javascript" src="../wicket/resource/org.apache.wicket.markup.html.WicketEventReference/wicket-event-ver-1336379226000.js"></script>
-<script type="text/javascript" src="../wicket/resource/org.apache.wicket.ajax.WicketAjaxReference/wicket-ajax-ver-1336379226000.js"></script>
+    <script type="text/javascript" src="wicket/resource/org.apache.wicket.markup.html.WicketEventReference/wicket-event-ver-1336379226000.js"></script>
+<script type="text/javascript" src="wicket/resource/org.apache.wicket.ajax.WicketAjaxReference/wicket-ajax-ver-1336379226000.js"></script>
 <script type="text/javascript" id="wicket-ajax-base-url">
 /*<![CDATA[*/
 Wicket.Ajax.baseUrl="patient/edit?3&amp;id=296";
 /*]]>*/
 </script>
-<script type="text/javascript" src="../wicket/resource/org.apache.wicket.extensions.yui.YuiLib/yuiloader/yuiloader-ver-1336379224000.js"></script>
+<script type="text/javascript" src="wicket/resource/org.apache.wicket.extensions.yui.YuiLib/yuiloader/yuiloader-ver-1336379224000.js"></script>
 <script type="text/javascript" >
 /*<![CDATA[*/
 Wicket.Event.add(window, "domready", function(event) { /*
@@ -395,7 +396,7 @@ jQuery(function() {
                 <td>Date of Birth</td>
                 <td>
                     <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
-<span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+<span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                     <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
                     <a href="#" class="info"><em>Help</em><span>To select a different month or year in the
                 date picker, click the current month or year at the top.<br/><br/></span> </a>
@@ -654,7 +655,7 @@ jQuery(function() {
                     <td>Date urea taken</td>
                     <td>
                         <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
-    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                         <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
                         <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
 
@@ -665,7 +666,7 @@ jQuery(function() {
                     <td>Date weight recorded</td>
                     <td>
                         <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
-    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                         <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
                         <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
 
@@ -688,7 +689,7 @@ jQuery(function() {
                     <td>Date creatinine taken</td>
                     <td>
                         <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
-    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                         <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
                         <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
 
@@ -699,7 +700,7 @@ jQuery(function() {
                     <td>Date height recorded</td>
                     <td>
                         <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
-    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                         <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
                         <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
 
@@ -724,7 +725,7 @@ jQuery(function() {
                     <td>Date BP recorded</td>
                     <td>
                         <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
-    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                         <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
                         <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
 
