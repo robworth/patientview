@@ -202,8 +202,11 @@ public class DemographicsPanel extends Panel {
 
         // Consultant and renal unit
         final IModel<Long> centreNumber = new Model<Long>();
+        Centre renalUnitSelected =  form.getModelObject().getRenalUnit();
+        centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getId() : null);
+
         DropDownChoice<Centre> renalUnit = new CentreDropDown("renalUnit");
-        final DropDownChoice<Consultant> consultant = new ConsultantDropDown("consultant", centreNumber);
+        final ConsultantDropDown consultant = new ConsultantDropDown("consultant", centreNumber);
         renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
