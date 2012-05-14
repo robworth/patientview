@@ -72,8 +72,8 @@
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-        <!--property name="testConnectionOnCheckout" value="true"/-->
-        <!--property name="preferredTestQuery" value="select 1"/-->
+        <property name="testConnectionOnCheckout" value="true"/>
+        <property name="preferredTestQuery" value="select 1"/>
 
         <!--Below shows the full list of properties available - may be necessary for some cases (but preferably avoided)-->
         <!--<property name="maxPoolSize" value="${cms.jdbc.maxPoolSize}"/>-->
