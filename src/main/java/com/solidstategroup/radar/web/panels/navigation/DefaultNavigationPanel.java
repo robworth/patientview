@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.web.panels.navigation;
 
+import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
 import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
@@ -8,11 +9,11 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.MarkupContainer;
 import com.solidstategroup.radar.web.pages.HomePage;
-import com.solidstategroup.radar.web.pages.PatientPage;
-import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
-import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
@@ -34,7 +35,7 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
 
         // Enter new patient - only visible when a professional is logged in
         BookmarkablePageLink enterNewPatientPageLink = new BookmarkablePageLink<PatientPage>("enterNewPatientPageLink",
-                PatientPage.class);
+                AddPatientPage.class);
         enterNewPatientPageLink.setVisible(isProfessionalOrSuperUserLoggedIn());
         add(enterNewPatientPageLink);
 

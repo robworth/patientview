@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web;
 
-import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
+import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.admin.AdminConsultantPage;
 import com.solidstategroup.radar.web.pages.admin.AdminConsultantsPage;
@@ -13,11 +14,12 @@ import com.solidstategroup.radar.web.pages.admin.AdminPatientsPage;
 import com.solidstategroup.radar.web.pages.admin.AdminUserPage;
 import com.solidstategroup.radar.web.pages.admin.AdminUsersPage;
 import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
-import com.solidstategroup.radar.web.pages.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.patient.GenericPatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
 import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.HomePage;
-import com.solidstategroup.radar.web.pages.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
 import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import com.solidstategroup.radar.web.pages.login.ProfessionalForgottenPasswordPage;
 import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
@@ -74,6 +76,10 @@ public class RadarApplication extends AuthenticatedWebApplication {
     public static final int RELAPSE_PAGE_NO = 12;
     public static final int HOSPITALISATION_PAGE_NO = 16;
 
+    // generic page numbers
+    public static final int ADD_PATIENT_PAGE_N0 = 17;
+    public static final int GENERIC_DEMOGRAPHICS_PAGE_NO = 18;
+    public static final int MEDICAL_RESULTS_PAGE_NO = 19;
     // some global settings
     public static final Double MIN_HEIGHT = 35.0;
     public static final Double MAX_HEIGHT = 220.0;
@@ -157,6 +163,8 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("patient/view", PatientPageReadOnly.class);
         mountPage("patients", ExistingPatientsListingPage.class);
         mountPage("registration/patient", PatientRegistrationPage.class);
+        mountPage("patient/new", AddPatientPage.class);
+        mountPage("patient/new/details", GenericPatientPage.class);
 
         // professional pages
         mountPage("registration/professional", ProfessionalRegistrationPage.class);

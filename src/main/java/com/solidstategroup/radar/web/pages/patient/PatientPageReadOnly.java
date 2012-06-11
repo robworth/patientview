@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarSecuredSession;
@@ -58,6 +58,6 @@ public class PatientPageReadOnly extends PatientPage {
 
 
     public static PageParameters getParameters(Long radarNumber) {
-       return new PageParameters().set(PatientPage.PARAM_ID, radarNumber);
+       return new PageParameters().set(PARAM_ID, radarNumber);
     }
 }

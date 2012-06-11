@@ -4,7 +4,7 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.models.PageNumberModel;
-import com.solidstategroup.radar.web.pages.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
 import com.solidstategroup.radar.web.panels.followup.ClinicalPicturePanel;
 import com.solidstategroup.radar.web.panels.followup.FollowUpLaboratoryResultsPanel;
 import com.solidstategroup.radar.web.panels.followup.FollowUpTreatmentPanel;

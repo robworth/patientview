@@ -1,0 +1,147 @@
+<wicket:panel>
+    <form>
+
+        <div id="mainBlock">
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+            <table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
+                <tr>
+                    <td style="height:30px;">
+                        <span style="font-weight:bold;">Demographics</span>
+                    </td>
+                    <td style="text-align:right; padding-right:10px;"><b>RADAR Number</b></td>
+                    <td style="width:150px;">
+                        <input id="radarNumber" type="text" readonly="readonly"
+                               style="background-color:#EEF6ED;font-style:italic;"/></td>
+                </tr>
+                <tr>
+                    <td style="height:30px;">
+                        <label class="lblPad"
+                               style="width:150px;">&nbsp;Disease Group:</label>
+                        ALPORT
+                    </td>
+                    <td style="text-align:right; padding-right:10px;">Date Registered</td>
+                    <td><input id="dateRegistered" type="text" readonly="readonly"
+                               style="background-color:#EEF6ED;font-style:italic;"/>
+                    </td>
+                </tr>
+            </table>
+            <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+                   class="style3">
+                <tr>
+                    <td style="width:50%; vertical-align:top;">
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+                            <tr>
+                                <td>
+                                    Blood Urea
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Date of Urea test
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Serum Creatinine
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Date Creatinine
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Weight
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Date Weight
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Height
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Date Height
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    BP diastolic
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Date BP
+                                </td>
+                                <td>
+                                    <input type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Antihypertensive drugs
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                        <option>Unknown</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br/><br/>
+                        <br/><br/>
+                        <input type="button" id="save" value="save" class="saveBtn"/>
+
+                    </td>
+                    <td style="vertical-align:top;">
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <span style="font-weight:bold;" id="successMessage"></span>
+            <span style="font-weight: bold; color:red" id="errorMessage"></span>
+
+        </div>
+
+    </form>
+</wicket:panel>
