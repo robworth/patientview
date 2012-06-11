@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
@@ -20,7 +19,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
-import com.solidstategroup.radar.web.pages.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;

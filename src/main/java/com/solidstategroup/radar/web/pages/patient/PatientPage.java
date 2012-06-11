@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.user.User;
@@ -11,6 +11,7 @@ import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.models.PageNumberModel;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.panels.DemographicsPanel;
 import com.solidstategroup.radar.web.panels.DiagnosisPanel;
 import com.solidstategroup.radar.web.panels.FirstVisitPanel;
@@ -19,6 +20,7 @@ import com.solidstategroup.radar.web.panels.HospitalisationPanel;
 import com.solidstategroup.radar.web.panels.PathologyPanel;
 import com.solidstategroup.radar.web.panels.RelapsePanel;
 import com.solidstategroup.radar.web.validators.RadarDateValidator;
+import com.solidstategroup.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -130,50 +132,8 @@ public class PatientPage extends BasePage {
         pageNumber.setOutputMarkupPlaceholderTag(true);
         add(pageNumber);
 
-
-        visitChildren(new IVisitor<Component, Object>() {
-            public void component(Component component, IVisit<Object> objectIVisit) {
-                //add onkeyup event to date to santise input - tried attaching behaviour in the component class itself
-                // but did not work
-                if (component instanceof RadarDateTextField || component instanceof RadarRequiredDateTextField) {
-                    component.add(new AttributeModifier("onkeyup", "radarUtility.sanitiseDateInput(this);"));
-                }
-
-                // add validator to date components - adding it inside the component constructor does not work
-                if (component instanceof RadarDateTextField || component instanceof RadarRequiredDateTextField) {
-                    component.add(new RadarDateValidator());
-                }
-
-                //if form component - mark form as dirty onchange
-                if (component instanceof FormComponent || component instanceof Radio) {
-                    // ignore the subform components
-                    String[] ignoreParents = {"immunosuppression", "plasmapheresispanel", "dialysiscontainer",
-                            "transplantscontainer", "rejectDataContainer", "editTransplantContainer", "addTransplantForm"};
-
-                    // ignore record switchers
-                    String[] ignoreIds = {"switcher"};
-
-                    boolean ignoreComponent = false;
-                    for (String ignore : ignoreParents) {
-                        if (component.getPath().toLowerCase().contains(ignore.toLowerCase())) {
-                            ignoreComponent = true;
-                            break;
-                        }
-                    }
-                    for (String ignore : ignoreIds) {
-                        if (component.getId().toLowerCase().contains(ignore.toLowerCase())) {
-                            ignoreComponent = true;
-                            break;
-                        }
-                    }
-                    if (!ignoreComponent) {
-                        component.add(new AttributeAppender("onchange", RadarApplication.FORM_IS_DIRTY_TRUE_SCRIPT));
-                    }
-                }
-
-            }
-
-        });
+        // edit form behaviour
+        visitChildren(new PatientFormVisitor());
 
         add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
     }

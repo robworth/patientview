@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages;
+package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
@@ -11,6 +11,7 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;

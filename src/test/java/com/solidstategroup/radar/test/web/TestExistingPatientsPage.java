@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.test.web;
 
-import com.solidstategroup.radar.web.pages.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
 import org.junit.Test;
 
 public class TestExistingPatientsPage extends BasePageTest {
