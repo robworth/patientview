@@ -26,7 +26,8 @@ public class ConsultantDropDown extends DropDownChoice<Consultant> {
 
     public ConsultantDropDown(String id, final IModel<Long> centreNumber) {
         super(id);
-        LoadableDetachableModel<List<Consultant>> consultantsListModel = new LoadableDetachableModel<List<Consultant>>() {
+        LoadableDetachableModel<List<Consultant>> consultantsListModel =
+                new LoadableDetachableModel<List<Consultant>>() {
             @Override
             protected List<Consultant> load() {
                 Centre centre = new Centre();

@@ -23,7 +23,8 @@ public class RadarBehaviourFactory {
             @Override
             public CharSequence decorateScript(Component c, CharSequence script) {
                 return "if (editPatientPage.formIsDirty) {\n" +
-                        "    var exit = confirm(\"Are you sure you want to leave the tab without saving the form?\")\n" +
+                        "    var exit = confirm(\"Are you sure you want " +
+                        "to leave the tab without saving the form?\")\n" +
                         "    if (!exit) {\n" +
                         "        return;\n" +
                         "    } else {\n" +
@@ -46,7 +47,8 @@ public class RadarBehaviourFactory {
                         "jQuery(function() {\n" +
                         "    jQuery(\"#topNavigation a\").not('.logoutLink').click(function() {\n" +
                         "        if (editPatientPage.formIsDirty) {\n" +
-                        "            return confirm(\"Are you sure you want to exit the page without saving the form?\");\n" +
+                        "            return confirm(\"Are you sure you want to exit the page without saving " +
+                                "the form?\");\n" +
                         "\n" +
                         "        }\n" +
                         "    });\n" +

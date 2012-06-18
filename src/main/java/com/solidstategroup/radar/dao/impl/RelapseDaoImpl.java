@@ -84,7 +84,8 @@ public class RelapseDaoImpl extends BaseDaoImpl implements RelapseDao {
     public Relapse getRelapse(long id) {
         try {
             return jdbcTemplate
-                    .queryForObject("SELECT * FROM tbl_Relapse WHERE relID = ?", new Object[]{id}, new RelapseRowMapper());
+                    .queryForObject("SELECT * FROM tbl_Relapse WHERE relID = ?",
+                            new Object[]{id}, new RelapseRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

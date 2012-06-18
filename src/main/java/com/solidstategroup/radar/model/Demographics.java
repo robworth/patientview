@@ -1,6 +1,8 @@
 package com.solidstategroup.radar.model;
 
 
+import com.solidstategroup.radar.model.generic.DiseaseGroup;
+import com.solidstategroup.radar.model.generic.GenericDiagnosis;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 
@@ -33,6 +35,46 @@ public class Demographics extends BaseModel {
 
     private boolean consent;
     private Centre renalUnitAuthorised;
+
+    // generic extra fields
+    private DiseaseGroup diseaseGroup;
+    private String emailAddress;
+    private String phone1;
+    private String phone2;
+    private String mobile;
+    private RRTModality rrtModality;
+    private GenericDiagnosis genericDiagnosis;
+    private Date dateOfGenericDiagnosis;
+    private String otherClinicianAndContactInfo;
+    private String comments;
+
+    private String republicOfIrelandId;
+    private String isleOfManId;
+    private String channelIslandsId;
+    private String indiaId;
+
+    private boolean generic;
+
+    public enum RRTModality {
+        HD(1),
+        PD(2),
+        Tx(3),
+        NONE(-1);
+
+        private int id;
+
+        RRTModality(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    }
 
     public Integer getAge() {
         // Return the difference between now and the date of birth
@@ -225,5 +267,125 @@ public class Demographics extends BaseModel {
 
     public void setConsent(boolean consent) {
         this.consent = consent;
+    }
+
+    public DiseaseGroup getDiseaseGroup() {
+        return diseaseGroup;
+    }
+
+    public void setDiseaseGroup(DiseaseGroup diseaseGroup) {
+        this.diseaseGroup = diseaseGroup;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getPhone1() {
+        return phone1;
+    }
+
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
+    }
+
+    public String getPhone2() {
+        return phone2;
+    }
+
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getRepublicOfIrelandId() {
+        return republicOfIrelandId;
+    }
+
+    public void setRepublicOfIrelandId(String republicOfIrelandId) {
+        this.republicOfIrelandId = republicOfIrelandId;
+    }
+
+    public String getIsleOfManId() {
+        return isleOfManId;
+    }
+
+    public void setIsleOfManId(String isleOfManId) {
+        this.isleOfManId = isleOfManId;
+    }
+
+    public String getChannelIslandsId() {
+        return channelIslandsId;
+    }
+
+    public void setChannelIslandsId(String channelIslandsId) {
+        this.channelIslandsId = channelIslandsId;
+    }
+
+    public String getIndiaId() {
+        return indiaId;
+    }
+
+    public void setIndiaId(String indiaId) {
+        this.indiaId = indiaId;
+    }
+
+    public RRTModality getRrtModality() {
+        return rrtModality;
+    }
+
+    public void setRrtModality(RRTModality rrtModality) {
+        this.rrtModality = rrtModality;
+    }
+
+    public GenericDiagnosis getGenericDiagnosis() {
+        return genericDiagnosis;
+    }
+
+    public void setGenericDiagnosis(GenericDiagnosis genericDiagnosis) {
+        this.genericDiagnosis = genericDiagnosis;
+    }
+
+    public Date getDateOfGenericDiagnosis() {
+        return dateOfGenericDiagnosis;
+    }
+
+    public void setDateOfGenericDiagnosis(Date dateOfGenericDiagnosis) {
+        this.dateOfGenericDiagnosis = dateOfGenericDiagnosis;
+    }
+
+    public String getOtherClinicianAndContactInfo() {
+        return otherClinicianAndContactInfo;
+    }
+
+    public void setOtherClinicianAndContactInfo(String otherClinicianAndContactInfo) {
+        this.otherClinicianAndContactInfo = otherClinicianAndContactInfo;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public boolean isGeneric() {
+        return generic;
+    }
+
+    public void setGeneric(boolean generic) {
+        this.generic = generic;
     }
 }

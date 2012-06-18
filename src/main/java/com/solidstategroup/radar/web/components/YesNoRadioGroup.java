@@ -3,7 +3,6 @@ package com.solidstategroup.radar.web.components;
 import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 public class YesNoRadioGroup extends RadioGroup<Boolean> {

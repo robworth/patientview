@@ -2,6 +2,8 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
+import com.solidstategroup.radar.dao.generic.GenericDiagnosisDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
@@ -21,10 +23,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -35,6 +37,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private static final String DATE_FORMAT_3 = "dd/MM/y";
     private SimpleJdbcInsert demographicsInsert;
     private UtilityDao utilityDao;
+    private DiseaseGroupDao diseaseGroupDao;
+    private GenericDiagnosisDao genericDiagnosisDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -47,8 +51,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 .usingColumns(
                         "RR_NO", "DATE_REG", "NHS_NO", "HOSP_NO", "UKT_NO", "CHI_NO", "SNAME", "SNAME_ALIAS",
                         "FNAME", "DOB", "AGE", "SEX", "ETHNIC_GP", "ADD1", "ADD2", "ADD3", "ADD4", "POSTCODE",
-                        "POSTCODE_OLD", "CONSENT", "DATE_BAPN_REG", "CONS_NEPH", "RENAL_UNIT", "RENAL_UNIT_2", "STATUS"
-                );
+                        "POSTCODE_OLD", "CONSENT", "DATE_BAPN_REG", "CONS_NEPH", "RENAL_UNIT", "RENAL_UNIT_2",
+                        "STATUS", "RDG", "emailAddress", "phone1", "phone2", "mobile", "RRT_modality",
+                        "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
+                        "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
     }
 
     public void saveDemographics(final Demographics demographics) {
@@ -80,8 +86,23 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "CONS_NEPH = ?, " +
                             "RENAL_UNIT = ?, " +
                             "RENAL_UNIT_2 = ?, " +
-                            "STATUS = ? " +
-                            "WHERE RADAR_NO = ?",
+                            "STATUS = ?, " +
+                            "RDG = ?, " +
+                            "emailAddress = ?, " +
+                            "phone1 = ?, " +
+                            "phone2 = ?, " +
+                            "mobile = ?, " +
+                            "RRT_modality = ?, " +
+                            "genericDiagnosis = ?, " +
+                            "dateOfGenericDiagnosis = ?, " +
+                            "otherClinicianAndContactInfo = ?, " +
+                            "comments = ?, " +
+                            "republicOfIrelandId = ?, " +
+                            "isleOfManId = ?, " +
+                            "channelIslandsId = ?, " +
+                            "indiaId = ?, " +
+                            "generic = ? " +
+                            " WHERE RADAR_NO = ?",
                     demographics.getRenalRegistryNumber(),
                     demographics.getDateRegistered(),
                     getEncryptedString(demographics.getNhsNumber()),
@@ -108,8 +129,22 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     demographics.getRenalUnitAuthorised() != null ?
                             demographics.getRenalUnitAuthorised().getId() : null,
                     demographics.getStatus() != null ? demographics.getStatus().getId() : null,
-                    demographics.getId()
-            );
+                    demographics.getDiseaseGroup() != null ? demographics.getDiseaseGroup().getId() : null,
+                    demographics.getEmailAddress(),
+                    demographics.getPhone1(),
+                    demographics.getPhone2(),
+                    demographics.getMobile(),
+                    demographics.getRrtModality() != null ? demographics.getRrtModality().getId() : null,
+                    demographics.getGenericDiagnosis() != null ? demographics.getGenericDiagnosis().getId() : null,
+                    demographics.getDateOfGenericDiagnosis(),
+                    demographics.getOtherClinicianAndContactInfo(),
+                    demographics.getComments(),
+                    demographics.getRepublicOfIrelandId(),
+                    demographics.getIsleOfManId(),
+                    demographics.getChannelIslandsId(),
+                    demographics.getIndiaId(),
+                    demographics.isGeneric(),
+                    demographics.getId());
         } else {
             Number id = demographicsInsert.executeAndReturnKey(new HashMap<String, Object>() {
                 {
@@ -123,7 +158,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("SNAME_ALIAS", getEncryptedString(demographics.getSurnameAlias()));
                     put("FNAME", getEncryptedString(demographics.getForename()));
                     put("DOB", demographics.getDateOfBirth() != null ?
-                            getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())) : null);
+                            getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(
+                                    demographics.getDateOfBirth())) : null);
                     put("AGE", demographics.getAge());
                     put("SEX", demographics.getSex() != null ? demographics.getSex().getId() : null);
                     put("ETHNIC_GP",
@@ -142,6 +178,23 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("RENAL_UNIT_2", demographics.getRenalUnitAuthorised() != null ?
                             demographics.getRenalUnitAuthorised().getId() : null);
                     put("STATUS", demographics.getStatus() != null ? demographics.getStatus().getId() : null);
+                    put("RDG", demographics.getDiseaseGroup() != null ? demographics.getDiseaseGroup().getId() : null);
+                    put("emailAddress", demographics.getEmailAddress());
+                    put("phone1", demographics.getPhone1());
+                    put("phone2", demographics.getPhone2());
+                    put("mobile", demographics.getMobile());
+                    put("RRT_modality", demographics.getRrtModality() != null ? demographics.getRrtModality().getId()
+                            : null);
+                    put("genericDiagnosis", demographics.getGenericDiagnosis() != null ?
+                            demographics.getGenericDiagnosis().getId() : null);
+                    put("dateOfGenericDiagnosis", demographics.getDateOfGenericDiagnosis());
+                    put("otherClinicianAndContactInfo", demographics.getOtherClinicianAndContactInfo());
+                    put("comments", demographics.getComments());
+                    put("republicOfIrelandId", demographics.getRepublicOfIrelandId());
+                    put("isleOfManId", demographics.getIsleOfManId());
+                    put("channelIslandsId", demographics.getChannelIslandsId());
+                    put("indiaId", demographics.getIndiaId());
+                    put("generic", demographics.isGeneric());
                 }
             });
             demographics.setId(id.longValue());
@@ -243,11 +296,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         return jdbcTemplate.query("SELECT * FROM tbl_Status", new StatusRowMapper());
     }
 
+
     private class DemographicsRowMapper implements RowMapper<Demographics> {
         public Demographics mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct object and set radar number
             Demographics demographics = new Demographics();
-            demographics.setId(resultSet.getLong("RADAR_NO"));
+            Long radarId = resultSet.getLong("RADAR_NO");
+            demographics.setId(radarId);
             demographics.setDateRegistered(resultSet.getDate("DATE_REG"));
 
             // Renal registry number
@@ -331,6 +386,36 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 demographics.setRenalUnitAuthorised(centre);
             }
 
+            // set generic fields
+            Long diseaseGroupId = getLongWithNullCheck("RDG", resultSet); //RDG,
+            if (diseaseGroupId != null) {
+                demographics.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
+            }
+            demographics.setEmailAddress(resultSet.getString("emailAddress")); //emailAddress,
+            demographics.setPhone1(resultSet.getString("phone1")); //phone1,
+            demographics.setPhone2(resultSet.getString("phone2")); //phone2,
+            demographics.setMobile("mobile"); //mobile,
+            Integer rrtModalityId = getIntegerWithNullCheck("RRT_modality", resultSet); //RRT_modality,
+            if (rrtModalityId != null) {
+                demographics.setRrtModality(getEnumValue(Demographics.RRTModality.class, rrtModalityId));
+            }
+
+            String genericDiagnosisId = resultSet.getString("genericDiagnosis");
+            if (genericDiagnosisId != null) {
+                if (!genericDiagnosisId.isEmpty()) {
+                    demographics.setGenericDiagnosis(genericDiagnosisDao.getById(genericDiagnosisId));
+                }
+            }
+
+            demographics.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));
+            demographics.setOtherClinicianAndContactInfo(resultSet.getString("otherClinicianAndContactInfo"));
+            demographics.setComments(resultSet.getString("comments")); //comments,
+            demographics.setRepublicOfIrelandId(resultSet.getString("republicOfIrelandId"));
+            demographics.setIsleOfManId(resultSet.getString("isleOfManId"));
+            demographics.setChannelIslandsId(resultSet.getString("channelIslandsId"));
+            demographics.setIndiaId(resultSet.getString("indiaId"));
+            demographics.setGeneric(resultSet.getBoolean("generic"));
+
             return demographics;
         }
     }
@@ -379,4 +464,19 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         this.utilityDao = utilityDao;
     }
 
+    public SimpleJdbcInsert getDemographicsInsert() {
+        return demographicsInsert;
+    }
+
+    public void setDemographicsInsert(SimpleJdbcInsert demographicsInsert) {
+        this.demographicsInsert = demographicsInsert;
+    }
+
+    public void setDiseaseGroupDao(DiseaseGroupDao diseaseGroupDao) {
+        this.diseaseGroupDao = diseaseGroupDao;
+    }
+
+    public void setGenericDiagnosisDao(GenericDiagnosisDaoImpl genericDiagnosisDao) {
+        this.genericDiagnosisDao = genericDiagnosisDao;
+    }
 }

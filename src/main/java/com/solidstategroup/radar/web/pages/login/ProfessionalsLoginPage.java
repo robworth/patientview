@@ -10,7 +10,6 @@ import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
@@ -87,7 +86,8 @@ public class ProfessionalsLoginPage extends BasePage {
         componentsToUpdate.add(feedbackPanel);
 
         form.add(new RadarRequiredTextField("email", form, componentsToUpdate));
-        RadarRequiredPasswordTextField password = new RadarRequiredPasswordTextField("password", form, componentsToUpdate);
+        RadarRequiredPasswordTextField password = new RadarRequiredPasswordTextField("password",
+                form, componentsToUpdate);
         form.add(password);
         password.setModel(passwordModel);
 

@@ -2,21 +2,23 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.dao.UtilityDao;
-
-import com.solidstategroup.radar.model.filter.ConsultantFilter;
-import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class UtilityDaoTest extends BaseDaoTest {
 

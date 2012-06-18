@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.PathologyDao;
-import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.sequenced.Pathology;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

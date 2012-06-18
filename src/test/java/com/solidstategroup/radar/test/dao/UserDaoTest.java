@@ -1,15 +1,15 @@
 package com.solidstategroup.radar.test.dao;
 
-import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.DemographicsDao;
-import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
+import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
-import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.util.TripleDes;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -19,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class UserDaoTest extends BaseDaoTest {
 

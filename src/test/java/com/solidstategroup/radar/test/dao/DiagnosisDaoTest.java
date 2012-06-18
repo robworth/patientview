@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DiagnosisDao;
-import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;

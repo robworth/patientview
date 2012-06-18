@@ -110,7 +110,8 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                 put("DYS_ERYTH_URINE", labData.getDysmorphicErythrocytes() != null ?
                         labData.getDysmorphicErythrocytes().getId() : null);
                 put("RED_CCASTS_URINE", labData.getRedCellCast() != null ? labData.getRedCellCast().getId() : null);
-                put("WBC_CASTS_URINE", labData.getWhiteCellCasts() != null ? labData.getWhiteCellCasts().getId() : null);
+                put("WBC_CASTS_URINE", labData.getWhiteCellCasts() != null ? labData.getWhiteCellCasts().getId()
+                        : null);
                 put("LEUC_URINE", labData.getLeucocytesUrine());
                 put("NITRITE", labData.getNitrite());
                 put("BACT_URINE", labData.getBacteria());
@@ -231,7 +232,7 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                     "only one record should exist for sequence number 1", id);
             List<LabData> labDatas = jdbcTemplate.query("SELECT * FROM tbl_LabData WHERE RADAR_NO = ? AND SEQ_NO = 1",
                     new Object[]{id}, new LabDataRowMapper());
-            if(!labDatas.isEmpty()) {
+            if (!labDatas.isEmpty()) {
                 return labDatas.get(0);
             }
         }
@@ -278,7 +279,8 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
             labData.setThyroxine(getDoubleWithNullCheck("THYROX", resultSet));
             labData.setTsh(getDoubleWithNullCheck("TSH", resultSet));
 
-            labData.setAnca(BaseDaoImpl.<LabData.Anca>getEnumValue(LabData.Anca.class, getIntegerWithNullCheck("ANCA", resultSet)));
+            labData.setAnca(BaseDaoImpl.<LabData.Anca>getEnumValue(LabData.Anca.class, getIntegerWithNullCheck("ANCA",
+                    resultSet)));
 
             // There is a row ELISA_ASS but again it is all commented out in current code
 
@@ -332,9 +334,11 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
             labData.setDnaTakenFactorH(resultSet.getBoolean("DNA_FACTOR_H"));
 
             labData.setEbv(BaseDaoImpl
-                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, getIntegerWithNullCheck("EBV", resultSet)));
+                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, getIntegerWithNullCheck(
+                            "EBV", resultSet)));
             labData.setCmvSerology(BaseDaoImpl
-                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, getIntegerWithNullCheck("CMV", resultSet)));
+                    .<LabData.Immunoglobulins>getEnumValue(LabData.Immunoglobulins.class, getIntegerWithNullCheck("CMV",
+                            resultSet)));
             labData.setCmvSymptomatic(resultSet.getBoolean("CMV_SYM"));
 
             // Three more commented within code: BKV and BKV_SYM and HANTAVIRUS
@@ -349,17 +353,21 @@ public class LabDataDaoImpl extends BaseDaoImpl implements LabDataDao {
                     LabData.UrineVolumeCondition.class, getIntegerWithNullCheck("UR_VOL_24H_COND", resultSet)));
 
             labData.setHaematuria(BaseDaoImpl
-                    .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, getIntegerWithNullCheck("HAEMATURIA", resultSet)));
+                    .<LabData.Haematuria>getEnumValue(LabData.Haematuria.class, getIntegerWithNullCheck("HAEMATURIA",
+                            resultSet)));
             labData.setAlbuminuria(BaseDaoImpl
                     .<LabData.Albuminuria>getEnumValue(LabData.Albuminuria.class, getIntegerWithNullCheck("ALBUMINURIA"
                             , resultSet)));
 
             labData.setDysmorphicErythrocytes(BaseDaoImpl
-                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("DYS_ERYTH_URINE", resultSet)));
+                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("DYS_ERYTH_URINE",
+                            resultSet)));
             labData.setRedCellCast(BaseDaoImpl
-                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("RED_CCASTS_URINE", resultSet)));
+                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("RED_CCASTS_URINE",
+                            resultSet)));
             labData.setWhiteCellCasts(BaseDaoImpl
-                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("WBC_CASTS_URINE", resultSet)));
+                    .<LabData.Present>getEnumValue(LabData.Present.class, getIntegerWithNullCheck("WBC_CASTS_URINE",
+                            resultSet)));
 
             labData.setLeucocytesUrine(getBooleanWithNullCheck("LEUC_URINE", resultSet));
             labData.setNitrite(getBooleanWithNullCheck("NITRITE", resultSet));

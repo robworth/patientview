@@ -1,11 +1,10 @@
 package com.solidstategroup.radar.web.panels;
 
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
-import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.model.PropertyModel;
 
 public class RadarAjaxPagingNavigator extends AjaxPagingNavigator {

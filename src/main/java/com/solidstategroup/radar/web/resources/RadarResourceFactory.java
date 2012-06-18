@@ -1,12 +1,10 @@
 package com.solidstategroup.radar.web.resources;
 
 import com.solidstategroup.radar.model.enums.ExportType;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.time.Duration;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,11 +16,11 @@ public class RadarResourceFactory {
     private static Map<ExportType, RadarExportResource> exportTypeToExportResourceMap;
 
     public static ByteArrayResource getExportResource(byte[] data, String fileName, ExportType exportType) {
-        if(exportType.equals(ExportType.CSV)) {
+        if (exportType.equals(ExportType.CSV)) {
            return new CsvExportResource(data, fileName);
-        } else if(exportType.equals(ExportType.EXCEL)) {
+        } else if (exportType.equals(ExportType.EXCEL)) {
            return new ExcelExportResource(data, fileName);
-        } else if(exportType.equals(ExportType.PDF)) { // else if rather than else as easier to add new case
+        } else if (exportType.equals(ExportType.PDF)) { // else if rather than else as easier to add new case
            return new PdfExportResource(data, fileName);
         }
         // this case should never happen
@@ -34,7 +32,8 @@ public class RadarResourceFactory {
 
         private String mimeType;
 
-        private RadarExportResource(byte[] array, String filename, String extension, String contentType, String mimeType) {
+        private RadarExportResource(byte[] array, String filename, String extension, String contentType,
+                                    String mimeType) {
             super(contentType, array, filename + extension);
             this.mimeType = mimeType;
         }

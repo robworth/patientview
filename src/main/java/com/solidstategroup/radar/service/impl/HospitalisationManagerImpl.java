@@ -3,7 +3,6 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.HospitalisationDao;
 import com.solidstategroup.radar.model.Hospitalisation;
 import com.solidstategroup.radar.service.HospitalisationManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.RelapseDao;
-import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.sequenced.Relapse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

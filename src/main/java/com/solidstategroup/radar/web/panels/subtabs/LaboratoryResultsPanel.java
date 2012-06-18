@@ -47,12 +47,14 @@ public class LaboratoryResultsPanel extends Panel {
     private ClinicalDataManager clinicalDataManager;
 
     public LaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel, boolean firstVisit,
-                                  IModel<LabData> followingVisitModel, List<Component> followingVisitComponentsToUpdate) {
+                                  IModel<LabData> followingVisitModel, List<Component>
+            followingVisitComponentsToUpdate) {
         super(id);
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
-        final CompoundPropertyModel<LabData> firsVisitModel = new CompoundPropertyModel<LabData>(new LoadableDetachableModel<LabData>() {
+        final CompoundPropertyModel<LabData> firsVisitModel = new CompoundPropertyModel<LabData>(new
+                LoadableDetachableModel<LabData>() {
             @Override
             public LabData load() {
                 LabData labDataModelObject = null;
@@ -78,13 +80,14 @@ public class LaboratoryResultsPanel extends Panel {
         });
 
         IModel<LabData> formModel;
-        if(firstVisit) {
+        if (firstVisit) {
             formModel = firsVisitModel;
         } else {
             formModel =  new CompoundPropertyModel<LabData>(followingVisitModel);
         }
 
-        final IModel<ClinicalData> clinicalDataModel = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel, clinicalDataManager);
+        final IModel<ClinicalData> clinicalDataModel = RadarModelFactory.getFirstClinicalDataModel(radarNumberModel,
+                clinicalDataManager);
 
         final Form<LabData> form = new Form<LabData>("form", new CompoundPropertyModel<LabData>(formModel)) {
             @Override
@@ -139,17 +142,28 @@ public class LaboratoryResultsPanel extends Panel {
 
         // Blood fields
         form.add(new RadarTextFieldWithValidation("hb", new RangeValidator(2.0, 20.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("wbc", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("neutrophils", new RangeValidator<Double>(0.1, 80.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("platelets", new RangeValidator<Double>(1.0, 800.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("sodium", new RangeValidator<Double>(90.0, 180.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("potassium", new RangeValidator<Double>(1.0, 9.9), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("bun", new RangeValidator<Double>(1.0, 100.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("serumCreatinine", new RangeValidator<Double>(10.0, 2800.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("protein", new RangeValidator<Double>(5.0, 90.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("albumin", new RangeValidator<Double>(5.0, 60.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("crp", new RangeValidator<Double>(0.0, 200.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("totalCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("wbc", new RangeValidator<Double>(0.1, 30.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("neutrophils", new RangeValidator<Double>(0.1, 80.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("platelets", new RangeValidator<Double>(1.0, 800.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("sodium", new RangeValidator<Double>(90.0, 180.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("potassium", new RangeValidator<Double>(1.0, 9.9), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("bun", new RangeValidator<Double>(1.0, 100.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("serumCreatinine", new RangeValidator<Double>(10.0, 2800.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("protein", new RangeValidator<Double>(5.0, 90.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("albumin", new RangeValidator<Double>(5.0, 60.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("crp", new RangeValidator<Double>(0.0, 200.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("totalCholesterol", new RangeValidator<Double>(1.0, 30.0), form,
+                componentsToUpdate));
 
         WebMarkupContainer hdlCholesterolContainer = new WebMarkupContainer("hdlCholesterolContainer") {
             @Override
@@ -157,7 +171,8 @@ public class LaboratoryResultsPanel extends Panel {
                 return isSrnsModel.getObject();
             }
         };
-        RadarTextFieldWithValidation hdlCholesterol = new RadarTextFieldWithValidation("hdlCholesterol", new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate);
+        RadarTextFieldWithValidation hdlCholesterol = new RadarTextFieldWithValidation("hdlCholesterol",
+                new RangeValidator<Double>(0.1, 30.0), form, componentsToUpdate);
         hdlCholesterolContainer.add(hdlCholesterol);
         form.add(hdlCholesterolContainer);
 
@@ -167,13 +182,17 @@ public class LaboratoryResultsPanel extends Panel {
                 return isSrnsModel.getObject();
             }
         };
-        RadarTextFieldWithValidation ldlCholesterol = new RadarTextFieldWithValidation("ldlCholesterol", new RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate);
+        RadarTextFieldWithValidation ldlCholesterol = new RadarTextFieldWithValidation("ldlCholesterol", new
+                RangeValidator<Double>(1.0, 30.0), form, componentsToUpdate);
         ldlCholesterolContainer.add(ldlCholesterol);
         form.add(ldlCholesterolContainer);
 
-        form.add(new RadarTextFieldWithValidation("triglycerides", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("thyroxine", new RangeValidator<Double>(0.0, 30.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("tsh", new RangeValidator<Double>(0.0, 50.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("triglycerides", new RangeValidator<Double>(0.0, 30.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("thyroxine", new RangeValidator<Double>(0.0, 30.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("tsh", new RangeValidator<Double>(0.0, 50.0), form,
+                componentsToUpdate));
 
         WebMarkupContainer phosphateContainer = new WebMarkupContainer("phosphateContainer") {
             @Override
@@ -192,7 +211,8 @@ public class LaboratoryResultsPanel extends Panel {
                 return isSrnsModel.getObject();
             }
         };
-        RadarTextFieldWithValidation ferritin = new RadarTextFieldWithValidation("ferritin", new RangeValidator<Double>(1.0, 5000.0), form, componentsToUpdate);
+        RadarTextFieldWithValidation ferritin = new RadarTextFieldWithValidation("ferritin",
+                new RangeValidator<Double>(1.0, 5000.0), form, componentsToUpdate);
         ferritinContainer.add(ferritin);
         form.add(ferritinContainer);
 
@@ -259,7 +279,8 @@ public class LaboratoryResultsPanel extends Panel {
                 return !isSrnsModel.getObject();
             }
         };
-        DropDownChoice<LabData.Present> dysmorphicErythrocytes = new DropDownChoice<LabData.Present>("dysmorphicErythrocytes",
+        DropDownChoice<LabData.Present> dysmorphicErythrocytes = new DropDownChoice<LabData.Present>(
+                "dysmorphicErythrocytes",
                 Arrays.asList(LabData.Present.values()), new ChoiceRenderer<LabData.Present>("label", "id")) {
         };
         dysmorphicErythrocytesContainer.add(dysmorphicErythrocytes);
@@ -271,7 +292,8 @@ public class LaboratoryResultsPanel extends Panel {
                 return !isSrnsModel.getObject();
             }
         };
-        DropDownChoice<LabData.Present> redCellCaset = new DropDownChoice<LabData.Present>("redCellCast", Arrays.asList(LabData.Present.values()),
+        DropDownChoice<LabData.Present> redCellCaset = new DropDownChoice<LabData.Present>("redCellCast", Arrays.asList(
+                LabData.Present.values()),
                 new ChoiceRenderer<LabData.Present>("label", "id"));
         redCellCastContainer.add(redCellCaset);
         form.add(redCellCastContainer);
@@ -320,9 +342,12 @@ public class LaboratoryResultsPanel extends Panel {
         form.add(new DropDownChoice<LabData.PositiveNegativeNotDone>("antiGbm",
                 Arrays.asList(LabData.PositiveNegativeNotDone.values()), new ChoiceRenderer("label", "id")));
         form.add(new TextArea("dnaAntibodies"));
-        form.add(new RadarTextFieldWithValidation("igG", new RangeValidator<Double>(0.0, 20.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("igA", new RangeValidator<Double>(0.0, 10.0), form, componentsToUpdate));
-        form.add(new RadarTextFieldWithValidation("igM", new RangeValidator<Double>(0.0, 10.0), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("igG", new RangeValidator<Double>(0.0, 20.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("igA", new RangeValidator<Double>(0.0, 10.0), form,
+                componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("igM", new RangeValidator<Double>(0.0, 10.0), form,
+                componentsToUpdate));
 
         WebMarkupContainer complementC3Container = new WebMarkupContainer("complementC3Container");
         RadarTextFieldWithValidation complementC3 = new RadarTextFieldWithValidation("complementC3",
@@ -330,7 +355,8 @@ public class LaboratoryResultsPanel extends Panel {
         complementC3Container.add(complementC3);
         form.add(complementC3Container);
 
-        form.add(new RadarTextFieldWithValidation("complementC4", new RangeValidator<Double>(0.01, 9.99), form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("complementC4", new RangeValidator<Double>(0.01, 9.99), form,
+                componentsToUpdate));
 
         final IModel<Boolean> complementOtherDetailsVisibility = new Model<Boolean>(false);
         complementOtherDetailsVisibility.setObject(form.getModelObject().getComplementOther() != null);
@@ -489,7 +515,7 @@ public class LaboratoryResultsPanel extends Panel {
 
         form.add(save, saveDown);
 
-        if(!firstVisit) {
+        if (!firstVisit) {
             for(Component component : followingVisitComponentsToUpdate) {
               componentsToUpdate.add(component);
             }

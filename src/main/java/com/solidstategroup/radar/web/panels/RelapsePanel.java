@@ -198,7 +198,8 @@ public class RelapsePanel extends Panel {
 
         WebMarkupContainer addRelapseFormContainer = new WebMarkupContainer("addRelapseFormContainer");
 
-        Form<Relapse> addRelapseform = new RelapseForm("addRelapseForm", new CompoundPropertyModel<Relapse>(new Relapse()),
+        Form<Relapse> addRelapseform = new RelapseForm("addRelapseForm",
+                new CompoundPropertyModel<Relapse>(new Relapse()),
                 addRelapseComponentsToUpdate);
 
         addRelapseform.setOutputMarkupId(true);
@@ -220,7 +221,8 @@ public class RelapsePanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                ajaxRequestTarget.add(addRelapseComponentsToUpdate.toArray(new Component[addRelapseComponentsToUpdate.size()]));
+                ajaxRequestTarget.add(addRelapseComponentsToUpdate.toArray(new Component[
+                        addRelapseComponentsToUpdate.size()]));
 
             }
         });
@@ -266,7 +268,8 @@ public class RelapsePanel extends Panel {
             remissionAchieved.add(new Radio<RemissionAchieved>("complete",
                     new Model<RemissionAchieved>(RemissionAchieved.COMPLETE)));
             remissionAchieved
-                    .add(new Radio<RemissionAchieved>("partial", new Model<RemissionAchieved>(RemissionAchieved.PARTIAL)));
+                    .add(new Radio<RemissionAchieved>("partial", new Model<RemissionAchieved>(
+                            RemissionAchieved.PARTIAL)));
             remissionAchieved
                     .add(new Radio<RemissionAchieved>("none", new Model<RemissionAchieved>(RemissionAchieved.NONE)));
             add(remissionAchieved);

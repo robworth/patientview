@@ -3,9 +3,9 @@ package com.solidstategroup.radar.web.dataproviders;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.UserManager;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 
 import java.util.Iterator;
 import java.util.List;

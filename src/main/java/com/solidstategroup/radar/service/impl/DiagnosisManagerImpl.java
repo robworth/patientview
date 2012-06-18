@@ -6,7 +6,6 @@ import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
 import com.solidstategroup.radar.service.DiagnosisManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
     private DiagnosisDao diagnosisDao;
 
     public void saveDiagnosis(Diagnosis diagnosis) {
-        diagnosisDao.saveDiagnosis( diagnosis);
+        diagnosisDao.saveDiagnosis(diagnosis);
     }
 
     public Diagnosis getDiagnosis(long id) {

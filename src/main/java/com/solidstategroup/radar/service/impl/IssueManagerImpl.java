@@ -1,14 +1,13 @@
 package com.solidstategroup.radar.service.impl;
 
-import com.solidstategroup.radar.service.IssueManager;
+import com.solidstategroup.radar.dao.IssueDao;
 import com.solidstategroup.radar.model.Issue;
 import com.solidstategroup.radar.model.filter.IssueFilter;
-import com.solidstategroup.radar.dao.IssueDao;
-
-import java.util.List;
-
+import com.solidstategroup.radar.service.IssueManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class IssueManagerImpl implements IssueManager {
 

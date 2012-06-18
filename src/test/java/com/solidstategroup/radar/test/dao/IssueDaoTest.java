@@ -1,19 +1,21 @@
 package com.solidstategroup.radar.test.dao;
 
+import com.solidstategroup.radar.dao.IssueDao;
+import com.solidstategroup.radar.model.Issue;
+import com.solidstategroup.radar.model.enums.IssuePriority;
+import com.solidstategroup.radar.model.enums.IssueStatus;
+import com.solidstategroup.radar.model.enums.IssueType;
+import com.solidstategroup.radar.model.filter.IssueFilter;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.junit.Test;
-import com.solidstategroup.radar.dao.IssueDao;
-import com.solidstategroup.radar.model.Issue;
-import com.solidstategroup.radar.model.filter.IssueFilter;
-import com.solidstategroup.radar.model.enums.IssueType;
-import com.solidstategroup.radar.model.enums.IssuePriority;
-import com.solidstategroup.radar.model.enums.IssueStatus;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class IssueDaoTest extends BaseDaoTest {
 

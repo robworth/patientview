@@ -6,8 +6,8 @@ public class DiagnosisCode extends BaseModel {
 
     private String description;
     private String abbreviation;
-    public static final Long SRNS_ID = 1l;
-    public static final Long MPGN_ID = 2l;
+    public static final Long SRNS_ID = 1L;
+    public static final Long MPGN_ID = 2L;
 
 
     public String getDescription() {

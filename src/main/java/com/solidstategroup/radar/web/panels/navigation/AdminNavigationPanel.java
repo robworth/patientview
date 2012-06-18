@@ -1,10 +1,10 @@
 package com.solidstategroup.radar.web.panels.navigation;
 
-import com.solidstategroup.radar.web.pages.admin.AdminUsersPage;
 import com.solidstategroup.radar.web.pages.admin.AdminConsultantsPage;
+import com.solidstategroup.radar.web.pages.admin.AdminIssuesPage;
 import com.solidstategroup.radar.web.pages.admin.AdminPatientsAllPage;
 import com.solidstategroup.radar.web.pages.admin.AdminPatientsPage;
-import com.solidstategroup.radar.web.pages.admin.AdminIssuesPage;
+import com.solidstategroup.radar.web.pages.admin.AdminUsersPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 public class AdminNavigationPanel extends BaseNavigationPanel {

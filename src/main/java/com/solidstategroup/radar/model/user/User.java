@@ -17,7 +17,7 @@ public abstract class User extends BaseModel implements UserDetails {
     public static final String ROLE_PATIENT = "ROLE_PATIENT";
     public static final String ROLE_SUPER_USER = "ROLE_SUPER_USER";
     // super users are hardcoded by id in the previous implementation
-    protected static final long[] SUPER_USER_IDS = {28,15};
+    protected static final long[] SUPER_USER_IDS = {28, 15};
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private String username, password;

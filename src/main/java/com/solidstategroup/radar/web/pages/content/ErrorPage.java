@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 
 public class ErrorPage extends BasePage {
-    private static final String typeParamKey = "type";
-    private static final String error404Message = "The requested page could not be found";
-    private static final String generalErrorMessage = "An unexpected error has occurred";
+    private static final String TYPE_PARAM_KEY = "type";
+    private static final String ERROR_404_MESSAGE = "The requested page could not be found";
+    private static final String GENERAL_ERROR_MESSAGE = "An unexpected error has occurred";
     public static final String ERROR_TYPE_404 = "404";
 
 
@@ -18,17 +18,17 @@ public class ErrorPage extends BasePage {
 
     public ErrorPage(Exception e) {
         LOGGER.error("An error occured: {}", e);
-        init(generalErrorMessage);
+        init(GENERAL_ERROR_MESSAGE);
     }
 
     public ErrorPage(PageParameters parameters) {
         String type = parameters.get("type").toString();
         if (type.equals(ERROR_TYPE_404)) {
             LOGGER.error("A 404 error occured");
-            init(error404Message);
+            init(ERROR_404_MESSAGE);
         } else {
             LOGGER.error("An error occured");
-            init(generalErrorMessage);
+            init(GENERAL_ERROR_MESSAGE);
         }
     }
 

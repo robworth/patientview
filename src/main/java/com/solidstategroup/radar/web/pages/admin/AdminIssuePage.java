@@ -1,26 +1,25 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.*;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import com.solidstategroup.radar.model.Issue;
+import com.solidstategroup.radar.model.enums.IssuePriority;
+import com.solidstategroup.radar.model.enums.IssueStatus;
+import com.solidstategroup.radar.model.enums.IssueType;
+import com.solidstategroup.radar.service.IssueManager;
+import com.solidstategroup.radar.web.RadarApplication;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
-import com.solidstategroup.radar.service.IssueManager;
-import com.solidstategroup.radar.model.Issue;
-import com.solidstategroup.radar.model.enums.IssueType;
-import com.solidstategroup.radar.model.enums.IssuePriority;
-import com.solidstategroup.radar.model.enums.IssueStatus;
-import com.solidstategroup.radar.web.RadarApplication;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 
 import java.util.Arrays;
 

@@ -1,28 +1,27 @@
 package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
-
-import com.solidstategroup.radar.model.filter.ConsultantFilter;
-import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
-import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.apache.commons.lang.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 

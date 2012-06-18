@@ -1,14 +1,13 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
-
-import com.solidstategroup.radar.model.filter.ConsultantFilter;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
-import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.filter.ConsultantFilter;
 import com.solidstategroup.radar.service.UtilityManager;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -21,10 +20,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
 import java.text.DecimalFormat;
-import java.util.Map;
 import java.util.List;
-import java.awt.*;
+import java.util.Map;
 
 public class UtilityManagerImpl implements UtilityManager {
 

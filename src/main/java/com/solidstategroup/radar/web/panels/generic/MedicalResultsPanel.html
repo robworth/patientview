@@ -1,51 +1,28 @@
 <wicket:panel>
-    <form>
+    <form wicket:id="form">
 
         <div id="mainBlock">
 
             <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
-            <table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
-                <tr>
-                    <td style="height:30px;">
-                        <span style="font-weight:bold;">Demographics</span>
-                    </td>
-                    <td style="text-align:right; padding-right:10px;"><b>RADAR Number</b></td>
-                    <td style="width:150px;">
-                        <input id="radarNumber" type="text" readonly="readonly"
-                               style="background-color:#EEF6ED;font-style:italic;"/></td>
-                </tr>
-                <tr>
-                    <td style="height:30px;">
-                        <label class="lblPad"
-                               style="width:150px;">&nbsp;Disease Group:</label>
-                        ALPORT
-                    </td>
-                    <td style="text-align:right; padding-right:10px;">Date Registered</td>
-                    <td><input id="dateRegistered" type="text" readonly="readonly"
-                               style="background-color:#EEF6ED;font-style:italic;"/>
-                    </td>
-                </tr>
-            </table>
+            <div wicket:id="patientDetail">
+
+            </div>
             <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
                    class="style3">
                 <tr>
-                    <td style="width:50%; vertical-align:top;">
+                    <td style="width:80%; vertical-align:top;">
                         <table cellpadding="5" style="width: 100%; border-collapse:collapse">
                             <tr>
                                 <td>
                                     Blood Urea
                                 </td>
                                 <td>
-                                    <input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Date of Urea test
-                                </td>
-                                <td>
-                                    <input type="text"/>
+                                    <input wicket:id="bloodUrea" type="text"/> <label>Date</label> <span
+                                        class="feedback" wicket:id="bloodUreaFeedback"></span>
+                                    <input wicket:id="bloodUreaDate" type="text"/> <span class="feedback"
+                                                                                         wicket:id="bloodUreaDateFeedback"></span>
+
                                 </td>
                             </tr>
                             <tr>
@@ -53,15 +30,10 @@
                                     Serum Creatinine
                                 </td>
                                 <td>
-                                    <input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Date Creatinine
-                                </td>
-                                <td>
-                                    <input type="text"/>
+                                    <input wicket:id="serumCreatanine" type="text"/> <label>Date</label> <span
+                                        class="feedback" wicket:id="serumCreatanineFeedback"></span>
+                                    <input wicket:id="creatanineDate" type="text"/> <span class="feedback"
+                                                                                          wicket:id="creatanineDateFeedback"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -69,15 +41,10 @@
                                     Weight
                                 </td>
                                 <td>
-                                    <input type="text"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Date Weight
-                                </td>
-                                <td>
-                                    <input type="text"/>
+                                    <input wicket:id="weight" type="text"/> <label>Date</label> <span class="feedback"
+                                                                                                      wicket:id="weightFeedback"></span>
+                                    <input wicket:id="weightDate" type="text"/> <span class="feedback"
+                                                                                      wicket:id="weightDateFeedback"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -85,50 +52,57 @@
                                     Height
                                 </td>
                                 <td>
-                                    <input type="text"/>
+                                    <input wicket:id="height" type="text"/> <label>Date</label> <span class="feedback"
+                                                                                                      wicket:id="heightFeedback"></span>
+                                    <input wicket:id="heightDate" type="text"/> <span class="feedback"
+                                                                                      wicket:id="heightDateFeedback"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Date Height
+                                    BP Systolic
                                 </td>
                                 <td>
-                                    <input type="text"/>
+                                    <input wicket:id="bpSystolic" type="text"/>
+                                    <span class="feedback" wicket:id="bpSystolicFeedback"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    BP diastolic
+                                    BP Diastolic
                                 </td>
                                 <td>
-                                    <input type="text"/>
+                                    <input wicket:id="bpDiastolic" type="text"/>
+                                    <span class="feedback" wicket:id="bpDiastolicFeedback"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Date BP
+                                    Antihypertensive Drugs
                                 </td>
                                 <td>
-                                    <input type="text"/>
+                                    <div wicket:id="antihypertensiveDrugs">
+                                        <input wicket:id="yes" type="radio">Yes</input>
+                                        <input wicket:id="no" type="radio">No</input>
+                                        <input wicket:id="unknown" type="radio">Unknown</input>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Antihypertensive drugs
+                                    BP and Antihypertentive Date
                                 </td>
                                 <td>
-                                    <select>
-                                        <option>Yes</option>
-                                        <option>No</option>
-                                        <option>Unknown</option>
-                                    </select>
+                                    <input wicket:id="bpDate" type="text"/>
+                                    <span class="feedback" wicket:id="bpDateFeedback"></span>
                                 </td>
+
                             </tr>
 
                         </table>
                         <br/><br/>
                         <br/><br/>
-                        <input type="button" id="save" value="save" class="saveBtn"/>
+                        <input type="button" wicket:id="save" value="save" class="saveBtn"/>
 
                     </td>
                     <td style="vertical-align:top;">
@@ -138,8 +112,8 @@
                     </td>
                 </tr>
             </table>
-            <span style="font-weight:bold;" id="successMessage"></span>
-            <span style="font-weight: bold; color:red" id="errorMessage"></span>
+            <span style="font-weight:bold;" wicket:id="successMessage"></span>
+            <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
 
         </div>
 

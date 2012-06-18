@@ -34,7 +34,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -197,11 +196,12 @@ public class DialysisTablePanel extends Panel {
             super(id, treatmentIModel);
 
             RadarRequiredDropdownChoice treatmentModality = new RadarRequiredDropdownChoice("treatmentModality",
-                    treatmentManager.getTreatmentModalities(),new ChoiceRenderer("description", "id"), this,
+                    treatmentManager.getTreatmentModalities(), new ChoiceRenderer("description", "id"), this,
                     componentsToUpdate);
             add(treatmentModality);
 
-            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
+            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate",
+                    this, componentsToUpdate);
             add(startDate);
             endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);

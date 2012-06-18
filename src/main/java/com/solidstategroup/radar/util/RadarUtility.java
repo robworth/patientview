@@ -1,7 +1,5 @@
 package com.solidstategroup.radar.util;
 
-import com.solidstategroup.radar.service.TreatmentManager;
-
 import java.util.Date;
 
 /**
@@ -41,5 +39,22 @@ public class RadarUtility {
             }
         }
         return false;
+    }
+
+    /**
+     * returns a user friendly label for an enum for example PART1_PART2 will return Part1 Part2
+     */
+    public static String getLabelFromEnum(String enumString) {
+        String label = enumString;
+        label = label.replace("_", " ");
+        String[] parts = label.split(" ");
+        label = "";
+        for (String part : parts) {
+            String formatted = part.toLowerCase();
+            formatted = Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
+            label += formatted;
+            label += " ";
+        }
+        return label;
     }
 }

@@ -11,18 +11,21 @@ import java.util.List;
 
 
 public class RadarTextFieldWithValidation<T> extends TextField<T> {
-    public RadarTextFieldWithValidation(String id, IValidator validator, WebMarkupContainer container, List<Component> componentsToUpdate) {
+    public RadarTextFieldWithValidation(String id, IValidator validator, WebMarkupContainer container,
+                                       List<Component> componentsToUpdate) {
         super(id);
         init(id, container, validator, false, componentsToUpdate);
     }
 
-    public RadarTextFieldWithValidation(String id, IValidator validator, boolean required, WebMarkupContainer container, List<Component> componentsToUpdate) {
+    public RadarTextFieldWithValidation(String id, IValidator validator, boolean required,
+                                        WebMarkupContainer container, List<Component> componentsToUpdate) {
         super(id);
         init(id, container, validator, required, componentsToUpdate);
     }
 
-    private void init(String id, WebMarkupContainer form, IValidator validator, boolean required, List<Component> componentsToUpdate) {
-        if(validator != null) {
+    private void init(String id, WebMarkupContainer form, IValidator validator, boolean required,
+                      List<Component> componentsToUpdate) {
+        if (validator != null) {
              add(validator);
         }
         final ComponentFeedbackPanel feedbackPanel = new ComponentFeedbackPanel(id + "Feedback", this) {

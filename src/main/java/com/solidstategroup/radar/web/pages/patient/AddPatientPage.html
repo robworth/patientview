@@ -36,13 +36,15 @@
                                 <tb>
                                     <tr>
                                         <td>
-                                           Identifying Number
+                                            Identifying Number
                                         </td>
                                         <td>
                                             <input wicket:id="id" type="text"/>
+                                            <span wicket:id="idFeedbackIndicator"></span>
                                         </td>
                                         <td>
                                             <select wicket:id="idType"/>
+                                            <span wicket:id="idTypeFeedbackIndicator"></span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -52,11 +54,15 @@
 
                                         <td>
                                             <select wicket:id="diseaseGroup"/>
+                                            <span wicket:id="diseaseGroupFeedbackIndicator"></span>
                                         </td>
                                     </tr>
                                 </tb>
                             </table>
                             <input type="button" wicket:id="submit" value="Add Patient"/>
+
+                           <span class="feedback" wicket:id="feedback"></span>
+
                         </td>
                     </tr>
                     </tbody>

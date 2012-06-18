@@ -15,6 +15,8 @@
     <bean id="demographicsDao" class="com.solidstategroup.radar.dao.impl.DemographicsDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
+        <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+        <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
     </bean>
 
     <bean id="diagnosisDao" class="com.solidstategroup.radar.dao.impl.DiagnosisDaoImpl">
@@ -64,6 +66,19 @@
 
     <bean id="userDao" class="com.solidstategroup.radar.dao.impl.UserDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- radarv generic daos -->
+    <bean id="diseasGroupDao" class="com.solidstategroup.radar.dao.impl.DiseaseGroupDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="genericDiagnosisDao" class="com.solidstategroup.radar.dao.impl.GenericDiagnosisDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="medicalResultDao" class="com.solidstategroup.radar.dao.impl.MedicalResultDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 

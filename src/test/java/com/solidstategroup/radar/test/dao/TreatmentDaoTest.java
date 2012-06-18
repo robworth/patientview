@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.TreatmentDao;
-import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.Treatment;
 import com.solidstategroup.radar.model.TreatmentModality;
 import org.junit.Test;

@@ -21,7 +21,7 @@ public class RadarDateValidator extends AbstractValidator{
         int year = calendar.get(Calendar.YEAR);
         // if the year input has 3 digits or less then 999 is the max value - not the best way but
         // could not find another way
-        if(year < 1000) {
+        if (year < 1000) {
             error(iValidatable);
         }
     }

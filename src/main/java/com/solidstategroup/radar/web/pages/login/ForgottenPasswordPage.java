@@ -7,7 +7,6 @@ import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
@@ -98,7 +97,7 @@ public abstract class ForgottenPasswordPage extends BasePage {
 
             @Override
             public boolean isVisible() {
-                if(form.isSubmitted() && !form.hasError()) {
+                if (form.isSubmitted() && !form.hasError()) {
                      return false;
                 }
                 return super.isVisible();

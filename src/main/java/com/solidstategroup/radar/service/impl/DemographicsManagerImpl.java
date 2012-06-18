@@ -59,7 +59,37 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao;
     }
 
+    public boolean isNhsNumberValid(String nhsNumber) {
+        return true; // todo change remove comments
+/*        nhsNumber = nhsNumber.trim().replace(" ", "");  //remove spaces before checking
+        if (nhsNumber.length() != 10) {
+            return false;
+        }
+
+        //generate the checksum using modulus 11 algorithm
+        int checksum = 0;
+        //multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
+        for (int i = 0; i <= 8; i++) {
+            int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
+            checksum += value;
+        }
+        //(modulus 11)
+        checksum = 11 - checksum % 11;
+        if (checksum == 11) {
+            checksum = 0;
+        }
+
+        //does checksum match the 10th digit?
+        if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
+            return true;
+        } else {
+            return false;
+        }*/
+    }
+
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
     }
+
+
 }

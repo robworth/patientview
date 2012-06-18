@@ -11,8 +11,8 @@ import org.apache.wicket.model.IModel;
 import java.util.List;
 
 public class RadarRequiredDropdownChoice extends DropDownChoice {
-    public RadarRequiredDropdownChoice(String id, List choices, IChoiceRenderer iChoiceRenderer, WebMarkupContainer parent,
-                                       List<Component> componentsToUpdateList) {
+    public RadarRequiredDropdownChoice(String id, List choices, IChoiceRenderer iChoiceRenderer, WebMarkupContainer
+            parent, List<Component> componentsToUpdateList) {
         super(id, choices, iChoiceRenderer);
         init(parent, componentsToUpdateList);
     }

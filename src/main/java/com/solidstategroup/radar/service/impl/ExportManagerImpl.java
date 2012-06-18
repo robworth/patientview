@@ -34,7 +34,7 @@ public class ExportManagerImpl implements ExportManager {
 
     private DocumentDataBuilder csvDocumentDataBuilder;
     private DocumentDataBuilder excelDocumentDataBuilder;
-    private DocumentDataBuilder PdfDocumentDataBuilder;
+    private DocumentDataBuilder pdfDocumentDataBuilder;
 
     private Map<ExportType, DocumentDataBuilder> exportTypeToDocumentDataBuilderMap;
 
@@ -111,7 +111,8 @@ public class ExportManagerImpl implements ExportManager {
             dateRegistered = user.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
                     format(user.getDateRegistered()) : "";
 
-            documentData.addRow(Arrays.asList(user.getRadarNumber().toString(), user.getUsername(), dob, dateRegistered));
+            documentData.addRow(Arrays.asList(user.getRadarNumber().toString(), user.getUsername(), dob,
+                    dateRegistered));
         }
 
         return getExportData(exportType, documentData);
@@ -124,7 +125,7 @@ public class ExportManagerImpl implements ExportManager {
                     DocumentDataBuilder>();
             exportTypeToDocumentDataBuilderMap.put(ExportType.CSV, csvDocumentDataBuilder);
             exportTypeToDocumentDataBuilderMap.put(ExportType.EXCEL, excelDocumentDataBuilder);
-            exportTypeToDocumentDataBuilderMap.put(ExportType.PDF, PdfDocumentDataBuilder);
+            exportTypeToDocumentDataBuilderMap.put(ExportType.PDF, pdfDocumentDataBuilder);
         }
 
         DocumentDataBuilder documentDataBuilder = exportTypeToDocumentDataBuilderMap.get(exportType);
@@ -157,6 +158,6 @@ public class ExportManagerImpl implements ExportManager {
     }
 
     public void setPdfDocumentDataBuilder(DocumentDataBuilder pdfDocumentDataBuilder) {
-        PdfDocumentDataBuilder = pdfDocumentDataBuilder;
+        this.pdfDocumentDataBuilder = pdfDocumentDataBuilder;
     }
 }

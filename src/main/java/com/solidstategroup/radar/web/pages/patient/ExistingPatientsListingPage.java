@@ -54,7 +54,16 @@ public class ExistingPatientsListingPage extends BasePage {
             @Override
             protected void populateItem(Item<Demographics> item) {
                 // Populate fields
-                item.add(new BookmarkablePageLink<PatientPage>("edit", PatientPage.class, PatientPage.getParameters(item.getModelObject())));
+                Demographics demographics = item.getModelObject();
+                if (demographics.isGeneric()) {
+                    item.add(new BookmarkablePageLink<GenericPatientPage>("edit", GenericPatientPage.class,
+                            GenericPatientPage.getPageParameters(demographics)));
+                } else {
+                    item.add(new BookmarkablePageLink<PatientPage>("edit", PatientPage.class,
+                            PatientPage.getParameters(demographics)));
+                }
+
+
                 item.add(new Label("surname"), new Label("forename"));
                 item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("id"));

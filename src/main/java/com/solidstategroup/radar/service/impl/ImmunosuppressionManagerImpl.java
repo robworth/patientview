@@ -60,7 +60,8 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
         List<Date> datesToCheck = Arrays.asList(immunosuppression.getStartDate(), immunosuppression.getEndDate());
 
         // cannot be before date of birth
-        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(immunosuppression.getRadarNumber());
+        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(
+                immunosuppression.getRadarNumber());
         if (demographics != null) {
             Date dob = demographics.getDateOfBirth();
             if (dob != null) {

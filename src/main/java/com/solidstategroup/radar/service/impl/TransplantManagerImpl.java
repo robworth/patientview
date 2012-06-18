@@ -193,8 +193,8 @@ public class TransplantManagerImpl implements TransplantManager {
         for (Date rejectDate : rejectDates) {
             if (rejectDate != null) {
                 Date startDate = transplant.getDate();
-                Date failureDate = transplant.getDateFailureRejectData() != null ? transplant.getDateFailureRejectData().
-                        getFailureDate() : null;
+                Date failureDate = transplant.getDateFailureRejectData() != null ?
+                        transplant.getDateFailureRejectData().getFailureDate() : null;
                 if (startDate != null) {
                     if (startDate.compareTo(rejectDate) >= 0) {
                         errors.add(TransplantManager.REJECT_DATA_ERROR_MESSAGE);
