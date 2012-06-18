@@ -2,6 +2,8 @@ package com.solidstategroup.radar.web.pages.patient;
 
 
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.generic.AddPatientModel;
+import com.solidstategroup.radar.model.generic.IdType;
 import com.solidstategroup.radar.model.generic.MedicalResult;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -28,6 +30,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 
+
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class GenericPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
@@ -40,27 +43,33 @@ public class GenericPatientPage extends BasePage {
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
-    public GenericPatientPage(AddPatientPage.AddPatientModel patientModel) {
+    public GenericPatientPage(AddPatientModel patientModel) {
+        // this constructor is used when adding a new patient
         super();
+        // set the nhs id or chi id based on model
         Demographics demographics = new Demographics();
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
-        if (patientModel.getIdType().equals(AddPatientPage.AddPatientModel.IdType.NHS)) {
+        if (patientModel.getIdType().equals(IdType.NHS)) {
             demographics.setNhsNumber(patientModel.getId());
 
-        } else if (patientModel.getIdType().equals(AddPatientPage.AddPatientModel.IdType.CHI)) {
+        } else if (patientModel.getIdType().equals(IdType.CHI)) {
             demographics.setChiNumber(patientModel.getId());
         }
 
+        // create new medical result
         MedicalResult medicalResult = new MedicalResult();
         medicalResult.setId(patientModel.getId());
         init(demographics, medicalResult);
     }
 
     public GenericPatientPage(PageParameters pageParameters) {
+        // this constructor is used when a patient exists
+        // get the demographics based on radar id
         StringValue idValue = pageParameters.get("id");
         Long id = idValue.toLong();
         Demographics demographics = demographicsManager.getDemographicsByRadarNumber(id);
 
+         // get medical result based on either nhs id or chi
         String medicalResultId = "";
         if (demographics.getNhsNumber() != null) {
             if (!demographics.getNhsNumber().isEmpty()) {
@@ -76,6 +85,7 @@ public class GenericPatientPage extends BasePage {
     }
 
     public void init(Demographics demographics, MedicalResult medicalResult) {
+        // init all the panels
 
         genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
             @Override

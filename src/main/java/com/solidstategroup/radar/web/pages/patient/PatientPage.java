@@ -1,6 +1,9 @@
 package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.generic.AddPatientModel;
+import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -90,7 +93,17 @@ public class PatientPage extends BasePage {
         }
 
         // Construct panels for each of the tabs
-        demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
+        if (parameters != null) {
+            if (parameters.get("idType").toString() != null) {
+                demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel, parameters);
+            } else {
+                demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
+            }
+        } else {
+            demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
+        }
+
+
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel", radarNumberModel);
         followUpPanel = new FollowUpPanel("followUpPanel", radarNumberModel);
@@ -186,6 +199,20 @@ public class PatientPage extends BasePage {
 
     public static PageParameters getParameters(Demographics demographics) {
         return new PageParameters().set(PARAM_ID, demographics.getId());
+    }
+
+    public static PageParameters getParameters(AddPatientModel patientModel) {
+        PageParameters pageParameters = new PageParameters();
+        if (patientModel.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID)) {
+            pageParameters.set("diagnosis", DiagnosisCode.SRNS_ID);
+
+        } else if (patientModel.getDiseaseGroup().getId().equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
+            pageParameters.set("diagnosis", DiagnosisCode.MPGN_ID);
+        }
+
+        pageParameters.set("idType", patientModel.getIdType().toString());
+        pageParameters.set("idVal", patientModel.getId());
+        return pageParameters;
     }
 
     public IModel<Long> getRadarNumberModel() {
