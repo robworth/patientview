@@ -7,6 +7,7 @@ import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.generic.IdType;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.ClinicalDataManager;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -45,6 +46,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -68,6 +70,10 @@ public class DemographicsPanel extends Panel {
     private UtilityManager utilityManager;
 
     public DemographicsPanel(String id, final IModel<Long> radarNumberModel) {
+        this(id, radarNumberModel, null);
+    }
+
+    public DemographicsPanel(String id, final IModel<Long> radarNumberModel, final PageParameters pageParameters) {
         super(id);
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
@@ -75,26 +81,36 @@ public class DemographicsPanel extends Panel {
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Demographics> model = new CompoundPropertyModel<Demographics>(
                 new LoadableDetachableModel<Demographics>() {
-            @Override
-            public Demographics load() {
-                Demographics demographicsModelObject = null;
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
-                    }
-                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                }
+                    @Override
+                    public Demographics load() {
+                        Demographics demographicsModelObject = null;
+                        if (radarNumberModel.getObject() != null) {
+                            Long radarNumber;
+                            try {
+                                radarNumber = radarNumberModel.getObject();
+                            } catch (ClassCastException e) {
+                                Object obj = radarNumberModel.getObject();
+                                radarNumber = Long.parseLong((String) obj);
+                            }
+                            demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                        }
 
-                if (demographicsModelObject == null) {
-                    demographicsModelObject = new Demographics();
-                }
-                return demographicsModelObject;
-            }
-        });
+                        if (demographicsModelObject == null) {
+                            demographicsModelObject = new Demographics();
+                            if (pageParameters != null) {
+                                // if page parameter exists then adding a demographics
+                                // set the id type and val
+                                String idType = pageParameters.get("idType").toString();
+                                if (idType.equals(IdType.CHI.toString())) {
+                                    demographicsModelObject.setChiNumber(pageParameters.get("idVal").toString());
+                                } else if (idType.equals(IdType.NHS.toString())) {
+                                    demographicsModelObject.setNhsNumber(pageParameters.get("idVal").toString());
+                                }
+                            }
+                        }
+                        return demographicsModelObject;
+                    }
+                });
 
         // Set up form
         final Form<Demographics> form = new Form<Demographics>("form", model) {
@@ -156,6 +172,22 @@ public class DemographicsPanel extends Panel {
                     }
                 };
 
+        if (pageParameters != null) {
+            //if pageParameters not null then creating new demographics - set the diagnosis
+            String diseaseGroup = pageParameters.get("diagnosis").toString();
+            DiagnosisCode diagnosisCode = new DiagnosisCode();
+
+            if (diseaseGroup.equals(DiagnosisCode.SRNS_ID + "")) {
+                diagnosisCode.setId(DiagnosisCode.SRNS_ID);
+            } else if (diseaseGroup.equals(DiagnosisCode.MPGN_ID + "")) {
+                diagnosisCode.setId(DiagnosisCode.MPGN_ID);
+            }
+
+            diagnosis.setModel(new Model(diagnosisCode));
+
+        }
+
+
         // Basic fields
         RadarRequiredTextField surname = new RadarRequiredTextField("surname", form, componentsToUpdateList);
         RadarRequiredTextField forename = new RadarRequiredTextField("forename", form, componentsToUpdateList);
@@ -206,7 +238,7 @@ public class DemographicsPanel extends Panel {
 
         // Consultant and renal unit
         final IModel<Long> centreNumber = new Model<Long>();
-        Centre renalUnitSelected =  form.getModelObject().getRenalUnit();
+        Centre renalUnitSelected = form.getModelObject().getRenalUnit();
         centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getId() : null);
 
         DropDownChoice<Centre> renalUnit = new CentreDropDown("renalUnit");

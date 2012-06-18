@@ -39,11 +39,13 @@ public class MedicalResultsPanel extends Panel {
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
         IModel<MedicalResult> model = new Model<MedicalResult>(medicalResult);
 
+        // create form and components
+
         Form<MedicalResult> form = new Form<MedicalResult>("form", new CompoundPropertyModel<MedicalResult>(model)) {
             @Override
             protected void onSubmit() {
                 MedicalResult medicalResult = getModelObject();
-
+                // test result cannot have a null date
                 if (medicalResult.getBloodUrea() != null && medicalResult.getBloodUreaDate() == null) {
                     get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
