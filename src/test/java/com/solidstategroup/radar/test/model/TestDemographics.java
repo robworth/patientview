@@ -6,7 +6,6 @@ import org.joda.time.Years;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;

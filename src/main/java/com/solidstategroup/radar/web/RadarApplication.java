@@ -1,8 +1,8 @@
 package com.solidstategroup.radar.web;
 
-import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
-import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
+import com.solidstategroup.radar.web.pages.RecruitmentPage;
 import com.solidstategroup.radar.web.pages.admin.AdminConsultantPage;
 import com.solidstategroup.radar.web.pages.admin.AdminConsultantsPage;
 import com.solidstategroup.radar.web.pages.admin.AdminIssuePage;
@@ -13,18 +13,6 @@ import com.solidstategroup.radar.web.pages.admin.AdminPatientsAllPage;
 import com.solidstategroup.radar.web.pages.admin.AdminPatientsPage;
 import com.solidstategroup.radar.web.pages.admin.AdminUserPage;
 import com.solidstategroup.radar.web.pages.admin.AdminUsersPage;
-import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
-import com.solidstategroup.radar.web.pages.patient.GenericPatientPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
-import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
-import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
-import com.solidstategroup.radar.web.pages.HomePage;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
-import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
-import com.solidstategroup.radar.web.pages.login.ProfessionalForgottenPasswordPage;
-import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
-import com.solidstategroup.radar.web.pages.RecruitmentPage;
-import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import com.solidstategroup.radar.web.pages.admin.AdminsBasePage;
 import com.solidstategroup.radar.web.pages.admin.AdminsLoginPage;
 import com.solidstategroup.radar.web.pages.admin.AdminsPage;
@@ -33,6 +21,18 @@ import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.ErrorPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
+import com.solidstategroup.radar.web.pages.login.PatientForgottenPasswordPage;
+import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
+import com.solidstategroup.radar.web.pages.login.ProfessionalForgottenPasswordPage;
+import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
+import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
+import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.patient.GenericPatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
+import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
+import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -164,7 +164,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("patients", ExistingPatientsListingPage.class);
         mountPage("registration/patient", PatientRegistrationPage.class);
         mountPage("patient/new", AddPatientPage.class);
-        mountPage("patient/new/details", GenericPatientPage.class);
+        mountPage("patient/edit/generic", GenericPatientPage.class);
 
         // professional pages
         mountPage("registration/professional", ProfessionalRegistrationPage.class);

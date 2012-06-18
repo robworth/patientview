@@ -50,7 +50,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +69,8 @@ public class TreatmentPanel extends Panel {
     private IModel<ImmunosuppressionTreatment> editImmunosuppressionTreatmentIModel;
 
     public TreatmentPanel(String id, final IModel<Long> radarNumberModel, boolean firstVisit,
-                          IModel<Therapy> followingVisitTherapyModel, List<Component> followingVisitComponentsToUpdate) {
+                          IModel<Therapy> followingVisitTherapyModel, List<Component>
+            followingVisitComponentsToUpdate) {
         super(id);
 
         // Immunosuppression including Monoclonals
@@ -352,7 +352,8 @@ public class TreatmentPanel extends Panel {
                 ? false : true;
         final IModel<Boolean> antihypertensiveToggleModel = new Model<Boolean>(antihypertensiveToggleInit);
 
-        AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour = new AjaxFormChoiceComponentUpdatingBehavior() {
+        AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour =
+                new AjaxFormChoiceComponentUpdatingBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensive());
@@ -361,7 +362,8 @@ public class TreatmentPanel extends Panel {
             }
         };
 
-        AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour2 = new AjaxFormChoiceComponentUpdatingBehavior() {
+        AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour2 =
+                new AjaxFormChoiceComponentUpdatingBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensivePrior());
@@ -421,7 +423,8 @@ public class TreatmentPanel extends Panel {
         arb1AntagonistContainer.setOutputMarkupId(true);
         arb1AntagonistContainer.setOutputMarkupPlaceholderTag(true);
 
-        arb1AntagonistContainer.add(new YesNoRadioGroupPanel("arb1AntagonistRadioGroup", true, therapyFormModel, "arb1Antagonist"));
+        arb1AntagonistContainer.add(new YesNoRadioGroupPanel("arb1AntagonistRadioGroup", true, therapyFormModel,
+                "arb1Antagonist"));
         arb1AntagonistContainer.add(new YesNoRadioGroupPanel("arb1AntagonistPriorRadioGroup", true, therapyFormModel,
                 "arb1AntagonistPrior") {
             @Override
@@ -441,9 +444,11 @@ public class TreatmentPanel extends Panel {
         calciumChannelBlockerContainer.setOutputMarkupId(true);
         calciumChannelBlockerContainer.setOutputMarkupPlaceholderTag(true);
 
-        calciumChannelBlockerContainer.add(new YesNoRadioGroupPanel("calciumChannelBlockerRadioGroup", true, therapyFormModel,
+        calciumChannelBlockerContainer.add(new YesNoRadioGroupPanel("calciumChannelBlockerRadioGroup", true,
+                therapyFormModel,
                 "calciumChannelBlocker"));
-        calciumChannelBlockerContainer.add(new YesNoRadioGroupPanel("calciumChannelBlockerPriorRadioGroup", true, therapyFormModel,
+        calciumChannelBlockerContainer.add(new YesNoRadioGroupPanel("calciumChannelBlockerPriorRadioGroup", true,
+                therapyFormModel,
                 "calciumChannelBlockerPrior") {
             @Override
             public boolean isVisible() {
@@ -462,7 +467,8 @@ public class TreatmentPanel extends Panel {
         betaBlockerContainer.setOutputMarkupId(true);
         betaBlockerContainer.setOutputMarkupPlaceholderTag(true);
 
-        betaBlockerContainer.add(new YesNoRadioGroupPanel("betaBlockerRadioGroup", true, therapyFormModel, "betaBlocker"));
+        betaBlockerContainer.add(new YesNoRadioGroupPanel("betaBlockerRadioGroup", true, therapyFormModel,
+                "betaBlocker"));
         betaBlockerContainer.add(new YesNoRadioGroupPanel("betaBlockerPriorRadioGroup", true, therapyFormModel,
                 "betaBlockerPrior") {
             @Override
@@ -482,16 +488,18 @@ public class TreatmentPanel extends Panel {
         otherAntihypertensiveContainer.setOutputMarkupId(true);
         otherAntihypertensiveContainer.setOutputMarkupPlaceholderTag(true);
 
-        otherAntihypertensiveContainer.add(new YesNoRadioGroupPanel("otherAntihypertensiveRadioGroup", true, therapyFormModel,
+        otherAntihypertensiveContainer.add(new YesNoRadioGroupPanel("otherAntihypertensiveRadioGroup", true,
+                therapyFormModel,
                 "otherAntihypertensive"));
-        otherAntihypertensiveContainer.add(new YesNoRadioGroupPanel("otherAntihypertensivePriorRadioGroup", true, therapyFormModel,
+        otherAntihypertensiveContainer.add(new YesNoRadioGroupPanel("otherAntihypertensivePriorRadioGroup", true,
+                therapyFormModel,
                 "otherAntihypertensivePrior") {
             @Override
             public boolean isVisible() {
                 return isSrnsModel.getObject();
             }
         });
-        therapyForm.add(otherAntihypertensiveContainer);//@current
+        therapyForm.add(otherAntihypertensiveContainer);
 
 
         therapyForm.add(new YesNoRadioGroupPanel("insulinContainer", true, therapyFormModel, "insulin"));
@@ -509,9 +517,11 @@ public class TreatmentPanel extends Panel {
                         return isSrnsModel.getObject();
                     }
                 };
-        lipidLoweringAgentContainerParent.add(new YesNoRadioGroupPanel("lipidLoweringAgentContainer", true, therapyFormModel,
+        lipidLoweringAgentContainerParent.add(new YesNoRadioGroupPanel("lipidLoweringAgentContainer", true,
+                therapyFormModel,
                 "lipidLoweringAgent"));
-        lipidLoweringAgentContainerParent.add(new YesNoRadioGroupPanel("lipidLoweringAgentPriorContainer", true, therapyFormModel,
+        lipidLoweringAgentContainerParent.add(new YesNoRadioGroupPanel("lipidLoweringAgentPriorContainer", true,
+                therapyFormModel,
                 "lipidLoweringAgentPrior") {
             @Override
             public boolean isVisible() {
@@ -613,7 +623,8 @@ public class TreatmentPanel extends Panel {
         private ImmunosuppressionTreatmentForm(String id, IModel<ImmunosuppressionTreatment> model,
                                                final List<Component> componentsToUpdate) {
             super(id, model);
-            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
+            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this,
+                    componentsToUpdate);
             add(startDate);
 
             RadarRequiredDropdownChoice immunoSuppression = new RadarRequiredDropdownChoice("immunosuppression",

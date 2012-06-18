@@ -47,7 +47,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +83,8 @@ public class RrtTherapyPanel extends Panel {
         final IModel<Date> esrfDateModel = new LoadableDetachableModel<Date>() {
             @Override
             protected Date load() {
-                Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisManager).getObject();
+                Diagnosis diagnosis = RadarModelFactory.getDiagnosisModel(radarNumberModel, diagnosisManager)
+                        .getObject();
                 if (diagnosis != null) {
                     return diagnosis.getEsrfDate();
                 }
@@ -306,7 +306,8 @@ public class RrtTherapyPanel extends Panel {
 
         // Edit transplant form
         Form<Transplant> editTransplantForm =
-                new TransplantForm("form", new CompoundPropertyModel<Transplant>(editTransplantModel), editTransplantFormComponentsToUpdate);
+                new TransplantForm("form", new CompoundPropertyModel<Transplant>(editTransplantModel),
+                        editTransplantFormComponentsToUpdate);
         editTransplantContainer.add(editTransplantForm);
 
         editTransplantForm.add(new AjaxSubmitLink("save") {
@@ -367,7 +368,8 @@ public class RrtTherapyPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.add(addTransplantFormComponentsToUpdate.toArray(new Component[addTransplantFormComponentsToUpdate.size()]));
+                target.add(addTransplantFormComponentsToUpdate.toArray(new Component[
+                        addTransplantFormComponentsToUpdate.size()]));
             }
         });
         addTransplantForm.setOutputMarkupId(true);
@@ -428,7 +430,8 @@ public class RrtTherapyPanel extends Panel {
                     componentsToUpdate);
             add(dateFailure);
 
-            FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback", new IFeedbackMessageFilter() {
+            FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback",
+                    new IFeedbackMessageFilter() {
                 public boolean accept(FeedbackMessage feedbackMessage) {
                     List<String> acceptedErrorMessages = new ArrayList<String>();
                     acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);

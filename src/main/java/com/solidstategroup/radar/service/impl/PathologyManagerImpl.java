@@ -4,7 +4,6 @@ import com.solidstategroup.radar.dao.PathologyDao;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.model.sequenced.Pathology;
 import com.solidstategroup.radar.service.PathologyManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;

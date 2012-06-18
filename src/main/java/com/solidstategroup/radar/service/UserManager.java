@@ -3,14 +3,14 @@ package com.solidstategroup.radar.service;
 import com.solidstategroup.radar.model.exception.DaoException;
 import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
-import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
-import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import org.springframework.security.core.AuthenticationException;
-import com.solidstategroup.radar.model.filter.PatientUserFilter;
 
 import java.util.Date;
 import java.util.List;

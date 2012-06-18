@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.service.impl;
 
-import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.UserManager;
 import org.slf4j.LoggerFactory;

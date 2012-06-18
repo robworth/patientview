@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.choiceRenderers;
 
-import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 

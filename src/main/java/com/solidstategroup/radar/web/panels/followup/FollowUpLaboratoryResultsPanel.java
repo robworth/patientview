@@ -55,11 +55,13 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         labResultsContainer.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
                 radarNumberModel, demographicsManager)));
 
-        labResultsContainer.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
-                diagnosisManager), "abbreviation")));
+        labResultsContainer.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.
+                getDiagnosisCodeModel(radarNumberModel, diagnosisManager), "abbreviation")));
 
-        labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
-        labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
+                demographicsManager)));
+        labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
+                demographicsManager)));
         labResultsContainer.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel,
                 demographicsManager), RadarApplication.DATE_PATTERN));
 
@@ -82,7 +84,7 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
                 labResultsListModel, new DateChoiceRenderer("date", "id"){
             @Override
             protected Date getDate(Object object) {
-                return ((LabData)object).getDate();
+                return ((LabData) object).getDate();
             }
         });
 

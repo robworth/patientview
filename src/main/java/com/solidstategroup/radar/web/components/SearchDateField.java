@@ -1,17 +1,17 @@
 package com.solidstategroup.radar.web.components;
 
 import com.solidstategroup.radar.web.dataproviders.SortableDataProvider;
-import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.Component;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.Model;
 
-import java.util.List;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class SearchDateField extends DateTextField {
     public static final String DATABASE_DATE_PATTERN = "yyyy-MM-dd";

@@ -45,7 +45,7 @@ public class PathologyDaoImpl extends BaseDaoImpl implements PathologyDao {
                 put("RADAR_NO", pathology.getRadarNumber());
                 put("BX_DATE", pathology.getBiopsyDate());
                 put("NAT_TRANSP_KID", pathology.getKidneyTransplantedNative() != null ?
-                        pathology.getKidneyTransplantedNative().getId() : null );
+                        pathology.getKidneyTransplantedNative().getId() : null);
                 put("LATERALITY_BX", pathology.getSide() != null ? pathology.getSide().getId() : null);
                 put("SAMPLE_LAB_NO", pathology.getSampleLabNumber());
                 put("PATHDIAG", null);
@@ -174,8 +174,8 @@ public class PathologyDaoImpl extends BaseDaoImpl implements PathologyDao {
 
             // Side - LATERALITY_BX
             pathology.setSide(
-                    BaseDaoImpl.<Pathology.Side>getEnumValue(Pathology.Side.class, getIntegerWithNullCheck("LATERALITY_BX",
-                            resultSet)));
+                    BaseDaoImpl.<Pathology.Side>getEnumValue(Pathology.Side.class,
+                            getIntegerWithNullCheck("LATERALITY_BX", resultSet)));
 
             pathology.setInterstitalInflmatoryInfilitrate(resultSet.getString("INTER_INFLAM_INFIL"));
             pathology.setArterialAbnormalities(resultSet.getString("ART_ABNORMAL"));

@@ -33,7 +33,7 @@ public class RecruitmentPage extends BasePage{
 
                 Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
 
-                if(diagnosis.getDiagnosisCode() != null) {
+                if (diagnosis.getDiagnosisCode() != null) {
                     item.add(new Label("diagnosis", diagnosis.getDiagnosisCode().getAbbreviation()));
                 } else {
                    item.add(new Label("diagnosis", ""));

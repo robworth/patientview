@@ -90,6 +90,19 @@
         <property name="pdfDocumentDataBuilder" ref="pdfDocumentDataBuilder"/>
     </bean>
 
+    <!-- generic manager -->
+    <bean id="diseaseGroupManager" class="com.solidstategroup.radar.service.impl.DiseaseGroupManagerImpl">
+        <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+    </bean>
+
+    <bean id="genericDiagnosisManager" class="com.solidstategroup.radar.service.impl.GenericDiagnosisManagerImpl">
+        <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
+    </bean>
+
+    <bean id="medicalResultManager" class="com.solidstategroup.radar.service.impl.MedicalResultManagerImpl">
+        <property name="medicalResultDao" ref="medicalResultDao"/>
+    </bean>
+
     <bean id="csvDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.CsvDocumentDataBuilder"/>
     <bean id="excelDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.ExcelDocumentDataBuilder"/>
     <bean id="pdfDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.PdfDocumentDataBuilder"/>

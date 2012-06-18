@@ -33,7 +33,8 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
 
         // Initialise a simple JDBC insert to be able to get the allocated ID
         diagnosisInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_diagnosis")
-                .usingGeneratedKeyColumns("dID").usingColumns("RADAR_NO", "DATE_DIAG", "DIAG", "DIAG_TXT", "AGE_AT_DIAG", "HEIGHT_FIRST_VISIT",
+                .usingGeneratedKeyColumns("dID").usingColumns("RADAR_NO", "DATE_DIAG", "DIAG", "DIAG_TXT",
+                        "AGE_AT_DIAG", "HEIGHT_FIRST_VISIT",
                         "BX_PROVEN_DIAG", "PREPUB_DIAG", "CLIN_PRES", "CLIN_PRES_B", "GENE_MUT", "GENE_MUT_TEXT",
                         "KARYOTYPE", "KARYOTYPE_OTHER", "DATE_ONSET_RENALDIS", "CONSANGUINITY", "FAM_HIST",
                         "REL1", "REL1_RADAR", "REL2", "REL2_RADAR", "REL3", "REL3_RADAR", "REL4", "REL4_RADAR",
@@ -94,24 +95,34 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
                 put("STEROID_RESIST", diagnosis.getSteroidResistance() != null ?
                         diagnosis.getSteroidResistance().getId() : null);
                 put("DATE_ESRF", diagnosis.getEsrfDate());
-                put("MUTATION_1", diagnosis.getMutationYorN1() != null ? diagnosis.getMutationYorN1().getId() : null);
-                put("MUTATION_1S", diagnosis.getMutationSorSN1() != null ? diagnosis.getMutationSorSN1().getId() : null);
+                put("MUTATION_1", diagnosis.getMutationYorN1() != null ? diagnosis.getMutationYorN1().getId()
+                        : null);
+                put("MUTATION_1S", diagnosis.getMutationSorSN1() != null ? diagnosis.getMutationSorSN1().getId()
+                        : null);
                 put("MUTATION_2", diagnosis.getMutationYorN2() != null ? diagnosis.getMutationYorN2().getId() : null);
-                put("MUTATION_2S", diagnosis.getMutationSorSN2() != null ? diagnosis.getMutationSorSN2().getId() : null);
+                put("MUTATION_2S", diagnosis.getMutationSorSN2() != null ? diagnosis.getMutationSorSN2().getId()
+                        : null);
                 put("MUTATION_3", diagnosis.getMutationYorN3() != null ? diagnosis.getMutationYorN3().getId() : null);
-                put("MUTATION_3S", diagnosis.getMutationSorSN3() != null ? diagnosis.getMutationSorSN3().getId() : null);
+                put("MUTATION_3S", diagnosis.getMutationSorSN3() != null ? diagnosis.getMutationSorSN3().getId()
+                        : null);
                 put("MUTATION_4", diagnosis.getMutationYorN4() != null ? diagnosis.getMutationYorN4().getId() : null);
-                put("MUTATION_4S", diagnosis.getMutationSorSN4() != null ? diagnosis.getMutationSorSN4().getId() : null);
+                put("MUTATION_4S", diagnosis.getMutationSorSN4() != null ? diagnosis.getMutationSorSN4().getId()
+                        : null);
                 put("MUTATION_5", diagnosis.getMutationYorN5() != null ? diagnosis.getMutationYorN5().getId() : null);
-                put("MUTATION_5S", diagnosis.getMutationSorSN5() != null ? diagnosis.getMutationSorSN5().getId() : null);
+                put("MUTATION_5S", diagnosis.getMutationSorSN5() != null ? diagnosis.getMutationSorSN5().getId()
+                        : null);
                 put("MUTATION_6", diagnosis.getMutationYorN6() != null ? diagnosis.getMutationYorN6().getId() : null);
-                put("MUTATION_6S", diagnosis.getMutationSorSN6() != null ? diagnosis.getMutationSorSN6().getId() : null);
+                put("MUTATION_6S", diagnosis.getMutationSorSN6() != null ? diagnosis.getMutationSorSN6().getId()
+                        : null);
                 put("MUTATION_7", diagnosis.getMutationYorN7() != null ? diagnosis.getMutationYorN7().getId() : null);
-                put("MUTATION_7S", diagnosis.getMutationSorSN7() != null ? diagnosis.getMutationSorSN7().getId() : null);
+                put("MUTATION_7S", diagnosis.getMutationSorSN7() != null ? diagnosis.getMutationSorSN7().getId()
+                        : null);
                 put("MUTATION_8", diagnosis.getMutationYorN8() != null ? diagnosis.getMutationYorN8().getId() : null);
-                put("MUTATION_8S", diagnosis.getMutationSorSN8() != null ? diagnosis.getMutationSorSN8().getId() : null);
+                put("MUTATION_8S", diagnosis.getMutationSorSN8() != null ? diagnosis.getMutationSorSN8().getId()
+                        : null);
                 put("MUTATION_9", diagnosis.getMutationYorN9() != null ? diagnosis.getMutationYorN9().getId() : null);
-                put("MUTATION_9S", diagnosis.getMutationSorSN9() != null ? diagnosis.getMutationSorSN9().getId() : null);
+                put("MUTATION_9S", diagnosis.getMutationSorSN9() != null ? diagnosis.getMutationSorSN9().getId()
+                        : null);
             }
         };
 
@@ -257,12 +268,12 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
             diagnosis.setBiopsyDate(resultSet.getDate("DATE_DIAG"));
 
             int age = resultSet.getInt("AGE_AT_DIAG");
-            if(!resultSet.wasNull()) {
+            if (!resultSet.wasNull()) {
               diagnosis.setAgeAtDiagnosis(age);
             }
 
             double height = resultSet.getDouble("HEIGHT_FIRST_VISIT");
-            if(! resultSet.wasNull()) {
+            if (! resultSet.wasNull()) {
                  diagnosis.setHeightAtDiagnosis(height);
             }
 

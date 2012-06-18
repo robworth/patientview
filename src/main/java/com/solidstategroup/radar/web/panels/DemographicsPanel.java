@@ -8,7 +8,12 @@ import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.user.User;
-import com.solidstategroup.radar.service.*;
+import com.solidstategroup.radar.service.ClinicalDataManager;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.LabDataManager;
+import com.solidstategroup.radar.service.TherapyManager;
+import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.CentreDropDown;
@@ -19,8 +24,8 @@ import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -68,7 +73,8 @@ public class DemographicsPanel extends Panel {
         setOutputMarkupPlaceholderTag(true);
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
-        final CompoundPropertyModel<Demographics> model = new CompoundPropertyModel<Demographics>(new LoadableDetachableModel<Demographics>() {
+        final CompoundPropertyModel<Demographics> model = new CompoundPropertyModel<Demographics>(
+                new LoadableDetachableModel<Demographics>() {
             @Override
             public Demographics load() {
                 Demographics demographicsModelObject = null;
@@ -105,11 +111,11 @@ public class DemographicsPanel extends Panel {
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
                 Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
                 if (diagnosis == null) {
-                    Diagnosis diagnosis_new = new Diagnosis();
-                    diagnosis_new.setRadarNumber(demographics.getId());
+                    Diagnosis diagnosisNew = new Diagnosis();
+                    diagnosisNew.setRadarNumber(demographics.getId());
                     DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis")).getModelObject();
-                    diagnosis_new.setDiagnosisCode(diagnosisCode);
-                    diagnosisManager.saveDiagnosis(diagnosis_new);
+                    diagnosisNew.setDiagnosisCode(diagnosisCode);
+                    diagnosisManager.saveDiagnosis(diagnosisNew);
                 }
 
             }
@@ -163,12 +169,11 @@ public class DemographicsPanel extends Panel {
         // Sex
         RadarRequiredDropdownChoice sex =
                 new RadarRequiredDropdownChoice("sex", demographicsManager.getSexes(), new ChoiceRenderer<Sex>("type",
-                        "id"),
-                        form, componentsToUpdateList);
+                        "id"), form, componentsToUpdateList);
 
         // Ethnicity
-        DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.getEthnicities(),
-                new ChoiceRenderer<Ethnicity>("name", "id"));
+        DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
+                getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
 
         // Address fields

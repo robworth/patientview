@@ -11,52 +11,48 @@ import org.apache.wicket.util.resource.IResourceStream;
  * @author Ernesto Reinaldo Barreiro (reiern70@gmail.com)
  * @author Jordi Deu-Pons (jordi@jordeu.net)
  */
-public abstract class AJAXDownload extends AbstractAjaxBehavior
-{
-        private boolean addAntiCache;
+public abstract class AJAXDownload extends AbstractAjaxBehavior {
+    private boolean addAntiCache;
 
-        public AJAXDownload() {
-    	    this(true);
-    	}
-    	
-	public AJAXDownload(boolean addAntiCache) {
-	    super();
-	    this.addAntiCache = addAntiCache;
-	}
+    public AJAXDownload() {
+        this(true);
+    }
 
-	/**
-	 * Call this method to initiate the download.
-	 */
-	public void initiate(AjaxRequestTarget target)
-	{
-		String url = getCallbackUrl().toString();
+    public AJAXDownload(boolean addAntiCache) {
+        super();
+        this.addAntiCache = addAntiCache;
+    }
 
-                if (addAntiCache) {
-		    url = url + (url.contains("?") ? "&" : "?");
-		    url = url + "antiCache=" + System.currentTimeMillis();
-		}
- 
-                // the timeout is needed to let Wicket release the channel
-                target.appendJavaScript("setTimeout(\"window.location.href='" + url + "'\", 100);");
-	}
+    /**
+     * Call this method to initiate the download.
+     */
+    public void initiate(AjaxRequestTarget target) {
+        String url = getCallbackUrl().toString();
 
-	public void onRequest()
-	{
-		ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(getResourceStream(),getFileName());
-		handler.setContentDisposition(ContentDisposition.ATTACHMENT);
-		getComponent().getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
-	}
+        if (addAntiCache) {
+            url = url + (url.contains("?") ? "&" : "?");
+            url = url + "antiCache=" + System.currentTimeMillis();
+        }
 
-	/**
-	 * Override this method for a file name which will let the browser prompt with a save/open dialog.
-	 */
-	protected String getFileName()
-	{
-		return null;
-	}
+        // the timeout is needed to let Wicket release the channel
+        target.appendJavaScript("setTimeout(\"window.location.href='" + url + "'\", 100);");
+    }
 
-	/**
-	 * Hook method providing the actual resource stream.
-	 */
-	protected abstract IResourceStream getResourceStream();
+    public void onRequest() {
+        ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(getResourceStream(), getFileName());
+        handler.setContentDisposition(ContentDisposition.ATTACHMENT);
+        getComponent().getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+    }
+
+    /**
+     * Override this method for a file name which will let the browser prompt with a save/open dialog.
+     */
+    protected String getFileName() {
+        return null;
+    }
+
+    /**
+     * Hook method providing the actual resource stream.
+     */
+    protected abstract IResourceStream getResourceStream();
 }

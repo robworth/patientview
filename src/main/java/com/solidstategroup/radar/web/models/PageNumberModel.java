@@ -1,9 +1,7 @@
 package com.solidstategroup.radar.web.models;
 
 
-import com.solidstategroup.radar.service.DiagnosisManager;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
 
 /**
  * this model is used for displaying page numbers on pages

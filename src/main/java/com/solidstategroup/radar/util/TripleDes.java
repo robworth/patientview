@@ -20,10 +20,10 @@ public class TripleDes {
     private static final String KEY_SPEC = "DESede";
 
     // These were copied from the old code - file TripleDES.vb
-    private static final byte[] keyBytes =
+    private static final byte[] KEY_BYTES =
             {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
     // I think the last few values overflow and that's how they were in VB, going to try same here
-    private static final byte[] ivBytes = {65, 110, 68, 26, 69, (byte) 178, (byte) 200, (byte) 219};
+    private static final byte[] IV_BYTES = {65, 110, 68, 26, 69, (byte) 178, (byte) 200, (byte) 219};
 
     private TripleDes() {
         // Hide constructor for utility class
@@ -48,8 +48,8 @@ public class TripleDes {
     private static Cipher getCipher(int mode)
             throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
             InvalidAlgorithmParameterException {
-        final SecretKey key = new SecretKeySpec(keyBytes, KEY_SPEC);
-        final IvParameterSpec iv = new IvParameterSpec(ivBytes);
+        final SecretKey key = new SecretKeySpec(KEY_BYTES, KEY_SPEC);
+        final IvParameterSpec iv = new IvParameterSpec(IV_BYTES);
         final Cipher decipher = Cipher.getInstance(CIPHER_NAME);
         decipher.init(mode, key, iv);
         return decipher;

@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.PlasmapheresisDao;
-import com.solidstategroup.radar.model.ImmunosuppressionTreatment;
 import com.solidstategroup.radar.model.Plasmapheresis;
 import com.solidstategroup.radar.model.PlasmapheresisExchangeUnit;
 import org.junit.Test;

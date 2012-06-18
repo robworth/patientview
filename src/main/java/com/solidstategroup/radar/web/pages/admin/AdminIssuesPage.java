@@ -1,31 +1,31 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-import com.solidstategroup.radar.service.IssueManager;
-import com.solidstategroup.radar.web.dataproviders.IssuesDataProvider;
-import com.solidstategroup.radar.web.components.SortLink;
-import com.solidstategroup.radar.web.components.ClearLink;
-import com.solidstategroup.radar.web.components.SearchField;
-import com.solidstategroup.radar.web.components.SearchDropDownChoice;
-import com.solidstategroup.radar.web.components.SearchDateField;
-import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
 import com.solidstategroup.radar.model.Issue;
-import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.enums.IssuePriority;
 import com.solidstategroup.radar.model.enums.IssueStatus;
+import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.filter.IssueFilter;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import com.solidstategroup.radar.service.IssueManager;
+import com.solidstategroup.radar.web.components.ClearLink;
+import com.solidstategroup.radar.web.components.SearchDateField;
+import com.solidstategroup.radar.web.components.SearchDropDownChoice;
+import com.solidstategroup.radar.web.components.SearchField;
+import com.solidstategroup.radar.web.components.SortLink;
+import com.solidstategroup.radar.web.dataproviders.IssuesDataProvider;
+import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminIssuesPage extends AdminsBasePage {
 

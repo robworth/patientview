@@ -22,7 +22,7 @@ public abstract class DatabaseBackedTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseBackedTest.class);
 
     // Filenames
-    private static final String CREATE_TABLES_SQL_FILENAME = "create_tables.sql";
+    private static final String[] SQL_SCRIPTS = {"create_tables.sql", "phase2.sql", "testUpdates.sql"};
     private static final String DATASET_XML_FILENAME = "dataset.xml";
 
     @Autowired
@@ -42,23 +42,28 @@ public abstract class DatabaseBackedTest {
             ResultSet resultSet = statement.executeQuery("SHOW TABLES");
             if (!resultSet.next()) {
                 // Our tables don't exist so we need to create them
+                for (String script : SQL_SCRIPTS) {
 
-                // Load the statements and execute each one
-                InputStream inputStream = readFile(CREATE_TABLES_SQL_FILENAME);
+                    // Load the statements and execute each one
+                    InputStream inputStream = readFile(script);
 
-                if (inputStream != null) {
-                    // Split by ; and execute
-                    String createTablesScript = IOUtils.toString(inputStream);
-                    for (String sqlStatement : createTablesScript.split(";")) {
-                        if (StringUtils.isNotBlank(sqlStatement)) {
-                            statement.execute(sqlStatement);
+                    if (inputStream != null) {
+                        // Split by ; and execute
+                        String createTablesScript = IOUtils.toString(inputStream);
+                        createTablesScript = createTablesScript.replace("ENGINE=InnoDB", "");
+                        for (String sqlStatement : createTablesScript.split(";")) {
+                            if (StringUtils.isNotBlank(sqlStatement)) {
+                                statement.execute(sqlStatement);
+                            }
                         }
+
+                    } else {
+                        LOGGER.error("Could not initialise database - could not load {}", script);
+                        throw new RuntimeException("Could not load " + script);
                     }
 
-                } else {
-                    LOGGER.error("Could not initialise database - could not load {}", CREATE_TABLES_SQL_FILENAME);
-                    throw new RuntimeException("Could not load " + CREATE_TABLES_SQL_FILENAME);
                 }
+
             }
         } finally {
             if (statement != null) {

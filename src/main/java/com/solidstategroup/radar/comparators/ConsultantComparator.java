@@ -1,11 +1,10 @@
 package com.solidstategroup.radar.comparators;
 
 import com.solidstategroup.radar.model.Consultant;
-
-import java.util.Comparator;
-import java.io.Serializable;
-
 import org.apache.wicket.model.PropertyModel;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 public class ConsultantComparator implements Comparator<Consultant>, Serializable {
     private String sortProperty;

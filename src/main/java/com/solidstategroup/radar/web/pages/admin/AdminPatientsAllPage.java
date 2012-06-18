@@ -1,40 +1,40 @@
 package com.solidstategroup.radar.web.pages.admin;
 
-import com.solidstategroup.radar.model.enums.ExportType;
-import com.solidstategroup.radar.service.DemographicsManager;
-import com.solidstategroup.radar.service.ExportManager;
-import com.solidstategroup.radar.service.DiagnosisManager;
-import com.solidstategroup.radar.web.behaviours.AJAXDownload;
-import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
-import com.solidstategroup.radar.web.components.SortLink;
-import com.solidstategroup.radar.web.components.SearchField;
-import com.solidstategroup.radar.web.components.ClearLink;
-import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
+import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.DiagnosisManager;
+import com.solidstategroup.radar.service.ExportManager;
+import com.solidstategroup.radar.web.behaviours.AJAXDownload;
+import com.solidstategroup.radar.web.components.ClearLink;
+import com.solidstategroup.radar.web.components.SearchDateField;
+import com.solidstategroup.radar.web.components.SearchField;
+import com.solidstategroup.radar.web.components.SortLink;
+import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.panels.RadarAjaxPagingNavigator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxLink;
-import org.apache.wicket.request.Response;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
-import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.request.Response;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 import org.apache.wicket.util.resource.IResourceStream;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AdminPatientsAllPage extends AdminsBasePage {
     @SpringBean

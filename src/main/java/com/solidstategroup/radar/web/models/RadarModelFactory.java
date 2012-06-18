@@ -45,7 +45,8 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel<Boolean> getIsSrnsModel(final IModel radarNumberModel, final DiagnosisManager diagnosisManager) {
+    public static IModel<Boolean> getIsSrnsModel(final IModel radarNumberModel, final
+    DiagnosisManager diagnosisManager) {
         return new AbstractReadOnlyModel<Boolean>() {
 
             // cache the result as this model will be used on isVisible methods which are called
@@ -81,7 +82,8 @@ public class RadarModelFactory {
                             Object obj = radarNumberModel.getObject();
                             radarNumber = Long.parseLong((String) obj);
                         }
-                        List<ClinicalData> clinicalDatas = clinicalDataManager.getClinicalDataByRadarNumber(radarNumber);
+                        List<ClinicalData> clinicalDatas = clinicalDataManager.
+                                getClinicalDataByRadarNumber(radarNumber);
                         if (!clinicalDatas.isEmpty()) {
                             clinicalData = clinicalDatas.get(0);
                         }
@@ -121,7 +123,8 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel getFirstNameModel(final IModel<Long> radarNumberModel, final DemographicsManager demographicsManager) {
+    public static IModel getFirstNameModel(final IModel<Long> radarNumberModel, final DemographicsManager
+            demographicsManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
@@ -137,7 +140,8 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel getSurnameModel(final IModel<Long> radarNumberModel, final DemographicsManager demographicsManager) {
+    public static IModel getSurnameModel(final IModel<Long> radarNumberModel, final DemographicsManager
+            demographicsManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
@@ -153,7 +157,8 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel getDobModel(final IModel<Long> radarNumberModel, final DemographicsManager demographicsManager) {
+    public static IModel getDobModel(final IModel<Long> radarNumberModel, final DemographicsManager
+            demographicsManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
@@ -192,7 +197,8 @@ public class RadarModelFactory {
         return new LoadableDetachableModel() {
             @Override
             protected Object load() {
-                return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").format(new Date());
+                return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").
+                        format(new Date());
             }
         };
     }

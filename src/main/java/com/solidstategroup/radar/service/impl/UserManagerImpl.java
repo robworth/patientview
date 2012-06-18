@@ -3,12 +3,13 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.exception.DaoException;import com.solidstategroup.radar.model.exception.DecryptionException;
+import com.solidstategroup.radar.model.exception.DaoException;
+import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
-import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
-import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
-import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
+import com.solidstategroup.radar.model.filter.PatientUserFilter;
+import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -98,7 +99,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
 
         PatientUser dupliatePatientUser = getPatientUser(patientUser.getUsername());
-        if(dupliatePatientUser != null) {
+        if (dupliatePatientUser != null) {
             throw new UserEmailAlreadyExists("User email already exists");
         }
 

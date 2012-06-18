@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
@@ -21,7 +20,7 @@ public class YesNoRadioGroupPanel extends Panel {
         super(id);
 
         RadioGroup<Boolean> radioGroup = new RadioGroup<Boolean>("group", model.bind(property));
-        if(toggleBehaviour != null) {
+        if (toggleBehaviour != null) {
            radioGroup.add(toggleBehaviour);
         }
         add(radioGroup);

@@ -3,7 +3,6 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.LabDataDao;
 import com.solidstategroup.radar.model.sequenced.LabData;
 import com.solidstategroup.radar.service.LabDataManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 

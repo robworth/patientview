@@ -200,18 +200,20 @@ public class PlasmaPheresisPanel extends Panel {
 
         private PlasmapheresisForm(String id, IModel<Plasmapheresis> model, List<Component> componentsToUpdate) {
             super(id, model);
-            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this, componentsToUpdate);
+            RadarRequiredDateTextField startDate = new RadarRequiredDateTextField("startDate", this,
+                    componentsToUpdate);
             add(startDate);
             endDate = new RadarDateTextField("endDate", this, componentsToUpdate);
             add(endDate);
 
 
-            RadarRequiredDropdownChoice plasmapheresisExchanges = new RadarRequiredDropdownChoice("plasmapheresisExchanges",
-                    plasmapheresisManager.getPlasmapheresisExchangeUnits(),
+            RadarRequiredDropdownChoice plasmapheresisExchanges = new RadarRequiredDropdownChoice(
+                    "plasmapheresisExchanges", plasmapheresisManager.getPlasmapheresisExchangeUnits(),
                     new ChoiceRenderer("name", "id"), this, componentsToUpdate);
             add(plasmapheresisExchanges);
 
-            RadarRequiredDropdownChoice response = new RadarRequiredDropdownChoice("response", Arrays.asList(RemissionAchieved.COMPLETE,
+            RadarRequiredDropdownChoice response = new RadarRequiredDropdownChoice("response",
+                    Arrays.asList(RemissionAchieved.COMPLETE,
                     RemissionAchieved.PARTIAL, RemissionAchieved.NONE), new ChoiceRenderer("label", "id"),
                     this, componentsToUpdate);
             add(response);

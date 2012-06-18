@@ -1,8 +1,8 @@
 package com.solidstategroup.radar.model.filter;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BaseFilter implements Serializable {
 

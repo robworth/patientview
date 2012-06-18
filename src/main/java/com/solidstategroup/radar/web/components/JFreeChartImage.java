@@ -1,15 +1,11 @@
 package com.solidstategroup.radar.web.components;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.DynamicImageResource;
+import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.util.time.Duration;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
 

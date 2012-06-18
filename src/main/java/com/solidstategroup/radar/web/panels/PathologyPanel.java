@@ -149,7 +149,8 @@ public class PathologyPanel extends Panel {
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisManager), "abbreviation")));
 
-        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
+                demographicsManager)));
         form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
         form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
                 RadarApplication.DATE_PATTERN));

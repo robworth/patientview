@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.web.dataproviders;
 
-import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
+import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;

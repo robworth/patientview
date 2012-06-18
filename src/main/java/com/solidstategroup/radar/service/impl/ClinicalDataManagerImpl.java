@@ -4,7 +4,6 @@ import com.solidstategroup.radar.dao.ClinicalDataDao;
 import com.solidstategroup.radar.model.Phenotype;
 import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import com.solidstategroup.radar.service.ClinicalDataManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 

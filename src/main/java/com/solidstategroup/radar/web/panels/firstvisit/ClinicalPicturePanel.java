@@ -340,7 +340,8 @@ public class ClinicalPicturePanel extends Panel {
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisManager), "abbreviation")));
 
-        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
+                demographicsManager)));
 
         form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
 
@@ -576,8 +577,8 @@ public class ClinicalPicturePanel extends Panel {
             }
         });
 
-        WebMarkupContainer possibleImmunisationTriggerContainer = new WebMarkupContainer
-                (POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID) {
+        WebMarkupContainer possibleImmunisationTriggerContainer = new WebMarkupContainer(
+                POSSIBLE_IMMUNISATION_TRIGGER_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
                 return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
@@ -624,7 +625,8 @@ public class ClinicalPicturePanel extends Panel {
         preceedingInfection.add(new AjaxFormChoiceComponentUpdatingBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                showPrecedingInfectioModel.setObject(Boolean.TRUE.equals(form.getModelObject().getPreceedingInfection()));
+                showPrecedingInfectioModel.setObject(Boolean.TRUE.equals(form.getModelObject().
+                        getPreceedingInfection()));
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });
@@ -673,7 +675,8 @@ public class ClinicalPicturePanel extends Panel {
 
         final IModel<Boolean> showChronicModel = new Model<Boolean>(showChronicOnInit);
 
-        WebMarkupContainer chronicInfectionActiveContainer = new WebMarkupContainer(CHRONIC_INFECTION_ACTIVE_CONTAINER_ID) {
+        WebMarkupContainer chronicInfectionActiveContainer = new WebMarkupContainer(
+                CHRONIC_INFECTION_ACTIVE_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
                 return !hideElement(isFirstVisit, isSrnsModel.getObject(), getId());
@@ -692,7 +695,8 @@ public class ClinicalPicturePanel extends Panel {
         patientDetailsContainer.add(chronicInfectionActiveContainer);
 
         // Chronic infection show/hide
-        MarkupContainer chronicInfectionDetailContainer = new WebMarkupContainer(CHRONIC_INFECTION_DETAIL_CONTAINER_ID) {
+        MarkupContainer chronicInfectionDetailContainer = new WebMarkupContainer(
+                CHRONIC_INFECTION_DETAIL_CONTAINER_ID) {
             @Override
             public boolean isVisible() {
                 if (!hideElement(isFirstVisit, isSrnsModel.getObject(), getId())) {
@@ -738,7 +742,8 @@ public class ClinicalPicturePanel extends Panel {
         ophthalmoscopy.add(new AjaxFormChoiceComponentUpdatingBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                showOphthalmoscopyDetailsIModel.setObject(Boolean.TRUE.equals(form.getModelObject().getOphthalmoscopy()));
+                showOphthalmoscopyDetailsIModel.setObject(Boolean.TRUE.equals(form.getModelObject().
+                        getOphthalmoscopy()));
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdate);
             }
         });

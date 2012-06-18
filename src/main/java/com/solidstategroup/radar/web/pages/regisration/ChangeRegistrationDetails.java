@@ -60,7 +60,8 @@ public class ChangeRegistrationDetails extends BasePage {
         // controls whether the second changed details panel is visible
         final IModel<Boolean> changeDetailsVisibilityModel = new Model<Boolean>(false);
 
-        final CompoundPropertyModel<ProfessionalUser> userModel = new CompoundPropertyModel<ProfessionalUser>(new Model<ProfessionalUser>(
+        final CompoundPropertyModel<ProfessionalUser> userModel = new CompoundPropertyModel<ProfessionalUser>(
+                new Model<ProfessionalUser>(
                 new ProfessionalUser()));
         final Form<ProfessionalUser> authenticationForm = new Form<ProfessionalUser>("authenticationForm",
                 userModel) {
@@ -87,8 +88,8 @@ public class ChangeRegistrationDetails extends BasePage {
         };
 
         authenticationForm.add(new RadarRequiredTextField("username", authenticationForm, componentsToUpdate));
-        final PasswordTextField password = RadarComponentFactory.getRequiredPasswordTextField(PASSWORD_ID, authenticationForm,
-                componentsToUpdate);
+        final PasswordTextField password = RadarComponentFactory.getRequiredPasswordTextField(PASSWORD_ID,
+                authenticationForm, componentsToUpdate);
         password.setOutputMarkupId(true);
         password.setOutputMarkupPlaceholderTag(true);
         authenticationForm.add(password);
@@ -193,12 +194,14 @@ public class ChangeRegistrationDetails extends BasePage {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                target.add(changeDetailsComponentsToUpdate.toArray(new Component[changeDetailsComponentsToUpdate.size()]));
+                target.add(changeDetailsComponentsToUpdate.toArray(new Component[
+                        changeDetailsComponentsToUpdate.size()]));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.add(changeDetailsComponentsToUpdate.toArray(new Component[changeDetailsComponentsToUpdate.size()]));
+                target.add(changeDetailsComponentsToUpdate.toArray(new Component[
+                        changeDetailsComponentsToUpdate.size()]));
                 password1.clearInput();
                 password2.clearInput();
             }

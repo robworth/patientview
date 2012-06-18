@@ -53,14 +53,16 @@ public class FollowUpTreatmentPanel extends Panel {
         radarNumber.setEnabled(false);
         treatmentContainer.add(radarNumber);
 
-        treatmentContainer.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsManager)));
+        treatmentContainer.add(new TextField("hospitalNumber", RadarModelFactory.
+                getHospitalNumberModel(radarNumberModel, demographicsManager)));
 
         treatmentContainer.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.
                 getDiagnosisCodeModel(radarNumberModel, diagnosisManager), "abbreviation")));
 
-        treatmentContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
-        treatmentContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        treatmentContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
+                demographicsManager)));
+        treatmentContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
+                demographicsManager)));
         treatmentContainer.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel,
                 demographicsManager), RadarApplication.DATE_PATTERN));
 
@@ -81,16 +83,17 @@ public class FollowUpTreatmentPanel extends Panel {
         };
 
         final DropDownChoice<Therapy> treatmentSwitcher = new DropDownChoice("treatmentSwitcher", followUpModel,
-                therapiesListModel, new DateChoiceRenderer("treatmentRecordDate", "id"){
+                therapiesListModel, new DateChoiceRenderer("treatmentRecordDate", "id") {
 
             @Override
             protected Date getDate(Object object) {
-                return ((Therapy)object).getTreatmentRecordDate();
+                return ((Therapy) object).getTreatmentRecordDate();
             }
         });
         add(treatmentSwitcher);
 
-        final TreatmentPanel treatmentPanel = new TreatmentPanel("treatmentPanel", radarNumberModel, false, followUpModel,
+        final TreatmentPanel treatmentPanel = new TreatmentPanel("treatmentPanel", radarNumberModel, false,
+                followUpModel,
                 Arrays.<Component>asList(treatmentSwitcher));
         treatmentPanel.setVisible(false);
         add(treatmentPanel);

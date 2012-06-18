@@ -3,7 +3,6 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.TherapyDao;
 import com.solidstategroup.radar.model.sequenced.Therapy;
 import com.solidstategroup.radar.service.TherapyManager;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 

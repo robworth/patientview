@@ -2,26 +2,24 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.IssueDao;
 import com.solidstategroup.radar.model.Issue;
-import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.enums.IssuePriority;
 import com.solidstategroup.radar.model.enums.IssueStatus;
+import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.filter.IssueFilter;
-
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class IssueDaoImpl extends BaseDaoImpl implements IssueDao {
 

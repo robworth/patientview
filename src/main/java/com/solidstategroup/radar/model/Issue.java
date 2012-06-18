@@ -1,8 +1,8 @@
 package com.solidstategroup.radar.model;
 
-import com.solidstategroup.radar.model.enums.IssueType;
 import com.solidstategroup.radar.model.enums.IssuePriority;
 import com.solidstategroup.radar.model.enums.IssueStatus;
+import com.solidstategroup.radar.model.enums.IssueType;
 
 import java.util.Date;
 

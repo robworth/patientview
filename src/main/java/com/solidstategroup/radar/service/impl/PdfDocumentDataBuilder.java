@@ -1,20 +1,21 @@
 package com.solidstategroup.radar.service.impl;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.solidstategroup.radar.model.DocumentData;
 import com.solidstategroup.radar.service.DocumentDataBuilder;
-import java.io.ByteArrayOutputStream;
-import java.util.List;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 public class PdfDocumentDataBuilder implements DocumentDataBuilder {
 

@@ -14,10 +14,10 @@ public interface TransplantManager {
     public static final String TRANSPLANTS_INTERVAL_ERROR = "Transplants must be greater than 14 days apart";
     public static final String START_DATE_ERROR = "transplant date must be before recurrance date, failure date, " +
             "reject date and biopsy date";
-    public static final String FAILURE_DATE_ERROR = "Date of failure has to be after  reccurance date, reject date and " +
-            "biopsy date";
+    public static final String FAILURE_DATE_ERROR = "Date of failure has to be after  reccurance date, reject date " +
+            "and " + "biopsy date";
     public static final List<String> ERROR_MESSAGES = Arrays.asList(BEFORE_PREVIOUS_FAILURE_DATE,
-            TRANSPLANTS_INTERVAL_ERROR, START_DATE_ERROR, FAILURE_DATE_ERROR );
+            TRANSPLANTS_INTERVAL_ERROR, START_DATE_ERROR, FAILURE_DATE_ERROR);
 
     // reject data error messages
     public static final String REJECT_DATA_ERROR_MESSAGE = "Reject dates have to be after transplant start date and " +

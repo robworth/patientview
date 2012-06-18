@@ -8,7 +8,8 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import java.util.List;
 
 public class RadarRequiredPasswordTextField extends PasswordTextField {
-    public RadarRequiredPasswordTextField(String id, WebMarkupContainer parent, List<Component> componentsToUpdateList) {
+    public RadarRequiredPasswordTextField(String id, WebMarkupContainer parent, List<Component>
+            componentsToUpdateList) {
         super(id);
         init(parent, componentsToUpdateList);
     }

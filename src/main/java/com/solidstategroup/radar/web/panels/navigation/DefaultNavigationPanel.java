@@ -1,25 +1,25 @@
 package com.solidstategroup.radar.web.panels.navigation;
 
-import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
-import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
-import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
-import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
-import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.MarkupContainer;
+import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.pages.HomePage;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
-import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
-import com.solidstategroup.radar.web.pages.RecruitmentPage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.RecruitmentPage;
+import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
-import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
-import com.solidstategroup.radar.web.RadarSecuredSession;
-import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
+import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
+import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
+import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
+import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 // TODO: this could be split into patient, professional and no one logged in
 public class DefaultNavigationPanel extends BaseNavigationPanel {

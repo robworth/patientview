@@ -72,7 +72,8 @@ public class DiagnosisPanel extends Panel {
 
         // Set up model
         // Set up loadable detachable, working for null radar numbers (new patients) and existing
-        final CompoundPropertyModel<Diagnosis> model = new CompoundPropertyModel<Diagnosis>(new LoadableDetachableModel<Diagnosis>() {
+        final CompoundPropertyModel<Diagnosis> model = new CompoundPropertyModel<Diagnosis>(
+                new LoadableDetachableModel<Diagnosis>() {
             @Override
             protected Diagnosis load() {
                 if (radarNumberModel.getObject() != null) {
@@ -363,31 +364,40 @@ public class DiagnosisPanel extends Panel {
         geneMutationContainer.add(mutationContainer);
 
         // Gene mutations
-        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs1Container", 1, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs1Container", 1, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs2Container", 2, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs2Container", 2, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs3Container", 3, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("nphs3Container", 3, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("wt1Container", 4, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("wt1Container", 4, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("cd2apContainer", 5, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("cd2apContainer", 5, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("trpc6Container", 6, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("trpc6Container", 6, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("actn4Container", 7, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("actn4Container", 7, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel("lamb2Container", 8, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel("lamb2Container", 8, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
-        mutationContainer.add(new DiagnosisGeneMutationPanel(OTHER_CONTAINER_ID, 9, (CompoundPropertyModel) form.getModel(),
+        mutationContainer.add(new DiagnosisGeneMutationPanel(OTHER_CONTAINER_ID, 9, (CompoundPropertyModel)
+                form.getModel(),
                 otherDetailsVisibilityModel, moreDetailsVisibilityModel, componentsToUpdate));
 
         // Other gene mutation container
@@ -432,7 +442,8 @@ public class DiagnosisPanel extends Panel {
         final IModel<Boolean> karoTypeOtherVisibilityModel = new Model<Boolean>(showKaroTypeOtherOnInit);
 
         // Add Karotype
-        DropDownChoice<Karotype> karotypeDropDownChoice = new DropDownChoice<Karotype>("karotype", diagnosisManager.getKarotypes(),
+        DropDownChoice<Karotype> karotypeDropDownChoice = new DropDownChoice<Karotype>("karotype",
+                diagnosisManager.getKarotypes(),
                 new ChoiceRenderer<Karotype>("description", "id"));
 
         WebMarkupContainer karoTypeContainer = new WebMarkupContainer("karoTypeContainer") {

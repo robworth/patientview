@@ -1,7 +1,11 @@
 package com.solidstategroup.radar.web.pages.patient;
 
 
+import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.generic.MedicalResult;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.generic.MedicalResultManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.pages.BasePage;
@@ -21,6 +25,8 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class GenericPatientPage extends BasePage {
@@ -29,16 +35,56 @@ public class GenericPatientPage extends BasePage {
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
 
-    public GenericPatientPage(PageParameters parameters) {
+    @SpringBean
+    private DemographicsManager demographicsManager;
+    @SpringBean
+    private MedicalResultManager medicalResultManager;
+
+    public GenericPatientPage(AddPatientPage.AddPatientModel patientModel) {
         super();
-        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel") {
+        Demographics demographics = new Demographics();
+        demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
+        if (patientModel.getIdType().equals(AddPatientPage.AddPatientModel.IdType.NHS)) {
+            demographics.setNhsNumber(patientModel.getId());
+
+        } else if (patientModel.getIdType().equals(AddPatientPage.AddPatientModel.IdType.CHI)) {
+            demographics.setChiNumber(patientModel.getId());
+        }
+
+        MedicalResult medicalResult = new MedicalResult();
+        medicalResult.setId(patientModel.getId());
+        init(demographics, medicalResult);
+    }
+
+    public GenericPatientPage(PageParameters pageParameters) {
+        StringValue idValue = pageParameters.get("id");
+        Long id = idValue.toLong();
+        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(id);
+
+        String medicalResultId = "";
+        if (demographics.getNhsNumber() != null) {
+            if (!demographics.getNhsNumber().isEmpty()) {
+                medicalResultId = demographics.getNhsNumber();
+            } else {
+                medicalResultId = demographics.getChiNumber();
+            }
+        }
+
+
+        MedicalResult medicalResult = medicalResultManager.getById(medicalResultId);
+        init(demographics, medicalResult);
+    }
+
+    public void init(Demographics demographics, MedicalResult medicalResult) {
+
+        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.DEMOGRAPHICS);
             }
         };
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
-        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel") {
+        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", medicalResult, demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICAL_RESULTS);
@@ -67,6 +113,14 @@ public class GenericPatientPage extends BasePage {
 
         visitChildren(new PatientFormVisitor());
         add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
+
+    }
+
+    public static PageParameters getPageParameters(Demographics demographics) {
+        PageParameters pageParameters = new PageParameters();
+        Long id = demographics.getId();
+        pageParameters.set("id", id);
+        return pageParameters;
     }
 
     public enum Tab {
@@ -121,5 +175,6 @@ public class GenericPatientPage extends BasePage {
         protected IAjaxCallDecorator getAjaxCallDecorator() {
             return RadarBehaviourFactory.getWarningOnFormExitCallDecorator();
         }
+
     }
 }

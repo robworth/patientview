@@ -24,8 +24,8 @@ public class DiagnosisRelativePanel extends Panel {
         super(id);
         this.isVisibleModel = isVisibleModel;
         // Drop down with choices and choice renderer setup
-        add(new DropDownChoice<Relative>("relative", model.bind("relativeWithDisease" + i), utilityManager.getRelatives(),
-                new ChoiceRenderer<Relative>("name", "id")));
+        add(new DropDownChoice<Relative>("relative", model.bind("relativeWithDisease" + i),
+                utilityManager.getRelatives(), new ChoiceRenderer<Relative>("name", "id")));
 
         // Add the radar number text field too
         add(new TextField<Integer>("radarNumber", model.bind("relativeWithDiseaseRadarNumber" + i)));

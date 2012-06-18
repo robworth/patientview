@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.components;
 
-import com.solidstategroup.radar.model.sequenced.ClinicalData;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
