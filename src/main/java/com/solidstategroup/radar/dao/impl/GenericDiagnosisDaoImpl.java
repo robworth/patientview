@@ -5,6 +5,7 @@ import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.generic.GenericDiagnosis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -33,10 +34,16 @@ public class GenericDiagnosisDaoImpl extends BaseDaoImpl implements GenericDiagn
     }
 
     public GenericDiagnosis getById(String id) {
-        return jdbcTemplate.queryForObject("SELECT DISTINCT ERA_EDTA_PRD_code, ERA_EDTA_primaryRenalDiagnosisTerm, " +
-                "ordering FROM rdr_prd_code, rdr_diagnosis_mapping" +
-                " WHERE rdr_prd_code.ERA_EDTA_PRD_code = rdr_diagnosis_mapping.PRDCode" +
-                " AND ERA_EDTA_PRD_code = ?", new Object[]{id}, new GenericDiagnosisRowMapper());
+        try {
+            return jdbcTemplate.queryForObject("SELECT DISTINCT ERA_EDTA_PRD_code, " +
+                    "ERA_EDTA_primaryRenalDiagnosisTerm, " + "ordering FROM rdr_prd_code, rdr_diagnosis_mapping" +
+                    " WHERE rdr_prd_code.ERA_EDTA_PRD_code = rdr_diagnosis_mapping.PRDCode" +
+                    " AND ERA_EDTA_PRD_code = ?", new Object[]{id}, new GenericDiagnosisRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.error("generic diagnosis with id " + id + "not found" + e);
+            return null;
+        }
+
     }
 
     private class GenericDiagnosisRowMapper implements RowMapper<GenericDiagnosis> {
