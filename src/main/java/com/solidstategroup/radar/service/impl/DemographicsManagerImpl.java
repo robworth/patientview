@@ -60,8 +60,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
     }
 
     public boolean isNhsNumberValid(String nhsNumber) {
-        return true; // todo change remove comments
-/*        nhsNumber = nhsNumber.trim().replace(" ", "");  //remove spaces before checking
+        nhsNumber = nhsNumber.trim().replace(" ", "");  //remove spaces before checking
         if (nhsNumber.length() != 10) {
             return false;
         }
@@ -84,7 +83,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
             return true;
         } else {
             return false;
-        }*/
+        }
     }
 
     public void setDemographicsDao(DemographicsDao demographicsDao) {
