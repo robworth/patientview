@@ -121,12 +121,13 @@ public class RadarPhase2ExcelDataToSqlMapper {
             }
 
             // create sql for working groups sql insert
-            String workingGroupSql = "ALTER TABLE rdr_disease_group AUTO_INCREMENT=0;" +
+            String workingGroupSql = "" +
                     System.getProperty("line.separator");
             int workingGroupIndex = 0;
             for (String workingGroup : workingGroups) {
-                workingGroupSql += "INSERT INTO rdr_disease_group(name) VALUES('" +
-                        workingGroup + "');" + System.getProperty("line.separator");
+                String unitCode = workingGroup.split(" ")[0]+workingGroupIndex; // this is id, has to be unique
+                workingGroupSql += "INSERT INTO unit(unitcode, name, shortName, sourceType) VALUES('"+unitCode+"', '"+
+                        workingGroup + "', '','radargroup');" + System.getProperty("line.separator");
                 workingGroupIndex++;
             }
 
@@ -173,7 +174,8 @@ public class RadarPhase2ExcelDataToSqlMapper {
                     sql = baseSql;
                     String value = list.get(j);
                     if (!value.equals("0")) {
-                        sql += "'" + (i+1) + "','" + prdIds.get(j) + "','" + value + "');";
+                        sql += "'" + (workingGroups.get(i).split(" ")[0] + i) + "', '" + prdIds.get(j) + "','"
+                                + value + "');";
                         if (!sql.equals(baseSql)) {
                             mappingSql += sql + System.getProperty("line.separator");
                         }

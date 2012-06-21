@@ -1,17 +1,21 @@
 package com.solidstategroup.radar.model.generic;
 
-
-import com.solidstategroup.radar.model.BaseModel;
-
 import java.io.Serializable;
 
 /**
- * rdr_disease_group
+ * using 'unit' table in db
+ * also sometimes referred to as working group
  */
-public class DiseaseGroup extends BaseModel implements Serializable{
-    public static final Long SRNS_DISEASE_GROUP_ID = 42L; // todo change this for live and check ids for dev
-    public static final Long MPGN_DISEASEGROUP_ID = 32L; // todo copy this for live and check ids for dev
+public class DiseaseGroup implements Serializable, Comparable<DiseaseGroup> {
+    public static final String SRNS_DISEASE_GROUP_ID = "SRNS:41";
+    public static final String MPGN_DISEASEGROUP_ID = "Membranoproliferative31";
+    private String id;
     private String name;
+    private String shortName;
+
+    public int compareTo(DiseaseGroup o) {
+        return name.compareTo(o.getName()); // todo might need to compare short names
+    }
 
     public String getName() {
         return name;
@@ -19,5 +23,22 @@ public class DiseaseGroup extends BaseModel implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getId() {
+
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -54,11 +54,10 @@ public class AddPatientPage extends BasePage {
             protected void onSubmit() {
                 AddPatientModel model = getModelObject();
                 // check nhs number is valid
-                if (model.getIdType().equals(IdType.NHS)) {
                     if (!demographicsManager.isNhsNumberValid(model.getId())) {
                         error(NHS_NUMBER_INVALID_MSG);
                     }
-                }
+
 
                 // if srsn or mpgn chosen redirect to previous phase1 patients page, otherwise redirect to
                 // generic patients page
