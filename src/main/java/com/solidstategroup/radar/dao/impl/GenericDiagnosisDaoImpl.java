@@ -35,7 +35,7 @@ public class GenericDiagnosisDaoImpl extends BaseDaoImpl implements GenericDiagn
 
     public GenericDiagnosis getById(String id) {
         try {
-            return jdbcTemplate.queryForObject("SELECT DISTINCT *, FROM rdr_prd_code, rdr_diagnosis_mapping" +
+            return jdbcTemplate.queryForObject("SELECT DISTINCT * FROM rdr_prd_code, rdr_diagnosis_mapping" +
                     " WHERE rdr_prd_code.ERA_EDTA_PRD_code = rdr_diagnosis_mapping.PRDCode" +
                     " AND ERA_EDTA_PRD_code = ?", new Object[]{id}, new GenericDiagnosisRowMapper());
         } catch (EmptyResultDataAccessException e) {
