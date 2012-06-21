@@ -26,7 +26,7 @@ public class GenericDiagnosisDaoTest extends BaseDaoTest {
     @Test
     public void testGetByDiseaseGroup() throws Exception {
         DiseaseGroup diseaseGroup = new DiseaseGroup();
-        diseaseGroup.setId(1L);
+        diseaseGroup.setId("1");
         List<GenericDiagnosis> genericDiagnosises = genericDiagnosisDao.getByDiseaseGroup(diseaseGroup);
         Assert.assertEquals("Returned list of wrong size", 2, genericDiagnosises.size());
         Assert.assertEquals("Returned generic diagnosis with wrong id", "code6", genericDiagnosises.get(0).getId());

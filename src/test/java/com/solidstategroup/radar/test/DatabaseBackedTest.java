@@ -22,7 +22,7 @@ public abstract class DatabaseBackedTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseBackedTest.class);
 
     // Filenames
-    private static final String[] SQL_SCRIPTS = {"create_tables.sql", "phase2.sql", "testUpdates.sql"};
+    private static final String[] SQL_SCRIPTS = {"create_tables.sql", "testUpdates.sql", "phase2.sql"};
     private static final String DATASET_XML_FILENAME = "dataset.xml";
 
     @Autowired
