@@ -23,7 +23,7 @@ public class DiseaseGroupDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetById() throws Exception {
-        DiseaseGroup diseaseGroup = diseaseGroupDao.getById(1);
+        DiseaseGroup diseaseGroup = diseaseGroupDao.getById("1");
         Assert.assertNotNull(diseaseGroup);
     }
 }

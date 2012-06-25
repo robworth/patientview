@@ -81,6 +81,10 @@ public class GenericPatientPage extends BasePage {
 
 
         MedicalResult medicalResult = medicalResultManager.getById(medicalResultId);
+        if (medicalResult == null) {
+            medicalResult = new MedicalResult();
+            medicalResult.setId(medicalResultId);
+        }
         init(demographics, medicalResult);
     }
 

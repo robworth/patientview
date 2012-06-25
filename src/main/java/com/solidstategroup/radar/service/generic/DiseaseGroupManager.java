@@ -8,6 +8,6 @@ public interface DiseaseGroupManager {
 
     List<DiseaseGroup> getAll();
 
-    DiseaseGroup getById(long id);
+    DiseaseGroup getById(String id);
 
 }
