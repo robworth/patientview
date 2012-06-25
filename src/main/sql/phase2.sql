@@ -35,7 +35,7 @@ PRIMARY KEY (workingGroup, PRDCode),
 FOREIGN KEY (PRDCode) REFERENCES rdr_prd_code(ERA_EDTA_PRD_code) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-ALTER TABLE tbl_demographics ADD RDG INT(10);
+ALTER TABLE tbl_demographics ADD RDG VARCHAR(100);
 ALTER TABLE tbl_demographics ADD emailAddress VARCHAR(50);
 ALTER TABLE tbl_demographics ADD phone1 VARCHAR(20);
 ALTER TABLE tbl_demographics ADD phone2 VARCHAR(20);

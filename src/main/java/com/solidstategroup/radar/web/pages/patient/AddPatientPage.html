@@ -36,15 +36,17 @@
                                 <tb>
                                     <tr>
                                         <td>
-                                            Identifying Number
+                                            <label>Identifying Number</label>
                                         </td>
                                         <td>
                                             <input wicket:id="id" type="text"/>
                                             <span wicket:id="idFeedbackIndicator"></span>
-                                        </td>
-                                        <td>
+                                            <label>Identitying Type</label>
                                             <select wicket:id="idType"/>
                                             <span wicket:id="idTypeFeedbackIndicator"></span>
+                                        </td>
+                                        <td>
+                                            &nbsp;
                                         </td>
                                     </tr>
                                     <tr>
@@ -59,9 +61,9 @@
                                     </tr>
                                 </tb>
                             </table>
-                            <input type="button" wicket:id="submit" value="Add Patient"/>
+                            <input class="saveBtn" type="button" wicket:id="submit" value="Add Patient"/>
 
-                           <span class="feedback" wicket:id="feedback"></span>
+                            <span class="feedback" wicket:id="feedback"></span>
 
                         </td>
                     </tr>

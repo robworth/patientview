@@ -387,7 +387,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             // set generic fields
-            Long diseaseGroupId = getLongWithNullCheck("RDG", resultSet); //RDG,
+            String diseaseGroupId = resultSet.getString("RDG"); //RDG,
             if (diseaseGroupId != null) {
                 demographics.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
             }

@@ -22,7 +22,7 @@ public class DiseaseGroupDaoImpl extends BaseDaoImpl implements DiseaseGroupDao 
         return diseaseGroups;
     }
 
-    public DiseaseGroup getById(long id) {
+    public DiseaseGroup getById(String id) {
         return jdbcTemplate.queryForObject("SELECT * FROM unit WHERE sourceType='radargroup' AND unitcode = ?",
                 new Object[]{id}, new DiseaseGroupRowMapper());
     }

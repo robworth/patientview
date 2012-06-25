@@ -14,7 +14,7 @@ public class DiseaseGroupManagerImpl implements DiseaseGroupManager {
         return diseaseGroupDao.getAll();
     }
 
-    public DiseaseGroup getById(long id) {
+    public DiseaseGroup getById(String id) {
         return diseaseGroupDao.getById(id);
     }
 
