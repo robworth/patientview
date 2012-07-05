@@ -19,9 +19,12 @@ public class MedicalResult implements Serializable{
     private Double height; // height
     private Date heightDate;
     private Integer bpSystolic; // BPsys
+    private Date bpSystolicDate;
     private Integer bpDiastolic; // BPdia
+    private Date bpDiastolicDate; //     
     private Date bpDate;
     private YesNo antihypertensiveDrugs; //  antihypertensive
+    private Date antihypertensiveDrugsDate; //  antihypertensive
 
     public enum YesNo {
         YES("1"),
@@ -165,5 +168,29 @@ public class MedicalResult implements Serializable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Date getBpSystolicDate() {
+        return bpSystolicDate;
+    }
+
+    public void setBpSystolicDate(Date bpSystolicDate) {
+        this.bpSystolicDate = bpSystolicDate;
+    }
+
+    public Date getBpDiastolicDate() {
+        return bpDiastolicDate;
+    }
+
+    public void setBpDiastolicDate(Date bpDiastolicDate) {
+        this.bpDiastolicDate = bpDiastolicDate;
+    }
+
+    public Date getAntihypertensiveDrugsDate() {
+        return antihypertensiveDrugsDate;
+    }
+
+    public void setAntihypertensiveDrugsDate(Date antihypertensiveDrugsDate) {
+        this.antihypertensiveDrugsDate = antihypertensiveDrugsDate;
     }
 }
