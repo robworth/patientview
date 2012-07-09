@@ -13,13 +13,13 @@ import com.solidstategroup.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -39,6 +39,11 @@ public class MedicalResultsPanel extends Panel {
     public MedicalResultsPanel(String id, MedicalResult medicalResult, Demographics demographics) {
         super(id);
 
+        // general feedback for messages that are not to do with a certain component in the form
+        final FeedbackPanel formFeedback = new FeedbackPanel("formFeedbackPanel");
+        formFeedback.setOutputMarkupId(true);
+        formFeedback.setOutputMarkupPlaceholderTag(true);
+
         // components to update on ajax refresh
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
         IModel<MedicalResult> model = new Model<MedicalResult>(medicalResult);
@@ -49,32 +54,45 @@ public class MedicalResultsPanel extends Panel {
             @Override
             protected void onSubmit() {
                 MedicalResult medicalResult = getModelObject();
+
+                if (medicalResult.getBloodUrea() == null
+                        && medicalResult.getSerumCreatanine() == null
+                        && medicalResult.getWeight() == null
+                        && medicalResult.getHeight() == null
+                        && medicalResult.getBpSystolic() == null
+                        && medicalResult.getAntihypertensiveDrugs() == null) {
+                    error(TEST_RESULT_AT_LEAST_ONE);
+                }
+
                 // test result cannot have a null date
                 if (medicalResult.getBloodUrea() != null && medicalResult.getBloodUreaDate() == null) {
                     get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
+
                 if (medicalResult.getSerumCreatanine() != null && medicalResult.getCreatanineDate() == null) {
                     get("creatanineDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
+
                 if (medicalResult.getWeight() != null && medicalResult.getWeightDate() == null) {
                     get("weightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
+
                 if (medicalResult.getHeight() != null && medicalResult.getHeightDate() == null) {
                     get("heightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
+
                 if (medicalResult.getBpSystolic() != null && medicalResult.getBpSystolicDate() == null) {
                     get("bpSystolicDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
+
                 if (medicalResult.getBpDiastolic() != null && medicalResult.getBpDiastolicDate() == null) {
                     get("bpDiastolicDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
+
                 if (medicalResult.getAntihypertensiveDrugs() != null
+                        && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
                         && medicalResult.getAntihypertensiveDrugsDate() == null) {
                     get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                }
-                if (medicalResult.getBpSystolic() == null && medicalResult.getBpDiastolic() == null) {
-                    System.out.println("error");
-                    error(TEST_RESULT_AT_LEAST_ONE);
                 }
 
                 if (!hasError()) {
@@ -83,6 +101,11 @@ public class MedicalResultsPanel extends Panel {
             }
         };
         add(form);
+
+        // have to set the generic feedback panel to only pick up msgs for them form
+        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(form);
+        formFeedback.setFilter(filter);
+        form.add(formFeedback);
 
         PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Medical Results");
         patientDetail.setOutputMarkupId(true);
@@ -127,11 +150,13 @@ public class MedicalResultsPanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
                 target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+                target.add(formFeedback);
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.add(formFeedback);
             }
         });
     }
