@@ -25,6 +25,7 @@ public class MedicalResult implements Serializable{
     private Date bpDate;
     private YesNo antihypertensiveDrugs; //  antihypertensive
     private Date antihypertensiveDrugsDate; //  antihypertensive
+    private DiseaseGroup diseaseGroup;
 
     public enum YesNo {
         YES("1"),
@@ -192,5 +193,13 @@ public class MedicalResult implements Serializable{
 
     public void setAntihypertensiveDrugsDate(Date antihypertensiveDrugsDate) {
         this.antihypertensiveDrugsDate = antihypertensiveDrugsDate;
+    }
+
+    public DiseaseGroup getDiseaseGroup() {
+        return diseaseGroup;
+    }
+
+    public void setDiseaseGroup(DiseaseGroup diseaseGroup) {
+        this.diseaseGroup = diseaseGroup;
     }
 }
