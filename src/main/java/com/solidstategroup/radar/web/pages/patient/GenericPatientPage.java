@@ -59,6 +59,8 @@ public class GenericPatientPage extends BasePage {
         // create new medical result
         MedicalResult medicalResult = new MedicalResult();
         medicalResult.setId(patientModel.getId());
+        medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
+
         init(demographics, medicalResult);
     }
 
@@ -84,6 +86,7 @@ public class GenericPatientPage extends BasePage {
         if (medicalResult == null) {
             medicalResult = new MedicalResult();
             medicalResult.setId(medicalResultId);
+            medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
         }
         init(demographics, medicalResult);
     }

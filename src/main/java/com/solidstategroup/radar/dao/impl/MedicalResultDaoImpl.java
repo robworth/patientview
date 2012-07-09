@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.dao.impl;
 
+import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.dao.generic.MedicalResultDao;
 import com.solidstategroup.radar.model.generic.MedicalResult;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import java.util.Map;
 public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MedicalResultDaoImpl.class);
     private SimpleJdbcInsert medicalResultInsert;
+
+    private DiseaseGroupDao diseaseGroupDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -42,7 +45,7 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
             MedicalResultItem item = medicalResultItems.get(i);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("nhsno", medicalResult.getId());
-            map.put("unitcode", "radar"); // todo ask rob what to put here
+            map.put("unitcode", medicalResult.getDiseaseGroup().getId());
             map.put("testcode", item.getTestcode());
             map.put("value", item.getObjectValue());
             map.put("datestamp", item.getDate());
@@ -81,7 +84,10 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         if (!medicalResultItems.isEmpty()) {
             MedicalResult medicalResult = new MedicalResult();
             medicalResult.setId(id);
+
             for (MedicalResultItem item : medicalResultItems) {
+                medicalResult.setDiseaseGroup(diseaseGroupDao.getById(item.getDiseaseGroupId()));
+
                 Date date = item.getDate();
                 if (item.getTestcode().equals("urea")) {
                     Double urea = Double.parseDouble(item.getValue());
@@ -117,12 +123,17 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         return null;
     }
 
+    public void setDiseaseGroupDao(DiseaseGroupDao diseaseGroupDao) {
+        this.diseaseGroupDao = diseaseGroupDao;
+    }
+
     private class MedicalResultItemRowMapper implements RowMapper<MedicalResultItem> {
         public MedicalResultItem mapRow(ResultSet resultSet, int i) throws SQLException {
             MedicalResultItem item = new MedicalResultItem();
             item.setDate(resultSet.getDate("datestamp"));
             item.setTestcode(resultSet.getString("testcode"));
             item.setValue(resultSet.getString("value"));
+            item.setDiseaseGroupId(resultSet.getString("unitcode"));
             return item;
         }
     }
@@ -182,6 +193,7 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         Date date;
         String value;
         Object objectValue;
+        String diseaseGroupId;
 
         public String getTestcode() {
             return testcode;
@@ -213,6 +225,14 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
 
         public void setObjectValue(Object objectValue) {
             this.objectValue = objectValue;
+        }
+
+        public String getDiseaseGroupId() {
+            return diseaseGroupId;
+        }
+
+        public void setDiseaseGroupId(String diseaseGroupId) {
+            this.diseaseGroupId = diseaseGroupId;
         }
     }
 }
