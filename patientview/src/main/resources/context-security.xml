@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+        xmlns="http://www.springframework.org/schema/security"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:sec="http://www.springframework.org/schema/security"
+        xsi:schemaLocation="
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <http>
+        <!-- Control Protected Area -->
+        <intercept-url pattern="/control/**" access="ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
+        <!-- Patient Protected Area -->
+        <intercept-url pattern="/logged_in.do" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
+        <intercept-url pattern="/patient/**" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
+        <intercept-url pattern="/forums/**" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
+        <intercept-url pattern="/posts/**" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
+        <!-- Everything else is unsecured -->
+
+        <form-login
+                login-page="/login.jsp"
+                login-processing-url="/j_security_check"
+                password-parameter="j_password"
+                username-parameter="j_username"
+                default-target-url="/logged_in.do"
+                authentication-success-handler-ref="patientViewAuthenticationSuccessHandler"
+                authentication-failure-handler-ref="patientViewAuthenticationFailedHandler"
+        />
+
+        <logout logout-url="/logout.do" logout-success-url="/index.do"/>
+
+    </http>
+
+    <beans:bean id="encoder" class="com.worthsoln.security.impl.PatientViewPasswordEncoder"/>
+
+    <beans:bean id="patientViewAuthenticationSuccessHandler" class="com.worthsoln.security.PatientViewAuthenticationSuccessHandler"/>
+
+    <beans:bean id="patientViewAuthenticationFailedHandler" class="com.worthsoln.security.PatientViewAuthenticationFailureHandler">
+        <beans:property name="defaultFailureUrl" value="/login-error.do"/>
+        <beans:property name="allowedfailedlogons" value="${security.allowedfailedlogons}"/>
+    </beans:bean>
+
+    <beans:bean id="userDetailsService" class="com.worthsoln.security.impl.PatientViewUserDetailsService"/>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="encoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-context.xml</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--Stuff for JForum-->
+    <!-- Clickstream -->
+
+    <filter>
+        <filter-name>clickstream-jforum</filter-name>
+        <filter-class>com.worthsoln.forum.RpvForumFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>clickstream-jforum</filter-name>
+        <url-pattern>*.page</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>net.jforum.ForumSessionListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>jforum</servlet-name>
+        <servlet-class>net.jforum.JForum</servlet-class>
+
+        <init-param>
+            <param-name>development</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jforum</servlet-name>
+        <url-pattern>*.page</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts-config.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>xmlParser</servlet-name>
+        <servlet-class>com.worthsoln.patientview.ParserMonitorServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.do</welcome-file>
+    </welcome-file-list>
+
+    <!-- todo what is this? -->
+    <error-page>
+        <error-code>400</error-code>
+        <location>/patient_details.do</location>
+    </error-page>
+
+    <!-- override the tld from the struts jar -->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>
+                http://struts.apache.org/tags-logic
+            </taglib-uri>
+            <taglib-location>
+                /META-INF/struts-logic.tld
+            </taglib-location>
+        </taglib>
+    </jsp-config>
+</web-app>

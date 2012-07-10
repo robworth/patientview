@@ -1,0 +1,6 @@
+<#setting number_format = "#"/>
+Ol� ${user.username},
+
+Possui uma nova mensagem privada no ${forumName}. Pode l�-la clicando no link abaixo:
+
+${path}
