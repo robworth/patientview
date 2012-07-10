@@ -6,6 +6,5 @@ public interface MedicalResultManager {
 
     void save(MedicalResult medicalResult);
 
-    MedicalResult getById(String id);
-
+    MedicalResult getMedicalResult(long radarNumber, String unitCode);
 }
