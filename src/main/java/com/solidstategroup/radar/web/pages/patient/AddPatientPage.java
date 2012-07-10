@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.pages.patient;
 
-
 import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
@@ -37,13 +36,14 @@ import java.util.List;
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class AddPatientPage extends BasePage {
     public static final String NHS_NUMBER_INVALID_MSG = "NHS number is not valid";
+
     @SpringBean
     private DiseaseGroupDao diseaseGroupDao;
+
     @SpringBean
     private DemographicsManager demographicsManager;
 
     public AddPatientPage() {
-
         // list of items to update in ajax submits
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
 
@@ -53,11 +53,11 @@ public class AddPatientPage extends BasePage {
             @Override
             protected void onSubmit() {
                 AddPatientModel model = getModelObject();
-                // check nhs number is valid
-                    if (!demographicsManager.isNhsNumberValid(model.getId())) {
-                        error(NHS_NUMBER_INVALID_MSG);
-                    }
 
+                // check nhs number is valid
+                if (!demographicsManager.isNhsNumberValid(model.getId())) {
+                    error(NHS_NUMBER_INVALID_MSG);
+                }
 
                 // if srsn or mpgn chosen redirect to previous phase1 patients page, otherwise redirect to
                 // generic patients page
@@ -65,15 +65,13 @@ public class AddPatientPage extends BasePage {
                     if (model.getDiseaseGroup() != null) {
                         if (model.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
                                 model.getDiseaseGroup().getId().
-                                equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
+                                        equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
                             setResponsePage(PatientPage.class, PatientPage.getParameters(model));
                         } else {
                             setResponsePage(new GenericPatientPage(model));
                         }
                     }
-
                 }
-
             }
         };
 
@@ -83,7 +81,6 @@ public class AddPatientPage extends BasePage {
         RadarRequiredDropdownChoice idType =
                 new RadarRequiredDropdownChoice("idType", Arrays.asList(IdType.values()),
                         new ChoiceRenderer(), form, componentsToUpdateList);
-
 
         RadarRequiredDropdownChoice diseaseGroup =
                 new RadarRequiredDropdownChoice("diseaseGroup", diseaseGroupDao.getAll(),
@@ -118,5 +115,4 @@ public class AddPatientPage extends BasePage {
         form.add(id, idType, diseaseGroup, submit, feedbackPanel);
         add(form, pageNumber);
     }
-
 }
