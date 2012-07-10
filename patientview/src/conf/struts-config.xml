@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+    "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+<struts-config>
+
+  <!-- ========== Form Bean Definitions =================================== -->
+  <form-beans>
+    <form-bean name="edtaCodeForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="edtaCode" type="java.lang.String"/>
+      <form-property name="linkType" type="java.lang.String"/>
+      <form-property name="description" type="java.lang.String"/>
+      <form-property name="medicalLink01" type="java.lang.String"/>
+      <form-property name="medicalLink02" type="java.lang.String"/>
+      <form-property name="medicalLink03" type="java.lang.String"/>
+      <form-property name="medicalLink04" type="java.lang.String"/>
+      <form-property name="medicalLink05" type="java.lang.String"/>
+      <form-property name="medicalLink06" type="java.lang.String"/>
+      <form-property name="medicalLinkText01" type="java.lang.String"/>
+      <form-property name="medicalLinkText02" type="java.lang.String"/>
+      <form-property name="medicalLinkText03" type="java.lang.String"/>
+      <form-property name="medicalLinkText04" type="java.lang.String"/>
+      <form-property name="medicalLinkText05" type="java.lang.String"/>
+      <form-property name="medicalLinkText06" type="java.lang.String"/>
+      <form-property name="patientLink01" type="java.lang.String"/>
+      <form-property name="patientLink02" type="java.lang.String"/>
+      <form-property name="patientLink03" type="java.lang.String"/>
+      <form-property name="patientLink04" type="java.lang.String"/>
+      <form-property name="patientLink05" type="java.lang.String"/>
+      <form-property name="patientLink06" type="java.lang.String"/>
+      <form-property name="patientLinkText01" type="java.lang.String"/>
+      <form-property name="patientLinkText02" type="java.lang.String"/>
+      <form-property name="patientLinkText03" type="java.lang.String"/>
+      <form-property name="patientLinkText04" type="java.lang.String"/>
+      <form-property name="patientLinkText05" type="java.lang.String"/>
+      <form-property name="patientLinkText06" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="resultHeadingForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="headingcode" type="java.lang.String"/>
+      <form-property name="heading" type="java.lang.String"/>
+      <form-property name="rollover" type="java.lang.String"/>
+      <form-property name="link" type="java.lang.String"/>
+      <form-property name="panel" type="java.lang.String"/>
+      <form-property name="panelorder" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="patientForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="username" type="java.lang.String"/>
+      <form-property name="password" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="email" type="java.lang.String"/>
+      <form-property name="emailverified" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="role" type="java.lang.String"/>
+      <form-property name="firstlogon" type="java.lang.String"/>
+      <form-property name="overrideDuplicateNhsno" type="java.lang.String"/>
+      <form-property name="dummypatient" type="java.lang.String"/>
+      <form-property name="lastlogon" type="java.lang.String"/>
+      <form-property name="failedlogons" type="java.lang.String"/>
+      <form-property name="accountlocked" type="java.lang.String"/>
+      <form-property name="showgps" type="java.lang.String"/>
+      <form-property name="screenname" type="java.lang.String"/>
+      <form-property name="splashpage" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="shortname" type="java.lang.String"/>
+      <form-property name="unituser" type="java.lang.String"/>
+      <form-property name="address1" type="java.lang.String"/>
+      <form-property name="address2" type="java.lang.String"/>
+      <form-property name="address3" type="java.lang.String"/>
+      <form-property name="postcode" type="java.lang.String"/>
+      <form-property name="uniturl" type="java.lang.String"/>
+      <form-property name="trusturl" type="java.lang.String"/>
+      <form-property name="rpvadminname" type="java.lang.String"/>
+      <form-property name="rpvadminphone" type="java.lang.String"/>
+      <form-property name="rpvadminemail" type="java.lang.String"/>
+      <form-property name="unitenquiriesphone" type="java.lang.String"/>
+      <form-property name="unitenquiriesemail" type="java.lang.String"/>
+      <form-property name="appointmentphone" type="java.lang.String"/>
+      <form-property name="appointmentemail" type="java.lang.String"/>
+      <form-property name="outofhours" type="java.lang.String"/>
+      <form-property name="peritonealdialysisphone" type="java.lang.String"/>
+      <form-property name="peritonealdialysisemail" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname1" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone1" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation1" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl1" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname2" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone2" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation2" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl2" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname3" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone3" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation3" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl3" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname4" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone4" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation4" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl4" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname5" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone5" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation5" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl5" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname6" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone6" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation6" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl6" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname7" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone7" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation7" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl7" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname8" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone8" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation8" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl8" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname9" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone9" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation9" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl9" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname10" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone10" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation10" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl10" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname11" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone11" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation11" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl11" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname12" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone12" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation12" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl12" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="gpgForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="src" type="java.lang.String"/>
+      <form-property name="dest" type="java.lang.String"/>
+      <form-property name="passphrase" type="java.lang.String"/>
+      <form-property name="gpgHome" type="java.lang.String"/>
+      <form-property name="gpgRuntime" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="splashPageForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="headline" type="java.lang.String"/>
+      <form-property name="bodytext" type="java.lang.String"/>
+      <form-property name="datestart" type="java.lang.String"/>
+      <form-property name="datestop" type="java.lang.String"/>
+      <form-property name="live" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="xmlForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="src" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="passwordForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="oldpassword" type="java.lang.String"/>
+      <form-property name="passwordPwd" type="java.lang.String"/>
+      <form-property name="newpasswordagain" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="logForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="user" type="java.lang.String"/>
+      <form-property name="username" type="java.lang.String"/>
+      <form-property name="actor" type="java.lang.String"/>
+      <form-property name="action" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="startdate" type="java.lang.String"/>
+      <form-property name="enddate" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="newsForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="admin" type="java.lang.String"/>
+      <form-property name="patient" type="java.lang.String"/>
+      <form-property name="everyone" type="java.lang.String"/>
+      <form-property name="headline" type="java.lang.String"/>
+      <form-property name="body" type="java.lang.String"/>
+      <form-property name="submission" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="contactForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="message" type="java.lang.String"/>
+      <form-property name="email" type="java.lang.String"/>
+      <form-property name="type" type="java.lang.String"/>
+      <form-property name="rpvadminemail" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="patientResultForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="day" type="java.lang.String"/>
+      <form-property name="month" type="java.lang.String"/>
+      <form-property name="year" type="java.lang.String"/>
+      <form-property name="hour" type="java.lang.String"/>
+      <form-property name="minute" type="java.lang.String"/>
+      <form-property name="patientResultName" type="java.lang.String"/>
+      <form-property name="patientResultCode1" type="java.lang.String"/>
+      <form-property name="patientResultValue1" type="java.lang.String"/>
+      <form-property name="patientResultCode2" type="java.lang.String"/>
+      <form-property name="patientResultValue2" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="patientResultDeleteForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="patientResultKey" type="java.lang.String"/>
+      <form-property name="patientResultName" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="aboutmeForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="aboutme" type="java.lang.String"/>
+      <form-property name="talkabout" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="feedbackForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="username" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="comment" type="java.lang.String"/>
+      <form-property name="commentedited" type="java.lang.String"/>
+      <form-property name="anonymous" type="java.lang.String"/>
+      <form-property name="makepublic" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>
+  </form-beans>
+    
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+    <forward name="control"                    path="/control/index.jsp"/>
+    <forward name="splashPage"                 path="/patient/splash_page.jsp"/>
+    <forward name="patientPasswordChangeInput" path="/patient/password_change.jsp"/>
+    <forward name="controlPasswordChangeInput" path="/control/password_change.jsp"/>
+    <forward name="patientEntryBloodPressure"  path="/patient/patient_entry_bp.jsp"/>
+    <forward name="patientEntryGlucose"        path="/patient/patient_entry_glucose.jsp"/>
+    <forward name="patientEntryWeight"         path="/patient/patient_entry_weight.jsp"/>
+    <forward name="patientEntryResultComment"  path="/patient/patient_entry_result_comment.jsp"/>
+  </global-forwards>
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings>
+    <action path="/index"
+            type="com.worthsoln.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/index.jsp"/>
+    </action>
+    <action path="/login"
+            type="com.worthsoln.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/login.jsp" redirect="true"/>
+    </action>
+    <action path="/login-error"
+            type="com.worthsoln.patientview.logon.LogonErrorAction">
+      <forward name="success" path="/login-error.jsp"/>
+    </action>
+    <action path="/logged_in"
+            type="com.worthsoln.patientview.logon.LoggedInAction" parameter="index">
+      <forward name="patient" path="/login-success.jsp"/>
+      <forward name="admin" path="/control/index.jsp"/>
+    </action>
+    <action path="/logout"
+            type="com.worthsoln.patientview.logon.LogoutAction" parameter="index">
+      <forward name="success" path="/index.jsp"/>
+    </action>
+    <action path="/forgotten-password"
+      type="com.worthsoln.patientview.ForgottenPasswordAction" parameter="index">
+      <forward name="input" path="/forgotten-password.jsp"/>
+      <forward name="success" path="/forgotten-password-confirmation.jsp"/>
+    </action>
+
+    <action path="/setscreenname"
+      type="com.worthsoln.forum.ScreenNameAction" parameter="index">
+      <forward name="input" redirect="true" path="/set-screenname.jsp"/>
+      <forward name="success" redirect="true" path="/forums/list.page"/>
+    </action>
+
+
+    <action path="/emailverification"
+            type="com.worthsoln.patientview.user.EmailVerificationAction" parameter="index">
+      <forward name="failure" path="/email_verification_failure.jsp"/>
+      <forward name="success" path="/email_verification_success.jsp"/>
+    </action>
+
+    <action path="/patient/patient_details"
+            type="com.worthsoln.patientview.PatientDetailsAction" parameter="patient_details">
+      <forward name="success" path="/patient/patient_details.jsp"/>
+    </action>
+
+    <action path="/patient/index"
+            type="com.worthsoln.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/patient/index.jsp"/>
+    </action>
+
+    <action path="/patient/patient_view"
+            type="com.worthsoln.patientview.PatientDetailsAction" parameter="patient_view">
+      <forward name="success" path="/patient/patient_view.jsp"/>
+    </action>
+
+    <action path="/patient/medical_view"
+            type="com.worthsoln.patientview.PatientDetailsAction" parameter="medical_view">
+      <forward name="success" path="/patient/medical_view.jsp"/>
+    </action>
+
+    <action path="/patient/aboutme"
+            type="com.worthsoln.patientview.aboutme.AboutmeDisplay" parameter="aboutme">
+      <forward name="success" path="/patient/aboutme_display.jsp"/>
+      <forward name="editaboutme" path="/patient/aboutme_edit.jsp"/>
+    </action>
+
+    <action path="/patient/patient_entry"
+            type="com.worthsoln.patientview.IndexAction" parameter="patient_entry">
+      <forward name="success" path="/patient/patient_entry.jsp"/>
+    </action>
+
+    <action path="/patient/results"
+            type="com.worthsoln.patientview.TestResultsAction" parameter="results">
+      <forward name="success" path="/patient/results.jsp"/>
+    </action>
+
+    <action path="/patient/medicines"
+            type="com.worthsoln.patientview.medicine.MedicineDisplayAction" parameter="medicines">
+      <forward name="success" path="/patient/medicines.jsp"/>
+    </action>
+
+    <action path="/patient/letters"
+            type="com.worthsoln.patientview.letter.LetterDisplayAction" parameter="letters">
+      <forward name="success" path="/patient/letters.jsp"/>
+    </action>
+
+    <action path="/patient/letterDetail"
+            type="com.worthsoln.patientview.letter.LetterDetailAction" parameter="letters">
+      <forward name="success" path="/patient/letter_detail.jsp"/>
+      <forward name="nopermission" path="/patient/letter_denied.jsp"/>
+    </action>
+
+    <action path="/patient/contact"
+            type="com.worthsoln.patientview.ContactAction" parameter="contact" name="feedbackForm">
+      <forward name="success" path="/patient/contact.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsBloodPressure" type="com.worthsoln.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_bp.jsp"/>
+      <forward name="success" path="/patient/patient_entry_bp.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsBloodPressures" type="com.worthsoln.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_bp.jsp"/>
+      <forward name="success" path="/patient/patient_entry_bp.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesBloodPressure" type="com.worthsoln.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_bp.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsGlucose" type="com.worthsoln.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_glucose.jsp"/>
+      <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsGlucoses" type="com.worthsoln.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_glucose.jsp"/>
+      <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesGlucose" type="com.worthsoln.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsWeight" type="com.worthsoln.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_weight.jsp"/>
+      <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsWeights" type="com.worthsoln.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_weight.jsp"/>
+      <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesWeight" type="com.worthsoln.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsResultComment" type="com.worthsoln.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_result_comment.jsp"/>
+      <forward name="success" path="/patient/patient_entry_result_comment.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsResultComments" type="com.worthsoln.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_result_comment.jsp"/>
+      <forward name="success" path="/patient/patient_entry_result_comment.jsp"/>
+    </action>
+
+    <action path="/patient/patientEnteredCommentDisplay" type="com.worthsoln.patientview.comment.CommentViewAction" parameter="patient_entry">
+      <forward name="success" path="/patient/patient_comment_display.jsp"/>
+      <forward name="nopermission" path="/patient/patient_comment_denied.jsp"/>
+    </action>
+
+    <action path="/patient/patientEnteredCommentDisplayAll" type="com.worthsoln.patientview.comment.CommentViewAllAction" parameter="patient_entry">
+      <forward name="success" path="/patient/patient_comment_display.jsp"/>
+      <forward name="nopermission" path="/patient/patient_comment_denied.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesResultComment" type="com.worthsoln.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_result_comment.jsp"/>
+    </action>
+
+    <action path="/patient/contactForm" type="com.worthsoln.patientview.ContactFormAction" parameter="contact"
+            name="contactForm"
+            input="input">
+      <forward name="input" path="/patient/contact.jsp"/>
+      <forward name="success" path="/patient/contact.jsp"/>
+    </action>
+
+    <action path="/patient/aboutmeEdit"
+            name="aboutmeForm"
+            type="com.worthsoln.patientview.aboutme.AboutmeEdit"
+            scope="request">
+      <forward name="success" path="/patient/aboutme_edit.jsp"/>
+    </action>
+
+    <action path="/patient/aboutmeUpdate"
+            name="aboutmeForm"
+            input="input"
+            type="com.worthsoln.patientview.aboutme.AboutmeUpdate"
+            scope="request">
+      <forward name="input" path="/patient/aboutme_edit.jsp"/>
+      <forward name="success" path="/patient/aboutme_display.jsp"/>
+    </action>
+
+    <action path="/patient/aboutmeImageUpload"
+            type="com.worthsoln.patientview.aboutme.AboutmeImageUploadAction"
+            name="aboutmeImageUploadForm"
+            scope="request"
+            validate="true"
+            input="input">
+      <forward name="input" path="/patient/aboutme_image_upload_error.jsp"/>
+      <forward name="success" path="/patient/aboutme_display.jsp"/>
+    </action>
+      
+    <action path="/patient/feedbackForm" type="com.worthsoln.patientview.feedback.FeedbackFormAction" parameter="contact"
+            name="feedbackForm"
+            input="input">
+      <forward name="input" path="/patient/contact.jsp"/>
+      <forward name="success" path="/patient/contact.jsp"/>
+    </action>
+
+    <action path="/patient/feedbackViewForUnit" type="com.worthsoln.patientview.feedback.FeedbackViewAction" parameter="contact"
+            name="feedbackForm"
+            >
+      <forward name="success" path="/patient/feedback_for_unit.jsp"/>
+    </action>
+
+    <action path="/demo"
+            type="com.worthsoln.patientview.IndexAction" parameter="contact">
+      <forward name="success" path="/demo.jsp"/>
+    </action>
+
+    <action path="/faq"
+            type="com.worthsoln.patientview.IndexAction" parameter="faq">
+      <forward name="success" path="/faq.jsp"/>
+    </action>
+
+    <action path="/help"
+            type="com.worthsoln.patientview.IndexAction" parameter="help">
+      <forward name="success" path="/help.jsp"/>
+    </action>
+
+    <action path="/disclaimer"
+            type="com.worthsoln.patientview.IndexAction">
+      <forward name="success" path="/disclaimer.jsp"/>
+    </action>
+
+    <action path="/infoLinks"
+            type="com.worthsoln.patientview.edtacode.InfoLinkDisplayAction">
+      <forward name="success" path="/info_links.jsp"/>
+    </action>
+
+    <action path="/control/index"
+            type="com.worthsoln.patientview.IndexAction"
+            name="edtaCodeForm"
+            scope="request">
+      <forward name="success" path="/control/index.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeDisplay"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
+            parameter="edtaCode">
+      <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
+    <action path="/control/treatmentCodeDisplay"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
+            parameter="treatment">
+      <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeEdit"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeEditAction"
+            name="edtaCodeForm"
+            scope="request">
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/staticLinkEdit"
+            type="com.worthsoln.patientview.StaticLinkEditAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_edit.jsp"/>
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeUpdate"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeUpdateAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_edit.jsp"/>
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeAddInput"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeAddInputAction"
+            name="edtaCodeForm"
+            scope="request">
+      <forward name="success" path="/control/edta_code_add_input.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeAdd"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeAddAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_add_input.jsp"/>
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeDelete"
+            type="com.worthsoln.patientview.edtacode.EdtaCodeDeleteAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_edit.jsp"/>
+      <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingDisplay"
+            type="com.worthsoln.patientview.resultheading.ResultHeadingDisplayAction"
+            parameter="resultHeading">
+      <forward name="success" path="/control/result_headings.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingEdit"
+            type="com.worthsoln.patientview.resultheading.ResultHeadingEditAction"
+            name="resultHeadingForm"
+            scope="request">
+      <forward name="success" path="/control/result_heading_edit.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingUpdate"
+            type="com.worthsoln.patientview.resultheading.ResultHeadingUpdateAction"
+            name="resultHeadingForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/result_heading_edit.jsp"/>
+      <forward name="success" path="/control/result_heading_edit.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingAddInput"
+            type="com.worthsoln.patientview.resultheading.ResultHeadingAddInputAction"
+            name="resultHeadingForm"
+            scope="request">
+      <forward name="success" path="/control/result_heading_add_input.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingAdd"
+            type="com.worthsoln.patientview.resultheading.ResultHeadingAddAction"
+            name="resultHeadingForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/result_heading_add_input.jsp"/>
+      <forward name="success" path="/control/result_heading_edit.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingDelete"
+            type="com.worthsoln.patientview.resultheading.ResultHeadingDeleteAction"
+            name="resultHeadingForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/result_heading_edit.jsp"/>
+      <forward name="success" path="/control/result_headings.jsp"/>
+    </action>
+
+    <action path="/control/patientView"
+            type="com.worthsoln.patientview.PatientDetailsAdminViewAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/patient/patient_details.jsp"/>
+    </action>
+
+    <action path="/control/patientAddInput"
+            type="com.worthsoln.patientview.logon.LogonAddInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/patient_add_input.jsp"/>
+    </action>
+
+    <action path="/control/patientAdd"
+            type="com.worthsoln.patientview.logon.PatientAddAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_add_input.jsp"/>
+      <forward name="samenhsno" path="/control/patient_add_samenhsno.jsp"/>
+      <forward name="success" path="/control/patient_add_confirm.jsp"/>
+    </action>
+
+    <action path="/control/patientAddToUnit"
+            type="com.worthsoln.patientview.logon.PatientAddToUnitAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_add_samenhsno.jsp"/>
+      <forward name="success" path="/control/patient_add_to_unit_confirm.jsp"/>
+    </action>
+
+    <action path="/control/userDelete"
+            type="com.worthsoln.patientview.user.UserDeleteAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_edit_input.jsp"/>
+      <forward name="success" path="/control/user_delete_confirm.jsp"/>
+    </action>
+
+    <action path="/control/gpAdd"
+            forward="/control/gp_add_confirm.jsp"/>
+
+    <action path="/control/patientEditInput"
+            type="com.worthsoln.patientview.logon.PatientEditInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/patient_edit_input.jsp"/>
+    </action>
+
+    <action path="/control/patientEditX"
+            type="com.worthsoln.patientview.logon.PatientEditAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_edit_input.jsp"/>
+      <forward name="success" path="/control/unit_patients.jsp"/>
+    </action>
+
+    <action path="/control/unitUserEditInput"
+            type="com.worthsoln.patientview.logon.UnitUserEditInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/unituser_edit_input.jsp"/>
+    </action>
+
+    <action path="/control/unitUserEdit"
+            type="com.worthsoln.patientview.logon.UnitUserEditAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unituser_edit_input.jsp"/>
+      <forward name="success" path="/control/unit_users.jsp"/>
+    </action>
+
+    <action path="/control/unitAdminAddInput"
+            type="com.worthsoln.patientview.logon.LogonAddInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/unit_admin_add_input.jsp"/>
+    </action>
+
+    <action path="/control/unitAdminAdd"
+            type="com.worthsoln.patientview.logon.UnitAdminAddAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unit_admin_add_input.jsp"/>
+      <forward name="existinguser" path="/control/unit_admin_add_same_username.jsp"/>
+      <forward name="success" path="/control/admin_add_confirm.jsp"/>
+    </action>
+
+    <action path="/control/unitAdminAddToUnit"
+            type="com.worthsoln.patientview.logon.UnitAdminAddToUnitAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/admin_add_confirm.jsp"/>
+    </action>
+
+    <action path="/control/resetPassword"
+            type="com.worthsoln.patientview.logon.PasswordResetAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_add_input.jsp"/>
+      <forward name="success" path="/control/password_reset_confirm.jsp"/>
+    </action>
+
+    <action path="/control/passwordUnlock"
+            type="com.worthsoln.patientview.logon.PasswordUnlockAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/password_unlock_confirm.jsp"/>
+    </action>
+
+    <action path="/control/unitAddInput"
+            type="com.worthsoln.patientview.IndexAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_add_input.jsp"/>
+    </action>
+
+    <action path="/control/unitAdd"
+            type="com.worthsoln.patientview.unit.UnitAddAction"
+            name="unitForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unit_add_input.jsp"/>
+      <forward name="success" path="/control/unit_add_input.jsp"/>
+    </action>
+
+    <action path="/control/unitDisplay"
+            type="com.worthsoln.patientview.unit.UnitsDisplayAction">
+      <forward name="success" path="/control/unit_list.jsp"/>
+    </action>
+
+    <action path="/control/unitEdit"
+            type="com.worthsoln.patientview.unit.UnitEditAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_edit.jsp"/>
+    </action>
+
+    <action path="/control/unitUpdate"
+            type="com.worthsoln.patientview.unit.UnitUpdateAction"
+            name="unitForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unit_edit.jsp"/>
+      <forward name="success" path="/control/unit_edit.jsp"/>
+    </action>
+
+    <action path="/control/unitPatientsUnitSelect"
+            type="com.worthsoln.patientview.logon.LogonAddInputAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_patients_unit_select.jsp"/>
+    </action>
+
+    <action path="/control/unitPatients"
+            type="com.worthsoln.patientview.logon.UnitPatientsAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/unit_patients.jsp"/>
+    </action>
+
+    <action path="/control/unitUsersUnitSelect"
+            type="com.worthsoln.patientview.logon.LogonAddInputAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_users_unit_select.jsp"/>
+    </action>
+
+    <action path="/control/unitUsers"
+            type="com.worthsoln.patientview.logon.UnitUsersAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_users.jsp"/>
+    </action>
+
+    <action path="/control/unitStat"
+            type="com.worthsoln.patientview.unitstat.UnitStatAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/stats.jsp"/>
+    </action>
+
+    <action path="/control/feedbackUnitSelect"
+            type="com.worthsoln.patientview.logon.LogonAddInputAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_unit_select.jsp"/>
+    </action>
+
+    <action path="/control/feedbackView"
+            type="com.worthsoln.patientview.feedback.FeedbackViewAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_view.jsp"/>
+    </action>
+
+    <action path="/control/feedbackEditDisplay"
+            type="com.worthsoln.patientview.feedback.FeedbackEditDisplayAction"
+            name="feedbackForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_edit.jsp"/>
+    </action>
+
+    <action path="/control/feedbackEditUpdate"
+            type="com.worthsoln.patientview.feedback.FeedbackEditUpdateAction"
+            name="feedbackForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_view.jsp"/>
+    </action>
+
+    <action path="/control/decrypt"
+            type="com.worthsoln.patientview.DecryptGpg"
+            name="gpgForm"
+            scope="request">
+      <forward name="success" path="/control/decrypt_success.jsp"/>
+    </action>
+
+    <action path="/control/parseXml"
+            type="com.worthsoln.patientview.ParseXml"
+            name="gpgForm"
+            scope="request">
+      <forward name="success" path="/control/parse_xml_files_list.jsp"/>
+    </action>
+
+    <action path="/control/parseXmlFilesInput"
+            type="com.worthsoln.patientview.FindXmlFiles"
+            name="gpgForm"
+            scope="request">
+      <forward name="success" path="/control/parse_xml_files_list.jsp"/>
+    </action>
+
+    <action path="/patient/passwordChange"
+            type="com.worthsoln.patientview.logon.PasswordChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/patient/password_change.jsp"/>
+      <forward name="success" path="/patient/password_change_confirm.jsp"/>
+    </action>
+
+    <action path="/control/passwordChange"
+            type="com.worthsoln.patientview.logon.PasswordChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/password_change.jsp"/>
+      <forward name="success" path="/control/password_change_confirm.jsp"/>
+    </action>
+
+    <action path="/control/logView"
+            type="com.worthsoln.patientview.logging.LogViewAction"
+            name="logForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/logViewForPatient"
+            name="logForm"
+            input="input"
+            type="com.worthsoln.patientview.logging.LogViewForPatientAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/viewsOfPatient"
+            name="logForm"
+            input="input"
+            type="com.worthsoln.patientview.logging.ViewsOfPatientAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/dataLoadsForPatient"
+            name="logForm"
+            input="input"
+            type="com.worthsoln.patientview.logging.DataLoadsForPatientAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/activityByUser"
+            name="logForm"
+            input="input"
+            type="com.worthsoln.patientview.logging.ActivityByUserAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/newsList"
+            type="com.worthsoln.patientview.news.NewsListAction"
+            name="newsForm"
+            scope="request">
+      <forward name="success" path="/control/news_list.jsp"/>
+    </action>
+
+    <action path="/control/newsAdd"
+            type="com.worthsoln.patientview.news.NewsAddInputAction"
+            name="newsForm"
+            scope="request"
+            validate="false">
+      <forward name="success" path="/control/news_add.jsp"/>
+    </action>
+
+    <action path="/control/newsPreview"
+            type="com.worthsoln.patientview.news.NewsPreviewAction"
+            name="newsForm"
+            input="preview"
+            scope="request">
+      <forward name="preview" path="/control/news_edit.jsp"/>
+      <forward name="add" path="/control/news_list.jsp"/>
+    </action>
+
+    <action path="/control/newsEdit"
+            type="com.worthsoln.patientview.news.NewsEditAction"
+            name="newsForm"
+            scope="request">
+      <forward name="success" path="/control/news_edit.jsp"/>
+    </action>
+
+    <action path="/control/newsDelete"
+            type="com.worthsoln.patientview.news.NewsDeleteAction"
+            name="newsForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/news_list.jsp"/>
+      <forward name="success" path="/control/news_list.jsp"/>
+    </action>
+
+    <action path="/newsView"
+            type="com.worthsoln.patientview.news.NewsViewAction"
+            name="newsForm"
+            scope="request">
+      <forward name="success" path="/news_view.jsp"/>
+    </action>
+
+    <action path="/control/splashPageEdit"
+            type="com.worthsoln.patientview.splashpage.SplashPageEditAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_edit.jsp"/>
+    </action>
+
+     <action path="/control/splashPageUpdate"
+            type="com.worthsoln.patientview.splashpage.SplashPageUpdateAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_edit.jsp"/>
+    </action>
+
+    <action path="/control/version"
+            type="com.worthsoln.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/control/version.jsp"/>
+    </action>
+
+    <action path="/control/xmlFileView"
+            type="com.worthsoln.patientview.XmlFileViewAction"
+            name="newsForm"
+            scope="request">
+        <forward name="success" path="/control/xml_file_view.jsp"/>
+      </action>
+
+    <!--
+        <action path="/control/sha"
+          type="com.worthsoln.ShaAction" parameter="index">
+          <forward name="success" path="/control/version.jsp"/>
+        </action>
+    -->
+  </action-mappings>
+
+  <!-- ========== Controller Definitions =========================== -->
+  <controller
+      inputForward="true"/>
+
+  <!-- ========== Message Resources Definitions =========================== -->
+  <message-resources
+      parameter="org.apache.struts.webapp.example.ApplicationResources"/>
+  <message-resources
+      parameter="Messages"
+      null="false"/>
+
+  <!-- ========== Plug Ins Configuration ================================== -->
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property property="pathnames"
+                  value="/WEB-INF/struts/validator-rules.xml,/WEB-INF/validation.xml"/>
+  </plug-in>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin">
+    <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
+  </plug-in>
+</struts-config>
