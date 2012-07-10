@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.pages.patient;
 
-
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.IdType;
@@ -30,7 +29,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 
-
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class GenericPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
@@ -38,27 +36,30 @@ public class GenericPatientPage extends BasePage {
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
 
+    private Demographics demographics;
+
     @SpringBean
     private DemographicsManager demographicsManager;
+
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
     public GenericPatientPage(AddPatientModel patientModel) {
         // this constructor is used when adding a new patient
         super();
+
         // set the nhs id or chi id based on model
-        Demographics demographics = new Demographics();
+        demographics = new Demographics();
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
+
         if (patientModel.getIdType().equals(IdType.NHS)) {
             demographics.setNhsNumber(patientModel.getId());
-
         } else if (patientModel.getIdType().equals(IdType.CHI)) {
             demographics.setChiNumber(patientModel.getId());
         }
 
         // create new medical result
         MedicalResult medicalResult = new MedicalResult();
-        medicalResult.setId(patientModel.getId());
         medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
 
         init(demographics, medicalResult);
@@ -69,44 +70,38 @@ public class GenericPatientPage extends BasePage {
         // get the demographics based on radar id
         StringValue idValue = pageParameters.get("id");
         Long id = idValue.toLong();
-        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(id);
+        demographics = demographicsManager.getDemographicsByRadarNumber(id);
 
-         // get medical result based on either nhs id or chi
-        String medicalResultId = "";
-        if (demographics.getNhsNumber() != null) {
-            if (!demographics.getNhsNumber().isEmpty()) {
-                medicalResultId = demographics.getNhsNumber();
-            } else {
-                medicalResultId = demographics.getChiNumber();
-            }
-        }
+        MedicalResult medicalResult = medicalResultManager.getMedicalResult(demographics.getId(),
+                demographics.getDiseaseGroup().getId());
 
-
-        MedicalResult medicalResult = medicalResultManager.getById(medicalResultId);
         if (medicalResult == null) {
             medicalResult = new MedicalResult();
-            medicalResult.setId(medicalResultId);
+            medicalResult.setRadarNo(demographics.getId());
             medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
         }
+
         init(demographics, medicalResult);
     }
 
     public void init(Demographics demographics, MedicalResult medicalResult) {
         // init all the panels
-
         genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.DEMOGRAPHICS);
             }
         };
+
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
+
         medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", medicalResult, demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICAL_RESULTS);
             }
         };
+
         medicalResultsPanel.setOutputMarkupPlaceholderTag(true);
 
         add(genericDemographicsPanel, medicalResultsPanel);
@@ -119,6 +114,7 @@ public class GenericPatientPage extends BasePage {
 
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
         linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
+
         add(linksContainer);
 
         IModel<Integer> pageNumberModel = new Model<Integer>();
@@ -130,7 +126,6 @@ public class GenericPatientPage extends BasePage {
 
         visitChildren(new PatientFormVisitor());
         add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
-
     }
 
     public static PageParameters getPageParameters(Demographics demographics) {
@@ -175,23 +170,22 @@ public class GenericPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            GenericPatientPage.this.currentTab = tab;
-            // Add the links container to update hover class
-            target.add(linksContainer);
-            target.add(genericDemographicsPanel, medicalResultsPanel);
+            if (demographics.hasValidId()) {
+                GenericPatientPage.this.currentTab = tab;
+                // Add the links container to update hover class
+                target.add(linksContainer);
+                target.add(genericDemographicsPanel, medicalResultsPanel);
 
-            Component pageNumber = getPage().get("pageNumber");
-            IModel pageNumberModel = pageNumber.getDefaultModel();
-            pageNumberModel.setObject(GenericPatientPage.this.currentTab.getPageNumber());
-            target.add(pageNumber);
-
-
+                Component pageNumber = getPage().get("pageNumber");
+                IModel pageNumberModel = pageNumber.getDefaultModel();
+                pageNumberModel.setObject(GenericPatientPage.this.currentTab.getPageNumber());
+                target.add(pageNumber);
+            }
         }
 
         @Override
         protected IAjaxCallDecorator getAjaxCallDecorator() {
             return RadarBehaviourFactory.getWarningOnFormExitCallDecorator();
         }
-
     }
 }
