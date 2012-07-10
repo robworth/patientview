@@ -1,15 +1,13 @@
 package com.solidstategroup.radar.model.generic;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * table: testresult
  */
-public class MedicalResult implements Serializable{
-    // testcode values on the right - basically a unique id for each result type in the testresult table
-    private String id; // id is nhsno
+public class MedicalResult implements Serializable {
+    private Long radarNo;
     private Double bloodUrea; // urea
     private Date bloodUreaDate; //
     private Double serumCreatanine; // creatinine
@@ -19,9 +17,7 @@ public class MedicalResult implements Serializable{
     private Double height; // height
     private Date heightDate;
     private Integer bpSystolic; // BPsys
-    private Date bpSystolicDate;
     private Integer bpDiastolic; // BPdia
-    private Date bpDiastolicDate; //     
     private Date bpDate;
     private YesNo antihypertensiveDrugs; //  antihypertensive
     private Date antihypertensiveDrugsDate; //  antihypertensive
@@ -65,6 +61,14 @@ public class MedicalResult implements Serializable{
                 return "Unknown";
             }
         }
+    }
+
+    public Long getRadarNo() {
+        return radarNo;
+    }
+
+    public void setRadarNo(Long radarNo) {
+        this.radarNo = radarNo;
     }
 
     public Double getBloodUrea() {
@@ -161,30 +165,6 @@ public class MedicalResult implements Serializable{
 
     public void setAntihypertensiveDrugs(YesNo antihypertensiveDrugs) {
         this.antihypertensiveDrugs = antihypertensiveDrugs;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getBpSystolicDate() {
-        return bpSystolicDate;
-    }
-
-    public void setBpSystolicDate(Date bpSystolicDate) {
-        this.bpSystolicDate = bpSystolicDate;
-    }
-
-    public Date getBpDiastolicDate() {
-        return bpDiastolicDate;
-    }
-
-    public void setBpDiastolicDate(Date bpDiastolicDate) {
-        this.bpDiastolicDate = bpDiastolicDate;
     }
 
     public Date getAntihypertensiveDrugsDate() {
