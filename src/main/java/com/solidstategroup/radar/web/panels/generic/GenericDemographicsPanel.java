@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.panels.generic;
 
-
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Ethnicity;
@@ -52,8 +51,10 @@ public class GenericDemographicsPanel extends Panel {
 
     @SpringBean
     private DemographicsManager demographicsManager;
+
     @SpringBean
     private UtilityManager utilityManager;
+
     @SpringBean
     private GenericDiagnosisManager genericDiagnosisManager;
 
@@ -66,10 +67,13 @@ public class GenericDemographicsPanel extends Panel {
         if (demographics.getDateRegistered() == null) {
             demographics.setDateRegistered(new Date());
         }
+
         // components to update on ajax refresh
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
+
         // add form
         final IModel<Demographics> model = new Model(demographics);
+
         Form<Demographics> form = new Form<Demographics>("form", new CompoundPropertyModel(model)) {
             @Override
             protected void onSubmit() {
