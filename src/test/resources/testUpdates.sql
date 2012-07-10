@@ -1,10 +1,12 @@
 CREATE TABLE `testresult` (
-  `nhsno` varchar(100) NOT NULL default '',
-  `unitcode` varchar(100) NOT NULL default '',
-  `testcode` varchar(100) NOT NULL default '',
-  `datestamp` datetime NOT NULL default '0000-00-00 00:00:00',
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `unitcode` varchar(100) default '',
+  `testcode` varchar(100) default '',
+  `datestamp` datetime default '0000-00-00 00:00:00',
   `prepost` varchar(100) default '',
-  `value` varchar(100) NOT NULL default ''
+  `value` varchar(100) default '',
+  `RADAR_NO` int(11) unsigned NOT NULL,
+  PRIMARY KEY  (`id`)
 );
 
 
