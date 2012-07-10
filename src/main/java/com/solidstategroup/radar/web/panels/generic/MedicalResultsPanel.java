@@ -32,11 +32,12 @@ public class MedicalResultsPanel extends Panel {
 
     public static final String TEST_RESULT_NULL_DATE_MESSAGE = "Test result must have a date";
     public static final String TEST_RESULT_AT_LEAST_ONE = "A test result must be entered";
+    public static final String TEST_RESULT_BP = "BP Systolic and Diastolic must be entered";
 
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
-    public MedicalResultsPanel(String id, MedicalResult medicalResult, Demographics demographics) {
+    public MedicalResultsPanel(String id, MedicalResult medicalResult, final Demographics demographics) {
         super(id);
 
         // general feedback for messages that are not to do with a certain component in the form
@@ -81,12 +82,15 @@ public class MedicalResultsPanel extends Panel {
                     get("heightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
 
-                if (medicalResult.getBpSystolic() != null && medicalResult.getBpSystolicDate() == null) {
-                    get("bpSystolicDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                }
+                if (medicalResult.getBpSystolic() != null || medicalResult.getBpDiastolic() != null) {
+                    // if one has been entered need to make sure the other one is
+                    if (medicalResult.getBpSystolic() == null || medicalResult.getBpDiastolic() == null) {
+                        get("bpDate").error(TEST_RESULT_BP);
+                    }
 
-                if (medicalResult.getBpDiastolic() != null && medicalResult.getBpDiastolicDate() == null) {
-                    get("bpDiastolicDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    if (medicalResult.getBpDate() == null) {
+                        get("bpDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
                 }
 
                 if (medicalResult.getAntihypertensiveDrugs() != null
@@ -96,6 +100,7 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (!hasError()) {
+                    medicalResult.setRadarNo(demographics.getId());
                     medicalResultManager.save(medicalResult);
                 }
             }
@@ -125,11 +130,7 @@ public class MedicalResultsPanel extends Panel {
         form.add(new RadarDateTextField("heightDate", form, componentsToUpdateList));
 
         form.add(new RadarTextFieldWithValidation<Integer>("bpSystolic", null, form, componentsToUpdateList));
-        form.add(new RadarDateTextField("bpSystolicDate", form, componentsToUpdateList));
-
         form.add(new RadarTextFieldWithValidation<Integer>("bpDiastolic", null, form, componentsToUpdateList));
-        form.add(new RadarDateTextField("bpDiastolicDate", form, componentsToUpdateList));
-
         form.add(new RadarDateTextField("bpDate", form, componentsToUpdateList));
 
         RadioGroup<MedicalResult.YesNo> antihypertensiveDrugs = new RadioGroup<MedicalResult.YesNo>(
