@@ -1,9 +1,9 @@
 patientview
 ===========
 
-Complete instructions to build to follow:
 
-But basically you need to:
+Building a deployable WAR file & setting up a database
+======================================================
 
 - remove the submodule for filters that points to git@git.solidstategroup.com:patient_view_filters.git in the .gitmodules file
 - create a <filter>src/main/filters/${env}-filters.properties</filter> for your profile
@@ -14,4 +14,51 @@ mvn clean package -P<profile-name>
 
 The war file will be built to the maven target directory.
 
-Instructions to run locally to follow...
+
+Running locally using Intellij Idea
+===================================
+
+- Setup a maven run configuration with the following goals:
+
+clean compile war:inplace tomcat7:run
+
+- Select the localhost profile
+
+- Supply the following VM parameters to the run configuration runner tab to allocate enough memory and to allow the JSPs to compile:
+
+-Xmx512m -XX:MaxPermSize=128m -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false
+
+This will clear down any temporary files (as specified by the maven clean plugin and .gitignore file).
+Build the exploded war over the main/src/webapp directory.
+Starts an embedded Tomcat 7 server and runs the webapp.
+
+NOTE: The build is still dependent of Tomcat due to datasource and configuration so you cannot use Jetty.
+
+
+Notes on using Git submodules
+=============================
+
+http://chrisjean.com/2009/04/20/git-submodules-adding-using-removing-and-updating/
+
+git submodule add git@mygithost:billboard lib/billboard
+
+git submodule init
+
+git submodule update
+
+I've found it necessary to perform a git pull when in the directory of the submodule to update the submodule files locally.
+
+git submodule rm lib/billboard
+
+
+Notes on using Git submodules in Jenkins
+========================================
+
+To update submodules when building setup this execute shell pre step:
+
+git submodule foreach git checkout master
+git submodule foreach git pull
+
+
+
+
