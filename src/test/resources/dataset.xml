@@ -20318,57 +20318,75 @@ AFAFHDAH]]></value>
     </table>
 
     <table name="testresult">
-        <column>nhsno</column>
+        <column>id</column>
+        <column>unitcode</column>
         <column>testcode</column>
         <column>datestamp</column>
         <column>value</column>
+        <column>radar_no</column>
         <row>
             <value>1</value>
+            <value>testunitcode</value>
             <value>urea</value>
             <value>2007-12-12 13:00:00</value>
             <value>50.25</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>2</value>
+            <value>testunitcode</value>
             <value>creatinine</value>
             <value>2007-12-12 13:00:00</value>
             <value>1.25</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>3</value>
+            <value>testunitcode</value>
             <value>urea</value>
             <value>2007-12-12 13:00:00</value>
             <value>2.25</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>4</value>
+            <value>testunitcode</value>
             <value>weight</value>
             <value>2007-12-12 13:00:00</value>
             <value>100.25</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>5</value>
+            <value>testunitcode</value>
             <value>height</value>
             <value>2007-12-12 13:00:00</value>
             <value>200.25</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>6</value>
+            <value>testunitcode</value>
             <value>BPsys</value>
             <value>2007-12-12 13:00:00</value>
             <value>300</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>7</value>
+            <value>testunitcode</value>
             <value>BPdia</value>
             <value>2007-12-12 13:00:00</value>
             <value>400</value>
+            <value>3</value>
         </row>
         <row>
-            <value>1</value>
+            <value>8</value>
+            <value>testunitcode</value>
             <value>antihypertensive</value>
             <value>2007-12-12 13:00:00</value>
             <value>1</value>
+            <value>3</value>
         </row>
     </table>
 </dataset>
