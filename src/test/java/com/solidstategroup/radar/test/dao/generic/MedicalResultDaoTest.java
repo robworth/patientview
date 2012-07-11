@@ -20,8 +20,8 @@ public class MedicalResultDaoTest extends BaseDaoTest {
     @Autowired
     DiseaseGroupDao diseaseGroupDao;
 
-    @Test
-    public void testSave() throws Exception {
+//    @Test
+//    public void testSave() throws Exception {
         // save new record
 //        Date date = new Date();
 //
@@ -56,12 +56,12 @@ public class MedicalResultDaoTest extends BaseDaoTest {
 //
 //        medicalResult = medicalResultDao.getMedicalResult(241L, diseaseGroup.getId());
 //        Assert.assertEquals("Blood urea has wrong value", new Double(15.5), medicalResult.getBloodUrea());
-    }
-
-    @Test
-    public void testGetById() throws Exception {
+//    }
+//
+//    @Test
+//    public void testGetById() throws Exception {
         //MedicalResult medicalResult = medicalResultDao.getById("1");
         //Assert.assertNotNull(medicalResult);
-    }
+//    }
 
 }
