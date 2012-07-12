@@ -16,7 +16,6 @@
         <jetty.version>8.1.3.v20120416</jetty.version>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring-security.version>3.1.0.RELEASE</spring-security.version>
-        <build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</build.output-webapp-dir>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -28,6 +27,8 @@
                 <env>localhost</env>
                 <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
                 <warpath>/patientview</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -36,6 +37,7 @@
                 <env>dev</env>
                 <tomcatmanagerurl>http://dev.solidstategroup.com:10080/manager/text</tomcatmanagerurl>
                 <warpath>/patientview</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -44,6 +46,7 @@
                 <env>staging</env>
                 <tomcatmanagerurl>http://patientview.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -52,6 +55,7 @@
                 <env>production</env>
                 <tomcatmanagerurl>https://www.renalpatientview.org:9080/manager/html</tomcatmanagerurl>
                 <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
             </properties>
         </profile>
     </profiles>
@@ -66,7 +70,7 @@
             <resource>
                 <directory>src/conf</directory>
                 <filtering>false</filtering>
-                <targetPath>${build.output-webapp-dir}/WEB-INF</targetPath>
+                <targetPath>${profile.build.output-webapp-dir}/WEB-INF</targetPath>
                 <includes>
                     <include>*</include>
                 </includes>
@@ -74,17 +78,17 @@
             <resource>
                 <directory>src/conf/config</directory>
                 <filtering>true</filtering>
-                <targetPath>${build.output-webapp-dir}/WEB-INF/config</targetPath>
+                <targetPath>${profile.build.output-webapp-dir}/WEB-INF/config</targetPath>
             </resource>
             <resource>
                 <directory>src/conf/struts</directory>
                 <filtering>false</filtering>
-                <targetPath>${build.output-webapp-dir}/WEB-INF/struts</targetPath>
+                <targetPath>${profile.build.output-webapp-dir}/WEB-INF/struts</targetPath>
             </resource>
             <resource>
                 <directory>src/conf/metainf</directory>
                 <filtering>true</filtering>
-                <targetPath>${build.output-webapp-dir}/META-INF</targetPath>
+                <targetPath>${profile.build.output-webapp-dir}/META-INF</targetPath>
             </resource>
             <resource>
                 <directory>src/main/hibernate</directory>
@@ -98,6 +102,31 @@
         </filters>
 
         <plugins>
+
+            <!-- clear down any temporary files when running war:place localhost profile -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/webapp/META-INF</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>web.xml</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -141,6 +170,15 @@
                 </configuration>
             </plugin>
 
+            <!-- for running an embedded tomcat 7 server -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
+                <configuration>
+                    <path>/</path>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
