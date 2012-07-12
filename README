@@ -35,6 +35,18 @@ Starts an embedded Tomcat 7 server and runs the webapp.
 NOTE: The build is still dependent of Tomcat due to datasource and configuration so you cannot use Jetty.
 
 
+Debugging JSPs using Intellij Idea
+==================================
+
+- Not possible using the embedded tomcat maven plugin
+- Build the webapp using maven:
+
+clean compile war:inplace
+
+- Create a local Tomcat 7 run configuration and run the webapp directory as an exploded war artifact.
+- Make sure you turn off any "before launch" options so not to interfere with the maven output.
+
+
 Notes on using Git submodules
 =============================
 
