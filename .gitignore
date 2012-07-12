@@ -5,3 +5,6 @@ out/
 *.iml
 *.ipr
 *.iws
+src/main/webapp/WEB-INF/
+!src/main/webapp/WEB-INF/web.xml
+src/main/webapp/META-INF/
