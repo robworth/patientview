@@ -1,7 +1,8 @@
 package com.worthsoln.patientview.logon;
 
-import java.util.ArrayList;
 import com.worthsoln.database.StorableItem;
+
+import java.util.ArrayList;
 
 public class LogonDao extends StorableItem {
 
@@ -20,7 +21,7 @@ public class LogonDao extends StorableItem {
 
     public String[] getColumnNames() {
         return new String[]{"password", "role", "name", "email", "emailverified", "firstlogon", "dummypatient",
-                "lastlogon", "failedlogons", "accountlocked", "screenname", "splashpage"};
+                "lastlogon", "failedlogons", "accountlocked", "screenname"};
     }
 
     public ArrayList getColumnParameters() {
@@ -36,7 +37,6 @@ public class LogonDao extends StorableItem {
         params.add(logon.getFailedlogons());
         params.add(logon.isAccountlocked());
         params.add(logon.getScreenname());
-        params.add(logon.getSplashpage());
         return params;
     }
 
@@ -51,10 +51,4 @@ public class LogonDao extends StorableItem {
     public String getTableName() {
         return "user";
     }
-
-/*
-    String getNhsnumber() {
-        return logon.getNhsno();
-    }
-*/
 }

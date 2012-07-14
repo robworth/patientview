@@ -8,7 +8,6 @@
           <table width="100%">
             <tr>
                 <logic:present role="patient,demo,superadmin,unitadmin,unitstaff">
-                %>
                    <td class="infostrip" align="left">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b> <html:link action="logout">log out</html:link></td>
                 </logic:present>
 

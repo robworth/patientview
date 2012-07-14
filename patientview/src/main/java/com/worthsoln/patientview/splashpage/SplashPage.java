@@ -7,8 +7,8 @@ public class SplashPage {
     private boolean live;
     private String headline;
     private String bodytext;
+    private String unitcode;
     private static String IDENTIFIER = "splashPage";
-
 
     public SplashPage() {
     }
@@ -17,12 +17,13 @@ public class SplashPage {
         this.id = id;
     }
 
-    public SplashPage(int id, String name, boolean live, String headline, String bodytext) {
+    public SplashPage(int id, String name, boolean live, String headline, String bodytext, String unitcode) {
         this.id = id;
         this.name = name;
         this.live = live;
         this.headline = headline;
         this.bodytext = bodytext;
+        this.unitcode = unitcode;
     }
 
     public int getId() {
@@ -63,6 +64,14 @@ public class SplashPage {
 
     public void setBodytext(String bodytext) {
         this.bodytext = bodytext;
+    }
+
+    public String getUnitcode() {
+        return unitcode;
+    }
+
+    public void setUnitcode(String unitcode) {
+        this.unitcode = unitcode;
     }
 
     public static final String getIdentifier() {

@@ -56,7 +56,6 @@
     <html:hidden name="patient" property="failedlogons"/>
     <html:hidden name="patient" property="accountlocked"/>
     <html:hidden name="patient" property="screenname"/>
-    <html:hidden name="patient" property="splashpage"/>
 
     <tr align="right">
       <td><html:submit value="Edit" styleClass="formbutton"/></td>

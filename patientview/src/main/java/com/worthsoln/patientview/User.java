@@ -16,7 +16,6 @@ public class User {
     private int failedlogons;
     private boolean accountlocked;
     private String screenname;
-    private String splashpage;
 
     public User() {
     }
@@ -119,13 +118,5 @@ public class User {
 
     public void setScreenname(String screenname) {
         this.screenname = screenname;
-    }
-
-    public String getSplashpage() {
-        return splashpage;
-    }
-
-    public void setSplashpage(String splashpage) {
-        this.splashpage = splashpage;
     }
 }

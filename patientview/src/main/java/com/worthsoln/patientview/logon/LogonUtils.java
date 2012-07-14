@@ -5,18 +5,17 @@ import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.splashpage.SplashPage;
+import com.worthsoln.patientview.splashpage.SplashPageUserSeen;
+import com.worthsoln.patientview.splashpage.SplashPageUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.List;
 
 public class LogonUtils {
@@ -43,12 +42,17 @@ public class LogonUtils {
                 }
                 request.setAttribute("firstLogon", "true");
             } else {
+                HttpSession session = request.getSession();
+                Object splashPageViewedThisSession = session.getAttribute("splashPageViewed");
 
-                SplashPage splashPage = activeSplashPage(user);
+                if (splashPageViewedThisSession == null) {
+                    SplashPage splashPage = activeSplashPage(user);
 
-                if (null != splashPage) {
-                    resultForward = "splashPage";
-                    request.setAttribute("splashPage", splashPage);
+                    if (null != splashPage) {
+                        resultForward = "loginSuccess";
+                        request.setAttribute("splashPage", splashPage);
+                        session.setAttribute("splashPageViewed", "splashPageViewed");
+                    }
                 }
             }
         }
@@ -61,37 +65,35 @@ public class LogonUtils {
         SplashPage returnSplashPage = null;
 
         if (user.getRole().equalsIgnoreCase("patient")) {
-            List splashpages = null;
-            try {
-                Session session = HibernateUtil.currentSession();
-                Transaction tx = session.beginTransaction();
-                splashpages = session.find("from " + SplashPage.class.getName());
-                tx.commit();
-                HibernateUtil.closeSession();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPagesForPatient(user);
+            List<SplashPageUserSeen> splashPagesUserHasSeen = SplashPageUtils.retrieveSplashPagesPatientHasSeen(user);
 
-            if (!splashpages.isEmpty()) {
+            for (SplashPage splashPage : splashpages) {
+                boolean userHasSeenThisSplashPage = false;
 
-                SplashPage splashPage = (SplashPage) splashpages.get(0);
+                for (SplashPageUserSeen splashPageUserSeen : splashPagesUserHasSeen) {
+                    if (splashPage.getId() == splashPageUserSeen.getSplashpageid()) {
+                        userHasSeenThisSplashPage = true;
+                        break;
+                    }
+                }
 
-
-                if (null != splashPage &&
-                        !splashPage.getName().equals(user.getSplashpage()) &&
-                        splashPage.isLive()) {
-                    userHasSeenThisSplashPage(splashPage, user);
-                    return returnSplashPage = splashPage;
+                if (!userHasSeenThisSplashPage) {
+                    returnSplashPage = splashPage;
+                    markSplashPageAsSeenByUser(returnSplashPage, user);
+                    break;
                 }
             }
         }
+
         return returnSplashPage;
     }
 
-    private static void userHasSeenThisSplashPage(SplashPage splashPage, User user) {
-        user.setSplashpage(splashPage.getName());
+    private static void markSplashPageAsSeenByUser(SplashPage splashPage, User user) {
+        SplashPageUserSeen splashPageUserSeen = new SplashPageUserSeen(user.getUsername(), splashPage.getId());
+
         try {
-            HibernateUtil.saveOrUpdateWithTransaction(user);
+            HibernateUtil.saveWithTransaction(splashPageUserSeen);
         } catch (HibernateException e) {
             e.printStackTrace();
         }

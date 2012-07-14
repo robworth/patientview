@@ -63,12 +63,12 @@
                 <td><html:link action="/control/newsList">News Edit</html:link></td>
               </tr>
             </logic:present>
-            <logic:present role="superadmin">
+            <logic:present role="superadmin,unitadmin">
               <tr>
                 <td><hr class="thinblue"/></td>
               </tr>
               <tr>
-                <td><html:link action="/control/splashPageEdit">Splash Page</html:link></td>
+                <td><html:link action="/control/splashPageList">Splash Pages</html:link></td>
               </tr>
             </logic:present>
             <logic:present role="superadmin">

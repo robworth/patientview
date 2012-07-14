@@ -61,7 +61,6 @@
       <form-property name="accountlocked" type="java.lang.String"/>
       <form-property name="showgps" type="java.lang.String"/>
       <form-property name="screenname" type="java.lang.String"/>
-      <form-property name="splashpage" type="java.lang.String"/>
     </form-bean>
     <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="unitcode" type="java.lang.String"/>
@@ -145,6 +144,7 @@
       <form-property name="name" type="java.lang.String"/>
       <form-property name="headline" type="java.lang.String"/>
       <form-property name="bodytext" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
       <form-property name="datestart" type="java.lang.String"/>
       <form-property name="datestop" type="java.lang.String"/>
       <form-property name="live" type="java.lang.String"/>
@@ -221,7 +221,6 @@
   <!-- ========== Global Forward Definitions ============================== -->
   <global-forwards>
     <forward name="control"                    path="/control/index.jsp"/>
-    <forward name="splashPage"                 path="/patient/splash_page.jsp"/>
     <forward name="patientPasswordChangeInput" path="/patient/password_change.jsp"/>
     <forward name="controlPasswordChangeInput" path="/control/password_change.jsp"/>
     <forward name="patientEntryBloodPressure"  path="/patient/patient_entry_bp.jsp"/>
@@ -950,6 +949,21 @@
       <forward name="success" path="/news_view.jsp"/>
     </action>
 
+    <action path="/control/splashPageAddInput"
+           type="com.worthsoln.patientview.splashpage.SplashPageAddInputAction"
+           name="splashPageForm"
+            scope="request"
+            validate="false">
+      <forward name="success" path="/control/splash_page_add.jsp"/>
+    </action>
+
+    <action path="/control/splashPageList"
+            type="com.worthsoln.patientview.splashpage.SplashPageListAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_list.jsp"/>
+    </action>
+
     <action path="/control/splashPageEdit"
             type="com.worthsoln.patientview.splashpage.SplashPageEditAction"
             name="splashPageForm"
@@ -957,11 +971,20 @@
       <forward name="success" path="/control/splash_page_edit.jsp"/>
     </action>
 
-     <action path="/control/splashPageUpdate"
+    <action path="/control/splashPageUpdate"
             type="com.worthsoln.patientview.splashpage.SplashPageUpdateAction"
             name="splashPageForm"
+            input="input"
             scope="request">
-      <forward name="success" path="/control/splash_page_edit.jsp"/>
+      <forward name="success" path="/control/splash_page_list.jsp"/>
+      <forward name="input" path="/control/splash_page_edit.jsp"/>
+    </action>
+
+    <action path="/control/splashPageDelete"
+            type="com.worthsoln.patientview.splashpage.SplashPageDeleteAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_list.jsp"/>
     </action>
 
     <action path="/control/version"
@@ -974,7 +997,7 @@
             name="newsForm"
             scope="request">
         <forward name="success" path="/control/xml_file_view.jsp"/>
-      </action>
+    </action>
 
     <!--
         <action path="/control/sha"

@@ -1,12 +1,13 @@
 package com.worthsoln.patientview.news;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.worthsoln.database.action.DatabaseAction;
+import com.worthsoln.patientview.unit.UnitUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.unit.UnitUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class NewsAddInputAction extends DatabaseAction {
 

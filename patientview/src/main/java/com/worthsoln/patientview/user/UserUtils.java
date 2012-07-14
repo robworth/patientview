@@ -39,12 +39,17 @@ public class UserUtils {
         return retrieveUserMappings(user.getUsername());
     }
 
+    public static boolean isUserInRole(HttpServletRequest request, String rolename) {
+        User user = retrieveUser(request);
+
+        return user.getRole().equalsIgnoreCase(rolename);
+    }
+
     public static List<UserMapping> retrieveUserMappings(String username) {
         List userMappings = new ArrayList();
         try {
             Session session = HibernateUtil.currentSession();
             Transaction tx = session.beginTransaction();
-
 
             userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
                     " where usermapping.username = ? ",
@@ -207,7 +212,8 @@ public class UserUtils {
     }
 
     public static void removePatientFromSystem(String nhsno, String unitcode) {
-        String[] tableNames = new String[]{"user", "testresult", "letter",};        //TODO add medicines and diagnosis
+        String[] tableNames = new String[]{"testresult", "letter",};        //TODO add back user
+        //String[] tableNames = new String[]{"user", "testresult", "letter",};        //TODO add medicines and diagnosis
         for (int i = 0; i < tableNames.length; i++) {
             runDeleteQuery("DELETE FROM " + tableNames[i] + " WHERE nhsno = ? AND unitcode = ?", nhsno, unitcode);
         }
@@ -228,8 +234,8 @@ public class UserUtils {
 
             //multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
             for (int i = 0; i <= 8; i++) {//sum of each
-                int digit = Integer.parseInt(nhsno.substring(i, i+1));
-                checksum +=  digit * (10 - i);
+                int digit = Integer.parseInt(nhsno.substring(i, i + 1));
+                checksum += digit * (10 - i);
             }
             //(modulus 11)
             checksum = 11 - checksum % 11;

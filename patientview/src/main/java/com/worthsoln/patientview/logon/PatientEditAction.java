@@ -4,7 +4,6 @@ import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.unit.Unit;
-import com.worthsoln.patientview.user.UserUtils;
 import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
@@ -40,7 +39,6 @@ public class PatientEditAction extends DatabaseAction {
         int failedlogons = Integer.decode(failedlogonsstring);
         boolean accountlocked = "true".equals(BeanUtils.getProperty(form, "accountlocked"));
         String screenname = BeanUtils.getProperty(form, "screenname");
-        String splashpage = BeanUtils.getProperty(form, "splashpage");
         String mappingToFind = "";
         List duplicateUsers = findDuplicateUsers(nhsno, username);
         if (!duplicateUsers.isEmpty() && !overrideDuplicateNhsno.equals("on")) {
@@ -51,7 +49,7 @@ public class PatientEditAction extends DatabaseAction {
 
             PatientLogon patient =
                     new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient, lastlogon,
-                            failedlogons, accountlocked, screenname, splashpage);
+                            failedlogons, accountlocked, screenname);
             dao.updateItem(new LogonDao(patient));
 
             List<UserMapping> userMappings = findUsersSiblings(username, unitcode);

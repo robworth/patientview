@@ -29,6 +29,7 @@
     <mapping resource="com/worthsoln/patientview/PatientCount.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/ResultHeading.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/Splashpage.hbm.xml"/>
+    <mapping resource="com/worthsoln/patientview/SplashPageUserSeen.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/UktCode.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/UktStatus.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/Unit.hbm.xml"/>

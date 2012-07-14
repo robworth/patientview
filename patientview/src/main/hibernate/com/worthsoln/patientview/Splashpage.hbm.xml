@@ -12,5 +12,6 @@
     <property name="live"/>
     <property name="headline"/>
     <property name="bodytext"/>
+    <property name="unitcode"/>
   </class>
 </hibernate-mapping>

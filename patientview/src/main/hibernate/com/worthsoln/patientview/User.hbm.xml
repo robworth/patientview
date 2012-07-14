@@ -17,6 +17,5 @@
     <property name="failedlogons"/>
     <property name="accountlocked"/>
     <property name="screenname"/>
-    <property name="splashpage"/>
   </class>
 </hibernate-mapping>

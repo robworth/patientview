@@ -282,6 +282,21 @@
       </field>
     </form>
 
+    <form name="/control/splashPageUpdate">
+      <field property="name" depends="required">
+        <msg key="splashpage.name.required" name="required"/>
+      </field>
+      <field property="headline" depends="required">
+        <msg key="splashpage.headline.required" name="required"/>
+      </field>
+      <field property="unitcode" depends="required">
+        <msg key="splashpage.unitcode.required" name="required"/>
+      </field>
+      <field property="bodytext" depends="required">
+        <msg key="splashpage.bodytext.required" name="required"/>
+      </field>
+    </form>
+
   </formset>
     
 </form-validation>

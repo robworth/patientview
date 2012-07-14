@@ -10,7 +10,7 @@
 
 <p><b>Note:</b> It is the <b>name</b> field that lets a user know that they should see the page again. Changing the name lets users that have seen a previous splash page seen the new one. So if you are just tweaking a splash page, don't change the name. If it is a new one, change the name so everyone sees it.</p>
 
-<p><b>HTML:</b> You can use simple html markup in the pages like links, bold but don't be too fancy or risk breaking the page.</p>
+<p><b>HTML:</b> You can use simple html markup in the pages like links or bold but don't be too fancy or risk breaking the page.</p>
 <html:form action="/control/splashPageUpdate">
    <html:hidden property="id" name="splashPage" />
 <table cellpadding="3" >
@@ -24,6 +24,15 @@
     <tr>
       <td><b>Headline</b></td>
       <td><html:text name="splashPage" property="headline" /></td>
+    </tr>
+    <tr>
+        <td><b>Unit</b></td>
+        <td><html:select property="unitcode">
+            <logic:present role="superadmin">
+                <html:option value="ALL">-- All units --</html:option>
+            </logic:present>
+            <html:options collection="units" property="unitcode" labelProperty="unitNamePlusCode"/>
+        </html:select></td>
     </tr>
     <tr>
       <td><b>Body Text</b></td>

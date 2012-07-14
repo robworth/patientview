@@ -78,7 +78,7 @@
         <td width="" class="tablecellbold"><b>Date and time</b></td>
           <td width="" class="tablecell">Label</td>
             <logic:iterate name="resultsHeadings" id="heading">
-              <td width="" class="tablecell"><a href="<bean:write name="heading" property="link"/>" target="_blank" title="<bean:write name="heading" property="rollover"/>"><bean:write name="heading" property="heading"/></a></td>
+              <td width="" class="tablecell"><a href="<bean:write name="heading" property="link"/>" target="_blank" title="<bean:write name="heading" property="rollover"/> - Click for info"><bean:write name="heading" property="heading"/></a></td>
             </logic:iterate>
           <td width="" class="tablecellbold">Source</td>
       </tr>

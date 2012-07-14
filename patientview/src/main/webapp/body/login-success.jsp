@@ -3,6 +3,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 
+<logic:present name="splashPage">
+
+    <p class="header"><bean:write name="splashPage" property="headline"/></p>
+
+    <p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodytext"/></p>
+
+    <br />
+    <hr class="thinblue" />
+
+</logic:present>
+
+
 <p class="header">Login Successful</p>
 
 <p><b>This is a confidential record.</b> If you should not be reading it please <html:link action="logout">log out</html:link> now.</p>
