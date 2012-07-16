@@ -60,24 +60,34 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         for (Map map : medicalResultsMaps) {
             String unitCode = (String) map.get("unitcode");
             String testCode = (String) map.get("testcode");
+            Double value = (Double) map.get("value");
 
             // see if there is already a row for this test per uni and radar no and update
             MedicalResultItem medicalResultItem = getMedicalResultItem(medicalResult.getRadarNo(), unitCode, testCode);
 
             if (medicalResultItem != null && medicalResultItem.hasValidId()) {
-                String setString = " SET ";
-                List<String> keyList = new ArrayList<String>(map.keySet());
+                // if the value is not null then update it else delete the existing result
+                if (value != null) {
+                    String setString = " SET ";
+                    List<String> keyList = new ArrayList<String>(map.keySet());
 
-                for (int i = 0; i < keyList.size(); i++) {
-                    String key = keyList.get(i);
-                    setString += " " + key + " = " + ":" + key;
-                    setString += (i < keyList.size() - 1) ? ", " : "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        String key = keyList.get(i);
+                        setString += " " + key + " = " + ":" + key;
+                        setString += (i < keyList.size() - 1) ? ", " : "";
+                    }
+
+                    namedParameterJdbcTemplate.update("UPDATE testresult " + setString + " WHERE id = "
+                            + medicalResultItem.getId(), map);
+                } else {
+                    namedParameterJdbcTemplate.update("DELETE from testresult WHERE id = " + medicalResultItem.getId(),
+                            map);
                 }
-
-                namedParameterJdbcTemplate.update("UPDATE testresult " + setString + " WHERE id = "
-                        + medicalResultItem.getId(), map);
             } else {
-                medicalResultInsert.executeAndReturnKey(map);
+                // only insert if it has a value
+                if (value != null) {
+                    medicalResultInsert.executeAndReturnKey(map);
+                }
             }
         }
     }
