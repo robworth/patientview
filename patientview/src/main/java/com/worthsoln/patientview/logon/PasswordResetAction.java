@@ -1,19 +1,19 @@
 package com.worthsoln.patientview.logon;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.worthsoln.utils.LegacySpringUtils;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.unit.Unit;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class PasswordResetAction extends DatabaseAction {
 
@@ -23,6 +23,7 @@ public class PasswordResetAction extends DatabaseAction {
         PatientLogon patient = new PatientLogon(username);
         DatabaseDAO dao = getDao(request);
         patient = (PatientLogon) dao.retrieveItem(new PatientLogonDao(patient));
+        patient.setNhsno(UserUtils.retrieveUsersRealNhsnoBestGuess(username));
         String mappingToFind = "";
         if (patient != null) {
             String password = LogonUtils.generateNewPassword();
