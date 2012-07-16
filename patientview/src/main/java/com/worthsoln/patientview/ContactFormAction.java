@@ -7,9 +7,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletContext;
 
 public class ContactFormAction extends DatabaseAction {
 
@@ -29,7 +29,7 @@ public class ContactFormAction extends DatabaseAction {
 
             if ("unit".equals(type)) {
                 // Send to unit
-                String unitEmail = request.getParameter("rpvadminemail");
+                String unitEmail = request.getParameter("unit.rpvadminemail");
                 if (unitEmail != null && unitEmail.length() > 0) {
                     if (email != null && email.length() > 0) {
                         EmailUtils.sendEmail(context, email, unitEmail, subject, message);
