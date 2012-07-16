@@ -34,7 +34,8 @@ public class ResultsUpdater {
             parser.parseResults(context, xmlFile);
 
             if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag()) ||
-                    "Died".equalsIgnoreCase(parser.getFlag())) {
+                    "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag()) ||
+                    "Suspend".equalsIgnoreCase(parser.getFlag()) ) {
                 removePatientFromSystem(parser);
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
                         parser.getPatient().getCentreCode(), xmlFile.getName());
