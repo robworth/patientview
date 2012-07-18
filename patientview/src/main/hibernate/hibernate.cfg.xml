@@ -34,7 +34,6 @@
     <mapping resource="com/worthsoln/patientview/UktStatus.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/Unit.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/UnitStat.hbm.xml"/>
-    <mapping resource="com/worthsoln/patientview/User.hbm.xml"/>
     <mapping resource="com/worthsoln/patientview/UserMapping.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

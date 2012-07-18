@@ -4,7 +4,7 @@ import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
 import com.worthsoln.utils.LegacySpringUtils;

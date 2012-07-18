@@ -8,7 +8,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.NhsnoUnitcode;
 
 public class UnitUserEditInputAction extends Action {

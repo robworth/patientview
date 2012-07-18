@@ -3,6 +3,7 @@ package com.worthsoln.patientview.comment;
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.Comment;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
 import org.apache.struts.action.ActionForm;

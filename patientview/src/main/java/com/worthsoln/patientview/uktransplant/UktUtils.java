@@ -1,14 +1,12 @@
 package com.worthsoln.patientview.uktransplant;
 
 import javax.servlet.http.HttpServletRequest;
-import net.sf.hibernate.HibernateException;
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.database.DatabaseDAO;
 
 public class UktUtils {
 
     public static void addUktStatusToRequest(String nhsno, HttpServletRequest request)
-            throws HibernateException {
+            throws Exception {
         UktStatusForPatient readableStatus = retreiveUktStatus(nhsno);
         request.setAttribute("uktstatus", readableStatus);
     }

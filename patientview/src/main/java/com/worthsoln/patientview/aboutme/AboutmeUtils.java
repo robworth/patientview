@@ -1,7 +1,7 @@
 package com.worthsoln.patientview.aboutme;
 
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import net.sf.hibernate.HibernateException;

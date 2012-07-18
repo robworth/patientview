@@ -2,11 +2,11 @@ package com.worthsoln.patientview.user;
 
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UserMapping;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import net.sf.hibernate.HibernateException;
@@ -31,7 +31,9 @@ public class UserDeleteAction extends DatabaseAction {
         String nhsno = BeanUtils.getProperty(form, "nhsno");
 
 
-        List<UserMapping> userMappings = UserUtils.retrieveUserMappingsExcludeUnitcode(username, UnitUtils.PATIENT_ENTERS_UNITCODE);
+        List<UserMapping> userMappings
+                = LegacySpringUtils.getUserManager().getUserMappingsExcludeUnitcode(username,
+                UnitUtils.PATIENT_ENTERS_UNITCODE);
 
         PatientLogon patient = new PatientLogon();
         Unit unit = UnitUtils.retrieveUnit(unitcode);
@@ -71,7 +73,7 @@ public class UserDeleteAction extends DatabaseAction {
     }
 
     private void deleteUserMapping(String username, String unitcode) {
-        List<UserMapping> userMappings = UserUtils.retrieveUserMappings(username, unitcode);
+        List<UserMapping> userMappings = LegacySpringUtils.getUserManager().getUserMappings(username, unitcode);
 
         try {
             for (UserMapping userMapping : userMappings) {

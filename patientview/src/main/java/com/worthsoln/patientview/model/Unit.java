@@ -1,6 +1,8 @@
-package com.worthsoln.patientview.unit;
+package com.worthsoln.patientview.model;
 
-public class Unit {
+import com.worthsoln.patientview.model.BaseModel;
+
+public class Unit extends BaseModel {
 
     private String unitcode;
     private String name;

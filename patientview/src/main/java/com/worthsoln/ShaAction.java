@@ -9,7 +9,7 @@ import org.apache.struts.action.ActionMapping;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
 
 public class ShaAction extends DatabaseAction {

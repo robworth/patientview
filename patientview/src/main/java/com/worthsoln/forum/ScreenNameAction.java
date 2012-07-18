@@ -2,7 +2,7 @@ package com.worthsoln.forum;
 
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import net.jforum.dao.DataAccessDriver;
@@ -60,7 +60,7 @@ public class ScreenNameAction extends DatabaseAction {
         return user;
     }
 
-    private void setJforumScreenname(com.worthsoln.patientview.User user) {
+    private void setJforumScreenname(User user) {
         SSOUtils ssoutils = new SSOUtils();
 
         if (!ssoutils.userExists(user.getUsername())) {

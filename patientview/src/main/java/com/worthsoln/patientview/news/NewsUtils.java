@@ -3,19 +3,15 @@ package com.worthsoln.patientview.news;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
+import com.worthsoln.patientview.model.News;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
 
 public class NewsUtils {
 
-    public static void putAppropriateNewsForViewingInRequest(HttpServletRequest request) throws HibernateException {
+    public static void putAppropriateNewsForViewingInRequest(HttpServletRequest request) throws Exception {
         String hsql = "";
         Object[] params = new Object[]{};
         Type[] types = new Type[]{};

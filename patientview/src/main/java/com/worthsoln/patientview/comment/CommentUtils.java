@@ -1,7 +1,7 @@
 package com.worthsoln.patientview.comment;
 
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -22,7 +22,8 @@ public class CommentUtils {
             } else {
 
                 List<UserMapping> userMappingsForUser = UserUtils.retrieveUserMappings(user);
-                List<UserMapping> userMappingsForComment = UserUtils.retrieveUserMappingsForNhsno(nhsno);
+                List<UserMapping> userMappingsForComment
+                        = LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
 
                 for (UserMapping userMappingComment : userMappingsForComment) {
                     if ("patient".equalsIgnoreCase(user.getRole()) && userMappingComment.getUsername().equalsIgnoreCase(user.getUsername())) {

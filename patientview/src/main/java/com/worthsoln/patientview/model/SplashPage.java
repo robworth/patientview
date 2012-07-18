@@ -1,8 +1,9 @@
-package com.worthsoln.patientview.splashpage;
+package com.worthsoln.patientview.model;
 
-public class SplashPage {
+import com.worthsoln.patientview.model.BaseModel;
 
-    private int id;
+public class SplashPage extends BaseModel {
+
     private String name;
     private boolean live;
     private String headline;
@@ -13,25 +14,17 @@ public class SplashPage {
     public SplashPage() {
     }
 
-    public SplashPage(int id) {
-        this.id = id;
+    public SplashPage(Long id) {
+        this.setId(id);
     }
 
-    public SplashPage(int id, String name, boolean live, String headline, String bodytext, String unitcode) {
-        this.id = id;
+    public SplashPage(Long id, String name, boolean live, String headline, String bodytext, String unitcode) {
+        this.setId(id);
         this.name = name;
         this.live = live;
         this.headline = headline;
         this.bodytext = bodytext;
         this.unitcode = unitcode;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

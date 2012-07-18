@@ -1,6 +1,6 @@
-package com.worthsoln.patientview.resultheading;
+package com.worthsoln.patientview.model;
 
-public class ResultHeading {
+public class ResultHeading extends BaseModel {
 
     private String headingcode;
     private String heading;

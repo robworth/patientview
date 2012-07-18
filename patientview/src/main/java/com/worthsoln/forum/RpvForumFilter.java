@@ -1,7 +1,7 @@
 package com.worthsoln.forum;
 
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.utils.LegacySpringUtils;
 import net.jforum.util.legacy.clickstream.ClickstreamFilter;
 import net.sf.hibernate.Criteria;

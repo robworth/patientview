@@ -2,7 +2,7 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.patientview.edtacode.EdtaCode;
 import com.worthsoln.patientview.uktransplant.UktStatusForPatient;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 
 import java.util.List;
 

@@ -2,12 +2,13 @@ package com.worthsoln.patientview.resultheading;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.patientview.model.ResultHeading;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
@@ -27,11 +28,8 @@ public class ResultHeadingUpdateAction extends DatabaseAction {
             BeanUtils.setProperty(resultHeading, colNames[i], BeanUtils.getProperty(form, colNames[i]));
         }
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
+        LegacySpringUtils.getResultHeadingManager().save(resultHeading);
 
-        session.saveOrUpdate(resultHeading);
-        tx.commit();
         HibernateUtil.closeSession();
         request.setAttribute("resultHeading", resultHeading);
 

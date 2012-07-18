@@ -3,7 +3,7 @@
     PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
 <hibernate-mapping>
-  <class name="com.worthsoln.patientview.resultheading.ResultHeading" table="result_heading">
+  <class name="com.worthsoln.patientview.model.ResultHeading" table="result_heading">
     <id name="headingcode">
       <generator class="assigned"/>
     </id>

@@ -68,4 +68,8 @@ public class AbstractHibernateDAO<T extends BaseModel> {
             criteria.where(entityManager.getCriteriaBuilder().and(predicates));
         }
     }
+
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 }

@@ -2,9 +2,8 @@ package com.worthsoln.patientview.logon;
 
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.NhsnoUnitcode;
-import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

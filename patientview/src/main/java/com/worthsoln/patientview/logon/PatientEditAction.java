@@ -3,7 +3,7 @@ package com.worthsoln.patientview.logon;
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;

@@ -1,13 +1,12 @@
-package com.worthsoln.patientview.comment;
+package com.worthsoln.patientview.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
-public class Comment {
+public class Comment extends BaseModel {
 
-    private int id;
     private Calendar datestamped;
     private String nhsno;
     private String body;
@@ -15,8 +14,8 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id) {
-        this.id = id;
+    public Comment(Long id) {
+        this.setId(id);
     }
 
     public Comment(String nhsno, String body) {
@@ -29,14 +28,6 @@ public class Comment {
         this.datestamped = datestamp;
         setNhsno(nhsno);
         setBody(body);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Calendar getDatestamp() {

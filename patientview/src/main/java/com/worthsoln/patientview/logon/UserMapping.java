@@ -1,8 +1,9 @@
 package com.worthsoln.patientview.logon;
 
-public class UserMapping {
+import com.worthsoln.patientview.model.BaseModel;
 
-    private int id;
+public class UserMapping extends BaseModel {
+
     private String username;
     private String unitcode;
     private String nhsno;
@@ -38,13 +39,5 @@ public class UserMapping {
 
     public void setNhsno(String nhsno) {
         this.nhsno = nhsno;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

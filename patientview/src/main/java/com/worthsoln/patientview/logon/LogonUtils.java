@@ -2,9 +2,9 @@ package com.worthsoln.patientview.logon;
 
 import com.Ostermiller.util.RandPass;
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.splashpage.SplashPage;
+import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.splashpage.SplashPageUserSeen;
 import com.worthsoln.patientview.splashpage.SplashPageUtils;
 import com.worthsoln.patientview.user.UserUtils;

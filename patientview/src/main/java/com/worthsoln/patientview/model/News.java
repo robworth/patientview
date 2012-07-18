@@ -1,13 +1,12 @@
-package com.worthsoln.patientview.news;
+package com.worthsoln.patientview.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
-public class News {
+public class News extends BaseModel {
 
-    private int id;
     private Calendar datestamped;
     private String unitcode;
     private boolean admin;
@@ -19,8 +18,8 @@ public class News {
     public News() {
     }
 
-    public News(int id) {
-        this.id = id;
+    public News(Long id) {
+        this.setId(id);
     }
 
     public News(String unitcode, boolean admin, boolean patient, boolean everyone, String headline, String body) {
@@ -31,14 +30,6 @@ public class News {
         this.everyone = everyone;
         this.headline = headline;
         this.body = body;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Calendar getDatestamp() {

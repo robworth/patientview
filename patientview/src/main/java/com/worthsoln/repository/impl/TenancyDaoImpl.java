@@ -10,7 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *
  */
-@Repository
-@Transactional(propagation = Propagation.MANDATORY)
 public class TenancyDaoImpl extends AbstractHibernateDAO<Tenancy> implements TenancyDao {
 }

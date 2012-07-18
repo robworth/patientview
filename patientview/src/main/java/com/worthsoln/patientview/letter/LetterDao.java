@@ -2,7 +2,7 @@ package com.worthsoln.patientview.letter;
 
 import com.worthsoln.database.DatabaseQuery;
 import com.worthsoln.database.StorableItem;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 

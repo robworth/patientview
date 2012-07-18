@@ -1,21 +1,49 @@
-package com.worthsoln.patientview;
+package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Date;
 
-public class User {
+@Entity
+public class User extends BaseModel {
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
-    private String role;
+
+    @Column(nullable = true)
     private String name;
+
+    @Column(nullable = true)
     private String email;
+
+    @Column(nullable = true)
     private boolean emailverified;
+
+    @Column(nullable = true)
     private boolean firstlogon;
+
+    @Column(nullable = false)
     private boolean dummypatient;
+
+    @Column(nullable = true)
     private Date lastlogon;
+
+    @Column(nullable = true)
     private int failedlogons;
+
+    @Column(nullable = true)
     private boolean accountlocked;
+
+    @Column(nullable = true)
     private String screenname;
+
+    //todo remove
+    public String getRole() {
+        return "patient";
+    }
 
     public User() {
     }
@@ -38,14 +66,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getUsername() {

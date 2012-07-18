@@ -6,8 +6,12 @@
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+    <!-- daos -->
     <bean id="tenancyDao" class="com.worthsoln.repository.impl.TenancyDaoImpl"/>
 
+    <bean id="userDao" class="com.worthsoln.repository.impl.UserDaoImpl"/>
+
+    <!-- boiler plate jpa stuff -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="com.worthsoln.patientview.model"/>

@@ -2,7 +2,7 @@ package com.worthsoln.patientview.user;
 
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.Session;

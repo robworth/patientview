@@ -10,7 +10,7 @@ import org.apache.struts.action.ActionMapping;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 
 public class UnitUserEditAction extends DatabaseAction {
 

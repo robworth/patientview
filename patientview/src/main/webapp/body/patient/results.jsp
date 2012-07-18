@@ -29,7 +29,7 @@
                     <li>
                         <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel"><bean:write name="panel" property="panel" />
                         <span class="hover">
-                            <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.resultheading.ResultHeading" >
+                            <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
                                 <%= heading.getHeadingcode() %>
                             </logic:iterate>
                         </span>
@@ -87,7 +87,7 @@
         <tr>
           <td width="" class="tablecellbold" nowrap="true"><b><bean:write name="result" property="formattedTimeStamp"/></b></td>
           <td width="" class="tablecellbold"><bean:write name="result" property="prepost"/></td>
-            <logic:iterate name="resultsHeadings" id="heading" type="com.worthsoln.patientview.resultheading.ResultHeading" >
+            <logic:iterate name="resultsHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
               <bean:define id="content" value="<%= result.getValue(heading.getHeadingcode()) %>" />
 
               <logic:empty name="content">

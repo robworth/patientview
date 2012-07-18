@@ -3,10 +3,6 @@ package com.worthsoln.test.repository;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.TenancyDao;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -16,10 +12,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-context.xml")
-@Transactional
-public class TenancyDaoTest {
+public class TenancyDaoTest extends BaseDaoTest {
 
     @Inject
     private TenancyDao tenancyDao;

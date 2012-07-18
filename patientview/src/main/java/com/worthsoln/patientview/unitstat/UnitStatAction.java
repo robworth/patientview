@@ -4,7 +4,7 @@ import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
