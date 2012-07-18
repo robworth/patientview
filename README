@@ -47,6 +47,15 @@ clean compile war:inplace
 - Make sure you turn off any "before launch" options so not to interfere with the maven output.
 
 
+JPA annotations in Intellij Idea
+================================
+
+- From the settings menu, go to Compiler - Annotation Processors
+- Enable annotation processing
+- Add an annotation processor: org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
+- Turn on processing for the patientview module: generated sources directory name: target/generated-sources
+- Make sure you have set the generated-sources directory to be on the classpath for the project
+
 Notes on using Git submodules
 =============================
 
@@ -124,5 +133,16 @@ Forum tenancy filtering
 =======================
 
 - Todo
+
+
+Tasks for upgrading to JPA
+==========================
+
+- Refactor Hibernate code from Utils and Action classes into Manager and Dao interfaces
+- Move all classes managed by JPA into model package
+- Replace hibernate xml mappings with JPA annotations
+- Add id pk columns to tables
+- Review service level transactions are sufficient
+- Write test cases for each new Dao and Manager method
 
 
