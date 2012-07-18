@@ -22,17 +22,15 @@
             </td>
         </tr>
         <tr>
-            <td>Surname</td>
+            <td>Surname <strong><span wicket:id="surnameFeedbackIndicator"></span></strong></td>
             <td>
                 <input type="text" wicket:id="surname"/>
-                <span wicket:id="surnameFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
-            <td>First Name</td>
+            <td>First Name <strong><span wicket:id="forenameFeedbackIndicator"></span></strong></td>
             <td>
                 <input type="text" wicket:id="forename"/>
-                <span wicket:id="forenameFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
@@ -42,10 +40,9 @@
             </td>
         </tr>
         <tr>
-            <td>Date of Birth</td>
+            <td>Date of Birth <strong><span wicket:id="dateOfBirthFeedbackIndicator"></span></strong></td>
             <td>
                 <input type="text" wicket:id="dateOfBirth" style="width:70px;"/>
-                <span wicket:id="dateOfBirthFeedbackIndicator"></span>
                 <a href="#" class="info"><em>Help</em><span>To select a different month or year in the
                 date picker, click the current month or year at the top.<br/><br/></span> </a>
 
@@ -53,10 +50,9 @@
             </td>
         </tr>
         <tr>
-            <td>Sex</td>
+            <td>Sex <strong><span wicket:id="sexFeedbackIndicator"></span></strong></td>
             <td>
                 <select wicket:id="sex"/>
-                <span wicket:id="sexFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
@@ -184,27 +180,25 @@
             <td>RRT Modality</td>
             <td>
                 <div wicket:id="rrtModality">
-                    <label>hd</label> <input wicket:id="hd" type="radio"/>
-                    <label>pd</label> <input wicket:id="pd" type="radio"/>
-                    <label>tx</label> <input wicket:id="tx" type="radio"/>
+                    <label>HD</label> <input wicket:id="hd" type="radio" style="margin-left: 0; margin-right: 10px;"/>
+                    <label>PD</label> <input wicket:id="pd" type="radio" style="margin-left: 0; margin-right: 10px;"/>
+                    <label>Tx</label> <input wicket:id="tx" type="radio" style="margin-left: 0; margin-right: 10px;"/>
                     <label>none</label> <input wicket:id="none" type="radio"/>
                 </div>
             </td>
         </tr>
         <tr>
-            <td>Renal Diagnosis</td>
+            <td>Renal Diagnosis <strong><span wicket:id="genericDiagnosisFeedbackIndicator"></span></strong></td>
             <td>
                 <select wicket:id="genericDiagnosis"></select>
-                <span wicket:id="genericDiagnosisFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>
-            <td>Date of Diagnosis</td>
+            <td valign="top">Date of Diagnosis <strong><span wicket:id="dateOfGenericDiagnosisFeedbackIndicator"></span></strong></td>
             <td>
                 <input wicket:id="dateOfGenericDiagnosis" type="text"/>
-                <span wicket:id="dateOfGenericDiagnosisFeedbackIndicator"></span>
                 <a href="#" class="info"><em>Help</em><span>To select a different month or year in the
-                date picker, click the current month or year at the top.<br/><br/></span> </a>
+                date picker, click the current month or year at the top.<br/><br/></span> </a><br />
 
                 <span class="feedback" wicket:id="dateOfGenericDiagnosisFeedback"></span>
             </td>
@@ -244,6 +238,7 @@
 </td>
 </tr>
 </table>
+<div class="feedback" style="font-weight: bold; color:red" wicket:id="formFeedbackPanel"></div>
 <span style="font-weight:bold;" wicket:id="successMessage"></span>
 <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
 
