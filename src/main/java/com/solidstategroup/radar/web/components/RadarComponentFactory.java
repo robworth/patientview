@@ -30,7 +30,12 @@ public class RadarComponentFactory {
     }
 
     public static Label getErrorMessageLabel(String id, final Form form, final List<Component> componentsToUpdate) {
-        return new Label(id, "Please fix all errors") {
+        return getErrorMessageLabel(id, form, "Please fix all errors", componentsToUpdate);
+    }
+
+    public static Label getErrorMessageLabel(String id, final Form form, String msg, final List<Component>
+            componentsToUpdate) {
+        return new Label(id, msg) {
             {
                 setOutputMarkupId(true);
                 setOutputMarkupPlaceholderTag(true);
