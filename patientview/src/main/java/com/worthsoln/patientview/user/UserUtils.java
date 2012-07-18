@@ -27,7 +27,7 @@ public class UserUtils {
     }
 
     public static List<UserMapping> retrieveUserMappings(User user) {
-        return LegacySpringUtils.getUserManager().getUserMappings(user);
+        return LegacySpringUtils.getUserManager().getUserMappings(user.getUsername());
     }
 
     public static String retrieveUsersRealUnitcodeBestGuess(String username) {

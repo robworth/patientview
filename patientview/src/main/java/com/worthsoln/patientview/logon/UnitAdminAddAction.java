@@ -8,10 +8,6 @@ import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Criteria;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.expression.Expression;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -35,26 +31,17 @@ public class UnitAdminAddAction extends DatabaseAction {
         DatabaseDAO dao = getDao(request);
         User existingAdminWithSameUsername = (User) HibernateUtil.getPersistentObject(User.class, username);
 
-
-        Session session1 = HibernateUtil.currentSession();
-        Transaction tx1 = session1.beginTransaction();
-        Criteria criteria1 = session1.createCriteria(UserMapping.class);
-        criteria1.add(Expression.eq("username", username));
-        List usermappingList = criteria1.list();
-        tx1.commit();
-        HibernateUtil.closeSession();
-
+        List<UserMapping> usermappingList = LegacySpringUtils.getUserManager().getUserMappings(username);
 
         String mappingToFind;
         if (!usermappingList.isEmpty()) {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-            Criteria criteria = session.createCriteria(UserMapping.class);
-            criteria.add(Expression.eq("username", username));
-            criteria.add(Expression.eq("unitcode", unitcode));
-            UserMapping userMapping = (UserMapping) criteria.uniqueResult();
-            tx.commit();
-            HibernateUtil.closeSession();
+
+            // Note: legacy code assumes that there is a unique results here
+            List<UserMapping> userMappings = LegacySpringUtils.getUserManager().getUserMappings(username, unitcode);
+            UserMapping userMapping = null;
+            if (userMappings != null && userMappings.size() > 0) {
+                userMapping = userMappings.get(0);
+            }
 
             if (userMapping != null) {
                 request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);

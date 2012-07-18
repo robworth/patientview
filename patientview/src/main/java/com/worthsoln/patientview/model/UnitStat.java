@@ -1,8 +1,7 @@
-package com.worthsoln.patientview.unitstat;
+package com.worthsoln.patientview.model;
 
-public class UnitStat {
+public class UnitStat extends BaseModel {
 
-    private int id;
     private String unitcode;
     private String yearmonth;
     private String action;
@@ -11,8 +10,8 @@ public class UnitStat {
     public UnitStat() {
     }
 
-    public UnitStat(int id, String unitcode, String yearmonth, String action, int count) {
-        this.id = id;
+    public UnitStat(Long id, String unitcode, String yearmonth, String action, int count) {
+        this.setId(id);
         setUnitcode(unitcode);
         this.yearmonth = yearmonth;
         this.action = action;
@@ -24,14 +23,6 @@ public class UnitStat {
         this.yearmonth = yearmonth;
         this.action = action;
         this.count = count;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUnitcode() {

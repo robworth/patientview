@@ -12,6 +12,11 @@ import java.util.List;
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
+    public Unit get(String unitCode) {
+        return null;
+    }
+
+    @Override
     public List<Unit> getAll(boolean sortByName) {
 
         if (sortByName) {

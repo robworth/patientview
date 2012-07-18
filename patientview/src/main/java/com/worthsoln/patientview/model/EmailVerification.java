@@ -1,10 +1,9 @@
-package com.worthsoln.patientview.user;
+package com.worthsoln.patientview.model;
 
 import java.util.Calendar;
 
-public class EmailVerification {
+public class EmailVerification extends BaseModel {
 
-    private int id;
     private String username;
     private String email;
     private String verificationcode;
@@ -18,14 +17,6 @@ public class EmailVerification {
         this.email = email;
         this.verificationcode = verificationcode;
         this.expirydatestamp = expirydatestamp;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getVerificationcode() {

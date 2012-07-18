@@ -45,8 +45,37 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<UserMapping> getUserMappings(User user) {
-        return userMappingDao.getAll(user);
+    public void delete(User user) {
+        userDao.delete(user);
+    }
+
+    @Override
+    public void delete(String username) {
+
+        User user = get(username);
+
+        if (user != null) {
+            try {
+                delete(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void save(UserMapping userMapping) {
+        userMappingDao.save(userMapping);
+    }
+
+    @Override
+    public void deleteUserMappings(String username, String unitcode) {
+        userMappingDao.deleteUserMappings(username, unitcode);
+    }
+
+    @Override
+    public List<UserMapping> getUserMappings(String username) {
+        return userMappingDao.getAll(username);
     }
 
     @Override
@@ -72,5 +101,20 @@ public class UserManagerImpl implements UserManager {
     @Override
     public String getUsersRealNhsNoBestGuess(String username) {
         return userMappingDao.getUsersRealNhsNoBestGuess(username);
+    }
+
+    @Override
+    public UserMapping getUserMappingPatientEntered(User user) {
+        return userMappingDao.getUserMappingPatientEntered(user);
+    }
+
+    @Override
+    public List<UserMapping> getUsersSiblings(String username, String unitcode) {
+        return userMappingDao.getUsersSiblings(username, unitcode);
+    }
+
+    @Override
+    public List<UserMapping> getDuplicateUsers(String nhsno, String username) {
+        return userMappingDao.getDuplicateUsers(nhsno, username);
     }
 }

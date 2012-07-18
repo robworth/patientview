@@ -1,26 +1,17 @@
-package com.worthsoln.patientview.unitstat;
+package com.worthsoln.patientview.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class PatientCount {
+public class PatientCount extends BaseModel {
 
-    private int id;
     private Calendar datestamp;
     private String unitcode;
     private String role;
     private int count;
 
     public PatientCount() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getYearmonth() {

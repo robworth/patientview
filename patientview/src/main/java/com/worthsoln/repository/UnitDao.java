@@ -11,6 +11,8 @@ public interface UnitDao {
 
     Unit get(Long id);
 
+    Unit get(String unitCode);
+
     List<Unit> getAll(boolean sortByName);
 
     List<Unit> get(List<String> usersUnitCodes);

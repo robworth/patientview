@@ -13,7 +13,21 @@ import java.util.List;
 public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implements UserMappingDao {
 
     @Override
-    public List<UserMapping> getAll(User user) {
+    public void deleteUserMappings(String username, String unitcode) {
+
+        List<UserMapping> userMappings = getAll(username, unitcode);
+
+        try {
+            for (UserMapping userMapping : userMappings) {
+                delete(userMapping);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<UserMapping> getAll(String username) {
 
 //        List userMappings = new ArrayList();
 //        try {
@@ -192,6 +206,37 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
 //                }
 //            }
 //        }
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<UserMapping> getUsersSiblings(String username, String unitcode) {
+
+//        Session session = HibernateUtil.currentSession();
+//        Transaction tx = session.beginTransaction();
+//        List<UserMapping> duplicateUsers = session.find("from " + UserMapping.class.getName() + " as usermapping " +
+//                " WHERE (usermapping.username = ? OR usermapping.username = ?) " +
+//                " AND (usermapping.unitcode = ? OR usermapping.unitcode = ?) ",
+//                new Object[]{username, username + "-GP", unitcode, "PATIENT"},
+//                new Type[]{Hibernate.STRING, Hibernate.STRING, Hibernate.STRING, Hibernate.STRING});
+//        tx.commit();
+//        HibernateUtil.closeSession();
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<UserMapping> getDuplicateUsers(String nhsno, String username) {
+
+//        Session session = HibernateUtil.currentSession();
+//        Transaction tx = session.beginTransaction();
+//        List duplicateUsers = session.find("from " + UserMapping.class.getName() + " as usermapping " +
+//                " where usermapping.nhsno = ? AND usermapping.username <> ? AND usermapping.username not like ?",
+//                new Object[]{nhsno, username, "%-GP"},
+//                new Type[]{Hibernate.STRING, Hibernate.STRING, Hibernate.STRING});
+//        tx.commit();
+//        HibernateUtil.closeSession();
 
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }

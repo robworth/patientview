@@ -1,6 +1,8 @@
 package com.worthsoln.utils;
 
 import com.worthsoln.service.CommentManager;
+import com.worthsoln.service.EmailVerificationManager;
+import com.worthsoln.service.NewsManager;
 import com.worthsoln.service.ResultHeadingManager;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.SplashPageManager;
@@ -16,6 +18,10 @@ import com.worthsoln.service.UserManager;
 public class LegacySpringUtils {
 
     private static CommentManager commentManager;
+
+    private static EmailVerificationManager emailVerificationManager;
+
+    private static NewsManager newsManager;
 
     private static ResultHeadingManager resultHeadingManager;
 
@@ -33,6 +39,22 @@ public class LegacySpringUtils {
 
     public static void setCommentManager(CommentManager commentManager) {
         LegacySpringUtils.commentManager = commentManager;
+    }
+
+    public static EmailVerificationManager getEmailVerificationManager() {
+        return emailVerificationManager;
+    }
+
+    public static void setEmailVerificationManager(EmailVerificationManager emailVerificationManager) {
+        LegacySpringUtils.emailVerificationManager = emailVerificationManager;
+    }
+
+    public static NewsManager getNewsManager() {
+        return newsManager;
+    }
+
+    public static void setNewsManager(NewsManager newsManager) {
+        LegacySpringUtils.newsManager = newsManager;
     }
 
     public static ResultHeadingManager getResultHeadingManager() {

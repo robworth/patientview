@@ -145,4 +145,6 @@ Tasks for upgrading to JPA
 - Review service level transactions are sufficient
 - Write test cases for each new Dao and Manager method
 
+- Review patients - it mixes JDBC and hibernate
+
 
