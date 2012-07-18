@@ -74,10 +74,18 @@ public class GenericDemographicsPanel extends Panel {
         // add form
         final IModel<Demographics> model = new Model(demographics);
 
+
         Form<Demographics> form = new Form<Demographics>("form", new CompoundPropertyModel(model)) {
             @Override
             protected void onSubmit() {
                 Demographics demographics = getModel().getObject();
+
+                // make sure diagnosis date is after dob
+                if (demographics.getDateOfGenericDiagnosis().compareTo(demographics.getDateOfBirth()) < 1) {
+                    get("dateOfGenericDiagnosis").error("Your diagnosis date cannot be on or before your date " +
+                            "of birth");
+                }
+
                 demographics.setGeneric(true);
                 demographicsManager.saveDemographics(demographics);
             }
@@ -395,9 +403,10 @@ public class GenericDemographicsPanel extends Panel {
         final Label successMessageUp = RadarComponentFactory.getSuccessMessageLabel("successMessageUp", form,
                 componentsToUpdateList);
 
-        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
+        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form,
+                "Please complete all mandatory fields", componentsToUpdateList);
         Label errorMessageUp = RadarComponentFactory.getErrorMessageLabel("errorMessageUp", form,
-                componentsToUpdateList);
+                "Please complete all mandatory fields", componentsToUpdateList);
 
         AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("save") {
 
