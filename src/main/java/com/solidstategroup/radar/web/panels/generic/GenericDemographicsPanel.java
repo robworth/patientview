@@ -81,9 +81,8 @@ public class GenericDemographicsPanel extends Panel {
                 Demographics demographics = getModel().getObject();
 
                 // make sure diagnosis date is after dob
-                if (demographics.getDateOfGenericDiagnosis().compareTo(demographics.getDateOfBirth()) < 1) {
-                    get("dateOfGenericDiagnosis").error("Your diagnosis date cannot be on or before your date " +
-                            "of birth");
+                if (demographics.getDateOfGenericDiagnosis().compareTo(demographics.getDateOfBirth()) < 0) {
+                    get("dateOfGenericDiagnosis").error("Your diagnosis date cannot be before your date of birth");
                 }
 
                 demographics.setGeneric(true);
