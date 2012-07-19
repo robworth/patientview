@@ -60,7 +60,7 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         for (Map map : medicalResultsMaps) {
             String unitCode = (String) map.get("unitcode");
             String testCode = (String) map.get("testcode");
-            Double value = (Double) map.get("value");
+            Object value = map.get("value");
 
             // see if there is already a row for this test per uni and radar no and update
             MedicalResultItem medicalResultItem = getMedicalResultItem(medicalResult.getRadarNo(), unitCode, testCode);
