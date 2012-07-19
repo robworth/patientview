@@ -46,6 +46,13 @@
       <td><html:text name="patient" property="email"/></td>
     </tr>
     <tr>
+      <td><b>Email Address</b></td>
+      <td>
+          <logic:equal name="patient" property="emailverified" value="true"><big><font color="green">&#10004;</font></big></logic:equal>
+          <logic:equal name="patient" property="emailverified" value="false"><big><font color="red">&#10008;</font></big></logic:equal>
+      </td>
+    </tr>
+    <tr>
       <td><b>Dummy Patient</b></td>
       <td><html:checkbox name="patient" property="dummypatient" value="true"/></td>
     </tr>
