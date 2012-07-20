@@ -3,6 +3,8 @@ package com.worthsoln.patientview.feedback;
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
+import com.worthsoln.patientview.model.Feedback;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -28,13 +30,11 @@ public class FeedbackEditUpdateAction extends DatabaseAction {
 
         HibernateUtil.saveOrUpdateWithTransaction(feedback);
 
-        
-        List feedbacks = FeedbackUtils.getCommentsForUnit(feedback.getUnitcode());
+        List feedbacks = LegacySpringUtils.getFeedbackManager().get(feedback.getUnitcode());
 
         request.setAttribute("feedbacks", feedbacks);
 
         return LogonUtils.logonChecks(mapping, request);
-
     }
 
     public String getIdentifier() {

@@ -22,6 +22,8 @@ public interface UserManager {
 
     void delete(String username);
 
+    List<User> getAllUsers();
+
     void save(UserMapping userMapping);
 
     void deleteUserMappings(String username, String unitcode);

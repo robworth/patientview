@@ -7,7 +7,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.edtacode.EdtaCode;
+import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.logon.LogonUtils;
 
 public class StaticLinkEditAction extends Action {

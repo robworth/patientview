@@ -1,6 +1,6 @@
-package com.worthsoln.patientview;
+package com.worthsoln.patientview.model;
 
-public class Patient {
+public class Patient extends BaseModel {
 
     private String nhsno;
     private String surname;

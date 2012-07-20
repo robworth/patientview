@@ -50,6 +50,11 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getUnitsWithUser() {
+        return unitDao.getUnitsWithUser();
+    }
+
+    @Override
     public List<Unit> getLoggedInUsersUnits() {
 
         List<String> usersUnitCodes = getUsersUnitCodes();

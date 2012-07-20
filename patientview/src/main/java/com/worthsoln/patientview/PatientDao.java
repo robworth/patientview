@@ -1,6 +1,8 @@
 package com.worthsoln.patientview;
 
 import java.util.ArrayList;
+
+import com.worthsoln.patientview.model.Patient;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import com.worthsoln.database.DatabaseQuery;

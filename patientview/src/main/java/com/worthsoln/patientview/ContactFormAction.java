@@ -2,6 +2,7 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

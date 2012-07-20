@@ -17,8 +17,18 @@ public class CommentManagerImpl implements CommentManager {
     private CommentDao commentDao;
 
     @Override
+    public Comment get(Long id) {
+        return commentDao.get(id);
+    }
+
+    @Override
+    public List<Comment> get(String nhsno) {
+        return commentDao.get(nhsno);
+    }
+
+    @Override
     public List<Comment> get(String nhsno, Panel currentPanel) {
-        commentDao.get(nhsno, currentPanel);
+        return commentDao.get(nhsno, currentPanel);
     }
 
     @Override

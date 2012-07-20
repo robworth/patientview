@@ -1,5 +1,7 @@
 package com.worthsoln.patientview.medicine;
 
+import com.worthsoln.patientview.model.Medicine;
+
 public class MedicineWithShortName extends Medicine {
 
     private String shortname;

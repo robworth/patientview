@@ -1,12 +1,7 @@
 package com.worthsoln.patientview.feedback;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.unit.UnitUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -26,7 +21,7 @@ public class FeedbackViewAction extends Action {
 
         String unitcode = BeanUtils.getProperty(form, "unitcode");
 
-        List feedbacks = FeedbackUtils.getCommentsForUnit(unitcode);
+        List feedbacks = LegacySpringUtils.getFeedbackManager().get(unitcode);
 
         request.setAttribute("feedbacks", feedbacks);
 

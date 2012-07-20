@@ -15,6 +15,8 @@ public interface UnitDao {
 
     List<Unit> getAll(boolean sortByName);
 
+    List<Unit> getUnitsWithUser();
+
     List<Unit> get(List<String> usersUnitCodes);
 
     List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes);

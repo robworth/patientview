@@ -1,13 +1,12 @@
-package com.worthsoln.patientview.letter;
+package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Letter {
+public class Letter extends BaseModel {
 
-    private int id;
     private String nhsno;
     private String unitcode;
     private Calendar date;
@@ -17,8 +16,8 @@ public class Letter {
     public Letter() {
     }
 
-    public Letter(int id, String nhsno, String unitcode, Calendar date, String type, String content) {
-        this.id = id;
+    public Letter(Long id, String nhsno, String unitcode, Calendar date, String type, String content) {
+        this.setId(id);
         this.nhsno = nhsno;
         setUnitcode(unitcode);
         this.content = content;
@@ -32,14 +31,6 @@ public class Letter {
         this.content = content;
         this.date = date;
         this.type = type;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNhsno() {
@@ -103,19 +94,19 @@ public class Letter {
 
         Letter letter = (Letter) o;
 
-        if (id != letter.id) return false;
+        if (!this.getId().equals(letter.getId())) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        long result = this.getId();
         result = 31 * result + (nhsno != null ? nhsno.hashCode() : 0);
         result = 31 * result + (unitcode != null ? unitcode.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
-        return result;
+        return (int) result;
     }
 }

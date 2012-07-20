@@ -3,7 +3,7 @@
     PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
 <hibernate-mapping>
-  <class name="com.worthsoln.patientview.edtacode.EdtaCode" table="edtaCode">
+  <class name="com.worthsoln.patientview.model.EdtaCode" table="edtaCode">
     <id name="edtaCode">
       <generator class="assigned"/>
     </id>

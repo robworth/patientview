@@ -1,9 +1,8 @@
-package com.worthsoln.patientview.aboutme;
+package com.worthsoln.patientview.model;
 
 
-public class Aboutme {
+public class Aboutme extends BaseModel {
 
-    private int id;
     private String nhsno;
     private String aboutme;
     private String talkabout;
@@ -17,19 +16,11 @@ public class Aboutme {
         this.talkabout = talkabout;
     }
 
-    public Aboutme(int id, String nhsno, String aboutme, String talkabout) {
-        this.id = id;
+    public Aboutme(Long id, String nhsno, String aboutme, String talkabout) {
+        this.setId(id);
         this.nhsno = nhsno;
         this.talkabout = talkabout;
         this.aboutme = aboutme;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNhsno() {

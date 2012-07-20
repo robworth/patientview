@@ -33,6 +33,20 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
+    public List<Unit> getUnitsWithUser() {
+
+//        Session session = HibernateUtil.currentSession();
+//        Transaction tx = session.beginTransaction();
+//
+//        units = session. find("from " + Unit.class.getName() + " where unituser is not null and unituser <> ''");
+//
+//        tx.commit();
+//        HibernateUtil.closeSession();
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public List<Unit> get(List<String> usersUnitCodes) {
 
 //        if (unitcodes.size() != 0) {

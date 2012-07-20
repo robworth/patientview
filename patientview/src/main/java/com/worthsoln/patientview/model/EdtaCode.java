@@ -1,6 +1,6 @@
-package com.worthsoln.patientview.edtacode;
+package com.worthsoln.patientview.model;
 
-public class EdtaCode {
+public class EdtaCode extends BaseModel {
 
     private String edtaCode;
     private String linkType;

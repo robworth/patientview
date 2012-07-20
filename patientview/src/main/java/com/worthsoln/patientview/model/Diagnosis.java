@@ -1,8 +1,7 @@
-package com.worthsoln.patientview.diagnosis;
+package com.worthsoln.patientview.model;
 
-public class Diagnosis {
+public class Diagnosis extends BaseModel {
 
-    private int id;
     private String nhsno;
     private String unitcode;
     private String diagnosis;
@@ -16,14 +15,6 @@ public class Diagnosis {
         setUnitcode(unitcode);
         this.diagnosis = diagnosis;
         this.displayorder = displayorder;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNhsno() {

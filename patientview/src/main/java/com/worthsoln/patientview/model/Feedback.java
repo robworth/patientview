@@ -1,12 +1,10 @@
-package com.worthsoln.patientview.feedback;
+package com.worthsoln.patientview.model;
 
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
-public class Feedback {
+public class Feedback extends BaseModel {
 
-
-    private int id;
     private String username;
     private String name;
     private String nhsno;
@@ -20,8 +18,8 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(int id) {
-        this.id = id;
+    public Feedback(Long id) {
+        this.setId(id);
     }
 
     public Feedback(String username, String name, String nhsno, String unitcode, String comment, boolean anonymous) {
@@ -34,14 +32,6 @@ public class Feedback {
         setAnonymous(anonymous);
         this.datestamped = Calendar.getInstance();
         setMakepublic(false);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {

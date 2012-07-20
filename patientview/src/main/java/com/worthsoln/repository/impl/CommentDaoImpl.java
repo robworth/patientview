@@ -14,6 +14,21 @@ import java.util.List;
 public class CommentDaoImpl extends AbstractHibernateDAO<Comment> implements CommentDao {
 
     @Override
+    public List<Comment> get(String nhsno) {
+
+//        Session session = HibernateUtil.currentSession();
+//        Transaction tx = session.beginTransaction();
+//
+//        comments = session.find("from " + Comment.class.getName() + " where nhsno = ? " ,
+//                patient.getNhsno(), Hibernate.STRING);
+//
+//        tx.commit();
+//        HibernateUtil.closeSession();
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public List<Comment> get(String nhsno, Panel currentPanel) {
 
 //        Session session = HibernateUtil.currentSession();

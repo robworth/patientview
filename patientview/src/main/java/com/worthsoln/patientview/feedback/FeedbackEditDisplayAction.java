@@ -2,6 +2,7 @@ package com.worthsoln.patientview.feedback;
 
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
+import com.worthsoln.patientview.model.Feedback;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

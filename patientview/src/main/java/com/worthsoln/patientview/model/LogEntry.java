@@ -1,13 +1,12 @@
-package com.worthsoln.patientview.logging;
+package com.worthsoln.patientview.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
-public class LogEntry {
+public class LogEntry extends BaseModel {
 
-    private int id;
     private Calendar date;
     private String nhsno;
     private String user;
@@ -73,14 +72,6 @@ public class LogEntry {
         } else {
             return dateTimeFormat.format(date.getTime());
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getActor() {

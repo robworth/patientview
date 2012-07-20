@@ -64,6 +64,11 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return userDao.getAll();
+    }
+
+    @Override
     public void save(UserMapping userMapping) {
         userMappingDao.save(userMapping);
     }

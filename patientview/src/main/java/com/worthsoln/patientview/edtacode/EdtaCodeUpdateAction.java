@@ -2,12 +2,13 @@ package com.worthsoln.patientview.edtacode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.patientview.model.EdtaCode;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
 import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
@@ -27,12 +28,8 @@ public class EdtaCodeUpdateAction extends DatabaseAction {
             BeanUtils.setProperty(edtaCode, colNames[i], BeanUtils.getProperty(form, colNames[i]));
         }
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
+        LegacySpringUtils.getEdtaCodeManager().save(edtaCode);
 
-        session.saveOrUpdate(edtaCode);
-        tx.commit();
-        HibernateUtil.closeSession();
         request.setAttribute("edtaCode", edtaCode);
         HibernateUtil.retrievePersistentObjectAndAddToRequest(request, EdtaCode.class, EdtaCode.getIdentifier());
 

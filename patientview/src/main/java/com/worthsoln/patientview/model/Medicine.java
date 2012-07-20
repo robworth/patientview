@@ -1,4 +1,4 @@
-package com.worthsoln.patientview.medicine;
+package com.worthsoln.patientview.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -6,9 +6,8 @@ import java.sql.Timestamp;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
-public class Medicine {
+public class Medicine extends BaseModel {
 
-    private int id;
     private String nhsno;
     private String unitcode;
     private Calendar startdate;
@@ -18,8 +17,8 @@ public class Medicine {
     public Medicine() {
     }
 
-    public Medicine(int id, String nhsno, String unitcode, Calendar startdate, String name, String dose) {
-        this.id = id;
+    public Medicine(Long id, String nhsno, String unitcode, Calendar startdate, String name, String dose) {
+        this.setId(id);
         this.nhsno = nhsno;
         setUnitcode(unitcode);
         this.dose = dose;
@@ -27,16 +26,8 @@ public class Medicine {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setId(String id) {
-        this.id = Integer.decode(id);
+        this.setId(Long.decode(id));
     }
 
     public String getNhsno() {

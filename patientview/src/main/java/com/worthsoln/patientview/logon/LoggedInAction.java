@@ -6,7 +6,7 @@ import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.logging.LogEntry;
+import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.patientview.news.NewsUtils;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;

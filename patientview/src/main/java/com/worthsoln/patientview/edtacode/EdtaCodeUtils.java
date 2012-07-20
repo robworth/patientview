@@ -2,10 +2,9 @@ package com.worthsoln.patientview.edtacode;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.Hibernate;
+
+import com.worthsoln.patientview.model.EdtaCode;
+import com.worthsoln.utils.LegacySpringUtils;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.HibernateUtil;
 
@@ -24,16 +23,8 @@ public class EdtaCodeUtils {
             attributeName);
     }
 
-    public static List getCodeLinksForLinkType(String linkTypeMappingParameter) throws HibernateException {
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        List edtaCodes = session.find("from " + EdtaCode.class.getName()
-                                      + " as code where code.linkType = ? order by code.edtaCode asc",
-                                      linkTypeMappingParameter, Hibernate.STRING);
+    public static List getCodeLinksForLinkType(String linkTypeMappingParameter) throws Exception {
 
-        tx.commit();
-        HibernateUtil.closeSession();
-
-        return edtaCodes;
+        return LegacySpringUtils.getEdtaCodeManager().get(linkTypeMappingParameter);
     }
 }

@@ -4,6 +4,7 @@ import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.contact.Contact;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;

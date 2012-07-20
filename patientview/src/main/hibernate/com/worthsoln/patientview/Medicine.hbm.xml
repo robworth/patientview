@@ -3,7 +3,7 @@
     PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
 <hibernate-mapping>
-  <class name="com.worthsoln.patientview.medicine.Medicine" table="medicine">
+  <class name="com.worthsoln.patientview.model.Medicine" table="medicine">
     <id name="id"
         unsaved-value="0">
       <generator class="increment"/>

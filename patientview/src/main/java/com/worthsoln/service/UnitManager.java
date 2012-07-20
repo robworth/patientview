@@ -17,6 +17,8 @@ public interface UnitManager {
 
     List<Unit> getAll(boolean sortByName);
 
+    List<Unit> getUnitsWithUser();
+
     List<Unit> getLoggedInUsersUnits();
 
     List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes);

@@ -14,12 +14,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import com.worthsoln.patientview.Centre;
-import com.worthsoln.patientview.Patient;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.TestResult;
 import com.worthsoln.patientview.TestResultDateRange;
-import com.worthsoln.patientview.diagnosis.Diagnosis;
-import com.worthsoln.patientview.letter.Letter;
-import com.worthsoln.patientview.medicine.Medicine;
+import com.worthsoln.patientview.model.Diagnosis;
+import com.worthsoln.patientview.model.Letter;
+import com.worthsoln.patientview.model.Medicine;
 
 public class ResultParser {
 
