@@ -63,7 +63,8 @@ public class LogViewAction extends Action {
                                Calendar startdate, Calendar enddate) throws Exception {
         List logEntries = new ArrayList();
         if (!((nhsno.equals("")) && (user.equals("")) && (actor.equals("")) && (action.equals("")))) {
-            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, startdate, enddate, action);
+            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, user, actor, action, unitcode,
+                    startdate, enddate);
         }
         return logEntries;
     }

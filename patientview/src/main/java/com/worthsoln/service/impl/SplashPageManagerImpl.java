@@ -1,8 +1,10 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.patientview.model.SplashPageUserSeen;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.SplashPageDao;
+import com.worthsoln.repository.SplashPageUserSeenDao;
 import com.worthsoln.service.SplashPageManager;
 import com.worthsoln.service.UserManager;
 
@@ -20,6 +22,10 @@ public class SplashPageManagerImpl implements SplashPageManager {
     @Inject
     private SplashPageDao splashPageDao;
 
+    @Inject
+    private SplashPageUserSeenDao splashPageUserSeenDao;
+
+
     @Override
     public SplashPage get(Long id) {
         return splashPageDao.get(id);
@@ -28,6 +34,11 @@ public class SplashPageManagerImpl implements SplashPageManager {
     @Override
     public void save(SplashPage splashPage) {
         splashPageDao.save(splashPage);
+    }
+
+    @Override
+    public void save(SplashPageUserSeen splashPageUserSeen) {
+        splashPageUserSeenDao.save(splashPageUserSeen);
     }
 
     @Override

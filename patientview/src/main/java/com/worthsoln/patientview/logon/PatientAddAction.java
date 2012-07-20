@@ -8,10 +8,6 @@ import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -96,21 +92,7 @@ public class PatientAddAction extends DatabaseAction {
     }
 
     private List findExistingPatientsWithSameNhsno(String nhsno) {
-        List patientsWithSameNhsno = null;
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-            patientsWithSameNhsno = session.find("from " + UserMapping.class.getName() +
-                    " as usermapping where usermapping.nhsno = ?",
-                    nhsno, Hibernate.STRING);
-            tx.commit();
-            HibernateUtil.closeSession();
-
-
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return patientsWithSameNhsno;
+        return LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
     }
 
     public String getIdentifier() {

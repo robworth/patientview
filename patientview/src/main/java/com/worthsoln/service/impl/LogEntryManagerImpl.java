@@ -22,6 +22,11 @@ public class LogEntryManagerImpl implements LogEntryManager {
     }
 
     @Override
+    public LogEntry getLatestLogEntry(String nhsno, String action) {
+        return logEntryDao.getLatestLogEntry(nhsno, action);
+    }
+
+    @Override
     public List<LogEntry> get(String username, Calendar startdate, Calendar enddate) {
         return logEntryDao.get(username, startdate, enddate);
     }

@@ -13,6 +13,20 @@ import java.util.List;
  */
 public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements LogEntryDao {
     @Override
+    public LogEntry getLatestLogEntry(String nhsno, String action) {
+
+//        session = HibernateUtil.currentSession();
+//        tx = session.beginTransaction();
+//        criteria = session.createCriteria(LogEntry.class);
+//        criteria.add(Expression.eq("nhsno", nhsno));
+//        criteria.add(Expression.like("action", AddLog.PATIENT_DATA_FOLLOWUP));
+//        criteria.addOrder(Order.desc("date"));
+//        criteria.setMaxResults(1);
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public List<LogEntry> get(String username, Calendar startdate, Calendar enddate) {
 
 //        Session session = HibernateUtil.currentSession();
@@ -28,6 +42,7 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    // action is optional
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action) {
 

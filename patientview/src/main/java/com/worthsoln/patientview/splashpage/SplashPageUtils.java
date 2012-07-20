@@ -1,9 +1,9 @@
 package com.worthsoln.patientview.splashpage;
 
 import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.patientview.model.SplashPageUserSeen;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
-import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.EdtaCode;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -18,6 +19,10 @@ public class EdtaCodeAddAction extends DatabaseAction {
             throws Exception {
         EdtaCode objectToBuild = new EdtaCode();
         String attributeName = "edtaCode";
+
+        BeanUtils.getProperty(form, "edtaCode");
+
+        //todo
 
         HibernateUtil.extractDataFromFormMakeObjectAndAdd(objectToBuild, form, request, attributeName);
 
