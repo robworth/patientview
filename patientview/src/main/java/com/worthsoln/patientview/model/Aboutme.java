@@ -1,10 +1,18 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
 public class Aboutme extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = true)
     private String aboutme;
+
+    @Column(nullable = true)
     private String talkabout;
 
     public Aboutme() {

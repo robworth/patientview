@@ -11,6 +11,8 @@
 
     <bean id="userDao" class="com.worthsoln.repository.impl.UserDaoImpl"/>
 
+    <bean id="aboutmeDao" class="com.worthsoln.repository.impl.AboutmeDaoImpl"/>
+
     <!-- boiler plate jpa stuff -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
