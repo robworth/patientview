@@ -6,7 +6,6 @@ import com.worthsoln.patientview.model.Comment_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.CommentDao;
 
-import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -21,11 +20,7 @@ public class CommentDaoImpl extends AbstractHibernateDAO<Comment> implements Com
         Root<Comment> commentRoot = criteria.from(Comment.class);
         criteria.where(builder.equal(commentRoot.get(Comment_.nhsno), nhsno));
 
-        try {
-            return getEntityManager().createQuery(criteria).getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override

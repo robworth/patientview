@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface DiagnosisDao {
 
-    void save(Diagnosis diagnosis);
+    Diagnosis get(Long id);
 
     List<Diagnosis> getOtherDiagnoses(String nhsno, String unitcode);
+
+    void save(Diagnosis diagnosis);
 }
