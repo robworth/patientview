@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.comment;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
@@ -15,7 +14,7 @@ public class CommentUtils {
         boolean permissionToReadComment = false;
         String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
         if (username != null) {
-            User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+            User user = LegacySpringUtils.getUserManager().get(username);
 
             if (user.getRole().equalsIgnoreCase("superadmin")) {
                 permissionToReadComment = true;

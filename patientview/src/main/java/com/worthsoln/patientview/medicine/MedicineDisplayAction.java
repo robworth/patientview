@@ -9,6 +9,7 @@ import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -53,7 +54,9 @@ public class MedicineDisplayAction extends DatabaseAction {
     private List sortNullDatesOnMedicines(List medicines) {
         for (Object obj : medicines) {
             Medicine medicine = (Medicine) obj;
-            Medicine tempMed = (Medicine) HibernateUtil.getPersistentObject(Medicine.class, medicine.getId());
+
+            // todo this probably won't work anymore
+            Medicine tempMed = LegacySpringUtils.getMedicineManager().get(medicine.getId());
             medicine.setStartdate(tempMed.getStartdate());
         }
         return medicines;

@@ -10,6 +10,12 @@ import java.util.List;
  *
  */
 public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements EdtaCodeDao {
+
+    @Override
+    public EdtaCode getEdtaCode(String edtaCode) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @Override
     public void delete(String edtaCode) {
 

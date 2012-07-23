@@ -20,8 +20,7 @@ public class ShaAction extends DatabaseAction {
         List<User> users = LegacySpringUtils.getUserManager().getAllUsers();
         for (User user : users) {
             user.setPassword(LogonUtils.hashPassword(user.getPassword()));
-            HibernateUtil.saveOrUpdateWithTransaction(user);
-
+            LegacySpringUtils.getUserManager().save(user);
         }
         return mapping.findForward("success");
     }

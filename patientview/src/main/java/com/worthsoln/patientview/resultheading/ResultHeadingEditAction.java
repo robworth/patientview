@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.ResultHeading;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -16,8 +17,11 @@ public class ResultHeadingEditAction extends Action {
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        HibernateUtil.retrievePersistentObjectAndAddToSession(request, ResultHeading.class, "headingcode",
-            "resultHeading");
+
+        ResultHeading resultHeading
+                = LegacySpringUtils.getResultHeadingManager().get(request.getParameter("headingcode"));
+
+        request.getSession().setAttribute("resultHeading", resultHeading);
 
         return LogonUtils.logonChecks(mapping, request);
     }

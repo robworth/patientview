@@ -1,9 +1,7 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
@@ -29,7 +27,6 @@ public class UnitAdminAddAction extends DatabaseAction {
         String role = BeanUtils.getProperty(form, "role");
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, false, role, true);
         DatabaseDAO dao = getDao(request);
-        User existingAdminWithSameUsername = (User) HibernateUtil.getPersistentObject(User.class, username);
 
         List<UserMapping> usermappingList = LegacySpringUtils.getUserManager().getUserMappings(username);
 
@@ -59,7 +56,7 @@ public class UnitAdminAddAction extends DatabaseAction {
             dao.insertItem(new LogonDao(hashedUnitAdmin));
 
             UserMapping userMapping = new UserMapping(username, unitcode, "");
-            HibernateUtil.saveOrUpdateWithTransaction(userMapping);
+            LegacySpringUtils.getUserManager().save(userMapping);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD,
                     unitAdmin.getUsername(), "",

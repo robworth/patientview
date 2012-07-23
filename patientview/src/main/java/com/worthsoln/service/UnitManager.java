@@ -15,6 +15,8 @@ public interface UnitManager {
 
     Unit get(String unitCode);
 
+    void save(Unit unit);
+
     List<Unit> getAll(boolean sortByName);
 
     List<Unit> getUnitsWithUser();

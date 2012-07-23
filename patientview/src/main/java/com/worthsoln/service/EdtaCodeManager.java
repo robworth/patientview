@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface EdtaCodeManager {
 
+    EdtaCode getEdtaCode(String edtaCode);
+
     void save(EdtaCode edtaCode);
 
     void delete(String edtaCode);

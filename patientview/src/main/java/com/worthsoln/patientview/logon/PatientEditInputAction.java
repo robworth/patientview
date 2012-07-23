@@ -1,9 +1,9 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.NhsnoUnitcode;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -20,7 +20,7 @@ public class PatientEditInputAction extends Action {
         String username = ActionUtils.retrieveStringPropertyValue("username", form, request);
         String unitcode = ActionUtils.retrieveStringPropertyValue("unitcode", form, request);
         String nhsno = ActionUtils.retrieveStringPropertyValue("nhsno", form, request);
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+        User user = LegacySpringUtils.getUserManager().get(username);
         // String nhsno = UserUtils.retrieveUsersRealNhsnoBestGuess(username);
         NhsnoUnitcode nhsnoThing = new NhsnoUnitcode(nhsno, unitcode);
         request.getSession().setAttribute("patient", user);

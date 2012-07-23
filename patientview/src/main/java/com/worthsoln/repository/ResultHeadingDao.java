@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface ResultHeadingDao {
 
+    ResultHeading get(String headingcode);
+
     List<ResultHeading> getAll();
 
     void save(ResultHeading resultHeading);

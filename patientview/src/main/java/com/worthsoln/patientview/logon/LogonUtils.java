@@ -1,7 +1,6 @@
 package com.worthsoln.patientview.logon;
 
 import com.Ostermiller.util.RandPass;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.SplashPage;
@@ -31,7 +30,7 @@ public class LogonUtils {
         String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
 
         if (username != null) {
-            User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+            User user = LegacySpringUtils.getUserManager().get(username);
 
             if (user.isFirstlogon()) {
                 if (user.getRole().equalsIgnoreCase("patient")) {

@@ -1,6 +1,5 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LogEntryDao;

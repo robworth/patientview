@@ -12,6 +12,14 @@ import java.util.List;
 public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> implements ResultHeadingDao {
 
     @Override
+    public ResultHeading get(String headingcode) {
+
+        // todo
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public List<ResultHeading> getAll() {
         // customize ordering
 

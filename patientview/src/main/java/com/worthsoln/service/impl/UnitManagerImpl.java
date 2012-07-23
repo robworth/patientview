@@ -45,6 +45,11 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public void save(Unit unit) {
+        unitDao.save(unit);
+    }
+
+    @Override
     public List<Unit> getAll(boolean sortByName) {
         return unitDao.getAll(true);
     }

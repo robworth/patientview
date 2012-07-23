@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
@@ -73,9 +72,9 @@ public class PatientAddAction extends DatabaseAction {
             dao.insertItem(new LogonDao(hashedPatient));
             dao.insertItem(new LogonDao(hashedGp));
 
-            HibernateUtil.saveOrUpdateWithTransaction(userMapping);
-            HibernateUtil.saveOrUpdateWithTransaction(userMappingPatientEnters);
-            HibernateUtil.saveOrUpdateWithTransaction(userMappingGp);
+            LegacySpringUtils.getUserManager().save(userMapping);
+            LegacySpringUtils.getUserManager().save(userMappingPatientEnters);
+            LegacySpringUtils.getUserManager().save(userMappingGp);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
                     patient.getUsername(),
@@ -83,7 +82,9 @@ public class PatientAddAction extends DatabaseAction {
             EmailVerificationUtils.createEmailVerification(patient.getUsername(), patient.getEmail(), request);
             mappingToFind = "success";
         }
-        HibernateUtil.putListInRequest(Unit.class, "units", request);
+
+        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
+        request.setAttribute("units", units);
         request.setAttribute("patient", patient);
         request.setAttribute("userMapping", userMapping);
         request.getSession().setAttribute("gp", gp);

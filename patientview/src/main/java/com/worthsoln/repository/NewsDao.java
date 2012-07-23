@@ -11,6 +11,8 @@ public interface NewsDao {
 
     News get(Long id);
 
+    void save(News news);
+
     void delete(News news);
 
     List<News> getAll();

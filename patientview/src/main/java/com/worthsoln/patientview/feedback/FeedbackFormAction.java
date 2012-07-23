@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.feedback;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.EmailUtils;
 import com.worthsoln.patientview.model.Feedback;
@@ -26,7 +25,7 @@ public class FeedbackFormAction extends DatabaseAction {
                                  HttpServletResponse response) throws Exception {
         String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
         if (username != null) {
-            User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+            User user = LegacySpringUtils.getUserManager().get(username);
 
             String unitcode = BeanUtils.getProperty(form, "unitcode");
             String nhsno = BeanUtils.getProperty(form, "nhsno");
@@ -37,7 +36,7 @@ public class FeedbackFormAction extends DatabaseAction {
 
             Feedback feedback = new Feedback(user.getUsername(), user.getName(), nhsno, unitcode, comment, isAnonymous);
 
-            HibernateUtil.saveOrUpdateWithTransaction(feedback);
+            LegacySpringUtils.getFeedbackManager().save(feedback);
 
             emailUnitAdminFeedbackNotification(request, feedback);
 
@@ -45,8 +44,10 @@ public class FeedbackFormAction extends DatabaseAction {
 
             if (patient != null) {
                 request.setAttribute("patient", patient);
-                HibernateUtil.retrievePersistentObjectAndAddToRequestWithIdParameter(request, Unit.class,
-                        patient.getCentreCode(), "unit");
+
+                Unit unit = LegacySpringUtils.getUnitManager().get(patient.getCentreCode());
+                request.setAttribute("unit", unit);
+
             } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
                 return LogonUtils.logonChecks(mapping, request, "control");
             }

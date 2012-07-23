@@ -13,6 +13,8 @@ public interface UnitDao {
 
     Unit get(String unitCode);
 
+    void save(Unit unit);
+
     List<Unit> getAll(boolean sortByName);
 
     List<Unit> getUnitsWithUser();

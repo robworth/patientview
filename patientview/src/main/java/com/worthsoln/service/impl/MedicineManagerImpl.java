@@ -15,6 +15,11 @@ public class MedicineManagerImpl implements MedicineManager {
     private MedicineDao medicineDao;
 
     @Override
+    public Medicine get(Long id) {
+        return medicineDao.get(id);
+    }
+
+    @Override
     public void save(Medicine medicine) {
         medicineDao.save(medicine);
     }

@@ -14,6 +14,7 @@ import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.ResultHeadingManager;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.SplashPageManager;
+import com.worthsoln.service.UKTransplantManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
 
@@ -52,6 +53,8 @@ public class LegacySpringUtils {
     private static SecurityUserManager securityUserManager;
 
     private static SplashPageManager splashPageManager;
+
+    private static UKTransplantManager ukTransplantManager;
 
     private static UnitManager unitManager;
 
@@ -167,6 +170,14 @@ public class LegacySpringUtils {
 
     public static void setSplashPageManager(SplashPageManager splashPageManager) {
         LegacySpringUtils.splashPageManager = splashPageManager;
+    }
+
+    public static UKTransplantManager getUkTransplantManager() {
+        return ukTransplantManager;
+    }
+
+    public static void setUkTransplantManager(UKTransplantManager ukTransplantManager) {
+        LegacySpringUtils.ukTransplantManager = ukTransplantManager;
     }
 
     public static UserManager getUserManager() {

@@ -33,4 +33,9 @@ public class AboutmeManagerImpl implements AboutmeManager {
 
         return aboutme;
     }
+
+    @Override
+    public void save(Aboutme aboutme) {
+        aboutmeDao.save(aboutme);
+    }
 }

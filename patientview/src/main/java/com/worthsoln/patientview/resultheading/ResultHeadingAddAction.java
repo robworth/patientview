@@ -21,12 +21,11 @@ public class ResultHeadingAddAction extends DatabaseAction {
         ResultHeading resultHeading = new ResultHeading();
 
         BeanUtils.setProperty(resultHeading, "headingcode", BeanUtils.getProperty(form, "headingcode"));
-
-        String[] colNames = HibernateUtil.getPropertyNames(resultHeading.getClass());
-
-        for (int i = 0; i < colNames.length; i++) {
-            BeanUtils.setProperty(resultHeading, colNames[i], BeanUtils.getProperty(form, colNames[i]));
-        }
+        BeanUtils.setProperty(resultHeading, "heading", BeanUtils.getProperty(form, "heading"));
+        BeanUtils.setProperty(resultHeading, "rollover", BeanUtils.getProperty(form, "rollover"));
+        BeanUtils.setProperty(resultHeading, "link", BeanUtils.getProperty(form, "link"));
+        BeanUtils.setProperty(resultHeading, "panel", BeanUtils.getProperty(form, "panel"));
+        BeanUtils.setProperty(resultHeading, "panelorder", BeanUtils.getProperty(form, "panelorder"));
 
         LegacySpringUtils.getResultHeadingManager().save(resultHeading);
         request.setAttribute("resultHeading", resultHeading);

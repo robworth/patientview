@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.SplashPage;
@@ -33,7 +32,6 @@ public class SplashPageUpdateAction extends DatabaseAction {
         LegacySpringUtils.getSplashPageManager().save(splashPage);
 
         request.setAttribute("splashPage", splashPage);
-        HibernateUtil.retrievePersistentObjectAndAddToRequest(request, SplashPage.class, SplashPage.getIdentifier());
 
         List<SplashPage> splashpages = LegacySpringUtils.getSplashPageManager().getAll();
         request.setAttribute("splashpages", splashpages);

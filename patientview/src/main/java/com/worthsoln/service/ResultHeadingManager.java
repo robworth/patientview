@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface ResultHeadingManager {
 
+    ResultHeading get(String headingcode);
+
     List<ResultHeading> getAll();
 
     void save(ResultHeading resultHeading);

@@ -16,6 +16,16 @@ public class FeedbackManagerImpl implements FeedbackManager {
     private FeedbackDao feedbackDao;
 
     @Override
+    public Feedback get(Long id) {
+        return feedbackDao.get(id);
+    }
+
+    @Override
+    public void save(Feedback feedback) {
+        feedbackDao.save(feedback);
+    }
+
+    @Override
     public List<Feedback> get(String unitcode) {
         return feedbackDao.get(unitcode);
     }

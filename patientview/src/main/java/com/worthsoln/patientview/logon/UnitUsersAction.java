@@ -3,6 +3,8 @@ package com.worthsoln.patientview.logon;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -19,7 +21,10 @@ public class UnitUsersAction extends DatabaseAction {
             throws Exception {
         String unitcode = BeanUtils.getProperty(form, "unitcode");
         DatabaseDAO dao = getDao(request);
-        HibernateUtil.retrievePersistentObjectAndAddToRequestWithIdParameter(request, Unit.class, unitcode, "unit");
+
+        Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+        request.setAttribute("unit", unit);
+
         UnitUsersDao unitUserDao = new UnitUsersDao(unitcode);
         List unitUsers = dao.retrieveList(unitUserDao);
 

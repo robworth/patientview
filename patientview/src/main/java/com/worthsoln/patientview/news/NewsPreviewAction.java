@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.News;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -25,13 +26,13 @@ public class NewsPreviewAction extends DatabaseAction {
         News news = new News(unitcode, admin, patient, everyone, headline, body);
         String id = BeanUtils.getProperty(form, "id");
         if (!"".equals(id)) {
-            news.setId(Integer.decode(id));
+            news.setId(Long.decode(id));
         }
         if ("Preview".equals(BeanUtils.getProperty(form, "submission"))) {
             request.setAttribute("news", news);
             actionForward = mapping.findForward("preview");
         } else {
-            HibernateUtil.saveOrUpdateWithTransaction(news);
+            LegacySpringUtils.getNewsManager().save(news);
             NewsUtils.putAppropriateNewsForEditInRequest(request);
             actionForward = mapping.findForward("add");
         }

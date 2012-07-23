@@ -31,6 +31,11 @@ public class NewsManagerImpl implements NewsManager {
     }
 
     @Override
+    public void save(News news) {
+        newsDao.save(news);
+    }
+
+    @Override
     public void delete(News news) {
         newsDao.delete(news);
     }

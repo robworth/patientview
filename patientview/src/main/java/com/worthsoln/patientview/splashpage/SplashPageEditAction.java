@@ -20,7 +20,7 @@ public class SplashPageEditAction extends Action {
         String id = BeanUtils.getProperty(form, "id");
         Long idLong = Long.decode(id);
 
-        SplashPage splashpage = LegacySpringUtils.getSplashPageDao().get(idLong);
+        SplashPage splashpage = LegacySpringUtils.getSplashPageManager().get(idLong);
 
         request.setAttribute("splashPage", splashpage);
 

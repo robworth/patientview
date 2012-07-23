@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.feedback;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Feedback;
@@ -18,17 +17,17 @@ public class FeedbackEditUpdateAction extends DatabaseAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        String feedbackId = BeanUtils.getProperty(form, "id");
+        Long feedbackId = Long.decode(BeanUtils.getProperty(form, "id"));
         String commentedited = BeanUtils.getProperty(form, "commentedited");
         String makepublic = BeanUtils.getProperty(form, "makepublic");
         boolean makepublicBool = "true".equals(makepublic);
 
-        Feedback feedback = (Feedback) HibernateUtil.getPersistentObject(Feedback.class, Integer.decode(feedbackId));
+        Feedback feedback = LegacySpringUtils.getFeedbackManager().get(feedbackId);
 
         feedback.setCommentedited(commentedited);
         feedback.setMakepublic(makepublicBool);
 
-        HibernateUtil.saveOrUpdateWithTransaction(feedback);
+        LegacySpringUtils.getFeedbackManager().save(feedback);
 
         List feedbacks = LegacySpringUtils.getFeedbackManager().get(feedback.getUnitcode());
 

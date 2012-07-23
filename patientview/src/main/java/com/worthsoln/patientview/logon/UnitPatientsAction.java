@@ -3,6 +3,8 @@ package com.worthsoln.patientview.logon;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -25,7 +27,8 @@ public class UnitPatientsAction extends DatabaseAction {
         boolean showgps = "true".equals(BeanUtils.getProperty(form, "showgps"));
         DatabaseDAO dao = getDao(request);
         if (!"".equals(unitcode)) {
-            HibernateUtil.retrievePersistentObjectAndAddToRequestWithIdParameter(request, Unit.class, unitcode, "unit");
+            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+            request.setAttribute("unit", unit);
         }
         UnitPatientsWithTreatmentDao patientDao = new UnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps);
         List patients = dao.retrieveList(patientDao);

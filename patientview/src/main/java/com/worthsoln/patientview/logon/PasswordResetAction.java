@@ -8,12 +8,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.user.UserUtils;
+
+import java.util.List;
 
 public class PasswordResetAction extends DatabaseAction {
 
@@ -40,7 +41,10 @@ public class PasswordResetAction extends DatabaseAction {
             patient.setUsername("");
             mappingToFind = "input";
         }
-        HibernateUtil.putListInRequest(Unit.class, "units", request);
+
+        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
+        request.setAttribute("units", units);
+
         request.setAttribute("patient", patient);
         return mapping.findForward(mappingToFind);
     }

@@ -8,7 +8,6 @@ import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
@@ -19,8 +18,7 @@ public class UnitsDisplayAction extends DatabaseAction {
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        User user = (User) HibernateUtil.getPersistentObject(User.class,
-                LegacySpringUtils.getSecurityUserManager().getLoggedInUsername());
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
 
         List items;
         if (user.getRole().equals("superadmin")) {

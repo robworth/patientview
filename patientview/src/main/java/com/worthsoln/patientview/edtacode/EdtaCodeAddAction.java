@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.EdtaCode;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
 
@@ -17,14 +17,15 @@ public class EdtaCodeAddAction extends DatabaseAction {
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        EdtaCode objectToBuild = new EdtaCode();
-        String attributeName = "edtaCode";
 
-        BeanUtils.getProperty(form, "edtaCode");
 
-        //todo
+        //todo test this, changed from HibernateUtils.extractDataFromFormMakeObjectAndAdd
 
-        HibernateUtil.extractDataFromFormMakeObjectAndAdd(objectToBuild, form, request, attributeName);
+        EdtaCode edtaCode = EdtaCodeUtils.build(form);
+
+        LegacySpringUtils.getEdtaCodeManager().save(edtaCode);
+
+        request.setAttribute("edtaCode", edtaCode);
 
         return LogonUtils.logonChecks(mapping, request);
     }

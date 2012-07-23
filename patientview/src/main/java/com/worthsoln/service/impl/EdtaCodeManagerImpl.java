@@ -16,6 +16,11 @@ public class EdtaCodeManagerImpl implements EdtaCodeManager {
     private EdtaCodeDao edtaCodeDao;
 
     @Override
+    public EdtaCode getEdtaCode(String edtaCode) {
+        return edtaCodeDao.getEdtaCode(edtaCode);
+    }
+
+    @Override
     public void save(EdtaCode edtaCode) {
         edtaCodeDao.save(edtaCode);
     }

@@ -15,21 +15,12 @@ import java.util.Date;
 public class BaseModel implements Serializable, Comparable {
 
     protected BaseModel() {
-        this.created = new Date();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)   // let hibernate pick the strategy based on underlying db
     private Long id;
 
-    @Column(nullable = false)
-    private boolean deleted;
-
-    @Column(nullable = false)
-    private Date created;
-
-    @Column(nullable = false)
-    private Date updated;
 
     public boolean hasValidId() {
         return id != null && id > 0;
@@ -41,30 +32,6 @@ public class BaseModel implements Serializable, Comparable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
     }
 
     @Override

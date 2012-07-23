@@ -16,6 +16,11 @@ public class ResultHeadingManagerImpl implements ResultHeadingManager {
     private ResultHeadingDao resultHeadingDao;
 
     @Override
+    public ResultHeading get(String headingcode) {
+        return resultHeadingDao.get(headingcode);
+    }
+
+    @Override
     public List<ResultHeading> getAll() {
         return resultHeadingDao.getAll();
     }

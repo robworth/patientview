@@ -1,6 +1,6 @@
-package com.worthsoln.patientview.uktransplant;
+package com.worthsoln.patientview.model;
 
-public class UktStatus {
+public class UktStatus extends BaseModel {
 
     private String nhsno;
     private String kidney;
