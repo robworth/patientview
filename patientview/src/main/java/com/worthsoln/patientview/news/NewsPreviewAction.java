@@ -9,7 +9,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 
 public class NewsPreviewAction extends DatabaseAction {
