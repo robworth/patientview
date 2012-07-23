@@ -1,10 +1,21 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Diagnosis extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = false)
     private String unitcode;
+
+    @Column(nullable = true)
     private String diagnosis;
+
+    @Column(nullable = true)
     private String displayorder;
 
     public Diagnosis() {
