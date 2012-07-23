@@ -5,10 +5,19 @@ import java.util.Calendar;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Comment extends BaseModel {
 
+    @Column(nullable = false)
     private Calendar datestamped;
+
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = false)
     private String body;
 
     public Comment() {
