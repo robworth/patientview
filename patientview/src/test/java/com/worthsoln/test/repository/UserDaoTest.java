@@ -26,8 +26,6 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
-        user.setCreated(new Date());
-        user.setUpdated(new Date());
 
         userDao.save(user);
 

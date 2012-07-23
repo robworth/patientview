@@ -7,7 +7,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,22 +33,15 @@ public class AbstractHibernateDAO<T extends BaseModel> {
         if (!entity.hasValidId()) {
 
             // apply any baseModel standards
-            entity.setCreated(new Date());
-            entity.setUpdated(new Date());
-
             entityManager.persist(entity);
         } else {
             // apply any baseModel standards
-            entity.setUpdated(new Date());
-
             entityManager.merge(entity);
         }
     }
 
     public void delete(final T entity) {
-        entity.setDeleted(true);
-//        entityManager.remove(entity);
-        save(entity);
+        entityManager.remove(entity);
     }
 
     public void delete(final Long entityId) {

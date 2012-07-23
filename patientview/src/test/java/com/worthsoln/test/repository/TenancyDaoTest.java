@@ -21,9 +21,9 @@ public class TenancyDaoTest extends BaseDaoTest {
     public void testAddGetTenancy() {
 
         Tenancy tenancy = new Tenancy();
-        tenancy.setCreated(new Date());
-        tenancy.setUpdated(new Date());
         tenancy.setName("Tenant 1");
+        tenancy.setContext("ten");
+        tenancy.setDescription("Test description");
 
         tenancyDao.save(tenancy);
 
