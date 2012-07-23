@@ -16,11 +16,11 @@ public class AboutmeDaoTest extends BaseDaoTest {
     private AboutmeDao aboutmeDao;
 
     @Test
-    public void addGetAboutme() throws Exception {
+    public void testAddGetAboutme() throws Exception {
         Aboutme aboutme = new Aboutme();
         aboutme.setAboutme("Test about me");
         aboutme.setTalkabout("Test talkabout");
-        aboutme.setNhsno("");
+        aboutme.setNhsno("123456789");
 
         aboutmeDao.save(aboutme);
 
