@@ -1,34 +1,92 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class EdtaCode extends BaseModel {
 
+    @Column(nullable = false)
     private String edtaCode;
+
+    @Column(nullable = true)
     private String linkType;
+
+    @Column(nullable = true)
     private String description;
+
+    @Column(nullable = true)
     private String medicalLink01;
+
+    @Column(nullable = true)
     private String medicalLink02;
+
+    @Column(nullable = true)
     private String medicalLink03;
+
+    @Column(nullable = true)
     private String medicalLink04;
+
+    @Column(nullable = true)
     private String medicalLink05;
+
+    @Column(nullable = true)
     private String medicalLink06;
+
+    @Column(nullable = true)
     private String medicalLinkText01;
+
+    @Column(nullable = true)
     private String medicalLinkText02;
+
+    @Column(nullable = true)
     private String medicalLinkText03;
+
+    @Column(nullable = true)
     private String medicalLinkText04;
+
+    @Column(nullable = true)
     private String medicalLinkText05;
+
+    @Column(nullable = true)
     private String medicalLinkText06;
+
+    @Column(nullable = true)
     private String patientLink01;
+
+    @Column(nullable = true)
     private String patientLink02;
+
+    @Column(nullable = true)
     private String patientLink03;
+
+    @Column(nullable = true)
     private String patientLink04;
+
+    @Column(nullable = true)
     private String patientLink05;
+
+    @Column(nullable = true)
     private String patientLink06;
+
+    @Column(nullable = true)
     private String patientLinkText01;
+
+    @Column(nullable = true)
     private String patientLinkText02;
+
+    @Column(nullable = true)
     private String patientLinkText03;
+
+    @Column(nullable = true)
     private String patientLinkText04;
+
+    @Column(nullable = true)
     private String patientLinkText05;
+
+    @Column(nullable = true)
     private String patientLinkText06;
+
     private static String IDENTIFIER = "edtaCode";
 
     public EdtaCode() {
