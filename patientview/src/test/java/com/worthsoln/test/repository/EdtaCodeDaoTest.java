@@ -113,6 +113,10 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
         assertNotNull(checkEdtaCodes);
         assertTrue("No edta codes found", !checkEdtaCodes.isEmpty() && checkEdtaCodes.size() > 0);
         assertTrue("To many codes found", checkEdtaCodes.size() == 2);
+
+        // they should come out in order of edtacode so 1 should be first then 2
+        assertEquals("EdtaCode1 was not first", checkEdtaCodes.get(0).getId(), edtaCode1.getId());
+        assertEquals("EdtaCode2 was not second", checkEdtaCodes.get(1).getId(), edtaCode2.getId());
     }
 
     private EdtaCode getTestObject(String no, String linkType) {
