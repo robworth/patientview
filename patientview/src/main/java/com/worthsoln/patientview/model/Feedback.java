@@ -1,18 +1,38 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
+@Entity
 public class Feedback extends BaseModel {
 
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = false)
     private String unitcode;
+
+    @Column(nullable = false)
     private Calendar datestamped;
+
+    @Column(nullable = false)
     private String comment;
+
+    @Column(nullable = true)
     private String commentedited;
+
+    @Column(nullable = false)
     private boolean anonymous;
+
+    @Column(nullable = false)
     private boolean makepublic;
 
     public Feedback() {
