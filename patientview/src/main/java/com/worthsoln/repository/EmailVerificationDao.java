@@ -4,10 +4,9 @@ import com.worthsoln.patientview.model.EmailVerification;
 
 import java.util.List;
 
-/**
- *
- */
 public interface EmailVerificationDao {
+
+    EmailVerification get(Long id);
 
     List<EmailVerification> get(String verificationCode);
 
