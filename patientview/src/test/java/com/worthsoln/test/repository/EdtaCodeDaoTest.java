@@ -111,7 +111,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
         List<EdtaCode> checkEdtaCodes = edtaCodeDao.get(linkType1);
 
         assertNotNull(checkEdtaCodes);
-        assertTrue("No edta codes found", !checkEdtaCodes.isEmpty()  && checkEdtaCodes.size() > 0);
+        assertTrue("No edta codes found", !checkEdtaCodes.isEmpty() && checkEdtaCodes.size() > 0);
         assertTrue("To many codes found", checkEdtaCodes.size() == 2);
     }
 

@@ -27,6 +27,8 @@
 
     <bean id="userStatDao" class="com.worthsoln.repository.impl.UnitStatDaoImpl"/>
 
+    <bean id="emailVerificationDao" class="com.worthsoln.repository.impl.EmailVerificationDaoImpl"/>
+
     <bean id="userDao" class="com.worthsoln.repository.impl.UserDaoImpl"/>
 
     <bean id="userMappingDao" class="com.worthsoln.repository.impl.UserMappingDaoImpl"/>

@@ -66,7 +66,7 @@ public class CommentDaoTest extends BaseDaoTest {
         List<Comment> checkComments = commentDao.get("123456789");
 
         assertNotNull(checkComments);
-        assertTrue("No comments found", !checkComments.isEmpty()  && checkComments.size() > 0);
+        assertTrue("No comments found", !checkComments.isEmpty() && checkComments.size() > 0);
         assertTrue("To many comments found", checkComments.size() == 2);
     }
 }

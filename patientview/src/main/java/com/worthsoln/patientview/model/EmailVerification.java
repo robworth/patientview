@@ -1,12 +1,22 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Calendar;
 
+@Entity
 public class EmailVerification extends BaseModel {
 
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String verificationcode;
+
+    @Column(nullable = false)
     private Calendar expirydatestamp;
 
     public EmailVerification() {
