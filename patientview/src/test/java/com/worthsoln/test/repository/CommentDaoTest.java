@@ -54,9 +54,19 @@ public class CommentDaoTest extends BaseDaoTest {
         commentDao.save(comment2);
         assertTrue("Invalid id for comment 2", comment2.getId() > 0);
 
+        // create a third with a different nhsnumber which should not come back
+        Comment comment3 = new Comment();
+        comment3.setDatestamp("2012-01-24 11:24:06");
+        comment3.setBody("Comment 3");
+        comment3.setNhsno("123456788");
+
+        commentDao.save(comment3);
+        assertTrue("Invalid id for comment 3", comment3.getId() > 0);
+
         List<Comment> checkComments = commentDao.get("123456789");
 
         assertNotNull(checkComments);
         assertTrue("No comments found", !checkComments.isEmpty()  && checkComments.size() > 0);
+        assertTrue("To many comments found", checkComments.size() == 2);
     }
 }

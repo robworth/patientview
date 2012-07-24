@@ -18,6 +18,7 @@ public class CommentDaoImpl extends AbstractHibernateDAO<Comment> implements Com
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Comment> criteria = builder.createQuery(Comment.class);
         Root<Comment> commentRoot = criteria.from(Comment.class);
+
         criteria.where(builder.equal(commentRoot.get(Comment_.nhsno), nhsno));
 
         return getEntityManager().createQuery(criteria).getResultList();

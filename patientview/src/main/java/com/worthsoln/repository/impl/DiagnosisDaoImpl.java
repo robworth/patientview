@@ -20,6 +20,7 @@ public class DiagnosisDaoImpl extends AbstractHibernateDAO<Diagnosis> implements
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Diagnosis> criteria = builder.createQuery(Diagnosis.class);
         Root<Diagnosis> diagnosisRoot = criteria.from(Diagnosis.class);
+
         criteria.where(builder.equal(diagnosisRoot.get(Diagnosis_.nhsno), nhsno),
                 builder.equal(diagnosisRoot.get(Diagnosis_.unitcode), unitcode));
 
