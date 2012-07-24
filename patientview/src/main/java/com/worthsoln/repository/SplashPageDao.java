@@ -16,11 +16,5 @@ public interface SplashPageDao {
 
     void delete(SplashPage splashPage);
 
-    List<SplashPage> getAll(User user);
-
-    List<SplashPage> getAllForPatient(User user);
-
-    List<SplashPage> getSeenForPatient(User user);
-
-    void removeSeenSplashPage(Long id);
+    List<SplashPage> getAll(List<String> unitcodes);
 }

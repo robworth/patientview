@@ -19,11 +19,7 @@ public class SplashPageUtils {
 
     public static List<SplashPageUserSeen> retrieveSplashPagesPatientHasSeen(User user) {
 
-        List<SplashPageUserSeen> results = new ArrayList<SplashPageUserSeen>();
-
-        LegacySpringUtils.getSplashPageManager().getSeenForPatient(user); // todo convert to correct return type
-
-        return results;
+        return LegacySpringUtils.getSplashPageManager().getSeenForPatient(user);
     }
 
     static void putSplashPageUnitsInRequest(HttpServletRequest request) throws Exception {

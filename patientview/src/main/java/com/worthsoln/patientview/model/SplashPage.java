@@ -1,14 +1,27 @@
 package com.worthsoln.patientview.model;
 
-import com.worthsoln.patientview.model.BaseModel;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class SplashPage extends BaseModel {
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private boolean live;
+
+    @Column(nullable = false)
     private String headline;
+
+    @Column(nullable = false)
     private String bodytext;
+
+    @Column(nullable = false)
     private String unitcode;
+
     private static String IDENTIFIER = "splashPage";
 
     public SplashPage() {

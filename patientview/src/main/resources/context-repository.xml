@@ -14,8 +14,14 @@
     <bean id="diagnosisDao" class="com.worthsoln.repository.impl.DiagnosisDaoImpl"/>
 
     <bean id="edtaCodeDao" class="com.worthsoln.repository.impl.EdtaCodeDaoImpl"/>
-    
+
+    <bean id="splashPageDao" class="com.worthsoln.repository.impl.SplashPageDaoImpl"/>
+
+    <bean id="splashPageUserSeenDao" class="com.worthsoln.repository.impl.SplashPageUserSeenDaoImpl"/>
+
     <bean id="tenancyDao" class="com.worthsoln.repository.impl.TenancyDaoImpl"/>
+
+    <bean id="uktStatusDao" class="com.worthsoln.repository.impl.UktStatusDaoImpl"/>
 
     <bean id="unitDao" class="com.worthsoln.repository.impl.UnitDaoImpl"/>
 
