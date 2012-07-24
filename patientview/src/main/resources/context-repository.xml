@@ -15,6 +15,8 @@
     
     <bean id="tenancyDao" class="com.worthsoln.repository.impl.TenancyDaoImpl"/>
 
+    <bean id="edtaCodeDao" class="com.worthsoln.repository.impl.EdtaCodeDaoImpl"/>
+
     <bean id="userDao" class="com.worthsoln.repository.impl.UserDaoImpl"/>
 
     <bean id="userMappingDao" class="com.worthsoln.repository.impl.UserMappingDaoImpl"/>
