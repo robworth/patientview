@@ -13,5 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-context.xml")
 @Transactional
-public class BaseDaoTest {
+public abstract class BaseDaoTest {
 }

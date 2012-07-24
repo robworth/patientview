@@ -1,28 +1,28 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Aboutme;
+import com.worthsoln.patientview.model.Aboutme_;
 import com.worthsoln.repository.AboutmeDao;
 import com.worthsoln.repository.AbstractHibernateDAO;
 
-/**
- *
- */
-public class AboutmeDaoImpl extends AbstractHibernateDAO<Aboutme> implements AboutmeDao {
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+public class AboutmeDaoImpl extends AbstractHibernateDAO<Aboutme> implements AboutmeDao {
 
     @Override
     public Aboutme get(String nhsno) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Aboutme> criteria = builder.createQuery(Aboutme.class);
+        Root<Aboutme> aboutmeRoot = criteria.from(Aboutme.class);
+        criteria.where(builder.equal(aboutmeRoot.get(Aboutme_.nhsno), nhsno));
 
-//        Session session = HibernateUtil.currentSession();
-//        Transaction tx = session.beginTransaction();
-//
-//        aboutme = (Aboutme) session.createQuery("from " + Aboutme.class.getName() + " as aboutme where aboutme.nhsno = :nhsno ")
-//                .setString("nhsno", nhsno)
-//                .uniqueResult();
-//
-//        tx.commit();
-//        HibernateUtil.closeSession();
-
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

@@ -146,5 +146,6 @@ Tasks for upgrading to JPA
 - Write test cases for each new Dao and Manager method
 
 - Review patients - it mixes JDBC and hibernate
+- Review how adding a PK to model classes will break all the forms - in particular the edit screens
 
 
