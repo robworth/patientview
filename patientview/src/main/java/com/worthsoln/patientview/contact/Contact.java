@@ -1,7 +1,7 @@
 package com.worthsoln.patientview.contact;
 
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.Unit;
 
 public class Contact {

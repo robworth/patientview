@@ -1,7 +1,7 @@
 package com.worthsoln.patientview.comment;
 
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 

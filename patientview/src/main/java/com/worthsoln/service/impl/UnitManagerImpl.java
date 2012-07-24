@@ -1,7 +1,7 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.PatientCount;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;

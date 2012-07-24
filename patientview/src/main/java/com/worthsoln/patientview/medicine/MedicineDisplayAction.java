@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.medicine;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Medicine;

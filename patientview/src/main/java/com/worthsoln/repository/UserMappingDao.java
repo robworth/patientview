@@ -1,6 +1,6 @@
 package com.worthsoln.repository;
 
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 
 import java.util.List;
@@ -9,6 +9,8 @@ import java.util.List;
  *
  */
 public interface UserMappingDao {
+
+    UserMapping get(Long id);
 
     void save(UserMapping userMapping);
 

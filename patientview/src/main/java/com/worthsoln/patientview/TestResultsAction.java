@@ -5,7 +5,7 @@ import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.resultheading.ResultHeadingDao;

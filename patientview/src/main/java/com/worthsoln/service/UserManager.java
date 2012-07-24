@@ -1,6 +1,6 @@
 package com.worthsoln.service;
 
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 
 import java.util.List;

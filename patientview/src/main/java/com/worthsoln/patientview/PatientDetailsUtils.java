@@ -4,7 +4,7 @@ import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.edtacode.EdtaCodeUtils;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.uktransplant.UktUtils;

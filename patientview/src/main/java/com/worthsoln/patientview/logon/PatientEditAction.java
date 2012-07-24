@@ -3,6 +3,7 @@ package com.worthsoln.patientview.logon;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;

@@ -3,11 +3,10 @@ package com.worthsoln.patientview.user;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserUtils {

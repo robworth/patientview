@@ -1,6 +1,6 @@
 package com.worthsoln.service.impl;
 
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.Aboutme;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.AboutmeDao;

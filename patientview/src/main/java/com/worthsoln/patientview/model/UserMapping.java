@@ -1,11 +1,18 @@
-package com.worthsoln.patientview.logon;
+package com.worthsoln.patientview.model;
 
-import com.worthsoln.patientview.model.BaseModel;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
 public class UserMapping extends BaseModel {
 
+    @Column
     private String username;
+
+    @Column
     private String unitcode;
+
+    @Column
     private String nhsno;
 
     public UserMapping() {

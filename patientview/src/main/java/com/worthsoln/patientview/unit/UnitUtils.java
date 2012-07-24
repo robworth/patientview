@@ -2,13 +2,12 @@ package com.worthsoln.patientview.unit;
 
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class UnitUtils {
