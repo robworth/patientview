@@ -17,6 +17,7 @@ public class AboutmeDaoImpl extends AbstractHibernateDAO<Aboutme> implements Abo
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Aboutme> criteria = builder.createQuery(Aboutme.class);
         Root<Aboutme> aboutmeRoot = criteria.from(Aboutme.class);
+
         criteria.where(builder.equal(aboutmeRoot.get(Aboutme_.nhsno), nhsno));
 
         try {
