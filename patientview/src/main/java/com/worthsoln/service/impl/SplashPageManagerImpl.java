@@ -6,6 +6,7 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.SplashPageDao;
 import com.worthsoln.repository.SplashPageUserSeenDao;
 import com.worthsoln.service.SplashPageManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
 
 import javax.inject.Inject;
@@ -15,6 +16,9 @@ import java.util.List;
  *
  */
 public class SplashPageManagerImpl implements SplashPageManager {
+
+    @Inject
+    private UnitManager unitManager;
 
     @Inject
     private UserManager userManager;
@@ -48,21 +52,33 @@ public class SplashPageManagerImpl implements SplashPageManager {
 
     @Override
     public List<SplashPage> getAll() {
-        return splashPageDao.getAll(userManager.getLoggedInUser());
+
+        User user = userManager.getLoggedInUser();
+        List<String> unitCodes = null;
+
+        if (user.getRole().equals("unitadmin")) {
+            unitCodes = unitManager.getUsersUnitCodes();
+        }
+
+        return splashPageDao.getAll(unitCodes);
     }
 
     @Override
     public List<SplashPage> getAllForPatient(User user) {
-        return splashPageDao.getAllForPatient(user);
+
+        List<String> unitCodes = unitManager.getUsersUnitCodes();
+        unitCodes.add("ALL");
+
+        return splashPageDao.getAll(unitCodes);
     }
 
     @Override
-    public List<SplashPage> getSeenForPatient(User user) {
-        return splashPageDao.getSeenForPatient(user);
+    public List<SplashPageUserSeen> getSeenForPatient(User user) {
+        return splashPageUserSeenDao.getSeenForPatient(user);
     }
 
     @Override
     public void removeSeenSplashPage(Long id) {
-        splashPageDao.removeSeenSplashPage(id);
+        splashPageUserSeenDao.delete(id);
     }
 }

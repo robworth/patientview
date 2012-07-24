@@ -1,9 +1,18 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class UktStatus extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column
     private String kidney;
+
+    @Column
     private String pancreas;
 
     public UktStatus() {

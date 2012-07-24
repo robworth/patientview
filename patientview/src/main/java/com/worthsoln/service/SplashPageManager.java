@@ -23,7 +23,7 @@ public interface SplashPageManager {
 
     List<SplashPage> getAllForPatient(User user);
 
-    List<SplashPage> getSeenForPatient(User user);
+    List<SplashPageUserSeen> getSeenForPatient(User user);
 
     void removeSeenSplashPage(Long id);
 }
