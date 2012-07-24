@@ -16,7 +16,6 @@ public class EmailVerificationDaoImpl extends AbstractHibernateDAO<EmailVerifica
 
     @Override
     public List<EmailVerification> get(String verificationCode) {
-
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<EmailVerification> criteria = builder.createQuery(EmailVerification.class);
         Root<EmailVerification> emailVerificationRoot = criteria.from(EmailVerification.class);
