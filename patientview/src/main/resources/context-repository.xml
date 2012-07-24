@@ -12,10 +12,14 @@
     <bean id="commentDao" class="com.worthsoln.repository.impl.CommentDaoImpl"/>
 
     <bean id="diagnosisDao" class="com.worthsoln.repository.impl.DiagnosisDaoImpl"/>
+
+    <bean id="edtaCodeDao" class="com.worthsoln.repository.impl.EdtaCodeDaoImpl"/>
     
     <bean id="tenancyDao" class="com.worthsoln.repository.impl.TenancyDaoImpl"/>
 
-    <bean id="edtaCodeDao" class="com.worthsoln.repository.impl.EdtaCodeDaoImpl"/>
+    <bean id="unitDao" class="com.worthsoln.repository.impl.UnitDaoImpl"/>
+
+    <bean id="userStatDao" class="com.worthsoln.repository.impl.UnitStatDaoImpl"/>
 
     <bean id="emailVerificationDao" class="com.worthsoln.repository.impl.EmailVerificationDaoImpl"/>
 

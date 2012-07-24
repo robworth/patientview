@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  *      Test UserMappingDao and UserDao
@@ -46,6 +45,36 @@ public class UserDaoTest extends BaseDaoTest {
         checkUser = userDao.get(user.getUsername());
 
         assertTrue("User not found via username", checkUser != null && checkUser.equals(user));
+    }
+
+    @Test
+    public void testGetAllDelete() {
+        User user = new User();
+        user.setEmail("test@worthsolns.com");
+        user.setName("Firstname Lastname");
+        user.setPassword("password");
+        user.setUsername("test");
+        userDao.save(user);
+
+        user = new User();
+        user.setEmail("test2@worthsolns.com");
+        user.setName("Firstname Lastname2");
+        user.setPassword("password2");
+        user.setUsername("test2");
+        userDao.save(user);
+
+        user = new User();
+        user.setEmail("test3@worthsolns.com");
+        user.setName("Firstname Lastname3");
+        user.setPassword("password3");
+        user.setUsername("test3");
+        userDao.save(user);
+
+        assertEquals("Incorrect number of users", 3, userDao.getAll().size());
+
+        userDao.delete(user);
+
+        assertEquals("Incorrect number of users after delete", 2, userDao.getAll().size());
     }
 
     @Test

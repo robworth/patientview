@@ -1,10 +1,21 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class UnitStat extends BaseModel {
 
+    @Column(nullable = false)
     private String unitcode;
+
+    @Column(nullable = false)
     private String yearmonth;
+
+    @Column(nullable = false)
     private String action;
+
+    @Column(nullable = false)
     private int count;
 
     public UnitStat() {

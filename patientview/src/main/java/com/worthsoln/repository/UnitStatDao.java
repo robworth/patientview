@@ -10,4 +10,6 @@ import java.util.List;
 public interface UnitStatDao {
 
     List<UnitStat> get(String unitCode);
+
+    void save(UnitStat unitStat);
 }
