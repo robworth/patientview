@@ -1,9 +1,15 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.Unit_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.UnitDao;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +19,16 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public Unit get(String unitCode) {
-        return null;
+
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
+        Root<Unit> from = criteria.from(Unit.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Unit_.unitcode), unitCode));
+
+        buildWhereClause(criteria, wherePredicates);
+        return getEntityManager().createQuery(criteria).getSingleResult();
     }
 
     @Override

@@ -1,76 +1,149 @@
 package com.worthsoln.patientview.model;
 
-import com.worthsoln.patientview.model.BaseModel;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
 public class Unit extends BaseModel {
 
+    @Column(nullable = false, unique = true)
     private String unitcode;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String shortname;
+
+    @Column
     private String unituser;
+    @Column
     private String address1;
+    @Column
     private String address2;
+    @Column
     private String address3;
+    @Column
     private String postcode;
+    @Column
     private String uniturl;
+    @Column
     private String trusturl;
+    @Column
     private String rpvadminname;
+    @Column
     private String rpvadminphone;
+    @Column
     private String rpvadminemail;
+    @Column
     private String unitenquiriesphone;
+    @Column
     private String unitenquiriesemail;
+    @Column
     private String appointmentphone;
+    @Column
     private String appointmentemail;
+    @Column
     private String outofhours;
+    @Column
     private String peritonealdialysisphone;
+    @Column
     private String peritonealdialysisemail;
+    @Column
     private String haemodialysisunitname1;
+    @Column
     private String haemodialysisunitphone1;
+    @Column
     private String haemodialysisunitlocation1;
+    @Column
     private String haemodialysisuniturl1;
+    @Column
     private String haemodialysisunitname2;
+    @Column
     private String haemodialysisunitphone2;
+    @Column
     private String haemodialysisunitlocation2;
+    @Column
     private String haemodialysisuniturl2;
+    @Column
     private String haemodialysisunitname3;
+    @Column
     private String haemodialysisunitphone3;
+    @Column
     private String haemodialysisunitlocation3;
+    @Column
     private String haemodialysisuniturl3;
+    @Column
     private String haemodialysisunitname4;
+    @Column
     private String haemodialysisunitphone4;
+    @Column
     private String haemodialysisunitlocation4;
+    @Column
     private String haemodialysisuniturl4;
+    @Column
     private String haemodialysisunitname5;
+    @Column
     private String haemodialysisunitphone5;
+    @Column
     private String haemodialysisunitlocation5;
+    @Column
     private String haemodialysisuniturl5;
+    @Column
     private String haemodialysisunitname6;
+    @Column
     private String haemodialysisunitphone6;
+    @Column
     private String haemodialysisunitlocation6;
+    @Column
     private String haemodialysisuniturl6;
+    @Column
     private String haemodialysisunitname7;
+    @Column
     private String haemodialysisunitphone7;
+    @Column
     private String haemodialysisunitlocation7;
+    @Column
     private String haemodialysisuniturl7;
+    @Column
     private String haemodialysisunitname8;
+    @Column
     private String haemodialysisunitphone8;
+    @Column
     private String haemodialysisunitlocation8;
+    @Column
     private String haemodialysisuniturl8;
+    @Column
     private String haemodialysisunitname9;
+    @Column
     private String haemodialysisunitphone9;
+    @Column
     private String haemodialysisunitlocation9;
+    @Column
     private String haemodialysisuniturl9;
+    @Column
     private String haemodialysisunitname10;
+    @Column
     private String haemodialysisunitphone10;
+    @Column
     private String haemodialysisunitlocation10;
+    @Column
     private String haemodialysisuniturl10;
+    @Column
     private String haemodialysisunitname11;
+    @Column
     private String haemodialysisunitphone11;
+    @Column
     private String haemodialysisunitlocation11;
+    @Column
     private String haemodialysisuniturl11;
+    @Column
     private String haemodialysisunitname12;
+    @Column
     private String haemodialysisunitphone12;
+    @Column
     private String haemodialysisunitlocation12;
+    @Column
     private String haemodialysisuniturl12;
 
     public Unit() {
