@@ -5,10 +5,9 @@ import com.worthsoln.patientview.model.LogEntry;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- *
- */
 public interface LogEntryDao {
+
+    LogEntry get(Long id);
 
     void save(LogEntry logEntry);
 
