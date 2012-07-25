@@ -3,7 +3,6 @@ package com.worthsoln.test.repository;
 import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.repository.LogEntryDao;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 
@@ -159,7 +158,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         // third entry will be in the range but have a different action
         LogEntry logEntry3 = getTestObject();
         logEntry3.setDate(calendar1);
-        logEntry3.setAction("testaction2");
+        logEntry3.setAction("anewaction");
         logEntryDao.save(logEntry3);
 
         assertTrue("Invalid id for log entry 3", logEntry3.getId() > 0);
@@ -194,7 +193,6 @@ public class LogEntryDaoTest extends BaseDaoTest {
     }
 
     @Test
-    @Rollback(value = false)
     public void testGetLogEntriesWithAllFilters() throws Exception {
         // create a date from 2 days ago - will use this on two of the log entries
         Calendar calendar1 = Calendar.getInstance();
