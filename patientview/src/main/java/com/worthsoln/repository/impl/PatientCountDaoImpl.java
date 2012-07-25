@@ -1,9 +1,15 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.PatientCount;
+import com.worthsoln.patientview.model.PatientCount_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.PatientCountDao;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,16 +20,15 @@ public class PatientCountDaoImpl extends AbstractHibernateDAO<PatientCount> impl
     @Override
     public List<PatientCount> get(String unitCode, String role) {
 
-//        Object[] parameters = new String[]{unitcode, "patient"};
-//        Type[] types = new Type[]{Hibernate.STRING, Hibernate.STRING};
-//
-//        List<PatientCount> patientCounts =
-//                session.find("from " + PatientCount.class.getName() + " patientcount " +
-//                        "where patientcount.unitcode = ? and patientcount.role = ?", parameters, types);
-//        tx.commit();
-//        HibernateUtil.closeSession();
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<PatientCount> criteria = builder.createQuery(PatientCount.class);
+        Root<PatientCount> from = criteria.from(PatientCount.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
+        wherePredicates.add(builder.equal(from.get(PatientCount_.unitcode), unitCode));
+        wherePredicates.add(builder.equal(from.get(PatientCount_.role), role));
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        buildWhereClause(criteria, wherePredicates);
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 }

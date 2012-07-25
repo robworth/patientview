@@ -9,5 +9,7 @@ import java.util.List;
  */
 public interface PatientDao {
 
-    List<Patient> get(String unitCode);
+    void save(Patient patient);
+
+    List<Patient> get(String centreCode);
 }

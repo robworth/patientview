@@ -1,29 +1,56 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Patient extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+    @Column
     private String surname;
+    @Column
     private String forename;
+    @Column
     private String dateofbirth;
+    @Column
     private String sex;
+    @Column
     private String address1;
+    @Column
     private String address2;
+    @Column
     private String address3;
+    @Column
     private String postcode;
+    @Column
     private String telephone1;
+    @Column
     private String telephone2;
+    @Column
     private String mobile;
+    @Column(nullable = false)
     private String centreCode;
+    @Column
     private String diagnosis;
+    @Column
     private String treatment;
+    @Column
     private String transplantstatus;
+    @Column
     private String hospitalnumber;
+    @Column
     private String gpname;
+    @Column
     private String gpaddress1;
+    @Column
     private String gpaddress2;
+    @Column
     private String gpaddress3;
+    @Column
     private String gppostcode;
+    @Column
     private String gptelephone;
 
     public Patient() {

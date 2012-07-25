@@ -1,14 +1,24 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+@Entity(name = "userlog")
 public class PatientCount extends BaseModel {
 
+    @Column(nullable = false)
     private Calendar datestamp;
+
+    @Column
     private String unitcode;
+
+    @Column(nullable = false)
     private String role;
+
+    @Column(nullable = false)
     private int count;
 
     public PatientCount() {

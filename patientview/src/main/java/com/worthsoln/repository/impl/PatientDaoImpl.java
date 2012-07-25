@@ -1,9 +1,15 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.Patient_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.PatientDao;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,17 +18,16 @@ import java.util.List;
 public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements PatientDao {
 
     @Override
-    public List<Patient> get(String unitCode) {
+    public List<Patient> get(String centreCode) {
 
-//        Session session = HibernateUtil.currentSession();
-//        Transaction tx = session.beginTransaction();
-//
-//        patients = session.find("from " + Patient.class.getName() + " where centreCode = ?",
-//                unitCode, Hibernate.STRING);
-//
-//        tx.commit();
-//        HibernateUtil.closeSession();
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        wherePredicates.add(builder.equal(from.get(Patient_.centreCode), centreCode));
+
+        buildWhereClause(criteria, wherePredicates);
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 }
