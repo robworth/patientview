@@ -15,6 +15,10 @@
 
     <bean id="edtaCodeDao" class="com.worthsoln.repository.impl.EdtaCodeDaoImpl"/>
 
+    <bean id="patientCountDao" class="com.worthsoln.repository.impl.PatientCountDaoImpl"/>
+
+    <bean id="patientDao" class="com.worthsoln.repository.impl.PatientDaoImpl"/>
+
     <bean id="resultHeadingDao" class="com.worthsoln.repository.impl.ResultHeadingDaoImpl"/>
 
     <bean id="splashPageDao" class="com.worthsoln.repository.impl.SplashPageDaoImpl"/>
