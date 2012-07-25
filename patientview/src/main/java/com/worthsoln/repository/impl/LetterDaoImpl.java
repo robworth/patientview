@@ -1,54 +1,39 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Letter;
+import com.worthsoln.patientview.model.Letter_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LetterDao;
+import com.worthsoln.repository.UserMappingDao;
 
+import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.Collections;
 import java.util.List;
 
-/**
- *
- */
 public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements LetterDao {
+
+    @Inject
+    private UserMappingDao userMappingDao;
 
     @Override
     public List<Letter> get(String username) {
+        String usersNhsNo = userMappingDao.getUsersRealNhsNoBestGuess(username);
 
-//        try {
-//            Session session = HibernateUtil.currentSession();
-//            Transaction tx = session.beginTransaction();
-//
-//            lettersAndUserMappings = session.find("from " + Letter.class.getName() + " as letter, " +
-//                    UserMapping.class.getName() + " as usermapping " +
-//                    " where usermapping.username = ? " +
-//                    " and letter.nhsno = usermapping.nhsno " +
-//                    " order by letter.date desc",
-//                    new Object[]{username}, new Type[]{Hibernate.STRING});
-//
-//            tx.commit();
-//            HibernateUtil.closeSession();
-//        } catch (HibernateException e) {
-//            e.printStackTrace();
-//        }
-//
-//        List<Letter> letters = new ArrayList();
-//
-//        for (Object letterUserMapping : lettersAndUserMappings) {
-//            Object[] letterUserMappingArray = (Object[]) letterUserMapping;
-//            Letter letter = (Letter) letterUserMappingArray[0];
-//
-//            boolean letterAlreadyInList = false;
-//            for (Letter letterInList : letters) {
-//                if (letter.equals(letterInList)) {
-//                    letterAlreadyInList = true;
-//                    break;
-//                }
-//            }
-//            if (!letterAlreadyInList) {
-//                letters.add(letter);
-//            }
-//        }
+        if (usersNhsNo != null && usersNhsNo.length() > 0) {
+            CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<Letter> criteria = builder.createQuery(Letter.class);
+            Root<Letter> letterRoot = criteria.from(Letter.class);
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+            criteria.where(builder.equal(letterRoot.get(Letter_.nhsno), usersNhsNo));
+
+            criteria.orderBy(builder.desc(letterRoot.get(Letter_.date)));
+
+            return getEntityManager().createQuery(criteria).getResultList();
+        }
+
+        return Collections.emptyList();
     }
 }
