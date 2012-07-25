@@ -2,15 +2,27 @@ package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+@Entity
 public class Letter extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = false)
     private String unitcode;
+
+    @Column(nullable = true)
     private Calendar date;
+
+    @Column(nullable = true)
     private String type;
+
+    @Column(nullable = true)
     private String content;
 
     public Letter() {
