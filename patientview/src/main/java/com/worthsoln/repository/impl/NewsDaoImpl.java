@@ -1,9 +1,15 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.News;
+import com.worthsoln.patientview.model.News_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.NewsDao;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +18,7 @@ import java.util.List;
 public class NewsDaoImpl extends AbstractHibernateDAO<News> implements NewsDao {
 
     /**
-     * All calls need hsql = hsql + " order by news.datestamp desc ";
+     * todo All calls need hsql = hsql + " order by news.datestamp desc ";
      *
      *
      *
@@ -21,90 +27,97 @@ public class NewsDaoImpl extends AbstractHibernateDAO<News> implements NewsDao {
     @Override
     public List<News> getNewsForEveryone() {
 
-//        hsql = "from " + News.class.getName() + " as news where news.everyone = ?";
-//        params = new Object[]{1};
-//        types = new Type[]{Hibernate.INTEGER};
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<News> criteria = builder.createQuery(News.class);
+        Root<News> from = criteria.from(News.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        wherePredicates.add(builder.equal(from.get(News_.everyone), true));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
     public List<News> getAdminNewsForUnitCodes(List<String> unitCodes) {
 
-//        String unitCodeClause = "";
-//        params = new Object[unitcodes.size() + 4];
-//        types = new Type[unitcodes.size() + 4];
-//        unitCodeClause = createUnitCodeStringParamsAndTypes(params, types, unitcodes, unitCodeClause);
-//
-//        hsql = "from " + News.class.getName() +
-//                " as news where (( " + unitCodeClause + " ) and (news.admin = ? or news.patient = ?)) " +
-//                " or news.everyone = ?";
-//        params[unitcodes.size()] = "all";
-//        params[unitcodes.size() + 1] = 1;
-//        params[unitcodes.size() + 2] = 1;
-//        params[unitcodes.size() + 3] = 1;
-//
-//        types[unitcodes.size()] = Hibernate.STRING;
-//        types[unitcodes.size() + 1] = Hibernate.INTEGER;
-//        types[unitcodes.size() + 2] = Hibernate.INTEGER;
-//        types[unitcodes.size() + 3] = Hibernate.INTEGER;
+        unitCodes.add("all");   // some oddness to override stuff
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<News> criteria = builder.createQuery(News.class);
+        Root<News> from = criteria.from(News.class);
+
+        Predicate unitCodePredicate = from.get(News_.unitcode).in(unitCodes.toArray(new String[unitCodes.size()]));
+        Predicate adminPredicate = builder.equal(from.get(News_.admin), true);
+        Predicate patientPredicate = builder.equal(from.get(News_.patient), true);
+        Predicate everyonePredicate = builder.equal(from.get(News_.everyone), true);
+
+        Predicate adminOrPatientPredicate =  getEntityManager().getCriteriaBuilder()
+                .or(adminPredicate, patientPredicate);
+
+        Predicate securedNews = getEntityManager().getCriteriaBuilder()
+                .and(unitCodePredicate, adminOrPatientPredicate);
+
+        Predicate fullPredicate = getEntityManager().getCriteriaBuilder()
+                .or(securedNews, everyonePredicate);
+
+        criteria.where(fullPredicate);
+
+        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
     public List<News> getAdminEditNewsForUnitCodes(List<String> unitCodes) {
 
-//        String unitCodeClause = "";
-//        params = new Object[unitcodes.size() + 2];
-//        types = new Type[unitcodes.size() + 2];
-//
-//        for (int i = 0; i < unitcodes.size(); i++) {
-//            unitCodeClause += " news.unitcode = ? or ";
-//            params[i] = unitcodes.get(i);
-//            types[i] = Hibernate.STRING;
-//        }
-//        unitCodeClause = unitCodeClause.substring(0, unitCodeClause.length() - 3);
-//
-//        hsql = "from " + News.class.getName() +
-//                " as news where (" + unitCodeClause + " and (news.admin = ? or news.patient = ?)) ";
-//        params[unitcodes.size()] = 1;
-//        params[unitcodes.size() + 1] = 1;
-//
-//        types[unitcodes.size()] = Hibernate.INTEGER;
-//        types[unitcodes.size() + 1] = Hibernate.INTEGER;
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<News> criteria = builder.createQuery(News.class);
+        Root<News> from = criteria.from(News.class);
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Predicate unitCodePredicate = from.get(News_.unitcode).in(unitCodes.toArray(new String[unitCodes.size()]));
+        Predicate adminPredicate = builder.equal(from.get(News_.admin), true);
+        Predicate patientPredicate = builder.equal(from.get(News_.patient), true);
+
+        Predicate adminOrPatientPredicate =  getEntityManager().getCriteriaBuilder()
+                .or(adminPredicate, patientPredicate);
+
+        Predicate securedNews = getEntityManager().getCriteriaBuilder()
+                .and(unitCodePredicate, adminOrPatientPredicate);
+
+        criteria.where(securedNews);
+
+        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
     public List<News> getPatientNewsForUnitCodes(List<String> unitCodes) {
 
-//        String unitCodeClause = "";
-//        params = new Object[unitcodes.size() + 3];
-//        types = new Type[unitcodes.size() + 3];
-//        unitCodeClause = createUnitCodeStringParamsAndTypes(params, types, unitcodes, unitCodeClause);
-//
-//        hsql = "from " + News.class.getName() +
-//                " as news where (( " + unitCodeClause + " ) and news.patient = ?) or news.everyone = ?";
-//        params[unitcodes.size()] = "all";
-//        params[unitcodes.size() + 1] = 1;
-//        params[unitcodes.size() + 2] = 1;
-//
-//        types[unitcodes.size()] = Hibernate.STRING;
-//        types[unitcodes.size() + 1] = Hibernate.INTEGER;
-//        types[unitcodes.size() + 2] = Hibernate.INTEGER;
+        unitCodes.add("all");   // some oddness to override stuff
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<News> criteria = builder.createQuery(News.class);
+        Root<News> from = criteria.from(News.class);
+
+        Predicate unitCodePredicate = from.get(News_.unitcode).in(unitCodes.toArray(new String[unitCodes.size()]));
+        Predicate patientPredicate = builder.equal(from.get(News_.patient), true);
+        Predicate everyonePredicate = builder.equal(from.get(News_.everyone), true);
+
+        Predicate securedNews = getEntityManager().getCriteriaBuilder()
+                .and(unitCodePredicate, patientPredicate);
+
+        Predicate fullPredicate = getEntityManager().getCriteriaBuilder()
+                .or(securedNews, everyonePredicate);
+
+        criteria.where(fullPredicate);
+
+        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
     }
-
-//    private static String createUnitCodeStringParamsAndTypes(Object[] params, Type[] types, List<String> unitcodes, String unitCodeClause) {
-//        for (int i = 0; i < unitcodes.size(); i++) {
-//            unitCodeClause += " news.unitcode = ? or ";
-//            params[i] = unitcodes.get(i);
-//            types[i] = Hibernate.STRING;
-//        }
-//        unitCodeClause += " news.unitcode = ? ";
-//        return unitCodeClause;
-//    }
 }
