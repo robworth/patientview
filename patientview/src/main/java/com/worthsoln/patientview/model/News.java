@@ -5,14 +5,31 @@ import java.util.Calendar;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class News extends BaseModel {
 
+    @Column(nullable = false)
     private Calendar datestamped;
+
+    @Column(nullable = false)
     private String unitcode;
+
+    @Column(nullable = false)
     private boolean admin;
+
+    @Column(nullable = false)
     private boolean patient;
+
+    @Column(nullable = false)
     private boolean everyone;
+
+    @Column(nullable = false)
     private String headline;
+
+    @Column(nullable = false)
     private String body;
 
     public News() {
