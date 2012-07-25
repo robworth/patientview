@@ -1,12 +1,27 @@
 package com.worthsoln.patientview.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class ResultHeading extends BaseModel {
 
+    @Column(nullable = false)
     private String headingcode;
+
+    @Column(nullable = false)
     private String heading;
+
+    @Column(nullable = false)
     private String rollover;
+
+    @Column(nullable = false)
     private String link;
+
+    @Column(nullable = false)
     private int panel;
+
+    @Column(nullable = false)
     private int panelorder;
 
     public ResultHeading() {

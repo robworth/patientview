@@ -1,9 +1,15 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.ResultHeading;
+import com.worthsoln.patientview.model.ResultHeading_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.ResultHeadingDao;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,34 +20,20 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
     @Override
     public ResultHeading get(String headingcode) {
 
-        // todo
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<ResultHeading> criteria = builder.createQuery(ResultHeading.class);
+        Root<ResultHeading> from = criteria.from(ResultHeading.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+        wherePredicates.add(builder.equal(from.get(ResultHeading_.headingcode), headingcode));
 
-    @Override
-    public List<ResultHeading> getAll() {
-        // customize ordering
-
-//        Session session = HibernateUtil.currentSession();
-//        Transaction tx = session.beginTransaction();
-//        List resultHeadings = session.find("from " + ResultHeading.class.getName()
-//                + " as heading order by heading.panel asc, heading.panelorder asc");
-//
-//        tx.commit();
-//        HibernateUtil.closeSession();
-//
-        return null;
+        buildWhereClause(criteria, wherePredicates);
+        return getEntityManager().createQuery(criteria).getSingleResult();
     }
 
     @Override
     public void delete(String headingCode) {
 
-//        Session session = HibernateUtil.currentSession();
-//        Transaction tx = session.beginTransaction();
-//
-//        session.delete(new ResultHeading(resultHeadingId));
-//        tx.commit();
-//        HibernateUtil.closeSession();
+        delete(get(headingCode));
     }
 }
