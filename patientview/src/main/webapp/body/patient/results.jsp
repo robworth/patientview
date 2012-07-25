@@ -44,7 +44,7 @@
                     &nbsp;&nbsp;&nbsp;
                 </logic:equal>
                 <logic:notEqual value="" name="panelNav" property="nextPanel">
-                    <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="nextPanel" styleClass="paginate"><strong>More results</strong></html:link>
+                    <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="nextPanel" styleClass="paginate"><strong>Other test types</strong></html:link>
                     &nbsp;
                     <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="lastPanel" styleClass="paginate">&gt;|</html:link>
                 </logic:notEqual>
@@ -117,7 +117,7 @@
 <table width="600" border="0" cellspacing="1" cellpadding="3">
       <tr valign="top">
         <td align="right">
-          More results :
+          Older results :
                 &nbsp;
                 <logic:equal value="" name="pageNav" property="previousPanel">
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
