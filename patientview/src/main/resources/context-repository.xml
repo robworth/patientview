@@ -37,6 +37,8 @@
 
     <bean id="feedbackDao" class="com.worthsoln.repository.impl.FeedbackDaoImpl"/>
 
+    <bean id="letterDao" class="com.worthsoln.repository.impl.LetterDaoImpl"/>
+
     <bean id="userDao" class="com.worthsoln.repository.impl.UserDaoImpl"/>
 
     <bean id="userMappingDao" class="com.worthsoln.repository.impl.UserMappingDaoImpl"/>

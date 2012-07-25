@@ -4,9 +4,6 @@ import com.worthsoln.patientview.model.Letter;
 
 import java.util.List;
 
-/**
- *
- */
 public interface LetterDao {
 
     Letter get(Long id);
