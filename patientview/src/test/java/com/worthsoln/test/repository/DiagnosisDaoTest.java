@@ -41,7 +41,6 @@ public class DiagnosisDaoTest extends BaseDaoTest {
     }
 
     @Test
-    @Rollback(value = false)
     public void testGetOtherDiagnosis() throws Exception {
         Diagnosis diagnosis1 = new Diagnosis();
         diagnosis1.setDiagnosis("Test diagnosis 1");

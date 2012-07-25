@@ -82,7 +82,6 @@ public class EmailVerificationDaoTest extends BaseDaoTest {
     }
 
     @Test
-    @Rollback(value = false)
     public void testDeleteEmailVerificationByUsername() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 5);
