@@ -85,6 +85,7 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         }
 
         if (action != null && action.length() > 0) {
+            // TODO: not sure if this really has to be a like it all seemed very dodgy
             wherePredicates.add(builder.like(logEntryRoot.get(LogEntry_.action), '%' + action + '%'));
         }
 
