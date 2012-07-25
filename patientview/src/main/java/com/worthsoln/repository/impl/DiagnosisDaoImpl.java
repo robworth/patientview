@@ -7,7 +7,9 @@ import com.worthsoln.repository.DiagnosisDao;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiagnosisDaoImpl extends AbstractHibernateDAO<Diagnosis> implements DiagnosisDao {
@@ -21,8 +23,12 @@ public class DiagnosisDaoImpl extends AbstractHibernateDAO<Diagnosis> implements
         CriteriaQuery<Diagnosis> criteria = builder.createQuery(Diagnosis.class);
         Root<Diagnosis> diagnosisRoot = criteria.from(Diagnosis.class);
 
-        criteria.where(builder.equal(diagnosisRoot.get(Diagnosis_.nhsno), nhsno),
-                builder.equal(diagnosisRoot.get(Diagnosis_.unitcode), unitcode));
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(diagnosisRoot.get(Diagnosis_.nhsno), nhsno));
+        wherePredicates.add(builder.equal(diagnosisRoot.get(Diagnosis_.unitcode), unitcode));
+
+        buildWhereClause(criteria, wherePredicates);
 
         return getEntityManager().createQuery(criteria).getResultList();
     }

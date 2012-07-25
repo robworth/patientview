@@ -6,12 +6,25 @@ import java.sql.Timestamp;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Medicine extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = false)
     private String unitcode;
+
+    @Column(nullable = true)
     private Calendar startdate;
+
+    @Column(nullable = true)
     private String name;
+
+    @Column(nullable = true)
     private String dose;
 
     public Medicine() {

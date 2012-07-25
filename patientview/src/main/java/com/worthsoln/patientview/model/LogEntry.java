@@ -5,14 +5,31 @@ import java.util.Calendar;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class LogEntry extends BaseModel {
 
+    @Column(nullable = false)
     private Calendar date;
+
+    @Column(nullable = true)
     private String nhsno;
+
+    @Column(nullable = true)
     private String user;
+
+    @Column(nullable = false)
     private String action;
+
+    @Column(nullable = false)
     private String actor;
+
+    @Column(nullable = true)
     private String unitcode;
+
+    @Column(nullable = true)
     private String extrainfo;
 
     public LogEntry() {
@@ -121,6 +138,4 @@ public class LogEntry extends BaseModel {
 
         return filename;
     }
-
-
 }
