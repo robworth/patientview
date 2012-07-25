@@ -8,7 +8,9 @@ import com.worthsoln.repository.EmailVerificationDao;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,10 +22,16 @@ public class EmailVerificationDaoImpl extends AbstractHibernateDAO<EmailVerifica
         CriteriaQuery<EmailVerification> criteria = builder.createQuery(EmailVerification.class);
         Root<EmailVerification> emailVerificationRoot = criteria.from(EmailVerification.class);
 
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(emailVerificationRoot.get(EmailVerification_.verificationcode),
+                verificationCode));
+
         // TODO: not sure of the greater than and just using Calendar.getInstance()
-        criteria.where(builder.equal(emailVerificationRoot.get(EmailVerification_.verificationcode), verificationCode),
-                builder.greaterThan(emailVerificationRoot.get(EmailVerification_.expirydatestamp),
-                        Calendar.getInstance()));
+        wherePredicates.add(builder.greaterThan(emailVerificationRoot.get(EmailVerification_.expirydatestamp),
+                                Calendar.getInstance()));
+
+        buildWhereClause(criteria, wherePredicates);
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
