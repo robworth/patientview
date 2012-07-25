@@ -35,6 +35,8 @@
 
     <bean id="letterDao" class="com.worthsoln.repository.impl.LetterDaoImpl"/>
 
+    <bean id="logEntryDao" class="com.worthsoln.repository.impl.LogEntryDaoImpl"/>
+
     <bean id="userDao" class="com.worthsoln.repository.impl.UserDaoImpl"/>
 
     <bean id="userMappingDao" class="com.worthsoln.repository.impl.UserMappingDaoImpl"/>
