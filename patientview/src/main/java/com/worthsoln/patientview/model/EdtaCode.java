@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class EdtaCode extends BaseModel {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String edtaCode;
 
     @Column(nullable = true)

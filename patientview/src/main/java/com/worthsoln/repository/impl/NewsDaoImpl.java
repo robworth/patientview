@@ -36,7 +36,7 @@ public class NewsDaoImpl extends AbstractHibernateDAO<News> implements NewsDao {
 
         buildWhereClause(criteria, wherePredicates);
 
-        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+        criteria.orderBy(builder.desc(from.get(News_.datestamp)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
@@ -66,7 +66,7 @@ public class NewsDaoImpl extends AbstractHibernateDAO<News> implements NewsDao {
 
         criteria.where(fullPredicate);
 
-        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+        criteria.orderBy(builder.desc(from.get(News_.datestamp)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
@@ -90,7 +90,7 @@ public class NewsDaoImpl extends AbstractHibernateDAO<News> implements NewsDao {
 
         criteria.where(securedNews);
 
-        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+        criteria.orderBy(builder.desc(from.get(News_.datestamp)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
@@ -116,7 +116,7 @@ public class NewsDaoImpl extends AbstractHibernateDAO<News> implements NewsDao {
 
         criteria.where(fullPredicate);
 
-        criteria.orderBy(builder.desc(from.get(News_.datestamped)));
+        criteria.orderBy(builder.desc(from.get(News_.datestamp)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }

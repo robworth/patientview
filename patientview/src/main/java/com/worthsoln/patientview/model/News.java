@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 public class News extends BaseModel {
 
     @Column(nullable = false)
-    private Calendar datestamped;
+    private Calendar datestamp;
 
     @Column(nullable = false)
     private String unitcode;
@@ -40,7 +40,7 @@ public class News extends BaseModel {
     }
 
     public News(String unitcode, boolean admin, boolean patient, boolean everyone, String headline, String body) {
-        this.datestamped = Calendar.getInstance();
+        this.datestamp = Calendar.getInstance();
         setUnitcode(unitcode);
         this.admin = admin;
         this.patient = patient;
@@ -50,15 +50,15 @@ public class News extends BaseModel {
     }
 
     public Calendar getDatestamp() {
-        return datestamped;
+        return datestamp;
     }
 
     public void setDatestamp(Calendar date) {
-        this.datestamped = date;
+        this.datestamp = date;
     }
 
     public void setDatestamp(String dateString) {
-        this.datestamped = TimestampUtils.createTimestamp(dateString);
+        this.datestamp = TimestampUtils.createTimestamp(dateString);
     }
 
     public String getUnitcode() {
@@ -112,10 +112,10 @@ public class News extends BaseModel {
     public String getFormattedDatestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
-        if ((datestamped.get(Calendar.HOUR_OF_DAY) == 0) && (datestamped.get(Calendar.MINUTE) == 0)) {
-            return dateFormat.format(datestamped.getTime());
+        if ((datestamp.get(Calendar.HOUR_OF_DAY) == 0) && (datestamp.get(Calendar.MINUTE) == 0)) {
+            return dateFormat.format(datestamp.getTime());
         } else {
-            return dateTimeFormat.format(datestamped.getTime());
+            return dateTimeFormat.format(datestamp.getTime());
         }
     }
 

@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 public class Comment extends BaseModel {
 
     @Column(nullable = false)
-    private Calendar datestamped;
+    private Calendar datestamp;
 
     @Column(nullable = false)
     private String nhsno;
@@ -28,27 +28,27 @@ public class Comment extends BaseModel {
     }
 
     public Comment(String nhsno, String body) {
-        this.datestamped = Calendar.getInstance();
+        this.datestamp = Calendar.getInstance();
         setNhsno(nhsno);
         setBody(body);
     }
 
     public Comment(Calendar datestamp, String nhsno, String body) {
-        this.datestamped = datestamp;
+        this.datestamp = datestamp;
         setNhsno(nhsno);
         setBody(body);
     }
 
     public Calendar getDatestamp() {
-        return datestamped;
+        return datestamp;
     }
 
     public void setDatestamp(Calendar date) {
-        this.datestamped = date;
+        this.datestamp = date;
     }
 
     public void setDatestamp(String dateString) {
-        this.datestamped = TimestampUtils.createTimestamp(dateString);
+        this.datestamp = TimestampUtils.createTimestamp(dateString);
     }
 
     public String getNhsno() {
@@ -70,16 +70,16 @@ public class Comment extends BaseModel {
     public String getFormattedDatestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
-        if ((datestamped.get(Calendar.HOUR_OF_DAY) == 0) && (datestamped.get(Calendar.MINUTE) == 0)) {
-            return dateFormat.format(datestamped.getTime());
+        if ((datestamp.get(Calendar.HOUR_OF_DAY) == 0) && (datestamp.get(Calendar.MINUTE) == 0)) {
+            return dateFormat.format(datestamp.getTime());
         } else {
-            return dateTimeFormat.format(datestamped.getTime());
+            return dateTimeFormat.format(datestamp.getTime());
         }
     }
 
     public String getIsoFormattedDatestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        return dateFormat.format(datestamped.getTime());
+        return dateFormat.format(datestamp.getTime());
     }
 
     public String getBodyForHtml() {

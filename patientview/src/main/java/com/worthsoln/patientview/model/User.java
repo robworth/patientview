@@ -37,7 +37,7 @@ public class User extends BaseModel {
     @Column(nullable = true)
     private boolean accountlocked;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String screenname;
 
     //todo remove

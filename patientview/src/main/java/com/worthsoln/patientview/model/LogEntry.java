@@ -8,7 +8,7 @@ import com.worthsoln.patientview.utils.TimestampUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "log")
 public class LogEntry extends BaseModel {
 
     @Column(nullable = false)

@@ -20,7 +20,7 @@ public class FeedbackDaoImpl extends AbstractHibernateDAO<Feedback> implements F
 
         criteria.where(builder.equal(feedbackRoot.get(Feedback_.unitcode), unitcode));
 
-        criteria.orderBy(builder.desc(feedbackRoot.get(Feedback_.datestamped)));
+        criteria.orderBy(builder.desc(feedbackRoot.get(Feedback_.datestamp)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }

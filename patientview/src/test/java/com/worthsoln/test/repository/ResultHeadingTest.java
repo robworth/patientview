@@ -24,7 +24,7 @@ public class ResultHeadingTest extends BaseDaoTest {
 
         ResultHeading resultHeading = new ResultHeading();
         resultHeading.setHeading("heading");
-        resultHeading.setHeadingcode("HEAD");
+        resultHeading.setHeadingcode("HEADA");
         resultHeading.setLink("http://www.google.com/");
         resultHeading.setPanel(2);
         resultHeading.setPanelorder(3);

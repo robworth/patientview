@@ -33,6 +33,7 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
+        user.setScreenname("screenname");
 
         userDao.save(user);
 
@@ -54,6 +55,7 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
+        user.setScreenname("screenname1");
         userDao.save(user);
 
         user = new User();
@@ -61,6 +63,7 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname2");
         user.setPassword("password2");
         user.setUsername("test2");
+        user.setScreenname("screenname2");
         userDao.save(user);
 
         user = new User();
@@ -68,6 +71,7 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname3");
         user.setPassword("password3");
         user.setUsername("test3");
+        user.setScreenname("screenname3");
         userDao.save(user);
 
         assertEquals("Incorrect number of users", 3, userDao.getAll().size());
@@ -122,7 +126,7 @@ public class UserDaoTest extends BaseDaoTest {
     @Test
     public void testGetAll() {
 
-        // ignore unicode2
+        // ignore unitcode2
         List<UserMapping> userMappings = userMappingDao.getAll("username2");
 
         assertEquals("incorrect number of mappings found for username2", 2, userMappings.size());

@@ -82,7 +82,7 @@ public class FeedbackDaoTest extends BaseDaoTest {
         feedback.setUsername("testUsername");
         feedback.setName("Test name");
         feedback.setNhsno("123456789");
-        feedback.setUnitcode("testunitcode");
+        feedback.setUnitcode("TESTCODE");
         feedback.setDatestamp(Calendar.getInstance());
         feedback.setComment("Test comment");
         feedback.setCommentedited("Test commented edited");

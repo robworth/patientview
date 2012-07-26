@@ -21,7 +21,7 @@ public class Feedback extends BaseModel {
     private String unitcode;
 
     @Column(nullable = false)
-    private Calendar datestamped;
+    private Calendar datestamp;
 
     @Column(nullable = false)
     private String comment;
@@ -50,7 +50,7 @@ public class Feedback extends BaseModel {
         setComment(comment);
         setCommentedited(comment);
         setAnonymous(anonymous);
-        this.datestamped = Calendar.getInstance();
+        this.datestamp = Calendar.getInstance();
         setMakepublic(false);
     }
 
@@ -87,11 +87,11 @@ public class Feedback extends BaseModel {
     }
 
     public Calendar getDatestamp() {
-        return datestamped;
+        return datestamp;
     }
 
-    public void setDatestamp(Calendar datestamped) {
-        this.datestamped = datestamped;
+    public void setDatestamp(Calendar datestamp) {
+        this.datestamp = datestamp;
     }
 
     public String getComment() {
@@ -129,10 +129,10 @@ public class Feedback extends BaseModel {
     public String getFormattedDatestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
-        if ((datestamped.get(Calendar.HOUR_OF_DAY) == 0) && (datestamped.get(Calendar.MINUTE) == 0)) {
-            return dateFormat.format(datestamped.getTime());
+        if ((datestamp.get(Calendar.HOUR_OF_DAY) == 0) && (datestamp.get(Calendar.MINUTE) == 0)) {
+            return dateFormat.format(datestamp.getTime());
         } else {
-            return dateTimeFormat.format(datestamped.getTime());
+            return dateTimeFormat.format(datestamp.getTime());
         }
     }
 }

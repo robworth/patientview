@@ -3,10 +3,10 @@ package com.worthsoln.patientview.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "result_heading")
 public class ResultHeading extends BaseModel {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String headingcode;
 
     @Column(nullable = false)
