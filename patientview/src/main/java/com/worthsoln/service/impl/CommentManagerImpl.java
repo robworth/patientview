@@ -29,11 +29,6 @@ public class CommentManagerImpl implements CommentManager {
     }
 
     @Override
-    public List<Comment> get(String nhsno, Panel currentPanel) {
-        return commentDao.get(nhsno, currentPanel);
-    }
-
-    @Override
     public void save(Comment comment) {
         commentDao.save(comment);
     }

@@ -17,7 +17,5 @@ public interface CommentManager {
 
     List<Comment> get(String nhsno);
 
-    List<Comment> get(String nhsno, Panel currentPanel);
-
     void save(Comment comment);
 }
