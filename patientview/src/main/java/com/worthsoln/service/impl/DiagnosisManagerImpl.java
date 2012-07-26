@@ -3,6 +3,7 @@ package com.worthsoln.service.impl;
 import com.worthsoln.patientview.model.Diagnosis;
 import com.worthsoln.repository.DiagnosisDao;
 import com.worthsoln.service.DiagnosisManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "diagnosisManager")
 public class DiagnosisManagerImpl implements DiagnosisManager {
 
     @Inject

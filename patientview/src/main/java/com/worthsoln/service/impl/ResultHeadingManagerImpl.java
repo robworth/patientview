@@ -3,6 +3,7 @@ package com.worthsoln.service.impl;
 import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.repository.ResultHeadingDao;
 import com.worthsoln.service.ResultHeadingManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "resultHeadingManager")
 public class ResultHeadingManagerImpl implements ResultHeadingManager {
 
     @Inject

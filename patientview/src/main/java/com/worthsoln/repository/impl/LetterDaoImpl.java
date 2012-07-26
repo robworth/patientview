@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.Letter_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LetterDao;
 import com.worthsoln.repository.UserMappingDao;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.Collections;
 import java.util.List;
 
+@Repository(value = "letterDao")
 public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements LetterDao {
 
     @Inject

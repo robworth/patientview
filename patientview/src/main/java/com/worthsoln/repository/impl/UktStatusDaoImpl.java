@@ -4,7 +4,9 @@ import com.worthsoln.patientview.model.UktStatus;
 import com.worthsoln.patientview.model.UktStatus_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.UktStatusDao;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "uktStatusDao")
 public class UktStatusDaoImpl extends AbstractHibernateDAO<UktStatus> implements UktStatusDao {
 
     @Override
@@ -28,6 +31,10 @@ public class UktStatusDaoImpl extends AbstractHibernateDAO<UktStatus> implements
         wherePredicates.add(builder.equal(from.get(UktStatus_.nhsno), nhsno));
 
         buildWhereClause(criteria, wherePredicates);
-        return getEntityManager().createQuery(criteria).getSingleResult();
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

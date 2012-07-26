@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.model.EdtaCode_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.EdtaCodeDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@Repository(value = "edtaCodeDao")
 public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements EdtaCodeDao {
 
     @Override

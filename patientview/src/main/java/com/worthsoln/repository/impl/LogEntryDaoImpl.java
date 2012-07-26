@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.patientview.model.LogEntry_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LogEntryDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@Repository(value = "logEntryDao")
 public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements LogEntryDao {
 
     @Override

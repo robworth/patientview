@@ -2,12 +2,15 @@ package com.worthsoln.repository;
 
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  *
  */
+@Transactional(propagation = Propagation.MANDATORY)
 public interface UserMappingDao {
 
     UserMapping get(Long id);

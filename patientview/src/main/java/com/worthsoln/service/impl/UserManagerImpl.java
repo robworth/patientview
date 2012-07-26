@@ -6,6 +6,7 @@ import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UserManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "userManager")
 public class UserManagerImpl implements UserManager {
 
     @Inject

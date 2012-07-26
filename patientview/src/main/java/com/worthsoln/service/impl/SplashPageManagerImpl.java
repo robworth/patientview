@@ -8,6 +8,7 @@ import com.worthsoln.repository.SplashPageUserSeenDao;
 import com.worthsoln.service.SplashPageManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "splashPageManager")
 public class SplashPageManagerImpl implements SplashPageManager {
 
     @Inject

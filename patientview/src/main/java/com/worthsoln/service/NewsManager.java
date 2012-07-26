@@ -1,12 +1,15 @@
 package com.worthsoln.service;
 
 import com.worthsoln.patientview.model.News;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  *
  */
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface NewsManager {
 
     News get(Long id);

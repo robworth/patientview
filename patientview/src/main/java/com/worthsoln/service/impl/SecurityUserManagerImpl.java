@@ -5,9 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service(value = "securityUserManager")
 public class SecurityUserManagerImpl implements SecurityUserManager {
 
     @Override

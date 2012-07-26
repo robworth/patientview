@@ -6,6 +6,7 @@ import com.worthsoln.repository.NewsDao;
 import com.worthsoln.service.NewsManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "newsManager")
 public class NewsManagerImpl implements NewsManager {
 
     @Inject

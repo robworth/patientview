@@ -6,6 +6,7 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.EmailVerificationDao;
 import com.worthsoln.service.EmailVerificationManager;
 import com.worthsoln.service.UserManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "emailVerificationManager")
 public class EmailVerificationManagerImpl implements EmailVerificationManager {
 
     @Inject

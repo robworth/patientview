@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.EmailVerification;
 import com.worthsoln.patientview.model.EmailVerification_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.EmailVerificationDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@Repository(value = "emailVerificationDao")
 public class EmailVerificationDaoImpl extends AbstractHibernateDAO<EmailVerification> implements EmailVerificationDao {
 
     @Override

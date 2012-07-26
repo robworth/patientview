@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.patientview.model.UnitStat_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.UnitStatDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "unitStatDao")
 public class UnitStatDaoImpl extends AbstractHibernateDAO<UnitStat> implements UnitStatDao {
     @Override
     public List<UnitStat> get(String unitCode) {

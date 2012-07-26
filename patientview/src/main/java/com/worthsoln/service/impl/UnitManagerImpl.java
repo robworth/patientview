@@ -12,6 +12,7 @@ import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UnitStatDao;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "unitManager")
 public class UnitManagerImpl implements UnitManager {
 
     @Inject

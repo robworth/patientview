@@ -2,6 +2,8 @@ package com.worthsoln.service;
 
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UnitStat;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -9,6 +11,7 @@ import java.util.List;
  *
  *
  */
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface UnitManager {
 
     Unit get(Long id);

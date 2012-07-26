@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Patient_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.PatientDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "patientDao")
 public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements PatientDao {
 
     @Override

@@ -4,12 +4,14 @@ import com.worthsoln.patientview.model.Aboutme;
 import com.worthsoln.patientview.model.Aboutme_;
 import com.worthsoln.repository.AboutmeDao;
 import com.worthsoln.repository.AbstractHibernateDAO;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+@Repository(value = "aboutmeDao")
 public class AboutmeDaoImpl extends AbstractHibernateDAO<Aboutme> implements AboutmeDao {
 
     @Override

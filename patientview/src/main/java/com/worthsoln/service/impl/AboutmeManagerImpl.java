@@ -6,12 +6,14 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.AboutmeDao;
 import com.worthsoln.service.AboutmeManager;
 import com.worthsoln.service.UserManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
 /**
  *
  */
+@Service(value = "aboutmeManager")
 public class AboutmeManagerImpl implements AboutmeManager {
 
     @Inject

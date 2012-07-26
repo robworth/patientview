@@ -4,7 +4,9 @@ import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.model.ResultHeading_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.ResultHeadingDao;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "resultHeadingDao")
 public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> implements ResultHeadingDao {
 
     @Override
@@ -28,7 +31,11 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
         wherePredicates.add(builder.equal(from.get(ResultHeading_.headingcode), headingcode));
 
         buildWhereClause(criteria, wherePredicates);
-        return getEntityManager().createQuery(criteria).getSingleResult();
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

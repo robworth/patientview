@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.SplashPageUserSeen_;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.SplashPageUserSeenDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "splashPageUserSeenDao")
 public class SplashPageUserSeenDaoImpl extends AbstractHibernateDAO<SplashPageUserSeen>
         implements SplashPageUserSeenDao {
 

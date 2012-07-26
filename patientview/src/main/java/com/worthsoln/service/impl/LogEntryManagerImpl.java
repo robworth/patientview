@@ -3,6 +3,7 @@ package com.worthsoln.service.impl;
 import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.repository.LogEntryDao;
 import com.worthsoln.service.LogEntryManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "logEntryManager")
 public class LogEntryManagerImpl implements LogEntryManager {
 
     @Inject

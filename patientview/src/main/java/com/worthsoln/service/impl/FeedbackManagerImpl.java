@@ -3,6 +3,7 @@ package com.worthsoln.service.impl;
 import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.repository.FeedbackDao;
 import com.worthsoln.service.FeedbackManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "feedbackManager")
 public class FeedbackManagerImpl implements FeedbackManager {
 
     @Inject

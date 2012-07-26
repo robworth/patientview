@@ -6,6 +6,7 @@ import com.worthsoln.patientview.model.UserMapping_;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.UserMappingDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "userMappingDao")
 public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implements UserMappingDao {
 
     @Override

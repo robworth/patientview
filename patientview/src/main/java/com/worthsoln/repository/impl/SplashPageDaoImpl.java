@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.model.SplashPage_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.SplashPageDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  *
  */
+@Repository(value = "splashPageDao")
 public class SplashPageDaoImpl extends AbstractHibernateDAO<SplashPage> implements SplashPageDao {
 
     @Override

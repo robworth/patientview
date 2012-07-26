@@ -3,6 +3,7 @@ package com.worthsoln.service.impl;
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.repository.LetterDao;
 import com.worthsoln.service.LetterManager;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  *
  */
+@Service(value = "letterManager")
 public class LetterManagerImpl implements LetterManager {
 
     @Inject

@@ -4,12 +4,14 @@ import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.patientview.model.Feedback_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.FeedbackDao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@Repository(value = "feedbackDao")
 public class FeedbackDaoImpl extends AbstractHibernateDAO<Feedback> implements FeedbackDao {
 
     @Override
