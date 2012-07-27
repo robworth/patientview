@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.web.pages;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
@@ -19,6 +18,7 @@ public class RecruitmentPage extends BasePage{
 
     @SpringBean
     private DemographicsManager demographicsManager;
+
     @SpringBean
     private DiagnosisManager diagnosisManager;
 
@@ -30,15 +30,7 @@ public class RecruitmentPage extends BasePage{
                 Demographics demographics = item.getModelObject();
                 item.add(new Label("renalUnit.name"));
                 item.add(new Label("id"));
-
-                Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
-
-                if (diagnosis.getDiagnosisCode() != null) {
-                    item.add(new Label("diagnosis", diagnosis.getDiagnosisCode().getAbbreviation()));
-                } else {
-                   item.add(new Label("diagnosis", ""));
-                }
-
+                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(demographics)));
                 item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
             }

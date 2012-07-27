@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.web.pages.admin;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -187,14 +186,7 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
         item.add(new Label("address", StringUtils.join(addressValues, ", ")));
 
-        String diagnosisAbbrev = "";
-        Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
-
-        if (diagnosis != null && diagnosis.getDiagnosisCode() != null) {
-            diagnosisAbbrev = diagnosis.getDiagnosisCode().getAbbreviation();
-        }
-
-        item.add(new Label("diagnosis", diagnosisAbbrev));
+        item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(demographics)));
 
         String consultantSurname = "", consultantForename = "", centreAbbrv = "";
 
