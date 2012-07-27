@@ -2,13 +2,13 @@ package com.worthsoln.patientview.resultheading;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.patientview.model.ResultHeading;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
 
@@ -19,20 +19,16 @@ public class ResultHeadingUpdateAction extends DatabaseAction {
             throws Exception {
         ResultHeading resultHeading = new ResultHeading();
 
+        // todo work out how to get the object prior to save, probably use PK id
         BeanUtils.setProperty(resultHeading, "headingcode", BeanUtils.getProperty(form, "headingcode"));
+        BeanUtils.setProperty(resultHeading, "heading", BeanUtils.getProperty(form, "heading"));
+        BeanUtils.setProperty(resultHeading, "rollover", BeanUtils.getProperty(form, "rollover"));
+        BeanUtils.setProperty(resultHeading, "link", BeanUtils.getProperty(form, "link"));
+        BeanUtils.setProperty(resultHeading, "panel", BeanUtils.getProperty(form, "panel"));
+        BeanUtils.setProperty(resultHeading, "panelorder", BeanUtils.getProperty(form, "panelorder"));
 
-        String[] colNames = HibernateUtil.getPropertyNames(resultHeading.getClass());
+        LegacySpringUtils.getResultHeadingManager().save(resultHeading);
 
-        for (int i = 0; i < colNames.length; i++) {
-            BeanUtils.setProperty(resultHeading, colNames[i], BeanUtils.getProperty(form, colNames[i]));
-        }
-
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-
-        session.saveOrUpdate(resultHeading);
-        tx.commit();
-        HibernateUtil.closeSession();
         request.setAttribute("resultHeading", resultHeading);
 
         return LogonUtils.logonChecks(mapping, request);

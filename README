@@ -47,6 +47,15 @@ clean compile war:inplace
 - Make sure you turn off any "before launch" options so not to interfere with the maven output.
 
 
+JPA annotations in Intellij Idea
+================================
+
+- From the settings menu, go to Compiler - Annotation Processors
+- Enable annotation processing
+- Add an annotation processor: org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
+- Turn on processing for the patientview module: generated sources directory name: target/generated-sources
+- Make sure you have set the generated-sources directory to be on the classpath for the project
+
 Notes on using Git submodules
 =============================
 
@@ -72,5 +81,71 @@ git submodule foreach git checkout master
 git submodule foreach git pull
 
 
+Notes on Multi-tenant
+=====================
+
+Logging in
+==========
+
+- Users land at www.patientview.org
+- Tenancy generic landing page invites uses to login
+- We will extract user login details out of the user table into a tenant schema
+- The spring security success handler will check the user's tenancies.  Single tenancy uses will be forwarded directly to the tenancy landing page,  e.g. www.patientview.org/rpv
+- Multi-tenant users will hit www.patientview.org/launchpad which will allow them to select a tenancy to be redirected to
+- Should the user have no tenancy the launchpad will show a warning message
+
+Using a tenancy
+===============
+
+- Once the user arrives at a tenancy their session will be noted as associated with that tenancy
+- The only way to change tenancy will be via the tenancy switcher or by logging out.
+- Should the user try to manually change their URL to view data from a separate tenancy they will either get a not authorised error (if the user doesn't have a role for that tenancy) or and tenancy change error
+- All secure links/URLs in the application must be prefixed by the tenancy context, e.g. www.patientview.org/rpv/patient/patient_details.do
+- Each tenancy will have a spring security configuration to secure URLs with roles, e.g. /rpv/* requires ROLE_RPV_PATIENT or RPV_ROLE_UNITADMIN
+- The links in the templates will be directed to the tenancy context automatically using PatientViewLinkTag that overrides via <html:link>
+
+The tenancy servlet filter
+==========================
+
+- We will implement a custom tenancy servlet filter that appears after the spring security filter in the stack.
+- This will create a virtual tenancy context without need for rewriting anything in struts or the JSPs
+- The filter will strip off tenancy context and forward down the filter chain
+- It will check the tenancy requested matches the tenancy selected in the user's session to control tenancy switching
+- Requests that don't start with a valid tenancy context will need to be dropped and considered an attempt to bypass spring security
+- The following should pass through:
+- /styles.css
+- /images/*
+- /login.jsp
+
+Securing features per tenancy
+=============================
+
+- There will be no security to stop users accessing "hidden" tenancy specific features
+- Templates will have tenancy specific content by extending the PatientViewPresentTag to allow conditional templates e.g. <logic:present tenancy="rpv">
+
+Writing JSP templates
+=====================
+
+- CSS, there will be a common base CSS for all tenancies, if necessary we can have custom .css files for each tenancies.
+- The application will not supply different HTML markup per tenancy.
+
+Forum tenancy filtering
+=======================
+
+- Todo
+
+
+Tasks for upgrading to JPA
+==========================
+
+- Refactor Hibernate code from Utils and Action classes into Manager and Dao interfaces
+- Move all classes managed by JPA into model package
+- Replace hibernate xml mappings with JPA annotations
+- Add id pk columns to tables
+- Review service level transactions are sufficient
+- Write test cases for each new Dao and Manager method
+
+- Review patients - it mixes JDBC and hibernate
+- Review how adding a PK to model classes will break all the forms - in particular the edit screens
 
 

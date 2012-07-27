@@ -1,22 +1,17 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.comment.Comment;
+import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.logon.UserMapping;
-import com.worthsoln.patientview.resultheading.ResultHeading;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.resultheading.ResultHeadingDao;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -67,30 +62,15 @@ public class TestResultsAction extends DatabaseAction {
     }
 
     private void addCommentsForNhsno(String nhsno, Panel currentPanel, List<TestResultWithUnitShortname> results) {
-        List comments = null;
 
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
+        // Note: This seems to be trying to do something with the panel and result headings.
+        // We have removed because it did appear to do anything.
 
-            String thisPanel = (currentPanel == null) ? "1" : Integer.toString(currentPanel.getPanel());
+        List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
 
-
-            comments = session.find("from " + Comment.class.getName() + " as comment," + ResultHeading.class.getName() +
-                    " as result_heading where comment.nhsno = ? " +
-                    " and result_heading.headingcode = 'resultcomment' and result_heading.panel = ?",
-                    new Object[]{nhsno, thisPanel}, new Type[]{Hibernate.STRING, Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        for (Object commentObj : comments) {
-            Object[] commentArray = (Object[]) commentObj;
-            Comment comment = (Comment) commentArray[0];
+        for (Comment comment : comments) {
             results.add(new TestResultWithUnitShortname(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, comment.getDatestamp(),
-                    "resultcomment", Integer.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
+                    "resultcomment", Long.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
         }
     }
 

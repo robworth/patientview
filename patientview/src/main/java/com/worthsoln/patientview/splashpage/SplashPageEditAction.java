@@ -1,9 +1,8 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -19,13 +18,9 @@ public class SplashPageEditAction extends Action {
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String id = BeanUtils.getProperty(form, "id");
-        Integer idInt = Integer.decode(id);
+        Long idLong = Long.decode(id);
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        SplashPage splashpage = (SplashPage) session.get(SplashPage.class, idInt);
-        tx.commit();
-        HibernateUtil.closeSession();
+        SplashPage splashpage = LegacySpringUtils.getSplashPageManager().get(idLong);
 
         request.setAttribute("splashPage", splashpage);
 

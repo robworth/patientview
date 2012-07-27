@@ -1,13 +1,11 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
-import net.sf.hibernate.Criteria;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.expression.Expression;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -24,13 +22,7 @@ public class ForgottenPasswordAction extends DatabaseAction {
         String forwardMapping = "success";
 
         if (username != null && username.trim().length() > 0 && email != null && email.trim().length() > 0) {
-            Session session = HibernateUtil.currentSession();
-            //Transaction tx = session.beginTransaction();
-
-            // From the username get the number of failed logins and display the locked out message if that's the case
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Expression.like("username", username));
-            User user = (User) criteria.uniqueResult();
+            User user = LegacySpringUtils.getUserManager().get(username);
 
             request.setAttribute("foundUser", user != null);
 
@@ -52,7 +44,7 @@ public class ForgottenPasswordAction extends DatabaseAction {
                         String fromAddress = request.getSession().getServletContext().getInitParameter("noreply.email");
                         EmailUtils.sendEmail(request.getSession().getServletContext(), fromAddress, user.getEmail(),
                                 "Renal Patient View - Your password has been reset", message);
-                        session.save(user);
+                        LegacySpringUtils.getUserManager().save(user);
 
                         AddLog.addLog("system", AddLog.PASSWORD_RESET_FORGOTTEN, username, "",
                                 UserUtils.retrieveUsersRealUnitcodeBestGuess(username), user.getEmail());
@@ -68,8 +60,6 @@ public class ForgottenPasswordAction extends DatabaseAction {
                 request.setAttribute("nullUser", true);
                 forwardMapping = "input";
             }
-            //tx.commit();
-            HibernateUtil.closeSession();
         } else {
             request.setAttribute("nullUser", true);
             forwardMapping = "input";

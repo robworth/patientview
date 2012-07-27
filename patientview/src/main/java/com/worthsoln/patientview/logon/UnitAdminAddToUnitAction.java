@@ -1,9 +1,9 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
@@ -21,13 +21,13 @@ public class UnitAdminAddToUnitAction extends DatabaseAction {
         String unitcode = BeanUtils.getProperty(form, "unitcode");
 
         UserMapping userMapping = new UserMapping(username, unitcode, "");
-        HibernateUtil.saveOrUpdateWithTransaction(userMapping);
+        LegacySpringUtils.getUserManager().save(userMapping);
 
         AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD, username, "",
                 unitcode, "");
         String mappingToFind = "success";
 
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+        User user = LegacySpringUtils.getUserManager().get(username);
 
         user.setPassword("");
         

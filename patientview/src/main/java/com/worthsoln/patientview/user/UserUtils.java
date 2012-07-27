@@ -1,20 +1,12 @@
 package com.worthsoln.patientview.user;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
-import com.worthsoln.patientview.User;
-import com.worthsoln.patientview.logon.UserMapping;
-import com.worthsoln.patientview.unit.UnitUtils;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserUtils {
@@ -30,187 +22,26 @@ public class UserUtils {
             username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
         }
 
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username);
-
-        return user;
+        return LegacySpringUtils.getUserManager().get(username);
     }
 
     public static List<UserMapping> retrieveUserMappings(User user) {
-        return retrieveUserMappings(user.getUsername());
-    }
-
-    public static boolean isUserInRole(HttpServletRequest request, String rolename) {
-        User user = retrieveUser(request);
-
-        return user.getRole().equalsIgnoreCase(rolename);
-    }
-
-    public static List<UserMapping> retrieveUserMappings(String username) {
-        List userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.username = ? ",
-                    new Object[]{username}, new Type[]{Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return userMappings;
-    }
-
-    public static List<UserMapping> retrieveUserMappingsExcludeUnitcode(String username, String unitcode) {
-        List userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.username = ? and usermapping.unitcode != ?",
-                    new Object[]{username, unitcode}, new Type[]{Hibernate.STRING, Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return userMappings;
-    }
-
-    public static List<UserMapping> retrieveUserMappings(String username, String unitcode) {
-        List userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.username = ? and usermapping.unitcode = ?",
-                    new Object[]{username, unitcode}, new Type[]{Hibernate.STRING, Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return userMappings;
-    }
-
-    public static List<UserMapping> retrieveUserMappingsForNhsno(String nhsno) {
-        List<UserMapping> userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.nhsno = ? ",
-                    new Object[]{nhsno}, new Type[]{Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return userMappings;
+        return LegacySpringUtils.getUserManager().getUserMappings(user.getUsername());
     }
 
     public static String retrieveUsersRealUnitcodeBestGuess(String username) {
-        List<UserMapping> userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.username = ? and usermapping.unitcode != ?",
-                    new Object[]{username, UnitUtils.PATIENT_ENTERS_UNITCODE}, new Type[]{Hibernate.STRING, Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        if (userMappings.isEmpty()) {
-            return "";
-        } else {
-            return userMappings.get(0).getUnitcode();
-        }
+        return LegacySpringUtils.getUserManager().getUsersRealUnitcodeBestGuess(username);
     }
 
     public static String retrieveUsersRealNhsnoBestGuess(String username) {
-        List<UserMapping> userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.username = ? and usermapping.unitcode != ?",
-                    new Object[]{username, UnitUtils.PATIENT_ENTERS_UNITCODE}, new Type[]{Hibernate.STRING, Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        if (userMappings.isEmpty()) {
-            return "";
-        } else {
-            return userMappings.get(0).getNhsno();
-        }
+        return LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(username);
     }
 
     public static UserMapping retrieveUserMappingsPatientEntered(User user) {
-        List userMappings = new ArrayList();
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-
-            userMappings = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                    " where usermapping.username = ? ",
-                    new Object[]{user.getUsername()}, new Type[]{Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-
-        UserMapping patientEntryUserMapping = null;
-        UserMapping anyOtherUserMapping = null;
-
-        for (Object obj : userMappings) {
-            UserMapping currentUserMapping = (UserMapping) obj;
-
-            if (UnitUtils.PATIENT_ENTERS_UNITCODE.equals(currentUserMapping.getUnitcode())) {
-                patientEntryUserMapping = currentUserMapping;
-            } else {
-                anyOtherUserMapping = currentUserMapping;
-            }
-        }
-
-        if (patientEntryUserMapping == null) {
-            if (anyOtherUserMapping != null) {
-                patientEntryUserMapping = anyOtherUserMapping;
-                patientEntryUserMapping = new UserMapping(anyOtherUserMapping.getUsername(), UnitUtils.PATIENT_ENTERS_UNITCODE, anyOtherUserMapping.getNhsno());
-                try {
-                    HibernateUtil.saveOrUpdateWithTransaction(patientEntryUserMapping);
-                } catch (HibernateException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return patientEntryUserMapping;
+        return LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
     }
 
+    // todo move this into hibernate manager
     public static void removePatientFromSystem(String nhsno, String unitcode) {
         String[] tableNames = new String[]{"testresult", "letter",};        //TODO add back user
         //String[] tableNames = new String[]{"user", "testresult", "letter",};        //TODO add medicines and diagnosis

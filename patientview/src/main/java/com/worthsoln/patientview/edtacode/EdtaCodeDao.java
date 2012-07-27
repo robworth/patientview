@@ -2,6 +2,7 @@ package com.worthsoln.patientview.edtacode;
 
 import java.util.ArrayList;
 import com.worthsoln.database.StorableItem;
+import com.worthsoln.patientview.model.EdtaCode;
 
 public class EdtaCodeDao extends StorableItem {
 

@@ -8,6 +8,7 @@
 
     <!--Imports-->
     <import resource="context-legacy.xml"/>
+    <import resource="context-repository.xml"/>
     <import resource="context-security.xml"/>
     <import resource="context-service.xml"/>
 

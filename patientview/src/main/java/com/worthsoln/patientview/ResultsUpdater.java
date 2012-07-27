@@ -1,16 +1,16 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
-import com.worthsoln.patientview.diagnosis.Diagnosis;
-import com.worthsoln.patientview.letter.Letter;
+import com.worthsoln.patientview.model.Diagnosis;
+import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.medicine.Medicine;
+import com.worthsoln.patientview.model.Medicine;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
-import net.sf.hibernate.HibernateException;
+import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -131,11 +131,7 @@ public class ResultsUpdater {
     private void insertLetters(Collection letters) {
         for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
             Letter letter = (Letter) iterator.next();
-            try {
-                HibernateUtil.saveOrUpdateWithTransaction(letter);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getLetterManager().save(letter);
         }
     }
 
@@ -149,11 +145,7 @@ public class ResultsUpdater {
     private void insertOtherDiagnoses(Collection diagnoses) {
         for (Iterator iterator = diagnoses.iterator(); iterator.hasNext();) {
             Diagnosis diagnosis = (Diagnosis) iterator.next();
-            try {
-                HibernateUtil.saveOrUpdateWithTransaction(diagnosis);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getDiagnosisManager().save(diagnosis);
         }
     }
 
@@ -167,11 +159,7 @@ public class ResultsUpdater {
     private void insertMedicines(Collection medicines) {
         for (Iterator iterator = medicines.iterator(); iterator.hasNext();) {
             Medicine medicine = (Medicine) iterator.next();
-            try {
-                HibernateUtil.saveOrUpdateWithTransaction(medicine);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getMedicineManager().save(medicine);
         }
     }
 }

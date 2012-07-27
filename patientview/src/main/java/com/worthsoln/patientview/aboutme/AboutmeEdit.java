@@ -1,10 +1,8 @@
 package com.worthsoln.patientview.aboutme;
 
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.Patient;
-import com.worthsoln.patientview.PatientUtils;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.Aboutme;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import org.apache.struts.action.ActionForm;

@@ -1,10 +1,9 @@
 package com.worthsoln.patientview.comment;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.Comment;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -18,12 +17,8 @@ public class CommentViewAction extends DatabaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-        int commentId = Integer.parseInt(request.getParameter("commentId"));
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        Comment comment = (Comment) session.get(Comment.class, commentId);
-        tx.commit();
-        HibernateUtil.closeSession();
+        Long commentId = Long.parseLong(request.getParameter("commentId"));
+        Comment comment = LegacySpringUtils.getCommentManager().get(commentId);
 
         if (CommentUtils.verifyPermissionToReadItem(request, comment.getNhsno())) {
             List<Comment> comments = new ArrayList<Comment>();

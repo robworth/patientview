@@ -1,13 +1,10 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.unit.Unit;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
+import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -56,10 +53,14 @@ public class PatientEditAction extends DatabaseAction {
 
             for (UserMapping userMapping : userMappings) {
                 userMapping.setNhsno(nhsno);
-                HibernateUtil.saveOrUpdateWithTransaction(userMapping);
+                LegacySpringUtils.getUserManager().save(userMapping);
             }
 
-            HibernateUtil.retrievePersistentObjectAndAddToRequestWithIdParameter(request, Unit.class, unitcode, "unit");
+            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+            if (unit != null) {
+                request.setAttribute("unit", unit);
+            }
+
             UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode);
             List patients = dao.retrieveList(patientDao);
             request.setAttribute("patients", patients);
@@ -69,28 +70,11 @@ public class PatientEditAction extends DatabaseAction {
     }
 
     private List<UserMapping> findUsersSiblings(String username, String unitcode) throws Exception {
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        List<UserMapping> duplicateUsers = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                " WHERE (usermapping.username = ? OR usermapping.username = ?) " +
-                " AND (usermapping.unitcode = ? OR usermapping.unitcode = ?) ",
-                new Object[]{username, username + "-GP", unitcode, "PATIENT"},
-                new Type[]{Hibernate.STRING, Hibernate.STRING, Hibernate.STRING, Hibernate.STRING});
-        tx.commit();
-        HibernateUtil.closeSession();
-        return duplicateUsers;
+        return LegacySpringUtils.getUserManager().getUsersSiblings(username, unitcode);
     }
 
     private List findDuplicateUsers(String nhsno, String username) throws Exception {
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        List duplicateUsers = session.find("from " + UserMapping.class.getName() + " as usermapping " +
-                " where usermapping.nhsno = ? AND usermapping.username <> ? AND usermapping.username not like ?",
-                new Object[]{nhsno, username, "%-GP"},
-                new Type[]{Hibernate.STRING, Hibernate.STRING, Hibernate.STRING});
-        tx.commit();
-        HibernateUtil.closeSession();
-        return duplicateUsers;
+        return LegacySpringUtils.getUserManager().getDuplicateUsers(nhsno, username);
     }
 
     private static Calendar createDatestamp(String dateTimeString) {

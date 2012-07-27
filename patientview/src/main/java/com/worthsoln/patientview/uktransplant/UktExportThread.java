@@ -10,7 +10,7 @@ import javax.servlet.ServletContext;
 import com.Ostermiller.util.CSVPrinter;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.ParserThread;
-import com.worthsoln.patientview.Patient;
+import com.worthsoln.patientview.model.Patient;
 
 public class UktExportThread implements Runnable, ParserThread {
 

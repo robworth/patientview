@@ -1,20 +1,13 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
-import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.logging.LogEntry;
+import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.patientview.news.NewsUtils;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Criteria;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.expression.Expression;
-import net.sf.hibernate.expression.Order;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,14 +27,8 @@ public class LoggedInAction extends DatabaseAction {
         String forward = "";
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
         NewsUtils.putAppropriateNewsForViewingInRequest(request);
-        String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Expression.like("username", username));
-        User user = (User) criteria.uniqueResult();
-        tx.commit();
-        HibernateUtil.closeSession();
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
+
         if (user != null) {
 
             // For JForum SSO need to set some variables in the session
@@ -57,31 +44,22 @@ public class LoggedInAction extends DatabaseAction {
                 request.setAttribute("lastLogin", format.format(user.getLastlogon()));
             }
             user.setLastlogon(new Date());
-            session = HibernateUtil.currentSession();
-            tx = session.beginTransaction();
-            session.update(user);
-            tx.commit();
-            HibernateUtil.closeSession();
+
+            LegacySpringUtils.getUserManager().save(user);
+
             if ("patient".equals(user.getRole())) {
-                String nhsno = UserUtils.retrieveUsersRealNhsnoBestGuess(username);
+
+                String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
+
                 if (nhsno != null && !nhsno.equals("")) {
-                    session = HibernateUtil.currentSession();
-                    tx = session.beginTransaction();
-                    criteria = session.createCriteria(LogEntry.class);
-                    criteria.add(Expression.eq("nhsno", nhsno));
-                    criteria.add(Expression.like("action", AddLog.PATIENT_DATA_FOLLOWUP));
-                    criteria.addOrder(Order.desc("date"));
-                    criteria.setMaxResults(1);
-                    LogEntry log = (LogEntry) criteria.uniqueResult();
+                    LogEntry log = LegacySpringUtils.getLogEntryManager().getLatestLogEntry(nhsno,
+                            AddLog.PATIENT_DATA_FOLLOWUP);
                     if (log != null) {
                         request.setAttribute("lastDataDate", log.getDate().getTime());
                         // Get the unit from the unitcode
                         String unitcode = log.getUnitcode();
                         if (unitcode != null) {
-                            criteria = session.createCriteria(Unit.class);
-                            criteria.add(Expression.eq("unitcode", unitcode));
-                            criteria.setMaxResults(1);
-                            Unit unit = (Unit) criteria.uniqueResult();
+                            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
                             if (null == unit) {
                                 request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
                             } else {
@@ -89,8 +67,6 @@ public class LoggedInAction extends DatabaseAction {
                             }
                         }
                     }
-                    tx.commit();
-                    HibernateUtil.closeSession();
                 }
                 forward = "patient";
             } else {
@@ -107,5 +83,4 @@ public class LoggedInAction extends DatabaseAction {
     public String getIdentifier() {
         return "user";
     }
-
 }

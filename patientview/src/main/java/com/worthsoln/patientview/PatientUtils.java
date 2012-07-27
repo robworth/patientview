@@ -1,7 +1,9 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 

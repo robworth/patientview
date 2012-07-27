@@ -22,6 +22,16 @@
 
     <profiles>
         <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
             <id>localhost</id>
             <properties>
                 <env>localhost</env>
@@ -97,7 +107,7 @@
         </resources>
 
         <filters>
-            <!--Uses e.g. filters/dev-filters.properties to overlay cms.properties, and other properties files -->
+            <!--Uses e.g. filters/<env>-filters.properties to overlay cms.properties, other property files -->
             <filter>src/main/filters/${env}-filters.properties</filter>
         </filters>
 
@@ -131,10 +141,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
+                <version>2.3.2</version>
                 <configuration>
+                    <encoding>UTF-8</encoding>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <compilerArguments>
+                        <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                    </compilerArguments>
                 </configuration>
             </plugin>
 
@@ -212,6 +226,13 @@
     </repositories>
 
     <dependencies>
+
+        <!-- force correct latest version for hibernate -->
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
 
         <!-- Spring -->
         <dependency>
@@ -340,10 +361,29 @@
         </dependency>
 
         <!-- hibernate 2-->
+        <!--<dependency>-->
+            <!--<groupId>net.sf.hibernate</groupId>-->
+            <!--<artifactId>hibernate</artifactId>-->
+            <!--<version>2.1.8</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>net.sf.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-            <version>2.1.8</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.1.1.Final</version>
+            <!-- will come with Hibernate core-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>1.2.0.Final</version>
         </dependency>
 
         <!-- struts -->
@@ -351,6 +391,12 @@
             <groupId>struts</groupId>
             <artifactId>struts</artifactId>
             <version>1.2.9</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>antlr</groupId>
+        	<artifactId>antlr</artifactId>
+        	<version>2.7.7</version>
         </dependency>
 
         <!-- container -->
@@ -591,6 +637,28 @@
             <!--<version>1.0</version>-->
             <!--<scope>runtime</scope>-->
         <!--</dependency>-->
+
+        <!-- test stuff -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.165</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

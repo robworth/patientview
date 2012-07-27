@@ -1,17 +1,13 @@
 package com.worthsoln.patientview.user;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.PatientLogon;
-import com.worthsoln.patientview.logon.UserMapping;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -31,14 +27,16 @@ public class UserDeleteAction extends DatabaseAction {
         String nhsno = BeanUtils.getProperty(form, "nhsno");
 
 
-        List<UserMapping> userMappings = UserUtils.retrieveUserMappingsExcludeUnitcode(username, UnitUtils.PATIENT_ENTERS_UNITCODE);
+        List<UserMapping> userMappings
+                = LegacySpringUtils.getUserManager().getUserMappingsExcludeUnitcode(username,
+                UnitUtils.PATIENT_ENTERS_UNITCODE);
 
         PatientLogon patient = new PatientLogon();
         Unit unit = UnitUtils.retrieveUnit(unitcode);
         if (userMappings.size() != 0) {
             patient.setUsername(username);
             patient.setNhsno(nhsno);
-            User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+            User user = LegacySpringUtils.getUserManager().get(username);
             patient.setName(user.getName());
         }
 
@@ -62,49 +60,18 @@ public class UserDeleteAction extends DatabaseAction {
                 nhsno, unitcode, "");
         String mappingToFind = "success";
 
-        HibernateUtil.putListInRequest(Unit.class, "units", request);
-
-
+        request.setAttribute("units", LegacySpringUtils.getUnitManager().getAll(false));
         request.setAttribute("patient", patient);
         request.setAttribute("unit", unit);
         return mapping.findForward(mappingToFind);
     }
 
     private void deleteUserMapping(String username, String unitcode) {
-        List<UserMapping> userMappings = UserUtils.retrieveUserMappings(username, unitcode);
-
-        try {
-            for (UserMapping userMapping : userMappings) {
-                Session session = HibernateUtil.currentSession();
-                Transaction tx = session.beginTransaction();
-
-                session.delete(userMapping);
-
-                tx.commit();
-                HibernateUtil.closeSession();
-            }
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
+        LegacySpringUtils.getUserManager().deleteUserMappings(username, unitcode);
     }
 
     private void deleteUser(String username) {
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username);
-
-        if (user != null) {
-            try {
-                Session session = HibernateUtil.currentSession();
-                Transaction tx = session.beginTransaction();
-
-                session.delete(user);
-
-                tx.commit();
-                HibernateUtil.closeSession();
-
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
-        }
+        LegacySpringUtils.getUserManager().delete(username);
     }
 
     public String getIdentifier() {

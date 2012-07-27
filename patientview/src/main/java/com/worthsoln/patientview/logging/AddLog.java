@@ -1,7 +1,7 @@
 package com.worthsoln.patientview.logging;
 
-import net.sf.hibernate.HibernateException;
-import com.worthsoln.HibernateUtil;
+import com.worthsoln.patientview.model.LogEntry;
+import com.worthsoln.utils.LegacySpringUtils;
 
 public class AddLog {
 
@@ -34,8 +34,8 @@ public class AddLog {
 
         LogEntry entry = new LogEntry(nhsno, user, action, actor, unitcode, extrainfo);
         try {
-            HibernateUtil.saveOrUpdateWithTransaction(entry);
-        } catch (HibernateException e) {
+            LegacySpringUtils.getLogEntryManager().save(entry);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -1,15 +1,13 @@
 package com.worthsoln.patientview.logon;
 
 import com.Ostermiller.util.RandPass;
-import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.splashpage.SplashPage;
-import com.worthsoln.patientview.splashpage.SplashPageUserSeen;
+import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.patientview.model.SplashPageUserSeen;
 import com.worthsoln.patientview.splashpage.SplashPageUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.HibernateException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -32,7 +30,7 @@ public class LogonUtils {
         String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
 
         if (username != null) {
-            User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+            User user = LegacySpringUtils.getUserManager().get(username);
 
             if (user.isFirstlogon()) {
                 if (user.getRole().equalsIgnoreCase("patient")) {
@@ -92,11 +90,7 @@ public class LogonUtils {
     private static void markSplashPageAsSeenByUser(SplashPage splashPage, User user) {
         SplashPageUserSeen splashPageUserSeen = new SplashPageUserSeen(user.getUsername(), splashPage.getId());
 
-        try {
-            HibernateUtil.saveWithTransaction(splashPageUserSeen);
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
+        LegacySpringUtils.getSplashPageManager().save(splashPageUserSeen);
     }
 
     private static void recordLogon(HttpServletRequest request) {

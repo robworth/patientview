@@ -6,11 +6,155 @@
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
+    <bean id="setAboutmeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setAboutmeManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="aboutmeManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setCommentManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setCommentManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="commentManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setDiagnosisManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setDiagnosisManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="diagnosisManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setEdtaCodeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEdtaCodeManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="edtaCodeManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setEmailVerificationManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEmailVerificationManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="emailVerificationManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setFeedbackManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setFeedbackManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="feedbackManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setLetterManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setLetterManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="letterManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setLogEntryManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setLogEntryManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="logEntryManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setMedicineManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setMedicineManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="medicineManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setNewsManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setNewsManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="newsManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setPatientManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setPatientManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="patientManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setResultHeadingManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setResultHeadingManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="resultHeadingManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setSecurityUserManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSecurityUserManager"/>
         <property name="arguments">
             <list>
                 <ref bean="securityUserManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setSplashPageManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSplashPageManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="splashPageManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setUkTransplantManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUkTransplantManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="uKTransplantManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setUserManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUserManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="userManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setUnitManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUnitManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="unitManager"/>
             </list>
         </property>
     </bean>

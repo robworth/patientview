@@ -1,110 +1,34 @@
 package com.worthsoln.patientview.unit;
 
-import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UnitUtils {
 
     public static String PATIENT_ENTERS_UNITCODE = "PATIENT";
 
-    public static void putRelevantUnitsInRequest(HttpServletRequest request) throws HibernateException {
+    public static void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {
         putRelevantUnitsInRequestMinusSomeUnits(request, new String[]{PATIENT_ENTERS_UNITCODE}, new String[]{});
     }
 
-    public static void putRelevantUnitsInRequestMinusSomeUnits(HttpServletRequest request, String[] notTheseUnitCodes, String[] plusTheseUnitCodes) throws HibernateException {
-        List items = fetchRelevantUnits(request, notTheseUnitCodes, plusTheseUnitCodes);
+    public static void putRelevantUnitsInRequestMinusSomeUnits(HttpServletRequest request, String[] notTheseUnitCodes,
+                                                               String[] plusTheseUnitCodes) throws Exception {
+        List items = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits(notTheseUnitCodes, plusTheseUnitCodes);
         request.getSession().setAttribute("units", items);
-    }
-
-    public static List fetchRelevantUnits(HttpServletRequest request, String[] notTheseUnitCodes, String[] plusTheseUnitCodes) throws HibernateException {
-        List<String> unitcodes = usersUnitCodes(request);
-        List<Unit> items;
-        String addAND = " AND ";
-        if (unitcodes.size() == 0) {
-            String queryString = "";
-            if (notTheseUnitCodes.length == 0) {
-                queryString = "from " + Unit.class.getName() + " order by name ";
-
-                Session session = HibernateUtil.currentSession();
-                Transaction tx = session.beginTransaction();
-                items = session.find(queryString);
-                tx.commit();
-                HibernateUtil.closeSession();
-            } else {
-                queryString = "from " + Unit.class.getName() + " where ";
-                Object[] notTheseUnitcodeArray = new Object[notTheseUnitCodes.length];
-                Type[] typeArray = new Type[notTheseUnitCodes.length];
-
-                for (int i = 0; i < notTheseUnitCodes.length; i++) {
-                    queryString += " unitcode != ? " + addAND;
-                    notTheseUnitcodeArray[i] = notTheseUnitCodes[i];
-                    typeArray[i] = Hibernate.STRING;
-                }
-                queryString = queryString.substring(0, queryString.length() - addAND.length());
-
-                queryString += " order by name";
-
-                Session session = HibernateUtil.currentSession();
-                Transaction tx = session.beginTransaction();
-                items = session.find(queryString, notTheseUnitcodeArray, typeArray);
-                tx.commit();
-                HibernateUtil.closeSession();
-            }
-        } else {
-            String queryString = "from " + Unit.class.getName() + " as unit where ( ";
-            Object[] unitcodeArray = new Object[unitcodes.size() + notTheseUnitCodes.length];
-            Type[] typeArray = new Type[unitcodes.size() + notTheseUnitCodes.length];
-
-            for (int i = 0; i < unitcodes.size(); i++) {
-                queryString += " unit.unitcode = ? OR ";
-                unitcodeArray[i] = unitcodes.get(i);
-                typeArray[i] = Hibernate.STRING;
-            }
-            queryString = queryString.substring(0, queryString.length() - 3);
-
-            queryString += " ) ";
-
-            if (notTheseUnitCodes.length != 0) {
-                for (int i = 0; i < notTheseUnitCodes.length; i++) {
-                    queryString += addAND + " unitcode != ? ";
-                    unitcodeArray[unitcodes.size() + i] = notTheseUnitCodes[i];
-                    typeArray[unitcodes.size() + i] = Hibernate.STRING;
-                }
-            }
-
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-            items = session.find(queryString, unitcodeArray, typeArray);
-            tx.commit();
-            HibernateUtil.closeSession();
-        }
-
-        for (String unitcode : plusTheseUnitCodes) {
-            Unit unit = new Unit(unitcode);
-            unit.setName(unitcode);
-            items.add(unit);
-        }
-
-        return items;
     }
 
     public static Unit retrieveUnit(String unitcode) {
         unitcode = unitcode.toUpperCase();
         Unit unit = null;
         try {
-            unit = (Unit) HibernateUtil.getPersistentObject(Unit.class, unitcode);
+            unit = LegacySpringUtils.getUnitManager().get(unitcode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,24 +36,7 @@ public class UnitUtils {
     }
 
     public static List<String> usersUnitCodes(HttpServletRequest request) {
-        User user = (User) HibernateUtil.getPersistentObject(User.class, LegacySpringUtils.getSecurityUserManager().getLoggedInUsername());
-        return usersUnitCodes(user);
-    }
-
-    public static List<String> usersUnitCodes(User user) {
-        List<String> unitcodes = new ArrayList();
-
-        if (!user.getRole().equals("superadmin")) {
-
-            List<UserMapping> userMappings = UserUtils.retrieveUserMappings(user);
-
-            for (UserMapping userMapping : userMappings) {
-                if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
-                    unitcodes.add(userMapping.getUnitcode());
-                }
-            }
-        }
-        return unitcodes;
+        return LegacySpringUtils.getUnitManager().getUsersUnitCodes();
     }
 
     public static String retrieveUnitcode(HttpServletRequest request) {
@@ -138,5 +45,93 @@ public class UnitUtils {
         UserMapping userMapping = UserUtils.retrieveUserMappingsPatientEntered(user);
 
         return userMapping.getUnitcode();
+    }
+
+    public static Unit buildUnit(Object form) throws Exception {
+
+        // build object
+        Unit unit = new Unit();
+        unit.setUnitcode(BeanUtils.getProperty(form, "unitcode"));
+        unit.setName(BeanUtils.getProperty(form, "name"));
+        unit.setShortname(BeanUtils.getProperty(form, "shortname"));
+        unit.setUnituser(BeanUtils.getProperty(form, "unituser"));
+        unit.setAddress1(BeanUtils.getProperty(form, "address1"));
+        unit.setAddress2(BeanUtils.getProperty(form, "address2"));
+        unit.setAddress3(BeanUtils.getProperty(form, "address3"));
+        unit.setPostcode(BeanUtils.getProperty(form, "postcode"));
+        unit.setUniturl(BeanUtils.getProperty(form, "uniturl"));
+        unit.setTrusturl(BeanUtils.getProperty(form, "trusturl"));
+        unit.setRpvadminname(BeanUtils.getProperty(form, "rpvadminname"));
+        unit.setRpvadminphone(BeanUtils.getProperty(form, "rpvadminphone"));
+        unit.setRpvadminemail(BeanUtils.getProperty(form, "rpvadminemail"));
+        unit.setUnitenquiriesphone(BeanUtils.getProperty(form, "unitenquiriesphone"));
+        unit.setUnitenquiriesemail(BeanUtils.getProperty(form, "unitenquiriesemail"));
+        unit.setAppointmentphone(BeanUtils.getProperty(form, "appointmentphone"));
+        unit.setAppointmentemail(BeanUtils.getProperty(form, "appointmentemail"));
+        unit.setOutofhours(BeanUtils.getProperty(form, "outofhours"));
+        unit.setPeritonealdialysisphone(BeanUtils.getProperty(form, "peritonealdialysisphone"));
+        unit.setPeritonealdialysisemail(BeanUtils.getProperty(form, "peritonealdialysisemail"));
+
+        unit.setHaemodialysisunitname1(BeanUtils.getProperty(form, "haemodialysisunitname1"));
+        unit.setHaemodialysisunitphone1(BeanUtils.getProperty(form, "haemodialysisunitphone1"));
+        unit.setHaemodialysisunitphone1(BeanUtils.getProperty(form, "haemodialysisunit1"));
+        unit.setHaemodialysisuniturl1(BeanUtils.getProperty(form, "haemodialysisuniturl1"));
+
+        unit.setHaemodialysisunitname2(BeanUtils.getProperty(form, "haemodialysisunitname2"));
+        unit.setHaemodialysisunitphone2(BeanUtils.getProperty(form, "haemodialysisunitphone2"));
+        unit.setHaemodialysisunitphone2(BeanUtils.getProperty(form, "haemodialysisunit2"));
+        unit.setHaemodialysisuniturl2(BeanUtils.getProperty(form, "haemodialysisuniturl2"));
+
+        unit.setHaemodialysisunitname3(BeanUtils.getProperty(form, "haemodialysisunitname3"));
+        unit.setHaemodialysisunitphone3(BeanUtils.getProperty(form, "haemodialysisunitphone3"));
+        unit.setHaemodialysisunitphone3(BeanUtils.getProperty(form, "haemodialysisunit3"));
+        unit.setHaemodialysisuniturl3(BeanUtils.getProperty(form, "haemodialysisuniturl3"));
+
+        unit.setHaemodialysisunitname4(BeanUtils.getProperty(form, "haemodialysisunitname4"));
+        unit.setHaemodialysisunitphone4(BeanUtils.getProperty(form, "haemodialysisunitphone4"));
+        unit.setHaemodialysisunitphone4(BeanUtils.getProperty(form, "haemodialysisunit4"));
+        unit.setHaemodialysisuniturl4(BeanUtils.getProperty(form, "haemodialysisuniturl4"));
+
+        unit.setHaemodialysisunitname5(BeanUtils.getProperty(form, "haemodialysisunitname5"));
+        unit.setHaemodialysisunitphone5(BeanUtils.getProperty(form, "haemodialysisunitphone5"));
+        unit.setHaemodialysisunitphone5(BeanUtils.getProperty(form, "haemodialysisunit5"));
+        unit.setHaemodialysisuniturl5(BeanUtils.getProperty(form, "haemodialysisuniturl5"));
+
+        unit.setHaemodialysisunitname6(BeanUtils.getProperty(form, "haemodialysisunitname6"));
+        unit.setHaemodialysisunitphone6(BeanUtils.getProperty(form, "haemodialysisunitphone6"));
+        unit.setHaemodialysisunitphone6(BeanUtils.getProperty(form, "haemodialysisunit6"));
+        unit.setHaemodialysisuniturl6(BeanUtils.getProperty(form, "haemodialysisuniturl6"));
+
+        unit.setHaemodialysisunitname7(BeanUtils.getProperty(form, "haemodialysisunitname7"));
+        unit.setHaemodialysisunitphone7(BeanUtils.getProperty(form, "haemodialysisunitphone7"));
+        unit.setHaemodialysisunitphone7(BeanUtils.getProperty(form, "haemodialysisunit7"));
+        unit.setHaemodialysisuniturl7(BeanUtils.getProperty(form, "haemodialysisuniturl7"));
+
+        unit.setHaemodialysisunitname8(BeanUtils.getProperty(form, "haemodialysisunitname8"));
+        unit.setHaemodialysisunitphone8(BeanUtils.getProperty(form, "haemodialysisunitphone8"));
+        unit.setHaemodialysisunitphone8(BeanUtils.getProperty(form, "haemodialysisunit8"));
+        unit.setHaemodialysisuniturl8(BeanUtils.getProperty(form, "haemodialysisuniturl8"));
+
+        unit.setHaemodialysisunitname9(BeanUtils.getProperty(form, "haemodialysisunitname9"));
+        unit.setHaemodialysisunitphone9(BeanUtils.getProperty(form, "haemodialysisunitphone9"));
+        unit.setHaemodialysisunitphone9(BeanUtils.getProperty(form, "haemodialysisunit9"));
+        unit.setHaemodialysisuniturl9(BeanUtils.getProperty(form, "haemodialysisuniturl9"));
+
+        unit.setHaemodialysisunitname10(BeanUtils.getProperty(form, "haemodialysisunitname10"));
+        unit.setHaemodialysisunitphone10(BeanUtils.getProperty(form, "haemodialysisunitphone10"));
+        unit.setHaemodialysisunitphone10(BeanUtils.getProperty(form, "haemodialysisunit10"));
+        unit.setHaemodialysisuniturl10(BeanUtils.getProperty(form, "haemodialysisuniturl10"));
+
+        unit.setHaemodialysisunitname11(BeanUtils.getProperty(form, "haemodialysisunitname11"));
+        unit.setHaemodialysisunitphone11(BeanUtils.getProperty(form, "haemodialysisunitphone11"));
+        unit.setHaemodialysisunitphone11(BeanUtils.getProperty(form, "haemodialysisunit11"));
+        unit.setHaemodialysisuniturl11(BeanUtils.getProperty(form, "haemodialysisuniturl11"));
+
+        unit.setHaemodialysisunitname12(BeanUtils.getProperty(form, "haemodialysisunitname12"));
+        unit.setHaemodialysisunitphone12(BeanUtils.getProperty(form, "haemodialysisunitphone12"));
+        unit.setHaemodialysisunitphone12(BeanUtils.getProperty(form, "haemodialysisunit12"));
+        unit.setHaemodialysisuniturl12(BeanUtils.getProperty(form, "haemodialysisuniturl12"));
+
+        return unit;
     }
 }

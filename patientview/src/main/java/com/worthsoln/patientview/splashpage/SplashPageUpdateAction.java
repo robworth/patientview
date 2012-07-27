@@ -1,10 +1,9 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -30,16 +29,11 @@ public class SplashPageUpdateAction extends DatabaseAction {
         boolean isLive = "true".equals(stringLive);
         splashPage.setLive(isLive);
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
+        LegacySpringUtils.getSplashPageManager().save(splashPage);
 
-        session.saveOrUpdate(splashPage);
-        tx.commit();
-        HibernateUtil.closeSession();
         request.setAttribute("splashPage", splashPage);
-        HibernateUtil.retrievePersistentObjectAndAddToRequest(request, SplashPage.class, SplashPage.getIdentifier());
 
-        List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPages(request);
+        List<SplashPage> splashpages = LegacySpringUtils.getSplashPageManager().getAll();
         request.setAttribute("splashpages", splashpages);
 
         return LogonUtils.logonChecks(mapping, request);

@@ -5,18 +5,13 @@ import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import net.sf.hibernate.Criteria;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.expression.Expression;
-import net.sf.hibernate.expression.Order;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.unit.UnitUtils;
 
@@ -35,19 +30,10 @@ public class DataLoadsForPatientAction extends Action {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    private List getLogEntries(String nhsno, Calendar startdate, Calendar enddate) throws HibernateException {
+    private List getLogEntries(String nhsno, Calendar startdate, Calendar enddate) throws Exception {
         List logEntries = new ArrayList();
         if (nhsno != null && !nhsno.equals("")) {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-            Criteria criteria = session.createCriteria(LogEntry.class);
-            criteria.add(Expression.between("date", startdate, enddate));
-            criteria.add(Expression.like("nhsno", "%" + nhsno + "%"));
-            criteria.add(Expression.like("action", "%patient data%"));
-            criteria.addOrder(Order.asc("id"));
-            logEntries = criteria.list();
-            tx.commit();
-            HibernateUtil.closeSession();
+            LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, startdate, enddate, "patient data");
         }
         return logEntries;
     }

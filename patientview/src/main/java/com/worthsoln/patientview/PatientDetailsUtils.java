@@ -1,17 +1,17 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.patientview.diagnosis.DiagnosisUtils;
-import com.worthsoln.patientview.edtacode.EdtaCode;
+import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.edtacode.EdtaCodeUtils;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.uktransplant.UktUtils;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.HibernateException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class PatientDetailsUtils {
 
-    static List<PatientDetails> buildPatientDetails(HttpServletRequest request, DatabaseDAO dao) throws HibernateException {
+    static List<PatientDetails> buildPatientDetails(HttpServletRequest request, DatabaseDAO dao) throws Exception {
         User user = UserUtils.retrieveUser(request);
         List userMappings = UserUtils.retrieveUserMappings(user);
 
@@ -47,7 +47,8 @@ public class PatientDetailsUtils {
 
                 patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
 
-                List otherDiagnoses = DiagnosisUtils.getOtherDiagnoses(patient.getNhsno(), patient.getCentreCode());
+                List otherDiagnoses = LegacySpringUtils.getDiagnosisManager().getOtherDiagnoses(patient.getNhsno(),
+                        patient.getCentreCode());
                 patientDetail.setOtherDiagnoses(otherDiagnoses);
 
                 patientDetails.add(patientDetail);

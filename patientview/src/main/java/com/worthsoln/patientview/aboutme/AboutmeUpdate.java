@@ -1,11 +1,12 @@
 package com.worthsoln.patientview.aboutme;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.Aboutme;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.logon.UserMapping;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -36,13 +37,12 @@ public class AboutmeUpdate extends DatabaseAction {
 
             aboutMe = new Aboutme(nhsno, aboutme, talkabout);
         } else {
-            int idInt = Integer.decode(id);
+            Long idLong = Long.decode(id);
 
-            aboutMe = new Aboutme(idInt, nhsno, aboutme, talkabout);
+            aboutMe = new Aboutme(idLong, nhsno, aboutme, talkabout);
         }
 
-
-        HibernateUtil.saveOrUpdateWithTransaction(aboutMe);
+        LegacySpringUtils.getAboutmeManager().save(aboutMe);
 
         request.setAttribute("user", user);
         request.setAttribute("aboutme", aboutMe);

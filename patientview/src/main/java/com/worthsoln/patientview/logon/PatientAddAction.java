@@ -1,17 +1,13 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -77,9 +73,9 @@ public class PatientAddAction extends DatabaseAction {
             dao.insertItem(new LogonDao(hashedPatient));
             dao.insertItem(new LogonDao(hashedGp));
 
-            HibernateUtil.saveOrUpdateWithTransaction(userMapping);
-            HibernateUtil.saveOrUpdateWithTransaction(userMappingPatientEnters);
-            HibernateUtil.saveOrUpdateWithTransaction(userMappingGp);
+            LegacySpringUtils.getUserManager().save(userMapping);
+            LegacySpringUtils.getUserManager().save(userMappingPatientEnters);
+            LegacySpringUtils.getUserManager().save(userMappingGp);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
                     patient.getUsername(),
@@ -87,7 +83,9 @@ public class PatientAddAction extends DatabaseAction {
             EmailVerificationUtils.createEmailVerification(patient.getUsername(), patient.getEmail(), request);
             mappingToFind = "success";
         }
-        HibernateUtil.putListInRequest(Unit.class, "units", request);
+
+        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
+        request.setAttribute("units", units);
         request.setAttribute("patient", patient);
         request.setAttribute("userMapping", userMapping);
         request.getSession().setAttribute("gp", gp);
@@ -96,21 +94,7 @@ public class PatientAddAction extends DatabaseAction {
     }
 
     private List findExistingPatientsWithSameNhsno(String nhsno) {
-        List patientsWithSameNhsno = null;
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-            patientsWithSameNhsno = session.find("from " + UserMapping.class.getName() +
-                    " as usermapping where usermapping.nhsno = ?",
-                    nhsno, Hibernate.STRING);
-            tx.commit();
-            HibernateUtil.closeSession();
-
-
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return patientsWithSameNhsno;
+        return LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
     }
 
     public String getIdentifier() {

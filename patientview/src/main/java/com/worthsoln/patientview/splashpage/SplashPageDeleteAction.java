@@ -1,8 +1,7 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.HibernateUtil;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -19,18 +18,12 @@ public class SplashPageDeleteAction extends Action {
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String id = BeanUtils.getProperty(form, "id");
-        Integer idInt = Integer.decode(id);
-        int splashPageId = idInt.intValue();
+        Long idLong = Long.decode(id);
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        session.delete(new SplashPage(splashPageId));
-        tx.commit();
-        HibernateUtil.closeSession();
+        LegacySpringUtils.getSplashPageManager().delete(new SplashPage(idLong));
+        LegacySpringUtils.getSplashPageManager().removeSeenSplashPage(idLong);
 
-        SplashPageUtils.removeSplashPagesSeen(splashPageId);
-
-        List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPages(request);
+        List<SplashPage> splashpages = LegacySpringUtils.getSplashPageManager().getAll();
         request.setAttribute("splashpages", splashpages);
 
         return mapping.findForward("success");

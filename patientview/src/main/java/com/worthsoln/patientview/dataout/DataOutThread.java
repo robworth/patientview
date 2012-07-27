@@ -1,17 +1,13 @@
 package com.worthsoln.patientview.dataout;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.ParserThread;
-import com.worthsoln.patientview.Patient;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.TestResult;
 import com.worthsoln.patientview.TestResultForPatientDataOutDao;
-import com.worthsoln.patientview.comment.Comment;
-import com.worthsoln.patientview.unit.Unit;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.Comment;
+import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -164,16 +160,8 @@ public class DataOutThread implements Runnable, ParserThread {
         List<Comment> comments = null;
 
         try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-            comments = session.find("from " + Comment.class.getName() + " where nhsno = ? " ,
-                    patient.getNhsno(), Hibernate.STRING);
-
-            tx.commit();
-            HibernateUtil.closeSession();
-
-        } catch (HibernateException e) {
+            comments = LegacySpringUtils.getCommentManager().get(patient.getNhsno());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -209,21 +197,12 @@ public class DataOutThread implements Runnable, ParserThread {
         return childElement;
     }
 
-    private List<Patient> patientsInUnit(String
-            unitCode) {
+    private List<Patient> patientsInUnit(String unitCode) {
         List<Patient> patients = null;
 
         try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-            patients = session.find("from " + Patient.class.getName() + " where centreCode = ?",
-                    unitCode, Hibernate.STRING);
-
-            tx.commit();
-            HibernateUtil.closeSession();
-
-        } catch (HibernateException e) {
+            patients = LegacySpringUtils.getPatientManager().get(unitCode);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -235,15 +214,8 @@ public class DataOutThread implements Runnable, ParserThread {
         List<Unit> units = null;
 
         try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-
-            units = session. find("from " + Unit.class.getName() + " where unituser is not null and unituser <> ''");
-
-            tx.commit();
-            HibernateUtil.closeSession();
-
-        } catch (HibernateException e) {
+            units = LegacySpringUtils.getUnitManager().getUnitsWithUser();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

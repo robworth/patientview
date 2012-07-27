@@ -1,7 +1,6 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -18,17 +17,16 @@ public class PasswordChangeAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-        String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
         String suppliedOldPassword = BeanUtils.getProperty(form, "oldpassword");
         String actualOldPassword = user.getPassword();
         String hashedSuppliedOldPassword = LogonUtils.hashPassword(suppliedOldPassword);
         if (hashedSuppliedOldPassword.equals(actualOldPassword)) {
             user.setPassword(LogonUtils.hashPassword(BeanUtils.getProperty(form, "passwordPwd")));
             user.setFirstlogon(false);
-            HibernateUtil.saveOrUpdateWithTransaction(user);
+            LegacySpringUtils.getUserManager().save(user);
             AddLog.addLog(user.getUsername(), AddLog.PASSWORD_CHANGE, user.getUsername(), "",
-                    UserUtils.retrieveUsersRealUnitcodeBestGuess(username), "");
+                    UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
             return mapping.findForward("success");
         } else {
             request.setAttribute("error", "incorrect current password");
