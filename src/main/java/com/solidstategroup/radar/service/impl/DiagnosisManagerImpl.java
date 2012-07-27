@@ -31,6 +31,7 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
         // some demographics will have a generic diagnosis from phase 2 check for this first
         if (demographics.getGenericDiagnosis() != null
                 && demographics.getGenericDiagnosis().getId().length() > 0) {
+            // disease groups have sub diagnosis but just use the main disease group name as the diagnosis
             return demographics.getDiseaseGroup().getShortName();
         } else {
             Diagnosis diagnosis = getDiagnosisByRadarNumber(demographics.getId());
