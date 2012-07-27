@@ -2,6 +2,7 @@ package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.ClinicalPresentation;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
@@ -24,6 +25,22 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
 
     public Diagnosis getDiagnosisByRadarNumber(long radarNumber) {
         return diagnosisDao.getDiagnosisByRadarNumber(radarNumber);
+    }
+
+    public String getDiagnosisName(Demographics demographics) {
+        // some demographics will have a generic diagnosis from phase 2 check for this first
+        if (demographics.getGenericDiagnosis() != null
+                && demographics.getGenericDiagnosis().getId().length() > 0) {
+            return demographics.getDiseaseGroup().getShortName();
+        } else {
+            Diagnosis diagnosis = getDiagnosisByRadarNumber(demographics.getId());
+
+            if (diagnosis != null && diagnosis.hasValidId()) {
+                return diagnosis.getDiagnosisCode().getAbbreviation();
+            }
+        }
+
+        return "";
     }
 
     public DiagnosisCode getDiagnosisCode(long id) {

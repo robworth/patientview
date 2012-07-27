@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.service;
 
 import com.solidstategroup.radar.model.ClinicalPresentation;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Karotype;
@@ -14,6 +15,8 @@ public interface DiagnosisManager {
     Diagnosis getDiagnosis(long id);
 
     Diagnosis getDiagnosisByRadarNumber(long radarNumber);
+
+    String getDiagnosisName(Demographics demographics);
 
     DiagnosisCode getDiagnosisCode(long id);
 
