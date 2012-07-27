@@ -2,7 +2,6 @@ package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.Diagnosis;
 import com.solidstategroup.radar.model.DocumentData;
 import com.solidstategroup.radar.model.enums.ExportType;
 import com.solidstategroup.radar.model.user.PatientUser;
@@ -75,12 +74,8 @@ public class ExportManagerImpl implements ExportManager {
                 "Consultant", "", "Centre"));
 
         for (Demographics demographics : demographicsList) {
-            String diagnosisCodeAbbr = "";
-            Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
-            if (diagnosis != null) {
-                diagnosisCodeAbbr = diagnosis.getDiagnosisCode() != null ? diagnosis.getDiagnosisCode().
-                        getAbbreviation() : "";
-            }
+            String diagnosisCodeAbbr = diagnosisManager.getDiagnosisName(demographics);
+
             String dateRegistered = "";
             dateRegistered = demographics.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
                     format(demographics.getDateRegistered()) : "";
