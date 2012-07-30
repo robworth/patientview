@@ -11,13 +11,23 @@ http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <http>
-        <!-- RPV tenancy config -->
-        <intercept-url pattern="/rpv/logged_in.do" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/control/**" access="ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/patient/**" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/forums/**" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/posts/**" access="ROLE_DEMO,ROLE_PATIENT,ROLE_SUPERADMIN,ROLE_UNITADMIN,ROLE_UNITSTAFF"/>
 
+        <!-- generic login -->
+        <intercept-url pattern="/logged_in.do" access="ROLE_ANY_USER"/>
+
+        <!-- RPV tenancy config todo think about doing this in a generic way -->
+        <intercept-url pattern="/rpv/logged_in.do" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+        <intercept-url pattern="/rpv/control/**" access="ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+        <intercept-url pattern="/rpv/patient/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+        <intercept-url pattern="/rpv/forums/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+        <intercept-url pattern="/rpv/posts/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+
+        <!-- IDB tenancy config -->
+        <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/control/**" access="ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/forums/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
 
         <!-- Everything else is unsecured -->
 

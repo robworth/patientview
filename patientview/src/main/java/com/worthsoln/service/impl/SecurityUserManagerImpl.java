@@ -1,16 +1,23 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.service.SecurityUserManager;
+import com.worthsoln.service.UserManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.Collection;
 
 @Service(value = "securityUserManager")
 public class SecurityUserManagerImpl implements SecurityUserManager {
+
+    @Inject
+    private UserManager userManager;
 
     @Override
     public String getLoggedInUsername() {
@@ -21,6 +28,14 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
+    public Tenancy getLoggedInTenancy() {
+
+        SecurityUser securityUser = getSecurityUser();
+
+        return securityUser != null ? securityUser.getTenancy() : null;
+    }
+
+    @Override
     public boolean isLoggedIn() {
         return getLoggedInUsername() != null;
     }
@@ -28,24 +43,24 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     @Override
     public boolean isRolePresent(String... roles) {
 
-        User securityUser = getSecurityUser();
+        SecurityUser securityUser = getSecurityUser();
 
         if (securityUser != null) {
             Collection<GrantedAuthority> authorities = securityUser.getAuthorities();
-            String loggedInRole = null;
 
-            // users can only have one role
-            if (authorities != null && authorities.size() > 0) {
-                loggedInRole = authorities.toArray(new GrantedAuthority[authorities.size()])[0].getAuthority();
-            }
+            // users can have one role per tenancy
+            for (GrantedAuthority grantedAuthority : authorities) {
 
-            if (roles != null) {
-                for (String role : roles) {
-                    // convert to spring security convention
-                    role = ("ROLE_" + role).toUpperCase();
+                String userRole = grantedAuthority.getAuthority();
 
-                    if (role.equals(loggedInRole)) {
-                        return true;
+                if (roles != null) {
+                    for (String role : roles) {
+                        // convert to spring security convention
+                        role = ("ROLE_" + securityUser.getTenancy().getContext() + "_" +  role).toUpperCase();
+
+                        if (role.equals(userRole)) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -54,13 +69,13 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
         return false;
     }
 
-    private User getSecurityUser() {
+    private SecurityUser getSecurityUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
-            if (principal instanceof User) {
-                return (User) principal;
+            if (principal instanceof SecurityUser) {
+                return (SecurityUser) principal;
             }
         }
 

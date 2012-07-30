@@ -6,6 +6,7 @@ import com.worthsoln.repository.NewsDao;
 import com.worthsoln.service.NewsManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -54,7 +55,7 @@ public class NewsManagerImpl implements NewsManager {
 
         } else {
 
-            String userType = user.getRole();
+            String userType = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
 
             if ("superadmin".equals(userType)) {
 
@@ -87,7 +88,7 @@ public class NewsManagerImpl implements NewsManager {
 
         } else {
 
-            String userType = user.getRole();
+            String userType = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
 
             if ("superadmin".equals(userType)) {
 

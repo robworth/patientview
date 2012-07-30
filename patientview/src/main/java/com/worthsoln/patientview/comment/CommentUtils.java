@@ -16,7 +16,9 @@ public class CommentUtils {
         if (username != null) {
             User user = LegacySpringUtils.getUserManager().get(username);
 
-            if (user.getRole().equalsIgnoreCase("superadmin")) {
+            final String role = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+
+            if (role.equalsIgnoreCase("superadmin")) {
                 permissionToReadComment = true;
             } else {
 
@@ -25,12 +27,12 @@ public class CommentUtils {
                         = LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
 
                 for (UserMapping userMappingComment : userMappingsForComment) {
-                    if ("patient".equalsIgnoreCase(user.getRole()) && userMappingComment.getUsername().equalsIgnoreCase(user.getUsername())) {
+                    if ("patient".equalsIgnoreCase(role) && userMappingComment.getUsername().equalsIgnoreCase(user.getUsername())) {
                         permissionToReadComment = true;
                         break;
                     }
                     for (UserMapping userMappingUser : userMappingsForUser) {
-                        if ("unitadmin".equalsIgnoreCase(user.getRole()) || "unitstaff".equalsIgnoreCase(user.getRole())) {
+                        if ("unitadmin".equalsIgnoreCase(role) || "unitstaff".equalsIgnoreCase(role)) {
                             if (userMappingComment.getUnitcode().equalsIgnoreCase(userMappingUser.getUnitcode())) {
                                 permissionToReadComment = true;
                                 break;
