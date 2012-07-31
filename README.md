@@ -97,7 +97,7 @@ Logging in
 Using a tenancy
 ===============
 
-- Once the user arrives at a tenancy their session will be noted as associated with that tenancy
+- Once the user arrives at a tenancy their session will be noted as associated with that tenancy.  We will have new methods to get the current user role for the tenancy.
 - The only way to change tenancy will be via the tenancy switcher or by logging out.
 - Should the user try to manually change their URL to view data from a separate tenancy they will either get a not authorised error (if the user doesn't have a role for that tenancy) or and tenancy change error
 - All secure links/URLs in the application must be prefixed by the tenancy context, e.g. www.patientview.org/rpv/patient/patient_details.do
