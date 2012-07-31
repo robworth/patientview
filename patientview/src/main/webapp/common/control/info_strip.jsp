@@ -19,6 +19,8 @@
                    <td class="infostrip" align="left"><html:link forward="controlPasswordChangeInput">change password</html:link></td>
                 </logic:present>
 
+                <jsp:include page="../include/tenancy_switcher.jsp"/>
+
                 <td class="infostrip" align="right"><dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format></td>
             </tr>
           </table>

@@ -1,9 +1,11 @@
-<%@ page import="com.worthsoln.utils.LegacySpringUtils" %><%
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ page import="com.worthsoln.patientview.model.Tenancy" %><%
     String taglineImage, logoImage;
 
     if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
+        Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
         taglineImage = "images/tagline.gif";
-        logoImage = "images/logo.gif";
+        logoImage = "images/tenancy/" + tenancy.getContext() + "/" + "logo.gif";
     } else {
         taglineImage = "images/tagline_generic.gif";
         logoImage = "images/logo_generic.gif";
