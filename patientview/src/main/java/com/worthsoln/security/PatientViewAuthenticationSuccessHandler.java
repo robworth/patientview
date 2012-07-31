@@ -47,8 +47,9 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
 
         // if this user has multiple tenancies then route to the launchpad page
         if (tenancyUserRoles.size() > 1) {
-            // this should only take effect if spring it not in the middle of redirecting to a secured page
-            setTargetUrlParameter("/launchpad");
+            // todo this should only take effect if spring it not in the middle of redirecting to a secured page
+            response.sendRedirect("/launchpad.do");
+
         } else if (tenancyUserRoles.size() == 1) {
             // you cannot get here if you don't have at least one tenancy
 
@@ -59,9 +60,9 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
 
             // if this user has only a single tenancy route to the home page : /<tenancy-context>/logged_in.do
 //            setTargetUrlParameter("/" + tenancy.getContext() + "/logged_in.do");
-        }
 
-        super.onAuthenticationSuccess(request, response, authentication);
+            super.onAuthenticationSuccess(request, response, authentication);
+        }
     }
 
     // todo work out if we need to close this connection manually?

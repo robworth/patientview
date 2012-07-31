@@ -1,3 +1,4 @@
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -9,6 +10,10 @@
               <td class="navcell-empty"><font class="navlink">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
 
               <td class="navcell"><html:link action="/index" styleClass="<%= ("index".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Home</html:link></td>
+
+        <%
+            if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
+        %>
 
               <td class="navcell"><html:link action="/patient/patient_details" styleClass="<%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Patient Details</html:link></td>
 
@@ -28,6 +33,9 @@
 
               <td class="navcell"><html:link href="/forums/list.page" styleClass="<%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Forum</html:link></td>
 
+        <%
+            }
+        %>
               <td class="navcell-right"><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Help</html:link></td>
 
               <td class="navcell-empty"><font class="navlink">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>

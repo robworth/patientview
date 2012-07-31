@@ -7,11 +7,11 @@
         <td colspan="10">
           <table width="100%">
             <tr>
-                <logic:present role="patient,demo,superadmin,unitadmin,unitstaff">
+                <logic:present role="any_user,patient,demo,superadmin,unitadmin,unitstaff">
                    <td class="infostrip" align="left">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b> <html:link action="logout">log out</html:link></td>
                 </logic:present>
 
-                <logic:notPresent role="patient,demo,superadmin,unitadmin,unitstaff">
+                <logic:notPresent role="any_user,patient,demo,superadmin,unitadmin,unitstaff">
                    <td class="infostrip" align="left">&nbsp;&nbsp;<html:link action="/patient/patient_details">log in</html:link></td>
                 </logic:notPresent>
 

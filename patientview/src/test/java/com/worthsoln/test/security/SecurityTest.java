@@ -46,7 +46,7 @@ public class SecurityTest {
 
     // Test suite wide references
     private User user;
-    Tenancy tenancy1, tenancy2;
+    Tenancy tenancy1, tenancy2, tenancy3;
 
     @Before
     public void setupTenancies() {
@@ -54,6 +54,7 @@ public class SecurityTest {
 
         tenancy1 = repositoryHelpers.createTenancy("Tenant 1", "ten1", "Test description");
         tenancy2 = repositoryHelpers.createTenancy("Tenant 2", "ten2", "Test description 2");
+        tenancy3 = repositoryHelpers.createTenancy("Tenant 3", "ten3", "Test description 3");   // no access
 
         repositoryHelpers.createTenancyUserRole(tenancy1, user, "patient");
         repositoryHelpers.createTenancyUserRole(tenancy2, user, "admin");
@@ -105,9 +106,49 @@ public class SecurityTest {
         assertEquals("Incorrect logged in tenancy", tenancy1, securityUserManager.getLoggedInTenancy());
     }
 
+    @Test
+    public void testSetLoggedInTenancy() throws Exception {
+
+        // first login without setting the tenancy
+        loginAsUser(user.getUsername());
+
+        assertNull("Tenancy found in session", securityUserManager.getLoggedInTenancy());
+
+        securityUserManager.setLoggedInTenancy(tenancy1.getId());
+
+        assertEquals("Incorrect logged in tenancy", tenancy1, securityUserManager.getLoggedInTenancy());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testCannotSetLoggedInTenancyWhenNoAccess() throws Exception {
+
+        // first login without setting the tenancy
+        loginAsUser(user.getUsername());
+
+        assertNull("Tenancy found in session", securityUserManager.getLoggedInTenancy());
+
+        securityUserManager.setLoggedInTenancy(tenancy3.getId());
+    }
+
+    @Test
+    public void testUserGetsAnyUserRole() {
+
+        loginAsUser(user.getUsername());
+
+        assertTrue("User does not have ANY_USER role", securityUserManager.isRolePresent("any_user"));
+    }
+
+
     private void loginAsUser(String username, Tenancy tenancy) {
         SecurityUser user = (SecurityUser) userDetailsService.loadUserByUsername(username);
         user.setTenancy(tenancy);
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
+    }
+
+    private void loginAsUser(String username) {
+        SecurityUser user = (SecurityUser) userDetailsService.loadUserByUsername(username);
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));

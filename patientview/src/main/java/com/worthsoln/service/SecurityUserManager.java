@@ -1,6 +1,7 @@
 package com.worthsoln.service;
 
 import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,5 +17,11 @@ public interface SecurityUserManager {
 
     boolean isLoggedIn();
 
+    boolean isLoggedInToTenancy();
+
     boolean isRolePresent(String... roles);
+
+    void setLoggedInTenancy(Long tenancyId) throws Exception;
+
+    boolean hasAccessToTenancy(User user, Tenancy tenancy);
 }
