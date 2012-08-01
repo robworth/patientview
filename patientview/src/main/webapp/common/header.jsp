@@ -1,9 +1,7 @@
 <head>
   <title>Renal Patient View</title>
-  <link rel="SHORTCUT ICON" href="images/kidney.gif" />
-  <link rel="STYLESHEET" type="text/css" href="<%= request.getParameter("cdToStyles") %>styles.css" />
+  <link href="<%=request.getParameter("cdToStyles") %>css/bootstrap.min.css" rel="stylesheet">
+  <link href="<%=request.getParameter("cdToStyles") %>css/main.css" rel="stylesheet">
 </head>
 
 <body>
-  <div align="center">
-    <table cellspacing="0" cellpadding="0" class="allborders">

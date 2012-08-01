@@ -1,7 +1,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 
-<html:html xhtml="true">
+<!DOCTYPE html>
+<html lang="en">
 
     <tiles:insert attribute="header" />
     <tiles:insert attribute="title" />
@@ -15,4 +16,4 @@
     <tiles:insert attribute="main_footer" />
     <tiles:insert attribute="footer" />
 
-</html:html>
+</html>
