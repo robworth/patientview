@@ -138,6 +138,13 @@ public class SecurityTest {
         assertTrue("User does not have ANY_USER role", securityUserManager.isRolePresent("any_user"));
     }
 
+    @Test
+    public void testIsTenancyPresent() {
+        loginAsUser(user.getUsername(), tenancy1);
+
+        assertTrue("Tenancy is not present", securityUserManager.isTenancyPresent(tenancy1.getContext()));
+    }
+
 
     private void loginAsUser(String username, Tenancy tenancy) {
         SecurityUser user = (SecurityUser) userDetailsService.loadUserByUsername(username);

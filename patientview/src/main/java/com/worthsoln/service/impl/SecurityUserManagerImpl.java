@@ -52,6 +52,14 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
+    public boolean isTenancyPresent(String context) {
+
+        Tenancy tenancy = getLoggedInTenancy();
+
+        return tenancy != null && tenancy.getContext().equalsIgnoreCase(context);
+    }
+
+    @Override
     public boolean isRolePresent(String... roles) {
 
         SecurityUser securityUser = getSecurityUser();

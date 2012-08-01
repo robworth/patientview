@@ -19,6 +19,8 @@ public interface SecurityUserManager {
 
     boolean isLoggedInToTenancy();
 
+    boolean isTenancyPresent(String context);
+
     boolean isRolePresent(String... roles);
 
     void setLoggedInTenancy(Long tenancyId) throws Exception;

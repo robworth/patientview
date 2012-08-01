@@ -19,6 +19,10 @@
 
               <td class="navcell"><html:link action="/patient/patient_view" styleClass="<%= ("patient_view".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Patient Info</html:link></td>
 
+                <logic:present tenancy="ibd">
+                    <td class="navcell"><a>My IBD</a></td>
+                </logic:present>
+
               <td class="navcell"><html:link action="/patient/aboutme" styleClass="<%= ("aboutme".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">About Me</html:link></td>
 
               <td class="navcell"><html:link action="/patient/patient_entry" styleClass="<%= ("patient_entry".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Enter My...</html:link></td>

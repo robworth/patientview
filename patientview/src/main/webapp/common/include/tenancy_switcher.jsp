@@ -7,12 +7,14 @@
 <%
     if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
 
-%>
-<td class="infostrip">Change speciality:
-    <%
         User user = LegacySpringUtils.getUserManager().getLoggedInUser();
         List<TenancyUserRole> tenancyUserRoles = LegacySpringUtils.getUserManager().getTenancyUserRoles(user);
 
+        if (tenancyUserRoles.size() > 1) {
+
+%>
+<td class="infostrip">Change speciality:
+    <%
         Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
 
         for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
@@ -25,5 +27,6 @@
     %>
 </td>
 <%
+        }
     }
 %>
