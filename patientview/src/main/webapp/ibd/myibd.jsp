@@ -23,9 +23,9 @@
 		      	</ul>
 	      		<form class="navbar-form pull-right" action="">
         			<input type="text" class="span2" placeholder="Username">
-        			<input type="text" class="span2" placeholder="Password">   
-        			<input class="btn" type="submit" value="Login">   	
-		      	</form>		      
+        			<input type="text" class="span2" placeholder="Password">
+        			<input class="btn" type="submit" value="Login">
+		      	</form>
 		    </div><!-- /.nav-collapse -->
 		  </div>
 		</div><!-- /navbar-inner -->
@@ -43,7 +43,7 @@
 			  <li><a href="#">Letters</a></li>
 			  <li><a href="#">Contact</a></li>
 			  <li><a href="#">Education</a></li>
-			</ul>			
+			</ul>
 			<div class="row">
 				<div class="span12">
 					<h1>My IBD</h1>
