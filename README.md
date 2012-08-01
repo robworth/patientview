@@ -92,7 +92,7 @@ Logging in
 - We will extract user login details out of the user table into a tenant schema
 - The spring security success handler will check the user's tenancies.  Single tenancy uses will be forwarded directly to the tenancy landing page,  e.g. www.patientview.org/rpv
 - Multi-tenant users will hit www.patientview.org/launchpad which will allow them to select a tenancy to be redirected to
-- Should the user have no tenancy the launchpad will show a warning message
+- Should the user have no tenancy the user will not even be able to log in
 
 Using a tenancy
 ===============
@@ -110,12 +110,26 @@ The tenancy servlet filter
 - We will implement a custom tenancy servlet filter that appears after the spring security filter in the stack.
 - This will create a virtual tenancy context without need for rewriting anything in struts or the JSPs
 - The filter will strip off tenancy context and forward down the filter chain
-- It will check the tenancy requested matches the tenancy selected in the user's session to control tenancy switching
+- It will NOT check the tenancy requested matches the tenancy selected in the user's session to control tenancy switching.  This will be possible if the user has access to the URL/tenancy.
+
+
+Enhancements to the spring security configuration
+=================================================
+
 - Requests that don't start with a valid tenancy context will need to be dropped and considered an attempt to bypass spring security
 - The following should pass through:
-- /styles.css
-- /images/*
+- /**/*.css
+- /**/*.js
+- /images/**/*
 - /login.jsp
+- /logged_in.do
+- /launchpad.do
+- /j_security_check
+- /newsView.do?id=xyz
+- /disclaimer.do
+- /help.do
+- /index.do
+- /infoLinks.do
 
 Securing features per tenancy
 =============================

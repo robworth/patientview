@@ -15,8 +15,8 @@
         <td colspan="2" nowrap="nowrap">
           <table>
             <tr>
-              <td><img src="<%=taglineImage%>" width="258" height="31" border="0" alt="" hspace="20" /></td>
-              <td><img src="<%=logoImage%>" width="366" height="55" border="0" alt="" /></td>
+              <td><img src="/<%=taglineImage%>" width="258" height="31" border="0" alt="" hspace="20" /></td>
+              <td><img src="/<%=logoImage%>" width="366" height="55" border="0" alt="" /></td>
             </tr>
           </table>
         </td>

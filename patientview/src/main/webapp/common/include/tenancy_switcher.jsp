@@ -18,7 +18,7 @@
         for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
             if (!tenancyUserRole.getTenancy().equals(tenancy)) {
     %>
-    <a href="launchpad-select.do?tenancyId=<%=tenancyUserRole.getTenancy().getId()%>"><%=tenancyUserRole.getTenancy().getName()%></a>
+    <a href="/launchpad-select.do?tenancyId=<%=tenancyUserRole.getTenancy().getId()%>"><%=tenancyUserRole.getTenancy().getName()%></a>
     <%
             }
         }
