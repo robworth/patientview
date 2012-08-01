@@ -10,17 +10,26 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+    <!-- allow all web assets through -->
+    <http pattern="/**/*.css" security="none"/>
+    <http pattern="/**/*.js" security="none"/>
+    <http pattern="/images/**" security="none"/>
+
+    <!-- public pages -->
+    <http pattern="/login.jsp" security="none"/>
+    <http pattern="/newsView.do" security="none"/>
+    <http pattern="/disclaimer.do" security="none"/>
+    <http pattern="/help.do" security="none"/>
+    <http pattern="/index.do" security="none"/>
+    <http pattern="/infoLinks.do" security="none"/>
+
+    <!-- secure pages -->
     <http>
-
-        <!-- todo allow all web assets through -->
-
-        <!-- todo public pages -->
-
-        <!-- generic URLs -->
+        <!-- generic URLs that require a login -->
         <intercept-url pattern="/logged_in.do" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/launchpad.do" access="ROLE_ANY_USER"/>
 
-        <!-- RPV tenancy config todo think about doing this in a generic way -->
+        <!-- RPV tenancy config -->
         <intercept-url pattern="/rpv/logged_in.do" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
         <intercept-url pattern="/rpv/control/**" access="ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
         <intercept-url pattern="/rpv/patient/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
@@ -34,7 +43,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/ibd/forums/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
 
-        <!-- todo Everything else is to be dropped -->
+        <!-- Everything else is inaccessible -->
 
         <form-login
                 login-page="/login.jsp"
