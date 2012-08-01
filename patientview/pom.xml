@@ -46,7 +46,7 @@
             <properties>
                 <env>dev</env>
                 <tomcatmanagerurl>http://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
-                <warpath>/patientview-dev</warpath>
+                <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
             </properties>
         </profile>
