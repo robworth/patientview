@@ -134,6 +134,7 @@ Securing features per tenancy
 
 - There will be no security to stop users accessing "hidden" tenancy specific features
 - Templates will have tenancy specific content by extending the PatientViewPresentTag to allow conditional templates e.g.
+
     <logic:present tenancy="rpv">
 
 Writing JSP templates
