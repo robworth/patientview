@@ -71,7 +71,8 @@ public class SecurityTest {
 
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-        assertEquals("Incorrect number of roles", 2, authorities.size());
+        // NOTE: there is an extra role in here called ROLE_ANY_USER, hence 3 rather than 2
+        assertEquals("Incorrect number of roles", 3, authorities.size());
 
         Set<GrantedAuthority> authoritySet = new HashSet<GrantedAuthority>(authorities);
         GrantedAuthority grantedAuthority1 = new SimpleGrantedAuthority("ROLE_TEN2_ADMIN");
