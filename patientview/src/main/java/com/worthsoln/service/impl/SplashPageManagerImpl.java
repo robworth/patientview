@@ -55,10 +55,9 @@ public class SplashPageManagerImpl implements SplashPageManager {
     @Override
     public List<SplashPage> getAll() {
 
-        User user = userManager.getLoggedInUser();
         List<String> unitCodes = null;
 
-        if (user.getRole().equals("unitadmin")) {
+        if (userManager.getLoggedInUserRole().equals("unitadmin")) {
             unitCodes = unitManager.getUsersUnitCodes();
         }
 

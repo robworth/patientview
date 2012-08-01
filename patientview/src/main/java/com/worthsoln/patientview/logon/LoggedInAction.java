@@ -36,8 +36,10 @@ public class LoggedInAction extends DatabaseAction {
             // Not sure if this makes a difference if it's encrypted
             request.getSession().setAttribute("sso.password.attribute", user.getPassword());
 
+            final String role = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+
             // Is user patient or admin?
-            if ("patient".equals(user.getRole())) {
+            if ("patient".equals(role)) {
                 request.setAttribute("isPatient", true);
             }
             if ((user.getLastlogon() != null)) {
@@ -47,7 +49,7 @@ public class LoggedInAction extends DatabaseAction {
 
             LegacySpringUtils.getUserManager().save(user);
 
-            if ("patient".equals(user.getRole())) {
+            if ("patient".equals(role)) {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 

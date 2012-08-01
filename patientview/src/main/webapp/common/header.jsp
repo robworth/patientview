@@ -1,7 +1,9 @@
 <head>
-  <title>Renal Patient View</title>
-  <link href="<%=request.getParameter("cdToStyles") %>css/bootstrap.min.css" rel="stylesheet">
-  <link href="<%=request.getParameter("cdToStyles") %>css/main.css" rel="stylesheet">
+  <title>Patient View</title>
+    <link href="/<%=request.getParameter("cdToStyles") %>css/bootstrap.min.css" rel="stylesheet">
+    <link href="/<%=request.getParameter("cdToStyles") %>css/main.css" rel="stylesheet">
 </head>
 
 <body>
+  <div align="center">
+    <table cellspacing="0" cellpadding="0" class="allborders">

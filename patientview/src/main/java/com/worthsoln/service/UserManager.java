@@ -1,5 +1,7 @@
 package com.worthsoln.service;
 
+import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +20,12 @@ public interface UserManager {
     User get(Long id);
 
     User get(String username);
+
+    String getLoggedInUserRole();
+
+    String getCurrentTenancyRole(User user);
+
+    List<TenancyUserRole> getTenancyUserRoles(User user);
 
     void save(User user);
 

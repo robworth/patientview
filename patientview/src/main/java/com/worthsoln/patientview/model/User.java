@@ -40,11 +40,6 @@ public class User extends BaseModel {
     @Column(nullable = false)
     private String screenname;
 
-    //todo remove
-    public String getRole() {
-        return "patient";
-    }
-
     public User() {
     }
 
