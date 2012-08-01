@@ -1,7 +1,7 @@
 <head>
-  <title>Renal Patient View</title>
+  <title>Patient View</title>
   <link rel="SHORTCUT ICON" href="images/kidney.gif" />
-  <link rel="STYLESHEET" type="text/css" href="<%= request.getParameter("cdToStyles") %>styles.css" />
+  <link rel="STYLESHEET" type="text/css" href="/<%= request.getParameter("cdToStyles") %>styles.css" />
 </head>
 
 <body>
