@@ -10,7 +10,7 @@ Building a deployable WAR file & setting up a database
 - install the db using patientview/src/sql/mysql/patientview.sql
 - run the maven build command:
 
-mvn clean package -P<profile-name>
+`mvn clean package -P<profile-name>`
 
 The war file will be built to the maven target directory.
 
@@ -20,13 +20,13 @@ Running locally using Intellij Idea
 
 - Setup a maven run configuration with the following goals:
 
-clean compile war:inplace tomcat7:run
+`clean compile war:inplace tomcat7:run`
 
 - Select the localhost profile
 
 - Supply the following VM parameters to the run configuration runner tab to allocate enough memory and to allow the JSPs to compile:
 
--Xmx512m -XX:MaxPermSize=128m -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false
+`-Xmx512m -XX:MaxPermSize=128m -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false`
 
 This will clear down any temporary files (as specified by the maven clean plugin and .gitignore file).
 Build the exploded war over the main/src/webapp directory.
@@ -41,7 +41,7 @@ Debugging JSPs using Intellij Idea
 - Not possible using the embedded tomcat maven plugin
 - Build the webapp using maven:
 
-clean compile war:inplace
+`clean compile war:inplace`
 
 - Create a local Tomcat 7 run configuration and run the webapp directory as an exploded war artifact.
 - Make sure you turn off any "before launch" options so not to interfere with the maven output.
@@ -61,15 +61,15 @@ Notes on using Git submodules
 
 http://chrisjean.com/2009/04/20/git-submodules-adding-using-removing-and-updating/
 
-git submodule add git@mygithost:billboard lib/billboard
+`git submodule add git@mygithost:billboard lib/billboard`
 
-git submodule init
+`git submodule init`
 
-git submodule update
+`git submodule update`
 
 I've found it necessary to perform a git pull when in the directory of the submodule to update the submodule files locally.
 
-git submodule rm lib/billboard
+`git submodule rm lib/billboard`
 
 
 Notes on using Git submodules in Jenkins
@@ -77,8 +77,8 @@ Notes on using Git submodules in Jenkins
 
 To update submodules when building setup this execute shell pre step:
 
-git submodule foreach git checkout master
-git submodule foreach git pull
+`git submodule foreach git checkout master`
+`git submodule foreach git pull`
 
 
 Notes on Multi-tenant
@@ -102,7 +102,7 @@ Using a tenancy
 - Should the user try to manually change their URL to view data from a separate tenancy they will either get a not authorised error HTTP 403 (if the user doesn't have a role for that tenancy) or they will get a HTTP 404 response.
 - All secure links/URLs in the application must be prefixed by the tenancy context, e.g. www.patientview.org/rpv/patient/patient_details.do
 - Each tenancy will have a spring security configuration to secure URLs with roles, e.g. /rpv/* requires ROLE_RPV_PATIENT or RPV_ROLE_UNITADMIN
-- The links in the templates will be directed to the tenancy context automatically using PatientViewLinkTag that overrides via <html:link>
+- The links in the templates will be directed to the tenancy context automatically using PatientViewLinkTag that overrides via `<html:link>`
 
 The tenancy servlet filter
 ==========================
@@ -133,10 +133,7 @@ Securing features per tenancy
 =============================
 
 - There will be no security to stop users accessing "hidden" tenancy specific features
-- Templates will have tenancy specific content by extending the PatientViewPresentTag to allow conditional templates e.g.
-`<code>`
-    <logic:present tenancy="rpv">
-`<code>`
+- Templates will have tenancy specific content by extending the PatientViewPresentTag to allow conditional templates e.g. `<logic:present tenancy="rpv">`
 
 Writing JSP templates
 =====================
