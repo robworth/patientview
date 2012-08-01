@@ -5,5 +5,3 @@
 </head>
 
 <body>
-  <div align="center">
-    <table cellspacing="0" cellpadding="0" class="allborders">
