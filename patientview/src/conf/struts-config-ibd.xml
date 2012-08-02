@@ -18,29 +18,59 @@
             <form-property name="surgeryId" type="java.lang.Long"/>
             <form-property name="vaccinationRecordId" type="java.lang.Long"/>
         </form-bean>
+
+        <form-bean name="carePlanForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="areaToDiscussIds" type="java.lang.Long[]"/>
+            <form-property name="furtherTopics" type="java.lang.String"/>
+            <form-property name="goals" type="java.lang.String"/>
+            <form-property name="goalToAchieve" type="java.lang.String"/>
+            <form-property name="goalScale" type="java.lang.Integer"/>
+            <form-property name="howToAchieveGoal" type="java.lang.String"/>
+            <form-property name="barriers" type="java.lang.String"/>
+            <form-property name="whatCanBeDone" type="java.lang.String"/>
+            <form-property name="confidenceScale" type="java.lang.Integer"/>
+        </form-bean>
     </form-beans>
 
     <action-mappings>
-        <action path="/myibd"
+        <action path="/ibd/myibd"
                 type="com.worthsoln.ibd.action.myibd.MyIbdAction"
                 scope="request">
-            <forward name="success" path="/myibd.jsp"/>
+            <forward name="success" path="/ibd/myibd.jsp"/>
         </action>
 
-        <action path="/myibd-edit"
+        <action path="/ibd/myibd-edit"
                 name="myIbdForm"
                 type="com.worthsoln.ibd.action.myibd.MyIbdEditAction"
                 scope="request">
-          <forward name="success" path="/myibd-edit.jsp"/>
+          <forward name="success" path="/ibd/myibd-edit.jsp"/>
         </action>
 
-        <action path="/myibd-update" name="myIbdForm"
+        <action path="/ibd/myibd-update"
+                name="myIbdForm"
                 type="com.worthsoln.ibd.action.myibd.MyIbdUpdateAction"
                 input="input"
                 scope="request"
                 validate="true">
-            <forward name="input" path="/myibd-edit.jsp"/>
-            <forward name="success" path="/myibd.do" redirect="true" />
+            <forward name="input" path="/ibd/myibd-edit.jsp"/>
+            <forward name="success" path="/ibd/myibd.do" redirect="true" />
+        </action>
+
+        <action path="/ibd/careplan"
+                name="carePlanForm"
+                type="com.worthsoln.ibd.action.careplan.CarePlanEditAction"
+                scope="request">
+          <forward name="success" path="/ibd/careplan-edit.jsp"/>
+        </action>
+
+        <action path="/ibd/careplan-update" name="carePlanForm"
+                type="com.worthsoln.ibd.action.careplan.CarePlanUpdateAction"
+                input="input"
+                scope="request"
+                validate="true">
+            <forward name="input" path="/ibd/careplan-edit.jsp"/>
+            <forward name="success" path="/ibd/careplan.do" redirect="true" />
         </action>
     </action-mappings>
 
