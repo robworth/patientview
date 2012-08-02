@@ -31,7 +31,14 @@ public class CarePlanEditAction extends BaseAction {
         dynaForm.set(Ibd.BARRIERS_PARAM, carePlan.getBarriers());
         dynaForm.set(Ibd.WHAT_CAN_BE_DONE_PARAM, carePlan.getWhatCanBeDone());
         dynaForm.set(Ibd.CONFIDENCE_SCALE_PARAM, carePlan.getConfidenceScale());
-        // TODO: review date
+
+        String reviewDate = "";
+
+        if (carePlan.getReviewDate() != null) {
+            reviewDate = Ibd.DATE_FORMAT.format(carePlan.getReviewDate());
+        }
+
+        dynaForm.set(Ibd.REVIEW_DATE_PARAM, reviewDate);
 
         Long[] areaToDiscussIds = new Long[carePlan.getAreaToDiscussIds().size()];
         int count = 0;
