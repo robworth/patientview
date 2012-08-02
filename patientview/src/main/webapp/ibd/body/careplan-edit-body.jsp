@@ -118,6 +118,11 @@
 
             <p>
                 Date set to review my Care Plan
+                <br />
+                <div class="input-append date datePicker" data-date="<bean:write name="carePlanForm" property="reviewDate"/>">
+                    <input name="reviewDate" class="span2" size="16" type="text" value="<bean:write name="carePlanForm" property="reviewDate"/>" readonly>
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </div>
             </p>
         </div>
     </div>
