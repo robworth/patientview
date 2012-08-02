@@ -32,6 +32,8 @@ public class Ibd {
 
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";
+
+    // my ibd
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
     public static final String DISEASE_EXTENT_REQUIRED = "diseaseExtent.required";
     public static final String COMPLICATIONS_REQUIRED = "complications.required";
@@ -41,6 +43,18 @@ public class Ibd {
     public static final String SMOKING_REQUIRED = "smoking.required";
     public static final String SURGERY_REQUIRED = "surgery.required";
     public static final String VACCINATION_RECORD_REQUIRED = "vaccinationRecord.required";
+
+    // care plan
+    public static final String AREAS_TO_DISCUSS_REQUIRED = "areasToDiscuss.required";
+    public static final String GOALS_REQUIRED = "goals.required";
+    public static final String GOAL_TO_ACHIEVE_REQUIRED = "goalToAchieve.required";
+    public static final String GOAL_SCORE_REQUIRED = "goalScore.required";
+    public static final String HOW_TO_ACHIEVE_GOAL_REQUIRED = "howToAchieveGoal.required";
+    public static final String BARRIERS_REQUIRED = "barriers.required";
+    public static final String WHAT_CAN_BE_DONE_REQUIRED = "whatCanBeDone.required";
+    public static final String CONFIDENCE_SCORE_REQUIRED = "confidenceScore.required";
+    public static final String REVIEW_DATE_REQUIRED = "reviewDate.required";
+
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }
