@@ -1,19 +1,23 @@
 package com.worthsoln.ibd.model.enums;
 
+import com.worthsoln.ibd.Ibd;
+
 import java.util.Arrays;
 import java.util.List;
 
 public enum Diagnosis {
-    ULCERATIVE_COLITIS(1, "Ulcerative colitis"),
-    COLITIS_UNSPECIFIED(2, "Colitis unspecified"),
-    CROHNS(3, "Chrohn's");
+    ULCERATIVE_COLITIS(1, "Ulcerative colitis", Ibd.ULCERATIVE_COLITIS_DIAGRAM),
+    COLITIS_UNSPECIFIED(2, "Colitis unspecified", Ibd.COLITIS_UNSPECIFIED_DIAGRAM),
+    CROHNS(3, "Crohn's", Ibd.CROHNS_DIAGRAM);
 
     private long id;
     private String name;
+    private String diagram;
 
-    private Diagnosis(long id, String name) {
+    private Diagnosis(long id, String name, String diagram) {
         this.id = id;
         this.name = name;
+        this.diagram = diagram;
     }
 
     public static Diagnosis getDiagnosis(Long id) {
@@ -44,5 +48,13 @@ public enum Diagnosis {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDiagram() {
+        return diagram;
+    }
+
+    public void setDiagram(String diagram) {
+        this.diagram = diagram;
     }
 }
