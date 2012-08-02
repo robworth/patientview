@@ -36,14 +36,16 @@
     <action-mappings>
         <action path="/ibd/myibd"
                 type="com.worthsoln.ibd.action.myibd.MyIbdAction"
-                scope="request">
+                scope="request"
+                parameter="ibd_myibd">
             <forward name="success" path="/ibd/myibd.jsp"/>
         </action>
 
         <action path="/ibd/myibd-edit"
                 name="myIbdForm"
                 type="com.worthsoln.ibd.action.myibd.MyIbdEditAction"
-                scope="request">
+                scope="request"
+                parameter="ibd_myibd">
           <forward name="success" path="/ibd/myibd-edit.jsp"/>
         </action>
 
@@ -52,7 +54,8 @@
                 type="com.worthsoln.ibd.action.myibd.MyIbdUpdateAction"
                 input="input"
                 scope="request"
-                validate="true">
+                validate="true"
+                parameter="ibd_myibd">
             <forward name="input" path="/ibd/myibd-edit.jsp"/>
             <forward name="success" path="/ibd/myibd.do" redirect="true" />
         </action>
@@ -60,7 +63,8 @@
         <action path="/ibd/careplan"
                 name="carePlanForm"
                 type="com.worthsoln.ibd.action.careplan.CarePlanEditAction"
-                scope="request">
+                scope="request"
+                parameter="ibd_careplan">
           <forward name="success" path="/ibd/careplan-edit.jsp"/>
         </action>
 
@@ -68,7 +72,8 @@
                 type="com.worthsoln.ibd.action.careplan.CarePlanUpdateAction"
                 input="input"
                 scope="request"
-                validate="true">
+                validate="true"
+                parameter="ibd_careplan">
             <forward name="input" path="/ibd/careplan-edit.jsp"/>
             <forward name="success" path="/ibd/careplan.do" redirect="true" />
         </action>
