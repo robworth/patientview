@@ -35,14 +35,14 @@
     </form-beans>
 
     <action-mappings>
-        <action path="/ibd/myibd"
+        <action path="/myibd"
                 type="com.worthsoln.ibd.action.myibd.MyIbdAction"
                 scope="request"
                 parameter="ibd_myibd">
             <forward name="success" path="/ibd/myibd.jsp"/>
         </action>
 
-        <action path="/ibd/myibd-edit"
+        <action path="/myibd-edit"
                 name="myIbdForm"
                 type="com.worthsoln.ibd.action.myibd.MyIbdEditAction"
                 scope="request"
@@ -50,7 +50,7 @@
           <forward name="success" path="/ibd/myibd-edit.jsp"/>
         </action>
 
-        <action path="/ibd/myibd-update"
+        <action path="/myibd-update"
                 name="myIbdForm"
                 type="com.worthsoln.ibd.action.myibd.MyIbdUpdateAction"
                 input="input"
@@ -58,10 +58,10 @@
                 validate="true"
                 parameter="ibd_myibd">
             <forward name="input" path="/ibd/myibd-edit.jsp"/>
-            <forward name="success" path="/ibd/myibd.do" redirect="true" />
+            <forward name="success" path="/myibd.do" redirect="true" />
         </action>
 
-        <action path="/ibd/careplan"
+        <action path="/careplan"
                 name="carePlanForm"
                 type="com.worthsoln.ibd.action.careplan.CarePlanEditAction"
                 scope="request"
@@ -69,14 +69,14 @@
           <forward name="success" path="/ibd/careplan-edit.jsp"/>
         </action>
 
-        <action path="/ibd/careplan-update" name="carePlanForm"
+        <action path="/careplan-update" name="carePlanForm"
                 type="com.worthsoln.ibd.action.careplan.CarePlanUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
                 parameter="ibd_careplan">
             <forward name="input" path="/ibd/careplan-edit.jsp"/>
-            <forward name="success" path="/ibd/careplan.do" redirect="true" />
+            <forward name="success" path="/careplan.do" redirect="true" />
         </action>
     </action-mappings>
 

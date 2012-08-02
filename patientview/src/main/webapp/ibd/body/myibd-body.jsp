@@ -127,14 +127,14 @@
     </div>
     <div class="row">
         <div class="span12">
-            <html:link action="/ibd/myibd-edit">Edit</html:link>
+            <html:link action="/myibd-edit">Edit</html:link>
         </div>
     </div>
 </logic:present>
 <logic:notPresent name="myIbd">
     <div class="row">
         <div class="span12">
-            <html:link action="/ibd/myibd-edit">Add</html:link>
+            <html:link action="/myibd-edit">Add</html:link>
         </div>
     </div>
 </logic:notPresent>

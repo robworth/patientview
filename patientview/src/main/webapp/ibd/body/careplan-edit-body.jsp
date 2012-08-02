@@ -8,7 +8,7 @@
         <h1>Care Plan</h1>
     </div>
 </div>
-<html:form action="/ibd/careplan-update">
+<html:form action="/careplan-update">
     <div class="row">
         <div class="span3">
             Care plan:
