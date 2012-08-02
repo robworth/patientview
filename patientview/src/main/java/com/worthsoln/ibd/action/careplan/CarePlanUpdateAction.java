@@ -44,6 +44,7 @@ public class CarePlanUpdateAction extends BaseAction {
         carePlan.setBarriers((String) dynaForm.get(Ibd.BARRIERS_PARAM));
         carePlan.setWhatCanBeDone((String) dynaForm.get(Ibd.WHAT_CAN_BE_DONE_PARAM));
         carePlan.setConfidenceScale((Integer) dynaForm.get(Ibd.CONFIDENCE_SCALE_PARAM));
+        carePlan.setReviewDate(Ibd.DATE_FORMAT.parse((String) dynaForm.get(Ibd.REVIEW_DATE_PARAM)));
 
         Long[] areaToDiscussIds = (Long[]) dynaForm.get(Ibd.AREA_TO_DISCUSS_IDS_PARAM);
         carePlan.setAreaToDiscussIds(new HashSet<Long>(Arrays.asList(areaToDiscussIds)));
