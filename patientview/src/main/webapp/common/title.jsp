@@ -12,6 +12,7 @@
         </a>
         <a class="brand" href="#">
             <logic:present tenancy="ibd">My IBD</logic:present>
+            <logic:present tenancy="rpv">My RPV</logic:present>
         </a>
         <div class="nav-collapse">
             <ul class="nav pull-right">
