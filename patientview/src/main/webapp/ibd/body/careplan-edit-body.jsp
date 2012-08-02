@@ -134,7 +134,7 @@
 
             <p>
                 <html:submit value="Save" styleClass="btn"/>
-                <html:link action="/ibd/careplan" styleClass="btn">Cancel</html:link>
+                <%--<html:link action="/ibd/careplan" styleClass="btn">Cancel</html:link>--%>
             </p>
         </div>
     </div>
