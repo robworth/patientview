@@ -8,7 +8,7 @@
         <div class="page-header">
             <h1>Care Plan</h1>
         </div>
-        <html:form action="/ibd/careplan-update" styleClass="form-horizontal">
+        <html:form action="/careplan-update" styleClass="form-horizontal">
             <html:errors/>
             <fieldset>
             <div class="control-group">
