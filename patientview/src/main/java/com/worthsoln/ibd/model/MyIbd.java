@@ -17,6 +17,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "ibd_myibd")
 public class MyIbd extends BaseModel {
 
     @Column(nullable = false)
@@ -114,8 +116,8 @@ public class MyIbd extends BaseModel {
 
     @Access(AccessType.PROPERTY)
     @ElementCollection
-    @CollectionTable(name="myibd_complications", joinColumns=@JoinColumn(name="myibd_id"))
-    @Column(name="complication_id")
+    @CollectionTable(name = "ibd_myibd_complications", joinColumns = @JoinColumn(name = "myibd_id"))
+    @Column(name = "complication_id")
     public Set<Long> getComplicationIds() {
         if (complications != null) {
             Set<Long> complicationIds = new HashSet<Long>(complications.size());
