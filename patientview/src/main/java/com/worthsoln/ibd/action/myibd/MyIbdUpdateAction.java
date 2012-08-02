@@ -4,9 +4,7 @@ import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
-import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -77,17 +75,5 @@ public class MyIbdUpdateAction extends BaseAction {
         }
 
         return true;
-    }
-
-    private String getNhsNoForUser(HttpServletRequest request) {
-        User user = UserUtils.retrieveUser(request);
-
-        UserMapping userMapping = LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
-
-        if (userMapping != null) {
-            return userMapping.getNhsno();
-        }
-
-        return null;
     }
 }
