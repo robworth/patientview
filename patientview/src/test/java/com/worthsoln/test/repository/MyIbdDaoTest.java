@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 public class MyIbdDaoTest extends BaseDaoTest {
 
     @Inject
-    MyIbdDao myIbdDao;
+    private MyIbdDao myIbdDao;
 
     @Test
     public void testAddGetMyIbd() throws Exception {
@@ -51,7 +51,6 @@ public class MyIbdDaoTest extends BaseDaoTest {
     }
 
     @Test
-    @Rollback(value = false)
     public void testGetByNhsNo() throws Exception {
         MyIbd myIbd = getTestObject();
 
