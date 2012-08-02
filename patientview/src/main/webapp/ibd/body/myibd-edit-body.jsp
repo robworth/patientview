@@ -7,7 +7,9 @@
 		    <h1>My IBD</h1>
         </div>
 
-        <html:form action="/ibd/myibd-update" styleClass="form-horizontal">
+        <html:form action="/myibd-update" styleClass="form-horizontal">
+            <html:errors/>
+
             <logic:present name="diagnosisList" scope="session">
                 <div class="control-group">
                         <label class="control-label">Primary Diagnosis:</label>
@@ -97,11 +99,9 @@
                 </div>
             </logic:present>
 
-            <html:errors/>
-
             <div class="form-actions">
                 <html:submit value="Save" styleClass="btn btn-primary"/>
-                <html:link action="/ibd/myibd" styleClass="btn">Cancel</html:link>
+                <html:link action="/myibd" styleClass="btn">Cancel</html:link>
             </div>
         </html:form>
 	</div>

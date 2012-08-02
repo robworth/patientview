@@ -41,9 +41,11 @@
             </div>
         </div>
         <div class="span6">
-            <div class="medicalDiagram">
-                <img src="img/content/proctitis.jpg" alt="Proctitis"/>
-            </div>
+            <logic:present name="myIbd" property="diagnosis">
+                <div class="medicalDiagram">
+                    <img src="img/content/<bean:write name="myIbd" property="diagnosis.diagram"/>" alt="<bean:write name="myIbd" property="diagnosis.name"/>"/>
+                </div>
+            </logic:present>
         </div>
     </div>
     <div class="row">
@@ -125,14 +127,14 @@
     </div>
     <div class="row">
         <div class="span12">
-            <html:link action="/ibd/myibd-edit">Edit</html:link>
+            <html:link action="/myibd-edit">Edit</html:link>
         </div>
     </div>
 </logic:present>
 <logic:notPresent name="myIbd">
     <div class="row">
         <div class="span12">
-            <html:link action="/ibd/myibd-edit">Add</html:link>
+            <html:link action="/myibd-edit">Add</html:link>
         </div>
     </div>
 </logic:notPresent>

@@ -8,7 +8,6 @@
         <div class="page-header">
             <h1>Care Plan</h1>
         </div>
-
         <html:form action="/ibd/careplan-update" styleClass="form-horizontal">
             <html:errors/>
             <fieldset>
@@ -128,10 +127,8 @@
                 </div>
             </div>
 
-
             <div class="form-actions">
                 <html:submit value="Save" styleClass="btn btn-primary"/>
-                <html:link action="/ibd/careplan" styleClass="btn">Cancel</html:link>
             </div>
 
             </fieldset>
