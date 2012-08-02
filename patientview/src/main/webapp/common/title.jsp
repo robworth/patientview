@@ -1,6 +1,7 @@
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib prefix="bean" uri="http://struts.apache.org/tags-bean" %>
 <div class="navbar">
     <div class="navbar-inner">
       <div class="container">
@@ -19,18 +20,8 @@
                 %>
                 <li class="pull-right "><div class="navText">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
                 <li><html:link action="logout">Logout</html:link></li>
-                    <%
-                        if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Change specialty<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">IBD portal</a></li>
-                            <li><a href="#">Renal patient portal</a></li>
-                        </ul>
-                    </li>
-                    <%
-                        }
+                <jsp:include page="include/tenancy_switcher.jsp"/>
+                <%
                     }
                 %>
 

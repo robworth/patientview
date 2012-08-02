@@ -13,19 +13,22 @@
         if (tenancyUserRoles.size() > 1) {
 
 %>
-<td class="infostrip">Change speciality:
-    <%
-        Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Change specialty<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+         <%
+            Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
 
-        for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
-            if (!tenancyUserRole.getTenancy().equals(tenancy)) {
-    %>
-    <a href="/launchpad-select.do?tenancyId=<%=tenancyUserRole.getTenancy().getId()%>"><%=tenancyUserRole.getTenancy().getName()%></a>
-    <%
+            for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
+                if (!tenancyUserRole.getTenancy().equals(tenancy)) {
+        %>
+            <li><a href="/launchpad-select.do?tenancyId=<%=tenancyUserRole.getTenancy().getId()%>"><%=tenancyUserRole.getTenancy().getName()%></a></li>
+        <%
+                }
             }
-        }
-    %>
-</td>
+        %>
+    </ul>
+</li>
 <%
         }
     }
