@@ -7,6 +7,10 @@ public class Ibd {
     public static final String MY_IBD_PARAM = "myIbd";
     public static final String NHS_NO_PARAM = "nhsNo";
 
+    public static final String CROHNS_DIAGRAM = "crohns.jpg";
+    public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";
+    public static final String ULCERATIVE_COLITIS_DIAGRAM = "ulcerative-colitis.jpg";
+
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
     public static final String DISEASE_EXTENT_ID_PARAM = "diseaseExtentId";
