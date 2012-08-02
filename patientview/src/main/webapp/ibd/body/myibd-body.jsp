@@ -41,9 +41,11 @@
             </div>
         </div>
         <div class="span6">
-            <div class="medicalDiagram">
-                <img src="img/content/proctitis.jpg" alt="Proctitis"/>
-            </div>
+            <logic:present name="myIbd" property="diagnosis">
+                <div class="medicalDiagram">
+                    <img src="img/content/<bean:write name="myIbd" property="diagnosis.diagram"/>" alt="<bean:write name="myIbd" property="diagnosis.name"/>"/>
+                </div>
+            </logic:present>
         </div>
     </div>
     <div class="row">
