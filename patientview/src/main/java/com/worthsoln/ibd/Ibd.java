@@ -34,6 +34,13 @@ public class Ibd {
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
     public static final String DISEASE_EXTENT_REQUIRED = "diseaseExtent.required";
+    public static final String COMPLICATIONS_REQUIRED = "complications.required";
+    public static final String BODY_PART_AFFECTED_REQUIRED = "bodyPartAffected.required";
+    public static final String WEIGHT_REQUIRED = "weight.required";
+    public static final String FAMILY_HISTORY_REQUIRED = "familyHistory.required";
+    public static final String SMOKING_REQUIRED = "smoking.required";
+    public static final String SURGERY_REQUIRED = "surgery.required";
+    public static final String VACCINATION_RECORD_REQUIRED = "vaccinationRecord.required";
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }
