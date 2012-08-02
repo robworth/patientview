@@ -1,5 +1,6 @@
 package com.worthsoln.service.ibd;
 
+import com.worthsoln.ibd.model.CarePlan;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,4 +14,10 @@ public interface IbdManager {
     MyIbd getMyIbd(User user);
 
     void saveMyIbd(MyIbd myIbd);
+
+    CarePlan getCarePlan(String nhsno);
+
+    CarePlan getCarePlan(User user);
+
+    void saveCarePlan(CarePlan carePlan);
 }
