@@ -1,5 +1,7 @@
 package com.worthsoln.ibd;
 
+import java.text.SimpleDateFormat;
+
 public class Ibd {
 
     public static final String MY_IBD_PARAM = "myIbd";
@@ -32,4 +34,6 @@ public class Ibd {
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
     public static final String DISEASE_EXTENT_REQUIRED = "diseaseExtent.required";
+
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }
