@@ -16,6 +16,18 @@ public class Ibd {
     public static final String VACCINATION_RECORD_ID_PARAM = "vaccinationRecordId";
     public static final String COMPLICATION_IDS_PARAM = "complicationIds";
 
+    // care plan params
+    public static final String AREA_TO_DISCUSS_IDS_PARAM = "areaToDiscussIds";
+    public static final String FURTHER_TOPICS_PARAM = "furtherTopics";
+    public static final String GOALS_PARAM = "goals";
+    public static final String GOAL_TO_ACHIEVE_PARAM = "goalToAchieve";
+    public static final String GOAL_SCORE_PARAM = "goalScale";
+    public static final String HOW_TO_ACHIEVE_GOAL_PARAM = "howToAchieveGoal";
+    public static final String BARRIERS_PARAM = "barriers";
+    public static final String WHAT_CAN_BE_DONE_PARAM = "whatCanBeDone";
+    public static final String CONFIDENCE_SCALE_PARAM = "confidenceScale";
+    public static final String REVIEW_DATE_PARAM = "reviewDate";
+
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
