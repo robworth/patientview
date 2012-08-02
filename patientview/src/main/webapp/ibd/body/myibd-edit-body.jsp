@@ -8,6 +8,8 @@
         </div>
 
         <html:form action="/ibd/myibd-update" styleClass="form-horizontal">
+            <html:errors/>
+
             <logic:present name="diagnosisList" scope="session">
                 <div class="control-group">
                         <label class="control-label">Primary Diagnosis:</label>
@@ -96,8 +98,6 @@
                     </div>
                 </div>
             </logic:present>
-
-            <html:errors/>
 
             <div class="form-actions">
                 <html:submit value="Save" styleClass="btn btn-primary"/>
