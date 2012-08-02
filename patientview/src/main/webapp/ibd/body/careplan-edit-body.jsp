@@ -1,3 +1,5 @@
+<%@ page import="com.worthsoln.ibd.model.enums.AreaToDiscuss" %>
+<%@ page import="java.util.HashSet" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -20,9 +22,22 @@
             </p>
 
             <p>
-                <logic:iterate name="areaToDiscussList" id="areaToDiscuss">
+                <bean:define id="areaToDiscussIds" name="carePlanForm" property="areaToDiscussIds" type="java.lang.Long[]"/>
+
+                <logic:iterate name="areaToDiscussList" id="areaToDiscuss" type="com.worthsoln.ibd.model.enums.AreaToDiscuss">
+                    <%
+                    boolean checked = false;
+
+                    for (Long l : areaToDiscussIds) {
+                        if (l == areaToDiscuss.getId()) {
+                            checked = true;
+                            break;
+                        }
+                    }
+                    %>
                     <input type="checkbox" id="areaToDiscuss<bean:write name="areaToDiscuss" property="id" />"
-                           name="areaToDiscussIds" value="<bean:write name="areaToDiscuss" property="id" />"/>
+                           name="areaToDiscussIds" value="<bean:write name="areaToDiscuss" property="id" />"
+                           <%=(checked ? "checked=\"checked\"":"")%> />
                     <label style="display: inline" for="areaToDiscuss<bean:write name="areaToDiscuss" property="id" />"><bean:write
                             name="areaToDiscuss" property="name"/></label>
                     <br/>
