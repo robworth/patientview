@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
-      <tr>
+<%--      <tr>
         <td colspan="10">
           <table width="100%">
             <tr>
@@ -25,4 +25,4 @@
             </tr>
           </table>
         </td>
-      </tr>
+      </tr>--%>

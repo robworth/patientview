@@ -3,7 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <div class="row">
     <div class="span12">
-        <h1>My IBD</h1>
+        <div class="page-header">
+            <h1>My IBD</h1>
+        </div>
     </div>
 </div>
 <logic:present name="myIbd">
