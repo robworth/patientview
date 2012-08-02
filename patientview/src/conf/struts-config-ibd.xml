@@ -30,6 +30,7 @@
             <form-property name="barriers" type="java.lang.String"/>
             <form-property name="whatCanBeDone" type="java.lang.String"/>
             <form-property name="confidenceScale" type="java.lang.Integer"/>
+            <form-property name="reviewDate" type="java.lang.String"/>
         </form-bean>
     </form-beans>
 
