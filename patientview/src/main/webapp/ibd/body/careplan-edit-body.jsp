@@ -12,7 +12,7 @@
             <html:errors/>
             <fieldset>
             <div class="control-group">
-                <label class="control-label">
+                <label class="control-label no-top-padding">
                     Care plan:
                 </label>
                 <div class="controls docs-input-sizes">
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="control-label">
+                <div class="control-label no-top-padding">
                     Action plan:
                 </div>
                 <div class="controls docs-input-sizes">
