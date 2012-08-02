@@ -4,47 +4,34 @@
 
 <html:xhtml/>
 
-<div align="center">
-
-<table width="440">
-    <tr>
-        <td><p class="header">LaunchPad</p></td>
-    </tr>
-</table>
-
-<br />
-
 <logic:notPresent name="tenancyUserRoles">
-    <table width="440" border="0" cellspacing="1" cellpadding="3">
-        <tr valign="top">
-            <td class="tableheader" colspan="2">Sorry you do not have the correct permissions to login</td>
-        </tr>
-    </table>
+    <div class="alert alert-error">
+        Sorry you do not have the correct permissions to login
+    </div>
 </logic:notPresent>
 
 <logic:present name="tenancyUserRoles">
 
-    <table width="440" border="0" cellspacing="1" cellpadding="3">
+    <div class="page-header">
+        <h1>Launch Pad <small>Select the speciality you wish to view in more detail</small></h1>
+    </div>
 
-        <tr valign="top">
-            <td class="tableheader" colspan="2">Available Specialities, please select one:</td>
-        </tr>
-
+    <ul class="thumbnails">
     <logic:iterate id="tenancyUserRole" name="tenancyUserRoles">
-        <tr valign="top">
-            <td class="tablecellbold">Speciality</td>
-
-            <td class="tablecell">
-                <a href="launchpad-select.do?tenancyId=<bean:write name="tenancyUserRole" property="tenancy.id"/>"><bean:write name="tenancyUserRole" property="tenancy.name"/> (<bean:write name="tenancyUserRole" property="role"/>)</a>
-            </td>
-        </tr>
+        <li class="span3">
+            <div class="thumbnail">
+                <a href="launchpad-select.do?tenancyId=<bean:write name="tenancyUserRole" property="tenancy.id"/>" class="thimbnail"><img src="http://placehold.it/260x180" alt=""></a>
+                <div class="caption">
+                  <h5><bean:write name="tenancyUserRole" property="tenancy.name"/> (<bean:write name="tenancyUserRole" property="role"/>)</h5>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                  <p><a href="launchpad-select.do?tenancyId=<bean:write name="tenancyUserRole" property="tenancy.id"/>" class="btn">Enter</a></p>
+                </div>
+            </div>
+        </li>            
     </logic:iterate>
-
-    </table>
-    <br /><br />
+    </ul>
 
 </logic:present>
 
-</div>
 
 

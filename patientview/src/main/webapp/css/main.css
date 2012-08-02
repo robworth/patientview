@@ -197,3 +197,7 @@ h1{
 	text-align: center;
 	margin: 0 0 20px 0;
 }
+
+.no-top-padding, .form-horizontal .control-label.no-top-padding{
+    padding-top: 0;
+}

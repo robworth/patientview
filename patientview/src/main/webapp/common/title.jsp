@@ -9,33 +9,46 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">Site Title</a>
+        <a class="brand" href="#">
+            <logic:present tenancy="ibd">My IBD</logic:present>
+        </a>
         <div class="nav-collapse">
             <ul class="nav pull-right">
-                <logic:present role="patient,demo,superadmin,unitadmin,unitstaff">
+                <%
+                    if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
+                %>
                 <li class="pull-right "><div class="navText">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
                 <li><html:link action="logout">Logout</html:link></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Change specialty<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">IBD portal</a></li>
-                        <li><a href="#">Renal patient portal</a></li>
-                    </ul>
-                </li>
-                </logic:present>
+                    <%
+                        if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
+                    %>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Change specialty<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">IBD portal</a></li>
+                            <li><a href="#">Renal patient portal</a></li>
+                        </ul>
+                    </li>
+                    <%
+                        }
+                    }
+                %>
 
                 <li><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
 
             </ul>
 
-            <logic:notPresent role="patient,demo,superadmin,unitadmin,unitstaff">
+            <%
+                    if (!LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
+            %>
                 <form class="navbar-form pull-right" action="j_security_check" method="POST">
                     <input type="text" class="span2" name="j_username" placeholder="Username">
                     <input type="password" class="span2" name="j_password" placeholder="Password">
                     <input class="btn" type="submit" value="Login">
                 </form>
-            </logic:notPresent>
-
+            <%
+                }
+            %>
         </div><!-- /.nav-collapse -->
       </div>
     </div><!-- /navbar-inner -->
