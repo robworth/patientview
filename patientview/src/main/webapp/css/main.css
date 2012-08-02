@@ -20,6 +20,10 @@ h1{
 	width: 100px;
 }
 
+.navbar .navText{
+    padding: 9px 10px 11px;
+}
+
 .navbar .container {
 	width: 940px;
 }

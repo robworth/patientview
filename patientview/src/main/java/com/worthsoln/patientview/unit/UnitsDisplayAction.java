@@ -21,7 +21,7 @@ public class UnitsDisplayAction extends DatabaseAction {
         User user = LegacySpringUtils.getUserManager().getLoggedInUser();
 
         List items;
-        if (user.getRole().equals("superadmin")) {
+        if (LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equals("superadmin")) {
             items = LegacySpringUtils.getUnitManager().getAll(true);
         } else {
             items = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits();

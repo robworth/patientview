@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
  *  Sets up everything required for hibernate, persistence.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-context.xml")
+@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
 @Transactional
 public abstract class BaseDaoTest {
 }

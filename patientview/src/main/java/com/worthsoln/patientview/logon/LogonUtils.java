@@ -33,7 +33,7 @@ public class LogonUtils {
             User user = LegacySpringUtils.getUserManager().get(username);
 
             if (user.isFirstlogon()) {
-                if (user.getRole().equalsIgnoreCase("patient")) {
+                if (LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equalsIgnoreCase("patient")) {
                     resultForward = "patientPasswordChangeInput";
                 } else {
                     resultForward = "controlPasswordChangeInput";
@@ -62,7 +62,7 @@ public class LogonUtils {
     private static SplashPage activeSplashPage(User user) {
         SplashPage returnSplashPage = null;
 
-        if (user.getRole().equalsIgnoreCase("patient")) {
+        if (LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equalsIgnoreCase("patient")) {
             List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPagesForPatient(user);
             List<SplashPageUserSeen> splashPagesUserHasSeen = SplashPageUtils.retrieveSplashPagesPatientHasSeen(user);
 

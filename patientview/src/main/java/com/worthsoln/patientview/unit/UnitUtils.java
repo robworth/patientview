@@ -35,10 +35,6 @@ public class UnitUtils {
         return unit;
     }
 
-    public static List<String> usersUnitCodes(HttpServletRequest request) {
-        return LegacySpringUtils.getUnitManager().getUsersUnitCodes();
-    }
-
     public static String retrieveUnitcode(HttpServletRequest request) {
         User user = UserUtils.retrieveUser(request);
 

@@ -12,6 +12,7 @@ import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UnitStatDao;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -84,7 +85,7 @@ public class UnitManagerImpl implements UnitManager {
 
         List<String> unitCodes = new ArrayList<String>();
 
-        if (!user.getRole().equals("superadmin")) {
+        if (!LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equals("superadmin")) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 

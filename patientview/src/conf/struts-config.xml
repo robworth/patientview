@@ -258,6 +258,17 @@
       <forward name="success" path="/forgotten-password-confirmation.jsp"/>
     </action>
 
+      <action path="/launchpad"
+              type="com.worthsoln.patientview.launchpad.LaunchpadAction">
+          <forward name="success" path="/launchpad.jsp" redirect="false"/>
+      </action>
+
+      <action path="/launchpad-select"
+              type="com.worthsoln.patientview.launchpad.LaunchpadSelectAction">
+          <forward name="error" path="/logout.do" redirect="true"/>
+          <forward name="success" path="/logged_in.do" redirect="true"/>
+      </action>
+
     <action path="/setscreenname"
       type="com.worthsoln.forum.ScreenNameAction" parameter="index">
       <forward name="input" redirect="true" path="/set-screenname.jsp"/>

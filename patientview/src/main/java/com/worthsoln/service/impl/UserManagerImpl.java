@@ -1,7 +1,10 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.repository.TenancyUserRoleDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.service.SecurityUserManager;
@@ -26,6 +29,9 @@ public class UserManagerImpl implements UserManager {
     @Inject
     private SecurityUserManager securityUserManager;
 
+    @Inject
+    private TenancyUserRoleDao tenancyUserRoleDao;
+
     @Override
     public User getLoggedInUser() {
         return userDao.get(securityUserManager.getLoggedInUsername());
@@ -39,6 +45,27 @@ public class UserManagerImpl implements UserManager {
     @Override
     public User get(String username) {
         return userDao.get(username);
+    }
+
+    @Override
+    public String getLoggedInUserRole() {
+
+        // todo get role from spring user for this logged in tenancy - should be in securityUserManager
+
+        return "patient";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getCurrentTenancyRole(User user) {
+
+        // todo get role for this user for logged in tenancy - should be in securityUserManager
+
+        return "patient";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<TenancyUserRole> getTenancyUserRoles(User user) {
+        return tenancyUserRoleDao.get(user);
     }
 
     @Override

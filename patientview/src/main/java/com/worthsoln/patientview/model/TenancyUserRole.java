@@ -4,25 +4,26 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
- *  Allow users to have mutiple entries (i.e. different roles in different tenancies) in the patient view system
+ *  Allow users to have multiple entries (i.e. different roles in different tenancies) in the patient view system
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"tenancy_id", "user_id", "role"}))
 public class TenancyUserRole extends BaseModel {
-
 
     @ManyToOne
     @JoinColumn(name = "tenancy_id")
     private Tenancy tenancy;
 
-    @Column(nullable = false)
-    private Long userFkId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false)
     private String role;
-
-    // unit code?
 
     public Tenancy getTenancy() {
         return tenancy;
@@ -32,12 +33,12 @@ public class TenancyUserRole extends BaseModel {
         this.tenancy = tenancy;
     }
 
-    public Long getUserFkId() {
-        return userFkId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserFkId(Long userFkId) {
-        this.userFkId = userFkId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getRole() {
