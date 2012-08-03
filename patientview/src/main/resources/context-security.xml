@@ -30,6 +30,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <!-- generic URLs that require a login -->
         <intercept-url pattern="/logged_in.do" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/launchpad.do" access="ROLE_ANY_USER"/>
+        <intercept-url pattern="/launchpad-select.do" access="ROLE_ANY_USER"/>
 
         <!-- RPV tenancy config -->
         <intercept-url pattern="/rpv/logged_in.do" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
