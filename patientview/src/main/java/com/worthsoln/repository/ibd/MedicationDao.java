@@ -1,15 +1,13 @@
 package com.worthsoln.repository.ibd;
 
-import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.medication.Medication;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(propagation = Propagation.MANDATORY)
-public interface CarePlanDao {
+public interface MedicationDao {
 
-    CarePlan get(Long id);
+    Medication get(Long id);
 
-    CarePlan get(String nhsno);
-
-    void save(CarePlan carePlan);
+    void save(Medication medication);
 }
