@@ -16,7 +16,6 @@ import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.springframework.web.struts.ActionSupport;
 
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +103,10 @@ public class BaseAction extends ActionSupport {
     }
 
     protected IbdManager getIbdManager() {
+        // To do this without the spring action support
+//        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(
+//                servlet.getServletContext());
+
         return getWebApplicationContext().getBean(IbdManager.class);
     }
 
