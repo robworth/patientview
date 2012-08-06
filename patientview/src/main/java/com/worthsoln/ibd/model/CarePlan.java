@@ -28,25 +28,25 @@ public class CarePlan extends BaseModel {
     @Transient
     List<AreaToDiscuss> areasToDiscuss;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String furtherTopics;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String goals;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String goalToAchieve;
 
     @Column(nullable = true)
     private Integer goalScale;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String howToAchieveGoal;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String barriers;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String whatCanBeDone;
 
     @Column(nullable = true)
