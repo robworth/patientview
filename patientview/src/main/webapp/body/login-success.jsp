@@ -23,50 +23,50 @@
 
 <dl>
 
-  <%
-    if (request.getAttribute("lastLogin") != null) {
-  %>
-  <dt>Last login recorded</dt>
-  <dd><%=request.getAttribute("lastLogin")%>
-  </dd>
-  <%
-    }
-  %>
+    <%
+        if (request.getAttribute("lastLogin") != null) {
+    %>
+    <dt>Last login recorded</dt>
+    <dd><%=request.getAttribute("lastLogin")%>
+    </dd>
+    <%
+        }
+    %>
 
-  <%
-    if (request.getAttribute("lastDataDate") != null) {
-  %>
-  <dt>Last data received for this record</dt>
-  <dd>On <%=request.getAttribute("lastDataDate")%>
     <%
-      if (request.getAttribute("lastDataFrom") != null) {
+        if (request.getAttribute("lastDataDate") != null) {
     %>
-    from <%=request.getAttribute("lastDataFrom")%>
+    <dt>Last data received for this record</dt>
+    <dd>On <%=request.getAttribute("lastDataDate")%>
+        <%
+            if (request.getAttribute("lastDataFrom") != null) {
+        %>
+        from <%=request.getAttribute("lastDataFrom")%>
+        <%
+            }
+        %>
+    </dd>
     <%
-      }
+        }
     %>
-  </dd>
-  <%
-    }
-  %>
 </dl>
 
 
 <%
-  if (request.getAttribute("isPatient") != null) {
+    if (request.getAttribute("isPatient") != null) {
 %>
 <form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy().getContext()%>/patient/patient_details.do">
-<p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
-    </form>
+    <p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
+</form>
 
 <%
 } else {
 %>
 <form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy().getContext()%>/control/index.jsp">
-   <p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
+    <p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
 </form>
 <%
-  }
+    }
 %>
 
 
