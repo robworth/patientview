@@ -1,12 +1,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib prefix="logic" uri="http://struts.apache.org/tags-logic" %>
 
 <div class="row">
         <div class="span12 footer">
             <ul class="barSpeperatedNav">
-                <li><a href="#">Legal</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Accesibility</a></li>
+                <logic:present tenancy="rpv">
+                    <li><a href="/disclaimer.do">Disclaimer</a></li>
+                </logic:present>
             </ul>
         </div>
     </div>
