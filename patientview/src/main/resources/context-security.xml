@@ -16,31 +16,31 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/images/**" security="none"/>
     <http pattern="/img/**" security="none"/>
 
-    <!-- public pages -->
-    <http pattern="/" security="none"/>
-    <http pattern="/index.jsp" security="none"/>
-    <http pattern="/login.jsp" security="none"/>
-    <http pattern="/newsView.do" security="none"/>
-    <http pattern="/disclaimer.do" security="none"/>
-    <http pattern="/help.do" security="none"/>
-    <http pattern="/index.do" security="none"/>
-    <http pattern="/infoLinks.do" security="none"/>
-    <http pattern="/password-advice.jsp" security="none"/>
-    <http pattern="/forgotten-password.jsp" security="none"/>
-
-    <!-- secure pages -->
     <http>
+        <!-- these pages can be viewed without logging in, but need to run with the filter chain (so we can view login details etc-->
+        <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/index.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/newsView.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/disclaimer.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/help.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/index.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/infoLinks.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/password-advice.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/forgotten-password.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- secure pages -->
         <!-- generic URLs that require a login -->
         <intercept-url pattern="/logged_in.do" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/launchpad.do" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/launchpad-select.do" access="ROLE_ANY_USER"/>
 
         <!-- RPV tenancy config -->
-        <intercept-url pattern="/rpv/logged_in.do" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
         <intercept-url pattern="/rpv/control/**" access="ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
         <intercept-url pattern="/rpv/patient/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
         <intercept-url pattern="/rpv/forums/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
         <intercept-url pattern="/rpv/posts/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+        <intercept-url pattern="/rpv/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
 
         <!-- IDB tenancy config -->
         <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
@@ -48,8 +48,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/forums/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/myibd**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/careplan**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
 
         <!-- Everything else is inaccessible, no one will ever have this role... -->
         <intercept-url pattern="/**" access="ROLE_NOT_ALLOWED"/>
