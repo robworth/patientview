@@ -46,5 +46,5 @@
     <%
         }
     %>
-    <li <%= ("help".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/help">Help</html:link></li>
+    <li <%= ("help".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/help.do">Help</a></li>
 </ul>
