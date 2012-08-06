@@ -45,7 +45,7 @@ public class MyMedicine extends BaseModel {
     @Transient
     private MedicationFrequency medicationFrequency;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String reasonForStopping;
 
     public boolean hasStopped() {
