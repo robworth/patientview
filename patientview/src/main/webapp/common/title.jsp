@@ -10,7 +10,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">
+        <a class="brand" href="/">
             <logic:present tenancy="ibd">My IBD</logic:present>
             <logic:present tenancy="rpv">My RPV</logic:present>
         </a>
