@@ -8,12 +8,14 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
-@Table(name = "ibd_medicines")
+@Table(name = "ibd_my_medicines")
 public class MyMedicine extends BaseModel {
 
     @Column(nullable = false)
@@ -25,13 +27,16 @@ public class MyMedicine extends BaseModel {
     @Column(nullable = true)
     private Date dateStopped;
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "medication_type_id")
     private MedicationType medicationType;
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "medication_id")
     private Medication medication;
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "medication_dose_id")
     private MedicationDose medicationDose;
 
     @Transient
@@ -39,6 +44,13 @@ public class MyMedicine extends BaseModel {
 
     @Transient
     private MedicationFrequency medicationFrequency;
+
+    @Column(nullable = true)
+    private String reasonForStopping;
+
+    public boolean hasStopped() {
+        return dateStopped != null;
+    }
 
     public String getNhsno() {
         return nhsno;
@@ -130,5 +142,13 @@ public class MyMedicine extends BaseModel {
 
     public void setMedicationFrequencyId(Long id) {
         this.medicationFrequency = MedicationFrequency.getMedicineFrequency(id);
+    }
+
+    public String getReasonForStopping() {
+        return reasonForStopping;
+    }
+
+    public void setReasonForStopping(String reasonForStopping) {
+        this.reasonForStopping = reasonForStopping;
     }
 }
