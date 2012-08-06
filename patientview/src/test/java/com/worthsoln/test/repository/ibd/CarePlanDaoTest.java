@@ -1,8 +1,9 @@
-package com.worthsoln.test.repository;
+package com.worthsoln.test.repository.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
 import com.worthsoln.ibd.model.enums.AreaToDiscuss;
 import com.worthsoln.repository.ibd.CarePlanDao;
+import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
 
 import javax.inject.Inject;
