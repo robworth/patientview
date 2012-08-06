@@ -44,10 +44,11 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
         List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(user);
 
         // todo implement routing direct to target URL?
+        // todo this should only take effect if spring it not in the middle of redirecting to a secured page
+        // currently we push all logins through the logged_in action to ensure correct routing to admin pages
 
-        // if this user has multiple tenancies then route to the launchpad page
         if (tenancyUserRoles.size() > 1) {
-            // todo this should only take effect if spring it not in the middle of redirecting to a secured page
+            // if this user has multiple tenancies then route to the launchpad page
             response.sendRedirect("/launchpad.do");
 
         } else if (tenancyUserRoles.size() == 1) {
@@ -55,13 +56,10 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
 
             // set the users tenancy session
             Tenancy tenancy = tenancyUserRoles.get(0).getTenancy();
-
             securityUser.setTenancy(tenancy);
 
             // if this user has only a single tenancy route to the home page : /<tenancy-context>/logged_in.do
-//            setTargetUrlParameter("/" + tenancy.getContext() + "/logged_in.do");
-
-            super.onAuthenticationSuccess(request, response, authentication);
+            response.sendRedirect("/" + tenancy.getContext() + "/logged_in.do");
         }
     }
 
