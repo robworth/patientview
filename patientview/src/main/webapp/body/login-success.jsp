@@ -1,3 +1,4 @@
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -14,55 +15,61 @@
 
 </logic:present>
 
+<div class="page-header">
+    <h1>Welcome <%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%>, you have logged in successfully</h1>
+</div>
 
-<p class="header">Login Successful</p>
-
-<p><b>This is a confidential record.</b> If you should not be reading it please <html:link action="logout">log out</html:link> now.</p>
+<div class="alert alert-info"><b>This is a confidential record.</b> If you should not be reading it please <html:link action="logout">log out</html:link> now.</div>
 
 
-<dl>
+<table class="table table-striped table-bordered table-condensed">
+    <tbody>
 
-  <%
-    if (request.getAttribute("lastLogin") != null) {
-  %>
-  <dt>Last login recorded</dt>
-  <dd><%=request.getAttribute("lastLogin")%>
-  </dd>
-  <%
-    }
-  %>
-
-  <%
-    if (request.getAttribute("lastDataDate") != null) {
-  %>
-  <dt>Last data received for this record</dt>
-  <dd>On <%=request.getAttribute("lastDataDate")%>
     <%
-      if (request.getAttribute("lastDataFrom") != null) {
+        if (request.getAttribute("lastLogin") != null) {
     %>
-    from <%=request.getAttribute("lastDataFrom")%>
+          <tr>
+            <th>Last login recorded</th>
+            <td><%=request.getAttribute("lastLogin")%></td>
+          </tr>
+        <%
+        }
+        %>
+
+        <%
+        if (request.getAttribute("lastDataDate") != null) {
+        %>
+        <tr>
+            <th>Last data received for this record</th>
+            <td>On <%=request.getAttribute("lastDataDate")%>
+            <%
+              if (request.getAttribute("lastDataFrom") != null) {
+            %>
+            from <%=request.getAttribute("lastDataFrom")%>
+            <%
+              }
+            %>
+            </td>
+        </tr>
     <%
-      }
+        }
     %>
-  </dd>
-  <%
-    }
-  %>
-</dl>
+    </tbody>
+</table>
 
 
 <%
   if (request.getAttribute("isPatient") != null) {
 %>
 <form action="/patient/patient_details.do">
-<p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
-    </form>
+    <input type="submit" value="Continue" class="btn" tabindex="3" />
+</form>
 
 <%
 } else {
 %>
 <form action="/control/index.jsp">
-   <p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
+   <input type="submit" value="Continue" class="btn" style="border-style: outset;" tabindex="3" />
 </form>
 <%
   }
