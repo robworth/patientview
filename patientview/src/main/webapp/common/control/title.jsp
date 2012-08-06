@@ -1,10 +1,48 @@
-      <tr bgcolor="#AAAAAA" height="50">
-        <td colspan="2" nowrap="nowrap">
-          <table>
-            <tr>
-              <td><img src="images/administrationarea.gif" width="258" height="18" border="0" alt="" hspace="20" align="absmiddle" /></td>
-              <td><img src="images/logo-admin.gif" width="366" height="55" border="0" alt="Renal PatientView" /></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib prefix="bean" uri="http://struts.apache.org/tags-bean" %>
+<div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <html:link action="/index" styleClass="brand">
+            Administration Area
+        </html:link>
+        <%--<div class="nav-collapse">
+            <ul class="nav pull-right">
+                <%
+                    if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
+                %>
+                <li class="pull-right "><div class="navText">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
+                <li><html:link action="logout">Logout</html:link></li>
+                <jsp:include page="include/tenancy_switcher.jsp"/>
+                <%
+                    }
+                %>
+
+                <li><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
+
+            </ul>
+
+            <%
+                    if (!LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
+            %>
+                <form class="navbar-form pull-right" action="j_security_check" method="POST">
+                    <input type="text" class="span2" name="j_username" placeholder="Username">
+                    <input type="password" class="span2" name="j_password" placeholder="Password">
+                    <input class="btn" type="submit" value="Login">
+                </form>
+            <%
+                }
+            %>
+        </div><!-- /.nav-collapse -->--%>
+      </div>
+    </div><!-- /navbar-inner -->
+</div>
+
+<div class="container">

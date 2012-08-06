@@ -205,3 +205,12 @@ h1{
 .checkbox.inline.span6 {
     width: 447px;
 }
+
+.paragraphSizeTopMargin{
+    margin-top: 9px;
+}
+
+.noSidePadding {
+    padding-left: 0;
+    padding-right: 0;
+}
