@@ -1,3 +1,4 @@
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -54,14 +55,14 @@
 <%
   if (request.getAttribute("isPatient") != null) {
 %>
-<form action="/patient/patient_details.do">
+<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy().getContext()%>/patient/patient_details.do">
 <p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
     </form>
 
 <%
 } else {
 %>
-<form action="/control/index.jsp">
+<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy().getContext()%>/control/index.jsp">
    <p><b><input type="submit" value="Continue" class="formbutton" style="border-style: outset;" tabindex="3" /></b></p>
 </form>
 <%

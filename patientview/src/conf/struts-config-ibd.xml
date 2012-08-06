@@ -58,7 +58,7 @@
                 validate="true"
                 parameter="ibd_myibd">
             <forward name="input" path="/ibd/myibd-edit.jsp"/>
-            <forward name="success" path="/ibd/myibd.do" redirect="true" />
+            <forward name="success" path="/myibd.do"/>
         </action>
 
         <action path="/careplan"
@@ -76,7 +76,7 @@
                 validate="true"
                 parameter="ibd_careplan">
             <forward name="input" path="/ibd/careplan-edit.jsp"/>
-            <forward name="success" path="/ibd/careplan.do" redirect="true" />
+            <forward name="success" path="/careplan.do"/>
         </action>
     </action-mappings>
 

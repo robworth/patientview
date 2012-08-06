@@ -6,8 +6,8 @@
                 <li><a href="#">Legal</a></li>
                 <li><a href="#">Privacy Policy</a></li>
                 <li><a href="#">About</a></li>
-                <li><a href="#">Accesibility</li>
-            <ul>
+                <li><a href="#">Accesibility</a></li>
+            </ul>
         </div>
     </div>
 </div>
