@@ -32,10 +32,20 @@ public class TenancyUtils {
 
     public static String rewriteTenancyUrlAddContext(String uri) {
 
-        Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
+        if (uri != null) {
 
-        String context = tenancy != null ? "/" + tenancy.getContext() : "";
+            // check for leading double slash
+            if (uri.startsWith("//")) {
+                uri = uri.substring(1);
+            }
 
-        return context + uri;
+            Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
+
+            String context = tenancy != null ? "/" + tenancy.getContext() : "";
+
+            return context + uri;
+        } else {
+            return "";
+        }
     }
 }

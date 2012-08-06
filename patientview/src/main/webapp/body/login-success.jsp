@@ -75,5 +75,4 @@
   }
 %>
 
-
-<html:link href="/password-advice.jsp">Find out more about secure passwords.</html:link>
+<a href="/password-advice.jsp">Find out more about secure passwords.</a>

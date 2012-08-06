@@ -80,8 +80,4 @@
         </action>
     </action-mappings>
 
-    <message-resources
-            parameter="ibd-messages"
-            null="false"/>
-
 </struts-config>

@@ -24,6 +24,8 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/help.do" security="none"/>
     <http pattern="/index.do" security="none"/>
     <http pattern="/infoLinks.do" security="none"/>
+    <http pattern="/password-advice.jsp" security="none"/>
+    <http pattern="/forgotten-password.jsp" security="none"/>
 
     <!-- secure pages -->
     <http>
