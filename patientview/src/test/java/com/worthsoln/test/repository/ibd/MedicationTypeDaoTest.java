@@ -52,7 +52,7 @@ public class MedicationTypeDaoTest extends BaseDaoTest {
 
     private Medication getTestMedicationObject() {
         MedicationDose medicationDose = new MedicationDose();
-        medicationDose.setValue("400mg");
+        medicationDose.setMg(400.00);
 
         medicationDoseDao.save(medicationDose);
 

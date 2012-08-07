@@ -27,11 +27,17 @@ public class MedicationDaoTest extends BaseDaoTest {
     @Test
     public void testAddGetMedication() throws Exception {
         MedicationDose medicationDose = new MedicationDose();
-        medicationDose.setValue("400mg");
+        medicationDose.setMg(400.00);
+        medicationDose.setExtraInformation("Per kilo");
 
         medicationDoseDao.save(medicationDose);
 
+        MedicationDose checkMedicationDose = medicationDoseDao.get(medicationDose.getId());
+
         assertTrue("Invalid id for new medication dose", medicationDose.getId() > 0);
+        assertEquals("MG for dose not persisted", medicationDose.getMg(), checkMedicationDose.getMg());
+        assertEquals("Extra information for dose not persisted", medicationDose.getExtraInformation(),
+                checkMedicationDose.getExtraInformation());
 
         List<MedicationDose> allowedDosages = new ArrayList<MedicationDose>();
         allowedDosages.add(medicationDose);
