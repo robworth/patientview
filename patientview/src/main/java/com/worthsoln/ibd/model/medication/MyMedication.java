@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ibd_my_medicines")
-public class MyMedicine extends BaseModel {
+public class MyMedication extends BaseModel {
 
     @Column(nullable = false)
     private String nhsno;
@@ -34,6 +34,9 @@ public class MyMedicine extends BaseModel {
     @ManyToOne(optional = false)
     @JoinColumn(name = "medication_id")
     private Medication medication;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String otherMedication;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "medication_dose_id")
@@ -90,6 +93,14 @@ public class MyMedicine extends BaseModel {
 
     public void setMedication(Medication medication) {
         this.medication = medication;
+    }
+
+    public String getOtherMedication() {
+        return otherMedication;
+    }
+
+    public void setOtherMedication(String otherMedication) {
+        this.otherMedication = otherMedication;
     }
 
     public MedicationDose getMedicationDose() {
