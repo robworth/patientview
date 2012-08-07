@@ -32,6 +32,24 @@
             <form-property name="confidenceScale" type="java.lang.Integer"/>
             <form-property name="reviewDate" type="java.lang.String"/>
         </form-bean>
+
+        <form-bean name="medicationForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="id" type="java.lang.Long"/>
+            <form-property name="dateStarted" type="java.lang.String"/>
+            <form-property name="medicationTypeId" type="java.lang.Long"/>
+            <form-property name="medicationId" type="java.lang.Long"/>
+            <form-property name="medicationDoseId" type="java.lang.Long"/>
+            <form-property name="otherMedication" type="java.lang.String"/>
+            <form-property name="medicationNoOfId" type="java.lang.Long"/>
+            <form-property name="medicationFrequencyId" type="java.lang.Long"/>
+        </form-bean>
+
+        <form-bean name="stopMedicationForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="id" type="java.lang.Long"/>
+            <form-property name="reasonForStopping" type="java.lang.String"/>
+        </form-bean>
     </form-beans>
 
     <action-mappings>
@@ -77,6 +95,31 @@
                 parameter="ibd_careplan">
             <forward name="input" path="/ibd/careplan-edit.jsp"/>
             <forward name="success" path="/ibd/careplan.do" redirect="true" />
+        </action>
+
+        <action path="/medications"
+                type="com.worthsoln.ibd.action.mymedications.MyMedicationsAction"
+                scope="request"
+                parameter="ibd_myibd">
+            <forward name="success" path="/ibd/medications.jsp"/>
+        </action>
+
+        <action path="/medication-add"
+                name="medicationForm"
+                type="com.worthsoln.ibd.action.mymedications.MyMedicationEditAction"
+                scope="request"
+                parameter="ibd_mymedications">
+            <forward name="success" path="/ibd/medication-add.jsp"/>
+        </action>
+
+        <action path="/medication-update" name="medicationForm"
+                type="com.worthsoln.ibd.action.mymedications.MyMedicationUpdateAction"
+                input="input"
+                scope="request"
+                validate="true"
+                parameter="ibd_medication">
+            <forward name="input" path="/ibd/medication-add.jsp"/>
+            <forward name="success" path="/ibd/medications.do" redirect="true" />
         </action>
     </action-mappings>
 
