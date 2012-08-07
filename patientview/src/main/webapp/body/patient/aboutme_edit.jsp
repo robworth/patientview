@@ -4,11 +4,13 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 
 <html:xhtml/>
+<div class="row">
+    <div class="span12">
+        <div class="page-header">
+            <h1>About Me</h1>
+        </div>
 
-<p class="header">About Me</p>
 
-
-<table cellpadding="3" >
 
 <html:form action="/patient/aboutmeUpdate">
 
@@ -25,49 +27,40 @@
     <tr>
         <td >
             <logic:empty name="aboutme">
-                <html:textarea property="aboutme" rows="5" cols="40"/>
+                <html:textarea property="aboutme" rows="5" cols="40" styleClass="span6"/>
             </logic:empty>
 
             <logic:notEmpty name="aboutme">
-                <html:textarea name="aboutme" property="aboutme" rows="5" cols="40"/>
+                <html:textarea name="aboutme" property="aboutme" rows="5" cols="40"  styleClass="span6"/>
             </logic:notEmpty>
         </td>
     </tr>
     <tr>
         <td >&nbsp;</td>
     </tr>
-
-    <tr>
-        <td >
-            <p><b>Things I'd like to talk about</b><br />
+    <label>
+    <b>Things I'd like to talk about</b><br />
                 (For example... what should my blood pressure be, home dialysis, stopping dialysis, getting a transplant)</p>
-        </td>
-    </tr>
+    </label>
     <tr>
         <td >
             <logic:empty name="aboutme">
-                <html:textarea property="talkabout" rows="5" cols="40"/>
+                <html:textarea property="talkabout" rows="5" cols="80"  styleClass="span6"/>
             </logic:empty>
 
             <logic:notEmpty name="aboutme">
-                <html:textarea name="aboutme" property="talkabout" rows="5" cols="40"/>
+                <html:textarea name="aboutme" property="talkabout" rows="5" cols="40"  styleClass="span6"/>
             </logic:notEmpty>
         </td>
     </tr>
-    <tr>
-        <td >&nbsp;</td>
-    </tr>
 
-    <tr>
-        <td align="left">
-             <html:submit value="Update" styleClass="formButton"/>
-        </td>
-    </tr>
+
+    <div class="form-actions">
+         <html:submit value="Update" styleClass="btn btn-primary"/>
+    </div>
 
 </html:form>
-    <tr>
-        <td >&nbsp;</td>
-    </tr>
+
 <%--
     <tr>
         <td >
@@ -90,7 +83,7 @@
     </tr>
 </html:form>
 --%>
-</table>
-
+</div>
+</div>
 
 
