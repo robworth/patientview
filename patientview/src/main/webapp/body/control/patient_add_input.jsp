@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Patient</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Patient</h1>
+</div>
 
 <html:errors />
 
@@ -59,8 +61,10 @@
       <td><html:checkbox property="dummypatient" value="true" /></td>
     </tr>
     <tr align="right">
-      <td><html:submit value="Add" styleClass="formbutton" /></td>
+      <td><html:submit value="Add" styleClass="btn" /></td>
     </tr>
  </table>
 
 </html:form>
+</div>
+</div>

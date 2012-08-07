@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Splash Pages</p>
+<div class="span9">
+<div class="header">
+    <h1>Splash Pages</h1>
+</div>
 
 <html:errors />
 
@@ -63,7 +65,7 @@
     <tr>
         <td>
             <html:form action="/control/splashPageAddInput">
-                <html:submit value="Add New" styleClass="formbutton" />
+                <html:submit value="Add New" styleClass="btn" />
             </html:form>
         </td>
     </tr>
@@ -71,4 +73,6 @@
 
 
 </table>
+</div>
+</div>
 

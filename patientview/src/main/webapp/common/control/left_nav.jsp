@@ -11,7 +11,7 @@
             <li class="divider"></li>
         </logic:present>
         <logic:present role="superadmin,unitadmin">
-            <li><html:link action="/control/uniliisplay">Renal Units</html:link></li>
+            <li><html:link action="/control/unitDisplay">Renal Units</html:link></li>
             <li class="divider"></li>
             <li><html:link action="/control/unitAdminAddInput">Add Unit User</html:link></li>
             <li><html:link action="/control/unitUsersUnitSelect">Users In Unit</html:link></li>

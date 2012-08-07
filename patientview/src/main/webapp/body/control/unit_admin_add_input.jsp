@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Unit Admins</p>
+<div class="span9">
+    <div class="page-header">
+        <h1>Unit Admins</h1>
+    </div>
 
 <html:errors />
 
@@ -50,8 +52,10 @@
           </html:select></td>
     </tr>
     <tr align="right">
-      <td><html:submit value="Add" styleClass="formbutton" /></td>
+      <td><html:submit value="Add" styleClass="btn" /></td>
     </tr>
  </table>
 
 </html:form>
+</div>
+</div>

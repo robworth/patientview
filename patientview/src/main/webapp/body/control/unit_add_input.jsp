@@ -1,9 +1,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
 <html:xhtml/>
-
-<p class="header">Unit Add</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Unit Add</h1>
+</div>
 
 <html:errors />
 
@@ -391,5 +392,6 @@
   </table>
 
 </html:form>
+</div>
 
-
+</div>

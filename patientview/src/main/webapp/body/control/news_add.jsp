@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
+<div class="span9">
 <table width="100%" cellpadding="3">
   <tr>
     <td align="right"><html:link action="/control/newsList">back to News List</html:link></td>
@@ -69,3 +69,5 @@
   <p><bean:write name="news" property="bodyForHtml" filter="false" /></p>
 
 </logic:present>
+</div>
+</div>

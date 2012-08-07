@@ -4,7 +4,7 @@
 
 <html:xhtml/>
 
-
+<div class="span9">
 <table width="600" border="0" cellspacing="1" cellpadding="3">
   <%--
 <tr valign="top">
@@ -63,4 +63,5 @@
   </logic:notEmpty>
 
 </table>
-
+</div>
+</div>
