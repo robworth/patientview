@@ -11,13 +11,28 @@ import javax.persistence.Table;
 public class MedicationDose extends BaseModel {
 
     @Column(nullable = false)
-    private String value;
+    private Double mg;
 
-    public String getValue() {
-        return value;
+    @Column(nullable = true)
+    private String extraInformation;
+
+    public String getMgValueAsString() {
+        return mg.toString();
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public Double getMg() {
+        return mg;
+    }
+
+    public void setMg(Double mg) {
+        this.mg = mg;
+    }
+
+    public String getExtraInformation() {
+        return extraInformation;
+    }
+
+    public void setExtraInformation(String extraInformation) {
+        this.extraInformation = extraInformation;
     }
 }
