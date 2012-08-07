@@ -6,7 +6,8 @@ import java.util.List;
 public enum MedicationNoOf {
     ONE_TO_TWO(1, "1-2"),
     ONE_TO_FOUR(2, "1-4"),
-    ONE_TO_SIX(3, "1-6");
+    ONE_TO_SIX(3, "1-6"),
+    NA(4, "N/A");
 
     private long id;
     private String name;

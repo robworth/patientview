@@ -12,7 +12,8 @@ public enum MedicationFrequency {
     ONCE_A_WEEK(6, "Once a week"),
     EVERY_2_WEEKS(7, "Every 2 weeks"),
     EVERY_4_WEEKS(8, "Every 4 weeks"),
-    EVERY_8_WEEKS(9, "Every 8 weeks");
+    EVERY_8_WEEKS(9, "Every 8 weeks"),
+    NA(10, "N/A");
 
     private long id;
     private String name;
