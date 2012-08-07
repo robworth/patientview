@@ -1,6 +1,8 @@
 package com.worthsoln.ibd.model.medication;
 
 import com.worthsoln.patientview.model.BaseModel;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ public class Medication extends BaseModel {
     private String name;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "ibd_medication_allowed_dosages",
             joinColumns = {@JoinColumn(name = "medication_id")},
