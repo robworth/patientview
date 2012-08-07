@@ -3,16 +3,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
+<div class="row">
+    <div class="span12">
+
+    <div class="page-header">
+        <h1>Patient Info</h1>
+    </div>
 
 <div align="left">
-The links on this page are to information that is mainly written for patients, but it is often very useful for healthcare staff too. Almost all links are to other websites. These links have been chosen by us, but the information is not written by us.
+    The links on this page are to information that is mainly written for patients, but it is often very useful for healthcare staff too. Almost all links are to other websites. These links have been chosen by us, but the information is not written by us.
 </div>
 
-<br/>
 
-<div align="center">
-
-  <table width="690">
 
   <logic:notEmpty name="patientDetails">
 
@@ -20,26 +22,25 @@ The links on this page are to information that is mainly written for patients, b
 
     <logic:present name="patientDetail" property="unit">
     <logic:present name="patientDetail" property="patient">
-      <tr valign="top">
-        <td class="tableheader" colspan="3">Patient Details for
+    <h2 class="paragraphSizeTopMargin">Patient Details for
           <bean:write name="patientDetail" property="patient.forename"/>
-          <bean:write name="patientDetail" property="patient.surname"/> &nbsp;&nbsp;- &nbsp;&nbsp;uploaded by unit: <bean:write name="patientDetail" property="unit.shortname"/>
-        </td>
-      </tr>
+          <bean:write name="patientDetail" property="patient.surname"/> <small>uploaded by unit: <bean:write name="patientDetail" property="unit.shortname"/></small>
+    </h2>
     </logic:present>
     </logic:present>
 
+    <table class="table table-bordered table-striped">
     <logic:notPresent name="patientDetail" property="edtaDiagnosis">
       <tr>
-        <td valign="top">Primary Diagnosis:</td>
-        <td valign="top"><b>No primary diagnosis has been loaded</b></td>
+        <th valign="top">Primary Diagnosis</th>
+        <td valign="top">No primary diagnosis has been loaded</td>
       </tr>
     </logic:notPresent>
 
     <logic:present name="patientDetail" property="edtaDiagnosis">
     <tr>
-      <td valign="top" class="tablecell">Primary Diagnosis:</td>
-      <td valign="top" class="tablecell"><b><bean:write name="patientDetail" property="edtaDiagnosis.description"/></b></td>
+      <th valign="top" class="tablecell">Primary Diagnosis</th>
+      <td valign="top" class="tablecell"><bean:write name="patientDetail" property="edtaDiagnosis.description"/></td>
       <td valign="top" class="tablecell">
         <logic:notEmpty name="patientDetail" property="edtaDiagnosis.patientLink01">
            <a href="<bean:write name="patientDetail" property="edtaDiagnosis.patientLink01"/>" target="_blank"><bean:write name="patientDetail" property="edtaDiagnosis.patientLinkText01"/></a><br />
@@ -66,15 +67,15 @@ The links on this page are to information that is mainly written for patients, b
 
     <logic:notPresent name="patientDetail" property="edtaTreatment">
     <tr>
-      <td valign="top" class="tablecell">Treatment:</td>
-      <td valign="top" class="tablecell"><b>No treatment has been uploaded</b></td>
+      <th valign="top" class="tablecell">Treatment</th>
+      <td valign="top" class="tablecell">No treatment has been uploaded</td>
     </tr>
     </logic:notPresent>
 
     <logic:present name="patientDetail" property="edtaTreatment">
     <tr>
-      <td valign="top" class="tablecell">Treatment:</td>
-      <td valign="top" class="tablecell"><b><bean:write name="patientDetail" property="edtaTreatment.description"/></b></td>
+      <th valign="top" class="tablecell">Treatment</th>
+      <td valign="top" class="tablecell"><bean:write name="patientDetail" property="edtaTreatment.description"/></td>
       <td valign="top" class="tablecell">
         <logic:notEmpty name="patientDetail" property="edtaTreatment.patientLink01">
            <a href="<bean:write name="patientDetail" property="edtaTreatment.patientLink01"/>" target="_blank"><bean:write name="patientDetail" property="edtaTreatment.patientLinkText01"/></a><br />
@@ -97,23 +98,19 @@ The links on this page are to information that is mainly written for patients, b
       </td>
     </tr>
     </logic:present>
+    </table>
 
-    <tr>
-      <td valign="top" colspan="3">&nbsp;</td>
-    </tr>
 
     </logic:iterate>
 
     </logic:notEmpty>
       
     <logic:present name="staticLinks">
-    <tr valign="top">
-      <td class="tableheader" colspan="3">Further Information
-      </td>
-    </tr>
+    <h2>Further Information</h2>
+
+    <table class="table table-bordered table-striped">
     <tr>
-      <td valign="top" class="tablecell"><bean:write name="staticLinks" property="description"/></td>
-      <td valign="top" class="tablecell">&nbsp;</td>
+      <th valign="top" class="tablecell"><bean:write name="staticLinks" property="description"/></th>
       <td valign="top" class="tablecell">
         <logic:notEmpty name="staticLinks" property="patientLink01">
            <a href="<bean:write name="staticLinks" property="patientLink01"/>" target="_blank"><bean:write name="staticLinks" property="patientLinkText01"/></a><br />
@@ -138,5 +135,5 @@ The links on this page are to information that is mainly written for patients, b
     </logic:present>
 
   </table>
-
+    </div>
 </div>
