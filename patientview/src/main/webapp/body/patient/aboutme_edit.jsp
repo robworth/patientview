@@ -19,40 +19,30 @@
         <html:hidden name="aboutme" property="nhsno"/>
     </logic:notEmpty>
 
-    <tr>
-        <td align="center" >
-            <p><b>Things people should know about me</b><br />(For example...)</p>
-        </td>
-    </tr>
-    <tr>
-        <td >
-            <logic:empty name="aboutme">
-                <html:textarea property="aboutme" rows="5" cols="40" styleClass="span6"/>
-            </logic:empty>
+    <label>
+        <b>Things people should know about me</b><br />(For example...)
+    </label>
 
-            <logic:notEmpty name="aboutme">
-                <html:textarea name="aboutme" property="aboutme" rows="5" cols="40"  styleClass="span6"/>
-            </logic:notEmpty>
-        </td>
-    </tr>
-    <tr>
-        <td >&nbsp;</td>
-    </tr>
+    <logic:empty name="aboutme">
+        <html:textarea property="aboutme" rows="5" cols="40" styleClass="span6"/>
+    </logic:empty>
+
+    <logic:notEmpty name="aboutme">
+        <html:textarea name="aboutme" property="aboutme" rows="5" cols="40"  styleClass="span6"/>
+    </logic:notEmpty>
+
     <label>
     <b>Things I'd like to talk about</b><br />
                 (For example... what should my blood pressure be, home dialysis, stopping dialysis, getting a transplant)</p>
     </label>
-    <tr>
-        <td >
-            <logic:empty name="aboutme">
-                <html:textarea property="talkabout" rows="5" cols="80"  styleClass="span6"/>
-            </logic:empty>
 
-            <logic:notEmpty name="aboutme">
-                <html:textarea name="aboutme" property="talkabout" rows="5" cols="40"  styleClass="span6"/>
-            </logic:notEmpty>
-        </td>
-    </tr>
+    <logic:empty name="aboutme">
+        <html:textarea property="talkabout" rows="5" cols="80"  styleClass="span6"/>
+    </logic:empty>
+
+    <logic:notEmpty name="aboutme">
+        <html:textarea name="aboutme" property="talkabout" rows="5" cols="40"  styleClass="span6"/>
+    </logic:notEmpty>
 
 
     <div class="form-actions">
