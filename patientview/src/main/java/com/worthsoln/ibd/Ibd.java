@@ -6,6 +6,7 @@ public class Ibd {
 
     public static final String MY_IBD_PARAM = "myIbd";
     public static final String NHS_NO_PARAM = "nhsNo";
+    public static final String ID_PARAM = "id";
 
     public static final String CROHNS_DIAGRAM = "crohns.jpg";
     public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";
@@ -34,8 +35,20 @@ public class Ibd {
     public static final String CONFIDENCE_SCALE_PARAM = "confidenceScale";
     public static final String REVIEW_DATE_PARAM = "reviewDate";
 
+    // medicine form params
+    public static final String DATE_STARTED_PARAM = "dateStarted";
+    public static final String DATE_STOPPED_PARAM = "dateStopped";
+    public static final String MEDICATION_TYPE_ID_PARAM = "medicationTypeId";
+    public static final String MEDICATION_ID_PARAM = "medicationId";
+    public static final String MEDICATION_DOSE_ID_PARAM = "medicationDoseId";
+    public static final String OTHER_MEDICATION_ID_PARAM = "otherMedication";
+    public static final String MEDICATION_NO_OF_ID_PARAM = "medicationNoOfId";
+    public static final String MEDICATION_FREQUENCY_ID_PARAM = "medicationFrequencyId";
+    public static final String REASON_FOR_STOPPING_PARAM = "reasonForStopping";
+
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";
+    public static final String NOT_A_VALID_ID = "id.notValid";
 
     // my ibd
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
@@ -59,6 +72,14 @@ public class Ibd {
     public static final String CONFIDENCE_SCORE_REQUIRED = "confidenceScore.required";
     public static final String REVIEW_DATE_REQUIRED = "reviewDate.required";
 
+    // medication
+    public static final String DATE_STARTED_REQUIRED = "dateStarted.required";
+    public static final String MEDICATION_TYPE_REQUIRED = "medicationType.required";
+    public static final String MEDICATION_REQUIRED = "medication.required";
+    public static final String MEDICATION_DOSE_REQUIRED = "medicationDose.required";
+    public static final String OTHER_MEDICATION_REQUIRED = "otherMedication.required";
+    public static final String MEDICATION_NO_OF_REQUIRED = "medicationNoOf.required";
+    public static final String MEDICATION_FREQUENCY_REQUIRED = "medicationFrequency.required";
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }
