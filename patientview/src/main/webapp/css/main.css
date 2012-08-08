@@ -214,3 +214,11 @@ h1, h2{
     padding-left: 0;
     padding-right: 0;
 }
+
+.flush-dl dt{
+    margin-top: 9px;
+}
+
+.flush-dl dd{
+    margin-left: 0;
+}
