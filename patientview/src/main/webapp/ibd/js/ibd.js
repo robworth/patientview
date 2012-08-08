@@ -8,7 +8,19 @@ IBD.AddMedicineInit = function() {
         medicationDoseContainer     = $('#medicationDoseContainer'),
         medicationDoseLists         = medicationDoseContainer.find('.medicationDoseList'),
         medicationOtherContainer    = $('#medicationOtherContainer'),
-        otherMedicationInput        = $('#otherMedication');
+        otherMedicationInput        = $('#otherMedication'),
+        disableLists                = function(list) {
+            if (list) {
+                list.each(function(i, el) {
+                    $(el).addClass('hidden')[0].disabled = true;
+                });
+            }
+        },
+        enableList                  = function(list) {
+            if (list) {
+                list.removeClass('hidden')[0].disabled = false;
+            }
+        };
 
     medicationType.on('change', function() {
         var medicationTypeId = parseInt(medicationType.find('option:selected').val());
@@ -16,11 +28,11 @@ IBD.AddMedicineInit = function() {
         // if a value is selected then show the corresponding list of medications else hide if they are showing
         if (medicationTypeId !== NaN && medicationTypeId > 0) {
             medicationContainer.removeClass('hidden');
-            medicationLists.addClass('hidden');
-            $('#medicationType' + medicationTypeId + '-medications').removeClass('hidden');
+            disableLists(medicationLists);
+            enableList($('#medicationType' + medicationTypeId + '-medications'));
         } else {
             medicationContainer.addClass('hidden');
-            medicationLists.addClass('hidden');
+            disableLists(medicationLists)
         }
     });
 
@@ -31,7 +43,7 @@ IBD.AddMedicineInit = function() {
         // if the value is -2 then this is the 'other' option been selected in which case show the other text field
         if (medicationId === NaN || medicationId <= 0) {
             medicationDoseContainer.addClass('hidden');
-            medicationDoseLists.addClass('hidden');
+            disableLists(medicationDoseLists);
 
             if (medicationId !== NaN && medicationId === -2) {
                 medicationOtherContainer.removeClass('hidden');
@@ -40,8 +52,8 @@ IBD.AddMedicineInit = function() {
             otherMedicationInput.val('');
             medicationOtherContainer.addClass('hidden');
             medicationDoseContainer.removeClass('hidden');
-            medicationDoseLists.addClass('hidden');
-            $('#medication' + medicationId + '-dosages').removeClass('hidden');
+            disableLists(medicationDoseLists);
+            enableList($('#medication' + medicationId + '-dosages'));
         }
     })
 };
