@@ -33,6 +33,8 @@ public interface IbdManager {
 
     MyMedication getMyMedication(Long id);
 
+    void saveMyMedication(MyMedication myMedication);
+
     void saveMyMedication(MyMedication myMedication, Long medicationTypeId, Long medicationId, Long medicationDoseId);
 
     List<MyMedication> getAllMedications(User user);
