@@ -103,6 +103,11 @@ public class IbdManagerImpl implements IbdManager {
     }
 
     @Override
+    public void saveMyMedication(MyMedication myMedication) {
+        myMedicationDao.save(myMedication);
+    }
+
+    @Override
     public void saveMyMedication(MyMedication myMedication, Long medicationTypeId, Long medicationId,
                                  Long medicationDoseId) {
         if (medicationTypeId != null && medicationTypeId > 0) {
@@ -114,7 +119,7 @@ public class IbdManagerImpl implements IbdManager {
         }
 
         if (medicationId != null && medicationId > 0) {
-                Medication medication = getMedication(medicationTypeId);
+                Medication medication = getMedication(medicationId);
 
                 if (medication != null && medication.hasValidId()) {
                     myMedication.setMedication(medication);
@@ -122,7 +127,7 @@ public class IbdManagerImpl implements IbdManager {
         }
 
         if (medicationDoseId != null && medicationDoseId > 0) {
-            MedicationDose medicationDose = getMedicationDose(medicationTypeId);
+            MedicationDose medicationDose = getMedicationDose(medicationDoseId);
 
             if (medicationDose != null && medicationDose.hasValidId()) {
                 myMedication.setMedicationDose(medicationDose);
