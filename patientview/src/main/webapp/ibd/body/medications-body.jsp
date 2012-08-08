@@ -19,9 +19,49 @@
         <h2>Current Medicines</h2>
 
         <logic:present name="currentMedications">
-            <logic:iterate name="currentMedications" id="medication" indexId="index">
-
-            </logic:iterate>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date Started</th>
+                        <th>Type</th>
+                        <th>Medication</th>
+                        <th>Dose</th>
+                        <th>No Tabs/Granules</th>
+                        <th>Frequency</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <logic:iterate name="currentMedications" id="myMedication" indexId="index">
+                        <tr>
+                            <td>
+                                <bean:write name="myMedication" property="dateStarted" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationType.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medication.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationDose.mgValueAsString" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationNoOf.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationFrequency.name" />
+                            </td>
+                            <td>
+                                <html:form action="/medication-stop" method="get">
+                                    <html:hidden property="id" name="myMedication" />
+                                    <html:submit value="Stop" styleClass="btn" />
+                                </html:form>
+                            </td>
+                        </tr>
+                    </logic:iterate>
+                </tbody>
+            </table>
         </logic:present>
         <logic:notPresent name="currentMedications">
             <p>No current medicines</p>
@@ -34,9 +74,46 @@
         <div class="span12">
             <h2>Stopped Medicines</h2>
 
-            <logic:iterate name="stoppedMedications" id="medication" indexId="index">
-
-            </logic:iterate>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date Started</th>
+                        <th>Type</th>
+                        <th>Medication</th>
+                        <th>Dose</th>
+                        <th>No Tabs/Granules</th>
+                        <th>Frequency</th>
+                        <th>Reason for stopping</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <logic:iterate name="stoppedMedications" id="myMedication" indexId="index">
+                        <tr>
+                            <td>
+                                <bean:write name="myMedication" property="dateStarted" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationType.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medication.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationDose.mgValueAsString" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationNoOf.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationFrequency.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="reasonForStopping" />
+                            </td>
+                        </tr>
+                    </logic:iterate>
+                </tbody>
+            </table>
         </div>
     </div>
 </logic:present>
