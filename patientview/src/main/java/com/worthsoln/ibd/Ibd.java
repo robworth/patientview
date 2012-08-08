@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat;
 public class Ibd {
 
     public static final String MY_IBD_PARAM = "myIbd";
+    public static final String MY_MEDICATION_PARAM = "myMedication";
     public static final String NHS_NO_PARAM = "nhsNo";
     public static final String ID_PARAM = "id";
+    public static final String SUBMIT_PARAM = "submit";
 
     public static final String CROHNS_DIAGRAM = "crohns.jpg";
     public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";
@@ -73,6 +75,7 @@ public class Ibd {
     public static final String REVIEW_DATE_REQUIRED = "reviewDate.required";
 
     // medication
+    public static final String MEDICATION_NOT_FOUND_TO_UPDATE = "medication.notFound";
     public static final String DATE_STARTED_REQUIRED = "dateStarted.required";
     public static final String MEDICATION_TYPE_REQUIRED = "medicationType.required";
     public static final String MEDICATION_REQUIRED = "medication.required";
@@ -80,6 +83,7 @@ public class Ibd {
     public static final String OTHER_MEDICATION_REQUIRED = "otherMedication.required";
     public static final String MEDICATION_NO_OF_REQUIRED = "medicationNoOf.required";
     public static final String MEDICATION_FREQUENCY_REQUIRED = "medicationFrequency.required";
+    public static final String REASON_FOR_STOPPING_REQUIRED = "reasonForStopping.required";
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }
