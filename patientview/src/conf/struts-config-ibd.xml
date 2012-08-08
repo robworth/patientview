@@ -101,7 +101,7 @@
         <action path="/medications"
                 type="com.worthsoln.ibd.action.mymedications.MyMedicationsAction"
                 scope="request"
-                parameter="ibd_myibd">
+                parameter="ibd_medications">
             <forward name="success" path="/ibd/medications.jsp"/>
         </action>
 
@@ -109,7 +109,7 @@
                 name="medicationForm"
                 type="com.worthsoln.ibd.action.mymedications.MyMedicationEditAction"
                 scope="request"
-                parameter="ibd_mymedications">
+                parameter="ibd_medications">
             <forward name="success" path="/ibd/medication-add.jsp"/>
         </action>
 
@@ -118,7 +118,7 @@
                 input="input"
                 scope="request"
                 validate="true"
-                parameter="ibd_medication">
+                parameter="ibd_medications">
             <forward name="input" path="/ibd/medication-add.jsp"/>
             <forward name="error" path="/ibd/medications.do" redirect="true" />
             <forward name="success" path="/ibd/medications.do" redirect="true" />
@@ -129,7 +129,7 @@
                 input="input"
                 scope="request"
                 validate="true"
-                parameter="ibd_medication">
+                parameter="ibd_medications">
             <forward name="input" path="/ibd/medication-stop.jsp"/>
             <forward name="success" path="/ibd/medications.do" redirect="true" />
         </action>

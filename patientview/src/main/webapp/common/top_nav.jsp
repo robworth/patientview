@@ -16,6 +16,7 @@
     <logic:present tenancy="ibd">
         <li><html:link action="/myibd" styleClass="<%= ("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">My IBD</html:link></li>
         <li><html:link action="/careplan" styleClass="<%= ("ibd_careplan".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">My Care Plan</html:link></li>
+        <li><html:link action="/medications" styleClass="<%= ("ibd_medications".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">My Medicines</html:link></li>
     </logic:present>
 
     <li><html:link action="/patient/aboutme" styleClass="<%= ("aboutme".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">About Me</html:link></li>
