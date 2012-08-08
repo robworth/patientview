@@ -4,31 +4,28 @@
 
 <html:xhtml/>
 
-<table width="690" border="0" cellspacing="1" cellpadding="3">
-      <tr valign="top">
-        <td colspan="12" align="left">
-            <div id="resultsPanelsLabel">
-                Result panels :
-                &nbsp;
-                <logic:equal value="" name="panelNav" property="previousPanel">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </logic:equal>
-                <logic:notEqual value="" name="panelNav" property="previousPanel">
-                    <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="firstPanel" styleClass="paginate">|&lt;</html:link>
-                    &nbsp;
-                    <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="previousPanel" styleClass="paginate">&lt;</html:link>
-                    &nbsp;
-                </logic:notEqual>
-            </div>
-            <ul class="resultsPanels">
+<div class="page-header">
+    <h1>Results</h1>
+</div>
+    <h3>Result panels</h3>
+    <div class="pagination">
+        <ul>
+        <logic:equal value="" name="panelNav" property="previousPanel">
+            <li class="disabled"><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="firstPanel" styleClass="paginate">First</html:link></li>
+            <li class="disabled"><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="previousPanel" styleClass="paginate">Prev</html:link></li>
+        </logic:equal>
+        <logic:notEqual value="" name="panelNav" property="previousPanel">
+            <li><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="firstPanel" styleClass="paginate">First</html:link></li>
+            <li><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="previousPanel" styleClass="paginate">Prev</html:link></li>
+        </logic:notEqual>
             <logic:iterate id="panel" name="panelNav" property="panels"  >
                 <logic:equal value="true" name="panel" property="currentPanel">
-                    <li><bean:write name="panel" property="panel" /></li>
+                    <li class="active"><a href="#"><bean:write name="panel" property="panel" /></a></li>
                 </logic:equal>
                 <logic:notEqual value="true" name="panel" property="currentPanel">
                     <li>
                         <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel"><bean:write name="panel" property="panel" />
-                        <span class="hover">
+                        <span style="display: none">
                             <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
                                 <%= heading.getHeadingcode() %>
                             </logic:iterate>
@@ -37,24 +34,18 @@
                     </li>
                 </logic:notEqual>
             </logic:iterate>
-            </ul>
-            <div class="pagination">
-                &nbsp;
-                <logic:equal value="" name="panelNav" property="nextPanel">
-                    &nbsp;&nbsp;&nbsp;
-                </logic:equal>
-                <logic:notEqual value="" name="panelNav" property="nextPanel">
-                    <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="nextPanel" styleClass="paginate"><strong>More results</strong></html:link>
-                    &nbsp;
-                    <html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="lastPanel" styleClass="paginate">&gt;|</html:link>
-                </logic:notEqual>
-                &nbsp;
-            </div>
-        </td>
-      </tr>
-</table>
+    <logic:equal value="" name="panelNav" property="nextPanel">
+        <li class="disabled"><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="nextPanel" styleClass="paginate">Next</html:link></li>
+        <li class="disabled"><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="lastPanel" styleClass="paginate">Last</html:link></li>
+    </logic:equal>
+    <logic:notEqual value="" name="panelNav" property="nextPanel">
+        <li><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="nextPanel" styleClass="paginate">Next</html:link></li>
+        <li><html:link action="/patient/results"  paramId="panel" paramName="panelNav" paramProperty="lastPanel" styleClass="paginate">Last</html:link></li>
+    </logic:notEqual>
+    </ul>
+</div>
 
-<table width="600" border="0" cellspacing="1" cellpadding="3">
+<table border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
           <%--
   <tr valign="top">
     <td colspan="10"><img src="images/space.gif"/></td>
@@ -112,43 +103,38 @@
     </logic:present>
 
   </logic:notEmpty>
-
 </table>
-<table width="600" border="0" cellspacing="1" cellpadding="3">
-      <tr valign="top">
-        <td align="right">
-          More results :
-                &nbsp;
-                <logic:equal value="" name="pageNav" property="previousPanel">
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </logic:equal>
-                <logic:notEqual value="" name="pageNav" property="previousPanel">
-                   <a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="firstPanel" />' class="paginate">|&lt;</a>
-                   &nbsp;
-                   <a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="previousPanel" />' class="paginate">&lt;</a>
-                   &nbsp;
-                </logic:notEqual>
 
-          <logic:iterate id="pag" name="pages">
-            <logic:equal value="true" name="pag" property="currentPanel">
-              <bean:write name="pag" property="panel" />&nbsp;
-            </logic:equal>
-            <logic:notEqual value="true" name="pag" property="currentPanel">
-              <a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pag" property="panel" />'><bean:write name="pag" property="panel" /></a>&nbsp;
-            </logic:notEqual>
-          </logic:iterate>
+<h3>More results</h3>
+<div class="pagination">
+    <ul>
+    <logic:equal value="" name="pageNav" property="previousPanel">
+       <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="firstPanel" />' class="paginate">First</a></li>
+       <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="previousPanel" />' class="paginate">Prev</a></li>
+    </logic:equal>
+    <logic:notEqual value="" name="pageNav" property="previousPanel">
+       <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="firstPanel" />' class="paginate">|&lt;</a></li>
+       <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="previousPanel" />' class="paginate">&lt;</a></li>
+    </logic:notEqual>
 
-                &nbsp;
-                <logic:equal value="" name="pageNav" property="nextPanel">
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </logic:equal>
-                <logic:notEqual value="" name="pageNav" property="nextPanel">
-                   <a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="nextPanel" />' class="paginate">&gt;</a>
-                   &nbsp;
-                   <a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">&gt;|</a>
-                   &nbsp;
-                </logic:notEqual>
-        </td>
-      </tr>
-</table>
+      <logic:iterate id="pag" name="pages">
+        <logic:equal value="true" name="pag" property="currentPanel">
+          <li class="active"><a href="#"><bean:write name="pag" property="panel" /></a></li>
+        </logic:equal>
+        <logic:notEqual value="true" name="pag" property="currentPanel">
+          <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pag" property="panel" />'><bean:write name="pag" property="panel" /></a></li>
+        </logic:notEqual>
+      </logic:iterate>
+
+    <logic:equal value="" name="pageNav" property="nextPanel">
+        <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="nextPanel" />' class="paginate">Next</a></li>
+        <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">Last</a></li>
+    </logic:equal>
+    <logic:notEqual value="" name="pageNav" property="nextPanel">
+       <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="nextPanel" />' class="paginate">Next</a></li>
+       <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">Last</a></li>
+    </logic:notEqual>
+    </ul>
+</div>
+
 

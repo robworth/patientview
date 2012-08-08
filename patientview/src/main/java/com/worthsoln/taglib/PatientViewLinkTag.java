@@ -1,7 +1,6 @@
 package com.worthsoln.taglib;
 
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.utils.LegacySpringUtils;
+import com.worthsoln.tenancy.TenancyUtils;
 import org.apache.struts.taglib.html.LinkTag;
 
 import javax.servlet.jsp.JspException;
@@ -15,10 +14,6 @@ public class PatientViewLinkTag extends LinkTag {
     protected String calculateURL() throws JspException {
         String result = super.calculateURL();
 
-        Tenancy tenancy = LegacySpringUtils.getSecurityUserManager().getLoggedInTenancy();
-
-        String context = tenancy != null ? "/" + tenancy.getContext() : "";
-
-        return context + result;
+        return TenancyUtils.rewriteTenancyUrlAddContext(result);
     }
 }

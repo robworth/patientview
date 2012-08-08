@@ -4,7 +4,11 @@
 
 <html:xhtml/>
 
-<p class="header">News</p>
+<div class="span9">
+
+<div class="page-header">
+    <h1>News</h1>
+</div>
 
 <html:errors />
 
@@ -66,7 +70,7 @@
        <td class="tablecell" align="center" valign="center">
          <html:form action="/control/newsDelete">
            <html:hidden name="news" property="id" />
-           <html:submit value="Delete" styleClass="formbutton" />
+           <html:submit value="Delete" styleClass="btn" />
          </html:form>
        </td>
 
@@ -82,10 +86,11 @@
   <tr>
     <td>
       <html:form action="/control/newsAdd">
-        <html:submit value="Add New" styleClass="formbutton" />
+        <html:submit value="Add New" styleClass="btn" />
       </html:form>
     </td>
   </tr>
 
 </table>
-
+</div>
+</div>

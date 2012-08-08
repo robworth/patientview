@@ -4,8 +4,12 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 
 <html:xhtml/>
+<div class="row">
+    <div class="span12">    
 
-<p class="header">Enter My Glucose</p>
+<div class="page-header">
+    <h1>Enter My Glucose</h1>
+</div>
 
 
 <p>Use this page to enter values from home or from your GP surgery, for example. Important: these results will not be automatically sent to anyone at your renal unit. If you need advice, you must contact them in the usual way.</p>
@@ -15,12 +19,13 @@
 
 
 
-  <table cellpadding="3" >
+  <table cellpadding="3" class="table table-bordered table-striped">
 
     <tr>
-      <td class="tableheader" align="center">Date</td>
-      <td class="tableheader" align="center">Time</td>
-      <td class="tableheader" align="center">Glucose</td>
+        <th class="tableheader" align="center">Date</th>
+        <th class="tableheader" align="center">Time</th>
+        <th class="tableheader" align="center">Glucose</th>
+        <th></th>
     </tr>
 
     <logic:present name="glucose" scope="session">
@@ -32,7 +37,7 @@
                  <html:form action="/patient/patientDeletesGlucose">
                      <input type="hidden" name="patientResultKey" value='<bean:write name="gluc" property="key" />' />
                      <input type="hidden" name="patientResultName" value="glucose" />
-                   <td align="center" valign="center"><html:submit value="Delete" styleClass="formButton" /></td>
+                   <td align="center" valign="center"><html:submit value="Delete" styleClass="btn" /></td>
                  </html:form>
              </tr>
         </logic:iterate>
@@ -42,7 +47,7 @@
 
     <tr>
         <td class="tablecell" align="center" >
-            <select name="day">
+            <select name="day" class="span1">
                 <option><dt:format pattern="d"><dt:currentTime/></dt:format></option>
                 <option>1</option>
                 <option>2</option>
@@ -76,8 +81,7 @@
                 <option>30</option>
                 <option>31</option>
             </select>
-            -
-            <html:select property="month">
+            <html:select property="month" styleClass="span2">
                 <option value="<dt:format pattern="M"><dt:currentTime/></dt:format>"><dt:format pattern="MMM"><dt:currentTime/></dt:format></option>
                 <html:option value="1">Jan</html:option>
                 <html:option value="2">Feb</html:option>
@@ -92,15 +96,14 @@
                 <html:option value="11">Nov</html:option>
                 <html:option value="12">Dec</html:option>
             </html:select>
-            -
-            <html:select property="year">
+            <html:select property="year"  styleClass="span1">
                 <option value="<dt:format pattern="yyyy"><dt:currentTime/></dt:format>"><dt:format pattern="yyyy"><dt:currentTime/></dt:format></option>
                 <html:option value="2009">2009</html:option>
                 <html:option value="2010">2010</html:option>
             </html:select>
         </td>
         <td class="tablecell" align="center">
-            <html:select property="hour">
+            <html:select property="hour" styleClass="span1">
                 <option value="<dt:format pattern="H"><dt:currentTime/></dt:format>"><dt:format pattern="HH"><dt:currentTime/></dt:format></option>
                 <html:option value="0">00</html:option>
                 <html:option value="1">01</html:option>
@@ -128,7 +131,7 @@
                 <html:option value="23">23</html:option>
             </html:select>
             :
-            <html:select property="minute">
+            <html:select property="minute" styleClass="span1">
                 <option value="<dt:format pattern="m"><dt:currentTime/></dt:format>"><dt:format pattern="mm"><dt:currentTime/></dt:format></option>
                 <html:option value="0">00</html:option>
                 <html:option value="10">10</html:option>
@@ -144,30 +147,22 @@
             <html:hidden property="patientResultCode1" value="glucose"/>
             <html:text property="patientResultValue1" size="3"/>
         </td>
-      <td align="center"><html:submit value="Add" styleClass="formButton"/></td>
+      <td align="center"><html:submit value="Add" styleClass="btn"/></td>
     </tr>
 </html:form>
+</table>
 
     <logic:present name="glucose" scope="session">
       <logic:notEmpty name="glucose" scope="session">
-        <tr>
-          <td>&nbsp;</td>  
-        </tr>
-        <tr>
-          <td colspan="4">By pressing the Submit All button you will add these glucose values to your record. After clicking, you will not be able to make any more changes. Use the Delete and Add buttons above to ensure that you are happy before clicking the Submit All button.</td>
-        </tr>
-        <tr>
+          <div class="alert alert-block">By pressing the <strong>Submit All</strong> button you will add these glucose values to your record. <strong>After clicking, you will not be able to make any more changes.</strong> Use the Delete and Add buttons above to ensure that you are happy before clicking the Submit All button.</div>
           <html:form action="/patient/patientSubmitsGlucoses">
-            <td>
-              <html:submit value="Submit All" styleClass="formButton"/>
+              <html:submit value="Submit All" styleClass="btn"/>
               <input type="hidden" name="patientResultName" value="glucose" />
-            </td>
           </html:form>
-        </tr>
       </logic:notEmpty>
     </logic:present>
 
-  </table>
 
-
+    </div>
+</div>
 

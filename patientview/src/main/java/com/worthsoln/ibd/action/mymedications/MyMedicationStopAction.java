@@ -36,7 +36,7 @@ public class MyMedicationStopAction extends BaseAction {
                 return mapping.findForward(ERROR);
             }
 
-            request.setAttribute(Ibd.MY_MEDICATION_PARAM, getIbdManager().getMyMedication(id));
+            request.getSession().setAttribute(Ibd.MY_MEDICATION_PARAM, getIbdManager().getMyMedication(id));
             return mapping.findForward(INPUT);
         } else {
             return handleFormSubmission(mapping, dynaForm, request);

@@ -8,7 +8,7 @@
             <h1>Stop Medicine</h1>
         </div>
 
-        <logic:present name="myMedication">
+        <logic:present name="myMedication" scope="session">
             <table class="table table-bordered">
                 <thead>
                     <tr>

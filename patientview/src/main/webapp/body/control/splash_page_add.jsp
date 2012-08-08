@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Splash Page Editing</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Splash Page Editing</h1>
+</div>
 
 <logic:empty name="units">
 
@@ -60,10 +62,12 @@
 
         <tr>
             <td>&nbsp;</td>
-            <td align="right"><html:submit value="Add" styleClass="formButton"/></td>
+            <td align="right"><html:submit value="Add" styleClass="btn"/></td>
         </tr>
     </html:form>
 </logic:notEmpty>
 
 </table>
       
+</div>
+</div>

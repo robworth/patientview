@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Users for Unit <bean:write name="unit" property="name"/></p>
+<div class="span9">
+<div class="page-header">
+    <h1>Users for Unit <bean:write name="unit" property="name"/></h1>
+</div>
 
 <logic:notEmpty name="unitUsers">
   <table cellpadding="3" border="0">
@@ -38,4 +40,4 @@
     </logic:iterate>
    </table>
  </logic:notEmpty>
-
+</div>

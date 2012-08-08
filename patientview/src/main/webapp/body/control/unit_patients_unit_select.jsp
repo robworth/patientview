@@ -3,8 +3,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
+<div class="span9">
 
-<p class="header">Select Unit</p>
+<div class="page-header">
+    <h1>Select Unit</h1>
+</div>
 
 
 <html:form action="/control/unitPatients">
@@ -34,8 +37,10 @@
       <td><html:checkbox property="showgps" value="true" /></td>
     </tr>
     <tr align="right">
-      <td><html:submit value="Select" styleClass="formbutton" /></td>
+      <td><html:submit value="Select" styleClass="btn" /></td>
     </tr>
  </table>
 
 </html:form>
+</div>
+</div>

@@ -10,10 +10,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">
+        <html:link action="/index" styleClass="brand">
             <logic:present tenancy="ibd">My IBD</logic:present>
             <logic:present tenancy="rpv">My RPV</logic:present>
-        </a>
+        </html:link>
         <div class="nav-collapse">
             <ul class="nav pull-right">
                 <%

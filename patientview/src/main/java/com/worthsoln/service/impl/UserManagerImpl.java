@@ -50,17 +50,27 @@ public class UserManagerImpl implements UserManager {
     @Override
     public String getLoggedInUserRole() {
 
-        // todo get role from spring user for this logged in tenancy - should be in securityUserManager
-
-        return "patient";  //To change body of implemented methods use File | Settings | File Templates.
+        // get role from spring user for this logged in tenancy
+        return getCurrentTenancyRole(getLoggedInUser());
     }
 
     @Override
     public String getCurrentTenancyRole(User user) {
 
-        // todo get role for this user for logged in tenancy - should be in securityUserManager
+        // get role from spring user for this logged in tenancy
+        if (user != null) {
+            List<TenancyUserRole> tenancyUserRoles = getTenancyUserRoles(user);
+            Tenancy loggedInTenancy = securityUserManager.getLoggedInTenancy();
 
-        return "patient";  //To change body of implemented methods use File | Settings | File Templates.
+            for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
+
+                if (tenancyUserRole.getTenancy().equals(loggedInTenancy)) {
+                    return tenancyUserRole.getRole();
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override

@@ -3,15 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Feedback</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Feedback</h1>
+</div>
 
 <logic:present name="feedback">
 
-<table>
-    <tr>
-      <td><img src="images/space.gif" height="30" /> </td>
-    </tr>
+<table class="table table-bordered table-striped">
     <tr>
       <td class="tableheader"><b>Date</b></td>
       <td class="tableheader"><b>Comment</b></td>
@@ -19,7 +18,7 @@
       <td class="tableheader"><b>User</b></td>
       <td class="tableheader"><b>NHS No</b></td>
       <td class="tableheader"><b>Is Public</b></td>
-
+      <td class="tableheader"></td>
     </tr>
         <html:form action="/control/feedbackEditUpdate">
           <html:hidden property="id" name="feedback"/>
@@ -42,12 +41,12 @@
            <html:textarea rows="6" cols="30" property="commentedited" name="feedback" />
          </td>
        </tr>
-       <tr><td>&nbsp;</td></tr>
        <tr>
-           <td colspan="7" align="right"><html:submit value="Update" styleClass="formbutton" /></td>
+           <td colspan="7" align="right"><html:submit value="Update" styleClass="btn" /></td>
        </tr>     
     </html:form>
  </table>
 
  </logic:present>
-
+</div>
+</div>

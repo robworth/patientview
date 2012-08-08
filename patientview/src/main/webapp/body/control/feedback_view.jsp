@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Feedback</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Feedback</h1>
+</div>
 
 <logic:empty name="feedbacks">
     <b>No feedback comments found</b>
@@ -12,10 +14,7 @@
 
 <logic:notEmpty name="feedbacks">
 
-<table>
-    <tr>
-      <td><img src="images/space.gif" height="30" /> </td>
-    </tr>
+<table class="table table-bordered table-striped">
     <tr>
       <td class="tableheader"><b>Date</b></td>
       <td class="tableheader"><b>Original Comment</b></td>
@@ -24,7 +23,7 @@
       <td class="tableheader"><b>User</b></td>
       <td class="tableheader"><b>NHS No</b></td>
       <td class="tableheader"><b>Is Public</b></td>
-
+      <td class="tableheader"></td>
     </tr>
   <logic:iterate id="feedback" name="feedbacks" >
 
@@ -48,7 +47,7 @@
          <td class="tablecell">
              <html:form action="/control/feedbackEditDisplay">
                  <html:hidden property="id" name="feedback"/>
-                  <html:submit value="Edit" styleClass="formbutton" />
+                  <html:submit value="Edit" styleClass="btn" />
              </html:form>
          </td>
        </tr>
@@ -59,3 +58,5 @@
 
  </logic:notEmpty>
 
+</div>
+</div>

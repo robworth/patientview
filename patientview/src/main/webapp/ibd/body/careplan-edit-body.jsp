@@ -8,26 +8,33 @@
         <div class="page-header">
             <h1>Care Plan</h1>
         </div>
-        <html:form action="/careplan-update" styleClass="form-horizontal">
+    <div>
+</div>
+        <html:form action="/careplan-update" styleClass="form-horizontal row">
             <html:errors/>
-            <fieldset>
-            <div class="control-group">
-                <label class="control-label no-top-padding">
-                    Care plan:
-                </label>
-                <div class="controls docs-input-sizes">
-                    <p>
-                        These are some common areas that can have an impact on living with IBD. Which are the
-                        most relevant to you? Please tick the boxes to highlight the areas you would like to
-                        discuss at your next appointment. There are information links to learn more about
-                        these areas in detail.
-                    </p>
-
+            <fieldset class="span12">
+                <div class="row">
+                    <div class="span12">
+                        <p>
+                            These are some common areas that can have an impact on living with IBD. Which are the
+                            most relevant to you? Please tick the boxes to highlight the areas you would like to
+                            discuss at your next appointment. There are information links to learn more about
+                            these areas in detail.
+                        </p>
+                    </div>
+                </div>
                         <bean:define id="areaToDiscussIds" name="carePlanForm" property="areaToDiscussIds" type="java.lang.Long[]"/>
-
+                        <%
+                            int count = 0;
+                        %>
                         <logic:iterate name="areaToDiscussList" id="areaToDiscuss" type="com.worthsoln.ibd.model.enums.AreaToDiscuss">
                             <%
                             boolean checked = false;
+                            count ++;
+
+                            if (count == 3) {
+                                    count = 1;
+                            }
 
                             for (Long l : areaToDiscussIds) {
                                 if (l == areaToDiscuss.getId()) {
@@ -36,54 +43,52 @@
                                 }
                             }
                             %>
-                            <label class="checkbox" for="areaToDiscuss<bean:write name="areaToDiscuss" property="id" />">
+                            <%=count == 1 ? "<div class=\"row\">" :""%>
+                            <label class="checkbox inline span6" for="areaToDiscuss<bean:write name="areaToDiscuss" property="id" />">
                             <input type="checkbox" id="areaToDiscuss<bean:write name="areaToDiscuss" property="id" />"
                                    name="areaToDiscussIds" value="<bean:write name="areaToDiscuss" property="id" />"
                                    <%=(checked ? "checked=\"checked\"":"")%> />
-                            <bean:write
-                                    name="areaToDiscuss" property="name"/></label>
+                            <bean:write name="areaToDiscuss" property="name"/></label>
+                            <%=count == 2 ? "</div>": "" %>
                         </logic:iterate>
+                    <div class="row paragraphSizeTopMargin">
+                        <div class="span12">
+                            <label>
+                                Use the box below to add further topic areas that you would like to explore.
+                            </label>
+                            <html:textarea property="furtherTopics" rows="5" styleClass="span6"/>
+                            <div class="page-header">
+                                <h2>Set your goals to improve your health</h2>
+                            </div>
+                            <p>
+                                What goals would you like to change or improve about your health in the next year?
+                            </p>
 
-                    <p>
-                        Use the box below to add further topic areas that you would like to explore.
-                        <br/>
-                        <html:textarea property="furtherTopics" rows="5" styleClass="span6"/>
-                    </p>
+                            <p>
+                                My goals for changing/improving my IBD are:
+                                <br/>
+                                <html:textarea property="goals" rows="5" styleClass="span6"/>
+                            </p>
 
-                    <p>
-                        <strong>Set your goals to improve your health</strong>
-                    </p>
+                            <p>
+                                Think about these goals, what one goal would you like to achieve?
+                                <br/>
+                                <html:textarea property="goalToAchieve" rows="5" styleClass="span6"/>
+                            </p>
 
-                    <p>
-                        What goals would you like to change or improve about your health in the next year?
-                    </p>
-
-                    <p>
-                        My goals for changing/improving my IBD are:
-                        <br/>
-                        <html:textarea property="goals" rows="5" styleClass="span6"/>
-                    </p>
-
-                    <p>
-                        Think about these goals, what one goal would you like to achieve?
-                        <br/>
-                        <html:textarea property="goalToAchieve" rows="5" styleClass="span6"/>
-                    </p>
-
-                    <p>
-                        How important is achieving this goal to you?
-                        <br/>
-                        <html:select property="goalScale">
-                            <html:options collection="scaleList" property="value" name="value"/>
-                        </html:select>
-                    </p>
-                </div>
-            </div>
+                            <p>
+                                How important is achieving this goal to you?
+                                <br/>
+                                <html:select property="goalScale">
+                                    <html:options collection="scaleList" property="value" name="value"/>
+                                </html:select>
+                            </p>
+                        </div>
+                    </div>
             <div class="control-group">
-                <div class="control-label no-top-padding">
-                    Action plan:
+                <div class="page-header">
+                    <h2>Action plan</h2>
                 </div>
-                <div class="controls docs-input-sizes">
                     <p>
                         In this section a specific plan on how to achieve the goal will be made.
                     </p>
@@ -124,7 +129,6 @@
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                     </p>
-                </div>
             </div>
 
             <div class="form-actions">

@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.service.SecurityUserManager;
+import com.worthsoln.service.UserManager;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +44,9 @@ public class SecurityTest {
 
     @Inject
     private UserDetailsService userDetailsService;
+
+    @Inject
+    private UserManager userManager;
 
     // Test suite wide references
     private User user;
@@ -146,6 +150,19 @@ public class SecurityTest {
         assertTrue("Tenancy is not present", securityUserManager.isTenancyPresent(tenancy1.getContext()));
     }
 
+    @Test
+    public void testGetLoggedInUserRole() {
+        loginAsUser(user.getUsername(), tenancy2);
+
+        assertEquals("Incorrect logged in user role", "admin", userManager.getLoggedInUserRole());
+    }
+
+    @Test
+    public void testGetCurrentTenancyRole() {
+        loginAsUser(user.getUsername(), tenancy2);
+
+        assertEquals("Incorrect logged in user role", "admin", userManager.getCurrentTenancyRole(user));
+    }
 
     private void loginAsUser(String username, Tenancy tenancy) {
         SecurityUser user = (SecurityUser) userDetailsService.loadUserByUsername(username);

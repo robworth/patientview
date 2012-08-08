@@ -5,12 +5,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
+<div class="span9">
 <table border="0" width="100%">
   <tr>
     <td>
       <logic:present name="unit">
-        <p class="header">Patients for Unit <bean:write name="unit" property="name"/></p>
+        <div class="page-header"><h1>Patients for Unit <bean:write name="unit" property="name"/></h1></div>
       </logic:present>
     </td>
 
@@ -124,4 +124,5 @@
     </logic:iterate>
    </table>
  </logic:notEmpty>
-
+</div>
+</div>

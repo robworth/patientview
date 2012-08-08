@@ -3,12 +3,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
+<div class="span9">
+<div class="page-header">
+    <h1>View Log</h1>
+</div>
 <table width="600" border="0" cellspacing="1" cellpadding="3">
 
   <tr height="20">
-    <td colspan="10">You must enter a start and an end date and at least one other search criteria. Dates in format
-      dd/mm/yyyy
+    <td colspan="10"><div class="alert alert-info">You must enter a start and an end date and at least one other search criteria. Dates in format
+      dd/mm/yyyy</div>
     </td>
   </tr>
 
@@ -66,7 +69,7 @@
 
     <tr align="left">
       <td>&nbsp;</td>
-      <td><html:submit value="Search" styleClass="formbutton"/></td>
+      <td><html:submit value="Search" styleClass="btn"/></td>
     </tr>
 
   </html:form>
@@ -80,7 +83,7 @@
 
   <logic:empty name="log">
     <tr valign="top">
-      <td class="tableheader">No log entries found.</td>
+      <td class="tableheader"><div class="alert alert-block">No log entries found.</div></td>
     </tr>
   </logic:empty>
 
@@ -121,4 +124,5 @@
   </logic:notEmpty>
 
 </table>
-
+</div>
+</div>
