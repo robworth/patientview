@@ -1,4 +1,3 @@
-<%@ page import="com.worthsoln.ibd.model.medication.MedicationType" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -42,13 +41,16 @@
                         <logic:iterate name="medicationTypeList" id="medicationType" type="com.worthsoln.ibd.model.medication.MedicationType">
                             <bean:define id="medications" name="medicationType" property="medications"/>
 
-                            <div id="medicationType<bean:write name="medicationType" property="id" />-medications" class="medicationList <%=(!medicationType.getId().equals(medicationTypeId) ? "hidden":"")%>">
-                                <html:select property="medicationId">
-                                    <html:option value="">Select</html:option>
-                                    <html:options name="medicationType" collection="medications" property="id" labelProperty="name"/>
-                                    <html:option value="-2">Other</html:option>
-                                </html:select>
-                            </div>
+                            <%
+                            String medicationSelectId = "medicationType" + medicationType.getId() + "-medications";
+                            String medicationSelectClass = !medicationType.getId().equals(medicationTypeId) ? "hidden":"";
+                            boolean medicationSelectDisabled = !medicationType.getId().equals(medicationTypeId);
+                            %>
+                            <html:select property="medicationId" disabled="<%=medicationSelectDisabled%>" styleId="<%=medicationSelectId%>" styleClass="<%="medicationList " + medicationSelectClass%>">
+                                <html:option value="">Select</html:option>
+                                <html:options name="medicationType" collection="medications" property="id" labelProperty="name"/>
+                                <html:option value="-2">Other</html:option>
+                            </html:select>
                         </logic:iterate>
                     </div>
                 </div>
@@ -63,12 +65,15 @@
                                 <logic:iterate name="medications" id="medication" type="com.worthsoln.ibd.model.medication.Medication">
                                     <bean:define id="allowedDosages" name="medication" property="allowedDosages" />
 
-                                    <div id="medication<bean:write name="medication" property="id" />-dosages" class="medicationDoseList <%=(!medication.getId().equals(medicationId) ? "hidden":"")%>">
-                                        <html:select property="medicationDoseId">
-                                            <html:option value="">Select</html:option>
-                                            <html:options name="medication" collection="allowedDosages" property="id" labelProperty="mgValueAsString"/>
-                                        </html:select>
-                                    </div>
+                                    <%
+                                    String medicationDoseSelectId = "medication" + medication.getId() + "-dosages";
+                                    String medicationDoseSelectClass = !medication.getId().equals(medicationId) ? "hidden":"";
+                                    boolean medicationDoseSelectDisabled = !medication.getId().equals(medicationId);
+                                    %>
+                                    <html:select property="medicationDoseId" disabled="<%=medicationDoseSelectDisabled%>" styleId="<%=medicationDoseSelectId%>" styleClass="<%="medicationDoseList " + medicationDoseSelectClass%>">
+                                        <html:option value="">Select</html:option>
+                                        <html:options name="medication" collection="allowedDosages" property="id" labelProperty="mgValueAsString"/>
+                                    </html:select>
                                 </logic:iterate>
                             </logic:iterate>
                         </div>
