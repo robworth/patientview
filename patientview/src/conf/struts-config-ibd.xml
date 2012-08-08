@@ -120,8 +120,8 @@
                 validate="true"
                 parameter="ibd_medications">
             <forward name="input" path="/ibd/medication-add.jsp"/>
-            <forward name="error" path="/ibd/medications.do" redirect="true" />
-            <forward name="success" path="/ibd/medications.do" redirect="true" />
+            <forward name="error" path="/medications.do" />
+            <forward name="success" path="/medications.do" />
         </action>
 
         <action path="/medication-stop" name="stopMedicationForm"
@@ -131,7 +131,7 @@
                 validate="true"
                 parameter="ibd_medications">
             <forward name="input" path="/ibd/medication-stop.jsp"/>
-            <forward name="success" path="/ibd/medications.do" redirect="true" />
+            <forward name="success" path="/medications.do" />
         </action>
     </action-mappings>
 
