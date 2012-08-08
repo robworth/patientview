@@ -47,6 +47,7 @@
 
         <form-bean name="stopMedicationForm"
                    type="org.apache.struts.action.DynaActionForm">
+            <form-property name="submit" type="java.lang.Boolean"/>
             <form-property name="id" type="java.lang.Long"/>
             <form-property name="reasonForStopping" type="java.lang.String"/>
         </form-bean>
@@ -119,6 +120,17 @@
                 validate="true"
                 parameter="ibd_medication">
             <forward name="input" path="/ibd/medication-add.jsp"/>
+            <forward name="error" path="/ibd/medications.do" redirect="true" />
+            <forward name="success" path="/ibd/medications.do" redirect="true" />
+        </action>
+
+        <action path="/medication-stop" name="stopMedicationForm"
+                type="com.worthsoln.ibd.action.mymedications.MyMedicationStopAction"
+                input="input"
+                scope="request"
+                validate="true"
+                parameter="ibd_medication">
+            <forward name="input" path="/ibd/medication-stop.jsp"/>
             <forward name="success" path="/ibd/medications.do" redirect="true" />
         </action>
     </action-mappings>
