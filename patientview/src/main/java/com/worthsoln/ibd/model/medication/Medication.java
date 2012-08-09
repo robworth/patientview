@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "ibd_medication")
 public class Medication extends BaseModel {
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
