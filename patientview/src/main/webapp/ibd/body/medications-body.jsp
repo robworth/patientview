@@ -41,10 +41,17 @@
                                 <bean:write name="myMedication" property="medicationType.name" />
                             </td>
                             <td>
-                                <bean:write name="myMedication" property="medication.name" />
+                                <logic:present name="myMedication" property="medication">
+                                    <bean:write name="myMedication" property="medication.name" />
+                                </logic:present>
+                                <logic:present name="myMedication" property="otherMedication">
+                                    <bean:write name="myMedication" property="otherMedication" />
+                                </logic:present>
                             </td>
                             <td>
-                                <bean:write name="myMedication" property="medicationDose.formattedValue" />
+                                <logic:present name="myMedication" property="medicationDose">
+                                    <bean:write name="myMedication" property="medicationDose.formattedValue" />
+                                </logic:present>
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationNoOf.name" />
@@ -96,10 +103,17 @@
                                 <bean:write name="myMedication" property="medicationType.name" />
                             </td>
                             <td>
-                                <bean:write name="myMedication" property="medication.name" />
+                                <logic:present name="myMedication" property="medication">
+                                    <bean:write name="myMedication" property="medication.name" />
+                                </logic:present>
+                                <logic:present name="myMedication" property="otherMedication">
+                                    <bean:write name="myMedication" property="otherMedication" />
+                                </logic:present>
                             </td>
                             <td>
-                                <bean:write name="myMedication" property="medicationDose.formattedValue" />
+                                <logic:present name="myMedication" property="medicationDose">
+                                    <bean:write name="myMedication" property="medicationDose.formattedValue" />
+                                </logic:present>
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationNoOf.name" />
