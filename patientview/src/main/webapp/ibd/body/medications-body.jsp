@@ -16,10 +16,10 @@
 
 <div class="row">
     <div class="span12">
-        <h2>Current Medicines</h2>
+        <h2 class="paragraphSizeTopMargin">Current Medicines</h2>
 
         <logic:present name="currentMedications">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Date Started</th>
@@ -81,7 +81,7 @@
         <div class="span12">
             <h2>Stopped Medicines</h2>
 
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Date Started</th>
