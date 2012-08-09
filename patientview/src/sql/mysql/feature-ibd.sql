@@ -57,7 +57,7 @@ CREATE TABLE `ibd_medication_type_medications` (
   CONSTRAINT `FK4D48F99B99BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`)
 );
 
-CREATE TABLE `ibd_my_medicines` (
+CREATE TABLE `ibd_my_medication` (
   `id` bigint(20) NOT NULL auto_increment,
   `dateStarted` datetime NOT NULL,
   `dateStopped` datetime default NULL,
@@ -66,16 +66,10 @@ CREATE TABLE `ibd_my_medicines` (
   `nhsno` varchar(255) NOT NULL,
   `otherMedication` text,
   `reasonForStopping` text,
-  `medication_id` bigint(20) NOT NULL,
+  `medication_id` bigint(20) default NULL,
   `medication_dose_id` bigint(20) NOT NULL,
   `medication_type_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FK75CC2BFAF8204181` (`medication_dose_id`),
-  KEY `FK75CC2BFA99BAAE42` (`medication_id`),
-  KEY `FK75CC2BFA57719061` (`medication_type_id`),
-  CONSTRAINT `FK75CC2BFA57719061` FOREIGN KEY (`medication_type_id`) REFERENCES `ibd_medication_type` (`id`),
-  CONSTRAINT `FK75CC2BFA99BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`),
-  CONSTRAINT `FK75CC2BFAF8204181` FOREIGN KEY (`medication_dose_id`) REFERENCES `ibd_medication_dose` (`id`)
+  PRIMARY KEY  (`id`)
 );
 
 CREATE TABLE `ibd_myibd` (
