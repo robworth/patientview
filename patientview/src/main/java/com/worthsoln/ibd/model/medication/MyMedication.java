@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
-@Table(name = "ibd_my_medicines")
+@Table(name = "ibd_my_medication")
 public class MyMedication extends BaseModel {
 
     @Column(nullable = false)
@@ -31,14 +31,14 @@ public class MyMedication extends BaseModel {
     @JoinColumn(name = "medication_type_id")
     private MedicationType medicationType;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "medication_id")
     private Medication medication;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String otherMedication;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "medication_dose_id")
     private MedicationDose medicationDose;
 
