@@ -13,14 +13,13 @@
         <html:link action="/index" styleClass="brand">
             Administration Area
         </html:link>
-        <%--<div class="nav-collapse">
+       <div class="nav-collapse">
             <ul class="nav pull-right">
                 <%
                     if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
                 %>
                 <li class="pull-right "><div class="navText">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
                 <li><html:link action="logout">Logout</html:link></li>
-                <jsp:include page="include/tenancy_switcher.jsp"/>
                 <%
                     }
                 %>
@@ -40,7 +39,7 @@
             <%
                 }
             %>
-        </div><!-- /.nav-collapse -->--%>
+        </div><!-- /.nav-collapse -->
       </div>
     </div><!-- /navbar-inner -->
 </div>
