@@ -44,7 +44,7 @@
                                 <bean:write name="myMedication" property="medication.name" />
                             </td>
                             <td>
-                                <bean:write name="myMedication" property="medicationDose.mgValueAsString" /><bean:write name="myMedication" property="medicationDose.extraInformation" />
+                                <bean:write name="myMedication" property="medicationDose.formattedValue" />
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationNoOf.name" />
@@ -99,7 +99,7 @@
                                 <bean:write name="myMedication" property="medication.name" />
                             </td>
                             <td>
-                                <bean:write name="myMedication" property="medicationDose.mgValueAsString" /><bean:write name="myMedication" property="medicationDose.extraInformation" />
+                                <bean:write name="myMedication" property="medicationDose.formattedValue" />
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationNoOf.name" />

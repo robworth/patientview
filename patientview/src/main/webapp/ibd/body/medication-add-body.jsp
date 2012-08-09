@@ -72,7 +72,7 @@
                                     %>
                                     <html:select property="medicationDoseId" disabled="<%=medicationDoseSelectDisabled%>" styleId="<%=medicationDoseSelectId%>" styleClass="<%="medicationDoseList " + medicationDoseSelectClass%>">
                                         <html:option value="">Select</html:option>
-                                        <html:options name="medication" collection="allowedDosages" property="id" labelProperty="mgValueAsString"/>
+                                        <html:options name="medication" collection="allowedDosages" property="id" labelProperty="formattedValue"/>
                                     </html:select>
                                 </logic:iterate>
                             </logic:iterate>
