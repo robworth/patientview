@@ -95,6 +95,12 @@
         <error-code>400</error-code>
         <location>/patient_details.do</location>
     </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+
 
     <!-- override the tld from the struts jar -->
     <jsp-config>
