@@ -2,6 +2,7 @@ package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -10,6 +11,8 @@ import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.dataproviders.DemographicsDataProvider;
 import com.solidstategroup.radar.web.pages.BasePage;
+import com.solidstategroup.radar.web.pages.patient.alport.AlportPatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
@@ -52,14 +55,22 @@ public class ExistingPatientsListingPage extends BasePage {
                 // Populate fields
                 Demographics demographics = item.getModelObject();
 
-                if (demographics.isGeneric()) {
+                // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
+                // TODO: need to implement a patient base page with the constructors needed and then have an enum map
+                // TODO: that maps disease ids to the page they need to go to so we dont need all these ifs
+                if (demographics.getDiseaseGroup() != null && demographics.getDiseaseGroup().getId().equals(
+                        DiseaseGroup.SRNS_DISEASE_GROUP_ID) || demographics.getDiseaseGroup().getId().
+                                equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
+                    item.add(new BookmarkablePageLink<SrnsPatientPage>("edit", SrnsPatientPage.class,
+                            SrnsPatientPage.getParameters(demographics)));
+                } else if (demographics.getDiseaseGroup() != null && demographics.getDiseaseGroup().getId().equals(
+                        DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
+                    item.add(new BookmarkablePageLink<AlportPatientPage>("edit", AlportPatientPage.class,
+                            AlportPatientPage.getPageParameters(demographics)));
+                } else {
                     item.add(new BookmarkablePageLink<GenericPatientPage>("edit", GenericPatientPage.class,
                             GenericPatientPage.getPageParameters(demographics)));
-                } else {
-                    item.add(new BookmarkablePageLink<PatientPage>("edit", PatientPage.class,
-                            PatientPage.getParameters(demographics)));
                 }
-
 
                 item.add(new Label("surname"), new Label("forename"));
                 item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN2));

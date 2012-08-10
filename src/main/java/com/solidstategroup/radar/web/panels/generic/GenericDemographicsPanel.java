@@ -64,6 +64,9 @@ public class GenericDemographicsPanel extends Panel {
     }
 
     private void init(Demographics demographics) {
+        setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
+
         if (demographics.getDateRegistered() == null) {
             demographics.setDateRegistered(new Date());
         }
