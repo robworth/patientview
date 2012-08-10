@@ -20401,4 +20401,12 @@ AFAFHDAH]]></value>
         <column>whatResultsShowed</column>
         <column>keyEvidence</column>
     </table>
+
+    <table name="rdr_alport_deafness">
+        <column>id</column>
+        <column>radar_no</column>
+        <column>evidenceOfDeafness</column>
+        <column>ageProblemFirstNoticed</column>
+        <column>ageStartedUsingHearingAid</column>
+    </table>
 </dataset>
