@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.test.web;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.junit.Test;
 
@@ -16,10 +16,10 @@ public class TestPatientFirstVisitPage extends BasePageTest {
         demographics.setId(new Long(238));
 
         // Start and renderTemplate the test page
-        tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));
+        tester.startPage(SrnsPatientPage.class, SrnsPatientPage.getParameters(demographics));
 
         // Assert rendered page class
-        tester.assertRenderedPage(PatientPage.class);
+        tester.assertRenderedPage(SrnsPatientPage.class);
 
         // Try Ajax refresh
         Component firstVisitLink = tester.getLastRenderedPage().get("linksContainer").get("firstVisitLink");

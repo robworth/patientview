@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.test.web;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.TextField;
 import org.junit.Test;
@@ -20,21 +20,21 @@ public class TestPatientPage extends BasePageTest {
         demographics.setId(238L);
 
         // Start and renderTemplate the test page with page parameters
-        tester.startPage(PatientPage.class, PatientPage.getParameters(demographics));
+        tester.startPage(SrnsPatientPage.class, SrnsPatientPage.getParameters(demographics));
         clickTabsAndAssert(true);
     }
 
     @Test
     public void renderPatientPageNewPatient() {
         //start and renderTemplate the test page
-        tester.startPage(PatientPage.class);
+        tester.startPage(SrnsPatientPage.class);
 
         clickTabsAndAssert(false);
     }
 
     private void clickTabsAndAssert(boolean hasPatient) {
         //assert rendered page class
-        tester.assertRenderedPage(PatientPage.class);
+        tester.assertRenderedPage(SrnsPatientPage.class);
 
         // Try Ajax refresh
         tester.assertVisible("demographicsPanel");
