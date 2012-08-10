@@ -8,6 +8,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="deafnessDao" class="com.solidstategroup.radar.dao.alport.impl.DeafnessDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="issueDao" class="com.solidstategroup.radar.dao.impl.IssueDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
