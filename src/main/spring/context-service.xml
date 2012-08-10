@@ -4,6 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+
+    <bean id="deafnessManager" class="com.solidstategroup.radar.service.alport.impl.DeafnessManagerImpl">
+    </bean>
+
+    <bean id="medicineManager" class="com.solidstategroup.radar.service.alport.impl.MedicineManagerImpl">
+    </bean>
+
+    <bean id="geneticsManager" class="com.solidstategroup.radar.service.alport.impl.GeneticsManagerImpl">
+        <property name="geneticsDao" ref="geneticsDao"/>
+    </bean>
+
     <bean id="issueManager" class="com.solidstategroup.radar.service.impl.IssueManagerImpl">
         <property name="issueDao" ref="issueDao"/>
     </bean>
