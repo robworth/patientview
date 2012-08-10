@@ -56,6 +56,18 @@ ALTER TABLE tbl_demographics ADD CONSTRAINT fk_genericDiagnosis FOREIGN KEY (gen
 ALTER TABLE unit ADD sourceType VARCHAR(50);
 ALTER TABLE unit ADD shortName VARCHAR(50);
 
+CREATE TABLE `rdc_genetic_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `radar_no` bigint(20) NOT NULL,
+  `testsDone` int(11) NOT NULL,
+  `labWhereTestWasDone` text,
+  `testDoneOn` text,
+  `referenceNumber` varchar(255) default NULL,
+  `whatResultsShowed` text,
+  `keyEvidence` text,
+  PRIMARY KEY  (`id`)
+);
+
 
 
 
