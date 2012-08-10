@@ -1,6 +1,5 @@
 package com.solidstategroup.radar.web.panels.generic;
 
-
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.generic.MedicalResult;
 import com.solidstategroup.radar.service.generic.MedicalResultManager;
@@ -37,8 +36,24 @@ public class MedicalResultsPanel extends Panel {
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
-    public MedicalResultsPanel(String id, MedicalResult medicalResult, final Demographics demographics) {
+    public MedicalResultsPanel(String id, final Demographics demographics) {
         super(id);
+
+        setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
+
+        MedicalResult medicalResult = null;
+
+        if (demographics.hasValidId()) {
+            medicalResult = medicalResultManager.getMedicalResult(demographics.getId(),
+                    demographics.getDiseaseGroup().getId());
+        }
+
+        if (medicalResult == null) {
+            medicalResult = new MedicalResult();
+            medicalResult.setRadarNo(demographics.getId());
+            medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
+        }
 
         // general feedback for messages that are not to do with a certain component in the form
         final FeedbackPanel formFeedback = new FeedbackPanel("formFeedbackPanel");
