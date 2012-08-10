@@ -68,6 +68,15 @@ CREATE TABLE `rdc_genetic_test` (
   PRIMARY KEY  (`id`)
 );
 
+CREATE TABLE `rdr_alport_deafness` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `radar_no` bigint(20) NOT NULL,
+  `evidenceOfDeafness` int(11) NOT NULL,
+  `ageProblemFirstNoticed` int(11) default NULL,
+  `ageStartedUsingHearingAid` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+)
+
 
 
 
