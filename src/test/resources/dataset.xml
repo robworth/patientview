@@ -20389,4 +20389,16 @@ AFAFHDAH]]></value>
             <value>3</value>
         </row>
     </table>
+
+    <table name="rdc_genetic_test">
+        <column>id</column>
+        <column>radar_no</column>
+        <column>testsDone</column>
+        <column>ifYes</column>
+        <column>labWhereTestWasDone</column>
+        <column>testDoneOn</column>
+        <column>referenceNumber</column>
+        <column>whatResultsShowed</column>
+        <column>keyEvidence</column>
+    </table>
 </dataset>
