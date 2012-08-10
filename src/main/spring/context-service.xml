@@ -6,6 +6,7 @@
 
 
     <bean id="deafnessManager" class="com.solidstategroup.radar.service.alport.impl.DeafnessManagerImpl">
+        <property name="deafnessDao" ref="deafnessDao"/>
     </bean>
 
     <bean id="medicineManager" class="com.solidstategroup.radar.service.alport.impl.MedicineManagerImpl">
