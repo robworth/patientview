@@ -14,15 +14,3 @@ CREATE TABLE unit (
 unitcode varchar(100) NOT NULL DEFAULT '',
 name varchar(50),
 );
-
-CREATE TABLE `rdc_genetic_test` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `radar_no` bigint(20) NOT NULL,
-  `testsDone` int(11) NOT NULL,
-  `labWhereTestWasDone` text,
-  `testDoneOn` text,
-  `referenceNumber` varchar(255) default NULL,
-  `whatResultsShowed` text,
-  `keyEvidence` text,
-  PRIMARY KEY  (`id`)
-);
