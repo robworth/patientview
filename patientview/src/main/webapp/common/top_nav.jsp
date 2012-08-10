@@ -20,15 +20,12 @@
         <li <%=("ibd_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/careplan">Care Plan</html:link></li>
         <li <%=("patient_entry".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_entry">Enter Symptoms</html:link></li>
         <li <%=("ibd_medications".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/medications">Medicines</html:link></li>
+        <li <%=("ibd_nutrition".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/nutrition">Nutrition</html:link></li>
     </logic:present>
     <logic:present tenancy="rpv">
         <li <%= ("aboutme".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/aboutme">About Me</html:link></li>
         <li <%=("patient_entry".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_entry">Enter My Own Results</html:link></li>
         <li <%=("medicines".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/medicines">Medicines</html:link></li>
-    </logic:present>
-
-    <logic:present tenancy="ibd">
-        <li <%=("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="#">Nutrition</html:link></li>
     </logic:present>
 
     <li <%=("results".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/results">Results</html:link></li>

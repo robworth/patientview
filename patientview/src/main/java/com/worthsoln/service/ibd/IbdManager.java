@@ -2,6 +2,7 @@ package com.worthsoln.service.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
 import com.worthsoln.ibd.model.MyIbd;
+import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
 import com.worthsoln.ibd.model.medication.MedicationDose;
 import com.worthsoln.ibd.model.medication.MedicationType;
@@ -52,4 +53,8 @@ public interface IbdManager {
     MedicationType getMedicationType(Long id);
 
     List<MedicationType> getMedicationTypes();
+
+    List<Nutrition> getAllNutritions(User user);
+
+    void saveNutrition(Nutrition nutrition);
 }

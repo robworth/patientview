@@ -2,6 +2,7 @@ package com.worthsoln.service.ibd.impl;
 
 import com.worthsoln.ibd.model.CarePlan;
 import com.worthsoln.ibd.model.MyIbd;
+import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
 import com.worthsoln.ibd.model.medication.MedicationDose;
 import com.worthsoln.ibd.model.medication.MedicationType;
@@ -13,6 +14,7 @@ import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyIbdDao;
 import com.worthsoln.repository.ibd.MyMedicationDao;
+import com.worthsoln.repository.ibd.NutritionDao;
 import com.worthsoln.repository.ibd.impl.MedicationDoseDao;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
@@ -44,6 +46,9 @@ public class IbdManagerImpl implements IbdManager {
 
     @Inject
     MyMedicationDao myMedicationDao;
+
+    @Inject
+    private NutritionDao nutritionDao;
 
     @Override
     public MyIbd getMyIbd(User user) {
@@ -119,11 +124,11 @@ public class IbdManagerImpl implements IbdManager {
         }
 
         if (medicationId != null && medicationId > 0) {
-                Medication medication = getMedication(medicationId);
+            Medication medication = getMedication(medicationId);
 
-                if (medication != null && medication.hasValidId()) {
-                    myMedication.setMedication(medication);
-                }
+            if (medication != null && medication.hasValidId()) {
+                myMedication.setMedication(medication);
+            }
         }
 
         if (medicationDoseId != null && medicationDoseId > 0) {
@@ -193,6 +198,26 @@ public class IbdManagerImpl implements IbdManager {
     @Override
     public List<MedicationType> getMedicationTypes() {
         return medicationTypeDao.getAll();
+    }
+
+    @Override
+    public List<Nutrition> getAllNutritions(User user) {
+        String nhsNo = getNhsNumber(user);
+
+        if (nhsNo != null) {
+            return getAllNutritions(nhsNo);
+        }
+
+        return null;
+    }
+
+    public List<Nutrition> getAllNutritions(String nhsno) {
+        return nutritionDao.getAllNutritions(nhsno);
+    }
+
+    @Override
+    public void saveNutrition(Nutrition nutrition) {
+        nutritionDao.save(nutrition);
     }
 
     private String getNhsNumber(User user) {
