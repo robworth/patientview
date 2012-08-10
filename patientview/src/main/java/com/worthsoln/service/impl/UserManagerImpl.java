@@ -1,5 +1,6 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.TenancyUserRole;
@@ -133,7 +134,44 @@ public class UserManagerImpl implements UserManager {
 
         save(user);
 
-        // handle the permissions for the tenancy
+        addEditUserTenancyRole(user, unitAdmin.getRole());
+
+        return user;
+    }
+
+
+
+    @Override
+    public User saveUserFromPatient(PatientLogon patientLogon) {
+
+        // check for an existing user
+        User user = get(patientLogon.getUsername());
+
+        if (user == null) {
+            // create a user to save based on the unitAdmin
+            user = new User();
+        }
+        user.setAccountlocked(patientLogon.isAccountlocked());
+        user.setDummypatient(patientLogon.isDummypatient());
+        user.setEmail(patientLogon.getEmail());
+        user.setEmailverified(patientLogon.isEmailverfied());
+        user.setFailedlogons(patientLogon.getFailedlogons());
+        user.setFirstlogon(patientLogon.isFirstlogon());
+        user.setLastlogon(patientLogon.getLastlogon());
+        user.setName(patientLogon.getName());
+        user.setPassword(patientLogon.getPassword());
+        user.setScreenname(patientLogon.getScreenname());
+        user.setUsername(patientLogon.getUsername());
+
+        save(user);
+
+        addEditUserTenancyRole(user, patientLogon.getRole());
+
+        return user;
+    }
+
+    // handle the permissions for the tenancy
+    private void addEditUserTenancyRole(User user, String role) {
 
         TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
 
@@ -144,11 +182,9 @@ public class UserManagerImpl implements UserManager {
 
         // this is always updating the tenancyUserRole - shouldn't be an issue
         tenancyUserRole.setUser(user);
-        tenancyUserRole.setRole(unitAdmin.getRole());
+        tenancyUserRole.setRole(role);
         tenancyUserRole.setTenancy(securityUserManager.getLoggedInTenancy());
         tenancyUserRoleDao.save(tenancyUserRole);
-
-        return user;
     }
 
     @Override
@@ -231,7 +267,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List getUnitUsers(String unitcode) {
+    public List<UnitAdmin> getUnitUsers(String unitcode) {
         return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInTenancy());
     }
 }

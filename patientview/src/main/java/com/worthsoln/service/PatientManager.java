@@ -18,4 +18,7 @@ public interface PatientManager {
 
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps);
+
+    // Note: generics not used as the result is half user, half patient
+    List getUnitPatientsAllWithTreatmentDao(String unitcode);
 }

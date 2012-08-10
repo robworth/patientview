@@ -1,6 +1,7 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.database.DatabaseDAO;
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.User_;
@@ -36,7 +37,7 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
     }
 
     @Override
-    public List getUnitUsers(String unitcode, Tenancy tenancy) {
+    public List<UnitAdmin> getUnitUsers(String unitcode, Tenancy tenancy) {
 
         DatabaseDAO dao = new DatabaseDAO("patientview");
 

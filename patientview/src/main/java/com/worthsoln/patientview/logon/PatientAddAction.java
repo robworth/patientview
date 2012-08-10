@@ -70,8 +70,8 @@ public class PatientAddAction extends DatabaseAction {
             hashedPatient.setPassword(LogonUtils.hashPassword(hashedPatient.getPassword()));
             hashedGp.setPassword(LogonUtils.hashPassword(hashedGp.getPassword()));
 
-            dao.insertItem(new LogonDao(hashedPatient));
-            dao.insertItem(new LogonDao(hashedGp));
+            LegacySpringUtils.getUserManager().saveUserFromPatient(hashedPatient);
+            LegacySpringUtils.getUserManager().saveUserFromPatient(hashedGp);
 
             LegacySpringUtils.getUserManager().save(userMapping);
             LegacySpringUtils.getUserManager().save(userMappingPatientEnters);

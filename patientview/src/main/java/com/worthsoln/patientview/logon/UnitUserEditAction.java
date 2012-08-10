@@ -27,7 +27,6 @@ public class UnitUserEditAction extends DatabaseAction {
         String role = BeanUtils.getProperty(form, "role");
         boolean firstlogon = "true".equals(BeanUtils.getProperty(form, "firstlogon"));
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
-        DatabaseDAO dao = getDao(request);
 
         LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin);
 

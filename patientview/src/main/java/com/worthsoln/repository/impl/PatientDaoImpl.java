@@ -90,9 +90,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         */
     }
 
+    @Override
+    public List getUnitPatientsAllWithTreatmentDao(String unitcode, Tenancy tenancy) {
 
+        DatabaseDAO dao = new DatabaseDAO("patientview");
 
-
+        UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode, tenancy);
+        return dao.retrieveList(patientDao);
+    }
 
 
 }

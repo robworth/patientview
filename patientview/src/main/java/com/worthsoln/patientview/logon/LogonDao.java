@@ -27,7 +27,6 @@ public class LogonDao extends StorableItem {
     public ArrayList getColumnParameters() {
         ArrayList params = new ArrayList();
         params.add(logon.getPassword());
-        params.add(logon.getRole());
         params.add(logon.getName());
         params.add(logon.getEmail());
         params.add(logon.isEmailverfied());

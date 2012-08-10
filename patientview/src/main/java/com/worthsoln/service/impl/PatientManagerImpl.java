@@ -36,4 +36,9 @@ public class PatientManagerImpl implements PatientManager {
         return patientDao.getUnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,
                 securityUserManager.getLoggedInTenancy());
     }
+
+    @Override
+    public List getUnitPatientsAllWithTreatmentDao(String unitcode) {
+        return patientDao.getUnitPatientsAllWithTreatmentDao(unitcode, securityUserManager.getLoggedInTenancy());
+    }
 }
