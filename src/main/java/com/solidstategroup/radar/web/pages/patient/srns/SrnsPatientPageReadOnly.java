@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages.patient;
+package com.solidstategroup.radar.web.pages.patient.srns;
 
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.web.RadarSecuredSession;
@@ -15,8 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @AuthorizeInstantiation({User.ROLE_PATIENT})
-public class PatientPageReadOnly extends PatientPage {
-    public PatientPageReadOnly(PageParameters parameters) {
+public class SrnsPatientPageReadOnly extends SrnsPatientPage {
+    public SrnsPatientPageReadOnly(PageParameters parameters) {
         super(parameters);
 
         //a patient cannot edit so hide and disable stuff so only a read only view is available

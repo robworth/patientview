@@ -7,7 +7,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredPasswordTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
-import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,7 +51,7 @@ public class PatientsLoginPage extends BasePage {
                         session.setUser(patientUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
-                        setResponsePage(PatientPageReadOnly.class, PatientPageReadOnly.getParameters(
+                        setResponsePage(SrnsPatientPageReadOnly.class, SrnsPatientPageReadOnly.getParameters(
                                 patientUser.getRadarNumber()));
 
                     } else {

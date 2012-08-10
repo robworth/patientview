@@ -3,7 +3,6 @@ package com.solidstategroup.radar.web.pages.patient;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.IdType;
-import com.solidstategroup.radar.model.generic.MedicalResult;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.generic.MedicalResultManager;
@@ -58,11 +57,7 @@ public class GenericPatientPage extends BasePage {
             demographics.setChiNumber(patientModel.getId());
         }
 
-        // create new medical result
-        MedicalResult medicalResult = new MedicalResult();
-        medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
-
-        init(demographics, medicalResult);
+        init(demographics);
     }
 
     public GenericPatientPage(PageParameters pageParameters) {
@@ -72,19 +67,10 @@ public class GenericPatientPage extends BasePage {
         Long id = idValue.toLong();
         demographics = demographicsManager.getDemographicsByRadarNumber(id);
 
-        MedicalResult medicalResult = medicalResultManager.getMedicalResult(demographics.getId(),
-                demographics.getDiseaseGroup().getId());
-
-        if (medicalResult == null) {
-            medicalResult = new MedicalResult();
-            medicalResult.setRadarNo(demographics.getId());
-            medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
-        }
-
-        init(demographics, medicalResult);
+        init(demographics);
     }
 
-    public void init(Demographics demographics, MedicalResult medicalResult) {
+    public void init(Demographics demographics) {
         // init all the panels
         genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
             @Override
@@ -95,7 +81,7 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
-        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", medicalResult, demographics) {
+        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICAL_RESULTS);
