@@ -5,12 +5,17 @@ import com.solidstategroup.radar.model.alport.Deafness;
 import com.solidstategroup.radar.service.alport.DeafnessManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.ComponentHelper;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -26,11 +31,22 @@ public class DeafnessPanel extends Panel {
     @SpringBean
     private DeafnessManager deafnessManager;
 
-    public DeafnessPanel(final String id, final Deafness deafness, final Demographics demographics) {
+    public DeafnessPanel(final String id, final Demographics demographics) {
         super(id);
 
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        Deafness deafness = null;
+
+        if (demographics.hasValidId()) {
+            deafness = deafnessManager.get(demographics.getId());
+        }
+
+        if (deafness == null) {
+            deafness = new Deafness();
+            deafness.setRadarNo(demographics.getId());
+        }
 
         // main model for this tab
         IModel<Deafness> model = new Model<Deafness>(deafness);
@@ -48,10 +64,37 @@ public class DeafnessPanel extends Panel {
             @Override
             protected void onSubmit() {
                 Deafness deafness = getModelObject();
+
+                if (deafness.getEvidenceOfDeafness() == null) {
+                    error("Please select any evidence of deafness");
+                }
+
+                if (!hasError()) {
+                    deafness.setRadarNo(demographics.getId());
+                    deafnessManager.save(deafness);
+                }
             }
         };
+        form.setMarkupId("deafnessForm");
 
         add(form);
+
+        int maxAge = 90;
+        int minAge = 1;
+
+        List<Integer> ages = new ArrayList<Integer>();
+
+        for (int x = minAge; x <= maxAge; x++) {
+            ages.add(x);
+        }
+
+        DropDownChoice<Integer> ageProblemFirstNoticedDropDown =
+                new DropDownChoice<Integer>("ageProblemFirstNoticed", ages);
+        form.add(ageProblemFirstNoticedDropDown);
+
+        DropDownChoice<Integer> ageStartedUsingHearingAidDropDown =
+                new DropDownChoice<Integer>("ageStartedUsingHearingAid", ages);
+        form.add(ageStartedUsingHearingAidDropDown);
 
         // have to set the generic feedback panel to only pick up msgs for them form
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(form);
@@ -63,6 +106,21 @@ public class DeafnessPanel extends Panel {
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);
+
+        RadioGroup<Deafness.EvidenceOfDeafness> evidenceOfDeafnessRadioGroup =
+                new RadioGroup<Deafness.EvidenceOfDeafness>("evidenceOfDeafness");
+        form.add(evidenceOfDeafnessRadioGroup);
+
+        evidenceOfDeafnessRadioGroup.add(new Radio<Deafness.EvidenceOfDeafness>("evidenceOfDeafnessNo",
+                new Model<Deafness.EvidenceOfDeafness>(Deafness.EvidenceOfDeafness.NO)));
+        evidenceOfDeafnessRadioGroup.add(new Radio<Deafness.EvidenceOfDeafness>("evidenceOfDeafnessYesMinor",
+                new Model<Deafness.EvidenceOfDeafness>(Deafness.EvidenceOfDeafness.YES_MINOR)));
+        evidenceOfDeafnessRadioGroup.add(new Radio<Deafness.EvidenceOfDeafness>("evidenceOfDeafnessYesHearingAidNeeded",
+                new Model<Deafness.EvidenceOfDeafness>(Deafness.EvidenceOfDeafness.YES_HEARING_AID_NEEDED)));
+
+        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+                componentsToUpdateList);
+        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
 
         form.add(new AjaxSubmitLink("save") {
             @Override
