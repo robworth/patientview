@@ -29,13 +29,12 @@ public class UnitUserEditAction extends DatabaseAction {
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
         DatabaseDAO dao = getDao(request);
 
-        dao.updateItem(new LogonDao(unitAdmin));
+        LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin);
 
         Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
         request.setAttribute("unit", unit);
 
-        UnitUsersDao patientDao = new UnitUsersDao(unitcode);
-        List unitUsers = dao.retrieveList(patientDao);
+        List unitUsers = LegacySpringUtils.getUserManager().getUnitUsers(unitcode);
 
         request.setAttribute("unitUsers", unitUsers);
 

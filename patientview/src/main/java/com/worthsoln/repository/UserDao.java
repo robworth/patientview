@@ -1,5 +1,6 @@
 package com.worthsoln.repository;
 
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,4 +22,6 @@ public interface UserDao {
     void delete(User user);
 
     List<User> getAll();
+
+    List getUnitUsers(String unitcode, Tenancy tenancy);
 }

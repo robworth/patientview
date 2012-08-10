@@ -52,9 +52,10 @@ public class UnitAdminAddAction extends DatabaseAction {
                 mappingToFind = "existinguser";
             }
         } else {
+            // create the new user
             UnitAdmin hashedUnitAdmin = (UnitAdmin) unitAdmin.clone();
             hashedUnitAdmin.setPassword(LogonUtils.hashPassword(hashedUnitAdmin.getPassword()));
-            dao.insertItem(new LogonDao(hashedUnitAdmin));
+            LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin);
 
             UserMapping userMapping = new UserMapping(username, unitcode, "");
             LegacySpringUtils.getUserManager().save(userMapping);

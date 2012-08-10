@@ -28,6 +28,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/infoLinks.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/password-advice.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/forgotten-password.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/emailverification.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
         <!-- secure pages -->
         <!-- generic URLs that require a login -->

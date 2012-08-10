@@ -20,7 +20,7 @@ public class LogonDao extends StorableItem {
     }
 
     public String[] getColumnNames() {
-        return new String[]{"password", "role", "name", "email", "emailverified", "firstlogon", "dummypatient",
+        return new String[]{"password", "name", "email", "emailverified", "firstlogon", "dummypatient",
                 "lastlogon", "failedlogons", "accountlocked", "screenname"};
     }
 

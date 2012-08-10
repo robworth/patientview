@@ -1,5 +1,6 @@
 package com.worthsoln.service;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
@@ -23,11 +24,15 @@ public interface UserManager {
 
     String getLoggedInUserRole();
 
+    Tenancy getCurrentTenancy(User user);
+
     String getCurrentTenancyRole(User user);
 
     List<TenancyUserRole> getTenancyUserRoles(User user);
 
     void save(User user);
+
+    User saveUserFromUnitAdmin(UnitAdmin unitAdmin);
 
     void delete(User user);
 
@@ -56,4 +61,6 @@ public interface UserManager {
     List<UserMapping> getUsersSiblings(String username, String unitcode);
 
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
+
+    List getUnitUsers(String unitcode);
 }

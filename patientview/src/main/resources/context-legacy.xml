@@ -132,6 +132,15 @@
         </property>
     </bean>
 
+    <bean id="setSpringApplicationContextBean" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSpringApplicationContextBean"/>
+        <property name="arguments">
+            <list>
+                <ref bean="springApplicationContextBean"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setUkTransplantManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUkTransplantManager"/>
         <property name="arguments">

@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 /**
  *      Grab the user from the database
  */
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class PatientViewUserDetailsService implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientViewUserDetailsService.class);

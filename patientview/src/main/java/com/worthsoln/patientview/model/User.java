@@ -1,7 +1,10 @@
 package com.worthsoln.patientview.model;
 
+import com.worthsoln.utils.LegacySpringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
@@ -45,6 +48,12 @@ public class User extends BaseModel {
 
     public User(String username) {
         this.username = username;
+    }
+
+    @Transient
+    // get the user's role in the currently selected tenancy
+    public String getRole() {
+        return LegacySpringUtils.getUserManager().getCurrentTenancyRole(this);
     }
 
     public String getName() {

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -17,8 +18,8 @@ public class UnitUpdateAction extends DatabaseAction {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        // todo test this
-        Unit unit = UnitUtils.buildUnit(form);
+        Unit unit = LegacySpringUtils.getUnitManager().get(BeanUtils.getProperty(form, "unitcode"));
+        UnitUtils.buildUnit(unit, form);
         LegacySpringUtils.getUnitManager().save(unit);
         request.setAttribute("unit", unit);
 

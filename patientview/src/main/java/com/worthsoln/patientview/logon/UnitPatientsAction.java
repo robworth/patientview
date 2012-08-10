@@ -9,7 +9,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Unit;
 
@@ -24,13 +23,12 @@ public class UnitPatientsAction extends DatabaseAction {
         String name = BeanUtils.getProperty(form, "name");
         name = (name == null) ? "" : name;
         boolean showgps = "true".equals(BeanUtils.getProperty(form, "showgps"));
-        DatabaseDAO dao = getDao(request);
         if (!"".equals(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
             request.setAttribute("unit", unit);
         }
-        UnitPatientsWithTreatmentDao patientDao = new UnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps);
-        List patients = dao.retrieveList(patientDao);
+        List patients
+                = LegacySpringUtils.getPatientManager().getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
         request.setAttribute("patients", patients);
         return LogonUtils.logonChecks(mapping, request);
     }

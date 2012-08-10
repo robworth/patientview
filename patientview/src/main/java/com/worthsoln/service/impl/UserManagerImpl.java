@@ -1,5 +1,6 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
@@ -55,17 +56,42 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
+    public Tenancy getCurrentTenancy(User user) {
+
+        TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
+
+        if (tenancyUserRole != null) {
+            return tenancyUserRole.getTenancy();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public String getCurrentTenancyRole(User user) {
+
+        TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
+
+        if (tenancyUserRole != null) {
+            return tenancyUserRole.getRole();
+        } else {
+            return null;
+        }
+    }
+
+    private TenancyUserRole getCurrentTenancyUserRole(User user) {
 
         // get role from spring user for this logged in tenancy
         if (user != null) {
             List<TenancyUserRole> tenancyUserRoles = getTenancyUserRoles(user);
             Tenancy loggedInTenancy = securityUserManager.getLoggedInTenancy();
 
-            for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
+            if (loggedInTenancy != null) {
+                for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
 
-                if (tenancyUserRole.getTenancy().equals(loggedInTenancy)) {
-                    return tenancyUserRole.getRole();
+                    if (tenancyUserRole.getTenancy().equals(loggedInTenancy)) {
+                        return tenancyUserRole;
+                    }
                 }
             }
         }
@@ -81,6 +107,48 @@ public class UserManagerImpl implements UserManager {
     @Override
     public void save(User user) {
         userDao.save(user);
+    }
+
+    @Override
+    public User saveUserFromUnitAdmin(UnitAdmin unitAdmin) {
+
+        // check for an existing user
+        User user = get(unitAdmin.getUsername());
+
+        if (user == null) {
+            // create a user to save based on the unitAdmin
+            user = new User();
+        }
+        user.setAccountlocked(unitAdmin.isAccountlocked());
+        user.setDummypatient(unitAdmin.isDummypatient());
+        user.setEmail(unitAdmin.getEmail());
+        user.setEmailverified(unitAdmin.isEmailverfied());
+        user.setFailedlogons(unitAdmin.getFailedlogons());
+        user.setFirstlogon(unitAdmin.isFirstlogon());
+        user.setLastlogon(unitAdmin.getLastlogon());
+        user.setName(unitAdmin.getName());
+        user.setPassword(unitAdmin.getPassword());
+        user.setScreenname(unitAdmin.getScreenname());
+        user.setUsername(unitAdmin.getUsername());
+
+        save(user);
+
+        // handle the permissions for the tenancy
+
+        TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
+
+        if (tenancyUserRole == null) {
+            // associate new user with the current tenancy and role
+            tenancyUserRole = new TenancyUserRole();
+        }
+
+        // this is always updating the tenancyUserRole - shouldn't be an issue
+        tenancyUserRole.setUser(user);
+        tenancyUserRole.setRole(unitAdmin.getRole());
+        tenancyUserRole.setTenancy(securityUserManager.getLoggedInTenancy());
+        tenancyUserRoleDao.save(tenancyUserRole);
+
+        return user;
     }
 
     @Override
@@ -160,5 +228,10 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<UserMapping> getDuplicateUsers(String nhsno, String username) {
         return userMappingDao.getDuplicateUsers(nhsno, username);
+    }
+
+    @Override
+    public List getUnitUsers(String unitcode) {
+        return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInTenancy());
     }
 }

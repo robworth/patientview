@@ -24,8 +24,7 @@ public class UnitUsersAction extends DatabaseAction {
         Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
         request.setAttribute("unit", unit);
 
-        UnitUsersDao unitUserDao = new UnitUsersDao(unitcode);
-        List unitUsers = dao.retrieveList(unitUserDao);
+        List unitUsers = LegacySpringUtils.getUserManager().getUnitUsers(unitcode);
 
         request.setAttribute("unitUsers", unitUsers);
 

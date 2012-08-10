@@ -43,10 +43,10 @@ public class UnitUtils {
         return userMapping.getUnitcode();
     }
 
-    public static Unit buildUnit(Object form) throws Exception {
+    // update the unit by setting it's properties
+    public static void buildUnit(Unit unit, Object form) throws Exception {
 
         // build object
-        Unit unit = new Unit();
         unit.setUnitcode(BeanUtils.getProperty(form, "unitcode"));
         unit.setName(BeanUtils.getProperty(form, "name"));
         unit.setShortname(BeanUtils.getProperty(form, "shortname"));
@@ -70,64 +70,62 @@ public class UnitUtils {
 
         unit.setHaemodialysisunitname1(BeanUtils.getProperty(form, "haemodialysisunitname1"));
         unit.setHaemodialysisunitphone1(BeanUtils.getProperty(form, "haemodialysisunitphone1"));
-        unit.setHaemodialysisunitphone1(BeanUtils.getProperty(form, "haemodialysisunit1"));
+        unit.setHaemodialysisunitlocation1(BeanUtils.getProperty(form, "haemodialysisunitlocation1"));
         unit.setHaemodialysisuniturl1(BeanUtils.getProperty(form, "haemodialysisuniturl1"));
 
         unit.setHaemodialysisunitname2(BeanUtils.getProperty(form, "haemodialysisunitname2"));
         unit.setHaemodialysisunitphone2(BeanUtils.getProperty(form, "haemodialysisunitphone2"));
-        unit.setHaemodialysisunitphone2(BeanUtils.getProperty(form, "haemodialysisunit2"));
+        unit.setHaemodialysisunitlocation2(BeanUtils.getProperty(form, "haemodialysisunitlocation2"));
         unit.setHaemodialysisuniturl2(BeanUtils.getProperty(form, "haemodialysisuniturl2"));
 
         unit.setHaemodialysisunitname3(BeanUtils.getProperty(form, "haemodialysisunitname3"));
         unit.setHaemodialysisunitphone3(BeanUtils.getProperty(form, "haemodialysisunitphone3"));
-        unit.setHaemodialysisunitphone3(BeanUtils.getProperty(form, "haemodialysisunit3"));
+        unit.setHaemodialysisunitlocation3(BeanUtils.getProperty(form, "haemodialysisunitlocation3"));
         unit.setHaemodialysisuniturl3(BeanUtils.getProperty(form, "haemodialysisuniturl3"));
 
         unit.setHaemodialysisunitname4(BeanUtils.getProperty(form, "haemodialysisunitname4"));
         unit.setHaemodialysisunitphone4(BeanUtils.getProperty(form, "haemodialysisunitphone4"));
-        unit.setHaemodialysisunitphone4(BeanUtils.getProperty(form, "haemodialysisunit4"));
+        unit.setHaemodialysisunitlocation4(BeanUtils.getProperty(form, "haemodialysisunitlocation4"));
         unit.setHaemodialysisuniturl4(BeanUtils.getProperty(form, "haemodialysisuniturl4"));
 
         unit.setHaemodialysisunitname5(BeanUtils.getProperty(form, "haemodialysisunitname5"));
         unit.setHaemodialysisunitphone5(BeanUtils.getProperty(form, "haemodialysisunitphone5"));
-        unit.setHaemodialysisunitphone5(BeanUtils.getProperty(form, "haemodialysisunit5"));
+        unit.setHaemodialysisunitlocation5(BeanUtils.getProperty(form, "haemodialysisunitlocation5"));
         unit.setHaemodialysisuniturl5(BeanUtils.getProperty(form, "haemodialysisuniturl5"));
 
         unit.setHaemodialysisunitname6(BeanUtils.getProperty(form, "haemodialysisunitname6"));
         unit.setHaemodialysisunitphone6(BeanUtils.getProperty(form, "haemodialysisunitphone6"));
-        unit.setHaemodialysisunitphone6(BeanUtils.getProperty(form, "haemodialysisunit6"));
+        unit.setHaemodialysisunitlocation6(BeanUtils.getProperty(form, "haemodialysisunitlocation6"));
         unit.setHaemodialysisuniturl6(BeanUtils.getProperty(form, "haemodialysisuniturl6"));
 
         unit.setHaemodialysisunitname7(BeanUtils.getProperty(form, "haemodialysisunitname7"));
         unit.setHaemodialysisunitphone7(BeanUtils.getProperty(form, "haemodialysisunitphone7"));
-        unit.setHaemodialysisunitphone7(BeanUtils.getProperty(form, "haemodialysisunit7"));
+        unit.setHaemodialysisunitlocation7(BeanUtils.getProperty(form, "haemodialysisunitlocation7"));
         unit.setHaemodialysisuniturl7(BeanUtils.getProperty(form, "haemodialysisuniturl7"));
 
         unit.setHaemodialysisunitname8(BeanUtils.getProperty(form, "haemodialysisunitname8"));
         unit.setHaemodialysisunitphone8(BeanUtils.getProperty(form, "haemodialysisunitphone8"));
-        unit.setHaemodialysisunitphone8(BeanUtils.getProperty(form, "haemodialysisunit8"));
+        unit.setHaemodialysisunitlocation8(BeanUtils.getProperty(form, "haemodialysisunitlocation8"));
         unit.setHaemodialysisuniturl8(BeanUtils.getProperty(form, "haemodialysisuniturl8"));
 
         unit.setHaemodialysisunitname9(BeanUtils.getProperty(form, "haemodialysisunitname9"));
         unit.setHaemodialysisunitphone9(BeanUtils.getProperty(form, "haemodialysisunitphone9"));
-        unit.setHaemodialysisunitphone9(BeanUtils.getProperty(form, "haemodialysisunit9"));
+        unit.setHaemodialysisunitlocation9(BeanUtils.getProperty(form, "haemodialysisunitlocation9"));
         unit.setHaemodialysisuniturl9(BeanUtils.getProperty(form, "haemodialysisuniturl9"));
 
         unit.setHaemodialysisunitname10(BeanUtils.getProperty(form, "haemodialysisunitname10"));
         unit.setHaemodialysisunitphone10(BeanUtils.getProperty(form, "haemodialysisunitphone10"));
-        unit.setHaemodialysisunitphone10(BeanUtils.getProperty(form, "haemodialysisunit10"));
+        unit.setHaemodialysisunitlocation10(BeanUtils.getProperty(form, "haemodialysisunitlocation10"));
         unit.setHaemodialysisuniturl10(BeanUtils.getProperty(form, "haemodialysisuniturl10"));
 
         unit.setHaemodialysisunitname11(BeanUtils.getProperty(form, "haemodialysisunitname11"));
         unit.setHaemodialysisunitphone11(BeanUtils.getProperty(form, "haemodialysisunitphone11"));
-        unit.setHaemodialysisunitphone11(BeanUtils.getProperty(form, "haemodialysisunit11"));
+        unit.setHaemodialysisunitlocation11(BeanUtils.getProperty(form, "haemodialysisunitlocation11"));
         unit.setHaemodialysisuniturl11(BeanUtils.getProperty(form, "haemodialysisuniturl11"));
 
         unit.setHaemodialysisunitname12(BeanUtils.getProperty(form, "haemodialysisunitname12"));
         unit.setHaemodialysisunitphone12(BeanUtils.getProperty(form, "haemodialysisunitphone12"));
-        unit.setHaemodialysisunitphone12(BeanUtils.getProperty(form, "haemodialysisunit12"));
+        unit.setHaemodialysisunitlocation12(BeanUtils.getProperty(form, "haemodialysisunitlocation12"));
         unit.setHaemodialysisuniturl12(BeanUtils.getProperty(form, "haemodialysisuniturl12"));
-
-        return unit;
     }
 }
