@@ -10,7 +10,7 @@ import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -176,7 +176,7 @@ public class HospitalisationPanel extends Panel {
 
     @Override
     public boolean isVisible() {
-        return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.HOSPITALISATION);
+        return ((SrnsPatientPage) getPage()).getCurrentTab().equals(SrnsPatientPage.CurrentTab.HOSPITALISATION);
     }
 
     private abstract class HospitilisationAjaxSubmitLink extends AjaxSubmitLink {

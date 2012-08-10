@@ -15,6 +15,7 @@ import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.LabDataManager;
 import com.solidstategroup.radar.service.TherapyManager;
 import com.solidstategroup.radar.service.UtilityManager;
+import com.solidstategroup.radar.service.generic.DiseaseGroupManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.CentreDropDown;
@@ -26,7 +27,7 @@ import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -58,6 +59,8 @@ public class DemographicsPanel extends Panel {
 
     @SpringBean
     private DemographicsManager demographicsManager;
+    @SpringBean
+    private DiseaseGroupManager diseaseGroupManager;
     @SpringBean
     private DiagnosisManager diagnosisManager;
     @SpringBean
@@ -97,17 +100,27 @@ public class DemographicsPanel extends Panel {
 
                         if (demographicsModelObject == null) {
                             demographicsModelObject = new Demographics();
+
                             if (pageParameters != null) {
                                 // if page parameter exists then adding a demographics
                                 // set the id type and val
                                 String idType = pageParameters.get("idType").toString();
+
                                 if (idType.equals(IdType.CHI.toString())) {
                                     demographicsModelObject.setChiNumber(pageParameters.get("idVal").toString());
                                 } else if (idType.equals(IdType.NHS.toString())) {
                                     demographicsModelObject.setNhsNumber(pageParameters.get("idVal").toString());
                                 }
+
+                                String diseaseGroupId = pageParameters.get("diseaseGroupId").toString();
+
+                                if (diseaseGroupId != null) {
+                                    demographicsModelObject.setDiseaseGroup(
+                                            diseaseGroupManager.getById(diseaseGroupId));
+                                }
                             }
                         }
+
                         return demographicsModelObject;
                     }
                 });
@@ -299,6 +312,6 @@ public class DemographicsPanel extends Panel {
 
     @Override
     public boolean isVisible() {
-        return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.DEMOGRAPHICS);
+        return ((SrnsPatientPage) getPage()).getCurrentTab().equals(SrnsPatientPage.CurrentTab.DEMOGRAPHICS);
     }
 }

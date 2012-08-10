@@ -3,7 +3,7 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.models.PageNumberModel;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import com.solidstategroup.radar.web.panels.firstvisit.ClinicalPicturePanel;
 import com.solidstategroup.radar.web.panels.firstvisit.FirstVisitLaboratoryResultsPanel;
 import com.solidstategroup.radar.web.panels.firstvisit.FirstVisitTreatmentPanel;
@@ -104,7 +104,7 @@ public class FirstVisitPanel extends Panel {
 
     @Override
     public boolean isVisible() {
-        return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.FIRST_VISIT);
+        return ((SrnsPatientPage) getPage()).getCurrentTab().equals(SrnsPatientPage.CurrentTab.FIRST_VISIT);
     }
 
 

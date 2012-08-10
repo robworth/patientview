@@ -28,8 +28,8 @@ import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
 import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.patient.GenericPatientPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
 import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
@@ -121,7 +121,7 @@ public class RadarApplication extends AuthenticatedWebApplication {
                         if (component instanceof Page) {
                             if (component instanceof AdminsBasePage) {
                                 throw new RestartResponseAtInterceptPageException(AdminsLoginPage.class);
-                            } else if (component.getClass() == PatientPageReadOnly.class) {
+                            } else if (component.getClass() == SrnsPatientPageReadOnly.class) {
                                 throw new RestartResponseAtInterceptPageException(PatientsLoginPage.class);
                             }
 
@@ -159,8 +159,8 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage(ADMINS_BASE_URL + "/users/edit", AdminUserPage.class);
 
         // patient pages
-        mountPage("patient/edit", PatientPage.class);
-        mountPage("patient/view", PatientPageReadOnly.class);
+        mountPage("patient/edit", SrnsPatientPage.class);
+        mountPage("patient/view", SrnsPatientPageReadOnly.class);
         mountPage("patients", ExistingPatientsListingPage.class);
         mountPage("registration/patient", PatientRegistrationPage.class);
         mountPage("patient/new", AddPatientPage.class);

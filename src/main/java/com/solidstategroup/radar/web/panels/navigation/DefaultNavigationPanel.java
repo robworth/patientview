@@ -13,8 +13,8 @@ import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
 import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
-import com.solidstategroup.radar.web.pages.patient.PatientPageReadOnly;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import org.apache.wicket.MarkupContainer;
@@ -34,8 +34,8 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
         add(new BookmarkablePageLink<DiseaseIndexPage>("diseaseIndexPageLink", DiseaseIndexPage.class));
 
         // Enter new patient - only visible when a professional is logged in
-        BookmarkablePageLink enterNewPatientPageLink = new BookmarkablePageLink<PatientPage>("enterNewPatientPageLink",
-                AddPatientPage.class);
+        BookmarkablePageLink enterNewPatientPageLink =
+                new BookmarkablePageLink<SrnsPatientPage>("enterNewPatientPageLink", AddPatientPage.class);
         enterNewPatientPageLink.setVisible(isProfessionalOrSuperUserLoggedIn());
         add(enterNewPatientPageLink);
 
@@ -77,8 +77,8 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
         professionalsPageLink.setVisible(!userLoggedIn || isProfessionalOrSuperUserLoggedIn());
         add(professionalsPageLink);
 
-        BookmarkablePageLink patientsPageLink = new BookmarkablePageLink<PatientPageReadOnly>("patientsPageLink",
-                PatientPageReadOnly.class);
+        BookmarkablePageLink patientsPageLink = new BookmarkablePageLink<SrnsPatientPageReadOnly>("patientsPageLink",
+                SrnsPatientPageReadOnly.class);
         patientsPageLink.setVisible(!userLoggedIn);
         add(patientsPageLink);
     }

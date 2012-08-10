@@ -1,4 +1,4 @@
-package com.solidstategroup.radar.web.pages.patient;
+package com.solidstategroup.radar.web.pages.patient.srns;
 
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.DiagnosisCode;
@@ -38,7 +38,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
-public class PatientPage extends BasePage {
+public class SrnsPatientPage extends BasePage {
 
     protected static final String PARAM_ID = "id";
     @SpringBean
@@ -83,7 +83,7 @@ public class PatientPage extends BasePage {
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
-    public PatientPage(PageParameters parameters) {
+    public SrnsPatientPage(PageParameters parameters) {
         super();
 
         // Get radar number from parameters - we might not have one for new patients
@@ -205,11 +205,11 @@ public class PatientPage extends BasePage {
         PageParameters pageParameters = new PageParameters();
         if (patientModel.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID)) {
             pageParameters.set("diagnosis", DiagnosisCode.SRNS_ID);
-
         } else if (patientModel.getDiseaseGroup().getId().equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
             pageParameters.set("diagnosis", DiagnosisCode.MPGN_ID);
         }
 
+        pageParameters.set("diseaseGroupId", patientModel.getDiseaseGroup().getId());
         pageParameters.set("idType", patientModel.getIdType().toString());
         pageParameters.set("idVal", patientModel.getId());
         return pageParameters;

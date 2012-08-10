@@ -14,7 +14,7 @@ import com.solidstategroup.radar.web.components.RadarComponentFactory;
 import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.models.RadarModelFactory;
-import com.solidstategroup.radar.web.pages.patient.PatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -236,7 +236,7 @@ public class RelapsePanel extends Panel {
 
     @Override
     public boolean isVisible() {
-        return ((PatientPage) getPage()).getCurrentTab().equals(PatientPage.CurrentTab.RELAPSE);
+        return ((SrnsPatientPage) getPage()).getCurrentTab().equals(SrnsPatientPage.CurrentTab.RELAPSE);
     }
 
     private static class RelapseForm extends Form<Relapse> {
