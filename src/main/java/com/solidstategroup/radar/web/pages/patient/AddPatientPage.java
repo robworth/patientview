@@ -12,6 +12,8 @@ import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
+import com.solidstategroup.radar.web.pages.patient.alport.AlportPatientPage;
+import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -59,14 +61,17 @@ public class AddPatientPage extends BasePage {
                     error(NHS_NUMBER_INVALID_MSG);
                 }
 
-                // if srsn or mpgn chosen redirect to previous phase1 patients page, otherwise redirect to
-                // generic patients page
+                // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
+                // TODO: need to implement a patient base page with the constructors needed and then have an enum map
+                // TODO: that maps disease ids to the page they need to go to so we dont need all these ifs
                 if (!hasError()) {
                     if (model.getDiseaseGroup() != null) {
-                        if (model.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
+                       if (model.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
                                 model.getDiseaseGroup().getId().
                                         equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
-                            setResponsePage(PatientPage.class, PatientPage.getParameters(model));
+                            setResponsePage(SrnsPatientPage.class, SrnsPatientPage.getParameters(model));
+                        } else if (model.getDiseaseGroup().getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
+                            setResponsePage(new AlportPatientPage(model));
                         } else {
                             setResponsePage(new GenericPatientPage(model));
                         }
