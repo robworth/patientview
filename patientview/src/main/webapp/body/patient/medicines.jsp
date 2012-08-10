@@ -3,8 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-<div class="row">
-<div class="span12">
+
 <div class="page-header">
     <h1>Medicines</h1>
 </div>
@@ -52,7 +51,3 @@
   </logic:notEmpty>
 
 </table>
-
-</div>
-
-</div>

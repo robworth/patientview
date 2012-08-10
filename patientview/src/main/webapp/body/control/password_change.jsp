@@ -4,8 +4,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Change Password</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Change Password</h1>
+</div>
 
 <logic:present name="firstLogon">
   <bean:message key="firstlogn.message" /><br /><br />
@@ -19,46 +21,48 @@
 
 <html:errors/>
 
-<html:form action="/control/passwordChange">
+<html:form action="/control/passwordChange" styleClass="form-horizontal">
+    <fieldset>
+    <div class="control-group">
+        <label class="control-label">Username</label>
+        <div class="controls"><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername() %></div>
+    </div>
 
-  <table cellpadding="3" >
+    <div class="control-group">
+      <label class="control-label">Current Password</label>
+      <div class="controls"><html:password property="oldpassword" /></div>
+    </div>
 
-    <tr>
-      <td><b>Username</b></td>
-      <td><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername() %></td>
-    </tr>
-
-    <tr>
-      <td><b>Current Password</b></td>
-      <td><html:password property="oldpassword" /></td>
-    </tr>
-
-    <tr>
-      <td><b>New Password</b></td>
+    <div class="control-group">
+        <label class="control-label">New Password</label>
       <%--<td><html:password property="newpassword" onkeyup="chkPass(this.value);"/></td>
---%>      <td><input type="password" id="passwordPwd" name="passwordPwd" autocomplete="off" onkeyup="chkPass(this.value);" /></td>
-                      <td>
-                        <div id="scorebarBorder">
-                        <div id="score">0%</div>
-                        <div id="scorebar">&nbsp;</div>
-                        </div>
-                    </td><td><div id="complexity">Too Short</div></td>
-    </tr>
+--%>
+        <div class="controls"><input type="password" id="passwordPwd" name="passwordPwd" autocomplete="off" onkeyup="chkPass(this.value);" />
+            <p class="help-block">
+                <span id="scorebarBorder">
+                    <span id="score">0%</span>
+                    <span id="scorebar">&nbsp;</span>
+                </span>
+                <span id="complexity">Too Short</span>
+            </p>
+        </div>
+    </div>
 
-    <tr>
-      <td><b>Repeat New Password</b></td>
-      <td><html:password property="newpasswordagain" /></td>
-    </tr>
+    <div class="control-group">
+      <label class="control-label">Repeat New Password</label>
+      <div class="controls "><html:password property="newpasswordagain" /></div>
+    </div>
 
-    <tr>
-      <td><html:submit value="Submit" styleClass="formButton"/></td>
-    </tr>
+    <div class="form-actions">
+      <td><html:submit value="Submit" styleClass="btn btn-primary"/></td>
+    </div>
 
-  </table>
+</html:form>
 
-    <p class="header">Password Strength Scores</p>
+
+    <h2 class="header">Password Strength Scores</h2>
     
-    <table id="tablePwdStatus" cellpadding="5" cellspacing="1" border="0" class="pwdmeter">
+    <table id="tablePwdStatus" cellpadding="5" cellspacing="1" border="0" class="table table-bordered table-striped">
         <tr>
             <th colspan="2" class="pwdmeter">Additions</th>
             <th class="pwdmeter">Type</th>
@@ -211,33 +215,33 @@
             </td>
         </tr>
     </table>
-  <table id="tablePwdNotes" cellpadding="5" cellspacing="1" border="0" class="pwdmeter">
-       <tr class="pwdmeter">
-           <th class="pwdmeter">Quick Footnotes</th>
-       </tr>
-       <tr class="pwdmeter">
-           <td class="pwdmeter">
-               &bull; <strong>Flat:</strong> Rates that add/remove in non-changing increments.<br />
-               &bull; <strong>Incr:</strong> Rates that add/remove in adjusting increments.<br />
-               &bull; <strong>Cond:</strong> Rates that add/remove depending on additional factors.<br />
-               &bull; <strong>Comp:</strong> Rates that are too complex to summarize. See source code for details.<br />
-               &bull; <strong>n:</strong> Refers to the total number of occurrences.<br />
-               &bull; <strong>len:</strong> Refers to the total password length.<br />
-               &bull; Additional bonus scores are given for increased character variety.<br />
-               &bull; Final score is a cumulative result of all bonuses minus deductions.<br />
-               &bull; Final score is capped with a minimum of 0 and a maximum of 100.<br />
-               &bull; Score and Complexity ratings are not conditional on meeting minimum requirements.<br />
-           </td>
-       </tr>
-       <tr class="pwdmeter">
-           <th class="pwdmeter">DISCLAIMER</th>
-       </tr>
-       <tr class="pwdmeter">
-           <td class="pwdmeter">
-               <p>This application is designed to assess the strength of password strings.  The instantaneous visual feedback provides the user a means to improve the strength of their passwords, with a hard focus on breaking the typical bad habits of faulty password formulation.  Since no official weighting system exists, we created our own formulas to assess the overall strength of a given password.  Please note, that this application does not utilize the typical "days-to-crack" approach for strength determination.  We have found that particular system to be severely lacking and unreliable for real-world scenarios.  This application is neither perfect nor foolproof, and should only be utilized as a loose guide in determining methods for improving the password creation process. </p>
-           </td>
-       </tr>
-   </table>
+
+
+   <h2 class="pwdmeter">Quick Footnotes</h2>
+   <ul class="pwdmeter">
+       <li><strong>Flat:</strong> Rates that add/remove in non-changing increments.</li>
+       <li><strong>Incr:</strong> Rates that add/remove in adjusting increments.</li>
+       <li><strong>Cond:</strong> Rates that add/remove depending on additional factors.</li>
+       <li><strong>Comp:</strong> Rates that are too complex to summarize. See source code for details.</li>
+       <li><strong>n:</strong> Refers to the total number of occurrences.</li>
+       <li><strong>len:</strong> Refers to the total password length.</li>
+       <li>Additional bonus scores are given for increased character variety.</li>
+       <li>Final score is a cumulative result of all bonuses minus deductions.</li>
+       <li>Final score is capped with a minimum of 0 and a maximum of 100.</li>
+       <li>Score and Complexity ratings are not conditional on meeting minimum requirements.</li>
+   </ul>
+
+   <h2>Disclaimer</h2>
+
+   <p>This application is designed to assess the strength of password strings.  The instantaneous visual feedback
+       provides the user a means to improve the strength of their passwords, with a hard focus on breaking the typical
+       bad habits of faulty password formulation.  Since no official weighting system exists, we created our own
+       formulas to assess the overall strength of a given password.  Please note, that this application does not
+       utilize the typical "days-to-crack" approach for strength determination.  We have found that particular system
+       to be severely lacking and unreliable for real-world scenarios.  This application is neither perfect nor
+       foolproof, and should only be utilized as a loose guide in determining methods for improving the password
+       creation process.
+   </p>
     
-</html:form>
+</div>
 

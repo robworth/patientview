@@ -4,9 +4,6 @@
 
 <html:xhtml/>
 
-<div class="row">
-    <div class="span12">
-
     <div class="page-header">
         <h1>Letters</h1>
     </div>
@@ -48,5 +45,3 @@
 
 </table>
         
-    </div>
-</div>

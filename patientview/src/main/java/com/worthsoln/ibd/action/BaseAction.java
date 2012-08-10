@@ -9,6 +9,9 @@ import com.worthsoln.ibd.model.enums.FamilyHistory;
 import com.worthsoln.ibd.model.enums.Smoking;
 import com.worthsoln.ibd.model.enums.Surgery;
 import com.worthsoln.ibd.model.enums.VaccinationRecord;
+import com.worthsoln.ibd.model.medication.MedicationType;
+import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
+import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
@@ -39,6 +42,11 @@ public class BaseAction extends ActionSupport {
     // care plan lists
     protected static final String AREA_TO_DISCUSS_LIST_PROPERTY = "areaToDiscussList";
     protected static final String SCALE_LIST_PROPERTY = "scaleList";
+
+    // medication lists
+    protected static final String MEDICATION_TYPE_LIST_PROPERTY = "medicationTypeList";
+    protected static final String MEDICATION_NO_OF_LIST_PROPERTY = "medicationNoOfList";
+    protected static final String MEDICATION_FREQUENCY_LIST_PROPERTY = "medicationFrequencyList";
 
     protected static List<ScaleItem> scaleList;
 
@@ -88,6 +96,18 @@ public class BaseAction extends ActionSupport {
         }
 
         return scaleList;
+    }
+
+    protected List<MedicationType> getMedicationTypeList() {
+        return getIbdManager().getMedicationTypes();
+    }
+
+    protected List<MedicationNoOf> getMedicationNoOfList() {
+        return MedicationNoOf.getAsList();
+    }
+
+    protected List<MedicationFrequency> getMedicationFrequencyList() {
+        return MedicationFrequency.getAsList();
     }
 
     protected String getNhsNoForUser(HttpServletRequest request) {

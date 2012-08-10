@@ -1,4 +1,4 @@
-package com.worthsoln.test.repository;
+package com.worthsoln.test.repository.ibd;
 
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
@@ -10,8 +10,8 @@ import com.worthsoln.ibd.model.enums.Smoking;
 import com.worthsoln.ibd.model.enums.Surgery;
 import com.worthsoln.ibd.model.enums.VaccinationRecord;
 import com.worthsoln.repository.ibd.MyIbdDao;
+import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 
