@@ -145,7 +145,8 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
     private List<MedicalResultItem> mapMedicalResultToMedicalResultItems(MedicalResult medicalResult) {
         List<MedicalResultItem> medicalResultItems = new ArrayList<MedicalResultItem>();
 
-        String[] testCodes = {"urea", "creatinine", "weight", "height", "BPsys", "BPdia", "antihypertensive"};
+        String[] testCodes = {"urea", "creatinine", "weight", "height", "BPsys", "BPdia", "antihypertensive", "PCR",
+                "ACR"};
 
         for (String code : testCodes) {
             MedicalResultItem item = new MedicalResultItem();
@@ -176,6 +177,12 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
                     item.setObjectValue(medicalResult.getAntihypertensiveDrugs().getId());
                     item.setDate(medicalResult.getAntihypertensiveDrugsDate());
                 }
+            } else if (code.equals("PCR")) {
+                item.setObjectValue(medicalResult.getPcr());
+                item.setDate(medicalResult.getPcrDate());
+            } else if (code.equals("ACR")) {
+                item.setObjectValue(medicalResult.getAcr());
+                item.setDate(medicalResult.getAcrDate());
             }
 
             medicalResultItems.add(item);
@@ -236,6 +243,16 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
                     medicalResult.setAntihypertensiveDrugs(yesNo);
                 }
                 medicalResult.setAntihypertensiveDrugsDate(date);
+            } else if (item.getTestcode().equals("PCR")) {
+                if (item.getValue() != null) {
+                    medicalResult.setPcr(Integer.parseInt(item.getValue()));
+                }
+                medicalResult.setPcrDate(date);
+            } else if (item.getTestcode().equals("ACR")) {
+                if (item.getValue() != null) {
+                    medicalResult.setAcr(Integer.parseInt(item.getValue()));
+                }
+                medicalResult.setAcrDate(date);
             }
         }
 
