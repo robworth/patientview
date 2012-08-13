@@ -55,8 +55,8 @@
     <tr align="right">
 
       <td>&nbsp;</td>
-      <td><html:submit value="Preview" styleClass="formbutton" property="submission"/>&nbsp;
-      <html:submit value="Post" styleClass="formbutton" property="submission"/></td>
+      <td><html:submit value="Preview" styleClass="btn" property="submission"/>&nbsp;
+      <html:submit value="Post" styleClass="btn" property="submission"/></td>
     </tr>
  </table>
 
