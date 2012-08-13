@@ -10,17 +10,8 @@ import org.apache.commons.beanutils.BeanUtils;
 
 public class EdtaCodeUtils {
 
-    public static EdtaCode retrieveEdtaCode(DatabaseDAO dao, String code) {
-        return (EdtaCode) dao.retrieveItem(new EdtaCodeDao(new EdtaCode(code)));
-    }
-
     public static void addEdtaCodeToRequest(String code, String attributeName, DatabaseDAO dao,
                                             HttpServletRequest request) {
-        EdtaCode treatmentCode = EdtaCodeUtils.retrieveEdtaCode(dao, code);
-
-        request.setAttribute(attributeName, treatmentCode);
-
-        // todo test this - it looks wrong
         EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(code);
         request.setAttribute(attributeName, edtaCode);
     }
@@ -30,9 +21,7 @@ public class EdtaCodeUtils {
         return LegacySpringUtils.getEdtaCodeManager().get(linkTypeMappingParameter);
     }
 
-    public static EdtaCode build(Object form) throws Exception {
-
-        EdtaCode edtaCode = new EdtaCode();
+    public static void build(Object form, EdtaCode edtaCode) throws Exception {
 
         edtaCode.setDescription(BeanUtils.getProperty(form, "description"));
         edtaCode.setEdtaCode(BeanUtils.getProperty(form, "edtaCode"));
@@ -61,7 +50,5 @@ public class EdtaCodeUtils {
         edtaCode.setPatientLinkText04(BeanUtils.getProperty(form, "patientLinkText04"));
         edtaCode.setPatientLinkText05(BeanUtils.getProperty(form, "patientLinkText05"));
         edtaCode.setPatientLinkText06(BeanUtils.getProperty(form, "patientLinkText06"));
-
-        return edtaCode;
     }
 }

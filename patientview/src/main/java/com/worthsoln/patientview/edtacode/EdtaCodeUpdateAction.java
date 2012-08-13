@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -16,9 +17,9 @@ public class EdtaCodeUpdateAction extends DatabaseAction {
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(BeanUtils.getProperty(form, "edtaCode"));
 
-        // todo test this pull back from hibernate first
-        EdtaCode edtaCode = EdtaCodeUtils.build(form);
+        EdtaCodeUtils.build(form, edtaCode);
 
         LegacySpringUtils.getEdtaCodeManager().save(edtaCode);
 

@@ -2,6 +2,7 @@ package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.model.EdtaCode_;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.EdtaCodeDao;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository(value = "edtaCodeDao")
@@ -40,13 +43,16 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
     }
 
     @Override
-    public List<EdtaCode> get(String linkType) {
+    public List<EdtaCode> get(String linkType, Tenancy tenancy) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<EdtaCode> criteria = builder.createQuery(EdtaCode.class);
         Root<EdtaCode> edtaCodeRoot = criteria.from(EdtaCode.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        criteria.where(builder.equal(edtaCodeRoot.get(EdtaCode_.linkType), linkType));
+        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.linkType), linkType));
+        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.tenancy), tenancy));
 
+        buildWhereClause(criteria, wherePredicates);
         criteria.orderBy(builder.asc(edtaCodeRoot.get(EdtaCode_.edtaCode)));
 
         return getEntityManager().createQuery(criteria).getResultList();

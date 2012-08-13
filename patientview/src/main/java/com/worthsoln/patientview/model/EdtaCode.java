@@ -2,12 +2,18 @@ package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class EdtaCode extends BaseModel {
 
     @Column(nullable = false, unique = true)
     private String edtaCode;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
 
     @Column(nullable = true)
     private String linkType;
@@ -96,7 +102,8 @@ public class EdtaCode extends BaseModel {
         this.edtaCode = edtaCode;
     }
 
-    public EdtaCode(String edtaCode, String linkType, String description, String medicalLink01, String medicalLink02,
+    public EdtaCode(String edtaCode, Tenancy tenancy, String linkType, String description, String medicalLink01,
+                    String medicalLink02,
                     String medicalLink03, String medicalLink04, String medicalLink05, String medicalLink06,
                     String medicalLinkText01, String medicalLinkText02, String medicalLinkText03,
                     String medicalLinkText04, String medicalLinkText05, String medicalLinkText06, String patientLink01,
@@ -104,6 +111,7 @@ public class EdtaCode extends BaseModel {
                     String patientLink06, String patientLinkText01, String patientLinkText02, String patientLinkText03,
                     String patientLinkText04, String patientLinkText05, String patientLinkText06) {
         this.description = description;
+        this.tenancy = tenancy;
         this.edtaCode = edtaCode;
         this.linkType = linkType;
         this.medicalLink01 = medicalLink01;
@@ -134,6 +142,14 @@ public class EdtaCode extends BaseModel {
 
     public static final String getIdentifier() {
         return IDENTIFIER;
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public String getMedicalLinkText01() {

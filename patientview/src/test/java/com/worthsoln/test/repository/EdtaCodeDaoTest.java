@@ -1,7 +1,10 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.EdtaCode;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.EdtaCodeDao;
+import com.worthsoln.test.helpers.RepositoryHelpers;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -18,6 +21,16 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
     @Inject
     private EdtaCodeDao edtaCodeDao;
 
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
+
+    private Tenancy tenancy;
+
+    @Before
+    public void setupSystem() {
+        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tennacy");
+    }
+
     @Test
     public void testAddGetEdtaCode() throws Exception {
         EdtaCode edtaCode = getTestObject("1", "linkType1");
@@ -30,6 +43,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
 
         assertNotNull(checkEdtaCode);
         assertEquals("Edta code not persisted", edtaCode.getEdtaCode(), checkEdtaCode.getEdtaCode());
+        assertEquals("Tenancy not persisted", tenancy, checkEdtaCode.getTenancy());
         assertEquals("Link type not persisted", edtaCode.getLinkType(), checkEdtaCode.getLinkType());
         assertEquals("Description not persisted", edtaCode.getDescription(), checkEdtaCode.getDescription());
         assertEquals("Medical Link 01 not persisted", edtaCode.getMedicalLink01(), checkEdtaCode.getMedicalLink01());
@@ -108,7 +122,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
         assertTrue("Edtacode3 did not save", edtaCode3.getId() > 0);
 
         // now pull them back for linktype1 we should get 2
-        List<EdtaCode> checkEdtaCodes = edtaCodeDao.get(linkType1);
+        List<EdtaCode> checkEdtaCodes = edtaCodeDao.get(linkType1, tenancy);
 
         assertNotNull(checkEdtaCodes);
         assertTrue("No edta codes found", !checkEdtaCodes.isEmpty() && checkEdtaCodes.size() > 0);
@@ -120,7 +134,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
     }
 
     private EdtaCode getTestObject(String no, String linkType) {
-        return new EdtaCode("Test edtaCode" + no, linkType, "Test description", "Test medicalLink01",
+        return new EdtaCode("Test edtaCode" + no, tenancy, linkType, "Test description", "Test medicalLink01",
                 "Test medicalLink02", "Test medicalLink03", "Test medicalLink04", "Test medicalLink05",
                 "Test medicalLink06", "Test medicalLinkText01", "Test medicalLinkText02",
                 "Test medicalLinkText03", "Test medicalLinkText04", "Test medicalLinkText05",
