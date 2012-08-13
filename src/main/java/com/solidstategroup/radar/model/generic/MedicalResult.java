@@ -21,6 +21,10 @@ public class MedicalResult implements Serializable {
     private Date bpDate;
     private YesNo antihypertensiveDrugs; //  antihypertensive
     private Date antihypertensiveDrugsDate; //  antihypertensive
+    private Integer pcr;
+    private Date pcrDate;
+    private Integer acr;
+    private Date acrDate;
     private DiseaseGroup diseaseGroup;
 
     public enum YesNo {
@@ -173,6 +177,38 @@ public class MedicalResult implements Serializable {
 
     public void setAntihypertensiveDrugsDate(Date antihypertensiveDrugsDate) {
         this.antihypertensiveDrugsDate = antihypertensiveDrugsDate;
+    }
+
+    public Integer getPcr() {
+        return pcr;
+    }
+
+    public void setPcr(Integer pcr) {
+        this.pcr = pcr;
+    }
+
+    public Date getPcrDate() {
+        return pcrDate;
+    }
+
+    public void setPcrDate(Date pcrDate) {
+        this.pcrDate = pcrDate;
+    }
+
+    public Integer getAcr() {
+        return acr;
+    }
+
+    public void setAcr(Integer acr) {
+        this.acr = acr;
+    }
+
+    public Date getAcrDate() {
+        return acrDate;
+    }
+
+    public void setAcrDate(Date acrDate) {
+        this.acrDate = acrDate;
     }
 
     public DiseaseGroup getDiseaseGroup() {

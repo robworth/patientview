@@ -32,6 +32,7 @@ public class MedicalResultsPanel extends Panel {
     public static final String TEST_RESULT_NULL_DATE_MESSAGE = "Test result must have a date";
     public static final String TEST_RESULT_AT_LEAST_ONE = "A test result must be entered";
     public static final String TEST_RESULT_BP = "BP Systolic and Diastolic must be entered";
+    public static final String MUST_BE_BETWEEN_0_AND_2000 = "Must be between 0 - 2000";
 
     @SpringBean
     private MedicalResultManager medicalResultManager;
@@ -114,6 +115,26 @@ public class MedicalResultsPanel extends Panel {
                     get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                 }
 
+                if (medicalResult.getPcr() != null) {
+                    if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 2000) {
+                        get("pcr").error(MUST_BE_BETWEEN_0_AND_2000);
+                    }
+
+                    if (medicalResult.getPcrDate() == null) {
+                        get("pcrDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
+                }
+
+                if (medicalResult.getAcr() != null) {
+                    if (medicalResult.getAcr() < 0 || medicalResult.getAcr() > 2000) {
+                        get("acr").error(MUST_BE_BETWEEN_0_AND_2000);
+                    }
+
+                    if (medicalResult.getAcrDate() == null) {
+                        get("acrDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
+                }
+
                 if (!hasError()) {
                     medicalResult.setRadarNo(demographics.getId());
                     medicalResultManager.save(medicalResult);
@@ -156,6 +177,12 @@ public class MedicalResultsPanel extends Panel {
         form.add(antihypertensiveDrugs);
 
         form.add(new RadarDateTextField("antihypertensiveDrugsDate", form, componentsToUpdateList));
+
+        form.add(new RadarTextFieldWithValidation<Integer>("pcr", null, form, componentsToUpdateList));
+        form.add(new RadarDateTextField("pcrDate", form, componentsToUpdateList));
+
+        form.add(new RadarTextFieldWithValidation<Integer>("acr", null, form, componentsToUpdateList));
+        form.add(new RadarDateTextField("acrDate", form, componentsToUpdateList));
 
         final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
                 componentsToUpdateList);
