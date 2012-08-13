@@ -10,7 +10,7 @@
         </div>
     <div>
 </div>
-        <html:form action="/careplan-update" styleClass="form-horizontal row">
+        <html:form action="/careplan-update" styleClass="row">
             <html:errors/>
             <fieldset class="span12">
                 <div class="row">
