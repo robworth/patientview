@@ -32,3 +32,8 @@ ALTER TABLE edtacode ADD tenancy_id BIGINT(20)
 NOT NULL;
 
 UPDATE edtacode set tenancy_id = 1;
+
+ALTER TABLE result_heading ADD tenancy_id BIGINT(20)
+NOT NULL;
+
+UPDATE result_heading set tenancy_id = 1;

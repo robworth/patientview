@@ -2,12 +2,18 @@ package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "result_heading")
 public class ResultHeading extends BaseModel {
 
     @Column(nullable = false, unique = true)
     private String headingcode;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
 
     @Column(nullable = false)
     private String heading;
@@ -31,8 +37,9 @@ public class ResultHeading extends BaseModel {
         this.headingcode = headingcode;
     }
 
-    public ResultHeading(String heading, String rollover, String headingcode, String link, int panel, int panelorder) {
+    public ResultHeading(String heading, Tenancy tenancy, String rollover, String headingcode, String link, int panel, int panelorder) {
         this.heading = heading;
+        this.tenancy = tenancy;
         this.rollover = rollover;
         this.headingcode = headingcode;
         this.link = link;
@@ -46,6 +53,14 @@ public class ResultHeading extends BaseModel {
 
     public void setHeading(String heading) {
         this.heading = heading;
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public String getRollover() {
