@@ -118,12 +118,11 @@
                         </html:select>
                     </div>
                 </div>
-
+            </div>           
                 <div class="form-actions">
                     <html:submit value="Save" styleClass="btn btn-primary"/>
                     <html:link action="/medications" styleClass="btn">Cancel</html:link>
                 </div>
-            </div>
         </html:form>
     </div>
 </div>

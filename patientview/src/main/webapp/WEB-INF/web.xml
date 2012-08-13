@@ -101,6 +101,10 @@
         <location>/error.jsp</location>
     </error-page>
 
+    <error-page>
+        <error-code>403</error-code>
+        <location>/no-access.jsp</location>
+    </error-page>
 
     <!-- override the tld from the struts jar -->
     <jsp-config>

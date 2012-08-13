@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
@@ -42,12 +41,11 @@ public class PatientEditAction extends DatabaseAction {
             request.setAttribute(LogonUtils.NHSNO_ALREADY_EXISTS, nhsno);
             mappingToFind = "input";
         } else {
-            DatabaseDAO dao = getDao(request);
 
             PatientLogon patient =
                     new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient, lastlogon,
                             failedlogons, accountlocked, screenname);
-            dao.updateItem(new LogonDao(patient));
+            LegacySpringUtils.getUserManager().saveUserFromPatient(patient);
 
             List<UserMapping> userMappings = findUsersSiblings(username, unitcode);
 
@@ -61,8 +59,7 @@ public class PatientEditAction extends DatabaseAction {
                 request.setAttribute("unit", unit);
             }
 
-            UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode);
-            List patients = dao.retrieveList(patientDao);
+            List patients = LegacySpringUtils.getPatientManager().getUnitPatientsAllWithTreatmentDao(unitcode);
             request.setAttribute("patients", patients);
             mappingToFind = "success";
         }

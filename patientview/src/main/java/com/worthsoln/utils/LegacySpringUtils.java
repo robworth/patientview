@@ -17,7 +17,7 @@ import com.worthsoln.service.SplashPageManager;
 import com.worthsoln.service.UKTransplantManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
-
+import com.worthsoln.service.impl.SpringApplicationContextBean;
 
 /**
  *  Used to connect up the methods in the old model classes that do service layer operations to the newer service
@@ -53,6 +53,8 @@ public class LegacySpringUtils {
     private static SecurityUserManager securityUserManager;
 
     private static SplashPageManager splashPageManager;
+
+    private static SpringApplicationContextBean springApplicationContextBean;
 
     private static UKTransplantManager ukTransplantManager;
 
@@ -174,6 +176,14 @@ public class LegacySpringUtils {
 
     public static UKTransplantManager getUkTransplantManager() {
         return ukTransplantManager;
+    }
+
+    public static SpringApplicationContextBean getSpringApplicationContextBean() {
+        return springApplicationContextBean;
+    }
+
+    public static void setSpringApplicationContextBean(SpringApplicationContextBean springApplicationContextBean) {
+        LegacySpringUtils.springApplicationContextBean = springApplicationContextBean;
     }
 
     public static void setUkTransplantManager(UKTransplantManager ukTransplantManager) {

@@ -3,9 +3,11 @@ package com.worthsoln.test.helpers.impl;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.repository.TenancyDao;
 import com.worthsoln.repository.TenancyUserRoleDao;
 import com.worthsoln.repository.UserDao;
+import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,9 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
     private UserDao userDao;
 
     @Inject
+    private UserMappingDao userMappingDao;
+
+    @Inject
     private TenancyUserRoleDao tenancyUserRoleDao;
 
     @Override
@@ -36,6 +41,22 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
         user.setUsername(username);
         user.setScreenname(screenName);
         userDao.save(user);
+
+        return user;
+    }
+
+    @Override
+    public User createUserWithMapping(String username, String email, String password, String name, String screenName,
+                                      String unitcode, String nhsno) {
+
+        User user = createUser(username, email, password, name, screenName);
+
+        UserMapping userMapping = new UserMapping();
+        userMapping.setNhsno(nhsno);
+        userMapping.setUnitcode(unitcode);
+        userMapping.setUsername(username);
+
+        userMappingDao.save(userMapping);
 
         return user;
     }

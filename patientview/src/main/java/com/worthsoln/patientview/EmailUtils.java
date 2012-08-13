@@ -35,6 +35,16 @@ public class EmailUtils {
             Properties props = System.getProperties();
             props.put("mail.smtp.host", host);
             Session session = Session.getInstance(props, null);
+            /*
+                todo look at providing auth to use send grid
+            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication("xxxx@yyy.com", "pass");
+                }
+            });
+            */
+
             MimeMessage email = new MimeMessage(session);
             email.setFrom(new InternetAddress(fromAddress));
             email.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));

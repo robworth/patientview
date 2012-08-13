@@ -3,11 +3,14 @@ package com.worthsoln.test.helpers;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.User;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
+ *  As per RepositoryHelpers but these are Transactional
  */
-public interface RepositoryHelpers {
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public interface ServiceHelpers {
 
     User createUser(String username, String email, String password, String name, String screenName);
 
