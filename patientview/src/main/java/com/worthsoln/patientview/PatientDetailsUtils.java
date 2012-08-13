@@ -2,7 +2,6 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.model.EdtaCode;
-import com.worthsoln.patientview.edtacode.EdtaCodeUtils;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.Patient;
@@ -39,10 +38,10 @@ public class PatientDetailsUtils {
                 patientDetail.setPatient(patient);
                 patientDetail.setUnit(unit);
 
-                EdtaCode diagnosisCode = EdtaCodeUtils.retrieveEdtaCode(dao, patient.getDiagnosis());
+                EdtaCode diagnosisCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(patient.getDiagnosis());
                 patientDetail.setEdtaDiagnosis(diagnosisCode);
 
-                EdtaCode treatmentCode = EdtaCodeUtils.retrieveEdtaCode(dao, patient.getTreatment());
+                EdtaCode treatmentCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(patient.getTreatment());
                 patientDetail.setEdtaTreatment(treatmentCode);
 
                 patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));

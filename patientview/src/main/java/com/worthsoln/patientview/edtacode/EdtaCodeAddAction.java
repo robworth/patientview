@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.utils.LegacySpringUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -18,10 +17,8 @@ public class EdtaCodeAddAction extends DatabaseAction {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-
-        //todo test this, changed from HibernateUtils.extractDataFromFormMakeObjectAndAdd
-
-        EdtaCode edtaCode = EdtaCodeUtils.build(form);
+        EdtaCode edtaCode = new EdtaCode();
+        EdtaCodeUtils.build(form, edtaCode);
 
         LegacySpringUtils.getEdtaCodeManager().save(edtaCode);
 
