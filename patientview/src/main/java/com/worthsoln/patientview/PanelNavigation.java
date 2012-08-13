@@ -1,5 +1,7 @@
 package com.worthsoln.patientview;
 
+import com.worthsoln.patientview.model.Panel;
+
 import java.util.List;
 
 public class PanelNavigation {

@@ -23,7 +23,7 @@ public class EdtaCodeManagerImpl implements EdtaCodeManager {
 
     @Override
     public EdtaCode getEdtaCode(String edtaCode) {
-        return edtaCodeDao.getEdtaCode(edtaCode);
+        return edtaCodeDao.getEdtaCode(edtaCode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
@@ -39,7 +39,7 @@ public class EdtaCodeManagerImpl implements EdtaCodeManager {
 
     @Override
     public void delete(String edtaCode) {
-        edtaCodeDao.delete(edtaCode);
+        edtaCodeDao.delete(edtaCode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override

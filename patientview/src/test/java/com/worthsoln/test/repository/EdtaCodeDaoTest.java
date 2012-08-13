@@ -39,7 +39,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
 
         assertTrue("Invalid id for new edtacode", edtaCode.getId() > 0);
 
-        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(edtaCode.getEdtaCode());
+        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(edtaCode.getEdtaCode(), tenancy);
 
         assertNotNull(checkEdtaCode);
         assertEquals("Edta code not persisted", edtaCode.getEdtaCode(), checkEdtaCode.getEdtaCode());
@@ -93,9 +93,9 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
 
         assertTrue("Edtacode did not save", edtaCode.getId() > 0);
 
-        edtaCodeDao.delete(code);
+        edtaCodeDao.delete(code, tenancy);
 
-        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(code);
+        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(code, tenancy);
 
         assertNull(checkEdtaCode);
     }

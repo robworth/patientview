@@ -1,6 +1,4 @@
-package com.worthsoln.patientview;
-
-import com.worthsoln.patientview.model.ResultHeading;
+package com.worthsoln.patientview.model;
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.worthsoln.service.impl;
 
-import com.worthsoln.patientview.Panel;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.repository.CommentDao;
 import com.worthsoln.service.CommentManager;

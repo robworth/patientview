@@ -1,6 +1,5 @@
 package com.worthsoln.repository;
 
-import com.worthsoln.patientview.Panel;
 import com.worthsoln.patientview.model.Comment;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
