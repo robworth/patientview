@@ -75,7 +75,25 @@ CREATE TABLE `rdr_alport_deafness` (
   `ageProblemFirstNoticed` int(11) default NULL,
   `ageStartedUsingHearingAid` int(11) default NULL,
   PRIMARY KEY  (`id`)
-)
+);
+
+/**
+The create table is not actually needed as the table will already exist when radar and rpv dbs are merged
+so only need the update statement below
+ */
+CREATE TABLE `medicine` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(20) NOT NULL default '',
+  `unitcode` varchar(20) NOT NULL default '',
+  `startdate` datetime default '0000-00-00 00:00:00',
+  `name` varchar(100) default '',
+  `dose` varchar(100) default '',
+  PRIMARY KEY  (`id`)
+);
+
+ALTER TABLE medicine ALTER COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
+ALTER TABLE medicine ADD enddate DATETIME DEFAULT '0000-00-00 00:00:00' NULL;
+
 
 
 
