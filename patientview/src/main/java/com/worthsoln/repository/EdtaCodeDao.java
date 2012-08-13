@@ -13,11 +13,11 @@ import java.util.List;
 @Transactional(propagation = Propagation.MANDATORY)
 public interface EdtaCodeDao {
 
-    EdtaCode getEdtaCode(String edtaCode);
+    EdtaCode getEdtaCode(String edtaCode, Tenancy tenancy);
 
     void save(EdtaCode edtaCode);
 
-    void delete(String edtaCode);
+    void delete(String edtaCode, Tenancy tenancy);
 
     List<EdtaCode> get(String linkType, Tenancy tenancy);
 }

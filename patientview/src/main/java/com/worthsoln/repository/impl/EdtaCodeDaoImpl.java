@@ -19,12 +19,17 @@ import java.util.List;
 public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements EdtaCodeDao {
 
     @Override
-    public EdtaCode getEdtaCode(String edtaCode) {
+    public EdtaCode getEdtaCode(String edtaCode, Tenancy tenancy) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<EdtaCode> criteria = builder.createQuery(EdtaCode.class);
         Root<EdtaCode> edtaCodeRoot = criteria.from(EdtaCode.class);
 
-        criteria.where(builder.equal(edtaCodeRoot.get(EdtaCode_.edtaCode), edtaCode));
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.edtaCode), edtaCode));
+        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.tenancy), tenancy));
+
+        buildWhereClause(criteria, wherePredicates);
 
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
@@ -34,8 +39,8 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
     }
 
     @Override
-    public void delete(String edtaCode) {
-        EdtaCode edtaCodeToRemove = getEdtaCode(edtaCode);
+    public void delete(String edtaCode, Tenancy tenancy) {
+        EdtaCode edtaCodeToRemove = getEdtaCode(edtaCode, tenancy);
 
         if (edtaCodeToRemove != null) {
             delete(edtaCodeToRemove);

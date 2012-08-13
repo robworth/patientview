@@ -17,7 +17,7 @@ public class StaticLinkEditAction extends Action {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(request.getParameter("static"));
+        EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode("static");
         request.setAttribute(EdtaCode.getIdentifier(), edtaCode);
 
         return LogonUtils.logonChecks(mapping, request);
