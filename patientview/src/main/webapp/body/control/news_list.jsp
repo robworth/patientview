@@ -13,27 +13,30 @@
 <html:errors />
 
 
-<table cellpadding="3" >
+<table cellpadding="3" class="table table-bordered table-striped">
 
+    <thead>
   <logic:notEmpty name="newses">  <tr class="tableheader">
-    <td class="tableheader" rowspan="2">Headline</td>
-    <td class="tableheader" rowspan="2">Posted</td>
+    <th class="tableheader" rowspan="2">Headline</th>
+    <th class="tableheader" rowspan="2">Posted</th>
     <logic:present role="superadmin">
-      <td class="tableheader" colspan="4" align="center">Available to</td>
+      <th class="tableheader" colspan="4" align="center">Available to</th>
     </logic:present>
     <logic:present role="unitadmin">
-      <td class="tableheader" colspan="2" align="center">Available to</td>
+      <th class="tableheader" colspan="2" align="center">Available to</th>
     </logic:present>
+      <th rowspan="2"></th>
+      
   </tr>
   <tr class="tableheader">
     <logic:present role="superadmin">
-      <td class="tableheader">Unit(s)</td>
+      <th class="tableheader">Unit(s)</th>
     </logic:present>
-    <td class="tableheader">Admins</td>
-    <td class="tableheader">Patients</td>
-    <logic:present role="superadmin"><td class="tableheader">Public</td></logic:present>
+    <th class="tableheader">Admins</th>
+    <th class="tableheader">Patients</th>
+    <logic:present role="superadmin"><th class="tableheader">Public</th></logic:present>
   </tr>
-
+  </thead>
 
   <logic:iterate id="news" name="newses" >
      <tr>
@@ -78,19 +81,11 @@
   </logic:iterate>
 </logic:notEmpty>
 
-
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  
-  <tr>
-    <td>
+</table>
+ 
       <html:form action="/control/newsAdd">
         <html:submit value="Add New" styleClass="btn" />
       </html:form>
-    </td>
-  </tr>
 
-</table>
 </div>
 </div>
