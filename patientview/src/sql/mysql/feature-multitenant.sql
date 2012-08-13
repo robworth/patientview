@@ -37,3 +37,8 @@ ALTER TABLE result_heading ADD tenancy_id BIGINT(20)
 NOT NULL;
 
 UPDATE result_heading set tenancy_id = 1;
+
+ALTER TABLE unit ADD tenancy_id BIGINT(20)
+NOT NULL;
+
+UPDATE unit set tenancy_id = 1;
