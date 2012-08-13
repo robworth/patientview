@@ -4,8 +4,11 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 
 <html:xhtml/>
+<div class="span9">
 
-<p class="header">Admin Addition Confirmation</p>
+<div class="page-header">
+    <h1>Admin Addition Confirmation</h1>
+</div>
 
 On <dt:format
         pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfully added a new admin user with the following details:
@@ -40,3 +43,4 @@ On <dt:format
         or password, so you still need to give them this information in the usual way. The verification link will expire
         in two weeks.</p>
 </logic:notEmpty>
+</div>

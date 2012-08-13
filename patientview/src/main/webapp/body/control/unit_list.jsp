@@ -41,14 +41,13 @@
       </logic:iterate>
     </logic:notEmpty>
   </logic:present>
+</table>
+
   <logic:present role="superadmin">
-    <tr>
 
       <html:form action="/control/unitAddInput">
-        <td><html:submit value="Add new" styleClass="btn"/></td>
+        <html:submit value="Add new" styleClass="btn"/>
       </html:form>
-    </tr>
   </logic:present>
-</table>
 </div>
 </div>

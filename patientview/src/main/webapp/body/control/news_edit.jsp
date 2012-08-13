@@ -6,7 +6,7 @@
 <div class="span9">
 <table width="100%" cellpadding="3">
   <tr>
-    <td align="right"><html:link action="/control/newsList">back to News List</html:link></td>
+    <td align="left"><html:link action="/control/newsList" styleClass="btn">&larr; back to News List</html:link></td>
   </tr>
 </table>
 
