@@ -3,7 +3,6 @@ package com.worthsoln.patientview.news;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.worthsoln.patientview.model.News;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
@@ -19,7 +18,7 @@ public class NewsDeleteAction extends DatabaseAction {
 
         String id = BeanUtils.getProperty(form, "id");
         Long idLong = Long.decode(id);
-        LegacySpringUtils.getNewsManager().delete(new News(idLong));
+        LegacySpringUtils.getNewsManager().delete(idLong);
 
         NewsUtils.putAppropriateNewsForEditInRequest(request);
         return mapping.findForward("success");

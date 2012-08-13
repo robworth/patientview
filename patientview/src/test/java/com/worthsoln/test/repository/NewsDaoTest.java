@@ -1,7 +1,9 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.News;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.NewsDao;
+import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,10 +23,18 @@ public class NewsDaoTest extends BaseDaoTest {
     @Inject
     private NewsDao newsDao;
 
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
+
+    private Tenancy tenancy;
+
     @Before
     public void createNews() {
 
+        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+
         News news = new News();
+        news.setTenancy(tenancy);
         news.setAdmin(false);
         news.setBody("body1");
         news.setDatestamp(Calendar.getInstance());
@@ -35,6 +45,7 @@ public class NewsDaoTest extends BaseDaoTest {
         newsDao.save(news);
 
         news = new News();
+        news.setTenancy(tenancy);
         news.setAdmin(false);
         news.setBody("body2");
         news.setDatestamp(Calendar.getInstance());
@@ -45,6 +56,7 @@ public class NewsDaoTest extends BaseDaoTest {
         newsDao.save(news);
 
         news = new News();
+        news.setTenancy(tenancy);
         news.setAdmin(true);
         news.setBody("body3");
         news.setDatestamp(Calendar.getInstance());
@@ -55,6 +67,7 @@ public class NewsDaoTest extends BaseDaoTest {
         newsDao.save(news);
 
         news = new News();
+        news.setTenancy(tenancy);
         news.setAdmin(true);
         news.setBody("body4");
         news.setDatestamp(Calendar.getInstance());
@@ -69,6 +82,7 @@ public class NewsDaoTest extends BaseDaoTest {
     public void testSaveGet() {
 
         News news = new News();
+        news.setTenancy(tenancy);
         news.setAdmin(true);
         news.setBody("body5");
         news.setDatestamp(Calendar.getInstance());
@@ -84,7 +98,7 @@ public class NewsDaoTest extends BaseDaoTest {
     @Test
     public void testGetNewsForEveryone() {
 
-        List<News> news = newsDao.getNewsForEveryone();
+        List<News> news = newsDao.getNewsForEveryone(tenancy);
 
         assertEquals("Incorrect news for everyone", 2, news.size());
         // most recent first
@@ -97,7 +111,7 @@ public class NewsDaoTest extends BaseDaoTest {
         List<String> unitCodes = new ArrayList<String>();
         unitCodes.add("UNITCODE2");
 
-        List<News> news = newsDao.getAdminNewsForUnitCodes(unitCodes);
+        List<News> news = newsDao.getAdminNewsForUnitCodes(unitCodes, tenancy);
 
         assertEquals("Incorrect add news", 3, news.size());
         assertEquals("Incorrect news item", "body3", news.get(1).getBody());
@@ -109,7 +123,7 @@ public class NewsDaoTest extends BaseDaoTest {
         List<String> unitCodes = new ArrayList<String>();
         unitCodes.add("UNITCODE2");
 
-        List<News> news = newsDao.getAdminEditNewsForUnitCodes(unitCodes);
+        List<News> news = newsDao.getAdminEditNewsForUnitCodes(unitCodes, tenancy);
 
         assertEquals("Incorrect add news", 2, news.size());
         assertEquals("Incorrect news item", "body4", news.get(0).getBody());
@@ -121,7 +135,7 @@ public class NewsDaoTest extends BaseDaoTest {
         List<String> unitCodes = new ArrayList<String>();
         unitCodes.add("UNITCODE2");
 
-        List<News> news = newsDao.getPatientNewsForUnitCodes(unitCodes);
+        List<News> news = newsDao.getPatientNewsForUnitCodes(unitCodes, tenancy);
 
         assertEquals("Incorrect add news", 3, news.size());
 //        assertEquals("Incorrect news item", "body4", news.get(0).getBody());

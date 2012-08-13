@@ -42,3 +42,8 @@ ALTER TABLE unit ADD tenancy_id BIGINT(20)
 NOT NULL;
 
 UPDATE unit set tenancy_id = 1;
+
+ALTER TABLE news ADD tenancy_id BIGINT(20)
+NOT NULL;
+
+UPDATE news SET tenancy_id = 1;

@@ -28,7 +28,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
 
     @Before
     public void setupSystem() {
-        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tennacy");
+        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
     }
 
     @Test

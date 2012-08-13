@@ -7,9 +7,15 @@ import com.worthsoln.patientview.utils.TimestampUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class News extends BaseModel {
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
 
     @Column(nullable = false)
     private Calendar datestamp;
@@ -47,6 +53,14 @@ public class News extends BaseModel {
         this.everyone = everyone;
         this.headline = headline;
         this.body = body;
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public Calendar getDatestamp() {
