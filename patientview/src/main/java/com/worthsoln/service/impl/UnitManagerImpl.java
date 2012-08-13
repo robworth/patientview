@@ -10,6 +10,7 @@ import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.repository.PatientCountDao;
 import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UnitStatDao;
+import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -29,6 +30,9 @@ public class UnitManagerImpl implements UnitManager {
     private PatientCountDao patientCountDao;
 
     @Inject
+    private SecurityUserManager securityUserManager;
+
+    @Inject
     private UnitDao unitDao;
 
     @Inject
@@ -44,22 +48,28 @@ public class UnitManagerImpl implements UnitManager {
 
     @Override
     public Unit get(String unitCode) {
-        return unitDao.get(unitCode);
+        return unitDao.get(unitCode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public void save(Unit unit) {
+
+        // set the tenancy against the unit if not already set
+        if (unit.getTenancy() == null) {
+            unit.setTenancy(securityUserManager.getLoggedInTenancy());
+        }
+
         unitDao.save(unit);
     }
 
     @Override
     public List<Unit> getAll(boolean sortByName) {
-        return unitDao.getAll(true);
+        return unitDao.getAll(true, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<Unit> getUnitsWithUser() {
-        return unitDao.getUnitsWithUser();
+        return unitDao.getUnitsWithUser(securityUserManager.getLoggedInTenancy());
     }
 
     @Override
@@ -67,7 +77,7 @@ public class UnitManagerImpl implements UnitManager {
 
         List<String> usersUnitCodes = getUsersUnitCodes();
 
-        return unitDao.get(usersUnitCodes);
+        return unitDao.get(usersUnitCodes, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
@@ -75,7 +85,8 @@ public class UnitManagerImpl implements UnitManager {
 
         List<String> usersUnitCodes = getUsersUnitCodes();
 
-        return unitDao.get(usersUnitCodes, notTheseUnitCodes, plusTheseUnitCodes);
+        return unitDao.get(usersUnitCodes, notTheseUnitCodes, plusTheseUnitCodes,
+                securityUserManager.getLoggedInTenancy());
     }
 
     @Override
