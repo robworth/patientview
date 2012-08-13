@@ -20409,4 +20409,14 @@ AFAFHDAH]]></value>
         <column>ageProblemFirstNoticed</column>
         <column>ageStartedUsingHearingAid</column>
     </table>
+
+    <table name="medicine">
+        <column>id</column>
+        <column>nhsno</column>
+        <column>unitcode</column>
+        <column>name</column>
+        <column>dose</column>
+        <column>startdate</column>
+        <column>enddate</column>
+    </table>
 </dataset>
