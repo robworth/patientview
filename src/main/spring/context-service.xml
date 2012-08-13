@@ -10,6 +10,7 @@
     </bean>
 
     <bean id="medicineManager" class="com.solidstategroup.radar.service.alport.impl.MedicineManagerImpl">
+        <property name="medicineDao" ref="medicineDao"/>
     </bean>
 
     <bean id="geneticsManager" class="com.solidstategroup.radar.service.alport.impl.GeneticsManagerImpl">
