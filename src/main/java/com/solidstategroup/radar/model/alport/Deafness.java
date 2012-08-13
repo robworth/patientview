@@ -72,11 +72,35 @@ public class Deafness extends BaseModel {
         this.ageProblemFirstNoticed = ageProblemFirstNoticed;
     }
 
+    public String getAgeProblemFirstNoticedAsString() {
+        return Integer.toString(ageProblemFirstNoticed);
+    }
+
+    public void setAgeProblemFirstNoticedAsString(String ageProblemFirstNoticed) {
+        try {
+            this.ageProblemFirstNoticed = Integer.parseInt(ageProblemFirstNoticed);
+        } catch (Exception e) {
+            // not sure obviously not a number
+        }
+    }
+
     public int getAgeStartedUsingHearingAid() {
         return ageStartedUsingHearingAid;
     }
 
     public void setAgeStartedUsingHearingAid(int ageStartedUsingHearingAid) {
         this.ageStartedUsingHearingAid = ageStartedUsingHearingAid;
+    }
+
+    public String getAgeStartedUsingHearingAidAsString() {
+        return Integer.toString(ageStartedUsingHearingAid);
+    }
+
+    public void setAgeStartedUsingHearingAidAsString(String ageStartedUsingHearingAid) {
+        try {
+            this.ageStartedUsingHearingAid = Integer.parseInt(ageStartedUsingHearingAid);
+        } catch (Exception e) {
+            // not sure obviously not a number
+        }
     }
 }
