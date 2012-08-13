@@ -38,7 +38,7 @@ function addLoadEvent(func) {
 	}
 }
 
-function $() {
+function docId() {
 	var arrElms = [];
 	for (var i=0; i < arguments.length; i++) {
 		var elm = arguments[i];
@@ -60,9 +60,9 @@ String.prototype.strReverse = function() {
 };
 
 function chkPass(pwd) {
-	var oScorebar = $("scorebar");
-	var oScore = $("score");
-	var oComplexity = $("complexity");
+	var oScorebar = docId("scorebar");
+	var oScore = docId("score");
+	var oComplexity = docId("complexity");
 	// Simultaneous variable declaration and value assignment aren't supported in IE apparently
 	// so I'm forced to assign the same value individually per var to support a crappy browser *sigh* 
 	var nScore=0, nLength=0, nAlphaUC=0, nAlphaLC=0, nNumber=0, nSymbol=0, nMidChar=0, nRequirements=0, nAlphasOnly=0, nNumbersOnly=0, nUnqChar=0, nRepChar=0, nRepInc=0, nConsecAlphaUC=0, nConsecAlphaLC=0, nConsecNumber=0, nConsecSymbol=0, nConsecCharType=0, nSeqAlpha=0, nSeqNumber=0, nSeqSymbol=0, nSeqChar=0, nReqChar=0, nMultConsecCharType=0;
@@ -75,7 +75,7 @@ function chkPass(pwd) {
 	var sAlphaUC="0", sAlphaLC="0", sNumber="0", sSymbol="0", sMidChar="0", sRequirements="0", sAlphasOnly="0", sNumbersOnly="0", sRepChar="0", sConsecAlphaUC="0", sConsecAlphaLC="0", sConsecNumber="0", sSeqAlpha="0", sSeqNumber="0", sSeqSymbol="0";
 	var sAlphas = "abcdefghijklmnopqrstuvwxyz";
 	var sNumerics = "01234567890";
-	var sSymbols = ")!@#$%^&*()";
+	var sSymbols = ")!@#docId%^&*()";
 	var sComplexity = "Too Short";
 	var sStandards = "Below";
 	var nMinPwdLen = 8;
@@ -155,7 +155,7 @@ function chkPass(pwd) {
 	/* Modify overall score value based on usage vs requirements */
 
 		/* General point assignment */
-		$("nLengthBonus").innerHTML = "+ " + nScore; 
+		docId("nLengthBonus").innerHTML = "+ " + nScore; 
 		if (nAlphaUC > 0 && nAlphaUC < nLength) {	
 			nScore = parseInt(nScore + ((nLength - nAlphaUC) * 2));
 			sAlphaUC = "+ " + parseInt((nLength - nAlphaUC) * 2); 
@@ -176,11 +176,11 @@ function chkPass(pwd) {
 			nScore = parseInt(nScore + (nMidChar * nMultMidChar));
 			sMidChar = "+ " + parseInt(nMidChar * nMultMidChar);
 		}
-		$("nAlphaUCBonus").innerHTML = sAlphaUC; 
-		$("nAlphaLCBonus").innerHTML = sAlphaLC;
-		$("nNumberBonus").innerHTML = sNumber;
-		$("nSymbolBonus").innerHTML = sSymbol;
-		$("nMidCharBonus").innerHTML = sMidChar;
+		docId("nAlphaUCBonus").innerHTML = sAlphaUC; 
+		docId("nAlphaLCBonus").innerHTML = sAlphaLC;
+		docId("nNumberBonus").innerHTML = sNumber;
+		docId("nSymbolBonus").innerHTML = sSymbol;
+		docId("nMidCharBonus").innerHTML = sMidChar;
 		
 		/* Point deductions for poor practices */
 		if ((nAlphaLC > 0 || nAlphaUC > 0) && nSymbol === 0 && nNumber === 0) {  // Only Letters
@@ -221,24 +221,24 @@ function chkPass(pwd) {
 			nScore = parseInt(nScore - (nSeqSymbol * nMultSeqSymbol)); 
 			sSeqSymbol = "- " + parseInt(nSeqSymbol * nMultSeqSymbol);
 		}
-		$("nAlphasOnlyBonus").innerHTML = sAlphasOnly; 
-		$("nNumbersOnlyBonus").innerHTML = sNumbersOnly; 
-		$("nRepCharBonus").innerHTML = sRepChar; 
-		$("nConsecAlphaUCBonus").innerHTML = sConsecAlphaUC; 
-		$("nConsecAlphaLCBonus").innerHTML = sConsecAlphaLC; 
-		$("nConsecNumberBonus").innerHTML = sConsecNumber;
-		$("nSeqAlphaBonus").innerHTML = sSeqAlpha; 
-		$("nSeqNumberBonus").innerHTML = sSeqNumber; 
-		$("nSeqSymbolBonus").innerHTML = sSeqSymbol; 
+		docId("nAlphasOnlyBonus").innerHTML = sAlphasOnly; 
+		docId("nNumbersOnlyBonus").innerHTML = sNumbersOnly; 
+		docId("nRepCharBonus").innerHTML = sRepChar; 
+		docId("nConsecAlphaUCBonus").innerHTML = sConsecAlphaUC; 
+		docId("nConsecAlphaLCBonus").innerHTML = sConsecAlphaLC; 
+		docId("nConsecNumberBonus").innerHTML = sConsecNumber;
+		docId("nSeqAlphaBonus").innerHTML = sSeqAlpha; 
+		docId("nSeqNumberBonus").innerHTML = sSeqNumber; 
+		docId("nSeqSymbolBonus").innerHTML = sSeqSymbol; 
 
 		/* Determine if mandatory requirements have been met and set image indicators accordingly */
 		var arrChars = [nLength,nAlphaUC,nAlphaLC,nNumber,nSymbol];
 		var arrCharsIds = ["nLength","nAlphaUC","nAlphaLC","nNumber","nSymbol"];
 		var arrCharsLen = arrChars.length;
 		for (var c=0; c < arrCharsLen; c++) {
-			var oImg = $('div_' + arrCharsIds[c]);
-			var oBonus = $(arrCharsIds[c] + 'Bonus');
-			$(arrCharsIds[c]).innerHTML = arrChars[c];
+			var oImg = docId('div_' + arrCharsIds[c]);
+			var oBonus = docId(arrCharsIds[c] + 'Bonus');
+			docId(arrCharsIds[c]).innerHTML = arrChars[c];
 			if (arrCharsIds[c] == "nLength") { var minVal = parseInt(nMinPwdLen - 1); } else { var minVal = 0; }
 			if (arrChars[c] == parseInt(minVal + 1)) { nReqChar++; oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
 			else if (arrChars[c] > parseInt(minVal + 1)) { nReqChar++; oImg.className = "exceed"; oBonus.parentNode.className = "exceed"; }
@@ -250,16 +250,16 @@ function chkPass(pwd) {
 			nScore = parseInt(nScore + (nRequirements * 2)); 
 			sRequirements = "+ " + parseInt(nRequirements * 2);
 		}
-		$("nRequirementsBonus").innerHTML = sRequirements;
+		docId("nRequirementsBonus").innerHTML = sRequirements;
 
 		/* Determine if additional bonuses need to be applied and set image indicators accordingly */
 		var arrChars = [nMidChar,nRequirements];
 		var arrCharsIds = ["nMidChar","nRequirements"];
 		var arrCharsLen = arrChars.length;
 		for (var c=0; c < arrCharsLen; c++) {
-			var oImg = $('div_' + arrCharsIds[c]);
-			var oBonus = $(arrCharsIds[c] + 'Bonus');
-			$(arrCharsIds[c]).innerHTML = arrChars[c];
+			var oImg = docId('div_' + arrCharsIds[c]);
+			var oBonus = docId(arrCharsIds[c] + 'Bonus');
+			docId(arrCharsIds[c]).innerHTML = arrChars[c];
 			if (arrCharsIds[c] == "nRequirements") { var minVal = nMinReqChars; } else { var minVal = 0; }
 			if (arrChars[c] == parseInt(minVal + 1)) { oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
 			else if (arrChars[c] > parseInt(minVal + 1)) { oImg.className = "exceed"; oBonus.parentNode.className = "exceed"; }
@@ -271,9 +271,9 @@ function chkPass(pwd) {
 		var arrCharsIds = ["nAlphasOnly","nNumbersOnly","nRepChar","nConsecAlphaUC","nConsecAlphaLC","nConsecNumber","nSeqAlpha","nSeqNumber","nSeqSymbol"];
 		var arrCharsLen = arrChars.length;
 		for (var c=0; c < arrCharsLen; c++) {
-			var oImg = $('div_' + arrCharsIds[c]);
-			var oBonus = $(arrCharsIds[c] + 'Bonus');
-			$(arrCharsIds[c]).innerHTML = arrChars[c];
+			var oImg = docId('div_' + arrCharsIds[c]);
+			var oBonus = docId(arrCharsIds[c] + 'Bonus');
+			docId(arrCharsIds[c]).innerHTML = arrChars[c];
 			if (arrChars[c] > 0) { oImg.className = "warn"; oBonus.parentNode.className = "warn"; }
 			else { oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
 		}
@@ -300,9 +300,9 @@ function chkPass(pwd) {
 }
 
 function togPwdMask() {
-	var oPwd = $("passwordPwd");
-	var oTxt = $("passwordTxt");
-	var oMask = $("mask");
+	var oPwd = docId("passwordPwd");
+	var oTxt = docId("passwordTxt");
+	var oMask = docId("mask");
 	if (oMask.checked) { 
 		oPwd.value = oTxt.value;
 		oPwd.className = ""; 
@@ -322,18 +322,18 @@ function initPwdChk(restart) {
 	var arrPassDivs = ["div_nAlphasOnly","div_nNumbersOnly","div_nRepChar","div_nConsecAlphaUC","div_nConsecAlphaLC","div_nConsecNumber","div_nSeqAlpha","div_nSeqNumber","div_nSeqSymbol"];
 	var arrFailPars = ["nLengthBonus","nAlphaUCBonus","nAlphaLCBonus","nNumberBonus","nSymbolBonus","nMidCharBonus","nRequirementsBonus"];
 	var arrFailDivs = ["div_nLength","div_nAlphaUC","div_nAlphaLC","div_nNumber","div_nSymbol","div_nMidChar","div_nRequirements"];
-	for (var i in arrZeros) { $(arrZeros[i]).innerHTML = "0"; }
-	for (var i in arrPassPars) { $(arrPassPars[i]).parentNode.className = "pass"; }
-	for (var i in arrPassDivs) { $(arrPassDivs[i]).className = "pass"; }
-	for (var i in arrFailPars) { $(arrFailPars[i]).parentNode.className = "fail"; }
-	for (var i in arrFailDivs) { $(arrFailDivs[i]).className = "fail"; }
-	$("passwordPwd").value = "";
-	$("passwordTxt").value = "";
-	$("scorebar").style.backgroundPosition = "0";
+	for (var i in arrZeros) { docId(arrZeros[i]).innerHTML = "0"; }
+	for (var i in arrPassPars) { docId(arrPassPars[i]).parentNode.className = "pass"; }
+	for (var i in arrPassDivs) { docId(arrPassDivs[i]).className = "pass"; }
+	for (var i in arrFailPars) { docId(arrFailPars[i]).parentNode.className = "fail"; }
+	for (var i in arrFailDivs) { docId(arrFailDivs[i]).className = "fail"; }
+	docId("passwordPwd").value = "";
+	docId("passwordTxt").value = "";
+	docId("scorebar").style.backgroundPosition = "0";
 	if (restart) {
-		$("passwordPwd").className = "";
-		$("passwordTxt").className = "hide";
-		$("mask").checked = true;
+		docId("passwordPwd").className = "";
+		docId("passwordTxt").className = "hide";
+		docId("mask").checked = true;
 	}
 }
 
