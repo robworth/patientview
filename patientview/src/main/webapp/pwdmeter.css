@@ -49,7 +49,7 @@ td.pwdmeter {
 }
 th.pwdmeter {
 	background: #456;
-	color: #fff;
+	color: #000;
 	text-align: left;
 	vertical-align: top;
 }
@@ -61,7 +61,7 @@ th.pwdmeter {
 }
 #linkstop {
 	background: #234;
-	color: #fff;
+	color: #000;
 	margin-top: -10px;
 	padding: 2px;
 }
@@ -139,16 +139,16 @@ td.exceed,td.fail,td.pass,td.warn {
 	font-weight: bold;
 	text-align: center;
 }
-td.exceed {
+td.exceed, .table tbody tr:hover td.exceed, .table tbody tr:hover th.exceed, .table-striped tbody tr:nth-child(odd) td.exceed, .table-striped tbody tr:nth-child(odd) th.exceed {
 	background: #1C60A4;
 }
-td.fail {
+td.fail, .table tbody tr:hover td.fail, .table tbody tr:hover th.fail, .table-striped tbody tr:nth-child(odd) td.fail, .table-striped tbody tr:nth-child(odd) th.fail {
 	background: #C00;
 }
-td.pass {
+td.pass, .table tbody tr:hover td.pass, .table tbody tr:hover th.pass, .table-striped tbody tr:nth-child(odd) td.pass, .table-striped tbody tr:nth-child(odd) th.pass {
 	background: #093;
 }
-td.warn {
+td.warn, .table tbody tr:hover td.warn, .table tbody tr:hover th.warn, .table-striped tbody tr:nth-child(odd) td.warn, .table-striped tbody tr:nth-child(odd) th.warn {
 	background: #f60;
 }
 div.box {
