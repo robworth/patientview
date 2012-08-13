@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.web.pages.patient.alport;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.alport.Medicine;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.IdType;
 import com.solidstategroup.radar.model.user.User;
@@ -126,7 +125,7 @@ public class AlportPatientPage extends BasePage {
         };
         add(deafnessPanel);
 
-        medicinePanel = new MedicinePanel("medicinePanel", new Medicine(), demographics) {
+        medicinePanel = new MedicinePanel("medicinePanel", demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICINE);
