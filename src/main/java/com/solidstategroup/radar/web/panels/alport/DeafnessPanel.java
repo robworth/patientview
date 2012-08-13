@@ -21,6 +21,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -75,25 +76,28 @@ public class DeafnessPanel extends Panel {
                 }
             }
         };
-        form.setMarkupId("deafnessForm");
 
         add(form);
 
         int maxAge = 90;
         int minAge = 1;
 
-        List<Integer> ages = new ArrayList<Integer>();
+        // the list has to be strings so we can have the first one as N/A
+        List<String> ages = new ArrayList<String>();
+        ages.add("N/A");
 
         for (int x = minAge; x <= maxAge; x++) {
-            ages.add(x);
+            ages.add(Integer.toString(x));
         }
 
-        DropDownChoice<Integer> ageProblemFirstNoticedDropDown =
-                new DropDownChoice<Integer>("ageProblemFirstNoticed", ages);
+        DropDownChoice<String> ageProblemFirstNoticedDropDown =
+                new DropDownChoice<String>("ageProblemFirstNoticed",
+                        new PropertyModel<String>(model, "ageProblemFirstNoticedAsString"), ages);
         form.add(ageProblemFirstNoticedDropDown);
 
-        DropDownChoice<Integer> ageStartedUsingHearingAidDropDown =
-                new DropDownChoice<Integer>("ageStartedUsingHearingAid", ages);
+        DropDownChoice<String> ageStartedUsingHearingAidDropDown =
+                new DropDownChoice<String>("ageStartedUsingHearingAid",
+                        new PropertyModel<String>(model, "ageStartedUsingHearingAidAsString"), ages);
         form.add(ageStartedUsingHearingAidDropDown);
 
         // have to set the generic feedback panel to only pick up msgs for them form
