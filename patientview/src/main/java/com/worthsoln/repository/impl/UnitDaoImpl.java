@@ -1,5 +1,6 @@
 package com.worthsoln.repository.impl;
 
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.Unit_;
 import com.worthsoln.repository.AbstractHibernateDAO;
@@ -22,7 +23,7 @@ import java.util.List;
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
-    public Unit get(String unitCode) {
+    public Unit get(String unitCode, Tenancy tenancy) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -30,6 +31,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.unitcode), unitCode));
+        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
 
         buildWhereClause(criteria, wherePredicates);
         try {
@@ -40,13 +42,18 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> getAll(boolean sortByName) {
+    public List<Unit> getAll(boolean sortByName, Tenancy tenancy) {
 
         if (sortByName) {
 
             CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
             CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
             Root<Unit> from = criteria.from(Unit.class);
+            List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+            wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+
+            buildWhereClause(criteria, wherePredicates);
 
             criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
@@ -57,7 +64,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> getUnitsWithUser() {
+    public List<Unit> getUnitsWithUser(Tenancy tenancy) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -66,13 +73,14 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
         wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
+        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<Unit> get(List<String> usersUnitCodes) {
+    public List<Unit> get(List<String> usersUnitCodes, Tenancy tenancy) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -80,13 +88,15 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
+        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes) {
+    public List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
+                          Tenancy tenancy) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -108,6 +118,8 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 wherePredicates.add(builder.notEqual(from.get(Unit_.unitcode), notUnitCode));
             }
         }
+
+        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
 
         buildWhereClause(criteria, wherePredicates);
         criteria.orderBy(builder.asc(from.get(Unit_.name)));

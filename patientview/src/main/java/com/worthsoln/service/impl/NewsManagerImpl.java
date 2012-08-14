@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.News;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.NewsDao;
 import com.worthsoln.service.NewsManager;
+import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -23,6 +24,9 @@ public class NewsManagerImpl implements NewsManager {
     private NewsDao newsDao;
 
     @Inject
+    private SecurityUserManager securityUserManager;
+
+    @Inject
     private UnitManager unitManager;
 
     @Inject
@@ -35,12 +39,21 @@ public class NewsManagerImpl implements NewsManager {
 
     @Override
     public void save(News news) {
+
+        // apply the tenancy to the news if not set
+        if (news.getTenancy() == null) {
+            news.setTenancy(securityUserManager.getLoggedInTenancy());
+        }
+
         newsDao.save(news);
     }
 
     @Override
-    public void delete(News news) {
-        newsDao.delete(news);
+    public void delete(Long id) {
+        News news = get(id);
+        if (news != null) {
+            newsDao.delete(get(id));
+        }
     }
 
     @Override
@@ -51,7 +64,7 @@ public class NewsManagerImpl implements NewsManager {
 
         if (user == null) {
 
-            news = newsDao.getNewsForEveryone();
+            news = newsDao.getNewsForEveryone(securityUserManager.getLoggedInTenancy());
 
         } else {
 
@@ -59,17 +72,17 @@ public class NewsManagerImpl implements NewsManager {
 
             if ("superadmin".equals(userType)) {
 
-                news = newsDao.getAll();
+                news = newsDao.getAll(securityUserManager.getLoggedInTenancy());
 
             } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
 
                 List<String> unitCodes = unitManager.getUsersUnitCodes();
-                news = newsDao.getAdminNewsForUnitCodes(unitCodes);
+                news = newsDao.getAdminNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
 
             } else if ("patient".equals(userType)) {
 
                 List<String> unitCodes = unitManager.getUsersUnitCodes();
-                news = newsDao.getPatientNewsForUnitCodes(unitCodes);
+                news = newsDao.getPatientNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
             }
         }
 
@@ -84,7 +97,7 @@ public class NewsManagerImpl implements NewsManager {
 
         if (user == null) {
 
-            news = newsDao.getNewsForEveryone();
+            news = newsDao.getNewsForEveryone(securityUserManager.getLoggedInTenancy());
 
         } else {
 
@@ -92,12 +105,12 @@ public class NewsManagerImpl implements NewsManager {
 
             if ("superadmin".equals(userType)) {
 
-                news = newsDao.getAll();
+                news = newsDao.getAll(securityUserManager.getLoggedInTenancy());
 
             } else if ("unitadmin".equals(userType)) {
 
                 List<String> unitCodes = unitManager.getUsersUnitCodes();
-                news = newsDao.getAdminEditNewsForUnitCodes(unitCodes);
+                news = newsDao.getAdminEditNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
             }
         }
 

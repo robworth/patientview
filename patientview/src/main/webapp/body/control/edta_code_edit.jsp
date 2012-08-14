@@ -3,29 +3,30 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Links Editing</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Links Editing</h1>
+</div>
 
 <html:errors />
 
-<html:form action="/control/edtaCodeUpdate">
+<html:form action="/control/edtaCodeUpdate" styleClass="form-horizontal">
    <html:hidden property="linkType" name="edtaCode" />
-<table cellpadding="3" >
-    <tr>
-      <td><img src="images/space.gif" height="10" /> </td>
-    </tr>
-    <tr>
-      <td><b>Code</b></td>
-      <td><bean:write name="edtaCode" property="edtaCode" /></td>
+    <fieldset>
+    <div class="control-group">
+      <label class="control-label">Code</label>
+      <div class="controls"><bean:write name="edtaCode" property="edtaCode" /></div>
       <html:hidden name="edtaCode" property="edtaCode" />
-    </tr>
-    <tr>
-      <td><b>Description</b></td>
-      <td><html:text name="edtaCode" property="description" /></td>
-    </tr>
-    <tr>
-      <td><img src="images/space.gif" height="10" /> </td>
-    </tr>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls"><html:text name="edtaCode" property="description" /></div>
+    </div>
+    </fieldset>
+
+<table cellpadding="3" class="table table-bordered table-striped">
+      
+
     <tr>
       <td></td>
       <td align="center"><b>Link (e.g. http:// etc.)</b></td>
@@ -91,9 +92,10 @@
       <td><html:text name="edtaCode" property="patientLink06" /></td>
       <td><html:text name="edtaCode" property="patientLinkText06" /></td>
     </tr>
-    <tr>
-      <td><html:submit value="Update" styleClass="formButton"/></td>
-    </tr>
+</table>
+
+<html:submit value="Update" styleClass="btn"/>
+
 </html:form>
 
 
@@ -104,5 +106,6 @@
 
 
 
- </table>
 
+    </div>
+</div>

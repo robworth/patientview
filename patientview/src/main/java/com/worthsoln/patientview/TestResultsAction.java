@@ -5,10 +5,10 @@ import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.ResultHeading;
-import com.worthsoln.patientview.resultheading.ResultHeadingDao;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -31,13 +31,15 @@ public class TestResultsAction extends DatabaseAction {
         if (user != null) {
             request.setAttribute("user", user);
 
-            Panel currentPanel = managePanels(request, dao);
+            Panel currentPanel = managePanels(request);
             List<TestResultWithUnitShortname> results = extractTestResultsWithComments(dao, currentPanel, user);
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
             managePages(request, resultsInRecords);
             request.setAttribute("results", resultsInRecords);
 
-            List<ResultHeading> resultsHeadingsList = dao.retrieveList(new ResultHeadingDao(currentPanel));
+            List<ResultHeading> resultsHeadingsList
+                    = LegacySpringUtils.getResultHeadingManager().get(currentPanel.getPanel());
+
             request.setAttribute("resultsHeadings", resultsHeadingsList);
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");
@@ -74,11 +76,11 @@ public class TestResultsAction extends DatabaseAction {
         }
     }
 
-    private Panel managePanels(HttpServletRequest request, DatabaseDAO dao) {
+    private Panel managePanels(HttpServletRequest request) {
         Panel currentPanel = currentPanel(request);
-        List<Panel> panelList = dao.retrieveList(new PanelsDao());
+        List<Panel> panelList = LegacySpringUtils.getResultHeadingManager().getPanels();
         for (Panel p : panelList) {
-            p.setResultHeadings(dao.retrieveList(new ResultHeadingDao(p)));
+            p.setResultHeadings(LegacySpringUtils.getResultHeadingManager().get(p.getPanel()));
         }
         PanelNavigation panelNav = new PanelNavigation(currentPanel, panelList);
         request.setAttribute("panelNav", panelNav);

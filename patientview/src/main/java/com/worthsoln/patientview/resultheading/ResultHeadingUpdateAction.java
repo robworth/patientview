@@ -17,10 +17,9 @@ public class ResultHeadingUpdateAction extends DatabaseAction {
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        ResultHeading resultHeading = new ResultHeading();
+        ResultHeading resultHeading
+                = LegacySpringUtils.getResultHeadingManager().get(BeanUtils.getProperty(form, "headingcode"));
 
-        // todo work out how to get the object prior to save, probably use PK id
-        BeanUtils.setProperty(resultHeading, "headingcode", BeanUtils.getProperty(form, "headingcode"));
         BeanUtils.setProperty(resultHeading, "heading", BeanUtils.getProperty(form, "heading"));
         BeanUtils.setProperty(resultHeading, "rollover", BeanUtils.getProperty(form, "rollover"));
         BeanUtils.setProperty(resultHeading, "link", BeanUtils.getProperty(form, "link"));

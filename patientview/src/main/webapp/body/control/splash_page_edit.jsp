@@ -54,7 +54,7 @@
 
     <tr>
         <td>&nbsp;</td>
-      <td align="right"><html:submit value="Update" styleClass="formButton"/></td>
+      <td align="right"><html:submit value="Update" styleClass="btn"/></td>
     </tr>
 </html:form>
 

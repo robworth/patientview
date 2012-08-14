@@ -1,6 +1,5 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.patientview.Panel;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.model.Comment_;
 import com.worthsoln.repository.AbstractHibernateDAO;

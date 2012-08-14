@@ -2,12 +2,18 @@ package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Unit extends BaseModel {
 
     @Column(nullable = false, unique = true)
     private String unitcode;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
 
     @Column(nullable = false)
     private String name;
@@ -153,7 +159,7 @@ public class Unit extends BaseModel {
         setUnitcode(unitcode);
     }
 
-    public Unit(String unitcode, String name, String shortname, String address1, String address2, String address3, String postcode,
+    public Unit(String unitcode, Tenancy tenancy, String name, String shortname, String address1, String address2, String address3, String postcode,
                 String uniturl, String trusturl, String rpvadminname, String rpvadminphone, String rpvadminemail,
                 String unitenquiriesphone,
                 String unitenquiriesemail, String appointmentphone, String appointmentemail, String outofhours,
@@ -178,6 +184,7 @@ public class Unit extends BaseModel {
                 String haemodialysisunitname12, String haemodialysisunitphone12, String haemodialysisunitlocation12,
                 String haemodialysisuniturl12) {
         setUnitcode(unitcode);
+        this.tenancy = tenancy;
         this.name = name;
         this.shortname = shortname;
         this.address1 = address1;
@@ -252,6 +259,14 @@ public class Unit extends BaseModel {
 
     public void setUnitcode(String unitcode) {
         this.unitcode = (unitcode != null) ? unitcode.toUpperCase() : unitcode;
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public String getName() {

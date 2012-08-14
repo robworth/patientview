@@ -1,6 +1,7 @@
 package com.worthsoln.repository;
 
 import com.worthsoln.patientview.model.News;
+import com.worthsoln.patientview.model.Tenancy;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +19,13 @@ public interface NewsDao {
 
     void delete(News news);
 
-    List<News> getAll();
+    List<News> getAll(Tenancy tenancy);
 
-    List<News> getNewsForEveryone();
+    List<News> getNewsForEveryone(Tenancy tenancy);
 
-    List<News> getAdminNewsForUnitCodes(List<String> unitCodes);
+    List<News> getAdminNewsForUnitCodes(List<String> unitCodes, Tenancy tenancy);
 
-    List<News> getAdminEditNewsForUnitCodes(List<String> unitCodes);
+    List<News> getAdminEditNewsForUnitCodes(List<String> unitCodes, Tenancy tenancy);
 
-    List<News> getPatientNewsForUnitCodes(List<String> unitCodes);
+    List<News> getPatientNewsForUnitCodes(List<String> unitCodes, Tenancy tenancy);
 }

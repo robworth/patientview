@@ -18,8 +18,7 @@ public class UnitAddAction extends DatabaseAction {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-
-        Unit unit = LegacySpringUtils.getUnitManager().get(BeanUtils.getProperty(form, "unitcode"));
+        Unit unit = new Unit();
         UnitUtils.buildUnit(unit, form);
         LegacySpringUtils.getUnitManager().save(unit);
         request.setAttribute("unit", unit);

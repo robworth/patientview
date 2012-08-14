@@ -16,7 +16,7 @@ public interface NewsManager {
 
     void save(News news);
 
-    void delete(News news);
+    void delete(Long id);
 
     List<News> getNewsForViewing();
 
