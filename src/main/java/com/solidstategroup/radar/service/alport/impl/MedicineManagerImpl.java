@@ -2,6 +2,7 @@ package com.solidstategroup.radar.service.alport.impl;
 
 import com.solidstategroup.radar.dao.alport.MedicineDao;
 import com.solidstategroup.radar.model.alport.Medicine;
+import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.service.alport.MedicineManager;
 
 import java.util.List;
@@ -24,6 +25,10 @@ public class MedicineManagerImpl implements MedicineManager {
 
     public List<Medicine> getMedicines(String nhsNo) {
         return medicineDao.getMedicines(nhsNo);
+    }
+
+    public List<Medicine> getMedicines(String nhsNo, DiseaseGroup diseaseGroup) {
+        return medicineDao.getMedicines(nhsNo, diseaseGroup);
     }
 
     public void setMedicineDao(MedicineDao medicineDao) {
