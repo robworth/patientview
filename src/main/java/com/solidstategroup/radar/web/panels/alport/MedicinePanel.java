@@ -7,13 +7,13 @@ import com.solidstategroup.radar.service.alport.MedicineManager;
 import com.solidstategroup.radar.service.generic.DiseaseGroupManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
-import com.solidstategroup.radar.web.components.RadarDatePicker;
+import com.solidstategroup.radar.web.components.RadarDateTextField;
 import com.solidstategroup.radar.web.panels.PatientDetailPanel;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -29,6 +29,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -178,13 +179,14 @@ public class MedicinePanel extends Panel {
             TextField dose = new TextField<String>("dose");
             add(dose);
 
-            DateTextField startDate = new DateTextField("startDate", RadarApplication.DATE_PATTERN2);
-            startDate.add(new RadarDatePicker());
+            RadarDateTextField startDate = new RadarDateTextField("startDate", this,
+                    new ArrayList<Component>(0));
             startDate.setRequired(true);
             add(startDate);
 
-            DateTextField endDate = new DateTextField("endDate", RadarApplication.DATE_PATTERN2);
-            endDate.add(new RadarDatePicker());
+            RadarDateTextField endDate = new RadarDateTextField("endDate", this,
+                    new ArrayList<Component>(0));
+            endDate.setRequired(false);
             add(endDate);
 
             add(medicineFormFeedback);
