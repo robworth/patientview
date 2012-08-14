@@ -20,7 +20,7 @@ public interface SplashPageManager {
 
     void save(SplashPageUserSeen splashPageUserSeen);
 
-    void delete(SplashPage splashPage);
+    void delete(Long id);
 
     List<SplashPage> getAll();
 

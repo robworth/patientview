@@ -2,9 +2,11 @@ package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.model.SplashPageUserSeen;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.SplashPageDao;
 import com.worthsoln.repository.SplashPageUserSeenDao;
+import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,28 +29,18 @@ public class SplashPageDaoTest extends BaseDaoTest {
     @Inject
     private SplashPageUserSeenDao splashPageUserSeenDao;
 
-    @Test
-    public void testSaveGet() {
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
 
-        SplashPage splashPage = new SplashPage();
-        splashPage.setName("name");
-        splashPage.setLive(true);
-        splashPage.setHeadline("headline");
-        splashPage.setBodytext("body");
-        splashPage.setUnitcode("UNITCODE1");
-        splashPageDao.save(splashPage);
-
-        assertTrue("Invalid id after save", splashPage.getId() > 0);
-
-        SplashPage check = splashPageDao.get(splashPage.getId());
-
-        assertEquals("Check has incorrect name", "name", check.getName());
-    }
+    private Tenancy tenancy;
 
     @Before
     public void createSplashPagesAndSeen() {
 
+        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+
         SplashPage splashPage = new SplashPage();
+        splashPage.setTenancy(tenancy);
         splashPage.setName("name1");
         splashPage.setLive(true);
         splashPage.setHeadline("headline1");
@@ -62,6 +54,7 @@ public class SplashPageDaoTest extends BaseDaoTest {
         splashPageUserSeenDao.save(splashPageUserSeen);
 
         splashPage = new SplashPage();
+        splashPage.setTenancy(tenancy);
         splashPage.setName("name2");
         splashPage.setLive(true);
         splashPage.setHeadline("headline2");
@@ -75,6 +68,7 @@ public class SplashPageDaoTest extends BaseDaoTest {
         splashPageUserSeenDao.save(splashPageUserSeen);
 
         splashPage = new SplashPage();
+        splashPage.setTenancy(tenancy);
         splashPage.setName("name3");
         splashPage.setLive(true);
         splashPage.setHeadline("headline3");
@@ -89,19 +83,39 @@ public class SplashPageDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testSaveGet() {
+
+        SplashPage splashPage = new SplashPage();
+        splashPage.setTenancy(tenancy);
+        splashPage.setName("name");
+        splashPage.setLive(true);
+        splashPage.setHeadline("headline");
+        splashPage.setBodytext("body");
+        splashPage.setUnitcode("UNITCODE1");
+        splashPageDao.save(splashPage);
+
+        assertTrue("Invalid id after save", splashPage.getId() > 0);
+
+        SplashPage check = splashPageDao.get(splashPage.getId());
+
+        assertEquals("Check has incorrect name", "name", check.getName());
+    }
+
+    @Test
     public void testGetWithUnitCodes() {
 
         List<String> unitCodes = new ArrayList<String>();
         unitCodes.add("UNITCODE2");
         unitCodes.add("UNITCODE3");
 
-        assertEquals("Incorrect number of splash pages returned", 2, splashPageDao.getAll(unitCodes).size());
+        assertEquals("Incorrect number of splash pages returned", 2, splashPageDao.getAll(unitCodes, tenancy).size());
     }
 
     @Test
     public void testGetSeenForPatientAndDelete() {
 
         SplashPage splashPage = new SplashPage();
+        splashPage.setTenancy(tenancy);
         splashPage.setName("nameA");
         splashPage.setLive(true);
         splashPage.setHeadline("headlineA");

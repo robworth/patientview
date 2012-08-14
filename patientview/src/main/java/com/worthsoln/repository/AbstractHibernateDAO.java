@@ -46,7 +46,9 @@ public class AbstractHibernateDAO<T extends BaseModel> {
 
     public void delete(final Long entityId) {
         final T entity = get(entityId);
-        delete(entity);
+        if (entity != null) {
+            delete(entity);
+        }
     }
 
     protected <T> void buildWhereClause(CriteriaQuery<T> criteria, List<Predicate> wherePredicates) {

@@ -47,7 +47,8 @@ public class LogonUtils {
                     SplashPage splashPage = activeSplashPage(user);
 
                     if (null != splashPage) {
-                        resultForward = "loginSuccess";
+                        // Note: This may need to be extended for other roles?
+                        resultForward = "patient";
                         request.setAttribute("splashPage", splashPage);
                         session.setAttribute("splashPageViewed", "splashPageViewed");
                     }
