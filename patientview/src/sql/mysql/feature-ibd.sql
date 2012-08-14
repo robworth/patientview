@@ -67,7 +67,7 @@ CREATE TABLE `ibd_my_medication` (
   `otherMedication` text,
   `reasonForStopping` text,
   `medication_id` bigint(20) default NULL,
-  `medication_dose_id` bigint(20) NOT NULL,
+  `medication_dose_id` bigint(20) default NULL,
   `medication_type_id` bigint(20) NOT NULL,
   PRIMARY KEY  (`id`)
 );
