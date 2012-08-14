@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum MassInTummy {
-
     NO(0, "No", 0),
     POSSIBLE(1, "Possible", 1),
     DEFINITE(2, "Definite", 2),
@@ -24,24 +23,12 @@ public enum MassInTummy {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getDisplayText() {
         return displayText;
     }
 
-    public void setDisplayText(String displayText) {
-        this.displayText = displayText;
-    }
-
     public int getScore() {
         return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public static List<MassInTummy> getAsList() {

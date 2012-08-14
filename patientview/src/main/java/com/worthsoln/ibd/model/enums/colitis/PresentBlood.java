@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum PresentBlood {
-
     NONE(0, "None", 0),
     A_TRACE(1, "A trace", 1),
     OCCASIONAL(2, "Occasional Blood", 2),
@@ -24,24 +23,12 @@ public enum PresentBlood {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getDisplayText() {
         return displayText;
     }
 
-    public void setDisplayText(String displayText) {
-        this.displayText = displayText;
-    }
-
     public int getScore() {
         return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public static List<PresentBlood> getAsList() {

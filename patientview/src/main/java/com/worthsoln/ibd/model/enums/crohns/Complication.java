@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Complication {
-
     NO(0, "No", 0),
     MILD(1, "Arthralgia", 1),
     UVEITIS(2, "Uveitis", 1),
@@ -29,24 +28,12 @@ public enum Complication {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getDisplayText() {
         return displayText;
     }
 
-    public void setDisplayText(String displayText) {
-        this.displayText = displayText;
-    }
-
     public int getScore() {
         return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public static List<Complication> getAsList() {

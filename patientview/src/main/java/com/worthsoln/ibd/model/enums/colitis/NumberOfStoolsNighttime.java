@@ -22,24 +22,12 @@ public enum NumberOfStoolsNighttime {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getDisplayText() {
         return displayText;
     }
 
-    public void setDisplayText(String displayText) {
-        this.displayText = displayText;
-    }
-
     public int getScore() {
         return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public static List<NumberOfStoolsNighttime> getAsList() {
