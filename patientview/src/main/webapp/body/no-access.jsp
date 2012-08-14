@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1>Error 404 - Page not found</h1>
+    <h1>Error 403 - Insufficient Privileges</h1>
 
 </div>
 
