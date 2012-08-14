@@ -194,7 +194,7 @@
 
         <action path="/crohns-edit"
                 name="crohnsForm"
-                type="com.worthsoln.ibd.action.crohns.CrohnsEditAction"
+                type="com.worthsoln.ibd.action.symptoms.crohns.CrohnsEditAction"
                 scope="request"
                 parameter="ibd_crohns">
             <forward name="success" path="/ibd/crohns.jsp"/>
@@ -202,7 +202,7 @@
 
         <action path="/crohns-update"
                 name="crohnsForm"
-                type="com.worthsoln.ibd.action.crohns.CrohnsUpdateAction"
+                type="com.worthsoln.ibd.action.symptoms.crohns.CrohnsUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -213,7 +213,7 @@
 
         <action path="/colitis-edit"
                 name="colitisForm"
-                type="com.worthsoln.ibd.action.colitis.ColitisEditAction"
+                type="com.worthsoln.ibd.action.symptoms.colitis.ColitisEditAction"
                 scope="request"
                 parameter="ibd_colitis">
             <forward name="success" path="/ibd/colitis.jsp"/>
@@ -221,7 +221,7 @@
 
         <action path="/colitis-update"
                 name="colitisForm"
-                type="com.worthsoln.ibd.action.colitis.ColitisUpdateAction"
+                type="com.worthsoln.ibd.action.symptoms.colitis.ColitisUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"

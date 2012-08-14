@@ -1,8 +1,8 @@
-package com.worthsoln.ibd.action.crohns;
+package com.worthsoln.ibd.action.symptoms.colitis;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.ibd.model.Crohns;
+import com.worthsoln.ibd.model.symptoms.Colitis;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -13,35 +13,35 @@ import org.apache.struts.action.DynaActionForm;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CrohnsUpdateAction extends BaseAction {
+public class ColitisUpdateAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-
         DynaActionForm dynaForm = (DynaActionForm) form;
 
         if (!validate(dynaForm, request)) {
             return mapping.findForward(INPUT);
         }
 
-        Crohns crohns = new Crohns();
-        crohns.setNhsno(getNhsNoForUser(request));
-        crohns.setAbdominalPain((Integer) dynaForm.get(Ibd.ABDOMINAL_PAIN_PARAM));
-        crohns.setOpenBowels((Integer) dynaForm.get(Ibd.OPEN_BOWELS_PARAM));
-        crohns.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
-        crohns.setComplications((Integer) dynaForm.get(Ibd.COMPLICATIONS_PARAM));
-        crohns.setMassInTummy((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
+        Colitis colitis = new Colitis();
+        colitis.setNhsno(getNhsNoForUser(request));
+        colitis.setStoolsDay((Integer) dynaForm.get(Ibd.STOOLS_DATE_PARAM));
+        colitis.setStoolsNight((Integer) dynaForm.get(Ibd.STOOLS_NIGHT_PARAM));
+        colitis.setToiletTiming((Integer) dynaForm.get(Ibd.TOILET_TIMING_PARAM));
+        colitis.setPresentBlood((Integer) dynaForm.get(Ibd.PRESENT_BLOOD_PARAM));
+        colitis.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
+        colitis.setFurtherComplications((Integer) dynaForm.get(Ibd.FURTHER_COMPLICATIONS_PARAM));
 
-        String crohnsDateString = (String) dynaForm.get(Ibd.CROHNS_DATE_PARAM);
-        if (crohnsDateString != null && crohnsDateString.length() > 0) {
+        String colitisDateString = (String) dynaForm.get(Ibd.COLITIS_DATE_PARAM);
+        if (colitisDateString != null && colitisDateString.length() > 0) {
             try {
-                crohns.setChornsDate(Ibd.DATE_FORMAT.parse(crohnsDateString));
+                colitis.setColitisDate(Ibd.DATE_FORMAT.parse(colitisDateString));
             } catch (Exception e) {
                 // dunno just store with it set to null
             }
         }
 
-        getIbdManager().saveCrohns(crohns);
+        getIbdManager().saveColitis(colitis);
 
         return mapping.findForward(SUCCESS);
     }
@@ -54,16 +54,10 @@ public class CrohnsUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.CROHNS_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.CROHNS_DATE_PARAM)).length() == 0) {
-            actionErrors.add(Ibd.CROHNS_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
+        if (form.get(Ibd.COLITIS_DATE_PARAM) == null ||
+                ((String) form.get(Ibd.COLITIS_DATE_PARAM)).length() == 0) {
+            actionErrors.add(Ibd.COLITIS_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
-
-        if (form.get(Ibd.OPEN_BOWELS_PARAM) == null ||
-                ((Integer) form.get(Ibd.OPEN_BOWELS_PARAM)) < 0) {
-            actionErrors.add(Ibd.OPEN_BOWELS_PARAM, new ActionMessage(Ibd.OPEN_BOWELS_INVALID_NUMBER));
-        }
-
         if (actionErrors.size() > 0) {
             saveErrors(request, actionErrors);
             return false;

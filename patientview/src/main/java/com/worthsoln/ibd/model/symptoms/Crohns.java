@@ -1,4 +1,4 @@
-package com.worthsoln.ibd.model;
+package com.worthsoln.ibd.model.symptoms;
 
 import com.worthsoln.patientview.model.BaseModel;
 

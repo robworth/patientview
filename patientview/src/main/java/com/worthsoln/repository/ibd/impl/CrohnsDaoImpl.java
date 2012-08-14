@@ -1,6 +1,6 @@
 package com.worthsoln.repository.ibd.impl;
 
-import com.worthsoln.ibd.model.Crohns;
+import com.worthsoln.ibd.model.symptoms.Crohns;
 import com.worthsoln.ibd.model.Crohns_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.ibd.CrohnsDao;

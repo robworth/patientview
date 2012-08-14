@@ -1,6 +1,6 @@
 package com.worthsoln.test.repository.ibd;
 
-import com.worthsoln.ibd.model.Colitis;
+import com.worthsoln.ibd.model.symptoms.Colitis;
 import com.worthsoln.ibd.model.enums.Feeling;
 import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsDaytime;
 import com.worthsoln.ibd.model.enums.colitis.PresentBlood;

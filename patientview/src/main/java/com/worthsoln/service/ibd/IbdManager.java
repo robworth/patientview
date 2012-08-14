@@ -1,8 +1,8 @@
 package com.worthsoln.service.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
-import com.worthsoln.ibd.model.Colitis;
-import com.worthsoln.ibd.model.Crohns;
+import com.worthsoln.ibd.model.symptoms.Colitis;
+import com.worthsoln.ibd.model.symptoms.Crohns;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
