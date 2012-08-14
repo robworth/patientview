@@ -21,6 +21,7 @@ public class NutritionDaoImpl extends AbstractHibernateDAO<Nutrition> implements
         Root<Nutrition> nutritionRoot = criteria.from(Nutrition.class);
 
         criteria.where(builder.equal(nutritionRoot.get(Nutrition_.nhsno), nhsno));
+        criteria.orderBy(builder.asc(nutritionRoot.get(Nutrition_.nutritionDate)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
