@@ -60,6 +60,27 @@
             <form-property name="comment" type="java.lang.String"/>
         </form-bean>
 
+        <form-bean name="crohnsForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="chornsDate" type="java.lang.String"/>
+            <form-property name="abdominalPain" type="java.lang.Integer"/>
+            <form-property name="openBowels" type="java.lang.Integer"/>
+            <form-property name="feeling" type="java.lang.Integer"/>
+            <form-property name="complications" type="java.lang.Integer"/>
+            <form-property name="massInTummy" type="java.lang.Integer"/>
+        </form-bean>
+
+        <form-bean name="colitisForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="colitisDate" type="java.lang.String"/>
+            <form-property name="stoolsDay" type="java.lang.Integer"/>
+            <form-property name="stoolsNight" type="java.lang.Integer"/>
+            <form-property name="toiletTiming" type="java.lang.Integer"/>
+            <form-property name="presentBlood" type="java.lang.Integer"/>
+            <form-property name="feeling" type="java.lang.Integer"/>
+            <form-property name="furtherComplications" type="java.lang.Integer"/>
+        </form-bean>
+
     </form-beans>
 
     <action-mappings>
@@ -75,7 +96,7 @@
                 type="com.worthsoln.ibd.action.myibd.MyIbdEditAction"
                 scope="request"
                 parameter="ibd_myibd">
-          <forward name="success" path="/ibd/myibd-edit.jsp"/>
+            <forward name="success" path="/ibd/myibd-edit.jsp"/>
         </action>
 
         <action path="/myibd-update"
@@ -94,7 +115,7 @@
                 type="com.worthsoln.ibd.action.careplan.CarePlanEditAction"
                 scope="request"
                 parameter="ibd_careplan">
-          <forward name="success" path="/ibd/careplan-edit.jsp"/>
+            <forward name="success" path="/ibd/careplan-edit.jsp"/>
         </action>
 
         <action path="/careplan-update" name="carePlanForm"
@@ -129,8 +150,8 @@
                 validate="true"
                 parameter="ibd_medications">
             <forward name="input" path="/ibd/medication-add.jsp"/>
-            <forward name="error" path="/medications.do" />
-            <forward name="success" path="/medications.do" />
+            <forward name="error" path="/medications.do"/>
+            <forward name="success" path="/medications.do"/>
         </action>
 
         <action path="/medication-stop" name="stopMedicationForm"
@@ -140,7 +161,7 @@
                 validate="true"
                 parameter="ibd_medications">
             <forward name="input" path="/ibd/medication-stop.jsp"/>
-            <forward name="success" path="/medications.do" />
+            <forward name="success" path="/medications.do"/>
         </action>
 
         <action path="/nutrition"
@@ -148,7 +169,7 @@
                 type="com.worthsoln.ibd.action.nutrition.NutritionAction"
                 scope="request"
                 parameter="ibd_nutrition">
-          <forward name="success" path="/ibd/nutrition.jsp"/>
+            <forward name="success" path="/ibd/nutrition.jsp"/>
         </action>
 
         <action path="/nutrition-edit"
@@ -156,7 +177,8 @@
                 type="com.worthsoln.ibd.action.nutrition.NutritionEditAction"
                 scope="request"
                 parameter="ibd_nutrition">
-          <forward name="success" path="/ibd/nutrition-edit.jsp"/>
+            <forward name="input" path="/ibd/nutrition-edit.jsp"/>
+            <forward name="success" path="/ibd/nutrition-edit.jsp"/>
         </action>
 
         <action path="/nutrition-update"
@@ -168,6 +190,44 @@
                 parameter="ibd_nutrition">
             <forward name="input" path="/ibd/nutrition-edit.jsp"/>
             <forward name="success" path="/nutrition.do"/>
+        </action>
+
+        <action path="/crohns-edit"
+                name="crohnsForm"
+                type="com.worthsoln.ibd.action.crohns.CrohnsEditAction"
+                scope="request"
+                parameter="ibd_crohns">
+            <forward name="success" path="/ibd/crohns.jsp"/>
+        </action>
+
+        <action path="/crohns-update"
+                name="crohnsForm"
+                type="com.worthsoln.ibd.action.crohns.CrohnsUpdateAction"
+                input="input"
+                scope="request"
+                validate="true"
+                parameter="ibd_crohns">
+            <forward name="input" path="/ibd/crohns.jsp"/>
+            <forward name="success" path="/ibd/crohns.jsp"/>
+        </action>
+
+        <action path="/colitis-edit"
+                name="colitisForm"
+                type="com.worthsoln.ibd.action.colitis.ColitisEditAction"
+                scope="request"
+                parameter="ibd_colitis">
+            <forward name="success" path="/ibd/colitis.jsp"/>
+        </action>
+
+        <action path="/colitis-update"
+                name="colitisForm"
+                type="com.worthsoln.ibd.action.colitis.ColitisUpdateAction"
+                input="input"
+                scope="request"
+                validate="true"
+                parameter="ibd_colitis">
+            <forward name="input" path="/ibd/colitis.jsp"/>
+            <forward name="success" path="/ibd/colitis.jsp"/>
         </action>
 
     </action-mappings>

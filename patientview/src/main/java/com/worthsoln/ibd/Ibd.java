@@ -54,6 +54,20 @@ public class Ibd {
     public static final String COMMENT_PARAM = "comment";
     public static final String NUTRITION_DATE_PARAM = "nutritionDate";
 
+    // symptoms params
+    public static final String CROHNS_DATE_PARAM = "chornsDate";
+    public static final String ABDOMINAL_PAIN_PARAM = "abdominalPain";
+    public static final String OPEN_BOWELS_PARAM = "openBowels";
+    public static final String FEELING_PARAM = "feeling";
+    public static final String COMPLICATIONS_PARAM = "complications";
+    public static final String MASS_IN_TUMMY_PARAM = "massInTummy";
+    public static final String COLITIS_DATE_PARAM = "colitisDate";
+    public static final String STOOLS_DATE_PARAM = "stoolsDay";
+    public static final String STOOLS_NIGHT_PARAM = "stoolsNight";
+    public static final String TOILET_TIMING_PARAM = "toiletTiming";
+    public static final String PRESENT_BLOOD_PARAM = "presentBlood";
+    public static final String FURTHER_COMPLICATIONS_PARAM = "furtherComplications";
+
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";
     public static final String NOT_A_VALID_ID = "id.notValid";
@@ -93,7 +107,11 @@ public class Ibd {
 
     // nutrition
     public static final String FOODS_THAT_DISAGREE_REQUIRED = "foodsThatDisagree.required";
-    public static final String NUTRITION_DATE_REQUIRED = "nutritionDate.required";
+
+    // symptoms
+    public static final String OPEN_BOWELS_INVALID_NUMBER = "openBowels.invalidNumber";
+
+    public static final String DATE_REQUIRED = "date.required";
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }

@@ -1,6 +1,8 @@
 package com.worthsoln.service.ibd.impl;
 
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.Colitis;
+import com.worthsoln.ibd.model.Crohns;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
@@ -10,6 +12,8 @@ import com.worthsoln.ibd.model.medication.MyMedication;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.repository.ibd.CarePlanDao;
+import com.worthsoln.repository.ibd.ColitisDao;
+import com.worthsoln.repository.ibd.CrohnsDao;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyIbdDao;
@@ -49,6 +53,12 @@ public class IbdManagerImpl implements IbdManager {
 
     @Inject
     private NutritionDao nutritionDao;
+
+    @Inject
+    private CrohnsDao crohnsDao;
+
+    @Inject
+    private ColitisDao colitisDao;
 
     @Override
     public MyIbd getMyIbd(User user) {
@@ -218,6 +228,46 @@ public class IbdManagerImpl implements IbdManager {
     @Override
     public void saveNutrition(Nutrition nutrition) {
         nutritionDao.save(nutrition);
+    }
+
+    @Override
+    public void saveCrohns(Crohns crohns) {
+        crohnsDao.save(crohns);
+    }
+
+    @Override
+    public List<Crohns> getAllCrohns(User user) {
+        String nhsNo = getNhsNumber(user);
+
+        if (nhsNo != null) {
+            return getAllCrohns(nhsNo);
+        }
+
+        return null;
+    }
+
+    public List<Crohns> getAllCrohns(String nhsno) {
+            return crohnsDao.getAllCrohns(nhsno);
+        }
+
+    @Override
+    public void saveColitis(Colitis colitis) {
+        colitisDao.save(colitis);
+    }
+
+    @Override
+    public List<Colitis> getAllColitis(User user) {
+        String nhsNo = getNhsNumber(user);
+
+        if (nhsNo != null) {
+            return getAllColitis(nhsNo);
+        }
+
+        return null;
+    }
+
+    public List<Colitis> getAllColitis(String nhsno) {
+        return colitisDao.getAllColitis(nhsno);
     }
 
     private String getNhsNumber(User user) {

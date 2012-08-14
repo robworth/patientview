@@ -6,9 +6,16 @@ import com.worthsoln.ibd.model.enums.Complication;
 import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.ibd.model.enums.FamilyHistory;
+import com.worthsoln.ibd.model.enums.Feeling;
 import com.worthsoln.ibd.model.enums.Smoking;
 import com.worthsoln.ibd.model.enums.Surgery;
 import com.worthsoln.ibd.model.enums.VaccinationRecord;
+import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsDaytime;
+import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsNighttime;
+import com.worthsoln.ibd.model.enums.colitis.PresentBlood;
+import com.worthsoln.ibd.model.enums.colitis.ToiletTiming;
+import com.worthsoln.ibd.model.enums.crohns.AbdominalPain;
+import com.worthsoln.ibd.model.enums.crohns.MassInTummy;
 import com.worthsoln.ibd.model.medication.MedicationType;
 import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
 import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
@@ -48,6 +55,17 @@ public class BaseAction extends ActionSupport {
     protected static final String MEDICATION_NO_OF_LIST_PROPERTY = "medicationNoOfList";
     protected static final String MEDICATION_FREQUENCY_LIST_PROPERTY = "medicationFrequencyList";
 
+    // symptom lists
+    protected static final String ABDOMINAL_PAIN_LIST_PROPERTY = "abdominalPainList";
+    protected static final String FEELING_LIST_PROPERTY = "feelingList";
+    protected static final String CROHNS_COMPLICATION_LIST_PROPERTY = "crohnsComplicationList";
+    protected static final String MASS_IN_TUMMY_LIST_PROPERTY = "massInTummyList";
+    protected static final String STOOLS_DAY_LIST_PROPERTY = "stoolsDayList";
+    protected static final String STOOLS_NIGHT_LIST_PROPERTY = "stoolsNightList";
+    protected static final String TOILET_TIMING_LIST_PROPERTY = "toiletTimingList";
+    protected static final String PRESENT_BLOOD_LIST_PROPERTY = "presentBloodList";
+    protected static final String FURTHER_COMPLICATION_LIST_PROPERTY = "furtherComplicationList";
+
     protected static List<ScaleItem> scaleList;
 
     protected List<DiseaseExtent> getDiseaseExtentList() {
@@ -84,6 +102,42 @@ public class BaseAction extends ActionSupport {
 
     protected List<AreaToDiscuss> getAreaToDiscussList() {
         return AreaToDiscuss.getAsList();
+    }
+
+    protected List<AbdominalPain> getAbdominalPainList() {
+        return AbdominalPain.getAsList();
+    }
+
+    protected List<Feeling> getFeelingList() {
+        return Feeling.getAsList();
+    }
+
+    protected List<NumberOfStoolsDaytime> getStoolsDayList() {
+        return NumberOfStoolsDaytime.getAsList();
+    }
+
+    protected List<NumberOfStoolsNighttime> getStoolsNightList() {
+        return NumberOfStoolsNighttime.getAsList();
+    }
+
+    protected List<ToiletTiming> getToiletTimingList() {
+        return ToiletTiming.getAsList();
+    }
+
+    protected List<PresentBlood> getPresentBloodList() {
+        return PresentBlood.getAsList();
+    }
+
+    protected List<com.worthsoln.ibd.model.enums.colitis.Complication> getColitisComplicationList() {
+        return com.worthsoln.ibd.model.enums.colitis.Complication.getAsList();
+    }
+
+    protected List<com.worthsoln.ibd.model.enums.crohns.Complication> getCrohnsComplicationList() {
+        return com.worthsoln.ibd.model.enums.crohns.Complication.getAsList();
+    }
+
+    protected List<MassInTummy> getMassInTummy() {
+        return MassInTummy.getAsList();
     }
 
     protected List<ScaleItem> getScaleList() {
