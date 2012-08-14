@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="span5">
-        <html:form action="/colitis-update" styleClass="form-horizontal row">
+        <html:form action="/colitis-update" styleClass="form-horizontal">
             <html:errors/>
             <div class="control-group">
                 <label class="control-label">Date</label>
