@@ -3,9 +3,15 @@ package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class SplashPage extends BaseModel {
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
 
     @Column(nullable = false)
     private String name;
@@ -38,6 +44,14 @@ public class SplashPage extends BaseModel {
         this.headline = headline;
         this.bodytext = bodytext;
         this.unitcode = unitcode;
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public String getName() {

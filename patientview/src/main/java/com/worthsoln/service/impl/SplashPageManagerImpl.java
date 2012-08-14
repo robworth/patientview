@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.SplashPageUserSeen;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.SplashPageDao;
 import com.worthsoln.repository.SplashPageUserSeenDao;
+import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.SplashPageManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
@@ -26,6 +27,9 @@ public class SplashPageManagerImpl implements SplashPageManager {
     private UserManager userManager;
 
     @Inject
+    private SecurityUserManager securityUserManager;
+
+    @Inject
     private SplashPageDao splashPageDao;
 
     @Inject
@@ -39,6 +43,12 @@ public class SplashPageManagerImpl implements SplashPageManager {
 
     @Override
     public void save(SplashPage splashPage) {
+
+        // apply tenancy to splash page if not set
+        if (splashPage.getTenancy() == null) {
+            splashPage.setTenancy(securityUserManager.getLoggedInTenancy());
+        }
+
         splashPageDao.save(splashPage);
     }
 
@@ -48,8 +58,11 @@ public class SplashPageManagerImpl implements SplashPageManager {
     }
 
     @Override
-    public void delete(SplashPage splashPage) {
-        splashPageDao.delete(splashPage);
+    public void delete(Long id) {
+        SplashPage splashPage = get(id);
+        if (splashPage != null) {
+            splashPageDao.delete(splashPage);
+        }
     }
 
     @Override
@@ -61,7 +74,7 @@ public class SplashPageManagerImpl implements SplashPageManager {
             unitCodes = unitManager.getUsersUnitCodes();
         }
 
-        return splashPageDao.getAll(unitCodes);
+        return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
@@ -70,7 +83,7 @@ public class SplashPageManagerImpl implements SplashPageManager {
         List<String> unitCodes = unitManager.getUsersUnitCodes();
         unitCodes.add("ALL");
 
-        return splashPageDao.getAll(unitCodes);
+        return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInTenancy());
     }
 
     @Override

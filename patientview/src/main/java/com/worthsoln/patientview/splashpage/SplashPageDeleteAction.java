@@ -20,7 +20,7 @@ public class SplashPageDeleteAction extends Action {
         String id = BeanUtils.getProperty(form, "id");
         Long idLong = Long.decode(id);
 
-        LegacySpringUtils.getSplashPageManager().delete(new SplashPage(idLong));
+        LegacySpringUtils.getSplashPageManager().delete(idLong);
         LegacySpringUtils.getSplashPageManager().removeSeenSplashPage(idLong);
 
         List<SplashPage> splashpages = LegacySpringUtils.getSplashPageManager().getAll();

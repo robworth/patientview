@@ -18,9 +18,15 @@ public class SplashPageUpdateAction extends DatabaseAction {
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SplashPage splashPage = new SplashPage();
 
-        BeanUtils.setProperty(splashPage, "id", BeanUtils.getProperty(form, "id"));
+        SplashPage splashPage;
+        String idStr = BeanUtils.getProperty(form, "id");
+        if (idStr != null && !idStr.equals("")) {
+            splashPage = LegacySpringUtils.getSplashPageManager().get(Long.decode(idStr));
+        } else {
+            splashPage = new SplashPage();
+        }
+
         BeanUtils.setProperty(splashPage, "name", BeanUtils.getProperty(form, "name"));
         BeanUtils.setProperty(splashPage, "headline", BeanUtils.getProperty(form, "headline"));
         BeanUtils.setProperty(splashPage, "bodytext", BeanUtils.getProperty(form, "bodytext"));
