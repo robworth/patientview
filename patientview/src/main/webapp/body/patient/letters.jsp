@@ -13,7 +13,7 @@
   
 
   <logic:empty name="letters">
-      <div class="alert">>No letters uploaded</div>
+      <div class="alert">No letters uploaded</div>
   </logic:empty>
 
   <logic:notEmpty name="letters">
