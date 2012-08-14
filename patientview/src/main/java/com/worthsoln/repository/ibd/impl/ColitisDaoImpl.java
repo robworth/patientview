@@ -1,7 +1,7 @@
 package com.worthsoln.repository.ibd.impl;
 
 import com.worthsoln.ibd.model.symptoms.Colitis;
-import com.worthsoln.ibd.model.Colitis_;
+import com.worthsoln.ibd.model.symptoms.Colitis_;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.ibd.ColitisDao;
 import org.springframework.stereotype.Repository;
