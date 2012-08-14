@@ -1,6 +1,6 @@
 package com.worthsoln.repository.ibd;
 
-import com.worthsoln.ibd.model.Colitis;
+import com.worthsoln.ibd.model.symptoms.Colitis;
 import java.util.List;
 
 public interface ColitisDao {

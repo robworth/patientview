@@ -1,4 +1,4 @@
-package com.worthsoln.ibd.action.colitis;
+package com.worthsoln.ibd.action.symptoms.crohns;
 
 import com.worthsoln.ibd.action.BaseAction;
 import org.apache.struts.action.ActionForm;
@@ -8,19 +8,15 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ColitisEditAction extends BaseAction {
+public class CrohnsEditAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-
-        request.getSession().setAttribute(STOOLS_DAY_LIST_PROPERTY, getStoolsDayList());
-        request.getSession().setAttribute(STOOLS_NIGHT_LIST_PROPERTY, getStoolsNightList());
-        request.getSession().setAttribute(TOILET_TIMING_LIST_PROPERTY, getToiletTimingList());
-        request.getSession().setAttribute(PRESENT_BLOOD_LIST_PROPERTY, getPresentBloodList());
+        request.getSession().setAttribute(ABDOMINAL_PAIN_LIST_PROPERTY, getAbdominalPainList());
         request.getSession().setAttribute(FEELING_LIST_PROPERTY, getFeelingList());
-        request.getSession().setAttribute(FURTHER_COMPLICATION_LIST_PROPERTY, getColitisComplicationList());
+        request.getSession().setAttribute(CROHNS_COMPLICATION_LIST_PROPERTY, getCrohnsComplicationList());
+        request.getSession().setAttribute(MASS_IN_TUMMY_LIST_PROPERTY, getMassInTummy());
 
         return mapping.findForward(SUCCESS);
     }
-
 }

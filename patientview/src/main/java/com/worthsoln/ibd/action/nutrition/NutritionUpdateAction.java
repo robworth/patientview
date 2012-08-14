@@ -17,7 +17,6 @@ public class NutritionUpdateAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-
         DynaActionForm dynaForm = (DynaActionForm) form;
 
         if (!validate(dynaForm, request)) {

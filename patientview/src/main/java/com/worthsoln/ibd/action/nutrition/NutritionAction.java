@@ -1,6 +1,5 @@
 package com.worthsoln.ibd.action.nutrition;
 
-
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.Nutrition;
@@ -17,7 +16,6 @@ public class NutritionAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-
         List<Nutrition> nutritionList = getIbdManager().getAllNutritions(UserUtils.retrieveUser(request));
 
         if (nutritionList != null) {
@@ -26,5 +24,4 @@ public class NutritionAction extends BaseAction {
 
         return mapping.findForward(SUCCESS);
     }
-
 }
