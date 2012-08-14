@@ -3,6 +3,7 @@ package com.solidstategroup.radar.test.dao.alport;
 import com.solidstategroup.radar.dao.alport.MedicineDao;
 import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.model.alport.Medicine;
+import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.test.dao.BaseDaoTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,27 @@ public class MedicineDaoTest extends BaseDaoTest {
         assertTrue("No medicines found", !checkMedicines.isEmpty() && checkMedicines.size() > 0);
         assertTrue("To many medicines found", checkMedicines.size() == 2);
     }
+
+    @Test
+    public void testAddGetMedicinesByNhsNoAndDiseaseGroup() throws Exception {
+        DiseaseGroup diseaseGroup1 = diseaseGroupDao.getById("1");
+
+        Medicine medicine1 = getTestObject();
+        medicineDao.save(medicine1);
+        assertTrue("Invalid id for new medicine1", medicine1.getId() > 0);
+
+        Medicine medicine2 = getTestObject();
+        medicine2.setDiseaseGroup(diseaseGroupDao.getById("2"));
+        medicineDao.save(medicine2);
+        assertTrue("Invalid id for new medicine2", medicine2.getId() > 0);
+
+        // now try to pull back all medicines for this user for disease group 1 - should get back the first only
+        List<Medicine> checkMedicines = medicineDao.getMedicines("123456789", diseaseGroup1);
+
+        assertTrue("No medicines found", !checkMedicines.isEmpty() && checkMedicines.size() > 0);
+        assertTrue("To many medicines found", checkMedicines.size() == 1);
+    }
+
 
     @Test
     public void testAddDeleteMedicine() throws Exception {

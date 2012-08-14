@@ -88,7 +88,7 @@ public class MedicinePanel extends Panel {
         final IModel<List<Medicine>> medicinesModel = new AbstractReadOnlyModel<List<Medicine>>() {
             @Override
             public List<Medicine> getObject() {
-                return medicineManager.getMedicines(demographics.getNhsNumber());
+                return medicineManager.getMedicines(demographics.getNhsNumber(), diseaseGroup);
             }
         };
 

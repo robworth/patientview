@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.alport.MedicineDao;
 import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.dao.impl.BaseDaoImpl;
 import com.solidstategroup.radar.model.alport.Medicine;
+import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -90,6 +91,19 @@ public class MedicineDaoImpl extends BaseDaoImpl implements MedicineDao {
                     new Object[]{nhsNo}, new MedicineRowMapper());
         } catch (DataAccessException e) {
             LOGGER.debug("Could not find rows in table " + TABLE_NAME + " with " + NHS_NO_FIELD_NAME + " {}", nhsNo);
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<Medicine> getMedicines(String nhsNo, DiseaseGroup diseaseGroup) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE " + NHS_NO_FIELD_NAME + " = ? AND "
+                    + UNIT_CODE_FIELD_NAME + " = ?",
+                    new Object[]{nhsNo, diseaseGroup.getId()}, new MedicineRowMapper());
+        } catch (DataAccessException e) {
+            LOGGER.debug("Could not find rows in table " + TABLE_NAME + " with " + NHS_NO_FIELD_NAME + " and "
+                    + UNIT_CODE_FIELD_NAME + " {}", nhsNo);
         }
 
         return Collections.emptyList();
