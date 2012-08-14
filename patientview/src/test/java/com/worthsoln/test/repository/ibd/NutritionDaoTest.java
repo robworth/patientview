@@ -26,7 +26,7 @@ public class NutritionDaoTest extends BaseDaoTest {
 
         nutritionDao.save(nutrition);
 
-        assertTrue("Invalid id for new care plan", nutrition.getId() > 0);
+        assertTrue("Invalid id for new nutrition", nutrition.getId() > 0);
 
         Nutrition checkNutrition = nutritionDao.get(nutrition.getId());
 

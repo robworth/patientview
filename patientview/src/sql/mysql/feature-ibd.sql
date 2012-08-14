@@ -93,7 +93,40 @@ CREATE TABLE `ibd_myibd_complications` (
   CONSTRAINT `FKC4EEAD21FDB07963` FOREIGN KEY (`myibd_id`) REFERENCES `ibd_myibd` (`id`)
 );
 
+CREATE TABLE `ibd_nutrition` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `comment` varchar(255) default NULL,
+  `foodsThatDisagree` varchar(255) NOT NULL,
+  `weight` double NOT NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `nutritionDate` datetime NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `ibd_crohns` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `abdominalPain` int(11) NOT NULL,
+  `chornsDate` datetime NOT NULL,
+  `complications` int(11) NOT NULL,
+  `feeling` int(11) NOT NULL,
+  `massInTummy` int(11) NOT NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `openBowels` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ibd_colitis` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `colitisDate` datetime NOT NULL,
+  `feeling` int(11) NOT NULL,
+  `furtherComplications` int(11) NOT NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `presentBlood` int(11) NOT NULL,
+  `stoolsDay` int(11) NOT NULL,
+  `stoolsNight` int(11) NOT NULL,
+  `toiletTiming` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /** MEDICATION TABLE DATE */
 insert  into `ibd_medication`(`id`,`name`) values (1,'Asacol'),(2,'Pentasa'),(3,'Salofalk'),(4,'Azathioprine');
