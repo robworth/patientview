@@ -215,7 +215,7 @@
                 validate="true"
                 parameter="ibd_crohns">
             <forward name="input" path="/ibd/symptoms/crohns.jsp"/>
-            <forward name="success" path="/ibd/symptoms/crohns.jsp"/>
+            <forward name="success" path="/crohns-edit.do"/>
         </action>
 
         <action path="/colitis-edit"
@@ -234,7 +234,7 @@
                 validate="true"
                 parameter="ibd_colitis">
             <forward name="input" path="/ibd/symptoms/colitis.jsp"/>
-            <forward name="success" path="/ibd/symptoms/colitis.jsp"/>
+            <forward name="success" path="/colitis-edit.do"/>
         </action>
 
         <action path="/graph-data"

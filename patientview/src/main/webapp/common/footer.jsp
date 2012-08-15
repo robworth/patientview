@@ -12,7 +12,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/ibd/js/raphael-min.js"></script>
