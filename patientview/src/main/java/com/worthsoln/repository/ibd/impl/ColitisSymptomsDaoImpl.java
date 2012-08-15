@@ -18,6 +18,12 @@ import java.util.List;
 public class ColitisSymptomsDaoImpl extends AbstractHibernateDAO<ColitisSymptoms> implements ColitisSymptomsDao {
 
     @Override
+    public void save(ColitisSymptoms colitisSymptoms) {
+        colitisSymptoms.setScore(colitisSymptoms.calculateScore());
+        super.save(colitisSymptoms);
+    }
+
+    @Override
     public List<ColitisSymptoms> getAllColitis(String nhsno, Date fromDate, Date toDate) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ColitisSymptoms> criteria = builder.createQuery(ColitisSymptoms.class);

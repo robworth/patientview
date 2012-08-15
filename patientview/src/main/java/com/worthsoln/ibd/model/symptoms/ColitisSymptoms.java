@@ -34,7 +34,33 @@ public class ColitisSymptoms extends BaseSymptoms {
 
     @Override
     public Integer calculateScore() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        int score = 0;
+
+        if (numberOfStoolsDaytime != null) {
+            score += numberOfStoolsDaytime.getScore();
+        }
+
+        if (numberOfStoolsNighttime != null) {
+            score += numberOfStoolsNighttime.getScore();
+        }
+
+        if (toiletTiming != null) {
+            score += toiletTiming.getScore();
+        }
+
+        if (presentBlood != null) {
+            score += presentBlood.getScore();
+        }
+
+        if (complication != null) {
+            score += complication.getScore();
+        }
+
+        if (getFeeling() != null) {
+            score += getFeeling().getScore();
+        }
+
+        return score;
     }
 
     public NumberOfStoolsDaytime getNumberOfStoolsDaytime() {

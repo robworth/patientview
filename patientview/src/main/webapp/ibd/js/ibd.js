@@ -80,11 +80,6 @@ IBD.Symptoms = {
         that.toDate = this.graphForm.find('#toDate');
         that.graphType = this.graphForm.find('#graphType');
 
-            // TODO: set up some test data
-//        this.data = this.testData(1, 25, function() {
-//            return Math.round(Math.random() * 10000);
-//        });
-
         this.graphForm.submit(function() {
             that.dataRequest();
             return false;
@@ -117,7 +112,7 @@ IBD.Symptoms = {
                 graphType: that.graphType.val()
             },
             success: function(data) {
-                that.data = data.data;
+                that.data = data.scores;
                 that.drawGraph();
             },
             error: function(jqXHR) {
