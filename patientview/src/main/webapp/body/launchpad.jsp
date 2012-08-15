@@ -13,7 +13,7 @@
 <logic:present name="tenancyUserRoles">
 
     <div class="page-header">
-        <h1>Launch Pad <small>Select the speciality you wish to view in more detail</small></h1>
+        <h1>Launch Pad <small>Select which condition you want to view and manage</small></h1>
     </div>
 
     <ul class="thumbnails">
