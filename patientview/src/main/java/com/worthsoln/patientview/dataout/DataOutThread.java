@@ -3,7 +3,7 @@ package com.worthsoln.patientview.dataout;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.ParserThread;
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.TestResult;
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.TestResultForPatientDataOutDao;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.model.Unit;

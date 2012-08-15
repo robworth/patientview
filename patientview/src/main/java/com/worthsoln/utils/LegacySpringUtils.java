@@ -14,6 +14,7 @@ import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.ResultHeadingManager;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.SplashPageManager;
+import com.worthsoln.service.TestResultManager;
 import com.worthsoln.service.UKTransplantManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
@@ -55,6 +56,8 @@ public class LegacySpringUtils {
     private static SplashPageManager splashPageManager;
 
     private static SpringApplicationContextBean springApplicationContextBean;
+
+    private static TestResultManager testResultManager;
 
     private static UKTransplantManager ukTransplantManager;
 
@@ -184,6 +187,14 @@ public class LegacySpringUtils {
 
     public static void setSpringApplicationContextBean(SpringApplicationContextBean springApplicationContextBean) {
         LegacySpringUtils.springApplicationContextBean = springApplicationContextBean;
+    }
+
+    public static TestResultManager getTestResultManager() {
+        return testResultManager;
+    }
+
+    public static void setTestResultManager(TestResultManager testResultManager) {
+        LegacySpringUtils.testResultManager = testResultManager;
     }
 
     public static void setUkTransplantManager(UKTransplantManager ukTransplantManager) {
