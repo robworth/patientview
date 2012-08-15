@@ -19,6 +19,16 @@ public enum MassInTummy {
         this.score = score;
     }
 
+    public static MassInTummy getMassInTummy(int id) {
+        for (MassInTummy massInTummy : MassInTummy.values()) {
+            if (massInTummy.getId() == id) {
+                return massInTummy;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

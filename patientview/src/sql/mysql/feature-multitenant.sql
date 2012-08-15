@@ -9,8 +9,8 @@ CREATE TABLE `tenancy` (
   UNIQUE KEY `name` (`name`)
 );
 
-INSERT INTO tenancy VALUES (1, 'rpv', 'Renal Patient View', 'RPV');
-INSERT INTO tenancy VALUES (2, 'ibd', 'IBD', 'IBD');
+INSERT INTO tenancy VALUES (1, 'rpv', 'Renal Patient View', 'Renal Patient View');
+INSERT INTO tenancy VALUES (2, 'ibd', 'Inflammatory bowel disease', 'Inflammatory bowel disease');
 
 CREATE TABLE `tenancyuserrole` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -57,3 +57,7 @@ ALTER TABLE usermapping ADD tenancy_id BIGINT(20)
 NOT NULL;
 
 UPDATE usermapping SET tenancy_id = 1;
+
+ALTER TABLE log ADD tenancy_id BIGINT(20);
+
+UPDATE log SET tenancy_id = 1;

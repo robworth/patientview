@@ -247,3 +247,10 @@ h1, h2{
 .thumbnail .caption h5{
     padding-bottom: 5px;
 }
+
+/* graph styles */
+.linegraph {
+    width: 540px;
+    height: 300px;
+    background-color: #fff;
+}

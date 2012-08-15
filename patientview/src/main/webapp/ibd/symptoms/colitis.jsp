@@ -3,6 +3,6 @@
 <tiles:insert definition="patient.layout" flush="true">
 
   <tiles:put name="left_nav" value="/common/left_nav_empty.jsp" />
-  <tiles:put name="body" value="/ibd/body/colitis-body.jsp"/>
+  <tiles:put name="body" value="/ibd/symptoms/body/colitis-body.jsp"/>
 
 </tiles:insert>

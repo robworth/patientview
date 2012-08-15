@@ -141,6 +141,15 @@
         </property>
     </bean>
 
+    <bean id="setTestResultManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setTestResultManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="testResultManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setUkTransplantManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUkTransplantManager"/>
         <property name="arguments">

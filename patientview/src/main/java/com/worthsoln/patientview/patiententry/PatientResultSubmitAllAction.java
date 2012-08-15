@@ -2,7 +2,7 @@ package com.worthsoln.patientview.patiententry;
 
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.PatientUtils;
-import com.worthsoln.patientview.TestResult;
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.TestResultDao;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.unit.UnitUtils;

@@ -7,6 +7,7 @@ import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.Medicine;
 import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;

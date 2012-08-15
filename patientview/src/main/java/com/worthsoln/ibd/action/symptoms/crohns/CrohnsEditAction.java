@@ -16,6 +16,7 @@ public class CrohnsEditAction extends BaseAction {
         request.getSession().setAttribute(FEELING_LIST_PROPERTY, getFeelingList());
         request.getSession().setAttribute(CROHNS_COMPLICATION_LIST_PROPERTY, getCrohnsComplicationList());
         request.getSession().setAttribute(MASS_IN_TUMMY_LIST_PROPERTY, getMassInTummy());
+        request.getSession().setAttribute(OPEN_BOWEL_LIST_PROPERTY, getOpenBowelList());
 
         return mapping.findForward(SUCCESS);
     }

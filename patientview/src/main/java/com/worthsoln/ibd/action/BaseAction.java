@@ -65,8 +65,10 @@ public class BaseAction extends ActionSupport {
     protected static final String TOILET_TIMING_LIST_PROPERTY = "toiletTimingList";
     protected static final String PRESENT_BLOOD_LIST_PROPERTY = "presentBloodList";
     protected static final String FURTHER_COMPLICATION_LIST_PROPERTY = "furtherComplicationList";
+    protected static final String OPEN_BOWEL_LIST_PROPERTY = "openBowelList";
 
     protected static List<ScaleItem> scaleList;
+    protected static List<OpenBowel> openBowelList;
 
     protected List<DiseaseExtent> getDiseaseExtentList() {
         return DiseaseExtent.getAsList();
@@ -152,6 +154,18 @@ public class BaseAction extends ActionSupport {
         return scaleList;
     }
 
+    protected List<OpenBowel> getOpenBowelList() {
+            if (openBowelList == null) {
+                openBowelList = new ArrayList<OpenBowel>();
+
+                for (int x = 1; x <= 20; x++) {
+                    openBowelList.add(new OpenBowel(x));
+                }
+            }
+
+            return openBowelList;
+        }
+
     protected List<MedicationType> getMedicationTypeList() {
         return getIbdManager().getMedicationTypes();
     }
@@ -191,6 +205,21 @@ public class BaseAction extends ActionSupport {
         private int value;
 
         public ScaleItem(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    /**
+     * This is just a simple class as the struts list cant just take an array of ints
+     */
+    public class OpenBowel {
+        private int value;
+
+        public OpenBowel(int value) {
             this.value = value;
         }
 

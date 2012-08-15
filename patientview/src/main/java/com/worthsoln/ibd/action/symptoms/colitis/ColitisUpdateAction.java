@@ -2,7 +2,7 @@ package com.worthsoln.ibd.action.symptoms.colitis;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.ibd.model.symptoms.Colitis;
+import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -23,25 +23,25 @@ public class ColitisUpdateAction extends BaseAction {
             return mapping.findForward(INPUT);
         }
 
-        Colitis colitis = new Colitis();
-        colitis.setNhsno(getNhsNoForUser(request));
-        colitis.setStoolsDay((Integer) dynaForm.get(Ibd.STOOLS_DATE_PARAM));
-        colitis.setStoolsNight((Integer) dynaForm.get(Ibd.STOOLS_NIGHT_PARAM));
-        colitis.setToiletTiming((Integer) dynaForm.get(Ibd.TOILET_TIMING_PARAM));
-        colitis.setPresentBlood((Integer) dynaForm.get(Ibd.PRESENT_BLOOD_PARAM));
-        colitis.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
-        colitis.setFurtherComplications((Integer) dynaForm.get(Ibd.FURTHER_COMPLICATIONS_PARAM));
+        ColitisSymptoms colitisSymptoms = new ColitisSymptoms();
+        colitisSymptoms.setNhsno(getNhsNoForUser(request));
+        colitisSymptoms.setNumberOfStoolsDaytimeId((Integer) dynaForm.get(Ibd.NUMBER_OF_STOOLS_DAYTIME_PARAM));
+        colitisSymptoms.setNumberOfStoolsNighttimeId((Integer) dynaForm.get(Ibd.NUMBER_OF_STOOLS_NIGHTTIME_PARAM));
+        colitisSymptoms.setToiletTimingId((Integer) dynaForm.get(Ibd.TOILET_TIMING_PARAM));
+        colitisSymptoms.setPresentBloodId((Integer) dynaForm.get(Ibd.PRESENT_BLOOD_PARAM));
+        colitisSymptoms.setFeelingId((Integer) dynaForm.get(Ibd.FEELING_PARAM));
+        colitisSymptoms.setComplicationId((Integer) dynaForm.get(Ibd.COMPLICATION_PARAM));
 
-        String colitisDateString = (String) dynaForm.get(Ibd.COLITIS_DATE_PARAM);
+        String colitisDateString = (String) dynaForm.get(Ibd.SYMPTOM_DATE_PARAM);
         if (colitisDateString != null && colitisDateString.length() > 0) {
             try {
-                colitis.setColitisDate(Ibd.DATE_FORMAT.parse(colitisDateString));
+                colitisSymptoms.setSymptomDate(Ibd.DATE_FORMAT.parse(colitisDateString));
             } catch (Exception e) {
                 // dunno just store with it set to null
             }
         }
 
-        getIbdManager().saveColitis(colitis);
+        getIbdManager().saveColitis(colitisSymptoms);
 
         return mapping.findForward(SUCCESS);
     }
@@ -54,9 +54,9 @@ public class ColitisUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.COLITIS_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.COLITIS_DATE_PARAM)).length() == 0) {
-            actionErrors.add(Ibd.COLITIS_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
+        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null ||
+                ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
+            actionErrors.add(Ibd.SYMPTOM_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
         if (actionErrors.size() > 0) {
             saveErrors(request, actionErrors);
