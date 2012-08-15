@@ -1,21 +1,13 @@
 package com.worthsoln.ibd.model.symptoms;
 
-import com.worthsoln.patientview.model.BaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "ibd_colitis")
-public class Colitis extends BaseModel {
-
-    @Column(nullable = false)
-    private String nhsno;
-
-    @Column(nullable = false)
-    private Date colitisDate;
+@Table(name = "ibd_colitis_symptoms")
+public class Colitis extends BaseSymptom {
 
     @Column(nullable = false)
     private int stoolsDay;
@@ -30,25 +22,11 @@ public class Colitis extends BaseModel {
     private int presentBlood;
 
     @Column(nullable = false)
-    private int feeling;
-
-    @Column(nullable = false)
     private int furtherComplications;
 
-    public String getNhsno() {
-        return nhsno;
-    }
-
-    public void setNhsno(String nhsno) {
-        this.nhsno = nhsno;
-    }
-
-    public Date getColitisDate() {
-        return colitisDate;
-    }
-
-    public void setColitisDate(Date colitisDate) {
-        this.colitisDate = colitisDate;
+    @Override
+    public Integer calculateScore() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public int getStoolsDay() {
@@ -81,14 +59,6 @@ public class Colitis extends BaseModel {
 
     public void setPresentBlood(int presentBlood) {
         this.presentBlood = presentBlood;
-    }
-
-    public int getFeeling() {
-        return feeling;
-    }
-
-    public void setFeeling(int feeling) {
-        this.feeling = feeling;
     }
 
     public int getFurtherComplications() {

@@ -36,7 +36,7 @@ public class ColitisDaoTest extends BaseDaoTest {
 
         assertNotNull(checkColitis);
         assertEquals("NHS no not persisted", checkColitis.getNhsno(), colitis.getNhsno());
-        assertEquals("Colitis date not persisted", checkColitis.getColitisDate(), colitis.getColitisDate());
+        assertEquals("Colitis date not persisted", checkColitis.getSymptomDate(), colitis.getSymptomDate());
         assertEquals("Colitis stools day not persisted", checkColitis.getStoolsDay(), colitis.getStoolsDay());
         assertEquals("Colitis stools night not persisted", checkColitis.getStoolsNight(), colitis.getStoolsNight());
         assertEquals("Colitis toilet timing not persisted", checkColitis.getToiletTiming(), colitis.getToiletTiming());
@@ -49,7 +49,7 @@ public class ColitisDaoTest extends BaseDaoTest {
         Colitis colitis = new Colitis();
 
         colitis.setNhsno("1234567890");
-        colitis.setColitisDate(new Date());
+        colitis.setSymptomDate(new Date());
         colitis.setStoolsDay(NumberOfStoolsDaytime.SEVEN_TO_NINE.getId());
         colitis.setStoolsNight(NumberOfStoolsDaytime.FOUR_TO_SIX.getId());
         colitis.setToiletTiming(ToiletTiming.HAVING_ACCIDENTS.getId());

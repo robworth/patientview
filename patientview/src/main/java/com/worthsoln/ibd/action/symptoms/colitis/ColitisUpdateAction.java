@@ -32,10 +32,10 @@ public class ColitisUpdateAction extends BaseAction {
         colitis.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
         colitis.setFurtherComplications((Integer) dynaForm.get(Ibd.FURTHER_COMPLICATIONS_PARAM));
 
-        String colitisDateString = (String) dynaForm.get(Ibd.COLITIS_DATE_PARAM);
+        String colitisDateString = (String) dynaForm.get(Ibd.SYMPTOM_DATE_PARAM);
         if (colitisDateString != null && colitisDateString.length() > 0) {
             try {
-                colitis.setColitisDate(Ibd.DATE_FORMAT.parse(colitisDateString));
+                colitis.setSymptomDate(Ibd.DATE_FORMAT.parse(colitisDateString));
             } catch (Exception e) {
                 // dunno just store with it set to null
             }
@@ -54,9 +54,9 @@ public class ColitisUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.COLITIS_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.COLITIS_DATE_PARAM)).length() == 0) {
-            actionErrors.add(Ibd.COLITIS_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
+        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null ||
+                ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
+            actionErrors.add(Ibd.SYMPTOM_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
         if (actionErrors.size() > 0) {
             saveErrors(request, actionErrors);

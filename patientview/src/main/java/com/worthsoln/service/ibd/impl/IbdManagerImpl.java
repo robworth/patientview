@@ -25,6 +25,7 @@ import com.worthsoln.service.ibd.IbdManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 @Service(value = "ibdManager")
@@ -237,17 +238,22 @@ public class IbdManagerImpl implements IbdManager {
 
     @Override
     public List<Crohns> getAllCrohns(User user) {
+        return getAllCrohns(user, null, null);
+    }
+
+    @Override
+    public List<Crohns> getAllCrohns(User user, Date fromDate, Date toDate) {
         String nhsNo = getNhsNumber(user);
 
         if (nhsNo != null) {
-            return getAllCrohns(nhsNo);
+            return getAllCrohns(nhsNo, fromDate,  toDate);
         }
 
         return null;
     }
 
-    public List<Crohns> getAllCrohns(String nhsno) {
-            return crohnsDao.getAllCrohns(nhsno);
+    public List<Crohns> getAllCrohns(String nhsno, Date fromDate, Date toDate) {
+            return crohnsDao.getAllCrohns(nhsno, fromDate,  toDate);
         }
 
     @Override
@@ -257,17 +263,22 @@ public class IbdManagerImpl implements IbdManager {
 
     @Override
     public List<Colitis> getAllColitis(User user) {
+        return getAllColitis(user, null, null);
+    }
+
+    @Override
+    public List<Colitis> getAllColitis(User user, Date fromDate, Date toDate) {
         String nhsNo = getNhsNumber(user);
 
         if (nhsNo != null) {
-            return getAllColitis(nhsNo);
+            return getAllColitis(nhsNo, fromDate, toDate);
         }
 
         return null;
     }
 
-    public List<Colitis> getAllColitis(String nhsno) {
-        return colitisDao.getAllColitis(nhsno);
+    public List<Colitis> getAllColitis(String nhsno, Date fromDate, Date toDate) {
+        return colitisDao.getAllColitis(nhsno, fromDate, toDate);
     }
 
     private String getNhsNumber(User user) {

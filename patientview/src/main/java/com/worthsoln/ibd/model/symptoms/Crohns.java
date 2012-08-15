@@ -1,21 +1,13 @@
 package com.worthsoln.ibd.model.symptoms;
 
-import com.worthsoln.patientview.model.BaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "ibd_crohns")
-public class Crohns extends BaseModel {
-
-    @Column(nullable = false)
-    private String nhsno;
-
-    @Column(nullable = false)
-    private Date chornsDate;
+@Table(name = "ibd_crohns_symptoms")
+public class Crohns extends BaseSymptom {
 
     @Column(nullable = false)
     private int abdominalPain;
@@ -24,28 +16,14 @@ public class Crohns extends BaseModel {
     private int openBowels;
 
     @Column(nullable = false)
-    private int feeling;
-
-    @Column(nullable = false)
     private int complications;
 
     @Column(nullable = false)
     private int massInTummy;
 
-    public String getNhsno() {
-        return nhsno;
-    }
-
-    public void setNhsno(String nhsno) {
-        this.nhsno = nhsno;
-    }
-
-    public Date getChornsDate() {
-        return chornsDate;
-    }
-
-    public void setChornsDate(Date chornsDate) {
-        this.chornsDate = chornsDate;
+    @Override
+    public Integer calculateScore() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public int getAbdominalPain() {
@@ -62,14 +40,6 @@ public class Crohns extends BaseModel {
 
     public void setOpenBowels(int openBowels) {
         this.openBowels = openBowels;
-    }
-
-    public int getFeeling() {
-        return feeling;
-    }
-
-    public void setFeeling(int feeling) {
-        this.feeling = feeling;
     }
 
     public int getComplications() {

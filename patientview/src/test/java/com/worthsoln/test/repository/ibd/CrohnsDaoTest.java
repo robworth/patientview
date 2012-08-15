@@ -37,7 +37,7 @@ public class CrohnsDaoTest extends BaseDaoTest {
 
         assertNotNull(checkCrohns);
         assertEquals("NHS no not persisted", checkCrohns.getNhsno(), crohns.getNhsno());
-        assertEquals("Crohns date not persisted", checkCrohns.getChornsDate(), crohns.getChornsDate());
+        assertEquals("Crohns date not persisted", checkCrohns.getSymptomDate(), crohns.getSymptomDate());
         assertEquals("Crohns abdominal pain not persisted", checkCrohns.getAbdominalPain(), crohns.getAbdominalPain());
         assertEquals("Crohns open bowels not persisted", checkCrohns.getOpenBowels(), crohns.getOpenBowels());
         assertEquals("Crohns feeling not persisted", checkCrohns.getFeeling(), crohns.getFeeling());
@@ -50,7 +50,7 @@ public class CrohnsDaoTest extends BaseDaoTest {
         Crohns crohns = new Crohns();
 
         crohns.setNhsno("1234567890");
-        crohns.setChornsDate(new Date());
+        crohns.setSymptomDate(new Date());
         crohns.setAbdominalPain(AbdominalPain.MODERATE.getId());
         crohns.setOpenBowels(5);
         crohns.setFeeling(Feeling.POOR.getId());

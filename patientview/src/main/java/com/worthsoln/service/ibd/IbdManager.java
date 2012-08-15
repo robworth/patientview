@@ -13,6 +13,7 @@ import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -64,7 +65,11 @@ public interface IbdManager {
 
     List<Crohns> getAllCrohns(User user);
 
+    List<Crohns> getAllCrohns(User user, Date fromDate, Date toDate);
+
     void saveColitis(Colitis colitis);
 
     List<Colitis> getAllColitis(User user);
+
+    List<Colitis> getAllColitis(User user, Date fromDate, Date toDate);
 }

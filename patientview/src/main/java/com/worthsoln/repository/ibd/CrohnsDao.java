@@ -2,6 +2,7 @@ package com.worthsoln.repository.ibd;
 
 import com.worthsoln.ibd.model.symptoms.Crohns;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CrohnsDao {
@@ -10,6 +11,5 @@ public interface CrohnsDao {
 
     void save(Crohns crohns);
 
-    List<Crohns> getAllCrohns(String nhsno);
-
+    List<Crohns> getAllCrohns(String nhsno, Date fromDate, Date toDate);
 }
