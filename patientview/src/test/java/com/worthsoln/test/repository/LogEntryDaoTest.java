@@ -1,7 +1,10 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.LogEntry;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.LogEntryDao;
+import com.worthsoln.test.helpers.RepositoryHelpers;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -17,6 +20,16 @@ public class LogEntryDaoTest extends BaseDaoTest {
 
     @Inject
     private LogEntryDao logEntryDao;
+
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
+
+    private Tenancy tenancy;
+
+    @Before
+    public void setupSystem() {
+        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+    }
 
     @Test
     public void testAddGetLogEntry() throws Exception {
@@ -63,7 +76,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new log entry 3", logEntry3.getId() > 0);
 
         // entry 2 was the newest so would expect this back
-        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction");
+        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction", tenancy);
         assertNotNull(checkLogEntry);
         assertEquals("Incorrect log entry retrieved", checkLogEntry.getId(), logEntry2.getId());
     }
@@ -114,7 +127,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for log entry 4", logEntry4.getId() > 0);
 
         // So we now expect back entry 1 & 2, 3 is out of the date range and 4 is in the range but for another user
-        List<LogEntry> checkLogEntries = logEntryDao.get(logEntry1.getActor(), startDate, endDate);
+        List<LogEntry> checkLogEntries = logEntryDao.get(logEntry1.getActor(), startDate, endDate, tenancy);
 
         assertNotNull(checkLogEntries);
         assertTrue("No log entries found", !checkLogEntries.isEmpty() && checkLogEntries.size() > 0);
@@ -181,7 +194,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         // So we now expect back entry 1 & 2, 3 has a different action, 4 is out of the date range and 5
         // is in the range but for another user
         List<LogEntry> checkLogEntries = logEntryDao.getWithNhsNo(logEntry1.getNhsno(), startDate, endDate,
-                logEntry1.getAction());
+                logEntry1.getAction(), tenancy);
 
         assertNotNull(checkLogEntries);
         assertTrue("No log entries found", !checkLogEntries.isEmpty() && checkLogEntries.size() > 0);
@@ -229,7 +242,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
 
         // So we now expect back entry 1 and not 2
         List<LogEntry> checkLogEntries = logEntryDao.getWithNhsNo(logEntry1.getNhsno(), logEntry1.getUser(),
-                logEntry1.getActor(), logEntry1.getAction(), logEntry1.getUnitcode(), startDate, endDate);
+                logEntry1.getActor(), logEntry1.getAction(), logEntry1.getUnitcode(), startDate, endDate, tenancy);
 
         assertNotNull(checkLogEntries);
         assertTrue("No log entries found", !checkLogEntries.isEmpty() && checkLogEntries.size() > 0);
@@ -268,11 +281,47 @@ public class LogEntryDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for log entry 2", logEntry2.getId() > 0);
 
         // So we now expect back entry 1 and not 2
-        List<LogEntry> checkLogEntries = logEntryDao.getWithUnitCode(logEntry1.getUnitcode(), startDate, endDate);
+        List<LogEntry> checkLogEntries = logEntryDao.getWithUnitCode(logEntry1.getUnitcode(), startDate, endDate,
+                tenancy);
 
         assertNotNull(checkLogEntries);
         assertTrue("No log entries found", !checkLogEntries.isEmpty() && checkLogEntries.size() > 0);
         assertTrue("To many log entries found", checkLogEntries.size() == 1);
+    }
+
+    @Test
+    // As per testGetLatestLogEntry() but with a tenancy set
+    public void testLogAndSearchWithTenancy() {
+        // Want an older date so we can filter to the latest one
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -5);
+
+        LogEntry logEntry1 = getTestObject();
+        logEntry1.setTenancy(tenancy);
+        logEntry1.setDate(calendar);
+        logEntryDao.save(logEntry1);
+
+        assertTrue("Invalid id for new log entry 1", logEntry1.getId() > 0);
+
+        LogEntry logEntry2 = getTestObject();
+        logEntry2.setTenancy(tenancy);
+        logEntryDao.save(logEntry2);
+
+        assertTrue("Invalid id for new log entry 2", logEntry2.getId() > 0);
+
+        // create a third with a different nhs no that is newer than than the 2nd
+        LogEntry logEntry3 = getTestObject();
+        logEntry3.setTenancy(tenancy);
+        logEntry3.setNhsno("123456780");
+        logEntryDao.save(logEntry3);
+
+        assertTrue("Invalid id for new log entry 3", logEntry3.getId() > 0);
+
+        // entry 2 was the newest so would expect this back
+        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction", tenancy);
+        assertNotNull(checkLogEntry);
+        assertEquals("Incorrect log entry retrieved", checkLogEntry.getId(), logEntry2.getId());
+        assertEquals("Tenancy not correct", tenancy, checkLogEntry.getTenancy());
     }
 
     private LogEntry getTestObject() {

@@ -2,6 +2,7 @@ package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.patientview.model.LogEntry_;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LogEntryDao;
 import org.springframework.stereotype.Repository;
@@ -20,12 +21,23 @@ import java.util.List;
 public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements LogEntryDao {
 
     @Override
-    public LogEntry getLatestLogEntry(String nhsno, String action) {
+    public LogEntry getLatestLogEntry(String nhsno, String action, Tenancy tenancy) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<LogEntry> criteria = builder.createQuery(LogEntry.class);
         Root<LogEntry> logEntryRoot = criteria.from(LogEntry.class);
 
-        criteria.where(builder.equal(logEntryRoot.get(LogEntry_.nhsno), nhsno));
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.nhsno), nhsno));
+
+        // pull back results that have the current tenancy or none
+        Predicate tenancyPred = builder.equal(logEntryRoot.get(LogEntry_.tenancy), tenancy);
+        Predicate tenancyNone = builder.isNull(logEntryRoot.get(LogEntry_.tenancy));
+
+        Predicate tenancyOrNone = builder.or(tenancyPred, tenancyNone);
+        wherePredicates.add(tenancyOrNone);
+
+        buildWhereClause(criteria, wherePredicates);
 
         criteria.orderBy(builder.desc(logEntryRoot.get(LogEntry_.date)));
 
@@ -41,28 +53,29 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
     }
 
     @Override
-    public List<LogEntry> get(String username, Calendar startdate, Calendar enddate) {
-        return getLogEntries(null, null, username, null, null, startdate, enddate);
+    public List<LogEntry> get(String username, Calendar startdate, Calendar enddate, Tenancy tenancy) {
+        return getLogEntries(null, null, username, null, null, startdate, enddate, tenancy);
     }
 
     @Override
-    public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action) {
-        return getLogEntries(nhsno, null, null, null, action, startdate, enddate);
+    public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action,
+                                       Tenancy tenancy) {
+        return getLogEntries(nhsno, null, null, null, action, startdate, enddate, tenancy);
     }
 
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                       Calendar startdate, Calendar enddate) {
-        return getLogEntries(nhsno, user, actor, unitcode, action, startdate, enddate);
+                                       Calendar startdate, Calendar enddate, Tenancy tenancy) {
+        return getLogEntries(nhsno, user, actor, unitcode, action, startdate, enddate, tenancy);
     }
 
     @Override
-    public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate) {
-        return getLogEntries(null, null, null, unitcode, null, startdate, enddate);
+    public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate, Tenancy tenancy) {
+        return getLogEntries(null, null, null, unitcode, null, startdate, enddate, tenancy);
     }
 
     private List<LogEntry> getLogEntries(String nhsno, String user, String actor, String unitcode, String action,
-                                         Calendar startdate, Calendar enddate) {
+                                         Calendar startdate, Calendar enddate, Tenancy tenancy) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<LogEntry> criteria = builder.createQuery(LogEntry.class);
         Root<LogEntry> logEntryRoot = criteria.from(LogEntry.class);
@@ -94,6 +107,14 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         if (startdate != null && enddate != null) {
             wherePredicates.add(builder.between(logEntryRoot.get(LogEntry_.date), startdate, enddate));
         }
+
+        // pull back results that have the current tenancy or none
+        Predicate tenancyPred = builder.equal(logEntryRoot.get(LogEntry_.tenancy), tenancy);
+        Predicate tenancyNone = builder.isNull(logEntryRoot.get(LogEntry_.tenancy));
+
+        Predicate tenancyOrNone = builder.or(tenancyPred, tenancyNone);
+
+        wherePredicates.add(tenancyOrNone);
 
         buildWhereClause(criteria, wherePredicates);
 
