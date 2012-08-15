@@ -7,9 +7,16 @@ import com.worthsoln.patientview.utils.TimestampUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "log")
 public class LogEntry extends BaseModel {
+
+    // NOTE: the tenancy is optional here because so log events may occur outside a logged in context
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
 
     @Column(nullable = false)
     private Calendar date;
@@ -43,6 +50,14 @@ public class LogEntry extends BaseModel {
         setUnitcode(unitcode);
         this.extrainfo = extrainfo;
         this.date = Calendar.getInstance();
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public String getAction() {
