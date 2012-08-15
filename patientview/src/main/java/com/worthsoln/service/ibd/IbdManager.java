@@ -1,8 +1,8 @@
 package com.worthsoln.service.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
-import com.worthsoln.ibd.model.symptoms.Colitis;
-import com.worthsoln.ibd.model.symptoms.Crohns;
+import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
+import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
@@ -13,6 +13,7 @@ import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -60,11 +61,15 @@ public interface IbdManager {
 
     void saveNutrition(Nutrition nutrition);
 
-    void saveCrohns(Crohns crohns);
+    void saveCrohns(CrohnsSymptoms crohnsSymptoms);
 
-    List<Crohns> getAllCrohns(User user);
+    List<CrohnsSymptoms> getAllCrohns(User user);
 
-    void saveColitis(Colitis colitis);
+    List<CrohnsSymptoms> getAllCrohns(User user, Date fromDate, Date toDate);
 
-    List<Colitis> getAllColitis(User user);
+    void saveColitis(ColitisSymptoms colitisSymptoms);
+
+    List<ColitisSymptoms> getAllColitis(User user);
+
+    List<ColitisSymptoms> getAllColitis(User user, Date fromDate, Date toDate);
 }

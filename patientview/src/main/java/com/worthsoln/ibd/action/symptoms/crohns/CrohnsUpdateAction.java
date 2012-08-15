@@ -2,7 +2,7 @@ package com.worthsoln.ibd.action.symptoms.crohns;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.ibd.model.symptoms.Crohns;
+import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -23,24 +23,24 @@ public class CrohnsUpdateAction extends BaseAction {
             return mapping.findForward(INPUT);
         }
 
-        Crohns crohns = new Crohns();
-        crohns.setNhsno(getNhsNoForUser(request));
-        crohns.setAbdominalPain((Integer) dynaForm.get(Ibd.ABDOMINAL_PAIN_PARAM));
-        crohns.setOpenBowels((Integer) dynaForm.get(Ibd.OPEN_BOWELS_PARAM));
-        crohns.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
-        crohns.setComplications((Integer) dynaForm.get(Ibd.COMPLICATIONS_PARAM));
-        crohns.setMassInTummy((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
+        CrohnsSymptoms crohnsSymptoms = new CrohnsSymptoms();
+        crohnsSymptoms.setNhsno(getNhsNoForUser(request));
+        crohnsSymptoms.setAbdominalPainId((Integer) dynaForm.get(Ibd.ABDOMINAL_PAIN_PARAM));
+        crohnsSymptoms.setOpenBowels((Integer) dynaForm.get(Ibd.OPEN_BOWELS_PARAM));
+        crohnsSymptoms.setFeelingId((Integer) dynaForm.get(Ibd.FEELING_PARAM));
+        crohnsSymptoms.setComplicationId((Integer) dynaForm.get(Ibd.COMPLICATION_PARAM));
+        crohnsSymptoms.setMassInTummyId((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
 
-        String crohnsDateString = (String) dynaForm.get(Ibd.CROHNS_DATE_PARAM);
+        String crohnsDateString = (String) dynaForm.get(Ibd.SYMPTOM_DATE_PARAM);
         if (crohnsDateString != null && crohnsDateString.length() > 0) {
             try {
-                crohns.setChornsDate(Ibd.DATE_FORMAT.parse(crohnsDateString));
+                crohnsSymptoms.setSymptomDate(Ibd.DATE_FORMAT.parse(crohnsDateString));
             } catch (Exception e) {
                 // dunno just store with it set to null
             }
         }
 
-        getIbdManager().saveCrohns(crohns);
+        getIbdManager().saveCrohns(crohnsSymptoms);
 
         return mapping.findForward(SUCCESS);
     }
@@ -53,14 +53,9 @@ public class CrohnsUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.CROHNS_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.CROHNS_DATE_PARAM)).length() == 0) {
-            actionErrors.add(Ibd.CROHNS_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
-        }
-
-        if (form.get(Ibd.OPEN_BOWELS_PARAM) == null ||
-                ((Integer) form.get(Ibd.OPEN_BOWELS_PARAM)) < 0) {
-            actionErrors.add(Ibd.OPEN_BOWELS_PARAM, new ActionMessage(Ibd.OPEN_BOWELS_INVALID_NUMBER));
+        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null ||
+                ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
+            actionErrors.add(Ibd.SYMPTOM_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
 
         if (actionErrors.size() > 0) {

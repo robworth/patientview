@@ -19,6 +19,16 @@ public enum NumberOfStoolsDaytime {
         this.score = score;
     }
 
+    public static NumberOfStoolsDaytime getNumberOfStoolsDaytime(int id) {
+            for (NumberOfStoolsDaytime numberOfStoolsDaytime : NumberOfStoolsDaytime.values()) {
+                if (numberOfStoolsDaytime.getId() == id) {
+                    return numberOfStoolsDaytime;
+                }
+            }
+
+            return null;
+        }
+
     public int getId() {
         return id;
     }

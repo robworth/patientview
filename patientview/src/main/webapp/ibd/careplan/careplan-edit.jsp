@@ -2,6 +2,6 @@
 
 <tiles:insert definition="patient.layout" flush="true" >
 
-    <tiles:put name="body" value="/ibd/body/careplan-edit-body.jsp" />
+    <tiles:put name="body" value="/ibd/careplan/body/careplan-edit-body.jsp" />
 
 </tiles:insert>
