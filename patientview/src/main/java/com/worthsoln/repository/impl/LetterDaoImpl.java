@@ -2,6 +2,7 @@ package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.model.Letter_;
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LetterDao;
 import com.worthsoln.repository.UserMappingDao;
@@ -21,8 +22,8 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
     private UserMappingDao userMappingDao;
 
     @Override
-    public List<Letter> get(String username) {
-        String usersNhsNo = userMappingDao.getUsersRealNhsNoBestGuess(username);
+    public List<Letter> get(String username, Tenancy tenancy) {
+        String usersNhsNo = userMappingDao.getUsersRealNhsNoBestGuess(username, tenancy);
 
         if (usersNhsNo != null && usersNhsNo.length() > 0) {
             CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();

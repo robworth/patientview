@@ -27,7 +27,6 @@ public class UnitAdminAddAction extends DatabaseAction {
         String unitcode = BeanUtils.getProperty(form, "unitcode");
         String role = BeanUtils.getProperty(form, "role");
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, false, role, true);
-        DatabaseDAO dao = getDao(request);
 
         List<UserMapping> usermappingList = LegacySpringUtils.getUserManager().getUserMappings(username);
 

@@ -2,6 +2,8 @@ package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class UserMapping extends BaseModel {
@@ -15,6 +17,10 @@ public class UserMapping extends BaseModel {
     @Column
     private String nhsno;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tenancy_id")
+    private Tenancy tenancy;
+
     public UserMapping() {
     }
 
@@ -22,6 +28,14 @@ public class UserMapping extends BaseModel {
         this.username = username;
         this.unitcode = unitcode;
         this.nhsno = nhsno;
+    }
+
+    public Tenancy getTenancy() {
+        return tenancy;
+    }
+
+    public void setTenancy(Tenancy tenancy) {
+        this.tenancy = tenancy;
     }
 
     public String getUsername() {

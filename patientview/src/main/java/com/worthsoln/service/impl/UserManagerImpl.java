@@ -213,57 +213,62 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public void save(UserMapping userMapping) {
+
+        if (userMapping.getTenancy() == null) {
+            userMapping.setTenancy(securityUserManager.getLoggedInTenancy());
+        }
+
         userMappingDao.save(userMapping);
     }
 
     @Override
     public void deleteUserMappings(String username, String unitcode) {
-        userMappingDao.deleteUserMappings(username, unitcode);
+        userMappingDao.deleteUserMappings(username, unitcode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<UserMapping> getUserMappings(String username) {
-        return userMappingDao.getAll(username);
+        return userMappingDao.getAll(username, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<UserMapping> getUserMappingsExcludeUnitcode(String username, String unitcode) {
-        return userMappingDao.getAllExcludeUnitcode(username, unitcode);
+        return userMappingDao.getAllExcludeUnitcode(username, unitcode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<UserMapping> getUserMappings(String username, String unitcode) {
-        return userMappingDao.getAll(username, unitcode);
+        return userMappingDao.getAll(username, unitcode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<UserMapping> getUserMappingsForNhsNo(String nhsNo) {
-        return userMappingDao.getAllForNhsNo(nhsNo);
+        return userMappingDao.getAllForNhsNo(nhsNo, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public String getUsersRealUnitcodeBestGuess(String username) {
-        return userMappingDao.getUsersRealUnitcodeBestGuess(username);
+        return userMappingDao.getUsersRealUnitcodeBestGuess(username, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public String getUsersRealNhsNoBestGuess(String username) {
-        return userMappingDao.getUsersRealNhsNoBestGuess(username);
+        return userMappingDao.getUsersRealNhsNoBestGuess(username, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public UserMapping getUserMappingPatientEntered(User user) {
-        return userMappingDao.getUserMappingPatientEntered(user);
+        return userMappingDao.getUserMappingPatientEntered(user, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<UserMapping> getUsersSiblings(String username, String unitcode) {
-        return userMappingDao.getUsersSiblings(username, unitcode);
+        return userMappingDao.getUsersSiblings(username, unitcode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<UserMapping> getDuplicateUsers(String nhsno, String username) {
-        return userMappingDao.getDuplicateUsers(nhsno, username);
+        return userMappingDao.getDuplicateUsers(nhsno, username, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
