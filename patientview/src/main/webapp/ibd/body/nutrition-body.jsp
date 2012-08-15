@@ -31,7 +31,7 @@
                     <td>
                         <bean:write name="nutrition" property="foodsThatDisagree"/>
                     </td>
-             
+
                     <td>
                         <bean:write name="nutrition" property="comment"/>
                     </td>
@@ -48,6 +48,9 @@
             </div>
 
         </html:form>
+        <p>
+            If you wish to calculate your BMI please visit this <a href="http://www.nhs.uk/Tools/Pages/Healthyweightcalculator.aspx">link</a> fot the NHS BMI calculator.
+        </p>
     </div>
 </div>
 

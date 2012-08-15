@@ -226,3 +226,24 @@ h1, h2{
 .hidden {
     display: none!important;
 }
+
+.launchPadTextAlternative{
+    background: url(/img/content/launchPadPlaceHolder.png);
+    font-size: 40px;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.launchPadTextAlternative.rpvResults{
+    background: url(/img/content/resultsThumbPlaceHolder.png);
+    font-size: 20px;
+    padding: 60px 0;
+}
+
+.thumbnail .caption{
+    text-align: center;
+}
+
+.thumbnail .caption h5{
+    padding-bottom: 5px;
+}

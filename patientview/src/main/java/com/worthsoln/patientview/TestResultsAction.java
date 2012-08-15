@@ -6,6 +6,7 @@ import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Panel;
+import com.worthsoln.patientview.model.TestResultWithUnitShortname;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.ResultHeading;
@@ -50,8 +51,8 @@ public class TestResultsAction extends DatabaseAction {
 
     private List<TestResultWithUnitShortname> extractTestResultsWithComments(DatabaseDAO dao,
                                                                              Panel currentPanel, User user) {
-        TestResultForPatientDao resultDao = new TestResultForPatientDao(user.getUsername(), currentPanel);
-        List<TestResultWithUnitShortname> results = dao.retrieveList(resultDao);
+        List<TestResultWithUnitShortname> results
+                = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user.getUsername(), currentPanel);
 
         List userMappings = UserUtils.retrieveUserMappings(user);
 
@@ -121,7 +122,8 @@ public class TestResultsAction extends DatabaseAction {
         try {
             currentPanel = new Panel(Integer.parseInt(request.getParameter("panel")));
         } catch (Exception e) {
-            ;
+            // provide a default if not set
+            currentPanel = new Panel(1);
         }
         return currentPanel;
     }

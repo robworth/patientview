@@ -12,7 +12,7 @@ public interface RepositoryHelpers {
     User createUser(String username, String email, String password, String name, String screenName);
 
     User createUserWithMapping(String username, String email, String password, String name, String screenName,
-                               String unitcode, String nhsno);
+                               String unitcode, String nhsno, Tenancy tenancy);
 
     Tenancy createTenancy(String name, String context, String description);
 

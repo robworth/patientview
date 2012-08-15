@@ -146,6 +146,9 @@ Forum tenancy filtering
 
 - Todo
 
+Administration Area
+====================
+- Superadmin users can now be setup per tenancy.  A per tenancy superadmin implements the "specialityadmin" role described in the spec.
 
 Tasks for upgrading to JPA
 ==========================

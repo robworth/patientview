@@ -1,4 +1,4 @@
-package com.worthsoln.patientview;
+package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 

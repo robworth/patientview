@@ -1,5 +1,6 @@
 package com.worthsoln.repository;
 
+import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,23 +18,23 @@ public interface UserMappingDao {
 
     void save(UserMapping userMapping);
 
-    void deleteUserMappings(String username, String unitcode);
+    void deleteUserMappings(String username, String unitcode, Tenancy tenancy);
 
-    List<UserMapping> getAll(String username);
+    List<UserMapping> getAll(String username, Tenancy tenancy);
 
-    List<UserMapping> getAllExcludeUnitcode(String username, String unitcode);
+    List<UserMapping> getAllExcludeUnitcode(String username, String unitcode, Tenancy tenancy);
 
-    List<UserMapping> getAll(String username, String unitcode);
+    List<UserMapping> getAll(String username, String unitcode, Tenancy tenancy);
 
-    List<UserMapping> getAllForNhsNo(String nhsNo);
+    List<UserMapping> getAllForNhsNo(String nhsNo, Tenancy tenancy);
 
-    String getUsersRealUnitcodeBestGuess(String username);
+    String getUsersRealUnitcodeBestGuess(String username, Tenancy tenancy);
 
-    String getUsersRealNhsNoBestGuess(String username);
+    String getUsersRealNhsNoBestGuess(String username, Tenancy tenancy);
 
-    UserMapping getUserMappingPatientEntered(User user);
+    UserMapping getUserMappingPatientEntered(User user, Tenancy tenancy);
 
-    List<UserMapping> getUsersSiblings(String username, String unitcode);
+    List<UserMapping> getUsersSiblings(String username, String unitcode, Tenancy tenancy);
 
-    List<UserMapping> getDuplicateUsers(String nhsno, String username);
+    List<UserMapping> getDuplicateUsers(String nhsno, String username, Tenancy tenancy);
 }
