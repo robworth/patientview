@@ -28,7 +28,27 @@ public class CrohnsSymptoms extends BaseSymptoms {
 
     @Override
     public Integer calculateScore() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        int score = 0;
+
+        score += openBowels;
+
+        if (abdominalPain != null) {
+            score += abdominalPain.getScore();
+        }
+
+        if (massInTummy != null) {
+            score += massInTummy.getScore();
+        }
+
+        if (complication != null) {
+            score += complication.getScore();
+        }
+
+        if (getFeeling() != null) {
+            score += getFeeling().getScore();
+        }
+
+        return score;
     }
     
     public int getOpenBowels() {

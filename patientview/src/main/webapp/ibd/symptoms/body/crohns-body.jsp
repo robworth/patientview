@@ -1,3 +1,4 @@
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -97,3 +98,11 @@
         <jsp:include page="graph.jsp" />
     </div>
 </div>
+
+<bean:define id="graphScores" name="graphScores" type="java.util.ArrayList" />
+
+<script type="text/javascript">
+    $(function() {
+        IBD.Symptoms.data = [<%=StringUtils.join(graphScores.toArray(), ", ")%>]
+    });
+</script>
