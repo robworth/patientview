@@ -19,6 +19,16 @@ public enum PresentBlood {
         this.score = score;
     }
 
+    public static PresentBlood getPresentBlood(int id) {
+        for (PresentBlood presentBlood : PresentBlood.values()) {
+            if (presentBlood.getId() == id) {
+                return presentBlood;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

@@ -56,17 +56,16 @@ public class Ibd {
 
     // symptoms params
     public static final String CROHNS_DATE_PARAM = "chornsDate";
-    public static final String ABDOMINAL_PAIN_PARAM = "abdominalPain";
+    public static final String ABDOMINAL_PAIN_PARAM = "abdominalPainId";
     public static final String OPEN_BOWELS_PARAM = "openBowels";
-    public static final String FEELING_PARAM = "feeling";
-    public static final String COMPLICATIONS_PARAM = "complications";
-    public static final String MASS_IN_TUMMY_PARAM = "massInTummy";
+    public static final String FEELING_PARAM = "feelingId";
+    public static final String COMPLICATION_PARAM = "complicationId";
+    public static final String MASS_IN_TUMMY_PARAM = "massInTummyId";
     public static final String COLITIS_DATE_PARAM = "colitisDate";
-    public static final String STOOLS_DATE_PARAM = "stoolsDay";
-    public static final String STOOLS_NIGHT_PARAM = "stoolsNight";
-    public static final String TOILET_TIMING_PARAM = "toiletTiming";
-    public static final String PRESENT_BLOOD_PARAM = "presentBlood";
-    public static final String FURTHER_COMPLICATIONS_PARAM = "furtherComplications";
+    public static final String NUMBER_OF_STOOLS_DAYTIME_PARAM = "numberOfStoolsDaytimeId";
+    public static final String NUMBER_OF_STOOLS_NIGHTTIME_PARAM = "numberOfStoolsNighttimeId";
+    public static final String TOILET_TIMING_PARAM = "toiletTimingId";
+    public static final String PRESENT_BLOOD_PARAM = "presentBloodId";
 
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";

@@ -103,30 +103,32 @@ CREATE TABLE `ibd_nutrition` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `ibd_crohns` (
   `id` bigint(20) NOT NULL auto_increment,
-  `abdominalPain` int(11) NOT NULL,
+  `abdominal_pain_id` int(11) NOT NULL,
   `chornsDate` datetime NOT NULL,
-  `complications` int(11) NOT NULL,
-  `feeling` int(11) NOT NULL,
-  `massInTummy` int(11) NOT NULL,
+  `complication_id` int(11) NOT NULL,
+  `feeling_id` int(11) NOT NULL,
+  `mass_in_tummy_id` int(11) NOT NULL,
   `nhsno` varchar(255) NOT NULL,
   `openBowels` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ibd_colitis` (
   `id` bigint(20) NOT NULL auto_increment,
   `colitisDate` datetime NOT NULL,
-  `feeling` int(11) NOT NULL,
-  `furtherComplications` int(11) NOT NULL,
+  `complication_id` int(11) NOT NULL,
+  `feeling_id` int(11) NOT NULL,
   `nhsno` varchar(255) NOT NULL,
-  `presentBlood` int(11) NOT NULL,
-  `stoolsDay` int(11) NOT NULL,
-  `stoolsNight` int(11) NOT NULL,
-  `toiletTiming` int(11) NOT NULL,
+  `number_of_stools_daytime_id` int(11) NOT NULL,
+  `number_of_stools_nighttime_id` int(11) NOT NULL,
+  `present_blood_id` int(11) NOT NULL,
+  `toilet_timing_id` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 /** MEDICATION TABLE DATE */
 insert  into `ibd_medication`(`id`,`name`) values (1,'Asacol'),(2,'Pentasa'),(3,'Salofalk'),(4,'Azathioprine');

@@ -1,5 +1,6 @@
 package com.worthsoln.test.repository.ibd;
 
+import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsNighttime;
 import com.worthsoln.ibd.model.symptoms.Colitis;
 import com.worthsoln.ibd.model.enums.Feeling;
 import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsDaytime;
@@ -37,8 +38,8 @@ public class ColitisDaoTest extends BaseDaoTest {
         assertNotNull(checkColitis);
         assertEquals("NHS no not persisted", checkColitis.getNhsno(), colitis.getNhsno());
         assertEquals("Colitis date not persisted", checkColitis.getColitisDate(), colitis.getColitisDate());
-        assertEquals("Colitis stools day not persisted", checkColitis.getStoolsDay(), colitis.getStoolsDay());
-        assertEquals("Colitis stools night not persisted", checkColitis.getStoolsNight(), colitis.getStoolsNight());
+        assertEquals("Colitis stools day not persisted", checkColitis.getNumberOfStoolsDaytime(), colitis.getNumberOfStoolsDaytime());
+        assertEquals("Colitis stools night not persisted", checkColitis.getNumberOfStoolsNighttime(), colitis.getNumberOfStoolsNighttime());
         assertEquals("Colitis toilet timing not persisted", checkColitis.getToiletTiming(), colitis.getToiletTiming());
         assertEquals("Colitis present blood not persisted", checkColitis.getPresentBlood(), colitis.getPresentBlood());
         assertEquals("Colitis feeling not persisted", checkColitis.getFeeling(), colitis.getFeeling());
@@ -50,11 +51,11 @@ public class ColitisDaoTest extends BaseDaoTest {
 
         colitis.setNhsno("1234567890");
         colitis.setColitisDate(new Date());
-        colitis.setStoolsDay(NumberOfStoolsDaytime.SEVEN_TO_NINE.getId());
-        colitis.setStoolsNight(NumberOfStoolsDaytime.FOUR_TO_SIX.getId());
-        colitis.setToiletTiming(ToiletTiming.HAVING_ACCIDENTS.getId());
-        colitis.setPresentBlood(PresentBlood.A_TRACE.getId());
-        colitis.setFeeling(Feeling.BELOW_PAR.getId());
+        colitis.setNumberOfStoolsDaytime(NumberOfStoolsDaytime.SEVEN_TO_NINE);
+        colitis.setNumberOfStoolsNighttime(NumberOfStoolsNighttime.FOUR_TO_SIX);
+        colitis.setToiletTiming(ToiletTiming.HAVING_ACCIDENTS);
+        colitis.setPresentBlood(PresentBlood.A_TRACE);
+        colitis.setFeeling(Feeling.BELOW_PAR);
 
         return colitis;
     }

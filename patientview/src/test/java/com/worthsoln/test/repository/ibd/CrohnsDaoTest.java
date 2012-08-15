@@ -39,9 +39,9 @@ public class CrohnsDaoTest extends BaseDaoTest {
         assertEquals("NHS no not persisted", checkCrohns.getNhsno(), crohns.getNhsno());
         assertEquals("Crohns date not persisted", checkCrohns.getChornsDate(), crohns.getChornsDate());
         assertEquals("Crohns abdominal pain not persisted", checkCrohns.getAbdominalPain(), crohns.getAbdominalPain());
-        assertEquals("Crohns open bowels not persisted", checkCrohns.getOpenBowels(), crohns.getOpenBowels());
+//        assertEquals("Crohns open bowels not persisted", checkCrohns.getOpenBowels(), crohns.getOpenBowels());
         assertEquals("Crohns feeling not persisted", checkCrohns.getFeeling(), crohns.getFeeling());
-        assertEquals("Crohns complications not persisted", checkCrohns.getComplications(), crohns.getComplications());
+        assertEquals("Crohns complications not persisted", checkCrohns.getComplication(), crohns.getComplication());
         assertEquals("Crohns mass in tummy not persisted", checkCrohns.getMassInTummy(), crohns.getMassInTummy());
 
     }
@@ -51,11 +51,11 @@ public class CrohnsDaoTest extends BaseDaoTest {
 
         crohns.setNhsno("1234567890");
         crohns.setChornsDate(new Date());
-        crohns.setAbdominalPain(AbdominalPain.MODERATE.getId());
-        crohns.setOpenBowels(5);
-        crohns.setFeeling(Feeling.POOR.getId());
-        crohns.setComplications(Complication.APTHOUS_ULCERS.getId());
-        crohns.setMassInTummy(MassInTummy.DEFINITE.getId());
+        crohns.setAbdominalPain(AbdominalPain.MODERATE);
+//        crohns.setOpenBowels(5);
+        crohns.setFeeling(Feeling.POOR);
+        crohns.setComplication(Complication.APTHOUS_ULCERS);
+        crohns.setMassInTummy(MassInTummy.DEFINITE);
 
         return crohns;
     }

@@ -19,6 +19,16 @@ public enum ToiletTiming {
         this.score = score;
     }
 
+    public static ToiletTiming getToiletTiming(int id) {
+        for (ToiletTiming toiletTiming : ToiletTiming.values()) {
+            if (toiletTiming.getId() == id) {
+                return toiletTiming;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

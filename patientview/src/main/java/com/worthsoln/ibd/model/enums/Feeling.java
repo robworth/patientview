@@ -20,6 +20,16 @@ public enum Feeling {
         this.score = score;
     }
 
+    public static Feeling getFeeling(int id) {
+        for (Feeling feeling : Feeling.values()) {
+            if (feeling.getId() == id) {
+                return feeling;
+            }
+        }
+
+        return null;
+    }
+    
     public int getId() {
         return id;
     }

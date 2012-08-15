@@ -19,6 +19,16 @@ public enum Complication {
         this.score = score;
     }
 
+    public static Complication getComplication(int id) {
+        for (Complication toiletTiming : Complication.values()) {
+            if (toiletTiming.getId() == id) {
+                return toiletTiming;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

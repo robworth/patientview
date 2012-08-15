@@ -13,10 +13,20 @@ public enum AbdominalPain {
     private String displayText;
     private int score;
 
-    AbdominalPain(int id, String displayText, int score) {
+    private AbdominalPain(int id, String displayText, int score) {
         this.id = id;
         this.displayText = displayText;
         this.score = score;
+    }
+
+    public static AbdominalPain getAbdominalPain(int id) {
+        for (AbdominalPain abdominalPain : AbdominalPain.values()) {
+            if (abdominalPain.getId() == id) {
+                return abdominalPain;
+            }
+        }
+
+        return null;
     }
 
     public int getId() {

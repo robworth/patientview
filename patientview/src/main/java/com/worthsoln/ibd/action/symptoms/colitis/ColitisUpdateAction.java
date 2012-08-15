@@ -25,12 +25,12 @@ public class ColitisUpdateAction extends BaseAction {
 
         Colitis colitis = new Colitis();
         colitis.setNhsno(getNhsNoForUser(request));
-        colitis.setStoolsDay((Integer) dynaForm.get(Ibd.STOOLS_DATE_PARAM));
-        colitis.setStoolsNight((Integer) dynaForm.get(Ibd.STOOLS_NIGHT_PARAM));
-        colitis.setToiletTiming((Integer) dynaForm.get(Ibd.TOILET_TIMING_PARAM));
-        colitis.setPresentBlood((Integer) dynaForm.get(Ibd.PRESENT_BLOOD_PARAM));
-        colitis.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
-        colitis.setFurtherComplications((Integer) dynaForm.get(Ibd.FURTHER_COMPLICATIONS_PARAM));
+        colitis.setNumberOfStoolsDaytimeId((Integer) dynaForm.get(Ibd.NUMBER_OF_STOOLS_DAYTIME_PARAM));
+        colitis.setNumberOfStoolsNighttimeId((Integer) dynaForm.get(Ibd.NUMBER_OF_STOOLS_NIGHTTIME_PARAM));
+        colitis.setToiletTimingId((Integer) dynaForm.get(Ibd.TOILET_TIMING_PARAM));
+        colitis.setPresentBloodId((Integer) dynaForm.get(Ibd.PRESENT_BLOOD_PARAM));
+        colitis.setFeelingId((Integer) dynaForm.get(Ibd.FEELING_PARAM));
+        colitis.setComplicationId((Integer) dynaForm.get(Ibd.COMPLICATION_PARAM));
 
         String colitisDateString = (String) dynaForm.get(Ibd.COLITIS_DATE_PARAM);
         if (colitisDateString != null && colitisDateString.length() > 0) {

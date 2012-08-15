@@ -25,11 +25,11 @@ public class CrohnsUpdateAction extends BaseAction {
 
         Crohns crohns = new Crohns();
         crohns.setNhsno(getNhsNoForUser(request));
-        crohns.setAbdominalPain((Integer) dynaForm.get(Ibd.ABDOMINAL_PAIN_PARAM));
+        crohns.setAbdominalPainId((Integer) dynaForm.get(Ibd.ABDOMINAL_PAIN_PARAM));
         crohns.setOpenBowels((Integer) dynaForm.get(Ibd.OPEN_BOWELS_PARAM));
-        crohns.setFeeling((Integer) dynaForm.get(Ibd.FEELING_PARAM));
-        crohns.setComplications((Integer) dynaForm.get(Ibd.COMPLICATIONS_PARAM));
-        crohns.setMassInTummy((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
+        crohns.setFeelingId((Integer) dynaForm.get(Ibd.FEELING_PARAM));
+        crohns.setComplicationId((Integer) dynaForm.get(Ibd.COMPLICATION_PARAM));
+        crohns.setMassInTummyId((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
 
         String crohnsDateString = (String) dynaForm.get(Ibd.CROHNS_DATE_PARAM);
         if (crohnsDateString != null && crohnsDateString.length() > 0) {
@@ -56,11 +56,6 @@ public class CrohnsUpdateAction extends BaseAction {
         if (form.get(Ibd.CROHNS_DATE_PARAM) == null ||
                 ((String) form.get(Ibd.CROHNS_DATE_PARAM)).length() == 0) {
             actionErrors.add(Ibd.CROHNS_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
-        }
-
-        if (form.get(Ibd.OPEN_BOWELS_PARAM) == null ||
-                ((Integer) form.get(Ibd.OPEN_BOWELS_PARAM)) < 0) {
-            actionErrors.add(Ibd.OPEN_BOWELS_PARAM, new ActionMessage(Ibd.OPEN_BOWELS_INVALID_NUMBER));
         }
 
         if (actionErrors.size() > 0) {
