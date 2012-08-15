@@ -27,45 +27,41 @@
 <ul class="thumbnails">
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryBloodPressure"><img src="http://placehold.it/260x180" alt=""></html:link>
+            <html:link forward="patientEntryBloodPressure" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Blood Pressure</div></html:link>
             <div class="caption">
               <h5>Enter my blood pressure</h5>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
               <p><html:link forward="patientEntryBloodPressure" styleClass="btn">Enter</html:link></p>
             </div>
         </div>
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryGlucose"><img src="http://placehold.it/260x180" alt=""></html:link>
+            <html:link forward="patientEntryGlucose" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Glucose Values</div></html:link>
             <div class="caption">
               <h5>Enter my glucose values</h5>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
               <p><html:link forward="patientEntryGlucose" styleClass="btn">Enter</html:link></p>
             </div>
         </div>
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryWeight"><img src="http://placehold.it/260x180" alt=""></html:link>
+            <html:link forward="patientEntryWeight" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Weight</div></html:link>
             <div class="caption">
               <h5>Enter my weight</h5>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
               <p><html:link forward="patientEntryWeight" styleClass="btn">Enter</html:link></p>
             </div>
         </div>
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryResultComment"><img src="http://placehold.it/260x180" alt=""></html:link>
+            <html:link forward="patientEntryResultComment" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Comment</div></html:link>
             <div class="caption">
               <h5>Enter a comment on my results</h5>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
               <p><html:link forward="patientEntryResultComment" styleClass="btn">Enter</html:link></p>
             </div>
         </div>
     </li>
-    <li class="span3">
+    <%--<li class="span3">
         <div class="thumbnail">
             <html:link action="/colitis-edit"><img src="http://placehold.it/260x180" alt=""></html:link>
             <div class="caption">
@@ -80,10 +76,9 @@
             <html:link action="/crohns-edit"><img src="http://placehold.it/260x180" alt=""></html:link>
             <div class="caption">
               <h5>Enter your Crohns values</h5>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
               <p><html:link action="/crohns-edit" styleClass="btn">Enter</html:link></p>
             </div>
         </div>
-    </li>
+    </li>--%>
 </ul>
 </logic:present>

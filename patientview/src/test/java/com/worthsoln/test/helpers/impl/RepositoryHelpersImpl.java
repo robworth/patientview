@@ -47,11 +47,12 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
     @Override
     public User createUserWithMapping(String username, String email, String password, String name, String screenName,
-                                      String unitcode, String nhsno) {
+                                      String unitcode, String nhsno, Tenancy tenancy) {
 
         User user = createUser(username, email, password, name, screenName);
 
         UserMapping userMapping = new UserMapping();
+        userMapping.setTenancy(tenancy);
         userMapping.setNhsno(nhsno);
         userMapping.setUnitcode(unitcode);
         userMapping.setUsername(username);

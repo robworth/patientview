@@ -46,7 +46,7 @@ public class PatientManagerTest extends BaseServiceTest {
 
         // setup a system with a user with 2 tenancy roles
         user = serviceHelpers.createUserWithMapping("Username", "username@test.com", "pass", "Test User",
-                "Testy", "unitcode1", "nhsno1");
+                "Testy", "unitcode1", "nhsno1", tenancy1);
 
 
         serviceHelpers.createTenancyUserRole(tenancy1, user, "patient");
