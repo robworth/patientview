@@ -20,16 +20,14 @@
     <logic:iterate id="tenancyUserRole" name="tenancyUserRoles">
         <li class="span3">
             <div class="thumbnail">
-                <a href="launchpad-select.do?tenancyId=<bean:write name="tenancyUserRole" property="tenancy.id"/>" class="thimbnail"><img src="http://placehold.it/260x180" alt=""></a>
+                <a href="launchpad-select.do?tenancyId=<bean:write name="tenancyUserRole" property="tenancy.id"/>" class="thumbnail"><div class="launchPadTextAlternative"><bean:write name="tenancyUserRole" property="tenancy.name"/></div></a>
                 <div class="caption">
                   <h5><bean:write name="tenancyUserRole" property="tenancy.name"/> (<bean:write name="tenancyUserRole" property="role"/>)</h5>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                   <p><a href="launchpad-select.do?tenancyId=<bean:write name="tenancyUserRole" property="tenancy.id"/>" class="btn">Enter</a></p>
                 </div>
             </div>
         </li>            
     </logic:iterate>
-    </ul>
 
 </logic:present>
 
