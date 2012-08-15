@@ -23,68 +23,84 @@
                         </div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">Number of Stools (Day)</label>
 
-                    <div class="controls">
-                        <html:select property="stoolsDay">
-                            <html:options collection="stoolsDayList" property="id" name="id" labelName="displayText"
-                                          labelProperty="displayText"/>
-                        </html:select>
+                <logic:present name="stoolsDayList" scope="session">
+                    <div class="control-group">
+                        <label class="control-label">Number of Stools (Day)</label>
+
+                        <div class="controls">
+                            <html:select property="numberOfStoolsDaytimeId">
+                                <html:options collection="stoolsDayList" property="id"
+                                              labelProperty="displayText"/>
+                            </html:select>
+                        </div>
                     </div>
-                </div>
+                </logic:present>
 
-                <div class="control-group">
-                    <label class="control-label">Number of Stools (Night)</label>
+                <logic:present name="stoolsNightList" scope="session">
+                    <div class="control-group">
+                        <label class="control-label">Number of Stools (Night)</label>
 
-                    <div class="controls">
-                        <html:select property="stoolsNight">
-                            <html:options collection="stoolsNightList" property="id" name="id" labelName="displayText"
-                                          labelProperty="displayText"/>
-                        </html:select>
+                        <div class="controls">
+                            <html:select property="numberOfStoolsNighttimeId">
+                                <html:options collection="stoolsNightList" property="id"
+                                              labelProperty="displayText"/>
+                            </html:select>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">When I go to the toilet?</label>
+                </logic:present>
 
-                    <div class="controls">
-                        <html:select property="toiletTiming">
-                            <html:options collection="toiletTimingList" property="id" name="id" labelName="displayText"
-                                          labelProperty="displayText"/>
-                        </html:select>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Is there blood present?</label>
+                <logic:present name="toiletTimingList" scope="session">
+                    <div class="control-group">
+                        <label class="control-label">When I go to the toilet?</label>
 
-                    <div class="controls">
-                        <html:select property="presentBlood">
-                            <html:options collection="presentBloodList" property="id" name="id" labelName="displayText"
-                                          labelProperty="displayText"/>
-                        </html:select>
+                        <div class="controls">
+                            <html:select property="toiletTimingId">
+                                <html:options collection="toiletTimingList" property="id" labelProperty="displayText"/>
+                            </html:select>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">How do I feel?</label>
+                </logic:present>
 
-                    <div class="controls">
-                        <html:select property="feeling">
-                            <html:options collection="feelingList" property="id" name="id" labelName="displayText"
-                                          labelProperty="displayText"/>
-                        </html:select>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Do I have any further complications?</label>
+                <logic:present name="presentBloodList" scope="session">
+                    <div class="control-group">
+                        <label class="control-label">Is there blood present?</label>
 
-                    <div class="controls">
-                        <html:select property="furtherComplications">
-                            <html:options collection="furtherComplicationList" property="id" name="id"
-                                          labelName="displayText"
-                                          labelProperty="displayText"/>
-                        </html:select>
+                        <div class="controls">
+                            <html:select property="presentBloodId">
+                                <html:options collection="presentBloodList" property="id"
+                                              labelProperty="displayText"/>
+                            </html:select>
+                        </div>
                     </div>
-                </div>
+                </logic:present>
+
+                <logic:present name="feelingList" scope="session">
+                    <div class="control-group">
+                        <label class="control-label">How do I feel?</label>
+
+                        <div class="controls">
+                            <html:select property="feelingId">
+                                <html:options collection="feelingList" property="id"
+                                              labelProperty="displayText"/>
+                            </html:select>
+                        </div>
+                    </div>
+                </logic:present>
+
+                <logic:present name="furtherComplicationList" scope="session">
+                    <div class="control-group">
+                        <label class="control-label">Do I have any further complications?</label>
+
+                        <div class="controls">
+                            <html:select property="complicationId">
+                                <html:options collection="furtherComplicationList" property="id"
+                                              labelProperty="displayText"/>
+                            </html:select>
+                        </div>
+                    </div>
+                </logic:present>
+
                 <div class="form-actions">
                     <html:submit value="Save" styleClass="btn btn-primary"/>
                 </div>

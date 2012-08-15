@@ -18,6 +18,16 @@ public enum NumberOfStoolsNighttime {
         this.score = score;
     }
 
+    public static NumberOfStoolsNighttime getNumberOfStoolsNighttime(int id) {
+        for (NumberOfStoolsNighttime numberOfStoolsNighttime : NumberOfStoolsNighttime.values()) {
+            if (numberOfStoolsNighttime.getId() == id) {
+                return numberOfStoolsNighttime;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

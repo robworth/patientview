@@ -2,8 +2,7 @@ package com.worthsoln.ibd.action.symptoms;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.ibd.model.symptoms.BaseSymptom;
-import com.worthsoln.ibd.model.symptoms.Colitis;
+import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
@@ -38,7 +37,7 @@ public class GraphDataAction extends BaseAction {
         if (graphType != null) {
             Date fromDate = null;
             Date toDate = null;
-            List<? extends BaseSymptom> symptoms = null;
+            List<? extends BaseSymptoms> symptoms = null;
 
             String fromDateString = (String) dynaForm.get(Ibd.FROM_DATE_PARAM);
             String toDateString = (String) dynaForm.get(Ibd.TO_DATE_PARAM);
@@ -68,7 +67,7 @@ public class GraphDataAction extends BaseAction {
             }
 
             if (symptoms != null) {
-                for (BaseSymptom symptom : symptoms) {
+                for (BaseSymptoms symptom : symptoms) {
                     scores.add(symptom.getScore());
                 }
             }

@@ -1,8 +1,8 @@
 package com.worthsoln.service.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
-import com.worthsoln.ibd.model.symptoms.Colitis;
-import com.worthsoln.ibd.model.symptoms.Crohns;
+import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
+import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
@@ -61,15 +61,15 @@ public interface IbdManager {
 
     void saveNutrition(Nutrition nutrition);
 
-    void saveCrohns(Crohns crohns);
+    void saveCrohns(CrohnsSymptoms crohnsSymptoms);
 
-    List<Crohns> getAllCrohns(User user);
+    List<CrohnsSymptoms> getAllCrohns(User user);
 
-    List<Crohns> getAllCrohns(User user, Date fromDate, Date toDate);
+    List<CrohnsSymptoms> getAllCrohns(User user, Date fromDate, Date toDate);
 
-    void saveColitis(Colitis colitis);
+    void saveColitis(ColitisSymptoms colitisSymptoms);
 
-    List<Colitis> getAllColitis(User user);
+    List<ColitisSymptoms> getAllColitis(User user);
 
-    List<Colitis> getAllColitis(User user, Date fromDate, Date toDate);
+    List<ColitisSymptoms> getAllColitis(User user, Date fromDate, Date toDate);
 }

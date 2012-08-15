@@ -24,6 +24,16 @@ public enum Complication {
         this.score = score;
     }
 
+    public static Complication getComplication(int id) {
+        for (Complication complication : Complication.values()) {
+            if (complication.getId() == id) {
+                return complication;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

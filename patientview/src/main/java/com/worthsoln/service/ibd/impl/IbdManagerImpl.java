@@ -1,8 +1,8 @@
 package com.worthsoln.service.ibd.impl;
 
 import com.worthsoln.ibd.model.CarePlan;
-import com.worthsoln.ibd.model.symptoms.Colitis;
-import com.worthsoln.ibd.model.symptoms.Crohns;
+import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
+import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.ibd.model.medication.Medication;
@@ -12,8 +12,8 @@ import com.worthsoln.ibd.model.medication.MyMedication;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.repository.ibd.CarePlanDao;
-import com.worthsoln.repository.ibd.ColitisDao;
-import com.worthsoln.repository.ibd.CrohnsDao;
+import com.worthsoln.repository.ibd.ColitisSymptomsDao;
+import com.worthsoln.repository.ibd.CrohnsSymptomsDao;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyIbdDao;
@@ -56,10 +56,10 @@ public class IbdManagerImpl implements IbdManager {
     private NutritionDao nutritionDao;
 
     @Inject
-    private CrohnsDao crohnsDao;
+    private CrohnsSymptomsDao crohnsSymptomsDao;
 
     @Inject
-    private ColitisDao colitisDao;
+    private ColitisSymptomsDao colitisSymptomsDao;
 
     @Override
     public MyIbd getMyIbd(User user) {
@@ -232,17 +232,17 @@ public class IbdManagerImpl implements IbdManager {
     }
 
     @Override
-    public void saveCrohns(Crohns crohns) {
-        crohnsDao.save(crohns);
+    public void saveCrohns(CrohnsSymptoms crohnsSymptoms) {
+        crohnsSymptomsDao.save(crohnsSymptoms);
     }
 
     @Override
-    public List<Crohns> getAllCrohns(User user) {
+    public List<CrohnsSymptoms> getAllCrohns(User user) {
         return getAllCrohns(user, null, null);
     }
 
     @Override
-    public List<Crohns> getAllCrohns(User user, Date fromDate, Date toDate) {
+    public List<CrohnsSymptoms> getAllCrohns(User user, Date fromDate, Date toDate) {
         String nhsNo = getNhsNumber(user);
 
         if (nhsNo != null) {
@@ -252,22 +252,22 @@ public class IbdManagerImpl implements IbdManager {
         return null;
     }
 
-    public List<Crohns> getAllCrohns(String nhsno, Date fromDate, Date toDate) {
-            return crohnsDao.getAllCrohns(nhsno, fromDate,  toDate);
+    public List<CrohnsSymptoms> getAllCrohns(String nhsno, Date fromDate, Date toDate) {
+            return crohnsSymptomsDao.getAllCrohns(nhsno, fromDate,  toDate);
         }
 
     @Override
-    public void saveColitis(Colitis colitis) {
-        colitisDao.save(colitis);
+    public void saveColitis(ColitisSymptoms colitisSymptoms) {
+        colitisSymptomsDao.save(colitisSymptoms);
     }
 
     @Override
-    public List<Colitis> getAllColitis(User user) {
+    public List<ColitisSymptoms> getAllColitis(User user) {
         return getAllColitis(user, null, null);
     }
 
     @Override
-    public List<Colitis> getAllColitis(User user, Date fromDate, Date toDate) {
+    public List<ColitisSymptoms> getAllColitis(User user, Date fromDate, Date toDate) {
         String nhsNo = getNhsNumber(user);
 
         if (nhsNo != null) {
@@ -277,8 +277,8 @@ public class IbdManagerImpl implements IbdManager {
         return null;
     }
 
-    public List<Colitis> getAllColitis(String nhsno, Date fromDate, Date toDate) {
-        return colitisDao.getAllColitis(nhsno, fromDate, toDate);
+    public List<ColitisSymptoms> getAllColitis(String nhsno, Date fromDate, Date toDate) {
+        return colitisSymptomsDao.getAllColitis(nhsno, fromDate, toDate);
     }
 
     private String getNhsNumber(User user) {

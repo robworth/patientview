@@ -63,22 +63,22 @@
         <form-bean name="crohnsSymptomsForm"
                    type="org.apache.struts.action.DynaActionForm">
             <form-property name="symptomDate" type="java.lang.String"/>
-            <form-property name="abdominalPain" type="java.lang.Integer"/>
+            <form-property name="abdominalPainId" type="java.lang.Integer"/>
             <form-property name="openBowels" type="java.lang.Integer"/>
-            <form-property name="feeling" type="java.lang.Integer"/>
-            <form-property name="complications" type="java.lang.Integer"/>
-            <form-property name="massInTummy" type="java.lang.Integer"/>
+            <form-property name="feelingId" type="java.lang.Integer"/>
+            <form-property name="complicationId" type="java.lang.Integer"/>
+            <form-property name="massInTummyId" type="java.lang.Integer"/>
         </form-bean>
 
         <form-bean name="colitisSymptomsForm"
                    type="org.apache.struts.action.DynaActionForm">
             <form-property name="symptomDate" type="java.lang.String"/>
-            <form-property name="stoolsDay" type="java.lang.Integer"/>
-            <form-property name="stoolsNight" type="java.lang.Integer"/>
-            <form-property name="toiletTiming" type="java.lang.Integer"/>
-            <form-property name="presentBlood" type="java.lang.Integer"/>
-            <form-property name="feeling" type="java.lang.Integer"/>
-            <form-property name="furtherComplications" type="java.lang.Integer"/>
+            <form-property name="numberOfStoolsDaytimeId" type="java.lang.Integer"/>
+            <form-property name="numberOfStoolsNighttimeId" type="java.lang.Integer"/>
+            <form-property name="toiletTimingId" type="java.lang.Integer"/>
+            <form-property name="presentBloodId" type="java.lang.Integer"/>
+            <form-property name="feelingId" type="java.lang.Integer"/>
+            <form-property name="complicationId" type="java.lang.Integer"/>
         </form-bean>
 
         <form-bean name="graphDataForm" type="org.apache.struts.action.DynaActionForm">

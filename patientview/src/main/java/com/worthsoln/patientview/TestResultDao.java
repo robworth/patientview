@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import com.worthsoln.database.StorableItem;
+import com.worthsoln.patientview.model.TestResult;
 
 public class TestResultDao extends StorableItem {
 
