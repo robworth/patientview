@@ -1,55 +1,82 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<div class="row">
-    <div class="span12">
-        <div class="page-header">
-            <h1>Crohns</h1>
-        </div>
-        <div>
-        </div>
-        <html:form action="/crohns-update" styleClass="form-horizontal row">
+    <div class="page-header">
+        <h1>Crohns</h1>
+    </div>
+    <div class="row">
+        <div class="span5">
+        <html:form action="/crohns-update" styleClass="form-horizontal">
             <html:errors/>
-
-            <div class="input-append date datePicker"
-                 data-date="<bean:write name="crohnsForm" property="chornsDate"/>">
-                <input name="chornsDate" class="span2" size="16" type="text"
-                       value="<bean:write name="crohnsForm" property="chornsDate"/>" readonly>
-                <span class="add-on"><i class="icon-th"></i></span>
+            <div class="control-group">
+                <label class="control-label">Date</label>
+                <div class="controls">
+                    <div class="input-append date datePicker"
+                         data-date="<bean:write name="crohnsForm" property="chornsDate"/>">
+                        <input name="chornsDate" class="span2" size="16" type="text"
+                               value="<bean:write name="crohnsForm" property="chornsDate"/>" readonly>
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
             </div>
 
-            I have currently got
-            <html:select property="abdominalPain">
-                <html:options collection="abdominalPainList" property="id" name="id" labelName="displayText"
-                              labelProperty="displayText"/>
-            </html:select> abdominal pain at present
+            <div class="control-group">
+                <label class="control-label">I have currently got</label>
+                <div class="controls">
+                    <html:select property="abdominalPain">
+                        <html:options collection="abdominalPainList" property="id" name="id" labelName="displayText"
+                                      labelProperty="displayText"/>
+                    </html:select> abdominal pain at present
+                </div>
+            </div>
 
-            My bowels are open
-            <html:textarea property="openBowels"/>
-            a day
+            <div class="control-group">
+                <label class="control-label"> My bowels are open</label>
+                <div class="controls">
+                    <html:textarea property="openBowels"/>
+                    <br/>a day
+                </div>
+            </div>
 
-            Currently I am feeling
-            <html:select property="feeling">
-                <html:options collection="feelingList" property="id" name="id" labelName="displayText"
-                              labelProperty="displayText"/>
-            </html:select>
+            <div class="control-group">
+                <label class="control-label">Currently I am feeling</label>
+                <div class="controls">
+                    <html:select property="feeling">
+                        <html:options collection="feelingList" property="id" name="id" labelName="displayText"
+                                      labelProperty="displayText"/>
+                    </html:select>
+                </div>
+            </div>
 
-            I have
-            <html:select property="complications">
-                <html:options collection="crohnsComplicationList" property="id" name="id" labelName="displayText"
-                              labelProperty="displayText"/>
-            </html:select>
-            complications from my IBD
+            <div class="control-group">
+                <label class="control-label">I have</label>
+                <div class="controls">
+                    <html:select property="complications">
+                        <html:options collection="crohnsComplicationList" property="id" name="id" labelName="displayText"
+                                      labelProperty="displayText"/>
+                    </html:select>
+                    complications from my IBD
+                </div>
+            </div>
 
-            The Doctor has said I have
-            <html:select property="massInTummy">
-                <html:options collection="massInTummyList" property="id" name="id" labelName="displayText"
-                              labelProperty="displayText"/>
-            </html:select>
-            mass in my tummy
-
-            <html:submit value="Save" styleClass="btn btn-primary"/>
-
+            <div class="control-group">
+                <label class="control-label">
+                    The Doctor has said I have
+                </label>
+                <div class="controls">
+                    <html:select property="massInTummy">
+                        <html:options collection="massInTummyList" property="id" name="id" labelName="displayText"
+                                      labelProperty="displayText"/>
+                    </html:select>
+                    mass in my tummy
+                </div>
+            </div>
+            <div class="form-actions">
+                <html:submit value="Save" styleClass="btn btn-primary"/>
+            </div>
         </html:form>
+        </div>
+        <div class="span7">
+            <%--GRAPH GOES HERE--%>
+        </div>
     </div>
-</div>

@@ -98,7 +98,7 @@
     
     <error-page>
         <error-code>404</error-code>
-        <location>/error.jsp</location>
+        <location>/error.html</location>
     </error-page>
 
     <error-page>
