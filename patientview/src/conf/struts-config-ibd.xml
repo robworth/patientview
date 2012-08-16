@@ -207,7 +207,7 @@
                 name="crohnsSymptomsForm"
                 type="com.worthsoln.ibd.action.symptoms.crohns.CrohnsEditAction"
                 scope="request"
-                parameter="ibd_crohns">
+                parameter="ibd_symptoms">
             <forward name="success" path="/ibd/symptoms/crohns.jsp"/>
         </action>
 
@@ -217,7 +217,7 @@
                 input="input"
                 scope="request"
                 validate="true"
-                parameter="ibd_crohns">
+                parameter="ibd_symptoms">
             <forward name="input" path="/ibd/symptoms/crohns.jsp"/>
             <forward name="success" path="/crohns-edit.do"/>
         </action>
@@ -226,7 +226,7 @@
                 name="colitisSymptomsForm"
                 type="com.worthsoln.ibd.action.symptoms.colitis.ColitisEditAction"
                 scope="request"
-                parameter="ibd_colitis">
+                parameter="ibd_symptoms">
             <forward name="success" path="/ibd/symptoms/colitis.jsp"/>
         </action>
 
@@ -236,7 +236,7 @@
                 input="input"
                 scope="request"
                 validate="true"
-                parameter="ibd_colitis">
+                parameter="ibd_symptoms">
             <forward name="input" path="/ibd/symptoms/colitis.jsp"/>
             <forward name="success" path="/colitis-edit.do"/>
         </action>
