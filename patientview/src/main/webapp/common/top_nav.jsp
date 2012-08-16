@@ -1,4 +1,6 @@
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ page import="com.worthsoln.ibd.model.MyIbd" %>
+<%@ page import="com.worthsoln.ibd.model.enums.Diagnosis" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -16,9 +18,28 @@
     </logic:present>
 
     <logic:present tenancy="ibd">
+        <%
+            MyIbd myIbd = LegacySpringUtils.getIbdManager().getMyIbd(LegacySpringUtils.getUserManager().getLoggedInUser());
+
+            String symptomsUrl = null;
+
+            if (myIbd != null && myIbd.hasValidId()) {
+                if (myIbd.getDiagnosis().equals(Diagnosis.COLITIS_UNSPECIFIED) || myIbd.getDiagnosis().equals(Diagnosis.ULCERATIVE_COLITIS)) {
+                    symptomsUrl = "/colitis-edit";
+                } else if (myIbd.getDiagnosis().equals(Diagnosis.CROHNS)) {
+                    symptomsUrl = "/crohns-edit";
+                }
+            }
+        %>
         <li <%=("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/myibd">My IBD</html:link></li>
         <li <%=("ibd_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/careplan">Care Plan</html:link></li>
-        <li <%=("patient_entry".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_entry">Enter Symptoms</html:link></li>
+        <%
+        if (symptomsUrl != null && symptomsUrl.length() > 0) {
+        %>
+            <li <%=("ibd_symptoms".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="<%=symptomsUrl%>">Enter Symptoms</html:link></li>
+        <%
+        }
+        %>
         <li <%=("ibd_medications".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/medications">Medicines</html:link></li>
         <li <%=("ibd_nutrition".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/nutrition">Nutrition</html:link></li>
     </logic:present>
