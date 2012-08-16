@@ -73,7 +73,7 @@ public class Ibd {
     public static final String TO_DATE_PARAM = "toDate";
     public static final String GRAPH_TYPE_PARAM = "graphType";
     public static final String GRAPH_DATA_ERROR_PARAM = "graphDataError";
-    public static final String GRAPH_SCORES_PARAM = "graphScores";
+    public static final String GRAPH_DATA_PARAM = "graphData";
 
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";

@@ -3,6 +3,7 @@ package com.worthsoln.ibd.action.symptoms;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
+import com.worthsoln.ibd.model.symptoms.SymptomsData;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
@@ -29,7 +30,7 @@ public class GraphDataAction extends BaseAction {
         // returning an error string if an error happened and a list of scores.
         // Returning both as struts goes spastic bout nulls
         String error = "";
-        List<Integer> scores = new ArrayList<Integer>();
+        List<SymptomsData> graphData = new ArrayList<SymptomsData>();
 
         // can only return data if we have a graph type
         Integer graphType = (Integer) dynaForm.get(Ibd.GRAPH_TYPE_PARAM);
@@ -68,7 +69,7 @@ public class GraphDataAction extends BaseAction {
 
             if (symptoms != null) {
                 for (BaseSymptoms symptom : symptoms) {
-                    scores.add(symptom.getScore());
+                    graphData.add(new SymptomsData(symptom));
                 }
             }
         } else {
@@ -77,7 +78,7 @@ public class GraphDataAction extends BaseAction {
 
         // add the objects to the request
         request.setAttribute(Ibd.GRAPH_DATA_ERROR_PARAM, error);
-        request.setAttribute(Ibd.GRAPH_SCORES_PARAM, scores);
+        request.setAttribute(Ibd.GRAPH_DATA_PARAM, graphData);
 
         return mapping.findForward(SUCCESS);
     }

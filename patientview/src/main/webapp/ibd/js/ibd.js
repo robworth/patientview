@@ -65,10 +65,17 @@ IBD.Symptoms = {
     graph:          null,
     graphOptions:   {
         start_value: 0,
+        //label_count: 10,
+        label_step: 2,
         markers: 'circle',
-        grid: true
+        colours: {
+            scores: '#0066CC'
+        },
+        grid: true,
+        background_colour: 'transparent'
     },
-    data:           null,
+    graphData:      null,
+    graphDates:     null,
     fromDate:       null,
     toDate:         null,
     graphType:      null,
@@ -91,10 +98,14 @@ IBD.Symptoms = {
     drawGraph: function() {
         this.graphEl.html('');
 
-        if (this.data) {
+        if (this.graphData && this.graphDates) {
+            this.graphOptions.labels = this.graphDates;
+
             this.graph = new Ico.LineGraph(
                 this.graphEl[0],
-                this.data,
+                {
+                    scores: this.graphData
+                },
                 this.graphOptions
             );
         }
@@ -112,7 +123,8 @@ IBD.Symptoms = {
                 graphType: that.graphType.val()
             },
             success: function(data) {
-                that.data = data.scores;
+                that.graphData = data.scores;
+                that.graphDates = data.dates;
                 that.drawGraph();
             },
             error: function(jqXHR) {
