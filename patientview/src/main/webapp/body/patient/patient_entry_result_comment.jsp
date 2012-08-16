@@ -46,7 +46,7 @@
 
     <tr>
         <td class="tablecell" align="center" >
-            <select name="day" class="span1">
+            <select name="day" class="input-mini">
                 <option><dt:format pattern="d"><dt:currentTime/></dt:format></option>
                 <option>1</option>
                 <option>2</option>
@@ -81,7 +81,7 @@
                 <option>31</option>
             </select>
             -
-            <html:select property="month" styleClass="span2">
+            <html:select property="month" styleClass="input-mini">
                 <option value="<dt:format pattern="M"><dt:currentTime/></dt:format>"><dt:format pattern="MMM"><dt:currentTime/></dt:format></option>
                 <html:option value="1">Jan</html:option>
                 <html:option value="2">Feb</html:option>
@@ -97,14 +97,14 @@
                 <html:option value="12">Dec</html:option>
             </html:select>
             -
-            <html:select property="year" styleClass="span1">
+            <html:select property="year" styleClass="input-mini">
                 <option value="<dt:format pattern="yyyy"><dt:currentTime/></dt:format>"><dt:format pattern="yyyy"><dt:currentTime/></dt:format></option>
                 <html:option value="2009">2009</html:option>
                 <html:option value="2010">2010</html:option>
             </html:select>
         </td>
         <td class="tablecell" align="center">
-            <html:select property="hour" styleClass="span1">
+            <html:select property="hour" styleClass="input-mini">
                 <option value="<dt:format pattern="H"><dt:currentTime/></dt:format>"><dt:format pattern="HH"><dt:currentTime/></dt:format></option>
                 <html:option value="0">00</html:option>
                 <html:option value="1">01</html:option>
@@ -132,7 +132,7 @@
                 <html:option value="23">23</html:option>
             </html:select>
             :
-            <html:select property="minute" styleClass="span1">
+            <html:select property="minute" styleClass="input-mini">
                 <option value="<dt:format pattern="m"><dt:currentTime/></dt:format>"><dt:format pattern="mm"><dt:currentTime/></dt:format></option>
                 <html:option value="0">00</html:option>
                 <html:option value="10">10</html:option>

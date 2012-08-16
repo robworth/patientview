@@ -1,6 +1,7 @@
 package com.worthsoln.service.ibd.impl;
 
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
 import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import com.worthsoln.ibd.model.MyIbd;
@@ -22,6 +23,7 @@ import com.worthsoln.repository.ibd.NutritionDao;
 import com.worthsoln.repository.ibd.impl.MedicationDoseDao;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -290,4 +292,29 @@ public class IbdManagerImpl implements IbdManager {
 
         return null;
     }
+
+    @Override
+    public Diagnosis getLoggedInUserDiagnosis() {
+        String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
+
+        if (username != null) {
+            User user = LegacySpringUtils.getUserManager().get(username);
+
+            return getDiagnosis(user);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Diagnosis getDiagnosis(User user) {
+        MyIbd myIbd = getMyIbd(user);
+
+        if (myIbd != null) {
+            return myIbd.getDiagnosis();
+        } else {
+            return null;
+        }
+    }
+
 }
