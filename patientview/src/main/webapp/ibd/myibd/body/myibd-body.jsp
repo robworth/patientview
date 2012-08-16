@@ -6,6 +6,9 @@
         <div class="page-header">
             <h1>My IBD</h1>
         </div>
+        <p>
+            Use this page to enter what medicines you are currently taking for you IBD. Any other medications you are taking please fill in the box below labelled other medications with the doses.
+        </p>
     </div>
 </div>
 <logic:present name="myIbd">
