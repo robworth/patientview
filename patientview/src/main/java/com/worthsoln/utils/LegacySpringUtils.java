@@ -1,5 +1,6 @@
 package com.worthsoln.utils;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import com.worthsoln.service.AboutmeManager;
 import com.worthsoln.service.CommentManager;
 import com.worthsoln.service.DiagnosisManager;
@@ -18,6 +19,7 @@ import com.worthsoln.service.TestResultManager;
 import com.worthsoln.service.UKTransplantManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 
 /**
@@ -64,6 +66,8 @@ public class LegacySpringUtils {
     private static UnitManager unitManager;
 
     private static UserManager userManager;
+
+    private static IbdManager ibdManager;
 
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
@@ -215,5 +219,13 @@ public class LegacySpringUtils {
 
     public static void setUnitManager(UnitManager unitManager) {
         LegacySpringUtils.unitManager = unitManager;
+    }
+
+    public static IbdManager getIbdManager() {
+        return ibdManager;
+    }
+
+    public static void setIbdManager(IbdManager ibdManager) {
+        LegacySpringUtils.ibdManager = ibdManager;
     }
 }
