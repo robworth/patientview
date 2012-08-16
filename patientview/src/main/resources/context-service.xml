@@ -9,5 +9,6 @@
 
     <!-- check for annotations -->
     <context:component-scan base-package="com.worthsoln.service"/>
+    <context:component-scan base-package="com.worthsoln.service.ibd"/>
 
 </beans>

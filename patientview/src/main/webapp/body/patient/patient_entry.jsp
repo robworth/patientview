@@ -61,24 +61,5 @@
             </div>
         </div>
     </li>
-    <%--<li class="span3">
-        <div class="thumbnail">
-            <html:link action="/colitis-edit"><img src="http://placehold.it/260x180" alt=""></html:link>
-            <div class="caption">
-              <h5>Enter your Colitis values</h5>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><html:link action="/colitis-edit" styleClass="btn">Enter</html:link></p>
-            </div>
-        </div>
-    </li>
-    <li class="span3">
-        <div class="thumbnail">
-            <html:link action="/crohns-edit"><img src="http://placehold.it/260x180" alt=""></html:link>
-            <div class="caption">
-              <h5>Enter your Crohns values</h5>
-              <p><html:link action="/crohns-edit" styleClass="btn">Enter</html:link></p>
-            </div>
-        </div>
-    </li>--%>
 </ul>
 </logic:present>

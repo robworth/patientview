@@ -177,4 +177,13 @@
         </property>
     </bean>
 
+    <bean id="setIbdManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setIbdManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="ibdManager"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

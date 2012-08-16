@@ -1,6 +1,7 @@
 package com.worthsoln.service.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.symptoms.Colitis;
 import com.worthsoln.ibd.model.symptoms.Crohns;
 import com.worthsoln.ibd.model.MyIbd;
@@ -67,4 +68,8 @@ public interface IbdManager {
     void saveColitis(Colitis colitis);
 
     List<Colitis> getAllColitis(User user);
+
+    Diagnosis getLoggedInUserDiagnosis();
+
+    Diagnosis getDiagnosis(User user);
 }

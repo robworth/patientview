@@ -230,6 +230,11 @@
             <forward name="success" path="/ibd/colitis.jsp"/>
         </action>
 
+        <action path="/enter-symptoms"
+                type="com.worthsoln.patientview.IndexAction" parameter="ibd_entersymptoms">
+          <forward name="success" path="/ibd/entersymptoms.jsp"/>
+        </action>
+
     </action-mappings>
 
 </struts-config>
