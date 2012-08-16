@@ -4,11 +4,13 @@ import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
 import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
+import com.worthsoln.ibd.model.symptoms.SymptomsData;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,15 +24,26 @@ public class CrohnsEditAction extends BaseAction {
         User user = UserUtils.retrieveUser(request);
 
         // add previous score data from symptoms to the page
-        List<Integer> scores = new ArrayList<Integer>();
+        List<SymptomsData> graphData = new ArrayList<SymptomsData>();
         List<CrohnsSymptoms> symptoms = getIbdManager().getAllCrohns(user);
 
         for (BaseSymptoms symptom : symptoms) {
-            scores.add(symptom.getScore());
+            graphData.add(new SymptomsData(symptom));
         }
 
-        request.getSession().setAttribute(Ibd.GRAPH_SCORES_PARAM, scores);
+        request.getSession().setAttribute(Ibd.GRAPH_DATA_PARAM, graphData);
 
+        // set the form to have empty values
+        DynaActionForm dynaForm = (DynaActionForm) form;
+
+        dynaForm.set(Ibd.ABDOMINAL_PAIN_PARAM, null);
+        dynaForm.set(Ibd.OPEN_BOWELS_PARAM, null);
+        dynaForm.set(Ibd.FEELING_PARAM, null);
+        dynaForm.set(Ibd.COMPLICATION_PARAM, null);
+        dynaForm.set(Ibd.MASS_IN_TUMMY_PARAM, null);
+        dynaForm.set(Ibd.SYMPTOM_DATE_PARAM, null);
+
+        // add the lists to the page
         request.getSession().setAttribute(ABDOMINAL_PAIN_LIST_PROPERTY, getAbdominalPainList());
         request.getSession().setAttribute(FEELING_LIST_PROPERTY, getFeelingList());
         request.getSession().setAttribute(CROHNS_COMPLICATION_LIST_PROPERTY, getCrohnsComplicationList());
