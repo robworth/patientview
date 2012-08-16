@@ -53,44 +53,54 @@
             Current Medications:
         </div>
         <div class="span9">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Date Started</th>
-                    <th>Type</th>
-                    <th>Medication</th>
-                    <th>Dose</th>
-                    <th>No Tabs/Granules</th>
-                    <th>Frequency</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>12/12/2012</td>
-                    <td>Oral 5 Aminosalicylate</td>
-                    <td>Pentasa</td>
-                    <td>400mg</td>
-                    <td>4</td>
-                    <td>Frequencey</td>
-                </tr>
-                <tr>
-                    <td>12/12/2012</td>
-                    <td>Oral 5 Aminosalicylate</td>
-                    <td>Pentasa</td>
-                    <td>400mg</td>
-                    <td>4</td>
-                    <td>Frequencey</td>
-                </tr>
-                <tr>
-                    <td>12/12/2012</td>
-                    <td>Oral 5 Aminosalicylate</td>
-                    <td>Pentasa</td>
-                    <td>400mg</td>
-                    <td>4</td>
-                    <td>Frequencey</td>
-                </tr>
-                </tbody>
-            </table>
+            <logic:present name="currentMedications">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Date Started</th>
+                        <th>Type</th>
+                        <th>Medication</th>
+                        <th>Dose</th>
+                        <th>No Tabs/Granules</th>
+                        <th>Frequency</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <logic:iterate name="currentMedications" id="myMedication" indexId="index">
+                        <tr>
+                            <td>
+                                <bean:write name="myMedication" property="dateStartedAsString" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationType.name" />
+                            </td>
+                            <td>
+                                <logic:present name="myMedication" property="medication">
+                                    <bean:write name="myMedication" property="medication.name" />
+                                </logic:present>
+                                <logic:present name="myMedication" property="otherMedication">
+                                    <bean:write name="myMedication" property="otherMedication" />
+                                </logic:present>
+                            </td>
+                            <td>
+                                <logic:present name="myMedication" property="medicationDose">
+                                    <bean:write name="myMedication" property="medicationDose.formattedValue" />
+                                </logic:present>
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationNoOf.name" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="medicationFrequency.name" />
+                            </td>
+                        </tr>
+                    </logic:iterate>
+                    </tbody>
+                </table>
+            </logic:present>
+            <logic:notPresent name="currentMedications">
+                <p>No current medicines</p>
+            </logic:notPresent>
         </div>
     </div>
     <div class="row">

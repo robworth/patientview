@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.model.medication;
 
+import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
 import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
 import com.worthsoln.patientview.model.BaseModel;
@@ -67,12 +68,20 @@ public class MyMedication extends BaseModel {
         return dateStarted;
     }
 
+    public String getDateStartedAsString() {
+        return Ibd.DATE_FORMAT.format(dateStarted);
+    }
+
     public void setDateStarted(Date dateStarted) {
         this.dateStarted = dateStarted;
     }
 
     public Date getDateStopped() {
         return dateStopped;
+    }
+
+    public String getDateStoppedAsString() {
+        return Ibd.DATE_FORMAT.format(dateStopped);
     }
 
     public void setDateStopped(Date dateStopped) {

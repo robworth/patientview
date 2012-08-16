@@ -10,6 +10,8 @@ public class Ibd {
     public static final String ID_PARAM = "id";
     public static final String SUBMIT_PARAM = "submit";
     public static final String NUTRITION_LIST = "nutritionList";
+    public static final String CURRENT_MEDICATIONS_PARAM = "currentMedications";
+    public static final String STOPPED_MEDICATIONS_PARAM = "stoppedMedications";
 
     public static final String CROHNS_DIAGRAM = "crohns.jpg";
     public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";

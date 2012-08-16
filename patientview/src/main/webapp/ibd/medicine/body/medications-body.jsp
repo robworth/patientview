@@ -35,7 +35,7 @@
                     <logic:iterate name="currentMedications" id="myMedication" indexId="index">
                         <tr>
                             <td>
-                                <bean:write name="myMedication" property="dateStarted" />
+                                <bean:write name="myMedication" property="dateStartedAsString" />
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationType.name" />
@@ -85,6 +85,7 @@
                 <thead>
                     <tr>
                         <th>Date Started</th>
+                        <th>Date Stopped</th>
                         <th>Type</th>
                         <th>Medication</th>
                         <th>Dose</th>
@@ -97,7 +98,10 @@
                     <logic:iterate name="stoppedMedications" id="myMedication" indexId="index">
                         <tr>
                             <td>
-                                <bean:write name="myMedication" property="dateStarted" />
+                                <bean:write name="myMedication" property="dateStartedAsString" />
+                            </td>
+                            <td>
+                                <bean:write name="myMedication" property="dateStoppedAsString" />
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationType.name" />
