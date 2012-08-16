@@ -67,8 +67,6 @@ public class LegacySpringUtils {
 
     private static UserManager userManager;
 
-    private static IbdManager ibdManager;
-
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
     }
@@ -219,13 +217,5 @@ public class LegacySpringUtils {
 
     public static void setUnitManager(UnitManager unitManager) {
         LegacySpringUtils.unitManager = unitManager;
-    }
-
-    public static IbdManager getIbdManager() {
-        return ibdManager;
-    }
-
-    public static void setIbdManager(IbdManager ibdManager) {
-        LegacySpringUtils.ibdManager = ibdManager;
     }
 }
