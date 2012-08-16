@@ -53,6 +53,11 @@ public class Patient extends BaseModel {
     @Column
     private String gptelephone;
 
+    @Column(nullable = true, columnDefinition = "TEXT")
+    // Note: this is used at the moment for IBD only.  The patient details view shows a separate "Other Conditions"
+    // which is pulling in through DiagnosisManager.getOtherDiagnoses()
+    private String otherConditions;
+
     public Patient() {
     }
 
@@ -273,5 +278,13 @@ public class Patient extends BaseModel {
 
     public void setGptelephone(String gptelephone) {
         this.gptelephone = gptelephone;
+    }
+
+    public String getOtherConditions() {
+        return otherConditions;
+    }
+
+    public void setOtherConditions(String otherConditions) {
+        this.otherConditions = otherConditions;
     }
 }
