@@ -19,6 +19,16 @@ public class MyMedicationUpdateAction extends BaseAction {
                                  HttpServletResponse response) throws Exception {
         DynaActionForm dynaForm = (DynaActionForm) form;
 
+        // the jsp on the front end has some logic in for styles which require the medicationTypeId and MedicationId
+        // to not be null all the struts goes spastic so just set to -1 if they are
+        if (dynaForm.get(Ibd.MEDICATION_TYPE_ID_PARAM) == null) {
+            dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, (long) -1);
+        }
+
+        if (dynaForm.get(Ibd.MEDICATION_ID_PARAM) == null) {
+            dynaForm.set(Ibd.MEDICATION_ID_PARAM, (long) -1);
+        }
+
         if (!validate(dynaForm, request)) {
             return mapping.findForward(INPUT);
         }
@@ -66,35 +76,35 @@ public class MyMedicationUpdateAction extends BaseAction {
 
         if (form.get(Ibd.MEDICATION_TYPE_ID_PARAM) == null || ((Long) form.get(Ibd.MEDICATION_TYPE_ID_PARAM) <= 0)) {
             actionErrors.add(Ibd.MEDICATION_TYPE_ID_PARAM, new ActionMessage(Ibd.MEDICATION_TYPE_REQUIRED));
-        }
+        } else {
+            // user has to select a medication or the other option
+            // if they have selected a medication then they need to have selected a dosage aswell
+            // the other option will pass through -2 in which case they need to have also entered text for otherMedication
+            Long medicationId = (Long) form.get(Ibd.MEDICATION_ID_PARAM);
+            String otherMedication = (String) form.get(Ibd.OTHER_MEDICATION_ID_PARAM);
 
-        // user has to select a medication or the other option
-        // if they have selected a medication then they need to have selected a dosage aswell
-        // the other option will pass through -2 in which case they need to have also entered text for otherMedication
-        Long medicationId = (Long) form.get(Ibd.MEDICATION_ID_PARAM);
-        String otherMedication = (String) form.get(Ibd.OTHER_MEDICATION_ID_PARAM);
-
-        if (medicationId == null || (medicationId <= 0 && medicationId != -2)) {
-            actionErrors.add(Ibd.MEDICATION_ID_PARAM, new ActionMessage(Ibd.MEDICATION_REQUIRED));
-        } else if (medicationId == -2 && (otherMedication == null || otherMedication.length() == 0)) {
-            actionErrors.add(Ibd.OTHER_MEDICATION_ID_PARAM, new ActionMessage(Ibd.OTHER_MEDICATION_REQUIRED));
-        }
-
-        // if they selected a medication the validate dose
-        if (medicationId != null && medicationId > 0) {
-            if (form.get(Ibd.MEDICATION_DOSE_ID_PARAM) == null
-                    || ((Long) form.get(Ibd.MEDICATION_DOSE_ID_PARAM) <= 0)) {
-                actionErrors.add(Ibd.MEDICATION_DOSE_ID_PARAM, new ActionMessage(Ibd.MEDICATION_DOSE_REQUIRED));
+            if (medicationId == null || (medicationId <= 0 && medicationId != -2)) {
+                actionErrors.add(Ibd.MEDICATION_ID_PARAM, new ActionMessage(Ibd.MEDICATION_REQUIRED));
+            } else if (medicationId == -2 && (otherMedication == null || otherMedication.length() == 0)) {
+                actionErrors.add(Ibd.OTHER_MEDICATION_ID_PARAM, new ActionMessage(Ibd.OTHER_MEDICATION_REQUIRED));
             }
-        }
 
-        if (form.get(Ibd.MEDICATION_NO_OF_ID_PARAM) == null || ((Long) form.get(Ibd.MEDICATION_NO_OF_ID_PARAM) <= 0)) {
-            actionErrors.add(Ibd.MEDICATION_NO_OF_ID_PARAM, new ActionMessage(Ibd.MEDICATION_NO_OF_REQUIRED));
-        }
+            // if they selected a medication the validate dose
+            if (medicationId != null && medicationId > 0) {
+                if (form.get(Ibd.MEDICATION_DOSE_ID_PARAM) == null
+                        || ((Long) form.get(Ibd.MEDICATION_DOSE_ID_PARAM) <= 0)) {
+                    actionErrors.add(Ibd.MEDICATION_DOSE_ID_PARAM, new ActionMessage(Ibd.MEDICATION_DOSE_REQUIRED));
+                }
+            }
 
-        if (form.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM) == null
-                || ((Long) form.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM) <= 0)) {
-            actionErrors.add(Ibd.MEDICATION_FREQUENCY_ID_PARAM, new ActionMessage(Ibd.MEDICATION_FREQUENCY_REQUIRED));
+            if (form.get(Ibd.MEDICATION_NO_OF_ID_PARAM) == null || ((Long) form.get(Ibd.MEDICATION_NO_OF_ID_PARAM) <= 0)) {
+                actionErrors.add(Ibd.MEDICATION_NO_OF_ID_PARAM, new ActionMessage(Ibd.MEDICATION_NO_OF_REQUIRED));
+            }
+
+            if (form.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM) == null
+                    || ((Long) form.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM) <= 0)) {
+                actionErrors.add(Ibd.MEDICATION_FREQUENCY_ID_PARAM, new ActionMessage(Ibd.MEDICATION_FREQUENCY_REQUIRED));
+            }
         }
 
         if (actionErrors.size() > 0) {
