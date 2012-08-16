@@ -86,6 +86,24 @@ IBD.Symptoms = {
     init: function() {
         var that = this;
 
+        // first need to update the ico code so we can alter the horizontal labels to be vertial
+        Ico.LineGraph.prototype.drawHorizontalLabels = function() {
+            var step = this.snap_to_grid ? this.grid_step : this.step;
+            this.drawMarkers(
+                this.options.labels,
+                [1, 0],
+                step,
+                this.options.plot_padding,
+                [0, (this.options.font_size + 7) * -2],
+                {transform: "r-90"}
+            );
+        };
+
+        // need to increase the space for the labels on the bottom
+        Ico.LineGraph.prototype.paddingBottomOffset = function() {
+            return 50;
+        };
+
         // get elements from the graph form
         that.graphFormFromDate = this.graphForm.find('#fromDate');
         that.graphFormToDate = this.graphForm.find('#toDate');
