@@ -16,6 +16,13 @@ public class Ibd {
     public static final String CROHNS_DIAGRAM = "crohns.jpg";
     public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";
     public static final String ULCERATIVE_COLITIS_DIAGRAM = "ulcerative-colitis.jpg";
+    public static final String PROCTITIS_DIAGRAM = "proctitis.png";
+    public static final String LEFT_SIDED_COLITIS_DIAGRAM = "left-sided-colitis.png";
+    public static final String EXTENSIVE_COLITIS_DIAGRAM = "extensive-colitis.png";
+    public static final String ILEAL_CROHNS_DIAGRAM = "ileal-crohns.png";
+    public static final String ILEO_COLONIC_DISEASE_DIAGRAM = "ileo-colonic-disease.png";
+    public static final String CROHNS_COLITIS_DIAGRAM = "crohns-colitis.png";
+    public static final String ISOLATED_UPPER_GI_DISEASE_DIAGRAM = "isolated-upper-gi-disease.png";
 
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";

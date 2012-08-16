@@ -43,7 +43,7 @@
         <div class="span6">
             <logic:present name="myIbd" property="diagnosis">
                 <div class="medicalDiagram">
-                    <img src="ibd/img/content/<bean:write name="myIbd" property="diagnosis.diagram"/>" alt="<bean:write name="myIbd" property="diagnosis.name"/>"/>
+                    <img src="ibd/img/content/<bean:write name="myIbd" property="diseaseExtent.diagram"/>" alt="<bean:write name="myIbd" property="diseaseExtent.name"/>"/>
                 </div>
             </logic:present>
         </div>
