@@ -101,34 +101,7 @@ CREATE TABLE `ibd_nutrition` (
   `nhsno` varchar(255) NOT NULL,
   `nutritionDate` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `ibd_crohns` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `abdominal_pain_id` int(11) NOT NULL,
-  `chornsDate` datetime NOT NULL,
-  `complication_id` int(11) NOT NULL,
-  `feeling_id` int(11) NOT NULL,
-  `mass_in_tummy_id` int(11) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `openBowels` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `ibd_colitis` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `colitisDate` datetime NOT NULL,
-  `complication_id` int(11) NOT NULL,
-  `feeling_id` int(11) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `number_of_stools_daytime_id` int(11) NOT NULL,
-  `number_of_stools_nighttime_id` int(11) NOT NULL,
-  `present_blood_id` int(11) NOT NULL,
-  `toilet_timing_id` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+);
 
 /** MEDICATION TABLE DATE */
 insert  into `ibd_medication`(`id`,`name`) values (1,'Asacol'),(2,'Pentasa'),(3,'Salofalk'),(4,'Azathioprine');
@@ -136,3 +109,30 @@ insert  into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values 
 insert  into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (1,NULL,400),(2,NULL,800),(3,NULL,500),(4,NULL,750),(5,'/KG',10);
 insert  into `ibd_medication_type`(`id`,`name`) values (1,'Aminosalicylate'),(2,'Immunomodulators');
 insert  into `ibd_medication_type_medications`(`medication_type_id`,`medication_id`) values (1,1),(1,2),(1,3),(2,4);
+
+CREATE TABLE `ibd_colitis_symptoms` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `feeling_id` int(11) NOT NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `score` int(11) NOT NULL,
+  `symptomDate` datetime NOT NULL,
+  `complication_id` int(11) NOT NULL,
+  `number_of_stools_daytime_id` int(11) NOT NULL,
+  `number_of_stools_nighttime_id` int(11) NOT NULL,
+  `present_blood_id` int(11) NOT NULL,
+  `toilet_timing_id` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `ibd_crohns_symptoms` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `feeling_id` int(11) NOT NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `score` int(11) NOT NULL,
+  `symptomDate` datetime NOT NULL,
+  `abdominal_pain_id` int(11) NOT NULL,
+  `complication_id` int(11) NOT NULL,
+  `mass_in_tummy_id` int(11) NOT NULL,
+  `openBowels` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+);

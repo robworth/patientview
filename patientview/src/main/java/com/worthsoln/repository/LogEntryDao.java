@@ -1,6 +1,7 @@
 package com.worthsoln.repository;
 
 import com.worthsoln.patientview.model.LogEntry;
+import com.worthsoln.patientview.model.Tenancy;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +15,15 @@ public interface LogEntryDao {
 
     void save(LogEntry logEntry);
 
-    LogEntry getLatestLogEntry(String nhsno, String action);
+    LogEntry getLatestLogEntry(String nhsno, String action, Tenancy tenancy);
 
-    List<LogEntry> get(String username, Calendar startdate, Calendar enddate);
+    List<LogEntry> get(String username, Calendar startdate, Calendar enddate, Tenancy tenancy);
 
     // action is optional
-    List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action);
+    List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action, Tenancy tenancy);
 
     List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                Calendar startdate, Calendar enddate);
+                                Calendar startdate, Calendar enddate, Tenancy tenancy);
 
-    List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate);
+    List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate, Tenancy tenancy);
 }

@@ -16,6 +16,8 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/images/**" security="none"/>
     <http pattern="/img/**" security="none"/>
     <http pattern="/templates/default/images/**" security="none"/>
+    <http pattern="/favicon.ico" security="none"/>
+
     <http>
         <!-- these pages can be viewed without logging in, but need to run with the filter chain (so we can view login details etc-->
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>

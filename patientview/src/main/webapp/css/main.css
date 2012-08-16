@@ -229,7 +229,7 @@ h1, h2{
 
 .launchPadTextAlternative{
     background: url(/img/content/launchPadPlaceHolder.png);
-    font-size: 40px;
+    font-size: 25px;
     text-align: center;
     padding: 40px 0;
 }
@@ -246,4 +246,11 @@ h1, h2{
 
 .thumbnail .caption h5{
     padding-bottom: 5px;
+}
+
+/* graph styles */
+.linegraph {
+    width: 540px;
+    height: 300px;
+    background-color: #fff;
 }

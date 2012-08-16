@@ -55,17 +55,25 @@ public class Ibd {
     public static final String NUTRITION_DATE_PARAM = "nutritionDate";
 
     // symptoms params
-    public static final String CROHNS_DATE_PARAM = "chornsDate";
+    public static final String SYMPTOM_DATE_PARAM = "symptomDate";
     public static final String ABDOMINAL_PAIN_PARAM = "abdominalPainId";
     public static final String OPEN_BOWELS_PARAM = "openBowels";
     public static final String FEELING_PARAM = "feelingId";
     public static final String COMPLICATION_PARAM = "complicationId";
     public static final String MASS_IN_TUMMY_PARAM = "massInTummyId";
-    public static final String COLITIS_DATE_PARAM = "colitisDate";
     public static final String NUMBER_OF_STOOLS_DAYTIME_PARAM = "numberOfStoolsDaytimeId";
     public static final String NUMBER_OF_STOOLS_NIGHTTIME_PARAM = "numberOfStoolsNighttimeId";
     public static final String TOILET_TIMING_PARAM = "toiletTimingId";
     public static final String PRESENT_BLOOD_PARAM = "presentBloodId";
+
+    // graph data params
+    public static final int COLITIS_GRAPH_TYPE = 1;
+    public static final int CROHNS_GRAPH_TYPE = 2;
+    public static final String FROM_DATE_PARAM = "fromDate";
+    public static final String TO_DATE_PARAM = "toDate";
+    public static final String GRAPH_TYPE_PARAM = "graphType";
+    public static final String GRAPH_DATA_ERROR_PARAM = "graphDataError";
+    public static final String GRAPH_SCORES_PARAM = "graphScores";
 
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";

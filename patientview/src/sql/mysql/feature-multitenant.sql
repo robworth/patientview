@@ -57,3 +57,7 @@ ALTER TABLE usermapping ADD tenancy_id BIGINT(20)
 NOT NULL;
 
 UPDATE usermapping SET tenancy_id = 1;
+
+ALTER TABLE log ADD tenancy_id BIGINT(20);
+
+UPDATE log SET tenancy_id = 1;

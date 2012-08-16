@@ -58,14 +58,92 @@ IBD.AddMedicineInit = function() {
     })
 };
 
+IBD.Symptoms = {
+    graphContainer: $('#graphContainer'),
+    graphForm:      $('#graphForm'),
+    graphEl:        $('#graph'),
+    graph:          null,
+    graphOptions:   {
+        start_value: 0,
+        markers: 'circle',
+        grid: true
+    },
+    data:           null,
+    fromDate:       null,
+    toDate:         null,
+    graphType:      null,
+
+    init: function() {
+        var that = this;
+
+        that.fromDate = this.graphForm.find('#fromDate');
+        that.toDate = this.graphForm.find('#toDate');
+        that.graphType = this.graphForm.find('#graphType');
+
+        this.graphForm.submit(function() {
+            that.dataRequest();
+            return false;
+        });
+
+        this.drawGraph();
+    },
+
+    drawGraph: function() {
+        this.graphEl.html('');
+
+        if (this.data) {
+            this.graph = new Ico.LineGraph(
+                this.graphEl[0],
+                this.data,
+                this.graphOptions
+            );
+        }
+    },
+
+    dataRequest: function() {
+        var that = this;
+
+        $.ajax({
+            url: '/ibd/graph-data.do',
+            dataType: 'json',
+            data: {
+                fromDate: that.fromDate.val(),
+                toDate: that.toDate.val(),
+                graphType: that.graphType.val()
+            },
+            success: function(data) {
+                that.data = data.scores;
+                that.drawGraph();
+            },
+            error: function(jqXHR) {
+                this.graphEl.html('Could not load data: ' + jqXHR.responseText);
+            }
+        })
+    },
+
+    testData: function(min, max, method) {
+        var a = [], i;
+        for (i = min; i < max; i++) {
+            a.push(method.apply(this, [i]));
+        }
+        return a;
+    }
+};
+
 $(function() {
     $('.datePicker').datepicker({
         format:'dd-mm-yyyy'
     }).on('changeDate', function (ev) {
             $(ev.currentTarget).datepicker('hide')
-    });
+        });
 
+    // if its the add medicine page then set up medication code
     if ($('#addMedication').length > 0) {
         IBD.AddMedicineInit();
+    }
+
+    // if symptoms container is present then set up symptoms code
+    if ($('#symptomsContainer').length > 0) {
+        IBD.Symptoms.init();
     }
 });
