@@ -59,10 +59,11 @@ IBD.AddMedicineInit = function() {
 };
 
 IBD.Symptoms = {
-    graphContainer: $('#graphContainer'),
-    graphForm:      $('#graphForm'),
-    graphEl:        $('#graph'),
-    graph:          null,
+    graphContainer:         $('#graphContainer'),
+    graphForm:              $('#graphForm'),
+    symptomsForm:           $('#symptomsForm'),
+    graphEl:                $('#graph'),
+    graph:                  null,
     graphOptions:   {
         start_value: 0,
         //label_count: 10,
@@ -74,22 +75,36 @@ IBD.Symptoms = {
         grid: true,
         background_colour: 'transparent'
     },
-    graphData:      null,
-    graphDates:     null,
-    fromDate:       null,
-    toDate:         null,
-    graphType:      null,
+    graphData:              null,
+    graphDates:             null,
+    graphFormFromDate:      null,
+    graphFormToDate:        null,
+    symptomsFormFromDate:   null,
+    symptomsFormToDate:     null,
+    graphType:              null,
 
     init: function() {
         var that = this;
 
-        that.fromDate = this.graphForm.find('#fromDate');
-        that.toDate = this.graphForm.find('#toDate');
+        // get elements from the graph form
+        that.graphFormFromDate = this.graphForm.find('#fromDate');
+        that.graphFormToDate = this.graphForm.find('#toDate');
         that.graphType = this.graphForm.find('#graphType');
 
+        // find elements in the symptoms form
+        that.symptomsFormFromDate = this.symptomsForm.find('#fromDate');
+        that.symptomsFormToDate = this.symptomsForm.find('#toDate');
+
+        // add submit on the graph form so it makes an ajax request for the data
         this.graphForm.submit(function() {
             that.dataRequest();
             return false;
+        });
+
+        // on the symptoms form we want to copy the from and two date from the graph form if they have been set before
+        this.symptomsForm.submit(function() {
+            that.symptomsFormFromDate.val(that.graphFormFromDate.val());
+            that.symptomsFormToDate.val(that.graphFormToDate.val());
         });
 
         this.drawGraph();
@@ -98,7 +113,7 @@ IBD.Symptoms = {
     drawGraph: function() {
         this.graphEl.html('');
 
-        if (this.graphData && this.graphDates) {
+        if (this.graphData && this.graphData.length > 0 && this.graphDates && this.graphDates.length > 0) {
             this.graphOptions.labels = this.graphDates;
 
             this.graph = new Ico.LineGraph(
@@ -118,8 +133,8 @@ IBD.Symptoms = {
             url: '/ibd/graph-data.do',
             dataType: 'json',
             data: {
-                fromDate: that.fromDate.val(),
-                toDate: that.toDate.val(),
+                fromDate: that.graphFormFromDate.val(),
+                toDate: that.graphFormToDate.val(),
                 graphType: that.graphType.val()
             },
             success: function(data) {

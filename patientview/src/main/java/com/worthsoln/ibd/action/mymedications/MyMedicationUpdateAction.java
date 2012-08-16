@@ -41,15 +41,7 @@ public class MyMedicationUpdateAction extends BaseAction {
         myMedication.setOtherMedication((String) dynaForm.get(Ibd.OTHER_MEDICATION_ID_PARAM));
         myMedication.setMedicationNoOfId((Long) dynaForm.get(Ibd.MEDICATION_NO_OF_ID_PARAM));
         myMedication.setMedicationFrequencyId((Long) dynaForm.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM));
-
-        String dateStartedString = (String) dynaForm.get(Ibd.DATE_STARTED_PARAM);
-        if (dateStartedString != null && dateStartedString.length() > 0) {
-            try {
-                myMedication.setDateStarted(Ibd.DATE_FORMAT.parse(dateStartedString));
-            } catch (Exception e) {
-                // dunno just store with it set to null
-            }
-        }
+        myMedication.setDateStarted(convertFormDateString(Ibd.DATE_STARTED_PARAM, dynaForm));
 
         Long medicationTypeId = (Long) dynaForm.get(Ibd.MEDICATION_TYPE_ID_PARAM);
         Long medicationId = (Long) dynaForm.get(Ibd.MEDICATION_ID_PARAM);

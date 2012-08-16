@@ -2,9 +2,6 @@ package com.worthsoln.ibd.action.symptoms.colitis;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
-import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
-import com.worthsoln.ibd.model.symptoms.SymptomsData;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
@@ -14,8 +11,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class ColitisEditAction extends BaseAction {
 
@@ -23,19 +19,20 @@ public class ColitisEditAction extends BaseAction {
                                  HttpServletResponse response) throws Exception {
         User user = UserUtils.retrieveUser(request);
 
-        // add previous score data from symptoms to the page
-        List<SymptomsData> graphData = new ArrayList<SymptomsData>();
-        List<ColitisSymptoms> symptoms = getIbdManager().getAllColitis(user);
-
-        for (BaseSymptoms symptom : symptoms) {
-            graphData.add(new SymptomsData(symptom));
-        }
-
-        request.getSession().setAttribute(Ibd.GRAPH_DATA_PARAM, graphData);
-
-        // set the form to have empty values
         DynaActionForm dynaForm = (DynaActionForm) form;
 
+        // if these were set in the other form of the pge they will be passed through with this one
+        Date fromDate = convertFormDateString(Ibd.FROM_DATE_PARAM, dynaForm);
+        Date toDate = convertFormDateString(Ibd.TO_DATE_PARAM, dynaForm);
+
+        request.setAttribute(Ibd.FROM_DATE_PARAM, convertFormDateString(fromDate));
+        request.setAttribute(Ibd.TO_DATE_PARAM, convertFormDateString(toDate));
+
+        // need to re add graph data to the page
+        request.setAttribute(Ibd.GRAPH_DATA_PARAM, getSymptomsGraphData(user, Ibd.COLITIS_GRAPH_TYPE,
+                fromDate, toDate));
+
+        // set the form to have empty values
         dynaForm.set(Ibd.NUMBER_OF_STOOLS_DAYTIME_PARAM, null);
         dynaForm.set(Ibd.NUMBER_OF_STOOLS_NIGHTTIME_PARAM, null);
         dynaForm.set(Ibd.TOILET_TIMING_PARAM, null);

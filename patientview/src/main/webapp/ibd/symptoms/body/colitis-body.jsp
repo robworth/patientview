@@ -13,8 +13,12 @@
 
     <div class="row">
         <div class="span5">
-            <html:form action="/colitis-update" styleClass="form-horizontal">
+            <html:form action="/colitis-update" styleClass="form-horizontal" styleId="symptomsForm">
                 <html:errors/>
+
+                <input type="hidden" name="fromDate" id="fromDate" value="" />
+                <input type="hidden" name="toDate" id="toDate" value="" />
+
                 <div class="control-group">
                     <label class="control-label">Date</label>
 
@@ -115,12 +119,12 @@
     </div>
 </div>
 
-<bean:define id="graphData" name="graphData" type="java.util.ArrayList<SymptomsData>" />
+<bean:define id="symptomsGraphData" name="graphData" type="com.worthsoln.ibd.model.symptoms.SymptomsGraphData" />
 <%
     List<Integer> graphScores = new ArrayList<Integer>();
     List<String> graphDates = new ArrayList<String>();
 
-    for (SymptomsData symptomsData : graphData) {
+    for (SymptomsData symptomsData : symptomsGraphData.getGraphData()) {
         graphScores.add(symptomsData.getScore());
         graphDates.add(symptomsData.getDate());
     }

@@ -72,8 +72,8 @@ public class Ibd {
     public static final String FROM_DATE_PARAM = "fromDate";
     public static final String TO_DATE_PARAM = "toDate";
     public static final String GRAPH_TYPE_PARAM = "graphType";
-    public static final String GRAPH_DATA_ERROR_PARAM = "graphDataError";
     public static final String GRAPH_DATA_PARAM = "graphData";
+    public static final String NO_GRAPH_TYPE_SPECIFIED = "No graph type specified";
 
     // message keys
     public static final String NHS_NO_NOT_FOUND = "nhsNo.notFound";

@@ -19,13 +19,7 @@ public class MyMedicationEditAction extends BaseAction {
 
         DynaActionForm dynaForm = (DynaActionForm) form;
 
-        String dateStarted = "";
-
-        if (myMedication.getDateStarted() != null) {
-            dateStarted = Ibd.DATE_FORMAT.format(myMedication.getDateStarted());
-        }
-
-        dynaForm.set(Ibd.DATE_STARTED_PARAM, dateStarted);
+        dynaForm.set(Ibd.DATE_STARTED_PARAM, convertFormDateString(myMedication.getDateStarted()));
 
         if (myMedication.getMedicationType() != null) {
             dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, myMedication.getMedicationType().getId());

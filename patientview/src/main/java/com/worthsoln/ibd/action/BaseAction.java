@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.action;
 
+import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.enums.AreaToDiscuss;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
 import com.worthsoln.ibd.model.enums.Complication;
@@ -19,15 +20,20 @@ import com.worthsoln.ibd.model.enums.crohns.MassInTummy;
 import com.worthsoln.ibd.model.medication.MedicationType;
 import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
 import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
+import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
+import com.worthsoln.ibd.model.symptoms.SymptomsData;
+import com.worthsoln.ibd.model.symptoms.SymptomsGraphData;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.DynaActionForm;
 import org.springframework.web.struts.ActionSupport;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BaseAction extends ActionSupport {
@@ -188,6 +194,54 @@ public class BaseAction extends ActionSupport {
         }
 
         return null;
+    }
+
+    protected SymptomsGraphData getSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate) {
+        SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
+
+        if (graphType != null) {
+            List<? extends BaseSymptoms> symptoms = null;
+
+            if (graphType == Ibd.COLITIS_GRAPH_TYPE) {
+                symptoms = getIbdManager().getAllColitis(user, fromDate, toDate);
+            } else if (graphType == Ibd.CROHNS_GRAPH_TYPE) {
+                symptoms = getIbdManager().getAllCrohns(user, fromDate, toDate);
+            } else {
+                symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
+            }
+
+            if (symptoms != null) {
+                for (BaseSymptoms symptom : symptoms) {
+                    symptomsGraphData.addGraphData(new SymptomsData(symptom));
+                }
+            }
+        } else {
+            symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
+        }
+
+        return symptomsGraphData;
+    }
+
+    protected Date convertFormDateString(String formProperty, DynaActionForm dynaActionForm) {
+        String dateString = (String) dynaActionForm.get(formProperty);
+
+        if (dateString != null && dateString.length() > 0) {
+            try {
+                return Ibd.DATE_FORMAT.parse(dateString);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    protected String convertFormDateString(Date date) {
+        if (date != null) {
+            return Ibd.DATE_FORMAT.format(date);
+        }
+
+        return "";
     }
 
     protected IbdManager getIbdManager() {

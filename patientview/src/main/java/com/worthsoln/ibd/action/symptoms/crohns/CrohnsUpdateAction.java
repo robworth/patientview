@@ -3,6 +3,8 @@ package com.worthsoln.ibd.action.symptoms.crohns;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -12,12 +14,26 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 public class CrohnsUpdateAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        User user = UserUtils.retrieveUser(request);
+
         DynaActionForm dynaForm = (DynaActionForm) form;
+
+        // if these were set in the other form of the pge they will be passed through with this one
+        Date fromDate = convertFormDateString(Ibd.FROM_DATE_PARAM, dynaForm);
+        Date toDate = convertFormDateString(Ibd.TO_DATE_PARAM, dynaForm);
+
+        request.setAttribute(Ibd.FROM_DATE_PARAM, convertFormDateString(fromDate));
+        request.setAttribute(Ibd.TO_DATE_PARAM, convertFormDateString(toDate));
+
+        // need to re add graph data to the page
+        request.setAttribute(Ibd.GRAPH_DATA_PARAM, getSymptomsGraphData(user, Ibd.COLITIS_GRAPH_TYPE,
+                fromDate, toDate));
 
         if (!validate(dynaForm, request)) {
             return mapping.findForward(INPUT);
@@ -30,15 +46,7 @@ public class CrohnsUpdateAction extends BaseAction {
         crohnsSymptoms.setFeelingId((Integer) dynaForm.get(Ibd.FEELING_PARAM));
         crohnsSymptoms.setComplicationId((Integer) dynaForm.get(Ibd.COMPLICATION_PARAM));
         crohnsSymptoms.setMassInTummyId((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
-
-        String crohnsDateString = (String) dynaForm.get(Ibd.SYMPTOM_DATE_PARAM);
-        if (crohnsDateString != null && crohnsDateString.length() > 0) {
-            try {
-                crohnsSymptoms.setSymptomDate(Ibd.DATE_FORMAT.parse(crohnsDateString));
-            } catch (Exception e) {
-                // dunno just store with it set to null
-            }
-        }
+        crohnsSymptoms.setSymptomDate(convertFormDateString(Ibd.SYMPTOM_DATE_PARAM,  dynaForm));
 
         getIbdManager().saveCrohns(crohnsSymptoms);
 

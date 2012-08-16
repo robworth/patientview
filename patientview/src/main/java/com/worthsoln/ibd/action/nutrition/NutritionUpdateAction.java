@@ -28,15 +28,7 @@ public class NutritionUpdateAction extends BaseAction {
         nutrition.setWeight((Double) dynaForm.get(Ibd.WEIGHT_PARAM));
         nutrition.setFoodsThatDisagree((String) dynaForm.get(Ibd.FOODS_THAT_DISAGREE_PARAM));
         nutrition.setComment((String) dynaForm.get(Ibd.COMMENT_PARAM));
-
-        String nutritionDateString = (String) dynaForm.get(Ibd.NUTRITION_DATE_PARAM);
-        if (nutritionDateString != null && nutritionDateString.length() > 0) {
-            try {
-                nutrition.setNutritionDate(Ibd.DATE_FORMAT.parse(nutritionDateString));
-            } catch (Exception e) {
-                // dunno just store with it set to null
-            }
-        }
+        nutrition.setNutritionDate(convertFormDateString(Ibd.NUTRITION_DATE_PARAM, dynaForm));
 
         getIbdManager().saveNutrition(nutrition);
 

@@ -68,6 +68,8 @@
             <form-property name="feelingId" type="java.lang.Integer"/>
             <form-property name="complicationId" type="java.lang.Integer"/>
             <form-property name="massInTummyId" type="java.lang.Integer"/>
+            <form-property name="fromDate" type="java.lang.String"/>
+            <form-property name="toDate" type="java.lang.String"/>
         </form-bean>
 
         <form-bean name="colitisSymptomsForm"
@@ -79,6 +81,8 @@
             <form-property name="presentBloodId" type="java.lang.Integer"/>
             <form-property name="feelingId" type="java.lang.Integer"/>
             <form-property name="complicationId" type="java.lang.Integer"/>
+            <form-property name="fromDate" type="java.lang.String"/>
+            <form-property name="toDate" type="java.lang.String"/>
         </form-bean>
 
         <form-bean name="graphDataForm" type="org.apache.struts.action.DynaActionForm">
