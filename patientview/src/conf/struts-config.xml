@@ -361,6 +361,11 @@
       <forward name="success" path="/patient/contact.jsp"/>
     </action>
 
+      <action path="/patient/education"
+              type="com.worthsoln.patientview.education.EducationDisplayAction" parameter="education">
+          <forward name="success" path="/patient/education.jsp"/>
+      </action>
+
     <action path="/patient/patientAddsBloodPressure" type="com.worthsoln.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
             name="patientResultForm"
             input="input">
