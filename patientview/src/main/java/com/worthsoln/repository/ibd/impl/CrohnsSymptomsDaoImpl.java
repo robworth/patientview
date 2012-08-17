@@ -43,6 +43,8 @@ public class CrohnsSymptomsDaoImpl extends AbstractHibernateDAO<CrohnsSymptoms> 
 
         buildWhereClause(criteria, wherePredicates);
 
+        criteria.orderBy(builder.desc(crohnsRoot.get(CrohnsSymptoms_.symptomDate)));
+
         return getEntityManager().createQuery(criteria).getResultList();
     }
 }
