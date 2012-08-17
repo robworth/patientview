@@ -1,4 +1,5 @@
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ page import="com.worthsoln.ibd.model.enums.Diagnosis" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -18,7 +19,25 @@
     <logic:present tenancy="ibd">
         <li <%=("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/myibd">My IBD</html:link></li>
         <li <%=("ibd_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/careplan">Care Plan</html:link></li>
-        <li <%=("ibd_entersymptoms".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/enter-symptoms">Enter Symptoms</html:link></li>
+
+        <%
+        String symptomsUrl = null;
+
+        Diagnosis loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getLoggedInUserDiagnosis();
+
+        if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
+                Diagnosis.ULCERATIVE_COLITIS == loggedInUserDiagnosis) {
+            symptomsUrl = "/colitis-edit";
+        } else if (Diagnosis.CROHNS == loggedInUserDiagnosis) {
+            symptomsUrl = "/crohns-edit";
+        }
+
+        if (symptomsUrl != null && symptomsUrl.length() > 0) {
+        %>
+            <li <%=("ibd_entersymptoms".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="<%=symptomsUrl%>">Enter Symptoms</html:link></li>
+        <%
+        }
+        %>
         <li <%=("ibd_medications".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/medications">Medicines</html:link></li>
         <li <%=("ibd_nutrition".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/nutrition">Nutrition</html:link></li>
         <li><a>Diagnostics</a></li>

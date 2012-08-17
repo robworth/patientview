@@ -247,11 +247,6 @@
             <forward name="success" path="/ibd/symptoms/body/graph-data.jsp"/>
         </action>
 
-        <action path="/enter-symptoms"
-                type="com.worthsoln.patientview.IndexAction" parameter="ibd_entersymptoms">
-          <forward name="success" path="/ibd/entersymptoms.jsp"/>
-        </action>
-
     </action-mappings>
 
 </struts-config>
