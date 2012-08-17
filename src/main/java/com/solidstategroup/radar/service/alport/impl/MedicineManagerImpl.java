@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.service.alport.impl;
 
 import com.solidstategroup.radar.dao.alport.MedicineDao;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.alport.Medicine;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.service.alport.MedicineManager;
@@ -23,12 +24,24 @@ public class MedicineManagerImpl implements MedicineManager {
         return medicineDao.get(id);
     }
 
-    public List<Medicine> getMedicines(String nhsNo) {
-        return medicineDao.getMedicines(nhsNo);
+    public List<Medicine> getMedicines(Demographics demographics) {
+        if (demographics.getNhsNumber() != null) {
+            return medicineDao.getMedicinesByNhsNo(demographics.getNhsNumber());
+        } else if (demographics.getChiNumber() != null) {
+            return medicineDao.getMedicinesByChiNo(demographics.getChiNumber());
+        }
+
+        return null;
     }
 
-    public List<Medicine> getMedicines(String nhsNo, DiseaseGroup diseaseGroup) {
-        return medicineDao.getMedicines(nhsNo, diseaseGroup);
+    public List<Medicine> getMedicines(Demographics demographics, DiseaseGroup diseaseGroup) {
+        if (demographics.getNhsNumber() != null) {
+            return medicineDao.getMedicinesByNhsNoAndDiseaseGroup(demographics.getNhsNumber(), diseaseGroup);
+        } else if (demographics.getChiNumber() != null) {
+            return medicineDao.getMedicinesByChiNoAndDiseaseGroup(demographics.getChiNumber(), diseaseGroup);
+        }
+
+        return null;
     }
 
     public void setMedicineDao(MedicineDao medicineDao) {
