@@ -13,6 +13,8 @@ import java.util.List;
 @Transactional(propagation = Propagation.MANDATORY)
 public interface PatientDao {
 
+    Patient get(Long id);
+
     void save(Patient patient);
 
     List<Patient> get(String centreCode);

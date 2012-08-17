@@ -136,3 +136,5 @@ CREATE TABLE `ibd_crohns_symptoms` (
   `openBowels` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
 );
+
+ALTER TABLE patient ADD otherConditions TEXT;

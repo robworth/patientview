@@ -11,6 +11,14 @@
      <div class="page-header">
          <h1>Patient Details</h1>
      </div>
+
+     <%
+         if (request.getParameter("success") != null) {
+     %>
+     <div class="alert alert-error">Patient details updated</div>
+     <%
+         }
+     %>
         
 <logic:notPresent name="patientDetails">
   <div class="alert alert-error">Patient details not uploaded</div>
@@ -143,34 +151,35 @@
 </logic:notEmpty>
 
 
+<logic:present tenancy="rpv">
+    <tr valign="top">
+        <th class="tablecellbold">Transplant Status</th>
 
-<tr valign="top">
-  <th class="tablecellbold">Transplant Status</th>
-
-  <td class="tablecell">
-      <logic:equal value="" name="patientDetail" property="uktStatus.uktkidney">
-        <bean:message key="ukt.status.none"/>
-      </logic:equal>
-
-
-        <logic:notEqual value="" name="patientDetail" property="uktStatus.uktkidney">
-          Kidney :
-          <bean:write name="patientDetail" property="uktStatus.uktkidney"/>
-        </logic:notEqual>
-
-        <logic:notEqual value="" name="patientDetail" property="uktStatus.uktpancreas">
-          <logic:notEqual value="Not on list" name="patientDetail" property="uktStatus.uktpancreas">
-            <br/>
-             Pancreas :
-             <bean:write name="patientDetail" property="uktStatus.uktpancreas"/>
-          </logic:notEqual>
-        </logic:notEqual>
+        <td class="tablecell">
+            <logic:equal value="" name="patientDetail" property="uktStatus.uktkidney">
+                <bean:message key="ukt.status.none"/>
+            </logic:equal>
 
 
+            <logic:notEqual value="" name="patientDetail" property="uktStatus.uktkidney">
+                Kidney :
+                <bean:write name="patientDetail" property="uktStatus.uktkidney"/>
+            </logic:notEqual>
 
-    <br/>(<a href="http://www.renal.org/rixg/transplant.html" target="_blank">Explain this</a>)
-  </td>
-</tr>
+            <logic:notEqual value="" name="patientDetail" property="uktStatus.uktpancreas">
+                <logic:notEqual value="Not on list" name="patientDetail" property="uktStatus.uktpancreas">
+                    <br/>
+                    Pancreas :
+                    <bean:write name="patientDetail" property="uktStatus.uktpancreas"/>
+                </logic:notEqual>
+            </logic:notEqual>
+
+
+
+            <br/>(<a href="http://www.renal.org/rixg/transplant.html" target="_blank">Explain this</a>)
+        </td>
+    </tr>
+</logic:present>
 
 <tr valign="top">
   <th class="tablecellbold">Other Conditions</th>
@@ -186,6 +195,37 @@
 </table>
 
 </logic:iterate>
+
+    <!-- a separate user editable other conditions space for the IBD tenancy only -->
+
+    <logic:present tenancy="ibd">
+
+        <html:form action="/patient/patient_details_update" styleClass="form-horizontal">
+            <html:errors/>
+
+            <html:hidden property="patientId"/>
+
+            <tr valign="top">
+                <th class="tablecellbold">Other Conditions</th>
+
+                <td class="tablecell">
+                    <html:textarea property="otherConditions" rows="5" cols="80"  styleClass="span6"/>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th class="tablecellbold">Email Address</th>
+
+                <td class="tablecell">
+                    <html:text property="email" styleClass="span6"/>
+                </td>
+            </tr>
+
+            <div class="form-actions">
+                <html:submit value="Update" styleClass="btn btn-primary"/>
+            </div>
+
+        </html:form>
+    </logic:present>
 
 </logic:notEmpty>
 

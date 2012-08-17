@@ -12,6 +12,8 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface PatientManager {
 
+    Patient get(Long id);
+
     void save(Patient patient);
 
     List<Patient> get(String unitCode);

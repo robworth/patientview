@@ -97,8 +97,7 @@
         <action path="/myibd"
                 type="com.worthsoln.ibd.action.myibd.MyIbdAction"
                 scope="request"
-                parameter="ibd_myibd"
-                >
+                parameter="ibd_myibd">
             <forward name="success" path="/ibd/myibd/myibd.jsp"/>
         </action>
 

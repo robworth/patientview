@@ -1,7 +1,7 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.contact.Contact;
+import com.worthsoln.patientview.model.Contact;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.Patient;
@@ -27,7 +27,7 @@ public class ContactAction extends DatabaseAction {
         User user = UserUtils.retrieveUser(request);
         List<UserMapping> userMappings = UserUtils.retrieveUserMappings(user);
 
-        List<Contact> contacts = new ArrayList();
+        List<Contact> contacts = new ArrayList<Contact>();
 
         for (UserMapping userMapping : userMappings) {
             if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {

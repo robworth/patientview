@@ -22,6 +22,11 @@ public class PatientManagerImpl implements PatientManager {
     private SecurityUserManager securityUserManager;
 
     @Override
+    public Patient get(Long id) {
+        return patientDao.get(id);
+    }
+
+    @Override
     public void save(Patient patient) {
         patientDao.save(patient);
     }

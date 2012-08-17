@@ -7,6 +7,14 @@
 
   <!-- ========== Form Bean Definitions =================================== -->
   <form-beans>
+
+      <form-bean name="ibdPatientDetailsForm"
+                 type="org.apache.struts.action.DynaActionForm">
+          <form-property name="patientId" type="java.lang.Long"/>
+          <form-property name="otherConditions" type="java.lang.String"/>
+          <form-property name="email" type="java.lang.String"/>
+      </form-bean>
+
     <form-bean name="edtaCodeForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="edtaCode" type="java.lang.String"/>
       <form-property name="linkType" type="java.lang.String"/>
@@ -283,9 +291,23 @@
     </action>
 
     <action path="/patient/patient_details"
-            type="com.worthsoln.patientview.PatientDetailsAction" parameter="patient_details">
+            name="ibdPatientDetailsForm"
+            type="com.worthsoln.patientview.PatientDetailsAction"
+            scope="request"
+            parameter="patient_details">
       <forward name="success" path="/patient/patient_details.jsp"/>
     </action>
+
+      <action path="/patient/patient_details_update"
+              name="ibdPatientDetailsForm"
+              type="com.worthsoln.patientview.PatientDetailsUpdateAction"
+              input="input"
+              scope="request"
+              validate="true"
+              parameter="patient_details">
+          <forward name="input" path="/patient/patient_details.jsp"/>
+          <forward name="success" path="/patient/patient_details.do?success=true"/>
+      </action>
 
     <action path="/patient/index"
             type="com.worthsoln.patientview.IndexAction" parameter="index">
