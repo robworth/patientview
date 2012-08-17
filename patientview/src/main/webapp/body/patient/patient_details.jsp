@@ -205,20 +205,19 @@
 
             <html:hidden property="patientId"/>
 
-            <tr valign="top">
-                <th class="tablecellbold">Other Conditions</th>
+            <div class="control-group">
+                <label class="control-label">Other Conditions</label>
+                <div class="controls">
+                    <html:textarea property="otherConditions" rows="5" cols="80"  styleClass="input-xlarge"/>
+                </div>
+            </div>
 
-                <td class="tablecell">
-                    <html:textarea property="otherConditions" rows="5" cols="80"  styleClass="span6"/>
-                </td>
-            </tr>
-            <tr valign="top">
-                <th class="tablecellbold">Email Address</th>
-
-                <td class="tablecell">
-                    <html:text property="email" styleClass="span6"/>
-                </td>
-            </tr>
+            <div class="control-group">
+                <label class="control-label">Email Address</label>
+                <div class="controls">
+                    <html:text property="email" />
+                </div>
+            </div>
 
             <div class="form-actions">
                 <html:submit value="Update" styleClass="btn btn-primary"/>
