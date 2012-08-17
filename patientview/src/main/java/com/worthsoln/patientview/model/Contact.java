@@ -1,4 +1,4 @@
-package com.worthsoln.patientview.contact;
+package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.UserMapping;

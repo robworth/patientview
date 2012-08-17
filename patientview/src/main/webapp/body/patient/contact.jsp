@@ -30,7 +30,13 @@
 
 
    <logic:present role="patient">
-        <h2>Email your renal unit</h2>
+       <logic:present tenancy="rpv">
+           <h2>Email your renal unit</h2>
+       </logic:present>
+       <logic:present tenancy="ibd">
+           <h2>Email your IBD unit</h2>
+       </logic:present>
+
         <p>Any queries about results not appearing or being wrong, or about diagnosis or contact details.</p>
         <p>Note: Your name and NHS number will be sent with this message.</p>
         <p>Email is not regarded as a secure way to send sensitive data.</p>
@@ -54,14 +60,20 @@
         </html:form>
     </logic:notEmpty>
     <logic:empty name="contact" property="unit.rpvadminemail">
-        <div class="alert alert-error">It seems that your renal unit has not set up a contact email address, so you are not able to contact them from here. Let them know.</div>
+        <div class="alert alert-error">It seems that your unit has not set up a contact email address, so you are not able to contact them from here. Let them know.</div>
     </logic:empty>
     </logic:present>
 
 
 <logic:present role="patient">
 <logic:equal value="RSC02" name="contact" property="unit.unitcode">
-    <h2>Send feedback to your renal unit</h2>
+    <logic:present tenancy="rpv">
+        <h2>Send feedback to your renal unit</h2>
+    </logic:present>
+    <logic:present tenancy="ibd">
+        <h2>Send feedback to your IBD unit</h2>
+    </logic:present>
+
     <p>Any comments you wish to make about the unit.</p>
     <p>Note: By default this message will be anonymous, but you may untick the box below if you wish your name to be attached to the comment.</p>
 
@@ -95,7 +107,12 @@
 
 
 
+    <logic:present tenancy="rpv">
         <h2>Send feedback to your renal unit</h2>
+    </logic:present>
+    <logic:present tenancy="ibd">
+        <h2>Send feedback to your IBD unit</h2>
+    </logic:present>
         <p>Any comments you wish to make about the unit.</p>
         <p>Note: By default this message will be anonymous, but you may untick the box below if you wish your name to be attached to the comment.</p>
 
@@ -127,7 +144,12 @@
 
 
 <logic:equal value="SGC04" name="contact" property="unit.unitcode">
-    <h2>Send feedback to your renal unit</h2>
+    <logic:present tenancy="rpv">
+        <h2>Send feedback to your renal unit</h2>
+    </logic:present>
+    <logic:present tenancy="ibd">
+        <h2>Send feedback to your IBD unit</h2>
+    </logic:present>
     <p>Any comments you wish to make about the unit.</p>
     <p>Note: By default this message will be anonymous, but you may untick the box below if you wish your name to be attached to the comment.</p>
 
@@ -161,7 +183,7 @@
 </logic:notEmpty>
 
 <logic:notPresent name="contact" property="patient">
-<div class="alert alert-error">atient details not uploaded</div>
+<div class="alert alert-error">Patient details not uploaded</div>
 </logic:notPresent>
 
 
@@ -244,7 +266,7 @@
               <td class="tablecellbold">Unit Enquiries Email</td>
               <td class="tablecell">
                 <logic:notEmpty name="contact" property="unit.unitenquiriesemail">
-                  <a href="mailto:<bean:write name="contact" property="unit.unitenquiriesemail"/>?subject=[Renal Patient View Enquiry]"><bean:write name="contact" property="unit.unitenquiriesemail"/></a>
+                  <a href="mailto:<bean:write name="contact" property="unit.unitenquiriesemail"/>?subject=[Patient View Enquiry]"><bean:write name="contact" property="unit.unitenquiriesemail"/></a>
                 </logic:notEmpty>
               </td>
             </tr>
@@ -260,14 +282,17 @@
               <td class="tablecellbold">Out of Hours Info</td>
               <td class="tablecell"><bean:write name="contact" property="unit.outofhours"/></td>
             </tr>
-            <tr valign="top">
-              <td class="tablecellbold">Peritoneal Dialysis Phone</td>
-              <td class="tablecell"><bean:write name="contact" property="unit.peritonealdialysisphone"/></td>
-            </tr>
-            <tr valign="top">
-              <td class="tablecellbold">Peritoneal Dialysis Email</td>
-              <td class="tablecell"><bean:write name="contact" property="unit.peritonealdialysisemail"/></td>
-            </tr>
+
+            <logic:present tenancy="rpv">
+                <tr valign="top">
+                  <td class="tablecellbold">Peritoneal Dialysis Phone</td>
+                  <td class="tablecell"><bean:write name="contact" property="unit.peritonealdialysisphone"/></td>
+                </tr>
+                <tr valign="top">
+                  <td class="tablecellbold">Peritoneal Dialysis Email</td>
+                  <td class="tablecell"><bean:write name="contact" property="unit.peritonealdialysisemail"/></td>
+                </tr>
+            </logic:present>
 
 
             <logic:notEmpty name="contact" property="unit.haemodialysisunitname1">
@@ -419,7 +444,7 @@
         <logic:present name="contact" property="patient">
           <p>
             <logic:notEmpty name="contact" property="unit.unitenquiriesemail">
-              <a class="btn" href="mailto:<bean:write name="contact" property="unit.unitenquiriesemail"/>?subject=[Renal Patient View Enquiry]">Email Renal Unit</a>
+              <a class="btn" href="mailto:<bean:write name="contact" property="unit.unitenquiriesemail"/>?subject=[Patient View Enquiry]">Email Unit</a>
             </logic:notEmpty>
           </p>
         </logic:present>
@@ -427,7 +452,13 @@
 </logic:notEmpty> <%--close contacts notEmpty--%>
 </logic:present> <%--clost contacts present--%>
 
-<h2>Email the RPV system administrator</h2>
+<logic:present tenancy="rpv">
+    <h2>Email the RPV system administrator</h2>
+</logic:present>
+<logic:present tenancy="ibd">
+    <h2>Email the IBD system administrator</h2>
+</logic:present>
+
 <p>Any comments about the system as a whole, or the information links suggested.</p>
 <html:form action="/patient/contactForm" styleClass="form-horizontal">
     <fieldset>
@@ -446,7 +477,13 @@
     </fieldset>
 </html:form>
 <p>
+<logic:present tenancy="rpv">
     <a class="btn" href="mailto:admin@renalpatientview.org?subject=[Renal Patient View Enquiry]">Email Renal PatientView Administrator</a>
+</logic:present>
+<logic:present tenancy="ibd">
+    <a class="btn" href="mailto:admin-ibd@renalpatientview.org?subject=[IBD Patient View Enquiry]">Email IBD PatientView Administrator</a>
+</logic:present>
+
 </p>
 
 </logic:notPresent>   <%--close of emailSent present--%>
