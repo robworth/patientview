@@ -38,7 +38,7 @@ CREATE TABLE `ibd_medication_allowed_dosages` (
 CREATE TABLE `ibd_medication_dose` (
   `id` bigint(20) NOT NULL auto_increment,
   `extraInformation` varchar(255) default NULL,
-  `mg` double NOT NULL,
+  `mg` double default NULL,
   PRIMARY KEY  (`id`)
 );
 
@@ -102,13 +102,6 @@ CREATE TABLE `ibd_nutrition` (
   `nutritionDate` datetime NOT NULL,
   PRIMARY KEY  (`id`)
 );
-
-/** MEDICATION TABLE DATE */
-insert  into `ibd_medication`(`id`,`name`) values (1,'Asacol'),(2,'Pentasa'),(3,'Salofalk'),(4,'Azathioprine');
-insert  into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values (1,1),(1,2),(2,3),(3,4),(4,5);
-insert  into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (1,NULL,400),(2,NULL,800),(3,NULL,500),(4,NULL,750),(5,'/KG',10);
-insert  into `ibd_medication_type`(`id`,`name`) values (1,'Aminosalicylate'),(2,'Immunomodulators');
-insert  into `ibd_medication_type_medications`(`medication_type_id`,`medication_id`) values (1,1),(1,2),(1,3),(2,4);
 
 CREATE TABLE `ibd_colitis_symptoms` (
   `id` bigint(20) NOT NULL auto_increment,
