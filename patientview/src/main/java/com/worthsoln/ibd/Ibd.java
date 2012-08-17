@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 
 public class Ibd {
 
+    public static final int OTHER_MEDICATION_TYPE_ID = 6;
+
     public static final String MY_IBD_PARAM = "myIbd";
     public static final String MY_MEDICATION_PARAM = "myMedication";
     public static final String NHS_NO_PARAM = "nhsNo";
