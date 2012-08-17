@@ -60,7 +60,7 @@ public class MedicineDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new medicine2", medicine2.getId() > 0);
 
         // now try to pull back all medicines for this user and should see 2
-        List<Medicine> checkMedicines = medicineDao.getMedicines("123456789");
+        List<Medicine> checkMedicines = medicineDao.getMedicinesByNhsNo("123456789");
 
         assertTrue("No medicines found", !checkMedicines.isEmpty() && checkMedicines.size() > 0);
         assertTrue("To many medicines found", checkMedicines.size() == 2);
@@ -80,12 +80,11 @@ public class MedicineDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new medicine2", medicine2.getId() > 0);
 
         // now try to pull back all medicines for this user for disease group 1 - should get back the first only
-        List<Medicine> checkMedicines = medicineDao.getMedicines("123456789", diseaseGroup1);
+        List<Medicine> checkMedicines = medicineDao.getMedicinesByNhsNoAndDiseaseGroup("123456789", diseaseGroup1);
 
         assertTrue("No medicines found", !checkMedicines.isEmpty() && checkMedicines.size() > 0);
         assertTrue("To many medicines found", checkMedicines.size() == 1);
     }
-
 
     @Test
     public void testAddDeleteMedicine() throws Exception {
