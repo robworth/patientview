@@ -1,5 +1,6 @@
 package com.solidstategroup.radar.service.alport;
 
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.alport.Medicine;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 
@@ -13,7 +14,7 @@ public interface MedicineManager {
 
     Medicine get(Long id);
 
-    List<Medicine> getMedicines(String nhsNo);
+    List<Medicine> getMedicines(Demographics demographics);
 
-    List<Medicine> getMedicines(String nhsNo, DiseaseGroup diseaseGroup);
+    List<Medicine> getMedicines(Demographics demographics, DiseaseGroup diseaseGroup);
 }
