@@ -20413,6 +20413,7 @@ AFAFHDAH]]></value>
     <table name="medicine">
         <column>id</column>
         <column>nhsno</column>
+        <column>chino</column>
         <column>unitcode</column>
         <column>name</column>
         <column>dose</column>

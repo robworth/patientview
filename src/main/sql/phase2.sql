@@ -83,16 +83,20 @@ so only need the update statement below
  */
 CREATE TABLE `medicine` (
   `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(20) NOT NULL default '',
+  `nhsno` varchar(20) default NULL,
+  `chino` varchar(20) default NULL,
   `unitcode` varchar(20) NOT NULL default '',
   `startdate` datetime default '0000-00-00 00:00:00',
+  `enddate` datetime default '0000-00-00 00:00:00',
   `name` varchar(100) default '',
   `dose` varchar(100) default '',
   PRIMARY KEY  (`id`)
 );
 
-ALTER TABLE medicine ALTER COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-ALTER TABLE medicine ADD enddate DATETIME DEFAULT '0000-00-00 00:00:00' NULL;
+-- ALTER TABLE medicine ALTER COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE medicine ADD enddate DATETIME DEFAULT '0000-00-00 00:00:00' NULL;
+-- ALTER TABLE medicine ALTER COLUMN nhsno VARCHAR(20) DEFAULT NULL;
+-- ALTER TABLE medicine ADD COLUMN chino VARCHAR(20) DEFAULT NULL AFTER nhsno;
 
 
 
