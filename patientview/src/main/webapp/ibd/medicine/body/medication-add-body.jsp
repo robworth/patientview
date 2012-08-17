@@ -1,3 +1,4 @@
+<%@ page import="com.worthsoln.ibd.Ibd" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -49,7 +50,13 @@
                             <html:select property="medicationId" disabled="<%=medicationSelectDisabled%>" styleId="<%=medicationSelectId%>" styleClass="<%="medicationList " + medicationSelectClass%>">
                                 <html:option value="">Select</html:option>
                                 <html:options name="medicationType" collection="medications" property="id" labelProperty="name"/>
-                                <html:option value="-2">Other</html:option>
+                                <%
+                                if (medicationType.getId() == Ibd.OTHER_MEDICATION_TYPE_ID) {
+                                %>
+                                    <html:option value="-2">Other</html:option>
+                                <%
+                                }
+                                %>
                             </html:select>
                         </logic:iterate>
                     </div>
