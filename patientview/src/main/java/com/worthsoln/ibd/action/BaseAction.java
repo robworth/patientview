@@ -33,6 +33,7 @@ import org.springframework.web.struts.ActionSupport;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -198,6 +199,7 @@ public class BaseAction extends ActionSupport {
 
     protected SymptomsGraphData getSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate) {
         SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
+        List<Date> existingDates = new ArrayList<Date>();
 
         if (graphType != null) {
             List<? extends BaseSymptoms> symptoms = null;
@@ -210,11 +212,20 @@ public class BaseAction extends ActionSupport {
                 symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
             }
 
+            // - symptoms come out in DESC date order
+            // - the graph can only really have one point a day so if there are multiple records on a date so only add
+            //   first one found, this should be easy as the natural order wil have the latest first
+            // - then reverse the final set back to ASC for the graph
             if (symptoms != null) {
                 for (BaseSymptoms symptom : symptoms) {
-                    symptomsGraphData.addGraphData(new SymptomsData(symptom));
+                    if (!existingDates.contains(symptom.getSymptomDate())) {
+                        symptomsGraphData.addGraphData(new SymptomsData(symptom));
+                        existingDates.add(symptom.getSymptomDate());
+                    }
                 }
             }
+
+            Collections.reverse(symptomsGraphData.getGraphData());
         } else {
             symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
         }
