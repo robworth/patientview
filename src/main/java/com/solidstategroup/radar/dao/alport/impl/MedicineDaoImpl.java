@@ -27,6 +27,7 @@ public class MedicineDaoImpl extends BaseDaoImpl implements MedicineDao {
     private static final String TABLE_NAME = "medicine";
     private static final String ID_FIELD_NAME = "id";
     private static final String NHS_NO_FIELD_NAME = "nhsno";
+    private static final String CHI_NO_FIELD_NAME = "chino";
     private static final String UNIT_CODE_FIELD_NAME = "unitcode";
     private static final String NAME_FIELD_NAME = "name";
     private static final String DOSE_FIELD_NAME = "dose";
@@ -45,14 +46,15 @@ public class MedicineDaoImpl extends BaseDaoImpl implements MedicineDao {
         // Initialise a simple JDBC insert to be able to get the allocated ID
         medicineInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
-                .usingColumns(NHS_NO_FIELD_NAME, UNIT_CODE_FIELD_NAME, NAME_FIELD_NAME, DOSE_FIELD_NAME,
-                        START_DATE_FIELD_NAME, END_DATE_FIELD_NAME);
+                .usingColumns(NHS_NO_FIELD_NAME, CHI_NO_FIELD_NAME, UNIT_CODE_FIELD_NAME, NAME_FIELD_NAME,
+                        DOSE_FIELD_NAME, START_DATE_FIELD_NAME, END_DATE_FIELD_NAME);
     }
 
     public void save(Medicine medicine) {
         Map<String, Object> geneticsMap = new HashMap<String, Object>();
         geneticsMap.put(ID_FIELD_NAME, medicine.getId());
         geneticsMap.put(NHS_NO_FIELD_NAME, medicine.getNhsNo());
+        geneticsMap.put(CHI_NO_FIELD_NAME, medicine.getChiNo());
         geneticsMap.put(UNIT_CODE_FIELD_NAME, medicine.getDiseaseGroup().getId());
         geneticsMap.put(NAME_FIELD_NAME, medicine.getName());
         geneticsMap.put(DOSE_FIELD_NAME, medicine.getDose());
@@ -85,7 +87,7 @@ public class MedicineDaoImpl extends BaseDaoImpl implements MedicineDao {
         return null;
     }
 
-    public List<Medicine> getMedicines(String nhsNo) {
+    public List<Medicine> getMedicinesByNhsNo(String nhsNo) {
         try {
             return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE " + NHS_NO_FIELD_NAME + " = ?",
                     new Object[]{nhsNo}, new MedicineRowMapper());
@@ -96,14 +98,38 @@ public class MedicineDaoImpl extends BaseDaoImpl implements MedicineDao {
         return Collections.emptyList();
     }
 
-    public List<Medicine> getMedicines(String nhsNo, DiseaseGroup diseaseGroup) {
+    public List<Medicine> getMedicinesByNhsNoAndDiseaseGroup(String nhsNo, DiseaseGroup diseaseGroup) {
         try {
             return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE " + NHS_NO_FIELD_NAME + " = ? AND "
                     + UNIT_CODE_FIELD_NAME + " = ?",
                     new Object[]{nhsNo, diseaseGroup.getId()}, new MedicineRowMapper());
         } catch (DataAccessException e) {
             LOGGER.debug("Could not find rows in table " + TABLE_NAME + " with " + NHS_NO_FIELD_NAME + " and "
-                    + UNIT_CODE_FIELD_NAME + " {}", nhsNo);
+                    + UNIT_CODE_FIELD_NAME + " {}", nhsNo, diseaseGroup.getId());
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<Medicine> getMedicinesByChiNo(String chiNo) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE " + CHI_NO_FIELD_NAME + " = ?",
+                    new Object[]{chiNo}, new MedicineRowMapper());
+        } catch (DataAccessException e) {
+            LOGGER.debug("Could not find rows in table " + TABLE_NAME + " with " + CHI_NO_FIELD_NAME + " {}", chiNo);
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<Medicine> getMedicinesByChiNoAndDiseaseGroup(String chiNo, DiseaseGroup diseaseGroup) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE " + CHI_NO_FIELD_NAME + " = ? AND "
+                    + UNIT_CODE_FIELD_NAME + " = ?",
+                    new Object[]{chiNo, diseaseGroup.getId()}, new MedicineRowMapper());
+        } catch (DataAccessException e) {
+            LOGGER.debug("Could not find rows in table " + TABLE_NAME + " with " + CHI_NO_FIELD_NAME + " and "
+                    + UNIT_CODE_FIELD_NAME + " {}", chiNo, diseaseGroup.getId());
         }
 
         return Collections.emptyList();
@@ -119,6 +145,7 @@ public class MedicineDaoImpl extends BaseDaoImpl implements MedicineDao {
 
             medicine.setId(rs.getLong(ID_FIELD_NAME));
             medicine.setNhsNo(rs.getString(NHS_NO_FIELD_NAME));
+            medicine.setChiNo(rs.getString(CHI_NO_FIELD_NAME));
             medicine.setDiseaseGroup(diseaseGroupDao.getById(rs.getString(UNIT_CODE_FIELD_NAME)));
             medicine.setName(rs.getString(NAME_FIELD_NAME));
             medicine.setDose(rs.getString(DOSE_FIELD_NAME));

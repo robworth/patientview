@@ -13,7 +13,11 @@ public interface MedicineDao {
 
     Medicine get(Long id);
 
-    List<Medicine> getMedicines(String nhsNo);
+    List<Medicine> getMedicinesByNhsNo(String nhsNo);
 
-    List<Medicine> getMedicines(String nhsNo, DiseaseGroup diseaseGroup);
+    List<Medicine> getMedicinesByNhsNoAndDiseaseGroup(String nhsNo, DiseaseGroup diseaseGroup);
+
+    List<Medicine> getMedicinesByChiNo(String chiNo);
+
+    List<Medicine> getMedicinesByChiNoAndDiseaseGroup(String chiNo, DiseaseGroup diseaseGroup);
 }
