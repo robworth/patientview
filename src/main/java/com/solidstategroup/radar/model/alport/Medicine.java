@@ -8,6 +8,7 @@ import java.util.Date;
 public class Medicine extends BaseModel {
 
     private String nhsNo;
+    private String chiNo;
     private DiseaseGroup diseaseGroup;
     private String name;
     private String dose;
@@ -20,6 +21,14 @@ public class Medicine extends BaseModel {
 
     public void setNhsNo(String nhsNo) {
         this.nhsNo = nhsNo;
+    }
+
+    public String getChiNo() {
+        return chiNo;
+    }
+
+    public void setChiNo(String chiNo) {
+        this.chiNo = chiNo;
     }
 
     public DiseaseGroup getDiseaseGroup() {
