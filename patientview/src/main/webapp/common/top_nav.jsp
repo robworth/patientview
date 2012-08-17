@@ -37,9 +37,7 @@
     <logic:present tenancy="ibd">
         <li <%= ("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/education">Education</html:link></li>
     </logic:present>
-    <logic:present tenancy="rpv">
-        <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link href="/forums/list.page" styleClass="">Forum</html:link></li>
-    </logic:present>
+    <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/forums/list.page">Forum</a></li>
     <%
         }
     %>
