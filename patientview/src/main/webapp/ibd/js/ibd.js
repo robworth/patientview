@@ -82,11 +82,25 @@ IBD.Symptoms = {
     symptomsFormFromDate:   null,
     symptomsFormToDate:     null,
     graphType:              null,
+    alertMarkers: {
+        severe: 16,
+        moderate: 8,
+        mild: 4
+    },
+    alertColors:            {
+        severe: '#FE2E2E',
+        moderate: '#FFBF00',
+        mild: '#01DF01'
+    },
 
     init: function() {
         var that = this;
 
-        // first need to update the ico code so we can alter the horizontal labels to be vertial
+        /**
+         * We need to override some of the graph code so that we can have it looking the way we need
+         */
+
+        // OVERWRITE SO THAT THE HORIZONTAL LABELS ARE VERTICAL
         Ico.LineGraph.prototype.drawHorizontalLabels = function() {
             var step = this.snap_to_grid ? this.grid_step : this.step;
             this.drawMarkers(
@@ -99,9 +113,124 @@ IBD.Symptoms = {
             );
         };
 
-        // need to increase the space for the labels on the bottom
+        // OVERRIDE SO THAT WE CAN INCREASE THE PADDING AT BOTTOM OF GRAPH TO ACCOMODATE THE HORIZ LABELS BEING VERTICAL
         Ico.LineGraph.prototype.paddingBottomOffset = function() {
             return 50;
+        };
+
+        // OVERRIDE SO THAT WE CAN ALTER THE VERTICAL LABELS WHEN THEY HIT CERTAIN LEVELS
+        Ico.LineGraph.prototype.drawMarkers = function(labels, direction, step, start_offset, font_offsets, extra_font_options) {
+            function x_offset(value) {
+                return value * direction[0];
+            }
+
+            function y_offset(value) {
+                return value * direction[1];
+            }
+
+            /* Start at the origin */
+            var x = this.x_padding_left - 1 + x_offset(start_offset),
+                y = this.options.height - this.y_padding_bottom + y_offset(start_offset),
+                pathString = '',
+                i,
+                font_options = {},
+                font_options_to_use = {},
+                vertical = (direction[0] === 0 && direction[1] === -1),
+                strokeColor = this.options.label_colour,
+                strokeWidth = '1px';
+
+            $.extend(font_options, this.font_options);
+            $.extend(font_options, extra_font_options || {});
+            $.extend(font_options_to_use, font_options);
+
+            for (i = 0; i < labels.length; i++) {
+                pathString = 'M' + x + ',' + y;
+
+                if (vertical) {
+                    if (labels[i] === IBD.Symptoms.alertMarkers.severe) {
+                        strokeColor = IBD.Symptoms.alertColors.severe;
+                        strokeWidth = '2px';
+                        $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.severe});
+                    } else if (labels[i] === IBD.Symptoms.alertMarkers.moderate) {
+                        strokeColor = IBD.Symptoms.alertColors.moderate;
+                        strokeWidth = '2px';
+                        $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.moderate});
+                    } else if (labels[i] === IBD.Symptoms.alertMarkers.mild) {
+                        strokeColor = IBD.Symptoms.alertColors.mild;
+                        strokeWidth = '2px';
+                        $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.mild});
+                    } else {
+                        strokeColor = this.options.label_colour;
+                        strokeWidth = '1px';
+                        $.extend(font_options_to_use, font_options);
+                    }
+                }
+
+                if (typeof labels[i] !== 'undefined' && (labels[i] + '').length > 0) {
+                    pathString += 'L' + (x + y_offset(5)) + ',' + (y + x_offset(5));
+
+                    this.paper.text(x + font_offsets[0], y - font_offsets[1], labels[i]).attr(font_options_to_use).toFront();
+                }
+
+                this.paper.path(pathString).attr({ stroke: strokeColor, 'stroke-width': strokeWidth });
+
+                x = x + x_offset(step);
+                y = y + y_offset(step);
+            }
+        };
+
+        // OVERRIDE THE DRAW GRID SO WE CAN CHANGE THE COLORS OF THE LINES IF THEY REACH A CERTAIN LEVEL
+        Ico.LineGraph.prototype.drawGrid = function() {
+            var pathString = '', i, y, p, currentLabelValue, strokeColor, strokeWidth;
+
+            if (this.options.show_vertical_labels) {
+                y = this.graph_height + this.y_padding_top;
+
+                for (i = 0; i < this.y_label_count; i++) {
+                    currentLabelValue = this.value_labels[i];
+
+                    if (currentLabelValue === IBD.Symptoms.alertMarkers.severe) {
+                        strokeColor = IBD.Symptoms.alertColors.severe;
+                        strokeWidth = '2px';
+                    } else if (currentLabelValue === IBD.Symptoms.alertMarkers.moderate) {
+                        strokeColor = IBD.Symptoms.alertColors.moderate;
+                        strokeWidth = '2px';
+                    } else if (currentLabelValue === IBD.Symptoms.alertMarkers.mild) {
+                        strokeColor = IBD.Symptoms.alertColors.mild;
+                        strokeWidth = '2px';
+                    } else {
+                        strokeColor = this.options.grid_colour;
+                        strokeWidth = '1px';
+                    }
+
+                    y = y - (this.graph_height / this.y_label_count);
+
+                    p = 'M' + this.x_padding_left + ',' + y;
+                    p += 'L' + (this.x_padding_left + this.graph_width) + ',' + y;
+
+                    this.paper.path(p).attr({ stroke: strokeColor, 'stroke-width': strokeWidth });
+                }
+            }
+
+            if (this.options.show_horizontal_labels) {
+                var x = this.x_padding_left + this.options.plot_padding + this.grid_start_offset,
+                    x_labels = this.grouped ? this.flat_data.length : this.options.labels.length,
+                    i,
+                    step = this.grid_step || this.step;
+
+                for (i = 0; i < x_labels; i++) {
+                    p = 'M' + x + ',' + this.y_padding_top;
+                    p += 'L' + x +',' + (this.y_padding_top + this.graph_height);
+                    this.paper.path(p).attr({ stroke: this.options.grid_colour, 'stroke-width': '1px' });
+                    x = x + step;
+                }
+
+                x = x - this.options.plot_padding - 1;
+                pathString += 'M' + x + ',' + this.y_padding_top;
+                pathString += 'L' + x + ',' + (this.y_padding_top + this.graph_height);
+            }
+
+            this.paper.path(pathString).attr({ stroke: this.options.grid_colour, 'stroke-width': '1px' });
         };
 
         // get elements from the graph form
