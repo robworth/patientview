@@ -11,8 +11,9 @@
           <span class="icon-bar"></span>
         </a>
         <html:link action="/index" styleClass="brand">
-            <logic:present tenancy="ibd">My IBD</logic:present>
-            <logic:present tenancy="rpv">My RPV</logic:present>
+            Providing up-to-date medical information for patients and healthcare professionals
+            <%--<logic:present tenancy="ibd">My IBD</logic:present>
+            <logic:present tenancy="rpv">My RPV</logic:present>--%>
         </html:link>
         <div class="nav-collapse">
             <ul class="nav pull-right">
