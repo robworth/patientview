@@ -15,8 +15,8 @@
             <html:form action="/crohns-update" styleClass="form-horizontal" styleId="symptomsForm">
                 <html:errors/>
 
-                <input type="hidden" name="fromDate" id="fromDate" value="" />
-                <input type="hidden" name="toDate" id="toDate" value="" />
+                <input type="hidden" name="fromDate" class="fromDate" value="" />
+                <input type="hidden" name="toDate" class="toDate" value="" />
 
                 <div class="control-group">
                     <label class="control-label">Date</label>

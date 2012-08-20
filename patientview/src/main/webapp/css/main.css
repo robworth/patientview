@@ -256,6 +256,7 @@ h1, h2{
     width: 540px;
     height: 350px;
     background-color: #fff;
+    text-align: center;
 }
 
 .heroList {
