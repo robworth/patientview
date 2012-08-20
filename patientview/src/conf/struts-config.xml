@@ -335,6 +335,12 @@
       <forward name="success" path="/patient/patient_entry.jsp"/>
     </action>
 
+      <action path="/patient/diagnostics"
+              type="com.worthsoln.patientview.diagnostics.DiagnosticsAction"
+              parameter="diagnostics">
+          <forward name="success" path="/patient/diagnostics.jsp"/>
+      </action>
+
     <action path="/patient/results"
             type="com.worthsoln.patientview.TestResultsAction" parameter="results">
       <forward name="success" path="/patient/results.jsp"/>

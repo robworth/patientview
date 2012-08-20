@@ -33,6 +33,15 @@
         </property>
     </bean>
 
+    <bean id="setDiagnosticManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setDiagnosticManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="diagnosticManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setEdtaCodeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEdtaCodeManager"/>
         <property name="arguments">

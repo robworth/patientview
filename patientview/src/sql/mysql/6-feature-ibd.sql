@@ -131,3 +131,13 @@ CREATE TABLE `ibd_crohns_symptoms` (
 );
 
 ALTER TABLE patient ADD otherConditions TEXT;
+
+CREATE TABLE `diagnostic` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `datestamp` DATETIME NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  `diagnostic_type_id` INT(11) NOT NULL,
+  `nhsno` VARCHAR(255) NOT NULL,
+  `unitcode` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);

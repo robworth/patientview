@@ -1,9 +1,9 @@
 package com.worthsoln.utils;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import com.worthsoln.service.AboutmeManager;
 import com.worthsoln.service.CommentManager;
 import com.worthsoln.service.DiagnosisManager;
+import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.EdtaCodeManager;
 import com.worthsoln.service.EmailVerificationManager;
 import com.worthsoln.service.FeedbackManager;
@@ -34,6 +34,8 @@ public class LegacySpringUtils {
     private static CommentManager commentManager;
 
     private static DiagnosisManager diagnosisManager;
+
+    private static DiagnosticManager diagnosticManager;
 
     private static EdtaCodeManager edtaCodeManager;
 
@@ -91,6 +93,14 @@ public class LegacySpringUtils {
 
     public static void setDiagnosisManager(DiagnosisManager diagnosisManager) {
         LegacySpringUtils.diagnosisManager = diagnosisManager;
+    }
+
+    public static DiagnosticManager getDiagnosticManager() {
+        return diagnosticManager;
+    }
+
+    public static void setDiagnosticManager(DiagnosticManager diagnosticManager) {
+        LegacySpringUtils.diagnosticManager = diagnosticManager;
     }
 
     public static EdtaCodeManager getEdtaCodeManager() {
