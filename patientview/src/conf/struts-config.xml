@@ -279,7 +279,7 @@
 
     <action path="/setscreenname"
       type="com.worthsoln.forum.ScreenNameAction" parameter="index">
-      <forward name="input" redirect="true" path="/set-screenname.jsp"/>
+      <forward name="input" redirect="false" path="/set-screenname.jsp"/>
       <forward name="success" redirect="true" path="/forums/list.page"/>
     </action>
 
