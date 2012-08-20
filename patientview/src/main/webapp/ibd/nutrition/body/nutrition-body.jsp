@@ -8,6 +8,13 @@
         <div class="page-header">
             <h1>Nutrition</h1>
         </div>
+        <p>
+            This section is for you to keep a record of any foods that you think may upset your condition. Make a list of the foods that you have eaten and what symptoms it may have caused (e.g. abdominal pain or diarrhoea).
+        </p>
+        <p>
+            Stop eating this particular food for a few weeks and then try it again.
+        </p>
+
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
