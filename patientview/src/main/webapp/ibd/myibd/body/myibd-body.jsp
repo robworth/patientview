@@ -3,7 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <div class="row">
     <div class="span12">
+
         <div class="page-header">
+            <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
+            
             <h1>My IBD</h1>
         </div>
         <p>
@@ -16,7 +19,9 @@
         </p>
     </div>
 </div>
+<hr/>
 <logic:present name="myIbd">
+
     <div class="row paragraphSizeTopMargin">
         <div class="span6">
             <div class="row control-group">
@@ -57,7 +62,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="span3">
+        <div class="span3 control-label">
             Current Medications:
         </div>
         <div class="span9">
@@ -145,7 +150,7 @@
     </div>
     <div class="row">
         <div class="span12">
-            <html:link action="/myibd-edit" styleClass="btn">Edit</html:link>
+            <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
         </div>
     </div>
 </logic:present>
