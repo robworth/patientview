@@ -61,6 +61,7 @@ IBD.AddMedicineInit = function() {
 IBD.Symptoms = {
     graphContainer:         $('#graphContainer'),
     graphForm:              $('#graphForm'),
+    clearBtn:               $('#clearData'),
     symptomsForm:           $('#symptomsForm'),
     graphEl:                $('#graph'),
     graph:                  null,
@@ -234,33 +235,50 @@ IBD.Symptoms = {
         };
 
         // get elements from the graph form
-        that.graphFormFromDate = this.graphForm.find('#fromDate');
-        that.graphFormToDate = this.graphForm.find('#toDate');
+        that.graphFormFromDate = this.graphForm.find('.fromDate');
+        that.graphFormToDate = this.graphForm.find('.toDate');
         that.graphType = this.graphForm.find('#graphType');
 
         // find elements in the symptoms form
-        that.symptomsFormFromDate = this.symptomsForm.find('#fromDate');
-        that.symptomsFormToDate = this.symptomsForm.find('#toDate');
+        that.symptomsFormFromDate = this.symptomsForm.find('.fromDate');
+        that.symptomsFormToDate = this.symptomsForm.find('.toDate');
 
         // add submit on the graph form so it makes an ajax request for the data
-        this.graphForm.submit(function() {
+        that.graphForm.submit(function() {
             that.dataRequest();
             return false;
         });
 
         // on the symptoms form we want to copy the from and two date from the graph form if they have been set before
-        this.symptomsForm.submit(function() {
+        that.symptomsForm.submit(function() {
             that.symptomsFormFromDate.val(that.graphFormFromDate.val());
             that.symptomsFormToDate.val(that.graphFormToDate.val());
         });
 
-        this.drawGraph();
+        // clear btn on the graph form will submit the form with blank dates
+        that.clearBtn.on('click', function(e) {
+            if (e) {
+                e.preventDefault();
+            }
+
+            if (that.graphFormFromDate.val().length > 0 && that.graphFormToDate.val().length > 0) {
+                that.graphFormFromDate.val('');
+                that.graphFormToDate.val('');
+                that.graphForm.submit();
+            }
+        });
+
+        if (that.hasData()) {
+            that.drawGraph();
+        } else {
+            that.graphContainer.addClass('hidden');
+        }
     },
 
     drawGraph: function() {
         this.graphEl.html('');
 
-        if (this.graphData && this.graphData.length > 0 && this.graphDates && this.graphDates.length > 0) {
+        if (this.hasData()) {
             this.graphOptions.labels = this.graphDates;
 
             this.graph = new Ico.LineGraph(
@@ -270,6 +288,8 @@ IBD.Symptoms = {
                 },
                 this.graphOptions
             );
+        } else {
+            this.graphEl.html('<strong>No data found</strong>');
         }
     },
 
@@ -295,12 +315,8 @@ IBD.Symptoms = {
         })
     },
 
-    testData: function(min, max, method) {
-        var a = [], i;
-        for (i = min; i < max; i++) {
-            a.push(method.apply(this, [i]));
-        }
-        return a;
+    hasData: function() {
+        return (this.graphData && this.graphData.length > 0 && this.graphDates && this.graphDates.length > 0);
     }
 };
 
