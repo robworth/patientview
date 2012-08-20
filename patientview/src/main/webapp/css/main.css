@@ -267,3 +267,7 @@ h1, h2{
 .heroList li{
     margin-bottom: 5px;    
 }
+
+.control-label{
+    font-weight: bold;
+}
