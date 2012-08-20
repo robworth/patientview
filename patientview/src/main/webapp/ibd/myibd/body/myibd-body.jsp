@@ -7,12 +7,17 @@
             <h1>My IBD</h1>
         </div>
         <p>
-            Use this page to enter what medicines you are currently taking for you IBD. Any other medications you are taking please fill in the box below labelled other medications with the doses.
+            This section helps you keep a track of your inflammatory bowel disease. The information is provided from the
+            records held at the hospital. If there are any obvious errors please <html:link action="/patient/contact">contact the IBD team</html:link>.
+        </p>
+        <p>
+            To keep an up-to date record of your current and previous medications please record these in the <html:link action="/patient/medicines">Medicines
+            section</html:link>. The medication section of the record needs to be entered here to complete the summary of your condition, many thanks.
         </p>
     </div>
 </div>
 <logic:present name="myIbd">
-    <div class="row">
+    <div class="row paragraphSizeTopMargin">
         <div class="span6">
             <div class="row control-group">
                 <div class="span3">
