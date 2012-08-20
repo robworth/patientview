@@ -15,7 +15,7 @@
      <%
          if (request.getParameter("success") != null) {
      %>
-     <div class="alert alert-error">Patient details updated</div>
+     <div class="alert alert-success">Patient details updated</div>
      <%
          }
      %>
@@ -39,6 +39,9 @@
     <bean:write name="patientDetail" property="patient.forename"/>
     <bean:write name="patientDetail" property="patient.surname"/>, uploaded by unit: <bean:write name="patientDetail" property="unit.shortname"/>    
 </p>
+
+<html:form action="/patient/patient_details_update">
+
 
 <table width="440" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
 
@@ -179,52 +182,55 @@
             <br/>(<a href="http://www.renal.org/rixg/transplant.html" target="_blank">Explain this</a>)
         </td>
     </tr>
+        
+    <tr valign="top">
+      <th class="tablecellbold">Other Conditions</th>
+
+      <td class="tablecell">
+          <logic:iterate id="otherDiagnosis" name="patientDetail" property="otherDiagnoses">
+            <bean:write name="otherDiagnosis" property="diagnosis"/>
+            <br/>
+          </logic:iterate>
+      </td>
+    </tr>
+
+
 </logic:present>
 
-<tr valign="top">
-  <th class="tablecellbold">Other Conditions</th>
 
-  <td class="tablecell">
-      <logic:iterate id="otherDiagnosis" name="patientDetail" property="otherDiagnoses">
-        <bean:write name="otherDiagnosis" property="diagnosis"/>
-        <br/>
-      </logic:iterate>
-  </td>
-</tr>
+
+<logic:present tenancy="ibd">
+
+    <html:hidden property="patientId"/>
+    <tr>
+        <th >Other Conditions</th>
+        <td><html:textarea property="otherConditions" rows="5" cols="80"  styleClass="input-xlarge"/></td>
+    </tr>
+
+    <tr>
+        <th>Email Address</th>
+        <td><html:text property="email" /></td>
+    </tr>
+
+
+
+</logic:present>
+
 
 </table>
-
-</logic:iterate>
-
-    <!-- a separate user editable other conditions space for the IBD tenancy only -->
-
     <logic:present tenancy="ibd">
 
-        <html:form action="/patient/patient_details_update" styleClass="form-horizontal">
-            <html:errors/>
-
-            <html:hidden property="patientId"/>
-
-            <div class="control-group">
-                <label class="control-label">Other Conditions</label>
-                <div class="controls">
-                    <html:textarea property="otherConditions" rows="5" cols="80"  styleClass="input-xlarge"/>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">Email Address</label>
-                <div class="controls">
-                    <html:text property="email" />
-                </div>
-            </div>
-
-            <div class="form-actions">
-                <html:submit value="Update" styleClass="btn btn-primary"/>
-            </div>
-
-        </html:form>
+    <html:errors/>
+    
+    <div class="form-actions">
+        <html:submit value="Update" styleClass="btn btn-primary"/>
+    </div>
     </logic:present>
+    
+</html:form>
+
+</logic:iterate>
+    
 
 </logic:notEmpty>
 
