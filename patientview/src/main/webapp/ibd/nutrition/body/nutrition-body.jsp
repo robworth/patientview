@@ -56,7 +56,7 @@
 
         </html:form>
         <p>
-            If you wish to calculate your BMI please visit this <a href="http://www.nhs.uk/Tools/Pages/Healthyweightcalculator.aspx">link</a> fot the NHS BMI calculator.
+            If you wish to calculate your BMI please visit this <a target="_blank" href="http://www.nhs.uk/Tools/Pages/Healthyweightcalculator.aspx">link</a> fot the NHS BMI calculator.
         </p>
     </div>
 </div>
