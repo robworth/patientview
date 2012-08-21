@@ -1,24 +1,21 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<div class="row">
-    <div class="span12">
 
-        <div class="page-header">
-            <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
-            
-            <h1>My IBD</h1>
-        </div>
-        <p>
-            This section helps you keep a track of your inflammatory bowel disease. The information is provided from the
-            records held at the hospital. If there are any obvious errors please <html:link action="/patient/contact">contact the IBD team</html:link>.
-        </p>
-        <p>
-            To keep an up-to date record of your current and previous medications please record these in the <html:link action="/patient/medicines">Medicines
-            section</html:link>. The medication section of the record needs to be entered here to complete the summary of your condition, many thanks.
-        </p>
-    </div>
+<div class="page-header">
+    <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
+
+    <h1>My IBD</h1>
 </div>
+<p>
+    This section helps you keep a track of your inflammatory bowel disease. The information is provided from the
+    records held at the hospital. If there are any obvious errors please <html:link action="/patient/contact">contact the IBD team</html:link>.
+</p>
+<p>
+    To keep an up-to date record of your current and previous medications please record these in the <html:link action="/patient/medicines">Medicines
+    section</html:link>. The medication section of the record needs to be entered here to complete the summary of your condition, many thanks.
+</p>
+
 <hr/>
 <logic:present name="myIbd">
 
