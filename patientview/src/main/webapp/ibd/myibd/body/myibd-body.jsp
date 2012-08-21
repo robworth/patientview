@@ -3,7 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <div class="page-header">
-    <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
+    <logic:present name="myIbd">
+        <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
+    </logic:present>
 
     <h1>My IBD</h1>
 </div>
