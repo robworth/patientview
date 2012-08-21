@@ -40,7 +40,13 @@ public class MyMedicationEditAction extends BaseAction {
             otherMedication = myMedication.getOtherMedication();
         }
 
+        String otherMedicationDose = "";
+        if (myMedication.getOtherMedicationDose() != null) {
+            otherMedicationDose = myMedication.getOtherMedicationDose();
+        }
+
         dynaForm.set(Ibd.OTHER_MEDICATION_ID_PARAM, otherMedication);
+        dynaForm.set(Ibd.OTHER_MEDICATION_DOSE_ID_PARAM, otherMedicationDose);
         dynaForm.set(Ibd.MEDICATION_NO_OF_ID_PARAM, myMedication.getMedicationNoOfId());
         dynaForm.set(Ibd.MEDICATION_FREQUENCY_ID_PARAM, myMedication.getMedicationFrequencyId());
 

@@ -36,12 +36,15 @@ public class MyMedication extends BaseModel {
     @JoinColumn(name = "medication_id")
     private Medication medication;
 
-    @Column(nullable = true, columnDefinition = "TEXT")
-    private String otherMedication;
-
     @ManyToOne(optional = true)
     @JoinColumn(name = "medication_dose_id")
     private MedicationDose medicationDose;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String otherMedication;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String otherMedicationDose;
 
     @Transient
     private MedicationNoOf medicationNoOf;
@@ -104,6 +107,14 @@ public class MyMedication extends BaseModel {
         this.medication = medication;
     }
 
+    public MedicationDose getMedicationDose() {
+        return medicationDose;
+    }
+
+    public void setMedicationDose(MedicationDose medicationDose) {
+        this.medicationDose = medicationDose;
+    }
+
     public String getOtherMedication() {
         return otherMedication;
     }
@@ -112,12 +123,12 @@ public class MyMedication extends BaseModel {
         this.otherMedication = otherMedication;
     }
 
-    public MedicationDose getMedicationDose() {
-        return medicationDose;
+    public String getOtherMedicationDose() {
+        return otherMedicationDose;
     }
 
-    public void setMedicationDose(MedicationDose medicationDose) {
-        this.medicationDose = medicationDose;
+    public void setOtherMedicationDose(String otherMedicationDose) {
+        this.otherMedicationDose = otherMedicationDose;
     }
 
     public MedicationNoOf getMedicationNoOf() {
