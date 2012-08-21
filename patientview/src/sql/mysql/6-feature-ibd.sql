@@ -69,7 +69,14 @@ CREATE TABLE `ibd_my_medication` (
   `medication_id` bigint(20) default NULL,
   `medication_dose_id` bigint(20) default NULL,
   `medication_type_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`)
+  `otherMedicationDose` text,
+  PRIMARY KEY  (`id`),
+  KEY `FK434B606EF8204181` (`medication_dose_id`),
+  KEY `FK434B606E99BAAE42` (`medication_id`),
+  KEY `FK434B606E57719061` (`medication_type_id`),
+  CONSTRAINT `FK434B606E57719061` FOREIGN KEY (`medication_type_id`) REFERENCES `ibd_medication_type` (`id`),
+  CONSTRAINT `FK434B606E99BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`),
+  CONSTRAINT `FK434B606EF8204181` FOREIGN KEY (`medication_dose_id`) REFERENCES `ibd_medication_dose` (`id`)
 );
 
 CREATE TABLE `ibd_myibd` (
