@@ -99,10 +99,19 @@
                     }
                 }
                 %>
-                <div class="control-group <%=showOtherMedication ? "":"hidden"%>" id="medicationOtherContainer" >
-                    <label class="control-label">Other Medication:</label>
-                    <div class="controls">
-                        <html:textarea property="otherMedication" styleId="otherMedication"/>
+                <div class="<%=showOtherMedication ? "":"hidden"%>" id="medicationOtherContainer">
+                    <div class="control-group">
+                        <label class="control-label">Other Medication:</label>
+                        <div class="controls">
+                            <html:textarea property="otherMedication" styleId="otherMedication"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Other Medication Dose:</label>
+                        <div class="controls">
+                            <html:textarea property="otherMedicationDose" styleId="otherMedicationDose"/>
+                        </div>
                     </div>
                 </div>
 
