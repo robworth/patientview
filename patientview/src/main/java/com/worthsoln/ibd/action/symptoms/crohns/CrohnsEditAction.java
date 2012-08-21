@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.action.symptoms.crohns;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.User;
@@ -17,6 +18,9 @@ public class CrohnsEditAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         User user = UserUtils.retrieveUser(request);
 
         DynaActionForm dynaForm = (DynaActionForm) form;

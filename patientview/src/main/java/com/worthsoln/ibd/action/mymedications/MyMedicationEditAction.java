@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.action.mymedications;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.medication.MyMedication;
@@ -15,6 +16,9 @@ public class MyMedicationEditAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         MyMedication myMedication = new MyMedication();
 
         DynaActionForm dynaForm = (DynaActionForm) form;

@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.action.mymedications;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.medication.MyMedication;
@@ -17,6 +18,9 @@ public class MyMedicationUpdateAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         DynaActionForm dynaForm = (DynaActionForm) form;
 
         // the jsp on the front end has some logic in for styles which require the medicationTypeId and MedicationId
