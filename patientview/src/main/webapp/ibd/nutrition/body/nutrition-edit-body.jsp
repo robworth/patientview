@@ -4,7 +4,7 @@
 <div class="row">
     <div class="span12">
         <div class="page-header">
-            <h1>My IBD</h1>
+            <h1>Nutrition</h1>
         </div>
 
         <html:form action="/nutrition-update" styleClass="form-horizontal">
