@@ -56,6 +56,7 @@ public class Ibd {
     public static final String MEDICATION_ID_PARAM = "medicationId";
     public static final String MEDICATION_DOSE_ID_PARAM = "medicationDoseId";
     public static final String OTHER_MEDICATION_ID_PARAM = "otherMedication";
+    public static final String OTHER_MEDICATION_DOSE_ID_PARAM = "otherMedicationDose";
     public static final String MEDICATION_NO_OF_ID_PARAM = "medicationNoOfId";
     public static final String MEDICATION_FREQUENCY_ID_PARAM = "medicationFrequencyId";
     public static final String REASON_FOR_STOPPING_PARAM = "reasonForStopping";
