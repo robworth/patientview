@@ -259,6 +259,18 @@ h1, h2{
     text-align: center;
 }
 
+.severe {
+    color: #FE2E2E
+}
+
+.moderate {
+    color: #FFBF00
+}
+
+.mild {
+    color: #01DF01
+}
+
 .heroList {
     color: #fff;
     font-size: 16px;
