@@ -33,19 +33,19 @@
 
                 <logic:present name="abdominalPainList" scope="session">
                     <div class="control-group">
-                        <label class="control-label">I have currently got</label>
+                        <label class="control-label">Do you have any abdominal pain at present?</label>
                         <div class="controls">
                             <html:select property="abdominalPainId">
                                 <html:options collection="abdominalPainList" property="id"
                                               labelProperty="displayText"/>
-                            </html:select> abdominal pain at present
+                            </html:select>
                         </div>
                     </div>
                 </logic:present>
 
                 <logic:present name="openBowelList" scope="session">
                     <div class="control-group">
-                        <label class="control-label"> My bowels are open</label>
+                        <label class="control-label">What number of times are your bowels open per day?</label>
                         <div class="controls">
                             <html:select property="openBowels">
                                 <html:options collection="openBowelList" property="value" name="value"/>
@@ -56,7 +56,7 @@
 
                 <logic:present name="feelingList" scope="session">
                     <div class="control-group">
-                        <label class="control-label">Currently I am feeling</label>
+                        <label class="control-label">How are you feeling?</label>
                         <div class="controls">
                             <html:select property="feelingId">
                                 <html:options collection="feelingList" property="id"
@@ -68,13 +68,13 @@
 
                 <logic:present name="crohnsComplicationList" scope="session">
                     <div class="control-group">
-                        <label class="control-label">I have</label>
+                        <label class="control-label">Do you have any complications from your IBD?</label>
                         <div class="controls">
                             <html:select property="complicationId">
                                 <html:options collection="crohnsComplicationList" property="id"
                                               labelProperty="displayText"/>
                             </html:select>
-                            complications from my IBD
+
                         </div>
                     </div>
                 </logic:present>
@@ -82,14 +82,14 @@
                 <logic:present name="massInTummyList" scope="session">
                     <div class="control-group">
                         <label class="control-label">
-                            The Doctor has said I have
+                            Has the Doctor informed you about any mass in your tummy?
                         </label>
                         <div class="controls">
                             <html:select property="massInTummyId">
                                 <html:options collection="massInTummyList" property="id"
                                               labelProperty="displayText"/>
                             </html:select>
-                            mass in my tummy
+
                         </div>
                     </div>
                 </logic:present>

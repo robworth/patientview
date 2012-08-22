@@ -3,8 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="row">
-    <div class="span12">
         <div class="page-header">
             <h1>Nutrition</h1>
         </div>
@@ -56,9 +54,7 @@
 
         </html:form>
         <p>
-            If you wish to calculate your BMI please visit this <a href="http://www.nhs.uk/Tools/Pages/Healthyweightcalculator.aspx">link</a> fot the NHS BMI calculator.
+            If you wish to calculate your BMI please visit this <a target="_blank" href="http://www.nhs.uk/Tools/Pages/Healthyweightcalculator.aspx">link</a> fot the NHS BMI calculator.
         </p>
-    </div>
-</div>
 
 
