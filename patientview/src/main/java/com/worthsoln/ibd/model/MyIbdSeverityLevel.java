@@ -67,6 +67,10 @@ public class MyIbdSeverityLevel extends BaseModel {
     }
 
     public Integer getLevel() {
+        if (level == null || level <= 0) {
+            return severity.getDefaultLevel();
+        }
+
         return level;
     }
 

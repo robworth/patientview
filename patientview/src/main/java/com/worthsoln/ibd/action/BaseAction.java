@@ -221,7 +221,37 @@ public class BaseAction extends ActionSupport {
         return null;
     }
 
-    protected SymptomsGraphData getSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate) {
+    protected void addLastSymptomAdvice(User user, Integer graphType, HttpServletRequest request) {
+        List<? extends BaseSymptoms> symptoms = null;
+
+        if (graphType != null) {
+            if (graphType == Ibd.COLITIS_GRAPH_TYPE) {
+                symptoms = getIbdManager().getAllColitis(user, null, null);
+            } else if (graphType == Ibd.CROHNS_GRAPH_TYPE) {
+                symptoms = getIbdManager().getAllCrohns(user, null, null);
+            }
+        }
+
+        if (symptoms != null && !symptoms.isEmpty()) {
+            BaseSymptoms lastSymptom = symptoms.get(0);
+
+            String nhsNo = getNhsNoForUser(user);
+            MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
+            MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
+            MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
+
+            if (lastSymptom.getScore() >= myIbdSevereLevel.getLevel()) {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdSevereLevel);
+            } else if (lastSymptom.getScore() >= myIbdModerateLevel.getLevel()) {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdModerateLevel);
+            } else if (lastSymptom.getScore() >= myIbdMildLevel.getLevel()) {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdMildLevel);
+            }
+        }
+    }
+
+    protected void addSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate,
+                                                     HttpServletRequest request) {
         SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
         List<Date> existingDates = new ArrayList<Date>();
 
@@ -256,35 +286,15 @@ public class BaseAction extends ActionSupport {
 
         // need to check if they have any custom level settings
         String nhsNo = getNhsNoForUser(user);
-        MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
-        MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
-        MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
+        symptomsGraphData.setSevereLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE).getLevel());
+        symptomsGraphData.setModerateLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE).getLevel());
+        symptomsGraphData.setMildLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD).getLevel());
 
-        if (myIbdSevereLevel != null) {
-            if (myIbdSevereLevel.getLevel() > 0) {
-                symptomsGraphData.setSevereLevel(myIbdSevereLevel.getLevel());
-            } else {
-                symptomsGraphData.setSevereLevel(Severity.SEVERE.getDefaultLevel());
-            }
-        }
+        // need to re add graph data to the page
+        request.setAttribute(Ibd.GRAPH_DATA_PARAM, symptomsGraphData);
 
-        if (myIbdModerateLevel != null) {
-            if (myIbdModerateLevel.getLevel() > 0) {
-                symptomsGraphData.setModerateLevel(myIbdModerateLevel.getLevel());
-            } else {
-                symptomsGraphData.setModerateLevel(Severity.MODERATE.getDefaultLevel());
-            }
-        }
-
-        if (myIbdMildLevel != null) {
-            if (myIbdMildLevel.getLevel() > 0) {
-                symptomsGraphData.setMildLevel(myIbdMildLevel.getLevel());
-            } else {
-                symptomsGraphData.setMildLevel(Severity.MILD.getDefaultLevel());
-            }
-        }
-
-        return symptomsGraphData;
+        // where ever there is a graph it may need to show advice on your last entered symptoms so add this to request
+        addLastSymptomAdvice(user, graphType, request);
     }
 
     protected Date convertFormDateString(String formProperty, DynaActionForm dynaActionForm) {

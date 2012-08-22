@@ -47,31 +47,16 @@ public class IbdUserEditAction extends BaseAction {
         }
 
         MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
+        dynaForm.set(Ibd.SEVERE_LEVEL_PARAM, myIbdSevereLevel.getLevel());
+        dynaForm.set(Ibd.SEVERE_TREATMENT_PARAM, myIbdSevereLevel.getTreatment());
+
         MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
+        dynaForm.set(Ibd.MODERATE_LEVEL_PARAM, myIbdModerateLevel.getLevel());
+        dynaForm.set(Ibd.MODERATE_TREATMENT_PARAM, myIbdModerateLevel.getTreatment());
+
         MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
-
-        int severeLevel = Severity.SEVERE.getDefaultLevel();
-        int moderateLevel = Severity.MODERATE.getDefaultLevel();
-        int mildLevel = Severity.MILD.getDefaultLevel();
-
-        if (myIbdSevereLevel != null) {
-            severeLevel = myIbdSevereLevel.getLevel();
-            dynaForm.set(Ibd.SEVERE_TREATMENT_PARAM, myIbdSevereLevel.getTreatment());
-        }
-
-        if (myIbdModerateLevel != null) {
-            moderateLevel = myIbdModerateLevel.getLevel();
-            dynaForm.set(Ibd.MODERATE_TREATMENT_PARAM, myIbdModerateLevel.getTreatment());
-        }
-
-        if (myIbdMildLevel != null) {
-            mildLevel = myIbdMildLevel.getLevel();
-            dynaForm.set(Ibd.MILD_LEVEL_PARAM, myIbdMildLevel.getTreatment());
-        }
-
-        dynaForm.set(Ibd.SEVERE_LEVEL_PARAM, severeLevel);
-        dynaForm.set(Ibd.MODERATE_LEVEL_PARAM, moderateLevel);
-        dynaForm.set(Ibd.MILD_LEVEL_PARAM, mildLevel);
+        dynaForm.set(Ibd.MILD_LEVEL_PARAM, myIbdMildLevel.getLevel());
+        dynaForm.set(Ibd.MILD_TREATMENT_PARAM, myIbdMildLevel.getTreatment());
 
         return mapping.findForward(INPUT);
     }

@@ -35,20 +35,8 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
         } catch (Exception e) {
-            return null;
+            return new MyIbdSeverityLevel(nhsno, severity, severity.getDefaultLevel(), null);
         }
-
-    }
-
-    @Override
-    public List<MyIbdSeverityLevel> getMyIbdSeverityLevels(String nhsno) {
-        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<MyIbdSeverityLevel> criteria = builder.createQuery(MyIbdSeverityLevel.class);
-        Root<MyIbdSeverityLevel> myIbdSeverityLevelRoot = criteria.from(MyIbdSeverityLevel.class);
-
-        criteria.where(builder.equal(myIbdSeverityLevelRoot.get(MyIbdSeverityLevel_.nhsno), nhsno));
-
-        return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
@@ -66,9 +54,9 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
         MyIbdSeverityLevel existingMyIbdSeverityLevel = get(myIbdSeverityLevel.getNhsno(),
                 myIbdSeverityLevel.getSeverity());
 
-        if (existingMyIbdSeverityLevel != null) {
+        if (existingMyIbdSeverityLevel.hasValidId()) {
             if (canSave(myIbdSeverityLevel)) {
-                if (myIbdSeverityLevel.getLevel() != null && myIbdSeverityLevel.getLevel() > 0) {
+                if (levelChanged(myIbdSeverityLevel)) {
                     existingMyIbdSeverityLevel.setLevel(myIbdSeverityLevel.getLevel());
                 }
 
@@ -81,6 +69,10 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
         } else {
             // if the new value is > 0 and not the default then save
             if (canSave(myIbdSeverityLevel)) {
+                if (!levelChanged(myIbdSeverityLevel)) {
+                    myIbdSeverityLevel.setLevel(null);
+                }
+
                 super.save(myIbdSeverityLevel);
             }
         }
@@ -92,9 +84,17 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
      * @return boolean
      */
     private boolean canSave(MyIbdSeverityLevel myIbdSeverityLevel) {
-        return (myIbdSeverityLevel.getLevel() > 0
-                && myIbdSeverityLevel.getLevel() != myIbdSeverityLevel.getSeverity().getDefaultLevel())
-                || (myIbdSeverityLevel.getTreatment() != null
+        return levelChanged(myIbdSeverityLevel) || (myIbdSeverityLevel.getTreatment() != null
                 && myIbdSeverityLevel.getTreatment().length() > 0);
+    }
+
+    /**
+     * will check if the value has actually been updated and is not the default
+     * @param myIbdSeverityLevel MyIbdSeverityLevel
+     * @return boolean
+     */
+    private boolean levelChanged(MyIbdSeverityLevel myIbdSeverityLevel) {
+        return (myIbdSeverityLevel.getLevel() > 0
+                && myIbdSeverityLevel.getLevel() != myIbdSeverityLevel.getSeverity().getDefaultLevel());
     }
 }

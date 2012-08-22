@@ -14,8 +14,6 @@ public interface MyIbdSeverityLevelDao {
 
     MyIbdSeverityLevel get(String nhsno, Severity severity);
 
-    List<MyIbdSeverityLevel> getMyIbdSeverityLevels(String nhsno);
-
     void save(List<MyIbdSeverityLevel> myIbdSeverityLevels);
 
     void save(MyIbdSeverityLevel myIbdSeverityLevel);
