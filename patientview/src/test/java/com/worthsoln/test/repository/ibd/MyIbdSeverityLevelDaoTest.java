@@ -77,29 +77,7 @@ public class MyIbdSeverityLevelDaoTest extends BaseDaoTest {
         checkMyIbdSeverityLevel = myIbdSeverityLevelDao.get(myIbdSeverityLevel.getNhsno(),
                 myIbdSeverityLevel.getSeverity());
 
-        assertNull(checkMyIbdSeverityLevel);
-    }
-
-    @Test
-    public void testGetMyIbdSeverityLevels() throws Exception {
-        MyIbdSeverityLevel myIbdSevereSeverityLevel = getTestObject();
-        myIbdSeverityLevelDao.save(myIbdSevereSeverityLevel);
-        assertTrue("Id invalud", myIbdSevereSeverityLevel.getId() > 0);
-
-        MyIbdSeverityLevel myIbdModerateSeverityLevel = getTestObject();
-        myIbdModerateSeverityLevel.setSeverity(Severity.MODERATE);
-        myIbdSeverityLevelDao.save(myIbdModerateSeverityLevel);
-        assertTrue("Id invalud", myIbdModerateSeverityLevel.getId() > 0);
-
-        MyIbdSeverityLevel myIbdMildSeverityLevel = getTestObject();
-        myIbdMildSeverityLevel.setSeverity(Severity.MILD);
-        myIbdSeverityLevelDao.save(myIbdMildSeverityLevel);
-        assertTrue("Id invalud", myIbdMildSeverityLevel.getId() > 0);
-
-        List<MyIbdSeverityLevel> checkMyIbdSeverityLevels =
-                myIbdSeverityLevelDao.getMyIbdSeverityLevels(myIbdMildSeverityLevel.getNhsno());
-
-        assertEquals("Levels not persisted", checkMyIbdSeverityLevels.size(), 3);
+        assertTrue(!checkMyIbdSeverityLevel.hasValidId());
     }
 
     private MyIbdSeverityLevel getTestObject() {
