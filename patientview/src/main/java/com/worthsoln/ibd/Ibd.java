@@ -86,6 +86,7 @@ public class Ibd {
     public static final String NUMBER_OF_STOOLS_NIGHTTIME_PARAM = "numberOfStoolsNighttimeId";
     public static final String TOILET_TIMING_PARAM = "toiletTimingId";
     public static final String PRESENT_BLOOD_PARAM = "presentBloodId";
+    public static final String MY_IBD_SEVERITY_LEVEL_PARAM = "myIbdSeverityLevel";
 
     // graph data params
     public static final int COLITIS_GRAPH_TYPE = 1;
