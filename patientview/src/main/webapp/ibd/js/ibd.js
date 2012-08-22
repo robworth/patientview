@@ -88,6 +88,7 @@ IBD.Symptoms = {
         moderate: 8,
         mild: 4
     },
+    alertLineWidth: '4px',
     alertColors:            {
         severe: '#FE2E2E',
         moderate: '#FFBF00',
@@ -150,15 +151,15 @@ IBD.Symptoms = {
                 if (vertical) {
                     if (labels[i] === IBD.Symptoms.alertMarkers.severe) {
                         strokeColor = IBD.Symptoms.alertColors.severe;
-                        strokeWidth = '2px';
+                        strokeWidth = IBD.Symptoms.alertLineWidth;
                         $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.severe});
                     } else if (labels[i] === IBD.Symptoms.alertMarkers.moderate) {
                         strokeColor = IBD.Symptoms.alertColors.moderate;
-                        strokeWidth = '2px';
+                        strokeWidth = IBD.Symptoms.alertLineWidth;
                         $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.moderate});
                     } else if (labels[i] === IBD.Symptoms.alertMarkers.mild) {
                         strokeColor = IBD.Symptoms.alertColors.mild;
-                        strokeWidth = '2px';
+                        strokeWidth = IBD.Symptoms.alertLineWidth;
                         $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.mild});
                     } else {
                         strokeColor = this.options.label_colour;
@@ -192,13 +193,13 @@ IBD.Symptoms = {
 
                     if (currentLabelValue === IBD.Symptoms.alertMarkers.severe) {
                         strokeColor = IBD.Symptoms.alertColors.severe;
-                        strokeWidth = '2px';
+                        strokeWidth = IBD.Symptoms.alertLineWidth;
                     } else if (currentLabelValue === IBD.Symptoms.alertMarkers.moderate) {
                         strokeColor = IBD.Symptoms.alertColors.moderate;
-                        strokeWidth = '2px';
+                        strokeWidth = IBD.Symptoms.alertLineWidth;
                     } else if (currentLabelValue === IBD.Symptoms.alertMarkers.mild) {
                         strokeColor = IBD.Symptoms.alertColors.mild;
-                        strokeWidth = '2px';
+                        strokeWidth = IBD.Symptoms.alertLineWidth;
                     } else {
                         strokeColor = this.options.grid_colour;
                         strokeWidth = '1px';
