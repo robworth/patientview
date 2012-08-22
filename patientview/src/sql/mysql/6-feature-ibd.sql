@@ -148,3 +148,12 @@ CREATE TABLE `diagnostic` (
   `unitcode` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `ibd_myibd_severity_level` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `level` int(11) default NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `severity_id` bigint(20) NOT NULL,
+  `treatment` text,
+  PRIMARY KEY  (`id`)
+);
