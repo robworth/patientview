@@ -118,25 +118,3 @@
         <jsp:include page="graph.jsp" />
     </div>
 </div>
-
-<bean:define id="symptomsGraphData" name="graphData" type="com.worthsoln.ibd.model.symptoms.SymptomsGraphData" />
-<%
-    List<Integer> graphScores = new ArrayList<Integer>();
-    List<String> graphDates = new ArrayList<String>();
-
-    for (SymptomsData symptomsData : symptomsGraphData.getGraphData()) {
-        graphScores.add(symptomsData.getScore());
-        graphDates.add(symptomsData.getDate());
-    }
-%>
-<script type="text/javascript">
-    $(function() {
-        IBD.Symptoms.graphData = [<%=StringUtils.join(graphScores.toArray(), ", ")%>];
-        IBD.Symptoms.graphDates = ['<%=StringUtils.join(graphDates.toArray(), "', '")%>'];
-        IBD.Symptoms.alertMarkers.severe = <%=symptomsGraphData.getSevereLevel()%>;
-        IBD.Symptoms.alertMarkers.moderate = <%=symptomsGraphData.getModerateLevel()%>;
-        IBD.Symptoms.alertMarkers.mild = <%=symptomsGraphData.getMildLevel()%>;
-    });
-</script>
-
-
