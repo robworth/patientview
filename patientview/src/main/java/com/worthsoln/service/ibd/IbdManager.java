@@ -1,7 +1,9 @@
 package com.worthsoln.service.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.enums.Diagnosis;
+import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
 import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import com.worthsoln.ibd.model.MyIbd;
@@ -25,6 +27,12 @@ public interface IbdManager {
     MyIbd getMyIbd(String nhsno);
 
     void saveMyIbd(MyIbd myIbd);
+
+    MyIbdSeverityLevel getMyIbdSeverityLevel(String nhsno, Severity severity);
+
+    void saveMyIbdSeverityLevel(MyIbdSeverityLevel myIbdSeverityLevel);
+
+    void saveMyIbdSeverityLevels(List<MyIbdSeverityLevel> myIbdSeverityLevels);
 
     CarePlan getCarePlan(User user);
 

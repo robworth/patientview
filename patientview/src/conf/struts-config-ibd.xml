@@ -92,9 +92,31 @@
             <form-property name="graphType" type="java.lang.Integer"/>
         </form-bean>
 
+        <form-bean name="manageIbdUserForm" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="submit" type="java.lang.Boolean"/>
+            <form-property name="nhsNo" type="java.lang.String"/>
+            <form-property name="severeLevel" type="java.lang.Integer"/>
+            <form-property name="moderateLevel" type="java.lang.Integer"/>
+            <form-property name="mildLevel" type="java.lang.Integer"/>
+            <form-property name="severeTreatment" type="java.lang.String"/>
+            <form-property name="moderateTreatment" type="java.lang.String"/>
+            <form-property name="mildTreatment" type="java.lang.String"/>
+        </form-bean>
+
     </form-beans>
 
     <action-mappings>
+
+        <action path="/control/ibduser-edit"
+                name="manageIbdUserForm"
+                type="com.worthsoln.ibd.action.admin.IbdUserEditAction"
+                input="input"
+                scope="request"
+                validate="true">
+            <forward name="input" path="/ibd/admin/ibduser-edit.jsp"/>
+            <forward name="success" path="/control/unitPatients.do"/>
+        </action>
+
         <action path="/myibd"
                 type="com.worthsoln.ibd.action.myibd.MyIbdAction"
                 scope="request"

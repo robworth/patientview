@@ -133,6 +133,9 @@
     $(function() {
         IBD.Symptoms.graphData = [<%=StringUtils.join(graphScores.toArray(), ", ")%>];
         IBD.Symptoms.graphDates = ['<%=StringUtils.join(graphDates.toArray(), "', '")%>'];
+        IBD.Symptoms.alertMarkers.severe = <%=symptomsGraphData.getSevereLevel()%>;
+        IBD.Symptoms.alertMarkers.moderate = <%=symptomsGraphData.getModerateLevel()%>;
+        IBD.Symptoms.alertMarkers.mild = <%=symptomsGraphData.getMildLevel()%>;
     });
 </script>
 

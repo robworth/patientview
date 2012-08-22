@@ -14,6 +14,7 @@ public class Ibd {
     public static final String NUTRITION_LIST = "nutritionList";
     public static final String CURRENT_MEDICATIONS_PARAM = "currentMedications";
     public static final String STOPPED_MEDICATIONS_PARAM = "stoppedMedications";
+    public static final String UNIT_CODE_PARAM = "unitcode";
 
     public static final String CROHNS_DIAGRAM = "crohns.jpg";
     public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";
@@ -25,6 +26,14 @@ public class Ibd {
     public static final String ILEO_COLONIC_DISEASE_DIAGRAM = "ileo-colonic-disease.png";
     public static final String CROHNS_COLITIS_DIAGRAM = "crohns-colitis.png";
     public static final String ISOLATED_UPPER_GI_DISEASE_DIAGRAM = "isolated-upper-gi-disease.png";
+
+    // ibd severity level form params
+    public static final String SEVERE_LEVEL_PARAM = "severeLevel";
+    public static final String SEVERE_TREATMENT_PARAM = "severeTreatment";
+    public static final String MODERATE_LEVEL_PARAM = "moderateLevel";
+    public static final String MODERATE_TREATMENT_PARAM = "moderateTreatment";
+    public static final String MILD_LEVEL_PARAM = "mildLevel";
+    public static final String MILD_TREATMENT_PARAM = "mildTreatment";
 
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
@@ -129,6 +138,7 @@ public class Ibd {
 
     // symptoms
     public static final String OPEN_BOWELS_INVALID_NUMBER = "openBowels.invalidNumber";
+    public static final String VALUES_MUST_BE_MULTIPLE_OF_TWO = "valuesMustBeMultipleOfTwo";
 
     public static final String DATE_REQUIRED = "date.required";
 

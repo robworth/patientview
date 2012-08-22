@@ -69,26 +69,6 @@ public class MyMedicationStopAction extends BaseAction {
         return mapping.findForward(SUCCESS);
     }
 
-    /**
-     * When the actual edit form is submitted it should have an input field named submit set to true
-     * This fnc checks for this and if its not present then the actual edit form has not been submitted
-     * @param form DynaActionForm
-     * @return boolean
-     */
-    private boolean isFormSubmitted(DynaActionForm form) {
-        boolean submit = false;
-
-        if (form.get(Ibd.SUBMIT_PARAM) != null) {
-            try {
-                submit = (Boolean) form.get(Ibd.SUBMIT_PARAM);
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        return submit;
-    }
-
     private boolean validate(DynaActionForm form, HttpServletRequest request) {
         ActionMessages actionErrors = new ActionMessages();
 

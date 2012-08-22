@@ -240,8 +240,8 @@ IBD.Symptoms = {
         that.graphType = this.graphForm.find('#graphType');
 
         // find elements in the symptoms form
-        that.symptomsFormFromDate = this.symptomsForm.find('.fromDate');
-        that.symptomsFormToDate = this.symptomsForm.find('.toDate');
+//        that.symptomsFormFromDate = this.symptomsForm.find('.fromDate');
+//        that.symptomsFormToDate = this.symptomsForm.find('.toDate');
 
         // add submit on the graph form so it makes an ajax request for the data
         that.graphForm.submit(function() {
@@ -250,10 +250,10 @@ IBD.Symptoms = {
         });
 
         // on the symptoms form we want to copy the from and two date from the graph form if they have been set before
-        that.symptomsForm.submit(function() {
-            that.symptomsFormFromDate.val(that.graphFormFromDate.val());
-            that.symptomsFormToDate.val(that.graphFormToDate.val());
-        });
+//        that.symptomsForm.submit(function() {
+//            that.symptomsFormFromDate.val(that.graphFormFromDate.val());
+//            that.symptomsFormToDate.val(that.graphFormToDate.val());
+//        });
 
         // clear btn on the graph form will submit the form with blank dates
         that.clearBtn.on('click', function(e) {
