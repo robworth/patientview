@@ -283,3 +283,23 @@ h1, h2{
 .control-label{
     font-weight: bold;
 }
+
+.medicalDiagramKey{
+    margin-right: 10px;
+}
+
+.medicalDiagramKey dd{
+    float: left;
+    text-align: left;
+}
+
+.keyItem{
+    background-color: red;
+    border: 1px solid black;
+    float: left;
+    width: 10px;
+    height: 10px;
+    text-indent:-9999px;
+    margin-top: 10px;
+    overflow: hidden;
+}

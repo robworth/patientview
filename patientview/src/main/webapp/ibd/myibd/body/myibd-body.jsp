@@ -56,6 +56,10 @@
             <logic:present name="myIbd" property="diagnosis">
                 <div class="medicalDiagram">
                     <img src="ibd/img/content/<bean:write name="myIbd" property="diseaseExtent.diagram"/>" alt="<bean:write name="myIbd" property="diseaseExtent.name"/>"/>
+                    <dl class="medicalDiagramKey span4 pull-right">
+                        <dt class="redKeyItem keyItem">Red</dt>
+                        <dd class="span3">represents the part of the bowel affected by your condition.</dd>
+                    </dl>
                 </div>
             </logic:present>
         </div>

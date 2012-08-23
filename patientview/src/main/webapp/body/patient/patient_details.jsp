@@ -9,8 +9,14 @@
 
 
      <div class="page-header">
-         <h1>Patient Details</h1>
+         <h1>My Details</h1>
      </div>
+
+     <p>
+         This section contains basic information about you. Please check the details are correct. If there are any
+         errors please contact us by <html:link action="/patient/contact">clicking here</html:link>. We would be grateful if you could record your other medical
+         conditions and your email address, thank you. 
+     </p>
 
      <%
          if (request.getParameter("success") != null) {
