@@ -68,10 +68,10 @@
 </tr>
 
 <tr valign="top">
-  <th class="tablecellbold">Date of Birth (yyyy-mm-dd)</th>
+  <th class="tablecellbold">Date of Birth (dd/mm/yyyy)</th>
 
   <td class="tablecell">
-    <bean:write name="patientDetail" property="patient.dateofbirth"/>
+    <bean:write name="patientDetail" property="patient.formatedDateOfBirth"/>
   </td>
 </tr>
 
