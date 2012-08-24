@@ -27,45 +27,6 @@
     </form>
 
     <div id="graph" class="linegraph"></div>
-
-    <logic:present name="myIbdSeverityLevel">
-        <div>
-            <bean:define id="myIbdSeverityLevel" name="myIbdSeverityLevel" type="com.worthsoln.ibd.model.MyIbdSeverityLevel" />
-
-            <h3 class="<%=myIbdSeverityLevel.getSeverity().name().toLowerCase()%>"><%=myIbdSeverityLevel.getSeverity().name()%></h3>
-
-            <%
-            if (myIbdSeverityLevel.getSeverity().equals(Severity.SEVERE)) {
-            %>
-                <p>
-                    Severe specific content here
-                </p>
-            <%
-            } else if (myIbdSeverityLevel.getSeverity().equals(Severity.MODERATE)) {
-            %>
-                <p>
-                    Moderate specific content here
-                </p>
-            <%
-            } else if (myIbdSeverityLevel.getSeverity().equals(Severity.MILD)) {
-            %>
-                <p>
-                    Mild specific content here
-                </p>
-            <%
-            }
-
-            if (myIbdSeverityLevel.getTreatment() != null && myIbdSeverityLevel.getTreatment().length() > 0) {
-            %>
-                <h4>Flare Up Medication</h4>
-                <p>
-                    <%=myIbdSeverityLevel.getTreatment()%>
-                </p>
-            <%
-            }
-            %>
-        </div>
-    </logic:present>
 </div>
 
 <bean:define id="symptomsGraphData" name="graphData" type="com.worthsoln.ibd.model.symptoms.SymptomsGraphData" />
