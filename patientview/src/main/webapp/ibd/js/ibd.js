@@ -69,6 +69,7 @@ IBD.Symptoms = {
         start_value: 0,
         //label_count: 10,
         label_step: 2,
+        grid_colour: '#666666',
         markers: 'circle',
         colours: {
             scores: '#0066CC'
@@ -97,6 +98,39 @@ IBD.Symptoms = {
 
     init: function() {
         var that = this;
+
+        // this is a quick hack to draw the backgrounds of the sevirty onto the graph
+        var drawBackgrounds = function(obj) {
+            var i,
+                currentLabelValue,
+                y = obj.graph_height + obj.y_padding_top,
+                mildBackgroundStart,
+                moderateBackgroundStart;
+
+            for (i = 0; i < obj.y_label_count; i++) {
+                currentLabelValue = obj.value_labels[i];
+
+                if (currentLabelValue <= IBD.Symptoms.alertMarkers.mild) {
+                    mildBackgroundStart = (y - (obj.graph_height / obj.y_label_count));
+                } else if (currentLabelValue <= IBD.Symptoms.alertMarkers.severe) {
+                    moderateBackgroundStart = (y - (obj.graph_height / obj.y_label_count));
+                }
+
+                y = y - (obj.graph_height / obj.y_label_count);
+            }
+
+            var severeBackground = obj.paper.rect(obj.x_padding_left, obj.y_padding_top, obj.graph_width,
+                obj.graph_height - ((obj.options.height - obj.y_padding_bottom) - moderateBackgroundStart));
+            severeBackground.attr({fill: IBD.Symptoms.alertColors.severe, stroke: 'none', "fill-opacity":0.3 });
+
+            var moderateBackground = obj.paper.rect(obj.x_padding_left, moderateBackgroundStart, obj.graph_width,
+                ((obj.options.height - obj.y_padding_bottom) - moderateBackgroundStart));
+            moderateBackground.attr({fill: IBD.Symptoms.alertColors.moderate, stroke: 'none', "fill-opacity":0.3 });
+
+            var mildBackground = obj.paper.rect(obj.x_padding_left, mildBackgroundStart, obj.graph_width,
+                ((obj.options.height - obj.y_padding_bottom) - mildBackgroundStart));
+            mildBackground.attr({fill: IBD.Symptoms.alertColors.mild, stroke: 'none', "fill-opacity":0.3 });
+        };
 
         /**
          * We need to override some of the graph code so that we can have it looking the way we need
@@ -153,10 +187,6 @@ IBD.Symptoms = {
                         strokeColor = IBD.Symptoms.alertColors.severe;
                         strokeWidth = IBD.Symptoms.alertLineWidth;
                         $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.severe});
-                    } else if (labels[i] === IBD.Symptoms.alertMarkers.moderate) {
-                        strokeColor = IBD.Symptoms.alertColors.moderate;
-                        strokeWidth = IBD.Symptoms.alertLineWidth;
-                        $.extend(font_options_to_use, {'fill': IBD.Symptoms.alertColors.moderate});
                     } else if (labels[i] === IBD.Symptoms.alertMarkers.mild) {
                         strokeColor = IBD.Symptoms.alertColors.mild;
                         strokeWidth = IBD.Symptoms.alertLineWidth;
@@ -183,6 +213,9 @@ IBD.Symptoms = {
 
         // OVERRIDE THE DRAW GRID SO WE CAN CHANGE THE COLORS OF THE LINES IF THEY REACH A CERTAIN LEVEL
         Ico.LineGraph.prototype.drawGrid = function() {
+            // draw the background colours first so the grid lines go on top
+            drawBackgrounds(this);
+
             var pathString = '', i, y, p, currentLabelValue, strokeColor, strokeWidth;
 
             if (this.options.show_vertical_labels) {
@@ -193,9 +226,6 @@ IBD.Symptoms = {
 
                     if (currentLabelValue === IBD.Symptoms.alertMarkers.severe) {
                         strokeColor = IBD.Symptoms.alertColors.severe;
-                        strokeWidth = IBD.Symptoms.alertLineWidth;
-                    } else if (currentLabelValue === IBD.Symptoms.alertMarkers.moderate) {
-                        strokeColor = IBD.Symptoms.alertColors.moderate;
                         strokeWidth = IBD.Symptoms.alertLineWidth;
                     } else if (currentLabelValue === IBD.Symptoms.alertMarkers.mild) {
                         strokeColor = IBD.Symptoms.alertColors.mild;
@@ -240,21 +270,11 @@ IBD.Symptoms = {
         that.graphFormToDate = this.graphForm.find('.toDate');
         that.graphType = this.graphForm.find('#graphType');
 
-        // find elements in the symptoms form
-//        that.symptomsFormFromDate = this.symptomsForm.find('.fromDate');
-//        that.symptomsFormToDate = this.symptomsForm.find('.toDate');
-
         // add submit on the graph form so it makes an ajax request for the data
         that.graphForm.submit(function() {
             that.dataRequest();
             return false;
         });
-
-        // on the symptoms form we want to copy the from and two date from the graph form if they have been set before
-//        that.symptomsForm.submit(function() {
-//            that.symptomsFormFromDate.val(that.graphFormFromDate.val());
-//            that.symptomsFormToDate.val(that.graphFormToDate.val());
-//        });
 
         // clear btn on the graph form will submit the form with blank dates
         that.clearBtn.on('click', function(e) {
