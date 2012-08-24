@@ -10,7 +10,7 @@ import java.util.Date;
 public class Patient extends BaseModel {
 
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    private final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
     @Column(nullable = false)
     private String nhsno;
