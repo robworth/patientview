@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum ToiletTiming {
-    DONT_NEED_TO_RUSH(0, "I don't need to rush ", 0),
+    DONT_NEED_TO_RUSH(0, "I don't need to hurry", 0),
     NEED_TO_HURRY(1, "I need to hurry ", 1),
     NEED_TO_GO_IMMEDIATELY(2, "I need to go immediately", 2),
     HAVING_ACCIDENTS(3, "I am having accidents", 3);

@@ -73,7 +73,7 @@
 
                 <logic:present name="presentBloodList" scope="session">
                     <div class="control-group">
-                        <label class="control-label">Is there blood present?</label>
+                        <label class="control-label">Is there blood present mixed in the stool?</label>
 
                         <div class="controls">
                             <html:select property="presentBloodId">
