@@ -54,7 +54,7 @@ public class CrohnsDaoTest extends BaseDaoTest {
         crohnsSymptoms.setAbdominalPain(AbdominalPain.MODERATE);
         crohnsSymptoms.setOpenBowels(5);
         crohnsSymptoms.setFeeling(Feeling.POOR);
-        crohnsSymptoms.setComplication(Complication.APTHOUS_ULCERS);
+        crohnsSymptoms.setComplication(Complication.NONE);
         crohnsSymptoms.setMassInTummy(MassInTummy.DEFINITE);
 
         return crohnsSymptoms;
