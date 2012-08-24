@@ -184,7 +184,11 @@ public class MyIbd extends BaseModel {
     }
 
     public String getYearForSurveillanceColonoscopyAsString() {
-        return Ibd.DATE_FORMAT.format(yearForSurveillanceColonoscopy);
+        if (yearForSurveillanceColonoscopy != null) {
+            return Ibd.DATE_FORMAT.format(yearForSurveillanceColonoscopy);
+        }
+
+        return "";
     }
 
     public void setYearForSurveillanceColonoscopy(Date yearForSurveillanceColonoscopy) {
