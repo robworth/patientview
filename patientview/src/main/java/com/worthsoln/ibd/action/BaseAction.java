@@ -242,10 +242,10 @@ public class BaseAction extends ActionSupport {
 
             if (lastSymptom.getScore() >= myIbdSevereLevel.getLevel()) {
                 request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdSevereLevel);
-            } else if (lastSymptom.getScore() >= myIbdModerateLevel.getLevel()) {
-                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdModerateLevel);
-            } else if (lastSymptom.getScore() >= myIbdMildLevel.getLevel()) {
+            } else if (lastSymptom.getScore() <= myIbdMildLevel.getLevel()) {
                 request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdMildLevel);
+            } else {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdModerateLevel);
             }
         }
     }
