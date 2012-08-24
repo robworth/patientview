@@ -1,13 +1,10 @@
 package com.worthsoln.ibd.model;
 
+import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
 import com.worthsoln.ibd.model.enums.Complication;
 import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.DiseaseExtent;
-import com.worthsoln.ibd.model.enums.FamilyHistory;
-import com.worthsoln.ibd.model.enums.Smoking;
-import com.worthsoln.ibd.model.enums.Surgery;
-import com.worthsoln.ibd.model.enums.VaccinationRecord;
 import com.worthsoln.patientview.model.BaseModel;
 
 import javax.persistence.Access;
@@ -20,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +35,9 @@ public class MyIbd extends BaseModel {
     @Transient
     private DiseaseExtent diseaseExtent;
 
+    @Column(nullable = false)
+    private Date yearOfDiagnosis;
+
     @Transient
     private List<Complication> complications = new ArrayList<Complication>() {
         {
@@ -47,20 +48,14 @@ public class MyIbd extends BaseModel {
     @Transient
     private BodyPartAffected bodyPartAffected = BodyPartAffected.NONE;
 
-    @Column(nullable = false)
-    private Double weight;
+    @Column(nullable = true)
+    private Date yearForSurveillanceColonoscopy;
 
-    @Transient
-    private FamilyHistory familyHistory = FamilyHistory.NONE;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String namedConsultant;
 
-    @Transient
-    private Smoking smoking = Smoking.NEVER_SMOKED;
-
-    @Transient
-    private Surgery surgery = Surgery.NO_PREVIOUS_OPERATIONS;
-
-    @Transient
-    private VaccinationRecord vaccinationRecord = VaccinationRecord.NOT_KNOWN;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String nurses;
 
     public String getNhsno() {
         return nhsno;
@@ -112,6 +107,18 @@ public class MyIbd extends BaseModel {
 
     public void setDiseaseExtent(DiseaseExtent diseaseExtent) {
         this.diseaseExtent = diseaseExtent;
+    }
+
+    public Date getYearOfDiagnosis() {
+        return yearOfDiagnosis;
+    }
+
+    public String getYearOfDiagnosisAsString() {
+        return Ibd.DATE_FORMAT.format(yearOfDiagnosis);
+    }
+
+    public void setYearOfDiagnosis(Date yearOfDiagnosis) {
+        this.yearOfDiagnosis = yearOfDiagnosis;
     }
 
     @Access(AccessType.PROPERTY)
@@ -172,99 +179,31 @@ public class MyIbd extends BaseModel {
         this.bodyPartAffected = bodyPartAffected;
     }
 
-    public Double getWeight() {
-        return weight;
+    public Date getYearForSurveillanceColonoscopy() {
+        return yearForSurveillanceColonoscopy;
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public String getYearForSurveillanceColonoscopyAsString() {
+        return Ibd.DATE_FORMAT.format(yearForSurveillanceColonoscopy);
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "family_history_id", nullable = false)
-    public long getFamilyHistoryId() {
-        if (familyHistory != null) {
-            return familyHistory.getId();
-        }
-
-        return -1;
+    public void setYearForSurveillanceColonoscopy(Date yearForSurveillanceColonoscopy) {
+        this.yearForSurveillanceColonoscopy = yearForSurveillanceColonoscopy;
     }
 
-    public void setFamilyHistoryId(Long id) {
-        this.familyHistory = FamilyHistory.getFamilyHistory(id);
+    public String getNamedConsultant() {
+        return namedConsultant;
     }
 
-    public FamilyHistory getFamilyHistory() {
-        return familyHistory;
+    public void setNamedConsultant(String namedConsultant) {
+        this.namedConsultant = namedConsultant;
     }
 
-    public void setFamilyHistory(FamilyHistory familyHistory) {
-        this.familyHistory = familyHistory;
+    public String getNurses() {
+        return nurses;
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "smoking_id", nullable = false)
-    public long getSmokingId() {
-        if (smoking != null) {
-            return smoking.getId();
-        }
-
-        return -1;
-    }
-
-    public void setSmokingId(Long id) {
-        this.smoking = Smoking.getSmoking(id);
-    }
-
-    public Smoking getSmoking() {
-        return smoking;
-    }
-
-    public void setSmoking(Smoking smoking) {
-        this.smoking = smoking;
-    }
-
-    @Access(AccessType.PROPERTY)
-    @Column(name = "surgery_id", nullable = false)
-    public long getSurgeryId() {
-        if (surgery != null) {
-            return surgery.getId();
-        }
-
-        return -1;
-    }
-
-    public void setSurgeryId(Long id) {
-        this.surgery = Surgery.getSurgery(id);
-    }
-
-    public Surgery getSurgery() {
-        return surgery;
-    }
-
-    public void setSurgery(Surgery surgery) {
-        this.surgery = surgery;
-    }
-
-    @Access(AccessType.PROPERTY)
-    @Column(name = "vaccination_record_id", nullable = false)
-    public long getVaccinationRecordId() {
-        if (vaccinationRecord != null) {
-            return vaccinationRecord.getId();
-        }
-
-        return -1;
-    }
-
-    public void setVaccinationRecordId(Long id) {
-        this.vaccinationRecord = VaccinationRecord.getVaccinationRecord(id);
-    }
-
-    public VaccinationRecord getVaccinationRecord() {
-        return vaccinationRecord;
-    }
-
-    public void setVaccinationRecord(VaccinationRecord vaccinationRecord) {
-        this.vaccinationRecord = vaccinationRecord;
+    public void setNurses(String nurses) {
+        this.nurses = nurses;
     }
 }

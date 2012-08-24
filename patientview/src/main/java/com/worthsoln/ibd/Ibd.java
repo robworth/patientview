@@ -38,13 +38,13 @@ public class Ibd {
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
     public static final String DISEASE_EXTENT_ID_PARAM = "diseaseExtentId";
+    public static final String YEAR_OF_DIAGNOSIS_PARAM = "yearOfDiagnosis";
     public static final String BODY_PART_AFFECTED_ID_PARAM = "bodyPartAffectedId";
     public static final String WEIGHT_PARAM = "weight";
-    public static final String FAMILY_HISTORY_ID_PARAM = "familyHistoryId";
-    public static final String SMOKING_ID_PARAM = "smokingId";
-    public static final String SURGERY_ID_PARAM = "surgeryId";
-    public static final String VACCINATION_RECORD_ID_PARAM = "vaccinationRecordId";
     public static final String COMPLICATION_IDS_PARAM = "complicationIds";
+    public static final String YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM = "yearForSurveillanceColonoscopy";
+    public static final String NAMED_CONSULTANT_PARAM = "namedConsultant";
+    public static final String NURSES_PARAM = "nurses";
 
     // care plan params
     public static final String AREA_TO_DISCUSS_IDS_PARAM = "areaToDiscussIds";
@@ -104,13 +104,10 @@ public class Ibd {
     // my ibd
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
     public static final String DISEASE_EXTENT_REQUIRED = "diseaseExtent.required";
+    public static final String YEAR_OF_DIAGNOSIS_REQUIRED = "yearOfDiagnosis.required";
+    public static final String WEIGHT_REQUIRED = "weight.required";
     public static final String COMPLICATIONS_REQUIRED = "complications.required";
     public static final String BODY_PART_AFFECTED_REQUIRED = "bodyPartAffected.required";
-    public static final String WEIGHT_REQUIRED = "weight.required";
-    public static final String FAMILY_HISTORY_REQUIRED = "familyHistory.required";
-    public static final String SMOKING_REQUIRED = "smoking.required";
-    public static final String SURGERY_REQUIRED = "surgery.required";
-    public static final String VACCINATION_RECORD_REQUIRED = "vaccinationRecord.required";
 
     // care plan
     public static final String AREAS_TO_DISCUSS_REQUIRED = "areasToDiscuss.required";

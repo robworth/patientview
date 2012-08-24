@@ -41,6 +41,14 @@
             </div>
             <div class="row control-group">
                 <div class="span3">
+                    <label class="control-label">Year of Diagnosis:</label>
+                </div>
+                <div class="span3 controls">
+                    <bean:write name="myIbd" property="yearOfDiagnosisAsString"/>
+                </div>
+            </div>
+            <div class="row control-group">
+                <div class="span3">
                     <label class="control-label">Complications:</label>
                 </div>
                 <div class="span3 controls">
@@ -131,24 +139,28 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="span6">
-            <div class="row control-group">
-                <div class="span3">
-                    <label class="control-label">General:</label>
-                </div>
-                <div class="span3 controls">
-                    <p>Weight: <bean:write name="myIbd" property="weight"/></p>
-
-                    <p>IBD Related Family History: <bean:write name="myIbd" property="familyHistory.name"/></p>
-
-                    <p>Smoking History: <bean:write name="myIbd" property="smoking.name"/></p>
-
-                    <p>Surgical History: <bean:write name="myIbd" property="surgery.name"/></p>
-
-                    <p>Vaccination Record: <bean:write name="myIbd" property="vaccinationRecord.name"/></p>
-                </div>
-            </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Year for Surveillance Colonoscopy:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="yearForSurveillanceColonoscopyAsString"/>
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Named Consultant:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="namedConsultant"/>
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Nurses:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="nurses"/>
         </div>
     </div>
     <div class="row">
