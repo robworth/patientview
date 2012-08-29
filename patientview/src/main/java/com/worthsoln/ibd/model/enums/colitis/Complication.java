@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum Complication {
     NONE(0, "None", 0),
-    JOINT_PROBLEMS(1, "Joint Problems(arthralgia)", 1),
+    JOINT_PROBLEMS(1, "Joint Problems (arthralgia)", 1),
     SKIN_PROBLEMS(2, "Skin Problems (erythema nodusum, pyoderma gangrenosum)", 1),
     EYE_PROBLEMS(3, "Eye Problems (uveitis, scleritis)", 1);
 

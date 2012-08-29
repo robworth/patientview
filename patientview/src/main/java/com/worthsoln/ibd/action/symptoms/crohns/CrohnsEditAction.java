@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.action.symptoms.crohns;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.User;
@@ -17,6 +18,9 @@ public class CrohnsEditAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         User user = UserUtils.retrieveUser(request);
 
         DynaActionForm dynaForm = (DynaActionForm) form;
@@ -29,8 +33,7 @@ public class CrohnsEditAction extends BaseAction {
         request.setAttribute(Ibd.TO_DATE_PARAM, convertFormDateString(toDate));
 
         // need to re add graph data to the page
-        request.setAttribute(Ibd.GRAPH_DATA_PARAM, getSymptomsGraphData(user, Ibd.CROHNS_GRAPH_TYPE,
-                fromDate, toDate));
+        addSymptomsGraphData(user, Ibd.CROHNS_GRAPH_TYPE, fromDate, toDate, request);
 
         // set the form to have empty values
         dynaForm.set(Ibd.ABDOMINAL_PAIN_PARAM, null);

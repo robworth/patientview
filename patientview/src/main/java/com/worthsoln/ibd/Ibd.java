@@ -14,6 +14,7 @@ public class Ibd {
     public static final String NUTRITION_LIST = "nutritionList";
     public static final String CURRENT_MEDICATIONS_PARAM = "currentMedications";
     public static final String STOPPED_MEDICATIONS_PARAM = "stoppedMedications";
+    public static final String UNIT_CODE_PARAM = "unitcode";
 
     public static final String CROHNS_DIAGRAM = "crohns.jpg";
     public static final String COLITIS_UNSPECIFIED_DIAGRAM = "colitis-unspecified.jpg";
@@ -26,16 +27,24 @@ public class Ibd {
     public static final String CROHNS_COLITIS_DIAGRAM = "crohns-colitis.png";
     public static final String ISOLATED_UPPER_GI_DISEASE_DIAGRAM = "isolated-upper-gi-disease.png";
 
+    // ibd severity level form params
+    public static final String SEVERE_LEVEL_PARAM = "severeLevel";
+    public static final String SEVERE_TREATMENT_PARAM = "severeTreatment";
+    public static final String MODERATE_LEVEL_PARAM = "moderateLevel";
+    public static final String MODERATE_TREATMENT_PARAM = "moderateTreatment";
+    public static final String MILD_LEVEL_PARAM = "mildLevel";
+    public static final String MILD_TREATMENT_PARAM = "mildTreatment";
+
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
     public static final String DISEASE_EXTENT_ID_PARAM = "diseaseExtentId";
+    public static final String YEAR_OF_DIAGNOSIS_PARAM = "yearOfDiagnosis";
     public static final String BODY_PART_AFFECTED_ID_PARAM = "bodyPartAffectedId";
     public static final String WEIGHT_PARAM = "weight";
-    public static final String FAMILY_HISTORY_ID_PARAM = "familyHistoryId";
-    public static final String SMOKING_ID_PARAM = "smokingId";
-    public static final String SURGERY_ID_PARAM = "surgeryId";
-    public static final String VACCINATION_RECORD_ID_PARAM = "vaccinationRecordId";
     public static final String COMPLICATION_IDS_PARAM = "complicationIds";
+    public static final String YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM = "yearForSurveillanceColonoscopy";
+    public static final String NAMED_CONSULTANT_PARAM = "namedConsultant";
+    public static final String NURSES_PARAM = "nurses";
 
     // care plan params
     public static final String AREA_TO_DISCUSS_IDS_PARAM = "areaToDiscussIds";
@@ -56,6 +65,7 @@ public class Ibd {
     public static final String MEDICATION_ID_PARAM = "medicationId";
     public static final String MEDICATION_DOSE_ID_PARAM = "medicationDoseId";
     public static final String OTHER_MEDICATION_ID_PARAM = "otherMedication";
+    public static final String OTHER_MEDICATION_DOSE_ID_PARAM = "otherMedicationDose";
     public static final String MEDICATION_NO_OF_ID_PARAM = "medicationNoOfId";
     public static final String MEDICATION_FREQUENCY_ID_PARAM = "medicationFrequencyId";
     public static final String REASON_FOR_STOPPING_PARAM = "reasonForStopping";
@@ -76,6 +86,7 @@ public class Ibd {
     public static final String NUMBER_OF_STOOLS_NIGHTTIME_PARAM = "numberOfStoolsNighttimeId";
     public static final String TOILET_TIMING_PARAM = "toiletTimingId";
     public static final String PRESENT_BLOOD_PARAM = "presentBloodId";
+    public static final String MY_IBD_SEVERITY_LEVEL_PARAM = "myIbdSeverityLevel";
 
     // graph data params
     public static final int COLITIS_GRAPH_TYPE = 1;
@@ -93,13 +104,10 @@ public class Ibd {
     // my ibd
     public static final String DIAGNOSIS_REQUIRED = "diagnosis.required";
     public static final String DISEASE_EXTENT_REQUIRED = "diseaseExtent.required";
+    public static final String YEAR_OF_DIAGNOSIS_REQUIRED = "yearOfDiagnosis.required";
+    public static final String WEIGHT_REQUIRED = "weight.required";
     public static final String COMPLICATIONS_REQUIRED = "complications.required";
     public static final String BODY_PART_AFFECTED_REQUIRED = "bodyPartAffected.required";
-    public static final String WEIGHT_REQUIRED = "weight.required";
-    public static final String FAMILY_HISTORY_REQUIRED = "familyHistory.required";
-    public static final String SMOKING_REQUIRED = "smoking.required";
-    public static final String SURGERY_REQUIRED = "surgery.required";
-    public static final String VACCINATION_RECORD_REQUIRED = "vaccinationRecord.required";
 
     // care plan
     public static final String AREAS_TO_DISCUSS_REQUIRED = "areasToDiscuss.required";
@@ -128,6 +136,7 @@ public class Ibd {
 
     // symptoms
     public static final String OPEN_BOWELS_INVALID_NUMBER = "openBowels.invalidNumber";
+    public static final String VALUES_MUST_BE_MULTIPLE_OF_TWO = "valuesMustBeMultipleOfTwo";
 
     public static final String DATE_REQUIRED = "date.required";
 

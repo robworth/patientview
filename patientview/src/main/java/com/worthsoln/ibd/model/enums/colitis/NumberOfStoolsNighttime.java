@@ -5,8 +5,9 @@ import java.util.List;
 
 public enum NumberOfStoolsNighttime {
 
-    ONE_TO_THREE(0, "1-3", 1),
-    FOUR_TO_SIX(1, "4-6", 2);
+    NONE(1, "0", 0),
+    ONE_TO_THREE(2, "1-3", 1),
+    FOUR_TO_SIX(3, "4-6", 2);
 
     private int id;
     private String displayText;

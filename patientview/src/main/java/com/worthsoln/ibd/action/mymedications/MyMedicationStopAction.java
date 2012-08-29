@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.action.mymedications;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.medication.MyMedication;
@@ -18,6 +19,9 @@ public class MyMedicationStopAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         DynaActionForm dynaForm = (DynaActionForm) form;
 
         /**
@@ -63,26 +67,6 @@ public class MyMedicationStopAction extends BaseAction {
         getIbdManager().saveMyMedication(myMedication);
 
         return mapping.findForward(SUCCESS);
-    }
-
-    /**
-     * When the actual edit form is submitted it should have an input field named submit set to true
-     * This fnc checks for this and if its not present then the actual edit form has not been submitted
-     * @param form DynaActionForm
-     * @return boolean
-     */
-    private boolean isFormSubmitted(DynaActionForm form) {
-        boolean submit = false;
-
-        if (form.get(Ibd.SUBMIT_PARAM) != null) {
-            try {
-                submit = (Boolean) form.get(Ibd.SUBMIT_PARAM);
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        return submit;
     }
 
     private boolean validate(DynaActionForm form, HttpServletRequest request) {

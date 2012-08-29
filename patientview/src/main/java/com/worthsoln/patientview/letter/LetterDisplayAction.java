@@ -1,5 +1,6 @@
 package com.worthsoln.patientview.letter;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
@@ -18,6 +19,9 @@ public class LetterDisplayAction extends DatabaseAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         User user = UserUtils.retrieveUser(request);
         List letters = LegacySpringUtils.getLetterManager().get(user.getUsername());
         request.setAttribute("letters", letters);

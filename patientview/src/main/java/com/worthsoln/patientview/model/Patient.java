@@ -2,9 +2,18 @@ package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Entity
 public class Patient extends BaseModel {
+
+    @Transient
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    @Transient
+    private final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
     @Column(nullable = false)
     private String nhsno;
@@ -130,6 +139,14 @@ public class Patient extends BaseModel {
 
     public String getDateofbirth() {
         return dateofbirth;
+    }
+
+    public String getFormatedDateOfBirth() {
+        try {
+            return UK_DATE_FORMAT.format(DATE_FORMAT.parse(dateofbirth));
+        } catch (ParseException e) {
+            return dateofbirth;
+        }
     }
 
     public void setDateofbirth(String dateofbirth) {

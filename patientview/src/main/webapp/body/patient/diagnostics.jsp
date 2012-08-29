@@ -7,14 +7,14 @@
     <div class="span12">
         <div class="page-header">
             <h1>Diagnostics</h1>
-            <p><bean:message key="diagnostics.intro" /></p>
         </div>
 
-        <div class="page-header">
+        <p><bean:message key="diagnostics.intro" /></p>
+
+
             <h2>Imaging</h2>
-        </div>
 
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped paragraphSizeTopMargin">
             <thead>
             <tr>
                 <th>Exam Date</th>
@@ -35,12 +35,8 @@
             </logic:iterate>
             </tbody>
         </table>
-
-        <div class="page-header">
             <h2>Endoscopy</h2>
-        </div>
-
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped paragraphSizeTopMargin">
             <thead>
             <tr>
                 <th>Procedure Date</th>

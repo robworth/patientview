@@ -4,15 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Complication {
-    NO(0, "No", 0),
-    MILD(1, "Arthralgia", 1),
-    UVEITIS(2, "Uveitis", 1),
-    ERYTHEMA_NODUSUM(3, "Erythema nodusum", 1),
-    APTHOUS_ULCERS(4, "Apthous ulcers", 1),
-    PYODERMA_GANGRENOSUM(5, "Pyoderma gangrenosum", 1),
-    ANAL_FISSURE(6, "Anal fissure", 1),
-    FISTULA(7, "Fistula", 1),
-    ABSCESS(8, "Abscess", 1);
+    NONE(0, "None", 0),
+    IBD_RELATED_JOINT_COMPLICATIONS(1, "IBD related joint complications (inflammatory arthritis, sacroilelitis)", 1),
+    IBD_RELATED_SKIN_COMPLICATIONS(2, "IBD related skin complications (erythema nodosum, pyoderma gangrenosum)", 1),
+    IBD_RELATED_EYE_COMPLICATIONS(3, "IBD related eye complications (uveitis, episclreitis)", 1),
+    MOUTH_ULCERS(4, "Mouth ulcers", 1),
+    ANAL_FISSURE(5, "Anal fissure", 1),
+    FISTULA(6, "Fistula", 1),
+    ABSCESS(7, "Abscess", 1);
 
     private int id;
     private String displayText;

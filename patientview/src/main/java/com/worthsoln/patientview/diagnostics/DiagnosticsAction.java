@@ -1,5 +1,6 @@
 package com.worthsoln.patientview.diagnostics;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.Diagnostic;
 import com.worthsoln.patientview.model.enums.DiagnosticType;
@@ -19,6 +20,9 @@ public class DiagnosticsAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         List<Diagnostic> diagnosticsImaging
                 = LegacySpringUtils.getDiagnosticManager().getForLoggedInUser(DiagnosticType.IMAGING);
 

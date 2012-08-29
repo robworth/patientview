@@ -27,7 +27,7 @@ public class GraphDataAction extends BaseAction {
         Date toDate = convertFormDateString(Ibd.TO_DATE_PARAM, dynaForm);
 
         // add the graph data to the request to the request
-        request.setAttribute(Ibd.GRAPH_DATA_PARAM, getSymptomsGraphData(user, graphType, fromDate, toDate));
+        addSymptomsGraphData(user, graphType, fromDate, toDate, request);
 
         return mapping.findForward(SUCCESS);
     }

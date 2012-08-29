@@ -9,7 +9,7 @@ import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyMedicationDao;
-import com.worthsoln.repository.ibd.impl.MedicationDoseDao;
+import com.worthsoln.repository.ibd.MedicationDoseDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
 

@@ -55,7 +55,7 @@
     <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/contact">Contact</html:link></li>
 
     <logic:present tenancy="ibd">
-        <li <%= ("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/education">Education</html:link></li>
+        <li <%= ("education".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/education">Education</html:link></li>
     </logic:present>
     <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/forums/list.page">Forum</a></li>
     <%

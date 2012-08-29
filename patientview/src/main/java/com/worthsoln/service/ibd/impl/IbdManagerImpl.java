@@ -1,7 +1,9 @@
 package com.worthsoln.service.ibd.impl;
 
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.enums.Diagnosis;
+import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
 import com.worthsoln.ibd.model.symptoms.CrohnsSymptoms;
 import com.worthsoln.ibd.model.MyIbd;
@@ -18,9 +20,10 @@ import com.worthsoln.repository.ibd.CrohnsSymptomsDao;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyIbdDao;
+import com.worthsoln.repository.ibd.MyIbdSeverityLevelDao;
 import com.worthsoln.repository.ibd.MyMedicationDao;
 import com.worthsoln.repository.ibd.NutritionDao;
-import com.worthsoln.repository.ibd.impl.MedicationDoseDao;
+import com.worthsoln.repository.ibd.MedicationDoseDao;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -35,6 +38,9 @@ public class IbdManagerImpl implements IbdManager {
 
     @Inject
     private MyIbdDao myIbdDao;
+
+    @Inject
+    private MyIbdSeverityLevelDao myIbdSeverityLevelDao;
 
     @Inject
     private CarePlanDao carePlanDao;
@@ -82,6 +88,21 @@ public class IbdManagerImpl implements IbdManager {
     @Override
     public void saveMyIbd(MyIbd myIbd) {
         myIbdDao.save(myIbd);
+    }
+
+    @Override
+    public MyIbdSeverityLevel getMyIbdSeverityLevel(String nhsno, Severity severity) {
+        return myIbdSeverityLevelDao.get(nhsno,  severity);
+    }
+
+    @Override
+    public void saveMyIbdSeverityLevel(MyIbdSeverityLevel myIbdSeverityLevel) {
+        myIbdSeverityLevelDao.save(myIbdSeverityLevel);
+    }
+
+    @Override
+    public void saveMyIbdSeverityLevels(List<MyIbdSeverityLevel> myIbdSeverityLevels) {
+        myIbdSeverityLevelDao.save(myIbdSeverityLevels);
     }
 
     @Override

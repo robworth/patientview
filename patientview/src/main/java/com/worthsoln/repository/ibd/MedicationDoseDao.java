@@ -1,4 +1,4 @@
-package com.worthsoln.repository.ibd.impl;
+package com.worthsoln.repository.ibd;
 
 import com.worthsoln.ibd.model.medication.MedicationDose;
 import org.springframework.transaction.annotation.Propagation;

@@ -1,6 +1,7 @@
 package com.worthsoln.ibd.action;
 
 import com.worthsoln.ibd.Ibd;
+import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.enums.AreaToDiscuss;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
 import com.worthsoln.ibd.model.enums.Complication;
@@ -8,6 +9,7 @@ import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.ibd.model.enums.FamilyHistory;
 import com.worthsoln.ibd.model.enums.Feeling;
+import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.ibd.model.enums.Smoking;
 import com.worthsoln.ibd.model.enums.Surgery;
 import com.worthsoln.ibd.model.enums.VaccinationRecord;
@@ -76,6 +78,26 @@ public class BaseAction extends ActionSupport {
 
     protected static List<ScaleItem> scaleList;
     protected static List<OpenBowel> openBowelList;
+
+    /**
+     * When the actual edit form is submitted it should have an input field named submit set to true
+     * This fnc checks for this and if its not present then the actual edit form has not been submitted
+     * @param form DynaActionForm
+     * @return boolean
+     */
+    protected boolean isFormSubmitted(DynaActionForm form) {
+        boolean submit = false;
+
+        if (form.get(Ibd.SUBMIT_PARAM) != null) {
+            try {
+                submit = (Boolean) form.get(Ibd.SUBMIT_PARAM);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        return submit;
+    }
 
     protected List<DiseaseExtent> getDiseaseExtentList() {
         return DiseaseExtent.getAsList();
@@ -186,8 +208,10 @@ public class BaseAction extends ActionSupport {
     }
 
     protected String getNhsNoForUser(HttpServletRequest request) {
-        User user = UserUtils.retrieveUser(request);
+        return getNhsNoForUser(UserUtils.retrieveUser(request));
+    }
 
+    protected String getNhsNoForUser(User user) {
         UserMapping userMapping = LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
 
         if (userMapping != null) {
@@ -197,7 +221,37 @@ public class BaseAction extends ActionSupport {
         return null;
     }
 
-    protected SymptomsGraphData getSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate) {
+    protected void addLastSymptomAdvice(User user, Integer graphType, HttpServletRequest request) {
+        List<? extends BaseSymptoms> symptoms = null;
+
+        if (graphType != null) {
+            if (graphType == Ibd.COLITIS_GRAPH_TYPE) {
+                symptoms = getIbdManager().getAllColitis(user, null, null);
+            } else if (graphType == Ibd.CROHNS_GRAPH_TYPE) {
+                symptoms = getIbdManager().getAllCrohns(user, null, null);
+            }
+        }
+
+        if (symptoms != null && !symptoms.isEmpty()) {
+            BaseSymptoms lastSymptom = symptoms.get(0);
+
+            String nhsNo = getNhsNoForUser(user);
+            MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
+            MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
+            MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
+
+            if (lastSymptom.getScore() >= myIbdSevereLevel.getLevel()) {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdSevereLevel);
+            } else if (lastSymptom.getScore() <= myIbdMildLevel.getLevel()) {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdMildLevel);
+            } else {
+                request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdModerateLevel);
+            }
+        }
+    }
+
+    protected void addSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate,
+                                                     HttpServletRequest request) {
         SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
         List<Date> existingDates = new ArrayList<Date>();
 
@@ -230,7 +284,17 @@ public class BaseAction extends ActionSupport {
             symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
         }
 
-        return symptomsGraphData;
+        // need to check if they have any custom level settings
+        String nhsNo = getNhsNoForUser(user);
+        symptomsGraphData.setSevereLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE).getLevel());
+        symptomsGraphData.setModerateLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE).getLevel());
+        symptomsGraphData.setMildLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD).getLevel());
+
+        // need to re add graph data to the page
+        request.setAttribute(Ibd.GRAPH_DATA_PARAM, symptomsGraphData);
+
+        // where ever there is a graph it may need to show advice on your last entered symptoms so add this to request
+        addLastSymptomAdvice(user, graphType, request);
     }
 
     protected Date convertFormDateString(String formProperty, DynaActionForm dynaActionForm) {

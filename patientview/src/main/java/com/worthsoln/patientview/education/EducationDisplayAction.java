@@ -1,5 +1,6 @@
 package com.worthsoln.patientview.education;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -19,6 +20,8 @@ public class EducationDisplayAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
         // pull back the static links for this tenancy and pass to view in the request
         EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode("static");

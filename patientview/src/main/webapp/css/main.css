@@ -256,6 +256,19 @@ h1, h2{
     width: 540px;
     height: 350px;
     background-color: #fff;
+    text-align: center;
+}
+
+.severe {
+    color: #FE2E2E
+}
+
+.moderate {
+    color: #FFBF00
+}
+
+.mild {
+    color: #01DF01
 }
 
 .heroList {
@@ -265,4 +278,28 @@ h1, h2{
 
 .heroList li{
     margin-bottom: 5px;    
+}
+
+.control-label{
+    font-weight: bold;
+}
+
+.medicalDiagramKey{
+    margin-right: 10px;
+}
+
+.medicalDiagramKey dd{
+    float: left;
+    text-align: left;
+}
+
+.keyItem{
+    background-color: red;
+    border: 1px solid black;
+    float: left;
+    width: 10px;
+    height: 10px;
+    text-indent:-9999px;
+    margin-top: 10px;
+    overflow: hidden;
 }

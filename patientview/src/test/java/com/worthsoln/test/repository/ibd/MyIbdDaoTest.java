@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -41,13 +42,14 @@ public class MyIbdDaoTest extends BaseDaoTest {
         assertNotNull(checkMyIbd);
         assertEquals("Diagnosis not persisted", checkMyIbd.getDiagnosis(), myIbd.getDiagnosis());
         assertEquals("Disease extent not persisted", checkMyIbd.getDiseaseExtent(), myIbd.getDiseaseExtent());
-        assertEquals("Weight not persisted", checkMyIbd.getWeight(), myIbd.getWeight());
+        assertEquals("Year of diagnosis not persisted", checkMyIbd.getYearOfDiagnosis(), myIbd.getYearOfDiagnosis());
         assertEquals("Body part affected not persisted", checkMyIbd.getBodyPartAffected(), myIbd.getBodyPartAffected());
-        assertEquals("Family history not persisted", checkMyIbd.getFamilyHistory(), myIbd.getFamilyHistory());
-        assertEquals("Smoking not persisted", checkMyIbd.getSmoking(), myIbd.getSmoking());
-        assertEquals("Surgery not persisted", checkMyIbd.getSurgery(), myIbd.getSurgery());
-        assertEquals("Vaccination record not persisted", checkMyIbd.getVaccinationRecord(), myIbd.getVaccinationRecord());
-        assertEquals("Complications not persisted", checkMyIbd.getComplications().size(), myIbd.getComplications().size());
+        assertEquals("Complications not persisted", checkMyIbd.getComplications().size(),
+                myIbd.getComplications().size());
+        assertEquals("Year for surveillance colonoscopy not persisted", checkMyIbd.getYearForSurveillanceColonoscopy(),
+                myIbd.getYearForSurveillanceColonoscopy());
+        assertEquals("Named consultant not persisted", checkMyIbd.getNamedConsultant(), myIbd.getNamedConsultant());
+        assertEquals("Nurses not persisted", checkMyIbd.getNurses(), myIbd.getNurses());
     }
 
     @Test
@@ -69,12 +71,11 @@ public class MyIbdDaoTest extends BaseDaoTest {
         myIbd.setNhsno("1234567890");
         myIbd.setDiagnosis(Diagnosis.COLITIS_UNSPECIFIED);
         myIbd.setDiseaseExtent(DiseaseExtent.ILEO_COLONIC_DISEASE);
-        myIbd.setWeight(12.0);
+        myIbd.setYearOfDiagnosis(new Date());
         myIbd.setBodyPartAffected(BodyPartAffected.ANKYLOSING_SPONDYLITIS);
-        myIbd.setFamilyHistory(FamilyHistory.NONE);
-        myIbd.setSmoking(Smoking.CURRENT_SMOKER);
-        myIbd.setSurgery(Surgery.DOUBLE_BALLOON_ENTEROSTOMY);
-        myIbd.setVaccinationRecord(VaccinationRecord.PREVIOUS_HEP_B_VACCINATION);
+        myIbd.setYearForSurveillanceColonoscopy(new Date());
+        myIbd.setNamedConsultant("Test consultant");
+        myIbd.setNurses("Test nurses");
 
         List<Complication> complications = new ArrayList<Complication>();
         complications.add(Complication.ABSCESS);

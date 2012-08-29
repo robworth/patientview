@@ -40,6 +40,8 @@ public class MyMedicationDaoImpl extends AbstractHibernateDAO<MyMedication> impl
 
         buildWhereClause(criteria, wherePredicates);
 
+        criteria.orderBy(builder.asc(myMedicineRoot.get(MyMedication_.dateStarted)));
+
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
@@ -55,6 +57,8 @@ public class MyMedicationDaoImpl extends AbstractHibernateDAO<MyMedication> impl
         wherePredicates.add(builder.isNotNull(myMedicineRoot.get(MyMedication_.dateStopped)));
 
         buildWhereClause(criteria, wherePredicates);
+
+        criteria.orderBy(builder.asc(myMedicineRoot.get(MyMedication_.dateStopped)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }

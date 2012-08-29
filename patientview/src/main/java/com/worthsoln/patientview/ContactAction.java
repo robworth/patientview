@@ -1,5 +1,6 @@
 package com.worthsoln.patientview;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Contact;
 import com.worthsoln.patientview.logon.LogonUtils;
@@ -24,6 +25,9 @@ public class ContactAction extends DatabaseAction {
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         User user = UserUtils.retrieveUser(request);
         List<UserMapping> userMappings = UserUtils.retrieveUserMappings(user);
 

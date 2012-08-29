@@ -1,22 +1,26 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<div class="row">
-    <div class="span12">
-        <div class="page-header">
-            <h1>My IBD</h1>
-        </div>
-        <p>
-            This section helps you keep a track of your inflammatory bowel disease. The information is provided from the
-            records held at the hospital. If there are any obvious errors please <html:link action="/patient/contact">contact the IBD team</html:link>.
-        </p>
-        <p>
-            To keep an up-to date record of your current and previous medications please record these in the <html:link action="/patient/medicines">Medicines
-            section</html:link>. The medication section of the record needs to be entered here to complete the summary of your condition, many thanks.
-        </p>
-    </div>
+
+<div class="page-header">
+    <logic:present name="myIbd">
+        <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
+    </logic:present>
+
+    <h1>My IBD</h1>
 </div>
+<p>
+    This section helps you keep a track of your inflammatory bowel disease. The information is provided from the
+    records held at the hospital. If there are any obvious errors please <html:link action="/patient/contact">contact the IBD team</html:link>.
+</p>
+<p>
+    To keep an up-to date record of your current and previous medications please record these in the <html:link action="/patient/medicines">Medicines
+    section</html:link>. The medication section of the record needs to be entered here to complete the summary of your condition, many thanks.
+</p>
+
+<hr/>
 <logic:present name="myIbd">
+
     <div class="row paragraphSizeTopMargin">
         <div class="span6">
             <div class="row control-group">
@@ -37,6 +41,14 @@
             </div>
             <div class="row control-group">
                 <div class="span3">
+                    <label class="control-label">Year of Diagnosis:</label>
+                </div>
+                <div class="span3 controls">
+                    <bean:write name="myIbd" property="yearOfDiagnosisAsString"/>
+                </div>
+            </div>
+            <div class="row control-group">
+                <div class="span3">
                     <label class="control-label">Complications:</label>
                 </div>
                 <div class="span3 controls">
@@ -52,12 +64,16 @@
             <logic:present name="myIbd" property="diagnosis">
                 <div class="medicalDiagram">
                     <img src="ibd/img/content/<bean:write name="myIbd" property="diseaseExtent.diagram"/>" alt="<bean:write name="myIbd" property="diseaseExtent.name"/>"/>
+                    <dl class="medicalDiagramKey span4 pull-right">
+                        <dt class="redKeyItem keyItem">Red</dt>
+                        <dd class="span3">represents the part of the bowel affected by your condition.</dd>
+                    </dl>
                 </div>
             </logic:present>
         </div>
     </div>
     <div class="row">
-        <div class="span3">
+        <div class="span3 control-label">
             Current Medications:
         </div>
         <div class="span9">
@@ -123,29 +139,33 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="span6">
-            <div class="row control-group">
-                <div class="span3">
-                    <label class="control-label">General:</label>
-                </div>
-                <div class="span3 controls">
-                    <p>Weight: <bean:write name="myIbd" property="weight"/></p>
-
-                    <p>IBD Related Family History: <bean:write name="myIbd" property="familyHistory.name"/></p>
-
-                    <p>Smoking History: <bean:write name="myIbd" property="smoking.name"/></p>
-
-                    <p>Surgical History: <bean:write name="myIbd" property="surgery.name"/></p>
-
-                    <p>Vaccination Record: <bean:write name="myIbd" property="vaccinationRecord.name"/></p>
-                </div>
-            </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Year for Surveillance Colonoscopy:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="yearForSurveillanceColonoscopyAsString"/>
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Named Consultant:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="namedConsultant"/>
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Nurses:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="nurses"/>
         </div>
     </div>
     <div class="row">
         <div class="span12">
-            <html:link action="/myibd-edit" styleClass="btn">Edit</html:link>
+            <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
         </div>
     </div>
 </logic:present>
