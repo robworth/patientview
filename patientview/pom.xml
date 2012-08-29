@@ -100,10 +100,6 @@
                 <filtering>true</filtering>
                 <targetPath>${profile.build.output-webapp-dir}/META-INF</targetPath>
             </resource>
-            <resource>
-                <directory>src/main/hibernate</directory>
-                <filtering>false</filtering>
-            </resource>
         </resources>
 
         <filters>
