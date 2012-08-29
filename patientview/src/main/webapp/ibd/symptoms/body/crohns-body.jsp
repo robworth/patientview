@@ -140,7 +140,7 @@
 
                     <ul>
                         <li>Blood mixed in with the stool</li>
-                        <li>Fever more than 37.8 °C</li>
+                        <li>Fever more than 37.8 &deg;C</li>
                         <li>Severe abdominal pain and tenderness</li>
                         <li>Persistent vomiting</li>
                         <li>Significant weight loss (Greater than 5%)</li>
