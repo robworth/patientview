@@ -10,7 +10,11 @@
 
 
     <p><bean:message key="cautionary.letters" /></p>
-  
+
+    <h3>Links about Letters</h3>
+    <ul>
+        <li><a href="#">Glossary of terms used in IBD</a></li>
+    </ul>
 
   <logic:empty name="letters">
       <div class="alert">No letters uploaded</div>

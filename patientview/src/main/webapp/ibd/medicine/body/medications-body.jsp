@@ -1,13 +1,39 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<div class="row">
-    <div class="span12">
-        <div class="page-header">
-            <h1>Medicines</h1>
-        </div>
-    </div>
+
+<div class="page-header">
+    <h1>Medicines</h1>
 </div>
+
+<p>
+    This section helps you keep a personal record of your current and previous medications. Please use an estimate for
+    the start date of a medication, if the exact date is not known.
+</p>
+
+<p>
+    If for any reason you discontinue or complete a course of treatment, you can record this by clicking the Stop <a class="btn" href="javascript:;">Stop</a>  icon. If you take a medication not present in the drop down boxes, you can enter the drug using the
+    dropdown box Other to complete your record.    
+</p>
+
+<p>
+    For more information about common medicines used click on the links below.
+</p>
+
+
+<h3>Links for IBD Medicines:</h3>
+<ul>
+    <li><a href="">Introduction to drugs used in IBD</a></li>
+    <li><a href="">Aminosalicylates</a></li>
+    <li><a href="">Steroids</a></li>
+    <li><a href="">Immunomodulators</a></li>
+    <li><a href="">Biologics / Anti- TNFs</a></li>
+    <li><a href="">Other drugs used in IBD</a></li>
+    <li><a href="">Research Trials in IBD</a></li>
+</ul>
+
+<hr/>
+
 <div class="row">
     <div class="span12">
         <html:link action="/medication-add" styleClass="btn">Add New Medicine</html:link>

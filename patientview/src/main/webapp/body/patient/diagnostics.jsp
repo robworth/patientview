@@ -9,8 +9,26 @@
             <h1>Diagnostics</h1>
         </div>
 
-        <p><bean:message key="diagnostics.intro" /></p>
+        <p>
+            The Diagnostics section lists your previous imaging and endoscopy tests direct from the hospital record.
+            Please note only the date and type of test is recorded. The full report is not available. If you have any
+            further questions about your tests please contact us by <a href="#">clicking here.</a>            
+        </p>
 
+        <p>
+            To learn more about the investigations used commonly in IBD click on the following links:
+        </p>
+
+        <h3>Links about Diagnostics</h3>
+        <ul>
+            <li><a href="#">Endoscopy (Colonosocopy / Sigmoidoscopy/ Gastroscopy)</a></li>
+            <li><a href="#">X-Rays- Plain and Barium tests</a></li>
+            <li><a href="#">CT scans and MRI scans</a></li>
+            <li><a href="#">Other tests</a></li>
+        </ul>
+
+        <%--<p><bean:message key="diagnostics.intro" /></p>--%>
+        <hr/>
 
             <h2>Imaging</h2>
 

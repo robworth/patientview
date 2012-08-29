@@ -7,6 +7,21 @@
 <div class="page-header">
     <h1>Results</h1>
 </div>
+<p>
+    This section helps you monitor your latest tests, direct from the hospital system. Most routine test results are
+    updated within 48 hours from when the sample was taken. Certain results make take longer to be processed and may not
+    register for over 2 weeks. To learn more about what the results mean, click on the links.
+</p>
+
+<h3>Links about blood tests</h3>
+<ul>
+    <li><a href="#">What are the common tests used</a></li>
+    <li><a href="#">Labtests Online</a> </li>
+</ul>
+
+<p>
+    Note- You may see test results before the IBD team have had chance to review them. If you have any concerns about the tests, <a href="#">please contact us here</a> or via the IBD helpline on 0161 20 6423.    
+</p>
     <h3>Result panels</h3>
     <div class="pagination">
         <ul>

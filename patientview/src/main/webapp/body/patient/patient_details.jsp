@@ -13,9 +13,12 @@
      </div>
 
      <p>
-         This section contains basic information about you. Please check the details are correct. If there are any
-         errors please contact us by <html:link action="/patient/contact">clicking here</html:link>. We would be grateful if you could record your other medical
-         conditions and your email address, thank you. 
+         My details contains basic information from your hospital records. Please check that your details are correct.
+         If there are any errors please contact us by <html:link action="/patient/contact">clicking here</html:link>.
+     </p>
+     <p>
+         To complete a full personal record of your health and contact details, please record any other health
+         conditions and your email address in the boxes below.
      </p>
 
      <%
