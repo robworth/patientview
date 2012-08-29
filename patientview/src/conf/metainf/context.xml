@@ -35,26 +35,6 @@
 
     <Parameter name="email.verification.best.before.days" value="${email.verification.best.before.days}" override="false"/>
 
-  <Resource auth="Container"
-            description="DB Connection"
-            driverClass="com.mysql.jdbc.Driver"
-            maxPoolSize="4"
-            minPoolSize="2"
-            maxConnectionAge="30"
-            maxIdleTime="30"
-            acquireIncrement="1"
-            name="jdbc/patientview"
-            user="${jdbc.username}"
-            password="${jdbc.password}"
-            factory="org.apache.naming.factory.BeanFactory"
-            type="com.mchange.v2.c3p0.ComboPooledDataSource"
-            jdbcUrl="${jdbc.url}" />
-
-    <Logger className="org.apache.catalina.logger.FileLogger"
-            prefix="renalpatientview.org_patientview_log." suffix=".txt"
-            timestamp="true"/>
-
-
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
     <WatchedResource>META-INF/context.xml</WatchedResource>
 </Context>
