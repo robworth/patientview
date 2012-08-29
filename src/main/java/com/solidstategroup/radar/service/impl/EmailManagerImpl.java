@@ -63,7 +63,7 @@ public class EmailManagerImpl implements EmailManager {
     public void sendPatientRegistrationReminderEmail(PatientUser patientUser) throws Exception {       
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("patientUser", patientUser);
-        map.put("password", TripleDes.decrypt(patientUser.getPasswordHash()));
+//        map.put("password", TripleDes.decrypt(patientUser.getPasswordHash()));
         String emailBody = renderTemplate(map, "patient-registration-reminder.vm");
         if (!debug) {
             sendEmail(emailAddressApplication, new String[]{patientUser.getUsername()},
@@ -75,20 +75,20 @@ public class EmailManagerImpl implements EmailManager {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("patientUser", patientUser);
         String emailBody = renderTemplate(map, "patient-registration-admin-notification.vm");
-        sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
-                new String[]{emailAddressAdmin1}, "New Radar patient registrant on: " +
-                new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(patientUser.getDateRegistered()),
-                emailBody);
+//        sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
+//                new String[]{emailAddressAdmin1}, "New Radar patient registrant on: " +
+//                new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(patientUser.getDateRegistered()),
+//                emailBody);
     }
 
     public void sendProfessionalRegistrationAdminNotificationEmail(ProfessionalUser professionalUser) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("user", professionalUser);
         String emailBody = renderTemplate(map, "professional-registration-admin-notification.vm");
-        sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
-                new String[]{emailAddressAdmin1}, "New Radar site registrant on: " +
-                new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(professionalUser.getDateRegistered()),
-                emailBody);
+//        sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
+//                new String[]{emailAddressAdmin1}, "New Radar site registrant on: " +
+//                new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(professionalUser.getDateRegistered()),
+//                emailBody);
     }
 
     public void sendForgottenPassword(PatientUser patientUser, String password) {

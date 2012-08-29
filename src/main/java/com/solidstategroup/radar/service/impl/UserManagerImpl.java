@@ -78,7 +78,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public void savePatientUser(PatientUser patientUser) throws Exception {
         // if the password prop set then encrypt it
         if (patientUser.getPassword() != null && patientUser.getPassword().length() > 0) {
-            patientUser.setPasswordHash(PatientUser.getPasswordHash(patientUser.getPassword()));
+            //patientUser.setPasswordHash(PatientUser.getPasswordHash(patientUser.getPassword()));
         }
 
         userDao.savePatientUser(patientUser);
@@ -113,7 +113,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             // Generate the password - 8 random characters
             String password = generateRandomPassword();
             try {
-                patientUser.setPasswordHash(User.getPasswordHash(password));
+                //patientUser.setPasswordHash(User.getPasswordHash(password));
 
                 // Save the patient user to the patient user table
                 userDao.savePatientUser(patientUser);
@@ -165,8 +165,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // if its a new user generate a password
         if (!professionalUser.hasValidId()) {
             String password = generateRandomPassword();
-            professionalUser.setPasswordHash(ProfessionalUser.getPasswordHash(password));
-            professionalUser.setUsernameHash(ProfessionalUser.getUsernameHash(professionalUser.getEmail()));
+//            professionalUser.setPasswordHash(ProfessionalUser.getPasswordHash(password));
+//            professionalUser.setUsernameHash(ProfessionalUser.getUsernameHash(professionalUser.getEmail()));
         }
 
         userDao.saveProfessionalUser(professionalUser);
@@ -206,7 +206,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public void changeUserPassword(String username, String password) throws DecryptionException, DaoException {
         ProfessionalUser professionalUser = getProfessionalUser(username);
         try {
-            professionalUser.setPasswordHash(User.getPasswordHash(password));
+            //professionalUser.setPasswordHash(User.getPasswordHash(password));
 
         } catch (Exception e) {
             LOGGER.error("could not get password hash for password", e);
@@ -226,8 +226,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         PatientUser patientUser = userDao.getPatientUser(username);
         if (patientUser != null) {
             try {
-                String password = TripleDes.decrypt(patientUser.getPasswordHash());
-                emailManager.sendForgottenPassword(patientUser, password);
+//                String password = TripleDes.decrypt(patientUser.getPasswordHash());
+//                emailManager.sendForgottenPassword(patientUser, password);
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt password for forgotten password email for {}", username, e);
                 throw new DecryptionException("Could not decrypt password for forgotten password email", e);
@@ -244,9 +244,9 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         ProfessionalUser professionalUser = userDao.getProfessionalUser(username);
         if (professionalUser != null) {
             try {
-                String password = TripleDes.decrypt(professionalUser.getPasswordHash());
-                professionalUser.setUsername(TripleDes.decrypt(professionalUser.getUsernameHash()));
-                emailManager.sendForgottenPassword(professionalUser, password);
+//                String password = TripleDes.decrypt(professionalUser.getPasswordHash());
+//                professionalUser.setUsername(TripleDes.decrypt(professionalUser.getUsernameHash()));
+                //emailManager.sendForgottenPassword(professionalUser, password);
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt");
                 throw new DecryptionException("Could not decrypt", e);

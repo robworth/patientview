@@ -10,6 +10,7 @@ import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.util.RadarUtility;
 import com.solidstategroup.radar.util.TripleDes;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -33,6 +34,90 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Autowired
     private DemographicsDao demographicsDao;
+
+    @Test
+    public void testAddGetAdminUser() throws Exception {
+        AdminUser adminUser = new AdminUser();
+        adminUser.setEmail("admin@radar101.com");
+        adminUser.setUsername("admin@radar101.com");
+        adminUser.setForename("Admin");
+        adminUser.setSurname("Admin");
+        adminUser.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveAdminUser(adminUser);
+
+        AdminUser checkAdminUser = userDao.getAdminUser(adminUser.getEmail());
+
+        assertNotNull(checkAdminUser);
+        assertTrue("Does not have a valid ID", checkAdminUser.hasValidId());
+        assertEquals("Email not persisted", checkAdminUser.getEmail(), adminUser.getEmail());
+        assertEquals("Username not persisted", checkAdminUser.getUsername(), adminUser.getUsername());
+        assertEquals("Forename not persisted", checkAdminUser.getForename(), adminUser.getForename());
+        assertEquals("Surname not persisted", checkAdminUser.getSurname(), adminUser.getSurname());
+        assertEquals("Password not persisted", checkAdminUser.getPassword(), adminUser.getPassword());
+    }
+
+    @Test
+    public void testAddGetProfessionalUser() throws Exception {
+        ProfessionalUser professionalUser = new ProfessionalUser();
+        professionalUser.setEmail("professional@radar101.com");
+        professionalUser.setUsername("professional@radar101.com");
+        professionalUser.setForename("Eddard");
+        professionalUser.setSurname("Stark");
+        professionalUser.setRole("Centre role");
+        professionalUser.setGmc("testGmc");
+        professionalUser.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser);
+
+        ProfessionalUser checkProfessionalUser = userDao.getProfessionalUser(professionalUser.getEmail());
+        assertNotNull(checkProfessionalUser);
+        assertTrue("Does not have a valid ID", checkProfessionalUser.hasValidId());
+        assertEquals("Email not persisted", checkProfessionalUser.getEmail(), professionalUser.getEmail());
+        assertEquals("Username not persisted", checkProfessionalUser.getUsername(), professionalUser.getUsername());
+        assertEquals("Forename not persisted", checkProfessionalUser.getForename(), professionalUser.getForename());
+        assertEquals("Surname not persisted", checkProfessionalUser.getSurname(), professionalUser.getSurname());
+        assertEquals("Password not persisted", checkProfessionalUser.getPassword(), professionalUser.getPassword());
+        assertEquals("Role not persisted", checkProfessionalUser.getRole(), professionalUser.getRole());
+        assertEquals("GMC not persisted", checkProfessionalUser.getGmc(), professionalUser.getGmc());
+    }
+
+    @Test
+    public void testGetProfessionalUserById() throws Exception {
+        ProfessionalUser professionalUser = new ProfessionalUser();
+        professionalUser.setEmail("professional@radar101.com");
+        professionalUser.setUsername("professional@radar101.com");
+        professionalUser.setForename("Eddard");
+        professionalUser.setSurname("Stark");
+        professionalUser.setRole("Centre role");
+        professionalUser.setGmc("testGmc");
+        professionalUser.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser);
+
+        ProfessionalUser checkProfessionalUser = userDao.getProfessionalUser(professionalUser.getId());
+        assertNotNull(checkProfessionalUser);
+    }
+
+    @Test
+    public void testDeleteProfessionalUser() throws Exception {
+        ProfessionalUser professionalUser = new ProfessionalUser();
+        professionalUser.setEmail("professional@radar101.com");
+        professionalUser.setUsername("professional@radar101.com");
+        professionalUser.setForename("Eddard");
+        professionalUser.setSurname("Stark");
+        professionalUser.setRole("Centre role");
+        professionalUser.setGmc("testGmc");
+        professionalUser.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser);
+
+        // delete the user and try to pull back
+        userDao.deleteProfessionalUser(professionalUser);
+
+        ProfessionalUser checkProfessionalUser = userDao.getProfessionalUser(professionalUser.getEmail());
+        assertNull(checkProfessionalUser);
+    }
 
     @Test
     public void testGetAdminUser() {
@@ -63,7 +148,7 @@ public class UserDaoTest extends BaseDaoTest {
         patientUser.setUsername("test_user");
         patientUser.setRadarNumber(123);
         patientUser.setDateOfBirth(new Date());
-        patientUser.setPasswordHash(User.getPasswordHash("password12"));
+        //patientUser.setPasswordHash(User.getPasswordHash("password12"));
 
         // Save
         userDao.savePatientUser(patientUser);
@@ -71,7 +156,7 @@ public class UserDaoTest extends BaseDaoTest {
         // Make sure we have an ID and a date registered
         assertTrue("Saved user doesn't have an ID", patientUser.getId() > 0);
         // Make sure it has a date registered
-        assertNotNull("No date registered", patientUser.getDateRegistered());
+        //assertNotNull("No date registered", patientUser.getDateRegistered());
 
         // Try and get the patient user - should get our new user
         patientUser = userDao.getPatientUser("test_user");
@@ -119,8 +204,8 @@ public class UserDaoTest extends BaseDaoTest {
     @Test
     public void testSaveNewProfessionalUser() throws Exception {
         ProfessionalUser professionalUser = new ProfessionalUser();
-        professionalUser.setUsernameHash(User.getUsernameHash("test_admin_user"));
-        professionalUser.setPasswordHash(User.getPasswordHash("password12"));
+        //professionalUser.setUsernameHash(User.getUsernameHash("test_admin_user"));
+        //professionalUser.setPasswordHash(User.getPasswordHash("password12"));
         professionalUser.setSurname("test_surname");
         professionalUser.setForename("test_forename");
         professionalUser.setTitle("test_title");
@@ -136,7 +221,7 @@ public class UserDaoTest extends BaseDaoTest {
         userDao.saveProfessionalUser(professionalUser);
 
         assertTrue("Saved user doesn't have an ID", professionalUser.getId() > 0);
-        assertNotNull("No date registered", professionalUser.getDateRegistered());
+        //assertNotNull("No date registered", professionalUser.getDateRegistered());
 
         professionalUser = userDao.getProfessionalUser("test_email");
         assertNotNull("Saved user was null on getting from DAO", professionalUser);
@@ -171,10 +256,10 @@ public class UserDaoTest extends BaseDaoTest {
         assertEquals("Wrong email", "marklittle@nhs.net", professionalUser.getEmail());
 
         // Username should have been set
-        assertNotNull("Username is null", professionalUser.getUsernameHash());
+        //assertNotNull("Username is null", professionalUser.getUsernameHash());
 
         // Password should have been set
-        assertNotNull("Password hash is null", professionalUser.getPasswordHash());
+        //assertNotNull("Password hash is null", professionalUser.getPasswordHash());
     }
 
     @Test
@@ -206,13 +291,6 @@ public class UserDaoTest extends BaseDaoTest {
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() > 0);
     }
-
-    @Test
-    public void testDeleteProfessionalUser() throws Exception {
-        userDao.deleteProfessionalUser(userDao.getProfessionalUser(16L));
-        ProfessionalUser professionalUser = userDao.getProfessionalUser(16L);
-        assertNull("User was found after being deleted", professionalUser);
-    }
     
     @Test
     public void outputLoginDetails() {
@@ -223,8 +301,8 @@ public class UserDaoTest extends BaseDaoTest {
         String email = "hugh.mccarthy@UHBristol.nhs.uk";
         ProfessionalUser professionalUser = userDao.getProfessionalUser(email);
         try {
-            String password = TripleDes.decrypt(professionalUser.getPasswordHash());
-            LOGGER.info("super user | email: " + email + " | password: " + password);
+            //String password = TripleDes.decrypt(professionalUser.getPasswordHash());
+            //LOGGER.info("super user | email: " + email + " | password: " + password);
         } catch (Exception e) {
             LOGGER.error(e.toString());
         }

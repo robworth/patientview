@@ -103,21 +103,21 @@ public class AdminPatientsPage extends AdminsBasePage {
         item.add(new Label("dob", patientUser.getDateOfBirth().toString()));
 
         String dateRegistered = "";
-        if (patientUser.getDateRegistered() != null) {
-            dateRegistered = patientUser.getDateRegistered().toString();
-        }
+//        if (patientUser.getDateRegistered() != null) {
+//            dateRegistered = patientUser.getDateRegistered().toString();
+//        }
 
         item.add(new Label("dateRegistered", dateRegistered));
         item.add(new Label("username", patientUser.getUsername()));
 
         String password;
         try {
-            password = TripleDes.decrypt(patientUser.getPasswordHash());
+            //password = TripleDes.decrypt(patientUser.getPasswordHash());
         } catch (Exception e) {
             password = "";
         }
 
-        item.add(new Label("password", password));
+        //item.add(new Label("password", password));
 
         AjaxLink deleteLink = new AjaxLink("deleteLink") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {

@@ -63,14 +63,14 @@ public class AdminPatientPage extends AdminsBasePage {
         // the password is encrypted in the property passwordhash so unenctypt and set the password prop
         // so the model can automatically map it to the textfield
         try {
-            patientUser.setPassword(TripleDes.decrypt(patientUser.getPasswordHash()));
+            //patientUser.setPassword(TripleDes.decrypt(patientUser.getPasswordHash()));
         } catch (Exception e) {
             // dunno
         }
 
         userForm.add(new RequiredTextField("password"));
         userForm.add(new Label("dob", patientUser.getDateOfBirth().toString()));
-        userForm.add(new Label("dateRegistered", patientUser.getDateRegistered().toString()));
+        //userForm.add(new Label("dateRegistered", patientUser.getDateRegistered().toString()));
 
         userForm.add(new AjaxSubmitLink("update") {
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {

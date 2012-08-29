@@ -2,14 +2,14 @@ package com.solidstategroup.radar.model.filter;
 
 public class ProfessionalUserFilter extends BaseFilter {
     public enum UserField {
-        SURNAME("uSurname"),
-        FORENAME("uForename"),
-        TITLE("uTitle"),
+        SURNAME("surname"),
+        FORENAME("forename"),
+        TITLE("title"),
         ROLE("uRole"),
-        EMAIL("uEmail"),
-        CENTRE("cName"),
-        REGISTRATION_DATE("uDateJoin"),
-        GMC("uGMC");
+        EMAIL("email"),
+        CENTRE("centreName"),
+        REGISTRATION_DATE("created"),
+        GMC("gmc");
 
         private String databaseFieldName;
 

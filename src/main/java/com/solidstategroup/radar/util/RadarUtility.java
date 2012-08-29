@@ -1,5 +1,8 @@
 package com.solidstategroup.radar.util;
 
+import com.Ostermiller.util.RandPass;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.Date;
 
 /**
@@ -56,5 +59,13 @@ public class RadarUtility {
             label += " ";
         }
         return label;
+    }
+
+    public static String hashPassword(String password) {
+        return DigestUtils.sha256Hex(password);
+    }
+
+    public static String generateNewPassword() {
+        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
     }
 }

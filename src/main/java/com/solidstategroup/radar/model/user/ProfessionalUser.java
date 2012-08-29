@@ -4,12 +4,15 @@ import com.solidstategroup.radar.model.Centre;
 
 public class ProfessionalUser extends User {
 
+    // super users are hardcoded by id in the previous implementation
+    private static final long[] SUPER_USER_IDS = {28, 15};
+
     private String surname = "", forename = "", title = "", gmc = "", role = "", email = "", phone = "";
     private Centre centre = new Centre();
 
     @Override
     public String getSecurityRole() {
-        for(long id : User.SUPER_USER_IDS) {
+        for(long id : SUPER_USER_IDS) {
             if (getId().equals(id)) {
                 return User.ROLE_SUPER_USER;
             }
