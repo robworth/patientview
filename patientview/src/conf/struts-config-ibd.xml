@@ -269,6 +269,11 @@
             <forward name="success" path="/ibd/symptoms/body/graph-data.jsp"/>
         </action>
 
+        <action path="/ibd-help"
+                type="com.worthsoln.patientview.IndexAction" parameter="help">
+            <forward name="success" path="/ibd/help.jsp"/>
+        </action>
+
     </action-mappings>
 
 </struts-config>
