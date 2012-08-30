@@ -7,9 +7,9 @@ import java.io.Serializable;
  * also sometimes referred to as working group
  */
 public class DiseaseGroup implements Serializable, Comparable<DiseaseGroup> {
-    public static final String SRNS_DISEASE_GROUP_ID = "SRNS:41";
-    public static final String MPGN_DISEASEGROUP_ID = "Membranoproliferative31";
-    public static final String ALPORT_DISEASEGROUP_ID = "Alport0";
+    public static final String SRNS_DISEASE_GROUP_ID = "SRNS";
+    public static final String MPGN_DISEASEGROUP_ID = "MPGN";
+    public static final String ALPORT_DISEASEGROUP_ID = "ALPORT";
     private String id;
     private String name;
     private String shortName;
