@@ -144,26 +144,57 @@
   </tr>
 </logic:notEmpty>
 
-<logic:notEmpty name="patientDetail" property="edtaDiagnosis">
 <tr valign="top">
   <th class="tablecellbold">Diagnosis</th>
     <td class="tablecell">
-      <bean:write name="patientDetail" property="edtaDiagnosis.description"/>
-    </td>   
-</tr>
-</logic:notEmpty>
-
-<logic:notEmpty name="patientDetail" property="edtaTreatment">
-<tr align="top">
-  <th class="tablecellbold">Treatment</th>
-    <td class="tablecell">
-      <bean:write name="patientDetail" property="edtaTreatment.description"/>
+        <logic:present tenancy="rpv">
+            <logic:notEmpty name="patientDetail" property="edtaDiagnosis">
+                <bean:write name="patientDetail" property="edtaDiagnosis.description"/><br />
+            </logic:notEmpty>
+        </logic:present>
+        <logic:present name="myIbdDiagnosis" scope="session">
+            <bean:write name="myIbdDiagnosis" scope="session"/><br />
+        </logic:present>
     </td>
 </tr>
-</logic:notEmpty>
 
+<tr valign="top">
+    <th class="tablecellbold">GP name</th>
+    <td class="tablecell">
+        <bean:write name="patientDetail" property="patient.gpname"/>
+    </td>
+</tr>
+
+<tr valign="top">
+    <th class="tablecellbold">GP telephone</th>
+    <td class="tablecell">
+        <bean:write name="patientDetail" property="patient.gptelephone"/>
+    </td>
+</tr>
+
+<tr valign="top">
+    <th class="tablecellbold">GP address</th>
+    <td class="tablecell">
+        <bean:write name="patientDetail" property="patient.gpaddress1"/>
+        <br />
+        <bean:write name="patientDetail" property="patient.gpaddress2"/>
+        <br />
+        <bean:write name="patientDetail" property="patient.gpaddress3"/>
+        <br />
+        <bean:write name="patientDetail" property="patient.gppostcode"/>
+    </td>
+</tr>
 
 <logic:present tenancy="rpv">
+    <logic:notEmpty name="patientDetail" property="edtaTreatment">
+        <tr align="top">
+            <th class="tablecellbold">Treatment</th>
+            <td class="tablecell">
+                <bean:write name="patientDetail" property="edtaTreatment.description"/>
+            </td>
+        </tr>
+    </logic:notEmpty>
+
     <tr valign="top">
         <th class="tablecellbold">Transplant Status</th>
 
