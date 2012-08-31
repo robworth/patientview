@@ -160,6 +160,10 @@ public abstract class BaseDaoImpl {
         return "";
     }
 
+    public String buildWhereQuery(Map<String, String> searchMap, boolean and, List<Object> paramList) {
+        return buildWhereQuery(true, searchMap, and, paramList);
+    }
+
     /**
      * Will build a where query based on search values in a map
      * Key in the map is the database field name and the value is the text to search for
@@ -168,12 +172,17 @@ public abstract class BaseDaoImpl {
      * @param paramList List of params for current query
      * @return String
      */
-    public String buildWhereQuery(Map<String, String> searchMap, boolean and, List<Object> paramList) {
+    public String buildWhereQuery(boolean includeWhere, Map<String, String> searchMap, boolean and,
+                                  List<Object> paramList) {
         if (searchMap != null && !searchMap.isEmpty()) {
             List<String> searchQueries = new ArrayList<String>();
 
             // if there a search fields in the filter then create where clause
-            searchQueries.add("WHERE");
+
+            // the start is optional as some statement may already have the where part and only require all the clauses
+            if (includeWhere) {
+                searchQueries.add("WHERE");
+            }
 
             // parse the search map as one key can be multiple fields in a table
             searchMap = parseSearchMap(searchMap);
