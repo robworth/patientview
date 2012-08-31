@@ -46,7 +46,10 @@
 <p>
     Patient Details for
     <bean:write name="patientDetail" property="patient.forename"/>
-    <bean:write name="patientDetail" property="patient.surname"/>, uploaded by unit: <bean:write name="patientDetail" property="unit.shortname"/>    
+    <bean:write name="patientDetail" property="patient.surname"/>
+    <logic:present tenancy="rpv">
+        , uploaded by unit: <bean:write name="patientDetail" property="unit.shortname"/>
+    </logic:present>
 </p>
 
 <html:form action="/patient/patient_details_update">
