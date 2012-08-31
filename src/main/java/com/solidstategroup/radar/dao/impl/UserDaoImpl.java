@@ -28,36 +28,84 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     // tables
-    private static final String USER_TABLE_NAME = "user";
-    private static final String USER_MAPPING_TABLE_NAME = "rdr_user_mapping";
-    private static final String PROFESSIONAL_USER_TABLE_NAME = "rdr_professional_user";
+    private static final String USER_TABLE_NAME = "user"; // main user table
+    private static final String USER_MAPPING_TABLE_NAME = "rdr_user_mapping"; // maps user accounts to roles in radar
+    private static final String PATIENT_TABLE_NAME = "patient"; // patient specific details
+    private static final String PROFESSIONAL_USER_TABLE_NAME = "rdr_professional_user"; // rdr specific user
+    private static final String RADAR_PATIENT_USER_TABLE_NAME = "rdr_patient_user"; // rdr specific patient information
 
     // user mapping table fields
     private static final String ID_FIELD_NAME = "id";
     private static final String USER_ID_FIELD_NAME = "userId";
-    private static final String ROLE_FIELD_NAME = "role";
+    private static final String USER_ROLE_FIELD_NAME = "role";
 
     // user table fields
-    private static final String CREATED_FIELD_NAME = "created";
-    private static final String USERNAME_FIELD_NAME = "username";
-    private static final String PASSWORD_FIELD_NAME = "password";
-    private static final String EMAIL_FIELD_NAME = "email";
-    private static final String TITLE_FIELD_NAME = "title";
-    private static final String FORENAME_FIELD_NAME = "forename";
-    private static final String SURNAME_FIELD_NAME = "surname";
-    private static final String TELEPHONE_FIELD_NAME = "telephone";
-    private static final String SCREEN_NAME_FIELD_NAME = "screenName";
+    private static final String USER_CREATED_FIELD_NAME = "created";
+    private static final String USER_USERNAME_FIELD_NAME = "username";
+    private static final String USER_PASSWORD_FIELD_NAME = "password";
+    private static final String USER_EMAIL_FIELD_NAME = "email";
+    private static final String USER_TITLE_FIELD_NAME = "title";
+    private static final String USER_FORENAME_FIELD_NAME = "forename";
+    private static final String USER_SURNAME_FIELD_NAME = "surname";
+    private static final String USER_TELEPHONE_FIELD_NAME = "telephone";
+    private static final String USER_SCREEN_NAME_FIELD_NAME = "screenName";
+
+    // patient table fields
+    private static final String PATIENT_USER_NHS_NO_FIELD_NAME = "nhsNo";
+    private static final String PATIENT_USER_DATE_OF_BIRTH_FIELD_NAME = "dateofbirth";
+    private static final String PATIENT_USER_SEX_FIELD_NAME = "sex";
+    private static final String PATIENT_USER_ADDRESS_1_FIELD_NAME = "address1";
+    private static final String PATIENT_USER_ADDRESS_2_FIELD_NAME = "address2";
+    private static final String PATIENT_USER_ADDRESS_3_FIELD_NAME = "address3";
+    private static final String PATIENT_USER_ADDRESS_4_FIELD_NAME = "address4";
+    private static final String PATIENT_USER_POST_CODE_FIELD_NAME = "postcode";
+    private static final String PATIENT_USER_PREVIOUS_POST_CODE_FIELD_NAME = "previousPostCode";
+    private static final String PATIENT_USER_TELEPHONE_2_FIELD_NAME = "telephone2";
+    private static final String PATIENT_USER_MOBILE_FIELD_NAME = "mobile";
+    private static final String PATIENT_USER_HOSPITAL_NUMBER_FIELD_NAME = "hospitalnumber";
+    private static final String PATIENT_USER_SURNAME_ALIAS_FIELD_NAME = "surnameAlias";
+
+    // TODO: Future plan is to get rid of the RADAR_NO for patients and use the NHSNO in patient table
+    // TODO: When this happens the rdr_patient_table should not be needed
+
+    // rdr patient table fields
+    private static final String RADAR_PATIENT_USER_RADAR_NO_FIELD_NAME = "radarNo";
 
     // professional user table fields
-    private static final String GMC_FIELD_NAME = "gmc";
-    private static final String CENTRE_ID_FIELD_NAME = "centreId";
-    private static final String CENTRE_ROLE_FIELD_NAME = "centreRole";
+    private static final String PROFESSIONAL_USER_GMC_FIELD_NAME = "gmc";
+    private static final String PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME = "centreId";
+    private static final String PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME = "centreRole";
+
+    // sql snippets
+    private static final String BASE_PROFESSIONAL_USERS_SQL =
+            "SELECT " +
+            "   user.*, " +
+            "   userMapping.*, " +
+            "   professionalUser.* " +
+            "FROM " +
+            USER_TABLE_NAME + " user, " +
+            USER_MAPPING_TABLE_NAME + " userMapping, " +
+            PROFESSIONAL_USER_TABLE_NAME + " professionalUser ";
+
+    private static final String BASE_PATIENT_USERS_SQL =
+            "SELECT " +
+                    "   user.*, " +
+                    "   userMapping.*, " +
+                    "   patient.*, " +
+                    "   rdrPatientUser.* " +
+                    "FROM " +
+                    USER_TABLE_NAME + " user, " +
+                    USER_MAPPING_TABLE_NAME + " userMapping, " +
+                    PATIENT_TABLE_NAME + " patient, " +
+                    RADAR_PATIENT_USER_TABLE_NAME + " rdrPatientUser";
 
     private UtilityDao utilityDao;
 
     private SimpleJdbcInsert userInsert;
     private SimpleJdbcInsert userMappingInsert;
     private SimpleJdbcInsert professionalUserInsert;
+    private SimpleJdbcInsert patientUserInsert;
+    private SimpleJdbcInsert radarPatientUserInsert;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -65,17 +113,32 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
-                .usingColumns(CREATED_FIELD_NAME, USERNAME_FIELD_NAME, PASSWORD_FIELD_NAME, EMAIL_FIELD_NAME,
-                        TITLE_FIELD_NAME, FORENAME_FIELD_NAME, SURNAME_FIELD_NAME, TELEPHONE_FIELD_NAME,
-                        SCREEN_NAME_FIELD_NAME);
+                .usingColumns(USER_CREATED_FIELD_NAME, USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
+                        USER_EMAIL_FIELD_NAME, USER_TITLE_FIELD_NAME, USER_FORENAME_FIELD_NAME,
+                        USER_SURNAME_FIELD_NAME, USER_TELEPHONE_FIELD_NAME, USER_SCREEN_NAME_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
-                .usingColumns(USER_ID_FIELD_NAME, ROLE_FIELD_NAME);
+                .usingColumns(USER_ID_FIELD_NAME, USER_ROLE_FIELD_NAME);
 
         professionalUserInsert = new SimpleJdbcInsert(dataSource).withTableName(PROFESSIONAL_USER_TABLE_NAME)
-                .usingGeneratedKeyColumns(ID_FIELD_NAME)
-                .usingColumns(USER_ID_FIELD_NAME, GMC_FIELD_NAME, CENTRE_ID_FIELD_NAME, CENTRE_ROLE_FIELD_NAME);
+                .usingColumns(USER_ID_FIELD_NAME, PROFESSIONAL_USER_GMC_FIELD_NAME,
+                        PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME, PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME);
+
+        patientUserInsert = new SimpleJdbcInsert(dataSource).withTableName(PATIENT_TABLE_NAME)
+                .usingColumns(USER_ID_FIELD_NAME, PATIENT_USER_NHS_NO_FIELD_NAME, PATIENT_USER_DATE_OF_BIRTH_FIELD_NAME,
+                        PATIENT_USER_SEX_FIELD_NAME, PATIENT_USER_ADDRESS_1_FIELD_NAME,
+                        PATIENT_USER_ADDRESS_2_FIELD_NAME, PATIENT_USER_ADDRESS_3_FIELD_NAME,
+                        PATIENT_USER_ADDRESS_4_FIELD_NAME,
+                        PATIENT_USER_POST_CODE_FIELD_NAME,
+                        PATIENT_USER_PREVIOUS_POST_CODE_FIELD_NAME,
+                        PATIENT_USER_TELEPHONE_2_FIELD_NAME,
+                        PATIENT_USER_MOBILE_FIELD_NAME,
+                        PATIENT_USER_HOSPITAL_NUMBER_FIELD_NAME,
+                        PATIENT_USER_SURNAME_ALIAS_FIELD_NAME);
+
+        radarPatientUserInsert = new SimpleJdbcInsert(dataSource).withTableName(RADAR_PATIENT_USER_TABLE_NAME)
+                .usingColumns(USER_ID_FIELD_NAME, RADAR_PATIENT_USER_RADAR_NO_FIELD_NAME);
     }
 
     public AdminUser getAdminUser(String email) {
@@ -87,14 +150,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                         USER_TABLE_NAME + " user, " +
                         USER_MAPPING_TABLE_NAME + " userMapping " +
                     "WHERE " +
-                    "   user." + EMAIL_FIELD_NAME + " = ? " +
+                    "   user." + USER_EMAIL_FIELD_NAME + " = ? " +
                     "AND" +
-                    "   usermapping." + ROLE_FIELD_NAME + " = ? " +
+                    "   usermapping." + USER_ROLE_FIELD_NAME + " = ? " +
                     "AND" +
                     "   user." + ID_FIELD_NAME + " = userMapping." + USER_ID_FIELD_NAME,
                     new Object[]{email, User.ROLE_ADMIN}, new AdminUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Could not admin user " + USER_TABLE_NAME + " with " + EMAIL_FIELD_NAME + " {}", email);
+            LOGGER.debug("Could not admin user " + USER_TABLE_NAME + " with " + USER_EMAIL_FIELD_NAME + " {}", email);
         }
 
         return null;
@@ -108,21 +171,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     public ProfessionalUser getProfessionalUser(Long id) {
         try {
-            return jdbcTemplate.queryForObject("" +
-                    "SELECT " +
-                    "   user.*, " +
-                    "   userMapping.*, " +
-                    "   professionalUser.* " +
-                    "FROM " +
-                        USER_TABLE_NAME + " user, " +
-                        USER_MAPPING_TABLE_NAME + " userMapping, " +
-                        PROFESSIONAL_USER_TABLE_NAME + " professionalUser " +
+            return jdbcTemplate.queryForObject(BASE_PROFESSIONAL_USERS_SQL +
                     "WHERE " +
-                    "   usermapping." + ROLE_FIELD_NAME + " = ? " +
+                    "   usermapping." + USER_ROLE_FIELD_NAME + " = ? " +
                     "AND" +
                     "   usermapping." + USER_ID_FIELD_NAME + " = ? "+
                     "AND " +
-                    "   user." + ID_FIELD_NAME + " = professionalUser." + USER_ID_FIELD_NAME,
+                    "   user." + ID_FIELD_NAME + " = userMapping." + USER_ID_FIELD_NAME,
                     new Object[]{User.ROLE_PROFESSIONAL, id}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not professional user with " + ID_FIELD_NAME + " {}", id);
@@ -133,29 +188,57 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     public ProfessionalUser getProfessionalUser(String email) {
         try {
-            return jdbcTemplate.queryForObject("" +
-                    "SELECT " +
-                    "   user.*, " +
-                    "   userMapping.*, " +
-                    "   professionalUser.* " +
-                    "FROM " +
-                        USER_TABLE_NAME + " user, " +
-                        USER_MAPPING_TABLE_NAME + " userMapping, " +
-                        PROFESSIONAL_USER_TABLE_NAME + " professionalUser " +
+            return jdbcTemplate.queryForObject(BASE_PROFESSIONAL_USERS_SQL +
                     "WHERE " +
-                    "   user." + EMAIL_FIELD_NAME + " = ? " +
+                    "   user." + USER_EMAIL_FIELD_NAME + " = ? " +
                     "AND" +
-                    "   usermapping." + ROLE_FIELD_NAME + " = ? " +
+                    "   usermapping." + USER_ROLE_FIELD_NAME + " = ? " +
                     "AND" +
                     "   user." + ID_FIELD_NAME + " = userMapping." + USER_ID_FIELD_NAME +
                     " AND " +
-                    "   user." + ID_FIELD_NAME + " = professionalUser." + USER_ID_FIELD_NAME,
+                    "   user." + ID_FIELD_NAME + " = userMapping." + USER_ID_FIELD_NAME,
                     new Object[]{email, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Could not professional user with " + EMAIL_FIELD_NAME + " {}", email);
+            LOGGER.debug("Could not professional user with " + USER_EMAIL_FIELD_NAME + " {}", email);
         }
 
         return null;
+    }
+
+    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage) {
+        if (filter == null) {
+            filter = new ProfessionalUserFilter();
+        }
+
+        List<String> sqlQueries = new ArrayList<String>();
+        List<Object> params = new ArrayList<Object>();
+
+        // normal sql query without any filter options
+        sqlQueries.add(BASE_PROFESSIONAL_USERS_SQL +
+                "WHERE " +
+                "   usermapping." + USER_ROLE_FIELD_NAME + " = '" + User.ROLE_PROFESSIONAL + "'" +
+                "AND " +
+                "   professionalUser.userId = usermapping.userId " +
+                "AND " +
+                "   user." + ID_FIELD_NAME + " = professionalUser." + USER_ID_FIELD_NAME
+        );
+
+        // if there are search queries then build the where
+        if (filter.hasSearchCriteria()) {
+            sqlQueries.add("AND " + buildWhereQuery(false, filter.getSearchFields(), true, params));
+        }
+
+        // if the filter has a sort then order by it
+        if (filter.hasSortFilter()) {
+            sqlQueries.add(buildOrderQuery(filter.getSortField(), filter.isReverse()));
+        }
+
+        // if a range has been set limit the results
+        sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
+
+        // combine the statement and return result
+        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
+                new ProfessionalUserRowMapper());
     }
 
     public void saveProfessionalUser(final ProfessionalUser professionalUser) throws Exception {
@@ -165,9 +248,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         // save the specific radar professional user details in seperate table
         Map<String, Object> professionalUserMap = new HashMap<String, Object>();
         professionalUserMap.put(USER_ID_FIELD_NAME, professionalUser.getId());
-        professionalUserMap.put(GMC_FIELD_NAME, professionalUser.getGmc());
-        professionalUserMap.put(CENTRE_ID_FIELD_NAME, professionalUser.getCentre().getId());
-        professionalUserMap.put(CENTRE_ROLE_FIELD_NAME, professionalUser.getRole());
+        professionalUserMap.put(PROFESSIONAL_USER_GMC_FIELD_NAME, professionalUser.getGmc());
+        professionalUserMap.put(PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME, professionalUser.getCentre().getId());
+        professionalUserMap.put(PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME, professionalUser.getRole());
 
         // make sure we only ever have 1 record for this user
         namedParameterJdbcTemplate.update("DELETE FROM " + PROFESSIONAL_USER_TABLE_NAME + " WHERE "
@@ -190,50 +273,24 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     }
 
-    public List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage) {
-        if (filter == null) {
-            filter = new ProfessionalUserFilter();
-        }
-
-        List<String> sqlQueries = new ArrayList<String>();
-        List<Object> params = new ArrayList<Object>();
-
-        // normal sql query without any filter options
-        sqlQueries.add("" +
-                "SELECT " +
-                "   user.*, " +
-                "   userMapping.*, " +
-                "   professionalUser.* " +
-                "FROM " +
-                    USER_TABLE_NAME + " user, " +
-                    USER_MAPPING_TABLE_NAME + " userMapping, " +
-                    PROFESSIONAL_USER_TABLE_NAME + " professionalUser " +
-                "WHERE " +
-                "   usermapping." + ROLE_FIELD_NAME + " = ? " +
-                " AND " +
-                "   user." + ID_FIELD_NAME + " = professionalUser." + USER_ID_FIELD_NAME
-        );
-
-        // if there are search queries then build the where
-        if (filter.hasSearchCriteria()) {
-            sqlQueries.add(buildWhereQuery(filter.getSearchFields(), true, params));
-        }
-
-        // if the filter has a sort then order by it
-        if (filter.hasSortFilter()) {
-            sqlQueries.add(buildOrderQuery(filter.getSortField(), filter.isReverse()));
-        }
-
-        // if a range has been set limit the results
-        sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
-
-        // combine the statement and return result
-        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
-                new ProfessionalUserRowMapper());
-    }
-
     public PatientUser getPatientUser(Long id) {
-        // todo
+        try {
+            return jdbcTemplate.queryForObject(BASE_PATIENT_USERS_SQL +
+                    "WHERE " +
+                    "   usermapping." + USER_ROLE_FIELD_NAME + " = ? " +
+                    "AND" +
+                    "   usermapping." + USER_ID_FIELD_NAME + " = ? " +
+                    "AND " +
+                    "   user." + ID_FIELD_NAME + " = usermapping." + USER_ID_FIELD_NAME + " " +
+                    "AND " +
+                    "   patient." + ID_FIELD_NAME + " = usermapping." + USER_ID_FIELD_NAME  + " " +
+                    "AND " +
+                    "   rdrPatientUser." + ID_FIELD_NAME + " = usermapping." + USER_ID_FIELD_NAME,
+                    new Object[]{User.ROLE_PATIENT, id}, new PatientUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not patient user with " + ID_FIELD_NAME + " {}", id);
+        }
+
         return null;
     }
 
@@ -267,11 +324,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             ProfessionalUser professionalUser = (ProfessionalUser) mapUserObject(resultSet, new ProfessionalUser());
 
             // now map the specific props for this user in radar
-            professionalUser.setGmc(resultSet.getString(GMC_FIELD_NAME));
-            professionalUser.setRole(resultSet.getString(CENTRE_ROLE_FIELD_NAME));
+            professionalUser.setGmc(resultSet.getString(PROFESSIONAL_USER_GMC_FIELD_NAME));
+            professionalUser.setRole(resultSet.getString(PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME));
 
             // Set the centre
-            Long centreId = resultSet.getLong(CENTRE_ID_FIELD_NAME);
+            Long centreId = resultSet.getLong(PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME);
             if (centreId != null && centreId > 0) {
                 professionalUser.setCentre(utilityDao.getCentre(centreId));
             }
@@ -282,8 +339,28 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private class PatientUserRowMapper implements RowMapper<PatientUser> {
         public PatientUser mapRow(ResultSet resultSet, int i) throws SQLException {
-            // todo
-            return new PatientUser();
+            // map the base user properties
+            PatientUser patientUser = (PatientUser) mapUserObject(resultSet, new PatientUser());
+
+            // now map the common patient props
+            patientUser.setNhsNumber(resultSet.getString(PATIENT_USER_NHS_NO_FIELD_NAME));
+            patientUser.setDateOfBirth(resultSet.getDate(PATIENT_USER_DATE_OF_BIRTH_FIELD_NAME));
+            patientUser.setAddress1(resultSet.getString(PATIENT_USER_ADDRESS_1_FIELD_NAME));
+            patientUser.setAddress2(resultSet.getString(PATIENT_USER_ADDRESS_2_FIELD_NAME));
+            patientUser.setAddress3(resultSet.getString(PATIENT_USER_ADDRESS_3_FIELD_NAME));
+            patientUser.setAddress4(resultSet.getString(PATIENT_USER_ADDRESS_4_FIELD_NAME));
+            patientUser.setPostcode(resultSet.getString(PATIENT_USER_POST_CODE_FIELD_NAME));
+            patientUser.setPreviousPostcode(resultSet.getString(PATIENT_USER_PREVIOUS_POST_CODE_FIELD_NAME));
+            patientUser.setTelephone2(resultSet.getString(PATIENT_USER_TELEPHONE_2_FIELD_NAME));
+            patientUser.setMobile(resultSet.getString(PATIENT_USER_MOBILE_FIELD_NAME));
+            patientUser.setHospitalNumber(resultSet.getString(PATIENT_USER_HOSPITAL_NUMBER_FIELD_NAME));
+            patientUser.setSurnameAlias(resultSet.getString(PATIENT_USER_SURNAME_ALIAS_FIELD_NAME));
+            patientUser.setSex(resultSet.getString(PATIENT_USER_SEX_FIELD_NAME));
+
+            // map radar specific ones
+            patientUser.setRadarNumber(resultSet.getLong(RADAR_PATIENT_USER_RADAR_NO_FIELD_NAME));
+
+            return patientUser;
         }
     }
 
@@ -296,15 +373,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private User mapUserObject(ResultSet resultSet, User user) throws SQLException {
         user.setId(resultSet.getLong(ID_FIELD_NAME));
-        user.setCreated(resultSet.getDate(CREATED_FIELD_NAME));
-        user.setUsername(resultSet.getString(USERNAME_FIELD_NAME));
-        user.setPassword(resultSet.getString(PASSWORD_FIELD_NAME));
-        user.setEmail(resultSet.getString(EMAIL_FIELD_NAME));
-        user.setTitle(resultSet.getString(TITLE_FIELD_NAME));
-        user.setForename(resultSet.getString(FORENAME_FIELD_NAME));
-        user.setSurname(resultSet.getString(SURNAME_FIELD_NAME));
-        user.setTelephone(resultSet.getString(TELEPHONE_FIELD_NAME));
-        user.setScreenName(resultSet.getString(SCREEN_NAME_FIELD_NAME));
+        user.setCreated(resultSet.getDate(USER_CREATED_FIELD_NAME));
+        user.setUsername(resultSet.getString(USER_USERNAME_FIELD_NAME));
+        user.setPassword(resultSet.getString(USER_PASSWORD_FIELD_NAME));
+        user.setEmail(resultSet.getString(USER_EMAIL_FIELD_NAME));
+        user.setTitle(resultSet.getString(USER_TITLE_FIELD_NAME));
+        user.setForename(resultSet.getString(USER_FORENAME_FIELD_NAME));
+        user.setSurname(resultSet.getString(USER_SURNAME_FIELD_NAME));
+        user.setTelephone(resultSet.getString(USER_TELEPHONE_FIELD_NAME));
+        user.setScreenName(resultSet.getString(USER_SCREEN_NAME_FIELD_NAME));
         return user;
     }
 
@@ -315,15 +392,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private void saveUser(User user) {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(ID_FIELD_NAME, user.getId());
-        userMap.put(CREATED_FIELD_NAME, user.getCreated());
-        userMap.put(USERNAME_FIELD_NAME, user.getUsername());
-        userMap.put(PASSWORD_FIELD_NAME, user.getPassword());
-        userMap.put(EMAIL_FIELD_NAME, user.getEmail());
-        userMap.put(TITLE_FIELD_NAME, user.getTitle());
-        userMap.put(FORENAME_FIELD_NAME, user.getForename());
-        userMap.put(SURNAME_FIELD_NAME, user.getSurname());
-        userMap.put(TELEPHONE_FIELD_NAME, user.getTelephone());
-        userMap.put(SCREEN_NAME_FIELD_NAME, user.getScreenName());
+        userMap.put(USER_CREATED_FIELD_NAME, user.getCreated());
+        userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
+        userMap.put(USER_PASSWORD_FIELD_NAME, user.getPassword());
+        userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
+        userMap.put(USER_TITLE_FIELD_NAME, user.getTitle());
+        userMap.put(USER_FORENAME_FIELD_NAME, user.getForename());
+        userMap.put(USER_SURNAME_FIELD_NAME, user.getSurname());
+        userMap.put(USER_TELEPHONE_FIELD_NAME, user.getTelephone());
+        userMap.put(USER_SCREEN_NAME_FIELD_NAME, user.getScreenName());
 
         if (user.hasValidId()) {
             namedParameterJdbcTemplate.update(buildUpdateQuery(USER_TABLE_NAME, ID_FIELD_NAME, userMap), userMap);
@@ -363,7 +440,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         // we only ever want one user mapping per user so just delete any existing and re add
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_ID_FIELD_NAME, user.getId());
-        userMap.put(ROLE_FIELD_NAME, user.getSecurityRole());
+        userMap.put(USER_ROLE_FIELD_NAME, user.getSecurityRole());
 
         // delete any mappings already so we dont end up with two
         deleteUserMapping(user);
