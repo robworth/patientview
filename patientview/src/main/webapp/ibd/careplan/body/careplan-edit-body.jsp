@@ -13,11 +13,16 @@
             <fieldset class="span12">
                 <div class="row">
                     <div class="span12">
+                        <h2>Before your appointment</h2>
                         <p>
-                            These are some common areas that can have an impact on living with IBD. Which are the
-                            most relevant to you? Please tick the boxes to highlight the areas you would like to
-                            discuss at your next appointment. There are information links to learn more about
-                            these areas in detail.
+                            Whether you are newly diagnosed or have been living with IBD for a number of years, the
+                            challenges of managing a chronic condition can change quickly. Below is a list of common
+                            areas, where people feel they may need more help or information. Please tick the boxes to
+                            highlight the areas you would like to review at your next appointment. There are information
+                            links to learn more about these areas in detail.
+                        </p>
+                        <p>
+                            
                         </p>
                     </div>
                 </div>
@@ -55,10 +60,11 @@
                                 Use the box below to add further topic areas that you would like to explore.
                             </label>
                             <html:textarea property="furtherTopics" rows="5" styleClass="span6"/>
-                            <div class="page-header">
-                                <h2>Set your goals to improve your health</h2>
-                            </div>
-                            <p>
+                            <hr/>
+                                <h2>During and after your appointment</h2>
+                            
+                            <h3>My goals to improve my health</h3>
+                            <p class="paragraphSizeTopMargin">
                                 What goals would you like to change or improve about your health in the next year?
                             </p>
 
