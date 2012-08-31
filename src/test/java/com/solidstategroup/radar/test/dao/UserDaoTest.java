@@ -120,6 +120,81 @@ public class UserDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetProfessionalUsersInOrder() throws Exception {
+        ProfessionalUser professionalUser1 = new ProfessionalUser();
+        professionalUser1.setEmail("professional1@radar101.com");
+        professionalUser1.setUsername("professional1@radar101.com");
+        professionalUser1.setForename("Eddard");
+        professionalUser1.setSurname("Stark");
+        professionalUser1.setRole("Centre role");
+        professionalUser1.setGmc("testGmc");
+        professionalUser1.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser1);
+
+        ProfessionalUser professionalUser2 = new ProfessionalUser();
+        professionalUser2.setEmail("professional2@radar101.com");
+        professionalUser2.setUsername("professional2@radar101.com");
+        professionalUser2.setForename("Tyrion");
+        professionalUser2.setSurname("Lannister");
+        professionalUser2.setRole("Centre role");
+        professionalUser2.setGmc("testGmc");
+        professionalUser2.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser2);
+
+        List<ProfessionalUser> checkProfessionalUsers = userDao.getProfessionalUsers(new ProfessionalUserFilter(),
+                -1, -1);
+
+        assertTrue("No professional users found", !checkProfessionalUsers.isEmpty()
+                && checkProfessionalUsers.size() > 0);
+        assertTrue("To many professional users found", checkProfessionalUsers.size() == 2);
+
+        // first one should Tyrion
+        assertEquals("First user in list is not correct", checkProfessionalUsers.get(0).getId(),
+                professionalUser2.getId());
+    }
+
+    @Test
+    public void testSearchProfessionalUsers() throws Exception {
+        ProfessionalUser professionalUser1 = new ProfessionalUser();
+        professionalUser1.setEmail("professional1@radar101.com");
+        professionalUser1.setUsername("professional1@radar101.com");
+        professionalUser1.setForename("Eddard");
+        professionalUser1.setSurname("Stark");
+        professionalUser1.setRole("Centre role");
+        professionalUser1.setGmc("testGmc");
+        professionalUser1.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser1);
+
+        ProfessionalUser professionalUser2 = new ProfessionalUser();
+        professionalUser2.setEmail("professional2@radar101.com");
+        professionalUser2.setUsername("professional2@radar101.com");
+        professionalUser2.setForename("Tyrion");
+        professionalUser2.setSurname("Lannister");
+        professionalUser2.setRole("Centre role");
+        professionalUser2.setGmc("testGmc");
+        professionalUser2.setPassword(RadarUtility.generateNewPassword());
+
+        userDao.saveProfessionalUser(professionalUser2);
+
+        ProfessionalUserFilter professionalUserFilter = new ProfessionalUserFilter();
+        professionalUserFilter.addSearchCriteria(ProfessionalUserFilter.UserField.EMAIL.getDatabaseFieldName(),
+                professionalUser2.getEmail());
+
+        List<ProfessionalUser> checkProfessionalUsers = userDao.getProfessionalUsers(professionalUserFilter, -1, -1);
+
+        assertTrue("No professional users found", !checkProfessionalUsers.isEmpty()
+                && checkProfessionalUsers.size() > 0);
+        assertTrue("To many professional users found", checkProfessionalUsers.size() == 1);
+
+        // first one should Tyrion
+        assertEquals("First user in list is not correct", checkProfessionalUsers.get(0).getId(),
+                professionalUser2.getId());
+    }
+
+    @Test
     public void testGetAdminUser() {
         AdminUser adminUser = userDao.getAdminUser("ihaynes@data-insite.co.uk");
         assertNotNull(adminUser);
@@ -146,7 +221,7 @@ public class UserDaoTest extends BaseDaoTest {
         // Construct the user
         PatientUser patientUser = new PatientUser();
         patientUser.setUsername("test_user");
-        patientUser.setRadarNumber(123);
+        //patientUser.setRadarNumber(123);
         patientUser.setDateOfBirth(new Date());
         //patientUser.setPasswordHash(User.getPasswordHash("password12"));
 
@@ -283,14 +358,14 @@ public class UserDaoTest extends BaseDaoTest {
         assertTrue(professionalUsers.size() == 1);
     }
     
-    @Test
-    public void testSearchProfessionalUsers() {
-        ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
-        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME.getDatabaseFieldName(), "fiona");
-        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
-        assertNotNull(professionalUsers);
-        assertTrue(professionalUsers.size() > 0);
-    }
+//    @Test
+//    public void testSearchProfessionalUsers() {
+//        ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
+//        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME.getDatabaseFieldName(), "fiona");
+//        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
+//        assertNotNull(professionalUsers);
+//        assertTrue(professionalUsers.size() > 0);
+//    }
     
     @Test
     public void outputLoginDetails() {
