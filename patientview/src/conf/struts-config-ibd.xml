@@ -274,6 +274,14 @@
             <forward name="success" path="/ibd/help.jsp"/>
         </action>
 
+        <action path="/ibd-patient_details"
+                name="ibdPatientDetailsForm"
+                type="com.worthsoln.ibd.action.mydetails.MyDetailsAction"
+                scope="request"
+                parameter="patient_details">
+            <forward name="success" path="/patient/patient_details.jsp"/>
+        </action>
+
     </action-mappings>
 
 </struts-config>
