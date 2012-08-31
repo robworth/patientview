@@ -10,7 +10,12 @@
         if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
     %>
 
-    <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/patient/patient_details">My Details</html:link></li>
+    <logic:present tenancy="rpv">
+        <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/patient/patient_details">My Details</html:link></li>
+    </logic:present>
+    <logic:present tenancy="ibd">
+        <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/ibd-patient_details">My Details</html:link></li>
+    </logic:present>
 
     <logic:present tenancy="rpv">
         <li <%= ("patient_view".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_view">Patient Info</html:link></li>
