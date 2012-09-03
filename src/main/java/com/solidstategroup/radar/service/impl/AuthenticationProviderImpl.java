@@ -33,14 +33,14 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 try {
                     // Didn't want to store plain text password in memory, even tho probably safe
                     // Instead password hash is set on user from DAO, then we compare the two hashes
-//                    byte[] passwordHash = User.getPasswordHash((String) authentication.getCredentials());
-//                    if (Arrays.equals(user.getPasswordHash(), passwordHash)) {
-//                        // Authenticated
-//                        List<GrantedAuthorityImpl> authorities =
-//                                Arrays.asList(new GrantedAuthorityImpl(user.getSecurityRole()));
-//                        authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
-//                        return authentication;
-//                    }
+                    String passwordHash = User.getPasswordHash((String) authentication.getCredentials());
+                    if (user.getPassword().equals(passwordHash)) {
+                        // Authenticated
+                        List<GrantedAuthorityImpl> authorities =
+                                Arrays.asList(new GrantedAuthorityImpl(user.getSecurityRole()));
+                        authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
+                        return authentication;
+                    }
                 } catch (Exception e) {
                     LoggerFactory.getLogger(AuthenticationProviderImpl.class)
                             .error("Could not log user {} in", authentication.getName(), e);

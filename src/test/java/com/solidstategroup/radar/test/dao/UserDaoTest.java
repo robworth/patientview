@@ -2,6 +2,7 @@ package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
@@ -11,7 +12,6 @@ import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.util.RadarUtility;
-import com.solidstategroup.radar.util.TripleDes;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +35,16 @@ public class UserDaoTest extends BaseDaoTest {
     @Autowired
     private DemographicsDao demographicsDao;
 
+    @Autowired
+    private UtilityDao utilityDao;
+
     @Test
     public void testAddGetAdminUser() throws Exception {
         AdminUser adminUser = new AdminUser();
         adminUser.setEmail("admin@radar101.com");
         adminUser.setUsername("admin@radar101.com");
-        adminUser.setForename("Admin");
-        adminUser.setSurname("Admin");
-        adminUser.setPassword(RadarUtility.generateNewPassword());
+        adminUser.setName("Admin");
+        adminUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
 
         userDao.saveAdminUser(adminUser);
 
@@ -52,8 +54,7 @@ public class UserDaoTest extends BaseDaoTest {
         assertTrue("Does not have a valid ID", checkAdminUser.hasValidId());
         assertEquals("Email not persisted", checkAdminUser.getEmail(), adminUser.getEmail());
         assertEquals("Username not persisted", checkAdminUser.getUsername(), adminUser.getUsername());
-        assertEquals("Forename not persisted", checkAdminUser.getForename(), adminUser.getForename());
-        assertEquals("Surname not persisted", checkAdminUser.getSurname(), adminUser.getSurname());
+        assertEquals("Name not persisted", checkAdminUser.getName(), adminUser.getName());
         assertEquals("Password not persisted", checkAdminUser.getPassword(), adminUser.getPassword());
     }
 
@@ -72,7 +73,8 @@ public class UserDaoTest extends BaseDaoTest {
 
         ProfessionalUser checkProfessionalUser = userDao.getProfessionalUser(professionalUser.getEmail());
         assertNotNull(checkProfessionalUser);
-        assertTrue("Does not have a valid ID", checkProfessionalUser.hasValidId());
+        assertTrue("Does not have a valid radar ID", checkProfessionalUser.hasValidId());
+        assertTrue("Does not have a valid user ID", checkProfessionalUser.hasValidUserId());
         assertEquals("Email not persisted", checkProfessionalUser.getEmail(), professionalUser.getEmail());
         assertEquals("Username not persisted", checkProfessionalUser.getUsername(), professionalUser.getUsername());
         assertEquals("Forename not persisted", checkProfessionalUser.getForename(), professionalUser.getForename());
@@ -126,6 +128,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser1.setUsername("professional1@radar101.com");
         professionalUser1.setForename("Eddard");
         professionalUser1.setSurname("Stark");
+        professionalUser1.setCentre(utilityDao.getCentre(1));
         professionalUser1.setRole("Centre role");
         professionalUser1.setGmc("testGmc");
         professionalUser1.setPassword(RadarUtility.generateNewPassword());
@@ -137,6 +140,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser2.setUsername("professional2@radar101.com");
         professionalUser2.setForename("Tyrion");
         professionalUser2.setSurname("Lannister");
+        professionalUser2.setCentre(utilityDao.getCentre(1));
         professionalUser2.setRole("Centre role");
         professionalUser2.setGmc("testGmc");
         professionalUser2.setPassword(RadarUtility.generateNewPassword());
@@ -195,178 +199,137 @@ public class UserDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetAdminUser() {
-        AdminUser adminUser = userDao.getAdminUser("ihaynes@data-insite.co.uk");
-        assertNotNull(adminUser);
-    }
-
-    @Test
-    public void testGetPatientUser() {
-        // Get a user
-        PatientUser patientUser = userDao.getPatientUser("ihaynes@data-insite.co.uk");
-
-        // This patient should exist in our test dataset
-        assertNotNull(patientUser);
-    }
-
-    @Test
-    public void testGetUnknownPatientUser() {
-        // Get a user that doesn't exist
-        PatientUser patientUser = userDao.getPatientUser("doesnt@exist.com");
-        assertNull(patientUser);
-    }
-
-    @Test
-    public void testSavePatientUser() throws Exception {
-        // Construct the user
+    public void testAddGetPatientUser() throws Exception {
         PatientUser patientUser = new PatientUser();
-        patientUser.setUsername("test_user");
-        //patientUser.setRadarNumber(123);
+        patientUser.setRadarNumber(1);
+        patientUser.setEmail("patient@radar101.com");
+        patientUser.setUsername("patient@radar101.com");
+        patientUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
         patientUser.setDateOfBirth(new Date());
-        //patientUser.setPasswordHash(User.getPasswordHash("password12"));
+        patientUser.setDateRegistered(new Date());
 
-        // Save
         userDao.savePatientUser(patientUser);
 
-        // Make sure we have an ID and a date registered
-        assertTrue("Saved user doesn't have an ID", patientUser.getId() > 0);
-        // Make sure it has a date registered
-        //assertNotNull("No date registered", patientUser.getDateRegistered());
+        PatientUser checkPatientUser = userDao.getPatientUser(patientUser.getEmail());
 
-        // Try and get the patient user - should get our new user
-        patientUser = userDao.getPatientUser("test_user");
-        assertNotNull("Saved user was null on getting frmo DAO", patientUser);
+        assertNotNull(checkPatientUser);
+        assertTrue("Does not have a valid radar ID", checkPatientUser.hasValidId());
+        assertTrue("Does not have a valid user ID", checkPatientUser.hasValidUserId());
+        assertEquals("Email not persisted", checkPatientUser.getEmail(), patientUser.getEmail());
+        assertEquals("Radar no not persisted", checkPatientUser.getRadarNumber(), patientUser.getRadarNumber());
+        assertEquals("Username not persisted", checkPatientUser.getUsername(), patientUser.getUsername());
+        assertEquals("Password not persisted", checkPatientUser.getPassword(), patientUser.getPassword());
     }
 
     @Test
-    public void testGetPatientUsers() {
-        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), -1, -1);
-        assertNotNull(patientUsers);
-        assertTrue(patientUsers.size() > 0);
-    }
+    public void testGetPatientUserById() throws Exception {
+        PatientUser patientUser = new PatientUser();
+        patientUser.setRadarNumber(1);
+        patientUser.setEmail("patient@radar101.com");
+        patientUser.setUsername("patient@radar101.com");
+        patientUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+        patientUser.setDateOfBirth(new Date());
+        patientUser.setDateRegistered(new Date());
 
-    @Test
-    public void testGetPatientUsersPage1() {
-        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), 1, 1);
-        assertNotNull(patientUsers);
-        assertTrue(patientUsers.size() == 1);
-    }
+        userDao.savePatientUser(patientUser);
 
-    @Test
-    public void testSearchPatientUsers() {
-        PatientUserFilter userFilter = new PatientUserFilter();
-        userFilter.addSearchCriteria(PatientUserFilter.UserField.RADAR_NO.getDatabaseFieldName(), "246");
-        List<PatientUser> patientUsers = userDao.getPatientUsers(userFilter, -1, -1);
-        assertNotNull(patientUsers);
-        assertTrue(patientUsers.size() > 0);
+        PatientUser checkPatientUser = userDao.getPatientUser(patientUser.getId());
+
+        assertNotNull(checkPatientUser);
     }
 
     @Test
     public void testDeletePatientUser() throws Exception {
-        PatientUser patientUser = userDao.getPatientUser(1L);
-        Long radarNo = patientUser.getRadarNumber();
+        PatientUser patientUser = new PatientUser();
+        patientUser.setRadarNumber(1);
+        patientUser.setEmail("patient@radar101.com");
+        patientUser.setUsername("patient@radar101.com");
+        patientUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+        patientUser.setDateOfBirth(new Date());
+        patientUser.setDateRegistered(new Date());
 
+        userDao.savePatientUser(patientUser);
+
+        // delete the user and try to pull back
         userDao.deletePatientUser(patientUser);
 
-        // have to check the user was deleted and their demographics record
-        patientUser = userDao.getPatientUser(1L);
-        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(radarNo);
-
-        assertNull("User was found after being deleted", patientUser);
-        assertNull("Demographics for user was found after being deleted", demographics);
+        PatientUser checkPatientUser = userDao.getPatientUser(patientUser.getEmail());
+        assertNull(checkPatientUser);
     }
 
     @Test
-    public void testSaveNewProfessionalUser() throws Exception {
-        ProfessionalUser professionalUser = new ProfessionalUser();
-        //professionalUser.setUsernameHash(User.getUsernameHash("test_admin_user"));
-        //professionalUser.setPasswordHash(User.getPasswordHash("password12"));
-        professionalUser.setSurname("test_surname");
-        professionalUser.setForename("test_forename");
-        professionalUser.setTitle("test_title");
-        professionalUser.setRole("test_role");
-        professionalUser.setGmc("test_gmc");
-        professionalUser.setEmail("test_email");
-        professionalUser.setPhone("test_phone");
+    public void testGetPatientUsersInOrder() throws Exception {
+        PatientUser patientUser1 = new PatientUser();
+        patientUser1.setRadarNumber(1);
+        patientUser1.setEmail("patient1@radar101.com");
+        patientUser1.setUsername("patient1@radar101.com");
+        patientUser1.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+        patientUser1.setDateOfBirth(new Date());
+        patientUser1.setDateRegistered(new Date());
 
-        Centre centre = new Centre();
-        centre.setId((long) 10);
-        professionalUser.setCentre(centre);
+        userDao.savePatientUser(patientUser1);
 
-        userDao.saveProfessionalUser(professionalUser);
+        PatientUser patientUser2 = new PatientUser();
+        patientUser2.setRadarNumber(2);
+        patientUser2.setEmail("patient2@radar101.com");
+        patientUser2.setUsername("patient2@radar101.com");
+        patientUser2.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+        patientUser2.setDateOfBirth(new Date());
+        patientUser2.setDateRegistered(new Date());
 
-        assertTrue("Saved user doesn't have an ID", professionalUser.getId() > 0);
-        //assertNotNull("No date registered", professionalUser.getDateRegistered());
+        userDao.savePatientUser(patientUser2);
 
-        professionalUser = userDao.getProfessionalUser("test_email");
-        assertNotNull("Saved user was null on getting from DAO", professionalUser);
+        PatientUserFilter patientUserFilter = new PatientUserFilter();
+        patientUserFilter.setReverse(false);
+
+        List<PatientUser> checkPatientUsers = userDao.getPatientUsers(patientUserFilter, -1, -1);
+
+        assertTrue("No patient users found", !checkPatientUsers.isEmpty()
+                && checkPatientUsers.size() > 0);
+        assertTrue("To many patient users found", checkPatientUsers.size() == 2);
+
+        // first one should patient 2
+        assertEquals("First user in list is not correct", checkPatientUsers.get(0).getId(),
+                patientUser2.getId());
     }
 
     @Test
-    public void testSaveExistingProfessionalUser() throws Exception {
-        // have to make a user first
-        ProfessionalUser professionalUser = userDao.getProfessionalUser("marklittle@nhs.net");
-        professionalUser.setSurname("edit 3");
+    public void testSearchPatientUsers() throws Exception {
+        PatientUser patientUser1 = new PatientUser();
+        patientUser1.setRadarNumber(1);
+        patientUser1.setEmail("patient1@radar101.com");
+        patientUser1.setUsername("patient1@radar101.com");
+        patientUser1.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+        patientUser1.setDateOfBirth(new Date());
+        patientUser1.setDateRegistered(new Date());
 
-        userDao.saveProfessionalUser(professionalUser);
+        userDao.savePatientUser(patientUser1);
 
-        professionalUser = userDao.getProfessionalUser("marklittle@nhs.net");
-        assertTrue("User surname has not been updated", professionalUser.getSurname().equals("edit 3"));
+        PatientUser patientUser2 = new PatientUser();
+        patientUser2.setRadarNumber(2);
+        patientUser2.setEmail("patient2@radar101.com");
+        patientUser2.setUsername("patient2@radar101.com");
+        patientUser2.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+        patientUser2.setDateOfBirth(new Date());
+        patientUser2.setDateRegistered(new Date());
+
+        userDao.savePatientUser(patientUser2);
+
+        PatientUserFilter patientUserFilter = new PatientUserFilter();
+        patientUserFilter.addSearchCriteria(PatientUserFilter.UserField.USERNAME.getDatabaseFieldName(),
+                patientUser2.getUsername());
+
+        List<PatientUser> checkPatientUsers = userDao.getPatientUsers(patientUserFilter, -1, -1);
+
+        assertTrue("No patient users found", !checkPatientUsers.isEmpty()
+                && checkPatientUsers.size() > 0);
+        assertTrue("To many patient users found", checkPatientUsers.size() == 1);
+
+        // first one should patient 2
+        assertEquals("First user in list is not correct", checkPatientUsers.get(0).getId(),
+                patientUser2.getId());
     }
 
-    @Test
-    public void testGetProfessionalUser() {
-        // Get a user
-        ProfessionalUser professionalUser = userDao.getProfessionalUser("marklittle@nhs.net");
-
-        // This professional user should exist in our test database
-        assertNotNull(professionalUser);
-
-        // Check the various strings
-        assertEquals("Wrong surname", "Little", professionalUser.getSurname());
-        assertEquals("Wrong forename", "Mark", professionalUser.getForename());
-        assertEquals("Wrong title", "Dr", professionalUser.getTitle());
-        assertEquals("Wrong role", "Senior Lecturer", professionalUser.getRole());
-
-        assertEquals("Wrong email", "marklittle@nhs.net", professionalUser.getEmail());
-
-        // Username should have been set
-        //assertNotNull("Username is null", professionalUser.getUsernameHash());
-
-        // Password should have been set
-        //assertNotNull("Password hash is null", professionalUser.getPasswordHash());
-    }
-
-    @Test
-    public void testGetUnknownProfessionalUser() {
-        // Get an unknown user
-        ProfessionalUser professionalUser = userDao.getProfessionalUser("no@no.com");
-        assertNull("Unknown user isn't null", professionalUser);
-    }
-    
-    @Test
-    public void testGetProfessionalUsers() {
-        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(new ProfessionalUserFilter(), -1, -1);
-        assertNotNull(professionalUsers);
-        assertTrue(professionalUsers.size() > 0);
-    }
-
-    @Test
-    public void testGetProfessionalUsersPage1() {
-        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(new ProfessionalUserFilter(), 1, 1);
-        assertNotNull(professionalUsers);
-        assertTrue(professionalUsers.size() == 1);
-    }
-    
-//    @Test
-//    public void testSearchProfessionalUsers() {
-//        ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
-//        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME.getDatabaseFieldName(), "fiona");
-//        List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
-//        assertNotNull(professionalUsers);
-//        assertTrue(professionalUsers.size() > 0);
-//    }
-    
     @Test
     public void outputLoginDetails() {
 

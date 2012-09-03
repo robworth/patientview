@@ -7,8 +7,7 @@ public class PatientUserFilter extends BaseFilter {
         FORENAME("tbl_Demographics.FNAME"), // TODO: cant search these fields at the mo as they are encrypted
         REGISTRATION_DATE("pDateReg"),
         DOB("pDob"),
-        USERNAME("pUserName"),
-        PASSWORD("pPassWord");
+        USERNAME("username");
 
         private String databaseFieldName;
 

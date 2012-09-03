@@ -17,31 +17,25 @@ name varchar(50),
 
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL auto_increment,
-  `created` datetime NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `title` varchar(50) default NULL,
-  `forename` varchar(100) NOT NULL,
-  `surname` varchar(100) NOT NULL,
-  `telephone` varchar(100) default NULL,
-  `screenName` varchar(100) default NULL,
-  `emailVerified` tinyint(1) default '0',
-  `firstLogin` datetime default NULL,
-  `lastLogin` datetime default NULL,
-  `failedLogons` int(10) default NULL,
-  `accountLocked` tinyint(1) default '0',
-  PRIMARY KEY  (`id`)
-);
+  `username` varchar(100) NOT NULL default '',
+  `password` varchar(100) NOT NULL default '',
+  `name` varchar(100) default NULL,
+  `email` varchar(100) default NULL,
+  `emailverified` tinyint(1) default '0',
+  `firstlogon` tinyint(1) default '0',
+  `dummypatient` tinyint(1) NOT NULL default '0',
+  `lastlogon` datetime default NULL,
+  `failedlogons` int(10) default '0',
+  `accountlocked` tinyint(1) default '0',
+  `screenname` varchar(100) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB;
 
 CREATE TABLE `rdr_user_mapping` (
   `userId` bigint(20) NOT NULL,
-  `role` varchar(20) NOT NULL
-);
-
-CREATE TABLE `rdr_professional_user` (
-  `userId` bigint(20) NOT NULL,
-  `gmc` varchar(50) default NULL,
-  `centreId` bigint(20) default NULL,
-  `centreRole` varchar(20) default NULL
-);
+  `radarUserId` bigint(20) NOT NULL,
+  `role` varchar(20) NOT NULL,
+  PRIMARY KEY (`userId`),
+  constraint `FK_RDR_USER_MAPPING_USERID` foreign key (`userId`) references `user`(`id`) on delete Cascade
+) ENGINE=InnoDB;

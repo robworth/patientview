@@ -113,7 +113,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             // Generate the password - 8 random characters
             String password = generateRandomPassword();
             try {
-                //patientUser.setPasswordHash(User.getPasswordHash(password));
+                patientUser.setPassword(User.getPasswordHash(password));
+
+                // form only has a username field so just use this
+                patientUser.setEmail(patientUser.getUsername());
 
                 // Save the patient user to the patient user table
                 userDao.savePatientUser(patientUser);
@@ -165,8 +168,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // if its a new user generate a password
         if (!professionalUser.hasValidId()) {
             String password = generateRandomPassword();
-//            professionalUser.setPasswordHash(ProfessionalUser.getPasswordHash(password));
-//            professionalUser.setUsernameHash(ProfessionalUser.getUsernameHash(professionalUser.getEmail()));
+            professionalUser.setPassword(ProfessionalUser.getPasswordHash(password));
+            professionalUser.setUsername(professionalUser.getEmail());
         }
 
         userDao.saveProfessionalUser(professionalUser);
