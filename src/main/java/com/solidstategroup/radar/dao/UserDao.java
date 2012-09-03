@@ -14,7 +14,7 @@ public interface UserDao {
 
     List<AdminUser> getAdminUsers();
 
-    void saveAdminUser(AdminUser adminUser);
+    void saveAdminUser(AdminUser adminUser) throws Exception;
 
     PatientUser getPatientUser(Long id);
 

@@ -134,7 +134,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return jdbcTemplate.query(sql, new Object[]{}, new AdminUserRowMapper());
     }
 
-    public void saveAdminUser(final AdminUser adminUser) {
+    public void saveAdminUser(final AdminUser adminUser) throws Exception {
         // save details of the user into the radar tables
         Map<String, Object> adminUserMap = new HashMap<String, Object>() {
             {
@@ -235,7 +235,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         };
 
         if (professionalUser.hasValidId()) {
-            String updateSql = buildUpdateQuery(PROFESSIONAL_USER_TABLE_NAME, PROFESSIONAL_USER_ID_FIELD_NAME, professionalUserMap);
+            String updateSql = buildUpdateQuery(PROFESSIONAL_USER_TABLE_NAME, PROFESSIONAL_USER_ID_FIELD_NAME,
+                    professionalUserMap);
             namedParameterJdbcTemplate.update(updateSql, professionalUserMap);
         } else {
             Number id = professionalUsersInsert.executeAndReturnKey(professionalUserMap);
