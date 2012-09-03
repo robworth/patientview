@@ -12,6 +12,8 @@ public interface UserDao {
 
     AdminUser getAdminUser(String email);
 
+    List<AdminUser> getAdminUsers();
+
     void saveAdminUser(AdminUser adminUser);
 
     PatientUser getPatientUser(Long id);
