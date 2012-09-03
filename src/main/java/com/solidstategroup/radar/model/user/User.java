@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.model.user;
 
 import com.solidstategroup.radar.model.BaseModel;
-import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
