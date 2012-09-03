@@ -1,16 +1,13 @@
 Steps to create a new database
 ==============================
 
-// TODO update the patientview-create.sql script for IBD
 - Create the schema with patientview-create.sql
-- (Optional) Add some test data with patientview-increment.sql
+- (Optional) Add some test data with patientview-test-data.sql
 
 
 Steps to upgrade a database
 ===========================
 
-- Work out with features you are missing.
-- Add the schema patches relating to each feature (numbered) in order (The sum of the patches should equal patientview-create.sql.).
-
-
-// TODO Bootstrap data for IBD single tenancy
+- patientview-increment.sql will upgrade the live database to this branch of the code
+- See archive for previous patches per feature. Add the schema patches relating to each feature (numbered) in order
+(The sum of the patches should equal patientview-create.sql.).
