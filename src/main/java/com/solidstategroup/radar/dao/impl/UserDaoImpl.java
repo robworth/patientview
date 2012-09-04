@@ -8,6 +8,7 @@ import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.model.user.UserMapping;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +111,23 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                         PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME);
     }
 
+    public<T extends User> T getUser(String email) {
+        UserMapping userMapping = getUserMapping(email);
+
+        if (userMapping != null) {
+            if (userMapping.getRole().equals(User.ROLE_ADMIN)) {
+                return (T) getAdminUser(userMapping.getRadarId());
+            } else if (userMapping.getRole().equals(User.ROLE_PROFESSIONAL)
+                    || userMapping.getRole().equals(User.ROLE_SUPER_USER)) {
+                return (T) getProfessionalUser(userMapping.getRadarId());
+            } else if (userMapping.getRole().equals(User.ROLE_PATIENT)) {
+                return (T) getPatientUser(userMapping.getRadarId());
+            }
+        }
+
+        return null;
+    }
+
     public AdminUser getAdminUser(String email) {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(ADMIN_USER_TABLE_NAME)
@@ -117,6 +135,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                     new Object[]{email, User.ROLE_ADMIN}, new AdminUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not admin user " + USER_TABLE_NAME + " with " + USER_EMAIL_FIELD_NAME + " {}", email);
+        }
+
+        return null;
+    }
+
+    public AdminUser getAdminUser(Long id) {
+        try {
+            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(ADMIN_USER_TABLE_NAME)
+                    + buildUserWhereIdStatement(ADMIN_USER_TABLE_NAME, ADMIN_USER_ID_FIELD_NAME),
+                    new Object[]{id}, new AdminUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not admin user with " + ADMIN_USER_ID_FIELD_NAME + " {}", id);
         }
 
         return null;
@@ -159,7 +189,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
                     + buildUserWhereIdStatement(PROFESSIONAL_USER_TABLE_NAME, PROFESSIONAL_USER_ID_FIELD_NAME),
-                    new Object[]{id, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
+                    new Object[]{id}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not professional user with " + PROFESSIONAL_USER_ID_FIELD_NAME + " {}", id);
         }
@@ -263,7 +293,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME)
                     + buildUserWhereIdStatement(PATIENT_USER_TABLE_NAME, PATIENT_USER_ID_FIELD_NAME),
-                    new Object[]{id, User.ROLE_PATIENT}, new PatientUserRowMapper());
+                    new Object[]{id}, new PatientUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not patient user with " + ID_FIELD_NAME + " {}", id);
         }
@@ -443,6 +473,22 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);
     }
 
+    private UserMapping getUserMapping(String email) {
+        try {
+            return jdbcTemplate.queryForObject(buildSelectFromStatement(USER_TABLE_NAME, USER_MAPPING_TABLE_NAME) +
+                    " WHERE " +
+                            USER_TABLE_NAME + "." + USER_EMAIL_FIELD_NAME + " = ? " +
+                    " AND " +
+                            USER_TABLE_NAME + "." + ID_FIELD_NAME + " = " + USER_MAPPING_TABLE_NAME + "."
+                            + USER_MAPPING_USER_ID_FIELD_NAME,
+                    new Object[]{email}, new UserMappingRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not patient user with " + USER_EMAIL_FIELD_NAME + " {}", email);
+        }
+
+        return null;
+    }
+
     /**
      * Will build the main select/from statement for the users table
      * @param userTable Radar user table to use in the select
@@ -484,14 +530,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private String buildUserWhereIdStatement(String userTable, String mapIdField) {
         return " WHERE " +
-                    USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? " +
+                USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? " +
                 " AND " +
-                    USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME + " = ? " +
+                userTable + "." + mapIdField + " = " + USER_MAPPING_TABLE_NAME + "."
+                + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
                 " AND " +
-                    userTable + "." + mapIdField + " = " + USER_MAPPING_TABLE_NAME + "."
-                        + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
-                " AND " +
-                    USER_TABLE_NAME + "." + ID_FIELD_NAME + " = " + USER_MAPPING_TABLE_NAME
+                USER_TABLE_NAME + "." + ID_FIELD_NAME + " = " + USER_MAPPING_TABLE_NAME
                 + "." + USER_MAPPING_USER_ID_FIELD_NAME;
     }
 
@@ -568,6 +612,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return patientUser;
         }
     }
+
+    private class UserMappingRowMapper implements RowMapper<UserMapping> {
+        public UserMapping mapRow(ResultSet resultSet, int i) throws SQLException {
+            UserMapping userMapping = new UserMapping();
+
+            userMapping.setUserId(resultSet.getLong(USER_MAPPING_USER_ID_FIELD_NAME));
+            userMapping.setRadarId(resultSet.getLong(USER_MAPPING_RADAR_USER_ID_FIELD_NAME));
+            userMapping.setRole(resultSet.getString(USER_MAPPING_ROLE_FIELD_NAME));
+
+            return userMapping;
+        }
+    }
+
 
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;
