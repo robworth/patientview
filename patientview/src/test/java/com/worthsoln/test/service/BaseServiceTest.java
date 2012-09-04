@@ -54,8 +54,8 @@ public abstract class BaseServiceTest {
 
         // user tables
         jdbcTemplate.execute("delete from usermapping");
-        jdbcTemplate.execute("delete from user");
         jdbcTemplate.execute("delete from tenancyuserrole");
+        jdbcTemplate.execute("delete from user");
         jdbcTemplate.execute("delete from tenancy");
 
 
