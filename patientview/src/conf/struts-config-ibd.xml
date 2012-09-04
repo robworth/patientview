@@ -29,11 +29,11 @@
             <form-property name="furtherTopics" type="java.lang.String"/>
             <form-property name="goals" type="java.lang.String"/>
             <form-property name="goalToAchieve" type="java.lang.String"/>
-            <form-property name="goalScale" type="java.lang.Integer"/>
+            <form-property name="importanceId" type="java.lang.Long"/>
             <form-property name="howToAchieveGoal" type="java.lang.String"/>
             <form-property name="barriers" type="java.lang.String"/>
             <form-property name="whatCanBeDone" type="java.lang.String"/>
-            <form-property name="confidenceScale" type="java.lang.Integer"/>
+            <form-property name="confidenceId" type="java.lang.Long"/>
             <form-property name="reviewDate" type="java.lang.String"/>
         </form-bean>
 

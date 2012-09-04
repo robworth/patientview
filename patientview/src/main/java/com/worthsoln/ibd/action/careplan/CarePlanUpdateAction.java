@@ -44,11 +44,11 @@ public class CarePlanUpdateAction extends BaseAction {
         carePlan.setFurtherTopics((String) dynaForm.get(Ibd.FURTHER_TOPICS_PARAM));
         carePlan.setGoals((String) dynaForm.get(Ibd.GOALS_PARAM));
         carePlan.setGoalToAchieve((String) dynaForm.get(Ibd.GOAL_TO_ACHIEVE_PARAM));
-        carePlan.setGoalScale((Integer) dynaForm.get(Ibd.GOAL_SCORE_PARAM));
+        carePlan.setImportanceId((Long) dynaForm.get(Ibd.IMPORTANCE_ID_PARAM));
         carePlan.setHowToAchieveGoal((String) dynaForm.get(Ibd.HOW_TO_ACHIEVE_GOAL_PARAM));
         carePlan.setBarriers((String) dynaForm.get(Ibd.BARRIERS_PARAM));
         carePlan.setWhatCanBeDone((String) dynaForm.get(Ibd.WHAT_CAN_BE_DONE_PARAM));
-        carePlan.setConfidenceScale((Integer) dynaForm.get(Ibd.CONFIDENCE_SCALE_PARAM));
+        carePlan.setConfidenceId((Long) dynaForm.get(Ibd.CONFIDENCE_ID_PARAM));
         carePlan.setReviewDate(convertFormDateString(Ibd.REVIEW_DATE_PARAM, dynaForm));
 
         Long[] areaToDiscussIds = (Long[]) dynaForm.get(Ibd.AREA_TO_DISCUSS_IDS_PARAM);
@@ -83,8 +83,8 @@ public class CarePlanUpdateAction extends BaseAction {
             actionErrors.add(Ibd.GOAL_TO_ACHIEVE_PARAM, new ActionMessage(Ibd.GOAL_TO_ACHIEVE_REQUIRED));
         }
 
-        if (form.get(Ibd.GOAL_SCORE_PARAM) == null || ((Integer) form.get(Ibd.GOAL_SCORE_PARAM) <= 0)) {
-            actionErrors.add(Ibd.GOAL_SCORE_PARAM, new ActionMessage(Ibd.GOAL_SCORE_REQUIRED));
+        if (form.get(Ibd.IMPORTANCE_ID_PARAM) == null || ((Long) form.get(Ibd.IMPORTANCE_ID_PARAM) <= 0)) {
+            actionErrors.add(Ibd.IMPORTANCE_ID_PARAM, new ActionMessage(Ibd.IMPORTANCE_REQUIRED));
         }
 
         if (form.get(Ibd.HOW_TO_ACHIEVE_GOAL_PARAM) == null
@@ -101,8 +101,8 @@ public class CarePlanUpdateAction extends BaseAction {
             actionErrors.add(Ibd.WHAT_CAN_BE_DONE_PARAM, new ActionMessage(Ibd.WHAT_CAN_BE_DONE_REQUIRED));
         }
 
-        if (form.get(Ibd.CONFIDENCE_SCALE_PARAM) == null || ((Integer) form.get(Ibd.CONFIDENCE_SCALE_PARAM) <= 0)) {
-            actionErrors.add(Ibd.CONFIDENCE_SCALE_PARAM, new ActionMessage(Ibd.CONFIDENCE_SCORE_REQUIRED));
+        if (form.get(Ibd.CONFIDENCE_ID_PARAM) == null || ((Long) form.get(Ibd.CONFIDENCE_ID_PARAM) <= 0)) {
+            actionErrors.add(Ibd.CONFIDENCE_ID_PARAM, new ActionMessage(Ibd.CONFIDENCE_REQUIRED));
         }
 
         if (form.get(Ibd.REVIEW_DATE_PARAM) == null || ((String) form.get(Ibd.REVIEW_DATE_PARAM)).length() == 0) {

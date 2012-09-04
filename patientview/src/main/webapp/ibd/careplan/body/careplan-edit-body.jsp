@@ -83,9 +83,11 @@
                             <p>
                                 How important is achieving this goal to you?
                                 <br/>
-                                <html:select property="goalScale">
-                                    <html:options collection="scaleList" property="value" name="value"/>
-                                </html:select>
+                                <logic:present name="importanceList" scope="session">
+                                    <html:select property="importanceId">
+                                        <html:options collection="importanceList" property="id" labelProperty="name"/>
+                                    </html:select>
+                                </logic:present>
                             </p>
                         </div>
                     </div>
@@ -120,9 +122,11 @@
                     <p>
                         How confident do I feel?
                         <br/>
-                        <html:select property="confidenceScale">
-                            <html:options collection="scaleList" property="value" name="value"/>
-                        </html:select>
+                        <logic:present name="confidenceList" scope="session">
+                            <html:select property="confidenceId">
+                                <html:options collection="importanceList" property="id" labelProperty="name"/>
+                            </html:select>
+                        </logic:present>
                     </p>
 
                     <p>

@@ -1,6 +1,8 @@
 package com.worthsoln.ibd.model;
 
 import com.worthsoln.ibd.model.enums.AreaToDiscuss;
+import com.worthsoln.ibd.model.enums.Confidence;
+import com.worthsoln.ibd.model.enums.Importance;
 import com.worthsoln.patientview.model.BaseModel;
 
 import javax.persistence.Access;
@@ -37,8 +39,8 @@ public class CarePlan extends BaseModel {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String goalToAchieve;
 
-    @Column(nullable = true)
-    private Integer goalScale;
+    @Transient
+    private Importance importance;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String howToAchieveGoal;
@@ -49,8 +51,8 @@ public class CarePlan extends BaseModel {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String whatCanBeDone;
 
-    @Column(nullable = true)
-    private Integer confidenceScale;
+    @Transient
+    private Confidence confidence;
 
     @Column(nullable = true)
     private Date reviewDate;
@@ -123,12 +125,26 @@ public class CarePlan extends BaseModel {
         this.goalToAchieve = goalToAchieve;
     }
 
-    public Integer getGoalScale() {
-        return goalScale;
+    public Importance getImportance() {
+        return importance;
     }
 
-    public void setGoalScale(Integer goalScale) {
-        this.goalScale = goalScale;
+    public void setImportance(Importance importance) {
+        this.importance = importance;
+    }
+
+    @Access(AccessType.PROPERTY)
+    @Column(name = "importance_id", nullable = false)
+    public long getImportanceId() {
+        if (importance != null) {
+            return importance.getId();
+        }
+
+        return -1;
+    }
+
+    public void setImportanceId(Long id) {
+        this.importance = Importance.getImportance(id);
     }
 
     public String getHowToAchieveGoal() {
@@ -155,12 +171,26 @@ public class CarePlan extends BaseModel {
         this.whatCanBeDone = whatCanBeDone;
     }
 
-    public Integer getConfidenceScale() {
-        return confidenceScale;
+    public Confidence getConfidence() {
+        return confidence;
     }
 
-    public void setConfidenceScale(Integer confidenceScale) {
-        this.confidenceScale = confidenceScale;
+    public void setConfidence(Confidence confidence) {
+        this.confidence = confidence;
+    }
+
+    @Access(AccessType.PROPERTY)
+    @Column(name = "confidence_id", nullable = false)
+    public long getConfidenceId() {
+        if (confidence != null) {
+            return confidence.getId();
+        }
+
+        return -1;
+    }
+
+    public void setConfidenceId(Long id) {
+        this.confidence = Confidence.getConfidence(id);
     }
 
     public Date getReviewDate() {

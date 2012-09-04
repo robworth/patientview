@@ -5,10 +5,12 @@ import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.enums.AreaToDiscuss;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
 import com.worthsoln.ibd.model.enums.Complication;
+import com.worthsoln.ibd.model.enums.Confidence;
 import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.ibd.model.enums.FamilyHistory;
 import com.worthsoln.ibd.model.enums.Feeling;
+import com.worthsoln.ibd.model.enums.Importance;
 import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.ibd.model.enums.Smoking;
 import com.worthsoln.ibd.model.enums.Surgery;
@@ -57,7 +59,8 @@ public class BaseAction extends ActionSupport {
 
     // care plan lists
     protected static final String AREA_TO_DISCUSS_LIST_PROPERTY = "areaToDiscussList";
-    protected static final String SCALE_LIST_PROPERTY = "scaleList";
+    protected static final String IMPORTANCE_LIST_PROPERTY = "importanceList";
+    protected static final String CONFIDENCE_LIST_PROPERTY = "confidenceList";
 
     // medication lists
     protected static final String MEDICATION_TYPE_LIST_PROPERTY = "medicationTypeList";
@@ -76,7 +79,6 @@ public class BaseAction extends ActionSupport {
     protected static final String FURTHER_COMPLICATION_LIST_PROPERTY = "furtherComplicationList";
     protected static final String OPEN_BOWEL_LIST_PROPERTY = "openBowelList";
 
-    protected static List<ScaleItem> scaleList;
     protected static List<OpenBowel> openBowelList;
 
     /**
@@ -97,6 +99,14 @@ public class BaseAction extends ActionSupport {
         }
 
         return submit;
+    }
+
+    protected List<Importance> getImportanceList() {
+        return Importance.getAsList();
+    }
+
+    protected List<Confidence> getConfidenceList() {
+        return Confidence.getAsList();
     }
 
     protected List<DiseaseExtent> getDiseaseExtentList() {
@@ -169,18 +179,6 @@ public class BaseAction extends ActionSupport {
 
     protected List<MassInTummy> getMassInTummy() {
         return MassInTummy.getAsList();
-    }
-
-    protected List<ScaleItem> getScaleList() {
-        if (scaleList == null) {
-            scaleList = new ArrayList<ScaleItem>();
-
-            for (int x = 1; x <= 10; x++) {
-                scaleList.add(new ScaleItem(x));
-            }
-        }
-
-        return scaleList;
     }
 
     protected List<OpenBowel> getOpenBowelList() {
@@ -322,21 +320,6 @@ public class BaseAction extends ActionSupport {
 //                servlet.getServletContext());
 
         return getWebApplicationContext().getBean(IbdManager.class);
-    }
-
-    /**
-     * This is just a simple class as the struts list cant just take an array of ints
-     */
-    public class ScaleItem {
-        private int value;
-
-        public ScaleItem(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
     }
 
     /**

@@ -2,6 +2,8 @@ package com.worthsoln.test.repository.ibd;
 
 import com.worthsoln.ibd.model.CarePlan;
 import com.worthsoln.ibd.model.enums.AreaToDiscuss;
+import com.worthsoln.ibd.model.enums.Confidence;
+import com.worthsoln.ibd.model.enums.Importance;
 import com.worthsoln.repository.ibd.CarePlanDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
@@ -37,13 +39,12 @@ public class CarePlanDaoTest extends BaseDaoTest {
         assertEquals("Further topics not persisted", checkCarePlan.getFurtherTopics(), carePlan.getFurtherTopics());
         assertEquals("Goals not persisted", checkCarePlan.getGoals(), carePlan.getGoals());
         assertEquals("Goal to achieve not persisted", checkCarePlan.getGoalToAchieve(), carePlan.getGoalToAchieve());
-        assertEquals("Goal scale not persisted", checkCarePlan.getGoalScale(), carePlan.getGoalScale());
+        assertEquals("Importance not persisted", checkCarePlan.getImportance(), carePlan.getImportance());
         assertEquals("How to achieve not persisted", checkCarePlan.getHowToAchieveGoal(),
                 carePlan.getHowToAchieveGoal());
         assertEquals("Barriers not persisted", checkCarePlan.getBarriers(), carePlan.getBarriers());
         assertEquals("What can be done not persisted", checkCarePlan.getWhatCanBeDone(), carePlan.getWhatCanBeDone());
-        assertEquals("Confidence scale not persisted", checkCarePlan.getConfidenceScale(),
-                carePlan.getConfidenceScale());
+        assertEquals("Confidence not persisted", checkCarePlan.getConfidence(), carePlan.getConfidence());
         assertEquals("Review date not persisted", checkCarePlan.getReviewDate(), carePlan.getReviewDate());
     }
 
@@ -67,11 +68,11 @@ public class CarePlanDaoTest extends BaseDaoTest {
         carePlan.setFurtherTopics("Further topics");
         carePlan.setGoals("Goals");
         carePlan.setGoalToAchieve("Goal");
-        carePlan.setGoalScale(1);
+        carePlan.setImportance(Importance.NOT_IMPORTANT_AT_ALL);
         carePlan.setHowToAchieveGoal("How to achieve goal");
         carePlan.setBarriers("Barriers");
         carePlan.setWhatCanBeDone("What can be done");
-        carePlan.setConfidenceScale(1);
+        carePlan.setConfidence(Confidence.NOT_CONFIDENT);
         carePlan.setReviewDate(new Date());
 
         List<AreaToDiscuss> areasToDiscuss = new ArrayList<AreaToDiscuss>();

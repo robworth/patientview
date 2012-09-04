@@ -57,11 +57,11 @@ public class Ibd {
     public static final String FURTHER_TOPICS_PARAM = "furtherTopics";
     public static final String GOALS_PARAM = "goals";
     public static final String GOAL_TO_ACHIEVE_PARAM = "goalToAchieve";
-    public static final String GOAL_SCORE_PARAM = "goalScale";
+    public static final String IMPORTANCE_ID_PARAM = "importanceId";
     public static final String HOW_TO_ACHIEVE_GOAL_PARAM = "howToAchieveGoal";
     public static final String BARRIERS_PARAM = "barriers";
     public static final String WHAT_CAN_BE_DONE_PARAM = "whatCanBeDone";
-    public static final String CONFIDENCE_SCALE_PARAM = "confidenceScale";
+    public static final String CONFIDENCE_ID_PARAM = "confidenceId";
     public static final String REVIEW_DATE_PARAM = "reviewDate";
 
     // medicine form params
@@ -123,11 +123,11 @@ public class Ibd {
     public static final String AREAS_TO_DISCUSS_REQUIRED = "areasToDiscuss.required";
     public static final String GOALS_REQUIRED = "goals.required";
     public static final String GOAL_TO_ACHIEVE_REQUIRED = "goalToAchieve.required";
-    public static final String GOAL_SCORE_REQUIRED = "goalScore.required";
+    public static final String IMPORTANCE_REQUIRED = "importance.required";
     public static final String HOW_TO_ACHIEVE_GOAL_REQUIRED = "howToAchieveGoal.required";
     public static final String BARRIERS_REQUIRED = "barriers.required";
     public static final String WHAT_CAN_BE_DONE_REQUIRED = "whatCanBeDone.required";
-    public static final String CONFIDENCE_SCORE_REQUIRED = "confidenceScore.required";
+    public static final String CONFIDENCE_REQUIRED = "confidence.required";
     public static final String REVIEW_DATE_REQUIRED = "reviewDate.required";
 
     // medication
