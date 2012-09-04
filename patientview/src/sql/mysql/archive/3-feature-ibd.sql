@@ -89,6 +89,12 @@ CREATE TABLE `ibd_myibd` (
   `nurses` text,
   `yearForSurveillanceColonoscopy` datetime default NULL,
   `yearOfDiagnosis` datetime NOT NULL,
+  `family_history_id` bigint(20) NOT NULL,
+  `nhsno` varchar(255) NOT NULL,
+  `smoking_id` bigint(20) NOT NULL,
+  `surgery_id` bigint(20) NOT NULL,
+  `vaccination_record_id` bigint(20) NOT NULL,
+  `weight` double NOT NULL,
   PRIMARY KEY  (`id`)
 );
 

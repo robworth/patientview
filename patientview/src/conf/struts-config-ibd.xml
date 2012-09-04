@@ -16,6 +16,11 @@
             <form-property name="yearForSurveillanceColonoscopy" type="java.lang.String"/>
             <form-property name="namedConsultant" type="java.lang.String"/>
             <form-property name="nurses" type="java.lang.String"/>
+            <form-property name="weight" type="java.lang.Double"/>
+            <form-property name="familyHistoryId" type="java.lang.Long"/>
+            <form-property name="smokingId" type="java.lang.Long"/>
+            <form-property name="surgeryId" type="java.lang.Long"/>
+            <form-property name="vaccinationRecordId" type="java.lang.Long"/>
         </form-bean>
 
         <form-bean name="carePlanForm"

@@ -34,6 +34,11 @@ public class MyIbdEditAction extends BaseAction {
         dynaForm.set(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, convertFormDateString(myIbd.getYearForSurveillanceColonoscopy()));
         dynaForm.set(Ibd.NAMED_CONSULTANT_PARAM, myIbd.getNamedConsultant());
         dynaForm.set(Ibd.NURSES_PARAM, myIbd.getNurses());
+        dynaForm.set(Ibd.WEIGHT_PARAM, myIbd.getWeight());
+        dynaForm.set(Ibd.FAMILY_HISTORY_ID_PARAM, myIbd.getFamilyHistoryId());
+        dynaForm.set(Ibd.SMOKING_ID_PARAM, myIbd.getSmokingId());
+        dynaForm.set(Ibd.SURGERY_ID_PARAM, myIbd.getSurgeryId());
+        dynaForm.set(Ibd.VACCINATION_RECORD_ID_PARAM, myIbd.getVaccinationRecordId());
 
         Long[] complicationIds = new Long[myIbd.getComplications().size()];
         int count = 0;

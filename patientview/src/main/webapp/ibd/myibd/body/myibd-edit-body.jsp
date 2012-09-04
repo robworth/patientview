@@ -90,6 +90,53 @@
                 </div>
             </div>
 
+            <div class="control-group">
+                <label class="control-label">Weight:</label>
+                <div class="controls">
+                    <html:text property="weight"/>
+                </div>
+            </div>
+            <logic:present name="familyHistoryList" scope="session">
+                <div class="control-group">
+                    <label class="control-label">IBD Related Family History:</label>
+                    <div class="controls">
+                        <html:select property="familyHistoryId">
+                            <html:options collection="familyHistoryList" property="id" labelProperty="name"/>
+                        </html:select>
+                    </div>
+                </div>
+            </logic:present>
+            <logic:present name="smokingList" scope="session">
+                <div class="control-group">
+                    <label class="control-label">Smoking History:</label>
+                    <div class="controls">
+                        <html:select property="smokingId">
+                            <html:options collection="smokingList" property="id" labelProperty="name"/>
+                        </html:select>
+                    </div>
+                </div>
+            </logic:present>
+            <logic:present name="surgeryList" scope="session">
+                <div class="control-group">
+                    <label class="control-label">Surgery History:</label>
+                    <div class="controls">
+                        <html:select property="surgeryId">
+                            <html:options collection="surgeryList" property="id" labelProperty="name"/>
+                        </html:select>
+                    </div>
+                </div>
+            </logic:present>
+            <logic:present name="vaccinationRecordList" scope="session">
+                <div class="control-group">
+                    <label class="control-label">Vaccination History:</label>
+                    <div class="controls">
+                        <html:select property="vaccinationRecordId">
+                            <html:options collection="vaccinationRecordList" property="id" labelProperty="name"/>
+                        </html:select>
+                    </div>
+                </div>
+            </logic:present>
+
             <div class="form-actions">
                 <html:submit value="Save" styleClass="btn btn-primary"/>
                 <html:link action="/myibd" styleClass="btn">Cancel</html:link>

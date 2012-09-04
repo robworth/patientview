@@ -162,6 +162,26 @@
         </div>
     </div>
     <div class="row">
+        <div class="span6">
+            <div class="row control-group">
+                <div class="span3">
+                    <label class="control-label">General:</label>
+                </div>
+                <div class="span3 controls">
+                    <p>Weight: <bean:write name="myIbd" property="weight"/></p>
+
+                    <p>IBD Related Family History: <bean:write name="myIbd" property="familyHistory.name"/></p>
+
+                    <p>Smoking History: <bean:write name="myIbd" property="smoking.name"/></p>
+
+                    <p>Surgical History: <bean:write name="myIbd" property="surgery.name"/></p>
+
+                    <p>Vaccination Record: <bean:write name="myIbd" property="vaccinationRecord.name"/></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="span12">
             <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
         </div>
