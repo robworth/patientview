@@ -6,6 +6,7 @@ import com.worthsoln.service.MedicineManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  *
@@ -24,5 +25,10 @@ public class MedicineManagerImpl implements MedicineManager {
     @Override
     public void save(Medicine medicine) {
         medicineDao.save(medicine);
+    }
+
+    @Override
+    public List<Medicine> getAll() {
+        return medicineDao.getAll();
     }
 }

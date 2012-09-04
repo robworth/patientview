@@ -17,4 +17,6 @@ public interface LetterManager {
     void save(Letter letter);
 
     List<Letter> get(String username);
+
+    List<Letter> getAll();
 }
