@@ -43,10 +43,22 @@ public abstract class BaseServiceTest {
         LOGGER.info("STARTING CLEAR DOWN DB");
 
         // this should have all the tables in - extend when necessary
-        jdbcTemplate.execute("delete from tenancyuserrole");
+
+        // importer tables
+        jdbcTemplate.execute("delete from centre");
         jdbcTemplate.execute("delete from patient");
+        jdbcTemplate.execute("delete from testresult");
+        jdbcTemplate.execute("delete from letter");
+        jdbcTemplate.execute("delete from diagnosis");
+        jdbcTemplate.execute("delete from medicine");
+
+        // user tables
         jdbcTemplate.execute("delete from usermapping");
         jdbcTemplate.execute("delete from user");
+        jdbcTemplate.execute("delete from tenancyuserrole");
         jdbcTemplate.execute("delete from tenancy");
+
+
+
     }
 }

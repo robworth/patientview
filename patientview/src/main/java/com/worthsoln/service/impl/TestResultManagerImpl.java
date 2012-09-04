@@ -1,6 +1,7 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.model.Panel;
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.TestResultWithUnitShortname;
 import com.worthsoln.repository.TestResultDao;
 import com.worthsoln.service.TestResultManager;
@@ -25,5 +26,15 @@ public class TestResultManagerImpl implements TestResultManager {
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel) {
         return testResultDao.getTestResultForPatient(username, panel, unitManager.getLoggedInUsersUnits());
+    }
+
+    @Override
+    public void save(TestResult testResult) {
+        testResultDao.save(testResult);
+    }
+
+    @Override
+    public List<TestResult> get(String nhsno, String unitcode) {
+        return testResultDao.get(nhsno, unitcode);
     }
 }

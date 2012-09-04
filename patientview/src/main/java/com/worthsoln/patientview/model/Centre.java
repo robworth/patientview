@@ -1,15 +1,28 @@
-package com.worthsoln.patientview;
+package com.worthsoln.patientview.model;
 
-public class Centre {
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
+public class Centre extends BaseModel {
+
+    @Column(nullable = false)
     private String centreCode;
+    @Column
     private String centreName;
+    @Column
     private String centreAddress1;
+    @Column
     private String centreAddress2;
+    @Column
     private String centreAddress3;
+    @Column
     private String centreAddress4;
+    @Column
     private String centrePostCode;
+    @Column
     private String centreTelephone;
+    @Column
     private String centreEmail;
 
     public Centre() {

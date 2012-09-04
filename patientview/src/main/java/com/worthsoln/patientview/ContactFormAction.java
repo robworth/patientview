@@ -17,7 +17,7 @@ public class ContactFormAction extends DatabaseAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        Patient patient = PatientUtils.retrievePatient(request, getDao(request));
+        Patient patient = PatientUtils.retrievePatient(request);
         if (patient != null) {
             String message = request.getParameter("message");
             String type = request.getParameter("type");

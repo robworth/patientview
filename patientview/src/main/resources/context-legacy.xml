@@ -15,6 +15,15 @@
         </property>
     </bean>
 
+    <bean id="setCentreManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setCentreManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="centreManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setCommentManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setCommentManager"/>
         <property name="arguments">

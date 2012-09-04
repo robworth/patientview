@@ -13,7 +13,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.worthsoln.patientview.Centre;
+import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.TestResultDateRange;

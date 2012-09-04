@@ -1,5 +1,6 @@
 package com.worthsoln.repository;
 
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.TestResultWithUnitShortname;
 import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.Unit;
@@ -17,4 +18,8 @@ public interface TestResultDao {
     // Get the test results for the patient for the units they belong to.
     // The unit list is per tenancy.
     List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units);
+
+    void save(TestResult testResult);
+
+    List<TestResult> get(String nhsno, String unitcode);
 }

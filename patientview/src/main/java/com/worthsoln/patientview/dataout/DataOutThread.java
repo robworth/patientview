@@ -1,12 +1,11 @@
 package com.worthsoln.patientview.dataout;
 
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.ParserThread;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.TestResult;
-import com.worthsoln.patientview.TestResultForPatientDataOutDao;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -175,14 +174,7 @@ public class DataOutThread implements Runnable, ParserThread {
     }
 
     private List<TestResult> fetchTestResultsForPatient(Patient patient) {
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-
-        TestResultForPatientDataOutDao dataOutDao = new TestResultForPatientDataOutDao(patient.getNhsno());
-
-        List<TestResult> testResults = dao.retrieveList(dataOutDao);
-
-        return testResults;
-
+        return LegacySpringUtils.getTestResultManager().get(patient.getNhsno(), UnitUtils.PATIENT_ENTERS_UNITCODE);
     }
 
     private Element addChildElement(Document doc, Element parentElement, String elementName) {

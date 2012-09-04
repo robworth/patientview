@@ -3,7 +3,6 @@ package com.worthsoln.patientview.patiententry;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.PatientUtils;
 import com.worthsoln.patientview.model.TestResult;
-import com.worthsoln.patientview.TestResultDao;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -53,9 +52,9 @@ public class PatientResultSubmitAllAction extends Action {
             Comment comment = new Comment(dateTime, nhsno, testValue);
             LegacySpringUtils.getCommentManager().save(comment);
         } else {
-            TestResult testResult = new TestResult(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, dateTime, testCode, testValue);
-            TestResultDao testResultDao = new TestResultDao(testResult);
-            dao.insertItem(testResultDao);
+            TestResult testResult = new TestResult(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, dateTime, testCode,
+                    testValue);
+            LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
 }
