@@ -51,7 +51,7 @@ public class RadarRpvSingleUserTableExport {
             try {
                 userDao.saveAdminUser(adminUser);
             } catch (Exception e) {
-                LOGGER.error("Could not export radar admin user {}" + adminUser.getId());
+                LOGGER.error("Could not export radar admin user " + adminUser.getId());
             }
         }
 
@@ -61,7 +61,7 @@ public class RadarRpvSingleUserTableExport {
             try {
                 userDao.saveProfessionalUser(professionalUser);
             } catch (Exception e) {
-                LOGGER.error("Could not export radar professional user {}" + professionalUser.getId());
+                LOGGER.error("Could not export radar professional user " + professionalUser.getId());
             }
         }
 
@@ -71,7 +71,7 @@ public class RadarRpvSingleUserTableExport {
             try {
                 userDao.savePatientUser(patientUser);
             } catch (Exception e) {
-                LOGGER.error("Could not export radar patient user {}" + patientUser.getId());
+                LOGGER.error("Could not export radar patient user " + patientUser.getId());
             }
         }
     }
@@ -93,7 +93,7 @@ public class RadarRpvSingleUserTableExport {
                 adminUser.setPassword(User.getPasswordHash(decryptField(resultSet.getBytes("uPass"))));
                 adminUser.setUsername(decryptField(resultSet.getBytes("uUserName")));
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt user information for admin user {}", adminUser.getId());
+                LOGGER.error("Could not decrypt user information for admin user ", adminUser.getId());
             }
 
             return adminUser;
@@ -125,7 +125,7 @@ public class RadarRpvSingleUserTableExport {
                 professionalUser.setPassword(User.getPasswordHash(decryptField(resultSet.getBytes("uPass"))));
                 professionalUser.setUsername(decryptField(resultSet.getBytes("uUserName")));
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt user information for professional user {}", professionalUser.getId());
+                LOGGER.error("Could not decrypt user information for professional user ", professionalUser.getId());
             }
 
             return professionalUser;
@@ -140,12 +140,12 @@ public class RadarRpvSingleUserTableExport {
             patientUser.setRadarNumber(resultSet.getLong("RADAR_NO"));
             patientUser.setDateOfBirth(resultSet.getDate("pDOB"));
             patientUser.setDateRegistered(resultSet.getDate("pDateReg"));
+            patientUser.setUsername(resultSet.getString("pUserName"));
 
             try {
                 patientUser.setPassword(User.getPasswordHash(decryptField(resultSet.getBytes("pPassWord"))));
-                patientUser.setUsername(decryptField(resultSet.getBytes("pUserName")));
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt user information for patient user {}", patientUser.getId());
+                LOGGER.error("Could not decrypt user information for patient user ", patientUser.getId());
             }
 
             patientUser.setEmail(patientUser.getUsername());
