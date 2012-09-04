@@ -3,8 +3,6 @@ package com.solidstategroup.radar.test.dao;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
@@ -39,6 +37,22 @@ public class UserDaoTest extends BaseDaoTest {
     private UtilityDao utilityDao;
 
     @Test
+    public void testAddGetUser() throws Exception {
+        AdminUser adminUser = new AdminUser();
+        adminUser.setEmail("admin@radar101.com");
+        adminUser.setUsername("admin@radar101.com");
+        adminUser.setName("Admin");
+        adminUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
+
+        userDao.saveAdminUser(adminUser);
+
+        User checkUser = userDao.getUser(adminUser.getEmail());
+
+        assertNotNull(checkUser);
+        assertTrue("Not an admin user", checkUser instanceof AdminUser);
+    }
+
+    @Test
     public void testAddGetAdminUser() throws Exception {
         AdminUser adminUser = new AdminUser();
         adminUser.setEmail("admin@radar101.com");
@@ -67,6 +81,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser.setSurname("Stark");
         professionalUser.setRole("Centre role");
         professionalUser.setGmc("testGmc");
+        professionalUser.setCentre(utilityDao.getCentre(1));
         professionalUser.setPassword(RadarUtility.generateNewPassword());
 
         userDao.saveProfessionalUser(professionalUser);
@@ -93,6 +108,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser.setSurname("Stark");
         professionalUser.setRole("Centre role");
         professionalUser.setGmc("testGmc");
+        professionalUser.setCentre(utilityDao.getCentre(1));
         professionalUser.setPassword(RadarUtility.generateNewPassword());
 
         userDao.saveProfessionalUser(professionalUser);
@@ -110,6 +126,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser.setSurname("Stark");
         professionalUser.setRole("Centre role");
         professionalUser.setGmc("testGmc");
+        professionalUser.setCentre(utilityDao.getCentre(1));
         professionalUser.setPassword(RadarUtility.generateNewPassword());
 
         userDao.saveProfessionalUser(professionalUser);
@@ -168,6 +185,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser1.setSurname("Stark");
         professionalUser1.setRole("Centre role");
         professionalUser1.setGmc("testGmc");
+        professionalUser1.setCentre(utilityDao.getCentre(1));
         professionalUser1.setPassword(RadarUtility.generateNewPassword());
 
         userDao.saveProfessionalUser(professionalUser1);
@@ -178,6 +196,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser2.setForename("Tyrion");
         professionalUser2.setSurname("Lannister");
         professionalUser2.setRole("Centre role");
+        professionalUser2.setCentre(utilityDao.getCentre(1));
         professionalUser2.setGmc("testGmc");
         professionalUser2.setPassword(RadarUtility.generateNewPassword());
 
