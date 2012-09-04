@@ -35,4 +35,9 @@ public class LetterManagerImpl implements LetterManager {
     public List<Letter> get(String username) {
         return letterDao.get(username, securityUserManager.getLoggedInTenancy());
     }
+
+    @Override
+    public List<Letter> getAll() {
+        return letterDao.getAll();
+    }
 }

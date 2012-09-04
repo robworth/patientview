@@ -1,6 +1,6 @@
 package com.worthsoln.service;
 
-import com.worthsoln.patientview.model.Letter;
+import com.worthsoln.patientview.model.Centre;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,13 +10,13 @@ import java.util.List;
  *
  */
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public interface LetterManager {
+public interface CentreManager {
 
-    Letter get(Long id);
+    void save(Centre centre);
 
-    void save(Letter letter);
+    void delete(Long id);
 
-    List<Letter> get(String username);
+    void delete(String centreCode);
 
-    List<Letter> getAll();
+    List<Centre> getAll();
 }

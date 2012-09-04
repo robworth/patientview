@@ -15,7 +15,7 @@
 
 <h3>Links about blood tests</h3>
 <ul>
-    <li><a href="#">What are the common tests used</a></li>
+    <li><a href="#">What are the common tests performed in IBD</a></li>
     <li><a href="#">Labtests Online</a> </li>
 </ul>
 

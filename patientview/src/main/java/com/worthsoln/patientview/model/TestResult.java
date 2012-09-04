@@ -2,17 +2,27 @@ package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class TestResult {
+@Entity
+public class TestResult extends BaseModel {
 
+    @Column(nullable = false)
     private String nhsno;
+    @Column(nullable = false)
     private String unitcode;
+    @Column(nullable = false, name = "datestamp")
     private Calendar datestamped;
+    @Column(nullable = true)
     private String prepost;
+    @Column(nullable = false)
     private String testcode;
+    @Column(nullable = false)
     private String value;
 
     public TestResult() {
@@ -32,15 +42,18 @@ public class TestResult {
     }
 
     public void setDatestamp(Timestamp datestamped) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(datestamped.getTime());
-        this.datestamped = cal;
+        if (datestamped != null && datestamped.getTime() != 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(datestamped.getTime());
+            this.datestamped = cal;
+        }
     }
 
     public void setTimestamp(Calendar timestamp) {
         this.datestamped = timestamp;    
     }
 
+    @Transient
     public Calendar getTimestamp() {
         return datestamped;
     }
@@ -89,6 +102,7 @@ public class TestResult {
         this.value = value;
     }
 
+    @Transient
     public String getFormattedDatestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
@@ -99,16 +113,19 @@ public class TestResult {
         }
     }
 
+    @Transient
     public String getSortingDatestamp() {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-ddHH:mm");
         return dateTimeFormat.format(datestamped.getTime());
     }
 
+    @Transient
     public String getIsoDatestamp() {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         return dateTimeFormat.format(datestamped.getTime());
     }
 
+    @Transient
     public String getIsoDayDatestamp() {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateTimeFormat.format(datestamped.getTime());

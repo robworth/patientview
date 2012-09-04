@@ -1,17 +1,24 @@
 package com.worthsoln.repository;
 
-import com.worthsoln.patientview.model.Medicine;
+import com.worthsoln.patientview.model.Centre;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ *
+ */
 @Transactional(propagation = Propagation.MANDATORY)
-public interface MedicineDao {
+public interface CentreDao {
 
-    Medicine get(Long id);
+    Centre get(String centreCode);
 
-    void save(Medicine medicine);
+    void save(Centre centre);
 
-    List<Medicine> getAll();
+    void delete(Long id);
+
+    void delete(String centreCode);
+
+    List<Centre> getAll();
 }

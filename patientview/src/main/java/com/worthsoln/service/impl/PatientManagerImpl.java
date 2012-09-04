@@ -27,6 +27,11 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     @Override
+    public Patient get(String nhsno, String unitcode) {
+        return patientDao.get(nhsno, unitcode);
+    }
+
+    @Override
     public void save(Patient patient) {
         patientDao.save(patient);
     }
@@ -45,5 +50,10 @@ public class PatientManagerImpl implements PatientManager {
     @Override
     public List getUnitPatientsAllWithTreatmentDao(String unitcode) {
         return patientDao.getUnitPatientsAllWithTreatmentDao(unitcode, securityUserManager.getLoggedInTenancy());
+    }
+
+    @Override
+    public List<Patient> getUktPatients() {
+        return patientDao.getUktPatients();
     }
 }

@@ -1,6 +1,7 @@
 package com.worthsoln.utils;
 
 import com.worthsoln.service.AboutmeManager;
+import com.worthsoln.service.CentreManager;
 import com.worthsoln.service.CommentManager;
 import com.worthsoln.service.DiagnosisManager;
 import com.worthsoln.service.DiagnosticManager;
@@ -30,6 +31,8 @@ import com.worthsoln.service.impl.SpringApplicationContextBean;
 public class LegacySpringUtils {
 
     private static AboutmeManager aboutmeManager;
+
+    private static CentreManager centreManager;
 
     private static CommentManager commentManager;
 
@@ -77,6 +80,14 @@ public class LegacySpringUtils {
 
     public static void setAboutmeManager(AboutmeManager aboutmeManager) {
         LegacySpringUtils.aboutmeManager = aboutmeManager;
+    }
+
+    public static CentreManager getCentreManager() {
+        return centreManager;
+    }
+
+    public static void setCentreManager(CentreManager centreManager) {
+        LegacySpringUtils.centreManager = centreManager;
     }
 
     public static CommentManager getCommentManager() {

@@ -26,6 +26,7 @@
                 <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
                 <prop key="hibernate.c3p0.minPoolSize">${hibernate.c3p0.minPoolSize}</prop>
                 <prop key="hibernate.c3p0.maxPoolSize">${hibernate.c3p0.maxPoolSize}</prop>
+                <prop key="hibernate.connection.zeroDateTimeBehavior">convertToNull</prop>
             </props>
         </property>
     </bean>

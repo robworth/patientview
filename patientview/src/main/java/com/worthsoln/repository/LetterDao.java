@@ -15,4 +15,6 @@ public interface LetterDao {
     void save(Letter letter);
 
     List<Letter> get(String username, Tenancy tenancy);
+
+    List<Letter> getAll();
 }

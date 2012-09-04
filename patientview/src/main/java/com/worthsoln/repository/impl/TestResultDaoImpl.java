@@ -1,8 +1,10 @@
 package com.worthsoln.repository.impl;
 
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.TestResultWithUnitShortname;
 import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.TestResultDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,7 +22,7 @@ import java.util.List;
  *
  */
 @Repository(value = "testResultDao")
-public class TestResultDaoImpl implements TestResultDao {
+public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implements TestResultDao {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -64,11 +66,44 @@ public class TestResultDaoImpl implements TestResultDao {
         return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
     }
 
+    @Override
+    public List<TestResult> get(String nhsno, String unitcode) {
+
+        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? AND testresult.unitcode = ? " +
+                " ORDER BY testcode, datestamp";
+
+        List<Object> params = new ArrayList<Object>();
+        params.add(nhsno);
+        params.add(unitcode);
+
+        return jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
+    }
+
+    private class TestResultMapper implements RowMapper<TestResult> {
+
+        @Override
+        public TestResult mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            TestResult testResult = new TestResult();
+            testResult.setId(resultSet.getLong("id"));
+            testResult.setDatestamp(resultSet.getTimestamp("datestamp"));
+            testResult.setNhsno(resultSet.getString("nhsno"));
+            testResult.setPrepost(resultSet.getString("prepost"));
+            testResult.setTestcode(resultSet.getString("testcode"));
+            testResult.setUnitcode(resultSet.getString("unitcode"));
+            testResult.setValue(resultSet.getString("value"));
+
+            return testResult;
+        }
+    }
+
     private class TestResultWithUnitShortnameMapper implements RowMapper<TestResultWithUnitShortname> {
 
         @Override
         public TestResultWithUnitShortname mapRow(ResultSet resultSet, int i) throws SQLException {
+
             TestResultWithUnitShortname testResultWithUnitShortname = new TestResultWithUnitShortname();
+            testResultWithUnitShortname.setId(resultSet.getLong("id"));
             testResultWithUnitShortname.setShortname(resultSet.getString("shortname"));
             testResultWithUnitShortname.setDatestamp(resultSet.getTimestamp("datestamp"));
             testResultWithUnitShortname.setNhsno(resultSet.getString("nhsno"));

@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletContext;
 import com.Ostermiller.util.CSVPrinter;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.ParserThread;
 import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.utils.LegacySpringUtils;
 
 public class UktExportThread implements Runnable, ParserThread {
 
@@ -56,8 +56,7 @@ public class UktExportThread implements Runnable, ParserThread {
     }
 
     private String[][] getPatients() {
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        List patientList = dao.retrieveList(new UktPatientDao());
+        List patientList = LegacySpringUtils.getPatientManager().getUktPatients();
         String[][] patientArray = new String[patientList.size()][5];
         for (int i = 0; i < patientList.size(); i++) {
             Patient patient = (Patient) patientList.get(i);

@@ -14,6 +14,8 @@ public interface PatientManager {
 
     Patient get(Long id);
 
+    Patient get(String nhsno, String unitcode);
+
     void save(Patient patient);
 
     List<Patient> get(String unitCode);
@@ -23,4 +25,6 @@ public interface PatientManager {
 
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsAllWithTreatmentDao(String unitcode);
+
+    List<Patient> getUktPatients();
 }

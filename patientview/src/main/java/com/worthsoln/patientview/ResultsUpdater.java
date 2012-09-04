@@ -2,6 +2,7 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
+import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Diagnosis;
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.logging.AddLog;
@@ -53,6 +54,10 @@ public class ResultsUpdater {
                     xmlFile.getName() + " : " +XmlImportUtils.extractStringFromStackTrace(e));
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
+        renameDirectory(context, xmlFile);
+    }
+
+    protected void renameDirectory(ServletContext context, File xmlFile) {
         String directory = context.getInitParameter("xml.patient.data.load.directory");
         xmlFile.renameTo(new File(directory, xmlFile.getName()));
     }
@@ -77,15 +82,12 @@ public class ResultsUpdater {
     }
 
     private void updatePatientDetails(Patient patient) {
-        PatientDao patientDao = new PatientDao(patient);
-        dao.deleteItem(patientDao);
-        dao.insertItem(patientDao);
+        LegacySpringUtils.getPatientManager().save(patient);
     }
 
     private void updateCentreDetails(Centre centre) {
-        CentreDao centreDao = new CentreDao(centre);
-        dao.deleteItem(centreDao);
-        dao.insertItem(centreDao);
+        LegacySpringUtils.getCentreManager().delete(centre.getCentreCode());
+        LegacySpringUtils.getCentreManager().save(centre);
     }
 
     private void deleteDateRanges(Collection dateRanges) {
@@ -111,8 +113,7 @@ public class ResultsUpdater {
     private void insertResults(Collection testResults) {
         for (Iterator iterator = testResults.iterator(); iterator.hasNext();) {
             TestResult testResult = (TestResult) iterator.next();
-            TestResultDao testResultDao = new TestResultDao(testResult);
-            dao.insertItem(testResultDao);
+            LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
 
