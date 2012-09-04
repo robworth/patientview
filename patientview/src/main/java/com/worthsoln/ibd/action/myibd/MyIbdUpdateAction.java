@@ -47,6 +47,11 @@ public class MyIbdUpdateAction extends BaseAction {
         myIbd.setYearForSurveillanceColonoscopy(convertFormDateString(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, dynaForm));
         myIbd.setNamedConsultant((String) dynaForm.get(Ibd.NAMED_CONSULTANT_PARAM));
         myIbd.setNurses((String) dynaForm.get(Ibd.NURSES_PARAM));
+        myIbd.setWeight((Double) dynaForm.get(Ibd.WEIGHT_PARAM));
+        myIbd.setFamilyHistoryId((Long) dynaForm.get(Ibd.FAMILY_HISTORY_ID_PARAM));
+        myIbd.setSmokingId((Long) dynaForm.get(Ibd.SMOKING_ID_PARAM));
+        myIbd.setSurgeryId((Long) dynaForm.get(Ibd.SURGERY_ID_PARAM));
+        myIbd.setVaccinationRecordId((Long) dynaForm.get(Ibd.VACCINATION_RECORD_ID_PARAM));
 
         Long[] complicationIds = (Long[]) dynaForm.get(Ibd.COMPLICATION_IDS_PARAM);
         myIbd.setComplicationIds(new HashSet<Long>(Arrays.asList(complicationIds)));
@@ -87,6 +92,28 @@ public class MyIbdUpdateAction extends BaseAction {
         if (form.get(Ibd.BODY_PART_AFFECTED_ID_PARAM) == null
                 || ((Long) form.get(Ibd.BODY_PART_AFFECTED_ID_PARAM) <= 0)) {
             actionErrors.add(Ibd.BODY_PART_AFFECTED_ID_PARAM, new ActionMessage(Ibd.BODY_PART_AFFECTED_REQUIRED));
+        }
+
+        if (form.get(Ibd.WEIGHT_PARAM) == null || ((Double) form.get(Ibd.WEIGHT_PARAM) <= 0)) {
+            actionErrors.add(Ibd.WEIGHT_PARAM, new ActionMessage(Ibd.WEIGHT_REQUIRED));
+        }
+
+        if (form.get(Ibd.FAMILY_HISTORY_ID_PARAM) == null
+                || ((Long) form.get(Ibd.FAMILY_HISTORY_ID_PARAM) <= 0)) {
+            actionErrors.add(Ibd.FAMILY_HISTORY_ID_PARAM, new ActionMessage(Ibd.FAMILY_HISTORY_REQUIRED));
+        }
+
+        if (form.get(Ibd.SMOKING_ID_PARAM) == null || ((Long) form.get(Ibd.SMOKING_ID_PARAM) <= 0)) {
+            actionErrors.add(Ibd.SMOKING_ID_PARAM, new ActionMessage(Ibd.SMOKING_REQUIRED));
+        }
+
+        if (form.get(Ibd.SURGERY_ID_PARAM) == null || ((Long) form.get(Ibd.SURGERY_ID_PARAM) <= 0)) {
+            actionErrors.add(Ibd.SURGERY_ID_PARAM, new ActionMessage(Ibd.SURGERY_REQUIRED));
+        }
+
+        if (form.get(Ibd.VACCINATION_RECORD_ID_PARAM) == null
+                || ((Long) form.get(Ibd.VACCINATION_RECORD_ID_PARAM) <= 0)) {
+            actionErrors.add(Ibd.VACCINATION_RECORD_ID_PARAM, new ActionMessage(Ibd.VACCINATION_RECORD_REQUIRED));
         }
 
         if (actionErrors.size() > 0) {
