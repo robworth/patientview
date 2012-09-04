@@ -124,7 +124,7 @@
                         <br/>
                         <logic:present name="confidenceList" scope="session">
                             <html:select property="confidenceId">
-                                <html:options collection="importanceList" property="id" labelProperty="name"/>
+                                <html:options collection="confidenceList" property="id" labelProperty="name"/>
                             </html:select>
                         </logic:present>
                     </p>
