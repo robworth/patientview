@@ -187,7 +187,7 @@ public class BaseAction extends ActionSupport {
             if (openBowelList == null) {
                 openBowelList = new ArrayList<OpenBowel>();
 
-                for (int x = 1; x <= 20; x++) {
+                for (int x = 0; x <= 20; x++) {
                     openBowelList.add(new OpenBowel(x));
                 }
             }
@@ -292,9 +292,6 @@ public class BaseAction extends ActionSupport {
 
         // need to re add graph data to the page
         request.setAttribute(Ibd.GRAPH_DATA_PARAM, symptomsGraphData);
-
-        // where ever there is a graph it may need to show advice on your last entered symptoms so add this to request
-        addLastSymptomAdvice(user, graphType, request);
     }
 
     protected Date convertFormDateString(String formProperty, DynaActionForm dynaActionForm) {

@@ -40,7 +40,7 @@ public class FeedbackFormAction extends DatabaseAction {
 
             emailUnitAdminFeedbackNotification(request, feedback);
 
-            Patient patient = PatientUtils.retrievePatient(request, getDao(request));
+            Patient patient = PatientUtils.retrievePatient(request);
 
             if (patient != null) {
                 request.setAttribute("patient", patient);

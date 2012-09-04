@@ -35,11 +35,8 @@ public class CrohnsUpdateAction extends BaseAction {
         request.setAttribute(Ibd.FROM_DATE_PARAM, convertFormDateString(fromDate));
         request.setAttribute(Ibd.TO_DATE_PARAM, convertFormDateString(toDate));
 
-        // need to re add graph data to the page
-        addSymptomsGraphData(user, Ibd.CROHNS_GRAPH_TYPE, fromDate, toDate, request);
-
         if (!validate(dynaForm, request)) {
-            return mapping.findForward(INPUT);
+            mapping.findForward(INPUT);
         }
 
         CrohnsSymptoms crohnsSymptoms = new CrohnsSymptoms();

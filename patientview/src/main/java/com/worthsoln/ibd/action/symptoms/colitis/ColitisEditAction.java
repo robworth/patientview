@@ -35,6 +35,10 @@ public class ColitisEditAction extends BaseAction {
         // need to re add graph data to the page
         addSymptomsGraphData(user, Ibd.COLITIS_GRAPH_TYPE, fromDate, toDate, request);
 
+        if (request.getParameter(Ibd.SHOW_ADVICE_PARAM) != null) {
+            addLastSymptomAdvice(user, Ibd.CROHNS_GRAPH_TYPE, request);
+        }
+
         // set the form to have empty values
         dynaForm.set(Ibd.NUMBER_OF_STOOLS_DAYTIME_PARAM, null);
         dynaForm.set(Ibd.NUMBER_OF_STOOLS_NIGHTTIME_PARAM, null);

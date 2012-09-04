@@ -32,8 +32,11 @@ public class CrohnsEditAction extends BaseAction {
         request.setAttribute(Ibd.FROM_DATE_PARAM, convertFormDateString(fromDate));
         request.setAttribute(Ibd.TO_DATE_PARAM, convertFormDateString(toDate));
 
-        // need to re add graph data to the page
         addSymptomsGraphData(user, Ibd.CROHNS_GRAPH_TYPE, fromDate, toDate, request);
+
+        if (request.getParameter(Ibd.SHOW_ADVICE_PARAM) != null) {
+            addLastSymptomAdvice(user, Ibd.CROHNS_GRAPH_TYPE, request);
+        }
 
         // set the form to have empty values
         dynaForm.set(Ibd.ABDOMINAL_PAIN_PARAM, null);

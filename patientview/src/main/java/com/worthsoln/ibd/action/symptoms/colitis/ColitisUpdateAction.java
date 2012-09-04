@@ -35,9 +35,6 @@ public class ColitisUpdateAction extends BaseAction {
         request.setAttribute(Ibd.FROM_DATE_PARAM, convertFormDateString(fromDate));
         request.setAttribute(Ibd.TO_DATE_PARAM, convertFormDateString(toDate));
 
-        // need to re add graph data to the page
-        addSymptomsGraphData(user, Ibd.COLITIS_GRAPH_TYPE, fromDate, toDate, request);
-
         if (!validate(dynaForm, request)) {
             return mapping.findForward(INPUT);
         }

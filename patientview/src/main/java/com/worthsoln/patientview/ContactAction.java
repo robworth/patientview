@@ -35,7 +35,7 @@ public class ContactAction extends DatabaseAction {
 
         for (UserMapping userMapping : userMappings) {
             if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
-                Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode(), getDao(request));
+                Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode());
 
                 Unit unit = UnitUtils.retrieveUnit(userMapping.getUnitcode());
                 Contact contact = new Contact(patient, unit, userMapping);
