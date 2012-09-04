@@ -105,7 +105,7 @@ CREATE TABLE `tenancyuserrole` (
 
 INSERT INTO tenancyuserrole (role, tenancy_id, user_id) SELECT role, 1, id FROM USER;
 
-ALTER TABLE USER DROP COLUMN role;
+--ALTER TABLE USER DROP COLUMN role;  best not to drop this immediately in case we loose the user data
 
 -- per tenancy system data
 ALTER TABLE edtacode ADD tenancy_id BIGINT(20)

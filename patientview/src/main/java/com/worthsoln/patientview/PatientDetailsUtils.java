@@ -28,7 +28,7 @@ public class PatientDetailsUtils {
 
             UserMapping userMapping = (UserMapping) obj;
 
-            Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode(), dao);
+            Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode());
 
             Unit unit = UnitUtils.retrieveUnit(userMapping.getUnitcode());
 
