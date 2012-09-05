@@ -29,13 +29,10 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.nhsno), nhsno));
+        wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.action), action));
 
-        // pull back results that have the current tenancy or none
-        Predicate tenancyPred = builder.equal(logEntryRoot.get(LogEntry_.tenancy), tenancy);
-        Predicate tenancyNone = builder.isNull(logEntryRoot.get(LogEntry_.tenancy));
-
-        Predicate tenancyOrNone = builder.or(tenancyPred, tenancyNone);
-        wherePredicates.add(tenancyOrNone);
+        // this could be extended to show data from other tenancies...
+        wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.tenancy), tenancy));
 
         buildWhereClause(criteria, wherePredicates);
 
