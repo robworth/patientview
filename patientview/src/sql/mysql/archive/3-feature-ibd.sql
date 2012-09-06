@@ -161,3 +161,20 @@ CREATE TABLE `ibd_myibd_severity_level` (
   `treatment` text,
   PRIMARY KEY  (`id`)
 );
+
+-- my ibd links data
+
+
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Primary Diagnosis','myIbdLinks','Primary Diagnosis','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Disease Extent','myIbdLinks','Disease Extent','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Year of Diagnosis','myIbdLinks','Year of Diagnosis','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Complications','myIbdLinks','Complications','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Other parts of the body affected','myIbdLinks','Other parts of the body affected','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Year for Surveillance Colonoscopy','myIbdLinks','Year for Surveillance Colonoscopy','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Named Consultant','myIbdLinks','Named Consultant','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Nurses','myIbdLinks','Nurses','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Weight','myIbdLinks','Weight','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('IBD Related Family History','myIbdLinks','IBD Related Family History','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Smoking History','myIbdLinks','Smoking History','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Surgery History','myIbdLinks','Surgery History','','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Vaccination History','myIbdLinks','Vaccination History','','','2');
