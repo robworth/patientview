@@ -5,7 +5,6 @@ import com.worthsoln.ibd.model.medication.MedicationDose;
 import com.worthsoln.ibd.model.medication.MedicationType;
 import com.worthsoln.ibd.model.medication.MyMedication;
 import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
-import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyMedicationDao;
@@ -50,7 +49,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication.setMedicationType(medicationType);
         myMedication.setMedication(medication);
         myMedication.setMedicationDose(medicationDose);
-        myMedication.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
         myMedication.setReasonForStopping("Reason for stopping");
 
@@ -69,8 +67,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         assertEquals("Medication not persisted", checkMyMedication.getMedication(), myMedication.getMedication());
         assertEquals("Medication dose not persisted", checkMyMedication.getMedicationDose(),
                 myMedication.getMedicationDose());
-        assertEquals("Medication no of not persisted", checkMyMedication.getMedicationNoOf(),
-                myMedication.getMedicationNoOf());
         assertEquals("Medication frequency of not persisted", checkMyMedication.getMedicationFrequency(),
                 myMedication.getMedicationFrequency());
         assertEquals("Reason for stopping not persisted", checkMyMedication.getReasonForStopping(),
@@ -93,7 +89,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication1.setMedicationType(medicationType);
         myMedication1.setMedication(medication);
         myMedication1.setMedicationDose(medicationDose);
-        myMedication1.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication1.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
         myMedication1.setReasonForStopping("Reason for stopping");
 
@@ -109,7 +104,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication2.setMedicationType(medicationType);
         myMedication2.setMedication(medication);
         myMedication2.setMedicationDose(medicationDose);
-        myMedication2.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication2.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
         myMedication2.setReasonForStopping("Reason for stopping");
 
@@ -138,7 +132,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication1.setMedicationType(medicationType);
         myMedication1.setMedication(medication);
         myMedication1.setMedicationDose(medicationDose);
-        myMedication1.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication1.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
 
         myMedicationDao.save(myMedication1);
@@ -153,7 +146,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication2.setMedicationType(medicationType);
         myMedication2.setMedication(medication);
         myMedication2.setMedicationDose(medicationDose);
-        myMedication2.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication2.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
         myMedication2.setReasonForStopping("Reason for stopping");
 
@@ -181,7 +173,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication1.setMedicationType(medicationType);
         myMedication1.setMedication(medication);
         myMedication1.setMedicationDose(medicationDose);
-        myMedication1.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication1.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
 
         myMedicationDao.save(myMedication1);
@@ -196,7 +187,6 @@ public class MyMedicationDaoTest extends BaseDaoTest {
         myMedication2.setMedicationType(medicationType);
         myMedication2.setMedication(medication);
         myMedication2.setMedicationDose(medicationDose);
-        myMedication2.setMedicationNoOf(MedicationNoOf.ONE_TO_FOUR);
         myMedication2.setMedicationFrequency(MedicationFrequency.ONCE_A_DAY);
         myMedication2.setReasonForStopping("Reason for stopping");
 

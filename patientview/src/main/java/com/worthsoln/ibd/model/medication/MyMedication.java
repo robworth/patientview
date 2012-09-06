@@ -2,7 +2,6 @@ package com.worthsoln.ibd.model.medication;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
-import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
 import com.worthsoln.patientview.model.BaseModel;
 
 import javax.persistence.Access;
@@ -45,9 +44,6 @@ public class MyMedication extends BaseModel {
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String otherMedicationDose;
-
-    @Transient
-    private MedicationNoOf medicationNoOf;
 
     @Transient
     private MedicationFrequency medicationFrequency;
@@ -129,28 +125,6 @@ public class MyMedication extends BaseModel {
 
     public void setOtherMedicationDose(String otherMedicationDose) {
         this.otherMedicationDose = otherMedicationDose;
-    }
-
-    public MedicationNoOf getMedicationNoOf() {
-        return medicationNoOf;
-    }
-
-    public void setMedicationNoOf(MedicationNoOf medicationNoOf) {
-        this.medicationNoOf = medicationNoOf;
-    }
-
-    @Access(AccessType.PROPERTY)
-    @Column(name = "medication_no_of_id", nullable = false)
-    public Long getMedicationNoOfId() {
-        if (medicationNoOf != null) {
-            return medicationNoOf.getId();
-        }
-
-        return null;
-    }
-
-    public void setMedicationNoOfId(Long id) {
-        this.medicationNoOf = MedicationNoOf.getMedicineNoOf(id);
     }
 
     public MedicationFrequency getMedicationFrequency() {

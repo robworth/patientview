@@ -46,7 +46,6 @@
             <form-property name="medicationDoseId" type="java.lang.Long"/>
             <form-property name="otherMedication" type="java.lang.String"/>
             <form-property name="otherMedicationDose" type="java.lang.String"/>
-            <form-property name="medicationNoOfId" type="java.lang.Long"/>
             <form-property name="medicationFrequencyId" type="java.lang.Long"/>
         </form-bean>
 

@@ -23,7 +23,6 @@ import com.worthsoln.ibd.model.enums.crohns.AbdominalPain;
 import com.worthsoln.ibd.model.enums.crohns.MassInTummy;
 import com.worthsoln.ibd.model.medication.MedicationType;
 import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
-import com.worthsoln.ibd.model.medication.enums.MedicationNoOf;
 import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
 import com.worthsoln.ibd.model.symptoms.SymptomsData;
 import com.worthsoln.ibd.model.symptoms.SymptomsGraphData;
@@ -211,10 +210,6 @@ public class BaseAction extends ActionSupport {
         });
 
         return medicationTypes;
-    }
-
-    protected List<MedicationNoOf> getMedicationNoOfList() {
-        return MedicationNoOf.getAsList();
     }
 
     protected List<MedicationFrequency> getMedicationFrequencyList() {

@@ -116,16 +116,6 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label">No of Tabs/Granules:</label>
-                    <div class="controls">
-                        <html:select property="medicationNoOfId">
-                            <html:option value="">Select</html:option>
-                            <html:options collection="medicationNoOfList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
-                </div>
-
-                <div class="control-group">
                     <label class="control-label">Frequency:</label>
                     <div class="controls">
                         <html:select property="medicationFrequencyId">

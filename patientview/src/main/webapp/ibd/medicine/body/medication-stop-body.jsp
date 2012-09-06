@@ -16,7 +16,6 @@
                         <th>Type</th>
                         <th>Medication</th>
                         <th>Dose</th>
-                        <th>No Tabs/Granules</th>
                         <th>Frequency</th>
                     </tr>
                 </thead>
@@ -40,9 +39,6 @@
                             <logic:present name="myMedication" property="medicationDose">
                                 <bean:write name="myMedication" property="medicationDose.formattedValue" />
                             </logic:present>
-                        </td>
-                        <td>
-                            <bean:write name="myMedication" property="medicationNoOf.name" />
                         </td>
                         <td>
                             <bean:write name="myMedication" property="medicationFrequency.name" />

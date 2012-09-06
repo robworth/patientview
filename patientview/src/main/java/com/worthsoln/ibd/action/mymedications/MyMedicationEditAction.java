@@ -51,12 +51,10 @@ public class MyMedicationEditAction extends BaseAction {
 
         dynaForm.set(Ibd.OTHER_MEDICATION_ID_PARAM, otherMedication);
         dynaForm.set(Ibd.OTHER_MEDICATION_DOSE_ID_PARAM, otherMedicationDose);
-        dynaForm.set(Ibd.MEDICATION_NO_OF_ID_PARAM, myMedication.getMedicationNoOfId());
         dynaForm.set(Ibd.MEDICATION_FREQUENCY_ID_PARAM, myMedication.getMedicationFrequencyId());
 
         // set up all the needed lists in the session
         request.getSession().setAttribute(MEDICATION_TYPE_LIST_PROPERTY, getMedicationTypeList());
-        request.getSession().setAttribute(MEDICATION_NO_OF_LIST_PROPERTY, getMedicationNoOfList());
         request.getSession().setAttribute(MEDICATION_FREQUENCY_LIST_PROPERTY, getMedicationFrequencyList());
 
         return mapping.findForward(SUCCESS);

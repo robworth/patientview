@@ -54,7 +54,6 @@ public class MyMedicationUpdateAction extends BaseAction {
 
         myMedication.setOtherMedication((String) dynaForm.get(Ibd.OTHER_MEDICATION_ID_PARAM));
         myMedication.setOtherMedicationDose((String) dynaForm.get(Ibd.OTHER_MEDICATION_DOSE_ID_PARAM));
-        myMedication.setMedicationNoOfId((Long) dynaForm.get(Ibd.MEDICATION_NO_OF_ID_PARAM));
         myMedication.setMedicationFrequencyId((Long) dynaForm.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM));
         myMedication.setDateStarted(convertFormDateString(Ibd.DATE_STARTED_PARAM, dynaForm));
 
@@ -100,11 +99,6 @@ public class MyMedicationUpdateAction extends BaseAction {
                         || ((Long) form.get(Ibd.MEDICATION_DOSE_ID_PARAM) <= 0)) {
                     actionErrors.add(Ibd.MEDICATION_DOSE_ID_PARAM, new ActionMessage(Ibd.MEDICATION_DOSE_REQUIRED));
                 }
-            }
-
-            if (form.get(Ibd.MEDICATION_NO_OF_ID_PARAM) == null
-                    || ((Long) form.get(Ibd.MEDICATION_NO_OF_ID_PARAM) <= 0)) {
-                actionErrors.add(Ibd.MEDICATION_NO_OF_ID_PARAM, new ActionMessage(Ibd.MEDICATION_NO_OF_REQUIRED));
             }
 
             if (form.get(Ibd.MEDICATION_FREQUENCY_ID_PARAM) == null

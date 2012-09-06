@@ -52,7 +52,6 @@
                         <th>Type</th>
                         <th>Medication</th>
                         <th>Dose</th>
-                        <th>No Tabs/Granules</th>
                         <th>Frequency</th>
                         <th>Actions</th>
                     </tr>
@@ -81,9 +80,6 @@
                                 <logic:present name="myMedication" property="otherMedicationDose">
                                     <bean:write name="myMedication" property="otherMedicationDose" />
                                 </logic:present>
-                            </td>
-                            <td>
-                                <bean:write name="myMedication" property="medicationNoOf.name" />
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationFrequency.name" />
@@ -118,7 +114,6 @@
                         <th>Type</th>
                         <th>Medication</th>
                         <th>Dose</th>
-                        <th>No Tabs/Granules</th>
                         <th>Frequency</th>
                         <th>Reason for stopping</th>
                     </tr>
@@ -150,9 +145,6 @@
                                 <logic:present name="myMedication" property="otherMedicationDose">
                                     <bean:write name="myMedication" property="otherMedicationDose" />
                                 </logic:present>
-                            </td>
-                            <td>
-                                <bean:write name="myMedication" property="medicationNoOf.name" />
                             </td>
                             <td>
                                 <bean:write name="myMedication" property="medicationFrequency.name" />
