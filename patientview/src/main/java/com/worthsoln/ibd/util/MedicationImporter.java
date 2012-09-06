@@ -20,6 +20,26 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Will import medication from a spread sheet NOT A CSV!
+ *
+ * Spread sheet is expected to have column headers in the first row
+ * Required columns are -
+ *
+ * Medication Type, Medication Name, Medication Dose MG
+ *
+ * If you have multiple medications for a medication type you need a row for each with the same medication type name
+ * in each row
+ *
+ * The allowed dosages for a medication need to be in mg and seperated by a :
+ * If a dosage has extra information you can seperate the mg value and the extra info with a -
+ * e.g. 400:800:1200:1600:2400-This is extra information:3200:4800
+ *
+ * Example below for 1 medication type with two medications
+ *
+ * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 800 mg tablet, 400:800:1200:1600:2400-Test info:3200:4800
+ * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 400 mg tablet, 800:1600:2400:3200:4800
+ */
 public class MedicationImporter {
 
     // we should only have 3 cols in the sheet
