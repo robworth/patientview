@@ -3,6 +3,10 @@
 <div class="span3">
     <div class="well noSidePadding">
         <ul class="nav nav-list">
+        <logic:present tenancy="ibd">
+            <li><html:link action="/control/myibd-links-display">My IBD Links</html:link></li>
+            <li class="divider"></li>
+        </logic:present>
         <logic:present role="superadmin">
             <li><html:link action="/control/edtaCodeDisplay">EDTA Codes</html:link></li>
             <li><html:link action="/control/treatmentCodeDisplay">Treatment Codes</html:link></li>
