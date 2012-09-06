@@ -45,7 +45,13 @@ public class MedicationType extends BaseModel {
             Collections.sort(medications, new Comparator<Medication>() {
                 @Override
                 public int compare(Medication o1, Medication o2) {
-                    return o1.getName().compareToIgnoreCase(o2.getName());
+                if (o1.getId() > o2.getId()) {
+                    return 1;
+                } else if (o1.getId() < o2.getId()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
                 }
             });
         }

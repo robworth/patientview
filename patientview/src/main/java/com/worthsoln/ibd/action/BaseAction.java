@@ -38,6 +38,7 @@ import org.springframework.web.struts.ActionSupport;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -182,19 +183,34 @@ public class BaseAction extends ActionSupport {
     }
 
     protected List<OpenBowel> getOpenBowelList() {
-            if (openBowelList == null) {
-                openBowelList = new ArrayList<OpenBowel>();
+        if (openBowelList == null) {
+            openBowelList = new ArrayList<OpenBowel>();
 
-                for (int x = 0; x <= 20; x++) {
-                    openBowelList.add(new OpenBowel(x));
-                }
+            for (int x = 0; x <= 20; x++) {
+                openBowelList.add(new OpenBowel(x));
             }
-
-            return openBowelList;
         }
 
+        return openBowelList;
+    }
+
     protected List<MedicationType> getMedicationTypeList() {
-        return getIbdManager().getMedicationTypes();
+        List<MedicationType> medicationTypes = getIbdManager().getMedicationTypes();
+
+        Collections.sort(medicationTypes, new Comparator<MedicationType>() {
+            @Override
+            public int compare(MedicationType o1, MedicationType o2) {
+                if (o1.getId() > o2.getId()) {
+                    return 1;
+                } else if (o1.getId() < o2.getId()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
+        return medicationTypes;
     }
 
     protected List<MedicationNoOf> getMedicationNoOfList() {

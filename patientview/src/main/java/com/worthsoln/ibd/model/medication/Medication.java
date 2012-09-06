@@ -45,9 +45,9 @@ public class Medication extends BaseModel {
             Collections.sort(allowedDosages, new Comparator<MedicationDose>() {
                 @Override
                 public int compare(MedicationDose o1, MedicationDose o2) {
-                    if (o1.getMg() > o2.getMg()) {
+                    if (o1.getId() > o2.getId()) {
                         return 1;
-                    } else if (o1.getMg() < o2.getMg()) {
+                    } else if (o1.getId() < o2.getId()) {
                         return -1;
                     } else {
                         return 0;

@@ -19,7 +19,7 @@ public class MedicationDose extends BaseModel {
     public String getFormattedValue() {
         String doseValueAsString = "";
 
-        if (mg != null) {
+        if (mg != null && mg > 0) {
             /**
              * If the mg is grt OR eq to 1,000,000 then convert to KG
              * If the mg is grt OR eq to 1,000 then convert to Grams
@@ -35,7 +35,11 @@ public class MedicationDose extends BaseModel {
         }
 
         if (extraInformation != null && extraInformation.length() > 0) {
-            doseValueAsString += " " + extraInformation;
+            if (doseValueAsString.length() > 0) {
+                doseValueAsString += " ";
+            }
+
+            doseValueAsString += extraInformation;
         }
 
         return doseValueAsString;
