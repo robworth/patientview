@@ -37,6 +37,22 @@ public class Ibd {
     public static final String MILD_LEVEL_PARAM = "mildLevel";
     public static final String MILD_TREATMENT_PARAM = "mildTreatment";
 
+    // ibd link params
+    public static final String MY_IBD_LINKS_TYPE = "myIbdLinks";
+    public static final String PRIMARY_DIAGNOSIS_LINK_PARAM = "primaryDiagnosisLink";
+    public static final String DISEASE_EXTENT_LINK_PARAM = "diseaseExtentLink";
+    public static final String YEAR_OF_DIAGNOSIS_LINK_PARAM = "yearOfDiagnosisLink";
+    public static final String BODY_PART_AFFECTED_LINK_PARAM = "bodyPartAffectedLink";
+    public static final String WEIGHT_LINK_PARAM = "weightLink";
+    public static final String COMPLICATIONS_LINK_PARAM = "complicationLink";
+    public static final String YEAR_FOR_SURVEILLANCE_COLONOSCOPY_LINK_PARAM = "yearForSurveillanceColonoscopyLink";
+    public static final String NAMED_CONSULTANT_LINK_PARAM = "namedConsultantLink";
+    public static final String NURSES_LINK_PARAM = "nursesLink";
+    public static final String FAMILY_HISTORY_LINK_PARAM = "familyHistoryLink";
+    public static final String SMOKING_LINK_PARAM = "smokingLink";
+    public static final String SURGERY_LINK_PARAM = "surgeryLink";
+    public static final String VACCINATION_RECORD_LINK_PARAM = "vaccinationRecordLink";
+
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
     public static final String DISEASE_EXTENT_ID_PARAM = "diseaseExtentId";
