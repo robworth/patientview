@@ -28,7 +28,8 @@ public class PatientDetailsAction extends DatabaseAction {
 
         request.setAttribute("patientDetails", patientDetails);
 
-        if (patientDetails != null && patientDetails.size() > 0) {
+        // this form is only used for ibd for now, so just check it exist before trying to use it
+        if (form != null && form instanceof DynaActionForm && patientDetails != null && patientDetails.size() > 0) {
             // add the editable ibd only patient details
             DynaActionForm dynaForm = (DynaActionForm) form;
             // let's just store this info against the first patient object if there are many for this nhsno

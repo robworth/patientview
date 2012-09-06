@@ -105,8 +105,6 @@ CREATE TABLE `tenancyuserrole` (
 
 INSERT INTO tenancyuserrole (role, tenancy_id, user_id) SELECT role, 1, id FROM USER;
 
---ALTER TABLE USER DROP COLUMN role;  best not to drop this immediately in case we loose the user data
-
 -- per tenancy system data
 ALTER TABLE edtacode ADD tenancy_id BIGINT(20)
 NOT NULL;
@@ -141,6 +139,11 @@ UPDATE usermapping SET tenancy_id = 1;
 ALTER TABLE log ADD tenancy_id BIGINT(20);
 
 UPDATE log SET tenancy_id = 1;
+
+-- indexes to speed up queries
+
+CREATE INDEX nhs_log_index1 ON LOG (nhsno);
+CREATE INDEX action_log_index1 ON LOG (action);
 
 
 -- FEATURE-IBD

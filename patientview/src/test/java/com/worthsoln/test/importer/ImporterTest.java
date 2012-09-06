@@ -117,7 +117,7 @@ public class ImporterTest extends BaseServiceTest {
 
     @Test
     public void testUktExport() {
-        // todo - we need a sample ukt_rpv_export.txt
+        // todo - export some ukt patients we have imported
     }
 
 }
