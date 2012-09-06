@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -38,6 +40,16 @@ public class MedicationType extends BaseModel {
     }
 
     public List<Medication> getMedications() {
+        // return the medications in alpha order
+        if (medications != null) {
+            Collections.sort(medications, new Comparator<Medication>() {
+                @Override
+                public int compare(Medication o1, Medication o2) {
+                    return o1.getName().compareToIgnoreCase(o2.getName());
+                }
+            });
+        }
+
         return medications;
     }
 

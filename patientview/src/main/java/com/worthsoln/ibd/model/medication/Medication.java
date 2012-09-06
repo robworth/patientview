@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -38,6 +40,22 @@ public class Medication extends BaseModel {
     }
 
     public List<MedicationDose> getAllowedDosages() {
+        // order by MG
+        if (allowedDosages != null) {
+            Collections.sort(allowedDosages, new Comparator<MedicationDose>() {
+                @Override
+                public int compare(MedicationDose o1, MedicationDose o2) {
+                    if (o1.getMg() > o2.getMg()) {
+                        return 1;
+                    } else if (o1.getMg() < o2.getMg()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        }
+
         return allowedDosages;
     }
 
