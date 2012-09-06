@@ -209,7 +209,6 @@ CREATE TABLE `ibd_my_medication` (
   `dateStarted` datetime NOT NULL,
   `dateStopped` datetime default NULL,
   `medication_frequency_id` bigint(20) NOT NULL,
-  `medication_no_of_id` bigint(20) NOT NULL,
   `nhsno` varchar(255) NOT NULL,
   `otherMedication` text,
   `reasonForStopping` text,
