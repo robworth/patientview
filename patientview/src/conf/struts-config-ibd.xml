@@ -286,6 +286,44 @@
             <forward name="success" path="/patient/patient_details.jsp"/>
         </action>
 
+        <action path="/control/myibd-links-display"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
+                parameter="myIbdLinks">
+            <forward name="success" path="/ibd/admin/myibd-links.jsp"/>
+        </action>
+
+        <action path="/control/myibd-links-edit"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeEditAction"
+                name="edtaCodeForm"
+                scope="request">
+            <forward name="success" path="/ibd/admin/myibd-link-edit.jsp"/>
+        </action>
+
+        <action path="/control/myibd-links-update"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeUpdateAction"
+                name="edtaCodeForm"
+                input="input"
+                scope="request">
+            <forward name="input" path="/ibd/admin/myibd-link-edit.jsp"/>
+            <forward name="success" path="/control/myibd-links-display.do"/>
+        </action>
+
+        <action path="/control/myibd-links-add"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeAddInputAction"
+                name="edtaCodeForm"
+                scope="request">
+            <forward name="success" path="/ibd/admin/myibd-links-add.jsp"/>
+        </action>
+
+        <action path="/control/myibd-links-add-save"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeAddAction"
+                name="edtaCodeForm"
+                input="input"
+                scope="request">
+            <forward name="input" path="/ibd/admin/myibd-links-add.jsp"/>
+            <forward name="success" path="/control/myibd-links-display.do"/>
+        </action>
+
     </action-mappings>
 
 </struts-config>
