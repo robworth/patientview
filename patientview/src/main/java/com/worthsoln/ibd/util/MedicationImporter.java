@@ -32,12 +32,13 @@ import java.util.List;
  * in each row
  *
  * The allowed dosages for a medication need to be in mg and seperated by a :
- * If a dosage has extra information you can seperate the mg value and the extra info with a -
- * e.g. 400:800:1200:1600:2400-This is extra information:3200:4800
+ * If a dosage has no MG value then you have to put 0 as the value
+ * If a dosage has extra information you can seperate the mg value and the extra info with a _
+ * e.g. 400:800:1200:1600:2400_This is extra information:3200:4800
  *
  * Example below for 1 medication type with two medications
  *
- * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 800 mg tablet, 400:800:1200:1600:2400-Test info:3200:4800
+ * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 800 mg tablet, 400:800:1200:1600:2400_Test info:3200:4800
  * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 400 mg tablet, 800:1600:2400:3200:4800
  */
 public class MedicationImporter {
@@ -205,7 +206,7 @@ public class MedicationImporter {
 
     /**
      * Will take a string in the format of 400:600:800 where is dosage is in mg and seperated by a semicolon
-     * To add extra information to a dosage use the format 400:600-Extra Info:800 where extra info is split with a -
+     * To add extra information to a dosage use the format 400:600_Extra Info:800 where extra info is split with a _
      * @param dosages String of dosages
      * @return List<MedicationDose>
      */
@@ -225,8 +226,8 @@ public class MedicationImporter {
                 String doseMg = null;
                 String doseExtraInfo = null;
 
-                if (s.contains("-")) {
-                    String[] doseInfo = s.split("-");
+                if (s.contains("_")) {
+                    String[] doseInfo = s.split("_");
 
                     doseMg = doseInfo[0];
 
