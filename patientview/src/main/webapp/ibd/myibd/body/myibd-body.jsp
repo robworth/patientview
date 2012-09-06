@@ -27,6 +27,10 @@
                 </div>
                 <div class="span3 controls">
                     <bean:write name="myIbd" property="diagnosis.name"/>
+
+                    <logic:present name="primaryDiagnosisLink">
+                        <a href="<bean:write name="primaryDiagnosisLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                    </logic:present>
                 </div>
             </div>
             <div class="row control-group">
@@ -35,6 +39,10 @@
                 </div>
                 <div class="span3 controls">
                     <bean:write name="myIbd" property="diseaseExtent.name"/>
+
+                    <logic:present name="diseaseExtentLink">
+                        <a href="<bean:write name="diseaseExtentLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                    </logic:present>
                 </div>
             </div>
             <div class="row control-group">
@@ -43,6 +51,10 @@
                 </div>
                 <div class="span3 controls">
                     <bean:write name="myIbd" property="yearOfDiagnosisAsString"/>
+
+                    <logic:present name="yearOfDiagnosisLink">
+                        <a href="<bean:write name="yearOfDiagnosisLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                    </logic:present>
                 </div>
             </div>
             <div class="row control-group">
@@ -51,10 +63,15 @@
                 </div>
                 <div class="span3 controls">
                     <bean:size id="complicationsListSize" name="myIbd" property="complications"/>
+
                     <logic:iterate name="myIbd" property="complications" id="complication" indexId="index">
                         <bean:write name="complication"
                                     property="name"/><%= (complicationsListSize == (index + 1) ? "" : ",") %>
                     </logic:iterate>
+
+                    <logic:present name="complicationLink">
+                        <a href="<bean:write name="complicationLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                    </logic:present>
                 </div>
             </div>
         </div>
@@ -129,6 +146,10 @@
                 </div>
                 <div class="span3 controls">
                     <bean:write name="myIbd" property="bodyPartAffected.name"/>
+
+                    <logic:present name="bodyPartAffectedLink">
+                        <a href="<bean:write name="bodyPartAffectedLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                    </logic:present>
                 </div>
             </div>
         </div>
@@ -139,6 +160,10 @@
         </div>
         <div class="span3 controls">
             <bean:write name="myIbd" property="yearForSurveillanceColonoscopyAsString"/>
+
+            <logic:present name="yearForSurveillanceColonoscopyLink">
+                <a href="<bean:write name="yearForSurveillanceColonoscopyLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
     <div class="row control-group">
@@ -147,6 +172,10 @@
         </div>
         <div class="span3 controls">
             <bean:write name="myIbd" property="namedConsultant"/>
+
+            <logic:present name="namedConsultantLink">
+                <a href="<bean:write name="namedConsultantLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
     <div class="row control-group">
@@ -155,6 +184,10 @@
         </div>
         <div class="span3 controls">
             <bean:write name="myIbd" property="nurses"/>
+
+            <logic:present name="nursesLink">
+                <a href="<bean:write name="nursesLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
     <div class="row">
@@ -164,15 +197,45 @@
                     <label class="control-label">General:</label>
                 </div>
                 <div class="span3 controls">
-                    <p>Weight: <bean:write name="myIbd" property="weight"/></p>
+                    <p>
+                        Weight: <bean:write name="myIbd" property="weight"/>
 
-                    <p>IBD Related Family History: <bean:write name="myIbd" property="familyHistory.name"/></p>
+                        <logic:present name="weightLink">
+                            <a href="<bean:write name="weightLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                        </logic:present>
+                    </p>
 
-                    <p>Smoking History: <bean:write name="myIbd" property="smoking.name"/></p>
+                    <p>
+                        IBD Related Family History: <bean:write name="myIbd" property="familyHistory.name"/>
 
-                    <p>Surgical History: <bean:write name="myIbd" property="surgery.name"/></p>
+                        <logic:present name="familyHistoryLink">
+                            <a href="<bean:write name="familyHistoryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                        </logic:present>
+                    </p>
 
-                    <p>Vaccination Record: <bean:write name="myIbd" property="vaccinationRecord.name"/></p>
+                    <p>
+                        Smoking History: <bean:write name="myIbd" property="smoking.name"/>
+
+                        <logic:present name="smokingLink">
+                            <a href="<bean:write name="smokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                        </logic:present>
+                    </p>
+
+                    <p>
+                        Surgical History: <bean:write name="myIbd" property="surgery.name"/>
+
+                        <logic:present name="surgeryLink">
+                            <a href="<bean:write name="surgeryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                        </logic:present>
+                    </p>
+
+                    <p>
+                        Vaccination Record: <bean:write name="myIbd" property="vaccinationRecord.name"/>
+
+                        <logic:present name="vaccinationRecordLink">
+                            <a href="<bean:write name="vaccinationRecordLink" />" target="_blank"><i class="icon-info-sign"></i></a>
+                        </logic:present>
+                    </p>
                 </div>
             </div>
         </div>
