@@ -29,7 +29,6 @@ public class NutritionUpdateAction extends BaseAction {
 
         Nutrition nutrition = new Nutrition();
         nutrition.setNhsno(getNhsNoForUser(request));
-        nutrition.setWeight((Double) dynaForm.get(Ibd.WEIGHT_PARAM));
         nutrition.setFoodsThatDisagree((String) dynaForm.get(Ibd.FOODS_THAT_DISAGREE_PARAM));
         nutrition.setComment((String) dynaForm.get(Ibd.COMMENT_PARAM));
         nutrition.setNutritionDate(convertFormDateString(Ibd.NUTRITION_DATE_PARAM, dynaForm));
@@ -50,10 +49,6 @@ public class NutritionUpdateAction extends BaseAction {
         if (form.get(Ibd.NUTRITION_DATE_PARAM) == null ||
                 ((String) form.get(Ibd.NUTRITION_DATE_PARAM)).length() == 0) {
             actionErrors.add(Ibd.NUTRITION_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
-        }
-
-        if (form.get(Ibd.WEIGHT_PARAM) == null || ((Double) form.get(Ibd.WEIGHT_PARAM) <= 0)) {
-            actionErrors.add(Ibd.WEIGHT_PARAM, new ActionMessage(Ibd.WEIGHT_REQUIRED));
         }
 
         if (form.get(Ibd.FOODS_THAT_DISAGREE_PARAM) == null ||

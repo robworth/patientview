@@ -19,22 +19,11 @@ public class Nutrition extends BaseModel {
     @Column(nullable = false)
     private Date nutritionDate;
 
-    @Column(nullable = false)
-    private Double weight;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String foodsThatDisagree;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String comment;
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
 
     public String getFoodsThatDisagree() {
         return foodsThatDisagree;
@@ -71,8 +60,10 @@ public class Nutrition extends BaseModel {
     public String getFormattedNutritionDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(nutritionDate);
+
         if ((cal.get(Calendar.HOUR_OF_DAY) == 0) && (cal.get(Calendar.MINUTE) == 0)) {
             return dateFormat.format(cal.getTime());
         } else {

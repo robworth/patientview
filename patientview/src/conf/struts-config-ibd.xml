@@ -59,7 +59,6 @@
         <form-bean name="nutritionForm"
                    type="org.apache.struts.action.DynaActionForm">
             <form-property name="nutritionDate" type="java.lang.String"/>
-            <form-property name="weight" type="java.lang.Double"/>
             <form-property name="foodsThatDisagree" type="java.lang.String"/>
             <form-property name="comment" type="java.lang.String"/>
         </form-bean>

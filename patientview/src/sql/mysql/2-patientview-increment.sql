@@ -252,7 +252,6 @@ CREATE TABLE `ibd_nutrition` (
   `id` bigint(20) NOT NULL auto_increment,
   `comment` varchar(255) default NULL,
   `foodsThatDisagree` varchar(255) NOT NULL,
-  `weight` double NOT NULL,
   `nhsno` varchar(255) NOT NULL,
   `nutritionDate` datetime NOT NULL,
   PRIMARY KEY  (`id`)

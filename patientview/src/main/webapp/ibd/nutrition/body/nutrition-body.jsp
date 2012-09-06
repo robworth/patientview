@@ -44,7 +44,6 @@
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Weight</th>
                     <th>Foods that disagree with me</th>
                     <th>Enter a comment on my results</th>
                 </tr>
@@ -54,10 +53,6 @@
                 <tr>
                     <td>
                         <bean:write name="nutrition" property="formattedNutritionDate"/>
-                    </td>
-
-                    <td>
-                        <bean:write name="nutrition" property="weight"/>
                     </td>
 
                     <td>

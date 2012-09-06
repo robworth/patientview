@@ -23,13 +23,6 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label">Weight:</label>
-
-                <div class="controls">
-                    <html:text property="weight"/>
-                </div>
-            </div>
-            <div class="control-group">
                 <label class="control-label">
                     Foods that disagree with me
                 </label>

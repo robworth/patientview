@@ -33,7 +33,6 @@ public class NutritionDaoTest extends BaseDaoTest {
         assertNotNull(checkNutrition);
         assertEquals("NHS no not persisted", checkNutrition.getNhsno(), nutrition.getNhsno());
         assertEquals("Nutrition date not persisted", checkNutrition.getNutritionDate(), nutrition.getNutritionDate());
-        assertEquals("Weight not persisted", checkNutrition.getWeight(), nutrition.getWeight());
         assertEquals("Foods that disagree not persisted", checkNutrition.getFoodsThatDisagree(),
                 nutrition.getFoodsThatDisagree());
         assertEquals("Comment not persisted", checkNutrition.getComment(), nutrition.getComment());
@@ -44,7 +43,6 @@ public class NutritionDaoTest extends BaseDaoTest {
 
         nutrition.setNhsno("1234567890");
         nutrition.setNutritionDate(new Date());
-        nutrition.setWeight(78.0);
         nutrition.setFoodsThatDisagree("Cauliflower disagrees with me");
         nutrition.setComment("I feel sick after eating cauliflowers");
 
