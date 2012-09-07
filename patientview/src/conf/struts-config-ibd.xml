@@ -6,6 +6,12 @@
 <struts-config>
 
     <form-beans>
+        <form-bean name="myIbdContactForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+            <form-property name="message" type="java.lang.String"/>
+            <form-property name="email" type="java.lang.String"/>
+            <form-property name="type" type="java.lang.Integer"/>
+        </form-bean>
+
         <form-bean name="myIbdForm"
                    type="org.apache.struts.action.DynaActionForm">
             <form-property name="diagnosisId" type="java.lang.Long"/>
@@ -321,6 +327,19 @@
                 scope="request">
             <forward name="input" path="/ibd/admin/myibd-links-add.jsp"/>
             <forward name="success" path="/control/myibd-links-display.do"/>
+        </action>
+
+        <action path="/patient/ibd-contact"
+                type="com.worthsoln.ibd.action.contact.ContactAction" parameter="contact"
+                name="myIbdContactForm">
+            <forward name="success" path="/ibd/contact/contact.jsp"/>
+        </action>
+
+        <action path="/patient/ibd-contact-send" type="com.worthsoln.ibd.action.contact.ContactSendAction" parameter="contact"
+                name="myIbdContactForm"
+                input="input">
+            <forward name="input" path="/ibd/contact/contact.jsp"/>
+            <forward name="success" path="/ibd/contact/contact.jsp"/>
         </action>
 
     </action-mappings>
