@@ -13,7 +13,7 @@ public class TestGenericPatientPage extends BasePageTest {
         // Render forgotten password page
         AddPatientModel addPatientModel = new AddPatientModel();
         addPatientModel.setDiseaseGroup(new DiseaseGroup());
-        addPatientModel.setId("1" );
+        addPatientModel.setPatientId("1" );
         addPatientModel.setIdType(IdType.NHS);
         tester.startPage(new GenericPatientPage(addPatientModel));
 

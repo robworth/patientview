@@ -57,7 +57,7 @@ public class AddPatientPage extends BasePage {
                 AddPatientModel model = getModelObject();
 
                 // check nhs number is valid
-                if (!demographicsManager.isNhsNumberValid(model.getId())) {
+                if (!demographicsManager.isNhsNumberValid(model.getPatientId())) {
                     error(NHS_NUMBER_INVALID_MSG);
                 }
 
@@ -66,7 +66,7 @@ public class AddPatientPage extends BasePage {
                 // TODO: that maps disease ids to the page they need to go to so we dont need all these ifs
                 if (!hasError()) {
                     if (model.getDiseaseGroup() != null) {
-                       if (model.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
+                        if (model.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
                                 model.getDiseaseGroup().getId().
                                         equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
                             setResponsePage(SrnsPatientPage.class, SrnsPatientPage.getParameters(model));
@@ -81,7 +81,7 @@ public class AddPatientPage extends BasePage {
         };
 
         // create components
-        RadarRequiredTextField id = new RadarRequiredTextField("id", form, componentsToUpdateList);
+        RadarRequiredTextField id = new RadarRequiredTextField("patientId", form, componentsToUpdateList);
 
         RadarRequiredDropdownChoice idType =
                 new RadarRequiredDropdownChoice("idType", Arrays.asList(IdType.values()),
