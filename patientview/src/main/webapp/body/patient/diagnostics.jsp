@@ -12,7 +12,8 @@
         <p>
             The Diagnostics section lists your previous imaging and endoscopy tests direct from the hospital record.
             Please note only the date and type of test is recorded. The full report is not available. If you have any
-            further questions about your tests please contact us by <a href="#">clicking here.</a>            
+            further questions about your tests please contact us by
+            <html:link action="/patient/contact">clicking here.</html:link>
         </p>
 
         <p>
@@ -21,10 +22,9 @@
 
         <h3>Links about Diagnostics</h3>
         <ul>
-            <li><a href="#">Endoscopy (Colonosocopy / Sigmoidoscopy/ Gastroscopy)</a></li>
-            <li><a href="#">X-Rays- Plain and Barium tests</a></li>
-            <li><a href="#">CT scans and MRI scans</a></li>
-            <li><a href="#">Other tests</a></li>
+            <li><a target="_blank" href="http://www.myibdportal.org/investigations-for-ibd#endoscopy">Endoscopy (Colonosocopy / Sigmoidoscopy/ Gastroscopy)</a></li>
+            <li><a target="_blank" href="http://www.myibdportal.org/investigations-for-ibd#plain-x-rays">X-Rays- Plain and Barium tests</a></li>
+            <li><a target="_blank" href="http://www.myibdportal.org/investigations-for-ibd#other-x-ray-tests-and-scans">CT scans and MRI scans</a></li>
         </ul>
 
         <%--<p><bean:message key="diagnostics.intro" /></p>--%>

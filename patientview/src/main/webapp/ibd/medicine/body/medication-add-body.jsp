@@ -21,6 +21,8 @@
                     <div class="input-append date datePicker" data-date="<bean:write name="medicationForm" property="dateStarted"/>">
                         <input name="dateStarted" class="span2" size="16" type="text" value="<bean:write name="medicationForm" property="dateStarted"/>" readonly>
                         <span class="add-on"><i class="icon-th"></i></span>
+                         <span class="help-block">Please use an estimate if the exact date is not known
+</span>
                     </div>
                 </div>
             </div>

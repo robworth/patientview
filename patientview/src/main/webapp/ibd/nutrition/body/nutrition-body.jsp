@@ -23,10 +23,10 @@
         </p>
 
         <ul>
-            <li><a target="_blank" href="">Food and IBD- Crohn's and Colitis, UK</a></li>
-            <li><a target="_blank" href="">Diet and Nutrition- Crohn's and Colitis Foundation of America</a></li>
-            <li><a target="_blank" href="">Healthy Eating</a></li>
-            <li><a target="_blank" href="">Malnutrition</a></li>
+            <li><a target="_blank" href="http://www.myibdportal.org/food-and-ibd">Food and IBD- Crohn's and Colitis, UK</a></li>
+            <li><a target="_blank" href="http://www.ccfa.org/resources/diet-and-nutrition.html">Diet and Nutrition- Crohn's and Colitis Foundation of America</a></li>
+            <li><a target="_blank" href="http://www.nhs.uk/livewell/healthy-eating/Pages/Healthyeating.aspx">Healthy Eating</a></li>
+            <li><a target="_blank" href="http://www.nhs.uk/conditions/malnutrition/pages/introduction.aspx">Malnutrition</a></li>
             <li><a target="_blank" href="http://www.nhs.uk/Tools/Pages/Healthyweightcalculator.aspx">BMI Calculator</a></li>
         </ul>
 

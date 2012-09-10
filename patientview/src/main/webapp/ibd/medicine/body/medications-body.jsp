@@ -7,13 +7,23 @@
 </div>
 
 <p>
-    This section helps you keep a personal record of your current and previous medications. Please use an estimate for
-    the start date of a medication, if the exact date is not known.
+    This section is for your own personal use, to help you keep a track of your current and previous IBD medications.     
 </p>
 
 <p>
-    If for any reason you discontinue or complete a course of treatment, you can record this by clicking the Stop <a class="btn" href="javascript:;">Stop</a>  icon. If you take a medication not present in the drop down boxes, you can enter the drug using the
-    dropdown box Other to complete your record.    
+    The hospital is not able to keep an accurate list of your IBD medications. In order to complete your own personal
+    up-to-date record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>
+    icon.
+</p>
+
+<p>
+    If for any reason you discontinue or complete a course of treatment, you can record this by clicking the Stop
+    <a class="btn" href="javascript:;">Stop</a> icon.
+</p>
+<p>
+    If you take a medication not present in the drop down boxes, you can enter the drug using the dropdown box
+    labelled- Other to complete your medicines record. 
+
 </p>
 
 <p>
@@ -23,13 +33,13 @@
 
 <h3>Links for IBD Medicines:</h3>
 <ul>
-    <li><a href="">Introduction to drugs used in IBD</a></li>
-    <li><a href="">Aminosalicylates</a></li>
-    <li><a href="">Steroids</a></li>
-    <li><a href="">Immunomodulators</a></li>
-    <li><a href="">Biologics / Anti- TNFs</a></li>
-    <li><a href="">Other drugs used in IBD</a></li>
-    <li><a href="">Research Trials in IBD</a></li>
+    <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#introduction">Introduction to drugs used in IBD</a></li>
+    <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#how-are-aminosalicylates-5-asas-used">Aminosalicylates</a></li>
+    <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#what-are-corticosteroids">Steroids</a></li>
+    <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#how-are-immunossuppressants-used-in-ibd">Immunomodulators</a></li>
+    <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#how-are-biologics-used-in-ibd">Biologics / Anti- TNFs</a></li>
+    <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#how-are-antibiotics-used-in-ibd">Other drugs used in IBD</a></li>
+    <li><a target="_blank" href="http://www.nhs.uk/conditions/inflammatory-bowel-disease/pages/clinical-trial.aspx">Research Trials in IBD</a></li>
 </ul>
 
 <hr/>

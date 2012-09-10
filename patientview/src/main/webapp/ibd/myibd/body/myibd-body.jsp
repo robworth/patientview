@@ -10,12 +10,18 @@
     <h1>My IBD</h1>
 </div>
 <p>
-        My IBD helps you keep a track of your inflammatory bowel disease. The information is provided from records held
-         at the hospital. If there are any obvious errors please <html:link action="/patient/contact">contact the IBD
-         team</html:link>. To complete an up-to-date personal record, please enter your medications details by
-         <html:link action="/patient/patient_details">clicking here</html:link>.
-     </p>
-
+    My IBD helps you keep a track of your inflammatory bowel disease. The information is provided from the records held
+    at the hospital. If there are any obvious errors, please contact us by <html:link action="/patient/contact">clicking
+    here</html:link>.
+ </p>
+ <p>
+    The hospital is not able to keep an accurate list of your IBD medications. To complete your own personal up-to-date
+     record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>  icon in
+     the <html:link action="/patient/medicines">Medicines</html:link> section.
+</p>
+<p>
+    (can you make sure this hyperlink takes to Medicines as goes to My details at present, thanks)
+</p>
 <hr/>
 <logic:present name="myIbd">
 

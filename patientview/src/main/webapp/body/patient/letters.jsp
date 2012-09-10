@@ -13,7 +13,7 @@
 
     <h3>Links about Letters</h3>
     <ul>
-        <li><a href="#">Glossary of terms used in IBD</a></li>
+        <li><a href="http://www.myibdportal.org/medical-terms-used-in-ibd">Glossary of terms used in IBD</a></li>
     </ul>
 
   <logic:empty name="letters">

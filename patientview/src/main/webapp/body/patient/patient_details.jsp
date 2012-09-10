@@ -17,8 +17,11 @@
          If there are any errors please contact us by <html:link action="/patient/contact">clicking here</html:link>.
      </p>
      <p>
-         To complete a full personal record of your health and contact details, please record any other health
-         conditions and your email address in the boxes below.
+         To complete a full summary for your own personal record, please enter any other health conditions and your
+         email address in the boxes below.
+     </p>
+     <p>
+        If your details are correct please click on the tabs above to navigate to areas of interest to you.    
      </p>
 
      <%
@@ -119,7 +122,7 @@
 
 <logic:notEmpty name="patientDetail" property="patient.telephone1">
   <tr valign="top">
-    <th class="tablecellbold">Telephone 1</th>
+    <th class="tablecellbold">Telephone <logic:present tenancy="rpv">1</logic:present></th>
 
     <td class="tablecell">
       <bean:write name="patientDetail" property="patient.telephone1"/>
@@ -127,6 +130,7 @@
   </tr>
 </logic:notEmpty>
 
+<logic:present tenancy="rpv">
 <logic:notEmpty name="patientDetail" property="patient.telephone2">
   <tr valign="top">
     <th class="tablecellbold">Telephone 2</th>
@@ -136,6 +140,7 @@
     </td>
   </tr>
 </logic:notEmpty>
+</logic:present>
 
 <logic:notEmpty name="patientDetail" property="patient.mobile">
   <tr valign="top">

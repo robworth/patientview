@@ -18,7 +18,7 @@
                             Whether you are newly diagnosed or have been living with IBD for a number of years, the
                             challenges of managing a chronic condition can change quickly. Below is a list of common
                             areas, where people feel they may need more help or information. Please tick the boxes to
-                            highlight the areas you would like to review at your next appointment. There are information
+                            highlight the areas you would like to discuss at your next appointment. There are information
                             links to learn more about these areas in detail.
                         </p>
                         <p>
@@ -145,5 +145,11 @@
 
             </fieldset>
         </html:form>
+
+        <p>
+            If you would like, you could create a personal care plan. To learn more about care plans and for further
+            tips on getting more from your appointments click here.
+            <a href="http://www.myibdportal.org/personal-care-plans">click here link</a>
+        </p>
     </div>
 </div>
