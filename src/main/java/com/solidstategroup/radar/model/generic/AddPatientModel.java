@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 
 public class AddPatientModel implements Serializable {
-    private String id;
+    private String patientId;
     private IdType idType;
     private DiseaseGroup diseaseGroup;
 
-    public String getId() {
-        return id;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
     public IdType getIdType() {

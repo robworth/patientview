@@ -77,9 +77,9 @@ public class AlportPatientPage extends BasePage {
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
 
         if (patientModel.getIdType().equals(IdType.NHS)) {
-            demographics.setNhsNumber(patientModel.getId());
+            demographics.setNhsNumber(patientModel.getPatientId());
         } else if (patientModel.getIdType().equals(IdType.CHI)) {
-            demographics.setChiNumber(patientModel.getId());
+            demographics.setChiNumber(patientModel.getPatientId());
         }
 
         init(demographics);
