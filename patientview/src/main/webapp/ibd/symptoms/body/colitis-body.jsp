@@ -143,12 +143,16 @@
                     <bean:define id="myIbdSeverityLevel" name="myIbdSeverityLevel"
                                  type="com.worthsoln.ibd.model.MyIbdSeverityLevel"/>
 
-                    <h3 class="<%=myIbdSeverityLevel.getSeverity().name().toLowerCase()%>"><%=myIbdSeverityLevel.getSeverity().name()%>
-                    </h3>
+
 
                     <%
                         if (myIbdSeverityLevel.getSeverity().equals(Severity.SEVERE)) {
                     %>
+
+                    <h3 class="<%=myIbdSeverityLevel.getSeverity().name().toLowerCase()%>">
+                        Very Active
+                    </h3>
+
                     <p>
                         Your symptom score suggests ulcerative colitis is very active and you are experiencing a severe
                         flare-up. We advice you to monitor your symptoms daily on the chart and contact the IBD team or
@@ -189,6 +193,11 @@
                     <%
                     } else if (myIbdSeverityLevel.getSeverity().equals(Severity.MODERATE)) {
                     %>
+
+                    <h3 class="<%=myIbdSeverityLevel.getSeverity().name().toLowerCase()%>">
+                        Active
+                    </h3>
+
                     <p>
                         Your symptom score suggests your ulcerative colitis is active and you are experiencing a flare-up.
                     </p>
@@ -242,6 +251,11 @@
                     <%
                     } else if (myIbdSeverityLevel.getSeverity().equals(Severity.MILD)) {
                     %>
+
+                    <h3 class="<%=myIbdSeverityLevel.getSeverity().name().toLowerCase()%>">
+                        Inactive (Remission)
+                    </h3>
+
                     <p>
                         Excellent. Your ulcerative colitis seems under good control. Please carry on taking your current
                         medicines.  If you want to learn more about maintaining remission and
