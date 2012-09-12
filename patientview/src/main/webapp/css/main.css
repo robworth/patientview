@@ -303,3 +303,46 @@ h1, h2{
     margin-top: 10px;
     overflow: hidden;
 }
+
+.sliderGroup {
+    margin-top: 10px;
+}
+
+.sliderGroup .sliderHeading{
+    display: inline-block;
+    padding-left: 235px;
+}
+
+.sliderGroup .sliderHeading .bottomValue{
+    float: left;
+    font-weight: bold;
+    text-align: center;
+    width: 150px;
+}
+
+.sliderGroup .sliderHeading .topValue{
+    float: left;
+    padding-left: 85px;
+    font-weight: bold;
+    text-align: center;
+    width: 150px;
+}
+
+.sliderGroup .control-label{
+    font-weight: normal;
+    text-align: left;
+    width: 300px;   
+}
+
+.sliderGroup .slider{
+    padding-top: 2px;
+}
+
+.sliderGroup .smile{
+    font-style: normal;
+    font-size: 1.3em;
+    padding: 0 5px;
+}
+
+
+

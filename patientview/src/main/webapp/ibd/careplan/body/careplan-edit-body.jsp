@@ -30,6 +30,49 @@
                         <%
                             int count = 0;
                         %>
+                        <div class="form-horizontal">
+                            <div class="sliderGroup">
+                                <div class="sliderHeading">
+                                    <div class="bottomValue">Is not a problem </div>
+                                    <div class="topValue">A big problem </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="slider1">Overall my condition</label>
+                                    <div class="controls slider">
+                                        <i class="smile happy">&#9786;</i><input id="slider1" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="slider2">Tiredness /Fatigue</label>
+                                    <div class="controls slider">
+                                        <i class="smile happy">&#9786;</i><input id="slider2" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sliderGroup">
+                                <div class="sliderHeading">
+                                    <div class="bottomValue">Don't need help</div>
+                                    <div class="topValue">Need help</div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="slider3">Taking my medicines regularly</label>
+                                    <div class="controls slider">
+                                        <i class="smile happy">&#9786;</i><input id="slider3" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="slider4">Managing flare ups</label>
+                                    <div class="controls slider">
+                                        <i class="smile happy">&#9786;</i><input id="slider4" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
                         <logic:iterate name="areaToDiscussList" id="areaToDiscuss" type="com.worthsoln.ibd.model.enums.AreaToDiscuss">
                             <%
                             boolean checked = false;
