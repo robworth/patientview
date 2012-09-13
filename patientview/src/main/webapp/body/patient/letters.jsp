@@ -8,9 +8,23 @@
         <h1>Letters</h1>
     </div>
 
-
-    <p><bean:message key="cautionary.letters" /></p>
-
+    <ul>
+        <li>
+            Letters are only shown where they can be retrieved from your unit's computer system.
+        </li>
+        <li>
+            This is not always possible, or it may not have been activated for your unit.
+        </li>
+        <li>
+            It is important to note that letters may be shown here before they have been finally approved and had
+            mistakes corrected. This mainly applies if you are reading letters soon (e.g. within a week) after they have
+            been typed.
+        </li>
+        <li>
+            If you have any concerns you should discuss it at your next clinic appointment, or contact the author of the
+            letter.                
+        </li>
+    </ul>
     <h3>Links about Letters</h3>
     <ul>
         <li><a href="http://www.myibdportal.org/medical-terms-used-in-ibd">Glossary of terms used in IBD</a></li>

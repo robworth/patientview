@@ -9,16 +9,23 @@
             <h1>Diagnostics</h1>
         </div>
 
-        <p>
-            The Diagnostics section lists your previous imaging and endoscopy tests direct from the hospital record.
-            Please note only the date and type of test is recorded. The full report is not available. If you have any
-            further questions about your tests please contact us by
-            <html:link action="/patient/contact">clicking here.</html:link>
-        </p>
+        <ul>
+            <li>
+                The Diagnostics section lists your previous imaging and endoscopy tests direct from the hospital record.
+            </li>
+            <li>
+                Please note only the date and type of test is recorded. The full report is not available.
+            </li>
+            <li>
+                If you have any further questions about your tests please contact us by
+                <html:link action="/patient/contact">clicking here.</html:link>
+            </li>
+            <li>
+                To learn more about the investigations used commonly in IBD click on the following links:
+            </li>
+        </ul>
 
-        <p>
-            To learn more about the investigations used commonly in IBD click on the following links:
-        </p>
+
 
         <h3>Links about Diagnostics</h3>
         <ul>

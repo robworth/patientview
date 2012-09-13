@@ -9,19 +9,18 @@
 
     <h1>My IBD</h1>
 </div>
-<p>
-    My IBD helps you keep a track of your inflammatory bowel disease. The information is provided from the records held
-    at the hospital. If there are any obvious errors, please contact us by <html:link action="/patient/contact">clicking
-    here</html:link>.
- </p>
- <p>
-    The hospital is not able to keep an accurate list of your IBD medications. To complete your own personal up-to-date
-     record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>  icon in
-     the <html:link action="/patient/medicines">Medicines</html:link> section.
-</p>
-<p>
-    (can you make sure this hyperlink takes to Medicines as goes to My details at present, thanks)
-</p>
+<ul>
+    <li>
+        My IBD helps you keep a track of your inflammatory bowel disease. The information is provided from the records held
+        at the hospital. If there are any obvious errors, please contact us by <html:link action="/patient/contact">clicking
+        here</html:link>.
+    </li>
+    <li>
+        The hospital is not able to keep an accurate list of your IBD medications. To complete your own personal up-to-date
+         record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>  icon in
+         the <html:link action="/patient/medicines">Medicines</html:link> section.
+    </li>
+</ul>
 <hr/>
 <logic:present name="myIbd">
 
@@ -80,6 +79,7 @@
                     </logic:present>
                 </div>
             </div>
+
         </div>
         <div class="span6">
             <logic:present name="myIbd" property="diagnosis">
@@ -91,6 +91,22 @@
                     </dl>
                 </div>
             </logic:present>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <div class="row control-group">
+                <div class="span3">
+                    <label class="control-label">Other parts of the body affected:</label>
+                </div>
+                <div class="span3 controls">
+                    <bean:write name="myIbd" property="bodyPartAffected.name"/>
+
+                    <logic:present name="bodyPartAffectedLink">
+                        <a href="<bean:write name="bodyPartAffectedLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                    </logic:present>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -144,22 +160,68 @@
             </logic:notPresent>
         </div>
     </div>
-    <div class="row">
-        <div class="span6">
-            <div class="row control-group">
-                <div class="span3">
-                    <label class="control-label">Other parts of the body affected:</label>
-                </div>
-                <div class="span3 controls">
-                    <bean:write name="myIbd" property="bodyPartAffected.name"/>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Weight:</label>
+        </div>
+        <div class="span3 controls">
+                 <bean:write name="myIbd" property="weight"/>
 
-                    <logic:present name="bodyPartAffectedLink">
-                        <a href="<bean:write name="bodyPartAffectedLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                    </logic:present>
-                </div>
-            </div>
+                <logic:present name="weightLink">
+                    <a href="<bean:write name="weightLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                </logic:present>
         </div>
     </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">IBD Related Family History:</label>
+        </div>
+        <div class="span3 controls">
+                 <bean:write name="myIbd" property="familyHistory.name"/>
+
+                <logic:present name="familyHistoryLink">
+                    <a href="<bean:write name="familyHistoryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                </logic:present>
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Surgical History:</label>
+        </div>
+        <div class="span3 controls">
+                 <bean:write name="myIbd" property="surgery.name"/>
+
+                <logic:present name="surgeryLink">
+                    <a href="<bean:write name="surgeryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                </logic:present>
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Smoking History:</label>
+        </div>
+        <div class="span3 controls">
+                 <bean:write name="myIbd" property="smoking.name"/>
+
+                <logic:present name="smokingLink">
+                    <a href="<bean:write name="smokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                </logic:present>
+        </div>
+    </div>
+
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Vaccination Record:</label>
+        </div>
+        <div class="span3 controls">
+                 <bean:write name="myIbd" property="vaccinationRecord.name"/>
+
+                <logic:present name="vaccinationRecordLink">
+                    <a href="<bean:write name="vaccinationRecordLink" />" target="_blank"><i class="icon-info-sign"></i></a>
+                </logic:present>
+        </div>
+    </div>
+
     <div class="row control-group">
         <div class="span3">
             <label class="control-label">Year for Surveillance Colonoscopy:</label>
@@ -169,18 +231,6 @@
 
             <logic:present name="yearForSurveillanceColonoscopyLink">
                 <a href="<bean:write name="yearForSurveillanceColonoscopyLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-            </logic:present>
-        </div>
-    </div>
-    <div class="row control-group">
-        <div class="span3">
-            <label class="control-label">Named Consultant:</label>
-        </div>
-        <div class="span3 controls">
-            <bean:write name="myIbd" property="namedConsultant"/>
-
-            <logic:present name="namedConsultantLink">
-                <a href="<bean:write name="namedConsultantLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </div>
     </div>
@@ -196,56 +246,19 @@
             </logic:present>
         </div>
     </div>
-    <div class="row">
-        <div class="span6">
-            <div class="row control-group">
-                <div class="span3">
-                    <label class="control-label">General:</label>
-                </div>
-                <div class="span3 controls">
-                    <p>
-                        Weight: <bean:write name="myIbd" property="weight"/>
+    <div class="row control-group">
+        <div class="span3">
+            <label class="control-label">Named Consultant:</label>
+        </div>
+        <div class="span3 controls">
+            <bean:write name="myIbd" property="namedConsultant"/>
 
-                        <logic:present name="weightLink">
-                            <a href="<bean:write name="weightLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                        </logic:present>
-                    </p>
-
-                    <p>
-                        IBD Related Family History: <bean:write name="myIbd" property="familyHistory.name"/>
-
-                        <logic:present name="familyHistoryLink">
-                            <a href="<bean:write name="familyHistoryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                        </logic:present>
-                    </p>
-
-                    <p>
-                        Smoking History: <bean:write name="myIbd" property="smoking.name"/>
-
-                        <logic:present name="smokingLink">
-                            <a href="<bean:write name="smokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                        </logic:present>
-                    </p>
-
-                    <p>
-                        Surgical History: <bean:write name="myIbd" property="surgery.name"/>
-
-                        <logic:present name="surgeryLink">
-                            <a href="<bean:write name="surgeryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                        </logic:present>
-                    </p>
-
-                    <p>
-                        Vaccination Record: <bean:write name="myIbd" property="vaccinationRecord.name"/>
-
-                        <logic:present name="vaccinationRecordLink">
-                            <a href="<bean:write name="vaccinationRecordLink" />" target="_blank"><i class="icon-info-sign"></i></a>
-                        </logic:present>
-                    </p>
-                </div>
-            </div>
+            <logic:present name="namedConsultantLink">
+                <a href="<bean:write name="namedConsultantLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
+    
     <div class="row">
         <div class="span12">
             <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>

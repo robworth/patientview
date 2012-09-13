@@ -11,19 +11,19 @@
      <div class="page-header">
          <h1>My Details</h1>
      </div>
-
-     <p>
-         My details contains basic information from your hospital records. Please check that your details are correct.
-         If there are any errors please contact us by <html:link action="/patient/contact">clicking here</html:link>.
-     </p>
-     <p>
-         To complete a full summary for your own personal record, please enter any other health conditions and your
-         email address in the boxes below.
-     </p>
-     <p>
-        If your details are correct please click on the tabs above to navigate to areas of interest to you.    
-     </p>
-
+     <ul>
+         <li>
+             My details contains basic information from your hospital records. Please check that your details are correct.
+             If there are any errors please contact us by <html:link action="/patient/contact">clicking here</html:link>.
+         </li>
+         <li>
+             To complete a full summary for your own personal record, please enter any other health conditions and your
+             email address in the boxes below.
+         </li>
+         <li>
+            If your details are correct please click on the tabs above to navigate to areas of interest to you.
+         </li>
+     </ul>
      <%
          if (request.getParameter("success") != null) {
      %>

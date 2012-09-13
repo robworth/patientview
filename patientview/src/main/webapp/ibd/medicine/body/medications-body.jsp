@@ -5,35 +5,33 @@
 <div class="page-header">
     <h1>Medicines</h1>
 </div>
-
-<p>
-    This section is for your own personal use, to help you keep a track of your current and previous IBD medications.     
-</p>
-
-<p>
-    The hospital is not able to keep an accurate list of your IBD medications. In order to complete your own personal
-    up-to-date record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>
-    icon.
-</p>
-
-<p>
-    If for any reason you discontinue or complete a course of treatment, you can record this by clicking the Stop
-    <a class="btn" href="javascript:;">Stop</a> icon.
-</p>
-<p>
-    If you take a medication not present in the drop down boxes, you can enter the drug using the dropdown box
-    labelled- Other to complete your medicines record. 
-
-</p>
-
-<p>
-    For more information about common medicines used click on the links below.
-</p>
+<ul>
+    <li>
+        This section is for your own personal use, to help you keep a track of your current and previous IBD medications.
+    </li>
+    <li>
+        The hospital is not able to keep an accurate list of your IBD medications. In order to complete your own personal
+        up-to-date record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>
+        icon.
+    </li>
+    <li>
+        If for any reason you discontinue or complete a course of treatment, you can record this by clicking the
+        <a class="btn" href="javascript:;">Stop</a> icon.
+    </li>
+    <li>
+        If you take a medication not present in the drop down boxes, you can enter the drug using the dropdown box
+        labelled- Other to complete your medicines record.     
+    </li>
+    <li>
+        For more information about common medicines used click on the links below.
+    </li>
+</ul>
 
 
 <h3>Links for IBD Medicines:</h3>
 <ul>
     <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#introduction">Introduction to drugs used in IBD</a></li>
+    <li><a target="_blank" href="http://myibdportal.org/guide-to-using-suppositories-enemas">Guide to using suppositories / enemas</a></li>
     <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#how-are-aminosalicylates-5-asas-used">Aminosalicylates</a></li>
     <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#what-are-corticosteroids">Steroids</a></li>
     <li><a target="_blank" href="http://www.myibdportal.org/drugs-used-in-ibd#how-are-immunossuppressants-used-in-ibd">Immunomodulators</a></li>

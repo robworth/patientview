@@ -11,19 +11,26 @@
 
 <logic:notPresent name="emailSent">
     <h2>Questions about your health</h2>
-
-    <p>If you have any questions about your condition you can contact us be email below.
-        Alternatively you can leave a message through the IBD helpline on 0161 20 64023.</p>
-
-    <p>We aim to review and respond to messages by the end of the next working day.
-        In case of emergencies and you haven't received a response, please contact your GP or attend you
-        local A &amp; E department in cases of emergency.</p>
-
-    <p><strong>Note:</strong> Your name and NHS number will be sent with this message.</p>
-
-    <p>Email is not regarded as a secure way to send sensitive data.</p>
-
-    <p>Please enter your message here with your preferred contact email or phone number.</p>
+    <ul>
+        <li>
+            If you have any questions about your condition you can contact us be email below.
+            Alternatively you can leave a message through the IBD helpline on 0161 20 64023.
+        </li>
+        <li>
+            We aim to review and respond to messages by the end of the next working day.
+            In case of emergencies and you haven't received a response, please contact your GP or attend you
+            local A &amp; E department in cases of emergency.
+        </li>
+        <li>
+            <strong>Note:</strong> Your name and NHS number will be sent with this message.
+        </li>
+        <li>
+            Email is not regarded as a secure way to send sensitive data.
+        </li>
+        <li>
+            Please enter your message here with your preferred contact email or phone number.
+        </li>
+    </ul>
 
     <html:form action="/patient/ibd-contact-send">
         <fieldset>
@@ -52,17 +59,17 @@
     </html:form>
 
     <h2>Questions about your details, the site, feedback, any other questions</h2>
+    <ul>
+        <li>For Frequently Asked Questions please visit the <html:link action="ibd-help">Help</html:link> section. For any queries about login problems,
+            incorrect details on the site, content issues, results not appearing or being wrong, or any
+            concerns or feedback, email us here. </li>
 
-    <p>For Frequently Asked Questions please visit the <html:link action="ibd-help">Help</html:link> section. For any queries about login problems,
-        incorrect details on the site, content issues, results not appearing or being wrong, or any
-        concerns or feedback, email us here. </p>
+        <li><strong>Note:</strong> Your name and NHS number will be sent with this message.</li>
 
-    <p><strong>Note:</strong> Your name and NHS number will be sent with this message.</p>
+        <li>Email is not regarded as a secure way to send sensitive data.</li>
 
-    <p>Email is not regarded as a secure way to send sensitive data.</p>
-
-    <p>Please enter your message here with your preferred contact email or phone number.</p>
-
+        <li>Please enter your message here with your preferred contact email or phone number.</li>
+    </ul>
     <html:form action="/patient/ibd-contact-send">
         <fieldset>
             <logic:present name="otherFormError">

@@ -7,11 +7,20 @@
 <div class="page-header">
     <h1>Results</h1>
 </div>
-<p>
-    This section helps you monitor your latest blood and stool tests, direct from the hospital system. Most routine test results are
-    updated within 48 hours from when the sample was taken. Certain results make take longer to be processed and may not
-    register for over 2 weeks. To learn more about what the results mean, click on the links.
-</p>
+<ul>
+    <li>
+        This section helps you monitor your latest blood and stool tests, direct from the hospital system.
+    </li>
+    <li>
+        Most routine test results are updated within 48 hours from when the sample was taken.
+    </li>
+    <li>
+        Certain results make take longer to be processed and may not register for over 2 weeks.
+    </li>
+    <li>
+        To learn more about what the results mean, click on the links.
+    </li>    
+</ul>
 
 <h3>Links about blood tests</h3>
 <ul>
