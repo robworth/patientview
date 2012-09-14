@@ -159,11 +159,11 @@
                     <p><strong>Common Symptoms from a severe flare-up</strong></p>
 
                     <p>
-                        The symptoms from a severe flare-up depend on which part and how much of the gut is affected.      
+                        The symptoms from a severe flare-up depend on which part and how much of the gut is affected.
                     </p>
 
                     <p>
-                        With a severe flare up one or more of the following symptoms are commonly described:    
+                        With a severe flare up one or more of the following symptoms are commonly described:
                     </p>
 
                     <ul>
@@ -184,7 +184,7 @@
                     <p>
                         If you have a known stricture and you are experiencing persistent vomiting with cramping
                         abdominal pain, you may be suffering from bowel obstruction.  Further symptoms from a blockage
-                        include constipation and increased abdominal swelling. In these circumstances please contact us.                         
+                        include constipation and increased abdominal swelling. In these circumstances please contact us.
                     </p>
 
                     <p><strong>Contact Details</strong></p>
@@ -274,7 +274,7 @@
                     %>
 
                     <h3 class="<%=myIbdSeverityLevel.getSeverity().name().toLowerCase()%>">
-                        Inactive (Remission)                        
+                        Inactive (Remission)
                     </h3>
 
                     <p>
