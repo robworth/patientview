@@ -4,6 +4,7 @@ h1, h2{
 
 .navbar-inner{
 	background: #0066cc;
+    filter: none;
 	box-shadow: none;
 	border-radius: 0;
 	color: #fff;
@@ -334,13 +335,15 @@ h1, h2{
     width: 300px;   
 }
 
-.sliderGroup .slider{
+.sliderGroup .sliderContainer{
     padding-top: 2px;
 }
 
 .sliderGroup .smile{
+    float: left;
+    display: block;
     font-style: normal;
-    font-size: 1.3em;
+    font-size: 17px;
     padding: 0 5px;
 }
 

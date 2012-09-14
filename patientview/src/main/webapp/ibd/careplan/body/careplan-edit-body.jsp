@@ -46,13 +46,13 @@
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="slider1">Overall my condition</label>
-                                    <div class="controls slider">
+                                    <div class="controls sliderContainer">
                                         <i class="smile happy">&#9786;</i><input id="slider1" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="slider2">Tiredness /Fatigue</label>
-                                    <div class="controls slider">
+                                    <div class="controls sliderContainer">
                                         <i class="smile happy">&#9786;</i><input id="slider2" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
                                     </div>
                                 </div>
@@ -65,13 +65,13 @@
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="slider3">Taking my medicines regularly</label>
-                                    <div class="controls slider">
+                                    <div class="controls sliderContainer">
                                         <i class="smile happy">&#9786;</i><input id="slider3" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="slider4">Managing flare ups</label>
-                                    <div class="controls slider">
+                                    <div class="controls sliderContainer">
                                         <i class="smile happy">&#9786;</i><input id="slider4" type="range" min="0" max="4" value="2" step="1" /><i class="smile sad">&#9785;</i>
                                     </div>
                                 </div>
@@ -206,3 +206,7 @@
         </ul>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(":range").rangeinput();
+</script>
