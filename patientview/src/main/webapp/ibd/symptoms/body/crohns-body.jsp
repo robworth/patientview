@@ -8,7 +8,7 @@
     </div>
 
     <p>
-        The symptom checker can be used to keep a personal record of your Crohn’s symptoms over time. The scores
+        The symptom checker can be used to keep a personal record of your Crohns symptoms over time. The scores
         generated from the questions are based on previous validated research studies. If you have 3 days of worsening
         symptoms from your bowels, record your symptoms every day on the chart for 2 weeks.
     </p>
@@ -139,7 +139,7 @@
 
 
                     <p>
-                        Your symptom score suggests your Crohn’s disease is very active and you are experiencing a
+                        Your symptom score suggests your Crohns disease is very active and you are experiencing a
                         severe flare-up. We advice you to monitor your symptoms daily on the chart and contact the IBD
                         team or speak to your GP within the next 24 hours.
                     </p>
@@ -162,7 +162,7 @@
                         <li>Significant abdominal pain and tenderness</li>
                         <li>Worsening diarrhoea over several days</li>
                         <li>Blood mixed in with diarrhoea</li>
-                        <li>High fever (temperature greater than 37.8 °C)</li>
+                        <li>High fever (temperature greater than 37.8 ÔøΩC)</li>
                         <li>Losing weight without dieting</li>
                         <li>Persistent vomiting</li>
                         <li>Severe joint aches and swelling</li>
@@ -202,7 +202,7 @@
                     </h3>
 
                     <p>
-                        Your symptom score suggests your Crohn’s disease is active and you are experiencing a flare-up.
+                        Your symptom score suggests your Crohns disease is active and you are experiencing a flare-up.
                     </p>
 
                     <p>
@@ -270,7 +270,7 @@
                     </h3>
 
                     <p>
-                        Excellent. Your Crohn’s disease seems under good control. Please carry on taking your current
+                        Excellent. Your Crohns disease seems under good control. Please carry on taking your current
                         medicines. If you want to learn more about maintaining remission and
                         <a href="http://www.myibdportal.org/staying-well-with-ibd">staying well with IBD, click here.
                         </a>
