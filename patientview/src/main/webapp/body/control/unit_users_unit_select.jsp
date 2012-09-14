@@ -15,7 +15,7 @@
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b>Renal Unit</b></td>
+      <td><b><logic:present tenancy="rpv">Renal Unit</logic:present><logic:present tenancy="ibd">IBD Unit</logic:present></b></td>
       <td><html:select property="unitcode">
              <html:options collection="units" property="unitcode" labelProperty="name"/>
           </html:select></td>
