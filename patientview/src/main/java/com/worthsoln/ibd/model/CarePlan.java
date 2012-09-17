@@ -1,37 +1,77 @@
 package com.worthsoln.ibd.model;
 
-import com.worthsoln.ibd.model.enums.AreaToDiscuss;
 import com.worthsoln.ibd.model.enums.Confidence;
 import com.worthsoln.ibd.model.enums.Importance;
 import com.worthsoln.patientview.model.BaseModel;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "ibd_careplan")
 public class CarePlan extends BaseModel {
 
+    @Transient
+    private final int DEFAULT_SCORE = 5;
+
     @Column(nullable = false)
     private String nhsno;
 
-    @Transient
-    List<AreaToDiscuss> areasToDiscuss;
+    @Column(nullable = true)
+    private Integer overallMyConditionScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer tirednessFatigueScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer managingPainScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer stressAndWorryScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer supportFromFamilyAndFriendsScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer managingMySocialLifeHobbiesScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer managingWorkStudiesScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer takingMyMedicinesRegularlyScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer managingFlareUpsScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer stoppingSmokingScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer sleepingScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer sexualRelationshipsScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer fertilityPregnancyScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer learningAboutMyConditionScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer eatingAHealthyDietScore = DEFAULT_SCORE;
+
+    @Column(nullable = true)
+    private Integer travellingScore = DEFAULT_SCORE;
 
     @Column(nullable = true, columnDefinition = "TEXT")
-    private String furtherTopics;
+    private String otherAreasToDiscuss;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String goals;
@@ -65,48 +105,140 @@ public class CarePlan extends BaseModel {
         this.nhsno = nhsno;
     }
 
-    public List<AreaToDiscuss> getAreasToDiscuss() {
-        return areasToDiscuss;
+    public Integer getOverallMyConditionScore() {
+        return overallMyConditionScore;
     }
 
-    public void setAreasToDiscuss(List<AreaToDiscuss> areasToDiscuss) {
-        this.areasToDiscuss = areasToDiscuss;
+    public void setOverallMyConditionScore(Integer overallMyConditionScore) {
+        this.overallMyConditionScore = overallMyConditionScore;
     }
 
-    @Access(AccessType.PROPERTY)
-    @ElementCollection
-    @CollectionTable(name = "ibd_careplan_areas_to_discuss", joinColumns = @JoinColumn(name = "careplan_id"))
-    @Column(name = "area_to_discuss_id")
-    public Set<Long> getAreaToDiscussIds() {
-        if (areasToDiscuss != null) {
-            Set<Long> areaToDiscussIds = new HashSet<Long>(areasToDiscuss.size());
-
-            for (AreaToDiscuss areaToDiscuss : areasToDiscuss) {
-                areaToDiscussIds.add(areaToDiscuss.getId());
-            }
-
-            return areaToDiscussIds;
-        }
-
-        return new HashSet<Long>(0);
+    public Integer getTirednessFatigueScore() {
+        return tirednessFatigueScore;
     }
 
-    public void setAreaToDiscussIds(Set<Long> areaToDiscussIds) {
-        if (areaToDiscussIds != null) {
-            areasToDiscuss = new ArrayList<AreaToDiscuss>(areaToDiscussIds.size());
-
-            for (long areaToDiscussId : areaToDiscussIds) {
-                areasToDiscuss.add(AreaToDiscuss.getAreasToDiscuss(areaToDiscussId));
-            }
-        }
+    public void setTirednessFatigueScore(Integer tirednessFatigueScore) {
+        this.tirednessFatigueScore = tirednessFatigueScore;
     }
 
-    public String getFurtherTopics() {
-        return furtherTopics;
+    public Integer getManagingPainScore() {
+        return managingPainScore;
     }
 
-    public void setFurtherTopics(String furtherTopics) {
-        this.furtherTopics = furtherTopics;
+    public void setManagingPainScore(Integer managingPainScore) {
+        this.managingPainScore = managingPainScore;
+    }
+
+    public Integer getStressAndWorryScore() {
+        return stressAndWorryScore;
+    }
+
+    public void setStressAndWorryScore(Integer stressAndWorryScore) {
+        this.stressAndWorryScore = stressAndWorryScore;
+    }
+
+    public Integer getSupportFromFamilyAndFriendsScore() {
+        return supportFromFamilyAndFriendsScore;
+    }
+
+    public void setSupportFromFamilyAndFriendsScore(Integer supportFromFamilyAndFriendsScore) {
+        this.supportFromFamilyAndFriendsScore = supportFromFamilyAndFriendsScore;
+    }
+
+    public Integer getManagingMySocialLifeHobbiesScore() {
+        return managingMySocialLifeHobbiesScore;
+    }
+
+    public void setManagingMySocialLifeHobbiesScore(Integer managingMySocialLifeHobbiesScore) {
+        this.managingMySocialLifeHobbiesScore = managingMySocialLifeHobbiesScore;
+    }
+
+    public Integer getManagingWorkStudiesScore() {
+        return managingWorkStudiesScore;
+    }
+
+    public void setManagingWorkStudiesScore(Integer managingWorkStudiesScore) {
+        this.managingWorkStudiesScore = managingWorkStudiesScore;
+    }
+
+    public Integer getTakingMyMedicinesRegularlyScore() {
+        return takingMyMedicinesRegularlyScore;
+    }
+
+    public void setTakingMyMedicinesRegularlyScore(Integer takingMyMedicinesRegularlyScore) {
+        this.takingMyMedicinesRegularlyScore = takingMyMedicinesRegularlyScore;
+    }
+
+    public Integer getManagingFlareUpsScore() {
+        return managingFlareUpsScore;
+    }
+
+    public void setManagingFlareUpsScore(Integer managingFlareUpsScore) {
+        this.managingFlareUpsScore = managingFlareUpsScore;
+    }
+
+    public Integer getStoppingSmokingScore() {
+        return stoppingSmokingScore;
+    }
+
+    public void setStoppingSmokingScore(Integer stoppingSmokingScore) {
+        this.stoppingSmokingScore = stoppingSmokingScore;
+    }
+
+    public Integer getSleepingScore() {
+        return sleepingScore;
+    }
+
+    public void setSleepingScore(Integer sleepingScore) {
+        this.sleepingScore = sleepingScore;
+    }
+
+    public Integer getSexualRelationshipsScore() {
+        return sexualRelationshipsScore;
+    }
+
+    public void setSexualRelationshipsScore(Integer sexualRelationshipsScore) {
+        this.sexualRelationshipsScore = sexualRelationshipsScore;
+    }
+
+    public Integer getFertilityPregnancyScore() {
+        return fertilityPregnancyScore;
+    }
+
+    public void setFertilityPregnancyScore(Integer fertilityPregnancyScore) {
+        this.fertilityPregnancyScore = fertilityPregnancyScore;
+    }
+
+    public Integer getLearningAboutMyConditionScore() {
+        return learningAboutMyConditionScore;
+    }
+
+    public void setLearningAboutMyConditionScore(Integer learningAboutMyConditionScore) {
+        this.learningAboutMyConditionScore = learningAboutMyConditionScore;
+    }
+
+    public Integer getEatingAHealthyDietScore() {
+        return eatingAHealthyDietScore;
+    }
+
+    public void setEatingAHealthyDietScore(Integer eatingAHealthyDietScore) {
+        this.eatingAHealthyDietScore = eatingAHealthyDietScore;
+    }
+
+    public Integer getTravellingScore() {
+        return travellingScore;
+    }
+
+    public void setTravellingScore(Integer travellingScore) {
+        this.travellingScore = travellingScore;
+    }
+
+    public String getOtherAreasToDiscuss() {
+        return otherAreasToDiscuss;
+    }
+
+    public void setOtherAreasToDiscuss(String otherAreasToDiscuss) {
+        this.otherAreasToDiscuss = otherAreasToDiscuss;
     }
 
     public String getGoals() {
