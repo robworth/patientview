@@ -14,7 +14,7 @@
      <ul>
          <li>
              My details contains basic information from your hospital records. Please check that your details are correct.
-             If there are any errors please contact us by <html:link action="/patient/contact">clicking here</html:link>.
+             If there are any errors please contact us by <html:link action="/patient/ibd-contact">clicking here</html:link>.
          </li>
          <li>
              To complete a full summary for your own personal record, please enter any other health conditions and your

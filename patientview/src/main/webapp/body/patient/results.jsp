@@ -15,7 +15,7 @@
         Most routine test results are updated within 48 hours from when the sample was taken.
     </li>
     <li>
-        Certain results make take longer to be processed and may not register for over 2 weeks.
+        Certain results take longer to be processed and may not register for over 2 weeks.
     </li>
     <li>
         To learn more about what the results mean, click on the links.

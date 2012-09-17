@@ -13,9 +13,6 @@
             Letters are only shown where they can be retrieved from your unit's computer system.
         </li>
         <li>
-            This is not always possible, or it may not have been activated for your unit.
-        </li>
-        <li>
             It is important to note that letters may be shown here before they have been finally approved and had
             mistakes corrected. This mainly applies if you are reading letters soon (e.g. within a week) after they have
             been typed.
