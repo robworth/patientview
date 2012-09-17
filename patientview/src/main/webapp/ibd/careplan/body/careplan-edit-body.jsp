@@ -34,9 +34,9 @@
 
                     </div>
                 </div>
-
+                <div class="row">
                 <div class="form-horizontal">
-                    <div class="sliderGroup">
+                    <div class="sliderGroup span6">
                         <div class="sliderHeading">
                             <div class="bottomValue">Is not a problem </div>
                             <div class="topValue">A big problem </div>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div class="sliderGroup">
+                    <div class="sliderGroup span6">
                         <div class="sliderHeading">
                             <div class="bottomValue">Don't need help</div>
                             <div class="topValue">Need help</div>
@@ -210,7 +210,7 @@
                         </div>
                     </div>
                 </div>
-
+                </div>
                 <div class="row paragraphSizeTopMargin">
                     <div class="span12">
                         <label>
