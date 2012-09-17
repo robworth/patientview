@@ -11,7 +11,7 @@
      <div class="page-header">
          <h1>My Details</h1>
      </div>
-     <ul>
+     <ul class="padded-list">
          <li>
              My details contains basic information from your hospital records. Please check that your details are correct.
              If there are any errors please contact us by <html:link action="/patient/ibd-contact">clicking here</html:link>.
