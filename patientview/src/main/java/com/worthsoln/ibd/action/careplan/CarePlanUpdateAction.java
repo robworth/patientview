@@ -15,8 +15,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class CarePlanUpdateAction extends BaseAction {
 
@@ -41,7 +39,7 @@ public class CarePlanUpdateAction extends BaseAction {
             carePlan.setNhsno(getNhsNoForUser(request));
         }
 
-        carePlan.setFurtherTopics((String) dynaForm.get(Ibd.FURTHER_TOPICS_PARAM));
+        carePlan.setOtherAreasToDiscuss((String) dynaForm.get(Ibd.OTHER_AREAS_TO_DISCUSS_PARAM));
         carePlan.setGoals((String) dynaForm.get(Ibd.GOALS_PARAM));
         carePlan.setGoalToAchieve((String) dynaForm.get(Ibd.GOAL_TO_ACHIEVE_PARAM));
         carePlan.setImportanceId((Long) dynaForm.get(Ibd.IMPORTANCE_ID_PARAM));
@@ -50,9 +48,25 @@ public class CarePlanUpdateAction extends BaseAction {
         carePlan.setWhatCanBeDone((String) dynaForm.get(Ibd.WHAT_CAN_BE_DONE_PARAM));
         carePlan.setConfidenceId((Long) dynaForm.get(Ibd.CONFIDENCE_ID_PARAM));
         carePlan.setReviewDate(convertFormDateString(Ibd.REVIEW_DATE_PARAM, dynaForm));
-
-        Long[] areaToDiscussIds = (Long[]) dynaForm.get(Ibd.AREA_TO_DISCUSS_IDS_PARAM);
-        carePlan.setAreaToDiscussIds(new HashSet<Long>(Arrays.asList(areaToDiscussIds)));
+        carePlan.setOverallMyConditionScore((Integer) dynaForm.get(Ibd.OVERALL_MY_CONDITION_SCORE_PARAM));
+        carePlan.setTirednessFatigueScore((Integer) dynaForm.get(Ibd.TIREDNESS_FATIGUE_SCORE_PARAM));
+        carePlan.setManagingPainScore((Integer) dynaForm.get(Ibd.MANAGING_PAIN_SCORE_PARAM));
+        carePlan.setStressAndWorryScore((Integer) dynaForm.get(Ibd.STRESS_AND_WORRY_SCORE_PARAM));
+        carePlan.setSupportFromFamilyAndFriendsScore((Integer) dynaForm.get(
+                Ibd.SUPPORT_FROM_FAMILY_AND_FRIENDS_SCORE_PARAM));
+        carePlan.setManagingMySocialLifeHobbiesScore((Integer) dynaForm.get(
+                Ibd.MANAGING_MY_SOCIAL_LIFE_HOBBIES_SCORE_PARAM));
+        carePlan.setManagingWorkStudiesScore((Integer) dynaForm.get(Ibd.MANAGING_WORK_STUDIES_SCORE_PARAM));
+        carePlan.setTakingMyMedicinesRegularlyScore((Integer) dynaForm.get(
+                Ibd.TAKING_MY_MEDICINES_REGULARLY_SCORE_PARAM));
+        carePlan.setManagingFlareUpsScore((Integer) dynaForm.get(Ibd.MANAGING_FLARE_UPS_SCORE_PARAM));
+        carePlan.setStoppingSmokingScore((Integer) dynaForm.get(Ibd.STOPPING_SMOKING_SCORE_PARAM));
+        carePlan.setSleepingScore((Integer) dynaForm.get(Ibd.SLEEPING_SCORE_PARAM));
+        carePlan.setSexualRelationshipsScore((Integer) dynaForm.get(Ibd.SEXUAL_RELATIONSHIPS_SCORE_PARAM));
+        carePlan.setFertilityPregnancyScore((Integer) dynaForm.get(Ibd.FERTILITY_PREGNANCY_SCORE_PARAM));
+        carePlan.setLearningAboutMyConditionScore((Integer) dynaForm.get(Ibd.LEARNING_ABOUT_MY_CONDITION_SCORE_PARAM));
+        carePlan.setEatingAHealthyDietScore((Integer) dynaForm.get(Ibd.EATING_A_HEALTHY_DIET_SCORE_PARAM));
+        carePlan.setTravellingScore((Integer) dynaForm.get(Ibd.TRAVELLING_SCORE_PARAM));
 
         getIbdManager().saveCarePlan(carePlan);
 
@@ -68,12 +82,6 @@ public class CarePlanUpdateAction extends BaseAction {
         }
 
         // Comment out the ones that do not require validation
-
-        if (form.get(Ibd.AREA_TO_DISCUSS_IDS_PARAM) == null
-                || ((Long[]) form.get(Ibd.AREA_TO_DISCUSS_IDS_PARAM)).length == 0) {
-            actionErrors.add(Ibd.AREA_TO_DISCUSS_IDS_PARAM, new ActionMessage(Ibd.AREAS_TO_DISCUSS_REQUIRED));
-        }
-
         if (form.get(Ibd.GOALS_PARAM) == null || ((String) form.get(Ibd.GOALS_PARAM)).length() == 0) {
             actionErrors.add(Ibd.GOALS_PARAM, new ActionMessage(Ibd.GOALS_REQUIRED));
         }

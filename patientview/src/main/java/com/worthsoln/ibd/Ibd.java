@@ -69,8 +69,23 @@ public class Ibd {
     public static final String VACCINATION_RECORD_ID_PARAM = "vaccinationRecordId";
 
     // care plan params
-    public static final String AREA_TO_DISCUSS_IDS_PARAM = "areaToDiscussIds";
-    public static final String FURTHER_TOPICS_PARAM = "furtherTopics";
+    public static final String OVERALL_MY_CONDITION_SCORE_PARAM = "overallMyConditionScore";
+    public static final String TIREDNESS_FATIGUE_SCORE_PARAM = "tirednessFatigueScore";
+    public static final String MANAGING_PAIN_SCORE_PARAM = "managingPainScore";
+    public static final String STRESS_AND_WORRY_SCORE_PARAM = "stressAndWorryScore";
+    public static final String SUPPORT_FROM_FAMILY_AND_FRIENDS_SCORE_PARAM = "supportFromFamilyAndFriendsScore";
+    public static final String MANAGING_MY_SOCIAL_LIFE_HOBBIES_SCORE_PARAM = "managingMySocialLifeHobbiesScore";
+    public static final String MANAGING_WORK_STUDIES_SCORE_PARAM = "managingWorkStudiesScore";
+    public static final String TAKING_MY_MEDICINES_REGULARLY_SCORE_PARAM = "takingMyMedicinesRegularlyScore";
+    public static final String MANAGING_FLARE_UPS_SCORE_PARAM = "managingFlareUpsScore";
+    public static final String STOPPING_SMOKING_SCORE_PARAM = "stoppingSmokingScore";
+    public static final String SLEEPING_SCORE_PARAM = "sleepingScore";
+    public static final String SEXUAL_RELATIONSHIPS_SCORE_PARAM = "sexualRelationshipsScore";
+    public static final String FERTILITY_PREGNANCY_SCORE_PARAM = "fertilityPregnancyScore";
+    public static final String LEARNING_ABOUT_MY_CONDITION_SCORE_PARAM = "learningAboutMyConditionScore";
+    public static final String EATING_A_HEALTHY_DIET_SCORE_PARAM = "eatingAHealthyDietScore";
+    public static final String TRAVELLING_SCORE_PARAM = "travellingScore";
+    public static final String OTHER_AREAS_TO_DISCUSS_PARAM = "otherAreasToDiscuss";
     public static final String GOALS_PARAM = "goals";
     public static final String GOAL_TO_ACHIEVE_PARAM = "goalToAchieve";
     public static final String IMPORTANCE_ID_PARAM = "importanceId";
@@ -165,4 +180,8 @@ public class Ibd {
     public static final String DATE_REQUIRED = "date.required";
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+
+    // areas to discuss types
+    public static final int AREA_TO_DISCUSS_CONCERN_TYPE_ID = 1;
+    public static final int AREA_TO_DISCUSS_HELP_TYPE_ID = 2;
 }

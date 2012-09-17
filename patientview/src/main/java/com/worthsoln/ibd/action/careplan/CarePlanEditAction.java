@@ -27,7 +27,7 @@ public class CarePlanEditAction extends BaseAction {
         }
 
         DynaActionForm dynaForm = (DynaActionForm) form;
-        dynaForm.set(Ibd.FURTHER_TOPICS_PARAM, carePlan.getFurtherTopics());
+        dynaForm.set(Ibd.OTHER_AREAS_TO_DISCUSS_PARAM, carePlan.getOtherAreasToDiscuss());
         dynaForm.set(Ibd.GOALS_PARAM, carePlan.getGoals());
         dynaForm.set(Ibd.GOAL_TO_ACHIEVE_PARAM, carePlan.getGoalToAchieve());
         dynaForm.set(Ibd.IMPORTANCE_ID_PARAM, carePlan.getImportanceId());
@@ -36,18 +36,23 @@ public class CarePlanEditAction extends BaseAction {
         dynaForm.set(Ibd.WHAT_CAN_BE_DONE_PARAM, carePlan.getWhatCanBeDone());
         dynaForm.set(Ibd.CONFIDENCE_ID_PARAM, carePlan.getConfidenceId());
         dynaForm.set(Ibd.REVIEW_DATE_PARAM, convertFormDateString(carePlan.getReviewDate()));
+        dynaForm.set(Ibd.OVERALL_MY_CONDITION_SCORE_PARAM, carePlan.getOverallMyConditionScore());
+        dynaForm.set(Ibd.TIREDNESS_FATIGUE_SCORE_PARAM, carePlan.getTirednessFatigueScore());
+        dynaForm.set(Ibd.MANAGING_PAIN_SCORE_PARAM, carePlan.getManagingPainScore());
+        dynaForm.set(Ibd.STRESS_AND_WORRY_SCORE_PARAM, carePlan.getStressAndWorryScore());
+        dynaForm.set(Ibd.SUPPORT_FROM_FAMILY_AND_FRIENDS_SCORE_PARAM, carePlan.getSupportFromFamilyAndFriendsScore());
+        dynaForm.set(Ibd.MANAGING_MY_SOCIAL_LIFE_HOBBIES_SCORE_PARAM, carePlan.getManagingMySocialLifeHobbiesScore());
+        dynaForm.set(Ibd.MANAGING_WORK_STUDIES_SCORE_PARAM, carePlan.getManagingWorkStudiesScore());
+        dynaForm.set(Ibd.TAKING_MY_MEDICINES_REGULARLY_SCORE_PARAM, carePlan.getTakingMyMedicinesRegularlyScore());
+        dynaForm.set(Ibd.MANAGING_FLARE_UPS_SCORE_PARAM, carePlan.getManagingFlareUpsScore());
+        dynaForm.set(Ibd.STOPPING_SMOKING_SCORE_PARAM, carePlan.getStoppingSmokingScore());
+        dynaForm.set(Ibd.SLEEPING_SCORE_PARAM, carePlan.getSleepingScore());
+        dynaForm.set(Ibd.SEXUAL_RELATIONSHIPS_SCORE_PARAM, carePlan.getSexualRelationshipsScore());
+        dynaForm.set(Ibd.FERTILITY_PREGNANCY_SCORE_PARAM, carePlan.getFertilityPregnancyScore());
+        dynaForm.set(Ibd.LEARNING_ABOUT_MY_CONDITION_SCORE_PARAM, carePlan.getLearningAboutMyConditionScore());
+        dynaForm.set(Ibd.EATING_A_HEALTHY_DIET_SCORE_PARAM, carePlan.getEatingAHealthyDietScore());
+        dynaForm.set(Ibd.TRAVELLING_SCORE_PARAM, carePlan.getTravellingScore());
 
-        Long[] areaToDiscussIds = new Long[carePlan.getAreaToDiscussIds().size()];
-        int count = 0;
-
-        for (Long l : carePlan.getAreaToDiscussIds()) {
-            areaToDiscussIds[count] = l;
-            count++;
-        }
-
-        dynaForm.set(Ibd.AREA_TO_DISCUSS_IDS_PARAM, areaToDiscussIds);
-
-        request.getSession().setAttribute(AREA_TO_DISCUSS_LIST_PROPERTY, getAreaToDiscussList());
         request.getSession().setAttribute(IMPORTANCE_LIST_PROPERTY, getImportanceList());
         request.getSession().setAttribute(CONFIDENCE_LIST_PROPERTY, getConfidenceList());
 

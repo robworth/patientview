@@ -353,6 +353,11 @@ $(function() {
         IBD.AddMedicineInit();
     }
 
+    // care plan page then set up the sliders
+    if ($('#editCarePlan').length > 0) {
+        $(":range").rangeinput();
+    }
+
     // if symptoms container is present then set up symptoms code
     if ($('#symptomsContainer').length > 0) {
         IBD.Symptoms.init();

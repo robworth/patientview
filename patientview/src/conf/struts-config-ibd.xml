@@ -31,8 +31,23 @@
 
         <form-bean name="carePlanForm"
                    type="org.apache.struts.action.DynaActionForm">
-            <form-property name="areaToDiscussIds" type="java.lang.Long[]"/>
-            <form-property name="furtherTopics" type="java.lang.String"/>
+            <form-property name="overallMyConditionScore" type="java.lang.Integer"/>
+            <form-property name="tirednessFatigueScore" type="java.lang.Integer"/>
+            <form-property name="managingPainScore" type="java.lang.Integer"/>
+            <form-property name="stressAndWorryScore" type="java.lang.Integer"/>
+            <form-property name="supportFromFamilyAndFriendsScore" type="java.lang.Integer"/>
+            <form-property name="managingMySocialLifeHobbiesScore" type="java.lang.Integer"/>
+            <form-property name="managingWorkStudiesScore" type="java.lang.Integer"/>
+            <form-property name="takingMyMedicinesRegularlyScore" type="java.lang.Integer"/>
+            <form-property name="managingFlareUpsScore" type="java.lang.Integer"/>
+            <form-property name="stoppingSmokingScore" type="java.lang.Integer"/>
+            <form-property name="sleepingScore" type="java.lang.Integer"/>
+            <form-property name="sexualRelationshipsScore" type="java.lang.Integer"/>
+            <form-property name="fertilityPregnancyScore" type="java.lang.Integer"/>
+            <form-property name="learningAboutMyConditionScore" type="java.lang.Integer"/>
+            <form-property name="eatingAHealthyDietScore" type="java.lang.Integer"/>
+            <form-property name="travellingScore" type="java.lang.Integer"/>
+            <form-property name="otherAreasToDiscuss" type="java.lang.String"/>
             <form-property name="goals" type="java.lang.String"/>
             <form-property name="goalToAchieve" type="java.lang.String"/>
             <form-property name="importanceId" type="java.lang.Long"/>
