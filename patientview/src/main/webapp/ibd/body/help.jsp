@@ -13,7 +13,7 @@
 
 <p>
     The website provides secure access to your blood tests, clinic letters and your IBD record direct from the hospital
-    computer system. You’ll find tailored information links, from accurate and reliable sources. We hope My IBD Portal
+    computer system. YouÔøΩll find tailored information links, from accurate and reliable sources. We hope My IBD Portal
     will help you manage your condition more effectively.    
 </p>
 
@@ -21,7 +21,7 @@
     <dt>Questions about your health</dt>
     <dd>
         If you have any questions about your condition, you can contact us through the IBD helpline on 0161 20 64023
-        or you can contact us here. <html:link action="/patient/contact">Click here to send a message.</html:link>
+        or you can contact us here. <html:link action="/patient/ibd-contact">Click here to send a message.</html:link>
         If you are unable to contact us and you feel you need urgent help, please contact your GP or attend your
         local Accident & Emergency department.
     </dd>
@@ -29,7 +29,7 @@
     <dt>Questions about your own information<dt>
     <dd>
         If you are a patient, and suspect that wrong information is being shown, you need to contact us here.
-        <html:link action="/patient/contact">Click here to send a message.</html:link>
+        <html:link action="/patient/ibd-contact">Click here to send a message.</html:link>
     </dd>
 
     <dt>Questions about the system </dt>
@@ -41,7 +41,7 @@
     <dd>
         For any queries about login problems, incorrect details on the site, content issues, results not appearing
         or being wrong, or any concerns or feedback, please contact us here.
-        <html:link action="/patient/contact">Click here to send a message.</html:link>
+        <html:link action="/patient/ibd-contact">Click here to send a message.</html:link>
     </dd>
 
     <dt>FAQs</dt>
@@ -66,10 +66,10 @@
     <dt><a name="Anchor-How-49575"></a>How does it work?</dt>
     <dd>
         <p>
-            My IBD Portal takes information from your hospital’s computer system and links it to useful explanations
+            My IBD Portal takes information from your hospital's computer system and links it to useful explanations
             about your condition and its treatment. It shows blood test results, clinic letters (if they are on your
-            hospital’s computer system), and much more. It is updated at least once a day so that it should be up to
-            date. Because it shows information from your local hospital’s computer system, you should contact your
+            hospital's computer system), and much more. It is updated at least once a day so that it should be up to
+            date. Because it shows information from your local hospital's computer system, you should contact your
             hospital NHS Trust if you see (or suspect) errors.
         </p>
         <p>
@@ -91,14 +91,14 @@
     <dd>
         <p>
             My IBD Portal has been developed by Salford Royal Foundation Trust following sponsorship from the
-            charity, <a href="http://www.nacc.org.uk/" target="_blank">Crohn’s and Colitis UK</a>. The project has
+            charity, <a href="http://www.nacc.org.uk/" target="_blank">Crohn's and Colitis UK</a>. The project has
             been developed with patient involvement and adapted using the same system as Renal Patient View. For
             more information about Renal Patient View
             <a href="http://www.renal.org/whatwedo/JointActivitiesSection/RIXGSection/RenalPatientView.aspx"
                target="_blank">click here.</a>
         </p>
         <p>
-            The style, structure and content of the website has been created as a result of extensive evaluation
+            The style, structure and content of the website has been created as a result of an extensive evaluation
             process with people who have IBD and expert healthcare professionals. We try to provide information in a
             way that makes it easy to find what you are looking for and individual to your needs.
         </p>

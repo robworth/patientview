@@ -347,5 +347,9 @@ h1, h2{
     padding: 0 5px;
 }
 
+.padded-list li {
+    margin-bottom: 5px;
+}
+
 
 

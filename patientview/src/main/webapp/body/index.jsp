@@ -26,7 +26,7 @@
         <h3 class="mediumBlueTitle titleSeperator">About <em>My IBD Portal</em></h3>
         <p>
             <img class="pull-right" src="img/content/salfordLogo.jpg" alt="Salford">
-            <a href="http://myibdportal.org//about-the-project">My IBD Portal</a> is a project sponsored by Crohns & Colitis UK and is being trialled at <a href="http://www.srft.nhs.uk/">Salford Royal Foundation Trust</a>. The portal provides secure access to an online record of your condition.  It provides access to blood tests, clinic letters and your current management plan. You can keep an up-to-date list of current and previous medications. We have provided reliable and trusted information links, so you can learn more about the condition, what it is like living with the illness and treatments. The portal also provides the opportunity to monitor and chart your symptoms.
+            <a href="http://myibdportal.org/">My IBD Portal</a> is a project sponsored by Crohns & Colitis UK and is being trialled at <a href="http://www.srft.nhs.uk/">Salford Royal Foundation Trust</a>. The portal provides secure access to an online record of your condition.  It provides access to blood tests, clinic letters and your current management plan. You can keep an up-to-date list of current and previous medications. We have provided reliable and trusted information links, so you can learn more about the condition, what it is like living with the illness and treatments. The portal also provides the opportunity to monitor and chart your symptoms.
         </p>
         <p>
             To learn more about the project <a href="http://myibdportal.org//about-the-project">click here.</a>    

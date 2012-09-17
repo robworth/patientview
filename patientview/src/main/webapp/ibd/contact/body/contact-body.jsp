@@ -13,7 +13,7 @@
     <h2>Questions about your health</h2>
     <ul>
         <li>
-            If you have any questions about your condition you can contact us be email below.
+            If you have any questions about your condition you can contact us by email below.
             Alternatively you can leave a message through the IBD helpline on 0161 20 64023.
         </li>
         <li>
@@ -23,9 +23,6 @@
         </li>
         <li>
             <strong>Note:</strong> Your name and NHS number will be sent with this message.
-        </li>
-        <li>
-            Email is not regarded as a secure way to send sensitive data.
         </li>
         <li>
             Please enter your message here with your preferred contact email or phone number.
@@ -65,8 +62,6 @@
             concerns or feedback, email us here. </li>
 
         <li><strong>Note:</strong> Your name and NHS number will be sent with this message.</li>
-
-        <li>Email is not regarded as a secure way to send sensitive data.</li>
 
         <li>Please enter your message here with your preferred contact email or phone number.</li>
     </ul>

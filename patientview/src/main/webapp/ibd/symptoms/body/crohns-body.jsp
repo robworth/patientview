@@ -6,7 +6,7 @@
     <div class="page-header">
         <h1>Crohns</h1>
     </div>
-    <ul>
+    <ul class="padded-list">
         <li>
             The symptom checker can be used to keep a personal record of your Crohn's symptoms over time.
         </li>

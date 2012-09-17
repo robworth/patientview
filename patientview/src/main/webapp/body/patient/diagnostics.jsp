@@ -18,7 +18,7 @@
             </li>
             <li>
                 If you have any further questions about your tests please contact us by
-                <html:link action="/patient/contact">clicking here.</html:link>
+                <html:link action="/patient/ibd-contact">clicking here.</html:link>
             </li>
             <li>
                 To learn more about the investigations used commonly in IBD click on the following links:
