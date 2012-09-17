@@ -2,7 +2,6 @@ package com.worthsoln.ibd.action;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
-import com.worthsoln.ibd.model.enums.AreaToDiscuss;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
 import com.worthsoln.ibd.model.enums.Complication;
 import com.worthsoln.ibd.model.enums.Confidence;
@@ -58,7 +57,6 @@ public class BaseAction extends ActionSupport {
     protected static final String VACCINATION_RECORD_LIST_PROPERTY = "vaccinationRecordList";
 
     // care plan lists
-    protected static final String AREA_TO_DISCUSS_LIST_PROPERTY = "areaToDiscussList";
     protected static final String IMPORTANCE_LIST_PROPERTY = "importanceList";
     protected static final String CONFIDENCE_LIST_PROPERTY = "confidenceList";
 
@@ -139,10 +137,6 @@ public class BaseAction extends ActionSupport {
 
     protected List<VaccinationRecord> getVaccinationRecordList() {
         return VaccinationRecord.getAsList();
-    }
-
-    protected List<AreaToDiscuss> getAreaToDiscussList() {
-        return AreaToDiscuss.getAsList();
     }
 
     protected List<AbdominalPain> getAbdominalPainList() {
