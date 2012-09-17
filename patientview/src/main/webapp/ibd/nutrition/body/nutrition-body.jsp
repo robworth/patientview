@@ -49,7 +49,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Foods that disagree with me</th>
-                    <th>Enter a comment on my results</th>
+                    <th>Enter a comment on the food</th>
                 </tr>
             </thead>
             <tbody>
