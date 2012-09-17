@@ -2,22 +2,31 @@ CREATE TABLE `ibd_careplan` (
   `id` bigint(20) NOT NULL auto_increment,
   `barriers` text,
   `confidence_id` bigint(20) NOT NULL,
-  `furtherTopics` text,
+  `eatingAHealthyDietScore` int(11) default NULL,
+  `fertilityPregnancyScore` int(11) default NULL,
   `goalToAchieve` text,
   `goals` text,
   `howToAchieveGoal` text,
   `importance_id` bigint(20) NOT NULL,
+  `learningAboutMyConditionScore` int(11) default NULL,
+  `managingFlareUpsScore` int(11) default NULL,
+  `managingMySocialLifeHobbiesScore` int(11) default NULL,
+  `managingPainScore` int(11) default NULL,
+  `managingWorkStudiesScore` int(11) default NULL,
   `nhsno` varchar(255) NOT NULL,
+  `otherAreasToDiscuss` text,
+  `overallMyConditionScore` int(11) default NULL,
   `reviewDate` datetime default NULL,
+  `sexualRelationshipsScore` int(11) default NULL,
+  `sleepingScore` int(11) default NULL,
+  `stoppingSmokingScore` int(11) default NULL,
+  `stressAndWorryScore` int(11) default NULL,
+  `supportFromFamilyAndFriendsScore` int(11) default NULL,
+  `takingMyMedicinesRegularlyScore` int(11) default NULL,
+  `tirednessFatigueScore` int(11) default NULL,
+  `travellingScore` int(11) default NULL,
   `whatCanBeDone` text,
   PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_careplan_areas_to_discuss` (
-  `careplan_id` bigint(20) NOT NULL,
-  `area_to_discuss_id` bigint(20) default NULL,
-  KEY `FK149F8986A3FEFAD1` (`careplan_id`),
-  CONSTRAINT `FK149F8986A3FEFAD1` FOREIGN KEY (`careplan_id`) REFERENCES `ibd_careplan` (`id`)
 );
 
 CREATE TABLE `ibd_medication` (
