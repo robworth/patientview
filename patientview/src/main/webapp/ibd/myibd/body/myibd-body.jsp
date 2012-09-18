@@ -18,7 +18,7 @@
     <li>
         The hospital is not able to keep an accurate list of your IBD medications. To complete your own personal up-to-date
          record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>  icon in
-         the <html:link action="/medicines">Medicines</html:link> section.
+         the <html:link action="/medications">Medicines</html:link> section.
     </li>
 </ul>
 <hr/>
