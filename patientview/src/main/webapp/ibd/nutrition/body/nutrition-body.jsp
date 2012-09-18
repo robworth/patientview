@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>Nutrition <small>Discover up-to date information about food and IBD</small></h1>
         </div>
-        <ul>
+        <ul class="padded-list">
             <li>
                 When you have IBD it is important to have a well-balanced, healthy diet. Although there is no research to
                 date suggesting diet causes IBD, some people have found that certain foods can play a role in worsening

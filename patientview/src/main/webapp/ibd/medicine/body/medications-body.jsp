@@ -5,7 +5,7 @@
 <div class="page-header">
     <h1>Medicines</h1>
 </div>
-<ul>
+<ul class="padded-list">
     <li>
         This section is for your own personal use, to help you keep a track of your current and previous IBD medications.
     </li>

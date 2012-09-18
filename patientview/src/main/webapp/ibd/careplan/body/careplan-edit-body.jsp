@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="span12">
                         <h2>Before your appointment</h2>
-                        <ul>
+                        <ul class="padded-list">
                             <li>
                                 Whether you are newly diagnosed or have been living with IBD for a number of years, the
                                 challenges of managing a chronic condition can change quickly.
@@ -38,8 +38,8 @@
                 <div class="form-horizontal">
                     <div class="sliderGroup span6">
                         <div class="sliderHeading">
-                            <div class="bottomValue">Is not a problem </div>
-                            <div class="topValue">A big problem </div>
+                            <div class="bottomValue">Is not a concern</div>
+                            <div class="topValue">A big concern</div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">
@@ -314,6 +314,13 @@
                             Use the box below to add further topic areas that you would like to explore.
                         </label>
                         <html:textarea property="otherAreasToDiscuss" rows="5" styleClass="span6"/>
+                        <ul>
+                            <li>
+                                If you would like, you could create a personal care plan. To learn more about care plans and for further
+                                tips on getting more from your appointments click here.
+                                <a target="_blank" href="http://www.myibdportal.org/welcome-to-my-ibd-portal/personal-care-plans">Click here </a>
+                            </li>
+                        </ul>
                         <hr/>
                             <h2>During and after your appointment</h2>
 
@@ -400,13 +407,5 @@
                 </div>
             </fieldset>
         </html:form>
-
-        <ul>
-            <li>
-                If you would like, you could create a personal care plan. To learn more about care plans and for further
-                tips on getting more from your appointments click here.
-                <a href="http://www.myibdportal.org/personal-care-plans">click here link</a>
-            </li>
-        </ul>
     </div>
 </div>

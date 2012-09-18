@@ -9,7 +9,7 @@
 
     <h1>My IBD</h1>
 </div>
-<ul>
+<ul class="padded-list">
     <li>
         My IBD helps you keep a track of your inflammatory bowel disease. The information is provided from the records held
         at the hospital. If there are any obvious errors, please contact us by <html:link action="/patient/ibd-contact">clicking
@@ -20,7 +20,7 @@
          record, please enter your current medicines by clicking on the <span class="btn">Add New Medicine</span>  icon in
          the <html:link action="/medicines">Medicines</html:link> section.
     </li>
-</ul>                                                                                                                                          g co
+</ul>
 <hr/>
 <logic:present name="myIbd">
 
