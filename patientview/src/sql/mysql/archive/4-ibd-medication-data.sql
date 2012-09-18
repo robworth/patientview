@@ -158,12 +158,12 @@ insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (25,NULL,
 insert into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values (6,25);
 insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (26,NULL,3000.0);
 insert into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values (6,26);
-insert into `ibd_medication`(`id`,`name`) values (18,'Sulfazaline (Salazopyrin) 250 mg/5ml suspension');
+insert into `ibd_medication`(`id`,`name`) values (18,'Sulfasalazine (Salazopyrin) 250 mg/5ml suspension');
 insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (75,NULL,500.0);
 insert into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values (18,75);
 insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (76,NULL,1000.0);
 insert into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values (18,76);
-insert into `ibd_medication`(`id`,`name`) values (17,'Sulfazaline (Salazopyrin) 500 mg tablet');
+insert into `ibd_medication`(`id`,`name`) values (17,'Sulfasalazine (Salazopyrin) 500 mg tablet');
 insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (73,NULL,500.0);
 insert into `ibd_medication_allowed_dosages`(`medication_id`,`dose_id`) values (17,73);
 insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (74,NULL,1000.0);
