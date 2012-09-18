@@ -26,6 +26,7 @@ import com.worthsoln.ibd.model.medication.enums.MedicationFrequency;
 import com.worthsoln.ibd.model.symptoms.BaseSymptoms;
 import com.worthsoln.ibd.model.symptoms.SymptomsData;
 import com.worthsoln.ibd.model.symptoms.SymptomsGraphData;
+import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class BaseAction extends ActionSupport {
@@ -77,6 +79,25 @@ public class BaseAction extends ActionSupport {
     protected static final String PRESENT_BLOOD_LIST_PROPERTY = "presentBloodList";
     protected static final String FURTHER_COMPLICATION_LIST_PROPERTY = "furtherComplicationList";
     protected static final String OPEN_BOWEL_LIST_PROPERTY = "openBowelList";
+
+    // just maps question link codes to params for the front end to pick up
+    private static final HashMap<String, String> MY_IBD_QUESTIONS_MAP = new HashMap<String, String>() {
+        {
+            put("Primary Diagnosis", Ibd.PRIMARY_DIAGNOSIS_LINK_PARAM);
+            put("Disease Extent", Ibd.DISEASE_EXTENT_LINK_PARAM);
+            put("Year of Diagnosis", Ibd.YEAR_OF_DIAGNOSIS_LINK_PARAM);
+            put("Complications", Ibd.COMPLICATIONS_LINK_PARAM);
+            put("Other parts of the body affected", Ibd.BODY_PART_AFFECTED_LINK_PARAM);
+            put("Year for Surveillance Colonoscopy", Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_LINK_PARAM);
+            put("Named Consultant", Ibd.NAMED_CONSULTANT_LINK_PARAM);
+            put("Nurses", Ibd.NURSES_LINK_PARAM);
+            put("Weight", Ibd.WEIGHT_LINK_PARAM);
+            put("IBD Related Family History", Ibd.FAMILY_HISTORY_LINK_PARAM);
+            put("Smoking History", Ibd.SMOKING_LINK_PARAM);
+            put("Surgery History", Ibd.SURGERY_LINK_PARAM);
+            put("Vaccination History", Ibd.VACCINATION_RECORD_LINK_PARAM);
+        }
+    };
 
     protected static List<OpenBowel> openBowelList;
 
@@ -305,6 +326,25 @@ public class BaseAction extends ActionSupport {
 
         // need to re add graph data to the page
         request.setAttribute(Ibd.GRAPH_DATA_PARAM, symptomsGraphData);
+    }
+
+    protected void addMyIbdLinks(MyIbd myIbd, HttpServletRequest request) {
+        for (EdtaCode edtaCode : LegacySpringUtils.getEdtaCodeManager().get(Ibd.MY_IBD_LINKS_TYPE)) {
+            if (MY_IBD_QUESTIONS_MAP.containsKey(edtaCode.getEdtaCode())) {
+                String link = null;
+
+                if (myIbd.getDiagnosis().equals(Diagnosis.CROHNS)) {
+                    link = edtaCode.getMedicalLink01();
+                } else if (myIbd.getDiagnosis().equals(Diagnosis.COLITIS_UNSPECIFIED)
+                        || myIbd.getDiagnosis().equals(Diagnosis.ULCERATIVE_COLITIS)) {
+                    link = edtaCode.getMedicalLink02();
+                }
+
+                if (link != null && link.length() > 0) {
+                    request.setAttribute(MY_IBD_QUESTIONS_MAP.get(edtaCode.getEdtaCode()), link);
+                }
+            }
+        }
     }
 
     protected Date convertFormDateString(String formProperty, DynaActionForm dynaActionForm) {
