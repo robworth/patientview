@@ -11,7 +11,7 @@
     <div class="page-header">
         <h1>Colitis</h1>
     </div>
-    <ul>
+    <ul class="padded-list">
         <li>
             The symptom checker can be used to keep a personal record of your colitis symptoms over time.
         </li>

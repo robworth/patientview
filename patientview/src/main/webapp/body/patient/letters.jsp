@@ -8,7 +8,7 @@
         <h1>Letters</h1>
     </div>
 
-    <ul>
+    <ul class="padded-list">
         <li>
             Letters are only shown where they can be retrieved from your unit's computer system.
         </li>

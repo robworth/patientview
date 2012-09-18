@@ -13,7 +13,7 @@
 
 <p>
     The website provides secure access to your blood tests, clinic letters and your IBD record direct from the hospital
-    computer system. You�ll find tailored information links, from accurate and reliable sources. We hope My IBD Portal
+    computer system. You'll find tailored information links, from accurate and reliable sources. We hope My IBD Portal
     will help you manage your condition more effectively.    
 </p>
 

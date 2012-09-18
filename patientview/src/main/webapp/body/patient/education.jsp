@@ -5,7 +5,7 @@
 <html:xhtml/>
 
 <div class="page-header">
-    <h1>Education</h1>
+    <h1>Information</h1>
 </div>
 
 <p><bean:message key="education.intro" /></p>

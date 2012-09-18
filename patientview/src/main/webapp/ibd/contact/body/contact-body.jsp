@@ -11,7 +11,7 @@
 
 <logic:notPresent name="emailSent">
     <h2>Questions about your health</h2>
-    <ul>
+    <ul class="padded-list">
         <li>
             If you have any questions about your condition you can contact us by email below.
             Alternatively you can leave a message through the IBD helpline on 0161 20 64023.
