@@ -8,7 +8,7 @@ public enum Complication {
     PERI_ANAL_DISEASE(2, "Peri-anal disease"),
     PERFORATING_DISEASE_FISTULATION(3, "Perforating Disease / Fistulation"),
     SMALL_BOWEL_STRICTURING(4, "Small bowel stricturing"),
-    LARGE_BOWEL_STRICTURING(5, "Small bowel stricturing"),
+    LARGE_BOWEL_STRICTURING(5, "Large bowel stricturing"),
     ABSCESS(6, "Abscess"),
     GASTRO_DUODENAL_CROHNS(7, "Gasto-duodenal Crohn's"),
     ORAL_CROHNS(8, "Oral Crohn's"),
