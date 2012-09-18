@@ -306,6 +306,7 @@
             <forward name="success" path="/patient/patient_details.jsp"/>
         </action>
 
+        <!-- custom actions for myibd static help links -->
         <action path="/control/myibd-links-display"
                 type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
                 parameter="myIbdLinks">
@@ -342,6 +343,45 @@
                 scope="request">
             <forward name="input" path="/ibd/admin/myibd-links-add.jsp"/>
             <forward name="success" path="/control/myibd-links-display.do"/>
+        </action>
+
+        <!-- custom actions for static links on symptoms pages -->
+        <action path="/control/careplan-links-display"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
+                parameter="careplanLinks">
+            <forward name="success" path="/ibd/admin/careplan-links.jsp"/>
+        </action>
+
+        <action path="/control/careplan-links-edit"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeEditAction"
+                name="edtaCodeForm"
+                scope="request">
+            <forward name="success" path="/ibd/admin/careplan-link-edit.jsp"/>
+        </action>
+
+        <action path="/control/careplan-links-update"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeUpdateAction"
+                name="edtaCodeForm"
+                input="input"
+                scope="request">
+            <forward name="input" path="/ibd/admin/careplan-link-edit.jsp"/>
+            <forward name="success" path="/control/careplan-links-display.do"/>
+        </action>
+
+        <action path="/control/careplan-links-add"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeAddInputAction"
+                name="edtaCodeForm"
+                scope="request">
+            <forward name="success" path="/ibd/admin/careplan-links-add.jsp"/>
+        </action>
+
+        <action path="/control/careplan-links-add-save"
+                type="com.worthsoln.patientview.edtacode.EdtaCodeAddAction"
+                name="edtaCodeForm"
+                input="input"
+                scope="request">
+            <forward name="input" path="/ibd/admin/careplan-links-add.jsp"/>
+            <forward name="success" path="/control/careplan-links-display.do"/>
         </action>
 
         <action path="/patient/ibd-contact"

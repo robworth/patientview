@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="span12">
                         <h2>Before your appointment</h2>
-                        <ul>
+                        <ul class="padded-list">
                             <li>
                                 Whether you are newly diagnosed or have been living with IBD for a number of years, the
                                 challenges of managing a chronic condition can change quickly.
@@ -38,11 +38,18 @@
                 <div class="form-horizontal">
                     <div class="sliderGroup span6">
                         <div class="sliderHeading">
-                            <div class="bottomValue">Is not a problem </div>
-                            <div class="topValue">A big problem </div>
+                            <div class="bottomValue">Is not a concern</div>
+                            <div class="topValue">A big concern</div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Overall my condition</label>
+                            <label class="control-label">
+                                Overall my condition
+
+                                <logic:present name="overallMyConditionLink">
+                                    <a href="<bean:write name="overallMyConditionLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
+
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="overallMyConditionScore" type="range" min="0" max="10"
@@ -52,7 +59,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Tiredness /Fatigue</label>
+                            <label class="control-label">
+                                Tiredness /Fatigue
+
+                                <logic:present name="tirednessFatigueLink">
+                                    <a href="<bean:write name="tirednessFatigueLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="tirednessFatigueScore" type="range" min="0" max="10"
@@ -62,7 +75,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Managing Pain</label>
+                            <label class="control-label">
+                                Managing Pain
+
+                                <logic:present name="managingPainLink">
+                                    <a href="<bean:write name="managingPainLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="managingPainScore" type="range" min="0" max="10"
@@ -72,7 +91,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Stress and worry</label>
+                            <label class="control-label">
+                                Stress and worry
+
+                                <logic:present name="stressAndWorryLink">
+                                    <a href="<bean:write name="stressAndWorryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="stressAndWorryScore" type="range" min="0" max="10"
@@ -82,7 +107,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Support from family and friends</label>
+                            <label class="control-label">
+                                Support from family and friends
+
+                                <logic:present name="supportFromFamilyAndFriendsLink">
+                                    <a href="<bean:write name="supportFromFamilyAndFriendsLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="supportFromFamilyAndFriendsScore" type="range" min="0" max="10"
@@ -92,7 +123,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Managing my social life / hobbies</label>
+                            <label class="control-label">
+                                Managing my social life / hobbies
+
+                                <logic:present name="managingMySocialLifeHobbiesLink">
+                                    <a href="<bean:write name="managingMySocialLifeHobbiesLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="managingMySocialLifeHobbiesScore" type="range" min="0" max="10"
@@ -102,7 +139,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Managing work / studies</label>
+                            <label class="control-label">
+                                Managing work / studies
+
+                                <logic:present name="managingWorkStudiesLink">
+                                    <a href="<bean:write name="managingWorkStudiesLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="managingWorkStudiesScore" type="range" min="0" max="10"
@@ -112,7 +155,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Taking my medicines regularly</label>
+                            <label class="control-label">
+                                Taking my medicines regularly
+
+                                <logic:present name="takingMyMedicinesRegularlyLink">
+                                    <a href="<bean:write name="takingMyMedicinesRegularlyLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="takingMyMedicinesRegularlyScore" type="range" min="0" max="10"
@@ -129,7 +178,13 @@
                             <div class="topValue">Need help</div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Managing flare ups</label>
+                            <label class="control-label">
+                                Managing flare ups
+
+                                <logic:present name="managingFlareUpsLink">
+                                    <a href="<bean:write name="managingFlareUpsLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="managingFlareUpsScore" type="range" min="0" max="10"
@@ -139,7 +194,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Stopping smoking</label>
+                            <label class="control-label">
+                                Stopping smoking
+
+                                <logic:present name="stoppingSmokingLink">
+                                    <a href="<bean:write name="stoppingSmokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="stoppingSmokingScore" type="range" min="0" max="10"
@@ -149,7 +210,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Sleeping</label>
+                            <label class="control-label">
+                                Sleeping
+
+                                <logic:present name="sleepingLink">
+                                    <a href="<bean:write name="sleepingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="sleepingScore" type="range" min="0" max="10"
@@ -159,7 +226,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Sexual relationships</label>
+                            <label class="control-label">
+                                Sexual relationships
+
+                                <logic:present name="sexualRelationshipsLink">
+                                    <a href="<bean:write name="sexualRelationshipsLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="sexualRelationshipsScore" type="range" min="0" max="10"
@@ -169,7 +242,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Fertility / Pregnancy</label>
+                            <label class="control-label">
+                                Fertility / Pregnancy
+
+                                <logic:present name="fertilityPregnancyLink">
+                                    <a href="<bean:write name="fertilityPregnancyLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="fertilityPregnancyScore" type="range" min="0" max="10"
@@ -179,7 +258,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Learning about my condition</label>
+                            <label class="control-label">
+                                Learning about my condition
+
+                                <logic:present name="learningAboutMyConditionLink">
+                                    <a href="<bean:write name="learningAboutMyConditionLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="learningAboutMyConditionScore" type="range" min="0" max="10"
@@ -189,7 +274,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Eating a healthy diet</label>
+                            <label class="control-label">
+                                Eating a healthy diet
+
+                                <logic:present name="eatingAHealthyDietLink">
+                                    <a href="<bean:write name="eatingAHealthyDietLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="eatingAHealthyDietScore" type="range" min="0" max="10"
@@ -199,7 +290,13 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Travelling</label>
+                            <label class="control-label">
+                                Travelling
+
+                                <logic:present name="travellingLink">
+                                    <a href="<bean:write name="travellingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                                </logic:present>
+                            </label>
                             <div class="controls sliderContainer">
                                 <i class="smile happy">&#9786;</i>
                                 <input name="travellingScore" type="range" min="0" max="10"
@@ -217,6 +314,13 @@
                             Use the box below to add further topic areas that you would like to explore.
                         </label>
                         <html:textarea property="otherAreasToDiscuss" rows="5" styleClass="span6"/>
+                        <ul>
+                            <li>
+                                If you would like, you could create a personal care plan. To learn more about care plans and for further
+                                tips on getting more from your appointments click here.
+                                <a target="_blank" href="http://www.myibdportal.org/welcome-to-my-ibd-portal/personal-care-plans">Click here </a>
+                            </li>
+                        </ul>
                         <hr/>
                             <h2>During and after your appointment</h2>
 
@@ -303,13 +407,5 @@
                 </div>
             </fieldset>
         </html:form>
-
-        <ul>
-            <li>
-                If you would like, you could create a personal care plan. To learn more about care plans and for further
-                tips on getting more from your appointments click here.
-                <a href="http://www.myibdportal.org/personal-care-plans">click here link</a>
-            </li>
-        </ul>
     </div>
 </div>

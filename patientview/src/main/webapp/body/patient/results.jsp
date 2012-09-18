@@ -7,7 +7,7 @@
 <div class="page-header">
     <h1>Results</h1>
 </div>
-<ul>
+<ul class="padded-list">
     <li>
         This section helps you monitor your latest blood and stool tests, direct from the hospital system.
     </li>

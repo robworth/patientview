@@ -53,6 +53,25 @@ public class Ibd {
     public static final String SURGERY_LINK_PARAM = "surgeryLink";
     public static final String VACCINATION_RECORD_LINK_PARAM = "vaccinationRecordLink";
 
+    // care plan link params
+    public static final String CAREPLAN_LINKS_TYPE = "careplanLinks";
+    public static final String OVERALL_MY_CONDITION_LINK_PARAM = "overallMyConditionLink";
+    public static final String TIREDNESS_FATIGUE_LINK_PARAM = "tirednessFatigueLink";
+    public static final String MANAGING_PAIN_LINK_PARAM = "managingPainLink";
+    public static final String STRESS_AND_WORRY_LINK_PARAM = "stressAndWorryLink";
+    public static final String SUPPORT_FROM_FAMILY_AND_FRIENDS_LINK_PARAM = "supportFromFamilyAndFriendsLink";
+    public static final String MANAGING_MY_SOCIAL_LIFE_HOBBIES_LINK_PARAM = "managingMySocialLifeHobbiesLink";
+    public static final String MANAGING_WORK_STUDIES_LINK_PARAM = "managingWorkStudiesLink";
+    public static final String TAKING_MY_MEDICINES_REGULARLY_LINK_PARAM = "takingMyMedicinesRegularlyLink";
+    public static final String MANAGING_FLARE_UPS_LINK_PARAM = "managingFlareUpsLink";
+    public static final String STOPPING_SMOKING__LINK_PARAM = "stoppingSmokingLink";
+    public static final String SLEEPING_LINK_PARAM = "sleepingLink";
+    public static final String SEXUAL_RELATIONSHIPS_LINK_PARAM = "sexualRelationshipsLink";
+    public static final String FERTILITY_PREGNANCY_LINK_PARAM = "fertilityPregnancyLink";
+    public static final String LEARNING_ABOUT_MY_CONDITION_LINK_PARAM = "learningAboutMyConditionLink";
+    public static final String EATING_A_HEALTHY_DIET_LINK_PARAM = "eatingAHealthyDietLink";
+    public static final String TRAVELLING_LINK_PARAM = "travellingLink";
+
     // ibd form params
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
     public static final String DISEASE_EXTENT_ID_PARAM = "diseaseExtentId";

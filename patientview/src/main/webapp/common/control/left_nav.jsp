@@ -5,6 +5,7 @@
         <ul class="nav nav-list">
         <logic:present tenancy="ibd">
             <li><html:link action="/control/myibd-links-display">My IBD Links</html:link></li>
+            <li><html:link action="/control/careplan-links-display">Care plan Links</html:link></li>
             <li class="divider"></li>
         </logic:present>
         <logic:present role="superadmin">

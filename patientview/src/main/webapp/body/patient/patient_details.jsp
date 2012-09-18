@@ -17,11 +17,11 @@
              If there are any errors please contact us by <html:link action="/patient/ibd-contact">clicking here</html:link>.
          </li>
          <li>
-             To complete a full summary for your own personal record, please enter any other health conditions and your
-             email address in the boxes below.
+             To complete a full summary - please enter any other health conditions and your email address in the box
+             below. This is for your own personal record and does not become part of the hospital record.
          </li>
          <li>
-            If your details are correct please click on the tabs above to navigate to areas of interest to you.
+            <strong>If your details are correct please click on the tabs above to navigate to areas of interest to you.</strong>
          </li>
      </ul>
      <%

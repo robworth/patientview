@@ -9,7 +9,7 @@
             <h1>Diagnostics</h1>
         </div>
 
-        <ul>
+        <ul class="padded-list">
             <li>
                 The Diagnostics section lists your previous imaging and endoscopy tests direct from the hospital record.
             </li>
