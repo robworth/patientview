@@ -330,6 +330,8 @@ h1, h2{
 
 .sliderGroup .control-label{
     font-weight: normal;
+    height: 35px;
+    margin-bottom: 0;
     text-align: left;
     width: 170px;
 }
