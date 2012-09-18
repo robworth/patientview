@@ -1,14 +1,13 @@
 package com.worthsoln.test.repository.ibd;
 
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
+import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.repository.ibd.MyIbdSeverityLevelDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
 
 import javax.inject.Inject;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,7 +31,8 @@ public class MyIbdSeverityLevelDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new MyIbdSeverityLevel", checkMyIbdSeverityLevel.getId() > 0);
         assertEquals("Nhs no not stored", checkMyIbdSeverityLevel.getNhsno(), myIbdSeverityLevel.getNhsno());
         assertEquals("Severity not stored", checkMyIbdSeverityLevel.getSeverity(), myIbdSeverityLevel.getSeverity());
-        assertEquals("Level not stored", checkMyIbdSeverityLevel.getLevel(), myIbdSeverityLevel.getLevel());
+        assertEquals("Level not stored", checkMyIbdSeverityLevel.getLevel(Diagnosis.ULCERATIVE_COLITIS),
+                myIbdSeverityLevel.getLevel(Diagnosis.ULCERATIVE_COLITIS));
     }
 
     @Test
@@ -70,7 +70,8 @@ public class MyIbdSeverityLevelDaoTest extends BaseDaoTest {
         MyIbdSeverityLevel checkMyIbdSeverityLevel = myIbdSeverityLevelDao.get(myIbdSeverityLevel.getNhsno(),
                 myIbdSeverityLevel.getSeverity());
         assertNotNull(checkMyIbdSeverityLevel);
-        checkMyIbdSeverityLevel.setLevel(checkMyIbdSeverityLevel.getSeverity().getDefaultLevel());
+        checkMyIbdSeverityLevel.setLevel(checkMyIbdSeverityLevel.getSeverity().getDefaultLevel(
+                Diagnosis.ULCERATIVE_COLITIS));
         myIbdSeverityLevelDao.save(checkMyIbdSeverityLevel);
 
         // now try pull back one time it should be null

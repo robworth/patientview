@@ -1,6 +1,7 @@
 package com.worthsoln.ibd.action;
 
 import com.worthsoln.ibd.Ibd;
+import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.enums.BodyPartAffected;
 import com.worthsoln.ibd.model.enums.Complication;
@@ -243,9 +244,12 @@ public class BaseAction extends ActionSupport {
             MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
             MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
 
-            if (lastSymptom.getScore() >= myIbdSevereLevel.getLevel()) {
+            MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+            Diagnosis diagnosis = myIbd.getDiagnosis();
+
+            if (lastSymptom.getScore() >= myIbdSevereLevel.getLevel(diagnosis)) {
                 request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdSevereLevel);
-            } else if (lastSymptom.getScore() <= myIbdMildLevel.getLevel()) {
+            } else if (lastSymptom.getScore() <= myIbdMildLevel.getLevel(diagnosis)) {
                 request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdMildLevel);
             } else {
                 request.setAttribute(Ibd.MY_IBD_SEVERITY_LEVEL_PARAM, myIbdModerateLevel);
@@ -287,11 +291,17 @@ public class BaseAction extends ActionSupport {
             symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
         }
 
+        MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+        Diagnosis diagnosis = myIbd.getDiagnosis();
+
         // need to check if they have any custom level settings
         String nhsNo = getNhsNoForUser(user);
-        symptomsGraphData.setSevereLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE).getLevel());
-        symptomsGraphData.setModerateLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE).getLevel());
-        symptomsGraphData.setMildLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD).getLevel());
+        symptomsGraphData.setSevereLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE).getLevel(
+                diagnosis));
+        symptomsGraphData.setModerateLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE).getLevel(
+                diagnosis));
+        symptomsGraphData.setMildLevel(getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD).getLevel(
+                diagnosis));
 
         // need to re add graph data to the page
         request.setAttribute(Ibd.GRAPH_DATA_PARAM, symptomsGraphData);

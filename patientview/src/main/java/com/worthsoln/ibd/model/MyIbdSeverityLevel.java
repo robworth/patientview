@@ -1,5 +1,6 @@
 package com.worthsoln.ibd.model;
 
+import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.patientview.model.BaseModel;
 
@@ -66,9 +67,9 @@ public class MyIbdSeverityLevel extends BaseModel {
         this.severity = Severity.getSeverity(id);
     }
 
-    public Integer getLevel() {
+    public Integer getLevel(Diagnosis diagnosis) {
         if (level == null || level <= 0) {
-            return severity.getDefaultLevel();
+            return severity.getDefaultLevel(diagnosis);
         }
 
         return level;
