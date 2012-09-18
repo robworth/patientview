@@ -4,7 +4,9 @@ import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -12,8 +14,30 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 public class CarePlanEditAction extends BaseAction {
+
+    private static final HashMap<String, String> CAREPLAN_QUESTIONS_MAP = new HashMap<String, String>() {
+        {
+            put("Overall my condition", Ibd.OVERALL_MY_CONDITION_LINK_PARAM);
+            put("Tiredness /Fatigue", Ibd.TIREDNESS_FATIGUE_LINK_PARAM);
+            put("Managing Pain", Ibd.MANAGING_PAIN_LINK_PARAM);
+            put("Stress and worry", Ibd.STRESS_AND_WORRY_LINK_PARAM);
+            put("Support from family and friends", Ibd.SUPPORT_FROM_FAMILY_AND_FRIENDS_LINK_PARAM);
+            put("Managing my social life / hobbies", Ibd.MANAGING_MY_SOCIAL_LIFE_HOBBIES_LINK_PARAM);
+            put("Managing work / studies", Ibd.MANAGING_WORK_STUDIES_LINK_PARAM);
+            put("Taking my medicines regularly", Ibd.TAKING_MY_MEDICINES_REGULARLY_LINK_PARAM);
+            put("Managing flare ups", Ibd.MANAGING_FLARE_UPS_LINK_PARAM);
+            put("Stopping smoking", Ibd.STOPPING_SMOKING__LINK_PARAM);
+            put("Sleeping", Ibd.SLEEPING_LINK_PARAM);
+            put("Sexual relationships", Ibd.SEXUAL_RELATIONSHIPS_LINK_PARAM);
+            put("Fertility / Pregnancy", Ibd.FERTILITY_PREGNANCY_LINK_PARAM);
+            put("Learning about my condition", Ibd.LEARNING_ABOUT_MY_CONDITION_LINK_PARAM);
+            put("Eating a healthy diet", Ibd.EATING_A_HEALTHY_DIET_LINK_PARAM);
+            put("Travelling", Ibd.TRAVELLING_LINK_PARAM);
+        }
+    };
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                          HttpServletResponse response) throws Exception {
@@ -56,6 +80,21 @@ public class CarePlanEditAction extends BaseAction {
         request.getSession().setAttribute(IMPORTANCE_LIST_PROPERTY, getImportanceList());
         request.getSession().setAttribute(CONFIDENCE_LIST_PROPERTY, getConfidenceList());
 
+        // add any managed links in for this page
+        addCareplanLinks(request);
+
         return mapping.findForward(SUCCESS);
+    }
+
+    private void addCareplanLinks(HttpServletRequest request) {
+        for (EdtaCode edtaCode : LegacySpringUtils.getEdtaCodeManager().get(Ibd.CAREPLAN_LINKS_TYPE)) {
+            if (CAREPLAN_QUESTIONS_MAP.containsKey(edtaCode.getEdtaCode())) {
+                String link = edtaCode.getMedicalLink01();
+
+                if (link != null && link.length() > 0) {
+                    request.setAttribute(CAREPLAN_QUESTIONS_MAP.get(edtaCode.getEdtaCode()), link);
+                }
+            }
+        }
     }
 }

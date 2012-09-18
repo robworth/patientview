@@ -11,7 +11,7 @@
 
     <html:errors/>
 
-    <html:form action="/control/myibd-links-add-save">
+    <html:form action="/control/careplan-links-add-save">
         <html:hidden property="linkType" name="codeType" />
         <table cellpadding="3" >
             <tr>
@@ -34,14 +34,9 @@
                 <td align="center"><b>Text Description</b></td>
             </tr>
             <tr>
-                <td><b>Chrons Link</b></td>
+                <td><b>Help Link</b></td>
                 <td><html:text property="medicalLink01" /></td>
                 <td><html:text property="medicalLinkText01" /></td>
-            </tr>
-            <tr>
-                <td><b>Colitis Link</b></td>
-                <td><html:text property="medicalLink02" /></td>
-                <td><html:text property="medicalLinkText02" /></td>
             </tr>
             <tr>
                 <td><html:submit value="Add" styleClass="formbutton" /></td>
