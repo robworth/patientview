@@ -2,7 +2,9 @@ package com.worthsoln.ibd.action.admin;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
+import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
+import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.Severity;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -46,17 +48,22 @@ public class IbdUserEditAction extends BaseAction {
             return mapping.findForward(SUCCESS);
         }
 
+        MyIbd myIbd = getIbdManager().getMyIbd(nhsNo);
+        Diagnosis diagnosis = myIbd.getDiagnosis();
+
         MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
-        dynaForm.set(Ibd.SEVERE_LEVEL_PARAM, myIbdSevereLevel.getLevel());
+        dynaForm.set(Ibd.SEVERE_LEVEL_PARAM, myIbdSevereLevel.getLevel(diagnosis));
         dynaForm.set(Ibd.SEVERE_TREATMENT_PARAM, myIbdSevereLevel.getTreatment());
 
         MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
-        dynaForm.set(Ibd.MODERATE_LEVEL_PARAM, myIbdModerateLevel.getLevel());
+        dynaForm.set(Ibd.MODERATE_LEVEL_PARAM, myIbdModerateLevel.getLevel(diagnosis));
         dynaForm.set(Ibd.MODERATE_TREATMENT_PARAM, myIbdModerateLevel.getTreatment());
 
         MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
-        dynaForm.set(Ibd.MILD_LEVEL_PARAM, myIbdMildLevel.getLevel());
+        dynaForm.set(Ibd.MILD_LEVEL_PARAM, myIbdMildLevel.getLevel(diagnosis));
         dynaForm.set(Ibd.MILD_TREATMENT_PARAM, myIbdMildLevel.getTreatment());
+
+        request.setAttribute(Ibd.DIAGNOSIS_ID_PARAM, myIbd.getDiagnosis().getId());
 
         return mapping.findForward(INPUT);
     }

@@ -1,5 +1,6 @@
-<%@ page import="com.worthsoln.ibd.Ibd" %>
 <%@ page import="com.worthsoln.ibd.model.enums.Severity" %>
+<%@ page import="com.worthsoln.ibd.model.enums.Diagnosis" %>
+<%@ page import="com.worthsoln.ibd.Ibd" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -8,21 +9,41 @@
         <div class="page-header">
             <h1>IBD Patient Settings</h1>
         </div>
-        <p>
-            <strong>Defaults:</strong>
-            <br />
-            Severe - <%=Severity.SEVERE.getDefaultLevel()%>, Moderate - <%=Severity.MODERATE.getDefaultLevel()%>, Mild - <%=Severity.MILD.getDefaultLevel()%>
-        </p>
+
+        <%
+            if (request.getAttribute(Ibd.DIAGNOSIS_ID_PARAM) != null &&
+                    request.getAttribute(Ibd.DIAGNOSIS_ID_PARAM).equals(Diagnosis.CROHNS.getId())) {
+        %>
+            <p>
+                <strong>Defaults:</strong>
+                <br/>
+                Severe - <%=Severity.SEVERE.getCrohnsDefaultLevel()%>, Moderate
+                - <%=Severity.MODERATE.getCrohnsDefaultLevel()%>, Mild - <%=Severity.MILD.getCrohnsDefaultLevel()%>
+            </p>
+        <%
+            } else {
+        %>
+            <p>
+                <strong>Defaults:</strong>
+                <br/>
+                Severe - <%=Severity.SEVERE.getColitisDefaultLevel()%>, Moderate
+                - <%=Severity.MODERATE.getColitisDefaultLevel()%>, Mild - <%=Severity.MILD.getColitisDefaultLevel()%>
+            </p>
+        <%
+            }
+        %>
+
         <p>
             <em>Leave values blank to use defaults</em>
-            <br />
+            <br/>
         </p>
+
         <html:form action="/control/ibduser-edit">
             <html:errors/>
 
-            <html:hidden property="submit" value="true" />
+            <html:hidden property="submit" value="true"/>
 
-            <html:hidden property="nhsNo" />
+            <html:hidden property="nhsNo"/>
 
             <div class="control-group">
                 <label class="control-label">Severe level:</label>

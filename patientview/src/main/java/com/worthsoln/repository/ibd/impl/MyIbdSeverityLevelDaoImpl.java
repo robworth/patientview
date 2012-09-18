@@ -1,12 +1,16 @@
 package com.worthsoln.repository.ibd.impl;
 
+import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel_;
+import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.repository.AbstractHibernateDAO;
+import com.worthsoln.repository.ibd.MyIbdDao;
 import com.worthsoln.repository.ibd.MyIbdSeverityLevelDao;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -17,6 +21,9 @@ import java.util.List;
 @Repository(value = "myIbdSeverityLevelDao")
 public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverityLevel>
         implements MyIbdSeverityLevelDao {
+
+    @Inject
+    MyIbdDao myIbdDao;
 
     @Override
     public MyIbdSeverityLevel get(String nhsno, Severity severity) {
@@ -35,7 +42,10 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
         } catch (Exception e) {
-            return new MyIbdSeverityLevel(nhsno, severity, severity.getDefaultLevel(), null);
+            MyIbd myIbd = myIbdDao.get(nhsno);
+            Diagnosis diagnosis = myIbd.getDiagnosis();
+
+            return new MyIbdSeverityLevel(nhsno, severity, severity.getDefaultLevel(diagnosis), null);
         }
     }
 
@@ -57,7 +67,10 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
         if (existingMyIbdSeverityLevel.hasValidId()) {
             if (canSave(myIbdSeverityLevel)) {
                 if (levelChanged(myIbdSeverityLevel)) {
-                    existingMyIbdSeverityLevel.setLevel(myIbdSeverityLevel.getLevel());
+                    MyIbd myIbd = myIbdDao.get(myIbdSeverityLevel.getNhsno());
+                    Diagnosis diagnosis = myIbd.getDiagnosis();
+
+                    existingMyIbdSeverityLevel.setLevel(myIbdSeverityLevel.getLevel(diagnosis));
                 }
 
                 super.save(existingMyIbdSeverityLevel);
@@ -94,7 +107,11 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
      * @return boolean
      */
     private boolean levelChanged(MyIbdSeverityLevel myIbdSeverityLevel) {
-        return (myIbdSeverityLevel.getLevel() > 0
-                && myIbdSeverityLevel.getLevel() != myIbdSeverityLevel.getSeverity().getDefaultLevel());
+        MyIbd myIbd = myIbdDao.get(myIbdSeverityLevel.getNhsno());
+        Diagnosis diagnosis = myIbd.getDiagnosis();
+
+        return (myIbdSeverityLevel.getLevel(diagnosis) > 0
+                && myIbdSeverityLevel.getLevel(diagnosis) != myIbdSeverityLevel.getSeverity().getDefaultLevel(
+                diagnosis));
     }
 }

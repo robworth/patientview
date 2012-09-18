@@ -323,14 +323,15 @@ h1, h2{
 
 .sliderGroup .sliderHeading .topValue{
     float: left;
-    padding-left: 9px;
     font-weight: bold;
-    text-align: center;
-    width: 150px;
+    text-align: right;
+    width: 130px;
 }
 
 .sliderGroup .control-label{
     font-weight: normal;
+    height: 35px;
+    margin-bottom: 0;
     text-align: left;
     width: 170px;
 }
