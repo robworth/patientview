@@ -124,7 +124,13 @@
 
                 <logic:present name="furtherComplicationList" scope="session">
                     <div class="control-group">
-                        <label class="control-label">Do I have any further complications?</label>
+                        <label class="control-label">
+                            Do I have any further complications?
+
+                            <logic:present name="bodyPartAffectedLink">
+                                <a href="<bean:write name="bodyPartAffectedLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                            </logic:present>
+                        </label>
 
                         <div class="controls">
                             <html:select property="complicationId">

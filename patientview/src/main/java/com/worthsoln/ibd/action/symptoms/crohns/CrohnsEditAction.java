@@ -53,6 +53,9 @@ public class CrohnsEditAction extends BaseAction {
         request.getSession().setAttribute(MASS_IN_TUMMY_LIST_PROPERTY, getMassInTummy());
         request.getSession().setAttribute(OPEN_BOWEL_LIST_PROPERTY, getOpenBowelList());
 
+        // add any managed links in for this page
+        addMyIbdLinks(getIbdManager().getMyIbd(UserUtils.retrieveUser(request)), request);
+
         return mapping.findForward(SUCCESS);
     }
 }

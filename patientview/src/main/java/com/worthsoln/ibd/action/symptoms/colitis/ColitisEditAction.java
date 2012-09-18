@@ -56,6 +56,9 @@ public class ColitisEditAction extends BaseAction {
         request.getSession().setAttribute(FEELING_LIST_PROPERTY, getFeelingList());
         request.getSession().setAttribute(FURTHER_COMPLICATION_LIST_PROPERTY, getColitisComplicationList());
 
+        // add any managed links in for this page
+        addMyIbdLinks(getIbdManager().getMyIbd(UserUtils.retrieveUser(request)), request);
+
         return mapping.findForward(SUCCESS);
     }
 }

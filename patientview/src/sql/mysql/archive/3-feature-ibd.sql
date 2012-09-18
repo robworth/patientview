@@ -186,3 +186,20 @@ insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, 
 insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Smoking History','myIbdLinks','Smoking History','','','2');
 insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Surgery History','myIbdLinks','Surgery History','','','2');
 insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `medicalLink02`, `tenancy_id`) values('Vaccination History','myIbdLinks','Vaccination History','','','2');
+
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Overall my condition','careplanLinks','Overall my condition','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Tiredness /Fatigue','careplanLinks','Tiredness /Fatigue','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Managing Pain','careplanLinks','Managing Pain','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Stress and worry','careplanLinks','Stress and worry','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Support from family and friends','careplanLinks','Support from family and friends','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Managing my social life / hobbies','careplanLinks','Managing my social life / hobbies','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Managing work / studies','careplanLinks','Managing work / studies','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Taking my medicines regularly','careplanLinks','Taking my medicines regularly','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Managing flare ups','careplanLinks','Managing flare ups','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Stopping smoking','careplanLinks','Stopping smoking','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Sleeping','careplanLinks','Sleeping','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Sexual relationships','careplanLinks','Sexual relationships','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Fertility / Pregnancy','careplanLinks','Fertility / Pregnancy','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Learning about my condition','careplanLinks','Learning about my condition','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Eating a healthy diet','careplanLinks','Eating a healthy diet','','2');
+insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Travelling','careplanLinks','Travelling','','2');

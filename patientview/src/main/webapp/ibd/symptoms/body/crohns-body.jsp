@@ -94,7 +94,13 @@
 
                 <logic:present name="crohnsComplicationList" scope="session">
                     <div class="control-group">
-                        <label class="control-label">Do you have any complications from your IBD?</label>
+                        <label class="control-label">
+                            Do you have any complications from your IBD?
+
+                            <logic:present name="complicationLink">
+                                <a href="<bean:write name="complicationLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+                            </logic:present>
+                        </label>
 
                         <div class="controls">
                             <html:select property="complicationId">
