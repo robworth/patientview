@@ -30,6 +30,19 @@
                             <li>
                                 There are information links to learn more about these areas in detail.
                             </li>
+                            <li>
+                                Whether you are newly diagnosed or have been living with IBD for a number of years, the
+                                challenges of managing a chronic condition can change quickly.
+                            </li>
+                            <li>
+                                Use this section to help think about how well you are currently managing your condition
+                                and to highlight areas where you need more support.
+                            </li>
+                            <li>
+                                My IBD Tracker&copy; shows the common topics that can cause difficulties in living with
+                                IBD. Move the tracker to show how much each area is a concern and where you may need
+                                more help at your next appointment. For further resources click on the <i class="icon-info-sign"></i> links.
+                            </li>
                         </ul>
 
                     </div>
