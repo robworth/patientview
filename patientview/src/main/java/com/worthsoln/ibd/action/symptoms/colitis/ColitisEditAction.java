@@ -36,7 +36,7 @@ public class ColitisEditAction extends BaseAction {
         addSymptomsGraphData(user, Ibd.COLITIS_GRAPH_TYPE, fromDate, toDate, request);
 
         if (request.getParameter(Ibd.SHOW_ADVICE_PARAM) != null) {
-            addLastSymptomAdvice(user, Ibd.CROHNS_GRAPH_TYPE, request);
+            addLastSymptomAdvice(user, Ibd.COLITIS_GRAPH_TYPE, request);
         }
 
         // set the form to have empty values
