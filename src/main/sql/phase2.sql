@@ -53,9 +53,6 @@ ALTER TABLE tbl_demographics ADD generic BOOLEAN;
 ALTER TABLE tbl_demographics ADD CONSTRAINT fk_RDG FOREIGN KEY (RDG) REFERENCES unit (unitcode);
 ALTER TABLE tbl_demographics ADD CONSTRAINT fk_genericDiagnosis FOREIGN KEY (genericDiagnosis) REFERENCES rdr_prd_code (ERA_EDTA_PRD_code);
 
-ALTER TABLE unit ADD sourceType VARCHAR(50);
-ALTER TABLE unit ADD shortName VARCHAR(50);
-
 CREATE TABLE `rdc_genetic_test` (
   `id` bigint(20) NOT NULL auto_increment,
   `radar_no` bigint(20) NOT NULL,

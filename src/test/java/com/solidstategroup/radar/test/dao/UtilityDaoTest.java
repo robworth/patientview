@@ -29,11 +29,11 @@ public class UtilityDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetCentre() {
-        Centre centre = utilityDao.getCentre(3L);
+        Centre centre = utilityDao.getCentre(4L);
         assertNotNull("Centre is null", centre);
-        assertEquals("Centre ID is wrong", new Long(3), centre.getId());
-        assertEquals("Name is wrong", "Bristol Royal Hospital for Children", centre.getName());
-        assertEquals("Abbreviation is wrong", "Bristol", centre.getAbbreviation());
+        assertEquals("Centre ID is wrong", new Long(4), centre.getId());
+        assertEquals("Name is wrong", "Cardiff,  Children's Hospital for Wales", centre.getName());
+        assertEquals("Abbreviation is wrong", "Cardiff", centre.getAbbreviation());
 
         // Check country
         assertNotNull("Country is null", centre.getCountry());
@@ -92,7 +92,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         consultant.setForename("test_forename");
 
         Centre centre = new Centre();
-        centre.setId((long) 10);
+        centre.setId((long) 2);
         consultant.setCentre(centre);
 
         utilityDao.saveConsultant(consultant);
@@ -136,7 +136,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertEquals("Surname is wrong", "ARNEIL", consultant.getSurname());
         assertEquals("Forename is wrong", "Professor Gavin", consultant.getForename());
         assertNotNull("Centre is null", consultant.getCentre());
-        assertEquals("Centre is wrong", "Glasgow", consultant.getCentre().getAbbreviation());
+        assertEquals("Centre is wrong", "group1", consultant.getCentre().getAbbreviation());
     }
 
     @Test

@@ -130,7 +130,7 @@ public class UserDaoTest extends BaseDaoTest {
         professionalUser.setPhone("test_phone");
 
         Centre centre = new Centre();
-        centre.setId((long) 10);
+        centre.setId((long) 1);
         professionalUser.setCentre(centre);
 
         userDao.saveProfessionalUser(professionalUser);
@@ -201,7 +201,7 @@ public class UserDaoTest extends BaseDaoTest {
     @Test
     public void testSearchProfessionalUsers() {
         ProfessionalUserFilter userFilter = new ProfessionalUserFilter();
-        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME.getDatabaseFieldName(), "fiona");
+        userFilter.addSearchCriteria(ProfessionalUserFilter.UserField.FORENAME.getDatabaseFieldName(), "Ian");
         List<ProfessionalUser> professionalUsers = userDao.getProfessionalUsers(userFilter, -1, -1);
         assertNotNull(professionalUsers);
         assertTrue(professionalUsers.size() > 0);
@@ -209,8 +209,8 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Test
     public void testDeleteProfessionalUser() throws Exception {
-        userDao.deleteProfessionalUser(userDao.getProfessionalUser(16L));
-        ProfessionalUser professionalUser = userDao.getProfessionalUser(16L);
+        userDao.deleteProfessionalUser(userDao.getProfessionalUser(37L));
+        ProfessionalUser professionalUser = userDao.getProfessionalUser(37L);
         assertNull("User was found after being deleted", professionalUser);
     }
     
