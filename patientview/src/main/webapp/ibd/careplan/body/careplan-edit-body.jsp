@@ -20,21 +20,6 @@
                                 challenges of managing a chronic condition can change quickly.
                             </li>
                             <li>
-                                Below is a list of common areas, where people feel they may need more help or
-                                information.
-                            </li>
-                            <li>
-                                Please tick the boxes to highlight the areas you would like to discuss at your next
-                                appointment.
-                            </li>
-                            <li>
-                                There are information links to learn more about these areas in detail.
-                            </li>
-                            <li>
-                                Whether you are newly diagnosed or have been living with IBD for a number of years, the
-                                challenges of managing a chronic condition can change quickly.
-                            </li>
-                            <li>
                                 Use this section to help think about how well you are currently managing your condition
                                 and to highlight areas where you need more support.
                             </li>
