@@ -64,7 +64,7 @@
                 <a target="_blank" href="http://www.nhs.uk/ipg/Pages/IPStart.aspx" class="readMoreParagraph">&raquo; Information Prescription Service</a>
             </li>
             <li>
-                <a target="_blank" href="http://myibdportal.org//about-the-project" class="readMoreParagraph">&raquo; My IBD Portal Information Site</a>
+                <a target="_blank" href="http://myibdportal.org" class="readMoreParagraph">&raquo; My IBD Portal Information Site</a>
             </li>
         </ul>
     </div>

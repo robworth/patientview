@@ -315,8 +315,8 @@
                         <ul>
                             <li>
                                 If you would like, you could create a personal care plan. To learn more about care plans and for further
-                                tips on getting more from your appointments click here.
-                                <a target="_blank" href="http://www.myibdportal.org/welcome-to-my-ibd-portal/personal-care-plans">Click here </a>
+                                tips on getting more from your appointments
+                                <a target="_blank" href="http://www.myibdportal.org/welcome-to-my-ibd-portal/personal-care-plans">click here</a>.
                             </li>
                         </ul>
                         <hr/>
