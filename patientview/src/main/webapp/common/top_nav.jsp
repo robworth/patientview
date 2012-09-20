@@ -1,5 +1,6 @@
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ page import="com.worthsoln.ibd.model.enums.Diagnosis" %>
+<%@ page import="com.worthsoln.patientview.user.UserUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -28,6 +29,11 @@
         String symptomsUrl = null;
 
         Diagnosis loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getLoggedInUserDiagnosis();
+
+        // check, we could be viewing as a superadmin at a patient's account
+        if (loggedInUserDiagnosis == null) {
+            loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(UserUtils.retrieveUser(request));
+        }
 
         if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
                 Diagnosis.ULCERATIVE_COLITIS == loggedInUserDiagnosis) {
