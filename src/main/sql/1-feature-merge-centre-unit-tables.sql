@@ -31,6 +31,7 @@ update tbl_centres set CCOUNTRY = 1 where cid = 16;
 update tbl_centres set CABBREV = "UNKNOWN" where cid = 16;
 update tbl_centres set CCOUNTRY = 2 where cid = 99;
 
+update unit set id = 5, country =1 where unitcode = "SGC02";
 update unit set id = 17, country =1 where unitcode = "2020";
 update unit set id = 18, country =1 where unitcode = "7021";
 update unit set id = 19, country =1 where unitcode = "45020";
@@ -103,7 +104,7 @@ update unit set id = 85, country =1 where unitcode = "SRNS";
 update unit set id = 86, country =1 where unitcode = "STC01";
 update unit set id = 87, country =1 where unitcode = "SYC01";
 
-delete from unit where unitcode = "SGC02";  -- this already exists in tbl_centres
+delete from tbl_centres where unitcode = "SGC02";
 
 insert into unit (unitcode, id, name, shortname, country, sourcetype)
 select unitcode, cID, cName, cAbbrev, cCountry, "renalunit"
