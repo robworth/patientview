@@ -44,7 +44,7 @@
             <id>staging</id>
             <properties>
                 <env>staging</env>
-                <tomcatmanagerurl>http://staging.solidstategroup.com:8080/manager/html</tomcatmanagerurl>
+                <tomcatmanagerurl>http://staging2.solidstategroup.com:10005/manager/html</tomcatmanagerurl>
             </properties>
         </profile>
         <profile>
