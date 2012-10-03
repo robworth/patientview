@@ -32,7 +32,7 @@
             helpline on 0161 20 60423.
         </li>
         <li>
-             For more information about flare-ups <a href="http://www.myibdportal.org/about-flare-ups">click here.</a>
+             For more information about flare-ups <a target="_blank" href="http://www.myibdportal.org/about-flare-ups">click here.</a>
         </li>
     </ul>
     <hr/>
