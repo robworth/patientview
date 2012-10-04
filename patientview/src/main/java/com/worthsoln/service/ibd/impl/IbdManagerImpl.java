@@ -1,7 +1,10 @@
 package com.worthsoln.service.ibd.impl;
 
+import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
+import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
@@ -14,9 +17,11 @@ import com.worthsoln.ibd.model.medication.MedicationType;
 import com.worthsoln.ibd.model.medication.MyMedication;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.repository.ibd.AllergyDao;
 import com.worthsoln.repository.ibd.CarePlanDao;
 import com.worthsoln.repository.ibd.ColitisSymptomsDao;
 import com.worthsoln.repository.ibd.CrohnsSymptomsDao;
+import com.worthsoln.repository.ibd.IbdDiagnosticDao;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyIbdDao;
@@ -24,6 +29,7 @@ import com.worthsoln.repository.ibd.MyIbdSeverityLevelDao;
 import com.worthsoln.repository.ibd.MyMedicationDao;
 import com.worthsoln.repository.ibd.NutritionDao;
 import com.worthsoln.repository.ibd.MedicationDoseDao;
+import com.worthsoln.repository.ibd.ProcedureDao;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -69,6 +75,15 @@ public class IbdManagerImpl implements IbdManager {
     @Inject
     private ColitisSymptomsDao colitisSymptomsDao;
 
+    @Inject
+    private IbdDiagnosticDao ibdDiagnosticDao;
+
+    @Inject
+    private ProcedureDao procedureDao;
+
+    @Inject
+    private AllergyDao allergyDao;
+
     @Override
     public MyIbd getMyIbd(User user) {
         String nhsNo = getNhsNumber(user);
@@ -92,7 +107,7 @@ public class IbdManagerImpl implements IbdManager {
 
     @Override
     public MyIbdSeverityLevel getMyIbdSeverityLevel(String nhsno, Severity severity) {
-        return myIbdSeverityLevelDao.get(nhsno,  severity);
+        return myIbdSeverityLevelDao.get(nhsno, severity);
     }
 
     @Override
@@ -269,15 +284,15 @@ public class IbdManagerImpl implements IbdManager {
         String nhsNo = getNhsNumber(user);
 
         if (nhsNo != null) {
-            return getAllCrohns(nhsNo, fromDate,  toDate);
+            return getAllCrohns(nhsNo, fromDate, toDate);
         }
 
         return null;
     }
 
     public List<CrohnsSymptoms> getAllCrohns(String nhsno, Date fromDate, Date toDate) {
-            return crohnsSymptomsDao.getAllCrohns(nhsno, fromDate,  toDate);
-        }
+        return crohnsSymptomsDao.getAllCrohns(nhsno, fromDate, toDate);
+    }
 
     @Override
     public void saveColitis(ColitisSymptoms colitisSymptoms) {
@@ -338,4 +353,33 @@ public class IbdManagerImpl implements IbdManager {
         }
     }
 
+    @Override
+    public void saveDiagnostic(IbdDiagnostic ibdDiagnostic) {
+        ibdDiagnosticDao.save(ibdDiagnostic);
+    }
+
+    @Override
+    public IbdDiagnostic getIbdDiagnostic(String nhsno) {
+        return ibdDiagnosticDao.getDiagnostic(nhsno);
+    }
+
+    @Override
+    public void saveProcedure(Procedure procedure) {
+        procedureDao.save(procedure);
+    }
+
+    @Override
+    public Procedure getProcedure(String nhsno) {
+        return procedureDao.getProcedure(nhsno);
+    }
+
+    @Override
+    public void saveAllergy(Allergy allergy) {
+        allergyDao.save(allergy);
+    }
+
+    @Override
+    public Allergy getAllergy(String nhsno) {
+        return allergyDao.getAllergy(nhsno);
+    }
 }

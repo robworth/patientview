@@ -38,6 +38,16 @@ public enum Complication {
         return NONE;
     }
 
+    public static Complication getComplication(String name) {
+            for (Complication complication : Complication.values()) {
+                if (complication.getName() == name) {
+                    return complication;
+                }
+            }
+
+            return NONE;
+        }
+
     public static List<Complication> getAsList() {
         return Arrays.asList(Complication.values());
     }

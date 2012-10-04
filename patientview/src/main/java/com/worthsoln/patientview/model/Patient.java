@@ -1,10 +1,14 @@
 package com.worthsoln.patientview.model;
 
+import com.worthsoln.ibd.Ibd;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 public class Patient extends BaseModel {
@@ -32,6 +36,8 @@ public class Patient extends BaseModel {
     @Column
     private String address3;
     @Column
+    private String address4;
+    @Column
     private String postcode;
     @Column
     private String telephone1;
@@ -43,6 +49,8 @@ public class Patient extends BaseModel {
     private String centreCode;
     @Column
     private String diagnosis;
+    @Column
+    private Date diagnosisDate;
     @Column
     private String treatment;
     @Column
@@ -61,11 +69,25 @@ public class Patient extends BaseModel {
     private String gppostcode;
     @Column
     private String gptelephone;
+    @Column
+    private String gpemail;
+    @Column
+    private Date colonoscopysurveillance;
+    @Column
+    private Date bmdexam;
+    @Column
+    private String namedconsultant;
+    @Column
+    private String ibdnurse;
+    @Column
+    private String bloodgroup;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     // Note: this is used at the moment for IBD only.  The patient details view shows a separate "Other Conditions"
     // which is pulling in through DiagnosisManager.getOtherDiagnoses()
     private String otherConditions;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Patient.class);
 
     public Patient() {
     }
@@ -76,13 +98,15 @@ public class Patient extends BaseModel {
     }
 
     public Patient(String nhsno, String surname, String forename, String dateofbirth, String sex, String address1,
-                   String address2, String address3, String postcode, String telephone1, String telephone2,
-                   String mobile, String centreCode, String diagnosis, String treatment, String transplantstatus,
-                   String hospitalnumber, String gpname, String gpaddress1, String gpaddress2, String gpaddress3,
-                   String gppostcode, String gptelephone) {
+                   String address2, String address3, String address4, String postcode, String telephone1,
+                   String telephone2, String mobile, String centreCode, String diagnosis, String diagnosisDate,
+                   String treatment, String transplantstatus, String hospitalnumber, String gpname, String gpaddress1,
+                   String gpaddress2, String gpaddress3, String gppostcode, String gptelephone, String gpemail,
+                   String bmdexam, String bloodgroup) {
         this.address1 = address1;
         this.address2 = address2;
         this.address3 = address3;
+        this.address4 = address4;
         setCentreCode(centreCode);
         this.dateofbirth = dateofbirth;
         this.forename = forename;
@@ -94,6 +118,13 @@ public class Patient extends BaseModel {
         this.telephone2 = telephone2;
         this.mobile = mobile;
         this.diagnosis = diagnosis;
+        if (diagnosisDate != null) {
+            try {
+                this.diagnosisDate = Ibd.DATE_FORMAT.parse(diagnosisDate);
+            } catch (ParseException e) {
+                LOGGER.error("Could not parse diagnosisDate {} {}", diagnosisDate, e);
+            }
+        }
         this.treatment = treatment;
         this.transplantstatus = transplantstatus;
         this.hospitalnumber = hospitalnumber;
@@ -103,6 +134,15 @@ public class Patient extends BaseModel {
         this.gpaddress3 = gpaddress3;
         this.gppostcode = gppostcode;
         this.gptelephone = gptelephone;
+        this.gpemail = gpemail;
+        if (bmdexam != null) {
+            try {
+                this.bmdexam = Ibd.DATE_FORMAT.parse(bmdexam);
+            } catch (ParseException e) {
+                LOGGER.error("Could not parse bmdexam {} {}", bmdexam, e);
+            }
+        }
+        this.bloodgroup = bloodgroup;
     }
 
     public String getAddress1() {
@@ -127,6 +167,14 @@ public class Patient extends BaseModel {
 
     public void setAddress3(String address3) {
         this.address3 = address3;
+    }
+
+    public String getAddress4() {
+        return address4;
+    }
+
+    public void setAddress4(String address4) {
+        this.address4 = address4;
     }
 
     public String getCentreCode() {
@@ -225,6 +273,14 @@ public class Patient extends BaseModel {
         this.diagnosis = diagnosis;
     }
 
+    public Date getDiagnosisDate() {
+        return diagnosisDate;
+    }
+
+    public void setDiagnosisDate(Date diagnosisDate) {
+        this.diagnosisDate = diagnosisDate;
+    }
+
     public String getTreatment() {
         return treatment;
     }
@@ -297,6 +353,14 @@ public class Patient extends BaseModel {
         this.gptelephone = gptelephone;
     }
 
+    public String getGpemail() {
+        return gpemail;
+    }
+
+    public void setGpemail(String gpemail) {
+        this.gpemail = gpemail;
+    }
+
     public String getOtherConditions() {
         return otherConditions;
     }
@@ -304,4 +368,45 @@ public class Patient extends BaseModel {
     public void setOtherConditions(String otherConditions) {
         this.otherConditions = otherConditions;
     }
+
+    public Date getColonoscopysurveillance() {
+        return colonoscopysurveillance;
+    }
+
+    public void setColonoscopysurveillance(Date colonoscopysurveillance) {
+        this.colonoscopysurveillance = colonoscopysurveillance;
+    }
+
+    public Date getBmdexam() {
+        return bmdexam;
+    }
+
+    public void setBmdexam(Date bmdexam) {
+        this.bmdexam = bmdexam;
+    }
+
+    public String getNamedconsultant() {
+        return namedconsultant;
+    }
+
+    public void setNamedconsultant(String namedconsultant) {
+        this.namedconsultant = namedconsultant;
+    }
+
+    public String getIbdnurse() {
+        return ibdnurse;
+    }
+
+    public void setIbdnurse(String ibdnurse) {
+        this.ibdnurse = ibdnurse;
+    }
+
+    public String getBloodgroup() {
+        return bloodgroup;
+    }
+
+    public void setBloodgroup(String bloodgroup) {
+        this.bloodgroup = bloodgroup;
+    }
 }
+

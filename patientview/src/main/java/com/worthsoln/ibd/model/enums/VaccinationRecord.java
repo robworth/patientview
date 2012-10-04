@@ -27,6 +27,16 @@ public enum VaccinationRecord {
         return NOT_KNOWN;
     }
 
+    public static VaccinationRecord getVaccinationRecord(String name) {
+        for (VaccinationRecord vaccinationRecord : VaccinationRecord.values()) {
+            if (vaccinationRecord.getName().equals(name)) {
+                return vaccinationRecord;
+            }
+        }
+
+        return NOT_KNOWN;
+    }
+
     public static List<VaccinationRecord> getAsList() {
         return Arrays.asList(VaccinationRecord.values());
     }

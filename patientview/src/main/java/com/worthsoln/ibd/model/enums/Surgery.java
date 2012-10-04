@@ -35,6 +35,16 @@ public enum Surgery {
         return NO_PREVIOUS_OPERATIONS;
     }
 
+    public static Surgery getSurgery(String name) {
+        for (Surgery surgery : Surgery.values()) {
+            if (surgery.getName().equals(name)) {
+                return surgery;
+            }
+        }
+
+        return NO_PREVIOUS_OPERATIONS;
+    }
+
     public static List<Surgery> getAsList() {
         return Arrays.asList(Surgery.values());
     }

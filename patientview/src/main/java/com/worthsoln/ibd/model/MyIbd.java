@@ -61,8 +61,11 @@ public class MyIbd extends BaseModel {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String nurses;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double weight;
+
+    @Column(nullable = true)
+    private String eiManifestations;
 
     @Transient
     private FamilyHistory familyHistory = FamilyHistory.NONE;
@@ -324,5 +327,13 @@ public class MyIbd extends BaseModel {
 
     public void setVaccinationRecord(VaccinationRecord vaccinationRecord) {
         this.vaccinationRecord = vaccinationRecord;
+    }
+
+    public String getEiManifestations() {
+        return eiManifestations;
+    }
+
+    public void setEiManifestations(String eiManifestations) {
+        this.eiManifestations = eiManifestations;
     }
 }

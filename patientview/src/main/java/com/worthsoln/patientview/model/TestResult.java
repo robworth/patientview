@@ -131,6 +131,7 @@ public class TestResult extends BaseModel {
         return dateTimeFormat.format(datestamped.getTime());
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -157,6 +158,7 @@ public class TestResult extends BaseModel {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = (nhsno != null ? nhsno.hashCode() : 0);

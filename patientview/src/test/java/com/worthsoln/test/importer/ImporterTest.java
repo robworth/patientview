@@ -1,6 +1,10 @@
 package com.worthsoln.test.importer;
 
 import com.worthsoln.database.DatabaseDAO;
+import com.worthsoln.ibd.model.Allergy;
+import com.worthsoln.ibd.model.IbdDiagnostic;
+import com.worthsoln.ibd.model.MyIbd;
+import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.model.Medicine;
@@ -11,6 +15,7 @@ import com.worthsoln.service.LetterManager;
 import com.worthsoln.service.MedicineManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 import com.worthsoln.test.helpers.impl.TestableResultsUpdater;
 import com.worthsoln.test.service.BaseServiceTest;
@@ -52,6 +57,9 @@ public class ImporterTest extends BaseServiceTest {
 
     @Inject
     private TestResultManager testResultManager;
+
+    @Inject
+    private IbdManager ibdManager;
 
     @Test
     /**
@@ -106,8 +114,44 @@ public class ImporterTest extends BaseServiceTest {
     }
 
     @Test
-    public void testXmlParserUsingIBDFile() {
-        // todo - we need a sample ibd xml file
+    public void testXmlParserUsingIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                        .getResource("classpath:rm301_1244_9876543210.xml");
+
+        DatabaseDAO dao = new DatabaseDAO("patientview");
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+
+        testableResultsUpdater.update(null, xmlFileResource.getFile());
+
+        List<Centre> centres = centreManager.getAll();
+
+        assertEquals("Incorrect number of centres", 1, centres.size());
+        assertEquals("Incorrect centre", "RM301", centres.get(0).getCentreCode());
+
+        List<Patient> patients = patientManager.get("RM301");
+
+        assertEquals("Incorrect number of patients", 1, patients.size());
+        assertEquals("Incorrect patient", "9876543210", patients.get(0).getNhsno());
+
+        List<TestResult> results = testResultManager.get("9876543210", "RM301");
+
+        assertEquals("Incorrect number of results", 3, results.size());
+
+        List<Letter> letters = letterManager.getAll();
+
+        assertEquals("Incorrect number of letters", 2, letters.size());
+
+        MyIbd myIbd = ibdManager.getMyIbd("9876543210");
+        assertNotNull("No MyIbd information was parsed", myIbd);
+
+        IbdDiagnostic diagnostic = ibdManager.getIbdDiagnostic("9876543210");
+        assertNotNull("No IbdDiagnostic information was parsed", diagnostic);
+
+        Procedure procedure = ibdManager.getProcedure("9876543210");
+        assertNotNull("No procedure information was parsed", procedure);
+
+        Allergy allergy = ibdManager.getAllergy("9876543210");
+        assertNotNull("No allergy information was parsed", allergy);
     }
 
     @Test

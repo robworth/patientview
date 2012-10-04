@@ -34,6 +34,16 @@ public enum BodyPartAffected {
         return NONE;
     }
 
+    public static BodyPartAffected getBodyPartAffected(String name) {
+        for (BodyPartAffected bodyPartAffected : BodyPartAffected.values()) {
+            if (bodyPartAffected.getName() == name) {
+                return bodyPartAffected;
+            }
+        }
+
+        return NONE;
+    }
+
     public static List<BodyPartAffected> getAsList() {
         return Arrays.asList(BodyPartAffected.values());
     }

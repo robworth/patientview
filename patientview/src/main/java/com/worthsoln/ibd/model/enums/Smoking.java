@@ -26,6 +26,16 @@ public enum Smoking {
         return NEVER_SMOKED;
     }
 
+    public static Smoking getSmoking(String name) {
+        for (Smoking smoking : Smoking.values()) {
+            if (smoking.getName().equals(name)) {
+                return smoking;
+            }
+        }
+
+        return NEVER_SMOKED;
+    }
+
     public static List<Smoking> getAsList() {
         return Arrays.asList(Smoking.values());
     }

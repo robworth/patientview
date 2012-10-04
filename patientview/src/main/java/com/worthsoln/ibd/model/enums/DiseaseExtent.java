@@ -34,6 +34,16 @@ public enum DiseaseExtent {
         return null;
     }
 
+    public static DiseaseExtent getDiseaseExtent(String name) {
+        for (DiseaseExtent diseaseExtent : DiseaseExtent.values()) {
+            if (diseaseExtent.getName() == name) {
+                return diseaseExtent;
+            }
+        }
+
+        return null;
+    }
+
     public static List<DiseaseExtent> getAsList() {
         return Arrays.asList(DiseaseExtent.values());
     }

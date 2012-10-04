@@ -27,6 +27,16 @@ public enum FamilyHistory {
         return NONE;
     }
 
+    public static FamilyHistory getFamilyHistory(String name) {
+            for (FamilyHistory familyHistory : FamilyHistory.values()) {
+                if (familyHistory.getName() == name) {
+                    return familyHistory;
+                }
+            }
+
+            return NONE;
+        }
+
     public static List<FamilyHistory> getAsList() {
         return Arrays.asList(FamilyHistory.values());
     }

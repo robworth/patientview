@@ -1,7 +1,10 @@
 package com.worthsoln.service.ibd;
 
+import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.CarePlan;
+import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
+import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.Severity;
 import com.worthsoln.ibd.model.symptoms.ColitisSymptoms;
@@ -85,4 +88,17 @@ public interface IbdManager {
     Diagnosis getLoggedInUserDiagnosis();
     
     Diagnosis getDiagnosis(User user);
+
+    void saveDiagnostic(IbdDiagnostic ibdDiagnostic);
+
+    IbdDiagnostic getIbdDiagnostic(String nhsno);
+
+    void saveProcedure(Procedure procedure);
+
+    Procedure getProcedure(String nhsno);
+
+    void saveAllergy(Allergy allergy);
+
+    Allergy getAllergy(String nhsno);
+
 }

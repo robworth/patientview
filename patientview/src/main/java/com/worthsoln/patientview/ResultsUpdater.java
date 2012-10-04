@@ -2,6 +2,10 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
+import com.worthsoln.ibd.model.Allergy;
+import com.worthsoln.ibd.model.IbdDiagnostic;
+import com.worthsoln.ibd.model.MyIbd;
+import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Diagnosis;
 import com.worthsoln.patientview.model.Letter;
@@ -37,7 +41,7 @@ public class ResultsUpdater {
 
             if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag()) ||
                     "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag()) ||
-                    "Suspend".equalsIgnoreCase(parser.getFlag()) ) {
+                    "Suspend".equalsIgnoreCase(parser.getFlag())) {
                 removePatientFromSystem(parser);
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
                         parser.getPatient().getCentreCode(), xmlFile.getName());
@@ -50,8 +54,9 @@ public class ResultsUpdater {
         } catch (Exception e) {
             e.printStackTrace();
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()), XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " +XmlImportUtils.extractStringFromStackTrace(e));
+                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + XmlImportUtils.extractStringFromStackTrace(e));
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
         renameDirectory(context, xmlFile);
@@ -79,6 +84,67 @@ public class ResultsUpdater {
         insertOtherDiagnoses(parser.getOtherDiagnoses());
         deleteMedicines(parser.getData("nhsno"), parser.getData("centrecode"));
         insertMedicines(parser.getMedicines());
+        deleteMyIbd(parser.getData("nhsno"));
+        insertMyIbd(parser.getMyIbd());
+        deleteDiagnostics(parser.getData("nhsno"));
+        insertDiagnostics(parser.getDiagnostics());
+        deleteProcedures(parser.getData("nhsno"));
+        insertProcedures(parser.getProcedures());
+        deleteAllergies(parser.getData("nhsno"));
+        insertAllergies(parser.getAllergies());
+    }
+
+    private void deleteDiagnostics(String nhsno) {
+        String deleteSql = "DELETE FROM pv_diagnostic WHERE nhsno = ?";
+        Object[] params = new Object[]{nhsno};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertDiagnostics(Collection<IbdDiagnostic> ibdDiagnostics) {
+        for (Iterator iterator = ibdDiagnostics.iterator(); iterator.hasNext(); ) {
+            IbdDiagnostic ibdDiagnostic = (IbdDiagnostic) iterator.next();
+            LegacySpringUtils.getIbdManager().saveDiagnostic(ibdDiagnostic);
+        }
+    }
+
+    private void deleteProcedures(String nhsno) {
+        String deleteSql = "DELETE FROM pv_procedure WHERE nhsno = ?";
+        Object[] params = new Object[]{nhsno};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertProcedures(Collection<Procedure> procedures) {
+        for (Iterator iterator = procedures.iterator(); iterator.hasNext(); ) {
+            Procedure procedure = (Procedure) iterator.next();
+            LegacySpringUtils.getIbdManager().saveProcedure(procedure);
+        }
+    }
+
+    private void deleteAllergies(String nhsno) {
+        String deleteSql = "DELETE FROM pv_allergy WHERE nhsno = ?";
+        Object[] params = new Object[]{nhsno};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertAllergies(Collection<Allergy> allergies) {
+        for (Iterator iterator = allergies.iterator(); iterator.hasNext(); ) {
+            Allergy allergy = (Allergy) iterator.next();
+            LegacySpringUtils.getIbdManager().saveAllergy(allergy);
+        }
+    }
+
+    private void deleteMyIbd(String nhsno) {
+        String deleteSql = "DELETE FROM ibd_myibd WHERE nhsno = ?";
+        Object[] params = new Object[]{nhsno};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertMyIbd(MyIbd myIbd) {
+        LegacySpringUtils.getIbdManager().saveMyIbd(myIbd);
     }
 
     private void updatePatientDetails(Patient patient) {
