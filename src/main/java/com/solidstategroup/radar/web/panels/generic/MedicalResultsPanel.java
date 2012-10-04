@@ -54,6 +54,7 @@ public class MedicalResultsPanel extends Panel {
             medicalResult = new MedicalResult();
             medicalResult.setRadarNo(demographics.getId());
             medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
+            medicalResult.setNhsNo(demographics.getNhsNumber());
         }
 
         // general feedback for messages that are not to do with a certain component in the form
@@ -137,6 +138,7 @@ public class MedicalResultsPanel extends Panel {
 
                 if (!hasError()) {
                     medicalResult.setRadarNo(demographics.getId());
+                    medicalResult.setNhsNo(demographics.getNhsNumber());
                     medicalResultManager.save(medicalResult);
                 }
             }
