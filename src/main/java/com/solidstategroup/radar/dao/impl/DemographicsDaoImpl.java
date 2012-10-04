@@ -10,7 +10,6 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
-import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
