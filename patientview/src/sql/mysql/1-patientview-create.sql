@@ -377,13 +377,14 @@ DROP TABLE IF EXISTS `ibd_myibd`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ibd_myibd` (
   `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(10) NOT NULL,
+  `unitcode` varchar(20) NOT NULL,
   `body_part_affected_id` bigint(20) NOT NULL,
   `diagnosis_id` bigint(20) NOT NULL,
   `disease_extent_id` bigint(20) NOT NULL,
   `eiManifestations` varchar(255) default NULL,
   `family_history_id` bigint(20) NOT NULL,
   `namedConsultant` text,
-  `nhsno` varchar(255) NOT NULL,
   `nurses` text,
   `smoking_id` bigint(20) NOT NULL,
   `surgery_id` bigint(20) NOT NULL,
@@ -1261,7 +1262,7 @@ CREATE TABLE `patient` (
   `address4` varchar(255) default NULL,
   `bloodgroup` varchar(255) default NULL,
   `bmdexam` datetime default NULL,
-  `centreCode` varchar(255) NOT NULL,
+  `centreCode` varchar(20) NOT NULL,
   `colonoscopysurveillance` datetime default NULL,
   `dateofbirth` varchar(255) default NULL,
   `diagnosis` varchar(255) default NULL,
@@ -1299,10 +1300,11 @@ DROP TABLE IF EXISTS `pv_allergy`;
 
 CREATE TABLE `pv_allergy` (
   `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(10) NOT NULL,
+  `unitcode` varchar(20) NOT NULL,
   `confidenceLevel` varchar(255) default NULL,
   `description` varchar(255) default NULL,
   `infoSource` varchar(255) default NULL,
-  `nhsno` varchar(255) NOT NULL,
   `reaction` varchar(255) default NULL,
   `recordedDate` datetime default NULL,
   `status` varchar(255) default NULL,
@@ -1319,10 +1321,10 @@ DROP TABLE IF EXISTS `pv_diagnostic`;
 
 CREATE TABLE `pv_diagnostic` (
   `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(10) NOT NULL,
+  `unitcode` varchar(20) NOT NULL,
   `date` datetime NOT NULL,
   `diagnostic` varchar(255) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `unitcode` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
@@ -1334,10 +1336,10 @@ DROP TABLE IF EXISTS `pv_procedure`;
 
 CREATE TABLE `pv_procedure` (
   `id` bigint(20) NOT NULL auto_increment,
-  `date` datetime NOT NULL,
   `nhsno` varchar(255) NOT NULL,
-  `proceduretext` varchar(255) NOT NULL,
   `unitcode` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `proceduretext` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 

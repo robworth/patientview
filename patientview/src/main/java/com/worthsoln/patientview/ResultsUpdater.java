@@ -6,13 +6,8 @@ import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
-import com.worthsoln.patientview.model.Centre;
-import com.worthsoln.patientview.model.Diagnosis;
-import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.model.Medicine;
-import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.model.TestResult;
+import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
@@ -84,19 +79,19 @@ public class ResultsUpdater {
         insertOtherDiagnoses(parser.getOtherDiagnoses());
         deleteMedicines(parser.getData("nhsno"), parser.getData("centrecode"));
         insertMedicines(parser.getMedicines());
-        deleteMyIbd(parser.getData("nhsno"));
+        deleteMyIbd(parser.getData("nhsno"), parser.getData("centrecode"));
         insertMyIbd(parser.getMyIbd());
-        deleteDiagnostics(parser.getData("nhsno"));
+        deleteDiagnostics(parser.getData("nhsno"), parser.getData("centrecode"));
         insertDiagnostics(parser.getDiagnostics());
-        deleteProcedures(parser.getData("nhsno"));
+        deleteProcedures(parser.getData("nhsno"), parser.getData("centrecode"));
         insertProcedures(parser.getProcedures());
-        deleteAllergies(parser.getData("nhsno"));
+        deleteAllergies(parser.getData("nhsno"), parser.getData("centrecode"));
         insertAllergies(parser.getAllergies());
     }
 
-    private void deleteDiagnostics(String nhsno) {
-        String deleteSql = "DELETE FROM pv_diagnostic WHERE nhsno = ?";
-        Object[] params = new Object[]{nhsno};
+    private void deleteDiagnostics(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM pv_diagnostic WHERE nhsno = ? AND unitcode = ?";
+        Object[] params = new Object[]{nhsno, unitcode};
         DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
         dao.doExecute(query);
     }
@@ -108,9 +103,9 @@ public class ResultsUpdater {
         }
     }
 
-    private void deleteProcedures(String nhsno) {
-        String deleteSql = "DELETE FROM pv_procedure WHERE nhsno = ?";
-        Object[] params = new Object[]{nhsno};
+    private void deleteProcedures(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM pv_procedure WHERE nhsno = ? AND unitcode = ?";
+        Object[] params = new Object[]{nhsno, unitcode};
         DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
         dao.doExecute(query);
     }
@@ -122,9 +117,9 @@ public class ResultsUpdater {
         }
     }
 
-    private void deleteAllergies(String nhsno) {
-        String deleteSql = "DELETE FROM pv_allergy WHERE nhsno = ?";
-        Object[] params = new Object[]{nhsno};
+    private void deleteAllergies(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM pv_allergy WHERE nhsno = ? AND unitcode = ?";
+        Object[] params = new Object[]{nhsno, unitcode};
         DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
         dao.doExecute(query);
     }
@@ -136,9 +131,9 @@ public class ResultsUpdater {
         }
     }
 
-    private void deleteMyIbd(String nhsno) {
-        String deleteSql = "DELETE FROM ibd_myibd WHERE nhsno = ?";
-        Object[] params = new Object[]{nhsno};
+    private void deleteMyIbd(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM ibd_myibd WHERE nhsno = ? AND unitcode = ? ";
+        Object[] params = new Object[]{nhsno, unitcode};
         DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
         dao.doExecute(query);
     }

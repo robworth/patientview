@@ -1,30 +1,11 @@
 package com.worthsoln.ibd.model;
 
 import com.worthsoln.ibd.Ibd;
-import com.worthsoln.ibd.model.enums.BodyPartAffected;
-import com.worthsoln.ibd.model.enums.Complication;
-import com.worthsoln.ibd.model.enums.Diagnosis;
-import com.worthsoln.ibd.model.enums.DiseaseExtent;
-import com.worthsoln.ibd.model.enums.FamilyHistory;
-import com.worthsoln.ibd.model.enums.Smoking;
-import com.worthsoln.ibd.model.enums.Surgery;
-import com.worthsoln.ibd.model.enums.VaccinationRecord;
+import com.worthsoln.ibd.model.enums.*;
 import com.worthsoln.patientview.model.BaseModel;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "ibd_myibd")
@@ -32,6 +13,9 @@ public class MyIbd extends BaseModel {
 
     @Column(nullable = false)
     private String nhsno;
+
+    @Column(nullable = false)
+    private String unitcode;
 
     @Transient
     private Diagnosis diagnosis;
@@ -85,6 +69,14 @@ public class MyIbd extends BaseModel {
 
     public void setNhsno(String nhsno) {
         this.nhsno = nhsno;
+    }
+
+    public String getUnitcode() {
+        return unitcode;
+    }
+
+    public void setUnitcode(String unitcode) {
+        this.unitcode = unitcode;
     }
 
     @Access(AccessType.PROPERTY)

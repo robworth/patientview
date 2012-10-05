@@ -15,6 +15,9 @@ public class Allergy extends BaseModel {
     @Column(nullable = false)
     private String nhsno;
 
+    @Column(nullable = false)
+    private String unitcode;
+
     @Column(nullable = true)
     private String substance;
 
@@ -45,6 +48,14 @@ public class Allergy extends BaseModel {
 
     public void setNhsno(String nhsno) {
         this.nhsno = nhsno;
+    }
+
+    public String getUnitcode() {
+        return unitcode;
+    }
+
+    public void setUnitcode(String unitcode) {
+        this.unitcode = unitcode;
     }
 
     public String getSubstance() {

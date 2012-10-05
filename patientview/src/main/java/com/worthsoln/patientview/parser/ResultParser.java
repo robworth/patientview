@@ -1,40 +1,26 @@
 package com.worthsoln.patientview.parser;
 
-import java.io.File;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
-import com.worthsoln.ibd.model.enums.BodyPartAffected;
-import com.worthsoln.ibd.model.enums.Complication;
-import com.worthsoln.ibd.model.enums.DiseaseExtent;
-import com.worthsoln.ibd.model.enums.FamilyHistory;
-import com.worthsoln.ibd.model.enums.Smoking;
-import com.worthsoln.ibd.model.enums.Surgery;
-import com.worthsoln.ibd.model.enums.VaccinationRecord;
+import com.worthsoln.ibd.model.enums.*;
+import com.worthsoln.patientview.TestResultDateRange;
+import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.Diagnosis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import com.worthsoln.patientview.model.Centre;
-import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.model.TestResult;
-import com.worthsoln.patientview.TestResultDateRange;
-import com.worthsoln.patientview.model.Diagnosis;
-import com.worthsoln.patientview.model.Letter;
-import com.worthsoln.patientview.model.Medicine;
+import org.w3c.dom.*;
+
+import javax.servlet.ServletContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResultParser {
 
@@ -247,6 +233,7 @@ public class ResultParser {
             Node allergyNode = allergyNodes.item(i);
             Allergy allergy = new Allergy();
             allergy.setNhsno(getData("nhsno"));
+            allergy.setUnitcode(getData("centrecode"));
             NodeList allergyDetailNodes = allergyNode.getChildNodes();
             for (int j = 0; j < allergyDetailNodes.getLength(); j++) {
                 try {
@@ -377,6 +364,7 @@ public class ResultParser {
     public MyIbd getMyIbd() {
         MyIbd myIbd = new MyIbd();
         myIbd.setNhsno((String) xmlData.get("nhsno"));
+        myIbd.setUnitcode((String) xmlData.get("centrecode"));
         try {
             myIbd.setYearOfDiagnosis(
                     Ibd.YEAR_DATE_FORMAT.parse((String) xmlData.get("diagnosisyear")));
