@@ -1,6 +1,4 @@
-package com.solidstategroup.radar.model.alport;
-
-import com.solidstategroup.radar.model.BaseModel;
+package com.solidstategroup.radar.model;
 
 import java.util.Arrays;
 import java.util.List;

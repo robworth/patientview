@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.service.alport;
 
-import com.solidstategroup.radar.model.alport.Genetics;
+import com.solidstategroup.radar.model.Genetics;
 
 public interface GeneticsManager {
 

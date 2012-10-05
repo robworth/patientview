@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.service.alport.impl;
 
 import com.solidstategroup.radar.dao.alport.GeneticsDao;
-import com.solidstategroup.radar.model.alport.Genetics;
+import com.solidstategroup.radar.model.Genetics;
 import com.solidstategroup.radar.service.alport.GeneticsManager;
 
 public class GeneticsManagerImpl implements GeneticsManager {

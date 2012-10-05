@@ -9,6 +9,10 @@
         <property name="deafnessDao" ref="deafnessDao"/>
     </bean>
 
+    <bean id="hnf1BMiscManager" class="com.solidstategroup.radar.service.hnf1b.impl.HNF1BMiscManagerImpl">
+        <property name="hnf1BMiscDao" ref="hnf1BMiscDao"/>
+    </bean>
+
     <bean id="medicineManager" class="com.solidstategroup.radar.service.alport.impl.MedicineManagerImpl">
         <property name="medicineDao" ref="medicineDao"/>
     </bean>

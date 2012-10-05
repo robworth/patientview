@@ -1,12 +1,11 @@
-package com.solidstategroup.radar.web.panels.alport;
+package com.solidstategroup.radar.web.panels;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.model.alport.Genetics;
+import com.solidstategroup.radar.model.Genetics;
 import com.solidstategroup.radar.service.alport.GeneticsManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
-import com.solidstategroup.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
