@@ -197,7 +197,7 @@
 
                     <p>
                         To contact the IBD nurses from Monday to Friday 0900-1700 call the IBD helpline on 0161 206 4023
-                        or email via the About Your Health box on the Contact page.  Please leave your:
+                        or email via the <html:link action="/patient/contact">About Your Health box on the Contact page</html:link>.  Please leave your:
                     </p>
 
                     <ul>
@@ -265,7 +265,7 @@
 
                     <p>
                         To contact the IBD nurses from Monday to Friday 0900-1700 call the IBD helpline on 0161 206 4023
-                        or email via the About Your Health box on the Contact page.  Please leave your:
+                        or email via the <html:link action="/patient/contact">About Your Health box on the Contact page</html:link>.  Please leave your:
                     </p>
 
                     <ul>
