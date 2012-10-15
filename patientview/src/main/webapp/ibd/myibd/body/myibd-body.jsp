@@ -258,7 +258,7 @@
 <logic:notPresent name="myIbd">
     <div class="row">
         <div class="span12">
-            <html:link action="/myibd-edit" styleClass="btn">Add</html:link>
+            <p>No data received from unit.</p>
         </div>
     </div>
 </logic:notPresent>
