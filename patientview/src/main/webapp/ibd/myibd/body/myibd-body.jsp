@@ -3,10 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <div class="page-header">
-    <logic:present name="myIbd">
-        <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
-    </logic:present>
-
     <h1>My IBD</h1>
 </div>
 <ul class="padded-list">
@@ -256,12 +252,6 @@
             <logic:present name="namedConsultantLink">
                 <a href="<bean:write name="namedConsultantLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="span12">
-            <html:link action="/myibd-edit" styleClass="btn pull-right">Edit</html:link>
         </div>
     </div>
 </logic:present>
