@@ -3,7 +3,6 @@ package com.worthsoln.test.repository;
 import com.worthsoln.patientview.model.Diagnosis;
 import com.worthsoln.repository.DiagnosisDao;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 

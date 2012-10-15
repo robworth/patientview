@@ -4,7 +4,6 @@ import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.repository.ibd.AllergyDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 import java.util.Calendar;
@@ -18,7 +17,6 @@ public class AllergyDaoTest extends BaseDaoTest {
     AllergyDao allergyDao;
 
     @Test
-    @Rollback(value = false)
     public void testAddGetAllergy() throws Exception {
         Allergy allergy = getTestObject();
 
@@ -34,6 +32,7 @@ public class AllergyDaoTest extends BaseDaoTest {
     private Allergy getTestObject() throws Exception {
         Allergy allergy = new Allergy();
         allergy.setNhsno("1234567890");
+        allergy.setUnitcode("unit1");
         allergy.setConfidenceLevel("confidence level");
         allergy.setDescription("description");
         allergy.setInfoSource("info source");

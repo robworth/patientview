@@ -1,13 +1,23 @@
 package com.worthsoln.test.repository.ibd;
 
+import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
+import com.worthsoln.ibd.model.enums.BodyPartAffected;
+import com.worthsoln.ibd.model.enums.Complication;
 import com.worthsoln.ibd.model.enums.Diagnosis;
+import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.ibd.model.enums.Severity;
+import com.worthsoln.repository.ibd.MyIbdDao;
 import com.worthsoln.repository.ibd.MyIbdSeverityLevelDao;
 import com.worthsoln.test.repository.BaseDaoTest;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,6 +28,32 @@ public class MyIbdSeverityLevelDaoTest extends BaseDaoTest {
 
     @Inject
     private MyIbdSeverityLevelDao myIbdSeverityLevelDao;
+
+    @Inject
+    private MyIbdDao myIbdDao;
+
+    @Before
+    public void initMyIbd() {
+        // first create a myIbd object to go with this:
+        MyIbd myIbd = new MyIbd();
+
+        myIbd.setNhsno("1234567890");
+        myIbd.setUnitcode("unit1");
+        myIbd.setDiagnosis(Diagnosis.COLITIS_UNSPECIFIED);
+        myIbd.setDiseaseExtent(DiseaseExtent.ILEO_COLONIC_DISEASE);
+        myIbd.setYearOfDiagnosis(new Date());
+        myIbd.setBodyPartAffected(BodyPartAffected.ANKYLOSING_SPONDYLITIS);
+        myIbd.setYearForSurveillanceColonoscopy(new Date());
+        myIbd.setNamedConsultant("Test consultant");
+        myIbd.setNurses("Test nurses");
+
+        List<Complication> complications = new ArrayList<Complication>();
+        complications.add(Complication.ABSCESS);
+        complications.add(Complication.GASTRO_DUODENAL_CROHNS);
+
+        myIbd.setComplications(complications);
+        myIbdDao.save(myIbd);
+    }
 
     @Test
     public void testAddGetMyIbdSeverityLevel() throws Exception {

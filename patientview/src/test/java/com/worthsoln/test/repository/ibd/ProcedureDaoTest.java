@@ -4,7 +4,6 @@ import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.repository.ibd.ProcedureDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 import java.util.Calendar;
@@ -18,7 +17,6 @@ public class ProcedureDaoTest extends BaseDaoTest {
     private ProcedureDao procedureDao;
 
     @Test
-    @Rollback(value = false)
     public void testAddGetProcedure() throws Exception {
         Procedure procedure = getTestObject();
 

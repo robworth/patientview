@@ -4,7 +4,6 @@ import com.worthsoln.ibd.model.Nutrition;
 import com.worthsoln.repository.ibd.NutritionDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 
@@ -20,7 +19,6 @@ public class NutritionDaoTest extends BaseDaoTest {
     private NutritionDao nutritionDao;
 
     @Test
-    @Rollback(value = false)
     public void testAddGetNutrition() throws Exception {
         Nutrition nutrition = getTestObject();
 

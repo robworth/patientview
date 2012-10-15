@@ -8,7 +8,6 @@ import com.worthsoln.ibd.model.enums.crohns.MassInTummy;
 import com.worthsoln.repository.ibd.CrohnsSymptomsDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 
@@ -24,7 +23,6 @@ public class CrohnsDaoTest extends BaseDaoTest {
     private CrohnsSymptomsDao crohnsSymptomsDao;
 
     @Test
-    @Rollback(value = false)
     public void testAddGetCrohns() throws Exception {
 
         CrohnsSymptoms crohnsSymptoms = getTestObject();

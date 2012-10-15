@@ -333,6 +333,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         logEntry.setNhsno("123456789");
         logEntry.setUnitcode("testunit");
         logEntry.setUser("testuser");
+        logEntry.setTenancy(tenancy);
         return logEntry;
     }
 }

@@ -9,7 +9,6 @@ import com.worthsoln.ibd.model.enums.colitis.ToiletTiming;
 import com.worthsoln.repository.ibd.ColitisSymptomsDao;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -24,7 +23,6 @@ public class ColitisDaoTest extends BaseDaoTest {
     private ColitisSymptomsDao colitisSymptomsDao;
 
     @Test
-    @Rollback(value = false)
     public void testAddGetColitis() throws Exception {
 
         ColitisSymptoms colitisSymptoms = getTestObject();

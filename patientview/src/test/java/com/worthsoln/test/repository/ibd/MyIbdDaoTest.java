@@ -69,6 +69,7 @@ public class MyIbdDaoTest extends BaseDaoTest {
         MyIbd myIbd = new MyIbd();
 
         myIbd.setNhsno("1234567890");
+        myIbd.setUnitcode("unit1");
         myIbd.setDiagnosis(Diagnosis.COLITIS_UNSPECIFIED);
         myIbd.setDiseaseExtent(DiseaseExtent.ILEO_COLONIC_DISEASE);
         myIbd.setYearOfDiagnosis(new Date());

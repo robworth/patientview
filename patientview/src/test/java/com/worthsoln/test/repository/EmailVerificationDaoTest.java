@@ -3,7 +3,6 @@ package com.worthsoln.test.repository;
 import com.worthsoln.patientview.model.EmailVerification;
 import com.worthsoln.repository.EmailVerificationDao;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 
