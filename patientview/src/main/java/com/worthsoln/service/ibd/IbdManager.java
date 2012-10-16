@@ -31,6 +31,8 @@ public interface IbdManager {
 
     void saveMyIbd(MyIbd myIbd);
 
+    void deleteMyIbd(String nhsno, String unitcode);
+
     MyIbdSeverityLevel getMyIbdSeverityLevel(String nhsno, Severity severity);
 
     void saveMyIbdSeverityLevel(MyIbdSeverityLevel myIbdSeverityLevel);

@@ -11,5 +11,9 @@ public interface MyIbdDao {
 
     MyIbd get(String nhsno);
 
+    MyIbd get(String nhsno, String unitcode);
+
     void save(MyIbd myIbd);
+
+    void delete(String nhsno, String unitcode);
 }

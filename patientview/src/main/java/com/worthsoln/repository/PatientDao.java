@@ -19,6 +19,8 @@ public interface PatientDao {
 
     void save(Patient patient);
 
+    void delete(String nhsno, String unitcode);
+
     List<Patient> get(String centreCode);
 
     // Note: generics not used as the result is half user, half patient

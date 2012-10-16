@@ -106,6 +106,11 @@ public class IbdManagerImpl implements IbdManager {
     }
 
     @Override
+    public void deleteMyIbd(String nhsno, String unitcode) {
+        myIbdDao.delete(nhsno, unitcode);
+    }
+
+    @Override
     public MyIbdSeverityLevel getMyIbdSeverityLevel(String nhsno, Severity severity) {
         return myIbdSeverityLevelDao.get(nhsno, severity);
     }

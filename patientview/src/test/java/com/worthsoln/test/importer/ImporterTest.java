@@ -123,6 +123,39 @@ public class ImporterTest extends BaseServiceTest {
 
         testableResultsUpdater.update(null, xmlFileResource.getFile());
 
+        checkIbdImportConstantData();
+
+        List<TestResult> results = testResultManager.get("9876543210", "RM301");
+
+        assertEquals("Incorrect number of results", 3, results.size());
+    }
+
+    /**
+     *  If you run the import twice for the same file we still have the same data set
+     */
+    @Test
+    public void testXmlParserUsingIBDFileMultipleRuns() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_1244_9876543210.xml");
+
+        DatabaseDAO dao = new DatabaseDAO("patientview");
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+
+        // run twice
+        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(null, xmlFileResource.getFile());
+
+        checkIbdImportConstantData();
+
+        List<TestResult> results = testResultManager.get("9876543210", "RM301");
+
+        assertEquals("Incorrect number of results", 6, results.size());
+    }
+
+    private void checkIbdImportConstantData() {
+
+        // test the stuff that should be the same regardless of how many imports of the file are done
+
         List<Centre> centres = centreManager.getAll();
 
         assertEquals("Incorrect number of centres", 1, centres.size());
@@ -132,10 +165,6 @@ public class ImporterTest extends BaseServiceTest {
 
         assertEquals("Incorrect number of patients", 1, patients.size());
         assertEquals("Incorrect patient", "9876543210", patients.get(0).getNhsno());
-
-        List<TestResult> results = testResultManager.get("9876543210", "RM301");
-
-        assertEquals("Incorrect number of results", 3, results.size());
 
         List<Letter> letters = letterManager.getAll();
 
@@ -153,15 +182,4 @@ public class ImporterTest extends BaseServiceTest {
         Allergy allergy = ibdManager.getAllergy("9876543210");
         assertNotNull("No allergy information was parsed", allergy);
     }
-
-    @Test
-    public void testUktUpdater() {
-        // todo - we need a sample csv file
-    }
-
-    @Test
-    public void testUktExport() {
-        // todo - export some ukt patients we have imported
-    }
-
 }

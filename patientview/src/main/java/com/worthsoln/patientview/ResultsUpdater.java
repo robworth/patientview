@@ -132,10 +132,7 @@ public class ResultsUpdater {
     }
 
     private void deleteMyIbd(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM ibd_myibd WHERE nhsno = ? AND unitcode = ? ";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getIbdManager().deleteMyIbd(nhsno, unitcode);
     }
 
     private void insertMyIbd(MyIbd myIbd) {
@@ -143,6 +140,7 @@ public class ResultsUpdater {
     }
 
     private void updatePatientDetails(Patient patient) {
+        LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getCentreCode());
         LegacySpringUtils.getPatientManager().save(patient);
     }
 

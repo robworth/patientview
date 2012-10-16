@@ -37,6 +37,11 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     @Override
+    public void delete(String nhsno, String unitcode) {
+        patientDao.delete(nhsno, unitcode);
+    }
+
+    @Override
     public List<Patient> get(String unitCode) {
         return patientDao.get(unitCode);
     }
