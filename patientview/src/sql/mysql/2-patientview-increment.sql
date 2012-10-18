@@ -778,6 +778,53 @@ insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, 
 insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Eating a healthy diet','careplanLinks','Eating a healthy diet','','2');
 insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, `tenancy_id`) values('Travelling','careplanLinks','Travelling','','2');
 
+/**
+IBD Import changes
+ */
+ALTER TABLE `patient`
+  CHANGE `centreCode` `centreCode` VARCHAR(20) DEFAULT '' NOT NULL;
+  ADD COLUMN `address4` VARCHAR(255) NULL AFTER `otherConditions`,
+  ADD COLUMN `bloodgroup` VARCHAR(255) NULL AFTER `address4`,
+  ADD COLUMN `bmdexam` DATETIME NULL AFTER `bloodgroup`,
+  ADD COLUMN `gpemail` VARCHAR(255) NULL AFTER `bmdexam`,
+  ADD COLUMN `diagnosisDate` DATETIME NULL AFTER `gpemail`;
 
+ALTER TABLE `ibd_myibd`
+  CHANGE `nhsno` `nhsno` VARCHAR(10) NOT NULL,
+  ADD COLUMN `eiManifestations` VARCHAR(255) NULL AFTER `weight`,
+  ADD COLUMN `unitcode` VARCHAR(20) NULL AFTER `eiManifestations`;
+
+CREATE TABLE `pv_allergy` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(10) NOT NULL,
+  `unitcode` varchar(20) NOT NULL,
+  `confidenceLevel` varchar(255) default NULL,
+  `description` varchar(255) default NULL,
+  `infoSource` varchar(255) default NULL,
+  `reaction` varchar(255) default NULL,
+  `recordedDate` datetime default NULL,
+  `status` varchar(255) default NULL,
+  `substance` varchar(255) default NULL,
+  `typeCode` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `pv_diagnostic` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(10) NOT NULL,
+  `unitcode` varchar(20) NOT NULL,
+  `date` datetime NOT NULL,
+  `diagnostic` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `pv_procedure` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `nhsno` varchar(10) NOT NULL,
+  `unitcode` varchar(20) NOT NULL,
+  `date` datetime NOT NULL,
+  `proceduretext` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+);
 
 
