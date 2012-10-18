@@ -377,23 +377,21 @@ DROP TABLE IF EXISTS `ibd_myibd`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ibd_myibd` (
   `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(10) NOT NULL,
-  `unitcode` varchar(20) NOT NULL,
   `body_part_affected_id` bigint(20) NOT NULL,
   `diagnosis_id` bigint(20) NOT NULL,
   `disease_extent_id` bigint(20) NOT NULL,
-  `eiManifestations` varchar(255) default NULL,
-  `family_history_id` bigint(20) NOT NULL,
   `namedConsultant` text,
+  `nhsno` varchar(10) NOT NULL,
   `nurses` text,
+  `yearForSurveillanceColonoscopy` datetime default NULL,
+  `yearOfDiagnosis` datetime NOT NULL,
+  `family_history_id` bigint(20) NOT NULL,
   `smoking_id` bigint(20) NOT NULL,
   `surgery_id` bigint(20) NOT NULL,
   `vaccination_record_id` bigint(20) NOT NULL,
-  `weight` double default NULL,
-  `yearForSurveillanceColonoscopy` datetime default NULL,
-  `yearOfDiagnosis` datetime NOT NULL,
+  `weight` double NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1256,92 +1254,34 @@ DROP TABLE IF EXISTS `patient`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `patient` (
   `id` bigint(20) NOT NULL auto_increment,
-  `address1` varchar(255) default NULL,
-  `address2` varchar(255) default NULL,
-  `address3` varchar(255) default NULL,
-  `address4` varchar(255) default NULL,
-  `bloodgroup` varchar(255) default NULL,
-  `bmdexam` datetime default NULL,
-  `centreCode` varchar(20) NOT NULL,
-  `colonoscopysurveillance` datetime default NULL,
-  `dateofbirth` varchar(255) default NULL,
-  `diagnosis` varchar(255) default NULL,
-  `diagnosisDate` datetime default NULL,
-  `forename` varchar(255) default NULL,
-  `gpaddress1` varchar(255) default NULL,
-  `gpaddress2` varchar(255) default NULL,
-  `gpaddress3` varchar(255) default NULL,
-  `gpemail` varchar(255) default NULL,
-  `gpname` varchar(255) default NULL,
-  `gppostcode` varchar(255) default NULL,
-  `gptelephone` varchar(255) default NULL,
-  `hospitalnumber` varchar(255) default NULL,
-  `ibdnurse` varchar(255) default NULL,
-  `mobile` varchar(255) default NULL,
-  `namedconsultant` varchar(255) default NULL,
-  `nhsno` varchar(255) NOT NULL,
+  `nhsno` varchar(100) NOT NULL default '',
+  `surname` varchar(100) default '',
+  `forename` varchar(100) default '',
+  `dateofbirth` varchar(100) default '',
+  `sex` varchar(100) default '',
+  `address1` varchar(100) default '',
+  `address2` varchar(100) default '',
+  `address3` varchar(100) default '',
+  `postcode` varchar(100) default '',
+  `telephone1` varchar(100) default '',
+  `telephone2` varchar(100) default '',
+  `mobile` varchar(100) default '',
+  `centreCode` varchar(20) NOT NULL default '',
+  `diagnosis` varchar(100) default '',
+  `treatment` varchar(100) default '',
+  `transplantstatus` varchar(100) default '',
+  `hospitalnumber` varchar(100) default '',
+  `gpname` varchar(100) default '',
+  `gpaddress1` varchar(100) default '',
+  `gpaddress2` varchar(100) default '',
+  `gpaddress3` varchar(100) default '',
+  `gppostcode` varchar(100) default '',
+  `gptelephone` varchar(100) default '',
   `otherConditions` text,
-  `postcode` varchar(255) default NULL,
-  `sex` varchar(255) default NULL,
-  `surname` varchar(255) default NULL,
-  `telephone1` varchar(255) default NULL,
-  `telephone2` varchar(255) default NULL,
-  `transplantstatus` varchar(255) default NULL,
-  `treatment` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `nhsno` (`nhsno`,`centreCode`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `pv_allergy`
---
-
-DROP TABLE IF EXISTS `pv_allergy`;
-
-CREATE TABLE `pv_allergy` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(10) NOT NULL,
-  `unitcode` varchar(20) NOT NULL,
-  `confidenceLevel` varchar(255) default NULL,
-  `description` varchar(255) default NULL,
-  `infoSource` varchar(255) default NULL,
-  `reaction` varchar(255) default NULL,
-  `recordedDate` datetime default NULL,
-  `status` varchar(255) default NULL,
-  `substance` varchar(255) default NULL,
-  `typeCode` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Table structure for table `pv_diagnostic`
---
-
-DROP TABLE IF EXISTS `pv_diagnostic`;
-
-CREATE TABLE `pv_diagnostic` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(10) NOT NULL,
-  `unitcode` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `diagnostic` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Table structure for table `pv_procedure`
---
-
-DROP TABLE IF EXISTS `pv_procedure`;
-
-CREATE TABLE `pv_procedure` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(255) NOT NULL,
-  `unitcode` varchar(255) NOT NULL,
-  `date` datetime NOT NULL,
-  `proceduretext` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `rdc_genetic_test`
