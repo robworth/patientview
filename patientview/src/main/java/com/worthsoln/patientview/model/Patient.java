@@ -72,13 +72,7 @@ public class Patient extends BaseModel {
     @Column
     private String gpemail;
     @Column
-    private Date colonoscopysurveillance;
-    @Column
     private Date bmdexam;
-    @Column
-    private String namedconsultant;
-    @Column
-    private String ibdnurse;
     @Column
     private String bloodgroup;
 
@@ -369,36 +363,12 @@ public class Patient extends BaseModel {
         this.otherConditions = otherConditions;
     }
 
-    public Date getColonoscopysurveillance() {
-        return colonoscopysurveillance;
-    }
-
-    public void setColonoscopysurveillance(Date colonoscopysurveillance) {
-        this.colonoscopysurveillance = colonoscopysurveillance;
-    }
-
     public Date getBmdexam() {
         return bmdexam;
     }
 
     public void setBmdexam(Date bmdexam) {
         this.bmdexam = bmdexam;
-    }
-
-    public String getNamedconsultant() {
-        return namedconsultant;
-    }
-
-    public void setNamedconsultant(String namedconsultant) {
-        this.namedconsultant = namedconsultant;
-    }
-
-    public String getIbdnurse() {
-        return ibdnurse;
-    }
-
-    public void setIbdnurse(String ibdnurse) {
-        this.ibdnurse = ibdnurse;
     }
 
     public String getBloodgroup() {
