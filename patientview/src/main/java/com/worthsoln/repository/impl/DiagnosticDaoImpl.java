@@ -7,6 +7,7 @@ import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.DiagnosticDao;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -20,6 +21,21 @@ import java.util.Set;
  */
 @Repository(value = "diagnosticDao")
 public class DiagnosticDaoImpl extends AbstractHibernateDAO<Diagnostic> implements DiagnosticDao {
+
+    @Override
+    public Diagnostic get(String nhsno) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Diagnostic> criteria = builder.createQuery(Diagnostic.class);
+        Root<Diagnostic> diagnosticRoot = criteria.from(Diagnostic.class);
+
+        criteria.where(builder.equal(diagnosticRoot.get(Diagnostic_.nhsno), nhsno));
+
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (NonUniqueResultException ex) {
+            return null;
+        }
+    }
 
     @Override
     public List<Diagnostic> get(Set<String> nhsNos, DiagnosticType diagnosticType) {

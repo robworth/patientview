@@ -27,6 +27,11 @@ public class DiagnosticManagerImpl implements DiagnosticManager {
     private UserManager userManager;
 
     @Override
+    public Diagnostic get(String nhsno) {
+        return diagnosticDao.get(nhsno);
+    }
+
+    @Override
     public void save(Diagnostic diagnostic) {
         diagnosticDao.save(diagnostic);
     }

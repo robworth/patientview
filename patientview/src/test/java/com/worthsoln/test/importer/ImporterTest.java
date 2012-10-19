@@ -2,15 +2,16 @@ package com.worthsoln.test.importer;
 
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.ibd.model.Allergy;
-import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.patientview.model.Centre;
+import com.worthsoln.patientview.model.Diagnostic;
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.model.Medicine;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.service.CentreManager;
+import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.LetterManager;
 import com.worthsoln.service.MedicineManager;
 import com.worthsoln.service.PatientManager;
@@ -48,6 +49,9 @@ public class ImporterTest extends BaseServiceTest {
 
     @Inject
     private LetterManager letterManager;
+
+    @Inject
+    private DiagnosticManager diagnosticManager;
 
     @Inject
     private MedicineManager medicineManager;
@@ -173,8 +177,8 @@ public class ImporterTest extends BaseServiceTest {
         MyIbd myIbd = ibdManager.getMyIbd("9876543210");
         assertNotNull("No MyIbd information was parsed", myIbd);
 
-        IbdDiagnostic diagnostic = ibdManager.getIbdDiagnostic("9876543210");
-        assertNotNull("No IbdDiagnostic information was parsed", diagnostic);
+        Diagnostic diagnostic = diagnosticManager.get("9876543210");
+        assertNotNull("No diagnostic information was parsed", diagnostic);
 
         Procedure procedure = ibdManager.getProcedure("9876543210");
         assertNotNull("No procedure information was parsed", procedure);

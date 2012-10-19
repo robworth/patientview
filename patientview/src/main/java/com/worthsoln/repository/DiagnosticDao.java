@@ -16,6 +16,8 @@ public interface DiagnosticDao {
 
     Diagnostic get(Long id);
 
+    Diagnostic get(String nhsno);
+
     void save(Diagnostic diagnostic);
 
     List<Diagnostic> get(Set<String> nhsNos, DiagnosticType diagnosticType);

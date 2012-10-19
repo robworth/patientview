@@ -2,13 +2,14 @@ package com.worthsoln.patientview.parser;
 
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.Allergy;
-import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.ibd.model.enums.*;
 import com.worthsoln.patientview.TestResultDateRange;
 import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.model.Diagnosis;
+import com.worthsoln.patientview.model.enums.DiagnosticType;
+import com.worthsoln.patientview.utils.TimestampUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
@@ -29,7 +30,7 @@ public class ResultParser {
     private ArrayList<Letter> letters = new ArrayList<Letter>();
     private ArrayList<Diagnosis> otherDiagnoses = new ArrayList<Diagnosis>();
     private ArrayList<Medicine> medicines = new ArrayList<Medicine>();
-    private ArrayList<IbdDiagnostic> diagnostics = new ArrayList<IbdDiagnostic>();
+    private ArrayList<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
     private ArrayList<Procedure> procedures = new ArrayList<Procedure>();
     private ArrayList<Allergy> allergies = new ArrayList<Allergy>();
     private Map xmlData = new HashMap();
@@ -205,25 +206,36 @@ public class ResultParser {
         NodeList diagnosticsNodes = doc.getElementsByTagName("diagnostic");
         for (int i = 0; i < diagnosticsNodes.getLength(); i++) {
             Node diagnosticNode = diagnosticsNodes.item(i);
-            IbdDiagnostic ibdDiagnostic = new IbdDiagnostic();
-            ibdDiagnostic.setNhsno(getData("nhsno"));
-            ibdDiagnostic.setUnitcode(getData("centrecode"));
+
+            Diagnostic diagnostic = new Diagnostic();
+            diagnostic.setNhsno(getData("nhsno"));
+            diagnostic.setUnitcode(getData("centrecode"));
+
             NodeList diagnosticsDetailNodes = diagnosticNode.getChildNodes();
             for (int j = 0; j < diagnosticsDetailNodes.getLength(); j++) {
                 try {
                     Node diagnosticDetailNode = diagnosticsDetailNodes.item(j);
                     if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (diagnosticDetailNode.getNodeName().equals("diagnostics"))) {
-                        ibdDiagnostic.setDiagnostic(diagnosticNode.getFirstChild().getNodeValue());
+                            (diagnosticDetailNode.getNodeName().equals("diagnosticname"))) {
+                        diagnostic.setDescription(diagnosticDetailNode.getFirstChild().getNodeValue());
                     } else if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
                             (diagnosticDetailNode.getNodeName().equals("diagnosticdate"))) {
-                        ibdDiagnostic.setDate(diagnosticDetailNode.getFirstChild().getNodeValue());
+                        diagnostic.setDatestamp(TimestampUtils.createTimestamp(
+                                diagnosticDetailNode.getFirstChild().getNodeValue()));
+                    } else if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
+                            (diagnosticDetailNode.getNodeName().equals("diagnostictype"))) {
+                        diagnostic.setDiagnosticType(DiagnosticType.getDiagnosticType(
+                                diagnosticDetailNode.getFirstChild().getNodeValue()));
                     }
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
-            diagnostics.add(ibdDiagnostic);
+
+            // TODO: still waiting on rob to confirm types - only store if it has a diagnostic type
+            if (diagnostic.getDiagnosticType() != null) {
+                diagnostics.add(diagnostic);
+            }
         }
     }
 
@@ -427,7 +439,7 @@ public class ResultParser {
         return medicines;
     }
 
-    public ArrayList<IbdDiagnostic> getDiagnostics() {
+    public ArrayList<Diagnostic> getDiagnostics() {
         return diagnostics;
     }
 

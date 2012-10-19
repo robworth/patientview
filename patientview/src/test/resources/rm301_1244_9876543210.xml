@@ -113,8 +113,9 @@
         </letterdetails>
         <diagnostics>
             <diagnostic>
-                <diagnostics>allergysubstance</diagnostics>
+                <diagnosticname>allergysubstance</diagnosticname>
                 <diagnosticdate>2012-01-24T11:24:06</diagnosticdate>
+                <diagnostictype>Imaging</diagnostictype>
             </diagnostic>
         </diagnostics>
         <procedures>

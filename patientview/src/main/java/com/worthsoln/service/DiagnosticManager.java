@@ -13,6 +13,8 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface DiagnosticManager {
 
+    Diagnostic get(String nhsno);
+
     void save(Diagnostic diagnostic);
 
     List<Diagnostic> getForLoggedInUser(DiagnosticType diagnosticType);

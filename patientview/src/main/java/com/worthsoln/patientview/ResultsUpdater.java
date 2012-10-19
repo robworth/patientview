@@ -3,7 +3,6 @@ package com.worthsoln.patientview;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.ibd.model.Allergy;
-import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.patientview.logging.AddLog;
@@ -90,16 +89,16 @@ public class ResultsUpdater {
     }
 
     private void deleteDiagnostics(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM pv_diagnostic WHERE nhsno = ? AND unitcode = ?";
+        String deleteSql = "DELETE FROM diagnostic WHERE nhsno = ? AND unitcode = ?";
         Object[] params = new Object[]{nhsno, unitcode};
         DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
         dao.doExecute(query);
     }
 
-    private void insertDiagnostics(Collection<IbdDiagnostic> ibdDiagnostics) {
-        for (Iterator iterator = ibdDiagnostics.iterator(); iterator.hasNext(); ) {
-            IbdDiagnostic ibdDiagnostic = (IbdDiagnostic) iterator.next();
-            LegacySpringUtils.getIbdManager().saveDiagnostic(ibdDiagnostic);
+    private void insertDiagnostics(Collection<Diagnostic> diagnostics) {
+        for (Iterator iterator = diagnostics.iterator(); iterator.hasNext(); ) {
+            Diagnostic diagnostic = (Diagnostic) iterator.next();
+            LegacySpringUtils.getDiagnosticManager().save(diagnostic);
         }
     }
 

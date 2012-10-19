@@ -25,6 +25,16 @@ public enum DiagnosticType {
         return null;
     }
 
+    public static DiagnosticType getDiagnosticType(String s) {
+        for (DiagnosticType type : DiagnosticType.values()) {
+            if (type.getName().equalsIgnoreCase(s.trim())) {
+                return type;
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }

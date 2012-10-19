@@ -782,7 +782,7 @@ insert into `edtacode` (`edtaCode`, `linkType`, `description`, `medicalLink01`, 
 IBD Import changes
  */
 ALTER TABLE `patient`
-  CHANGE `centreCode` `centreCode` VARCHAR(20) DEFAULT '' NOT NULL;
+  CHANGE `centreCode` `centreCode` VARCHAR(20) DEFAULT '' NOT NULL,
   ADD COLUMN `address4` VARCHAR(255) NULL AFTER `otherConditions`,
   ADD COLUMN `bloodgroup` VARCHAR(255) NULL AFTER `address4`,
   ADD COLUMN `bmdexam` DATETIME NULL AFTER `bloodgroup`,
@@ -806,15 +806,6 @@ CREATE TABLE `pv_allergy` (
   `status` varchar(255) default NULL,
   `substance` varchar(255) default NULL,
   `typeCode` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `pv_diagnostic` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(10) NOT NULL,
-  `unitcode` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `diagnostic` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 );
 

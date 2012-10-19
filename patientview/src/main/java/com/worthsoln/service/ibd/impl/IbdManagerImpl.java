@@ -2,7 +2,6 @@ package com.worthsoln.service.ibd.impl;
 
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.CarePlan;
-import com.worthsoln.ibd.model.IbdDiagnostic;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
 import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.ibd.model.enums.Diagnosis;
@@ -21,7 +20,6 @@ import com.worthsoln.repository.ibd.AllergyDao;
 import com.worthsoln.repository.ibd.CarePlanDao;
 import com.worthsoln.repository.ibd.ColitisSymptomsDao;
 import com.worthsoln.repository.ibd.CrohnsSymptomsDao;
-import com.worthsoln.repository.ibd.IbdDiagnosticDao;
 import com.worthsoln.repository.ibd.MedicationDao;
 import com.worthsoln.repository.ibd.MedicationTypeDao;
 import com.worthsoln.repository.ibd.MyIbdDao;
@@ -74,9 +72,6 @@ public class IbdManagerImpl implements IbdManager {
 
     @Inject
     private ColitisSymptomsDao colitisSymptomsDao;
-
-    @Inject
-    private IbdDiagnosticDao ibdDiagnosticDao;
 
     @Inject
     private ProcedureDao procedureDao;
@@ -356,16 +351,6 @@ public class IbdManagerImpl implements IbdManager {
         } else {
             return null;
         }
-    }
-
-    @Override
-    public void saveDiagnostic(IbdDiagnostic ibdDiagnostic) {
-        ibdDiagnosticDao.save(ibdDiagnostic);
-    }
-
-    @Override
-    public IbdDiagnostic getIbdDiagnostic(String nhsno) {
-        return ibdDiagnosticDao.getDiagnostic(nhsno);
     }
 
     @Override
