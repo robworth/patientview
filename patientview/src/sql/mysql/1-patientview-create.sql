@@ -376,22 +376,22 @@ DROP TABLE IF EXISTS `ibd_myibd`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ibd_myibd` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `body_part_affected_id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `body_part_affected_id` bigint(20) DEFAULT NULL,
   `diagnosis_id` bigint(20) NOT NULL,
-  `disease_extent_id` bigint(20) NOT NULL,
+  `disease_extent_id` bigint(20) DEFAULT NULL,
   `namedConsultant` text,
-  `nhsno` varchar(255) NOT NULL,
+  `nhsno` varchar(10) NOT NULL,
   `nurses` text,
-  `yearForSurveillanceColonoscopy` datetime default NULL,
-  `yearOfDiagnosis` datetime NOT NULL,
-  `family_history_id` bigint(20) NOT NULL,
-  `smoking_id` bigint(20) NOT NULL,
-  `surgery_id` bigint(20) NOT NULL,
-  `vaccination_record_id` bigint(20) NOT NULL,
-  `weight` double NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `yearForSurveillanceColonoscopy` datetime DEFAULT NULL,
+  `yearOfDiagnosis` datetime DEFAULT NULL,
+  `family_history_id` bigint(20) DEFAULT NULL,
+  `smoking_id` bigint(20) DEFAULT NULL,
+  `surgery_id` bigint(20) DEFAULT NULL,
+  `vaccination_record_id` bigint(20) DEFAULT NULL,
+  `weight` double DEFAULT NULL
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

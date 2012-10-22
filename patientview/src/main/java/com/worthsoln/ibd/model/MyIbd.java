@@ -23,7 +23,7 @@ public class MyIbd extends BaseModel {
     @Transient
     private DiseaseExtent diseaseExtent;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date yearOfDiagnosis;
 
     @Transient
@@ -102,7 +102,7 @@ public class MyIbd extends BaseModel {
     }
 
     @Access(AccessType.PROPERTY)
-    @Column(name = "disease_extent_id", nullable = false)
+    @Column(name = "disease_extent_id", nullable = true)
     public long getDiseaseExtentId() {
         if (diseaseExtent != null) {
             return diseaseExtent.getId();
@@ -172,7 +172,7 @@ public class MyIbd extends BaseModel {
     }
 
     @Access(AccessType.PROPERTY)
-    @Column(name = "body_part_affected_id", nullable = false)
+    @Column(name = "body_part_affected_id", nullable = true)
     public long getBodyPartAffectedId() {
         if (bodyPartAffected != null) {
             return bodyPartAffected.getId();
@@ -234,7 +234,7 @@ public class MyIbd extends BaseModel {
     }
 
     @Access(AccessType.PROPERTY)
-    @Column(name = "family_history_id", nullable = false)
+    @Column(name = "family_history_id", nullable = true)
     public long getFamilyHistoryId() {
         if (familyHistory != null) {
             return familyHistory.getId();
@@ -256,7 +256,7 @@ public class MyIbd extends BaseModel {
     }
 
     @Access(AccessType.PROPERTY)
-    @Column(name = "smoking_id", nullable = false)
+    @Column(name = "smoking_id", nullable = true)
     public long getSmokingId() {
         if (smoking != null) {
             return smoking.getId();
@@ -278,7 +278,7 @@ public class MyIbd extends BaseModel {
     }
 
     @Access(AccessType.PROPERTY)
-    @Column(name = "surgery_id", nullable = false)
+    @Column(name = "surgery_id", nullable = true)
     public long getSurgeryId() {
         if (surgery != null) {
             return surgery.getId();
@@ -300,7 +300,7 @@ public class MyIbd extends BaseModel {
     }
 
     @Access(AccessType.PROPERTY)
-    @Column(name = "vaccination_record_id", nullable = false)
+    @Column(name = "vaccination_record_id", nullable = true)
     public long getVaccinationRecordId() {
         if (vaccinationRecord != null) {
             return vaccinationRecord.getId();
