@@ -329,19 +329,21 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void addMyIbdLinks(MyIbd myIbd, HttpServletRequest request) {
-        for (EdtaCode edtaCode : LegacySpringUtils.getEdtaCodeManager().get(Ibd.MY_IBD_LINKS_TYPE)) {
-            if (MY_IBD_QUESTIONS_MAP.containsKey(edtaCode.getEdtaCode())) {
-                String link = null;
+        if (myIbd != null) {
+            for (EdtaCode edtaCode : LegacySpringUtils.getEdtaCodeManager().get(Ibd.MY_IBD_LINKS_TYPE)) {
+                if (MY_IBD_QUESTIONS_MAP.containsKey(edtaCode.getEdtaCode())) {
+                    String link = null;
 
-                if (myIbd.getDiagnosis().equals(Diagnosis.CROHNS)) {
-                    link = edtaCode.getMedicalLink01();
-                } else if (myIbd.getDiagnosis().equals(Diagnosis.COLITIS_UNSPECIFIED)
-                        || myIbd.getDiagnosis().equals(Diagnosis.ULCERATIVE_COLITIS)) {
-                    link = edtaCode.getMedicalLink02();
-                }
+                    if (myIbd.getDiagnosis().equals(Diagnosis.CROHNS)) {
+                        link = edtaCode.getMedicalLink01();
+                    } else if (myIbd.getDiagnosis().equals(Diagnosis.COLITIS_UNSPECIFIED)
+                            || myIbd.getDiagnosis().equals(Diagnosis.ULCERATIVE_COLITIS)) {
+                        link = edtaCode.getMedicalLink02();
+                    }
 
-                if (link != null && link.length() > 0) {
-                    request.setAttribute(MY_IBD_QUESTIONS_MAP.get(edtaCode.getEdtaCode()), link);
+                    if (link != null && link.length() > 0) {
+                        request.setAttribute(MY_IBD_QUESTIONS_MAP.get(edtaCode.getEdtaCode()), link);
+                    }
                 }
             }
         }
