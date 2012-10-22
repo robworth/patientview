@@ -21,6 +21,7 @@ public class LogonUtils {
     public static final String USER_ALREADY_EXISTS = "userAlreadyExists";
     public static final String NHSNO_ALREADY_EXISTS = "nhsnoAlreadyExists";
     public static final String PATIENTS_WITH_SAME_NHSNO = "nhsnoAlreadyExists";
+    public static final String INVALID_NHSNO = "invalidNhsno";
     public static final String PATIENT_ALREADY_IN_UNIT = "patientAlreadyInUnit";
 
     public static ActionForward logonChecks(ActionMapping mapping, HttpServletRequest request, String defaultForward) {

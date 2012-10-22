@@ -69,6 +69,7 @@
       <form-property name="accountlocked" type="java.lang.String"/>
       <form-property name="showgps" type="java.lang.String"/>
       <form-property name="screenname" type="java.lang.String"/>
+      <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
     </form-bean>
     <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="unitcode" type="java.lang.String"/>
