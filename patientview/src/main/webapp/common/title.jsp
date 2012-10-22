@@ -18,13 +18,20 @@
         <div class="nav-collapse">
             <ul class="nav pull-right">
                 <%
-                    if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
+                if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
                 %>
-                <li class="pull-right "><div class="navText">Logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
-                <li><html:link action="logout">Logout</html:link></li>
-                <jsp:include page="include/tenancy_switcher.jsp"/>
-                <%
+                    <li class="pull-right "><div class="navText">Logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
+                    <%
+                    if (LegacySpringUtils.getSecurityUserManager().isRolePresent("SUPERADMIN", "UNITADMIN", "UNITSTAFF")) {
+                    %>
+                        <li><html:link action="logged_in">Back to Admin Area</html:link></li>
+                    <%
                     }
+                    %>
+                    <li><html:link action="logout">Logout</html:link></li>
+                    <jsp:include page="include/tenancy_switcher.jsp"/>
+                <%
+                }
                 %>
                 <logic:present tenancy="ibd">
                     <li><html:link action="/ibd-help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
@@ -35,7 +42,7 @@
             </ul>
 
             <%
-                    if (!LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
+                if (!LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
             %>
                 <form class="navbar-form pull-right" action="j_security_check" method="POST">
                     <input type="text" class="span2" name="j_username" placeholder="Username">
