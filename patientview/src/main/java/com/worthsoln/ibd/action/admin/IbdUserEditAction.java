@@ -49,21 +49,26 @@ public class IbdUserEditAction extends BaseAction {
         }
 
         MyIbd myIbd = getIbdManager().getMyIbd(nhsNo);
-        Diagnosis diagnosis = myIbd.getDiagnosis();
 
-        MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
-        dynaForm.set(Ibd.SEVERE_LEVEL_PARAM, myIbdSevereLevel.getLevel(diagnosis));
-        dynaForm.set(Ibd.SEVERE_TREATMENT_PARAM, myIbdSevereLevel.getTreatment());
+        if (myIbd != null) {
+            request.setAttribute(Ibd.MY_IBD_PARAM, myIbd);
 
-        MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
-        dynaForm.set(Ibd.MODERATE_LEVEL_PARAM, myIbdModerateLevel.getLevel(diagnosis));
-        dynaForm.set(Ibd.MODERATE_TREATMENT_PARAM, myIbdModerateLevel.getTreatment());
+            Diagnosis diagnosis = myIbd.getDiagnosis();
 
-        MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
-        dynaForm.set(Ibd.MILD_LEVEL_PARAM, myIbdMildLevel.getLevel(diagnosis));
-        dynaForm.set(Ibd.MILD_TREATMENT_PARAM, myIbdMildLevel.getTreatment());
+            MyIbdSeverityLevel myIbdSevereLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.SEVERE);
+            dynaForm.set(Ibd.SEVERE_LEVEL_PARAM, myIbdSevereLevel.getLevel(diagnosis));
+            dynaForm.set(Ibd.SEVERE_TREATMENT_PARAM, myIbdSevereLevel.getTreatment());
 
-        request.setAttribute(Ibd.DIAGNOSIS_ID_PARAM, myIbd.getDiagnosis().getId());
+            MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
+            dynaForm.set(Ibd.MODERATE_LEVEL_PARAM, myIbdModerateLevel.getLevel(diagnosis));
+            dynaForm.set(Ibd.MODERATE_TREATMENT_PARAM, myIbdModerateLevel.getTreatment());
+
+            MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
+            dynaForm.set(Ibd.MILD_LEVEL_PARAM, myIbdMildLevel.getLevel(diagnosis));
+            dynaForm.set(Ibd.MILD_TREATMENT_PARAM, myIbdMildLevel.getTreatment());
+
+            request.setAttribute(Ibd.DIAGNOSIS_ID_PARAM, myIbd.getDiagnosis().getId());
+        }
 
         return mapping.findForward(INPUT);
     }
