@@ -21,13 +21,9 @@
                 if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
                 %>
                     <li class="pull-right "><div class="navText">Logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
-                    <%
-                    if (LegacySpringUtils.getSecurityUserManager().isRolePresent("SUPERADMIN", "UNITADMIN", "UNITSTAFF")) {
-                    %>
+                    <logic:present role="superadmin,unitadmin,unitstaff">
                         <li><html:link action="logged_in">Back to Admin Area</html:link></li>
-                    <%
-                    }
-                    %>
+                    </logic:present>
                     <li><html:link action="logout">Logout</html:link></li>
                     <jsp:include page="include/tenancy_switcher.jsp"/>
                 <%
