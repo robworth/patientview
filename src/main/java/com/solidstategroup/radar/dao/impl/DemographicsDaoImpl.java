@@ -401,10 +401,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             String genericDiagnosisId = resultSet.getString("genericDiagnosis");
-            if (genericDiagnosisId != null) {
-                if (!genericDiagnosisId.isEmpty()) {
-                    demographics.setGenericDiagnosis(genericDiagnosisDao.getById(genericDiagnosisId));
-                }
+            if (StringUtils.isNotBlank(genericDiagnosisId) && StringUtils.isNotBlank(diseaseGroupId)) {
+                demographics.setGenericDiagnosis(genericDiagnosisDao.get(genericDiagnosisId, diseaseGroupId));
             }
 
             demographics.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));

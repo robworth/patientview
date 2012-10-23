@@ -11,6 +11,6 @@ public interface GenericDiagnosisManager {
 
     List<GenericDiagnosis> getByDiseaseGroup(DiseaseGroup diseaseGroup);
 
-    GenericDiagnosis getById(String id);
+    GenericDiagnosis get(String prdCode, String workingGroup);
 
 }

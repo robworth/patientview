@@ -1,7 +1,5 @@
 package com.solidstategroup.radar.test.dao.generic;
 
-
-import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.dao.generic.GenericDiagnosisDao;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.generic.GenericDiagnosis;
@@ -42,7 +40,7 @@ public class GenericDiagnosisDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetById() throws Exception {
-        GenericDiagnosis genericDiagnosis = genericDiagnosisDao.getById("code1");
+        GenericDiagnosis genericDiagnosis = genericDiagnosisDao.get("code1", "3");
         Assert.assertEquals("Returned generic diagnosis has wrong id", "code1", genericDiagnosis.getId());
     }
 }

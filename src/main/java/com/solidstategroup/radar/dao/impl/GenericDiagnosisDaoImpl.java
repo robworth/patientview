@@ -33,16 +33,18 @@ public class GenericDiagnosisDaoImpl extends BaseDaoImpl implements GenericDiagn
         return genericDiagnosises;
     }
 
-    public GenericDiagnosis getById(String id) {
+    public GenericDiagnosis get(String prdCode, String workingGroup) {
         try {
-            return jdbcTemplate.queryForObject("SELECT DISTINCT * FROM rdr_prd_code, rdr_diagnosis_mapping" +
-                    " WHERE rdr_prd_code.ERA_EDTA_PRD_code = rdr_diagnosis_mapping.PRDCode" +
-                    " AND ERA_EDTA_PRD_code = ?", new Object[]{id}, new GenericDiagnosisRowMapper());
+            return jdbcTemplate.queryForObject(
+                    "SELECT * " +
+                    "FROM RDR_PRD_CODE, RDR_DIAGNOSIS_MAPPING " +
+                    "WHERE RDR_PRD_CODE.ERA_EDTA_PRD_code = RDR_DIAGNOSIS_MAPPING.PRDCode " +
+                    "AND  RDR_DIAGNOSIS_MAPPING.PRDCode = ? AND RDR_DIAGNOSIS_MAPPING.workingGroup = ?",
+                    new Object[]{prdCode, workingGroup}, new GenericDiagnosisRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.error("generic diagnosis with id " + id + "not found" + e);
+            LOGGER.error("GenericDiagnosis with prdCode {} and workingGroup {} was not found", prdCode, workingGroup);
             return null;
         }
-
     }
 
     private class GenericDiagnosisRowMapper implements RowMapper<GenericDiagnosis> {
