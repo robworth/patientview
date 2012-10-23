@@ -10,10 +10,6 @@
 
 <html:errors />
 
-<logic:present name="invalidNhsno" >
-  <p><font color="red">The NHS number <b><bean:write name="invalidNhsno" /></b> is invalid.</font></p>
-</logic:present>
-
 <logic:present name="userAlreadyExists" >
   <p><font color="red">The username <b><bean:write name="userAlreadyExists" /></b> you entered is already being used by another user. Please pick another.</font></p>
 </logic:present>
@@ -49,10 +45,6 @@
       <logic:notPresent name="nhsnoAlreadyExists" >
         <html:hidden property="overrideDuplicateNhsno" value="" />
       </logic:notPresent>
-      <logic:present name="invalidNhsno" >
-        <td><b>Add patient with invalid NHS number</b></td>
-        <td><html:checkbox property="overrideInvalidNhsno"/></td>
-      </logic:present>
     </tr>
     <tr>
       <td><b>Email Address</b></td>
