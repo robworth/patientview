@@ -71,7 +71,7 @@ public class SplashPageManagerImpl implements SplashPageManager {
         List<String> unitCodes = null;
 
         if (userManager.getLoggedInUserRole().equals("unitadmin")) {
-            unitCodes = unitManager.getUsersUnitCodes();
+            unitCodes = unitManager.getUsersUnitCodes(userManager.getLoggedInUser());
         }
 
         return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInTenancy());
@@ -80,7 +80,7 @@ public class SplashPageManagerImpl implements SplashPageManager {
     @Override
     public List<SplashPage> getAllForPatient(User user) {
 
-        List<String> unitCodes = unitManager.getUsersUnitCodes();
+        List<String> unitCodes = unitManager.getUsersUnitCodes(user);
         unitCodes.add("ALL");
 
         return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInTenancy());

@@ -1,6 +1,7 @@
 package com.worthsoln.service;
 
 import com.worthsoln.patientview.model.Diagnostic;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.enums.DiagnosticType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,5 +18,5 @@ public interface DiagnosticManager {
 
     void save(Diagnostic diagnostic);
 
-    List<Diagnostic> getForLoggedInUser(DiagnosticType diagnosticType);
+    List<Diagnostic> getForUser(User user, DiagnosticType diagnosticType);
 }

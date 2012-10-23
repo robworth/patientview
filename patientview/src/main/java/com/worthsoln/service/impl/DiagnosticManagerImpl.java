@@ -37,10 +37,8 @@ public class DiagnosticManagerImpl implements DiagnosticManager {
     }
 
     @Override
-    public List<Diagnostic> getForLoggedInUser(DiagnosticType diagnosticType) {
-
+    public List<Diagnostic> getForUser(User user, DiagnosticType diagnosticType) {
         // get all nhs nos this user is known as for this tenancy to get there diagnostic results
-        User user = userManager.getLoggedInUser();
         if (user != null) {
             List<UserMapping> mappings = userManager.getUserMappings(user.getUsername());
             Set<String> nhsNos = new HashSet<String>();

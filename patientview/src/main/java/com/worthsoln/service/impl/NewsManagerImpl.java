@@ -76,12 +76,12 @@ public class NewsManagerImpl implements NewsManager {
 
             } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
 
-                List<String> unitCodes = unitManager.getUsersUnitCodes();
+                List<String> unitCodes = unitManager.getUsersUnitCodes(user);
                 news = newsDao.getAdminNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
 
             } else if ("patient".equals(userType)) {
 
-                List<String> unitCodes = unitManager.getUsersUnitCodes();
+                List<String> unitCodes = unitManager.getUsersUnitCodes(user);
                 news = newsDao.getPatientNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
             }
         }
@@ -109,7 +109,7 @@ public class NewsManagerImpl implements NewsManager {
 
             } else if ("unitadmin".equals(userType)) {
 
-                List<String> unitCodes = unitManager.getUsersUnitCodes();
+                List<String> unitCodes = unitManager.getUsersUnitCodes(user);
                 news = newsDao.getAdminEditNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
             }
         }

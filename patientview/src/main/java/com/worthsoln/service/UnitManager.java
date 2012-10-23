@@ -2,6 +2,7 @@ package com.worthsoln.service;
 
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UnitStat;
+import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +27,11 @@ public interface UnitManager {
 
     List<Unit> getLoggedInUsersUnits();
 
+    List<Unit> getUsersUnits(User user);
+
     List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes);
 
-    List<String> getUsersUnitCodes();
+    List<String> getUsersUnitCodes(User user);
 
     List<UnitStat> getPatientCountsForUnit(String unitCode);
 

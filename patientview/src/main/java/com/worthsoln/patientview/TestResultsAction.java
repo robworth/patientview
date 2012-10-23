@@ -52,7 +52,7 @@ public class TestResultsAction extends DatabaseAction {
     private List<TestResultWithUnitShortname> extractTestResultsWithComments(DatabaseDAO dao,
                                                                              Panel currentPanel, User user) {
         List<TestResultWithUnitShortname> results
-                = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user.getUsername(), currentPanel);
+                = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, currentPanel);
 
         List userMappings = UserUtils.retrieveUserMappings(user);
 

@@ -74,26 +74,26 @@ public class UnitManagerImpl implements UnitManager {
 
     @Override
     public List<Unit> getLoggedInUsersUnits() {
+        return getUsersUnits(userManager.getLoggedInUser());
+    }
 
-        List<String> usersUnitCodes = getUsersUnitCodes();
-
+    @Override
+    public List<Unit> getUsersUnits(User user) {
+        List<String> usersUnitCodes = getUsersUnitCodes(user);
         return unitDao.get(usersUnitCodes, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
     public List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes) {
 
-        List<String> usersUnitCodes = getUsersUnitCodes();
+        List<String> usersUnitCodes = getUsersUnitCodes(userManager.getLoggedInUser());
 
         return unitDao.get(usersUnitCodes, notTheseUnitCodes, plusTheseUnitCodes,
                 securityUserManager.getLoggedInTenancy());
     }
 
     @Override
-    public List<String> getUsersUnitCodes() {
-
-        User user = userManager.getLoggedInUser();
-
+    public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
         if (!LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equals("superadmin")) {
