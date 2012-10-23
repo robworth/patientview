@@ -7,6 +7,7 @@ import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
+import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
@@ -29,6 +30,7 @@ public class PatientAddAction extends DatabaseAction {
         String nhsno = BeanUtils.getProperty(form, "nhsno").trim();
         String unitcode = BeanUtils.getProperty(form, "unitcode");
         String overrideDuplicateNhsno = BeanUtils.getProperty(form, "overrideDuplicateNhsno");
+        String overrideInvalidNhsno = BeanUtils.getProperty(form, "overrideInvalidNhsno");
         boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
         PatientLogon patient =
                 new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false, "");
@@ -44,12 +46,17 @@ public class PatientAddAction extends DatabaseAction {
         List existingPatientsWithSameNhsno = findExistingPatientsWithSameNhsno(nhsno);
 
         String mappingToFind = "";
+        if (!"on".equals(overrideInvalidNhsno) && !UserUtils.nhsNumberChecksumValid(nhsno)) {
+            request.setAttribute(LogonUtils.INVALID_NHSNO, nhsno);
+            mappingToFind = "input";
+        }
         if (existingPatientwithSameUsername != null) {
             request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);
             patient.setUsername("");
             mappingToFind = "input";
         }
-        if (existingPatientsWithSameNhsno != null && !existingPatientsWithSameNhsno.isEmpty() && !overrideDuplicateNhsno.equals("on")) {
+        if (existingPatientsWithSameNhsno != null && !existingPatientsWithSameNhsno.isEmpty() &&
+                !overrideDuplicateNhsno.equals("on")) {
             for (Object obj : existingPatientsWithSameNhsno) {
                 UserMapping userMappingWithSameNhsno = (UserMapping) obj;
                 if (userMappingWithSameNhsno.getUnitcode().equalsIgnoreCase(unitcode)) {
