@@ -11,6 +11,10 @@
     <!--Snapshot means a version is downloaded every runtime and our pv builds get the latest db-->
     <version>1.0-DEVELOP-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
