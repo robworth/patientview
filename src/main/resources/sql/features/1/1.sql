@@ -1,3 +1,7 @@
+/**
+      Patch 1: Slow Queries
+ */
+
 -- DESCRIBE SELECT this.id AS id0_, this.date AS date0_, this.nhsno AS nhsno0_, this.user AS user0_, this.action AS action0_, this.actor AS actor0_, this.unitcode AS unitcode0_, this.extrainfo AS extrainfo0_ FROM LOG this WHERE this.nhsno='1234567890' AND this.action LIKE 'logon' ORDER BY this.date DESC LIMIT 1;
 CREATE INDEX log_index_nhsno ON LOG (nhsno);
 CREATE INDEX log_index_action ON LOG (action);

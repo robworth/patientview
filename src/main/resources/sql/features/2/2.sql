@@ -1,6 +1,5 @@
 /**
- *    Used to upgrade the current live patientview database to match the codebase.
- *
+      Patch 1: Multi-tenant and IBD
  */
 
 
