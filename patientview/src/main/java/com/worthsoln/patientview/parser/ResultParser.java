@@ -377,11 +377,16 @@ public class ResultParser {
         MyIbd myIbd = new MyIbd();
         myIbd.setNhsno((String) xmlData.get("nhsno"));
         myIbd.setUnitcode((String) xmlData.get("centrecode"));
-        try {
-            myIbd.setYearOfDiagnosis(
-                    Ibd.YEAR_DATE_FORMAT.parse((String) xmlData.get("diagnosisyear")));
-        } catch (Exception e) {
-            LOGGER.error("Could not parse diagnosisyear for MyIbd with NHS No {}", myIbd.getNhsno(), e);
+
+        Object diagnosisYearObj = xmlData.get("diagnosisyear");
+        // this is an ibd only field so can be null
+        if (diagnosisYearObj != null) {
+            try {
+                myIbd.setYearOfDiagnosis(
+                        Ibd.YEAR_DATE_FORMAT.parse((String) diagnosisYearObj));
+            } catch (Exception e) {
+                LOGGER.error("Could not parse diagnosisyear for MyIbd with NHS No {}", myIbd.getNhsno(), e);
+            }
         }
         myIbd.setDiseaseExtent(DiseaseExtent.getDiseaseExtent((String) xmlData.get("ibddiseaseextent")));
         myIbd.setEiManifestations((String) xmlData.get("ibdeimanifestations"));

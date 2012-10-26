@@ -101,8 +101,8 @@ public class NewsDaoTest extends BaseDaoTest {
         List<News> news = newsDao.getNewsForEveryone(tenancy);
 
         assertEquals("Incorrect news for everyone", 2, news.size());
-        // most recent first
-        assertEquals("Incorrect news item", "body4", news.get(0).getBody());
+
+        // note cannot check order as they may have the same datatime stamp and the order cannot be guaranteed
     }
 
     @Test
@@ -114,7 +114,7 @@ public class NewsDaoTest extends BaseDaoTest {
         List<News> news = newsDao.getAdminNewsForUnitCodes(unitCodes, tenancy);
 
         assertEquals("Incorrect add news", 3, news.size());
-        assertEquals("Incorrect news item", "body3", news.get(1).getBody());
+        // note cannot check order as they may have the same datatime stamp and the order cannot be guaranteed
     }
 
     @Test
@@ -126,7 +126,7 @@ public class NewsDaoTest extends BaseDaoTest {
         List<News> news = newsDao.getAdminEditNewsForUnitCodes(unitCodes, tenancy);
 
         assertEquals("Incorrect add news", 2, news.size());
-        assertEquals("Incorrect news item", "body4", news.get(0).getBody());
+        // note cannot check order as they may have the same datatime stamp and the order cannot be guaranteed
     }
 
     @Test
