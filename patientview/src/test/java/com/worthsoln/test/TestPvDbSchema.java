@@ -3,15 +3,11 @@ package com.worthsoln.test;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -30,10 +26,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
-@Transactional
-public class TestPvDbSchema {
+public abstract class TestPvDbSchema {
 
     @Inject
     private DataSource dataSource;
@@ -43,9 +36,11 @@ public class TestPvDbSchema {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPvDbSchema.class);
 
-    @Test
+    @Before
     @Rollback(false)
     public void testDbCreate() throws Exception {
+
+        LOGGER.info("Starting db setup");
 
         // a list of all the sql file names we need to run in order
         List<String> sqlFileNames = new ArrayList<String>();
@@ -78,6 +73,7 @@ public class TestPvDbSchema {
             // See what tables are in the database
             ResultSet resultSet = statement.executeQuery("SHOW TABLES");
             if (!resultSet.next()) {
+                LOGGER.info("Starting create tables");
                 // Our tables don't exist so we need to create them
                 for (String script : sqlFileNames) {
 
@@ -108,6 +104,8 @@ public class TestPvDbSchema {
                     }
                 }
             } else {
+
+                LOGGER.info("Starting truncate tables");
 
                 // we want to truncate all the table data
                 statement.execute("SET FOREIGN_KEY_CHECKS=0");
