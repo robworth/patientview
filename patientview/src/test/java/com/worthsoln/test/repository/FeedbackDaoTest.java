@@ -42,8 +42,8 @@ public class FeedbackDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetFeedbackByUnitCode() throws Exception {
-        String unitcode1 = "testunitcode1";
-        String unitcode2 = "testunitcode2";
+        String unitcode1 = "unitcode1";
+        String unitcode2 = "unitcode2";
 
         // date for first as want this to be older so we can check ordering
         Calendar calendar = Calendar.getInstance();
