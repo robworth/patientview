@@ -114,7 +114,7 @@ public class NewsDaoTest extends BaseDaoTest {
         List<News> news = newsDao.getAdminNewsForUnitCodes(unitCodes, tenancy);
 
         assertEquals("Incorrect add news", 3, news.size());
-        assertEquals("Incorrect news item", "body3", news.get(1).getBody());
+        // note cannot check order as they may have the same datatime stamp and the order cannot be guaranteed
     }
 
     @Test

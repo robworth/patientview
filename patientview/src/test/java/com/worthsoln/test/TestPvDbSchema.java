@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -37,7 +36,6 @@ public abstract class TestPvDbSchema {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPvDbSchema.class);
 
     @Before
-    @Rollback(false)
     public void testDbCreate() throws Exception {
 
         LOGGER.info("Starting db setup");
