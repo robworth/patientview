@@ -108,15 +108,22 @@ public abstract class TestPvDbSchema {
                 LOGGER.info("Starting truncate tables");
 
                 // we want to truncate all the table data
-                statement.execute("SET FOREIGN_KEY_CHECKS=0");
+                // mysql statement.execute("SET FOREIGN_KEY_CHECKS=0");
 
-                // todo check to see if this is mysql or h2?
+                // h2
+                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
 
                 // mysql
+//                ResultSet truncateResultSet = statement.executeQuery("SELECT CONCAT('TRUNCATE TABLE ', " +
+//                        "TABLE_NAME, ';')\n" +
+//                        "FROM INFORMATION_SCHEMA.TABLES\n" +
+//                        "WHERE TABLE_SCHEMA = 'patientviewtest';");
+
+                // h2
                 ResultSet truncateResultSet = statement.executeQuery("SELECT CONCAT('TRUNCATE TABLE ', " +
                         "TABLE_NAME, ';')\n" +
                         "FROM INFORMATION_SCHEMA.TABLES\n" +
-                        "WHERE TABLE_SCHEMA = 'patientviewtest';");
+                        "WHERE TABLE_SCHEMA = 'PUBLIC';");
 
                 Statement truncateStatement = connection.createStatement();
 
@@ -125,7 +132,7 @@ public abstract class TestPvDbSchema {
                     truncateStatement.execute(sql);
                 }
 
-                statement.execute("SET FOREIGN_KEY_CHECKS=1");
+                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
             }
 
         } finally {
