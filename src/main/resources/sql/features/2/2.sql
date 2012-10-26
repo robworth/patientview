@@ -185,6 +185,13 @@ CREATE TABLE `ibd_medication` (
   PRIMARY KEY  (`id`)
 );
 
+CREATE TABLE `ibd_medication_dose` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `extraInformation` varchar(255) default NULL,
+  `mg` double default NULL,
+  PRIMARY KEY  (`id`)
+);
+
 CREATE TABLE `ibd_medication_allowed_dosages` (
   `medication_id` bigint(20) NOT NULL,
   `dose_id` bigint(20) NOT NULL,
@@ -192,13 +199,6 @@ CREATE TABLE `ibd_medication_allowed_dosages` (
   KEY `FKBA6261E999BAAE42` (`medication_id`),
   CONSTRAINT `FKBA6261E999BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`),
   CONSTRAINT `FKBA6261E967F0EF1` FOREIGN KEY (`dose_id`) REFERENCES `ibd_medication_dose` (`id`)
-);
-
-CREATE TABLE `ibd_medication_dose` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `extraInformation` varchar(255) default NULL,
-  `mg` double default NULL,
-  PRIMARY KEY  (`id`)
 );
 
 CREATE TABLE `ibd_medication_type` (
