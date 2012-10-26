@@ -251,7 +251,7 @@ CREATE TABLE `ibd_myibd` (
   `smoking_id` bigint(20) DEFAULT NULL,
   `surgery_id` bigint(20) DEFAULT NULL,
   `vaccination_record_id` bigint(20) DEFAULT NULL,
-  `weight` double DEFAULT NULL
+  `weight` double
   PRIMARY KEY (`id`)
 );
 
