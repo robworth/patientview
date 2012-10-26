@@ -45,7 +45,7 @@ public class TestPvDbSchema {
 
     @Test
     @Rollback(false)
-    public void testDbCreate() throws IOException, SQLException {
+    public void testDbCreate() throws Exception {
 
         // a list of all the sql file names we need to run in order
         List<String> sqlFileNames = new ArrayList<String>();
@@ -92,7 +92,13 @@ public class TestPvDbSchema {
 
                         for (String sqlStatement : createTablesScript.split(";")) {
                             if (StringUtils.isNotBlank(sqlStatement)) {
-                                statement.execute(sqlStatement);
+                                try {
+                                    statement.execute(sqlStatement);
+                                } catch (SQLException e) {
+                                    String error = e.getMessage() + " error executing: " + script + ", sql:"
+                                            + sqlStatement;
+                                    throw new Exception(error);
+                                }
                             }
                         }
 
@@ -101,7 +107,29 @@ public class TestPvDbSchema {
                         throw new RuntimeException("Could not load " + script);
                     }
                 }
+            } else {
+
+                // we want to truncate all the table data
+                statement.execute("SET FOREIGN_KEY_CHECKS=0");
+
+                // todo check to see if this is mysql or h2?
+
+                // mysql
+                ResultSet truncateResultSet = statement.executeQuery("SELECT CONCAT('TRUNCATE TABLE ', " +
+                        "TABLE_NAME, ';')\n" +
+                        "FROM INFORMATION_SCHEMA.TABLES\n" +
+                        "WHERE TABLE_SCHEMA = 'patientviewtest';");
+
+                Statement truncateStatement = connection.createStatement();
+
+                while (truncateResultSet.next()) {
+                    String sql = truncateResultSet.getString(1);
+                    truncateStatement.execute(sql);
+                }
+
+                statement.execute("SET FOREIGN_KEY_CHECKS=1");
             }
+
         } finally {
             if (statement != null) {
                 statement.close();
