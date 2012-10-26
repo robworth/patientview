@@ -1,0 +1,3 @@
+[submodule "src/main/filters"]
+	path = src/main/filters
+	url = git@git.solidstategroup.com:radar_filters.git
