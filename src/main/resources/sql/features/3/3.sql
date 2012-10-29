@@ -1,9 +1,7 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 ALTER TABLE unit MODIFY unitcode varchar(100) NOT NULL;
-ALTER TABLE unit DROP PRIMARY KEY;
 
-alter table unit add column id int;
 alter table unit add column country varchar(100);
 alter table tbl_centres add column unitcode varchar(100);
 
@@ -112,8 +110,6 @@ insert into unit (unitcode, id, name, shortname, country, sourcetype)
 select unitcode, cID, cName, cAbbrev, cCountry, "renalunit"
 from tbl_centres;
 
-alter table unit add PRIMARY KEY (id);
-ALTER TABLE unit MODIFY id INTEGER NOT NULL AUTO_INCREMENT;
 ALTER TABLE unit AUTO_INCREMENT = 100;
 
 ALTER TABLE UNIT ADD UNIQUE (UNITCODE);
