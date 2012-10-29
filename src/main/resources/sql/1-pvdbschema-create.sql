@@ -55,8 +55,7 @@ CREATE TABLE diagnosis (
   nhsno varchar(20) NOT NULL default '',
   unitcode varchar(20) NOT NULL default '',
   diagnosis varchar(200) default '',
-  displayorder int(3) default '0',
-  KEY nhsno_unitcode (nhsno,unitcode)
+  displayorder int(3) default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*!
