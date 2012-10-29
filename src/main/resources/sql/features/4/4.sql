@@ -4,7 +4,7 @@ CREATE TABLE `rdr_user_mapping` (
   `role` varchar(20) NOT NULL,
   PRIMARY KEY (`userId`),
   constraint `FK_RDR_USER_MAPPING_USERID` foreign key (`userId`) references `user`(`id`) on delete Cascade
-) ENGINE=InnoDB;
+);
 
 /*
 ONLY DO THIS AFTER YOU HAVE RUN THE EXPORT FILE TO MAP THESE FIELDS INTO RPV
