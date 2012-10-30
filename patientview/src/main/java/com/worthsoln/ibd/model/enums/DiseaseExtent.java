@@ -6,22 +6,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum DiseaseExtent {
-    PROCTITIS(1, "Proctitis", Ibd.PROCTITIS_DIAGRAM),
-    LEFT_SIDED_COLITIS(2, "Left Sided colitis", Ibd.LEFT_SIDED_COLITIS_DIAGRAM),
-    EXTENSIVE_COLITIS(3, "Extensive Colitis", Ibd.EXTENSIVE_COLITIS_DIAGRAM),
-    ILEAL_CROHNS(4, "Ileal Crohn's", Ibd.ILEAL_CROHNS_DIAGRAM),
-    ILEO_COLONIC_DISEASE(5, "Ileo-Colonic Disease", Ibd.ILEO_COLONIC_DISEASE_DIAGRAM),
-    CROHNS_COLITIS(6, "Crohn's Colitis", Ibd.CROHNS_COLITIS_DIAGRAM),
-    ISOLATED_UPPER_GI_DISEASE(7, "Isolated Upper GI Disease", Ibd.ISOLATED_UPPER_GI_DISEASE_DIAGRAM);
+    PROCTITIS(1, "Proctitis", Ibd.PROCTITIS_DIAGRAM, "Proctitis"),
+    LEFT_SIDED_COLITIS(2, "Left Sided colitis", Ibd.LEFT_SIDED_COLITIS_DIAGRAM, "Left-sided Colitis"),
+    EXTENSIVE_COLITIS(3, "Extensive Colitis", Ibd.EXTENSIVE_COLITIS_DIAGRAM, "Extensive Colitis"),
+    ILEAL_CROHNS(4, "Ileal Crohn's", Ibd.ILEAL_CROHNS_DIAGRAM, "Ileal Crohn's"),
+    ILEO_COLONIC_DISEASE(5, "Ileo-Colonic Disease", Ibd.ILEO_COLONIC_DISEASE_DIAGRAM, "Ileal-colonic Crohn's"),
+    CROHNS_COLITIS(6, "Crohn's Colitis", Ibd.CROHNS_COLITIS_DIAGRAM, "Crohn's Colitis"),
+    ISOLATED_UPPER_GI_DISEASE(7, "Isolated Upper GI Disease", Ibd.ISOLATED_UPPER_GI_DISEASE_DIAGRAM,
+            "Isolated upper GI disease");
 
     private long id;
     private String name;
     private String diagram;
+    private String xmlName;
 
-    private DiseaseExtent(long id, String name, String diagram) {
+    private DiseaseExtent(long id, String name, String diagram, String xmlName) {
         this.id = id;
         this.name = name;
         this.diagram = diagram;
+        this.xmlName = xmlName;
     }
 
     public static DiseaseExtent getDiseaseExtent(Long id) {
@@ -34,9 +37,9 @@ public enum DiseaseExtent {
         return null;
     }
 
-    public static DiseaseExtent getDiseaseExtent(String name) {
+    public static DiseaseExtent getDiseaseExtentByXmlName(String name) {
         for (DiseaseExtent diseaseExtent : DiseaseExtent.values()) {
-            if (diseaseExtent.getName() == name) {
+            if (diseaseExtent.getXmlName().equalsIgnoreCase(name)) {
                 return diseaseExtent;
             }
         }
@@ -58,5 +61,9 @@ public enum DiseaseExtent {
 
     public String getDiagram() {
         return diagram;
+    }
+
+    public String getXmlName() {
+        return xmlName;
     }
 }
