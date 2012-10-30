@@ -47,8 +47,8 @@ public class MyIbdDaoImpl extends AbstractHibernateDAO<MyIbd> implements MyIbdDa
         CriteriaQuery<MyIbd> criteria = builder.createQuery(MyIbd.class);
         Root<MyIbd> myIbdRoot = criteria.from(MyIbd.class);
 
-        criteria.where(builder.equal(myIbdRoot.get(MyIbd_.nhsno), nhsno));
-        criteria.where(builder.equal(myIbdRoot.get(MyIbd_.unitcode), unitcode));
+        criteria.where(builder.equal(myIbdRoot.get(MyIbd_.nhsno), nhsno),
+                builder.equal(myIbdRoot.get(MyIbd_.unitcode), unitcode));
 
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
