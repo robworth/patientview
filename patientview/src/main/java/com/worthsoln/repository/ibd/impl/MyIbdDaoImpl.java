@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -46,8 +47,8 @@ public class MyIbdDaoImpl extends AbstractHibernateDAO<MyIbd> implements MyIbdDa
         CriteriaQuery<MyIbd> criteria = builder.createQuery(MyIbd.class);
         Root<MyIbd> myIbdRoot = criteria.from(MyIbd.class);
 
-        criteria.where(builder.equal(myIbdRoot.get(MyIbd_.nhsno), nhsno));
-        criteria.where(builder.equal(myIbdRoot.get(MyIbd_.unitcode), unitcode));
+        criteria.where(builder.equal(myIbdRoot.get(MyIbd_.nhsno), nhsno),
+                builder.equal(myIbdRoot.get(MyIbd_.unitcode), unitcode));
 
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
@@ -56,9 +57,8 @@ public class MyIbdDaoImpl extends AbstractHibernateDAO<MyIbd> implements MyIbdDa
             // too late to throw an exception, log and close your eyes.
             LOGGER.error("Found multiple MyIbds for nhsno {} and unitcode {}, returning null", nhsno, unitcode);
             return null;
-        } catch (Exception e) {
-            LOGGER.error("Error getting MyIbds for nhsno {} and unitcode {}, returning null, {}",
-                    new Object[] {nhsno, unitcode, e.getMessage()});
+        } catch (NoResultException e) {
+            // No entity found for query - this should be ok
             return null;
         }
     }
