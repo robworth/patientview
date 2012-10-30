@@ -9,7 +9,7 @@ CREATE TABLE aboutme (
   aboutme text,
   talkabout text,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -25,10 +25,9 @@ CREATE TABLE centre (
   centreAddress4 varchar(100) default '',
   centrePostCode varchar(100) default '',
   centreTelephone varchar(100) default '',
-  centreEmail varchar(100) default ''/*!,
+  centreEmail varchar(100) default '',
   KEY `centreCode` (`centreCode`)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -42,7 +41,7 @@ CREATE TABLE comment (
   nhsno varchar(10) NOT NULL default '',
   body text NOT NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -54,10 +53,10 @@ CREATE TABLE diagnosis (
   nhsno varchar(20) NOT NULL default '',
   unitcode varchar(20) NOT NULL default '',
   diagnosis varchar(200) default '',
-  displayorder int(3) default '0'/*!,
-  KEY nhsno_unitcode (nhsno,unitcode)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  displayorder int(3) default '0',
+  KEY diagnosis_nhsno_unitcode (nhsno,unitcode)
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -95,7 +94,7 @@ CREATE TABLE edtacode (
   patientLinkText05 varchar(100) default '',
   patientLinkText06 varchar(100) default '',
   PRIMARY KEY  (edtaCode)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -109,7 +108,7 @@ CREATE TABLE emailverification (
   verificationcode varchar(50) NOT NULL,
   expirydatestamp datetime NOT NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -128,7 +127,7 @@ CREATE TABLE feedback (
   anonymous tinyint(1) NOT NULL default '1',
   makepublic tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -140,7 +139,7 @@ CREATE TABLE jforum_api (
   api_key varchar(32) NOT NULL,
   api_validity datetime NOT NULL,
   PRIMARY KEY  (api_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -152,12 +151,12 @@ CREATE TABLE jforum_attach (
   post_id int(11) default NULL,
   privmsgs_id int(11) default NULL,
   user_id int(11) NOT NULL,
-  PRIMARY KEY  (attach_id)/*!,
-  KEY idx_att_post (post_id),
-  KEY idx_att_priv (privmsgs_id),
-  KEY idx_att_user (user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (attach_id),
+  KEY jforum_attach_att_post (post_id),
+  KEY jforum_attach_att_priv (privmsgs_id),
+  KEY jforum_attach_att_user (user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -177,11 +176,11 @@ CREATE TABLE jforum_attach_desc (
   upload_time datetime default NULL,
   thumb tinyint(1) default '0',
   extension_id int(11) default NULL,
-  PRIMARY KEY  (attach_desc_id)/*!,
+  PRIMARY KEY  (attach_desc_id),
   KEY idx_att_d_att (attach_id),
   KEY idx_att_d_ext (extension_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -194,10 +193,10 @@ CREATE TABLE jforum_attach_quota (
   attach_quota_id int(11) NOT NULL auto_increment,
   group_id int(11) NOT NULL,
   quota_limit_id int(11) NOT NULL,
-  PRIMARY KEY  (attach_quota_id)/*!,
+  PRIMARY KEY  (attach_quota_id),
   KEY group_id (group_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -210,12 +209,12 @@ CREATE TABLE jforum_banlist (
   user_id int(11) default NULL,
   banlist_ip varchar(15) default NULL,
   banlist_email varchar(255) default NULL,
-  PRIMARY KEY  (banlist_id)/*!,
-  KEY idx_user (user_id),
-  KEY banlist_ip (banlist_ip),
-  KEY banlist_email (banlist_email)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (banlist_id),
+  KEY jforum_banlist_user (user_id),
+  KEY jforum_banlist_banlist_ip (banlist_ip),
+  KEY jforum_banlist_banlist_email (banlist_email)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -238,10 +237,10 @@ CREATE TABLE jforum_banner (
   banner_type int(11) NOT NULL default '0',
   banner_width int(11) NOT NULL default '0',
   banner_height int(11) NOT NULL default '0',
-  PRIMARY KEY  (banner_id)/*!,
+  PRIMARY KEY  (banner_id),
   KEY banner_id (banner_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -259,11 +258,11 @@ CREATE TABLE jforum_bookmarks (
   public_visible int(11) default '1',
   title varchar(255) default NULL,
   description varchar(255) default NULL,
-  PRIMARY KEY  (bookmark_id)/*!,
-  KEY book_idx_relation (relation_id),
-  KEY user_id (user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (bookmark_id),
+  KEY jforum_bookmarks_book_idx_relation (relation_id),
+  KEY jforum_bookmarks_book_idx_user_id (user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -278,7 +277,7 @@ CREATE TABLE jforum_categories (
   display_order int(11) NOT NULL default '0',
   moderated tinyint(1) default '0',
   PRIMARY KEY  (categories_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -290,7 +289,7 @@ CREATE TABLE jforum_config (
   config_value varchar(255) NOT NULL default '',
   config_id int(11) NOT NULL auto_increment,
   PRIMARY KEY  (config_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -304,7 +303,7 @@ CREATE TABLE jforum_extension_groups (
   upload_icon varchar(100) default NULL,
   download_mode tinyint(1) default '1',
   PRIMARY KEY  (extension_group_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -318,11 +317,11 @@ CREATE TABLE jforum_extensions (
   upload_icon varchar(100) default NULL,
   extension varchar(10) default NULL,
   allow tinyint(1) default '1',
-  PRIMARY KEY  (extension_id)/*!,
+  PRIMARY KEY  (extension_id),
   KEY extension_group_id (extension_group_id),
   KEY extension (extension)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -340,11 +339,11 @@ CREATE TABLE jforum_forums (
   forum_topics int(11) NOT NULL default '0',
   forum_last_post_id int(11) NOT NULL default '0',
   moderated tinyint(1) default '0',
-  PRIMARY KEY  (forum_id)/*!,
+  PRIMARY KEY  (forum_id),
   KEY categories_id (categories_id),
   KEY idx_forums_cats (categories_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -354,11 +353,11 @@ CREATE TABLE jforum_forums (
 DROP TABLE IF EXISTS jforum_forums_watch;
 CREATE TABLE jforum_forums_watch (
   forum_id int(11) NOT NULL,
-  user_id int(11) NOT NULL/*!,
-  KEY idx_fw_forum (forum_id),
-  KEY idx_fw_user (user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  user_id int(11) NOT NULL,
+  KEY jforum_forums_watch_fw_forum (forum_id),
+  KEY jforum_forums_watch_fw_user (user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -373,7 +372,7 @@ CREATE TABLE jforum_groups (
   group_description varchar(255) default NULL,
   parent_id int(11) default '0',
   PRIMARY KEY  (group_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -388,13 +387,13 @@ CREATE TABLE jforum_karma (
   from_user_id int(11) NOT NULL,
   points int(11) NOT NULL,
   rate_date datetime default NULL,
-  PRIMARY KEY  (karma_id)/*!,
-  KEY post_id (post_id),
-  KEY topic_id (topic_id),
-  KEY post_user_id (post_user_id),
-  KEY from_user_id (from_user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (karma_id),
+  KEY jforum_karma_post_id (post_id),
+  KEY jforum_karma_topic_id (topic_id),
+  KEY jforum_karma_post_user_id (post_user_id),
+  KEY jforum_karma_from_user_id (from_user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -409,10 +408,10 @@ CREATE TABLE jforum_mail_integration (
   pop_password varchar(100) NOT NULL,
   pop_host varchar(100) NOT NULL,
   pop_port int(11) default '110',
-  pop_ssl tinyint(4) default '0'/*!,
+  pop_ssl tinyint(4) default '0',
   KEY forum_id (forum_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -431,11 +430,11 @@ CREATE TABLE jforum_moderation_log (
   post_id int(11) default '0',
   topic_id int(11) default '0',
   post_user_id int(11) default '0',
-  PRIMARY KEY  (log_id)/*!,
-  KEY user_id (user_id),
-  KEY post_user_id (post_user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (log_id),
+  KEY jforum_moderation_user_id (user_id),
+  KEY jforum_moderation_post_user_id (post_user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -459,14 +458,14 @@ CREATE TABLE jforum_posts (
   status tinyint(1) default '1',
   attach tinyint(1) default '0',
   need_moderate tinyint(1) default '0',
-  PRIMARY KEY  (post_id)/*!,
-  KEY user_id (user_id),
-  KEY topic_id (topic_id),
-  KEY forum_id (forum_id),
-  KEY post_time (post_time),
-  KEY need_moderate (need_moderate)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (post_id),
+  KEY jforum_posts_user_id (user_id),
+  KEY jforum_posts_topic_id (topic_id),
+  KEY jforum_posts_forum_id (forum_id),
+  KEY jforum_posts_post_time (post_time),
+  KEY jforum_posts_need_moderate (need_moderate)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -480,7 +479,7 @@ CREATE TABLE jforum_posts_text (
   post_text text,
   post_subject varchar(100) default NULL,
   PRIMARY KEY  (post_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -500,7 +499,7 @@ CREATE TABLE jforum_privmsgs (
   privmsgs_enable_smilies tinyint(1) NOT NULL default '1',
   privmsgs_attach_sig tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (privmsgs_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -511,7 +510,7 @@ CREATE TABLE jforum_privmsgs_text (
   privmsgs_id int(11) NOT NULL,
   privmsgs_text text,
   PRIMARY KEY  (privmsgs_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -524,7 +523,7 @@ CREATE TABLE jforum_quota_limit (
   quota_limit int(11) NOT NULL,
   quota_type tinyint(1) default '1',
   PRIMARY KEY  (quota_limit_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -538,7 +537,7 @@ CREATE TABLE jforum_ranks (
   rank_special tinyint(1) default NULL,
   rank_image varchar(255) default NULL,
   PRIMARY KEY  (rank_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -547,10 +546,10 @@ CREATE TABLE jforum_ranks (
 DROP TABLE IF EXISTS jforum_role_values;
 CREATE TABLE jforum_role_values (
   role_id int(11) NOT NULL,
-  role_value varchar(255) default NULL/*!,
+  role_value varchar(255) default NULL,
   KEY idx_role (role_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -563,11 +562,11 @@ CREATE TABLE jforum_roles (
   role_id int(11) NOT NULL auto_increment,
   group_id int(11) default '0',
   name varchar(255) NOT NULL,
-  PRIMARY KEY  (role_id)/*!,
+  PRIMARY KEY  (role_id),
   KEY idx_group (group_id),
   KEY idx_name (name)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -583,10 +582,10 @@ CREATE TABLE jforum_sessions (
   session_time bigint(20) default '0',
   session_ip varchar(15) NOT NULL default '',
   session_page int(11) NOT NULL default '0',
-  session_logged_int tinyint(1) default NULL/*!,
+  session_logged_int tinyint(1) default NULL,
   KEY idx_sessions_users (session_user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -601,7 +600,7 @@ CREATE TABLE jforum_smilies (
   url varchar(100) default NULL,
   disk_name varchar(255) default NULL,
   PRIMARY KEY  (smilie_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -613,7 +612,7 @@ CREATE TABLE jforum_themes (
   template_name varchar(30) NOT NULL default '',
   style_name varchar(30) NOT NULL default '',
   PRIMARY KEY  (themes_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -635,14 +634,14 @@ CREATE TABLE jforum_topics (
   topic_last_post_id int(11) NOT NULL default '0',
   topic_moved_id int(11) default '0',
   moderated tinyint(1) default '0',
-  PRIMARY KEY  (topic_id)/*!,
-  KEY forum_id (forum_id),
-  KEY user_id (user_id),
-  KEY topic_first_post_id (topic_first_post_id),
-  KEY topic_last_post_id (topic_last_post_id),
-  KEY topic_moved_id (topic_moved_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (topic_id),
+  KEY jforum_topicsforum_id (forum_id),
+  KEY jforum_topicsuser_id (user_id),
+  KEY jforum_topicstopic_first_post_id (topic_first_post_id),
+  KEY jforum_topicstopic_last_post_id (topic_last_post_id),
+  KEY jforum_topicstopic_moved_id (topic_moved_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -653,11 +652,11 @@ DROP TABLE IF EXISTS jforum_topics_watch;
 CREATE TABLE jforum_topics_watch (
   topic_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
-  is_read tinyint(1) default '1'/*!,
-  KEY idx_topic (topic_id),
-  KEY idx_user (user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  is_read tinyint(1) default '1',
+  KEY jforum_topics_watch_topic (topic_id),
+  KEY jforum_topics_watch_user (user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -668,11 +667,11 @@ CREATE TABLE jforum_topics_watch (
 DROP TABLE IF EXISTS jforum_user_groups;
 CREATE TABLE jforum_user_groups (
   group_id int(11) NOT NULL,
-  user_id int(11) NOT NULL/*!,
-  KEY idx_group (group_id),
-  KEY idx_user (user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  user_id int(11) NOT NULL,
+  KEY jforum_user_groups_group (group_id),
+  KEY jforum_user_groups_user (user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -737,7 +736,7 @@ CREATE TABLE jforum_users (
   user_karma double default NULL,
   user_authhash varchar(32) default NULL,
   PRIMARY KEY  (user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -750,10 +749,10 @@ CREATE TABLE jforum_vote_desc (
   vote_text varchar(255) NOT NULL default '',
   vote_start datetime NOT NULL,
   vote_length int(11) NOT NULL default '0',
-  PRIMARY KEY  (vote_id)/*!,
+  PRIMARY KEY  (vote_id),
   KEY topic_id (topic_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -766,10 +765,10 @@ CREATE TABLE jforum_vote_results (
   vote_id int(11) NOT NULL default '0',
   vote_option_id tinyint(4) NOT NULL default '0',
   vote_option_text varchar(255) NOT NULL default '',
-  vote_result int(11) NOT NULL default '0'/*!,
+  vote_result int(11) NOT NULL default '0',
   KEY vote_id (vote_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -781,11 +780,11 @@ DROP TABLE IF EXISTS jforum_vote_voters;
 CREATE TABLE jforum_vote_voters (
   vote_id int(11) NOT NULL default '0',
   vote_user_id int(11) NOT NULL default '0',
-  vote_user_ip varchar(15) NOT NULL default ''/*!,
-  KEY vote_id (vote_id),
-  KEY vote_user_id (vote_user_id)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  vote_user_ip varchar(15) NOT NULL default '',
+  KEY jforum_vote_voters_vote_id (vote_id),
+  KEY jforum_vote_voters_vote_user_id (vote_user_id)
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -799,7 +798,7 @@ CREATE TABLE jforum_words (
   word varchar(100) NOT NULL default '',
   replacement varchar(100) NOT NULL default '',
   PRIMARY KEY  (word_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -813,10 +812,10 @@ CREATE TABLE letter (
   date datetime default '0000-00-00 00:00:00',
   type varchar(100) default '',
   content text,
-  PRIMARY KEY  (id)/*!,
-  KEY nhsno_unitcode (nhsno,unitcode)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (id),
+  KEY letter_nhsno_unitcode (nhsno,unitcode)
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -833,12 +832,12 @@ CREATE TABLE log (
   user varchar(100) default '',
   unitcode varchar(100) default NULL,
   extrainfo text,
-  PRIMARY KEY  (id)/*!,
+  PRIMARY KEY  (id),
   KEY log_index_nhsno (nhsno),
   KEY log_index_action (action),
   KEY log_index_date (date)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -855,10 +854,10 @@ CREATE TABLE medicine (
   name varchar(100) default '',
   dose varchar(100) default '',
   enddate datetime default '0000-00-00 00:00:00',
-  PRIMARY KEY  (id)/*!,
-  KEY  nhsno_unitcode (nhsno,unitcode)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (id),
+  KEY  medicine_nhsno_unitcode (nhsno,unitcode)
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -877,7 +876,7 @@ CREATE TABLE news (
   headline varchar(255) NOT NULL default '',
   body text NOT NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -909,7 +908,7 @@ CREATE TABLE patient (
   gppostcode varchar(100) default '',
   gptelephone varchar(100) default '',
   PRIMARY KEY  (nhsno,centreCode)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -926,7 +925,7 @@ CREATE TABLE rdc_genetic_test (
   whatResultsShowed text,
   keyEvidence text,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -940,7 +939,7 @@ CREATE TABLE rdr_alport_deafness (
   ageProblemFirstNoticed int(11) default NULL,
   ageStartedUsingHearingAid int(11) default NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -973,7 +972,7 @@ CREATE TABLE rdr_prd_code (
   ICD10_rubricTerm varchar(200) default NULL,
   alternativesearchTerms varchar(200) default NULL,
   PRIMARY KEY  (ERA_EDTA_PRD_code)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -985,10 +984,10 @@ CREATE TABLE rdr_diagnosis_mapping (
   PRDCode varchar(20) NOT NULL,
   ordering int(10) default NULL,
   PRIMARY KEY  (workingGroup,PRDCode),
-  CONSTRAINT rdr_diagnosis_mapping_ibfk_1 FOREIGN KEY (PRDCode) REFERENCES rdr_prd_code (ERA_EDTA_PRD_code) ON DELETE CASCADE/*!,
+  CONSTRAINT rdr_diagnosis_mapping_ibfk_1 FOREIGN KEY (PRDCode) REFERENCES rdr_prd_code (ERA_EDTA_PRD_code) ON DELETE CASCADE,
   KEY  rdr_diagnosis_mapping_ibfk_1 (PRDCode)
-  */
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=InnoDB DEFAULT CHARSET=latin1 */;
 
 
 
@@ -1005,7 +1004,7 @@ CREATE TABLE result_heading (
   panel int(11) NOT NULL default '0',
   panelorder int(11) NOT NULL default '0',
   PRIMARY KEY  (headingcode)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1020,7 +1019,7 @@ CREATE TABLE splashpage (
   bodytext text NOT NULL,
   unitcode varchar(20) NOT NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1031,10 +1030,10 @@ CREATE TABLE splashpageuserseen (
   id int(10) NOT NULL,
   username varchar(100) NOT NULL,
   splashpageid int(10) NOT NULL,
-  PRIMARY KEY  (id)/*!,
-  KEY USING BTREE (username,splashpageid)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (id),
+  KEY splashpageuserseen_username_splashpageid (username,splashpageid)
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1047,7 +1046,7 @@ CREATE TABLE sysdiagrams (
   diagram_id int(11) NOT NULL,
   version int(11) default NULL,
   definition blob
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1091,7 +1090,7 @@ CREATE TABLE tbl_6month (
   DRUG5 varchar(50) default NULL,
   DRUG6 varchar(50) default NULL,
   SIG_CHANGE_STATUS char(10) default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1105,7 +1104,7 @@ CREATE TABLE tbl_adminusers (
   uPass varbinary(50) default NULL,
   uUserName varbinary(50) default NULL,
   PRIMARY KEY  (uID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1118,7 +1117,7 @@ CREATE TABLE tbl_centres (
   cAbbrev varchar(15) default NULL,
   cCountry int(11) default NULL,
   PRIMARY KEY  (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1129,7 +1128,7 @@ CREATE TABLE tbl_clin_pres (
   cID int(11) NOT NULL auto_increment,
   CLIN_PRES varchar(20) default NULL,
   PRIMARY KEY  (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1185,7 +1184,7 @@ CREATE TABLE tbl_clinicaldata (
   CKD_STAGE int(11) default NULL,
   SEQ_NO int(11) default NULL,
   PRIMARY KEY  (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1196,7 +1195,7 @@ CREATE TABLE tbl_complication (
   cmpID int(11) NOT NULL auto_increment,
   cmpDesc varchar(50) default NULL,
   PRIMARY KEY  (cmpID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1209,7 +1208,7 @@ CREATE TABLE tbl_consultants (
   cFNAME varchar(50) default NULL,
   cCentre int(11) default NULL,
   PRIMARY KEY  (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1220,7 +1219,7 @@ CREATE TABLE tbl_country (
   cID int(11) NOT NULL auto_increment,
   cName varchar(50) default NULL,
   PRIMARY KEY  (cID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1269,11 +1268,11 @@ CREATE TABLE tbl_demographics (
   channelIslandsId varchar(20) default NULL,
   indiaId varchar(20) default NULL,
   generic tinyint(1) default NULL,
-  PRIMARY KEY  (RADAR_NO)/*!,
+  PRIMARY KEY  (RADAR_NO),
   KEY fk_RDG (RDG),
   KEY fk_genericDiagnosis (genericDiagnosis)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -1287,7 +1286,7 @@ CREATE TABLE tbl_diagcode (
   dcDesc varchar(70) default NULL,
   dcAbbr varchar(15) default NULL,
   PRIMARY KEY  (dcID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1348,7 +1347,7 @@ CREATE TABLE tbl_diagnosis (
   MUTATION_9 bit(1) default NULL,
   MUTATION_9S bit(1) default NULL,
   PRIMARY KEY  (dID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1359,7 +1358,7 @@ CREATE TABLE tbl_diseasedata (
   dID int(11) NOT NULL auto_increment,
   dText text,
   PRIMARY KEY  (dID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1371,7 +1370,7 @@ CREATE TABLE tbl_ethnicity (
   eName varchar(50) default NULL,
   eCode varchar(50) default NULL,
   PRIMARY KEY  (eID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1382,7 +1381,7 @@ CREATE TABLE tbl_genemutation (
   gmID int(11) NOT NULL auto_increment,
   GENE_MUTATION varchar(30) default NULL,
   PRIMARY KEY  (gmID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1393,7 +1392,7 @@ CREATE TABLE tbl_hd_modality (
   hdID int(11) NOT NULL auto_increment,
   hdType varchar(75) default NULL,
   PRIMARY KEY  (hdID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1405,7 +1404,7 @@ CREATE TABLE tbl_hdial (
   RADAR_NO int(11) default NULL,
   DATE_START_HDIAL datetime default NULL,
   PRIMARY KEY  (hdID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1420,7 +1419,7 @@ CREATE TABLE tbl_hospitalisation (
   REASON_ADMIT varchar(250) default NULL,
   COMMENT text,
   PRIMARY KEY  (hID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1432,7 +1431,7 @@ CREATE TABLE tbl_immunosupp (
   imDesc varchar(50) default NULL,
   `Group` int(11) default NULL,
   PRIMARY KEY  (imID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1448,7 +1447,7 @@ CREATE TABLE tbl_immunsup_treatment (
   CYCLOPHOS_TOT_DOSE decimal(5,3) default NULL,
   FIRST_FLAG bit(1) default NULL,
   PRIMARY KEY  (tID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1467,7 +1466,7 @@ CREATE TABLE tbl_issuetracker (
   bStatus varchar(50) default NULL,
   bUpdated datetime default NULL,
   PRIMARY KEY  (bID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1478,7 +1477,7 @@ CREATE TABLE tbl_karyotype (
   kID int(11) NOT NULL auto_increment,
   KARYOTYPE varchar(50) default NULL,
   PRIMARY KEY  (kID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1560,7 +1559,7 @@ CREATE TABLE tbl_labdata (
   SEQ_NO int(11) default NULL,
   ANTI_CLQ decimal(4,1) default NULL,
   PRIMARY KEY  (labID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1571,7 +1570,7 @@ CREATE TABLE tbl_monoclonal (
   mID int(11) NOT NULL auto_increment,
   mDesc varchar(20) default NULL,
   PRIMARY KEY  (mID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1609,7 +1608,7 @@ CREATE TABLE tbl_pathology (
   PATH_TXT text,
   SEQ_NO int(11) default NULL,
   PRIMARY KEY  (pID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1624,7 +1623,7 @@ CREATE TABLE tbl_patient_users (
   pDOB datetime default NULL,
   pDateReg datetime default NULL,
   PRIMARY KEY  (pID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1635,7 +1634,7 @@ CREATE TABLE tbl_pd_modality (
   pdID int(11) NOT NULL auto_increment,
   pdType varchar(75) default NULL,
   PRIMARY KEY  (pdID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1647,7 +1646,7 @@ CREATE TABLE tbl_pdial (
   RADAR_NO int(11) default NULL,
   DATE_START_PDIAL datetime default NULL,
   PRIMARY KEY  (pdID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1658,7 +1657,7 @@ CREATE TABLE tbl_phenotypes (
   pID int(11) NOT NULL auto_increment,
   pDesc varchar(75) default NULL,
   PRIMARY KEY  (pID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1672,7 +1671,7 @@ CREATE TABLE tbl_plasmaph (
   DUR_PLASMAPH int(11) default NULL,
   NO_EXCH_PLASMAPH int(11) default NULL,
   PRIMARY KEY  (plID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1694,7 +1693,7 @@ CREATE TABLE tbl_relapse (
   DATE_REMISSION datetime default NULL,
   SEQ_NO int(11) default NULL,
   PRIMARY KEY  (relID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1705,7 +1704,7 @@ CREATE TABLE tbl_relative (
   rID int(11) NOT NULL auto_increment,
   RELATIVE varchar(20) default NULL,
   PRIMARY KEY  (rID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1719,7 +1718,7 @@ CREATE TABLE tbl_rrt_hd (
   DATE_START_HDIAL datetime default NULL,
   DATE_STOP_HDIAL datetime default NULL,
   PRIMARY KEY  (hID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1731,7 +1730,7 @@ CREATE TABLE tbl_rrt_modality (
   mType varchar(50) default NULL,
   `Group` int(11) default NULL,
   PRIMARY KEY  (mID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1745,7 +1744,7 @@ CREATE TABLE tbl_rrt_pd (
   DATE_START_PD datetime default NULL,
   DATE_STOP_PD datetime default NULL,
   PRIMARY KEY  (pID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1762,7 +1761,7 @@ CREATE TABLE tbl_rrt_plasma (
   DUR_PLASMAPH int(11) default NULL,
   RESPONSE_TO_PLASMA int(11) default NULL,
   PRIMARY KEY  (plID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1773,7 +1772,7 @@ CREATE TABLE tbl_rrt_plasma_lu (
   exID int(11) NOT NULL auto_increment,
   exDesc varchar(50) default NULL,
   PRIMARY KEY  (exID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1789,7 +1788,7 @@ CREATE TABLE tbl_rrt_treatment (
   UNIT_CODE int(11) default NULL,
   FIRST_FLAG bit(1) default NULL,
   PRIMARY KEY  (tID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1800,7 +1799,7 @@ CREATE TABLE tbl_rt_modality (
   mID int(11) NOT NULL,
   mDesc varchar(50) default NULL,
   PRIMARY KEY  (mID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1811,7 +1810,7 @@ CREATE TABLE tbl_sex (
   sID int(11) NOT NULL auto_increment,
   sType varchar(14) default NULL,
   PRIMARY KEY  (sID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1823,7 +1822,7 @@ CREATE TABLE tbl_status (
   sDesc varchar(50) default NULL,
   sAbbrev varchar(20) default NULL,
   PRIMARY KEY  (sID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1836,7 +1835,7 @@ CREATE TABLE tbl_test (
   tTwo bit(1) default NULL,
   tThree char(10) default NULL,
   PRIMARY KEY  (tID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1887,7 +1886,7 @@ CREATE TABLE tbl_therapy (
   TMT_MODALITY varchar(50) default NULL,
   SEQ_NO int(11) default NULL,
   PRIMARY KEY  (tID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1906,7 +1905,7 @@ CREATE TABLE tbl_transplant (
   DATE_TX_REJECT datetime default NULL,
   DATE_BX_TXK datetime default NULL,
   PRIMARY KEY  (trID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1917,7 +1916,7 @@ CREATE TABLE tbl_transplant_modality (
   trID int(11) NOT NULL auto_increment,
   trDesc varchar(75) default NULL,
   PRIMARY KEY  (trID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1931,7 +1930,7 @@ CREATE TABLE tbl_transplant_reject (
   trBiopsyDate datetime default NULL,
   trFailureDate datetime default NULL,
   PRIMARY KEY  (recID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1952,7 +1951,7 @@ CREATE TABLE tbl_users (
   uPass varbinary(50) default NULL,
   uUserName varbinary(50) default NULL,
   PRIMARY KEY  (uID)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1968,11 +1967,11 @@ CREATE TABLE testresult (
   prepost varchar(100) default '',
   value varchar(100) NOT NULL default '',
   RADAR_NO int(11) unsigned default NULL,
-  PRIMARY KEY  (id)/*!,
+  PRIMARY KEY  (id),
   KEY nhsno_testcode (nhsno,testcode,unitcode),
   KEY radarno_unitcode (RADAR_NO,unitcode)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -1984,7 +1983,7 @@ CREATE TABLE treatment (
   nhsNo varchar(100) NOT NULL default '',
   treatmentCode varchar(100) NOT NULL default '',
   PRIMARY KEY  (nhsNo,treatmentCode)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -1995,10 +1994,10 @@ CREATE TABLE uktcode (
   id int(11) NOT NULL default '0',
   uktcode varchar(10) NOT NULL default '',
   description varchar(100) NOT NULL default '',
-  PRIMARY KEY  (id)/*!,
+  PRIMARY KEY  (id),
   KEY uktcode_unique (uktcode)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 
@@ -2011,7 +2010,7 @@ CREATE TABLE uktstatus (
   nhsno varchar(20) NOT NULL default '',
   kidney varchar(10) default '',
   pancreas varchar(10) default ''
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -2089,7 +2088,7 @@ CREATE TABLE unit (
   haemodialysisuniturl12 varchar(100) default NULL,
   sourceType varchar(50) default NULL,
   PRIMARY KEY  (unitcode)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -2103,7 +2102,7 @@ CREATE TABLE unitstat (
   action varchar(30) NOT NULL,
   count int(10) NOT NULL default '0',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -2124,7 +2123,7 @@ CREATE TABLE user (
   accountlocked tinyint(1) default '0',
   screenname varchar(100) NOT NULL,
   PRIMARY KEY  (username)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -2138,7 +2137,7 @@ CREATE TABLE userlog (
   role varchar(100) NOT NULL default '',
   count int(10) NOT NULL default '0',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
 -- ----------------------------
@@ -2150,8 +2149,8 @@ CREATE TABLE usermapping (
   username varchar(100) NOT NULL,
   unitcode varchar(10) NOT NULL,
   nhsno varchar(10) default NULL,
-  PRIMARY KEY  (id)/*!,
+  PRIMARY KEY  (id),
   KEY usermapping_index_nhsno (nhsno),
   KEY usermapping_index_username (username)
-  */
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  
+) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
