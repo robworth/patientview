@@ -32,6 +32,23 @@
         </personaldetails>
         <clinicaldetails>
             <rrtstatus>HD</rrtstatus>
+            <tpstatus></tpstatus>
+            <diagnosisdate>2005-01-01</diagnosisdate>
+            <diagnosis>Crohn's Disease</diagnosis>
+            <ibddiseaseextent>Crohn's Colitis</ibddiseaseextent>
+            <ibddiseasecomplications>Peri-anal disease (fissures, fistulas,abscesses): Large bowel stricturing:
+                Osteopaenia
+            </ibddiseasecomplications>
+            <ibdeimanifestations>None</ibdeimanifestations>
+            <familyhistory>Family history of bowel cancer</familyhistory>
+            <smokinghistory>Never smoked</smokinghistory>
+            <surgicalhistory>Other procedure - please specify, subtotal colcectomy, ileo-rectal anastomosis
+            </surgicalhistory>
+            <vaccinationrecord>Previous history of chicken pox, Previous TB (BCG) vaccination</vaccinationrecord>
+            <colonoscopysurveillance>01-08-2017</colonoscopysurveillance>
+            <bmdexam>2013-08-08</bmdexam>
+            <namedconsultant>Dr Lal</namedconsultant>
+            <ibdnurse>Cath Stansfield, Justine Newberry</ibdnurse>
         </clinicaldetails>
         <testdetails>
             <test>
