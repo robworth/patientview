@@ -1,6 +1,7 @@
 package com.worthsoln.patientview.model;
 
 import com.worthsoln.ibd.Ibd;
+import com.worthsoln.patientview.parser.ResultParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.persistence.Column;
@@ -114,7 +115,7 @@ public class Patient extends BaseModel {
         this.diagnosis = diagnosis;
         if (diagnosisDate != null) {
             try {
-                this.diagnosisDate = Ibd.DATE_FORMAT.parse(diagnosisDate);
+                this.diagnosisDate = ResultParser.IMPORT_DATE_FORMAT.parse(diagnosisDate);
             } catch (ParseException e) {
                 LOGGER.error("Could not parse diagnosisDate {} {}", diagnosisDate, e);
             }

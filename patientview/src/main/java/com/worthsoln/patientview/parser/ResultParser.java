@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class ResultParser {
 
-    public static final SimpleDateFormat DIAGNOSIS_DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM");
+    public static final SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM");
 
     private ArrayList<TestResult> testResults = new ArrayList<TestResult>();
     private ArrayList<TestResultDateRange> dateRanges = new ArrayList<TestResultDateRange>();
@@ -387,7 +387,7 @@ public class ResultParser {
         if (diagnosisDate != null) {
             try {
                 myIbd.setYearOfDiagnosis(
-                        DIAGNOSIS_DATE_FORMAT.parse((String) diagnosisDate));
+                        IMPORT_DATE_FORMAT.parse((String) diagnosisDate));
             } catch (Exception e) {
                 LOGGER.error("Could not parse diagnosisyear for MyIbd with NHS No {}", myIbd.getNhsno(), e);
             }
@@ -407,7 +407,7 @@ public class ResultParser {
         if (xmlData.get("colonoscopysurveillance") != null) {
             try {
                 myIbd.setYearForSurveillanceColonoscopy(
-                        Ibd.DATE_FORMAT.parse((String) xmlData.get("colonoscopysurveillance")));
+                        IMPORT_DATE_FORMAT.parse((String) xmlData.get("colonoscopysurveillance")));
             } catch (ParseException e) {
                 LOGGER.error("Could not parse colonoscopysurveillance for MyIbd with NHS No {}", myIbd.getNhsno(), e);
             }
