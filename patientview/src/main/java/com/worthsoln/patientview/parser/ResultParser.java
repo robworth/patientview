@@ -19,11 +19,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ResultParser {
+
+    public static final SimpleDateFormat DIAGNOSIS_DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM");
 
     private ArrayList<TestResult> testResults = new ArrayList<TestResult>();
     private ArrayList<TestResultDateRange> dateRanges = new ArrayList<TestResultDateRange>();
@@ -41,7 +44,7 @@ public class ResultParser {
             "hospitalnumber", "address1", "address2", "address3", "address4", "postcode", "telephone1", "telephone2",
             "mobile", "diagnosisyear", "ibddiseaseextent", "ibddiseasecomplications", "ibdeimanifestations",
             "bodypartsaffected", "familyhistory", "smokinghistory", "surgicalhistory", "vaccinationrecord", "bmdexam",
-            "namedconsultant", "ibdnurse", "bloodgroup"};
+            "namedconsultant", "ibdnurse", "bloodgroup", "diagnosis", "colonoscopysurveillance"};
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultParser.class);
 
@@ -232,7 +235,6 @@ public class ResultParser {
                 }
             }
 
-            // TODO: still waiting on rob to confirm types - only store if it has a diagnostic type
             if (diagnostic.getDiagnosticType() != null) {
                 diagnostics.add(diagnostic);
             }
@@ -377,18 +379,20 @@ public class ResultParser {
         MyIbd myIbd = new MyIbd();
         myIbd.setNhsno((String) xmlData.get("nhsno"));
         myIbd.setUnitcode((String) xmlData.get("centrecode"));
+        myIbd.setDiagnosis(com.worthsoln.ibd.model.enums.Diagnosis.getDiagnosisByXmlName(
+                (String) xmlData.get("diagnosis")));
 
-        Object diagnosisYearObj = xmlData.get("diagnosisyear");
+        Object diagnosisDate = xmlData.get("diagnosisdate");
         // this is an ibd only field so can be null
-        if (diagnosisYearObj != null) {
+        if (diagnosisDate != null) {
             try {
                 myIbd.setYearOfDiagnosis(
-                        Ibd.YEAR_DATE_FORMAT.parse((String) diagnosisYearObj));
+                        DIAGNOSIS_DATE_FORMAT.parse((String) diagnosisDate));
             } catch (Exception e) {
                 LOGGER.error("Could not parse diagnosisyear for MyIbd with NHS No {}", myIbd.getNhsno(), e);
             }
         }
-        myIbd.setDiseaseExtent(DiseaseExtent.getDiseaseExtent((String) xmlData.get("ibddiseaseextent")));
+        myIbd.setDiseaseExtent(DiseaseExtent.getDiseaseExtentByXmlName((String) xmlData.get("ibddiseaseextent")));
         myIbd.setEiManifestations((String) xmlData.get("ibdeimanifestations"));
         ArrayList<Complication> complications = new ArrayList<Complication>();
         complications.add(Complication.getComplication((String) xmlData.get("ibddiseasecomplications")));
