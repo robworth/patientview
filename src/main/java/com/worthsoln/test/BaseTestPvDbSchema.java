@@ -2,6 +2,7 @@ package com.worthsoln.test;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -35,6 +37,47 @@ public class BaseTestPvDbSchema {
 
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
+
+    @Before
+    public void testDbCreate() throws Exception {
+        LOGGER.info("Starting db setup");
+
+        // a list of all the sql file names we need to run in order
+        List<String> sqlFileNames = new ArrayList<String>();
+        sqlFileNames.add("sql/1-pvdbschema-create.sql");
+
+        // work out the feature number we need to increment the db to
+        Resource txtResource = applicationContext.getResource("classpath:current-db-feature-num.txt");
+
+        assertTrue("null resource", txtResource != null && txtResource.exists());
+
+        int featureNum = Integer.parseInt(IOUtils.toString(txtResource.getInputStream()));
+
+        assertTrue("Invalid feature version", featureNum > 0);
+
+        // iterate through the features folders and grab the features we need
+        for (int i = 1; i <= featureNum; i++) {
+            sqlFileNames.add("sql/features/" + i + "/" + i + ".sql");
+        }
+
+        if (!sqlFileNames.isEmpty()) {
+            Connection connection = null;
+
+            try {
+                connection = dataSource.getConnection();
+
+                // empty db
+                emptyDatabase(connection);
+
+                // create tables
+                createTables(connection, sqlFileNames);
+            } finally {
+                if (connection != null) {
+                    connection.close();
+                }
+            }
+        }
+    }
 
     protected void emptyDatabase(Connection connection) throws Exception {
         LOGGER.info("Emptying database");
