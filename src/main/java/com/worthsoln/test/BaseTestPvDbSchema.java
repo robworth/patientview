@@ -36,7 +36,7 @@ public class BaseTestPvDbSchema {
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
 
-    private void emptyDatabase(Connection connection) throws Exception {
+    protected void emptyDatabase(Connection connection) throws Exception {
         LOGGER.info("Emptying database");
 
         Statement statement = connection.createStatement();
@@ -54,7 +54,7 @@ public class BaseTestPvDbSchema {
         dropStatement.close();
     }
 
-    private void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
+    protected void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
         LOGGER.info("Starting create tables");
 
         Statement statement = connection.createStatement();
