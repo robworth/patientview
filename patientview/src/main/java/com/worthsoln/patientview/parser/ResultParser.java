@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.parser;
 
-import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
@@ -26,7 +25,7 @@ import java.util.Map;
 
 public class ResultParser {
 
-    public static final SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM");
+    public static final SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private ArrayList<TestResult> testResults = new ArrayList<TestResult>();
     private ArrayList<TestResultDateRange> dateRanges = new ArrayList<TestResultDateRange>();
