@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import javax.inject.Inject;
@@ -33,6 +34,12 @@ public abstract class TestPvDbSchema {
     @Inject
     private SpringApplicationContextBean springApplicationContextBean;
 
+    @Value("${jdbc.databasename}")
+    private String databaseName;
+
+    @Value("${jdbc.driverClassName}")
+    private String driverClassName;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPvDbSchema.class);
 
     @Before
@@ -50,7 +57,7 @@ public abstract class TestPvDbSchema {
                 = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:current-db-feature-num.txt");
 
-        assertTrue("null resource", txtResource != null);
+        assertTrue("null resource", txtResource != null && txtResource.exists());
 
         int featureNum = Integer.parseInt(IOUtils.toString(txtResource.getInputStream()));
 
@@ -81,8 +88,11 @@ public abstract class TestPvDbSchema {
                     if (inputStream != null) {
                         // Split by ; and execute
                         String createTablesScript = IOUtils.toString(inputStream);
-                        createTablesScript = createTablesScript.replaceAll("ENGINE=InnoDB", "");
-                        createTablesScript = createTablesScript.replaceAll("ENGINE=MyISAM", "");
+
+                        // need to clean up the sql if its running in H2 as some of the commands will fail
+                        if (driverClassName.equals("org.h2.Driver")) {
+                            createTablesScript = convertToH2(createTablesScript);
+                        }
 
                         for (String sqlStatement : createTablesScript.split(";")) {
                             if (StringUtils.isNotBlank(sqlStatement)) {
@@ -102,26 +112,20 @@ public abstract class TestPvDbSchema {
                     }
                 }
             } else {
-
                 LOGGER.info("Starting truncate tables");
 
                 // we want to truncate all the table data
-                // mysql statement.execute("SET FOREIGN_KEY_CHECKS=0");
 
-                // h2
-                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
+                if (driverClassName.equals("org.h2.Driver")) {
+                    statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
+                } else {
+                    statement.execute("SET FOREIGN_KEY_CHECKS=0");
+                }
 
-                // mysql
-//                ResultSet truncateResultSet = statement.executeQuery("SELECT CONCAT('TRUNCATE TABLE ', " +
-//                        "TABLE_NAME, ';')\n" +
-//                        "FROM INFORMATION_SCHEMA.TABLES\n" +
-//                        "WHERE TABLE_SCHEMA = 'patientviewtest';");
-
-                // h2
                 ResultSet truncateResultSet = statement.executeQuery("SELECT CONCAT('TRUNCATE TABLE ', " +
                         "TABLE_NAME, ';')\n" +
                         "FROM INFORMATION_SCHEMA.TABLES\n" +
-                        "WHERE TABLE_SCHEMA = 'PUBLIC';");
+                        "WHERE TABLE_SCHEMA = '" + databaseName + "';");
 
                 Statement truncateStatement = connection.createStatement();
 
@@ -130,7 +134,11 @@ public abstract class TestPvDbSchema {
                     truncateStatement.execute(sql);
                 }
 
-                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
+                if (driverClassName.equals("org.h2.Driver")) {
+                    statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
+                } else {
+                    statement.execute("SET FOREIGN_KEY_CHECKS=1");
+                }
             }
 
         } finally {
@@ -141,6 +149,13 @@ public abstract class TestPvDbSchema {
                 connection.close();
             }
         }
+    }
+
+    private String convertToH2(String sql) {
+        sql = sql.replaceAll("MODIFY", "ALTER"); // changing a column
+        sql = sql.replaceAll("CHANGE", "ALTER"); // changing a column
+        sql = sql.replaceAll("FIRST", ""); // adding a primary key
+        return sql;
     }
 
     private InputStream readFileFromClasspath(String filename) throws IOException {
