@@ -2,7 +2,7 @@ package com.solidstategroup.radar.test.service;
 
 
 import com.solidstategroup.radar.service.DemographicsManager;
-import com.solidstategroup.radar.test.DatabaseBackedTest;
+import com.solidstategroup.radar.test.TestPvDbSchema;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:context.xml"})
-public class DemographicsManagerTest extends DatabaseBackedTest{
+public class DemographicsManagerTest extends TestPvDbSchema {
     @Autowired
     private DemographicsManager demographicsManager;
 

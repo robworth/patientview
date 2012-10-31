@@ -31,6 +31,13 @@
 
     <profiles>
         <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+            </properties>
+        </profile>
+        <profile>
             <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -453,6 +460,13 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.worthsoln</groupId>
+            <artifactId>pvdbschema</artifactId>
+            <version>1.0-DEVELOP-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
