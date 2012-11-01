@@ -226,19 +226,21 @@ CREATE TABLE `ibd_my_medication` (
 
 CREATE TABLE `ibd_myibd` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `body_part_affected_id` bigint(20) DEFAULT NULL,
+  `bodyPartAffected` text,
   `diagnosis_id` bigint(20) NOT NULL,
-  `disease_extent_id` bigint(20) DEFAULT NULL,
+  `disease_extent_id` bigint(20) NOT NULL,
   `namedConsultant` text,
   `nhsno` varchar(10) NOT NULL,
   `nurses` text,
   `yearForSurveillanceColonoscopy` datetime DEFAULT NULL,
-  `yearOfDiagnosis` datetime DEFAULT NULL,
-  `family_history_id` bigint(20) DEFAULT NULL,
-  `smoking_id` bigint(20) DEFAULT NULL,
-  `surgery_id` bigint(20) DEFAULT NULL,
-  `vaccination_record_id` bigint(20) DEFAULT NULL,
-  `weight` double,
+  `yearOfDiagnosis` datetime NOT NULL,
+  `familyHistory` text,
+  `smoking` text,
+  `surgery` text,
+  `vaccinationRecord` text,
+  `weight` double NOT NULL,
+  `eiManifestations` varchar(255) DEFAULT NULL,
+  `unitcode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
