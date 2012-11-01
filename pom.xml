@@ -39,9 +39,6 @@
         </profile>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <env>dev</env>
                 <tomcatmanagerurl>http://dev.solidstategroup.com:10080/manager/text</tomcatmanagerurl>
