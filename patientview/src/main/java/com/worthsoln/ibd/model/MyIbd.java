@@ -33,8 +33,8 @@ public class MyIbd extends BaseModel {
         }
     };
 
-    @Transient
-    private BodyPartAffected bodyPartAffected = BodyPartAffected.NONE;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String bodyPartAffected;
 
     @Column(nullable = true)
     private Date yearForSurveillanceColonoscopy;
@@ -51,17 +51,17 @@ public class MyIbd extends BaseModel {
     @Column(nullable = true)
     private String eiManifestations;
 
-    @Transient
-    private FamilyHistory familyHistory = FamilyHistory.NONE;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String familyHistory;
 
-    @Transient
-    private Smoking smoking = Smoking.NEVER_SMOKED;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String smoking;
 
-    @Transient
-    private Surgery surgery = Surgery.NO_PREVIOUS_OPERATIONS;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String surgery;
 
-    @Transient
-    private VaccinationRecord vaccinationRecord = VaccinationRecord.NOT_KNOWN;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String vaccinationRecord;
 
     public String getNhsno() {
         return nhsno;
@@ -171,25 +171,11 @@ public class MyIbd extends BaseModel {
         this.complications = complications;
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "body_part_affected_id", nullable = true)
-    public long getBodyPartAffectedId() {
-        if (bodyPartAffected != null) {
-            return bodyPartAffected.getId();
-        }
-
-        return -1;
-    }
-
-    public void setBodyPartAffectedId(Long id) {
-        this.bodyPartAffected = BodyPartAffected.getBodyPartAffected(id);
-    }
-
-    public BodyPartAffected getBodyPartAffected() {
+    public String getBodyPartAffected() {
         return bodyPartAffected;
     }
 
-    public void setBodyPartAffected(BodyPartAffected bodyPartAffected) {
+    public void setBodyPartAffected(String bodyPartAffected) {
         this.bodyPartAffected = bodyPartAffected;
     }
 
@@ -233,91 +219,35 @@ public class MyIbd extends BaseModel {
         this.weight = weight;
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "family_history_id", nullable = true)
-    public long getFamilyHistoryId() {
-        if (familyHistory != null) {
-            return familyHistory.getId();
-        }
-
-        return -1;
-    }
-
-    public void setFamilyHistoryId(Long id) {
-        this.familyHistory = FamilyHistory.getFamilyHistory(id);
-    }
-
-    public FamilyHistory getFamilyHistory() {
+    public String getFamilyHistory() {
         return familyHistory;
     }
 
-    public void setFamilyHistory(FamilyHistory familyHistory) {
+    public void setFamilyHistory(String familyHistory) {
         this.familyHistory = familyHistory;
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "smoking_id", nullable = true)
-    public long getSmokingId() {
-        if (smoking != null) {
-            return smoking.getId();
-        }
-
-        return -1;
-    }
-
-    public void setSmokingId(Long id) {
-        this.smoking = Smoking.getSmoking(id);
-    }
-
-    public Smoking getSmoking() {
+    public String getSmoking() {
         return smoking;
     }
 
-    public void setSmoking(Smoking smoking) {
+    public void setSmoking(String smoking) {
         this.smoking = smoking;
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "surgery_id", nullable = true)
-    public long getSurgeryId() {
-        if (surgery != null) {
-            return surgery.getId();
-        }
-
-        return -1;
-    }
-
-    public void setSurgeryId(Long id) {
-        this.surgery = Surgery.getSurgery(id);
-    }
-
-    public Surgery getSurgery() {
+    public String getSurgery() {
         return surgery;
     }
 
-    public void setSurgery(Surgery surgery) {
+    public void setSurgery(String surgery) {
         this.surgery = surgery;
     }
 
-    @Access(AccessType.PROPERTY)
-    @Column(name = "vaccination_record_id", nullable = true)
-    public long getVaccinationRecordId() {
-        if (vaccinationRecord != null) {
-            return vaccinationRecord.getId();
-        }
-
-        return -1;
-    }
-
-    public void setVaccinationRecordId(Long id) {
-        this.vaccinationRecord = VaccinationRecord.getVaccinationRecord(id);
-    }
-
-    public VaccinationRecord getVaccinationRecord() {
+    public String getVaccinationRecord() {
         return vaccinationRecord;
     }
 
-    public void setVaccinationRecord(VaccinationRecord vaccinationRecord) {
+    public void setVaccinationRecord(String vaccinationRecord) {
         this.vaccinationRecord = vaccinationRecord;
     }
 

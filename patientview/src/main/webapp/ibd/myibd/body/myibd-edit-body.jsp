@@ -55,16 +55,12 @@
                 </div>
             </logic:present>
 
-            <logic:present name="bodyPartAffectedList" scope="session">
-                <div class="control-group">
-                    <label class="control-label">Other parts of the body affected:</label>
-                    <div class="controls">
-                        <html:select property="bodyPartAffectedId">
-                            <html:options collection="bodyPartAffectedList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
+            <div class="control-group">
+                <label class="control-label">Other parts of the body affected:</label>
+                <div class="controls">
+                    <html:text property="bodyPartAffected"/>
                 </div>
-            </logic:present>
+            </div>
 
             <div class="control-group">
                 <label class="control-label" for="yearForSurveillanceColonoscopy">Year for Surveillance Colonoscopy:</label>
@@ -96,46 +92,34 @@
                     <html:text property="weight"/>
                 </div>
             </div>
-            <logic:present name="familyHistoryList" scope="session">
-                <div class="control-group">
-                    <label class="control-label">IBD Related Family History:</label>
-                    <div class="controls">
-                        <html:select property="familyHistoryId">
-                            <html:options collection="familyHistoryList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
+
+            <div class="control-group">
+                <label class="control-label">IBD Related Family History:</label>
+                <div class="controls">
+                    <html:text property="familyHistory"/>
                 </div>
-            </logic:present>
-            <logic:present name="smokingList" scope="session">
-                <div class="control-group">
-                    <label class="control-label">Smoking History:</label>
-                    <div class="controls">
-                        <html:select property="smokingId">
-                            <html:options collection="smokingList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Smoking History:</label>
+                <div class="controls">
+                    <html:text property="smoking"/>
                 </div>
-            </logic:present>
-            <logic:present name="surgeryList" scope="session">
-                <div class="control-group">
-                    <label class="control-label">Surgery History:</label>
-                    <div class="controls">
-                        <html:select property="surgeryId">
-                            <html:options collection="surgeryList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Surgery History:</label>
+                <div class="controls">
+                    <html:text property="surgery"/>
                 </div>
-            </logic:present>
-            <logic:present name="vaccinationRecordList" scope="session">
-                <div class="control-group">
-                    <label class="control-label">Vaccination History:</label>
-                    <div class="controls">
-                        <html:select property="vaccinationRecordId">
-                            <html:options collection="vaccinationRecordList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Vaccination History:</label>
+                <div class="controls">
+                    <html:text property="vaccinationRecord"/>
                 </div>
-            </logic:present>
+            </div>
 
             <div class="form-actions">
                 <html:submit value="Save" styleClass="btn btn-primary"/>

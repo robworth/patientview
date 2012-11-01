@@ -67,7 +67,7 @@
 
                     <logic:iterate name="myIbd" property="complications" id="complication" indexId="index">
                         <bean:write name="complication"
-                                    property="name"/><%= (complicationsListSize == (index + 1) ? "" : ",") %>
+                                    property="name"/><%= (complicationsListSize == (index + 1) ? "" : "<br />") %>
                     </logic:iterate>
 
                     <logic:present name="complicationLink">
@@ -96,7 +96,12 @@
                     <label class="control-label">Other parts of the body affected:</label>
                 </div>
                 <div class="span3 controls">
-                    <bean:write name="myIbd" property="bodyPartAffected.name"/>
+                    <logic:present name="myIbd" property="bodyPartAffected">
+                        <bean:write name="myIbd" property="bodyPartAffected"/>
+                    </logic:present>
+                    <logic:notPresent name="myIbd" property="bodyPartAffected">
+                        None
+                    </logic:notPresent>
 
                     <logic:present name="bodyPartAffectedLink">
                         <a href="<bean:write name="bodyPartAffectedLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
@@ -173,9 +178,14 @@
             <label class="control-label">IBD Related Family History:</label>
         </div>
         <div class="span3 controls">
-                 <bean:write name="myIbd" property="familyHistory.name"/>
+            <logic:present name="myIbd" property="familyHistory">
+                <bean:write name="myIbd" property="familyHistory"/>
+            </logic:present>
+            <logic:notPresent name="myIbd" property="familyHistory">
+                None
+            </logic:notPresent>
 
-                <logic:present name="familyHistoryLink">
+            <logic:present name="familyHistoryLink">
                     <a href="<bean:write name="familyHistoryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
                 </logic:present>
         </div>
@@ -185,11 +195,16 @@
             <label class="control-label">Surgical History:</label>
         </div>
         <div class="span3 controls">
-                 <bean:write name="myIbd" property="surgery.name"/>
+            <logic:present name="myIbd" property="surgery">
+                <bean:write name="myIbd" property="surgery"/>
+            </logic:present>
+            <logic:notPresent name="myIbd" property="surgery">
+                No previous operations
+            </logic:notPresent>
 
-                <logic:present name="surgeryLink">
-                    <a href="<bean:write name="surgeryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                </logic:present>
+            <logic:present name="surgeryLink">
+                <a href="<bean:write name="surgeryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
     <div class="row control-group">
@@ -197,11 +212,16 @@
             <label class="control-label">Smoking History:</label>
         </div>
         <div class="span3 controls">
-                 <bean:write name="myIbd" property="smoking.name"/>
+            <logic:present name="myIbd" property="smoking">
+                <bean:write name="myIbd" property="smoking"/>
+            </logic:present>
+            <logic:notPresent name="myIbd" property="smoking">
+                Never smoked
+            </logic:notPresent>
 
-                <logic:present name="smokingLink">
-                    <a href="<bean:write name="smokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
-                </logic:present>
+            <logic:present name="smokingLink">
+                <a href="<bean:write name="smokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
 
@@ -210,11 +230,16 @@
             <label class="control-label">Vaccination Record:</label>
         </div>
         <div class="span3 controls">
-                 <bean:write name="myIbd" property="vaccinationRecord.name"/>
+            <logic:present name="myIbd" property="vaccinationRecord">
+                <bean:write name="myIbd" property="vaccinationRecord"/>
+            </logic:present>
+            <logic:notPresent name="myIbd" property="vaccinationRecord">
+                Not known
+            </logic:notPresent>
 
-                <logic:present name="vaccinationRecordLink">
-                    <a href="<bean:write name="vaccinationRecordLink" />" target="_blank"><i class="icon-info-sign"></i></a>
-                </logic:present>
+            <logic:present name="vaccinationRecordLink">
+                <a href="<bean:write name="vaccinationRecordLink" />" target="_blank"><i class="icon-info-sign"></i></a>
+            </logic:present>
         </div>
     </div>
 
