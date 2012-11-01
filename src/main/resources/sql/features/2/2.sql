@@ -319,10 +319,6 @@ ALTER TABLE `patient` ADD COLUMN `bmdexam` DATETIME NULL /*!AFTER `bloodgroup`*/
 ALTER TABLE `patient` ADD COLUMN `gpemail` VARCHAR(255) NULL /*!AFTER `bmdexam`*/;
 ALTER TABLE `patient` ADD COLUMN `diagnosisDate` DATETIME NULL /*!AFTER `gpemail`*/;
 
-ALTER TABLE `ibd_myibd` MODIFY `nhsno` VARCHAR(10) NOT NULL;
-ALTER TABLE `ibd_myibd` ADD COLUMN `eiManifestations` VARCHAR(255) NULL /*!AFTER `weight`*/;
-ALTER TABLE `ibd_myibd` ADD COLUMN `unitcode` VARCHAR(20) NULL /*!AFTER `eiManifestations`*/;
-
 CREATE TABLE `pv_allergy` (
   `id` bigint(20) NOT NULL auto_increment,
   `nhsno` varchar(10) NOT NULL,
