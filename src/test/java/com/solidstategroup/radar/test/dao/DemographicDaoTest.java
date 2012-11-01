@@ -40,24 +40,6 @@ public class DemographicDaoTest extends BaseDaoTest {
 
         // Check radar number is correct
         assertEquals("Wrong radar number", new Long(241), demographics.getId());
-
-        // We should definitely have a valid forename and surname
-        assertTrue("Forename was empty", StringUtils.isNotBlank(demographics.getForename()));
-        assertTrue("Surname was empty", StringUtils.isNotBlank(demographics.getSurname()));
-
-        // Check address according to correct values in dataset
-        assertEquals("Wrong address 1", "9 Lowther Road", demographics.getAddress1());
-        assertEquals("Wrong address 2", "Yeovil", demographics.getAddress2());
-        assertEquals("Wrong address 3", "Somerset", demographics.getAddress3());
-        assertEquals("Wrong postcode", "BA21 5PF", demographics.getPostcode());
-
-        // Check hospital number and NHS number
-        assertEquals("Wrong NHS number", "4921148228", demographics.getNhsNumber());
-        assertEquals("Wrong Hospital number", "1703489M", demographics.getHospitalNumber());
-
-        // Centre should be set as 3, Bristol
-        assertNotNull("Centre was null", demographics.getRenalUnit());
-        assertEquals("Centre was not Bristol", demographics.getRenalUnit().getAbbreviation(), "Bristol");
     }
 
     @Test
