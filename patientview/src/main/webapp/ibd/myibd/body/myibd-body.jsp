@@ -67,7 +67,7 @@
 
                     <logic:iterate name="myIbd" property="complications" id="complication" indexId="index">
                         <bean:write name="complication"
-                                    property="name"/><%= (complicationsListSize == (index + 1) ? "" : ",") %>
+                                    property="name"/><%= (complicationsListSize == (index + 1) ? "" : "<br />") %>
                     </logic:iterate>
 
                     <logic:present name="complicationLink">
