@@ -42,7 +42,7 @@ public class MyIbdSeverityLevelDaoTest extends BaseDaoTest {
         myIbd.setDiagnosis(Diagnosis.COLITIS_UNSPECIFIED);
         myIbd.setDiseaseExtent(DiseaseExtent.ILEO_COLONIC_DISEASE);
         myIbd.setYearOfDiagnosis(new Date());
-        myIbd.setBodyPartAffected(BodyPartAffected.ANKYLOSING_SPONDYLITIS);
+        myIbd.setBodyPartAffected("Test");
         myIbd.setYearForSurveillanceColonoscopy(new Date());
         myIbd.setNamedConsultant("Test consultant");
         myIbd.setNurses("Test nurses");

@@ -76,16 +76,16 @@ public class Ibd {
     public static final String DIAGNOSIS_ID_PARAM = "diagnosisId";
     public static final String DISEASE_EXTENT_ID_PARAM = "diseaseExtentId";
     public static final String YEAR_OF_DIAGNOSIS_PARAM = "yearOfDiagnosis";
-    public static final String BODY_PART_AFFECTED_ID_PARAM = "bodyPartAffectedId";
+    public static final String BODY_PART_AFFECTED_PARAM = "bodyPartAffected";
     public static final String WEIGHT_PARAM = "weight";
     public static final String COMPLICATION_IDS_PARAM = "complicationIds";
     public static final String YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM = "yearForSurveillanceColonoscopy";
     public static final String NAMED_CONSULTANT_PARAM = "namedConsultant";
     public static final String NURSES_PARAM = "nurses";
-    public static final String FAMILY_HISTORY_ID_PARAM = "familyHistoryId";
-    public static final String SMOKING_ID_PARAM = "smokingId";
-    public static final String SURGERY_ID_PARAM = "surgeryId";
-    public static final String VACCINATION_RECORD_ID_PARAM = "vaccinationRecordId";
+    public static final String FAMILY_HISTORY_PARAM = "familyHistory";
+    public static final String SMOKING_PARAM = "smoking";
+    public static final String SURGERY_PARAM = "surgery";
+    public static final String VACCINATION_RECORD_PARAM = "vaccinationRecord";
 
     // care plan params
     public static final String OVERALL_MY_CONDITION_SCORE_PARAM = "overallMyConditionScore";

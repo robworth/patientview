@@ -30,15 +30,15 @@ public class MyIbdEditAction extends BaseAction {
         dynaForm.set(Ibd.DIAGNOSIS_ID_PARAM, myIbd.getDiagnosisId());
         dynaForm.set(Ibd.DISEASE_EXTENT_ID_PARAM, myIbd.getDiseaseExtentId());
         dynaForm.set(Ibd.YEAR_OF_DIAGNOSIS_PARAM, convertFormDateString(myIbd.getYearOfDiagnosis()));
-        dynaForm.set(Ibd.BODY_PART_AFFECTED_ID_PARAM, myIbd.getBodyPartAffectedId());
+        dynaForm.set(Ibd.BODY_PART_AFFECTED_PARAM, myIbd.getBodyPartAffected());
         dynaForm.set(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, convertFormDateString(myIbd.getYearForSurveillanceColonoscopy()));
         dynaForm.set(Ibd.NAMED_CONSULTANT_PARAM, myIbd.getNamedConsultant());
         dynaForm.set(Ibd.NURSES_PARAM, myIbd.getNurses());
         dynaForm.set(Ibd.WEIGHT_PARAM, myIbd.getWeight());
-        dynaForm.set(Ibd.FAMILY_HISTORY_ID_PARAM, myIbd.getFamilyHistoryId());
-        dynaForm.set(Ibd.SMOKING_ID_PARAM, myIbd.getSmokingId());
-        dynaForm.set(Ibd.SURGERY_ID_PARAM, myIbd.getSurgeryId());
-        dynaForm.set(Ibd.VACCINATION_RECORD_ID_PARAM, myIbd.getVaccinationRecordId());
+        dynaForm.set(Ibd.FAMILY_HISTORY_PARAM, myIbd.getFamilyHistory());
+        dynaForm.set(Ibd.SMOKING_PARAM, myIbd.getSmoking());
+        dynaForm.set(Ibd.SURGERY_PARAM, myIbd.getSurgery());
+        dynaForm.set(Ibd.VACCINATION_RECORD_PARAM, myIbd.getVaccinationRecord());
 
         Long[] complicationIds = new Long[myIbd.getComplications().size()];
         int count = 0;

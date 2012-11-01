@@ -396,11 +396,11 @@ public class ResultParser {
         ArrayList<Complication> complications = new ArrayList<Complication>();
         complications.add(Complication.getComplication((String) xmlData.get("ibddiseasecomplications")));
         myIbd.setComplications(complications);
-        myIbd.setBodyPartAffected(BodyPartAffected.getBodyPartAffected((String) xmlData.get("bodypartsaffected")));
-        myIbd.setFamilyHistory(FamilyHistory.getFamilyHistory((String) xmlData.get("familyhistory")));
-        myIbd.setSmoking(Smoking.getSmoking((String) xmlData.get("smokinghistory")));
-        myIbd.setSurgery(Surgery.getSurgery((String) xmlData.get("surgicalhistory")));
-        myIbd.setVaccinationRecord(VaccinationRecord.getVaccinationRecord((String) xmlData.get("vaccinationrecord")));
+        myIbd.setBodyPartAffected((String) xmlData.get("bodypartsaffected"));
+        myIbd.setFamilyHistory((String) xmlData.get("familyhistory"));
+        myIbd.setSmoking((String) xmlData.get("smokinghistory"));
+        myIbd.setSurgery((String) xmlData.get("surgicalhistory"));
+        myIbd.setVaccinationRecord((String) xmlData.get("vaccinationrecord"));
         myIbd.setNamedConsultant((String) xmlData.get("namedconsultant"));
         myIbd.setNurses((String) xmlData.get("ibdnurse"));
         if (xmlData.get("colonoscopysurveillance") != null) {
