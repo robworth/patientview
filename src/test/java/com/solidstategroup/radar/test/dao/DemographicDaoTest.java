@@ -69,15 +69,15 @@ public class DemographicDaoTest extends BaseDaoTest {
     public void testGetDemographicsByCentre() throws Exception {
         // Construct centre
         Centre centre = new Centre();
-        centre.setId(14L);
+        centre.setId(2L);
 
         // Call DAO
         List<Demographics> demographics = demographicDao.getDemographicsByRenalUnit(centre);
         assertNotNull("List was null", demographics);
-        assertEquals("Wrong size", 4, demographics.size());
+        assertEquals("Wrong size", 22, demographics.size());
         for (Demographics de : demographics) {
-            assertTrue("Wrong centre", de.getRenalUnit().getId().equals(14L) || de.getRenalUnitAuthorised().getId().
-                    equals(14L));
+            assertTrue("Wrong centre", de.getRenalUnit().getId().equals(2L) || de.getRenalUnitAuthorised().getId().
+                    equals(2L));
         }
     }
 

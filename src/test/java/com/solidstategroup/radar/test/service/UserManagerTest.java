@@ -57,7 +57,7 @@ public class UserManagerTest extends TestPvDbSchema {
         patientUser.setUsername("test_user");
 
         // Date of birth for this within test dataset is 6th November 1994
-        patientUser.setDateOfBirth(DATE_FORMAT.parse("06/11/1994"));
+        patientUser.setDateOfBirth(DATE_FORMAT.parse("06/11/1991"));
 
         // Try and register - this should complete successfully as the data matches up
         userManager.registerPatient(patientUser);

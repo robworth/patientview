@@ -66,7 +66,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         Centre centre = new Centre();
         centre.setId(4L);
         List<Consultant> consultants = utilityDao.getConsultantsByCentre(centre);
-        assertEquals(consultants.size(), 4);
+        assertEquals(consultants.size(), 3);
     }
 
     @Test
