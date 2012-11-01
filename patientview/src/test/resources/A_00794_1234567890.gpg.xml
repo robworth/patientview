@@ -5,41 +5,51 @@
     <flag>Follow-up-report</flag>
     <centredetails>
         <centrecode>A</centrecode>
+        <centrename>Centre Name</centrename>
+        <centreaddress1>Centre Address 1</centreaddress1>
+        <centreaddress2>Centre Address 2</centreaddress2>
+        <centreaddress3>Centre Address 3</centreaddress3>
+        <centreaddress4>Centre Address 4</centreaddress4>
+        <centrepostcode>Centre Postcode</centrepostcode>
+        <centretelephone>020 22222 2222</centretelephone>
+        <centreemail>centre@email.com</centreemail>
     </centredetails>
     <gpdetails>
-        <gpname>Dr GP</gpname>
-        <gpaddress1>12 GP Street</gpaddress1>
-        <gpaddress2>slidjfln</gpaddress2>
-        <gpaddress3>sdf</gpaddress3>
-        <gppostcode>GP1 7GP</gppostcode>
-        <gptelephone>02 9384 5595</gptelephone>
+        <gpname>Dr GP Name</gpname>
+        <gpaddress1>GP address 1</gpaddress1>
+        <gpaddress2>GP address 2</gpaddress2>
+        <gpaddress3>GP address 3</gpaddress3>
+        <gppostcode>GP Postcode</gppostcode>
+        <gptelephone>020 1111 1111</gptelephone>
     </gpdetails>
     <patient>
         <personaldetails>
-            <surname>Andrew</surname>
-            <forename>Andy</forename>
+            <surname>Surname</surname>
+            <forename>Forename</forename>
             <dateofbirth>1961-09-08</dateofbirth>
             <sex>Male</sex>
             <nhsno>1234567890</nhsno>
-            <ethnicorig>White</ethnicorig>
+            <ethnicorigin>White</ethnicorigin>
             <hospitalnumber>1111111</hospitalnumber>
-            <address1>1 Silly St</address1>
-            <address2>Yorkshire</address2>
-            <postcode>F56 6HJL</postcode>
+            <address1>Patient Address 1</address1>
+            <address2>Patient Address 2</address2>
+            <address3>Patient Address 3</address3>
+            <address4>Patient Address 4</address4>
+            <postcode>Patient Postcode</postcode>
             <telephone1>020 9999 8888</telephone1>
-            <telephone2>07886888888</telephone2>
-            <mobile>0789999999</mobile>
+            <telephone2>020 7777 6666</telephone2>
+            <mobile>0777 123 456</mobile>
         </personaldetails>
         <clinicaldetails>
             <rrtstatus>HD</rrtstatus>
-            <tpstatus></tpstatus>
-            <diagnosisdate>2005-01-01</diagnosisdate>
+            <tpstatus>N</tpstatus>
+            <diagnosisdate>2005-01-25</diagnosisdate>
             <diagnosis>Crohn's Disease</diagnosis>
             <ibddiseaseextent>Crohn's Colitis</ibddiseaseextent>
             <ibddiseasecomplications>Peri-anal disease (fissures, fistulas,abscesses): Large bowel stricturing:
                 Osteopaenia
             </ibddiseasecomplications>
-            <ibdeimanifestations>None</ibdeimanifestations>
+            <ibdeimanifestations>IBD EI Manifestations</ibdeimanifestations>
             <familyhistory>Family history of bowel cancer</familyhistory>
             <smokinghistory>Never smoked</smokinghistory>
             <surgicalhistory>Other procedure - please specify, subtotal colcectomy, ileo-rectal anastomosis
@@ -47,8 +57,9 @@
             <vaccinationrecord>Previous history of chicken pox, Previous TB (BCG) vaccination</vaccinationrecord>
             <colonoscopysurveillance>2012-05-31</colonoscopysurveillance>
             <bmdexam>2013-02-22</bmdexam>
-            <namedconsultant>Dr Lal</namedconsultant>
-            <ibdnurse>Cath Stansfield, Justine Newberry</ibdnurse>
+            <namedconsultant>Dr Named Consultant</namedconsultant>
+            <ibdnurse>Nurse IBD</ibdnurse>
+            <bloodgroup>O Pos</bloodgroup>
         </clinicaldetails>
         <testdetails>
             <test>
@@ -1505,7 +1516,6 @@
                     <value>1.5</value>
                 </result>
             </test>
-
             <test>
                 <testname>Iron Saturation</testname>
                 <testcode>ironsat</testcode>
@@ -1552,7 +1562,6 @@
                     <value>48</value>
                 </result>
             </test>
-
         </testdetails>
         <drugdetails>
             <drug>
@@ -1595,7 +1604,6 @@
                 <drugname>Venofer</drugname>
                 <drugdose>100 mg. Iv weekly.</drugdose>
             </drug>
-
         </drugdetails>
         <letterdetails>
             <letter>
@@ -1615,7 +1623,7 @@ dfdf
             </letter>
             <letter>
                 <letterdate>2012-01-18T10:38:30</letterdate>
-                <lettertype>Clinic Letter</lettertype>
+                <lettertype>Another Letter</lettertype>
                 <lettercontent>
                     <![CDATA[
 Another letter
@@ -1624,8 +1632,55 @@ Another letter
 
 ]]></lettercontent>
             </letter>
-
-
         </letterdetails>
+        <allergydetails>
+            <allergy>
+                <allergysubstance>alleryg substance 1</allergysubstance>
+                <allergytypecode>allergy type code 1</allergytypecode>
+                <allergyreaction>allergy reaction 1</allergyreaction>
+                <allergyconfidencelevel>allergy confidence level 1</allergyconfidencelevel>
+                <allergyinfosource>allergy info source 1</allergyinfosource>
+                <allergystatus>allergy status 1</allergystatus>
+                <allergydescription>allergy description 1</allergydescription>
+                <allergyrecordeddate>2011-01-21</allergyrecordeddate>
+            </allergy>
+            <allergy>
+                <allergysubstance>alleryg substance 2</allergysubstance>
+                <allergytypecode>allergy type code 2</allergytypecode>
+                <allergyreaction>allergy reaction 2</allergyreaction>
+                <allergyconfidencelevel>allergy confidence level 2</allergyconfidencelevel>
+                <allergyinfosource>allergy info source 2</allergyinfosource>
+                <allergystatus>allergy status 2</allergystatus>
+                <allergydescription>allergy description 2</allergydescription>
+                <allergyrecordeddate>2012-02-22</allergyrecordeddate>
+            </allergy>
+            <allergy>
+                <allergysubstance>alleryg substance 3</allergysubstance>
+                <allergytypecode>allergy type code 3</allergytypecode>
+                <allergyreaction>allergy reaction 3</allergyreaction>
+                <allergyconfidencelevel>allergy confidence level 3</allergyconfidencelevel>
+                <allergyinfosource>allergy info source 3</allergyinfosource>
+                <allergystatus>allergy status 3</allergystatus>
+                <allergydescription>allergy description 3</allergydescription>
+                <allergyrecordeddate>2013-03-23</allergyrecordeddate>
+            </allergy>
+        </allergydetails>
+        <diagnostics>
+            <diagnostic>
+                <diagnosticname>Xray Chest</diagnosticname>
+                <diagnostictype>imaging</diagnostictype>
+                <diagnosticdate>2012-01-27</diagnosticdate>
+            </diagnostic>
+            <diagnostic>
+                <diagnosticname>MRI Small Bowel Study</diagnosticname>
+                <diagnostictype>imaging</diagnostictype>
+                <diagnosticdate>2012-04-18</diagnosticdate>
+            </diagnostic>
+            <diagnostic>
+                <diagnosticname>Endoscopy Examination</diagnosticname>
+                <diagnostictype>endoscopy</diagnostictype>
+                <diagnosticdate>2012-06-29</diagnosticdate>
+            </diagnostic>
+        </diagnostics>
     </patient>
 </patientview>
