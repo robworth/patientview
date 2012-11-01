@@ -1,6 +1,7 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 ALTER TABLE unit MODIFY unitcode varchar(100) NOT NULL;
+ALTER TABLE unit MODIFY tenancy_id bigint(20) NULL;
 
 alter table unit add column country varchar(100);
 alter table tbl_centres add column unitcode varchar(100);
