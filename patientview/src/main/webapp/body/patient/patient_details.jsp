@@ -120,15 +120,19 @@
   </td>
 </tr>
 
-<logic:notEmpty name="patientDetail" property="patient.telephone1">
   <tr valign="top">
     <th class="tablecellbold">Telephone <logic:present tenancy="rpv">1</logic:present></th>
-
-    <td class="tablecell">
-      <bean:write name="patientDetail" property="patient.telephone1"/>
-    </td>
+      <logic:notEmpty name="patientDetail" property="patient.telephone1">
+        <td class="tablecell">
+            <bean:write name="patientDetail" property="patient.telephone1"/>
+        </td>
+      </logic:notEmpty>
+      <logic:empty name="patientDetail" property="patient.telephone1">
+        <td class="tablecell">
+            None uploaded
+        </td>
+      </logic:empty>
   </tr>
-</logic:notEmpty>
 
 <logic:present tenancy="rpv">
 <logic:notEmpty name="patientDetail" property="patient.telephone2">
