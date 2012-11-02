@@ -128,7 +128,7 @@ public class MyIbd extends BaseModel {
     }
 
     public String getYearOfDiagnosisAsString() {
-        return Ibd.DATE_FORMAT.format(yearOfDiagnosis);
+        return Ibd.YEAR_DATE_FORMAT.format(yearOfDiagnosis);
     }
 
     public void setYearOfDiagnosis(Date yearOfDiagnosis) {
@@ -199,7 +199,7 @@ public class MyIbd extends BaseModel {
 
     public String getYearForSurveillanceColonoscopyAsString() {
         if (yearForSurveillanceColonoscopy != null) {
-            return Ibd.DATE_FORMAT.format(yearForSurveillanceColonoscopy);
+            return Ibd.YEAR_DATE_FORMAT.format(yearForSurveillanceColonoscopy);
         }
 
         return "";
