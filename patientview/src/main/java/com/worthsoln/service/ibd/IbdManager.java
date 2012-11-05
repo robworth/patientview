@@ -85,6 +85,8 @@ public interface IbdManager {
     List<ColitisSymptoms> getAllColitis(User user);
 
     List<ColitisSymptoms> getAllColitis(User user, Date fromDate, Date toDate);
+
+    String getWeight(User user);
     
     Diagnosis getLoggedInUserDiagnosis();
     

@@ -47,7 +47,6 @@ public class MyIbdUpdateAction extends BaseAction {
         myIbd.setYearForSurveillanceColonoscopy(convertFormDateString(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, dynaForm));
         myIbd.setNamedConsultant((String) dynaForm.get(Ibd.NAMED_CONSULTANT_PARAM));
         myIbd.setNurses((String) dynaForm.get(Ibd.NURSES_PARAM));
-        myIbd.setWeight((Double) dynaForm.get(Ibd.WEIGHT_PARAM));
         myIbd.setFamilyHistory((String) dynaForm.get(Ibd.FAMILY_HISTORY_PARAM));
         myIbd.setSmoking((String) dynaForm.get(Ibd.SMOKING_PARAM));
         myIbd.setSurgery((String) dynaForm.get(Ibd.SURGERY_PARAM));
@@ -90,10 +89,6 @@ public class MyIbdUpdateAction extends BaseAction {
         if (form.get(Ibd.BODY_PART_AFFECTED_PARAM) == null
                 || form.get(Ibd.BODY_PART_AFFECTED_PARAM).toString().length() == 0) {
             actionErrors.add(Ibd.BODY_PART_AFFECTED_PARAM, new ActionMessage(Ibd.BODY_PART_AFFECTED_REQUIRED));
-        }
-
-        if (form.get(Ibd.WEIGHT_PARAM) == null || ((Double) form.get(Ibd.WEIGHT_PARAM) <= 0)) {
-            actionErrors.add(Ibd.WEIGHT_PARAM, new ActionMessage(Ibd.WEIGHT_REQUIRED));
         }
 
         if (form.get(Ibd.FAMILY_HISTORY_PARAM) == null

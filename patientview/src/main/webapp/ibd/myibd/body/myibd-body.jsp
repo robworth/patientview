@@ -108,7 +108,12 @@
                 </div>
 
                 <div class="span3 controls">
-                    <bean:write name="myIbd" property="weight"/>
+                    <logic:present name="weight">
+                        <bean:write name="weight" />
+                    </logic:present>
+                    <logic:notPresent name="weight">
+                        Unknown
+                    </logic:notPresent>
 
                     <logic:present name="weightLink">
                         <a href="<bean:write name="weightLink"/>" target="_blank"><i class="icon-info-sign"></i></a>

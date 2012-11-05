@@ -22,7 +22,6 @@
             <form-property name="yearForSurveillanceColonoscopy" type="java.lang.String"/>
             <form-property name="namedConsultant" type="java.lang.String"/>
             <form-property name="nurses" type="java.lang.String"/>
-            <form-property name="weight" type="java.lang.Double"/>
             <form-property name="familyHistory" type="java.lang.String"/>
             <form-property name="smoking" type="java.lang.String"/>
             <form-property name="surgery" type="java.lang.String"/>

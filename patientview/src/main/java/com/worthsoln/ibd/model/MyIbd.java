@@ -49,9 +49,6 @@ public class MyIbd extends BaseModel {
     private String nurses;
 
     @Column(nullable = true)
-    private Double weight;
-
-    @Column(nullable = true)
     private String eiManifestations;
 
     @Column(nullable = true, columnDefinition = "TEXT")
@@ -192,14 +189,6 @@ public class MyIbd extends BaseModel {
 
     public void setNurses(String nurses) {
         this.nurses = nurses;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
     }
 
     public String getFamilyHistory() {
