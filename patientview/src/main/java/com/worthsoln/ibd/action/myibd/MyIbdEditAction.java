@@ -39,16 +39,7 @@ public class MyIbdEditAction extends BaseAction {
         dynaForm.set(Ibd.SMOKING_PARAM, myIbd.getSmoking());
         dynaForm.set(Ibd.SURGERY_PARAM, myIbd.getSurgery());
         dynaForm.set(Ibd.VACCINATION_RECORD_PARAM, myIbd.getVaccinationRecord());
-
-        Long[] complicationIds = new Long[myIbd.getComplications().size()];
-        int count = 0;
-
-        for (Long l : myIbd.getComplicationIds()) {
-            complicationIds[count] = l;
-            count++;
-        }
-
-        dynaForm.set(Ibd.COMPLICATION_IDS_PARAM, complicationIds);
+        dynaForm.set(Ibd.COMPLICATIONS_PARAM, myIbd.getComplications());
 
         // set up all the needed lists in the session
         request.getSession().setAttribute(DISEASE_EXTENT_LIST_PROPERTY, getDiseaseExtentList());

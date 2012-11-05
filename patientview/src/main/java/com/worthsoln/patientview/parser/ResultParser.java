@@ -393,9 +393,7 @@ public class ResultParser {
         }
         myIbd.setDiseaseExtent(DiseaseExtent.getDiseaseExtentByXmlName((String) xmlData.get("ibddiseaseextent")));
         myIbd.setEiManifestations((String) xmlData.get("ibdeimanifestations"));
-        ArrayList<Complication> complications = new ArrayList<Complication>();
-        complications.add(Complication.getComplication((String) xmlData.get("ibddiseasecomplications")));
-        myIbd.setComplications(complications);
+        myIbd.setComplications((String) xmlData.get("ibddiseasecomplications"));
         myIbd.setBodyPartAffected((String) xmlData.get("bodypartsaffected"));
         myIbd.setFamilyHistory((String) xmlData.get("familyhistory"));
         myIbd.setSmoking((String) xmlData.get("smokinghistory"));

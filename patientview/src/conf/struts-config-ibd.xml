@@ -17,7 +17,7 @@
             <form-property name="diagnosisId" type="java.lang.Long"/>
             <form-property name="diseaseExtentId" type="java.lang.Long"/>
             <form-property name="yearOfDiagnosis" type="java.lang.String"/>
-            <form-property name="complicationIds" type="java.lang.Long[]"/>
+            <form-property name="complications" type="java.lang.String"/>
             <form-property name="bodyPartAffected" type="java.lang.String"/>
             <form-property name="yearForSurveillanceColonoscopy" type="java.lang.String"/>
             <form-property name="namedConsultant" type="java.lang.String"/>

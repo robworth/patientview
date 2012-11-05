@@ -44,8 +44,7 @@ public class MyIbdDaoTest extends BaseDaoTest {
         assertEquals("Disease extent not persisted", checkMyIbd.getDiseaseExtent(), myIbd.getDiseaseExtent());
         assertEquals("Year of diagnosis not persisted", checkMyIbd.getYearOfDiagnosis(), myIbd.getYearOfDiagnosis());
         assertEquals("Body part affected not persisted", checkMyIbd.getBodyPartAffected(), myIbd.getBodyPartAffected());
-        assertEquals("Complications not persisted", checkMyIbd.getComplications().size(),
-                myIbd.getComplications().size());
+        assertEquals("Complications not persisted", checkMyIbd.getComplications(), myIbd.getComplications());
         assertEquals("Year for surveillance colonoscopy not persisted", checkMyIbd.getYearForSurveillanceColonoscopy(),
                 myIbd.getYearForSurveillanceColonoscopy());
         assertEquals("Named consultant not persisted", checkMyIbd.getNamedConsultant(), myIbd.getNamedConsultant());
@@ -78,11 +77,7 @@ public class MyIbdDaoTest extends BaseDaoTest {
         myIbd.setNamedConsultant("Test consultant");
         myIbd.setNurses("Test nurses");
 
-        List<Complication> complications = new ArrayList<Complication>();
-        complications.add(Complication.ABSCESS);
-        complications.add(Complication.GASTRO_DUODENAL_CROHNS);
-
-        myIbd.setComplications(complications);
+        myIbd.setComplications("Test");
 
         return myIbd;
     }

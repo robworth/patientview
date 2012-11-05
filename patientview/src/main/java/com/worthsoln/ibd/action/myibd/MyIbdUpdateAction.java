@@ -52,9 +52,7 @@ public class MyIbdUpdateAction extends BaseAction {
         myIbd.setSmoking((String) dynaForm.get(Ibd.SMOKING_PARAM));
         myIbd.setSurgery((String) dynaForm.get(Ibd.SURGERY_PARAM));
         myIbd.setVaccinationRecord((String) dynaForm.get(Ibd.VACCINATION_RECORD_PARAM));
-
-        Long[] complicationIds = (Long[]) dynaForm.get(Ibd.COMPLICATION_IDS_PARAM);
-        myIbd.setComplicationIds(new HashSet<Long>(Arrays.asList(complicationIds)));
+        myIbd.setComplications((String) dynaForm.get(Ibd.COMPLICATIONS_PARAM));
 
         getIbdManager().saveMyIbd(myIbd);
 
@@ -84,9 +82,9 @@ public class MyIbdUpdateAction extends BaseAction {
             actionErrors.add(Ibd.YEAR_OF_DIAGNOSIS_PARAM, new ActionMessage(Ibd.YEAR_OF_DIAGNOSIS_REQUIRED));
         }
 
-        if (form.get(Ibd.COMPLICATION_IDS_PARAM) == null
-                || ((Long[]) form.get(Ibd.COMPLICATION_IDS_PARAM)).length == 0) {
-            actionErrors.add(Ibd.COMPLICATION_IDS_PARAM, new ActionMessage(Ibd.COMPLICATIONS_REQUIRED));
+        if (form.get(Ibd.COMPLICATIONS_PARAM) == null
+                || form.get(Ibd.COMPLICATIONS_PARAM).toString().length() == 0) {
+            actionErrors.add(Ibd.COMPLICATIONS_PARAM, new ActionMessage(Ibd.COMPLICATIONS_REQUIRED));
         }
 
         if (form.get(Ibd.BODY_PART_AFFECTED_PARAM) == null

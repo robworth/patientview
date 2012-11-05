@@ -70,12 +70,12 @@
                 </div>
 
                 <div class="span3 controls">
-                    <bean:size id="complicationsListSize" name="myIbd" property="complications"/>
-
-                    <logic:iterate name="myIbd" property="complications" id="complication" indexId="index">
-                        <bean:write name="complication"
-                                    property="name"/><%= (complicationsListSize == (index + 1) ? "" : "<br />") %>
-                    </logic:iterate>
+                    <logic:present name="myIbd" property="complications">
+                        <bean:write name="myIbd" property="formattedComplications" filter="false"/>
+                    </logic:present>
+                    <logic:notPresent name="myIbd" property="complications">
+                        None
+                    </logic:notPresent>
 
                     <logic:present name="complicationLink">
                         <a href="<bean:write name="complicationLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
