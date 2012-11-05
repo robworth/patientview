@@ -29,7 +29,10 @@ public class XmlFileViewAction extends DatabaseAction {
 
         if (xmlFile.exists()) {
             String xmlContent = readFile(xmlFile.getCanonicalPath());
-            xmlContent = xmlContent.replace("<br />", "");
+
+            if (xmlContent != null) {
+                xmlContent = xmlContent.replace("<br />", "");
+            }
 
             request.setAttribute("xmlContent", xmlContent);
         }
