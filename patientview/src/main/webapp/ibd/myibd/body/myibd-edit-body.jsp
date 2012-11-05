@@ -83,13 +83,6 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label">Weight:</label>
-                <div class="controls">
-                    <html:text property="weight"/>
-                </div>
-            </div>
-
-            <div class="control-group">
                 <label class="control-label">IBD Related Family History:</label>
                 <div class="controls">
                     <html:text property="familyHistory"/>

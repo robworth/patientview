@@ -5,6 +5,7 @@ import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.medication.MyMedication;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -21,13 +22,23 @@ public class MyIbdAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+        User user = UserUtils.retrieveUser(request);
+
+        MyIbd myIbd = getIbdManager().getMyIbd(user);
 
         if (myIbd != null) {
             request.setAttribute(Ibd.MY_IBD_PARAM, myIbd);
         }
 
-        List<MyMedication> currentMedications = getIbdManager().getCurrentMedications(UserUtils.retrieveUser(request));
+        // get the patients latest weight from the test results
+        String weight = getIbdManager().getWeight(user);
+
+        if (weight != null) {
+            request.setAttribute(Ibd.WEIGHT_PARAM, weight);
+        }
+
+        // get list of medications for user
+        List<MyMedication> currentMedications = getIbdManager().getCurrentMedications(user);
 
         if (currentMedications != null && !currentMedications.isEmpty()) {
             request.setAttribute(Ibd.CURRENT_MEDICATIONS_PARAM, currentMedications);

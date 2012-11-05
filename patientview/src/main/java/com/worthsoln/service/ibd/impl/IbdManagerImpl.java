@@ -28,6 +28,7 @@ import com.worthsoln.repository.ibd.MyMedicationDao;
 import com.worthsoln.repository.ibd.NutritionDao;
 import com.worthsoln.repository.ibd.MedicationDoseDao;
 import com.worthsoln.repository.ibd.ProcedureDao;
+import com.worthsoln.service.TestResultManager;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -51,6 +52,9 @@ public class IbdManagerImpl implements IbdManager {
 
     @Inject
     private UserManager userManager;
+
+    @Inject
+    private TestResultManager testResultManager;
 
     @Inject
     private MedicationDao medicationDao;
@@ -315,11 +319,16 @@ public class IbdManagerImpl implements IbdManager {
         return null;
     }
 
+    @Override
+    public String getWeight(User user) {
+        return testResultManager.getLatestWeightFromResults(getNhsNumber(user));
+    }
+
     public List<ColitisSymptoms> getAllColitis(String nhsno, Date fromDate, Date toDate) {
         return colitisSymptomsDao.getAllColitis(nhsno, fromDate, toDate);
     }
 
-    private String getNhsNumber(User user) {
+    public String getNhsNumber(User user) {
         UserMapping userMapping = userManager.getUserMappingPatientEntered(user);
 
         if (userMapping != null) {

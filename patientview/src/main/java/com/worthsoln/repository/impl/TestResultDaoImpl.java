@@ -79,6 +79,25 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         return jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
     }
 
+    @Override
+    public String getLatestWeightFromResults(String nhsno) {
+        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? " +
+                " AND testresult.testcode = ?" +
+                " ORDER BY datestamp DESC";
+
+        List<Object> params = new ArrayList<Object>();
+        params.add(nhsno);
+        params.add("weight");
+
+        List<TestResult> testResult = jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
+
+        if (testResult != null && !testResult.isEmpty()) {
+            return testResult.get(0).getValue();
+        }
+
+        return null;
+    }
+
     private class TestResultMapper implements RowMapper<TestResult> {
 
         @Override

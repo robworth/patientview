@@ -22,4 +22,6 @@ public interface TestResultDao {
     void save(TestResult testResult);
 
     List<TestResult> get(String nhsno, String unitcode);
+
+    String getLatestWeightFromResults(String nhsno);
 }

@@ -38,4 +38,9 @@ public class TestResultManagerImpl implements TestResultManager {
     public List<TestResult> get(String nhsno, String unitcode) {
         return testResultDao.get(nhsno, unitcode);
     }
+
+    @Override
+    public String getLatestWeightFromResults(String nhsno) {
+        return testResultDao.getLatestWeightFromResults(nhsno);
+    }
 }
