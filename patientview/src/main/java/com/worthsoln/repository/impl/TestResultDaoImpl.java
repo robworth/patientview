@@ -80,14 +80,26 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     }
 
     @Override
-    public String getLatestWeightFromResults(String nhsno) {
-        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? " +
-                " AND testresult.testcode = ?" +
-                " ORDER BY datestamp DESC";
-
+    public String getLatestWeightFromResults(String nhsno, List<String> unitcodes) {
         List<Object> params = new ArrayList<Object>();
         params.add(nhsno);
         params.add("weight");
+
+        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? " +
+                " AND testresult.testcode = ? AND testresult.unitcode IN (";
+
+        for (int x = 0; x < unitcodes.size(); x++) {
+            sql += " ? ";
+
+            params.add(unitcodes.get(x));
+
+            if (x != unitcodes.size() - 1) {
+                sql += ",";
+            }
+        }
+
+        sql += ")  ORDER BY datestamp DESC";
+
 
         List<TestResult> testResult = jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
 

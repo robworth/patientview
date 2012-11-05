@@ -321,14 +321,14 @@ public class IbdManagerImpl implements IbdManager {
 
     @Override
     public String getWeight(User user) {
-        return testResultManager.getLatestWeightFromResults(getNhsNumber(user));
+        return testResultManager.getLatestWeightFromResults(user);
     }
 
     public List<ColitisSymptoms> getAllColitis(String nhsno, Date fromDate, Date toDate) {
         return colitisSymptomsDao.getAllColitis(nhsno, fromDate, toDate);
     }
 
-    public String getNhsNumber(User user) {
+    private String getNhsNumber(User user) {
         UserMapping userMapping = userManager.getUserMappingPatientEntered(user);
 
         if (userMapping != null) {
