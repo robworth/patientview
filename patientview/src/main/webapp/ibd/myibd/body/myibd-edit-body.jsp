@@ -44,16 +44,12 @@
                 </div>
             </div>
 
-            <logic:present name="complicationList" scope="session">
-                <div class="control-group">
-                    <label class="control-label">Complications:</label>
-                    <div class="controls">
-                        <html:select property="complicationIds" multiple="true">
-                            <html:options collection="complicationList" property="id" labelProperty="name"/>
-                        </html:select>
-                    </div>
+            <div class="control-group">
+                <label class="control-label">Complications:</label>
+                <div class="controls">
+                    <html:text property="complications"/>
                 </div>
-            </logic:present>
+            </div>
 
             <div class="control-group">
                 <label class="control-label">Other parts of the body affected:</label>

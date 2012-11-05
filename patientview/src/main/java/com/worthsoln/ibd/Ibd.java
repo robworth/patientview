@@ -78,7 +78,7 @@ public class Ibd {
     public static final String YEAR_OF_DIAGNOSIS_PARAM = "yearOfDiagnosis";
     public static final String BODY_PART_AFFECTED_PARAM = "bodyPartAffected";
     public static final String WEIGHT_PARAM = "weight";
-    public static final String COMPLICATION_IDS_PARAM = "complicationIds";
+    public static final String COMPLICATIONS_PARAM = "complications";
     public static final String YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM = "yearForSurveillanceColonoscopy";
     public static final String NAMED_CONSULTANT_PARAM = "namedConsultant";
     public static final String NURSES_PARAM = "nurses";

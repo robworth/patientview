@@ -2,8 +2,6 @@ package com.worthsoln.test.repository.ibd;
 
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
-import com.worthsoln.ibd.model.enums.BodyPartAffected;
-import com.worthsoln.ibd.model.enums.Complication;
 import com.worthsoln.ibd.model.enums.Diagnosis;
 import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.ibd.model.enums.Severity;
@@ -15,9 +13,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -46,12 +42,7 @@ public class MyIbdSeverityLevelDaoTest extends BaseDaoTest {
         myIbd.setYearForSurveillanceColonoscopy(new Date());
         myIbd.setNamedConsultant("Test consultant");
         myIbd.setNurses("Test nurses");
-
-        List<Complication> complications = new ArrayList<Complication>();
-        complications.add(Complication.ABSCESS);
-        complications.add(Complication.GASTRO_DUODENAL_CROHNS);
-
-        myIbd.setComplications(complications);
+        myIbd.setComplications("Test");
         myIbdDao.save(myIbd);
     }
 

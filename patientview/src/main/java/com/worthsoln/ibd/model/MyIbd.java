@@ -1,11 +1,18 @@
 package com.worthsoln.ibd.model;
 
+
 import com.worthsoln.ibd.Ibd;
-import com.worthsoln.ibd.model.enums.*;
+import com.worthsoln.ibd.model.enums.Diagnosis;
+import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.patientview.model.BaseModel;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Date;
 
 @Entity
 @Table(name = "ibd_myibd")
@@ -26,12 +33,8 @@ public class MyIbd extends BaseModel {
     @Column(nullable = true)
     private Date yearOfDiagnosis;
 
-    @Transient
-    private List<Complication> complications = new ArrayList<Complication>() {
-        {
-            add(Complication.NONE);
-        }
-    };
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String complications;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String bodyPartAffected;
@@ -135,39 +138,19 @@ public class MyIbd extends BaseModel {
         this.yearOfDiagnosis = yearOfDiagnosis;
     }
 
-    @Access(AccessType.PROPERTY)
-    @ElementCollection
-    @CollectionTable(name = "ibd_myibd_complications", joinColumns = @JoinColumn(name = "myibd_id"))
-    @Column(name = "complication_id")
-    public Set<Long> getComplicationIds() {
-        if (complications != null) {
-            Set<Long> complicationIds = new HashSet<Long>(complications.size());
-
-            for (Complication complication : complications) {
-                complicationIds.add(complication.getId());
-            }
-
-            return complicationIds;
-        }
-
-        return new HashSet<Long>(0);
-    }
-
-    public void setComplicationIds(Set<Long> complicationIds) {
-        if (complicationIds != null) {
-            complications = new ArrayList<Complication>(complicationIds.size());
-
-            for (long complicationId : complicationIds) {
-                complications.add(Complication.getComplication(complicationId));
-            }
-        }
-    }
-
-    public List<Complication> getComplications() {
+    public String getComplications() {
         return complications;
     }
 
-    public void setComplications(List<Complication> complications) {
+    public String getFormattedComplications() {
+        if (complications != null) {
+            return complications.replace(",", "<br />");
+        }
+
+        return null;
+    }
+
+    public void setComplications(String complications) {
         this.complications = complications;
     }
 
