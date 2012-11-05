@@ -238,7 +238,6 @@ CREATE TABLE `ibd_myibd` (
   `smoking` text,
   `surgery` text,
   `vaccinationRecord` text,
-  `weight` double DEFAULT NULL,
   `eiManifestations` varchar(255) DEFAULT NULL,
   `unitcode` varchar(20) DEFAULT NULL,
   `complications` TEXT NULL,
