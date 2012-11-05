@@ -23,5 +23,5 @@ public interface TestResultDao {
 
     List<TestResult> get(String nhsno, String unitcode);
 
-    String getLatestWeightFromResults(String nhsno);
+    String getLatestWeightFromResults(String nhsno, List<String> unitcodes);
 }

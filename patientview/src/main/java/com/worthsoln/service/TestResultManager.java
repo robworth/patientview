@@ -21,5 +21,5 @@ public interface TestResultManager {
 
     List<TestResult> get(String nhsno, String unitcode);
 
-    String getLatestWeightFromResults(String nhsno);
+    String getLatestWeightFromResults(User user);
 }
