@@ -241,14 +241,8 @@ CREATE TABLE `ibd_myibd` (
   `weight` double DEFAULT NULL,
   `eiManifestations` varchar(255) DEFAULT NULL,
   `unitcode` varchar(20) DEFAULT NULL,
+  `complications` TEXT NULL,
   PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `ibd_myibd_complications` (
-  `myibd_id` bigint(20) NOT NULL,
-  `complication_id` bigint(20) default NULL,
-  KEY `FKC4EEAD21FDB07963` (`myibd_id`),
-  CONSTRAINT `FKC4EEAD21FDB07963` FOREIGN KEY (`myibd_id`) REFERENCES `ibd_myibd` (`id`)
 );
 
 CREATE TABLE `ibd_nutrition` (
