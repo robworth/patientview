@@ -65,6 +65,18 @@ public class Letter extends BaseModel {
         return content;
     }
 
+    /**
+     * Will return the content with the carriage returns replace with <br />
+     * @return String
+     */
+    public String getFormattedContent() {
+        if (content != null) {
+            return content.replace("\n", "<br />");
+        }
+
+        return "";
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
