@@ -18,7 +18,7 @@
 
 <logic:present name="xmlContent">
   ----START XML FILE----<br />
-  <bean:write name="xmlContent"/>
+  <bean:write name="xmlContent" filter="false"/>
   <br />-----END XML FILE-----
 </logic:present>
 
