@@ -26,5 +26,5 @@
   </tr>
 </table>
 <div>
-    <bean:write name="letter" property="content"/>
+    <bean:write name="letter" property="formattedContent" filter="false"/>
 </div>

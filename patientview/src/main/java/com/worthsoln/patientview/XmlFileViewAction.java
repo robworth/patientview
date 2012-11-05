@@ -28,7 +28,9 @@ public class XmlFileViewAction extends DatabaseAction {
         File xmlFile = new File(directory, xmlFilename);
 
         if (xmlFile.exists()) {
-            String xmlContent = readFile(xmlFile.getCanonicalPath());  
+            String xmlContent = readFile(xmlFile.getCanonicalPath());
+            xmlContent = xmlContent.replace("<br />", "");
+
             request.setAttribute("xmlContent", xmlContent);
         }
 
