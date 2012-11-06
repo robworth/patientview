@@ -141,7 +141,7 @@ public class MyIbd extends BaseModel {
 
     public String getFormattedComplications() {
         if (complications != null) {
-            return complications.replace(",", "<br />");
+            return complications.replace(",", "<br />").replace("\n", "<br />");
         }
 
         return null;
