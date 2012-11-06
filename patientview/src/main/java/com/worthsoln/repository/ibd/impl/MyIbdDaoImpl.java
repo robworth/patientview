@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -72,14 +71,6 @@ public class MyIbdDaoImpl extends AbstractHibernateDAO<MyIbd> implements MyIbdDa
         MyIbd myIbd = get(nhsno, unitcode);
 
         if (myIbd != null) {
-
-            // first clean up any dependent tables
-            // the complications
-            Query query = getEntityManager().createNativeQuery("DELETE FROM ibd_myibd_complications WHERE myibd_id = (?1)");
-
-            query.setParameter(1, myIbd.getId());
-            query.executeUpdate();
-
             delete(myIbd);
         }
     }
