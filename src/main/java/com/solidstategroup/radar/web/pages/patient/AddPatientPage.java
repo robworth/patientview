@@ -5,9 +5,11 @@ import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.generic.IdType;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
@@ -47,12 +49,17 @@ public class AddPatientPage extends BasePage {
     private DemographicsManager demographicsManager;
 
     public AddPatientPage() {
+        ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
+
         // list of items to update in ajax submits
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
 
+        CompoundPropertyModel<AddPatientModel> addPatientModel =
+                new CompoundPropertyModel<AddPatientModel>(new AddPatientModel());
+        addPatientModel.getObject().setCentre(user.getCentre());
+
         // create form
-        Form<AddPatientModel> form = new Form<AddPatientModel>("form",
-                new CompoundPropertyModel(new AddPatientModel())) {
+        Form<AddPatientModel> form = new Form<AddPatientModel>("form", addPatientModel) {
             @Override
             protected void onSubmit() {
                 AddPatientModel model = getModelObject();

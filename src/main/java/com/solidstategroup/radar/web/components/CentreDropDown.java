@@ -6,6 +6,8 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.List;
+
 public class CentreDropDown extends DropDownChoice<Centre> {
 
     @SpringBean
@@ -17,4 +19,9 @@ public class CentreDropDown extends DropDownChoice<Centre> {
         setChoiceRenderer(new ChoiceRenderer<Centre>("abbreviation", "id"));
     }
 
+    public CentreDropDown(String id, List<Centre> centres) {
+        super(id);
+        setChoices(centres);
+        setChoiceRenderer(new ChoiceRenderer<Centre>("abbreviation", "id"));
+    }
 }

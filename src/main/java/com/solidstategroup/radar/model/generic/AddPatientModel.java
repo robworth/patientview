@@ -1,12 +1,14 @@
 package com.solidstategroup.radar.model.generic;
 
-import java.io.Serializable;
+import com.solidstategroup.radar.model.Centre;
 
+import java.io.Serializable;
 
 public class AddPatientModel implements Serializable {
     private String patientId;
     private IdType idType;
     private DiseaseGroup diseaseGroup;
+    private Centre centre;
 
     public String getPatientId() {
         return patientId;
@@ -32,4 +34,11 @@ public class AddPatientModel implements Serializable {
         this.diseaseGroup = diseaseGroup;
     }
 
+    public Centre getCentre() {
+        return centre;
+    }
+
+    public void setCentre(Centre centre) {
+        this.centre = centre;
+    }
 }

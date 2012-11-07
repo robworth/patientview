@@ -66,6 +66,7 @@ public class HNF1BPatientPage extends BasePage {
         // set the nhs id or chi id based on model
         demographics = new Demographics();
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
+        demographics.setRenalUnit(patientModel.getCentre());
 
         if (patientModel.getIdType().equals(IdType.NHS)) {
             demographics.setNhsNumber(patientModel.getPatientId());
