@@ -16,9 +16,9 @@ update tbl_centres set unitcode = "RBS25" where cid = 7;
 update tbl_centres set unitcode = "RJ122" where cid = 8;
 update tbl_centres set unitcode = "RP4" where cid = 9;
 update tbl_centres set unitcode = "RW3RM" where cid = 10;
+update tbl_centres set unitcode = "99RHM01" where cid = 13;
 update tbl_centres set unitcode = "99RTD01" where cid = 11;
 update tbl_centres set unitcode = "99RCSLB" where cid = 12;
-update tbl_centres set unitcode = "99RHM01" where cid = 13;
 update tbl_centres set unitcode = "RENALREG" where cid = 14;
 update tbl_centres set unitcode = "DEMO" where cid = 15;
 update tbl_centres set unitcode = "UNKNOWN" where cid = 16;
@@ -105,10 +105,20 @@ update unit set id = 85, country =1 where unitcode = "SRNS";
 update unit set id = 86, country =1 where unitcode = "STC01";
 update unit set id = 87, country =1 where unitcode = "SYC01";
 
-delete from tbl_centres where unitcode = "SGC02";
+delete from tbl_centres where unitcode = '11023';
+delete from tbl_centres where unitcode = 'RQ3';
+delete from tbl_centres where unitcode = 'RA723';
+delete from tbl_centres where unitcode = 'RWM51';
+delete from tbl_centres where unitcode = 'SGC02';
+delete from tbl_centres where unitcode = '99RQR13';
+delete from tbl_centres where unitcode = 'RBS25';
+delete from tbl_centres where unitcode = 'RJ122';
+delete from tbl_centres where unitcode = 'RP4';
+delete from tbl_centres where unitcode = 'RW3RM';
+delete from tbl_centres where unitcode = '99RHM01';
 
 insert into unit (unitcode, id, name, shortname, country, sourcetype)
-select unitcode, cID, cName, cAbbrev, cCountry, "renalunit"
+select unitcode, cID, cName, cAbbrev, cCountry, "radargroup"
 from tbl_centres;
 
 ALTER TABLE unit AUTO_INCREMENT = 100;
