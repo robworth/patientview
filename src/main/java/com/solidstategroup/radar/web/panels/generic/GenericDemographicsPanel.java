@@ -4,11 +4,14 @@ import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.service.generic.GenericDiagnosisManager;
 import com.solidstategroup.radar.util.RadarUtility;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
@@ -66,6 +69,8 @@ public class GenericDemographicsPanel extends Panel {
     private void init(Demographics demographics) {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
         if (demographics.getDateRegistered() == null) {
             demographics.setDateRegistered(new Date());
@@ -347,23 +352,38 @@ public class GenericDemographicsPanel extends Panel {
         Centre renalUnitSelected = form.getModelObject().getRenalUnit();
         centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getId() : null);
 
-        DropDownChoice<Centre> renalUnit = new CentreDropDown("renalUnit");
         final ConsultantDropDown consultant = new ConsultantDropDown("consultant", centreNumber);
-        renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                Demographics demographics = model.getObject();
-                if (demographics != null) {
-                    centreNumber.setObject(demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() :
-                            null);
+        form.add(consultant);
+
+        DropDownChoice<Centre> renalUnit;
+
+        // if its a super user then the drop down will let them change renal units
+        // if its a normal user they can only add to their own renal unit
+        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
+            renalUnit = new CentreDropDown("renalUnit");
+
+            renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
+                    Demographics demographics = model.getObject();
+                    if (demographics != null) {
+                        centreNumber.setObject(demographics.getRenalUnit() != null ?
+                                demographics.getRenalUnit().getId():
+                                null);
+                    }
+
+                    consultant.clearInput();
+                    target.add(consultant);
                 }
+            });
+        } else {
+            List<Centre> centres = new ArrayList<Centre>();
+            centres.add(form.getModelObject().getRenalUnit());
 
-                consultant.clearInput();
-                target.add(consultant);
-            }
-        });
+            renalUnit = new CentreDropDown("renalUnit", centres);
+        }
 
-        form.add(consultant, renalUnit);
+        form.add(renalUnit);
 
         CheckBox consent = new CheckBox("consent");
         form.add(consent);

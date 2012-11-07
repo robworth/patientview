@@ -33,7 +33,7 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         // Initialise a simple JDBC insert to be able to get the allocated ID
         medicalResultInsert = new SimpleJdbcInsert(dataSource).withTableName("testresult")
                 .usingGeneratedKeyColumns("id")
-                .usingColumns("RADAR_NO", "unitcode", "testcode", "datestamp", "prepost", "value"
+                .usingColumns("RADAR_NO", "unitcode", "testcode", "datestamp", "prepost", "value", "nhsNo"
                 );
     }
 
@@ -53,6 +53,7 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
             map.put("testcode", item.getTestcode());
             map.put("value", item.getObjectValue());
             map.put("datestamp", item.getDate());
+            map.put("nhsNo", medicalResult.getNhsNo());
             medicalResultsMaps[i] = map;
         }
 

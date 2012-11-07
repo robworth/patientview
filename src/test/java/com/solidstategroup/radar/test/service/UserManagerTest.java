@@ -4,7 +4,7 @@ import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.UserManager;
-import com.solidstategroup.radar.test.DatabaseBackedTest;
+import com.solidstategroup.radar.test.TestPvDbSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Date;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:context.xml"})
-public class UserManagerTest extends DatabaseBackedTest {
+public class UserManagerTest extends TestPvDbSchema {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     @Autowired
@@ -57,7 +57,7 @@ public class UserManagerTest extends DatabaseBackedTest {
         patientUser.setUsername("test_user");
 
         // Date of birth for this within test dataset is 6th November 1994
-        patientUser.setDateOfBirth(DATE_FORMAT.parse("06/11/1994"));
+        patientUser.setDateOfBirth(DATE_FORMAT.parse("06/11/1991"));
 
         // Try and register - this should complete successfully as the data matches up
         userManager.registerPatient(patientUser);

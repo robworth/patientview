@@ -5,14 +5,17 @@ import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.generic.IdType;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.pages.patient.alport.AlportPatientPage;
+import com.solidstategroup.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -46,12 +49,17 @@ public class AddPatientPage extends BasePage {
     private DemographicsManager demographicsManager;
 
     public AddPatientPage() {
+        ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
+
         // list of items to update in ajax submits
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
 
+        CompoundPropertyModel<AddPatientModel> addPatientModel =
+                new CompoundPropertyModel<AddPatientModel>(new AddPatientModel());
+        addPatientModel.getObject().setCentre(user.getCentre());
+
         // create form
-        Form<AddPatientModel> form = new Form<AddPatientModel>("form",
-                new CompoundPropertyModel(new AddPatientModel())) {
+        Form<AddPatientModel> form = new Form<AddPatientModel>("form", addPatientModel) {
             @Override
             protected void onSubmit() {
                 AddPatientModel model = getModelObject();
@@ -72,6 +80,8 @@ public class AddPatientPage extends BasePage {
                             setResponsePage(SrnsPatientPage.class, SrnsPatientPage.getParameters(model));
                         } else if (model.getDiseaseGroup().getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
                             setResponsePage(new AlportPatientPage(model));
+                        } else if (model.getDiseaseGroup().getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
+                            setResponsePage(new HNF1BPatientPage(model));
                         } else {
                             setResponsePage(new GenericPatientPage(model));
                         }

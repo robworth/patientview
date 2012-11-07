@@ -9,7 +9,7 @@ import com.solidstategroup.radar.service.generic.MedicalResultManager;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.panels.alport.DeafnessPanel;
-import com.solidstategroup.radar.web.panels.alport.GeneticsPanel;
+import com.solidstategroup.radar.web.panels.GeneticsPanel;
 import com.solidstategroup.radar.web.panels.alport.MedicinePanel;
 import com.solidstategroup.radar.web.panels.generic.GenericDemographicsPanel;
 import com.solidstategroup.radar.web.panels.generic.MedicalResultsPanel;
@@ -75,6 +75,7 @@ public class AlportPatientPage extends BasePage {
         // set the nhs id or chi id based on model
         demographics = new Demographics();
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
+        demographics.setRenalUnit(patientModel.getCentre());
 
         if (patientModel.getIdType().equals(IdType.NHS)) {
             demographics.setNhsNumber(patientModel.getPatientId());

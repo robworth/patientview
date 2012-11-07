@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-
 public class GenericDiagnosisDaoImpl extends BaseDaoImpl implements GenericDiagnosisDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDiagnosisDaoImpl.class);
 
@@ -35,16 +34,22 @@ public class GenericDiagnosisDaoImpl extends BaseDaoImpl implements GenericDiagn
 
     public GenericDiagnosis get(String prdCode, String workingGroup) {
         try {
-            return jdbcTemplate.queryForObject(
+            List<GenericDiagnosis> genericDiagnosises = jdbcTemplate.query(
                     "SELECT * " +
                     "FROM RDR_PRD_CODE, RDR_DIAGNOSIS_MAPPING " +
                     "WHERE RDR_PRD_CODE.ERA_EDTA_PRD_code = RDR_DIAGNOSIS_MAPPING.PRDCode " +
                     "AND  RDR_DIAGNOSIS_MAPPING.PRDCode = ? AND RDR_DIAGNOSIS_MAPPING.workingGroup = ?",
                     new Object[]{prdCode, workingGroup}, new GenericDiagnosisRowMapper());
+
+            if (genericDiagnosises != null && !genericDiagnosises.isEmpty()) {
+                return genericDiagnosises.get(0);
+            }
         } catch (EmptyResultDataAccessException e) {
             LOGGER.error("GenericDiagnosis with prdCode {} and workingGroup {} was not found", prdCode, workingGroup);
             return null;
         }
+
+        return null;
     }
 
     private class GenericDiagnosisRowMapper implements RowMapper<GenericDiagnosis> {

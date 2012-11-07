@@ -6,6 +6,7 @@ CREATE TABLE `testresult` (
   `prepost` varchar(100) default '',
   `value` varchar(100) default '',
   `RADAR_NO` int(11) unsigned NOT NULL,
+  `nhsNo` varbinary(50) NOT NULL default '',
   PRIMARY KEY  (`id`)
 );
 

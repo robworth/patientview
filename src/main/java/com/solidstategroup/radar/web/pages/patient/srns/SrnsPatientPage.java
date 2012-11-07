@@ -209,6 +209,7 @@ public class SrnsPatientPage extends BasePage {
             pageParameters.set("diagnosis", DiagnosisCode.MPGN_ID);
         }
 
+        pageParameters.set("renalUnitId", patientModel.getCentre().getId());
         pageParameters.set("diseaseGroupId", patientModel.getDiseaseGroup().getId());
         pageParameters.set("idType", patientModel.getIdType().toString());
         pageParameters.set("idVal", patientModel.getPatientId());

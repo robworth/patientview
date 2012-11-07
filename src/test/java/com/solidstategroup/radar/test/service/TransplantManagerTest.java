@@ -3,7 +3,7 @@ package com.solidstategroup.radar.test.service;
 import com.solidstategroup.radar.model.Transplant;
 import com.solidstategroup.radar.model.exception.InvalidModelException;
 import com.solidstategroup.radar.service.TransplantManager;
-import com.solidstategroup.radar.test.DatabaseBackedTest;
+import com.solidstategroup.radar.test.TestPvDbSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:context.xml"})
-public class TransplantManagerTest extends DatabaseBackedTest {
+public class TransplantManagerTest extends TestPvDbSchema {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     @Autowired

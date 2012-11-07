@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.test.dao.alport;
 
 import com.solidstategroup.radar.dao.alport.GeneticsDao;
-import com.solidstategroup.radar.model.alport.Genetics;
+import com.solidstategroup.radar.model.Genetics;
 import com.solidstategroup.radar.test.dao.BaseDaoTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

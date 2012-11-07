@@ -1,16 +1,15 @@
-package com.solidstategroup.radar.web.pages.patient;
+package com.solidstategroup.radar.web.pages.patient.hnf1b;
 
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.IdType;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
-import com.solidstategroup.radar.service.generic.MedicalResultManager;
-import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.pages.BasePage;
+import com.solidstategroup.radar.web.panels.GeneticsPanel;
 import com.solidstategroup.radar.web.panels.generic.GenericDemographicsPanel;
-import com.solidstategroup.radar.web.panels.generic.MedicalResultsPanel;
+import com.solidstategroup.radar.web.panels.hnf1b.HNF1BMiscPanel;
 import com.solidstategroup.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -26,27 +25,44 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
-public class GenericPatientPage extends BasePage {
-    private GenericDemographicsPanel genericDemographicsPanel;
-    private MedicalResultsPanel medicalResultsPanel;
-    private Tab currentTab = Tab.DEMOGRAPHICS;
-    private MarkupContainer linksContainer;
+public class HNF1BPatientPage extends BasePage {
 
-    private Demographics demographics;
+    public enum Tab {
+        // Used for storing the current tab
+        DEMOGRAPHICS(1),
+        GENETICS(2),
+        PROTEINURIA(3),
+        HNF1BMisc(4);
+
+        private int pageNumber;
+
+        Tab(int pageNumber) {
+            this.pageNumber = pageNumber;
+        }
+
+        public int getPageNumber() {
+            return pageNumber;
+        }
+    }
+
+    protected static final String PARAM_ID = "id";
 
     @SpringBean
     private DemographicsManager demographicsManager;
 
-    @SpringBean
-    private MedicalResultManager medicalResultManager;
+    private Demographics demographics;
+    private MarkupContainer linksContainer;
 
-    public GenericPatientPage(AddPatientModel patientModel) {
-        // this constructor is used when adding a new patient
-        super();
+    // The panels we are using
+    private GenericDemographicsPanel genericDemographicsPanel;
+    private GeneticsPanel geneticsPanel;
+    private HNF1BMiscPanel hnf1BMiscPanel;
 
+    private Tab currentTab = Tab.DEMOGRAPHICS;
+
+    public HNF1BPatientPage(AddPatientModel patientModel) {
         // set the nhs id or chi id based on model
         demographics = new Demographics();
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
@@ -61,13 +77,9 @@ public class GenericPatientPage extends BasePage {
         init(demographics);
     }
 
-    public GenericPatientPage(PageParameters pageParameters) {
+    public HNF1BPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
-        // get the demographics based on radar id
-        StringValue idValue = pageParameters.get("id");
-        Long id = idValue.toLong();
-        demographics = demographicsManager.getDemographicsByRadarNumber(id);
-
+        demographics = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
         init(demographics);
     }
 
@@ -79,30 +91,33 @@ public class GenericPatientPage extends BasePage {
                 return currentTab.equals(Tab.DEMOGRAPHICS);
             }
         };
+        add(genericDemographicsPanel);
 
-        genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
-
-        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
+        geneticsPanel = new GeneticsPanel("geneticsPanel", demographics) {
             @Override
             public boolean isVisible() {
-                return currentTab.equals(Tab.MEDICAL_RESULTS);
+                return currentTab.equals(Tab.GENETICS);
             }
         };
+        add(geneticsPanel);
 
-        medicalResultsPanel.setOutputMarkupPlaceholderTag(true);
-
-        add(genericDemographicsPanel, medicalResultsPanel);
+        hnf1BMiscPanel = new HNF1BMiscPanel("hnf1BMiscPanel", demographics) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.HNF1BMisc);
+            }
+        };
+        add(hnf1BMiscPanel);
 
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
         linksContainer.setOutputMarkupId(true);
+        add(linksContainer);
 
         // Add the links to switch tab
-
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
-        linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
-
-        add(linksContainer);
+        linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
+        linksContainer.add(new TabAjaxLink("hnf1BMiscLink", Tab.HNF1BMisc));
 
         IModel<Integer> pageNumberModel = new Model<Integer>();
         pageNumberModel.setObject(Tab.DEMOGRAPHICS.getPageNumber());
@@ -116,25 +131,11 @@ public class GenericPatientPage extends BasePage {
     }
 
     public static PageParameters getPageParameters(Demographics demographics) {
-        PageParameters pageParameters = new PageParameters();
-        Long id = demographics.getId();
-        pageParameters.set("id", id);
-        return pageParameters;
+        return new PageParameters().set(PARAM_ID, demographics.getId());
     }
 
-    public enum Tab {
-        // Used for storing the current tab
-        DEMOGRAPHICS(RadarApplication.GENERIC_DEMOGRAPHICS_PAGE_NO),
-        MEDICAL_RESULTS(RadarApplication.MEDICAL_RESULTS_PAGE_NO);
-        private int pageNumber;
-
-        Tab(int pageNumber) {
-            this.pageNumber = pageNumber;
-        }
-
-        public int getPageNumber() {
-            return pageNumber;
-        }
+    public Tab getCurrentTab() {
+        return currentTab;
     }
 
     private class TabAjaxLink extends AjaxLink {
@@ -146,26 +147,30 @@ public class GenericPatientPage extends BasePage {
 
             // Decorate span with class="hovered" if we're active tab
             MarkupContainer span = new WebMarkupContainer("span");
+
             span.add(new AttributeModifier("class", new AbstractReadOnlyModel<String>() {
                 @Override
                 public String getObject() {
-                    return GenericPatientPage.this.currentTab.equals(TabAjaxLink.this.tab) ? "hovered" : "";
+                    return currentTab.equals(TabAjaxLink.this.tab) ? "hovered" : "";
                 }
             }));
+
             add(span);
         }
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            if (demographics.hasValidId()) {
-                GenericPatientPage.this.currentTab = tab;
+            if (demographics != null && demographics.hasValidId()) {
+                currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
-                target.add(genericDemographicsPanel, medicalResultsPanel);
+
+                // add each panel to the response
+                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();
-                pageNumberModel.setObject(GenericPatientPage.this.currentTab.getPageNumber());
+                pageNumberModel.setObject(HNF1BPatientPage.this.currentTab.getPageNumber());
                 target.add(pageNumber);
             }
         }
