@@ -20186,7 +20186,6 @@ AFAFHDAH]]></value>
         <column>haemodialysisuniturl12</column>
         <column>sourceType</column>
         <column>tenancy_id</column>
-        <column>country</column>
         <row>
             <value>1</value>
             <value>1</value>
@@ -20258,7 +20257,6 @@ AFAFHDAH]]></value>
             <null />
             <null />
             <value>radargroup</value>
-            <value>1</value>
             <value>1</value>
         </row>
         <row>
@@ -20332,7 +20330,6 @@ AFAFHDAH]]></value>
             <null />
             <null />
             <value>radargroup</value>
-            <value>1</value>
             <value>1</value>
         </row>
         <row>
@@ -20407,7 +20404,6 @@ AFAFHDAH]]></value>
             <null />
             <value>radargroup</value>
             <value>1</value>
-            <value>1</value>
         </row>
         <row>
             <value>4</value>
@@ -20481,7 +20477,120 @@ AFAFHDAH]]></value>
             <null />
             <value>renalunit</value>
             <value>1</value>
+        </row>
+    </table>
+    <table name="tbl_Centres">
+        <column>cID</column>
+        <column>cName</column>
+        <column>cAbbrev</column>
+        <column>cCountry</column>
+        <row>
             <value>1</value>
+            <value><![CDATA[Belfast, The Royal Belfast Hospital For Sick Children]]></value>
+            <value>Belfast</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value><![CDATA[Birmingham Children's Hospital]]></value>
+            <value>Birmingham</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value><![CDATA[Bristol Royal Hospital for Children]]></value>
+            <value>Bristol</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value><![CDATA[Cardiff,  Children's Hospital for Wales ]]></value>
+            <value>Cardiff</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>5</value>
+            <value><![CDATA[Glasgow - Yorkhill, Royal Hospital for Sick Children]]></value>
+            <value>Glasgow</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>6</value>
+            <value><![CDATA[Leeds -  St James University Hospital, Dept of Paediatric Nephrology]]></value>
+            <value>Leeds</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>7</value>
+            <value><![CDATA[Liverpool - Royal Liverpool Children's Hospital, Alder Hey]]></value>
+            <value><![CDATA[Liverpool AH]]></value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>8</value>
+            <value><![CDATA[London -  Evelina Children's Hospital]]></value>
+            <value><![CDATA[London Evelina]]></value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>9</value>
+            <value><![CDATA[London -  Great Ormond Street Hospital for Children NHS Trust ]]></value>
+            <value><![CDATA[London GOS]]></value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>10</value>
+            <value><![CDATA[Manchester -  Royal Manchester's Children's Hospital]]></value>
+            <value>Manchester</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>11</value>
+            <value><![CDATA[Newcastle - Royal Victoria Infirmary, Paediatric Unit	]]></value>
+            <value>Newcastle</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>12</value>
+            <value><![CDATA[Nottingham - QMC - Children's Kidney Unit]]></value>
+            <value>Nottingham</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>13</value>
+            <value><![CDATA[Southampton General Hospital ]]></value>
+            <value>Southampton</value>
+            <value>1</value>
+        </row>
+        <row>
+            <value>14</value>
+            <value><![CDATA[Renal Registry]]></value>
+            <null/>
+            <value>1</value>
+        </row>
+        <row>
+            <value>55</value>
+            <value><![CDATA[Christian Medical College, Vellore, India]]></value>
+            <value><![CDATA[CMC, Vellore]]></value>
+            <value>2</value>
+        </row>
+        <row>
+            <value>56</value>
+            <value><![CDATA[St John's Medical College Hospital, Bangalore, India]]></value>
+            <value><![CDATA[SJMCH, Banglore]]></value>
+            <value>2</value>
+        </row>
+        <row>
+            <value>57</value>
+            <value><![CDATA[All India Institute of Medical Science, New Dehli, India]]></value>
+            <value><![CDATA[AAIMS N.Dehli]]></value>
+            <value>2</value>
+        </row>
+        <row>
+            <value>58</value>
+            <value><![CDATA[Children Medical Centre Hospital, Tehran University of Medical Sciences]]></value>
+            <value><![CDATA[CMCH Tehran]]></value>
+            <value>2</value>
         </row>
     </table>
     <table name="rdr_diagnosis_mapping">
