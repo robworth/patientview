@@ -127,6 +127,4 @@ ALTER TABLE UNIT ADD UNIQUE (UNITCODE);
 CREATE INDEX UnitIDIndex ON UNIT (ID);
 CREATE INDEX UnitCodeIndex ON UNIT (UNITCODE);
 
-alter table testresult add column `nhsNo` varchar(10) NOT NULL default '';
-
 SET FOREIGN_KEY_CHECKS = 1;
