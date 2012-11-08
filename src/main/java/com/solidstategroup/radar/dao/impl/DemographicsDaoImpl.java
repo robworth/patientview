@@ -229,7 +229,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 "   tbl_Demographics.*, " +
                 "   tbl_Consultants.cFNAME, " +
                 "   tbl_Consultants.cSNAME, " +
-                "   unit.shortname, " +
+                "   tbl_Centres.cAbbrev, " +
                 "   tbl_DiagCode.dcAbbr " +
                 "FROM " +
                 "   tbl_DiagCode " +
@@ -242,11 +242,11 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 "ON " +
                 "   tbl_Diagnosis.RADAR_NO = tbl_Demographics.RADAR_NO " +
                 "LEFT OUTER JOIN " +
-                "   unit " +
+                "   tbl_Centres " +
                 "INNER JOIN " +
                 "   tbl_Consultants " +
                 "ON " +
-                "   unit.id = tbl_Consultants.cCentre " +
+                "   tbl_Centres.cID = tbl_Consultants.cCentre " +
                 "ON " +
                 "   tbl_Demographics.CONS_NEPH = tbl_Consultants.cID");
 

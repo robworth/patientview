@@ -219,13 +219,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         // normal sql query without any filter options
         sqlQueries.add("SELECT " +
                 "   tbl_Users.*, " +
-                "   unit.name AS cName " +
+                "   tbl_Centres.cName AS cName " +
                 "FROM " +
                 "   tbl_Users " +
                 "INNER JOIN " +
-                "   unit " +
+                "   tbl_Centres " +
                 "ON " +
-                "   tbl_Users.uCentre = unit.id");
+                "   tbl_Users.uCentre = tbl_Centres.cID");
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {

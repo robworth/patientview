@@ -39,12 +39,11 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public Centre getCentre(long id) {
         return jdbcTemplate
-                .queryForObject("SELECT * FROM unit WHERE id = ?", new Object[]{id}, new CentreRowMapper());
+                .queryForObject("SELECT * FROM tbl_Centres WHERE cID = ?", new Object[]{id}, new CentreRowMapper());
     }
 
     public List<Centre> getCentres() {
-        return jdbcTemplate.query("SELECT * FROM unit WHERE sourceType = ?", new Object[]{"renalunit"},
-                new CentreRowMapper());
+        return jdbcTemplate.query("SELECT * FROM tbl_Centres", new CentreRowMapper());
     }
 
     public Consultant getConsultant(long id) {
@@ -63,13 +62,13 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         // normal sql query without any filter options
         sqlQueries.add("SELECT " +
                 "   tbl_Consultants.*, " +
-                "   unit.name AS cName " +
+                "   tbl_Centres.cName AS cName " +
                 "FROM " +
                 "   tbl_Consultants " +
                 "INNER JOIN " +
-                "   unit " +
+                "   tbl_Centres " +
                 "ON " +
-                "   tbl_Consultants.cCentre = unit.id");
+                "   tbl_Consultants.cCentre = tbl_Centres.cID");
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
@@ -193,11 +192,11 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         public Centre mapRow(ResultSet resultSet, int i) throws SQLException {
             // Create a centre and set the fields from the resultset
             Centre centre = new Centre();
-            centre.setId(resultSet.getLong("id"));
-            centre.setName(resultSet.getString("name"));
-            centre.setAbbreviation(resultSet.getString("shortname"));
+            centre.setId(resultSet.getLong("cID"));
+            centre.setName(resultSet.getString("cName"));
+            centre.setAbbreviation(resultSet.getString("cAbbrev"));
             // Set country from our DAO
-            centre.setCountry(getCountry(resultSet.getLong("country")));
+            centre.setCountry(getCountry(resultSet.getLong("cCountry")));
             return centre;
         }
     }

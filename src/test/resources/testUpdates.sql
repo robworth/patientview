@@ -10,11 +10,7 @@ CREATE TABLE `testresult` (
 );
 
 
-CREATE TABLE `unit` (
-  `unitcode` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL default '',
-  `shortname` varchar(15) NOT NULL default '',
-  `sourceType` varchar(50) default NULL,
-  `id` int(11) NOT NULL auto_increment,
-  `country` varchar(100) default NULL
+CREATE TABLE unit (
+unitcode varchar(100) NOT NULL DEFAULT '',
+name varchar(50),
 );

@@ -11,7 +11,7 @@ public class DemographicsFilter extends BaseFilter {
         DIAGNOSIS("tbl_DiagCode.dcAbbr"),
         CONSULTANT_FORNAME("tbl_Consultants.cFNAME"),
         CONSULTANT_SURNAME("tbl_Consultants.cSNAME"),
-        CENTRE("unit.shortname");
+        CENTRE("tbl_Centres.cAbbrev");
 
         private String databaseFieldName;
 
