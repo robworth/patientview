@@ -20,10 +20,12 @@
       The contents of uploaded files are only held for 20 days, so it may already have been deleted.
     </logic:notPresent>
 
-    <bean:define id="xmlContent" name="xmlContent" type="java.lang.String" />
 
     <logic:present name="xmlContent">
-      <p>----START XML FILE----</p>
+
+        <bean:define id="xmlContent" name="xmlContent" type="java.lang.String" />
+
+        <p>----START XML FILE----</p>
 
       <p><%= StringEscapeUtils.escapeHtml(xmlContent).replace("\n", "<br />")%></p>
 
