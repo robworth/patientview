@@ -261,7 +261,7 @@ CREATE TABLE tbl_Hospitalisation (
 CREATE TABLE tbl_ImmunoSupp (
 	imID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (imID),
 	imDesc varchar(50),
-	Group int
+	`Group` int
 );
 
 CREATE TABLE tbl_IMMUNSUP_TREATMENT (
@@ -469,7 +469,7 @@ CREATE TABLE tbl_RRT_HD (
 CREATE TABLE tbl_RRT_MODALITY (
 	mID int AUTO_INCREMENT, PRIMARY KEY (mID),
 	mType varchar(50),
-	Group int
+	`Group` int
 );
 
 CREATE TABLE tbl_RRT_PD (
@@ -613,21 +613,5 @@ CREATE TABLE tbl_Users (
 	uDateJoin TIMESTAMP,
 	uPass varbinary(50),
 	uUserName varbinary(50)
-);
-
-CREATE TABLE rdr_hnf1b_misc (
-  id int(11) unsigned NOT NULL auto_increment,
-  radar_no bigint(20) NOT NULL,
-  renalCysts int(11) default '0',
-  singleKidney int(11) default '0',
-  otherRenalMalformations int(11) default '0',
-  otherRenalMalformationsDetails varchar(1000) default NULL,
-  diabetes int(11) default '0',
-  ageAtDiabetesDiagnosis int(11) default '0',
-  gout int(11) default '0',
-  ageAtGoutDiagnosis int(11) default '0',
-  genitalMalformation int(11) default '0',
-  genitalMalformationDetails varchar(1000) default NULL,
-  PRIMARY KEY  (id)
 );
 

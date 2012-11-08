@@ -10,6 +10,7 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
+import com.solidstategroup.radar.util.TripleDes;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,23 +105,23 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             " WHERE RADAR_NO = ?",
                     demographics.getRenalRegistryNumber(),
                     demographics.getDateRegistered(),
-                    demographics.getNhsNumber(),
-                    demographics.getHospitalNumber(),
+                    getEncryptedString(demographics.getNhsNumber()),
+                    getEncryptedString(demographics.getHospitalNumber()),
                     demographics.getUkTransplantNumber(),
                     demographics.getChiNumber(),
-                    demographics.getSurname(),
-                    demographics.getSurnameAlias(),
-                    demographics.getForename(),
-                    new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth()),
+                    getEncryptedString(demographics.getSurname()),
+                    getEncryptedString(demographics.getSurnameAlias()),
+                    getEncryptedString(demographics.getForename()),
+                    getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth())),
                     demographics.getAge(),
                     demographics.getSex() != null ? demographics.getSex().getId() : null,
                     demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null,
-                    demographics.getAddress1(),
-                    demographics.getAddress2(),
-                    demographics.getAddress3(),
-                    demographics.getAddress4(),
-                    demographics.getPostcode(),
-                    demographics.getPreviousPostcode(),
+                    getEncryptedString(demographics.getAddress1()),
+                    getEncryptedString(demographics.getAddress2()),
+                    getEncryptedString(demographics.getAddress3()),
+                    getEncryptedString(demographics.getAddress4()),
+                    getEncryptedString(demographics.getPostcode()),
+                    getEncryptedString(demographics.getPreviousPostcode()),
                     demographics.isConsent(),
                     demographics.getDateRegistered(),
                     demographics.getConsultant() != null ? demographics.getConsultant().getId() : null,
@@ -149,26 +150,26 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 {
                     put("RR_NO", demographics.getRenalRegistryNumber());
                     put("DATE_REG", demographics.getDateRegistered());
-                    put("NHS_NO", demographics.getNhsNumber());
-                    put("HOSP_NO", demographics.getHospitalNumber());
+                    put("NHS_NO", getEncryptedString(demographics.getNhsNumber()));
+                    put("HOSP_NO", getEncryptedString(demographics.getHospitalNumber()));
                     put("UKT_NO", demographics.getUkTransplantNumber());
                     put("CHI_NO", demographics.getChiNumber());
-                    put("SNAME", demographics.getSurname());
-                    put("SNAME_ALIAS", demographics.getSurnameAlias());
-                    put("FNAME", demographics.getForename());
+                    put("SNAME", getEncryptedString(demographics.getSurname()));
+                    put("SNAME_ALIAS", getEncryptedString(demographics.getSurnameAlias()));
+                    put("FNAME", getEncryptedString(demographics.getForename()));
                     put("DOB", demographics.getDateOfBirth() != null ?
-                            new SimpleDateFormat(DATE_FORMAT).format(
-                                    demographics.getDateOfBirth()) : null);
+                            getEncryptedString(new SimpleDateFormat(DATE_FORMAT).format(
+                                    demographics.getDateOfBirth())) : null);
                     put("AGE", demographics.getAge());
                     put("SEX", demographics.getSex() != null ? demographics.getSex().getId() : null);
                     put("ETHNIC_GP",
                             demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null);
-                    put("ADD1", demographics.getAddress1());
-                    put("ADD2", demographics.getAddress2());
-                    put("ADD3", demographics.getAddress3());
-                    put("ADD4", demographics.getAddress4());
-                    put("POSTCODE", demographics.getPostcode());
-                    put("POSTCODE_OLD", demographics.getPreviousPostcode());
+                    put("ADD1", getEncryptedString(demographics.getAddress1()));
+                    put("ADD2", getEncryptedString(demographics.getAddress2()));
+                    put("ADD3", getEncryptedString(demographics.getAddress3()));
+                    put("ADD4", getEncryptedString(demographics.getAddress4()));
+                    put("POSTCODE", getEncryptedString(demographics.getPostcode()));
+                    put("POSTCODE_OLD", getEncryptedString(demographics.getPreviousPostcode()));
                     put("CONSENT", demographics.isConsent());
                     put("DATE_BAPN_REG", null); // Todo: Fix
                     put("CONS_NEPH", demographics.getConsultant() != null ? demographics.getConsultant().getId()
@@ -312,14 +313,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             demographics.setChiNumber(resultSet.getString("CHI_NO"));
 
             // These need to be decrypted from the database
-            demographics.setNhsNumber(resultSet.getString("NHS_NO"));
-            demographics.setHospitalNumber(resultSet.getString("HOSP_NO"));
-            demographics.setSurname(resultSet.getString("SNAME"));
-            demographics.setSurnameAlias(resultSet.getString("SNAME_ALIAS"));
-            demographics.setForename(resultSet.getString("FNAME"));
+            demographics.setNhsNumber(getDecryptedString(resultSet, "NHS_NO"));
+            demographics.setHospitalNumber(getDecryptedString(resultSet, "HOSP_NO"));
+            demographics.setSurname(getDecryptedString(resultSet, "SNAME"));
+            demographics.setSurnameAlias(getDecryptedString(resultSet, "SNAME_ALIAS"));
+            demographics.setForename(getDecryptedString(resultSet, "FNAME"));
 
             // Date needs to be decrypted to string, then parsed
-            String dateOfBirthString = resultSet.getString("DOB");
+            String dateOfBirthString = getDecryptedString(resultSet, "DOB");
             if (StringUtils.isNotBlank(dateOfBirthString)) {
                 Date dateOfBirth = null;
 
@@ -343,12 +344,12 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             // Addresses, all encrypted too
-            demographics.setAddress1(resultSet.getString("ADD1"));
-            demographics.setAddress2(resultSet.getString("ADD2"));
-            demographics.setAddress3(resultSet.getString("ADD3"));
-            demographics.setAddress4(resultSet.getString("ADD4"));
-            demographics.setPostcode(resultSet.getString("POSTCODE"));
-            demographics.setPreviousPostcode(resultSet.getString("POSTCODE_OLD"));
+            demographics.setAddress1(getDecryptedString(resultSet, "ADD1"));
+            demographics.setAddress2(getDecryptedString(resultSet, "ADD2"));
+            demographics.setAddress3(getDecryptedString(resultSet, "ADD3"));
+            demographics.setAddress4(getDecryptedString(resultSet, "ADD4"));
+            demographics.setPostcode(getDecryptedString(resultSet, "POSTCODE"));
+            demographics.setPreviousPostcode(getDecryptedString(resultSet, "POSTCODE_OLD"));
 
             // Set sex
             demographics.setSex(getSex(resultSet.getLong("SEX")));
@@ -434,6 +435,26 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             status.setDescription(resultSet.getString("sDesc"));
             status.setAbbreviation(resultSet.getString("sAbbrev"));
             return status;
+        }
+    }
+
+    private String getDecryptedString(ResultSet resultSet, String column) {
+        try {
+            // Catch the exception and log rather than throwing from entire row mapper
+            return TripleDes.decrypt(resultSet.getBytes(column));
+        } catch (Exception e) {
+            LOGGER.error("Could not decrypt column data {} - {}", column, e.getMessage());
+            return null;
+        }
+    }
+
+    private byte[] getEncryptedString(String string) {
+        try {
+            // Catch the exception and log rather than throwing from entire row mapper
+            return TripleDes.encrypt(string);
+        } catch (Exception e) {
+            LOGGER.error("Could not decrypt data {}", e.getMessage());
+            return null;
         }
     }
 

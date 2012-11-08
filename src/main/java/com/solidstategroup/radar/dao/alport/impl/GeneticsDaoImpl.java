@@ -2,7 +2,7 @@ package com.solidstategroup.radar.dao.alport.impl;
 
 import com.solidstategroup.radar.dao.alport.GeneticsDao;
 import com.solidstategroup.radar.dao.impl.BaseDaoImpl;
-import com.solidstategroup.radar.model.Genetics;
+import com.solidstategroup.radar.model.alport.Genetics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
