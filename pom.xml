@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>radar</name>
-    <description></description>
 
     <organization>
         <name>Solid State Group</name>
@@ -23,6 +22,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <properties>
         <wicket.version>1.5.3</wicket.version>
         <jetty.version>8.0.1.v20110908</jetty.version>
@@ -208,7 +208,7 @@
                 <configuration>
                     <url>${tomcatmanagerurl}</url>
                     <server>tomcatmanager</server>
-                    <path>/radar</path>
+                    <path>${warpath}</path>
                 </configuration>
             </plugin>
 
