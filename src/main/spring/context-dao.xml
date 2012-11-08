@@ -17,10 +17,6 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="hnf1BMiscDao" class="com.solidstategroup.radar.dao.hnf1b.impl.HNF1BMiscDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
     <bean id="issueDao" class="com.solidstategroup.radar.dao.impl.IssueDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>

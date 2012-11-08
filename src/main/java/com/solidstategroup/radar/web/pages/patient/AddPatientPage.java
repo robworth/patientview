@@ -15,7 +15,6 @@ import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.pages.patient.alport.AlportPatientPage;
-import com.solidstategroup.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -80,8 +79,6 @@ public class AddPatientPage extends BasePage {
                             setResponsePage(SrnsPatientPage.class, SrnsPatientPage.getParameters(model));
                         } else if (model.getDiseaseGroup().getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
                             setResponsePage(new AlportPatientPage(model));
-                        } else if (model.getDiseaseGroup().getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
-                            setResponsePage(new HNF1BPatientPage(model));
                         } else {
                             setResponsePage(new GenericPatientPage(model));
                         }

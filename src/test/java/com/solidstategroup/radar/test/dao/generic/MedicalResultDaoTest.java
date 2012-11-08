@@ -25,7 +25,6 @@ public class MedicalResultDaoTest extends BaseDaoTest {
         Date date = new Date();
 
         MedicalResult medicalResult = new MedicalResult();
-        medicalResult.setNhsNo("123456789");
         medicalResult.setRadarNo(1L);
         medicalResult.setSerumCreatanine(10.25);
         medicalResult.setAntihypertensiveDrugs(MedicalResult.YesNo.YES);
@@ -57,7 +56,6 @@ public class MedicalResultDaoTest extends BaseDaoTest {
 
         // update record
         medicalResult.setBloodUrea(15.5);
-        medicalResult.setNhsNo("123456789");
         medicalResultDao.save(medicalResult);
 
         medicalResult = medicalResultDao.getMedicalResult(1L, diseaseGroup.getId());
