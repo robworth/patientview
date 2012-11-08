@@ -48,19 +48,4 @@ public class UserManagerTest extends TestPvDbSchema {
         userManager.registerPatient(patientUser);
     }
 
-    @Test
-    public void testPatientUserRegistration() throws RegistrationException, ParseException, UserEmailAlreadyExists {
-
-        // Construct a patient user
-        PatientUser patientUser = new PatientUser();
-        patientUser.setRadarNumber(267L);
-        patientUser.setUsername("test_user");
-
-        // Date of birth for this within test dataset is 6th November 1994
-        patientUser.setDateOfBirth(DATE_FORMAT.parse("06/11/1991"));
-
-        // Try and register - this should complete successfully as the data matches up
-        userManager.registerPatient(patientUser);
-    }
-
 }

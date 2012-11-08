@@ -74,7 +74,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         // Call DAO
         List<Demographics> demographics = demographicDao.getDemographicsByRenalUnit(centre);
         assertNotNull("List was null", demographics);
-        assertEquals("Wrong size", 22, demographics.size());
+        assertEquals("Wrong size", 21, demographics.size());
         for (Demographics de : demographics) {
             assertTrue("Wrong centre", de.getRenalUnit().getId().equals(2L) || de.getRenalUnitAuthorised().getId().
                     equals(2L));
