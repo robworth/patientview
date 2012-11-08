@@ -8,7 +8,6 @@ import java.util.Date;
  */
 public class MedicalResult implements Serializable {
     private Long radarNo;
-    private String nhsNo;
     private Double bloodUrea; // urea
     private Date bloodUreaDate; //
     private Double serumCreatanine; // creatinine
@@ -74,14 +73,6 @@ public class MedicalResult implements Serializable {
 
     public void setRadarNo(Long radarNo) {
         this.radarNo = radarNo;
-    }
-
-    public String getNhsNo() {
-        return nhsNo;
-    }
-
-    public void setNhsNo(String nhsNo) {
-        this.nhsNo = nhsNo;
     }
 
     public Double getBloodUrea() {
