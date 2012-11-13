@@ -1,339 +1,134 @@
 /**
-      Patch 1: Multi-tenant and IBD
+      Patch 2: Combine unit and tbl_centre tables
  */
 
-
--- FEATURE-JPA
-
-ALTER TABLE aboutme MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE centre ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-
-ALTER TABLE comment MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE diagnosis MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY;
-
-ALTER TABLE edtacode DROP PRIMARY KEY;
-ALTER TABLE edtacode ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-ALTER TABLE edtacode ADD UNIQUE (edtaCode);
-
-ALTER TABLE emailverification MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE feedback MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE letter DROP PRIMARY KEY;
-ALTER TABLE letter MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY;
-
-ALTER TABLE log MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE medicine MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE news MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE patient DROP PRIMARY KEY;
-ALTER TABLE patient ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY;
-ALTER TABLE patient ADD UNIQUE INDEX (nhsno, centreCode);
-
-ALTER TABLE result_heading DROP PRIMARY KEY;
-ALTER TABLE result_heading ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-ALTER TABLE result_heading ADD UNIQUE (headingcode);
-
-ALTER TABLE splashpage MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE splashpageuserseen MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE treatment DROP PRIMARY KEY;
-ALTER TABLE treatment ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-ALTER TABLE treatment ADD UNIQUE INDEX (nhsNo, treatmentCode);
-
-ALTER TABLE uktcode MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE uktstatus ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-
-ALTER TABLE unit DROP PRIMARY KEY;
-ALTER TABLE unit ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-ALTER TABLE unit ADD UNIQUE (unitcode);
-
-ALTER TABLE unitstat MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE USER DROP PRIMARY KEY;
-ALTER TABLE USER ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
-ALTER TABLE USER ADD UNIQUE (username);
-
-ALTER TABLE userlog MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE usermapping MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
-
-
--- FEATURE-MULTITENANT
-
-
-CREATE TABLE `tenancy` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `context` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `context` (`context`),
-  UNIQUE KEY `name` (`name`)
-);
-
-
-CREATE TABLE `tenancyuserrole` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `role` VARCHAR(255) NOT NULL,
-  `tenancy_id` BIGINT(20) DEFAULT NULL,
-  `user_id` BIGINT(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `tenancy_id` (`tenancy_id`,`user_id`,`role`),
-  KEY `FK7A1749E1AEFDD122` (`tenancy_id`),
-  CONSTRAINT `FK7A1749E1AEFDD122` FOREIGN KEY (`tenancy_id`) REFERENCES `tenancy` (`id`)
-);
-
-INSERT INTO tenancyuserrole (role, tenancy_id, user_id) SELECT role, 1, id FROM USER;
-
--- per tenancy system data
-ALTER TABLE edtacode ADD tenancy_id BIGINT(20)
-NOT NULL;
-
-UPDATE edtacode set tenancy_id = 1;
-
-ALTER TABLE result_heading ADD tenancy_id BIGINT(20)
-NOT NULL;
-
-UPDATE result_heading set tenancy_id = 1;
-
-ALTER TABLE unit ADD tenancy_id BIGINT(20)
-NOT NULL;
-
-UPDATE unit set tenancy_id = 1;
-
-ALTER TABLE news ADD tenancy_id BIGINT(20)
-NOT NULL;
-
-UPDATE news SET tenancy_id = 1;
-
-ALTER TABLE splashpage ADD tenancy_id BIGINT(20)
-NOT NULL;
-
-UPDATE splashpage SET tenancy_id = 1;
-
-ALTER TABLE usermapping ADD tenancy_id BIGINT(20)
-NOT NULL;
-
-UPDATE usermapping SET tenancy_id = 1;
-
-ALTER TABLE log ADD tenancy_id BIGINT(20);
-
-UPDATE log SET tenancy_id = 1;
-
--- indexes to speed up queries
-
-CREATE INDEX nhs_log_index1 ON LOG (nhsno);
-CREATE INDEX action_log_index1 ON LOG (action);
-
-
--- FEATURE-IBD
-
-CREATE TABLE `ibd_careplan` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `barriers` text,
-  `confidence_id` bigint(20) NOT NULL,
-  `eatingAHealthyDietScore` int(11) default NULL,
-  `fertilityPregnancyScore` int(11) default NULL,
-  `goalToAchieve` text,
-  `goals` text,
-  `howToAchieveGoal` text,
-  `importance_id` bigint(20) NOT NULL,
-  `learningAboutMyConditionScore` int(11) default NULL,
-  `managingFlareUpsScore` int(11) default NULL,
-  `managingMySocialLifeHobbiesScore` int(11) default NULL,
-  `managingPainScore` int(11) default NULL,
-  `managingWorkStudiesScore` int(11) default NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `otherAreasToDiscuss` text,
-  `overallMyConditionScore` int(11) default NULL,
-  `reviewDate` datetime default NULL,
-  `sexualRelationshipsScore` int(11) default NULL,
-  `sleepingScore` int(11) default NULL,
-  `stoppingSmokingScore` int(11) default NULL,
-  `stressAndWorryScore` int(11) default NULL,
-  `supportFromFamilyAndFriendsScore` int(11) default NULL,
-  `takingMyMedicinesRegularlyScore` int(11) default NULL,
-  `tirednessFatigueScore` int(11) default NULL,
-  `travellingScore` int(11) default NULL,
-  `whatCanBeDone` text,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_medication` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `name` text NOT NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_medication_dose` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `extraInformation` varchar(255) default NULL,
-  `mg` double default NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_medication_allowed_dosages` (
-  `medication_id` bigint(20) NOT NULL,
-  `dose_id` bigint(20) NOT NULL,
-  KEY `FKBA6261E967F0EF1` (`dose_id`),
-  KEY `FKBA6261E999BAAE42` (`medication_id`),
-  CONSTRAINT `FKBA6261E999BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`),
-  CONSTRAINT `FKBA6261E967F0EF1` FOREIGN KEY (`dose_id`) REFERENCES `ibd_medication_dose` (`id`)
-);
-
-CREATE TABLE `ibd_medication_type` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `name` text NOT NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_medication_type_medications` (
-  `medication_type_id` bigint(20) NOT NULL,
-  `medication_id` bigint(20) NOT NULL,
-  KEY `FK4D48F99B99BAAE42` (`medication_id`),
-  KEY `FK4D48F99B57719061` (`medication_type_id`),
-  CONSTRAINT `FK4D48F99B57719061` FOREIGN KEY (`medication_type_id`) REFERENCES `ibd_medication_type` (`id`),
-  CONSTRAINT `FK4D48F99B99BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`)
-);
-
-CREATE TABLE `ibd_my_medication` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `dateStarted` datetime NOT NULL,
-  `dateStopped` datetime default NULL,
-  `medication_frequency_id` bigint(20) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `otherMedication` text,
-  `reasonForStopping` text,
-  `medication_id` bigint(20) default NULL,
-  `medication_dose_id` bigint(20) default NULL,
-  `medication_type_id` bigint(20) NOT NULL,
-  `otherMedicationDose` text,
-  PRIMARY KEY  (`id`),
-  KEY `FK434B606EF8204181` (`medication_dose_id`),
-  KEY `FK434B606E99BAAE42` (`medication_id`),
-  KEY `FK434B606E57719061` (`medication_type_id`),
-  CONSTRAINT `FK434B606E57719061` FOREIGN KEY (`medication_type_id`) REFERENCES `ibd_medication_type` (`id`),
-  CONSTRAINT `FK434B606E99BAAE42` FOREIGN KEY (`medication_id`) REFERENCES `ibd_medication` (`id`),
-  CONSTRAINT `FK434B606EF8204181` FOREIGN KEY (`medication_dose_id`) REFERENCES `ibd_medication_dose` (`id`)
-);
-
-CREATE TABLE `ibd_myibd` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `bodyPartAffected` text,
-  `diagnosis_id` bigint(20) NOT NULL,
-  `disease_extent_id` bigint(20) NOT NULL,
-  `namedConsultant` text,
-  `nhsno` varchar(10) NOT NULL,
-  `nurses` text,
-  `yearForSurveillanceColonoscopy` datetime DEFAULT NULL,
-  `yearOfDiagnosis` datetime NOT NULL,
-  `familyHistory` text,
-  `smoking` text,
-  `surgery` text,
-  `vaccinationRecord` text,
-  `eiManifestations` varchar(255) DEFAULT NULL,
-  `unitcode` varchar(20) DEFAULT NULL,
-  `complications` TEXT NULL,
-  PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `ibd_nutrition` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `comment` varchar(255) default NULL,
-  `foodsThatDisagree` varchar(255) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `nutritionDate` datetime NOT NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_colitis_symptoms` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `feeling_id` int(11) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `score` int(11) NOT NULL,
-  `symptomDate` datetime NOT NULL,
-  `complication_id` int(11) NOT NULL,
-  `number_of_stools_daytime_id` int(11) NOT NULL,
-  `number_of_stools_nighttime_id` int(11) NOT NULL,
-  `present_blood_id` int(11) NOT NULL,
-  `toilet_timing_id` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `ibd_crohns_symptoms` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `feeling_id` int(11) NOT NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `score` int(11) NOT NULL,
-  `symptomDate` datetime NOT NULL,
-  `abdominal_pain_id` int(11) NOT NULL,
-  `complication_id` int(11) NOT NULL,
-  `mass_in_tummy_id` int(11) NOT NULL,
-  `openBowels` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-);
-
-ALTER TABLE patient ADD otherConditions TEXT;
-
-CREATE TABLE `diagnostic` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `datestamp` DATETIME NOT NULL,
-  `description` VARCHAR(255) NOT NULL,
-  `diagnostic_type_id` INT(11) NOT NULL,
-  `nhsno` VARCHAR(255) NOT NULL,
-  `unitcode` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `ibd_myibd_severity_level` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `level` int(11) default NULL,
-  `nhsno` varchar(255) NOT NULL,
-  `severity_id` bigint(20) NOT NULL,
-  `treatment` text,
-  PRIMARY KEY  (`id`)
-);
-
-
-/**
-IBD Import changes
- */
-ALTER TABLE `patient` MODIFY `centreCode` VARCHAR(20) DEFAULT '' NOT NULL;
-ALTER TABLE `patient` ADD COLUMN `address4` VARCHAR(255) NULL /*!AFTER `otherConditions`*/;
-ALTER TABLE `patient` ADD COLUMN `bloodgroup` VARCHAR(255) NULL /*!AFTER `address4`*/;
-ALTER TABLE `patient` ADD COLUMN `bmdexam` DATETIME NULL /*!AFTER `bloodgroup`*/;
-ALTER TABLE `patient` ADD COLUMN `gpemail` VARCHAR(255) NULL /*!AFTER `bmdexam`*/;
-ALTER TABLE `patient` ADD COLUMN `diagnosisDate` DATETIME NULL /*!AFTER `gpemail`*/;
-
-CREATE TABLE `pv_allergy` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(10) NOT NULL,
-  `unitcode` varchar(20) NOT NULL,
-  `confidenceLevel` varchar(255) default NULL,
-  `description` varchar(255) default NULL,
-  `infoSource` varchar(255) default NULL,
-  `reaction` varchar(255) default NULL,
-  `recordedDate` datetime default NULL,
-  `status` varchar(255) default NULL,
-  `substance` varchar(255) default NULL,
-  `typeCode` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-);
-
-CREATE TABLE `pv_procedure` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhsno` varchar(10) NOT NULL,
-  `unitcode` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `proceduretext` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-);
-
-
+SET FOREIGN_KEY_CHECKS = 0;
+
+ALTER TABLE unit MODIFY unitcode varchar(100) NOT NULL;
+ALTER TABLE unit MODIFY tenancy_id bigint(20) NULL;
+
+alter table unit add column country varchar(100);
+alter table tbl_centres add column unitcode varchar(100);
+
+update tbl_centres set unitcode = "11023" where cid = 1;
+update tbl_centres set unitcode = "RQ3" where cid = 2;
+update tbl_centres set unitcode = "RA723" where cid = 3;
+update tbl_centres set unitcode = "RWM51" where cid = 4;
+update tbl_centres set unitcode = "SGC02" where cid = 5;
+update tbl_centres set unitcode = "99RQR13" where cid = 6;
+update tbl_centres set unitcode = "RBS25" where cid = 7;
+update tbl_centres set unitcode = "RJ122" where cid = 8;
+update tbl_centres set unitcode = "RP4" where cid = 9;
+update tbl_centres set unitcode = "RW3RM" where cid = 10;
+update tbl_centres set unitcode = "99RHM01" where cid = 13;
+update tbl_centres set unitcode = "99RTD01" where cid = 11;
+update tbl_centres set unitcode = "99RCSLB" where cid = 12;
+update tbl_centres set unitcode = "RENALREG" where cid = 14;
+update tbl_centres set unitcode = "DEMO" where cid = 15;
+update tbl_centres set unitcode = "UNKNOWN" where cid = 16;
+update tbl_centres set unitcode = "VELLORE" where cid = 55;
+update tbl_centres set unitcode = "BANGALORE" where cid = 56;
+update tbl_centres set unitcode = "NEWDEHLI" where cid = 57;
+update tbl_centres set unitcode = "TERAN" where cid = 58;
+update tbl_centres set unitcode = "DEMOENTRY" where cid = 99;
+
+update tbl_centres set CCOUNTRY = 1 where cid = 16;
+update tbl_centres set CABBREV = "UNKNOWN" where cid = 16;
+update tbl_centres set CCOUNTRY = 2 where cid = 99;
+
+update unit set id = 5, country =1 where unitcode = "SGC02";
+update unit set id = 17, country =1 where unitcode = "2020";
+update unit set id = 18, country =1 where unitcode = "7021";
+update unit set id = 19, country =1 where unitcode = "45020";
+update unit set id = 20, country =1 where unitcode = "48021";
+update unit set id = 21, country =1 where unitcode = "ALPORT";
+update unit set id = 22, country =1 where unitcode = "CCL";
+update unit set id = 23, country =1 where unitcode = "CHI";
+update unit set id = 24, country =1 where unitcode = "DUMMY";
+update unit set id = 25, country =1 where unitcode = "MPGN";
+update unit set id = 26, country =1 where unitcode = "PATIENT";
+update unit set id = 27, country =1 where unitcode = "RAE05";
+update unit set id = 28, country =1 where unitcode = "RAJ01";
+update unit set id = 29, country =1 where unitcode = "RAL01";
+update unit set id = 30, country =1 where unitcode = "RAQ01";
+update unit set id = 31, country =1 where unitcode = "RAZ";
+update unit set id = 32, country =1 where unitcode = "RBL14";
+update unit set id = 33, country =1 where unitcode = "RBN01";
+update unit set id = 34, country =1 where unitcode = "RCB55";
+update unit set id = 35, country =1 where unitcode = "RCJAT";
+update unit set id = 36, country =1 where unitcode = "RDDH0";
+update unit set id = 37, country =1 where unitcode = "REE01";
+update unit set id = 38, country =1 where unitcode = "REF12";
+update unit set id = 39, country =1 where unitcode = "RF201";
+update unit set id = 40, country =1 where unitcode = "RFBAK";
+update unit set id = 41, country =1 where unitcode = "RFPFG";
+update unit set id = 42, country =1 where unitcode = "RGT01";
+update unit set id = 43, country =1 where unitcode = "RGU01";
+update unit set id = 44, country =1 where unitcode = "RH641";
+update unit set id = 45, country =1 where unitcode = "RH8";
+update unit set id = 46, country =1 where unitcode = "RHU02";
+update unit set id = 47, country =1 where unitcode = "RHW01";
+update unit set id = 48, country =1 where unitcode = "RJ100";
+update unit set id = 49, country =1 where unitcode = "RJ701";
+update unit set id = 50, country =1 where unitcode = "RJE01";
+update unit set id = 51, country =1 where unitcode = "RJR05";
+update unit set id = 52, country =1 where unitcode = "RJZ";
+update unit set id = 53, country =1 where unitcode = "RK7CC";
+update unit set id = 54, country =1 where unitcode = "RK950";
+update unit set id = 88, country =1 where unitcode = "RKB01";
+update unit set id = 89, country =1 where unitcode = "RL7";
+update unit set id = 90, country =1 where unitcode = "RLGAY";
+update unit set id = 91, country =1 where unitcode = "RLNGH";
+update unit set id = 59, country =1 where unitcode = "RM102";
+update unit set id = 60, country =1 where unitcode = "RM301";
+update unit set id = 61, country =1 where unitcode = "RM574";
+update unit set id = 62, country =1 where unitcode = "RMF01";
+update unit set id = 63, country =1 where unitcode = "RNA03";
+update unit set id = 64, country =1 where unitcode = "RNX02";
+update unit set id = 65, country =1 where unitcode = "RP5";
+update unit set id = 66, country =1 where unitcode = "RQ601";
+update unit set id = 67, country =1 where unitcode = "RQ617";
+update unit set id = 68, country =1 where unitcode = "RQ8L0";
+update unit set id = 69, country =1 where unitcode = "RQHC7";
+update unit set id = 70, country =1 where unitcode = "RQR00";
+update unit set id = 71, country =1 where unitcode = "RRBBV";
+update unit set id = 72, country =1 where unitcode = "RRK02";
+update unit set id = 73, country =1 where unitcode = "RSC02";
+update unit set id = 74, country =1 where unitcode = "RTD01";
+update unit set id = 75, country =1 where unitcode = "RVVKC";
+update unit set id = 76, country =1 where unitcode = "RW402";
+update unit set id = 77, country =1 where unitcode = "RX1CC";
+update unit set id = 78, country =1 where unitcode = "SAC02";
+update unit set id = 79, country =1 where unitcode = "SFC01";
+update unit set id = 80, country =1 where unitcode = "SGC04";
+update unit set id = 81, country =1 where unitcode = "SGC05";
+update unit set id = 82, country =1 where unitcode = "SHC01";
+update unit set id = 83, country =1 where unitcode = "SLC01";
+update unit set id = 84, country =1 where unitcode = "SNC01";
+update unit set id = 85, country =1 where unitcode = "SRNS";
+update unit set id = 86, country =1 where unitcode = "STC01";
+update unit set id = 87, country =1 where unitcode = "SYC01";
+
+delete from tbl_centres where unitcode = '11023';
+delete from tbl_centres where unitcode = 'RQ3';
+delete from tbl_centres where unitcode = 'RA723';
+delete from tbl_centres where unitcode = 'RWM51';
+delete from tbl_centres where unitcode = 'SGC02';
+delete from tbl_centres where unitcode = '99RQR13';
+delete from tbl_centres where unitcode = 'RBS25';
+delete from tbl_centres where unitcode = 'RJ122';
+delete from tbl_centres where unitcode = 'RP4';
+delete from tbl_centres where unitcode = 'RW3RM';
+delete from tbl_centres where unitcode = '99RHM01';
+
+insert into unit (unitcode, id, name, shortname, country, sourcetype)
+select unitcode, cID, cName, cAbbrev, cCountry, "radargroup"
+from tbl_centres;
+
+ALTER TABLE unit AUTO_INCREMENT = 100;
+
+ALTER TABLE UNIT ADD UNIQUE (UNITCODE);
+CREATE INDEX UnitIDIndex ON UNIT (ID);
+CREATE INDEX UnitCodeIndex ON UNIT (UNITCODE);
+
+SET FOREIGN_KEY_CHECKS = 1;
