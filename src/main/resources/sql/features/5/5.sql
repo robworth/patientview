@@ -7,6 +7,9 @@ ALTER TABLE `unit`
 
 RENAME TABLE `tenancy` TO `specialty`;
 
+ALTER TABLE `tenancyuserrole`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
+
 RENAME TABLE `tenancyuserrole` TO `specialtyuserrole`;
 
 ALTER TABLE `edtacode`
@@ -20,10 +23,6 @@ ALTER TABLE `news`
 
 ALTER TABLE `result_heading`
   CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
--- MAY NEED TO RENAME AN INDEX ON THIS!!!!!!!!!
-ALTER TABLE `tenancyuserrole`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
 
 ALTER TABLE `splashpage`
   CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
