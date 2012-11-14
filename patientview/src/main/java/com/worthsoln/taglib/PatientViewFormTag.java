@@ -1,6 +1,6 @@
 package com.worthsoln.taglib;
 
-import com.worthsoln.tenancy.TenancyUtils;
+import com.worthsoln.specialty.SpecialtyUtils;
 import org.apache.struts.taglib.TagUtils;
 import org.apache.struts.taglib.html.FormTag;
 
@@ -23,7 +23,7 @@ public class PatientViewFormTag extends FormTag {
         results.append(" action=\"");
         results.append(
                 response.encodeURL(
-                        TenancyUtils.rewriteTenancyUrlAddContext(TagUtils.getInstance().getActionMappingURL(
+                        SpecialtyUtils.rewriteSpecialtyUrlAddContext(TagUtils.getInstance().getActionMappingURL(
                                 this.action,
                                 this.pageContext))));
 

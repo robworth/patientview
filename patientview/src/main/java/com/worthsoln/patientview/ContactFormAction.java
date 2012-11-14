@@ -30,7 +30,7 @@ public class ContactFormAction extends DatabaseAction {
 
             if ("unit".equals(type)) {
                 // Send to unit
-                String unitEmail = request.getParameter("unit.rpvadminemail");
+                String unitEmail = request.getParameter("unit.renaladminemail");
                 if (unitEmail != null && unitEmail.length() > 0) {
                     if (email != null && email.length() > 0) {
                         EmailUtils.sendEmail(context, email, unitEmail, subject, message);

@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Check for screen name of user and redirect if one isn't set
  */
-public class RpvForumFilter extends ClickstreamFilter {
+public class RenalForumFilter extends ClickstreamFilter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

@@ -1,10 +1,10 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.patientview.model.TenancyUserRole;
-import com.worthsoln.patientview.model.TenancyUserRole_;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
+import com.worthsoln.patientview.model.SpecialtyUserRole_;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.AbstractHibernateDAO;
-import com.worthsoln.repository.TenancyUserRoleDao;
+import com.worthsoln.repository.SpecialtyUserRoleDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,19 +17,19 @@ import java.util.List;
 /**
  *
  */
-@Repository(value = "tenancyUserRoleDao")
-public class TenancyUserRoleDaoImpl extends AbstractHibernateDAO<TenancyUserRole>
-        implements TenancyUserRoleDao {
+@Repository(value = "specialtyUserRoleDao")
+public class SpecialtyUserRoleDaoImpl extends AbstractHibernateDAO<SpecialtyUserRole>
+        implements SpecialtyUserRoleDao {
 
     @Override
-    public List<TenancyUserRole> get(User user) {
+    public List<SpecialtyUserRole> get(User user) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<TenancyUserRole> criteria = builder.createQuery(TenancyUserRole.class);
-        Root<TenancyUserRole> from = criteria.from(TenancyUserRole.class);
+        CriteriaQuery<SpecialtyUserRole> criteria = builder.createQuery(SpecialtyUserRole.class);
+        Root<SpecialtyUserRole> from = criteria.from(SpecialtyUserRole.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(builder.equal(from.get(TenancyUserRole_.user), user));
+        wherePredicates.add(builder.equal(from.get(SpecialtyUserRole_.user), user));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();

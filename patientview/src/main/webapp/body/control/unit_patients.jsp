@@ -120,7 +120,7 @@
           </html:form>
         </logic:present>
 
-        <logic:present tenancy="ibd">
+        <logic:present specialty="ibd">
             <td>
                 <html:form action="/control/ibduser-edit" method="get" style="margin-bottom: 0">
                     <input type="hidden" name="nhsNo" value="<bean:write name="patient" property="nhsno" />" />

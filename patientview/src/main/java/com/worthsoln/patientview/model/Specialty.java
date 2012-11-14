@@ -7,7 +7,7 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-public class Tenancy extends BaseModel {
+public class Specialty extends BaseModel {
 
     @Column(nullable = false, unique = true)
     private String name;

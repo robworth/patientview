@@ -13,10 +13,10 @@ import javax.persistence.ManyToOne;
 @Entity(name = "log")
 public class LogEntry extends BaseModel {
 
-    // NOTE: the tenancy is optional here because so log events may occur outside a logged in context
+    // NOTE: the specialty is optional here because so log events may occur outside a logged in context
     @ManyToOne(optional = true)
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     @Column(nullable = false)
     private Calendar date;
@@ -52,12 +52,12 @@ public class LogEntry extends BaseModel {
         this.date = Calendar.getInstance();
     }
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public String getAction() {

@@ -1,7 +1,7 @@
 package com.worthsoln.test.service;
 
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.UserManager;
@@ -31,28 +31,28 @@ public class PatientManagerTest extends BaseServiceTest {
     private UserManager userManager;
 
     private User user;
-    private Tenancy tenancy1, tenancy2;
+    private Specialty specialty1, specialty2;
     private Patient patient;
 
     @Before
     public void setupSystem() {
-        tenancy1 = serviceHelpers.createTenancy("Tenant 1", "ten1", "Test description");
-        tenancy2 = serviceHelpers.createTenancy("Tenant 2", "ten2", "Test description 2");
+        specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description 2");
 
-        // create an admin adminUser and tenancy and log them in
+        // create an admin adminUser and specialty and log them in
         User adminUser = serviceHelpers.createUser("admin1", "admin1@test.com", "pass", "Test Unit Admin", "Testy");
-        serviceHelpers.createTenancyUserRole(tenancy1, adminUser, "unitadmin");
-        securityHelpers.loginAsUser(adminUser.getUsername(), tenancy1);
+        serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "unitadmin");
+        securityHelpers.loginAsUser(adminUser.getUsername(), specialty1);
 
-        // setup a system with a user with 2 tenancy roles
+        // setup a system with a user with 2 specialty roles
         user = serviceHelpers.createUserWithMapping("Username", "username@test.com", "pass", "Test User",
-                "Testy", "unitcode1", "nhsno1", tenancy1);
+                "Testy", "unitcode1", "nhsno1", specialty1);
 
 
-        serviceHelpers.createTenancyUserRole(tenancy1, user, "patient");
-        serviceHelpers.createTenancyUserRole(tenancy2, user, "admin");
+        serviceHelpers.createSpecialtyUserRole(specialty1, user, "patient");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user, "admin");
 
-        // setup a patient record for this user in tenancy 1
+        // setup a patient record for this user in specialty 1
         patient = new Patient();
         // required fields
         patient.setNhsno("nhsno1");
@@ -64,7 +64,7 @@ public class PatientManagerTest extends BaseServiceTest {
 
     @Test
     /**
-     *  This is run by a "unitadmin" who is logged into a tenancy
+     *  This is run by a "unitadmin" who is logged into a specialty
      */
     public void testGetUnitPatientsWithTreatment() {
 
@@ -73,7 +73,7 @@ public class PatientManagerTest extends BaseServiceTest {
 //        List results = patientManager.getUnitPatientsWithTreatment(patient.getCentreCode(), patient.getNhsno(),
 //                user.getName(), false);
 //
-//        List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(user);
+//        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
 //
 //        assertTrue("Incorrect results", results != null && results.size() == 1);
     }

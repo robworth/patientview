@@ -44,9 +44,9 @@ public class SplashPageManagerImpl implements SplashPageManager {
     @Override
     public void save(SplashPage splashPage) {
 
-        // apply tenancy to splash page if not set
-        if (splashPage.getTenancy() == null) {
-            splashPage.setTenancy(securityUserManager.getLoggedInTenancy());
+        // apply Specialty to splash page if not set
+        if (splashPage.getSpecialty() == null) {
+            splashPage.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         splashPageDao.save(splashPage);
@@ -74,7 +74,7 @@ public class SplashPageManagerImpl implements SplashPageManager {
             unitCodes = unitManager.getUsersUnitCodes(userManager.getLoggedInUser());
         }
 
-        return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInTenancy());
+        return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SplashPageManagerImpl implements SplashPageManager {
         List<String> unitCodes = unitManager.getUsersUnitCodes(user);
         unitCodes.add("ALL");
 
-        return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInTenancy());
+        return splashPageDao.getAll(unitCodes, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

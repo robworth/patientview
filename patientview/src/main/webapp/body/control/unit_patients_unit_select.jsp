@@ -16,7 +16,7 @@
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b><logic:present tenancy="rpv">Renal Unit</logic:present><logic:present tenancy="ibd">IBD Unit</logic:present></b></td>
+      <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
       <td><html:select property="unitcode">
             <logic:present role="superadmin">
               <html:option value="" >-- All Units --</html:option>

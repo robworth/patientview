@@ -12,8 +12,8 @@
         </a>
         <html:link action="/index" styleClass="brand">
             Providing up-to-date medical information for patients and healthcare professionals
-            <%--<logic:present tenancy="ibd">My IBD</logic:present>
-            <logic:present tenancy="rpv">My RPV</logic:present>--%>
+            <%--<logic:present specialty="ibd">My IBD</logic:present>
+            <logic:present specialty="renal">My RPV</logic:present>--%>
         </html:link>
         <div class="nav-collapse">
             <ul class="nav pull-right">
@@ -25,14 +25,14 @@
                         <li><html:link action="logged_in">Back to Admin Area</html:link></li>
                     </logic:present>
                     <li><html:link action="logout">Logout</html:link></li>
-                    <jsp:include page="include/tenancy_switcher.jsp"/>
+                    <jsp:include page="include/specialty_switcher.jsp"/>
                 <%
                 }
                 %>
-                <logic:present tenancy="ibd">
+                <logic:present specialty="ibd">
                     <li><html:link action="/ibd-help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
                 </logic:present>
-                <logic:present tenancy="rpv">
+                <logic:present specialty="renal">
                     <li><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
                 </logic:present>
             </ul>

@@ -11,8 +11,8 @@
           <span class="icon-bar"></span>
         </a>
         <html:link action="/index" styleClass="brand">
-            <logic:present tenancy="ibd">My IBD</logic:present>
-            <logic:present tenancy="rpv">My RPV</logic:present>
+            <logic:present specialty="ibd">My IBD</logic:present>
+            <logic:present specialty="renal">My RPV</logic:present>
             Administration Area
         </html:link>
        <div class="nav-collapse">
@@ -22,7 +22,7 @@
                 %>
                 <li class="pull-right "><div class="navText">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
                 <li><html:link action="logout">Logout</html:link></li>
-                <jsp:include page="../include/tenancy_switcher.jsp"/>
+                <jsp:include page="../include/specialty_switcher.jsp"/>
                 <%
                     }
                 %>

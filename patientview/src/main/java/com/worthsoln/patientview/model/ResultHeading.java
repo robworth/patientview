@@ -12,8 +12,8 @@ public class ResultHeading extends BaseModel {
     private String headingcode;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     @Column(nullable = false)
     private String heading;
@@ -37,9 +37,9 @@ public class ResultHeading extends BaseModel {
         this.headingcode = headingcode;
     }
 
-    public ResultHeading(String heading, Tenancy tenancy, String rollover, String headingcode, String link, int panel, int panelorder) {
+    public ResultHeading(String heading, Specialty specialty, String rollover, String headingcode, String link, int panel, int panelorder) {
         this.heading = heading;
-        this.tenancy = tenancy;
+        this.specialty = specialty;
         this.rollover = rollover;
         this.headingcode = headingcode;
         this.link = link;
@@ -55,12 +55,12 @@ public class ResultHeading extends BaseModel {
         this.heading = heading;
     }
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public String getRollover() {

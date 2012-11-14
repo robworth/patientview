@@ -1,7 +1,7 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.EdtaCode;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.repository.EdtaCodeDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.junit.Before;
@@ -24,11 +24,11 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
     @Inject
     private RepositoryHelpers repositoryHelpers;
 
-    private Tenancy tenancy;
+    private Specialty specialty;
 
     @Before
     public void setupSystem() {
-        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+        specialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
     }
 
     @Test
@@ -39,11 +39,11 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
 
         assertTrue("Invalid id for new edtacode", edtaCode.getId() > 0);
 
-        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(edtaCode.getEdtaCode(), tenancy);
+        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(edtaCode.getEdtaCode(), specialty);
 
         assertNotNull(checkEdtaCode);
         assertEquals("Edta code not persisted", edtaCode.getEdtaCode(), checkEdtaCode.getEdtaCode());
-        assertEquals("Tenancy not persisted", tenancy, checkEdtaCode.getTenancy());
+        assertEquals("Specialty not persisted", specialty, checkEdtaCode.getSpecialty());
         assertEquals("Link type not persisted", edtaCode.getLinkType(), checkEdtaCode.getLinkType());
         assertEquals("Description not persisted", edtaCode.getDescription(), checkEdtaCode.getDescription());
         assertEquals("Medical Link 01 not persisted", edtaCode.getMedicalLink01(), checkEdtaCode.getMedicalLink01());
@@ -93,9 +93,9 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
 
         assertTrue("Edtacode did not save", edtaCode.getId() > 0);
 
-        edtaCodeDao.delete(code, tenancy);
+        edtaCodeDao.delete(code, specialty);
 
-        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(code, tenancy);
+        EdtaCode checkEdtaCode = edtaCodeDao.getEdtaCode(code, specialty);
 
         assertNull(checkEdtaCode);
     }
@@ -122,7 +122,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
         assertTrue("Edtacode3 did not save", edtaCode3.getId() > 0);
 
         // now pull them back for linktype1 we should get 2
-        List<EdtaCode> checkEdtaCodes = edtaCodeDao.get(linkType1, tenancy);
+        List<EdtaCode> checkEdtaCodes = edtaCodeDao.get(linkType1, specialty);
 
         assertNotNull(checkEdtaCodes);
         assertTrue("No edta codes found", !checkEdtaCodes.isEmpty() && checkEdtaCodes.size() > 0);
@@ -134,7 +134,7 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
     }
 
     private EdtaCode getTestObject(String no, String linkType) {
-        return new EdtaCode("Test edtaCode" + no, tenancy, linkType, "Test description", "Test medicalLink01",
+        return new EdtaCode("Test edtaCode" + no, specialty, linkType, "Test description", "Test medicalLink01",
                 "Test medicalLink02", "Test medicalLink03", "Test medicalLink04", "Test medicalLink05",
                 "Test medicalLink06", "Test medicalLinkText01", "Test medicalLinkText02",
                 "Test medicalLinkText03", "Test medicalLinkText04", "Test medicalLinkText05",

@@ -1,6 +1,7 @@
 package com.worthsoln.repository;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
+import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,11 +11,9 @@ import java.util.List;
  *
  */
 @Transactional(propagation = Propagation.MANDATORY)
-public interface TenancyDao {
+public interface SpecialtyUserRoleDao {
 
-    Tenancy get(Long id);
+    List<SpecialtyUserRole> get(User user);
 
-    List<Tenancy> getAll();
-
-    void save(Tenancy tenancy);
+    void save(SpecialtyUserRole specialtyUserRole);
 }

@@ -11,7 +11,7 @@ public abstract class Logon {
     private String password;
 
     // This role attribute has gone a bit wonky now - to the getter and setter.
-    // The role is now stored against the tenancy
+    // The role is now stored against the Specialty
     private String role;
     private String name;
     private String email;
@@ -57,7 +57,7 @@ public abstract class Logon {
         if (role == null) {
             // attempt to work this out cos it's no longer in this db table
             UserManager userManager = LegacySpringUtils.getUserManager();
-            role = userManager.getCurrentTenancyRole(userManager.get(this.getUsername()));
+            role = userManager.getCurrentSpecialtyRole(userManager.get(this.getUsername()));
         }
 
         return role;

@@ -49,12 +49,12 @@ public class PatientManagerImpl implements PatientManager {
     @Override
     public List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps) {
         return patientDao.getUnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,
-                securityUserManager.getLoggedInTenancy());
+                securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List getUnitPatientsAllWithTreatmentDao(String unitcode) {
-        return patientDao.getUnitPatientsAllWithTreatmentDao(unitcode, securityUserManager.getLoggedInTenancy());
+        return patientDao.getUnitPatientsAllWithTreatmentDao(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

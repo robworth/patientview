@@ -1,6 +1,6 @@
 package com.worthsoln.service;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,17 +13,17 @@ public interface SecurityUserManager {
 
     String getLoggedInUsername();
 
-    Tenancy getLoggedInTenancy();
+    Specialty getLoggedInSpecialty();
 
     boolean isLoggedIn();
 
-    boolean isLoggedInToTenancy();
+    boolean isLoggedInToSpecialty();
 
-    boolean isTenancyPresent(String context);
+    boolean isSpecialtyPresent(String context);
 
     boolean isRolePresent(String... roles);
 
-    void setLoggedInTenancy(Long tenancyId) throws Exception;
+    void setLoggedInSpecialty(Long specialtyId) throws Exception;
 
-    boolean hasAccessToTenancy(User user, Tenancy tenancy);
+    boolean hasAccessToSpecialty(User user, Specialty specialty);
 }

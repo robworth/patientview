@@ -3,7 +3,7 @@ package com.worthsoln.repository.impl;
 import com.worthsoln.database.DatabaseQuery;
 import com.worthsoln.patientview.logon.LogonDao;
 import com.worthsoln.patientview.logon.PatientLogonWithTreatment;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.unit.UnitUtils;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -16,7 +16,7 @@ import java.util.Collection;
  *
  *  Now package private to enforce usage via the Spring bean
  *
- *  This has been modified to join to the tenancy
+ *  This has been modified to join to the specialty
  */
 class UnitPatientsWithTreatmentDao extends LogonDao {
 
@@ -24,14 +24,14 @@ class UnitPatientsWithTreatmentDao extends LogonDao {
     private String nhsno;
     private String name;
     private boolean showgps;
-    private Tenancy tenancy;
+    private Specialty specialty;
 
-    public UnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps, Tenancy tenancy) {
+    public UnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps, Specialty specialty) {
         this.unitcode = unitcode;
         this.nhsno = nhsno;
         this.name = name;
         this.showgps = showgps;
-        this.tenancy = tenancy;
+        this.specialty = specialty;
     }
 
     public Collection getRetrieveListWhereClauseParameters() {
@@ -45,7 +45,7 @@ class UnitPatientsWithTreatmentDao extends LogonDao {
         if (!showgps) {
             params.add("%-GP");
         }
-        params.add(tenancy.getId());
+        params.add(specialty.getId());
         return params;
     }
 
@@ -55,11 +55,11 @@ class UnitPatientsWithTreatmentDao extends LogonDao {
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, patient.treatment "
-                + "FROM user, tenancyuserrole, usermapping "
+                + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
-                + "WHERE tenancyuserrole.role = ? "
+                + "WHERE specialtyuserrole.role = ? "
                 + "AND user.username = usermapping.username "
-                + "AND user.id = tenancyuserrole.user_id "
+                + "AND user.id = specialtyuserrole.user_id "
                 + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' ";
 
         if (!"".equals(unitcode)) {
@@ -70,7 +70,7 @@ class UnitPatientsWithTreatmentDao extends LogonDao {
         if (!showgps) {
             sql += "AND user.name NOT LIKE ? ";
         }
-        sql += "AND tenancyuserrole.tenancy_id = ? ";
+        sql += "AND specialtyuserrole.specialty_id = ? ";
 
         sql += "ORDER BY user.name ASC ";
         ResultSetHandler rsHandler = new BeanListHandler(getTableMapper());

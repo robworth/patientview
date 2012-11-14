@@ -1,7 +1,7 @@
 package com.worthsoln.repository;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +24,5 @@ public interface UserDao {
 
     List<User> getAll();
 
-    List<UnitAdmin> getUnitUsers(String unitcode, Tenancy tenancy);
+    List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
 }

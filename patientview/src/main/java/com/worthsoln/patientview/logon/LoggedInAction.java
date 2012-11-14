@@ -36,7 +36,7 @@ public class LoggedInAction extends DatabaseAction {
             // Not sure if this makes a difference if it's encrypted
             request.getSession().setAttribute("sso.password.attribute", user.getPassword());
 
-            final String role = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+            final String role = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             // Is user patient or admin?
             if ("patient".equals(role)) {

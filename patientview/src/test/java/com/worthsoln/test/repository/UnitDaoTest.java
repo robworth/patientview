@@ -1,6 +1,6 @@
 package com.worthsoln.test.repository;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.repository.UnitDao;
@@ -30,7 +30,7 @@ public class UnitDaoTest extends BaseDaoTest {
     @Inject
     private RepositoryHelpers repositoryHelpers;
 
-    private Tenancy tenancy;
+    private Specialty specialty;
 
     @Test
     public void testAddGetUnitStatByUnitCode() {
@@ -70,10 +70,10 @@ public class UnitDaoTest extends BaseDaoTest {
     @Before
     public void createUnits() {
 
-        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+        specialty = repositoryHelpers.createSpecialty("Specialty1", "Specialty1", "A test specialty");
 
         Unit unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE1");
         unit.setName("z");
@@ -84,7 +84,7 @@ public class UnitDaoTest extends BaseDaoTest {
         unitDao.save(unit);
 
         unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE2");
         unit.setName("y");
@@ -95,7 +95,7 @@ public class UnitDaoTest extends BaseDaoTest {
         unitDao.save(unit);
 
         unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE3");
         unit.setName("x");
@@ -106,7 +106,7 @@ public class UnitDaoTest extends BaseDaoTest {
         unitDao.save(unit);
 
         unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE4");
         unit.setName("w");
@@ -122,7 +122,7 @@ public class UnitDaoTest extends BaseDaoTest {
     public void testAddGetUnit() {
 
         Unit unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE5");
         unit.setName("nameA");
@@ -138,7 +138,7 @@ public class UnitDaoTest extends BaseDaoTest {
 
         assertEquals("Unitname incorrect", "nameA", checkUnit.getName());
 
-        checkUnit = unitDao.get(unit.getUnitcode(), tenancy);
+        checkUnit = unitDao.get(unit.getUnitcode(), specialty);
 
         assertTrue("Unit not found with unitcode", checkUnit != null && checkUnit.getId() > 0);
     }
@@ -146,12 +146,12 @@ public class UnitDaoTest extends BaseDaoTest {
     @Test
     public void testGetAllSort() {
 
-        List<Unit> units = unitDao.getAll(false, tenancy);
+        List<Unit> units = unitDao.getAll(false, specialty);
 
         assertEquals("Incorrect number of units found", 4, units.size());
         assertEquals("Incorrect first unit", "UNITCODE1", units.get(0).getUnitcode());
 
-        units = unitDao.getAll(true, tenancy);
+        units = unitDao.getAll(true, specialty);
 
         assertEquals("Incorrect number of units found", 4, units.size());
         assertEquals("Incorrect first unit", "UNITCODE4", units.get(0).getUnitcode());
@@ -160,7 +160,7 @@ public class UnitDaoTest extends BaseDaoTest {
     @Test
     public void testGetUnitsWIthUser() {
 
-        assertEquals("Incorrect number of units with user", 3, unitDao.getUnitsWithUser(tenancy).size());
+        assertEquals("Incorrect number of units with user", 3, unitDao.getUnitsWithUser(specialty).size());
     }
 
     @Test
@@ -169,7 +169,7 @@ public class UnitDaoTest extends BaseDaoTest {
         unitCodes.add("UNITCODE2");
         unitCodes.add("UNITCODE4");
 
-        List<Unit> units = unitDao.get(unitCodes, tenancy);
+        List<Unit> units = unitDao.get(unitCodes, specialty);
 
         assertEquals("Incorrect number of units", 2, units.size());
     }
@@ -180,7 +180,7 @@ public class UnitDaoTest extends BaseDaoTest {
         List<String> unitCodes = new ArrayList<String>();
         String[] notTheseUnitCodes = new String[] {"UNITCODE2", "UNITCODE4"};
 
-        List<Unit> units = unitDao.get(unitCodes, notTheseUnitCodes, new String[]{}, tenancy);
+        List<Unit> units = unitDao.get(unitCodes, notTheseUnitCodes, new String[]{}, specialty);
 
         assertEquals("Incorrect number of units", 2, units.size());
         assertEquals("Incorrect first unit", "UNITCODE3", units.get(0).getUnitcode());
@@ -191,7 +191,7 @@ public class UnitDaoTest extends BaseDaoTest {
     public void testNotTheseUnitCodesPlusUnitCode() {
 
         Unit unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE5");
         unit.setName("za");
@@ -205,7 +205,7 @@ public class UnitDaoTest extends BaseDaoTest {
         String[] notTheseUnitCodes = new String[] {"UNITCODE2", "UNITCODE4"};
         String[] plusUnitCodes = new String[] {"UNITCODE5"};
 
-        List<Unit> units = unitDao.get(unitCodes, notTheseUnitCodes, plusUnitCodes, tenancy);
+        List<Unit> units = unitDao.get(unitCodes, notTheseUnitCodes, plusUnitCodes, specialty);
 
         assertEquals("Incorrect number of units", 3, units.size());
         assertEquals("Incorrect first unit", "UNITCODE3", units.get(0).getUnitcode());
@@ -216,7 +216,7 @@ public class UnitDaoTest extends BaseDaoTest {
     public void testGetUnitCodesNotTheseUnitCodesPlusUnitCode() {
 
         Unit unit = new Unit();
-        unit.setTenancy(tenancy);
+        unit.setSpecialty(specialty);
         // required fields
         unit.setUnitcode("UNITCODE5");
         unit.setName("za");
@@ -231,7 +231,7 @@ public class UnitDaoTest extends BaseDaoTest {
         String[] notTheseUnitCodes = new String[] {"UNITCODE2", "UNITCODE4"};
         String[] plusUnitCodes = new String[] {"UNITCODE5"};
 
-        List<Unit> units = unitDao.get(unitCodes, notTheseUnitCodes, plusUnitCodes, tenancy);
+        List<Unit> units = unitDao.get(unitCodes, notTheseUnitCodes, plusUnitCodes, specialty);
 
         assertEquals("Incorrect number of units", 2, units.size());
         assertEquals("Incorrect first unit", "UNITCODE3", units.get(0).getUnitcode());
