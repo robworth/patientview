@@ -32,3 +32,5 @@ ALTER TABLE `unit`
 
 ALTER TABLE `usermapping`
   CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+UPDATE specialty SET context = 'renal' WHERE id = 1;
