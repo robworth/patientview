@@ -2,10 +2,14 @@ package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Demographics;
+import com.worthsoln.patientview.model.PatientUser;
 import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.repository.DemographicsDao;
+import com.worthsoln.repository.PatientUserDao;
 import com.worthsoln.repository.TenancyUserRoleDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
@@ -33,6 +37,12 @@ public class UserManagerImpl implements UserManager {
 
     @Inject
     private TenancyUserRoleDao tenancyUserRoleDao;
+
+    @Inject
+    private DemographicsDao demographicsDao;
+
+    @Inject
+    private PatientUserDao patientUserDao;
 
     @Override
     public User getLoggedInUser() {
@@ -274,5 +284,18 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode) {
         return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInTenancy());
+    }
+
+    @Override
+    public boolean existsInRadar(String nhsno) {
+        Demographics demographics = demographicsDao.getDemographicsByNhsNo(nhsno);
+
+        if (demographics != null) {
+            PatientUser patientUser = patientUserDao.getPatientUserByRadarNo(demographics.getRadarNo());
+
+            return patientUser != null;
+        }
+
+        return false;
     }
 }

@@ -66,4 +66,6 @@ public interface UserManager {
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
+
+    boolean existsInRadar(String nhsno);
 }
