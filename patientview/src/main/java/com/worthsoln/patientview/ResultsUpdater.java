@@ -11,13 +11,24 @@ import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ResultsUpdater {
 
@@ -28,6 +39,40 @@ public class ResultsUpdater {
     }
 
     public void update(ServletContext context, File xmlFile) {
+        File xsdFile = new File(context.getInitParameter("xsd.pv.schema.file"));
+
+        update(context, xmlFile, xsdFile);
+    }
+
+    public void update(ServletContext context, File xmlFile, File xsdFile) {
+        /**
+         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
+         * hasn't worked. Send a mail to RPV admin.
+         */
+        if (xmlFile.length() == 0) {
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+            XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
+
+            return;
+        }
+
+        /**
+         * Check the XML file against XSD schema
+         */
+        List<SAXParseException> exceptions = getXMLParseExceptions(xmlFile, xsdFile);
+
+        // if there are any exceptions, log them and send an email
+        if (exceptions.size() > 0) {
+            // log
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
+                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+
+            // send email, then continue importing
+            XmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions, context);
+        }
 
         try {
             ResultParser parser = new ResultParser();
@@ -50,7 +95,7 @@ public class ResultsUpdater {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
                     XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
                     XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + XmlImportUtils.extractStringFromStackTrace(e));
+                    xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
         renameDirectory(context, xmlFile);
@@ -151,7 +196,7 @@ public class ResultsUpdater {
     private void deleteDateRanges(Collection dateRanges) {
         String dateRangeDeleteSql = "DELETE FROM testresult WHERE nhsno = ? AND unitcode = ? " +
                 " AND testcode = ? AND datestamp > ? AND datestamp < ?";
-        for (Iterator iterator = dateRanges.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = dateRanges.iterator(); iterator.hasNext(); ) {
             TestResultDateRange testResultDateRange = (TestResultDateRange) iterator.next();
             Calendar startDate = TimestampUtils.createTimestamp(testResultDateRange.getStartDate() + "T00:00");
             startDate.set(Calendar.SECOND, 0);
@@ -169,7 +214,7 @@ public class ResultsUpdater {
     }
 
     private void insertResults(Collection testResults) {
-        for (Iterator iterator = testResults.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = testResults.iterator(); iterator.hasNext(); ) {
             TestResult testResult = (TestResult) iterator.next();
             LegacySpringUtils.getTestResultManager().save(testResult);
         }
@@ -177,7 +222,7 @@ public class ResultsUpdater {
 
     private void deleteLetters(Collection letters) {
         String letterDeleteSql = "DELETE FROM letter WHERE nhsno = ? AND unitcode = ? AND date = ?";
-        for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
             Letter letter = (Letter) iterator.next();
             Object[] params = new Object[3];
             params[0] = letter.getNhsno();
@@ -189,7 +234,7 @@ public class ResultsUpdater {
     }
 
     private void insertLetters(Collection letters) {
-        for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
             Letter letter = (Letter) iterator.next();
             LegacySpringUtils.getLetterManager().save(letter);
         }
@@ -203,7 +248,7 @@ public class ResultsUpdater {
     }
 
     private void insertOtherDiagnoses(Collection diagnoses) {
-        for (Iterator iterator = diagnoses.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = diagnoses.iterator(); iterator.hasNext(); ) {
             Diagnosis diagnosis = (Diagnosis) iterator.next();
             LegacySpringUtils.getDiagnosisManager().save(diagnosis);
         }
@@ -217,9 +262,44 @@ public class ResultsUpdater {
     }
 
     private void insertMedicines(Collection medicines) {
-        for (Iterator iterator = medicines.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = medicines.iterator(); iterator.hasNext(); ) {
             Medicine medicine = (Medicine) iterator.next();
             LegacySpringUtils.getMedicineManager().save(medicine);
         }
+    }
+
+    private List<SAXParseException> getXMLParseExceptions(File xml, File xsd) {
+        final List<SAXParseException> exceptions = new LinkedList<SAXParseException>();
+
+        try {
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(new StreamSource(xsd));
+            Validator validator = schema.newValidator();
+            validator.setErrorHandler(new ErrorHandler() {
+                @Override
+                public void warning(SAXParseException exception) throws SAXException {
+                    exceptions.add(exception);
+                }
+
+                @Override
+                public void fatalError(SAXParseException exception) throws SAXException {
+                    exceptions.add(exception);
+                }
+
+                @Override
+                public void error(SAXParseException exception) throws SAXException {
+                    exceptions.add(exception);
+                }
+            });
+
+            StreamSource xmlFile = new StreamSource(xml);
+            validator.validate(xmlFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return exceptions;
     }
 }

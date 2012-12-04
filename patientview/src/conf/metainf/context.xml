@@ -25,6 +25,8 @@
 
     <Parameter name="aboutme.image.directory" value="${aboutme.image.directory}" override="false"/>
 
+    <Parameter name="xsd.pv.schema.file" value="${xsd.pv.schema.file}" override="false"/>
+
     <Parameter name="default.results.per.page" value="${default.results.per.page}" override="false"/>
 
     <Parameter name="smtp.host" value="${smtp.host}" override="false"/>
@@ -32,6 +34,7 @@
     <Parameter name="admin.email.to" value="${admin.email.to}" override="false"/>
     <Parameter name="support.email" value="${support.email}" override="false"/>
     <Parameter name="noreply.email" value="${noreply.email}" override="false"/>
+    <Parameter name="warning.email" value="${warning.email}" override="false"/>
 
     <Parameter name="email.verification.best.before.days" value="${email.verification.best.before.days}" override="false"/>
 

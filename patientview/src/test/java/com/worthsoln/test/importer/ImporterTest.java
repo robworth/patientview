@@ -30,14 +30,14 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- *      The importer is kicked off from ParserMonitorServlet.
+ * The importer is kicked off from ParserMonitorServlet.
  *
- *      There are 3 threads - XmlParserThread, UktParserThread & UktExportThread.
+ * There are 3 threads - XmlParserThread, UktParserThread & UktExportThread.
  *
- *      There are 2 versions of the patient view xml schema in the examples directory.
+ * There are 2 versions of the patient view xml schema in the examples directory.
  *
- *      - pv_schema_1.0.xml - used by rpv
- *      - pv_schema_2.0.xml - used by ibd
+ * - pv_schema_1.0.xml - used by rpv
+ * - pv_schema_2.0.xml - used by ibd
  */
 public class ImporterTest extends BaseServiceTest {
 
@@ -88,11 +88,13 @@ public class ImporterTest extends BaseServiceTest {
 
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:ibd_pv_schema_v0.6.xsd");
 
         DatabaseDAO dao = new DatabaseDAO("patientview");
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
 
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
 
         List<Centre> centres = centreManager.getAll();
 
@@ -120,12 +122,14 @@ public class ImporterTest extends BaseServiceTest {
     @Test
     public void testXmlParserUsingIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
-                        .getResource("classpath:rm301_1244_9876543210.xml");
+                .getResource("classpath:rm301_1244_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                        .getResource("classpath:ibd_pv_schema_v0.6.xsd");
 
         DatabaseDAO dao = new DatabaseDAO("patientview");
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
 
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
 
         checkIbdImportConstantData();
 
@@ -135,19 +139,21 @@ public class ImporterTest extends BaseServiceTest {
     }
 
     /**
-     *  If you run the import twice for the same file we still have the same data set
+     * If you run the import twice for the same file we still have the same data set
      */
     @Test
     public void testXmlParserUsingIBDFileMultipleRuns() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                        .getResource("classpath:ibd_pv_schema_v0.6.xsd");
 
         DatabaseDAO dao = new DatabaseDAO("patientview");
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
 
         // run twice
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
 
         checkIbdImportConstantData();
 
