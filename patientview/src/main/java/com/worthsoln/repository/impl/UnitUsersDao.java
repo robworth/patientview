@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import com.worthsoln.patientview.logon.LogonDao;
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import com.worthsoln.database.DatabaseQuery;
@@ -13,17 +13,17 @@ import com.worthsoln.database.DatabaseQuery;
 class UnitUsersDao extends LogonDao {
 
     private String unitcode;
-    private Tenancy tenancy;
+    private Specialty specialty;
 
-    public UnitUsersDao(String unitcode, Tenancy tenancy) {
+    public UnitUsersDao(String unitcode, Specialty specialty) {
         this.unitcode = unitcode;
-        this.tenancy = tenancy;
+        this.specialty = specialty;
     }
 
     public Collection getRetrieveListWhereClauseParameters() {
         ArrayList params = new ArrayList();
 
-        params.add(tenancy.getId());
+        params.add(specialty.getId());
         params.add(unitcode);
         params.add("unitadmin");
         params.add("unitstaff");
@@ -36,11 +36,11 @@ class UnitUsersDao extends LogonDao {
 
         parameters.addAll(getRetrieveListWhereClauseParameters());
 
-        String sql = "SELECT user.* FROM user, usermapping, tenancyuserrole " +
+        String sql = "SELECT user.* FROM user, usermapping, specialtyuserrole " +
                 "WHERE user.username = usermapping.username " +
-                "AND user.id = tenancyuserrole.user_id " +
-                "AND tenancyuserrole.tenancy_id = ? " +
-                "AND usermapping.unitcode = ? AND ( tenancyuserrole.role = ? OR tenancyuserrole.role = ? )";
+                "AND user.id = specialtyuserrole.user_id " +
+                "AND specialtyuserrole.specialty_id = ? " +
+                "AND usermapping.unitcode = ? AND ( specialtyuserrole.role = ? OR specialtyuserrole.role = ? )";
 
         ResultSetHandler rsHandler = new BeanListHandler(getTableMapper());
 

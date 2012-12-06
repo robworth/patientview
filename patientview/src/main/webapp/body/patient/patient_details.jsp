@@ -50,7 +50,7 @@
     Patient Details for
     <bean:write name="patientDetail" property="patient.forename"/>
     <bean:write name="patientDetail" property="patient.surname"/>
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         , uploaded by unit: <bean:write name="patientDetail" property="unit.shortname"/>
     </logic:present>
 </p>
@@ -121,7 +121,7 @@
 </tr>
 
   <tr valign="top">
-    <th class="tablecellbold">Telephone <logic:present tenancy="rpv">1</logic:present></th>
+    <th class="tablecellbold">Telephone <logic:present specialty="renal">1</logic:present></th>
       <logic:notEmpty name="patientDetail" property="patient.telephone1">
         <td class="tablecell">
             <bean:write name="patientDetail" property="patient.telephone1"/>
@@ -134,7 +134,7 @@
       </logic:empty>
   </tr>
 
-<logic:present tenancy="rpv">
+<logic:present specialty="renal">
 <logic:notEmpty name="patientDetail" property="patient.telephone2">
   <tr valign="top">
     <th class="tablecellbold">Telephone 2</th>
@@ -159,7 +159,7 @@
 <tr valign="top">
   <th class="tablecellbold">Diagnosis</th>
     <td class="tablecell">
-        <logic:present tenancy="rpv">
+        <logic:present specialty="renal">
             <logic:notEmpty name="patientDetail" property="edtaDiagnosis">
                 <bean:write name="patientDetail" property="edtaDiagnosis.description"/><br />
             </logic:notEmpty>
@@ -197,7 +197,7 @@
     </td>
 </tr>
 
-<logic:present tenancy="rpv">
+<logic:present specialty="renal">
     <logic:notEmpty name="patientDetail" property="edtaTreatment">
         <tr align="top">
             <th class="tablecellbold">Treatment</th>
@@ -251,7 +251,7 @@
 
 
 
-<logic:present tenancy="ibd">
+<logic:present specialty="ibd">
 
     <html:hidden property="patientId"/>
     <tr>
@@ -270,7 +270,7 @@
 
 
 </table>
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
 
     <html:errors/>
     

@@ -30,17 +30,17 @@
 
 
    <logic:present role="patient">
-       <logic:present tenancy="rpv">
+       <logic:present specialty="renal">
            <h2>Email your renal unit</h2>
        </logic:present>
-       <logic:present tenancy="ibd">
+       <logic:present specialty="ibd">
            <h2>Email your IBD unit</h2>
        </logic:present>
 
         <p>Any queries about results not appearing or being wrong, or about diagnosis or contact details.</p>
         <p>Note: Your name and NHS number will be sent with this message.</p>
         <p>Email is not regarded as a secure way to send sensitive data.</p>
-    <logic:notEmpty name="contact" property="unit.rpvadminemail">
+    <logic:notEmpty name="contact" property="unit.renaladminemail">
         <html:form action="/patient/contactForm">
             <fieldset>
                 <div class="control-group">
@@ -51,7 +51,7 @@
                     <label class="control-label">Email (this will help us contact you much faster to resolve your issue)</label>
                     <div class="controls"><html:text property="email" /></div>
                 </div>
-                <html:hidden property="unit.rpvadminemail" name="contact" />
+                <html:hidden property="unit.renaladminemail" name="contact" />
                 <html:hidden property="type" value="unit" />
                 <div class="form-actions">
                     <html:submit value="Send"  styleClass="btn" />
@@ -59,7 +59,7 @@
             </fieldset>
         </html:form>
     </logic:notEmpty>
-    <logic:empty name="contact" property="unit.rpvadminemail">
+    <logic:empty name="contact" property="unit.renaladminemail">
         <div class="alert alert-error">It seems that your unit has not set up a contact email address, so you are not able to contact them from here. Let them know.</div>
     </logic:empty>
     </logic:present>
@@ -67,10 +67,10 @@
 
 <logic:present role="patient">
 <logic:equal value="RSC02" name="contact" property="unit.unitcode">
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <h2>Send feedback to your renal unit</h2>
     </logic:present>
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <h2>Send feedback to your IBD unit</h2>
     </logic:present>
 
@@ -107,10 +107,10 @@
 
 
 
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <h2>Send feedback to your renal unit</h2>
     </logic:present>
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <h2>Send feedback to your IBD unit</h2>
     </logic:present>
         <p>Any comments you wish to make about the unit.</p>
@@ -144,10 +144,10 @@
 
 
 <logic:equal value="SGC04" name="contact" property="unit.unitcode">
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <h2>Send feedback to your renal unit</h2>
     </logic:present>
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <h2>Send feedback to your IBD unit</h2>
     </logic:present>
     <p>Any comments you wish to make about the unit.</p>
@@ -252,11 +252,11 @@
             </tr>
             <tr valign="top">
               <td class="tablecellbold">Patient View Admin Name</td>
-              <td class="tablecell"><bean:write name="contact" property="unit.rpvadminname"/></td>
+              <td class="tablecell"><bean:write name="contact" property="unit.renaladminname"/></td>
             </tr>
             <tr valign="top">
               <td class="tablecellbold">Patient View Admin Phone</td>
-              <td class="tablecell"><bean:write name="contact" property="unit.rpvadminphone"/></td>
+              <td class="tablecell"><bean:write name="contact" property="unit.renaladminphone"/></td>
             </tr>
             <tr valign="top">
               <td class="tablecellbold">Unit Enquiries Phone</td>
@@ -283,7 +283,7 @@
               <td class="tablecell"><bean:write name="contact" property="unit.outofhours"/></td>
             </tr>
 
-            <logic:present tenancy="rpv">
+            <logic:present specialty="renal">
                 <tr valign="top">
                   <td class="tablecellbold">Peritoneal Dialysis Phone</td>
                   <td class="tablecell"><bean:write name="contact" property="unit.peritonealdialysisphone"/></td>
@@ -452,10 +452,10 @@
 </logic:notEmpty> <%--close contacts notEmpty--%>
 </logic:present> <%--clost contacts present--%>
 
-<logic:present tenancy="rpv">
+<logic:present specialty="renal">
     <h2>Email the RPV system administrator</h2>
 </logic:present>
-<logic:present tenancy="ibd">
+<logic:present specialty="ibd">
     <h2>Email the IBD system administrator</h2>
 </logic:present>
 
@@ -477,10 +477,10 @@
     </fieldset>
 </html:form>
 <p>
-<logic:present tenancy="rpv">
+<logic:present specialty="renal">
     <a class="btn" href="mailto:admin@renalpatientview.org?subject=[Renal Patient View Enquiry]">Email Renal PatientView Administrator</a>
 </logic:present>
-<logic:present tenancy="ibd">
+<logic:present specialty="ibd">
     <a class="btn" href="mailto:admin-ibd@renalpatientview.org?subject=[IBD Patient View Enquiry]">Email IBD PatientView Administrator</a>
 </logic:present>
 

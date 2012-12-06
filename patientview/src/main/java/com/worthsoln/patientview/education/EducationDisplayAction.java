@@ -23,7 +23,7 @@ public class EducationDisplayAction extends Action {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        // pull back the static links for this tenancy and pass to view in the request
+        // pull back the static links for this Specialty and pass to view in the request
         EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode("static");
         request.setAttribute(EdtaCode.getIdentifier(), edtaCode);
         return LogonUtils.logonChecks(mapping, request);

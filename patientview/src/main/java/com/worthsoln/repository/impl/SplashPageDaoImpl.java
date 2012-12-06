@@ -1,8 +1,8 @@
 package com.worthsoln.repository.impl;
 
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.model.SplashPage_;
-import com.worthsoln.patientview.model.Tenancy;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.SplashPageDao;
 import org.springframework.stereotype.Repository;
@@ -21,14 +21,14 @@ import java.util.List;
 public class SplashPageDaoImpl extends AbstractHibernateDAO<SplashPage> implements SplashPageDao {
 
     @Override
-    public List<SplashPage> getAll(List<String> unitcodes, Tenancy tenancy) {
+    public List<SplashPage> getAll(List<String> unitcodes, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<SplashPage> criteria = builder.createQuery(SplashPage.class);
         Root<SplashPage> from = criteria.from(SplashPage.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(builder.equal(from.get(SplashPage_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(SplashPage_.specialty), specialty));
 
         if (unitcodes != null && unitcodes.size() > 0) {
             wherePredicates.add(from.get(SplashPage_.unitcode).in(unitcodes.toArray(new String[unitcodes.size()])));

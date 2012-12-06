@@ -74,17 +74,17 @@
 
     <tr>
       <td><b>PatientView Admin Name</b></td>
-      <td><html:text name="unit" property="rpvadminname" /></td>
+      <td><html:text name="unit" property="renaladminname" /></td>
     </tr>
 
     <tr>
       <td><b>PatientView Admin Phone</b></td>
-      <td><html:text name="unit" property="rpvadminphone" /></td>
+      <td><html:text name="unit" property="renaladminphone" /></td>
     </tr>
 
     <tr>
       <td><b>PatientView Admin Email</b></td>
-      <td><html:text name="unit" property="rpvadminemail" /></td>
+      <td><html:text name="unit" property="renaladminemail" /></td>
     </tr>
 
     <tr>

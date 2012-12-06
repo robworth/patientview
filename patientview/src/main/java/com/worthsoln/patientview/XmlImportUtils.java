@@ -134,7 +134,7 @@ public class XmlImportUtils {
             String emailBody = createEmailBody(context, stacktrace, fileName);
 
             EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
-                    "[RPV] File import failed: " + fileName, emailBody);
+                    "[RENAL] File import failed: " + fileName, emailBody);
 
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -173,10 +173,10 @@ public class XmlImportUtils {
     private static String allocateToAddress(ServletContext context, Unit unit) {
         String toAddress = "";
 
-        if (null == unit || null == unit.getRpvadminemail() || "".equals(unit.getRpvadminemail())) {
+        if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
             toAddress = context.getInitParameter("support.email");
         } else {
-            toAddress = unit.getRpvadminemail();
+            toAddress = unit.getRenaladminemail();
         }
 
         return toAddress;

@@ -33,7 +33,7 @@ public class LetterManagerImpl implements LetterManager {
 
     @Override
     public List<Letter> get(String username) {
-        return letterDao.get(username, securityUserManager.getLoggedInTenancy());
+        return letterDao.get(username, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

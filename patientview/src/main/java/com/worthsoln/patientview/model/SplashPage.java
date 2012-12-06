@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 public class SplashPage extends BaseModel {
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     @Column(nullable = false)
     private String name;
@@ -46,12 +46,12 @@ public class SplashPage extends BaseModel {
         this.unitcode = unitcode;
     }
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public String getName() {

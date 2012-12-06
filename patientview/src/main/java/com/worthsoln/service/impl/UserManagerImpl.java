@@ -2,15 +2,15 @@ package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.Demographics;
 import com.worthsoln.patientview.model.PatientUser;
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.TenancyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.repository.SpecialtyUserRoleDao;
 import com.worthsoln.repository.DemographicsDao;
 import com.worthsoln.repository.PatientUserDao;
-import com.worthsoln.repository.TenancyUserRoleDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.service.SecurityUserManager;
@@ -36,7 +36,7 @@ public class UserManagerImpl implements UserManager {
     private SecurityUserManager securityUserManager;
 
     @Inject
-    private TenancyUserRoleDao tenancyUserRoleDao;
+    private SpecialtyUserRoleDao specialtyUserRoleDao;
 
     @Inject
     private DemographicsDao demographicsDao;
@@ -62,46 +62,46 @@ public class UserManagerImpl implements UserManager {
     @Override
     public String getLoggedInUserRole() {
 
-        // get role from spring user for this logged in tenancy
-        return getCurrentTenancyRole(getLoggedInUser());
+        // get role from spring user for this logged in specialty
+        return getCurrentSpecialtyRole(getLoggedInUser());
     }
 
     @Override
-    public Tenancy getCurrentTenancy(User user) {
+    public Specialty getCurrentSpecialty(User user) {
 
-        TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
+        SpecialtyUserRole specialtyUserRole = getCurrentSpecialtyUserRole(user);
 
-        if (tenancyUserRole != null) {
-            return tenancyUserRole.getTenancy();
+        if (specialtyUserRole != null) {
+            return specialtyUserRole.getSpecialty();
         } else {
             return null;
         }
     }
 
     @Override
-    public String getCurrentTenancyRole(User user) {
+    public String getCurrentSpecialtyRole(User user) {
 
-        TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
+        SpecialtyUserRole specialtyUserRole = getCurrentSpecialtyUserRole(user);
 
-        if (tenancyUserRole != null) {
-            return tenancyUserRole.getRole();
+        if (specialtyUserRole != null) {
+            return specialtyUserRole.getRole();
         } else {
             return null;
         }
     }
 
-    private TenancyUserRole getCurrentTenancyUserRole(User user) {
+    private SpecialtyUserRole getCurrentSpecialtyUserRole(User user) {
 
-        // get role from spring user for this logged in tenancy
+        // get role from spring user for this logged in Specialty
         if (user != null) {
-            List<TenancyUserRole> tenancyUserRoles = getTenancyUserRoles(user);
-            Tenancy loggedInTenancy = securityUserManager.getLoggedInTenancy();
+            List<SpecialtyUserRole> specialtyUserRoles = getSpecialtyUserRoles(user);
+            Specialty loggedInSpecialty = securityUserManager.getLoggedInSpecialty();
 
-            if (loggedInTenancy != null) {
-                for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
+            if (loggedInSpecialty != null) {
+                for (SpecialtyUserRole specialtyUserRole : specialtyUserRoles) {
 
-                    if (tenancyUserRole.getTenancy().equals(loggedInTenancy)) {
-                        return tenancyUserRole;
+                    if (specialtyUserRole.getSpecialty().equals(loggedInSpecialty)) {
+                        return specialtyUserRole;
                     }
                 }
             }
@@ -111,8 +111,8 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<TenancyUserRole> getTenancyUserRoles(User user) {
-        return tenancyUserRoleDao.get(user);
+    public List<SpecialtyUserRole> getSpecialtyUserRoles(User user) {
+        return specialtyUserRoleDao.get(user);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class UserManagerImpl implements UserManager {
 
         save(user);
 
-        addEditUserTenancyRole(user, unitAdmin.getRole());
+        addEditUserSpecialtyRole(user, unitAdmin.getRole());
 
         return user;
     }
@@ -175,26 +175,26 @@ public class UserManagerImpl implements UserManager {
 
         save(user);
 
-        addEditUserTenancyRole(user, patientLogon.getRole());
+        addEditUserSpecialtyRole(user, patientLogon.getRole());
 
         return user;
     }
 
-    // handle the permissions for the tenancy
-    private void addEditUserTenancyRole(User user, String role) {
+    // handle the permissions for the Specialty
+    private void addEditUserSpecialtyRole(User user, String role) {
 
-        TenancyUserRole tenancyUserRole = getCurrentTenancyUserRole(user);
+        SpecialtyUserRole specialtyUserRole = getCurrentSpecialtyUserRole(user);
 
-        if (tenancyUserRole == null) {
-            // associate new user with the current tenancy and role
-            tenancyUserRole = new TenancyUserRole();
+        if (specialtyUserRole == null) {
+            // associate new user with the current Specialty and role
+            specialtyUserRole = new SpecialtyUserRole();
         }
 
-        // this is always updating the tenancyUserRole - shouldn't be an issue
-        tenancyUserRole.setUser(user);
-        tenancyUserRole.setRole(role);
-        tenancyUserRole.setTenancy(securityUserManager.getLoggedInTenancy());
-        tenancyUserRoleDao.save(tenancyUserRole);
+        // this is always updating the specialtyUserRole - shouldn't be an issue
+        specialtyUserRole.setUser(user);
+        specialtyUserRole.setRole(role);
+        specialtyUserRole.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        specialtyUserRoleDao.save(specialtyUserRole);
     }
 
     @Override
@@ -224,8 +224,8 @@ public class UserManagerImpl implements UserManager {
     @Override
     public void save(UserMapping userMapping) {
 
-        if (userMapping.getTenancy() == null) {
-            userMapping.setTenancy(securityUserManager.getLoggedInTenancy());
+        if (userMapping.getSpecialty() == null) {
+            userMapping.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         userMappingDao.save(userMapping);
@@ -233,56 +233,57 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public void deleteUserMappings(String username, String unitcode) {
-        userMappingDao.deleteUserMappings(username, unitcode, securityUserManager.getLoggedInTenancy());
+        userMappingDao.deleteUserMappings(username, unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UserMapping> getUserMappings(String username) {
-        return userMappingDao.getAll(username, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getAll(username, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UserMapping> getUserMappingsExcludeUnitcode(String username, String unitcode) {
-        return userMappingDao.getAllExcludeUnitcode(username, unitcode, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getAllExcludeUnitcode(username, unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UserMapping> getUserMappings(String username, String unitcode) {
-        return userMappingDao.getAll(username, unitcode, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getAll(username, unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UserMapping> getUserMappingsForNhsNo(String nhsNo) {
-        return userMappingDao.getAllForNhsNo(nhsNo, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getAllForNhsNo(nhsNo, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public String getUsersRealUnitcodeBestGuess(String username) {
-        return userMappingDao.getUsersRealUnitcodeBestGuess(username, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getUsersRealUnitcodeBestGuess(username, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public String getUsersRealNhsNoBestGuess(String username) {
-        return userMappingDao.getUsersRealNhsNoBestGuess(username, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getUsersRealNhsNoBestGuess(username, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public UserMapping getUserMappingPatientEntered(User user) {
-        return userMappingDao.getUserMappingPatientEntered(user, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getUserMappingPatientEntered(user, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UserMapping> getUsersSiblings(String username, String unitcode) {
-        return userMappingDao.getUsersSiblings(username, unitcode, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getUsersSiblings(username, unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UserMapping> getDuplicateUsers(String nhsno, String username) {
-        return userMappingDao.getDuplicateUsers(nhsno, username, securityUserManager.getLoggedInTenancy());
+        return userMappingDao.getDuplicateUsers(nhsno, username, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode) {
+        return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
         return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInTenancy());
     }
 

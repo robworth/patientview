@@ -2,7 +2,7 @@ package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.model.SplashPageUserSeen;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.SplashPageDao;
 import com.worthsoln.repository.SplashPageUserSeenDao;
@@ -32,15 +32,15 @@ public class SplashPageDaoTest extends BaseDaoTest {
     @Inject
     private RepositoryHelpers repositoryHelpers;
 
-    private Tenancy tenancy;
+    private Specialty specialty;
 
     @Before
     public void createSplashPagesAndSeen() {
 
-        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+        specialty = repositoryHelpers.createSpecialty("Specialty1", "Specialty1", "A test specialty");
 
         SplashPage splashPage = new SplashPage();
-        splashPage.setTenancy(tenancy);
+        splashPage.setSpecialty(specialty);
         splashPage.setName("name1");
         splashPage.setLive(true);
         splashPage.setHeadline("headline1");
@@ -54,7 +54,7 @@ public class SplashPageDaoTest extends BaseDaoTest {
         splashPageUserSeenDao.save(splashPageUserSeen);
 
         splashPage = new SplashPage();
-        splashPage.setTenancy(tenancy);
+        splashPage.setSpecialty(specialty);
         splashPage.setName("name2");
         splashPage.setLive(true);
         splashPage.setHeadline("headline2");
@@ -68,7 +68,7 @@ public class SplashPageDaoTest extends BaseDaoTest {
         splashPageUserSeenDao.save(splashPageUserSeen);
 
         splashPage = new SplashPage();
-        splashPage.setTenancy(tenancy);
+        splashPage.setSpecialty(specialty);
         splashPage.setName("name3");
         splashPage.setLive(true);
         splashPage.setHeadline("headline3");
@@ -86,7 +86,7 @@ public class SplashPageDaoTest extends BaseDaoTest {
     public void testSaveGet() {
 
         SplashPage splashPage = new SplashPage();
-        splashPage.setTenancy(tenancy);
+        splashPage.setSpecialty(specialty);
         splashPage.setName("name");
         splashPage.setLive(true);
         splashPage.setHeadline("headline");
@@ -108,14 +108,14 @@ public class SplashPageDaoTest extends BaseDaoTest {
         unitCodes.add("UNITCODE2");
         unitCodes.add("UNITCODE3");
 
-        assertEquals("Incorrect number of splash pages returned", 2, splashPageDao.getAll(unitCodes, tenancy).size());
+        assertEquals("Incorrect number of splash pages returned", 2, splashPageDao.getAll(unitCodes, specialty).size());
     }
 
     @Test
     public void testGetSeenForPatientAndDelete() {
 
         SplashPage splashPage = new SplashPage();
-        splashPage.setTenancy(tenancy);
+        splashPage.setSpecialty(specialty);
         splashPage.setName("nameA");
         splashPage.setLive(true);
         splashPage.setHeadline("headlineA");

@@ -3,7 +3,7 @@ package com.worthsoln.repository.impl;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Patient_;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.PatientDao;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -88,12 +88,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
     @Override
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
-                                                Tenancy tenancy) {
+                                                Specialty specialty) {
 
         DatabaseDAO dao = new DatabaseDAO("patientview");
 
         UnitPatientsWithTreatmentDao patientDao = new UnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,
-                tenancy);
+                specialty);
         return dao.retrieveList(patientDao);
 
         /*
@@ -103,11 +103,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, patient.treatment "
-                + "FROM user, tenancyuserrole, usermapping "
+                + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
-                + "WHERE tenancyuserrole.role = (?1) "
+                + "WHERE specialtyuserrole.role = (?1) "
                 + "AND user.username = usermapping.username "
-                + "AND user.id = tenancyuserrole.user_id "
+                + "AND user.id = specialtyuserrole.user_id "
                 + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' ";
 
         if (!"".equals(unitcode)) {
@@ -117,7 +117,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (!showgps) {
             sql += "AND user.name NOT LIKE (?5) ";
         }
-        sql += "AND tenancyuserrole.tenancy_id = (?6) ";
+        sql += "AND specialtyuserrole.specialty_id = (?6) ";
 
         sql += "ORDER BY user.name ASC ";
 
@@ -132,7 +132,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (!showgps) {
             query.setParameter(5, "%-GP");
         }
-        query.setParameter(6, tenancy.getId());
+        query.setParameter(6, specialty.getId());
 
         List results = query.getResultList();
 
@@ -142,11 +142,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
-    public List getUnitPatientsAllWithTreatmentDao(String unitcode, Tenancy tenancy) {
+    public List getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
 
         DatabaseDAO dao = new DatabaseDAO("patientview");
 
-        UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode, tenancy);
+        UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode, specialty);
         return dao.retrieveList(patientDao);
     }
 

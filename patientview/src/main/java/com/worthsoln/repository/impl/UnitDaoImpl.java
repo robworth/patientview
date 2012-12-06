@@ -1,6 +1,6 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.Unit_;
 import com.worthsoln.repository.AbstractHibernateDAO;
@@ -23,7 +23,7 @@ import java.util.List;
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
-    public Unit get(String unitCode, Tenancy tenancy) {
+    public Unit get(String unitCode, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -31,7 +31,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.unitcode), unitCode));
-        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         try {
@@ -42,7 +42,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> getAll(boolean sortByName, Tenancy tenancy) {
+    public List<Unit> getAll(boolean sortByName, Specialty specialty) {
 
         if (sortByName) {
 
@@ -51,7 +51,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             Root<Unit> from = criteria.from(Unit.class);
             List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-            wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
 
             buildWhereClause(criteria, wherePredicates);
 
@@ -64,7 +64,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> getUnitsWithUser(Tenancy tenancy) {
+    public List<Unit> getUnitsWithUser(Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -73,14 +73,14 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
         wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
-        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<Unit> get(List<String> usersUnitCodes, Tenancy tenancy) {
+    public List<Unit> get(List<String> usersUnitCodes, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -88,7 +88,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
-        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
@@ -96,7 +96,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
-                          Tenancy tenancy) {
+                          Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -119,7 +119,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             }
         }
 
-        wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         criteria.orderBy(builder.asc(from.get(Unit_.name)));

@@ -84,7 +84,7 @@ public class ImporterTest extends BaseServiceTest {
      *              - deleteMedicines
      *              - insertMedicines
      */
-    public void testXmlParserUsingRpvFile() throws IOException {
+    public void testXmlParserUsingRenalFile() throws IOException {
 
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");

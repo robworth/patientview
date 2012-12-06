@@ -16,7 +16,7 @@ public class CommentUtils {
         if (username != null) {
             User user = LegacySpringUtils.getUserManager().get(username);
 
-            final String role = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+            final String role = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             if (role.equalsIgnoreCase("superadmin")) {
                 permissionToReadComment = true;

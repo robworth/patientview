@@ -11,12 +11,12 @@ import javax.persistence.UniqueConstraint;
  *  Allow users to have multiple entries (i.e. different roles in different tenancies) in the patient view system
  */
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"tenancy_id", "user_id", "role"}))
-public class TenancyUserRole extends BaseModel {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"specialty_id", "user_id", "role"}))
+public class SpecialtyUserRole extends BaseModel {
 
     @ManyToOne
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,12 +25,12 @@ public class TenancyUserRole extends BaseModel {
     @Column(nullable = false)
     private String role;
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public User getUser() {

@@ -1,7 +1,7 @@
 package com.worthsoln.repository;
 
 import com.worthsoln.patientview.model.Letter;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,7 @@ public interface LetterDao {
 
     void save(Letter letter);
 
-    List<Letter> get(String username, Tenancy tenancy);
+    List<Letter> get(String username, Specialty specialty);
 
     List<Letter> getAll();
 }

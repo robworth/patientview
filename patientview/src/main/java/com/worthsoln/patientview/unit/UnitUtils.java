@@ -57,9 +57,9 @@ public class UnitUtils {
         unit.setPostcode(BeanUtils.getProperty(form, "postcode"));
         unit.setUniturl(BeanUtils.getProperty(form, "uniturl"));
         unit.setTrusturl(BeanUtils.getProperty(form, "trusturl"));
-        unit.setRpvadminname(BeanUtils.getProperty(form, "rpvadminname"));
-        unit.setRpvadminphone(BeanUtils.getProperty(form, "rpvadminphone"));
-        unit.setRpvadminemail(BeanUtils.getProperty(form, "rpvadminemail"));
+        unit.setRenaladminname(BeanUtils.getProperty(form, "renaladminname"));
+        unit.setRenaladminphone(BeanUtils.getProperty(form, "renaladminphone"));
+        unit.setRenaladminemail(BeanUtils.getProperty(form, "renaladminemail"));
         unit.setUnitenquiriesphone(BeanUtils.getProperty(form, "unitenquiriesphone"));
         unit.setUnitenquiriesemail(BeanUtils.getProperty(form, "unitenquiriesemail"));
         unit.setAppointmentphone(BeanUtils.getProperty(form, "appointmentphone"));

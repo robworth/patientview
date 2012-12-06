@@ -1,7 +1,7 @@
 package com.worthsoln.repository;
 
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +24,10 @@ public interface PatientDao {
     List<Patient> get(String centreCode);
 
     // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps, Tenancy tenancy);
+    List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps, Specialty specialty);
 
     // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsAllWithTreatmentDao(String unitcode, Tenancy tenancy);
+    List getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty);
 
     List<Patient> getUktPatients();
 }

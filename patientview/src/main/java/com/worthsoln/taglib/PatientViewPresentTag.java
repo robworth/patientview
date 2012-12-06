@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
  */
 public class PatientViewPresentTag extends PresentTag {
 
-    private String tenancy;
+    private String specialty;
 
     @Override
     protected boolean condition(boolean desired) throws JspException {
@@ -46,8 +46,8 @@ public class PatientViewPresentTag extends PresentTag {
             String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
             present = (username != null) && user.equals(username);
 
-        } else if (tenancy != null) {
-            present = LegacySpringUtils.getSecurityUserManager().isTenancyPresent(tenancy);
+        } else if (specialty != null) {
+            present = LegacySpringUtils.getSecurityUserManager().isSpecialtyPresent(specialty);
         } else {
             JspException e = new JspException
                     (messages.getMessage("logic.selector"));
@@ -62,14 +62,14 @@ public class PatientViewPresentTag extends PresentTag {
     public void release() {
         super.release();
 
-        tenancy = null;
+        specialty = null;
     }
 
-    public String getTenancy() {
-        return tenancy;
+    public String getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(String tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
     }
 }

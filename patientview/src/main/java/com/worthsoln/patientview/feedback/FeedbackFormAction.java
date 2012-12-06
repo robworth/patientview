@@ -65,7 +65,7 @@ public class FeedbackFormAction extends DatabaseAction {
         ServletContext context = request.getSession().getServletContext();
         String fromAddress = context.getInitParameter("noreply.email");
         Unit unit = UnitUtils.retrieveUnit(feedback.getUnitcode());
-        String toAddress = unit.getRpvadminemail();
+        String toAddress = unit.getRenaladminemail();
         String subject = "[Renal PatientView] New feedback for your unit - " + unit.getShortname();
 
         String newLine = System.getProperty("line.separator");

@@ -40,9 +40,9 @@ public class NewsManagerImpl implements NewsManager {
     @Override
     public void save(News news) {
 
-        // apply the tenancy to the news if not set
-        if (news.getTenancy() == null) {
-            news.setTenancy(securityUserManager.getLoggedInTenancy());
+        // apply the Specialty to the news if not set
+        if (news.getSpecialty() == null) {
+            news.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         newsDao.save(news);
@@ -64,25 +64,25 @@ public class NewsManagerImpl implements NewsManager {
 
         if (user == null) {
 
-            news = newsDao.getNewsForEveryone(securityUserManager.getLoggedInTenancy());
+            news = newsDao.getNewsForEveryone(securityUserManager.getLoggedInSpecialty());
 
         } else {
 
-            String userType = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+            String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             if ("superadmin".equals(userType)) {
 
-                news = newsDao.getAll(securityUserManager.getLoggedInTenancy());
+                news = newsDao.getAll(securityUserManager.getLoggedInSpecialty());
 
             } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
 
                 List<String> unitCodes = unitManager.getUsersUnitCodes(user);
-                news = newsDao.getAdminNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
+                news = newsDao.getAdminNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInSpecialty());
 
             } else if ("patient".equals(userType)) {
 
                 List<String> unitCodes = unitManager.getUsersUnitCodes(user);
-                news = newsDao.getPatientNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
+                news = newsDao.getPatientNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInSpecialty());
             }
         }
 
@@ -97,20 +97,20 @@ public class NewsManagerImpl implements NewsManager {
 
         if (user == null) {
 
-            news = newsDao.getNewsForEveryone(securityUserManager.getLoggedInTenancy());
+            news = newsDao.getNewsForEveryone(securityUserManager.getLoggedInSpecialty());
 
         } else {
 
-            String userType = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+            String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             if ("superadmin".equals(userType)) {
 
-                news = newsDao.getAll(securityUserManager.getLoggedInTenancy());
+                news = newsDao.getAll(securityUserManager.getLoggedInSpecialty());
 
             } else if ("unitadmin".equals(userType)) {
 
                 List<String> unitCodes = unitManager.getUsersUnitCodes(user);
-                news = newsDao.getAdminEditNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInTenancy());
+                news = newsDao.getAdminEditNewsForUnitCodes(unitCodes, securityUserManager.getLoggedInSpecialty());
             }
         }
 

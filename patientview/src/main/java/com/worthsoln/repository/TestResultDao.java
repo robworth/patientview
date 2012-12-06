@@ -16,7 +16,7 @@ import java.util.List;
 public interface TestResultDao {
 
     // Get the test results for the patient for the units they belong to.
-    // The unit list is per tenancy.
+    // The unit list is per Specialty.
     List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units);
 
     void save(TestResult testResult);

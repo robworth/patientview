@@ -14,8 +14,8 @@ import javax.persistence.ManyToOne;
 public class News extends BaseModel {
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     @Column(nullable = false)
     private Calendar datestamp;
@@ -55,12 +55,12 @@ public class News extends BaseModel {
         this.body = body;
     }
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public Calendar getDatestamp() {

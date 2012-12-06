@@ -2,8 +2,8 @@ package com.worthsoln.security;
 
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.service.UserManager;
@@ -41,25 +41,25 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
 
         User user = userManager.get(securityUser.getUsername());
 
-        List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(user);
+        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
 
         // todo implement routing direct to target URL?
         // todo this should only take effect if spring it not in the middle of redirecting to a secured page
         // currently we push all logins through the logged_in action to ensure correct routing to admin pages
 
-        if (tenancyUserRoles.size() > 1) {
+        if (specialtyUserRoles.size() > 1) {
             // if this user has multiple tenancies then route to the launchpad page
             response.sendRedirect("/launchpad.do");
 
-        } else if (tenancyUserRoles.size() == 1) {
-            // you cannot get here if you don't have at least one tenancy
+        } else if (specialtyUserRoles.size() == 1) {
+            // you cannot get here if you don't have at least one specialty
 
-            // set the users tenancy session
-            Tenancy tenancy = tenancyUserRoles.get(0).getTenancy();
-            securityUser.setTenancy(tenancy);
+            // set the users specialty session
+            Specialty specialty = specialtyUserRoles.get(0).getSpecialty();
+            securityUser.setSpecialty(specialty);
 
-            // if this user has only a single tenancy route to the home page : /<tenancy-context>/logged_in.do
-            response.sendRedirect("/" + tenancy.getContext() + "/logged_in.do");
+            // if this user has only a single specialty route to the home page : /<specialty-context>/logged_in.do
+            response.sendRedirect("/" + specialty.getContext() + "/logged_in.do");
         }
     }
 

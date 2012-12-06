@@ -18,8 +18,8 @@ public class UserMapping extends BaseModel {
     private String nhsno;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     public UserMapping() {
     }
@@ -30,12 +30,12 @@ public class UserMapping extends BaseModel {
         this.nhsno = nhsno;
     }
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public String getUsername() {

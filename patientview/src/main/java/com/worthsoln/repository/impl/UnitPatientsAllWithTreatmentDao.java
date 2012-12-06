@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import com.worthsoln.patientview.logon.LogonDao;
 import com.worthsoln.patientview.logon.PatientLogonWithTreatment;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import com.worthsoln.database.DatabaseQuery;
@@ -13,11 +13,11 @@ import com.worthsoln.database.DatabaseQuery;
 class UnitPatientsAllWithTreatmentDao extends LogonDao {
 
     private String unitcode;
-    private Tenancy tenancy;
+    private Specialty specialty;
 
-    public UnitPatientsAllWithTreatmentDao(String unitcode, Tenancy tenancy) {
+    public UnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
         this.unitcode = unitcode;
-        this.tenancy = tenancy;
+        this.specialty = specialty;
     }
 
     public Collection getRetrieveListWhereClauseParameters() {
@@ -25,7 +25,7 @@ class UnitPatientsAllWithTreatmentDao extends LogonDao {
         params.add(unitcode);
         params.add("patient");
         params.add("%-GP");
-        params.add(tenancy.getId());
+        params.add(specialty.getId());
         return params;
     }
 
@@ -35,14 +35,14 @@ class UnitPatientsAllWithTreatmentDao extends LogonDao {
         String sql = "SELECT " +
                 " user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, " +
                 " user.firstlogon, patient.treatment " +
-                " FROM user, tenancyuserrole, usermapping " +
+                " FROM user, specialtyuserrole, usermapping " +
                 " LEFT JOIN patient ON usermapping.nhsno = patient.nhsno " +
                 " WHERE usermapping.username = user.username " +
-                " AND user.id = tenancyuserrole.user_id " +
+                " AND user.id = specialtyuserrole.user_id " +
                 " AND usermapping.unitcode = ? " +
-                " AND tenancyuserrole.role = ? " +
+                " AND specialtyuserrole.role = ? " +
                 " AND user.name NOT LIKE ? " +
-                " AND tenancyuserrole.tenancy_id = ? " +
+                " AND specialtyuserrole.specialty_id = ? " +
                 " ORDER BY user.name ASC";
         ResultSetHandler rsHandler = new BeanListHandler(getTableMapper());
         return new DatabaseQuery(sql, parameters.toArray(), rsHandler);
