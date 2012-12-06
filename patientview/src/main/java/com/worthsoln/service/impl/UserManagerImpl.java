@@ -284,7 +284,6 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode) {
         return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
-        return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInTenancy());
     }
 
     @Override
