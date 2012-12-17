@@ -13,6 +13,10 @@ public interface SecurityUserManager {
 
     String getLoggedInUsername();
 
+    String getLoggedInEmailAddress();
+
+    boolean isFirstLogon();
+
     Specialty getLoggedInSpecialty();
 
     boolean isLoggedIn();

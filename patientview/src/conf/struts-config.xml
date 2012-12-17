@@ -165,6 +165,8 @@
       <form-property name="oldpassword" type="java.lang.String"/>
       <form-property name="passwordPwd" type="java.lang.String"/>
       <form-property name="newpasswordagain" type="java.lang.String"/>
+      <form-property name="emailAddress" type="java.lang.String"/>
+      <form-property name="emailAddressAgain" type="java.lang.String"/>
     </form-bean>
     <form-bean name="logForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="nhsno" type="java.lang.String"/>

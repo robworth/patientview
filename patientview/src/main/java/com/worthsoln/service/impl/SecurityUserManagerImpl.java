@@ -34,6 +34,25 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
+    public String getLoggedInEmailAddress() {
+
+        SecurityUser securityUser = getSecurityUser();
+
+        User user = userManager.get(securityUser.getUsername());
+
+        return user != null ? user.getEmail() : null;
+    }
+
+    @Override
+    public boolean isFirstLogon() {
+        SecurityUser securityUser = getSecurityUser();
+
+        User user = userManager.get(securityUser.getUsername());
+
+        return user != null && user.isFirstlogon();
+    }
+
+    @Override
     public Specialty getLoggedInSpecialty() {
 
         SecurityUser securityUser = getSecurityUser();
@@ -80,7 +99,7 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
                 if (roles != null) {
                     for (String role : roles) {
                         // convert to spring security convention
-                        role = ("ROLE_" + securityUser.getSpecialty().getContext() + "_" +  role).toUpperCase();
+                        role = ("ROLE_" + securityUser.getSpecialty().getContext() + "_" + role).toUpperCase();
 
                         if (role.equals(userRole)) {
                             return true;

@@ -87,7 +87,6 @@ public class PatientAddAction extends DatabaseAction {
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
                     patient.getUsername(),
                     userMapping.getNhsno(), userMapping.getUnitcode(), "");
-            EmailVerificationUtils.createEmailVerification(patient.getUsername(), patient.getEmail(), request);
             mappingToFind = "success";
         }
 
