@@ -35,7 +35,7 @@
                 <li class="divider"></li>
             </logic:present>
             <logic:present specialty="renal">
-                <li><html:link action="/patient/patient_details">News</html:link></li>
+                <li><html:link action="/control/newsPreview">News</html:link></li>
                 <li><html:link action="/control/newsList">News Edit</html:link></li>
                 <logic:present role="superadmin,unitadmin">
                     <li class="divider"></li>
