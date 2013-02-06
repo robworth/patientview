@@ -8,6 +8,7 @@ import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.EdtaCodeManager;
 import com.worthsoln.service.EmailVerificationManager;
 import com.worthsoln.service.FeedbackManager;
+import com.worthsoln.service.JoinRequestManager;
 import com.worthsoln.service.LetterManager;
 import com.worthsoln.service.LogEntryManager;
 import com.worthsoln.service.MedicineManager;
@@ -73,6 +74,8 @@ public class LegacySpringUtils {
     private static UserManager userManager;
 
     private static IbdManager ibdManager;
+
+    private static JoinRequestManager joinRequestManager;
 
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
@@ -248,5 +251,13 @@ public class LegacySpringUtils {
 
     public static void setIbdManager(IbdManager ibdManager) {
         LegacySpringUtils.ibdManager = ibdManager;
+    }
+
+    public static JoinRequestManager getJoinRequestManager() {
+        return joinRequestManager;
+    }
+
+    public static void setJoinRequestManager(JoinRequestManager joinRequestManager) {
+        LegacySpringUtils.joinRequestManager = joinRequestManager;
     }
 }

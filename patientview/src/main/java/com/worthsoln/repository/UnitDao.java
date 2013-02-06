@@ -19,6 +19,8 @@ public interface UnitDao {
 
     void save(Unit unit);
 
+    List<Unit> getAll(boolean sortByName);
+
     List<Unit> getAll(boolean sortByName, Specialty specialty);
 
     List<Unit> getUnitsWithUser(Specialty specialty);

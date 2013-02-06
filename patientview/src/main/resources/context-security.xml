@@ -60,6 +60,12 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
 
+        <!-- URLs that don't require any security -->
+        <intercept-url pattern="/join.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/join" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/joinSubmit" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/joinSubmit.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
         <!-- Everything else is inaccessible, no one will ever have this role... -->
         <intercept-url pattern="/**" access="ROLE_NOT_ALLOWED"/>
 

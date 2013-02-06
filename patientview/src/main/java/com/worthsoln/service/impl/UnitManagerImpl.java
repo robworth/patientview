@@ -63,6 +63,11 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getAllDisregardingSpeciality(boolean sortByName) {
+        return unitDao.getAll(true);
+    }
+
+    @Override
     public List<Unit> getAll(boolean sortByName) {
         return unitDao.getAll(true, securityUserManager.getLoggedInSpecialty());
     }
