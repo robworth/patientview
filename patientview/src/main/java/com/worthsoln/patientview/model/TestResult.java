@@ -8,6 +8,8 @@ import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 @Entity
 public class TestResult extends BaseModel {
@@ -50,7 +52,7 @@ public class TestResult extends BaseModel {
     }
 
     public void setTimestamp(Calendar timestamp) {
-        this.datestamped = timestamp;    
+        this.datestamped = timestamp;
     }
 
     @Transient
@@ -129,6 +131,22 @@ public class TestResult extends BaseModel {
     public String getIsoDayDatestamp() {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateTimeFormat.format(datestamped.getTime());
+    }
+
+    public static enum Order implements Comparator<TestResult> {
+        ByTimestamp() {
+            public int compare(TestResult lhs, TestResult rhs) {
+                return lhs.datestamped.compareTo(rhs.datestamped);
+            }
+        };
+
+        public Comparator ascending() {
+            return this;
+        }
+
+        public Comparator descending() {
+            return Collections.reverseOrder(this);
+        }
     }
 
     @Override

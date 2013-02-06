@@ -34,6 +34,7 @@ public class TestResultsAction extends DatabaseAction {
 
             Panel currentPanel = managePanels(request);
             List<TestResultWithUnitShortname> results = extractTestResultsWithComments(dao, currentPanel, user);
+            Collections.sort(results, TestResultWithUnitShortname.Order.ByTimestamp.descending());
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
             managePages(request, resultsInRecords);
             request.setAttribute("results", resultsInRecords);
