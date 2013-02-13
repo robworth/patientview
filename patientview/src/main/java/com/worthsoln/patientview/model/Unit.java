@@ -151,6 +151,8 @@ public class Unit extends BaseModel {
     private String haemodialysisunitlocation12;
     @Column
     private String haemodialysisuniturl12;
+    @Column
+    private String sourceType;
 
     public Unit() {
     }
@@ -182,7 +184,7 @@ public class Unit extends BaseModel {
                 String haemodialysisunitname11, String haemodialysisunitphone11, String haemodialysisunitlocation11,
                 String haemodialysisuniturl11,
                 String haemodialysisunitname12, String haemodialysisunitphone12, String haemodialysisunitlocation12,
-                String haemodialysisuniturl12) {
+                String haemodialysisuniturl12, String sourceType) {
         setUnitcode(unitcode);
         this.specialty = specialty;
         this.name = name;
@@ -251,6 +253,7 @@ public class Unit extends BaseModel {
         this.haemodialysisunitphone12 = haemodialysisunitphone12;
         this.haemodialysisunitlocation12 = haemodialysisunitlocation12;
         this.haemodialysisuniturl12 = haemodialysisuniturl12;
+        this.sourceType = sourceType;
     }
 
     public String getUnitcode() {
@@ -339,6 +342,14 @@ public class Unit extends BaseModel {
 
     public void setOutofhours(String outofhours) {
         this.outofhours = outofhours;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 
     public String getPeritonealdialysisemail() {

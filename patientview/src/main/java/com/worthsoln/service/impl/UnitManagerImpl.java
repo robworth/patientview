@@ -73,6 +73,11 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getAdminsUnits() {
+        return unitDao.getAdminsUnits(securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
     public List<Unit> getLoggedInUsersUnits() {
         return getUsersUnits(userManager.getLoggedInUser());
     }
@@ -86,7 +91,12 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes) {
 
-        List<String> usersUnitCodes = getUsersUnitCodes(userManager.getLoggedInUser());
+        User user = userManager.getLoggedInUser();
+        List<String> usersUnitCodes = getUsersUnitCodes(user);
+
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            return getAdminsUnits();
+        }
 
         return unitDao.get(usersUnitCodes, notTheseUnitCodes, plusTheseUnitCodes,
                 securityUserManager.getLoggedInSpecialty());

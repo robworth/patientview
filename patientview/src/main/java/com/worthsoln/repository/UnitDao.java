@@ -23,6 +23,8 @@ public interface UnitDao {
 
     List<Unit> getUnitsWithUser(Specialty specialty);
 
+    List<Unit> getAdminsUnits(Specialty specialty);
+
     List<Unit> get(List<String> usersUnitCodes, Specialty specialty);
 
     List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,

@@ -80,6 +80,25 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
+    public List<Unit> getAdminsUnits(Specialty specialty) {
+
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
+        Root<Unit> from = criteria.from(Unit.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
+        wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
+        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+
+        criteria.orderBy(builder.asc(from.get(Unit_.name)));
+
+        buildWhereClause(criteria, wherePredicates);
+        return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
     public List<Unit> get(List<String> usersUnitCodes, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();

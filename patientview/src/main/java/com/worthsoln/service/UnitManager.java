@@ -23,6 +23,8 @@ public interface UnitManager {
 
     List<Unit> getAll(boolean sortByName);
 
+    List<Unit> getAdminsUnits();
+
     List<Unit> getUnitsWithUser();
 
     List<Unit> getLoggedInUsersUnits();
