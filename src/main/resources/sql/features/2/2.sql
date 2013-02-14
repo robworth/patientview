@@ -127,12 +127,6 @@ ALTER TABLE log ADD tenancy_id BIGINT(20);
 
 UPDATE log SET tenancy_id = 1;
 
--- indexes to speed up queries
-
-CREATE INDEX nhs_log_index1 ON LOG (nhsno);
-CREATE INDEX action_log_index1 ON LOG (action);
-
-
 -- FEATURE-IBD
 
 CREATE TABLE `ibd_careplan` (

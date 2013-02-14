@@ -2009,7 +2009,8 @@ DROP TABLE IF EXISTS uktstatus;
 CREATE TABLE uktstatus (
   nhsno varchar(20) NOT NULL default '',
   kidney varchar(10) default '',
-  pancreas varchar(10) default ''
+  pancreas varchar(10) default '',
+  PRIMARY KEY  (`nhsno`)
 ) /*! ENGINE=MyISAM DEFAULT CHARSET=latin1 */;
 
 
