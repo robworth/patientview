@@ -48,6 +48,7 @@ ALTER TABLE treatment ADD UNIQUE INDEX (nhsNo, treatmentCode);
 
 ALTER TABLE uktcode MODIFY COLUMN id BIGINT(20) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE uktstatus DROP PRIMARY KEY;
 ALTER TABLE uktstatus ADD id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 
 ALTER TABLE unit DROP PRIMARY KEY;
@@ -126,11 +127,6 @@ UPDATE usermapping SET tenancy_id = 1;
 ALTER TABLE log ADD tenancy_id BIGINT(20);
 
 UPDATE log SET tenancy_id = 1;
-
--- indexes to speed up queries
-
-CREATE INDEX nhs_log_index1 ON LOG (nhsno);
-CREATE INDEX action_log_index1 ON LOG (action);
 
 
 -- FEATURE-IBD
