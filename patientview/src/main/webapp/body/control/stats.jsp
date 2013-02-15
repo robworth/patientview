@@ -21,24 +21,27 @@
 
   <logic:present name="unit">
 
-  <tr valign="top">
+  <div class="page-header"></div>
     <logic:notPresent role="superadmin">
-      <td class="tableheader" colspan="13"><b>Usage statistics for <bean:write name="unit" property="name"/></b></td>
+      <h1>Usage statistics for <bean:write name="unit" property="name"/></h1>
     </logic:notPresent>
     <logic:present role="superadmin">
-      <td class="tableheader" colspan="14"><b>Usage statistics for <bean:write name="unit" property="name"/></b></td>
+      <h1>Usage statistics for <bean:write name="unit" property="name"/></h1>
     </logic:present>
-  </tr>
+  </div>
 
-  <tr>
-    <td width="23%" class="tablecellbold"><b>Month</b></td>
-    <logic:iterate name="statsHeadings" id="heading">
-      <td width="7%" class="tablecell" align="center"><bean:write name="heading" property="heading"/></td>
-    </logic:iterate>
-    <logic:present role="superadmin">
-      <td width="7%" class="tablecell" align="center">Download CSV </br> (right-click and save as...)</td>
-    </logic:present>
-  </tr>
+  <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th width="23%" class="tablecellbold"><b>Month</b></th>
+        <logic:iterate name="statsHeadings" id="heading">
+          <th width="7%" class="tablecell" align="center"><bean:write name="heading" property="heading"/></th>
+        </logic:iterate>
+        <logic:present role="superadmin">
+          <th width="7%" class="tablecell" align="center">Download CSV </br> (right-click and save as...)</th>
+        </logic:present>
+      </tr>
+    </thead>
 
   <logic:iterate name="unitstats" id="stat" type="com.worthsoln.patientview.unitstat.UnitMonthStats">
   <tr>
