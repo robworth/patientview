@@ -352,5 +352,11 @@ h1, h2{
     margin-bottom: 5px;
 }
 
+.table-massive{
+    border-collapse: collapse;
+    margin-right: 40px;
+}
 
-
+.table-massive th{
+    min-width: 90px;
+}
