@@ -1,4 +1,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
 
@@ -22,7 +24,7 @@
 </div>
 
 <div class="row">
-    <div class="span6 seperatingBorders">
+    <div class="span4 seperatingBorders">
         <h3 class="mediumBlueTitle titleSeperator">About <em>Renal PatientView</em></h3>
         <p>
             Renal PatientView is a project of <a target="_blank" href="http://www.renal.org/rixg">RIXG</a> a UK group representing renal
@@ -35,7 +37,7 @@
             own unit.  Links are provided after you log in.
         </p>
     </div>
-    <div class="span6 seperatingBorders">
+    <div class="span4 seperatingBorders">
         <h3 class="mediumBlueTitle titleSeperator">Further Information</h3>
         <p>
             You can view our <a href="/infoLinks.do;jsessionid=087E1F2DF2610DA01BF518DBE7E74EDC">information links</a>
@@ -53,33 +55,27 @@
             from NHS Kidney Care.
         </p>    
     </div>
-    <%--<div class="span4 seperatingBorders">
-        <h3 class="mediumBlueTitle titleSeperator">Further Information</h3>
-        <ul class="linkList">
-            <li>
-                <a target="_blank" href="http://www.srft.nhs.uk/for-patients/outpatient-information/" class="readMoreParagraph">&raquo; Outpatient Information</a>
+    <div class="span4 seperatingBorders">
+        <h3 class="mediumBlueTitle titleSeperator">News</h3>
+
+        <logic:present name="newses">
+            <logic:empty name="newses">
                 <p>
-                    Useful information about your visit to SRFT.
+                    <i>There are currently no new news items.</i> 
                 </p>
-            </li>
-            <li>
-                <a target="_blank" href="http://www.srft.nhs.uk/useful-information/how-to-get-to-the-hospital/" class="readMoreParagraph">&raquo; Useful Information about SRFT</a>
-                <p>
-                    This link provides a link to maps, contact numbers, parking and visiting times.
-                </p>
-            </li>
-            <li>
-                <a target="_blank" href="http://www.nhs.uk/conditions/ulcerative-colitis/pages/introduction.aspx" class="readMoreParagraph">&raquo; NHS Choices- Ulcerative Colitis</a>
-            </li>
-            <li>
-                <a target="_blank" href="http://www.nhs.uk/conditions/crohns-disease/pages/introduction.aspx" class="readMoreParagraph">&raquo; NHS Choices- Crohn's Disease</a>
-            </li>
-            <li>
-                <a target="_blank" href="http://www.nhs.uk/ipg/Pages/IPStart.aspx" class="readMoreParagraph">&raquo; Information Prescription Service</a>
-            </li>
-            <li>
-                <a target="_blank" href="http://myibdportal.org" class="readMoreParagraph">&raquo; My IBD Portal Information Site</a>
-            </li>
-        </ul>
-    </div>--%>
+            </logic:empty>
+            <logic:notEmpty name="newses">
+                <ul class="linkList">
+                    <logic:iterate id="news" name="newses">
+                        <li>
+                            <html:link action="/newsView" paramId="id" paramName="news" paramProperty="id" styleClass="readMoreParagraph">
+                                &raquo; <bean:write name="news" property="headline" />
+                            </html:link>
+                        </li>
+                    </logic:iterate>
+                </ul>
+            </logic:notEmpty>
+
+        </logic:present>
+    </div>
 </div>
