@@ -40,12 +40,12 @@
     <div class="span4 seperatingBorders">
         <h3 class="mediumBlueTitle titleSeperator">Further Information</h3>
         <p>
-            You can view our <a href="/infoLinks.do;jsessionid=087E1F2DF2610DA01BF518DBE7E74EDC">information links</a>
+            You can view our <a href="/infoLinks.do">information links</a>
             without logging in.
         </p>
 
         <p>
-            You can view a <a href="/demo.do;jsessionid=087E1F2DF2610DA01BF518DBE7E74EDC">demo</a> as if you were a
+            You can view a <a href="/demo.do">demo</a> as if you were a
             patient.
         </p>
 
@@ -61,7 +61,7 @@
         <logic:present name="newses">
             <logic:empty name="newses">
                 <p>
-                    <i>There are currently no new news items.</i> 
+                    <i>There are currently no news items.</i>
                 </p>
             </logic:empty>
             <logic:notEmpty name="newses">
