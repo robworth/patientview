@@ -15,7 +15,7 @@
                     <ul class="heroList">
                         <li><em>Manage </em> your condition and medications</li>
                         <li><em>Monitor </em> your symptoms and tests</li>
-                        <li><em>Make</em> contact with your Unit</li>
+                        <li><em>Make</em> contact with your unit</li>
                     </ul>
                 </div>
             </div>
