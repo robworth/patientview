@@ -135,7 +135,9 @@ public class ResultsUpdater {
     }
 
     private void insertMyIbd(MyIbd myIbd) {
-        LegacySpringUtils.getIbdManager().saveMyIbd(myIbd);
+        if (myIbd != null) {
+            LegacySpringUtils.getIbdManager().saveMyIbd(myIbd);
+        }
     }
 
     private void updatePatientDetails(Patient patient) {
