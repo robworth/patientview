@@ -12,7 +12,7 @@
         </a>
         <html:link action="/index" styleClass="brand">
             <logic:present tenancy="ibd">My IBD</logic:present>
-            <logic:present tenancy="rpv">My RPV</logic:present>
+            <logic:present tenancy="rpv">RPV</logic:present>
             Administration Area
         </html:link>
        <div class="nav-collapse">
