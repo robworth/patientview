@@ -25,9 +25,9 @@
                     <li class="active"><a href="#"><bean:write name="panel" property="panel" /></a></li>
                 </logic:equal>
                 <logic:notEqual value="true" name="panel" property="currentPanel">
-                    <li>
-                        <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel"><bean:write name="panel" property="panel" />
-                            <span style="display: none">
+                    <li >
+                        <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel" styleClass="tooltip-link"><bean:write name="panel" property="panel" />
+                            <span class="tooltip">
                                 <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
                                     <%= heading.getHeadingcode() %>
                                 </logic:iterate>
