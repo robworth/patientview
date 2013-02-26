@@ -9,7 +9,7 @@
 </div>
 
 <h3>Result panels</h3>
-<logic:notEmpty name="results">
+
     <div class="pagination">
         <ul>
             <logic:equal value="" name="panelNav" property="previousPanel">
@@ -29,7 +29,7 @@
                         <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel" styleClass="tooltip-link"><bean:write name="panel" property="panel" />
                             <span class="tooltip">
                                 <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
-                                    <%= heading.getHeadingcode() %>
+                                    <%= heading.getHeadingcode() %>,
                                 </logic:iterate>
                             </span>
                         </html:link>
@@ -46,7 +46,7 @@
             </logic:notEqual>
         </ul>
     </div>
-</logic:notEmpty>
+
 <table border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
     <%--
 <tr valign="top">
@@ -55,7 +55,7 @@
     --%>
     <logic:empty name="results">
         <tr valign="top">
-            <td class="tableheader" colspan="10">No results uploaded</td>
+            <td class="tableheader" colspan="10">No results for this panel</td>
         </tr>
     </logic:empty>
 
