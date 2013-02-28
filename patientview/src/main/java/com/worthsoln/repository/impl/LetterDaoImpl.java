@@ -9,10 +9,13 @@ import com.worthsoln.repository.UserMappingDao;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Repository(value = "letterDao")
@@ -38,5 +41,17 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode, Date date) {
+        Query query = getEntityManager().createQuery(
+                "DELETE FROM letter WHERE nhsno = :nhsno AND unitcode = :unitcode AND date = :date");
+
+        query.setParameter("nhsno", unitcode);
+        query.setParameter("unitcode", unitcode);
+        query.setParameter("date", new Timestamp(date.getTime()));
+
+        query.executeUpdate();
     }
 }

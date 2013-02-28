@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,5 +64,11 @@ public class TestResultManagerImpl implements TestResultManager {
         }
 
         return null;
+    }
+
+    @Override
+    public void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate,
+                                          Date endDate) {
+        testResultDao.deleteTestResultsWithinTimeRange(nhsno, unitcode, testcode, startDate, endDate);
     }
 }

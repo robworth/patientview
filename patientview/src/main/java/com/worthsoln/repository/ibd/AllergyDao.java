@@ -10,4 +10,6 @@ public interface AllergyDao {
 
     Allergy getAllergy(String nhsno);
 
+    void delete(String nhsno, String unitcode);
+
 }

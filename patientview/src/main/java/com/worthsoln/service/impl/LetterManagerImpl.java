@@ -7,6 +7,7 @@ import com.worthsoln.service.SecurityUserManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,5 +40,10 @@ public class LetterManagerImpl implements LetterManager {
     @Override
     public List<Letter> getAll() {
         return letterDao.getAll();
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode, Date date) {
+        letterDao.delete(nhsno, unitcode, date);
     }
 }

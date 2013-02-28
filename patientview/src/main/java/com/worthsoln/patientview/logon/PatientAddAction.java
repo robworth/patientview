@@ -1,12 +1,10 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
-import com.worthsoln.patientview.user.EmailVerificationUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -18,10 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class PatientAddAction extends DatabaseAction {
+public class PatientAddAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+
         String username = BeanUtils.getProperty(form, "username");
         String password = LogonUtils.generateNewPassword();
         String gppassword = LogonUtils.generateNewPassword();
@@ -32,16 +31,21 @@ public class PatientAddAction extends DatabaseAction {
         String overrideDuplicateNhsno = BeanUtils.getProperty(form, "overrideDuplicateNhsno");
         String overrideInvalidNhsno = BeanUtils.getProperty(form, "overrideInvalidNhsno");
         boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
-        PatientLogon patient =
+        
+        PatientLogon patientLogon =
                 new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false, "");
+        
         UserMapping userMapping = new UserMapping(username, unitcode, nhsno);
         UserMapping userMappingPatientEnters = new UserMapping(username, UnitUtils.PATIENT_ENTERS_UNITCODE, nhsno);
-        PatientLogon gp =
+        
+        PatientLogon gpPatientLogon =
                 new PatientLogon(username + "-GP", gppassword, name + "-GP", null, false, true, dummypatient,
                         null, 0, false, "");
+
         UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
-        DatabaseDAO dao = getDao(request);
-        PatientLogon existingPatientwithSameUsername = (PatientLogon) dao.retrieveItem(new PatientLogonDao(patient));
+
+        Patient existingPatient =  LegacySpringUtils.getPatientManager().get(BeanUtils.getProperty(form, "nhsno"),
+                        BeanUtils.getProperty(form, "unitcode"));
 
         List existingPatientsWithSameNhsno = findExistingPatientsWithSameNhsno(nhsno);
 
@@ -50,11 +54,13 @@ public class PatientAddAction extends DatabaseAction {
             request.setAttribute(LogonUtils.INVALID_NHSNO, nhsno);
             mappingToFind = "input";
         }
-        if (existingPatientwithSameUsername != null) {
+
+        if (existingPatient != null) {
             request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);
-            patient.setUsername("");
+            patientLogon.setUsername("");
             mappingToFind = "input";
         }
+
         if (existingPatientsWithSameNhsno != null && !existingPatientsWithSameNhsno.isEmpty() &&
                 !overrideDuplicateNhsno.equals("on")) {
             for (Object obj : existingPatientsWithSameNhsno) {
@@ -70,9 +76,10 @@ public class PatientAddAction extends DatabaseAction {
                 mappingToFind = "samenhsno";
             }
         }
+
         if (mappingToFind.equals("")) {
-            PatientLogon hashedPatient = (PatientLogon) patient.clone();
-            PatientLogon hashedGp = (PatientLogon) gp.clone();
+            PatientLogon hashedPatient = (PatientLogon) patientLogon.clone();
+            PatientLogon hashedGp = (PatientLogon) gpPatientLogon.clone();
 
             hashedPatient.setPassword(LogonUtils.hashPassword(hashedPatient.getPassword()));
             hashedGp.setPassword(LogonUtils.hashPassword(hashedGp.getPassword()));
@@ -85,17 +92,19 @@ public class PatientAddAction extends DatabaseAction {
             LegacySpringUtils.getUserManager().save(userMappingGp);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
-                    patient.getUsername(),
+                    patientLogon.getUsername(),
                     userMapping.getNhsno(), userMapping.getUnitcode(), "");
             mappingToFind = "success";
         }
 
         List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
+
         request.setAttribute("units", units);
-        request.setAttribute("patient", patient);
+        request.setAttribute("patient", patientLogon);
         request.setAttribute("userMapping", userMapping);
-        request.getSession().setAttribute("gp", gp);
+        request.getSession().setAttribute("gp", gpPatientLogon);
         request.getSession().setAttribute("userMappingGp", userMappingGp);
+
         return mapping.findForward(mappingToFind);
     }
 
@@ -103,11 +112,4 @@ public class PatientAddAction extends DatabaseAction {
         return LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

@@ -51,4 +51,9 @@ public class DiagnosticManagerImpl implements DiagnosticManager {
 
         return null;
     }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        diagnosticDao.delete(nhsno, unitcode);
+    }
 }

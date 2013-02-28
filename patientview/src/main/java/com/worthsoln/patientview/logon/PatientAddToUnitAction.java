@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
@@ -13,7 +12,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class PatientAddToUnitAction extends DatabaseAction {
+public class PatientAddToUnitAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -42,12 +41,4 @@ public class PatientAddToUnitAction extends DatabaseAction {
         return null != user;
     }
 
-
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

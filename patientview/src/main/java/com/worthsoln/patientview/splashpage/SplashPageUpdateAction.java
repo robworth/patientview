@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class SplashPageUpdateAction extends DatabaseAction {
+public class SplashPageUpdateAction {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -45,11 +44,4 @@ public class SplashPageUpdateAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "splashPage";
-    }
 }

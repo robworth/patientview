@@ -7,6 +7,7 @@ import com.worthsoln.patientview.model.Unit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,4 +25,6 @@ public interface TestResultDao {
     List<TestResult> get(String nhsno, String unitcode);
 
     String getLatestWeightFromResults(String nhsno, List<String> unitcodes);
+
+    void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
 }

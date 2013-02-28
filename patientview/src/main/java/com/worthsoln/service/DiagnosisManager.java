@@ -15,4 +15,6 @@ public interface DiagnosisManager {
     void save(Diagnosis diagnosis);
 
     List<Diagnosis> getOtherDiagnoses(String nhsno, String unitcode);
+
+    void deleteOtherDiagnoses(String nhsno, String unitcode);
 }

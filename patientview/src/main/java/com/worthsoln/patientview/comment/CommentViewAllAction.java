@@ -10,11 +10,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.worthsoln.patientview.PatientUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.database.action.DatabaseAction;
 
 import java.util.List;
 
-public class CommentViewAllAction extends DatabaseAction {
+public class CommentViewAllAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -30,11 +29,4 @@ public class CommentViewAllAction extends DatabaseAction {
         }
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "news";
-    }
 }

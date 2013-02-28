@@ -8,9 +8,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.database.action.DatabaseAction;
 
-public class NewsDeleteAction extends DatabaseAction {
+public class NewsDeleteAction {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -22,14 +21,6 @@ public class NewsDeleteAction extends DatabaseAction {
 
         NewsUtils.putAppropriateNewsForEditInRequest(request);
         return mapping.findForward("success");
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "news";
     }
 
 }

@@ -10,4 +10,6 @@ public interface ProcedureDao {
 
     Procedure getProcedure(String nhsno);
 
+    void delete(String nhsno, String unitcode);
+
 }

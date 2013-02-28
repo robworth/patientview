@@ -1,7 +1,6 @@
 package com.worthsoln.patientview.letter;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.user.UserUtils;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class LetterDisplayAction extends DatabaseAction {
+public class LetterDisplayAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
@@ -29,11 +28,4 @@ public class LetterDisplayAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "letter";
-    }
 }

@@ -1,7 +1,6 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Contact;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.UserMapping;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactAction extends DatabaseAction {
+public class ContactAction {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -52,11 +51,4 @@ public class ContactAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "patient";
-    }
 }

@@ -7,6 +7,7 @@ import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,4 +23,6 @@ public interface TestResultManager {
     List<TestResult> get(String nhsno, String unitcode);
 
     String getLatestWeightFromResults(User user);
+
+    void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
 }

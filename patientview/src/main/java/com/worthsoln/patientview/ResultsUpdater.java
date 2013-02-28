@@ -1,7 +1,5 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
@@ -31,12 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ResultsUpdater {
-
-    private DatabaseDAO dao;
-
-    public ResultsUpdater(DatabaseDAO dao) {
-        this.dao = dao;
-    }
 
     public void update(ServletContext context, File xmlFile) {
         File xsdFile = new File(context.getInitParameter("xsd.pv.schema.file"));
@@ -134,10 +126,7 @@ public class ResultsUpdater {
     }
 
     private void deleteDiagnostics(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM diagnostic WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getDiagnosticManager().delete(nhsno, unitcode);
     }
 
     private void insertDiagnostics(Collection<Diagnostic> diagnostics) {
@@ -148,10 +137,7 @@ public class ResultsUpdater {
     }
 
     private void deleteProcedures(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM pv_procedure WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getIbdManager().deleteProcedure(nhsno, unitcode);
     }
 
     private void insertProcedures(Collection<Procedure> procedures) {
@@ -162,10 +148,7 @@ public class ResultsUpdater {
     }
 
     private void deleteAllergies(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM pv_allergy WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getIbdManager().deleteAllergy(nhsno, unitcode);
     }
 
     private void insertAllergies(Collection<Allergy> allergies) {
@@ -194,22 +177,18 @@ public class ResultsUpdater {
     }
 
     private void deleteDateRanges(Collection dateRanges) {
-        String dateRangeDeleteSql = "DELETE FROM testresult WHERE nhsno = ? AND unitcode = ? " +
-                " AND testcode = ? AND datestamp > ? AND datestamp < ?";
         for (Iterator iterator = dateRanges.iterator(); iterator.hasNext(); ) {
             TestResultDateRange testResultDateRange = (TestResultDateRange) iterator.next();
+
             Calendar startDate = TimestampUtils.createTimestamp(testResultDateRange.getStartDate() + "T00:00");
             startDate.set(Calendar.SECOND, 0);
             Calendar stopDate = TimestampUtils.createTimestamp(testResultDateRange.getStopDate() + "T23:59");
             stopDate.set(Calendar.SECOND, 59);
-            Object[] params = new Object[5];
-            params[0] = testResultDateRange.getNhsNo();
-            params[1] = testResultDateRange.getUnitcode();
-            params[2] = testResultDateRange.getTestCode();
-            params[3] = new Timestamp(startDate.getTimeInMillis());
-            params[4] = new Timestamp(stopDate.getTimeInMillis());
-            DatabaseUpdateQuery query = new DatabaseUpdateQuery(dateRangeDeleteSql, params);
-            dao.doExecute(query);
+
+            LegacySpringUtils.getTestResultManager().deleteTestResultsWithinTimeRange(testResultDateRange.getNhsNo(),
+                    testResultDateRange.getUnitcode(), testResultDateRange.getTestCode(), startDate.getTime(),
+                    stopDate.getTime());
+
         }
     }
 
@@ -221,15 +200,11 @@ public class ResultsUpdater {
     }
 
     private void deleteLetters(Collection letters) {
-        String letterDeleteSql = "DELETE FROM letter WHERE nhsno = ? AND unitcode = ? AND date = ?";
         for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
             Letter letter = (Letter) iterator.next();
-            Object[] params = new Object[3];
-            params[0] = letter.getNhsno();
-            params[1] = letter.getUnitcode();
-            params[2] = new Timestamp(letter.getDate().getTimeInMillis());
-            DatabaseUpdateQuery query = new DatabaseUpdateQuery(letterDeleteSql, params);
-            dao.doExecute(query);
+
+            LegacySpringUtils.getLetterManager().delete(letter.getNhsno(), letter.getUnitcode(),
+                    letter.getDate().getTime());
         }
     }
 
@@ -241,10 +216,8 @@ public class ResultsUpdater {
     }
 
     private void deleteOtherDiagnoses(String nhsno, String unitcode) {
-        String diagnosesDeleteSql = "DELETE FROM diagnosis WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(diagnosesDeleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getDiagnosisManager().deleteOtherDiagnoses(nhsno, unitcode);
+
     }
 
     private void insertOtherDiagnoses(Collection diagnoses) {
@@ -255,10 +228,7 @@ public class ResultsUpdater {
     }
 
     private void deleteMedicines(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM medicine WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getMedicineManager().delete(nhsno, unitcode);
     }
 
     private void insertMedicines(Collection medicines) {

@@ -2,7 +2,6 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Panel;
@@ -22,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-public class TestResultsAction extends DatabaseAction {
+public class TestResultsAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
@@ -153,13 +152,6 @@ public class TestResultsAction extends DatabaseAction {
         return resultsRecords.values();
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "edtaCode";
-    }
 }
 
 class TestResultId implements Comparable {

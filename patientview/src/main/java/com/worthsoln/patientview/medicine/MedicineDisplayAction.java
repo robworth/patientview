@@ -1,7 +1,5 @@
 package com.worthsoln.patientview.medicine;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Medicine;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicineDisplayAction extends DatabaseAction {
+public class MedicineDisplayAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
@@ -26,17 +24,17 @@ public class MedicineDisplayAction extends DatabaseAction {
         User user = UserUtils.retrieveUser(request);
         List medicines = getMedicinesForPatient(user, request);
         sortNullDatesOnMedicines(medicines);
+
         request.setAttribute("medicines", medicines);
         request.setAttribute("user", user);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
     private List getMedicinesForPatient(User user, HttpServletRequest request) throws Exception {
-        List<MedicineWithShortName> medicinesWithShortName = new ArrayList();
+        List<MedicineWithShortName> medicinesWithShortName = new ArrayList<MedicineWithShortName>();
         if (user != null) {
-            DatabaseDAO dao = getDao(request);
-            MedicineDao medicineDao = new MedicineDao(user);
-            List<Medicine> medicines = dao.retrieveList(medicineDao);
+            List<Medicine> medicines = LegacySpringUtils.getMedicineManager().getUserMedicines(user);
 
             for (Medicine med : medicines) {
                 Unit unit = UnitUtils.retrieveUnit(med.getUnitcode());
@@ -47,6 +45,7 @@ public class MedicineDisplayAction extends DatabaseAction {
                 }
             }
         }
+
         return medicinesWithShortName;
     }
 
@@ -58,15 +57,8 @@ public class MedicineDisplayAction extends DatabaseAction {
             Medicine tempMed = LegacySpringUtils.getMedicineManager().get(medicine.getId());
             medicine.setStartdate(tempMed.getStartdate());
         }
+
         return medicines;
     }
 
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "medicine";
-    }
 }

@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.comment;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentViewAction extends DatabaseAction {
+public class CommentViewAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -32,11 +31,4 @@ public class CommentViewAction extends DatabaseAction {
         }
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "news";
-    }
 }

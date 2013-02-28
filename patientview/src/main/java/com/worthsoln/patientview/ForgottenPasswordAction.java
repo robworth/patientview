@@ -1,6 +1,5 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.User;
@@ -13,7 +12,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ForgottenPasswordAction extends DatabaseAction {
+public class ForgottenPasswordAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -67,11 +66,4 @@ public class ForgottenPasswordAction extends DatabaseAction {
         return mapping.findForward(forwardMapping);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "user";
-    }
 }

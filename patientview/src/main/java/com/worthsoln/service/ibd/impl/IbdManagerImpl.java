@@ -373,6 +373,11 @@ public class IbdManagerImpl implements IbdManager {
     }
 
     @Override
+    public void deleteProcedure(String nhsno, String unitcode) {
+        procedureDao.delete(nhsno, unitcode);
+    }
+
+    @Override
     public void saveAllergy(Allergy allergy) {
         allergyDao.save(allergy);
     }
@@ -380,5 +385,10 @@ public class IbdManagerImpl implements IbdManager {
     @Override
     public Allergy getAllergy(String nhsno) {
         return allergyDao.getAllergy(nhsno);
+    }
+
+    @Override
+    public void deleteAllergy(String nhsno, String unitcode) {
+        allergyDao.delete(nhsno, unitcode);
     }
 }

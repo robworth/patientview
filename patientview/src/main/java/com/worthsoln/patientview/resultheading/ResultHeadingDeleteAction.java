@@ -8,9 +8,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.database.action.DatabaseAction;
 
-public class ResultHeadingDeleteAction extends DatabaseAction {
+public class ResultHeadingDeleteAction {
 
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -22,11 +21,4 @@ public class ResultHeadingDeleteAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "edtaCode";
-    }
 }

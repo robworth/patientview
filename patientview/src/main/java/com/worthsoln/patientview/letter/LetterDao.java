@@ -10,7 +10,10 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
+/**
+ * @deprecated please use {@link com.worthsoln.repository.LetterDao}
+ */
+@Deprecated
 public class LetterDao extends StorableItem {
 
     private User user;

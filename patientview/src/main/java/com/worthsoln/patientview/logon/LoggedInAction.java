@@ -1,7 +1,6 @@
 package com.worthsoln.patientview.logon;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.LogEntry;
@@ -18,7 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoggedInAction extends DatabaseAction {
+public class LoggedInAction {
 
     private final DateFormat format = new SimpleDateFormat("d MMM yyyy HH:mm");
 
@@ -78,11 +77,4 @@ public class LoggedInAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request, forward);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "user";
-    }
 }

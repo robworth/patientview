@@ -10,7 +10,10 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
+/**
+ * @deprecated use {@link com.worthsoln.service.MedicineManager} instead
+ */
+@Deprecated
 public class MedicineDao extends StorableItem {
 
     private User user;

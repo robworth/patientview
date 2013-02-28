@@ -47,7 +47,7 @@ public class XmlParserThread implements Runnable, ParserThread {
     private void updateXmlFiles(File[] xmlFiles) {
         DatabaseDAO dao = new DatabaseDAO("patientview");
         for (int i = 0; i < xmlFiles.length; i++) {
-            XmlParserUtils.updateXmlData(servletContext, xmlFiles[i], dao);
+            XmlParserUtils.updateXmlData(servletContext, xmlFiles[i]);
             //xmlFiles[i].delete();
         }
     }

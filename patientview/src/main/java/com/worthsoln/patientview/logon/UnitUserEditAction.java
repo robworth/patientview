@@ -9,11 +9,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Unit;
 
-public class UnitUserEditAction extends DatabaseAction {
+public class UnitUserEditAction {
 
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -26,6 +24,7 @@ public class UnitUserEditAction extends DatabaseAction {
         String unitcode = BeanUtils.getProperty(form, "unitcode");
         String role = BeanUtils.getProperty(form, "role");
         boolean firstlogon = "true".equals(BeanUtils.getProperty(form, "firstlogon"));
+
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
 
         LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin);
@@ -40,11 +39,4 @@ public class UnitUserEditAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

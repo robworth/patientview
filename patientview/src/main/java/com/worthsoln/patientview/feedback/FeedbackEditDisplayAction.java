@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.feedback;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -11,7 +10,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class FeedbackEditDisplayAction extends DatabaseAction {
+public class FeedbackEditDisplayAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
@@ -24,11 +23,4 @@ public class FeedbackEditDisplayAction extends DatabaseAction {
         return mapping.findForward("success");
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

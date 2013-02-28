@@ -9,9 +9,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.database.action.DatabaseAction;
 
-public class NewsPreviewAction extends DatabaseAction {
+public class NewsPreviewAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -38,11 +37,4 @@ public class NewsPreviewAction extends DatabaseAction {
         return actionForward;
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "news";
-    }
 }

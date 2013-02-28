@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.user;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.PatientLogon;
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class UserDeleteAction extends DatabaseAction {
+public class UserDeleteAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
@@ -78,11 +77,4 @@ public class UserDeleteAction extends DatabaseAction {
         LegacySpringUtils.getUserManager().delete(username);
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

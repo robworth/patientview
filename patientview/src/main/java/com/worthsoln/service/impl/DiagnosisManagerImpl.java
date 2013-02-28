@@ -26,4 +26,11 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
     public List<Diagnosis> getOtherDiagnoses(String nhsno, String unitcode) {
         return diagnosisDao.getOtherDiagnoses(nhsno, unitcode);
     }
+
+    @Override
+    public void deleteOtherDiagnoses(String nhsno, String unitcode) {
+
+    }
 }
+
+

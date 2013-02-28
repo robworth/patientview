@@ -96,8 +96,12 @@ public interface IbdManager {
 
     Procedure getProcedure(String nhsno);
 
+    void deleteProcedure(String nhsno, String unitcode);
+
     void saveAllergy(Allergy allergy);
 
     Allergy getAllergy(String nhsno);
+
+    void deleteAllergy(String nhsno, String unitcode);
 
 }

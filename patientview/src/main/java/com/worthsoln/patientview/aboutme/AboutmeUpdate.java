@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.aboutme;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Aboutme;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class AboutmeUpdate extends DatabaseAction {
+public class AboutmeUpdate {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -50,11 +49,4 @@ public class AboutmeUpdate extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request, "success");
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "aboutme";
-    }
 }

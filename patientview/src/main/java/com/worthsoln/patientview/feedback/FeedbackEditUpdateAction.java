@@ -1,7 +1,6 @@
 package com.worthsoln.patientview.feedback;
 
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class FeedbackEditUpdateAction extends DatabaseAction {
+public class FeedbackEditUpdateAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
@@ -36,11 +35,4 @@ public class FeedbackEditUpdateAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

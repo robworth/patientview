@@ -2,7 +2,6 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.edtacode.EdtaCodeUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.news.NewsUtils;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class PatientDetailsAction extends DatabaseAction {
+public class PatientDetailsAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -43,11 +42,4 @@ public class PatientDetailsAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "edtaCode";
-    }
 }

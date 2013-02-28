@@ -1,6 +1,5 @@
 package com.worthsoln.forum;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -14,7 +13,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ScreenNameAction extends DatabaseAction {
+public class ScreenNameAction {
 
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -61,11 +60,4 @@ public class ScreenNameAction extends DatabaseAction {
         }
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "user";
-    }
 }

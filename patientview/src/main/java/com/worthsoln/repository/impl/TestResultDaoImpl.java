@@ -12,10 +12,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -145,5 +148,21 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
             return testResultWithUnitShortname;
         }
+    }
+
+    @Override
+    public void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate,
+                                                 Date endDate) {
+
+        Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = " +
+                ":unitcode AND testcode = :testcode AND datestamp > :startDate AND datestamp < :endDate");
+
+        query.setParameter("nhsno", unitcode);
+        query.setParameter("unitcode", unitcode);
+        query.setParameter("testcode", testcode);
+        query.setParameter("startDate", new Timestamp(startDate.getTime()));
+        query.setParameter("endDate", new Timestamp(endDate.getTime()));
+
+        query.executeUpdate();
     }
 }
