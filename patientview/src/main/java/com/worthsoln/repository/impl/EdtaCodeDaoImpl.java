@@ -55,7 +55,12 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.linkType), linkType));
-        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.specialty), specialty));
+
+        // if not tenancy show all codes for all tenancies (i.e. the user is not logged in
+        // this may need changing in future
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.specialty), specialty));
+        }
 
         buildWhereClause(criteria, wherePredicates);
         criteria.orderBy(builder.asc(edtaCodeRoot.get(EdtaCode_.edtaCode)));

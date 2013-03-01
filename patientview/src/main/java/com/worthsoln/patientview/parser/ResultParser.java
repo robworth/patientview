@@ -448,26 +448,33 @@ public class ResultParser {
                 LOGGER.error("Could not parse diagnosisyear for MyIbd with NHS No {}", myIbd.getNhsno(), e);
             }
         }
-        myIbd.setDiseaseExtent(DiseaseExtent.getDiseaseExtentByXmlName((String) xmlData.get("ibddiseaseextent")));
-        myIbd.setEiManifestations((String) xmlData.get("ibdeimanifestations"));
-        myIbd.setComplications((String) xmlData.get("ibddiseasecomplications"));
-        myIbd.setBodyPartAffected((String) xmlData.get("bodypartsaffected"));
-        myIbd.setFamilyHistory((String) xmlData.get("familyhistory"));
-        myIbd.setSmoking((String) xmlData.get("smokinghistory"));
-        myIbd.setSurgery((String) xmlData.get("surgicalhistory"));
-        myIbd.setVaccinationRecord((String) xmlData.get("vaccinationrecord"));
-        myIbd.setNamedConsultant((String) xmlData.get("namedconsultant"));
-        myIbd.setNurses((String) xmlData.get("ibdnurse"));
-        if (xmlData.get("colonoscopysurveillance") != null) {
-            try {
-                myIbd.setYearForSurveillanceColonoscopy(
-                        IMPORT_DATE_FORMAT.parse((String) xmlData.get("colonoscopysurveillance")));
-            } catch (ParseException e) {
-                LOGGER.error("Could not parse colonoscopysurveillance for MyIbd with NHS No {}", myIbd.getNhsno(), e);
-            }
-        }
 
-        return myIbd;
+        // if we don't have the required fields for an myibd object just return null, it's an rpv file
+        if (myIbd.getNhsno() != null && myIbd.getUnitcode() != null && myIbd.getDiagnosis() != null
+                && myIbd.getYearOfDiagnosis() != null) {
+
+            myIbd.setDiseaseExtent(DiseaseExtent.getDiseaseExtentByXmlName((String) xmlData.get("ibddiseaseextent")));
+            myIbd.setEiManifestations((String) xmlData.get("ibdeimanifestations"));
+            myIbd.setComplications((String) xmlData.get("ibddiseasecomplications"));
+            myIbd.setBodyPartAffected((String) xmlData.get("bodypartsaffected"));
+            myIbd.setFamilyHistory((String) xmlData.get("familyhistory"));
+            myIbd.setSmoking((String) xmlData.get("smokinghistory"));
+            myIbd.setSurgery((String) xmlData.get("surgicalhistory"));
+            myIbd.setVaccinationRecord((String) xmlData.get("vaccinationrecord"));
+            myIbd.setNamedConsultant((String) xmlData.get("namedconsultant"));
+            myIbd.setNurses((String) xmlData.get("ibdnurse"));
+            if (xmlData.get("colonoscopysurveillance") != null) {
+                try {
+                    myIbd.setYearForSurveillanceColonoscopy(
+                            IMPORT_DATE_FORMAT.parse((String) xmlData.get("colonoscopysurveillance")));
+                } catch (ParseException e) {
+                    LOGGER.error("Could not parse colonoscopysurveillance for MyIbd with NHS No {}", myIbd.getNhsno(), e);
+                }
+            }
+            return myIbd;
+        } else {
+            return null;
+        }
     }
 
     public Centre getCentre() {

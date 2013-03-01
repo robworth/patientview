@@ -101,9 +101,7 @@ public class UnitManagerImpl implements UnitManager {
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 
             for (UserMapping userMapping : userMappings) {
-                if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
-                    unitCodes.add(userMapping.getUnitcode());
-                }
+                unitCodes.add(userMapping.getUnitcode());
             }
         }
 

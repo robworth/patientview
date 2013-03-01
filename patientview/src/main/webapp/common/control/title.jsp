@@ -12,7 +12,7 @@
         </a>
         <html:link action="/index" styleClass="brand">
             <logic:present specialty="ibd">My IBD</logic:present>
-            <logic:present specialty="renal">My RPV</logic:present>
+            <logic:present specialty="renal">RPV</logic:present>
             Administration Area
         </html:link>
        <div class="nav-collapse">

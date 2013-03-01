@@ -7,32 +7,9 @@
 <div class="page-header">
     <h1>Results</h1>
 </div>
-<ul class="padded-list">
-    <li>
-        This section helps you monitor your latest blood and stool tests, direct from the hospital system.
-    </li>
-    <li>
-        Most routine test results are updated within 48 hours from when the sample was taken.
-    </li>
-    <li>
-        Certain results take longer to be processed and may not register for over 2 weeks.
-    </li>
-    <li>
-        To learn more about what the results mean, click on the links.
-    </li>
-</ul>
 
-<h3>Links about blood tests</h3>
-<ul>
-    <li><a target="_blank" href="http://www.myibdportal.org/investigations-for-ibd">What are the common tests performed in IBD</a></li>
-    <li><a target="_blank" href="http://www.labtestsonline.org.uk/">Labtests Online</a></li>
-</ul>
-
-<p>
-    Note- You may see test results before the IBD team have had chance to review them. If you have any concerns about the tests, <html:link action="/patient/ibd-contact">please contact us here</html:link> or via the IBD helpline on 0161 20 6423.
-</p>
 <h3>Result panels</h3>
-<logic:notEmpty name="results">
+
     <div class="pagination">
         <ul>
             <logic:equal value="" name="panelNav" property="previousPanel">
@@ -48,11 +25,11 @@
                     <li class="active"><a href="#"><bean:write name="panel" property="panel" /></a></li>
                 </logic:equal>
                 <logic:notEqual value="true" name="panel" property="currentPanel">
-                    <li>
-                        <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel"><bean:write name="panel" property="panel" />
-                            <span style="display: none">
+                    <li >
+                        <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel" styleClass="tooltip-link"><bean:write name="panel" property="panel" />
+                            <span class="tooltip">
                                 <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
-                                    <%= heading.getHeadingcode() %>
+                                    <%= heading.getHeadingcode() %>,
                                 </logic:iterate>
                             </span>
                         </html:link>
@@ -69,7 +46,7 @@
             </logic:notEqual>
         </ul>
     </div>
-</logic:notEmpty>
+
 <table border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
     <%--
 <tr valign="top">
@@ -78,7 +55,7 @@
     --%>
     <logic:empty name="results">
         <tr valign="top">
-            <td class="tableheader" colspan="10">No results uploaded</td>
+            <td class="tableheader" colspan="10">No results for this panel</td>
         </tr>
     </logic:empty>
 

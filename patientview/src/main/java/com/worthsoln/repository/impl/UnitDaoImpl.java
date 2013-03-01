@@ -17,7 +17,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ *  Note: I have changed the implementation to allow units to be returned when the tenancy is null
+ *  i.e. we are not a logged in user.  (PC 01/03/2013)
+ *  The unitcode is unique so we should not get NonUniqueResultException
  */
 @Repository(value = "unitDao")
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
@@ -31,7 +33,10 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.unitcode), unitCode));
-        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+        }
 
         buildWhereClause(criteria, wherePredicates);
         try {
@@ -51,7 +56,9 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             Root<Unit> from = criteria.from(Unit.class);
             List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+            if (specialty != null) {
+                wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+            }
 
             buildWhereClause(criteria, wherePredicates);
 
@@ -73,7 +80,10 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
         wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
-        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+            
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+        }
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
@@ -88,7 +98,10 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
-        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+        }
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
@@ -119,7 +132,9 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             }
         }
 
-        wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
+        }
 
         buildWhereClause(criteria, wherePredicates);
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
