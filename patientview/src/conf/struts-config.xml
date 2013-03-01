@@ -7,6 +7,14 @@
 
   <!-- ========== Form Bean Definitions =================================== -->
   <form-beans>
+
+      <form-bean name="ibdPatientDetailsForm"
+                 type="org.apache.struts.action.DynaActionForm">
+          <form-property name="patientId" type="java.lang.Long"/>
+          <form-property name="otherConditions" type="java.lang.String"/>
+          <form-property name="email" type="java.lang.String"/>
+      </form-bean>
+
     <form-bean name="edtaCodeForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="edtaCode" type="java.lang.String"/>
       <form-property name="linkType" type="java.lang.String"/>
@@ -258,9 +266,20 @@
       <forward name="success" path="/forgotten-password-confirmation.jsp"/>
     </action>
 
+      <action path="/launchpad"
+              type="com.worthsoln.patientview.launchpad.LaunchpadAction">
+          <forward name="success" path="/launchpad.jsp" redirect="false"/>
+      </action>
+
+      <action path="/launchpad-select"
+              type="com.worthsoln.patientview.launchpad.LaunchpadSelectAction">
+          <forward name="error" path="/logout.do" redirect="true"/>
+          <forward name="success" path="/logged_in.do" redirect="true"/>
+      </action>
+
     <action path="/setscreenname"
       type="com.worthsoln.forum.ScreenNameAction" parameter="index">
-      <forward name="input" redirect="true" path="/set-screenname.jsp"/>
+      <forward name="input" redirect="false" path="/set-screenname.jsp"/>
       <forward name="success" redirect="true" path="/forums/list.page"/>
     </action>
 
@@ -272,9 +291,23 @@
     </action>
 
     <action path="/patient/patient_details"
-            type="com.worthsoln.patientview.PatientDetailsAction" parameter="patient_details">
+            name="ibdPatientDetailsForm"
+            type="com.worthsoln.patientview.PatientDetailsAction"
+            scope="request"
+            parameter="patient_details">
       <forward name="success" path="/patient/patient_details.jsp"/>
     </action>
+
+      <action path="/patient/patient_details_update"
+              name="ibdPatientDetailsForm"
+              type="com.worthsoln.patientview.PatientDetailsUpdateAction"
+              input="input"
+              scope="request"
+              validate="true"
+              parameter="patient_details">
+          <forward name="input" path="/patient/patient_details.jsp"/>
+          <forward name="success" path="/patient/patient_details.do?success=true"/>
+      </action>
 
     <action path="/patient/index"
             type="com.worthsoln.patientview.IndexAction" parameter="index">
@@ -302,6 +335,12 @@
       <forward name="success" path="/patient/patient_entry.jsp"/>
     </action>
 
+      <action path="/patient/diagnostics"
+              type="com.worthsoln.patientview.diagnostics.DiagnosticsAction"
+              parameter="diagnostics">
+          <forward name="success" path="/patient/diagnostics.jsp"/>
+      </action>
+
     <action path="/patient/results"
             type="com.worthsoln.patientview.TestResultsAction" parameter="results">
       <forward name="success" path="/patient/results.jsp"/>
@@ -327,6 +366,11 @@
             type="com.worthsoln.patientview.ContactAction" parameter="contact" name="feedbackForm">
       <forward name="success" path="/patient/contact.jsp"/>
     </action>
+
+      <action path="/patient/education"
+              type="com.worthsoln.patientview.education.EducationDisplayAction" parameter="education">
+          <forward name="success" path="/patient/education.jsp"/>
+      </action>
 
     <action path="/patient/patientAddsBloodPressure" type="com.worthsoln.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
             name="patientResultForm"

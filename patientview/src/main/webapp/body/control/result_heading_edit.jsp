@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Links Editing</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Links Editing</h1>
+</div>
 
 
 <html:form action="/control/resultHeadingUpdate">
@@ -38,17 +40,12 @@
       <td><html:text name="resultHeading" property="panelorder" /></td>
     </tr>
     <tr>
-      <td><html:submit value="Update" styleClass="formButton"/></td>
+      <td><html:submit value="Update" styleClass="btn"/></td>
     </tr>
 </html:form>
 
-
-
-
-
-
-
-
-
  </table>
+
+</div>
+</div>
 

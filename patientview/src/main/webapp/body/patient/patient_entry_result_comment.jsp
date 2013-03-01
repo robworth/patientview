@@ -5,23 +5,26 @@
 
 <html:xhtml/>
 
-<p class="header">Enter My Comments</p>
+<div class="page-header">
+    <h1>Enter My Comments</h1>
+</div>
 
 
 <p>Use this page to enter comments. They will appear alongside your results. These comments will not be automatically sent to anyone at your renal unit. If you need advice, you must contact them in the usual way.</p>
-<p>Currently comments are limited to 100 characters.</p>
+<div class="alert alert-info">Currently comments are limited to 100 characters.</div>
 
 
 <html:errors/>
 
 
 
-  <table cellpadding="3" >
+  <table cellpadding="3" class="table table-bordered table-striped">
 
     <tr>
-      <td class="tableheader" align="center">Date</td>
-      <td class="tableheader" align="center">Time</td>
-      <td class="tableheader" align="center">Comment</td>
+        <td class="tableheader" align="center">Date</td>
+        <td class="tableheader" align="center">Time</td>
+        <td class="tableheader" align="center">Comment</td>
+        <td></td>
     </tr>
 
     <logic:present name="resultcomment" scope="session">
@@ -33,7 +36,7 @@
                  <html:form action="/patient/patientDeletesResultComment">
                      <input type="hidden" name="patientResultKey" value='<bean:write name="comment" property="key" />' />
                      <input type="hidden" name="patientResultName" value="resultcomment" />
-                  <td align="center" valign="center"><html:submit value="Delete" styleClass="formButton" /></td>
+                  <td align="center" valign="center"><html:submit value="Delete" styleClass="btn" /></td>
                  </html:form>
              </tr>
         </logic:iterate>
@@ -43,7 +46,7 @@
 
     <tr>
         <td class="tablecell" align="center" >
-            <select name="day">
+            <select name="day" class="input-mini">
                 <option><dt:format pattern="d"><dt:currentTime/></dt:format></option>
                 <option>1</option>
                 <option>2</option>
@@ -78,7 +81,7 @@
                 <option>31</option>
             </select>
             -
-            <html:select property="month">
+            <html:select property="month" styleClass="input-mini">
                 <option value="<dt:format pattern="M"><dt:currentTime/></dt:format>"><dt:format pattern="MMM"><dt:currentTime/></dt:format></option>
                 <html:option value="1">Jan</html:option>
                 <html:option value="2">Feb</html:option>
@@ -94,14 +97,14 @@
                 <html:option value="12">Dec</html:option>
             </html:select>
             -
-            <html:select property="year">
+            <html:select property="year" styleClass="input-mini">
                 <option value="<dt:format pattern="yyyy"><dt:currentTime/></dt:format>"><dt:format pattern="yyyy"><dt:currentTime/></dt:format></option>
                 <html:option value="2009">2009</html:option>
                 <html:option value="2010">2010</html:option>
             </html:select>
         </td>
         <td class="tablecell" align="center">
-            <html:select property="hour">
+            <html:select property="hour" styleClass="input-mini">
                 <option value="<dt:format pattern="H"><dt:currentTime/></dt:format>"><dt:format pattern="HH"><dt:currentTime/></dt:format></option>
                 <html:option value="0">00</html:option>
                 <html:option value="1">01</html:option>
@@ -129,7 +132,7 @@
                 <html:option value="23">23</html:option>
             </html:select>
             :
-            <html:select property="minute">
+            <html:select property="minute" styleClass="input-mini">
                 <option value="<dt:format pattern="m"><dt:currentTime/></dt:format>"><dt:format pattern="mm"><dt:currentTime/></dt:format></option>
                 <html:option value="0">00</html:option>
                 <html:option value="10">10</html:option>
@@ -144,30 +147,23 @@
             <html:hidden property="patientResultCode1" value="resultcomment"/>
             <html:textarea property="patientResultValue1" />
         </td>
-      <td align="center" colspan="4"><html:submit value="Add" styleClass="formButton"/></td>
+      <td align="center" colspan="4"><html:submit value="Add" styleClass="btn"/></td>
     </tr>
 </html:form>
+</table>
 
     <logic:present name="resultcomment" scope="session">
       <logic:notEmpty name="resultcomment" scope="session">
-        <tr>
-          <td>&nbsp;</td>  
-        </tr>
-        <tr>
-          <td colspan="4">By pressing the Submit All button you will add these comments to your record. After clicking, you will not be able to make any more changes. Use the Delete and Add buttons above to ensure that you are happy before clicking the Submit All button.</td>
-        </tr>
-        <tr>
+
+          <div class="alert alert-block">By pressing the <strong>Submit All</strong> button you will add these comments to your record. <strong>After clicking, you will not be able to make any more changes.</strong> Use the Delete and Add buttons above to ensure that you are happy before clicking the Submit All button.</div>
+
           <html:form action="/patient/patientSubmitsResultComments">
-            <td>
-              <html:submit value="Submit All" styleClass="formButton"/>
+              <html:submit value="Submit All" styleClass="btn"/>
               <input type="hidden" name="patientResultName" value="resultcomment" />
-            </td>
           </html:form>
-        </tr>
       </logic:notEmpty>
     </logic:present>
 
-  </table>
 
 
 

@@ -5,59 +5,31 @@
 
 <html:xhtml/>
 
-<p class="header">About Me</p>
+<div class="page-header"><h1>About Me</h1></div>
 
-
+<div class="row">
 <logic:present name="aboutme">
 <logic:notEmpty name="aboutme">
-        <jsp:useBean id="aboutme" class="com.worthsoln.patientview.aboutme.Aboutme" scope="request"/>
+        <jsp:useBean id="aboutme" class="com.worthsoln.patientview.model.Aboutme" scope="request"/>
+    <div class="span3">
+        <img src="aboutmeimage/<%= aboutme.getNhsno() %>" alt="" width="200">
+    </div>
     
-    <img src="aboutmeimage/<%= aboutme.getNhsno() %>" alt="" width="200">
-       <br /><br />
-    
-    
-<table cellpadding="3" >
-
-
-    <tr>
-        <td align="center">
-            <p><b>Things people should know about me</b></p>
-        </td>
-    </tr>
-    <tr>
-        <td style="white-space: pre-line;">
-                <bean:write name="aboutme" property="aboutme" />
-        </td>
-    </tr>
-    <tr>
-        <td >&nbsp;</td>
-    </tr>
-
-    <tr>
-        <td >
-            <p><b>Things I'd like to talk about</b></p>
-        </td>
-    </tr>
-    <tr>
-        <td style="white-space: pre-line;">
-           <bean:write name="aboutme" property="talkabout" />
-        </td>
-    </tr>
-    <tr>
-        <td >&nbsp;</td>
-    </tr>
-    <tr>
-        <td ><html:form action="/patient/aboutmeEdit">
-        <html:submit value="Edit" styleClass="formButton"/>
-        </html:form></td>
-
-        <td><form><input type="button" class="formButton" value=" Print this page "
-onclick="window.print();return false;" /></form> </td>
-    </tr>
-
-</table>
+<div class="span9">
+        <h2>Things people should know about me</h2>
+        <p><bean:write name="aboutme" property="aboutme" /></p>
+        <h2>Things I'd like to talk about</h2>
+        <p><bean:write name="aboutme" property="talkabout" /></p>
+        <html:form action="/patient/aboutmeEdit">
+            <div class="form-actions">
+                <html:submit value="Edit" styleClass="btn btn-primary"/>
+                <input type="button" class="btn" value=" Print this page " onclick="window.print();return false;" />
+            </div>
+        </html:form>
+</div>
 
 </logic:notEmpty>
 </logic:present>
+</div>
 
 

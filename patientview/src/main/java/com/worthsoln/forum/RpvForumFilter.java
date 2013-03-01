@@ -1,14 +1,8 @@
 package com.worthsoln.forum;
 
-import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.utils.LegacySpringUtils;
 import net.jforum.util.legacy.clickstream.ClickstreamFilter;
-import net.sf.hibernate.Criteria;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.expression.Expression;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,24 +19,11 @@ public class RpvForumFilter extends ClickstreamFilter {
             throws IOException, ServletException {
 
         String screenName = null;
-        try {
-            // Check whether screen name is set
-            String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Expression.like("username", username));
-            User user = (User) criteria.uniqueResult();
+        // Check whether screen name is set
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
+
+        if (user != null) {
             screenName = user.getScreenname();
-            tx.commit();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                HibernateUtil.closeSession();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
         }
 
         if (screenName != null && screenName.trim().length() > 0) {

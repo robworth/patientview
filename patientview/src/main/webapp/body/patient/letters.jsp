@@ -4,45 +4,50 @@
 
 <html:xhtml/>
 
-<table width="90%" border="0" cellspacing="1" cellpadding="3">
+    <div class="page-header">
+        <h1>Letters</h1>
+    </div>
 
-  <tr valign="top">
-    <td colspan="5"><img src="images/space.gif" height="5"/></td>
-  </tr>
-
-  <tr valign="top">
-    <td colspan="5"><bean:message key="cautionary.letters" /></td>
-  </tr>
-
-  <tr valign="top">
-    <td colspan="5"><img src="images/space.gif" height="5"/></td>
-  </tr>
+    <ul class="padded-list">
+        <li>
+            Letters are only shown where they can be retrieved from your unit's computer system.
+        </li>
+        <li>
+            It is important to note that letters may be shown here before they have been finally approved and had
+            mistakes corrected. This mainly applies if you are reading letters soon (e.g. within a week) after they have
+            been typed.
+        </li>
+        <li>
+            If you have any concerns you should discuss it at your next clinic appointment, or contact the author of the
+            letter.                
+        </li>
+    </ul>
+    <h3>Links about Letters</h3>
+    <ul>
+        <li><a href="http://www.myibdportal.org/medical-terms-used-in-ibd">Glossary of terms used in IBD</a></li>
+    </ul>
 
   <logic:empty name="letters">
-    <tr valign="top">
-      <td class="tableheader" colspan="10">No letters uploaded</td>
-    </tr>
+      <div class="alert">No letters uploaded</div>
   </logic:empty>
 
   <logic:notEmpty name="letters">
 
     <logic:present name="user">
 
-      <tr valign="top">
-        <td><img src="images/space.gif" width="15"  height="1"/></td>
-        <td class="tableheader" colspan="3"><b>Letters for <bean:write name="user" property="name"/></b></td>
-      </tr>
+    <h2>Letters for <bean:write name="user" property="name"/></h2>
 
-      <tr>
-        <td><img src="images/space.gif" width="15"  height="1"/></td>
-        <td width="100" class="tablecellbold"><b>Date</b></td>
-        <td class="tablecellbold">Letter Type</td>
-        <td class="tablecellbold">&nbsp;</td>
-      </tr>
+<table width="90%" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
+      <thead>
+          <tr>
+            <th>Date</th>
+            <th>Letter Type</th>
+            <th>&nbsp;</th>
+          </tr>
+      </thead>
 
       <logic:iterate name="letters" id="letter">
         <tr>
-          <td><img src="images/space.gif" width="15" height="1"/></td>
            <td class="tablecell"><bean:write name="letter" property="formattedDate"/></td>
           <td class="tablecell"><bean:write name="letter" property="type"/></td>
           <td class="tablecell"><html:link action="/patient/letterDetail" paramName="letter" paramProperty="id" paramId="letterId">read letter...</html:link>&nbsp;</td>
@@ -54,4 +59,4 @@
   </logic:notEmpty>
 
 </table>
-
+        

@@ -1,10 +1,12 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -20,11 +22,13 @@ public class SplashPageListAction extends Action {
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPages(request);
+        List<SplashPage> splashpages = LegacySpringUtils.getSplashPageManager().getAll();
         User user = UserUtils.retrieveUser(request);
-        List<Unit> usersUnits = UnitUtils.fetchRelevantUnits(request, new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
+        List<Unit> usersUnits
+                = LegacySpringUtils.getUnitManager().
+                getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
 
-        if (user.getRole().equals("superadmin")) {
+        if (LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equals("superadmin")) {
             Unit unitAllUnits = new Unit("ALL");
             usersUnits.add(unitAllUnits);
         }

@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import javax.servlet.ServletContext;
 import com.Ostermiller.util.CSVParser;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.patientview.logging.AddLog;
+import com.worthsoln.patientview.model.UktStatus;
+import com.worthsoln.utils.LegacySpringUtils;
 
 public class UktUpdater {
 
@@ -36,7 +37,8 @@ public class UktUpdater {
             for (int i = 0; i < uktValues.length; i++) {
                 UktStatus status = new UktStatus(uktValues[i][0].trim(),
                         uktValues[i][1].trim(), uktValues[i][2].trim());
-                HibernateUtil.saveWithTransaction(status);
+
+                LegacySpringUtils.getUkTransplantManager().save(status);
             }
 
         } catch (Exception e) {

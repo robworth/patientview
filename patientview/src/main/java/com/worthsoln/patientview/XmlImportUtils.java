@@ -1,6 +1,6 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 
 import javax.servlet.ServletContext;

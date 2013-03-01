@@ -1,19 +1,7 @@
+<%--
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
-    <td class="left">
-
-
-            <table>
-              <tr>
-                <td colspan="2"><img src="images/space.gif" height="20" width="140" border="0" alt="" class="picture" /></td>
-              </tr>
-              <tr>
-                <td align="center" colspan="2"><img src="images/boy_and_apple.jpg" width="134" height="184" border="0" alt="Happy User" /></td>
-              </tr>
-            </table>
-
 
       <logic:present name="newses">
         <logic:notEmpty name="newses">
@@ -38,8 +26,4 @@
         </logic:notEmpty>
 
       </logic:present>
-
-
-
-
-        </td>
+--%>

@@ -1,11 +1,17 @@
 package com.worthsoln.patientview.logon;
 
+import com.worthsoln.service.UserManager;
+import com.worthsoln.utils.LegacySpringUtils;
+
 import java.util.Date;
 
 public abstract class Logon {
 
     private String username;
     private String password;
+
+    // This role attribute has gone a bit wonky now - to the getter and setter.
+    // The role is now stored against the tenancy
     private String role;
     private String name;
     private String email;
@@ -47,6 +53,13 @@ public abstract class Logon {
     }
 
     public String getRole() {
+
+        if (role == null) {
+            // attempt to work this out cos it's no longer in this db table
+            UserManager userManager = LegacySpringUtils.getUserManager();
+            role = userManager.getCurrentTenancyRole(userManager.get(this.getUsername()));
+        }
+
         return role;
     }
 

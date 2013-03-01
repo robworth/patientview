@@ -3,13 +3,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Splash Pages</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Splash Pages</h1>
+</div>
 
 <html:errors />
 
 
-<table cellpadding="3" >
+<table cellpadding="3" class="table table-bordered table-striped">
 
 
     <logic:notEmpty name="splashpages">
@@ -19,6 +21,7 @@
             <td class="tableheader">Headline</td>
             <td class="tableheader">Unit</td>
             <td class="tableheader">Live</td>
+            <td></td>
         </tr>
 
         <logic:iterate id="splashpage" name="splashpages" >
@@ -44,7 +47,7 @@
                 <td class="tablecell" align="center" valign="center">
                     <html:form action="/control/splashPageDelete">
                         <html:hidden name="splashpage" property="id" />
-                        <html:submit value="Delete" styleClass="formbutton" />
+                        <html:submit value="Delete" styleClass="btn" />
                     </html:form>
                 </td>
 
@@ -53,22 +56,15 @@
         </logic:iterate>
 
     </logic:notEmpty>
-
-
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
-
-
-    <tr>
-        <td>
-            <html:form action="/control/splashPageAddInput">
-                <html:submit value="Add New" styleClass="formbutton" />
-            </html:form>
-        </td>
-    </tr>
-
-
-
 </table>
+
+
+<html:form action="/control/splashPageAddInput">
+    <html:submit value="Add New" styleClass="btn" />
+</html:form>
+
+
+
+</div>
+</div>
 

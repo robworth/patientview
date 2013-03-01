@@ -23,6 +23,16 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>tenancyFilter</filter-name>
+        <filter-class>com.worthsoln.tenancy.TenancyFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>tenancyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!--Stuff for JForum-->
     <!-- Clickstream -->
 
@@ -60,7 +70,7 @@
         <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
         <init-param>
             <param-name>config</param-name>
-            <param-value>/WEB-INF/struts-config.xml</param-value>
+            <param-value>/WEB-INF/struts-config.xml, /WEB-INF/struts-config-ibd.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -85,6 +95,21 @@
         <error-code>400</error-code>
         <location>/patient_details.do</location>
     </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/no-access.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.html</location>
+    </error-page>
 
     <!-- override the tld from the struts jar -->
     <jsp-config>
@@ -94,6 +119,15 @@
             </taglib-uri>
             <taglib-location>
                 /META-INF/struts-logic.tld
+            </taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>
+                http://struts.apache.org/tags-html
+            </taglib-uri>
+            <taglib-location>
+                /META-INF/struts-html.tld
             </taglib-location>
         </taglib>
     </jsp-config>

@@ -4,15 +4,21 @@
 
 <html:xhtml/>
 
-<p class="header">Units</p>
+<div class="span9">
 
-<table cellpadding="3" border="0">
+    <div class="page-header">
+        <h1>Units</h1>
+    </div>
+
+<table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
 
   <logic:present name="units">
     <logic:notEmpty name="units">
       <tr>
-        <td class="tableheader">Unit Code</td>
-        <td class="tableheader">Name</td>
+        <th class="tableheader">Unit Code</th>
+        <th class="tableheader">Name</th>
+        <th></th>
+        <th></th>
       </tr>
       <logic:iterate id="unit" name="units">
         <tr>
@@ -22,12 +28,12 @@
           <logic:present role="superadmin,unitadmin">
             <html:form action="/control/unitEdit">
               <html:hidden name="unit" property="unitcode"/>
-              <td><html:submit value="Edit" styleClass="formbutton"/></td>
+              <td><html:submit value="Edit" styleClass="btn"/></td>
             </html:form>
 
             <html:form action="/control/unitStat">
               <html:hidden name="unit" property="unitcode"/>
-              <td><html:submit value="Stats" styleClass="formbutton"/></td>
+              <td><html:submit value="Stats" styleClass="btn"/></td>
             </html:form>
           </logic:present>
 
@@ -35,16 +41,13 @@
       </logic:iterate>
     </logic:notEmpty>
   </logic:present>
+</table>
 
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
   <logic:present role="superadmin">
-    <tr>
 
       <html:form action="/control/unitAddInput">
-        <td><html:submit value="Add new" styleClass="formbutton"/></td>
+        <html:submit value="Add new" styleClass="btn"/>
       </html:form>
-    </tr>
   </logic:present>
-</table>
+</div>
+</div>

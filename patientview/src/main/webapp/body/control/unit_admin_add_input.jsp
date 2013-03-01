@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Unit Admins</p>
+<div class="span9">
+    <div class="page-header">
+        <h1>Unit Admins</h1>
+    </div>
 
 <html:errors />
 
@@ -41,7 +43,7 @@
           </html:select></td>
     </tr>
     <tr>
-      <td><b>Renal Unit</b></td>
+      <td><b><logic:present tenancy="rpv">Renal Unit</logic:present><logic:present tenancy="ibd">IBD Unit</logic:present></b></td>
       <td><html:select property="unitcode">
              <logic:present role="superadmin">
                <html:option value="">None</html:option>
@@ -50,8 +52,10 @@
           </html:select></td>
     </tr>
     <tr align="right">
-      <td><html:submit value="Add" styleClass="formbutton" /></td>
+      <td><html:submit value="Add" styleClass="btn" /></td>
     </tr>
  </table>
 
 </html:form>
+</div>
+</div>

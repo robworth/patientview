@@ -5,7 +5,11 @@
 
 <html:xhtml/>
 
-<p class="header">Patient</p>
+<div class="span9">
+
+<div class="page-header">
+    <h1>Patient</h1>
+</div>
 
 
 On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfully enrolled a new patient with the following details:
@@ -49,3 +53,5 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
         in two weeks.</p>
 </logic:notEmpty>
 
+</div>
+</div>

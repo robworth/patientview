@@ -3,12 +3,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
+<div class="span9">
+<div class="page-header">
+    <h1>View Log</h1>
+</div>
 <table width="600" border="0" cellspacing="1" cellpadding="3">
 
   <tr height="20">
-    <td colspan="10">You must enter a start and an end date and at least one other search criteria. Dates in format
-      dd/mm/yyyy
+    <td colspan="10"><div class="alert alert-info">You must enter a start and an end date and at least one other search criteria. Dates in format
+      dd/mm/yyyy</div>
     </td>
   </tr>
 
@@ -66,39 +69,37 @@
 
     <tr align="left">
       <td>&nbsp;</td>
-      <td><html:submit value="Search" styleClass="formbutton"/></td>
+      <td><html:submit value="Search" styleClass="btn"/></td>
     </tr>
 
   </html:form>
 </table>
 
 
-<table width="600" border="0" cellspacing="1" cellpadding="1">
-  <tr valign="top">
-    <td colspan="10"><img src="images/space.gif"/></td>
-  </tr>
+<table width="600" border="0" cellspacing="1" cellpadding="1" class="table table-bordered table-striped paragraphSizeTopMargin">
 
   <logic:empty name="log">
     <tr valign="top">
-      <td class="tableheader">No log entries found.</td>
+      <td class="tableheader"><div class="alert alert-block">No log entries found.</div></td>
     </tr>
   </logic:empty>
 
   <logic:notEmpty name="log">
-
-    <tr>
-      <td class="tablecellbold">Date and time</td>
-      <td class="tablecellbold">NHS No</td>
-      <td class="tablecellbold">User</td>
-      <td class="tablecellbold">Action</td>
-      <td class="tablecellbold">Actor</td>
-      <td class="tablecellbold">Unit</td>
-      <td class="tablecellbold">Extra Info</td>
-    </tr>
-
+    <thead>
+        <tr>
+          <th class="tablecellbold">Date and time</th>
+          <th class="tablecellbold">NHS No</th>
+          <th class="tablecellbold">User</th>
+          <th class="tablecellbold">Action</th>
+          <th class="tablecellbold">Actor</th>
+          <th class="tablecellbold">Unit</th>
+          <th class="tablecellbold">Extra Info</th>
+        </tr>
+    </thead>
+    <tbody>
     <logic:iterate name="log" id="logentry">
       <tr>
-        <td class="tablecell"><b><bean:write name="logentry" property="formattedDate"/></b></td>
+        <td class="tablecell"><bean:write name="logentry" property="formattedDate"/></td>
         <td class="tablecell"><bean:write name="logentry" property="nhsno"/></td>
         <td class="tablecell"><bean:write name="logentry" property="user"/></td>
         <td class="tablecell"><bean:write name="logentry" property="action"/></td>
@@ -117,8 +118,9 @@
         </logic:equal>
       </tr>
     </logic:iterate>
-
+    </tbody>
   </logic:notEmpty>
 
 </table>
-
+</div>
+</div>

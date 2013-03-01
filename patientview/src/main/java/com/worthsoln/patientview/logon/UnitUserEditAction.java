@@ -3,14 +3,15 @@ package com.worthsoln.patientview.logon;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 
 public class UnitUserEditAction extends DatabaseAction {
 
@@ -26,13 +27,13 @@ public class UnitUserEditAction extends DatabaseAction {
         String role = BeanUtils.getProperty(form, "role");
         boolean firstlogon = "true".equals(BeanUtils.getProperty(form, "firstlogon"));
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
-        DatabaseDAO dao = getDao(request);
 
-        dao.updateItem(new LogonDao(unitAdmin));
-        HibernateUtil.retrievePersistentObjectAndAddToRequestWithIdParameter(request, Unit.class, unitcode, "unit");
+        LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin);
 
-        UnitUsersDao patientDao = new UnitUsersDao(unitcode);
-        List unitUsers = dao.retrieveList(patientDao);
+        Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+        request.setAttribute("unit", unit);
+
+        List unitUsers = LegacySpringUtils.getUserManager().getUnitUsers(unitcode);
 
         request.setAttribute("unitUsers", unitUsers);
 

@@ -5,12 +5,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
+<div class="span9">
 <table border="0" width="100%">
   <tr>
     <td>
       <logic:present name="unit">
-        <p class="header">Patients for Unit <bean:write name="unit" property="name"/></p>
+        <div class="page-header"><h1>Patients for Unit <bean:write name="unit" property="name"/></h1></div>
       </logic:present>
     </td>
 
@@ -120,8 +120,18 @@
           </html:form>
         </logic:present>
 
+        <logic:present tenancy="ibd">
+            <td>
+                <html:form action="/control/ibduser-edit" method="get" style="margin-bottom: 0">
+                    <input type="hidden" name="nhsNo" value="<bean:write name="patient" property="nhsno" />" />
+                    <html:submit value="Manage Ibd Settings" styleClass="formbutton" />
+                </html:form>
+            </td>
+        </logic:present>
+
       </tr>
     </logic:iterate>
    </table>
  </logic:notEmpty>
-
+</div>
+</div>

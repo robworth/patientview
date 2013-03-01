@@ -1,13 +1,11 @@
 package com.worthsoln.patientview.patiententry;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.PatientUtils;
-import com.worthsoln.patientview.TestResult;
-import com.worthsoln.patientview.TestResultDao;
-import com.worthsoln.patientview.comment.Comment;
+import com.worthsoln.patientview.model.TestResult;
+import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.unit.UnitUtils;
-import net.sf.hibernate.HibernateException;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -52,15 +50,11 @@ public class PatientResultSubmitAllAction extends Action {
                                                    String testCode, String testValue, Calendar dateTime) {
         if ("resultcomment".equalsIgnoreCase(testCode)) {
             Comment comment = new Comment(dateTime, nhsno, testValue);
-            try {
-                HibernateUtil.saveWithTransaction(comment);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getCommentManager().save(comment);
         } else {
-            TestResult testResult = new TestResult(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, dateTime, testCode, testValue);
-            TestResultDao testResultDao = new TestResultDao(testResult);
-            dao.insertItem(testResultDao);
+            TestResult testResult = new TestResult(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, dateTime, testCode,
+                    testValue);
+            LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
 }

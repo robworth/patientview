@@ -610,7 +610,7 @@
 </tag>
 <tag>
 <name>form</name>
-<tagclass>org.apache.struts.taglib.html.FormTag</tagclass>
+<tagclass>com.worthsoln.taglib.PatientViewFormTag</tagclass>
 <bodycontent>JSP</bodycontent>
 <attribute>
 <name>action</name>
@@ -1423,7 +1423,7 @@
 </tag>
 <tag>
 <name>link</name>
-<tagclass>org.apache.struts.taglib.html.LinkTag</tagclass>
+<tagclass>com.worthsoln.taglib.PatientViewLinkTag</tagclass>
 <attribute>
 <name>accesskey</name>
 <required>false</required>

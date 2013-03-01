@@ -2,8 +2,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Unit Editing</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Unit Editing</h1>
+</div>
 
 <html:errors />
 
@@ -389,11 +391,12 @@
 
 
     <tr>
-      <td><html:submit value="Update" styleClass="formButton"/></td>
+      <td><html:submit value="Update" styleClass="btn"/></td>
     </tr>
 
   </table>
 
 </html:form>
-
+</div>
+</div>
 

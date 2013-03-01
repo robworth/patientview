@@ -3,33 +3,39 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 
-<p class="header">Forgotten password</p>
+<div class="page-header">
+    <h1>Forgotten password</h1>
+</div>
 <logic:notEmpty name="nullUser">
-    <p class="error">Please enter your user name and email address.</p>
+    <div class="alert alert-info">Please enter your user name and email address.</div>
 </logic:notEmpty>
 <logic:equal name="foundUser" value="false">
-    <p class="error">No match was found for the user and email combination you entered.</p>
+    <div class="alert alert-block">No match was found for the user and email combination you entered.</div>
 </logic:equal>
 <logic:notEmpty name="nullEmail">
-    <p class="error">That username does not have an email set. Please contact an administrator.</p>
+    <div class="alert alert-error">That username does not have an email set. Please contact an administrator.</div>
 </logic:notEmpty>
 <logic:notEmpty name="noMatch">
-    <p class="error">No match was found for the user and email combination you entered.</p>
+    <div class="alert alert-error">No match was found for the user and email combination you entered.</div>
 </logic:notEmpty>
 
-<form action="forgotten-password.do" class="forgotenPassword">
-    <table>
-        <tr>
-            <td>User name</td>
-            <td><input type="text" name="username" id="username" /></td>
-        </tr>
-        <tr>
-            <td>Email address</td>
-            <td><input type="text" name="email" id="email" /></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right"><input type="submit" class="formButton" value="Submit"/></td>
-        </tr>
-    </table>
+<form action="forgotten-password.do" class="form-horizontal">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" name="username" id="username" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="email">Email address</label>
+            <div class="controls">
+                <input type="text" name="email" id="email" />
+            </div>  
+        </div>
+        <div class="form-actions">
+            <input type="submit" value="Submit" class="btn"/>    
+        </div>
+    </fieldset>
 </form>
 

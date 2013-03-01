@@ -3,14 +3,11 @@ package com.worthsoln.patientview.comment;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.worthsoln.patientview.model.Comment;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.type.Type;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.PatientUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.database.action.DatabaseAction;
@@ -23,12 +20,7 @@ public class CommentViewAllAction extends DatabaseAction {
                                  HttpServletResponse response) throws Exception {
         String nhsno = PatientUtils.retrieveNhsNo(request);
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        List<Comment> comments = session.find("from " + Comment.class.getName() + " as comment where comment.nhsno = ? " ,
-                             new Object[] {nhsno}, new Type[] {Hibernate.STRING});
-        tx.commit();
-        HibernateUtil.closeSession();
+        List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
 
         if (CommentUtils.verifyPermissionToReadItem(request, nhsno)) {
             request.setAttribute("comments", comments);

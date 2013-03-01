@@ -8,12 +8,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.user.UserUtils;
+
+import java.util.List;
 
 public class PasswordUnlockAction extends DatabaseAction {
 
@@ -33,7 +34,8 @@ public class PasswordUnlockAction extends DatabaseAction {
                     UserUtils.retrieveUsersRealUnitcodeBestGuess(username), "");
             mappingToFind = "success";
         }
-        HibernateUtil.putListInRequest(Unit.class, "units", request);
+        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
+        request.setAttribute("units", units);
         request.setAttribute("patient", patient);
         return mapping.findForward(mappingToFind);
     }

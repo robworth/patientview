@@ -1,16 +1,16 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.DatabaseUpdateQuery;
-import com.worthsoln.patientview.diagnosis.Diagnosis;
-import com.worthsoln.patientview.letter.Letter;
+import com.worthsoln.ibd.model.Allergy;
+import com.worthsoln.ibd.model.MyIbd;
+import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.medicine.Medicine;
+import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
-import net.sf.hibernate.HibernateException;
+import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -35,7 +35,7 @@ public class ResultsUpdater {
 
             if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag()) ||
                     "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag()) ||
-                    "Suspend".equalsIgnoreCase(parser.getFlag()) ) {
+                    "Suspend".equalsIgnoreCase(parser.getFlag())) {
                 removePatientFromSystem(parser);
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
                         parser.getPatient().getCentreCode(), xmlFile.getName());
@@ -48,10 +48,15 @@ public class ResultsUpdater {
         } catch (Exception e) {
             e.printStackTrace();
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()), XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " +XmlImportUtils.extractStringFromStackTrace(e));
+                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + XmlImportUtils.extractStringFromStackTrace(e));
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
+        renameDirectory(context, xmlFile);
+    }
+
+    protected void renameDirectory(ServletContext context, File xmlFile) {
         String directory = context.getInitParameter("xml.patient.data.load.directory");
         xmlFile.renameTo(new File(directory, xmlFile.getName()));
     }
@@ -73,18 +78,76 @@ public class ResultsUpdater {
         insertOtherDiagnoses(parser.getOtherDiagnoses());
         deleteMedicines(parser.getData("nhsno"), parser.getData("centrecode"));
         insertMedicines(parser.getMedicines());
+        deleteMyIbd(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertMyIbd(parser.getMyIbd());
+        deleteDiagnostics(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertDiagnostics(parser.getDiagnostics());
+        deleteProcedures(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertProcedures(parser.getProcedures());
+        deleteAllergies(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertAllergies(parser.getAllergies());
+    }
+
+    private void deleteDiagnostics(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM diagnostic WHERE nhsno = ? AND unitcode = ?";
+        Object[] params = new Object[]{nhsno, unitcode};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertDiagnostics(Collection<Diagnostic> diagnostics) {
+        for (Iterator iterator = diagnostics.iterator(); iterator.hasNext(); ) {
+            Diagnostic diagnostic = (Diagnostic) iterator.next();
+            LegacySpringUtils.getDiagnosticManager().save(diagnostic);
+        }
+    }
+
+    private void deleteProcedures(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM pv_procedure WHERE nhsno = ? AND unitcode = ?";
+        Object[] params = new Object[]{nhsno, unitcode};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertProcedures(Collection<Procedure> procedures) {
+        for (Iterator iterator = procedures.iterator(); iterator.hasNext(); ) {
+            Procedure procedure = (Procedure) iterator.next();
+            LegacySpringUtils.getIbdManager().saveProcedure(procedure);
+        }
+    }
+
+    private void deleteAllergies(String nhsno, String unitcode) {
+        String deleteSql = "DELETE FROM pv_allergy WHERE nhsno = ? AND unitcode = ?";
+        Object[] params = new Object[]{nhsno, unitcode};
+        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
+        dao.doExecute(query);
+    }
+
+    private void insertAllergies(Collection<Allergy> allergies) {
+        for (Iterator iterator = allergies.iterator(); iterator.hasNext(); ) {
+            Allergy allergy = (Allergy) iterator.next();
+            LegacySpringUtils.getIbdManager().saveAllergy(allergy);
+        }
+    }
+
+    private void deleteMyIbd(String nhsno, String unitcode) {
+        LegacySpringUtils.getIbdManager().deleteMyIbd(nhsno, unitcode);
+    }
+
+    private void insertMyIbd(MyIbd myIbd) {
+        if (myIbd != null) {
+            LegacySpringUtils.getIbdManager().saveMyIbd(myIbd);
+        }
     }
 
     private void updatePatientDetails(Patient patient) {
-        PatientDao patientDao = new PatientDao(patient);
-        dao.deleteItem(patientDao);
-        dao.insertItem(patientDao);
+        LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getCentreCode());
+        LegacySpringUtils.getPatientManager().save(patient);
     }
 
     private void updateCentreDetails(Centre centre) {
-        CentreDao centreDao = new CentreDao(centre);
-        dao.deleteItem(centreDao);
-        dao.insertItem(centreDao);
+        LegacySpringUtils.getCentreManager().delete(centre.getCentreCode());
+        LegacySpringUtils.getCentreManager().save(centre);
     }
 
     private void deleteDateRanges(Collection dateRanges) {
@@ -110,8 +173,7 @@ public class ResultsUpdater {
     private void insertResults(Collection testResults) {
         for (Iterator iterator = testResults.iterator(); iterator.hasNext();) {
             TestResult testResult = (TestResult) iterator.next();
-            TestResultDao testResultDao = new TestResultDao(testResult);
-            dao.insertItem(testResultDao);
+            LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
 
@@ -131,11 +193,7 @@ public class ResultsUpdater {
     private void insertLetters(Collection letters) {
         for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
             Letter letter = (Letter) iterator.next();
-            try {
-                HibernateUtil.saveOrUpdateWithTransaction(letter);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getLetterManager().save(letter);
         }
     }
 
@@ -149,11 +207,7 @@ public class ResultsUpdater {
     private void insertOtherDiagnoses(Collection diagnoses) {
         for (Iterator iterator = diagnoses.iterator(); iterator.hasNext();) {
             Diagnosis diagnosis = (Diagnosis) iterator.next();
-            try {
-                HibernateUtil.saveOrUpdateWithTransaction(diagnosis);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getDiagnosisManager().save(diagnosis);
         }
     }
 
@@ -167,11 +221,7 @@ public class ResultsUpdater {
     private void insertMedicines(Collection medicines) {
         for (Iterator iterator = medicines.iterator(); iterator.hasNext();) {
             Medicine medicine = (Medicine) iterator.next();
-            try {
-                HibernateUtil.saveOrUpdateWithTransaction(medicine);
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            }
+            LegacySpringUtils.getMedicineManager().save(medicine);
         }
     }
 }

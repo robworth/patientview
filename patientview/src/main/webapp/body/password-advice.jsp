@@ -9,9 +9,6 @@
   passwords. Here are some simple ways to make it more difficult.</p>
 
 <ol>
-  <li>Do not share your password. The correct way to show someone else a patient's data is for the patient to share
-    their password.
-  </li>
   <li>Don't make your password easy to guess, so not less than 6 characters and not 123456 or 777777, and certainly
     don't use
     "password"! It is safer to avoid other simple words (e.g. daffodil) too.
@@ -23,7 +20,7 @@
   <li>Changing your password from time to time is wise. Certainly do that if you think that someone else may know
     yours.
   </li>
-  <li>Most systems, including RPV, allow just letters and numbers in passwords, not spaces or special characters or
+  <li>Most systems, including My IBD Portal, allow just letters and numbers in passwords, not spaces or special characters or
     punctuation such as ! - &pound; @ _ -,.
   </li>
 </ol>

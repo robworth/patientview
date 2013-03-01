@@ -1,9 +1,9 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
@@ -22,11 +22,11 @@ public class PatientAddToUnitAction extends DatabaseAction {
         String unitcode = BeanUtils.getProperty(form, "unitcode");
 
         UserMapping userMapping = new UserMapping(username, unitcode, nhsno);
-        HibernateUtil.saveOrUpdateWithTransaction(userMapping);
+        LegacySpringUtils.getUserManager().save(userMapping);
 
         if (thereIsAGpUser(username)) {
             UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
-            HibernateUtil.saveOrUpdateWithTransaction(userMappingGp);
+            LegacySpringUtils.getUserManager().save(userMappingGp);
         }
 
         AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD, username,
@@ -38,7 +38,7 @@ public class PatientAddToUnitAction extends DatabaseAction {
     }
 
     private boolean thereIsAGpUser(String username) {
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username + "-GP");
+        User user = LegacySpringUtils.getUserManager().get(username + "-GP");
         return null != user;
     }
 

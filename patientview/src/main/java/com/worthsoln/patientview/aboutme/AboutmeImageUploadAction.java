@@ -1,5 +1,6 @@
 package com.worthsoln.patientview.aboutme;
 
+import com.worthsoln.patientview.model.Aboutme;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 
 public class AboutmeImageUploadAction extends Action {

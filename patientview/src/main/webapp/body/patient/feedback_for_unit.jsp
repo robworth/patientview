@@ -4,41 +4,44 @@
 
 <html:xhtml/>
 
-<p class="header">Feedback</p>
+<div class="page-header">
+    <h1>Feedback</h1>
+</div>
 
 <logic:empty name="feedbacks">
-    <b>No feedback comments found</b>
+    <div class="alert-heading alert">
+        No feedback comments found
+    </div>
 </logic:empty>
 
 <logic:notEmpty name="feedbacks">
 
-<table>
-    <tr>
-      <td><img src="images/space.gif" height="30" /> </td>
-    </tr>
-    <tr>
-      <td class="tableheader"><b>Date</b></td>
-      <td class="tableheader"><b>Name</b></td>
-      <td class="tableheader"><b>Comment</b></td>
-
-    </tr>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+          <th class="tableheader"><b>Date</b></th>
+          <th class="tableheader"><b>Name</b></th>
+          <th class="tableheader"><b>Comment</b></th>
+        </tr>
+    </thead>
+    <tbody>
   <logic:iterate id="feedback" name="feedbacks" >
      <logic:equal value="true" name="feedback" property="makepublic">
        <tr>
            <td class="tablecell"><bean:write name="feedback" property="formattedDatestamp" /></td>
 
-           <logic:equal value="true" name="feedback" property="anonymous">
-               <td class="tablecell" >Comment is anonymous</td>
-           </logic:equal>
-           <logic:notEqual value="true" name="feedback" property="anonymous">
-               <td class="tablecell"><bean:write name="feedback" property="name" /></td>
-           </logic:notEqual>
+
+               <td class="tablecell" ><logic:equal value="true" name="feedback" property="anonymous">Comment is anonymous</logic:equal></td>
+
+
+               <td class="tablecell"><logic:notEqual value="true" name="feedback" property="anonymous"><bean:write name="feedback" property="name" /></logic:notEqual></td>
+
 
            <td class="tablecell"><bean:write name="feedback" property="comment" /></td>
        </tr>
-                                                                     </logic:equal>
+     </logic:equal>
    </logic:iterate>
-
+     </tbody>
  </table>
 
  </logic:notEmpty>

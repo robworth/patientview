@@ -1,15 +1,11 @@
 package com.worthsoln.patientview.unitstat;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.unit.Unit;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
+import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.UnitStat;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -30,14 +26,21 @@ public class UnitStatAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         String unitcode = BeanUtils.getProperty(form, "unitcode");
-        List<UnitStat> unitStats = getUnitStatsForUnit(unitcode);
-        List<UnitStat> patientCountStats = getPatientCountsForUnit(unitcode);
+        List<UnitStat> unitStats = LegacySpringUtils.getUnitManager().getUnitStatsForUnit(unitcode);
+        List<UnitStat> patientCountStats = LegacySpringUtils.getUnitManager().getPatientCountsForUnit(unitcode);
         Collection<UnitMonthStats> statsInRecords = turnUnitStatsListIntoRecords(unitStats, patientCountStats);
         addDownloadableFilenames(request, statsInRecords);
         List statsHeadings = statsHeadings();
         request.setAttribute("unitstats", statsInRecords);
         request.setAttribute("statsHeadings", statsHeadings);
-        HibernateUtil.retrievePersistentObjectAndAddToSessionWithIdParameter(request, Unit.class, unitcode, "unit");
+
+        if (unitcode != null) {
+            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+            if (unit != null) {
+                request.getSession().setAttribute("unit", unit);
+            }
+        }
+
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
         return LogonUtils.logonChecks(mapping, request);
     }
@@ -70,40 +73,6 @@ public class UnitStatAction extends Action {
         statsHeadings.add(new StatsHeading(AddLog.PASSWORD_UNLOCKED));
         statsHeadings.add(new StatsHeading(AddLog.PATIENT_DATA_REMOVE));
         return statsHeadings;
-    }
-
-    private List<UnitStat> getPatientCountsForUnit(String unitcode) throws HibernateException {
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-
-        Object[] parameters = new String[]{unitcode, "patient"};
-        Type[] types = new Type[]{Hibernate.STRING, Hibernate.STRING};
-
-        List<PatientCount> patientCounts =
-                session.find("from " + PatientCount.class.getName() + " patientcount " +
-                        "where patientcount.unitcode = ? and patientcount.role = ?", parameters, types);
-        tx.commit();
-        HibernateUtil.closeSession();
-
-        List<UnitStat> patientCountStats = new ArrayList<UnitStat>();
-        for (PatientCount patientCount : patientCounts) {
-            String yearmonth = patientCount.getYearmonth();
-            int count = patientCount.getCount();
-            patientCountStats.add(new UnitStat(unitcode, yearmonth, AddLog.PATIENT_COUNT, count));
-        }
-
-        return patientCountStats;
-    }
-
-    private List<UnitStat> getUnitStatsForUnit(String unitcode) throws HibernateException {
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
-        List<UnitStat> unitStats =
-                session.find("from " + UnitStat.class.getName() + " unitstat where unitstat.unitcode = ?", unitcode,
-                        Hibernate.STRING);
-        tx.commit();
-        HibernateUtil.closeSession();
-        return unitStats;
     }
 
     private Collection<UnitMonthStats> turnUnitStatsListIntoRecords(List<UnitStat> unitStatsList, List<UnitStat> patientCountStatsList) {

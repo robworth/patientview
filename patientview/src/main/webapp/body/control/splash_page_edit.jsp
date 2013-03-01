@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <html:xhtml/>
-
-<p class="header">Splash Page Editing</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Splash Page Editing</h1>
+</div>
 
 <html:errors />
 
@@ -52,7 +54,7 @@
 
     <tr>
         <td>&nbsp;</td>
-      <td align="right"><html:submit value="Update" styleClass="formButton"/></td>
+      <td align="right"><html:submit value="Update" styleClass="btn"/></td>
     </tr>
 </html:form>
 
@@ -64,3 +66,5 @@
 
 <p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodytext"  ignore="true"/></p>
 
+</div>
+</div>

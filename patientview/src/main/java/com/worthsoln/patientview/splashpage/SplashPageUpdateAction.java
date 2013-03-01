@@ -1,10 +1,9 @@
 package com.worthsoln.patientview.splashpage;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.SplashPage;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -19,9 +18,15 @@ public class SplashPageUpdateAction extends DatabaseAction {
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        SplashPage splashPage = new SplashPage();
 
-        BeanUtils.setProperty(splashPage, "id", BeanUtils.getProperty(form, "id"));
+        SplashPage splashPage;
+        String idStr = BeanUtils.getProperty(form, "id");
+        if (idStr != null && !idStr.equals("")) {
+            splashPage = LegacySpringUtils.getSplashPageManager().get(Long.decode(idStr));
+        } else {
+            splashPage = new SplashPage();
+        }
+
         BeanUtils.setProperty(splashPage, "name", BeanUtils.getProperty(form, "name"));
         BeanUtils.setProperty(splashPage, "headline", BeanUtils.getProperty(form, "headline"));
         BeanUtils.setProperty(splashPage, "bodytext", BeanUtils.getProperty(form, "bodytext"));
@@ -30,16 +35,11 @@ public class SplashPageUpdateAction extends DatabaseAction {
         boolean isLive = "true".equals(stringLive);
         splashPage.setLive(isLive);
 
-        Session session = HibernateUtil.currentSession();
-        Transaction tx = session.beginTransaction();
+        LegacySpringUtils.getSplashPageManager().save(splashPage);
 
-        session.saveOrUpdate(splashPage);
-        tx.commit();
-        HibernateUtil.closeSession();
         request.setAttribute("splashPage", splashPage);
-        HibernateUtil.retrievePersistentObjectAndAddToRequest(request, SplashPage.class, SplashPage.getIdentifier());
 
-        List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPages(request);
+        List<SplashPage> splashpages = LegacySpringUtils.getSplashPageManager().getAll();
         request.setAttribute("splashpages", splashpages);
 
         return LogonUtils.logonChecks(mapping, request);

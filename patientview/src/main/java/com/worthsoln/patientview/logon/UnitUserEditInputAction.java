@@ -2,13 +2,14 @@ package com.worthsoln.patientview.logon;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.HibernateUtil;
-import com.worthsoln.patientview.User;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.NhsnoUnitcode;
 
 public class UnitUserEditInputAction extends Action {
@@ -18,7 +19,7 @@ public class UnitUserEditInputAction extends Action {
             throws Exception {
         String username = BeanUtils.getProperty(form, "username");
         String unitcode = BeanUtils.getProperty(form, "unitcode");
-        User user = (User) HibernateUtil.getPersistentObject(User.class, username);
+        User user = LegacySpringUtils.getUserManager().get(username);
         NhsnoUnitcode unitcodeThing = new NhsnoUnitcode("", unitcode);
 
         request.getSession().setAttribute("unitUser", user);

@@ -1,28 +1,24 @@
 package com.worthsoln.patientview.user;
 
 import com.Ostermiller.util.RandPass;
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.patientview.EmailUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import com.worthsoln.patientview.model.EmailVerification;
+import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ *  todo move the functionallity out of here into the EmailVerificationManager
+ */
 public class EmailVerificationUtils {
 
     public static void createEmailVerification(String username, String email, HttpServletRequest request) {
         if (null != email && !"".equals(email)) {
             try {
-                Session session = HibernateUtil.currentSession();
-                Transaction tx = session.beginTransaction();
-                session.delete("from " + EmailVerification.class.getName() + " as emailverification " +
-                        " where emailverification.username = ?", username, Hibernate.STRING);
-                tx.commit();
+                LegacySpringUtils.getEmailVerificationManager().delete(username);
 
                 String verificationCode = new RandPass(RandPass.NUMBERS_AND_LETTERS_ALPHABET).getPass(50);
                 Calendar now = GregorianCalendar.getInstance();
@@ -32,10 +28,10 @@ public class EmailVerificationUtils {
                 now.add(Calendar.DATE, daysToAdd);
                 EmailVerification emailVerification = new EmailVerification(username, email, verificationCode, now);
 
-                HibernateUtil.saveOrUpdateWithTransaction(emailVerification);
+                LegacySpringUtils.getEmailVerificationManager().save(emailVerification);
 
                 sendEmailVerificationEmail(emailVerification, context);
-            } catch (HibernateException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

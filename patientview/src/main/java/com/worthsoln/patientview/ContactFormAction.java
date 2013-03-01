@@ -2,6 +2,7 @@ package com.worthsoln.patientview;
 
 import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -16,7 +17,7 @@ public class ContactFormAction extends DatabaseAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        Patient patient = PatientUtils.retrievePatient(request, getDao(request));
+        Patient patient = PatientUtils.retrievePatient(request);
         if (patient != null) {
             String message = request.getParameter("message");
             String type = request.getParameter("type");

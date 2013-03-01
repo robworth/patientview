@@ -1,10 +1,13 @@
 package com.worthsoln.patientview;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.contact.Contact;
+import com.worthsoln.patientview.model.Contact;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.logon.UserMapping;
-import com.worthsoln.patientview.unit.Unit;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
@@ -22,14 +25,17 @@ public class ContactAction extends DatabaseAction {
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         User user = UserUtils.retrieveUser(request);
         List<UserMapping> userMappings = UserUtils.retrieveUserMappings(user);
 
-        List<Contact> contacts = new ArrayList();
+        List<Contact> contacts = new ArrayList<Contact>();
 
         for (UserMapping userMapping : userMappings) {
             if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
-                Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode(), getDao(request));
+                Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode());
 
                 Unit unit = UnitUtils.retrieveUnit(userMapping.getUnitcode());
                 Contact contact = new Contact(patient, unit, userMapping);

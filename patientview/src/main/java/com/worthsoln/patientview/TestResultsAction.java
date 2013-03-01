@@ -1,22 +1,18 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.HibernateUtil;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.database.action.DatabaseAction;
-import com.worthsoln.patientview.comment.Comment;
+import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.logon.UserMapping;
-import com.worthsoln.patientview.resultheading.ResultHeading;
-import com.worthsoln.patientview.resultheading.ResultHeadingDao;
+import com.worthsoln.patientview.model.Panel;
+import com.worthsoln.patientview.model.TestResultWithUnitShortname;
+import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.type.Type;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -36,13 +32,15 @@ public class TestResultsAction extends DatabaseAction {
         if (user != null) {
             request.setAttribute("user", user);
 
-            Panel currentPanel = managePanels(request, dao);
+            Panel currentPanel = managePanels(request);
             List<TestResultWithUnitShortname> results = extractTestResultsWithComments(dao, currentPanel, user);
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
             managePages(request, resultsInRecords);
             request.setAttribute("results", resultsInRecords);
 
-            List<ResultHeading> resultsHeadingsList = dao.retrieveList(new ResultHeadingDao(currentPanel));
+            List<ResultHeading> resultsHeadingsList
+                    = LegacySpringUtils.getResultHeadingManager().get(currentPanel.getPanel());
+
             request.setAttribute("resultsHeadings", resultsHeadingsList);
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");
@@ -53,8 +51,8 @@ public class TestResultsAction extends DatabaseAction {
 
     private List<TestResultWithUnitShortname> extractTestResultsWithComments(DatabaseDAO dao,
                                                                              Panel currentPanel, User user) {
-        TestResultForPatientDao resultDao = new TestResultForPatientDao(user.getUsername(), currentPanel);
-        List<TestResultWithUnitShortname> results = dao.retrieveList(resultDao);
+        List<TestResultWithUnitShortname> results
+                = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, currentPanel);
 
         List userMappings = UserUtils.retrieveUserMappings(user);
 
@@ -67,38 +65,23 @@ public class TestResultsAction extends DatabaseAction {
     }
 
     private void addCommentsForNhsno(String nhsno, Panel currentPanel, List<TestResultWithUnitShortname> results) {
-        List comments = null;
 
-        try {
-            Session session = HibernateUtil.currentSession();
-            Transaction tx = session.beginTransaction();
+        // Note: This seems to be trying to do something with the panel and result headings.
+        // We have removed because it did appear to do anything.
 
-            String thisPanel = (currentPanel == null) ? "1" : Integer.toString(currentPanel.getPanel());
+        List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
 
-
-            comments = session.find("from " + Comment.class.getName() + " as comment," + ResultHeading.class.getName() +
-                    " as result_heading where comment.nhsno = ? " +
-                    " and result_heading.headingcode = 'resultcomment' and result_heading.panel = ?",
-                    new Object[]{nhsno, thisPanel}, new Type[]{Hibernate.STRING, Hibernate.STRING});
-            tx.commit();
-            HibernateUtil.closeSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        for (Object commentObj : comments) {
-            Object[] commentArray = (Object[]) commentObj;
-            Comment comment = (Comment) commentArray[0];
+        for (Comment comment : comments) {
             results.add(new TestResultWithUnitShortname(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, comment.getDatestamp(),
-                    "resultcomment", Integer.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
+                    "resultcomment", Long.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
         }
     }
 
-    private Panel managePanels(HttpServletRequest request, DatabaseDAO dao) {
+    private Panel managePanels(HttpServletRequest request) {
         Panel currentPanel = currentPanel(request);
-        List<Panel> panelList = dao.retrieveList(new PanelsDao());
+        List<Panel> panelList = LegacySpringUtils.getResultHeadingManager().getPanels();
         for (Panel p : panelList) {
-            p.setResultHeadings(dao.retrieveList(new ResultHeadingDao(p)));
+            p.setResultHeadings(LegacySpringUtils.getResultHeadingManager().get(p.getPanel()));
         }
         PanelNavigation panelNav = new PanelNavigation(currentPanel, panelList);
         request.setAttribute("panelNav", panelNav);
@@ -139,7 +122,8 @@ public class TestResultsAction extends DatabaseAction {
         try {
             currentPanel = new Panel(Integer.parseInt(request.getParameter("panel")));
         } catch (Exception e) {
-            ;
+            // provide a default if not set
+            currentPanel = new Panel(1);
         }
         return currentPanel;
     }

@@ -1,5 +1,7 @@
 package com.worthsoln.patientview.unitstat;
 
+import com.worthsoln.patientview.model.UnitStat;
+
 import java.util.HashMap;
 import java.util.Map;
 

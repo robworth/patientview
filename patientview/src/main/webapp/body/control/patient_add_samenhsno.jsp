@@ -5,7 +5,11 @@
 
 <html:xhtml/>
 
-<p class="header">Patient</p>
+<div class="span9">
+
+<div class="page-header">
+    <h1>Patient</h1>
+</div>
 
 
 There is already a patient registered on RPV with that NHS number.
@@ -37,3 +41,5 @@ Please carefully check the details of that patient, then you can choose to add t
 
 <br />
 
+</div>
+</div>
