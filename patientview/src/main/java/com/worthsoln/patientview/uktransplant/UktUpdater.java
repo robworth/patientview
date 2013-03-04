@@ -4,19 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import javax.servlet.ServletContext;
 import com.Ostermiller.util.CSVParser;
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.UktStatus;
 import com.worthsoln.utils.LegacySpringUtils;
 
 public class UktUpdater {
-
-    private DatabaseDAO dao;
-
-    public UktUpdater(DatabaseDAO dao) {
-        this.dao = dao;
-    }
 
     public void update(ServletContext context, File uktFile) {
         try {
@@ -47,9 +39,6 @@ public class UktUpdater {
     }
 
     private void deleteUktRecords() {
-        String deleteUktSql = "DELETE FROM uktstatus";
-        Object[] params = new Object[0];
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteUktSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getUkTransplantManager().deleteAll();
     }
 }

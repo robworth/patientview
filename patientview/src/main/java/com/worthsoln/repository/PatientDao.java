@@ -1,5 +1,6 @@
 package com.worthsoln.repository;
 
+import com.worthsoln.patientview.logon.PatientLogonWithTreatment;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Specialty;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +28,7 @@ public interface PatientDao {
     List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps, Specialty specialty);
 
     // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty);
+    List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty);
 
     List<Patient> getUktPatients();
 }

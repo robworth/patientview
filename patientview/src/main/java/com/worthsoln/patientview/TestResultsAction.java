@@ -1,8 +1,6 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Panel;
@@ -13,6 +11,7 @@ import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -22,20 +21,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-public class TestResultsAction extends DatabaseAction {
+public class TestResultsAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        DatabaseDAO dao = getDao(request);
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
+
         if (user != null) {
             request.setAttribute("user", user);
 
             Panel currentPanel = managePanels(request);
-            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(dao, currentPanel, user);
+
+            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
+
             Collections.sort(results, TestResultWithUnitShortname.Order.ByTimestamp.descending());
+
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
+
             managePages(request, resultsInRecords);
             request.setAttribute("results", resultsInRecords);
 
@@ -46,12 +49,13 @@ public class TestResultsAction extends DatabaseAction {
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");
         }
+
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    private List<TestResultWithUnitShortname> extractTestResultsWithComments(DatabaseDAO dao,
-                                                                             Panel currentPanel, User user) {
+    private List<TestResultWithUnitShortname> extractTestResultsWithComments(Panel currentPanel, User user) {
         List<TestResultWithUnitShortname> results
                 = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, currentPanel);
 
@@ -153,13 +157,6 @@ public class TestResultsAction extends DatabaseAction {
         return resultsRecords.values();
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "edtaCode";
-    }
 }
 
 class TestResultId implements Comparable {

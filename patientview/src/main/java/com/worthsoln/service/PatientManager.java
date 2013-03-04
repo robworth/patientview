@@ -1,5 +1,6 @@
 package com.worthsoln.service;
 
+import com.worthsoln.patientview.PatientDetails;
 import com.worthsoln.patientview.model.Patient;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ public interface PatientManager {
 
     void delete(String nhsno, String unitcode);
 
+    void removePatientFromSystem(String nhsno, String unitcode);
+
     List<Patient> get(String unitCode);
 
     // Note: generics not used as the result is half user, half patient
@@ -29,4 +32,6 @@ public interface PatientManager {
     List getUnitPatientsAllWithTreatmentDao(String unitcode);
 
     List<Patient> getUktPatients();
+
+    List<PatientDetails> getPatientDetails(String username);
 }

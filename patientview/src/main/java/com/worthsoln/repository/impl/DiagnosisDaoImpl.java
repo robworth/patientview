@@ -6,6 +6,7 @@ import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.DiagnosisDao;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -33,5 +34,16 @@ public class DiagnosisDaoImpl extends AbstractHibernateDAO<Diagnosis> implements
         buildWhereClause(criteria, wherePredicates);
 
         return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public void deleteOtherDiagnoses(String nhsno, String unitcode) {
+        Query query = getEntityManager().createQuery(
+                "DELETE FROM diagnosis WHERE nhsno = :nhsno AND unitcode = :unitcode");
+
+        query.setParameter("nhsno", unitcode);
+        query.setParameter("unitcode", unitcode);
+
+        query.executeUpdate();
     }
 }

@@ -19,4 +19,6 @@ public interface DiagnosticManager {
     void save(Diagnostic diagnostic);
 
     List<Diagnostic> getForUser(User user, DiagnosticType diagnosticType);
+
+    void delete(String nhsno, String unitcode);
 }

@@ -1,6 +1,5 @@
 package com.worthsoln.test.importer;
 
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
@@ -91,8 +90,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:ibd_pv_schema_v0.6.xsd");
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
         testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
 
@@ -126,8 +124,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                         .getResource("classpath:ibd_pv_schema_v0.6.xsd");
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
         testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
 
@@ -148,8 +145,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                         .getResource("classpath:ibd_pv_schema_v0.6.xsd");
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
         // run twice
         testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());

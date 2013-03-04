@@ -20,9 +20,6 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.List;
 
-/**
- *
- */
 @Service(value = "userManager")
 public class UserManagerImpl implements UserManager {
 
@@ -282,11 +279,6 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<UnitAdmin> getUnitUsers(String unitcode) {
-        return userDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
-    }
-
-    @Override
     public boolean existsInRadar(String nhsno) {
         Demographics demographics = demographicsDao.getDemographicsByNhsNo(nhsno);
 
@@ -297,5 +289,46 @@ public class UserManagerImpl implements UserManager {
         }
 
         return false;
+    }
+
+    @Override
+    public void incrementFailedLogins(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            user.setFailedlogons(user.getFailedlogons() + 1);
+            userDao.save(user);
+        }
+    }
+
+    @Override
+     public int getFailedLogins(String username) {
+         User user = userDao.get(username);
+
+         if (user != null) {
+             return user.getFailedlogons();
+         }
+
+         return 0;
+     }
+
+    @Override
+     public void lockUserAccount(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            user.setAccountlocked(true);
+            userDao.save(user);
+        }
+     }
+
+    @Override
+    public void resetFailedLoginsForUser(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            user.setFailedlogons(0);
+            userDao.save(user);
+        }
     }
 }

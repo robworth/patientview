@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- *
- */
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface UserManager {
 
@@ -65,7 +62,13 @@ public interface UserManager {
 
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
 
-    List<UnitAdmin> getUnitUsers(String unitcode);
-
     boolean existsInRadar(String nhsno);
+
+    void incrementFailedLogins(String username);
+
+    int getFailedLogins(String username);
+
+    void lockUserAccount(String username);
+
+    void resetFailedLoginsForUser(String username);
 }
