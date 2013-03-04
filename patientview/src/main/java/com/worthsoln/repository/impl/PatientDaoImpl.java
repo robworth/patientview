@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -99,33 +98,33 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' ";
 
         if (!"".equals(unitcode)) {
-            sql += "AND usermapping.unitcode = :unitcode ";
+            sql += "AND usermapping.unitcode = ? ";
         }
 
-        sql += "AND usermapping.nhsno LIKE :nhsno "
-                + "AND user.name LIKE :name ";
+        sql += "AND usermapping.nhsno LIKE ? "
+                + "AND user.name LIKE ? ";
 
         if (!showgps) {
             sql += "AND user.name NOT LIKE '%-GP' ";
         }
 
-        sql += "AND specialtyuserrole.specialty_id = :specialtyId ORDER BY user.name ASC ";
+        sql += "AND specialtyuserrole.specialty_id = ? ORDER BY user.name ASC ";
 
-        Query query = getEntityManager().createQuery(sql, PatientLogonWithTreatment.class);
+        List<Object> params = new ArrayList<Object>();
 
         if (!"".equals(unitcode)) {
-            query.setParameter("unitcode", unitcode);
+            params.add(unitcode);
         }
 
-        query.setParameter("nhsno", nhsno);
-        query.setParameter("specialtyId", specialty.getId());
-        query.setParameter("name", name);
+        params.add(nhsno);
+        params.add(specialty.getId());
+        params.add(name);
 
-        return query.getResultList();
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
     }
 
     @Override
-    public List getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
+    public List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
         String sql = "SELECT " +
                 "   user.username,  " +
                 "   user.password, " +
@@ -146,22 +145,22 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 "AND " +
                 "   user.id = specialtyuserrole.user_id " +
                 "AND " +
-                "   usermapping.unitcode = :unitcode " +
+                "   usermapping.unitcode = ? " +
                 "AND " +
                 "   specialtyuserrole.role = 'patient' " +
                 "AND " +
                 "   user.name NOT LIKE '%-GP' " +
                 "AND " +
-                "   specialtyuserrole.specialty_id = :specialtyId " +
+                "   specialtyuserrole.specialty_id = ? " +
                 "ORDER BY " +
                 "   user.name ASC";
 
-        Query query = getEntityManager().createQuery(sql, PatientLogonWithTreatment.class);
+        List<Object> params = new ArrayList<Object>();
 
-        query.setParameter("unitcode", unitcode);
-        query.setParameter("specialtyId", specialty.getId());
+        params.add(unitcode);
+        params.add(specialty.getId());
 
-        return query.getResultList();
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
     }
 
     @Override
@@ -190,6 +189,24 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patient.setPostcode(resultSet.getString("postcode"));
 
             return patient;
+        }
+    }
+
+    private class PatientLogonWithTreatmentMapper implements RowMapper<PatientLogonWithTreatment> {
+        @Override
+        public PatientLogonWithTreatment mapRow(ResultSet resultSet, int i) throws SQLException {
+            PatientLogonWithTreatment patientLogonWithTreatment = new PatientLogonWithTreatment();
+
+            patientLogonWithTreatment.setUsername(resultSet.getString("username"));
+            patientLogonWithTreatment.setPassword(resultSet.getString("password"));
+            patientLogonWithTreatment.setName(resultSet.getString("name"));
+            patientLogonWithTreatment.setEmail(resultSet.getString("email"));
+            patientLogonWithTreatment.setNhsno(resultSet.getString("nhsno"));
+            patientLogonWithTreatment.setFirstlogon(resultSet.getBoolean("firstlogon"));
+            patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
+            patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
+
+            return patientLogonWithTreatment;
         }
     }
 }
