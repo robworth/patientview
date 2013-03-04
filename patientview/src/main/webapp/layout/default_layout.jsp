@@ -9,6 +9,7 @@
     <tiles:insert attribute="top_nav" />
     <tiles:insert attribute="info_strip" />
     <tiles:insert attribute="main_header" />
+    <tiles:insert attribute="left_nav" />
     <tiles:insert attribute="body_header" />
     <tiles:insert attribute="body" />
     <tiles:insert attribute="body_footer" />
