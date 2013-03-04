@@ -1,9 +1,10 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.database.DatabaseDAO;
+import com.worthsoln.patientview.logon.PatientLogonWithTreatment;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Patient_;
 import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.PatientDao;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -22,9 +24,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
 @Repository(value = "patientDao")
 public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements PatientDao {
 
@@ -89,65 +88,80 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     @Override
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
-
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-
-        UnitPatientsWithTreatmentDao patientDao = new UnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,
-                specialty);
-        return dao.retrieveList(patientDao);
-
-        /*
-
-        todo could replace this with the following to run with JPA native
-
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, patient.treatment "
                 + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
-                + "WHERE specialtyuserrole.role = (?1) "
+                + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
                 + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' ";
 
         if (!"".equals(unitcode)) {
-            sql += "AND usermapping.unitcode = (?2) ";
+            sql += "AND usermapping.unitcode = :unitcode ";
         }
-        sql += "AND usermapping.nhsno LIKE (?3) AND user.name LIKE (?4) ";
+
+        sql += "AND usermapping.nhsno LIKE :nhsno "
+                + "AND user.name LIKE :name ";
+
         if (!showgps) {
-            sql += "AND user.name NOT LIKE (?5) ";
+            sql += "AND user.name NOT LIKE '%-GP' ";
         }
-        sql += "AND specialtyuserrole.specialty_id = (?6) ";
 
-        sql += "ORDER BY user.name ASC ";
+        sql += "AND specialtyuserrole.specialty_id = :specialtyId ORDER BY user.name ASC ";
 
-        Query query = getEntityManager().createNativeQuery(sql);
+        Query query = getEntityManager().createQuery(sql, PatientLogonWithTreatment.class);
 
-        query.setParameter(1, "patient");
         if (!"".equals(unitcode)) {
-            query.setParameter(2, unitcode);
+            query.setParameter("unitcode", unitcode);
         }
-        query.setParameter(3, "%" + nhsno + "%");
-        query.setParameter(4, "%" + name + "%");
-        if (!showgps) {
-            query.setParameter(5, "%-GP");
-        }
-        query.setParameter(6, specialty.getId());
 
-        List results = query.getResultList();
+        query.setParameter("nhsno", nhsno);
+        query.setParameter("specialtyId", specialty.getId());
+        query.setParameter("name", name);
 
-        return results;
-
-        */
+        return query.getResultList();
     }
 
     @Override
     public List getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
+        String sql = "SELECT " +
+                "   user.username,  " +
+                "   user.password, " +
+                "   user.name, " +
+                "   user.email, " +
+                "   usermapping.nhsno, " +
+                "   usermapping.unitcode, " +
+                "   user.firstlogon, " +
+                "   patient.treatment " +
+                "FROM " +
+                "   user, " +
+                "   specialtyuserrole, " +
+                "   usermapping " +
+                "LEFT JOIN " +
+                "   patient ON usermapping.nhsno = patient.nhsno " +
+                "WHERE " +
+                "   usermapping.username = user.username " +
+                "AND " +
+                "   user.id = specialtyuserrole.user_id " +
+                "AND " +
+                "   usermapping.unitcode = :unitcode " +
+                "AND " +
+                "   specialtyuserrole.role = 'patient' " +
+                "AND " +
+                "   user.name NOT LIKE '%-GP' " +
+                "AND " +
+                "   specialtyuserrole.specialty_id = :specialtyId " +
+                "ORDER BY " +
+                "   user.name ASC";
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
+        Query query = getEntityManager().createQuery(sql, PatientLogonWithTreatment.class);
 
-        UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode, specialty);
-        return dao.retrieveList(patientDao);
+        query.setParameter("unitcode", unitcode);
+        query.setParameter("specialtyId", specialty.getId());
+
+        return query.getResultList();
     }
 
     @Override
@@ -178,6 +192,4 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             return patient;
         }
     }
-
-
 }

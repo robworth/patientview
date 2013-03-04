@@ -29,7 +29,7 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
 
     @Override
     public void deleteOtherDiagnoses(String nhsno, String unitcode) {
-
+        diagnosisDao.deleteOtherDiagnoses(nhsno, unitcode);
     }
 }
 

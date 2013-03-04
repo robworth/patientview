@@ -1,12 +1,11 @@
 package com.worthsoln.security;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.service.UserManager;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -18,13 +17,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- *  Hook login/auth success to implement what was in the LockOutRealm - failed login lockouts
- *
- *  todo move this sql to a proper dao managed by spring jdbc template
+ * Hook login/auth success to implement what was in the LockOutRealm - failed login lockouts
+ * <p/>
+ * todo move this sql to a proper dao managed by spring jdbc template
  */
 public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-
-    private DatabaseDAO dao = new DatabaseDAO("patientview");
 
     @Inject
     private UserManager userManager;
@@ -32,9 +29,8 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
-
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-        resetFailedLoginsForUser(securityUser.getUsername());
+        LegacySpringUtils.getUserManager().resetFailedLoginsForUser(securityUser.getUsername());
 
         // remove the account locked token from the session, we don't get any incorrect login error messages
         request.getSession().setAttribute(PatientViewAuthenticationFailureHandler.ACCOUNT_LOCKED_SESSION_TOKEN, null);
@@ -61,14 +57,5 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
             // if this user has only a single specialty route to the home page : /<specialty-context>/logged_in.do
             response.sendRedirect("/" + specialty.getContext() + "/logged_in.do");
         }
-    }
-
-    // todo work out if we need to close this connection manually?
-    private void resetFailedLoginsForUser(String username) {
-
-        String resetLoginsSql = "UPDATE user SET failedlogons = 0 WHERE username = ?";
-
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(resetLoginsSql, new Object[]{username});
-        dao.doExecute(query);
     }
 }

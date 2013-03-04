@@ -8,7 +8,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.parser.XmlParserUtils;
 

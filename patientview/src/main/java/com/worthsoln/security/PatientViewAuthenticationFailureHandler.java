@@ -1,9 +1,6 @@
 package com.worthsoln.security;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.DatabaseQuery;
-import com.worthsoln.database.DatabaseUpdateQuery;
-import org.apache.commons.dbutils.ResultSetHandler;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.LockedException;
@@ -15,19 +12,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
- *  Handle the account locking
+ * Handle the account locking
  */
 public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAuthenticationFailureHandler {
 
     public static final String ACCOUNT_LOCKED_SESSION_TOKEN = "lockedOut";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientViewAuthenticationFailureHandler.class);
-
-    private DatabaseDAO dao = new DatabaseDAO("patientview");
 
     private int allowedfailedlogons;
 
@@ -55,11 +48,10 @@ public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAut
             } else {
 
                 // assume a failed login that contributes to an account lockout
-                incrementFailedLogins(username);
+                LegacySpringUtils.getUserManager().incrementFailedLogins(username);
 
-                if (getFailedLogins(username) >= allowedfailedlogons) {
-
-                    lockUserAccount(username);
+                if (LegacySpringUtils.getUserManager().getFailedLogins(username) >= allowedfailedlogons) {
+                    LegacySpringUtils.getUserManager().lockUserAccount(username);
                     addAccountLockedTokenToSession(request);
                     LOGGER.info("User locked out, username: {}", username);
                 }
@@ -80,39 +72,5 @@ public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAut
 
     public void setAllowedfailedlogons(int allowedfailedlogons) {
         this.allowedfailedlogons = allowedfailedlogons;
-    }
-
-    private void incrementFailedLogins(String username) {
-
-        String incrementSql = "UPDATE user SET failedlogons = failedlogons + 1 WHERE username = ?";
-
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(incrementSql, new Object[]{username});
-        dao.doExecute(query);
-    }
-
-    private int getFailedLogins(String username) {
-
-        String failedLoginsSql =  "SELECT failedlogons FROM user WHERE username = ?";
-        DatabaseQuery query = new DatabaseQuery(failedLoginsSql, new Object[]{username},
-                new ResultSetHandler() {
-            @Override
-            public Integer handle(ResultSet resultSet) throws SQLException {
-                if (resultSet.next()) {
-                    return resultSet.getInt("failedlogons");
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        return (Integer) dao.doExecuteQuery(query);
-    }
-
-    private void lockUserAccount(String username) {
-
-        String resetLoginsSql = "UPDATE user SET accountlocked = 1 WHERE username = ?";
-
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(resetLoginsSql, new Object[]{username});
-        dao.doExecute(query);
     }
 }

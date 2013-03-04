@@ -25,4 +25,6 @@ public interface TestResultManager {
     String getLatestWeightFromResults(User user);
 
     void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
+
+    void deleteTestResults(String nhsno, String unitcode);
 }

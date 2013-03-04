@@ -71,4 +71,9 @@ public class TestResultManagerImpl implements TestResultManager {
                                           Date endDate) {
         testResultDao.deleteTestResultsWithinTimeRange(nhsno, unitcode, testcode, startDate, endDate);
     }
+
+    @Override
+    public void deleteTestResults(String nhsno, String unitcode) {
+        testResultDao.deleteTestResults(nhsno, unitcode);
+    }
 }

@@ -32,7 +32,7 @@ public class UnitUserEditAction {
         Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
         request.setAttribute("unit", unit);
 
-        List unitUsers = LegacySpringUtils.getUserManager().getUnitUsers(unitcode);
+        List unitUsers = LegacySpringUtils.getUnitManager().getUnitUsers(unitcode);
 
         request.setAttribute("unitUsers", unitUsers);
 

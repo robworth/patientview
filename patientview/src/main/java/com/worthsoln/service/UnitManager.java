@@ -1,5 +1,6 @@
 package com.worthsoln.service;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.patientview.model.User;
@@ -36,4 +37,6 @@ public interface UnitManager {
     List<UnitStat> getPatientCountsForUnit(String unitCode);
 
     List<UnitStat> getUnitStatsForUnit(String unitCode);
+
+    List<UnitAdmin> getUnitUsers(String unitcode);
 }

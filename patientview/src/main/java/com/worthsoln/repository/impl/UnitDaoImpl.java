@@ -1,5 +1,6 @@
 package com.worthsoln.repository.impl;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.Unit_;
@@ -8,6 +9,7 @@ import com.worthsoln.repository.UnitDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -125,5 +127,32 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
         return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
+        String sql = "SELECT " +
+                "   user.* " +
+                "FROM " +
+                "   user, " +
+                "   usermapping, " +
+                "   specialtyuserrole " +
+                "WHERE " +
+                "   user.username = usermapping.username " +
+                "AND " +
+                "   user.id = specialtyuserrole.user_id " +
+                "AND " +
+                "   specialtyuserrole.specialty_id = :specialtyId " +
+                "AND " +
+                "   usermapping.unitcode = :unitcode " +
+                "AND " +
+                "   (specialtyuserrole.role = 'unitadmin' OR specialtyuserrole.role = 'unitstaff')";
+
+        Query query = getEntityManager().createQuery(sql, UnitAdmin.class);
+
+        query.setParameter("specialtyId", specialty.getId());
+        query.setParameter("unitcode", unitcode);
+
+        return query.getResultList();
     }
 }

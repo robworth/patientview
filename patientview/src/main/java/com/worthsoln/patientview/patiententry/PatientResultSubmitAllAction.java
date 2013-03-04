@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.patiententry;
 
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.PatientUtils;
 import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.Comment;
@@ -28,15 +27,13 @@ public class PatientResultSubmitAllAction extends Action {
         Map<Long, PatientEnteredResult> patientResults =
                 (Map<Long, PatientEnteredResult>) session.getAttribute(patientResultName);
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-
         String nhsno = PatientUtils.retrieveNhsNo(request);
 
         for (PatientEnteredResult patientResult : patientResults.values()) {
-            addPatientEnteredResultToDatabase(dao, nhsno, patientResult.getResultCode1(),
+            addPatientEnteredResultToDatabase(nhsno, patientResult.getResultCode1(),
                     patientResult.getValue1(), patientResult.getDatetime());
             if (!"".equals(patientResult.getResultCode2())) {
-                addPatientEnteredResultToDatabase(dao, nhsno, patientResult.getResultCode2(),
+                addPatientEnteredResultToDatabase(nhsno, patientResult.getResultCode2(),
                         patientResult.getValue2(), patientResult.getDatetime());
             }
         }
@@ -46,7 +43,7 @@ public class PatientResultSubmitAllAction extends Action {
         return mapping.findForward("success");
     }
 
-    private void addPatientEnteredResultToDatabase(DatabaseDAO dao, String nhsno,
+    private void addPatientEnteredResultToDatabase(String nhsno,
                                                    String testCode, String testValue, Calendar dateTime) {
         if ("resultcomment".equalsIgnoreCase(testCode)) {
             Comment comment = new Comment(dateTime, nhsno, testValue);

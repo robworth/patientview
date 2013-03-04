@@ -1,7 +1,6 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.edtacode.EdtaCodeUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.news.NewsUtils;
@@ -21,9 +20,8 @@ public class PatientDetailsAction {
                                  HttpServletResponse response) throws Exception {
         NewsUtils.putAppropriateNewsForViewingInRequest(request);
 
-        DatabaseDAO dao = getDao(request);
-
-        List<PatientDetails> patientDetails = PatientDetailsUtils.buildPatientDetails(request, dao);
+        List<PatientDetails> patientDetails = LegacySpringUtils.getPatientManager().getPatientDetails(
+                LegacySpringUtils.getUserManager().getLoggedInUser().getUsername());
 
         request.setAttribute("patientDetails", patientDetails);
 
@@ -37,9 +35,10 @@ public class PatientDetailsAction {
             dynaForm.set("email", LegacySpringUtils.getUserManager().getLoggedInUser().getEmail());
         }
 
-        EdtaCodeUtils.addEdtaCodeToRequest("static", "staticLinks", dao, request);
+        EdtaCodeUtils.addEdtaCodeToRequest("static", "staticLinks", request);
+
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         return LogonUtils.logonChecks(mapping, request);
     }
-
 }

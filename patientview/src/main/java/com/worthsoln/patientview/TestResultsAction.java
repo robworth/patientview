@@ -1,7 +1,6 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Panel;
@@ -26,15 +25,19 @@ public class TestResultsAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        DatabaseDAO dao = getDao(request);
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
+
         if (user != null) {
             request.setAttribute("user", user);
 
             Panel currentPanel = managePanels(request);
-            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(dao, currentPanel, user);
+
+            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
+
             Collections.sort(results, TestResultWithUnitShortname.Order.ByTimestamp.descending());
+
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
+
             managePages(request, resultsInRecords);
             request.setAttribute("results", resultsInRecords);
 
@@ -45,12 +48,13 @@ public class TestResultsAction {
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");
         }
+
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    private List<TestResultWithUnitShortname> extractTestResultsWithComments(DatabaseDAO dao,
-                                                                             Panel currentPanel, User user) {
+    private List<TestResultWithUnitShortname> extractTestResultsWithComments(Panel currentPanel, User user) {
         List<TestResultWithUnitShortname> results
                 = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, currentPanel);
 

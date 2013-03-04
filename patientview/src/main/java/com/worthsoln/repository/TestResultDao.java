@@ -27,4 +27,6 @@ public interface TestResultDao {
     String getLatestWeightFromResults(String nhsno, List<String> unitcodes);
 
     void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
+
+    void deleteTestResults(String nhsno, String unitcode);
 }

@@ -54,4 +54,15 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
 
         query.executeUpdate();
     }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        Query query = getEntityManager().createQuery("DELETE FROM letter WHERE nhsno = :nhsno AND unitcode " +
+                "= :unitcode");
+
+        query.setParameter("nhsno", unitcode);
+        query.setParameter("unitcode", unitcode);
+
+        query.executeUpdate();
+    }
 }

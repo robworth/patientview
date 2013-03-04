@@ -22,4 +22,6 @@ public interface LetterManager {
     List<Letter> getAll();
 
     void delete(String nhsno, String unitcode, Date date);
+
+    void delete(String nhsno, String unitcode);
 }
