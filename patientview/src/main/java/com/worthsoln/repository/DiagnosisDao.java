@@ -17,4 +17,6 @@ public interface DiagnosisDao {
     List<Diagnosis> getOtherDiagnoses(String nhsno, String unitcode);
 
     void save(Diagnosis diagnosis);
+
+    public void deleteOtherDiagnoses(String nhsno, String unitcode);
 }

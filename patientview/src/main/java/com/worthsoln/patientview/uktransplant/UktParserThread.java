@@ -5,7 +5,6 @@ import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.ServletContext;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.ParserThread;
 
 public class UktParserThread implements Runnable, ParserThread {
@@ -44,9 +43,8 @@ public class UktParserThread implements Runnable, ParserThread {
     }
 
     private void updateUktFiles(File[] uktFiles) {
-        DatabaseDAO dao = new DatabaseDAO("patientview");
         for (int i = 0; i < uktFiles.length; i++) {
-            UktParserUtils.updateData(servletContext, uktFiles[i], dao);
+            UktParserUtils.updateData(servletContext, uktFiles[i]);
             uktFiles[i].delete();
         }
     }

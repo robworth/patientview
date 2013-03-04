@@ -13,4 +13,6 @@ public interface UKTransplantManager {
     UktStatus getUktStatus(String nhsno);
 
     void save(UktStatus uktStatus);
+
+    void deleteAll();
 }

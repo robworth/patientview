@@ -4,7 +4,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.ServletContext;
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.patientview.FindXmlFiles;
 import com.worthsoln.patientview.ParserThread;
 
@@ -45,9 +44,8 @@ public class XmlParserThread implements Runnable, ParserThread {
     }
 
     private void updateXmlFiles(File[] xmlFiles) {
-        DatabaseDAO dao = new DatabaseDAO("patientview");
         for (int i = 0; i < xmlFiles.length; i++) {
-            XmlParserUtils.updateXmlData(servletContext, xmlFiles[i], dao);
+            XmlParserUtils.updateXmlData(servletContext, xmlFiles[i]);
             //xmlFiles[i].delete();
         }
     }

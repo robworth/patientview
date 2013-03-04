@@ -5,19 +5,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.utils.LegacySpringUtils;
-import com.worthsoln.database.DatabaseDAO;
 import org.apache.commons.beanutils.BeanUtils;
 
 public class EdtaCodeUtils {
 
-    public static void addEdtaCodeToRequest(String code, String attributeName, DatabaseDAO dao,
-                                            HttpServletRequest request) {
+    public static void addEdtaCodeToRequest(String code, String attributeName, HttpServletRequest request) {
         EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(code);
         request.setAttribute(attributeName, edtaCode);
     }
 
     public static List getCodeLinksForLinkType(String linkTypeMappingParameter) throws Exception {
-
         return LegacySpringUtils.getEdtaCodeManager().get(linkTypeMappingParameter);
     }
 

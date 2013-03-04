@@ -1,10 +1,10 @@
 package com.worthsoln.patientview.logon;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -15,7 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PatientEditAction extends DatabaseAction {
+public class PatientEditAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -36,7 +36,9 @@ public class PatientEditAction extends DatabaseAction {
         boolean accountlocked = "true".equals(BeanUtils.getProperty(form, "accountlocked"));
         String screenname = BeanUtils.getProperty(form, "screenname");
         String mappingToFind = "";
+
         List duplicateUsers = findDuplicateUsers(nhsno, username);
+
         if (!duplicateUsers.isEmpty() && !overrideDuplicateNhsno.equals("on")) {
             request.setAttribute(LogonUtils.NHSNO_ALREADY_EXISTS, nhsno);
             mappingToFind = "input";
@@ -55,6 +57,7 @@ public class PatientEditAction extends DatabaseAction {
             }
 
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+
             if (unit != null) {
                 request.setAttribute("unit", unit);
             }
@@ -63,6 +66,7 @@ public class PatientEditAction extends DatabaseAction {
             request.setAttribute("patients", patients);
             mappingToFind = "success";
         }
+
         return mapping.findForward(mappingToFind);
     }
 
@@ -76,27 +80,25 @@ public class PatientEditAction extends DatabaseAction {
 
     private static Calendar createDatestamp(String dateTimeString) {
         Calendar datestamp = null;
+
         if (!"".equals(dateTimeString)) {
             datestamp = Calendar.getInstance();
+
             int year = Integer.parseInt(dateTimeString.substring(0, 4));
             int month = Integer.parseInt(dateTimeString.substring(5, 7));
             int day = Integer.parseInt(dateTimeString.substring(8, 10));
+
             datestamp.set(year, month - 1, day, 0, 0, 10);
             datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(11, 13)));
             datestamp.set(Calendar.MINUTE, Integer.parseInt(dateTimeString.substring(14, 16)));
+
             if (dateTimeString.length() == 19) {
                 datestamp.set(Calendar.SECOND, Integer.parseInt(dateTimeString.substring(17, 19)));
             }
+
             datestamp.set(Calendar.MILLISECOND, 0);
         }
         return datestamp;
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }
