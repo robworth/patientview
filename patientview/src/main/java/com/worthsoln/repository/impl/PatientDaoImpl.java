@@ -166,7 +166,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     @Override
     public List<Patient> getUktPatients() {
 
-        String sql = "SELECT DISTINCT patient.id, patient.nhsno, patient.surname, patient.forename, " +
+        String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, " +
                 " patient.dateofbirth, patient.postcode FROM patient, user, usermapping " +
                 " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno " +
                 "AND user.username = usermapping.username " +
@@ -181,7 +181,6 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
 
             Patient patient = new Patient();
-            patient.setId(resultSet.getLong("id"));
             patient.setNhsno(resultSet.getString("nhsno"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setForename(resultSet.getString("forename"));
