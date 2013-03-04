@@ -3,6 +3,7 @@ package com.worthsoln.patientview.comment;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentViewAction {
+public class CommentViewAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {

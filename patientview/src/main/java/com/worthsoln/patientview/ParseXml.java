@@ -5,13 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.parser.XmlParserUtils;
 
-public class ParseXml {
+public class ParseXml extends Action {
 
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)

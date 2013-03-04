@@ -7,6 +7,7 @@ import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.patientview.news.NewsUtils;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -17,7 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoggedInAction {
+public class LoggedInAction extends Action {
 
     private final DateFormat format = new SimpleDateFormat("d MMM yyyy HH:mm");
 
