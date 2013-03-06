@@ -6,36 +6,28 @@
 
 <html:xhtml/>
 <div class="span9">
-<table border="0" width="100%">
-  <tr>
-    <td>
+    <a class="pull-right" href="http://www.renal.org/rixg/adminhelp.html" target="_blank">Help</a>
       <logic:present name="unit">
         <div class="page-header"><h1>Patients for Unit <bean:write name="unit" property="name"/></h1></div>
       </logic:present>
-    </td>
 
-    <td align="right"><a href="http://www.renal.org/rixg/adminhelp.html" target="_blank">Help</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-  </tr>
-</table>
 
-<br/>
 
 <logic:empty name="patients">
-  <table cellpadding="3" border="0">
-    <tr valign="top">
-      <td class="tableheader">No matching patients found.</td>
-    </tr>
-  </table>
+  <p>No matching patients found.</p>
 </logic:empty>
 
 
 <logic:notEmpty name="patients">
-  <table cellpadding="3" border="0">
+  <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
+      <thead>
       <tr>
-        <td class="tableheader">Name<br />(edit)</td>
-        <td class="tableheader">NHS Number<br />(view patient)</td>
-        <td class="tableheader">Treatment</td>
+        <th class="tableheader">Name<br />(edit)</th>
+        <th class="tableheader">NHS Number<br />(view patient)</th>
+        <th class="tableheader">Treatment</th>
+        <th colspan="4">&nbsp;</th>
       </tr>
+      </thead>
     <logic:iterate id="patient" name="patients" type="com.worthsoln.patientview.logon.PatientLogon">
 
       <%
@@ -92,32 +84,41 @@
           </html:form>
         </logic:present>
 --%>
+
         <logic:present role="superadmin,unitadmin">
-          <html:form action="/control/logViewForPatient">
-            <html:hidden name="patient" property="nhsno" />
-            <td><html:submit value="Log" styleClass="formbutton" /></td>
-          </html:form>
+          <td>
+              <html:form action="/control/logViewForPatient">
+                <html:hidden name="patient" property="nhsno" />
+                <html:submit value="Log" styleClass="formbutton" />
+              </html:form>
+          </td>
         </logic:present>
 
         <logic:present role="superadmin,unitadmin">
-          <html:form action="/control/viewsOfPatient">
-            <html:hidden name="patient" property="nhsno" />
-            <td><html:submit value="Views" styleClass="formbutton" /></td>
-          </html:form>
+            <td>
+              <html:form action="/control/viewsOfPatient">
+                <html:hidden name="patient" property="nhsno" />
+                <html:submit value="Views" styleClass="formbutton" />
+              </html:form>
+            </td>
         </logic:present>
 
         <logic:present role="superadmin,unitadmin">
-          <html:form action="/control/dataLoadsForPatient">
-            <html:hidden name="patient" property="nhsno" />
-            <td><html:submit value="Data" styleClass="formbutton" /></td>
-          </html:form>
+            <td>
+              <html:form action="/control/dataLoadsForPatient">
+                <html:hidden name="patient" property="nhsno" />
+                <html:submit value="Data" styleClass="formbutton" />
+              </html:form>
+            </td>
         </logic:present>
 
         <logic:present role="superadmin,unitadmin">
-          <html:form action="/control/activityByUser">
-            <html:hidden name="patient" property="username" />
-            <td><html:submit value="Activity" styleClass="formbutton" /></td>
-          </html:form>
+            <td>
+              <html:form action="/control/activityByUser">
+                <html:hidden name="patient" property="username" />
+                <html:submit value="Activity" styleClass="formbutton" />
+              </html:form>
+            </td>
         </logic:present>
 
         <logic:present tenancy="ibd">
