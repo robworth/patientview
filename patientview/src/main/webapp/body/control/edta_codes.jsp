@@ -18,15 +18,18 @@
     </thead>
     <tbody>
   <logic:iterate id="edtaCode" name="edtaCodes" >
-    <html:form action="/control/edtaCodeEdit">
+
        <tr>
          <td class="tablecell"><bean:write name="edtaCode" property="edtaCode" /></td>
          <td class="tablecell"><bean:write name="edtaCode" property="description" /></td>
-         <html:hidden property="edtaCode" name="edtaCode" />
-         <html:hidden property="linkType" name="codeType" />
-         <td><html:submit value="Edit" styleClass="btn" /></td>
+         <td>
+            <html:form action="/control/edtaCodeEdit">
+                <html:hidden property="edtaCode" name="edtaCode" />
+                <html:hidden property="linkType" name="codeType" />
+                <html:submit value="Edit" styleClass="btn" />
+            </html:form>
+         </td>
        </tr>
-     </html:form>
    </logic:iterate>
     </tbody>
  </table>
