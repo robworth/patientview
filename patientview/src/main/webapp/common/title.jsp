@@ -22,6 +22,9 @@
                 %>
                     <li class="pull-right "><div class="navText">Logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
                     <logic:present role="superadmin,unitadmin,unitstaff">
+                        <li><html:link forward="controlPasswordChangeInput">change password</html:link></li>
+                    </logic:present>
+                    <logic:present role="superadmin,unitadmin,unitstaff">
                         <li><html:link action="logged_in">Back to Admin Area</html:link></li>
                     </logic:present>
                     <li><html:link action="logout">Logout</html:link></li>
