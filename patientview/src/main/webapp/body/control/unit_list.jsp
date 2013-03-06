@@ -26,17 +26,19 @@
           <td class="tablecell"><bean:write name="unit" property="name"/></td>
 
           <logic:present role="superadmin,unitadmin">
-            <html:form action="/control/unitEdit">
-              <html:hidden name="unit" property="unitcode"/>
-              <td><html:submit value="Edit" styleClass="btn"/></td>
-            </html:form>
-
+            <td>
+                <html:form action="/control/unitEdit">
+                  <html:hidden name="unit" property="unitcode"/>
+                  <html:submit value="Edit" styleClass="btn"/>
+                </html:form>
+            </td>
+            <td>
             <html:form action="/control/unitStat">
               <html:hidden name="unit" property="unitcode"/>
-              <td><html:submit value="Stats" styleClass="btn"/></td>
+              <html:submit value="Stats" styleClass="btn"/>
             </html:form>
+            </td>
           </logic:present>
-
         </tr>
       </logic:iterate>
     </logic:notEmpty>
