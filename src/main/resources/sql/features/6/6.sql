@@ -1,36 +1,30 @@
--- Refactor 'RPV' to 'renal' and 'tenancy' to 'specialty'
+/**
+      Patch 4: PV and Radar single user table
 
-ALTER TABLE `unit`
-  CHANGE `rpvadminname` `renaladminname` VARCHAR(100),
-  CHANGE `rpvadminphone` `renaladminphone` VARCHAR(100),
-  CHANGE `rpvadminemail` `renaladminemail` VARCHAR(100);
+      NOT FULLY TESTED ON DEV YET
+ */
 
-RENAME TABLE `tenancy` TO `specialty`;
+CREATE TABLE `rdr_user_mapping` (
+  `userId` bigint(20) NOT NULL,
+  `radarUserId` bigint(20) NOT NULL,
+  `role` varchar(20) NOT NULL,
+  PRIMARY KEY (`userId`),
+  constraint `FK_RDR_USER_MAPPING_USERID` foreign key (`userId`) references `user`(`id`) on delete Cascade
+);
 
-ALTER TABLE `tenancyuserrole`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
+/*
+ONLY DO THIS AFTER YOU HAVE RUN THE EXPORT FILE TO MAP THESE FIELDS INTO RPV
+*/
+ALTER TABLE `tbl_adminusers`
+  DROP COLUMN `uEmail`,
+  DROP COLUMN `uPass`,
+  DROP COLUMN `uUserName`;
 
-RENAME TABLE `tenancyuserrole` TO `specialtyuserrole`;
+ALTER TABLE `tbl_patient_users`
+  DROP COLUMN `pUserName`,
+  DROP COLUMN `pPassWord`;
 
-ALTER TABLE `edtacode`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
-ALTER TABLE `log`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
-
-ALTER TABLE `news`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
-ALTER TABLE `result_heading`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
-ALTER TABLE `splashpage`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
-ALTER TABLE `unit`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
-ALTER TABLE `usermapping`
-  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
-
-UPDATE specialty SET context = 'renal' WHERE id = 1;
+ALTER TABLE `tbl_users`
+  DROP COLUMN `uEmail`,
+  DROP COLUMN `uPass`,
+  DROP COLUMN `uUserName`;

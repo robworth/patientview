@@ -1,19 +1,36 @@
-/**
-      Patch 4: RPV - Group: HNF1 Beta - Bespoke Qs on Radar
- */
+-- Refactor 'RPV' to 'renal' and 'tenancy' to 'specialty'
 
-CREATE TABLE rdr_hnf1b_misc (
-  id int(11) unsigned NOT NULL auto_increment,
-  radar_no bigint(20) NOT NULL,
-  renalCysts int(11) default '0',
-  singleKidney int(11) default '0',
-  otherRenalMalformations int(11) default '0',
-  otherRenalMalformationsDetails varchar(1000) default NULL,
-  diabetes int(11) default '0',
-  ageAtDiabetesDiagnosis int(11) default '0',
-  gout int(11) default '0',
-  ageAtGoutDiagnosis int(11) default '0',
-  genitalMalformation int(11) default '0',
-  genitalMalformationDetails varchar(1000) default NULL,
-  PRIMARY KEY  (id)
-);
+ALTER TABLE `unit`
+  CHANGE `rpvadminname` `renaladminname` VARCHAR(100),
+  CHANGE `rpvadminphone` `renaladminphone` VARCHAR(100),
+  CHANGE `rpvadminemail` `renaladminemail` VARCHAR(100);
+
+RENAME TABLE `tenancy` TO `specialty`;
+
+ALTER TABLE `tenancyuserrole`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
+
+RENAME TABLE `tenancyuserrole` TO `specialtyuserrole`;
+
+ALTER TABLE `edtacode`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+ALTER TABLE `log`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
+
+ALTER TABLE `news`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+ALTER TABLE `result_heading`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+ALTER TABLE `splashpage`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+ALTER TABLE `unit`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+ALTER TABLE `usermapping`
+  CHANGE `tenancy_id` `specialty_id` BIGINT(20) NOT NULL;
+
+UPDATE specialty SET context = 'renal' WHERE id = 1;
