@@ -53,7 +53,7 @@ public class DemographicsDecryptData2SqlMapper {
             String updateStatement = "UPDATE TBL_DEMOGRAPHICS SET ";
 
             if (demographics.getNhsNumber() != null) {
-                updateStatement += " NHS_NO = " + demographics.getNhsNumber() + ", ";
+                updateStatement += " NHS_NO = '" + demographics.getNhsNumber() + "', ";
             }
 
             if (demographics.getHospitalNumber() != null) {
