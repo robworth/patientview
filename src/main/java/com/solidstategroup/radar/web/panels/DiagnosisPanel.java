@@ -522,7 +522,7 @@ public class DiagnosisPanel extends Panel {
 
         componentsToUpdate.add(clinicalPresentationFeedback);
 
-        Label radarFamilyLabel = new Label("radarFamilyLabel", "RADAR No") {
+        Label radarFamilyLabel = new Label("radarFamilyLabel", "RaDaR No") {
 
             @Override
             public boolean isVisible() {

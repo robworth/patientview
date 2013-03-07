@@ -15,6 +15,6 @@ public abstract class BasePage extends WebPage {
     }
 
     public String getTitle() {
-        return "RADAR - National Renal Rare Disease Registry";
+        return "RaDaR - National Renal Rare Disease Registry";
     }
 }
