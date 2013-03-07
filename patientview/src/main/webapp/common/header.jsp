@@ -4,6 +4,7 @@
     <link href="/css/datepicker.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/slider.css"/>
+    <link rel="icon" type="image/png" href="/images/kidney.gif">
     <!--[if IE]>
         <link href="/css/ie.css" rel="stylesheet">
     <![endif]-->

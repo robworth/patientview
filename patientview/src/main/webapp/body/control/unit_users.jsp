@@ -24,18 +24,22 @@
         <td class="tablecell"><bean:write name="unitUser" property="displayRole"/></td>
 
         <logic:present role="superadmin,unitadmin">
-          <html:form action="/control/unitUserEditInput">
-            <html:hidden name="unitUser" property="username" />
-            <html:hidden name="unit" property="unitcode" />
-            <td><html:submit value="Edit" styleClass="btn" /></td>
-          </html:form>
+            <td>
+              <html:form action="/control/unitUserEditInput">
+                <html:hidden name="unitUser" property="username" />
+                <html:hidden name="unit" property="unitcode" />
+                <html:submit value="Edit" styleClass="btn" />
+              </html:form>
+            </td>
         </logic:present>
 
         <logic:present role="superadmin,unitadmin">
-          <html:form action="/control/activityByUser">
-            <html:hidden name="unitUser" property="username" />
-            <td><html:submit value="Activity" styleClass="btn" /></td>
-          </html:form>
+            <td>
+              <html:form action="/control/activityByUser">
+                <html:hidden name="unitUser" property="username" />
+                <html:submit value="Activity" styleClass="btn" />
+              </html:form>
+            </td>
         </logic:present>
 
       </tr>
