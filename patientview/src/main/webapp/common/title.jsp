@@ -21,6 +21,22 @@
                 if (LegacySpringUtils.getSecurityUserManager().isLoggedIn()) {
                 %>
                     <li class="pull-right "><div class="navText">Logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div></li>
+
+                    <logic:present role="patient">
+                      <logic:notPresent user="testhd">
+                        <logic:notPresent user="testpd">
+                          <logic:notPresent user="testgen">
+                            <logic:notPresent user="testtx">
+                              <li><html:link forward="patientPasswordChangeInput">Change password</html:link></li>
+                            </logic:notPresent>
+                          </logic:notPresent>
+                        </logic:notPresent>
+                      </logic:notPresent>
+                    </logic:present>
+
+                    <logic:present role="superadmin,unitadmin,unitstaff">
+                        <li><html:link forward="controlPasswordChangeInput">Change password</html:link></li>
+                    </logic:present>
                     <logic:present role="superadmin,unitadmin,unitstaff">
                         <li><html:link action="logged_in">Back to Admin Area</html:link></li>
                     </logic:present>
