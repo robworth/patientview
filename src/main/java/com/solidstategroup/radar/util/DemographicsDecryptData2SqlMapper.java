@@ -1,7 +1,6 @@
 package com.solidstategroup.radar.util;
 
 import com.solidstategroup.radar.model.Demographics;
-import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
