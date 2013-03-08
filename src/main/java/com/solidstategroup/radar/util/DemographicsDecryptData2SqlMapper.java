@@ -92,6 +92,10 @@ public class DemographicsDecryptData2SqlMapper {
                 updateStatement += " ADD4 = \"" + demographics.getAddress4() + "\", ";
             }
 
+            if (demographics.getPostcode() != null) {
+                updateStatement += " POSTCODE = \"" + demographics.getPostcode() + "\", ";
+            }
+
             if (demographics.getPreviousPostcode() != null) {
                 updateStatement += " POSTCODE_OLD = \"" + demographics.getPreviousPostcode() + "\", ";
             }
@@ -132,8 +136,8 @@ public class DemographicsDecryptData2SqlMapper {
                     for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2, DATE_FORMAT_3}) {
                         try {
                             dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
-                        } catch (ParseException e) {
-                            LOGGER.debug("Could not parse date of birth {}", dateOfBirthString);
+                        } catch (Exception e) {
+                            LOGGER.error("Could not parse date of birth {}", dateOfBirthString);
                         }
                     }
 
@@ -143,7 +147,6 @@ public class DemographicsDecryptData2SqlMapper {
                     } else {
                         LOGGER.error("Could not parse date of birth from any format for dob {}",
                                 dateOfBirthString);
-                        String a = "";
                     }
                 }
 
@@ -155,7 +158,8 @@ public class DemographicsDecryptData2SqlMapper {
                 demographics.setPostcode(getDecryptedString(resultSet.getBytes("POSTCODE")));
                 demographics.setPreviousPostcode(getDecryptedString(resultSet.getBytes("POSTCODE_OLD")));
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt demographics information for demographics ", demographics.getId());
+                LOGGER.error("Could not decrypt demographics information for demographics {}", demographics.getId());
+                e.printStackTrace();
             }
 
             return demographics;
