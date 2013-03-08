@@ -9,9 +9,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 
 public class PatientDetailPanel extends Panel {
@@ -31,7 +28,7 @@ public class PatientDetailPanel extends Panel {
         if (demographics.getForename() != null && demographics.getForename().length() > 0) {
             sb.append(demographics.getForename());
             if (demographics.getSurname() != null && demographics.getSurname().length() > 0) {
-                sb.append("");
+                sb.append(" ");
             }
         }
         if (demographics.getSurname() != null && demographics.getSurname().length() > 0) {
@@ -42,9 +39,7 @@ public class PatientDetailPanel extends Panel {
         String dob = "";
         DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
         if (demographics.getDateOfBirth() != null) {
-            DateTimeFormatter df = DateTimeFormat.forPattern("EEE MMM dd HH:mm:ss 'GMT' yyyy");
-            DateTime dateTime = df.withOffsetParsed().parseDateTime(demographics.getDateOfBirth().toString());
-            dob = new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(dateTime.toDate());
+            dob = new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(demographics.getDateOfBirth());
         }
         details.add(new Label("dob", dob));
         details.add(radarNumberField, diseaseGroup, dateRegistered);
