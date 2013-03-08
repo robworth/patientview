@@ -120,14 +120,21 @@ public class DemographicsDecryptData2SqlMapper {
             demographics.setId(resultSet.getLong("RADAR_NO"));
 
             try {
-                demographics.setNhsNumber(getDecryptedString(resultSet.getBytes("NHS_NO")));
-                demographics.setHospitalNumber(getDecryptedString(resultSet.getBytes("HOSP_NO")));
-                demographics.setSurname(getDecryptedString(resultSet.getBytes("SNAME")));
-                demographics.setSurnameAlias(getDecryptedString(resultSet.getBytes("SNAME_ALIAS")));
-                demographics.setForename(getDecryptedString(resultSet.getBytes("FNAME")));
+                demographics.setNhsNumber(getDecryptedString(new String(resultSet.getBytes("NHS_NO")), "NHS_NO",
+                        resultSet.getBytes("NHS_NO")));
+                demographics.setHospitalNumber(getDecryptedString(demographics.getNhsNumber(), "HOSP_NO",
+                        resultSet.getBytes("HOSP_NO")));
+                demographics.setSurname(getDecryptedString(demographics.getNhsNumber(), "SNAME",
+                        resultSet.getBytes("SNAME")));
+                demographics.setSurnameAlias(getDecryptedString(demographics.getNhsNumber(), "SNAME_ALIAS",
+                        resultSet.getBytes("SNAME_ALIAS")));
+                demographics.setForename(getDecryptedString(demographics.getNhsNumber(), "FNAME",
+                        resultSet.getBytes("FNAME")));
 
                 // Date needs to be decrypted to string, then parsed
-                String dateOfBirthString = getDecryptedString(resultSet.getBytes("DOB"));
+                String dateOfBirthString = getDecryptedString(demographics.getNhsNumber(), "DOB",
+                        resultSet.getBytes("DOB"));
+
                 if (StringUtils.isNotBlank(dateOfBirthString)) {
                     Date dateOfBirth = null;
 
@@ -150,12 +157,19 @@ public class DemographicsDecryptData2SqlMapper {
                 }
 
                 // Addresses, all encrypted too
-                demographics.setAddress1(getDecryptedString(resultSet.getBytes("ADD1")));
-                demographics.setAddress2(getDecryptedString(resultSet.getBytes("ADD2")));
-                demographics.setAddress3(getDecryptedString(resultSet.getBytes("ADD3")));
-                demographics.setAddress4(getDecryptedString(resultSet.getBytes("ADD4")));
-                demographics.setPostcode(getDecryptedString(resultSet.getBytes("POSTCODE")));
-                demographics.setPreviousPostcode(getDecryptedString(resultSet.getBytes("POSTCODE_OLD")));
+                demographics.setAddress1(getDecryptedString(demographics.getNhsNumber(), "ADD1",
+                        resultSet.getBytes("ADD1")));
+                demographics.setAddress2(getDecryptedString(demographics.getNhsNumber(), "ADD2",
+                        resultSet.getBytes("ADD2")));
+                demographics.setAddress3(getDecryptedString(demographics.getNhsNumber(), "ADD3",
+                        resultSet.getBytes("ADD3")));
+                demographics.setAddress4(getDecryptedString(demographics.getNhsNumber(), "ADD4",
+                        resultSet.getBytes("ADD4")));
+                demographics.setPostcode(getDecryptedString(demographics.getNhsNumber(), "POSTCODE",
+                        resultSet.getBytes("POSTCODE")));
+                demographics.setPreviousPostcode(getDecryptedString(demographics.getNhsNumber(), "POSTCODE_OLD",
+                        resultSet.getBytes("POSTCODE_OLD")));
+
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt demographics information for demographics {}", demographics.getId());
                 e.printStackTrace();
@@ -165,11 +179,18 @@ public class DemographicsDecryptData2SqlMapper {
         }
     }
 
-    private String getDecryptedString(byte[] fieldData) throws Exception {
-        if (fieldData == null) {
-            return null;
+    private String getDecryptedString(String nhsNo, String fieldName, byte[] fieldData) throws Exception {
+        if (fieldData != null) {
+            try {
+                byte[] copy = Arrays.copyOf(fieldData, fieldData.length);
+                return TripleDes.decrypt(copy);
+            } catch (Exception e) {
+                LOGGER.error("Could not decrypt demographics information for nhs {}, field {}, field data {}, " +
+                        "message {}",
+                        new Object[] {nhsNo, fieldName, fieldData, e.getMessage()});
+            }
         }
-        byte[] copy = Arrays.copyOf(fieldData, fieldData.length);
-        return TripleDes.decrypt(copy);
+
+        return null;
     }
 }
