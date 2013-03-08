@@ -120,31 +120,30 @@ public class DemographicsDecryptData2SqlMapper {
             demographics.setId(resultSet.getLong("RADAR_NO"));
 
             try {
-                demographics.setNhsNumber(getDecryptedString(new String(resultSet.getBytes("NHS_NO")), "NHS_NO",
+                demographics.setNhsNumber(getDecryptedString(demographics.getId() + "", "NHS_NO",
                         resultSet.getBytes("NHS_NO")));
-                demographics.setHospitalNumber(getDecryptedString(demographics.getNhsNumber(), "HOSP_NO",
+                demographics.setHospitalNumber(getDecryptedString(demographics.getId() + "", "HOSP_NO",
                         resultSet.getBytes("HOSP_NO")));
-                demographics.setSurname(getDecryptedString(demographics.getNhsNumber(), "SNAME",
+                demographics.setSurname(getDecryptedString(demographics.getId() + "", "SNAME",
                         resultSet.getBytes("SNAME")));
-                demographics.setSurnameAlias(getDecryptedString(demographics.getNhsNumber(), "SNAME_ALIAS",
+                demographics.setSurnameAlias(getDecryptedString(demographics.getId() + "", "SNAME_ALIAS",
                         resultSet.getBytes("SNAME_ALIAS")));
-                demographics.setForename(getDecryptedString(demographics.getNhsNumber(), "FNAME",
+                demographics.setForename(getDecryptedString(demographics.getId() + "", "FNAME",
                         resultSet.getBytes("FNAME")));
 
                 // Date needs to be decrypted to string, then parsed
-                String dateOfBirthString = getDecryptedString(demographics.getNhsNumber(), "DOB",
+                String dateOfBirthString = getDecryptedString(demographics.getId() + "", "DOB",
                         resultSet.getBytes("DOB"));
 
                 if (StringUtils.isNotBlank(dateOfBirthString)) {
-                    Date dateOfBirth = null;
+                    Date dateOfBirth = getDate(dateOfBirthString, DATE_FORMAT);
 
-                    // It seems that the encrypted strings in the DB have different date formats, nice.
-                    for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2, DATE_FORMAT_3}) {
-                        try {
-                            dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
-                        } catch (Exception e) {
-                            LOGGER.error("Could not parse date of birth {}", dateOfBirthString);
-                        }
+                    if (dateOfBirth == null) {
+                        dateOfBirth = getDate(dateOfBirthString, DATE_FORMAT_2);
+                    }
+
+                    if (dateOfBirth == null) {
+                        dateOfBirth = getDate(dateOfBirthString, DATE_FORMAT_3);
                     }
 
                     // If after trying those formats we don't have anything then log as error
@@ -157,17 +156,17 @@ public class DemographicsDecryptData2SqlMapper {
                 }
 
                 // Addresses, all encrypted too
-                demographics.setAddress1(getDecryptedString(demographics.getNhsNumber(), "ADD1",
+                demographics.setAddress1(getDecryptedString(demographics.getId() + "", "ADD1",
                         resultSet.getBytes("ADD1")));
-                demographics.setAddress2(getDecryptedString(demographics.getNhsNumber(), "ADD2",
+                demographics.setAddress2(getDecryptedString(demographics.getId() + "", "ADD2",
                         resultSet.getBytes("ADD2")));
-                demographics.setAddress3(getDecryptedString(demographics.getNhsNumber(), "ADD3",
+                demographics.setAddress3(getDecryptedString(demographics.getId() + "", "ADD3",
                         resultSet.getBytes("ADD3")));
-                demographics.setAddress4(getDecryptedString(demographics.getNhsNumber(), "ADD4",
+                demographics.setAddress4(getDecryptedString(demographics.getId() + "", "ADD4",
                         resultSet.getBytes("ADD4")));
-                demographics.setPostcode(getDecryptedString(demographics.getNhsNumber(), "POSTCODE",
+                demographics.setPostcode(getDecryptedString(demographics.getId() + "", "POSTCODE",
                         resultSet.getBytes("POSTCODE")));
-                demographics.setPreviousPostcode(getDecryptedString(demographics.getNhsNumber(), "POSTCODE_OLD",
+                demographics.setPreviousPostcode(getDecryptedString(demographics.getId() + "", "POSTCODE_OLD",
                         resultSet.getBytes("POSTCODE_OLD")));
 
             } catch (Exception e) {
@@ -179,18 +178,28 @@ public class DemographicsDecryptData2SqlMapper {
         }
     }
 
-    private String getDecryptedString(String nhsNo, String fieldName, byte[] fieldData) throws Exception {
-        if (fieldData != null) {
+    private String getDecryptedString(String radarNo, String fieldName, byte[] fieldData) throws Exception {
+        if (fieldData != null && fieldData.length > 0) {
             try {
                 byte[] copy = Arrays.copyOf(fieldData, fieldData.length);
                 return TripleDes.decrypt(copy);
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt demographics information for nhs {}, field {}, field data {}, " +
+                LOGGER.error("Could not decrypt demographics information for radarNo {}, field {}, field data {}, " +
                         "message {}",
-                        new Object[] {nhsNo, fieldName, fieldData, e.getMessage()});
+                        new Object[] {radarNo, fieldName, fieldData, e.getMessage()});
             }
         }
 
+        return null;
+    }
+
+    private Date getDate(String dobStr, String dateFormat) {
+        // It seems that the encrypted strings in the DB have different date formats, nice.
+        try {
+            return new SimpleDateFormat(dateFormat).parse(dobStr);
+        } catch (Exception e) {
+            // cya
+        }
         return null;
     }
 }
