@@ -15,7 +15,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
