@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.util;
 
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,9 @@ public class DemographicsDecryptData2SqlMapper {
             }
 
             if (demographics.getDateOfBirth() != null) {
-                updateStatement += " DOB = \"" + demographics.getDateOfBirth() + "\", ";
+                // just guess what a sane date format is
+                updateStatement += " DOB = \""
+                        + new SimpleDateFormat(DATE_FORMAT_2).format(demographics.getDateOfBirth()) + "\", ";
             }
 
             if (demographics.getAddress1() != null) {
