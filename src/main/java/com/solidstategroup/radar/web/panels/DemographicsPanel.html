@@ -11,8 +11,8 @@
         <td style="height:30px;">
             <span style="font-weight:bold;">Demographics</span>
             <span wicket:id="addNewPatientLabel">Add a New Patient</span></td>
-        <td style="text-align:right; padding-right:10px;"><b>RaDaR Number</b></td>
-        <td style="width:150px;">
+        <td style="text-align:right; padding-right:10px; width: 120px"><b>RaDaR Number</b></td>
+        <td style="width:200px;">
             <input wicket:id="radarNumber" type="text" readonly="readonly"
                    style="background-color:#EEF6ED;font-style:italic;"/></td>
     </tr>
@@ -26,6 +26,12 @@
                 <option value="1">SRNS</option>
             </select>
             <span wicket:id="diagnosisFeedbackIndicator"></span>
+            <br/><br/>
+            &nbsp;Name
+            <input wicket:id="forenameForHeader" type="text" style="width:100px;" readonly="readonly">&nbsp;
+            <input wicket:id="surnameForHeader" type="text" style="width:100px;" readonly="readonly">
+            DoB
+            <input wicket:id="dateOfBirthForHeader" type="text" style="width:80px;" readonly="readonly">
         </td>
         <td style="text-align:right; padding-right:10px;">Date Registered</td>
         <td><input wicket:id="dateRegistered" type="text" readonly="readonly"

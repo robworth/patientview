@@ -222,6 +222,19 @@ public class DemographicsPanel extends Panel {
 
         form.add(diagnosis, surname, forename, dateOfBirth);
 
+        // add basic fields for header too... apparently we can't render same component twice in wicket!..
+        TextField forenameForHeader = new TextField("forenameForHeader", RadarModelFactory.getFirstNameModel(
+                radarNumberModel, demographicsManager));
+
+        TextField surnameForHeader = new TextField("surnameForHeader", RadarModelFactory.getSurnameModel(
+                radarNumberModel, demographicsManager));
+
+        TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
+                "dateOfBirthForHeader",
+                RadarModelFactory.getDobModel(radarNumberModel, demographicsManager), RadarApplication.DATE_PATTERN);
+
+        form.add(diagnosis, surnameForHeader, forenameForHeader, dateOfBirthForHeader);
+
         // Sex
         RadarRequiredDropdownChoice sex =
                 new RadarRequiredDropdownChoice("sex", demographicsManager.getSexes(), new ChoiceRenderer<Sex>("type",
