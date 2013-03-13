@@ -29,6 +29,8 @@ public class UnitsDisplayAction extends DatabaseAction {
 
         request.getSession().setAttribute("units", items);
 
+        //this is a test
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
