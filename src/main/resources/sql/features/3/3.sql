@@ -19,7 +19,7 @@ UPDATE tbl_centres c, unit u SET u.id = c.cid WHERE c.unitcode = u.unitcode;
 ALTER TABLE unit MODIFY tenancy_id bigint(20) NULL;
 
 -- add the radar units into the patientview table excluding the already existing units
-insert into unit (unitcode, id, name, shortname, country, sourcetype, tenanc)
+insert into unit (unitcode, id, name, shortname, country, sourcetype)
 select unitcode, cID, cName, cAbbrev, cCountry, 'radargroup'
 from tbl_centres where unitcode not in (SELECT c.unitcode FROM tbl_centres c, unit u WHERE c.unitcode = u.unitcode);
 
