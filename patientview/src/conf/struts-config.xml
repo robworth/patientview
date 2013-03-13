@@ -530,6 +530,20 @@
         <forward name="success" path="/join.jsp"/>
       </action>
 
+    <action path="/joinSubmit"
+            type="com.worthsoln.patientview.join.JoinRequestSubmitAction"
+            name="joinForm"
+            scope="request">
+      <forward name="success" path="/join.jsp"/>
+    </action>
+
+      <action path="/join"
+              type="com.worthsoln.patientview.join.JoinRequestInputAction"
+              name="joinForm"
+              scope="request">
+        <forward name="success" path="/join.jsp"/>
+      </action>
+
     <action path="/demo"
             type="com.worthsoln.patientview.IndexAction" parameter="contact">
       <forward name="success" path="/demo.jsp"/>
