@@ -372,3 +372,32 @@ h1, h2{
     opacity: 1;
     filter: alpha(opacity=1);
 }
+
+/** MESSAGES **/
+
+
+section article.conversation, section article.message{
+    padding:18px 18px;
+    border-bottom: 1px dotted #eeeeee;
+}
+
+section article.message{
+    padding: 18px 0;
+}
+
+section article .content{
+    margin-top:10px;
+}
+section article.conversation:hover{
+    cursor:pointer;
+    background:#f6f6f6;
+}
+
+section.conversation-container a:hover{
+    text-decoration:none;
+    color:#0066CC;
+}
+
+section article.conversation .dull, section article.message .dull{
+    color:#9b9b9b;
+}
