@@ -39,7 +39,7 @@ public class UserDeleteAction extends Action {
             patient.setName(user.getName());
         }
 
-        if (userMappings.size() == 1 && !userExistsInRadar(patient.getNhsno())) {
+        if (userMappings.size() == 1 && !userExistsInRadar(nhsno)) {
 
             // this is a user that exists in only one unit and not in radar  -> full delete
 
@@ -51,7 +51,7 @@ public class UserDeleteAction extends Action {
 
             // patients get all their records deleted
             if ("patient".equals(patient.getRole())) {
-                UserUtils.removePatientFromSystem(patient.getUsername(), patient.getUnitcode());
+                UserUtils.removePatientFromSystem(username, unitcode);
             }
 
         } else {
