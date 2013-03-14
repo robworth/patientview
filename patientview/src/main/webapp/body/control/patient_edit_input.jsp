@@ -4,7 +4,10 @@
 
 <html:xhtml/>
 
-<p class="header">Patient Edit</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Patient Edit</h1>
+</div>
 
 <html:errors/>
 
@@ -63,61 +66,41 @@
     <html:hidden name="patient" property="failedlogons"/>
     <html:hidden name="patient" property="accountlocked"/>
     <html:hidden name="patient" property="screenname"/>
-
-    <tr align="right">
-      <td><html:submit value="Edit" styleClass="formbutton"/></td>
-    </tr>
-  </html:form>
-
+  <tr><td></td></tr>
+  <tr><td></td></tr>
   <tr align="right">
-    <td>&nbsp;</td>
-  </tr>
 
-  <tr align="right">
-    <td>&nbsp;</td>
-  </tr>
+      </html:form>
 
-  <html:form action="/control/resetPassword">
-    <html:hidden name="patient" property="username"/>
-    <tr align="left">
-      <td><html:submit value="Reset Password" styleClass="formbutton"/></td>
-    </tr>
-  </html:form>
+      <html:form action="/control/userDelete">
+          <html:hidden name="patient" property="username"/>
+          <td width="10" align="left"><html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/></td>
+          <html:hidden property="unitcode" name="nhsnot"/>
+          <html:hidden property="nhsno" name="nhsnot"/>
+      </html:form>
 
-  <logic:match value="true" name="patient" property="accountlocked">
-    <tr align="right">
+      <html:form action="/control/resetPassword"  style="float:left;margin-left:5px;">
+        <html:hidden name="patient" property="username"/>
+          <td align="left"><html:submit value="Reset Password" style="float:left;" styleClass="btn formbutton"/></td>
+      </html:form>
+
       <td>&nbsp;</td>
-    </tr>
+      <td align="right" style="vertical-align:top;"><html:submit value="Save" styleClass="btn btn-primary formbutton"/></td>
 
-    <tr align="right">
+  </tr>
+  <tr>
       <td>&nbsp;</td>
-    </tr>
-
-    <html:form action="/control/passwordUnlock">
-      <html:hidden name="patient" property="username"/>
-      <tr align="left">
-        <td><html:submit value="Unlock Password" styleClass="formbutton"/></td>
-      </tr>
-    </html:form>
-  </logic:match>
-
-  <tr align="right">
-    <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <logic:match value="true" name="patient" property="accountlocked">
+          <html:form action="/control/passwordUnlock">
+              <html:hidden name="patient" property="username"/>
+              <html:hidden property="nhsno" name="nhsnot"/>
+              <html:hidden property="unitcode" name="nhsnot"/>
+      <td align="right" style="vertical-align: top;"><html:submit value="Unlock Password" styleClass="btn formbutton"/></td>
+      </html:form>
+      </logic:match>
   </tr>
-
-  <tr align="right">
-    <td>&nbsp;</td>
-  </tr>
-
-  <html:form action="/control/userDelete">
-    <html:hidden name="patient" property="username"/>
-    <tr align="left">
-      <td><html:submit value="Delete Patient" styleClass="formbutton"/></td>
-        <html:hidden property="unitcode" name="nhsnot"/>
-        <html:hidden property="nhsno" name="nhsnot"/>
-    </tr>
-  </html:form>
-
 </table>
-
+</div>
 
