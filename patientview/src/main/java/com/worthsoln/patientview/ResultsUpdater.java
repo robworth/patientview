@@ -56,27 +56,33 @@ public class ResultsUpdater {
             return;
         }
 
-        /**
-         * Check the XML file against XSD schema
-         */
-        List<SAXParseException> exceptions = getXMLParseExceptions(xmlFile, xsdFile);
+        // Turn this off without removing the code and it getting lost in ether.
+        // The units sending the data are not honouring the xsd, so no point validating yet.
+        final boolean whenWeDecideToValidateFiles = false;
 
-        // if there are any exceptions, log them and send an email
-        if (exceptions.size() > 0) {
+        if (whenWeDecideToValidateFiles) {
 
-//            System.out.println("error with xml parse");
-//
-//            for(SAXException e : exceptions) {
-//                System.out.println(e.getMessage());
-//            }
+            /**
+             * Check the XML file against XSD schema
+             */
+            List<SAXParseException> exceptions = getXMLParseExceptions(xmlFile, xsdFile);
 
-            // log
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+            // if there are any exceptions, log them and send an email
+            if (exceptions.size() > 0) {
+    //            System.out.println("error with xml parse");
+    //
+    //            for(SAXException e : exceptions) {
+    //                System.out.println(e.getMessage());
+    //            }
 
-            // send email, then continue importing
-            XmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions, context);
+                // log
+                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
+                        XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                        XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+
+                // send email, then continue importing
+                XmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions, context);
+            }
         }
 
         try {
