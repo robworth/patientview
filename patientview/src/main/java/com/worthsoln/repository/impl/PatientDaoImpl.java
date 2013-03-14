@@ -101,8 +101,13 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             sql += "AND usermapping.unitcode = ? ";
         }
 
-        sql += "AND usermapping.nhsno LIKE ? "
-                + "AND user.name LIKE ? ";
+        if (nhsno != null && nhsno.length() > 0) {
+            sql += "AND usermapping.nhsno LIKE ? ";
+        }
+
+        if (name != null && name.length() > 0) {
+            sql += "AND user.name LIKE ? ";
+        }
 
         if (!showgps) {
             sql += "AND user.name NOT LIKE '%-GP' ";
@@ -116,9 +121,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             params.add(unitcode);
         }
 
-        params.add(nhsno);
+        if (nhsno != null && nhsno.length() > 0) {
+            params.add(nhsno);
+        }
+
+        if (name != null && name.length() > 0) {
+            params.add(name);
+        }
         params.add(specialty.getId());
-        params.add(name);
 
         return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
     }

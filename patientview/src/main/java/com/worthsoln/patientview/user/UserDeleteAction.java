@@ -39,20 +39,27 @@ public class UserDeleteAction extends Action {
             patient.setName(user.getName());
         }
 
-        if (userMappings.size() <= 1) {
+        if (userMappings.size() == 1 && !userExistsInRadar(patient.getNhsno())) {
+
+            // this is a user that exists in only one unit and not in radar  -> full delete
+
             deleteUserMapping(username, unitcode); // deletes from usermapping table
             deleteUserMapping(username + "-GP", unitcode);
             deleteUserMapping(username, UnitUtils.PATIENT_ENTERS_UNITCODE);
             deleteUser(username); // deletes from user table
             deleteUser(username + "-GP");
+
+            // patients get all their records deleted
+            if ("patient".equals(patient.getRole())) {
+                UserUtils.removePatientFromSystem(patient.getUsername(), patient.getUnitcode());
+            }
+
         } else {
+
+            // this is a user that exists in multiple units -> just remove their unit access/mapping
+
             deleteUserMapping(username, unitcode);
             deleteUserMapping(username + "-GP", unitcode);
-        }
-
-        // TODO check whether remove patient should only remove user or remove data too
-        if ("patient".equals(patient.getRole()) && !userExistsInRadar(patient.getNhsno())) {
-           UserUtils.removePatientFromSystem(patient.getUsername(), patient.getUnitcode());
         }
 
         AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_DELETE, username,

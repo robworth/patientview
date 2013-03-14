@@ -21,9 +21,10 @@ public class PatientUserDaoImpl extends AbstractHibernateDAO<PatientUser> implem
 
         List<Integer> rawPatientUserList = query.getResultList();
 
-        PatientUser patientUser = new PatientUser();
+        PatientUser patientUser = null;
 
         if (rawPatientUserList.size() != 0) {
+            patientUser = new PatientUser();
             patientUser.setPatientUserId(rawPatientUserList.get(0));
         }
 
