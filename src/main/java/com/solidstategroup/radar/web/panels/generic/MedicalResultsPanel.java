@@ -32,7 +32,13 @@ public class MedicalResultsPanel extends Panel {
     public static final String TEST_RESULT_NULL_DATE_MESSAGE = "Test result must have a date";
     public static final String TEST_RESULT_AT_LEAST_ONE = "A test result must be entered";
     public static final String TEST_RESULT_BP = "BP Systolic and Diastolic must be entered";
-    public static final String MUST_BE_BETWEEN_0_AND_2000 = "Must be between 0 - 2000";
+    public static final String MUST_BE_BETWEEN_1_AND_100 = "Value must be between 1 - 100";
+    public static final String MUST_BE_BETWEEN_10_AND_2800 = "Value must be between 10 - 2800";
+    public static final String MUST_BE_BETWEEN_1_AND_250 = "Value must be between 1 - 250";
+    public static final String DIASTOLIC_MUST_BE_LESS_THAN_OR_EQUAL_TO_SYSTOLIC =
+            "Diastolic value must be less than or equal to systolic";
+    public static final String MUST_BE_BETWEEN_0_AND_15000 = "Value must be between 0 - 15000";
+    public static final String MUST_BE_BETWEEN_1_AND_3000 = "Value must be between 1 - 3000";
 
     @SpringBean
     private MedicalResultManager medicalResultManager;
@@ -85,10 +91,18 @@ public class MedicalResultsPanel extends Panel {
                 // test result cannot have a null date
                 if (medicalResult.getBloodUrea() != null && medicalResult.getBloodUreaDate() == null) {
                     get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+
+                    if (medicalResult.getBloodUrea() < 1 || medicalResult.getBloodUrea() > 100) {
+                        get("bloodUreaDate").error(". " + MUST_BE_BETWEEN_1_AND_100);
+                    }
                 }
 
                 if (medicalResult.getSerumCreatanine() != null && medicalResult.getCreatanineDate() == null) {
                     get("creatanineDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+
+                    if (medicalResult.getSerumCreatanine() < 10 || medicalResult.getSerumCreatanine() > 2800) {
+                        get("serumCreatanine").error(MUST_BE_BETWEEN_10_AND_2800);
+                    }
                 }
 
                 if (medicalResult.getWeight() != null && medicalResult.getWeightDate() == null) {
@@ -108,6 +122,21 @@ public class MedicalResultsPanel extends Panel {
                     if (medicalResult.getBpDate() == null) {
                         get("bpDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
                     }
+
+                    if (medicalResult.getBpSystolic() != null &&
+                            (medicalResult.getBpSystolic() < 1 || medicalResult.getBpSystolic() > 250)) {
+                        get("bpSystolic").error(MUST_BE_BETWEEN_1_AND_250);
+                    }
+
+                    if (medicalResult.getBpDiastolic() != null &&
+                            (medicalResult.getBpDiastolic() < 1 || medicalResult.getBpDiastolic() > 250)) {
+                        get("bpDiastolic").error(MUST_BE_BETWEEN_1_AND_250);
+                    }
+
+                    if (medicalResult.getBpSystolic() != null && medicalResult.getBpDiastolic() != null &&
+                            medicalResult.getBpDiastolic() > medicalResult.getBpSystolic()) {
+                        get("bpDiastolic").error(DIASTOLIC_MUST_BE_LESS_THAN_OR_EQUAL_TO_SYSTOLIC);
+                    }
                 }
 
                 if (medicalResult.getAntihypertensiveDrugs() != null
@@ -117,8 +146,8 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (medicalResult.getPcr() != null) {
-                    if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 2000) {
-                        get("pcr").error(MUST_BE_BETWEEN_0_AND_2000);
+                    if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 15000) {
+                        get("pcr").error(MUST_BE_BETWEEN_0_AND_15000);
                     }
 
                     if (medicalResult.getPcrDate() == null) {
@@ -127,8 +156,8 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (medicalResult.getAcr() != null) {
-                    if (medicalResult.getAcr() < 0 || medicalResult.getAcr() > 2000) {
-                        get("acr").error(MUST_BE_BETWEEN_0_AND_2000);
+                    if (medicalResult.getAcr() < 1 || medicalResult.getAcr() > 3000) {
+                        get("acr").error(MUST_BE_BETWEEN_1_AND_3000);
                     }
 
                     if (medicalResult.getAcrDate() == null) {
