@@ -14,15 +14,15 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
 <table cellpadding="3" >
     <tr>
       <td><b>User Name</b></td>
-      <td><bean:write name="patient" property="username" /></td>
+      <td><bean:write name="user" property="username" /></td>
     </tr>
     <tr>
       <td><b>Password</b></td>
-      <td class="password"><bean:write name="patient" property="password" /></td>
+      <td class="password"><bean:write name="user" property="password" /></td>
     </tr>
     <tr>
       <td><b>Name</b></td>
-      <td><bean:write name="patient" property="name" /></td>
+      <td><bean:write name="user" property="name" /></td>
     </tr>
     <tr>
       <td><b>NHS Number</b></td>
@@ -30,7 +30,7 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
     </tr>
     <tr>
       <td><b>Email Address</b></td>
-      <td><bean:write name="patient" property="email" /></td>
+      <td><bean:write name="user" property="email" /></td>
     </tr>
  </table>
 

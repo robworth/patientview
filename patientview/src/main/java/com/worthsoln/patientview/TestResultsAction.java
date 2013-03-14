@@ -26,7 +26,7 @@ public class TestResultsAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
+        User user = UserUtils.retrieveUser(request);
 
         if (user != null) {
             request.setAttribute("user", user);

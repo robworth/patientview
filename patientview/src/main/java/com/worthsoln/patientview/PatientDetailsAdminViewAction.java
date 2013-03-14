@@ -3,6 +3,8 @@ package com.worthsoln.patientview;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.patientview.edtacode.EdtaCodeUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -21,8 +23,11 @@ public class PatientDetailsAdminViewAction extends Action {
 
         request.getSession().setAttribute("userBeingViewedUsername", username);
 
+        // allow the logged in user to be overridden when viewing the site as a patient using an admin account
+        User user = UserUtils.retrieveUser(request);
+
         List<PatientDetails> patientDetails = LegacySpringUtils.getPatientManager().getPatientDetails(
-                LegacySpringUtils.getUserManager().getLoggedInUser().getUsername());
+                user.getUsername());
 
         request.setAttribute("patientDetails", patientDetails);
 
