@@ -31,7 +31,13 @@ import java.util.List;
 public class ResultsUpdater {
 
     public void update(ServletContext context, File xmlFile) {
-        File xsdFile = new File(context.getInitParameter("xsd.pv.schema.file"));
+        File xsdFile = null;
+        try {
+            xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
+                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ResultsUpdater.update()");
+        }
 
         update(context, xmlFile, xsdFile);
     }
@@ -57,6 +63,13 @@ public class ResultsUpdater {
 
         // if there are any exceptions, log them and send an email
         if (exceptions.size() > 0) {
+
+//            System.out.println("error with xml parse");
+//
+//            for(SAXException e : exceptions) {
+//                System.out.println(e.getMessage());
+//            }
+
             // log
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
                     XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),

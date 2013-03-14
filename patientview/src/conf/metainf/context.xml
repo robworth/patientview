@@ -25,8 +25,6 @@
 
     <Parameter name="aboutme.image.directory" value="${aboutme.image.directory}" override="false"/>
 
-    <Parameter name="xsd.pv.schema.file" value="${xsd.pv.schema.file}" override="false"/>
-
     <Parameter name="default.results.per.page" value="${default.results.per.page}" override="false"/>
 
     <Parameter name="smtp.host" value="${smtp.host}" override="false"/>

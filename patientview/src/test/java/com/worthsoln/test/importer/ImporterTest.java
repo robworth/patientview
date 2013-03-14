@@ -88,7 +88,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
-                .getResource("classpath:ibd_pv_schema_v0.6.xsd");
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
@@ -122,7 +122,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
-                        .getResource("classpath:ibd_pv_schema_v0.6.xsd");
+                        .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
@@ -143,7 +143,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
-                        .getResource("classpath:ibd_pv_schema_v0.6.xsd");
+                        .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
