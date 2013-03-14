@@ -4,6 +4,7 @@ import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.Unit_;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.UnitDao;
 import org.springframework.stereotype.Repository;
@@ -149,27 +150,43 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
         String sql = "SELECT " +
-                "   user.* " +
+                "  u.*  " +
                 "FROM " +
-                "   user, " +
-                "   usermapping, " +
-                "   specialtyuserrole " +
+                "   User u, " +
+                "   UserMapping um, " +
+                "   SpecialtyUserRole sur " +
                 "WHERE " +
-                "   user.username = usermapping.username " +
+                "   u.username = um.username " +
                 "AND " +
-                "   user.id = specialtyuserrole.user_id " +
+                "   u.id = sur.user_id " +
                 "AND " +
-                "   specialtyuserrole.specialty_id = :specialtyId " +
+                "   sur.specialty_id = :specialtyId " +
                 "AND " +
-                "   usermapping.unitcode = :unitcode " +
+                "   um.unitcode = :unitcode " +
                 "AND " +
-                "   (specialtyuserrole.role = 'unitadmin' OR specialtyuserrole.role = 'unitstaff')";
+                "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
 
-        Query query = getEntityManager().createQuery(sql, UnitAdmin.class);
+        Query query = getEntityManager().createNativeQuery(sql, User.class);
 
         query.setParameter("specialtyId", specialty.getId());
         query.setParameter("unitcode", unitcode);
 
-        return query.getResultList();
+        List<User> users =  query.getResultList();
+
+        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
+
+        for (User user : users) {
+            UnitAdmin unitAdmin = new UnitAdmin();
+            unitAdmin.setUsername(user.getUsername());
+            unitAdmin.setName(user.getName());
+            unitAdmin.setEmail(user.getEmail());
+            unitAdmin.setEmailverfied(user.isEmailverified());
+            unitAdmin.setRole(user.getRole());
+            unitAdmin.setFirstlogon(user.isFirstlogon());
+            unitAdmins.add(unitAdmin);
+            unitAdmin.setScreenname(user.getScreenname());
+        }
+
+        return unitAdmins;
     }
 }

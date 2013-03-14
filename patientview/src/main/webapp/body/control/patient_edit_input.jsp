@@ -79,6 +79,8 @@
 
   <html:form action="/control/resetPassword">
     <html:hidden name="patient" property="username"/>
+    <html:hidden property="unitcode" name="nhsnot"/>
+    <html:hidden property="nhsno" name="nhsnot"/>
     <tr align="left">
       <td><html:submit value="Reset Password" styleClass="formbutton"/></td>
     </tr>
@@ -94,7 +96,7 @@
     </tr>
 
     <html:form action="/control/passwordUnlock">
-      <html:hidden name="patient" property="username"/>
+        <html:hidden name="patient" property="username"/>
       <tr align="left">
         <td><html:submit value="Unlock Password" styleClass="formbutton"/></td>
       </tr>
