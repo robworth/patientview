@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 /**
- *  Allow users to have multiple entries (i.e. different roles in different tenancies) in the patient view system
+ *  Allow users to have multiple entries (i.e. different roles in different specialties) in the patient view system
  */
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames={"specialty_id", "user_id", "role"}))
