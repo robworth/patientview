@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  Note: I have changed the implementation to allow units to be returned when the tenancy is null
+ *  Note: I have changed the implementation to allow units to be returned when the specialty is null
  *  i.e. we are not a logged in user.  (PC 01/03/2013)
  *  The unitcode is unique so we should not get NonUniqueResultException
  */
