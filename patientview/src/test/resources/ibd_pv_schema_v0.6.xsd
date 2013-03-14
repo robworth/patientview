@@ -547,7 +547,7 @@
             <xs:enumeration value="Extensive Colitis"/>
             <xs:enumeration value="Ileal Crohns"/>
             <xs:enumeration value="Ileo-Colonic Disease"/>
-            <xs:enumeration value="Crohn�s Colitis"/>
+            <xs:enumeration value="Crohn's Colitis"/>
             <xs:enumeration value="Isolated Upper GI Disease"/>
         </xs:restriction>
     </xs:simpleType>
