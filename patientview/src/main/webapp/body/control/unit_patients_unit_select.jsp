@@ -37,7 +37,7 @@
       <td><html:checkbox property="showgps" value="true" /></td>
     </tr>
     <tr align="right">
-      <td><html:submit value="Select" styleClass="btn" /></td>
+      <td><html:submit value="Search" styleClass="btn" /></td>
     </tr>
  </table>
 
