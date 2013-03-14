@@ -99,7 +99,9 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         Root<Unit> from = criteria.from(Unit.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
+        if (usersUnitCodes != null && usersUnitCodes.size() > 0) {
+            wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
+        }
 
         if (specialty != null) {
             wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
