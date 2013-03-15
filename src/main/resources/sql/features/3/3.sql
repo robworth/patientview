@@ -34,7 +34,7 @@ update tbl_centres set unitcode = "UNKNOWN" where cid = 16;
 update tbl_centres set unitcode = "VELLORE" where cid = 55;
 update tbl_centres set unitcode = "BANGALORE" where cid = 56;
 update tbl_centres set unitcode = "NEWDEHLI" where cid = 57;
-update tbl_centres set unitcode = "TERAN" where cid = 58;
+update tbl_centres set unitcode = "TEHRAN" where cid = 58;
 update tbl_centres set unitcode = "DEMOENTRY" where cid = 99;
 
 update tbl_centres set CCOUNTRY = 1 where cid = 16;
