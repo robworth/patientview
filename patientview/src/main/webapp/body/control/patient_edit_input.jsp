@@ -16,49 +16,59 @@
             another user. <br/> You may override this using the checkbox below. But please use this with care!!</font></p>
     </logic:present>
 
-    <table cellpadding="3">
+    <div class="form-horizontal">
         <html:form action="/control/patientEditX">
-        <tr>
-            <td><img src="images/space.gif" height="10"/></td>
-        </tr>
-        <tr>
-            <td><b>User Name</b></td>
-            <td><html:hidden name="patient" property="username" write="true"/></td>
-        </tr>
-        <tr>
-            <td><b>Name</b></td>
-            <td><html:text name="patient" property="name"/></td>
-        </tr>
-
-
-        <tr>
-            <td><b>NHS Number</b></td>
-            <td><html:text property="nhsno" name="nhsnot"/></td>
-            <html:hidden property="unitcode" name="nhsnot"/>
+        <div class="control-group">
+            <label class="control-label">User Name</label>
+            <div class="controls">
+                <html:hidden name="patient" property="username" write="true"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Name</label>
+            <div class="controls">
+                <html:text name="patient" property="name"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">NHS Number</label>
+            <div class="controls">
+                <html:text property="nhsno" name="nhsnot"/>
+                <html:hidden property="unitcode" name="nhsnot"/>
+            </div>
             <logic:present name="nhsnoAlreadyExists">
-                <td><b>Override Duplicate</b></td>
-                <td><html:checkbox property="overrideDuplicateNhsno"/></td>
+                <label class="control-label">Override Duplicate</label>
+                <div class="controls">
+                    <html:checkbox property="overrideDuplicateNhsno"/>
+                </div>
             </logic:present>
             <logic:notPresent name="nhsnoAlreadyExists">
                 <html:hidden property="overrideDuplicateNhsno" value=""/>
             </logic:notPresent>
-        </tr>
+        </div>
 
-        <tr>
-            <td><b>Email Address</b></td>
-            <td><html:text name="patient" property="email"/></td>
-        </tr>
-        <tr>
-            <td><b>Email Address Verified</b></td>
-            <td>
+        <div class="control-group">
+            <label class="control-label">Email Address</label>
+            <div class="controls">
+                <html:text name="patient" property="email"/>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">Email Address Verified</label>
+            <div class="controls">
                 <logic:equal name="patient" property="emailverified" value="true"><big><font color="green">&#10004;</font></big></logic:equal>
                 <logic:equal name="patient" property="emailverified" value="false"><big><font color="red">&#10008;</font></big></logic:equal>
-            </td>
-        </tr>
-        <tr>
-            <td><b>Dummy Patient</b></td>
-            <td><html:checkbox name="patient" property="dummypatient" value="true"/></td>
-        </tr>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">Dummy Patient</label>
+            <div class="controls">
+                <html:checkbox name="patient" property="dummypatient" value="true"/>
+            </div>
+        </div>
+
         <html:hidden name="patient" property="emailverified"/>
         <html:hidden name="patient" property="firstlogon"/>
         <html:hidden name="patient" property="password"/>
@@ -66,43 +76,39 @@
         <html:hidden name="patient" property="failedlogons"/>
         <html:hidden name="patient" property="accountlocked"/>
         <html:hidden name="patient" property="screenname"/>
-        <tr><td></td></tr>
-        <tr><td></td></tr>
-        <tr align="right">
 
-            </html:form>
-
-            <html:form action="/control/userDelete">
-                <html:hidden name="patient" property="username"/>
-                <td width="10" align="left"><html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/></td>
-                <html:hidden property="unitcode" name="nhsnot"/>
-                <html:hidden property="nhsno" name="nhsnot"/>
-            </html:form>
-
-            <html:form action="/control/resetPassword"  style="float:left;margin-left:5px;">
-                <html:hidden name="patient" property="username"/>
-                <html:hidden property="unitcode" name="nhsnot"/>
-                <html:hidden property="nhsno" name="nhsnot"/>
-                <td align="left"><html:submit value="Reset Password" style="float:left;" styleClass="btn formbutton"/></td>
-            </html:form>
-
-            <td>&nbsp;</td>
-            <td align="right" style="vertical-align:top;"><html:submit value="Save" styleClass="btn btn-primary formbutton"/></td>
-
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <logic:match value="true" name="patient" property="accountlocked">
-                <html:form action="/control/passwordUnlock">
+        <div class="patient-edit-form form-actions">
+            <div class="row">
+                <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton"/>
+                <html:form action="/control/userDelete">
                     <html:hidden name="patient" property="username"/>
-                    <html:hidden property="nhsno" name="nhsnot"/>
+                    <html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/>
                     <html:hidden property="unitcode" name="nhsnot"/>
-                    <td align="right" style="vertical-align: top;"><html:submit value="Unlock Password" styleClass="btn formbutton"/></td>
+                    <html:hidden property="nhsno" name="nhsnot"/>
                 </html:form>
-            </logic:match>
-        </tr>
-    </table>
+
+                <html:form action="/control/resetPassword"  style="float:left;margin-left:5px;">
+                    <html:hidden name="patient" property="username"/>
+                    <html:hidden property="unitcode" name="nhsnot"/>
+                    <html:hidden property="nhsno" name="nhsnot"/>
+                    <html:submit value="Reset Password" style="float:left;" styleClass="btn formbutton"/>
+                </html:form>
+            </div>
+            <div class="row">
+                <logic:match value="true" name="patient" property="accountlocked">
+                    <html:form action="/control/passwordUnlock">
+                        <html:hidden name="patient" property="username"/>
+                        <html:hidden property="nhsno" name="nhsnot"/>
+                        <html:hidden property="unitcode" name="nhsnot"/>
+                        <html:submit value="Unlock Password" styleClass="btn formbutton"/>
+                    </html:form>
+                </logic:match>
+            </div>
+        </div>
+
+        </html:form>
+
+        </div>
+    </div>
 </div>
 

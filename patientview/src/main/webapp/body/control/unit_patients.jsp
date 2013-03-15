@@ -89,7 +89,7 @@
           <td>
               <html:form action="/control/logViewForPatient">
                 <html:hidden name="patient" property="nhsno" />
-                <html:submit value="Log" styleClass="formbutton" />
+                <html:submit value="Log" styleClass="btn formbutton" />
               </html:form>
           </td>
         </logic:present>
@@ -98,7 +98,7 @@
             <td>
               <html:form action="/control/viewsOfPatient">
                 <html:hidden name="patient" property="nhsno" />
-                <html:submit value="Views" styleClass="formbutton" />
+                <html:submit value="Views" styleClass="btn formbutton" />
               </html:form>
             </td>
         </logic:present>
@@ -107,7 +107,7 @@
             <td>
               <html:form action="/control/dataLoadsForPatient">
                 <html:hidden name="patient" property="nhsno" />
-                <html:submit value="Data" styleClass="formbutton" />
+                <html:submit value="Data" styleClass="btn formbutton" />
               </html:form>
             </td>
         </logic:present>
@@ -116,7 +116,7 @@
             <td>
               <html:form action="/control/activityByUser">
                 <html:hidden name="patient" property="username" />
-                <html:submit value="Activity" styleClass="formbutton" />
+                <html:submit value="Activity" styleClass="btn formbutton" />
               </html:form>
             </td>
         </logic:present>
@@ -125,7 +125,7 @@
             <td>
                 <html:form action="/control/ibduser-edit" method="get" style="margin-bottom: 0">
                     <input type="hidden" name="nhsNo" value="<bean:write name="patient" property="nhsno" />" />
-                    <html:submit value="Manage Ibd Settings" styleClass="formbutton" />
+                    <html:submit value="Manage Ibd Settings" styleClass="btn formbutton" />
                 </html:form>
             </td>
         </logic:present>
