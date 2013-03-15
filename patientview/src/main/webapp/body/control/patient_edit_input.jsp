@@ -79,8 +79,6 @@
 
   <html:form action="/control/resetPassword">
     <html:hidden name="patient" property="username"/>
-    <html:hidden property="unitcode" name="nhsnot"/>
-    <html:hidden property="nhsno" name="nhsnot"/>
     <tr align="left">
       <td><html:submit value="Reset Password" styleClass="formbutton"/></td>
     </tr>

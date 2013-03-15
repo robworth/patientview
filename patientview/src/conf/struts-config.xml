@@ -752,7 +752,6 @@
     <action path="/control/resetPassword"
             type="com.worthsoln.patientview.logon.PasswordResetAction"
             name="patientForm"
-            input="input"
             scope="request">
       <forward name="error" path="/control/password_reset_confirm.jsp"/>
       <forward name="success" path="/control/password_reset_confirm.jsp"/>
