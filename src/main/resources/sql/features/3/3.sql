@@ -19,9 +19,12 @@ UPDATE tbl_centres c, unit u SET u.id = c.cid WHERE c.unitcode = u.unitcode;
 ALTER TABLE unit MODIFY tenancy_id bigint(20) NULL;
 
 -- add the radar units into the patientview table excluding the already existing units
-insert into unit (unitcode, id, name, shortname, country, sourcetype)
-select unitcode, cID, cName, cAbbrev, cCountry, 'radargroup'
+insert into unit (unitcode, id, name, shortname, country, sourcetype, tenancy_id)
+select unitcode, cID, cName, cAbbrev, cCountry, 'renalunit', 1
 from tbl_centres where unitcode not in (SELECT c.unitcode FROM tbl_centres c, unit u WHERE c.unitcode = u.unitcode);
+
+-- set the country to be 1 (the UK) for units from RPV
+UPDATE unit SET country = 1 WHERE sourceType = 'renalunit' AND (country IS NULL OR country = '');
 
 -- drop the now unused table
 drop table tbl_centres;
