@@ -30,6 +30,7 @@ import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.service.MessageManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.DynaActionForm;
@@ -377,6 +378,10 @@ public class BaseAction extends ActionSupport {
 //                servlet.getServletContext());
 
         return getWebApplicationContext().getBean(IbdManager.class);
+    }
+
+    protected MessageManager getMessageManager() {
+        return getWebApplicationContext().getBean(MessageManager.class);
     }
 
     /**

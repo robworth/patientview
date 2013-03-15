@@ -507,6 +507,22 @@
       <forward name="success" path="/patient/feedback_for_unit.jsp"/>
     </action>
 
+      <action path="/patient/conversations"
+              type="com.worthsoln.patientview.messaging.ConversationsAction"
+              scope="request"
+              parameter="conversations">
+          <forward name="success" path="/patient/messages.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/patient/conversation"
+              type="com.worthsoln.patientview.messaging.ConversationAction"
+              scope="request"
+              parameter="conversation">
+          <forward name="success" path="/patient/message.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
     <action path="/demo"
             type="com.worthsoln.patientview.IndexAction" parameter="contact">
       <forward name="success" path="/demo.jsp"/>

@@ -10,7 +10,7 @@
 </div>
 
 <section class="conversation-container">
-    <a href="/message.jsp">
+    <a href="/patient/message.jsp">
         <article class="conversation">
             <h2 class="title">This is our conversation title <span class="pull-right conversation-date label label-inverse">Friday</span></h2>
             <h4 class="user">David Roberts </h4>
