@@ -754,7 +754,7 @@
             name="patientForm"
             input="input"
             scope="request">
-      <forward name="input" path="/control/patient_add_input.jsp"/>
+      <forward name="error" path="/control/password_reset_confirm.jsp"/>
       <forward name="success" path="/control/password_reset_confirm.jsp"/>
     </action>
 
