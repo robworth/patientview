@@ -22,7 +22,7 @@
         </tr>
         <tr>
           <td><b>Password</b></td>
-          <td class="password"><bean:write name="user" property="password" /></td>
+          <td class="password"><bean:write name="plaintextPassword"/></td>
         </tr>
         <tr>
           <td><b>Name</b></td>
