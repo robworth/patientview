@@ -407,4 +407,6 @@ section article.conversation .dull, section article.message .dull{
     color:#9b9b9b;
 }
 
-.
+.patient-edit-form.form-actions{
+    padding-left:30px;
+}

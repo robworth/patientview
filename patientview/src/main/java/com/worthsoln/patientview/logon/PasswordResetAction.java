@@ -23,34 +23,28 @@ public class PasswordResetAction extends Action {
                                  HttpServletResponse response) throws Exception {
 
         String username = BeanUtils.getProperty(form, "username");
-        Patient patient =  LegacySpringUtils.getPatientManager().get(BeanUtils.getProperty(form, "nhsno"),
-                BeanUtils.getProperty(form, "unitcode"));
+        User user = LegacySpringUtils.getUserManager().get(username);
 
         String mappingToFind = "";
-        User user = null;
 
-        if (patient != null) {
+        if (user != null) {
             String password = LogonUtils.generateNewPassword();
-            
-            user = LegacySpringUtils.getUserManager().get(username);
             user.setPassword(LogonUtils.hashPassword(password));
             user.setFirstlogon(true);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_RESET,
                     user.getUsername(), "", UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
+            request.setAttribute("plaintextPassword", password);
+            request.setAttribute("passwordUpdated", true);
             mappingToFind = "success";
         } else {
-            request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);
 
-            mappingToFind = "input";
+            request.setAttribute("passwordUpdateError", true);
+            mappingToFind = "error";
         }
 
-        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
-
-        request.setAttribute("units", units);
         request.setAttribute("user", user);
-        request.setAttribute("patient", patient);
 
         return mapping.findForward(mappingToFind);
     }
