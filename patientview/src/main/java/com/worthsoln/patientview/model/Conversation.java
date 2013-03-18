@@ -24,8 +24,19 @@ public class Conversation extends BaseModel {
     @JoinColumn(name = "participant2_id")
     private User participant2;
 
+    // Transient methods are set by the manager and are to help the front end so we do less struts
     @Transient
     private int numberUnread = 0;
+
+    @Transient
+    private String latestMessageSummary;
+
+    @Transient
+    private String latestMessageDate;
+
+    // this will be set so that the user in the message being shown to the user is the other person in the message
+    @Transient
+    private User userBasedOnContext;
 
     public boolean isDeleted() {
         return deleted;
@@ -65,5 +76,29 @@ public class Conversation extends BaseModel {
 
     public void setNumberUnread(int numberUnread) {
         this.numberUnread = numberUnread;
+    }
+
+    public String getLatestMessageSummary() {
+        return latestMessageSummary;
+    }
+
+    public void setLatestMessageSummary(String latestMessageSummary) {
+        this.latestMessageSummary = latestMessageSummary;
+    }
+
+    public String getLatestMessageDate() {
+        return latestMessageDate;
+    }
+
+    public void setLatestMessageDate(String latestMessageDate) {
+        this.latestMessageDate = latestMessageDate;
+    }
+
+    public User getUserBasedOnContext() {
+        return userBasedOnContext;
+    }
+
+    public void setUserBasedOnContext(User userBasedOnContext) {
+        this.userBasedOnContext = userBasedOnContext;
     }
 }

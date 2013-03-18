@@ -23,9 +23,6 @@ import java.util.List;
 @Repository(value = "conversationDao")
 public class ConversationDaoImpl extends AbstractHibernateDAO<Conversation> implements ConversationDao {
 
-    @Inject
-    private MessageDao messageDao;
-
     @Override
     public Conversation get(Long id) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -99,15 +96,7 @@ public class ConversationDaoImpl extends AbstractHibernateDAO<Conversation> impl
 
         criteria.orderBy(builder.asc(root.get(Conversation_.started)));
 
-        List<Conversation> conversations = getEntityManager().createQuery(criteria).getResultList();
-
-        // need to go through and show how many messages in a convo that user needs to read
-        for (Conversation conversation : conversations) {
-             conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
-                     participantId, conversation.getId()).intValue());
-        }
-
-        return conversations;
+        return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override

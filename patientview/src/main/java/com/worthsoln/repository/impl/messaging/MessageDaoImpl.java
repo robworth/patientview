@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -106,6 +107,30 @@ public class MessageDaoImpl extends AbstractHibernateDAO<Message> implements Mes
         criteria.orderBy(builder.asc(root.get(Message_.date)));
 
         return getEntityManager().createQuery(criteria).getSingleResult();
+    }
+
+    @Override
+    public Message getLatestMessage(Long conversationId) {
+        // only want to return frameworks if we have a user filter
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Message> criteria = builder.createQuery(Message.class);
+
+        Root<Message> root = criteria.from(Message.class);
+
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(root.get(Message_.deleted), false));
+        wherePredicates.add(builder.equal(root.get(Message_.conversation), conversationId));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        criteria.orderBy(builder.desc(root.get(Message_.date)));
+
+        TypedQuery<Message> query = getEntityManager().createQuery(criteria);
+        query.setFirstResult(0);
+        query.setMaxResults(1);
+
+        return query.getSingleResult();
     }
 
     @Override

@@ -177,4 +177,21 @@ public class MessageDaoTest extends BaseDaoTest {
         assertNotNull("Number of messages unread was null", checkUser2UnreadMessages);
         assertTrue("Wrong number of unread messages for user 2", checkUser2UnreadMessages.size() == 2L);
     }
+
+    @Test
+    public void testGetLatestMessage() throws Exception {
+        User user1 = repositoryHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
+        User user2 = repositoryHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+
+        // create convo between 1 and 2
+        Conversation conversation = repositoryHelpers.createConversation(user1, user2, true);
+
+        // 2 messages from user 1
+        Message message1 = repositoryHelpers.createMessage(conversation, user1, user2, "Message in conversation 1", true);
+        Message message2 = repositoryHelpers.createMessage(conversation, user1, user2, "2nd Message in conversation 1", true);
+
+        Message checkMessage = messageDao.getLatestMessage(conversation.getId());
+
+        assertEquals("Wrong message pull back as latest", checkMessage, message2);
+    }
 }

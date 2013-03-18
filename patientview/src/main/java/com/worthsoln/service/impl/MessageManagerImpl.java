@@ -12,11 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service(value = "messageManager")
 public class MessageManagerImpl implements MessageManager {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     @Inject
     private ConversationDao conversationDao;
@@ -31,7 +34,34 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<Conversation> getConversations(Long participantId) {
-        return conversationDao.getConversations(participantId);
+        List<Conversation> conversations = conversationDao.getConversations(participantId);
+
+        // need to populate this list for the user
+        // we add the total number of unread for each convo for THAT user
+        // we add the summary of the last message in that convo and the date of it
+        // need to go through and show how many messages in a convo that user needs to read
+        for (Conversation conversation : conversations) {
+            conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
+                    participantId, conversation.getId()).intValue());
+
+            // set the summary details for the convo to the last message
+            Message latestMessage = messageDao.getLatestMessage(conversation.getId());
+
+            if (latestMessage != null) {
+                conversation.setLatestMessageSummary(latestMessage.getContent());
+                conversation.setLatestMessageDate(DATE_FORMAT.format(latestMessage.getDate()));
+            }
+
+            // as there two users in the convo we want the front end to be able to show titles based on the other
+            // user in the convo and not the user who is viewing it
+            if (conversation.getParticipant1().getId().equals(participantId)) {
+                conversation.setUserBasedOnContext(conversation.getParticipant2());
+            } else {
+                conversation.setUserBasedOnContext(conversation.getParticipant1());
+            }
+        }
+
+        return conversations;
     }
 
     @Override

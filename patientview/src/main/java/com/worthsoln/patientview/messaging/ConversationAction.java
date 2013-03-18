@@ -3,6 +3,7 @@ package com.worthsoln.patientview.messaging;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.Conversation;
+import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -29,6 +30,10 @@ public class ConversationAction extends BaseAction {
 
         request.setAttribute(CONVERSATION_PARAM, conversation);
         request.setAttribute(MESSAGES_PARAM, getMessageManager().getMessages(conversation.getId()));
+
+        // as the user has requested to view this page we can assume they have read the messages
+        getMessageManager().markMessagesAsReadForConversation(UserUtils.retrieveUser(request).getId(),
+                conversation.getId());
 
         return mapping.findForward(SUCCESS);
     }

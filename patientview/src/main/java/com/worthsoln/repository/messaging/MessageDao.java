@@ -14,6 +14,8 @@ public interface MessageDao {
 
     Long getNumberOfUnreadMessages(Long recipientId, Long conversationId);
 
+    Message getLatestMessage(Long conversationId);
+
     void save(Message message);
 
     void delete(Message message);
