@@ -280,6 +280,15 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
         }
 
         public String getTestcode() {
+
+            // All the results must be written to the testresult table so testresult.testcode matches the
+            // result_heading.headingcode, thus all should be lowercase.
+            // ACR, PCR, BPsys and BPdia should be acr, pcr, bpsys and bpdia
+
+            if (testcode != null && testcode.length() > 0) {
+                testcode = testcode.toLowerCase();
+            }
+
             return testcode;
         }
 
