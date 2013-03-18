@@ -4,10 +4,14 @@ import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
+import com.worthsoln.patientview.model.Conversation;
+import com.worthsoln.patientview.model.Message;
 import com.worthsoln.repository.SpecialtyDao;
 import com.worthsoln.repository.SpecialtyUserRoleDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
+import com.worthsoln.repository.messaging.ConversationDao;
+import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +34,12 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
     @Inject
     private SpecialtyUserRoleDao specialtyUserRoleDao;
+
+    @Inject
+    private ConversationDao conversationDao;
+
+    @Inject
+    private MessageDao messageDao;
 
     @Override
     public User createUser(String username, String email, String password, String name, String screenName) {
@@ -85,5 +95,35 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
         specialtyUserRoleDao.save(specialtyUserRole1);
 
         return specialtyUserRole1;
+    }
+
+    @Override
+    public Conversation createConversation(User participant1, User participant2, boolean store) {
+        Conversation conversation = new Conversation();
+
+        conversation.setParticipant1(participant1);
+        conversation.setParticipant2(participant2);
+
+        if (store) {
+            conversationDao.save(conversation);
+        }
+
+        return conversation;
+    }
+
+    public Message createMessage(Conversation conversation, User sender, User recipient, String content,
+                                 boolean store) {
+        Message message = new Message();
+
+        message.setConversation(conversation);
+        message.setSender(sender);
+        message.setRecipient(recipient);
+        message.setContent(content);
+
+        if (store) {
+            messageDao.save(message);
+        }
+
+        return message;
     }
 }
