@@ -102,6 +102,7 @@ public class GenericDemographicsPanel extends Panel {
 
         WebMarkupContainer patientDetail = new PatientDetailPanel("patientDetail", demographics, "Demographics");
         patientDetail.setOutputMarkupId(true);
+        patientDetail.setOutputMarkupPlaceholderTag(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);
 
