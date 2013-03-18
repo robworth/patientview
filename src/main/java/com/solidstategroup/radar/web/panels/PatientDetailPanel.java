@@ -4,6 +4,7 @@ package com.solidstategroup.radar.web.panels;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -15,7 +16,7 @@ import org.apache.wicket.model.PropertyModel;
 import java.util.Date;
 
 public class PatientDetailPanel extends Panel {
-    public PatientDetailPanel(String id, Demographics demographics, String title) {
+    public PatientDetailPanel(String id, final Demographics demographics, String title) {
         super(id);
 
         WebMarkupContainer details = new WebMarkupContainer("details", new CompoundPropertyModel<Object>(demographics));
@@ -42,21 +43,33 @@ public class PatientDetailPanel extends Panel {
         details.add(diseaseGroup);
 
         // forename
-        Label nameLabel = new Label("nameLabel", "Patient Name");
-        nameLabel.setVisible(StringUtils.isNotBlank(demographics.getForename()));
+        Label nameLabel = new Label("nameLabel", "Patient Name") {
+            @Override
+            public boolean isVisible() {
+                return StringUtils.isNotBlank(demographics.getForename());
+            }
+        };
         nameLabel.setOutputMarkupId(true);
         nameLabel.setOutputMarkupPlaceholderTag(true);
         details.add(nameLabel);
 
-        TextField<Long> forename = new TextField<Long>("forename");
-        forename.setVisible(StringUtils.isNotBlank(demographics.getForename()));
+        TextField<Long> forename = new TextField<Long>("forename") {
+            @Override
+            public boolean isVisible() {
+                return StringUtils.isNotBlank(demographics.getForename());
+            }
+        };
         forename.setOutputMarkupId(true);
         forename.setOutputMarkupPlaceholderTag(true);
         details.add(forename);
 
         // surname
-        TextField<Long> surname = new TextField<Long>("surname");
-        surname.setVisible(StringUtils.isNotBlank(demographics.getSurname()));
+        TextField<Long> surname = new TextField<Long>("surname") {
+            @Override
+            public boolean isVisible() {
+                return StringUtils.isNotBlank(demographics.getSurname());
+            }
+        };
         surname.setOutputMarkupId(true);
         surname.setOutputMarkupPlaceholderTag(true);
         details.add(surname);
@@ -66,16 +79,24 @@ public class PatientDetailPanel extends Panel {
         details.add(dateRegistered);
 
         // date of birth
-        Label dobLabel = new Label("dobLabel", "Patient DOB");
-        dobLabel.setVisible(demographics.getDateOfBirth() != null);
+        Label dobLabel = new Label("dobLabel", "Patient DOB") {
+            @Override
+            public boolean isVisible() {
+                return demographics.getDateOfBirth() != null;
+            }
+        };
         dobLabel.setOutputMarkupId(true);
         dobLabel.setOutputMarkupPlaceholderTag(true);
         details.add(dobLabel);
 
-        DateTextField dateOfBirthTextField =
-                DateTextField.forDatePattern("dob", new PropertyModel<Date>(demographics, "dateOfBirth"),
-                        RadarApplication.DATE_PATTERN);
-        dateOfBirthTextField.setVisible(demographics.getDateOfBirth() != null);
+        DateTextField dateOfBirthTextField = new DateTextField("dob",
+                new PropertyModel<Date>(demographics, "dateOfBirth"), new PatternDateConverter(
+                RadarApplication.DATE_PATTERN, true)) {
+            @Override
+            public boolean isVisible() {
+                return demographics.getDateOfBirth() != null;
+            }
+        };
         dateOfBirthTextField.setOutputMarkupId(true);
         dateOfBirthTextField.setOutputMarkupPlaceholderTag(true);
         details.add(dateOfBirthTextField);
