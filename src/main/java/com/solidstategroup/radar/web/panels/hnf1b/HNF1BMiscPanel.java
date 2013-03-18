@@ -68,6 +68,10 @@ public class HNF1BMiscPanel extends Panel {
             protected void onSubmit() {
                 HNF1BMisc hnf1BMisc = getModelObject();
 
+                if (!formHasValues(hnf1BMisc)) {
+                    error("Please enter HNF1B Misc data");
+                }
+
                 if (!hasError()) {
                     hnf1BMisc.setRadarNo(demographics.getId());
                     hnf1BMiscManager.save(hnf1BMisc);
@@ -165,5 +169,15 @@ public class HNF1BMiscPanel extends Panel {
                 target.add(formFeedback);
             }
         });
+    }
+
+    private boolean formHasValues(HNF1BMisc hnf1BMisc) {
+        return hnf1BMisc.getRenalCysts() != null || hnf1BMisc.getSingleKidney() != null ||
+                hnf1BMisc.getOtherRenalMalformations() != null ||
+                hnf1BMisc.getOtherRenalMalformationsDetails() != null ||
+                hnf1BMisc.getDiabetes() != null  || hnf1BMisc.getGout() != null  ||
+                hnf1BMisc.getGenitalMalformation() != null ||
+                hnf1BMisc.getGenitalMalformationDetails() != null;
+
     }
 }

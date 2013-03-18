@@ -23,7 +23,7 @@ public enum YesNo {
             }
         }
 
-        return YesNo.NO;
+        return null;
     }
 
     public int getId() {
