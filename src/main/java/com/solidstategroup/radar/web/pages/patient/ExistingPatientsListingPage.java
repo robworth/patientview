@@ -82,15 +82,7 @@ public class ExistingPatientsListingPage extends BasePage {
                 item.add(new Label("id"));
                 item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(demographics)));
 
-                String patientNumber = "";
-
-                if (demographics.getNhsNumber() != null && demographics.getNhsNumber().length() > 0) {
-                    patientNumber = demographics.getNhsNumber();
-                } else {
-                    patientNumber = demographics.getChiNumber();
-                }
-
-                item.add(new Label("nhsNumber", patientNumber));
+                item.add(new Label("nhsNumber", demographics.getNhsNumber()));
                 item.add(new Label("hospitalNumber"));
                 item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));

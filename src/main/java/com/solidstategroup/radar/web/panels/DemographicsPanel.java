@@ -7,7 +7,7 @@ import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
-import com.solidstategroup.radar.model.generic.IdType;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.ClinicalDataManager;
@@ -35,6 +35,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -110,10 +111,12 @@ public class DemographicsPanel extends Panel {
                                 // set the id type and val
                                 String idType = pageParameters.get("idType").toString();
 
-                                if (idType.equals(IdType.CHI.toString())) {
-                                    demographicsModelObject.setChiNumber(pageParameters.get("idVal").toString());
-                                } else if (idType.equals(IdType.NHS.toString())) {
-                                    demographicsModelObject.setNhsNumber(pageParameters.get("idVal").toString());
+                                demographicsModelObject.setNhsNumber(pageParameters.get("idVal").toString());
+
+                                if (idType.equals(NhsNumberType.CHI_NUMBER.toString())) {
+                                    demographicsModelObject.setNhsNumberType(NhsNumberType.CHI_NUMBER);
+                                } else if (idType.equals(NhsNumberType.NHS_NUMBER.toString())) {
+                                    demographicsModelObject.setNhsNumberType(NhsNumberType.NHS_NUMBER);
                                 }
 
                                 String diseaseGroupId = pageParameters.get("diseaseGroupId").toString();
@@ -160,6 +163,27 @@ public class DemographicsPanel extends Panel {
 
             }
         };
+
+        // More info
+        Label nhsNumber = new Label("nhsNumber");
+        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
+            }
+        };
+        nhsNumberContainer.add(nhsNumber);
+
+        Label chiNumber = new Label("chiNumber");
+        WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
+            }
+        };
+        chiNumberContainer.add(chiNumber);
+
+        form.add(nhsNumberContainer, chiNumberContainer);
         add(form);
 
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
@@ -263,11 +287,9 @@ public class DemographicsPanel extends Panel {
         // More info
         RadarRequiredTextField hospitalNumber =
                 new RadarRequiredTextField("hospitalNumber", form, componentsToUpdateList);
-        TextField nhsNumber = new TextField("nhsNumber");
         TextField renalRegistryNumber = new TextField("renalRegistryNumber");
         TextField ukTransplantNumber = new TextField("ukTransplantNumber");
-        TextField chiNumber = new TextField("chiNumber");
-        form.add(hospitalNumber, nhsNumber, renalRegistryNumber, ukTransplantNumber, chiNumber);
+        form.add(hospitalNumber, renalRegistryNumber, ukTransplantNumber);
 
         // Status, consultants and centres drop down boxes
         form.add(new DropDownChoice<Status>("status", demographicsManager.getStatuses(),

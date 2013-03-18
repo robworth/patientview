@@ -9,6 +9,7 @@ import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -48,7 +49,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         demographicsInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Demographics")
                 .usingGeneratedKeyColumns("RADAR_NO")
                 .usingColumns(
-                        "RR_NO", "DATE_REG", "NHS_NO", "HOSP_NO", "UKT_NO", "CHI_NO", "SNAME", "SNAME_ALIAS",
+                        "RR_NO", "DATE_REG", "NHS_NO", "NHS_NO_TYPE", "HOSP_NO", "UKT_NO", "SNAME", "SNAME_ALIAS",
                         "FNAME", "DOB", "AGE", "SEX", "ETHNIC_GP", "ADD1", "ADD2", "ADD3", "ADD4", "POSTCODE",
                         "POSTCODE_OLD", "CONSENT", "DATE_BAPN_REG", "CONS_NEPH", "RENAL_UNIT", "RENAL_UNIT_2",
                         "STATUS", "RDG", "emailAddress", "phone1", "phone2", "mobile", "RRT_modality",
@@ -64,9 +65,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "RR_NO = ?, " +
                             "DATE_REG = ?, " +
                             "NHS_NO = ?, " +
+                            "NHS_NO_TYPE = ?, " +
                             "HOSP_NO = ?, " +
                             "UKT_NO = ?, " +
-                            "CHI_NO = ?, " +
                             "SNAME = ?, " +
                             "SNAME_ALIAS = ?, " +
                             "FNAME = ?, " +
@@ -105,9 +106,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     demographics.getRenalRegistryNumber(),
                     demographics.getDateRegistered(),
                     demographics.getNhsNumber(),
+                    demographics.getNhsNumberType().getId(),
                     demographics.getHospitalNumber(),
                     demographics.getUkTransplantNumber(),
-                    demographics.getChiNumber(),
                     demographics.getSurname(),
                     demographics.getSurnameAlias(),
                     demographics.getForename(),
@@ -150,9 +151,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("RR_NO", demographics.getRenalRegistryNumber());
                     put("DATE_REG", demographics.getDateRegistered());
                     put("NHS_NO", demographics.getNhsNumber());
+                    put("NHS_NO_TYPE", demographics.getNhsNumberType().getId());
                     put("HOSP_NO", demographics.getHospitalNumber());
                     put("UKT_NO", demographics.getUkTransplantNumber());
-                    put("CHI_NO", demographics.getChiNumber());
                     put("SNAME", demographics.getSurname());
                     put("SNAME_ALIAS", demographics.getSurnameAlias());
                     put("FNAME", demographics.getForename());
@@ -307,12 +308,11 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             // Renal registry number
             demographics.setRenalRegistryNumber(resultSet.getString("RR_NO"));
 
-            // UK transplant number and chiNumber
+            // UK transplant number
             demographics.setUkTransplantNumber(resultSet.getString("UKT_NO"));
-            demographics.setChiNumber(resultSet.getString("CHI_NO"));
 
-            // These need to be decrypted from the database
             demographics.setNhsNumber(resultSet.getString("NHS_NO"));
+            demographics.setNhsNumberType(NhsNumberType.getNhsNumberType(resultSet.getLong("NHS_NO_TYPE")));
             demographics.setHospitalNumber(resultSet.getString("HOSP_NO"));
             demographics.setSurname(resultSet.getString("SNAME"));
             demographics.setSurnameAlias(resultSet.getString("SNAME_ALIAS"));
@@ -342,7 +342,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 }
             }
 
-            // Addresses, all encrypted too
+            // Addresses
             demographics.setAddress1(resultSet.getString("ADD1"));
             demographics.setAddress2(resultSet.getString("ADD2"));
             demographics.setAddress3(resultSet.getString("ADD3"));

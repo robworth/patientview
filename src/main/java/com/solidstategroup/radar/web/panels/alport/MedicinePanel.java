@@ -217,7 +217,6 @@ public class MedicinePanel extends Panel {
 
             if (!hasError()) {
                 medicine.setNhsNo(demographics.getNhsNumber());
-                medicine.setChiNo(demographics.getChiNumber());
                 medicine.setDiseaseGroup(diseaseGroup);
                 medicineManager.save(medicine);
                 getModel().setObject(new Medicine());
