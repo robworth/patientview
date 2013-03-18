@@ -55,15 +55,37 @@ public class HNF1BMiscDaoImpl extends BaseDaoImpl implements HNF1BMiscDao {
         Map<String, Object> geneticsMap = new HashMap<String, Object>();
         geneticsMap.put(ID_FIELD_NAME, hnf1BMisc.getId());
         geneticsMap.put(RADAR_NO_FIELD_NAME, hnf1BMisc.getRadarNo());
-        geneticsMap.put(RENAL_CYSTS_FIELD_NAME, hnf1BMisc.getRenalCysts().getId());
-        geneticsMap.put(SINGLE_KIDNEY_FIELD_NAME, hnf1BMisc.getSingleKidney().getId());
-        geneticsMap.put(OTHER_RENAL_MALFORMATIONS_FIELD_NAME, hnf1BMisc.getOtherRenalMalformations().getId());
+
+        if (hnf1BMisc.getRenalCysts() != null) {
+            geneticsMap.put(RENAL_CYSTS_FIELD_NAME, hnf1BMisc.getRenalCysts().getId());
+        }
+
+        if (hnf1BMisc.getSingleKidney() != null) {
+            geneticsMap.put(SINGLE_KIDNEY_FIELD_NAME, hnf1BMisc.getSingleKidney().getId());
+        }
+
+        if (hnf1BMisc.getOtherRenalMalformations() != null) {
+            geneticsMap.put(OTHER_RENAL_MALFORMATIONS_FIELD_NAME, hnf1BMisc.getOtherRenalMalformations().getId());
+        }
+
         geneticsMap.put(OTHER_RENAL_MALFORMATIONS_DETAILS_FIELD_NAME, hnf1BMisc.getOtherRenalMalformationsDetails());
-        geneticsMap.put(DIABETES_FIELD_NAME, hnf1BMisc.getDiabetes().getId());
+
+        if (hnf1BMisc.getDiabetes() != null) {
+            geneticsMap.put(DIABETES_FIELD_NAME, hnf1BMisc.getDiabetes().getId());
+        }
+
         geneticsMap.put(AGE_AT_DIABETES_DIAGNOSIS_FIELD_NAME, hnf1BMisc.getAgeAtDiabetesDiagnosis());
-        geneticsMap.put(GOUT_FIELD_NAME, hnf1BMisc.getGout().getId());
+
+        if (hnf1BMisc.getGout() != null) {
+            geneticsMap.put(GOUT_FIELD_NAME, hnf1BMisc.getGout().getId());
+        }
+
         geneticsMap.put(AGE_AT_GOUT_DIAGNOSIS_FIELD_NAME, hnf1BMisc.getAgeAtGoutDiagnosis());
-        geneticsMap.put(GENITAL_MALFORMATION_FIELD_NAME, hnf1BMisc.getGenitalMalformation().getId());
+
+        if (hnf1BMisc.getGenitalMalformation() != null) {
+            geneticsMap.put(GENITAL_MALFORMATION_FIELD_NAME, hnf1BMisc.getGenitalMalformation().getId());
+        }
+
         geneticsMap.put(GENITAL_MALFORMATION_DETAILS_FIELD_NAME, hnf1BMisc.getGenitalMalformationDetails());
 
         if (hnf1BMisc.hasValidId()) {
