@@ -1,30 +1,22 @@
 /**
-      Patch: PV and Radar single user table
-
-      NOT FULLY TESTED ON DEV YET
+ *  Patch: remove the CHI number from the model
  */
 
-CREATE TABLE `rdr_user_mapping` (
-  `userId` bigint(20) NOT NULL,
-  `radarUserId` bigint(20) NOT NULL,
-  `role` varchar(20) NOT NULL,
-  PRIMARY KEY (`userId`),
-  constraint `FK_RDR_USER_MAPPING_USERID` foreign key (`userId`) references `user`(`id`) on delete Cascade
-);
+-- add a new enum column for nhs no type after nhs_no
+ALTER TABLE tbl_demographics ADD COLUMN NHS_NO_TYPE INT(11) NOT NULL AFTER NHS_NO;
 
-/*
-ONLY DO THIS AFTER YOU HAVE RUN THE EXPORT FILE TO MAP THESE FIELDS INTO RPV
-*/
-ALTER TABLE `tbl_adminusers`
-  DROP COLUMN `uEmail`,
-  DROP COLUMN `uPass`,
-  DROP COLUMN `uUserName`;
+-- set the type to be 2 for all rows with a chi_no set, also set the nhs no to be the chi no (there are no users with both an NHS and CHI no)
+UPDATE tbl_demographics SET NHS_NO_TYPE = 2, NHS_NO = CHI_NO WHERE CHI_NO IS NOT NULL;
 
-ALTER TABLE `tbl_patient_users`
-  DROP COLUMN `pUserName`,
-  DROP COLUMN `pPassWord`;
+-- set the remaining rows to be type = 1
+UPDATE tbl_demographics SET NHS_NO_TYPE = 1 WHERE NHS_NO_TYPE = 0;
 
-ALTER TABLE `tbl_users`
-  DROP COLUMN `uEmail`,
-  DROP COLUMN `uPass`,
-  DROP COLUMN `uUserName`;
+-- remove the column chi_no
+ALTER TABLE tbl_demographics DROP COLUMN CHI_NO;
+
+-- remove the chi_no from medicine (Note: there are no rows with the chi no set)
+ALTER TABLE medicine DROP COLUMN chino;
+
+
+
+
