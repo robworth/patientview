@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
@@ -32,6 +33,10 @@ public class Message extends BaseModel {
 
     @Column(nullable = false)
     private boolean hasRead;
+
+    // this will be set by manager
+    @Transient
+    private String friendlyDate;
 
     public boolean isDeleted() {
         return deleted;
@@ -87,5 +92,13 @@ public class Message extends BaseModel {
 
     public void setHasRead(boolean hasRead) {
         this.hasRead = hasRead;
+    }
+
+    public String getFriendlyDate() {
+        return friendlyDate;
+    }
+
+    public void setFriendlyDate(String friendlyDate) {
+        this.friendlyDate = friendlyDate;
     }
 }

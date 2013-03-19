@@ -3,6 +3,7 @@ package com.worthsoln.patientview.messaging;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.Conversation;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -22,7 +23,10 @@ public class ConversationAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        Conversation conversation = getMessageManager().getConversation(getConversationId(request));
+        User user = UserUtils.retrieveUser(request);
+
+        Conversation conversation = getMessageManager().getConversationForUser(getConversationId(request),
+                user.getId());
 
         if (conversation == null) {
             return mapping.findForward(ERROR);

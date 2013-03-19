@@ -12,10 +12,10 @@
     <logic:present name="conversations">
         <logic:notEmpty name="conversations">
             <logic:iterate name="conversations" id="conversation" indexId="index">
-                <a href="/patient/message.jsp">
+                <html:link action="/patient/conversation" paramName="conversation" paramProperty="id" paramId="id">
                     <article class="conversation">
                         <h2 class="title">
-                            <bean:write name="conversation" property="userBasedOnContext.name" />
+                            <bean:write name="conversation" property="otherUser.name" />
                             <logic:greaterThan value="0" name="conversation" property="numberUnread">
                                 <span class="badge badge-important">
                                     <bean:write name="conversation" property="numberUnread" />
@@ -27,7 +27,7 @@
                             <bean:write name="conversation" property="latestMessageSummary" />
                         </div>
                     </article>
-                </a>
+                </html:link>
             </logic:iterate>
         </logic:notEmpty>
         <logic:empty name="conversations">

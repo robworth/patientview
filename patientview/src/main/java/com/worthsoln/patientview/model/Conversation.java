@@ -36,7 +36,7 @@ public class Conversation extends BaseModel {
 
     // this will be set so that the user in the message being shown to the user is the other person in the message
     @Transient
-    private User userBasedOnContext;
+    private User otherUser;
 
     public boolean isDeleted() {
         return deleted;
@@ -94,11 +94,11 @@ public class Conversation extends BaseModel {
         this.latestMessageDate = latestMessageDate;
     }
 
-    public User getUserBasedOnContext() {
-        return userBasedOnContext;
+    public User getOtherUser() {
+        return otherUser;
     }
 
-    public void setUserBasedOnContext(User userBasedOnContext) {
-        this.userBasedOnContext = userBasedOnContext;
+    public void setOtherUser(User otherUser) {
+        this.otherUser = otherUser;
     }
 }

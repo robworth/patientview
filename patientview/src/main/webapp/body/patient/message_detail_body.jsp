@@ -4,47 +4,48 @@
 
 <html:xhtml/>
 
-<div class="page-header">
-    <div>
-        <input type="submit" id="back-to-conversation" class="btn" value="< back to Messages"/>
+<logic:notPresent name="conversation">
+    <div class="alert alert-error">
+        <strong>Conversation not found.</strong>
     </div>
-    <h1>This is our conversation title <input type="submit" id="create-conversation" class="pull-right btn btn-primary" value="Reply"/></h1>
-</div>
-
-<section>
-    <article class="message">
-        <h4 class="author">Andrew Moffatt <span class="label label-inverse pull-right date">7.32am</span></h4>
-
-        <div class="content dull">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper sodales leo, quis dictum justo ultricies at. Quisque congue diam id dui suscipit faucibus.
+</logic:notPresent>
+<logic:present name="conversation">
+    <div class="page-header">
+        <div>
+            <html:link action="/patient/conversations" styleClass="btn">< back to Messages</html:link>
         </div>
-    </article>
-    <article class="message">
-        <h4 class="author">Andrew Moffatt <span class="label label-inverse pull-right date">8.12am</span></h4>
 
-        <div class="content dull">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper sodales leo, quis dictum justo ultricies at. Quisque congue diam id dui suscipit faucibus.
-        </div>
-    </article>
-    <article class="message">
-        <h4 class="author">Paul Chenery <span class="label label-inverse pull-right date">5.13pm</span></h4>
+        <h1>
+            <br />
+            <bean:write name="conversation" property="otherUser.name" />
+        </h1>
+    </div>
 
-        <div class="content dull">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper sodales leo, quis dictum justo ultricies at. Quisque congue diam id dui suscipit faucibus.
-        </div>
-    </article>
-    <article class="message">
-        <h4 class="message-author">Paul Chenery <span class="label label-inverse pull-right date">Yesterday</span></h4>
+    <section>
+        <logic:present name="messages">
+            <logic:notEmpty name="messages">
+                <logic:iterate name="messages" id="message" indexId="index">
+                    <article class="message" id="message-<bean:write name="message" property="id" />">
+                        <h4 class="author"><bean:write name="message" property="sender.name" /> <span class="label label-inverse pull-right date"><bean:write name="message" property="friendlyDate" /></span></h4>
 
-        <div class="content dull">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper sodales leo, quis dictum justo ultricies at. Quisque congue diam id dui suscipit faucibus.
-        </div>
-    </article>
-</section>
+                        <div class="content dull">
+                            <bean:write name="message" property="content" />
+                        </div>
+                    </article>
+                </logic:iterate>
+            </logic:notEmpty>
+            <logic:empty name="messages">
+                <div class="alert">
+                    <strong>You do not have any messages.</strong>
+                </div>
+            </logic:empty>
+        </logic:present>
+    </section>
 
-<section class="new-message-container">
-    <textarea class="span12 new-message" cols="6" rows="3"></textarea>
-    <input id="submit-message" class="pull-right btn btn-primary" type="submit" value="Reply"/>
-</section>
+    <section class="new-message-container">
+        <textarea class="span12 new-message" cols="6" rows="3"></textarea>
+        <input id="submit-message" class="pull-right btn btn-primary" type="submit" value="Reply"/>
+    </section>
+</logic:present>
 
 

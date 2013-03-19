@@ -204,4 +204,13 @@
         </property>
     </bean>
 
+    <bean id="setMessageManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setMessageManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="messageManager"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

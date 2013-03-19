@@ -6,6 +6,8 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.MessageManager;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +15,16 @@ import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service(value = "messageManager")
 public class MessageManagerImpl implements MessageManager {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
+    // TODO: could build the string to format based on if its more than 1 day more than 1 year etc
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MMM/yy HH:mm");
+    private static final SimpleDateFormat SHORT_DAY_FORMAT = new SimpleDateFormat("HH:mm");
 
     @Inject
     private ConversationDao conversationDao;
@@ -33,34 +38,21 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<Conversation> getConversations(Long participantId) {
-        List<Conversation> conversations = conversationDao.getConversations(participantId);
+    public Conversation getConversationForUser(Long conversationId, Long participantId) {
+        Conversation conversation = conversationDao.get(conversationId);
 
-        // need to populate this list for the user
-        // we add the total number of unread for each convo for THAT user
-        // we add the summary of the last message in that convo and the date of it
-        // need to go through and show how many messages in a convo that user needs to read
-        for (Conversation conversation : conversations) {
-            conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
-                    participantId, conversation.getId()).intValue());
-
-            // set the summary details for the convo to the last message
-            Message latestMessage = messageDao.getLatestMessage(conversation.getId());
-
-            if (latestMessage != null) {
-                conversation.setLatestMessageSummary(latestMessage.getContent());
-                conversation.setLatestMessageDate(DATE_FORMAT.format(latestMessage.getDate()));
-            }
-
-            // as there two users in the convo we want the front end to be able to show titles based on the other
-            // user in the convo and not the user who is viewing it
-            if (conversation.getParticipant1().getId().equals(participantId)) {
-                conversation.setUserBasedOnContext(conversation.getParticipant2());
-            } else {
-                conversation.setUserBasedOnContext(conversation.getParticipant1());
-            }
+        if (!userHasAccessToConversation(conversation, participantId)) {
+            return null;
         }
 
+        populateConversation(conversation, participantId);
+        return conversation;
+    }
+
+    @Override
+    public List<Conversation> getConversations(Long participantId) {
+        List<Conversation> conversations = conversationDao.getConversations(participantId);
+        populateConversations(conversations, participantId);
         return conversations;
     }
 
@@ -78,7 +70,14 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<Message> getMessages(Long conversationId) {
-        return messageDao.getMessages(conversationId);
+        List<Message> messages = messageDao.getMessages(conversationId);
+
+        // go through and set any values the manager creates and return
+        for (Message message : messages) {
+            message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
+        }
+
+        return messages;
     }
 
     @Override
@@ -135,6 +134,59 @@ public class MessageManagerImpl implements MessageManager {
         for (Message message : unreadMessages) {
             message.setHasRead(true);
             messageDao.save(message);
+        }
+    }
+
+    private boolean userHasAccessToConversation(Conversation conversation, Long participantId) {
+        return conversation.getParticipant1().getId().equals(participantId)
+                || conversation.getParticipant2().getId().equals(participantId);
+    }
+
+    private void populateConversations(List<Conversation> conversations, Long participantId) {
+        if (conversations != null) {
+            for (Conversation conversation : conversations) {
+                populateConversation(conversation, participantId);
+            }
+        }
+    }
+
+    // need to populate this list for the user
+    // we add the total number of unread for each convo for THAT user
+    // we add the summary of the last message in that convo and the date of it
+    // need to go through and show how many messages in a convo that user needs to read
+    private void populateConversation(Conversation conversation, Long participantId) {
+        if (conversation != null) {
+            conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
+                    participantId, conversation.getId()).intValue());
+
+            // set the summary details for the convo to the last message
+            Message latestMessage = messageDao.getLatestMessage(conversation.getId());
+
+            if (latestMessage != null) {
+                conversation.setLatestMessageSummary(latestMessage.getContent());
+                conversation.setLatestMessageDate(getFriendlyDateTime(latestMessage.getDate()));
+            }
+
+            // as there two users in the convo we want the front end to be able to show titles based on the other
+            // user in the convo and not the user who is viewing it
+            if (conversation.getParticipant1().getId().equals(participantId)) {
+                conversation.setOtherUser(conversation.getParticipant2());
+            } else {
+                conversation.setOtherUser(conversation.getParticipant1());
+            }
+        }
+    }
+
+    private String getFriendlyDateTime(Date date) {
+        DateTime now = new DateTime();
+        DateTime dateTime = new DateTime(date);
+
+        if (dateTime.getYear() == now.getYear()
+                && dateTime.getMonthOfYear() == now.getMonthOfYear()
+                && dateTime.getDayOfWeek() == now.getDayOfWeek()) {
+            return SHORT_DAY_FORMAT.format(date);
+        } else {
+            return DATE_FORMAT.format(date);
         }
     }
 }
