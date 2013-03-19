@@ -64,7 +64,9 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
             }
         }
 
-        sql += ")";
+        sql += ") ";
+
+        sql += "ORDER BY testresult.datestamp desc";
 
         return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
     }
@@ -102,7 +104,6 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         }
 
         sql += ")  ORDER BY datestamp DESC";
-
 
         List<TestResult> testResult = jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
 

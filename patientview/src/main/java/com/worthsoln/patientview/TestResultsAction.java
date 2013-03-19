@@ -35,8 +35,6 @@ public class TestResultsAction extends Action {
 
             List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
 
-            Collections.sort(results, TestResultWithUnitShortname.Order.ByTimestamp.descending());
-
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
 
             managePages(request, resultsInRecords);
