@@ -171,22 +171,19 @@ class TestResultId implements Comparable {
         this.shortname = testResult.getShortname();
     }
 
+    // Note this means that if the user has multiple nhsno they will be ordered all together
     public int compareTo(Object o) {
         TestResultId resultToCompareThisTo = (TestResultId) o;
-        if (nhsno.equals(resultToCompareThisTo.getNhsno())) {
-            if (dateStamped.equals(resultToCompareThisTo.getDateStamped())) {
-                if (prepost.equals(resultToCompareThisTo.getPrepost())) {
-                    return shortname.compareToIgnoreCase(resultToCompareThisTo.getShortname());
-                } else {
-                    return prepost.compareToIgnoreCase(resultToCompareThisTo.getPrepost());
-                }
-            } else if (dateStamped.before(resultToCompareThisTo.getDateStamped())) {
-                return 1;
+        if (dateStamped.equals(resultToCompareThisTo.getDateStamped())) {
+            if (prepost.equals(resultToCompareThisTo.getPrepost())) {
+                return shortname.compareToIgnoreCase(resultToCompareThisTo.getShortname());
             } else {
-                return -1;
+                return prepost.compareToIgnoreCase(resultToCompareThisTo.getPrepost());
             }
+        } else if (dateStamped.before(resultToCompareThisTo.getDateStamped())) {
+            return 1;
         } else {
-            return nhsno.compareToIgnoreCase(resultToCompareThisTo.getNhsno());
+            return -1;
         }
     }
 
