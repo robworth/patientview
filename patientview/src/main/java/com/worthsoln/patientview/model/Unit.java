@@ -151,6 +151,12 @@ public class Unit extends BaseModel {
     private String haemodialysisunitlocation12;
     @Column
     private String haemodialysisuniturl12;
+    @Column
+    private String sourceType;
+
+    // Note: this is VARCHAR(100) at the moment, but could probably be an enum
+    @Column
+    private String country;
 
     public Unit() {
     }
@@ -159,7 +165,8 @@ public class Unit extends BaseModel {
         setUnitcode(unitcode);
     }
 
-    public Unit(String unitcode, Specialty specialty, String name, String shortname, String address1, String address2, String address3, String postcode,
+    public Unit(String unitcode, Specialty specialty, String name, String shortname, String address1, String address2,
+                String address3, String postcode,
                 String uniturl, String trusturl, String renaladminname, String renaladminphone, String renaladminemail,
                 String unitenquiriesphone,
                 String unitenquiriesemail, String appointmentphone, String appointmentemail, String outofhours,
@@ -807,5 +814,21 @@ public class Unit extends BaseModel {
 
     public String getUnitNamePlusCode() {
         return name + " - " + unitcode;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
