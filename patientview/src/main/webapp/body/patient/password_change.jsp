@@ -36,7 +36,8 @@
     </div>
 </div>
 
-<% if (LegacySpringUtils.getSecurityUserManager().isFirstLogon()) { %>
+<% if (LegacySpringUtils.getSecurityUserManager().isFirstLogon()
+        && !LegacySpringUtils.getSecurityUserManager().isEmailVerified()) { %>
 
     <div class="alert">
         Confirm your email address by entering the email you wish to use in both boxes below.
