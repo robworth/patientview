@@ -80,7 +80,7 @@
                 <units>ng/L</units>
                 <daterange start="2012-08-17" stop="2012-08-17"/>
                 <result>
-                    <datestamp>2012-08-17T15:29</datestamp>
+                    <datestamp>1012-08-17T15:29</datestamp>
                     <value>391</value>
                 </result>
             </test>

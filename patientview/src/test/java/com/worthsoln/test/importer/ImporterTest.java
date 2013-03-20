@@ -228,18 +228,19 @@ public class ImporterTest extends BaseServiceTest {
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        List<TestResult> results = testResultManager.get("9876543210", "RM301");
-
-        assertEquals("Incorrect number of results", 0, results.size());
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
      * Test if importer handles test results outside date ranges specified
      *
+     * Whole file needs to be rejected, and an email needs to be sent to RPV admin email
+     *
      * @throws IOException
      */
     @Test
-    public void testXmlParserCheckFutureTestResultOutsideDataRangeInIBDFile() throws IOException {
+    public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -253,9 +254,34 @@ public class ImporterTest extends BaseServiceTest {
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        List<TestResult> results = testResultManager.get("9876543210", "RM301");
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
+    }
 
-        assertEquals("Incorrect number of results", 0, results.size());
+    /**
+     * Test if importer handles test results with empty values
+     *
+     * Whole file needs to be rejected, n email should be sent to RPV admin and the error should be logged.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
     }
 
 
