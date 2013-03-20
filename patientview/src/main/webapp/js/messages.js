@@ -83,7 +83,7 @@ messages.sendMessage = function(form) {
                     if (messagesEl.length > 0) {
                         messagesEl.append(messages.getMessageHtml(data.message));
                     } else {
-                        window.location.href = redirectEl.val() + '?id=' + data.message.conversation.id;
+                        window.location.href = redirectEl.val() + '?id=' + data.message.conversation.id + '#response';
                     }
                 }
             },
