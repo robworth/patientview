@@ -35,6 +35,8 @@ public class PasswordResetAction extends Action {
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_RESET,
                     user.getUsername(), "", UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
+            LegacySpringUtils.getUserManager().save(user);
+
             request.setAttribute("plaintextPassword", password);
             request.setAttribute("passwordUpdated", true);
             mappingToFind = "success";

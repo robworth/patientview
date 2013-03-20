@@ -988,6 +988,14 @@
       <forward name="success" path="/control/news_list.jsp"/>
     </action>
 
+      <!-- note this is for admins -->
+      <action path="/control/newsView"
+              type="com.worthsoln.patientview.news.NewsListAction"
+              name="newsForm"
+              scope="request">
+          <forward name="success" path="/control/index.jsp"/>
+      </action>
+      <!-- note this is for patients -->
     <action path="/newsView"
             type="com.worthsoln.patientview.news.NewsViewAction"
             name="newsForm"
