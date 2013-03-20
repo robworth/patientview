@@ -111,6 +111,8 @@ public class MessageManagerImpl implements MessageManager {
         message.setContent(content);
         messageDao.save(message);
 
+        message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
+
         return message;
     }
 

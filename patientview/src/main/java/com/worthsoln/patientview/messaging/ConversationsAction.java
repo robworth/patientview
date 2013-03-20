@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ConversationsAction extends BaseAction {
 
-    private static final String CONVERSATIONS_PARAM = "conversations";
-
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         // set current nav
@@ -22,7 +20,7 @@ public class ConversationsAction extends BaseAction {
 
         User user = UserUtils.retrieveUser(request);
 
-        request.setAttribute(CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
+        request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
 
         return mapping.findForward(SUCCESS);
     }

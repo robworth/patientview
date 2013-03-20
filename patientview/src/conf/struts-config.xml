@@ -227,6 +227,11 @@
       <form-property name="makepublic" type="java.lang.String"/>
     </form-bean>
     <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>
+
+      <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
+          <form-property name="content" type="java.lang.String"/>
+          <form-property name="recipientId" type="java.lang.Long"/>
+      </form-bean>
   </form-beans>
     
   <!-- ========== Global Forward Definitions ============================== -->
@@ -518,9 +523,17 @@
       <action path="/patient/conversation"
               type="com.worthsoln.patientview.messaging.ConversationAction"
               scope="request"
-              parameter="conversation">
+              parameter="conversation"
+              name="sendMessageForm">
           <forward name="success" path="/patient/message.jsp"/>
           <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/patient/send-message" type="com.worthsoln.patientview.messaging.SendMessageAction" parameter="conversation"
+              name="sendMessageForm"
+              input="input">
+          <forward name="input" path="/body/patient/send-message-ajax.jsp"/>
+          <forward name="success" path="/body/patient/send-message-ajax.jsp"/>
       </action>
 
     <action path="/demo"

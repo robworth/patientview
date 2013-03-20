@@ -31,6 +31,7 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.DynaActionForm;
@@ -382,6 +383,10 @@ public class BaseAction extends ActionSupport {
 
     protected MessageManager getMessageManager() {
         return getWebApplicationContext().getBean(MessageManager.class);
+    }
+
+    protected UserManager getUserManager() {
+        return getWebApplicationContext().getBean(UserManager.class);
     }
 
     /**

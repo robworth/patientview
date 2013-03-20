@@ -21,7 +21,7 @@
         </h1>
     </div>
 
-    <section>
+    <section class="js-messages">
         <logic:present name="messages">
             <logic:notEmpty name="messages">
                 <logic:iterate name="messages" id="message" indexId="index">
@@ -43,9 +43,17 @@
     </section>
 
     <section class="new-message-container">
-        <textarea class="span12 new-message" cols="6" rows="3"></textarea>
-        <input id="submit-message" class="pull-right btn btn-primary" type="submit" value="Reply"/>
+        <html:form action="/patient/send-message" styleClass="js-message-form">
+            <html:hidden property="recipientId" styleClass="js-message-recipient-id" />
+            <html:textarea rows="6" cols="3" property="content" styleClass="span12 new-message js-message-content" />
+            <div class="alert alert-error js-message-errors" style="display: none">
+                <strong>You do not have any messages.</strong>
+            </div>
+            <html:submit value="Reply" styleClass="pull-right btn btn-primary js-message-submit-btn" />
+        </html:form>
     </section>
 </logic:present>
+
+<script src="/js/messages.js" type="text/javascript"></script>
 
 
