@@ -67,7 +67,7 @@ public class XmlImportUtils {
         emailBody += newLine;
         emailBody += newLine + xmlFileName;
         emailBody += newLine;
-        emailBody += newLine + "has not imported to RPV correctly. This is because the file is empty. " +
+        emailBody += newLine + "has not imported to RPV correctly. This is because the file was empty. " +
                 "The most likely cause of that is that it has not been encrypted properly at the unit before sending. ";
         emailBody += newLine;
         emailBody += newLine + "Please contact your IT department to ask them to check the encryption.";

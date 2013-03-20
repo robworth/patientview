@@ -86,4 +86,5 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
         return specialtyUserRole1;
     }
+
 }
