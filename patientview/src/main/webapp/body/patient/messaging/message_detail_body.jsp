@@ -31,7 +31,7 @@
                         <h4 class="author"><bean:write name="message" property="sender.name" /> <span class="label label-inverse pull-right date"><bean:write name="message" property="friendlyDate" /></span></h4>
 
                         <div class="content dull">
-                            <bean:write name="message" property="content" />
+                            <bean:write name="message" property="formattedContent" filter="false"/>
                         </div>
                     </article>
                 </logic:iterate>
@@ -48,7 +48,7 @@
         Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
         String context = specialty != null ? "/" + specialty.getContext() : "";
     %>
-    <section class="new-message-container">
+    <section class="new-message-container" id="response">
         <form action="<%=context%>/patient/send-message.do" class="js-message-form">
             <input type="hidden" name="js-message-redirect" value="<%=context%>/patient/conversation.do" />
             <input type="hidden" class="js-message-recipient-id" name="recipientId" value="<bean:write name="recipientId" />" />

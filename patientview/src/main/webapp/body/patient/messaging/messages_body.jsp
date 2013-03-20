@@ -17,7 +17,7 @@
     <logic:present name="conversations">
         <logic:notEmpty name="conversations">
             <logic:iterate name="conversations" id="conversation" indexId="index">
-                <html:link action="/patient/conversation" paramName="conversation" paramProperty="id" paramId="id">
+                <html:link action="/patient/conversation" paramName="conversation" paramProperty="id" paramId="id" anchor="response">
                     <article class="conversation">
                         <h2 class="title">
                             <bean:write name="conversation" property="otherUser.name" />

@@ -165,7 +165,7 @@ public class MessageManagerImpl implements MessageManager {
             Message latestMessage = messageDao.getLatestMessage(conversation.getId());
 
             if (latestMessage != null) {
-                conversation.setLatestMessageSummary(latestMessage.getContent());
+                conversation.setLatestMessageSummary(latestMessage.getSummary());
                 conversation.setLatestMessageDate(getFriendlyDateTime(latestMessage.getDate()));
             }
 

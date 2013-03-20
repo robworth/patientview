@@ -1,5 +1,7 @@
 package com.worthsoln.patientview.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -37,6 +39,18 @@ public class Message extends BaseModel {
     // this will be set by manager
     @Transient
     private String friendlyDate;
+
+    public String getFormattedContent() {
+        return content.replaceAll("\n", "<br/>");
+    }
+
+    public String getSummary() {
+        if (content.length() > 500) {
+            return StringUtils.substring(content, 0, 500) + " ...";
+        }
+
+        return content;
+    }
 
     public boolean isDeleted() {
         return deleted;
