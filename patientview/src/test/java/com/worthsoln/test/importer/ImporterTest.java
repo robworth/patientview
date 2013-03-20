@@ -175,7 +175,7 @@ public class ImporterTest extends BaseServiceTest {
         testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkEmptyIBDImportFileData();
+        checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
@@ -184,7 +184,7 @@ public class ImporterTest extends BaseServiceTest {
     /**
      * Check if no data was imported
      */
-    private void checkEmptyIBDImportFileData() {
+    private void checkNoDataHasBeenImportedFromIBDImportFile() {
         List<Centre> centres = centreManager.getAll();
         assertEquals("Centres were imported although data file was supposed to be empty", 0, centres.size());
 
@@ -226,7 +226,32 @@ public class ImporterTest extends BaseServiceTest {
         testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkEmptyIBDImportFileData();
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        List<TestResult> results = testResultManager.get("9876543210", "RM301");
+
+        assertEquals("Incorrect number of results", 0, results.size());
+    }
+
+    /**
+     * Test if importer handles test results outside date ranges specified
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckFutureTestResultOutsideDataRangeInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
 
         List<TestResult> results = testResultManager.get("9876543210", "RM301");
 
