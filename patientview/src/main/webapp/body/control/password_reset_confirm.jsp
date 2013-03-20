@@ -4,8 +4,10 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 
 <html:xhtml/>
-
-<p class="header">Password Reset</p>
+<div class="span9">
+    <div class="page-header">
+        <h1 class="header">Password Reset</h1>
+    </div>
 
 <logic:present name="passwordUpdateError" >
     <p>There was an error updating this user's password</p>
@@ -34,4 +36,5 @@
         </tr>
      </table>
 </logic:present>
-
+</div>
+</div>

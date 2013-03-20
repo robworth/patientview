@@ -372,3 +372,7 @@ h1, h2{
     opacity: 1;
     filter: alpha(opacity=1);
 }
+
+.patient-edit-form.form-actions{
+    padding-left:30px;
+}

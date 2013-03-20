@@ -22,16 +22,11 @@ public class PasswordUnlockAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         String username = BeanUtils.getProperty(form, "username");
-
-        User user = null;
-        Patient patient =  LegacySpringUtils.getPatientManager().get(BeanUtils.getProperty(form, "nhsno"),
-                        BeanUtils.getProperty(form, "unitcode"));
+        User user = LegacySpringUtils.getUserManager().get(username);
 
         String mappingToFind = "";
 
-        if (patient != null) {
-            user = LegacySpringUtils.getUserManager().get(username);
-
+        if (user != null) {
             user.setFailedlogons(0);
             user.setAccountlocked(false);
             LegacySpringUtils.getUserManager().save(user);
