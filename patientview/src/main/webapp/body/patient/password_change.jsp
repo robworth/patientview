@@ -38,6 +38,12 @@
 
 <% if (LegacySpringUtils.getSecurityUserManager().isFirstLogon()) { %>
 
+    <div class="alert">
+        Confirm your email address by entering the email you wish to use in both boxes below.
+            If there is an email in the first box, then that was entered when your account was created.
+            You may confirm that or use another email of your choice.
+    </div>
+
     <div class="control-group">
         <label class="control-label">Email Address</label>
 

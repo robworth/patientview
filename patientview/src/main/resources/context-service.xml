@@ -11,4 +11,20 @@
     <context:component-scan base-package="com.worthsoln.service"/>
     <context:component-scan base-package="com.worthsoln.service.ibd"/>
 
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${smtp.host}"/>
+        <property name="protocol" value="smtps"/>
+        <property name="username" value="${smtp.username}"/>
+        <property name="password" value="${smtp.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.debug">false</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.ssl.enable">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.port">465</prop>
+            </props>
+        </property>
+    </bean>
+
 </beans>
