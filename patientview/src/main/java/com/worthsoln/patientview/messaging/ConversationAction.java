@@ -37,11 +37,8 @@ public class ConversationAction extends BaseAction {
         getMessageManager().markMessagesAsReadForConversation(UserUtils.retrieveUser(request).getId(),
                 conversation.getId());
 
-        // set the message form up on the page
-        DynaActionForm dynaActionForm = (DynaActionForm) form;
-
-        dynaActionForm.set(Messaging.CONTENT_PARAM, "");
-        dynaActionForm.set(Messaging.RECIPIENT_ID_PARAM, conversation.getOtherUser().getId());
+        request.setAttribute(Messaging.CONTENT_PARAM, "");
+        request.setAttribute(Messaging.RECIPIENT_ID_PARAM, conversation.getOtherUser().getId());
 
         return mapping.findForward(SUCCESS);
     }

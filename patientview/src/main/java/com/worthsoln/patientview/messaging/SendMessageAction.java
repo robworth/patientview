@@ -42,7 +42,7 @@ public class SendMessageAction extends BaseAction {
             }
         }
 
-        if (!errors.isEmpty()) {
+        if (errors.isEmpty()) {
             return mapping.findForward(SUCCESS);
         }
 

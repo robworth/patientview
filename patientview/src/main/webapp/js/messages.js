@@ -57,7 +57,6 @@ messages.sendMessage = function(form) {
                 if (data.errors.length > 0) {
                    onError(data.errors.join('<br />'));
                 } else {
-                    recipientIdEl.val('');
                     contentEl.val('');
                     submitBtn.val(originalBtnValue);
 

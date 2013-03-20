@@ -1,3 +1,6 @@
+<%@ page import="java.util.Enumeration" %>
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ page import="com.worthsoln.patientview.model.Specialty" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -42,15 +45,28 @@
         </logic:present>
     </section>
 
+    <%
+        Enumeration attributeNames = request.getAttributeNames();
+
+        while(attributeNames.hasMoreElements()) {
+            String current = (String) attributeNames.nextElement();
+            System.out.println(current);
+        }
+    %>
+
+    <%
+    Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
+    String context = specialty != null ? "/" + specialty.getContext() : "";
+    %>
     <section class="new-message-container">
-        <html:form action="/patient/send-message" styleClass="js-message-form">
-            <html:hidden property="recipientId" styleClass="js-message-recipient-id" />
-            <html:textarea rows="6" cols="3" property="content" styleClass="span12 new-message js-message-content" />
+        <form action="<%=context%>/patient/send-message.do" class="js-message-form">
+            <input type="hidden" class="js-message-recipient-id" name="recipientId" value="<bean:write name="recipientId" />" />
+            <textarea rows="6" cols="3" name="content" class="span12 new-message js-message-content"><bean:write name="content" /></textarea>
             <div class="alert alert-error js-message-errors" style="display: none">
                 <strong>You do not have any messages.</strong>
             </div>
-            <html:submit value="Reply" styleClass="pull-right btn btn-primary js-message-submit-btn" />
-        </html:form>
+            <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
+        </form>
     </section>
 </logic:present>
 
