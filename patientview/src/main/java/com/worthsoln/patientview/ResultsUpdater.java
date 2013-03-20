@@ -9,6 +9,8 @@ import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -29,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ResultsUpdater {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsUpdater.class);
 
     public void update(ServletContext context, File xmlFile) {
         File xsdFile = null;
@@ -61,7 +65,6 @@ public class ResultsUpdater {
         final boolean whenWeDecideToValidateFiles = false;
 
         if (whenWeDecideToValidateFiles) {
-
             /**
              * Check the XML file against XSD schema
              */
@@ -69,12 +72,6 @@ public class ResultsUpdater {
 
             // if there are any exceptions, log them and send an email
             if (exceptions.size() > 0) {
-    //            System.out.println("error with xml parse");
-    //
-    //            for(SAXException e : exceptions) {
-    //                System.out.println(e.getMessage());
-    //            }
-
                 // log
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
                         XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
@@ -102,11 +99,15 @@ public class ResultsUpdater {
             }
             //xmlFile.delete();
         } catch (Exception e) {
-            e.printStackTrace();
+
+            // these exceptions can occur because of corrupt/invalid data in xml file
+            LOGGER.error("Importer failed to import file {} {}", xmlFile, e);
+
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
                     XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
                     XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
                     xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
+
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
         renameDirectory(context, xmlFile);
