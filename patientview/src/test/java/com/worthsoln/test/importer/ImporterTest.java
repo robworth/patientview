@@ -82,6 +82,26 @@ public class ImporterTest extends BaseServiceTest {
     @Inject
     private LogEntryManager logEntryManager;
 
+    @Before
+    public void setupSystem() {
+        Unit mockUnit = new Unit();
+        mockUnit.setUnitcode("RM301");
+        mockUnit.setName("RM301: RUNNING MAN TEST UNIT");
+        mockUnit.setShortname("RM301");
+        mockUnit.setRenaladminemail("renaladmin@mailinator.com");
+
+        Specialty mockSpecialty = new Specialty();
+        mockSpecialty.setName("Renal Patient View");
+        mockSpecialty.setContext("renal");
+        mockSpecialty.setDescription("Renal Patient View");
+
+        mockSpecialty = repositoryHelpers.createSpecialty("", "", "");
+
+        mockUnit.setSpecialty(mockSpecialty);
+
+        unitManager.save(mockUnit);
+    }
+
     @Test
     /**
      *  Calls XmlParserUtils.updateXmlData with files and a dao ref
@@ -109,8 +129,10 @@ public class ImporterTest extends BaseServiceTest {
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
 
-        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
 
         List<Centre> centres = centreManager.getAll();
 
@@ -133,26 +155,6 @@ public class ImporterTest extends BaseServiceTest {
         List<Letter> letters = letterManager.getAll();
 
         assertEquals("Incorrect number of letters", 2, letters.size());
-    }
-
-    @Before
-    public void setupSystem() {
-        Unit mockUnit = new Unit();
-        mockUnit.setUnitcode("RM301");
-        mockUnit.setName("RM301: RUNNING MAN TEST UNIT");
-        mockUnit.setShortname("RM301");
-        mockUnit.setRenaladminemail("renaladmin@mailinator.com");
-
-        Specialty mockSpecialty = new Specialty();
-        mockSpecialty.setName("Renal Patient View");
-        mockSpecialty.setContext("renal");
-        mockSpecialty.setDescription("Renal Patient View");
-
-        mockSpecialty = repositoryHelpers.createSpecialty("", "", "");
-
-        mockUnit.setSpecialty(mockSpecialty);
-
-        unitManager.save(mockUnit);
     }
 
     /**
