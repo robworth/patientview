@@ -8,19 +8,25 @@ import com.worthsoln.patientview.model.Diagnostic;
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.model.Medicine;
 import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.TestResult;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.service.CentreManager;
 import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.LetterManager;
 import com.worthsoln.service.MedicineManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
+import com.worthsoln.test.helpers.RepositoryHelpers;
 import com.worthsoln.test.helpers.impl.TestableResultsUpdater;
 import com.worthsoln.test.service.BaseServiceTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockHttpSession;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -63,6 +69,12 @@ public class ImporterTest extends BaseServiceTest {
 
     @Inject
     private IbdManager ibdManager;
+
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
 
     @Test
     /**
@@ -117,12 +129,60 @@ public class ImporterTest extends BaseServiceTest {
         assertEquals("Incorrect number of letters", 2, letters.size());
     }
 
+    @Before
+    public void setupSystem() {
+        Unit mockUnit = new Unit();
+        mockUnit.setUnitcode("RM301");
+        mockUnit.setName("RM301: RUNNING MAN TEST UNIT");
+        mockUnit.setShortname("RM301");
+        mockUnit.setRenaladminemail("support@mailinator.com");
+
+        Specialty mockSpecialty = new Specialty();
+        mockSpecialty.setName("Renal Patient View");
+        mockSpecialty.setContext("renal");
+        mockSpecialty.setDescription("Renal Patient View");
+
+        mockSpecialty = repositoryHelpers.createSpecialty("", "", "");
+
+        mockUnit.setSpecialty(mockSpecialty);
+
+        unitManager.save(mockUnit);
+    }
+
+    @Test
+    public void testXmlParserUsingEmptyIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_empty_data_file.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkEmptyIBDImportFileData();
+    }
+
+    private void checkEmptyIBDImportFileData() {
+        List<Centre> centres = centreManager.getAll();
+        assertEquals("Centres were imported although data file was supposed to be empty", 0, centres.size());
+
+        List<Unit> units = unitManager.getAll(false);
+        /**
+         * {@link setupSystem(); creates one unit so its ok if we have one unit now
+         */
+        assertEquals("Units were imported although data file was supposed to be empty", 1, units.size());
+    }
+
     @Test
     public void testXmlParserUsingIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
-                        .getResource("classpath:importer/pv_schema_2.0.xsd");
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
@@ -143,7 +203,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
-                        .getResource("classpath:importer/pv_schema_2.0.xsd");
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
 
