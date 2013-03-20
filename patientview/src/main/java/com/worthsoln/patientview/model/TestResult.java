@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-@Entity
+@Entity(name = "testresult")
 public class TestResult extends BaseModel {
 
     @Column(nullable = false)

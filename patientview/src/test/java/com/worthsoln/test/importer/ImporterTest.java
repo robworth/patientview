@@ -255,7 +255,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                        AddLog.PATIENT_DATA_FAIL);
+                AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -281,7 +281,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                        AddLog.PATIENT_DATA_FAIL);
+                AddLog.PATIENT_DATA_FAIL);
     }
 
 
@@ -293,10 +293,11 @@ public class ImporterTest extends BaseServiceTest {
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
 
-        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
 
-        checkIbdImportConstantData();
+        checkIbdImportedData();
 
         List<TestResult> results = testResultManager.get("9876543210", "RM301");
 
@@ -314,18 +315,18 @@ public class ImporterTest extends BaseServiceTest {
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
 
         // run twice
-        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
-        testableResultsUpdater.update(null, xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
 
-        checkIbdImportConstantData();
+        checkIbdImportedData();
 
         // Note the results get deleted each run on date range
     }
 
-    private void checkIbdImportConstantData() {
-
+    private void checkIbdImportedData() {
         // test the stuff that should be the same regardless of how many imports of the file are done
 
         List<Centre> centres = centreManager.getAll();
