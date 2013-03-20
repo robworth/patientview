@@ -4,10 +4,8 @@ import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -42,6 +40,7 @@ public class ConversationsAction extends BaseAction {
             for (Unit unit : units) {
                 List<Patient> patients = getPatientManager().get(unit.getUnitcode());
 
+                // TODO: need to work out how to get this done
                 for (Patient patient : patients) {
                     //recipients.add(getUserManager().get(patient.get()));
                 }
