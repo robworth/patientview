@@ -18,13 +18,21 @@ messages.getMessageHtml = function(message) {
 
 messages.sendMessage = function(form) {
     var $form = $(form),
+        submitBtn = $form.find('.js-message-submit-btn'),
+        originalBtnValue = submitBtn.val(),
         recipientIdEl = $form.find('.js-message-recipient-id'),
         contentEl = $form.find('.js-message-content'),
         errorsEl = $form.find('.js-message-errors'),
         errors = [],
-        messagesEl = $('.js-messages');
+        messagesEl = $('.js-messages'),
+        onError = function(errorSt) {
+            errorsEl.html(errorSt).show();
+            submitBtn.val(originalBtnValue);
+        };
 
     errorsEl.html('').hide();
+
+    submitBtn.val('Sending...');
 
     if (!messages.validateNumber(recipientIdEl.val())) {
         errors.push('Please select a recipient');
@@ -35,36 +43,38 @@ messages.sendMessage = function(form) {
     }
 
     if (errors.length > 0) {
-        errorsEl.html(errors.join('<br />')).show();
+        onError(errors.join('<br />'));
         return false;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: $form.attr('action'),
-        data: {
-            recipientId: recipientIdEl.val(),
-            content: contentEl.val()
-        },
-        success: function(data) {
-            if (data.errors.length > 0) {
-                errorsEl.html(data.errors.join('<br />')).show();
-            } else {
-                // if the messages are on the page then append the message else forward them onto the conversation page
-                if (messagesEl.length > 0) {
-                    messagesEl.append(messages.getMessageHtml(data.message));
+    } else {
+        $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: {
+                recipientId: recipientIdEl.val(),
+                content: contentEl.val()
+            },
+            success: function(data) {
+                if (data.errors.length > 0) {
+                   onError(data.errors.join('<br />'));
+                } else {
                     recipientIdEl.val('');
                     contentEl.val('');
-                } else {
-                    window.location.href = '/patient/conversation.do?id=' + message.conversation.id;
+                    submitBtn.val(originalBtnValue);
+
+                    // if the messages are on the page then append the message else forward them onto the conversation page
+                    if (messagesEl.length > 0) {
+                        messagesEl.append(messages.getMessageHtml(data.message));
+                    } else {
+                        window.location.href = '/patient/conversation.do?id=' + message.conversation.id;
+                    }
                 }
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            errorsEl.html(textStatus).show();
-        },
-        dataType: 'json'
-    });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                onError(textStatus);
+            },
+            dataType: 'json'
+        });
+    }
 };
 
 messages.validateString = function(s) {
