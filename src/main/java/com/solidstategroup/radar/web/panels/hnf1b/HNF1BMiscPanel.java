@@ -25,6 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,26 @@ public class HNF1BMiscPanel extends Panel {
             protected void onSubmit() {
                 HNF1BMisc hnf1BMisc = getModelObject();
 
-                if (!formHasValues(hnf1BMisc)) {
-                    error("Please enter HNF1B Misc data");
+                // check all the radio buttons have values
+                if (hnf1BMisc.getRenalCysts() == null
+                        || hnf1BMisc.getSingleKidney() == null
+                        || hnf1BMisc.getOtherRenalMalformations() == null
+                        || hnf1BMisc.getDiabetes() == null
+                        || hnf1BMisc.getGout() == null
+                        || hnf1BMisc.getGenitalMalformation() == null) {
+                    error("Please select a value for each radio button");
+
+                } else {
+                    // if all the radios are complete check that we have any additional required data
+                    if (hnf1BMisc.getOtherRenalMalformations().equals(YesNo.YES)
+                            && !StringUtils.hasText(hnf1BMisc.getOtherRenalMalformationsDetails())) {
+                        error("Please provide other renal malformation details");
+                    }
+
+                    if (hnf1BMisc.getGenitalMalformation().equals(YesNo.YES)
+                            && !StringUtils.hasText(hnf1BMisc.getGenitalMalformationDetails())) {
+                        error("Please provide genital malformation details");
+                    }
                 }
 
                 if (!hasError()) {
@@ -169,15 +188,5 @@ public class HNF1BMiscPanel extends Panel {
                 target.add(formFeedback);
             }
         });
-    }
-
-    private boolean formHasValues(HNF1BMisc hnf1BMisc) {
-        return hnf1BMisc.getRenalCysts() != null || hnf1BMisc.getSingleKidney() != null ||
-                hnf1BMisc.getOtherRenalMalformations() != null ||
-                hnf1BMisc.getOtherRenalMalformationsDetails() != null ||
-                hnf1BMisc.getDiabetes() != null  || hnf1BMisc.getGout() != null  ||
-                hnf1BMisc.getGenitalMalformation() != null ||
-                hnf1BMisc.getGenitalMalformationDetails() != null;
-
     }
 }
