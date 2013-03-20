@@ -1,4 +1,3 @@
-<%@ page import="java.util.Enumeration" %>
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ page import="com.worthsoln.patientview.model.Specialty" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -46,22 +45,13 @@
     </section>
 
     <%
-        Enumeration attributeNames = request.getAttributeNames();
-
-        while(attributeNames.hasMoreElements()) {
-            String current = (String) attributeNames.nextElement();
-            System.out.println(current);
-        }
-    %>
-
-    <%
-    Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
-    String context = specialty != null ? "/" + specialty.getContext() : "";
+        Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
+        String context = specialty != null ? "/" + specialty.getContext() : "";
     %>
     <section class="new-message-container">
         <form action="<%=context%>/patient/send-message.do" class="js-message-form">
             <input type="hidden" class="js-message-recipient-id" name="recipientId" value="<bean:write name="recipientId" />" />
-            <textarea rows="6" cols="3" name="content" class="span12 new-message js-message-content"><bean:write name="content" /></textarea>
+            <textarea rows="6" cols="3" name="content" class="span12 new-message js-message-content"></textarea>
             <div class="alert alert-error js-message-errors" style="display: none">
                 <strong>You do not have any messages.</strong>
             </div>

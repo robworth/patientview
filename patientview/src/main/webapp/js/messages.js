@@ -1,12 +1,30 @@
 messages = {};
 
 messages.init = function() {
+    var messageModal = $('#messageModal');
+
+    // loop through any message forms on set submit
     $('.js-message-form').each(function(index, el) {
         $(el).submit(function(e) {
             e.preventDefault();
             messages.sendMessage(el);
         })
     });
+
+    // set up the modal view
+    if (messageModal.length > 0) {
+        messageModal.modal({
+            show: false
+        }).on('hidden', function () {
+                var recipientIdEl = messageModal.find('.js-message-recipient-id'),
+                    contentEl = messageModal.find('.js-message-content'),
+                    errorsEl = messageModal.find('.js-message-errors');
+
+                recipientIdEl.val();
+                contentEl.val('');
+                errorsEl.html('').hide();
+            });
+    }
 };
 
 messages.getMessageHtml = function(message) {

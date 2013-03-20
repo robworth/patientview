@@ -532,8 +532,8 @@
       <action path="/patient/send-message" type="com.worthsoln.patientview.messaging.SendMessageAction" parameter="conversation"
               name="sendMessageForm"
               input="input">
-          <forward name="input" path="/body/patient/send-message-ajax.jsp"/>
-          <forward name="success" path="/body/patient/send-message-ajax.jsp"/>
+          <forward name="input" path="/body/patient/messaging/send-message-ajax.jsp"/>
+          <forward name="success" path="/body/patient/messaging/send-message-ajax.jsp"/>
       </action>
 
     <action path="/demo"
