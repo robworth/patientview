@@ -31,7 +31,9 @@ public class ConversationsAction extends BaseAction {
 
         List<Unit> units = getUnitManager().getLoggedInUsersUnits();
 
-        List<User> recipients = new ArrayList<User>();
+        List<User> unitAdminRecipients = new ArrayList<User>();
+        List<User> unitStaffRecipients = new ArrayList<User>();
+        List<User> patientRecipients = new ArrayList<User>();
 
         // need to add in a list of recipients available to the user
         // if its a patient then they get unit admins in their unit
@@ -49,22 +51,32 @@ public class ConversationsAction extends BaseAction {
                 List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
 
                 for (UnitAdmin unitAdmin : unitAdmins) {
-                    recipients.add(getUserManager().get(unitAdmin.getUsername()));
+                    if (unitAdmin.getRole().equals("unitadmin")) {
+                        unitAdminRecipients.add(getUserManager().get(unitAdmin.getUsername()));
+                    } else if (unitAdmin.getRole().equals("unitstaff")) {
+                        unitStaffRecipients.add(getUserManager().get(unitAdmin.getUsername()));
+                    }
                 }
             }
         }
 
         // order the recipients by name
-        Collections.sort(recipients, new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
+        Collections.sort(unitAdminRecipients, new UserComparator());
+        Collections.sort(unitStaffRecipients, new UserComparator());
+        Collections.sort(patientRecipients, new UserComparator());
 
         request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
-        request.setAttribute(Messaging.RECIPIENTS_PARAM, recipients);
+        request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
+        request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
+        request.setAttribute(Messaging.PATIENT_RECIPIENTS_PARAM, patientRecipients);
 
         return mapping.findForward(SUCCESS);
+    }
+
+    private class UserComparator implements Comparator<User> {
+        @Override
+        public int compare(User o1, User o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
     }
 }

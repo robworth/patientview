@@ -61,9 +61,29 @@
                         <div class="controls">
                             <select name="recipientId" class="js-message-recipient-id">
                                 <option value="">Select</option>
-                                <logic:iterate name="recipients" id="recipient" indexId="index">
-                                    <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
-                                </logic:iterate>
+                                <logic:notEmpty name="unitAdminRecipients">
+                                    <optgroup label="Unit Admins">
+                                        <logic:iterate name="unitAdminRecipients" id="recipient" indexId="index">
+                                            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                        </logic:iterate>
+                                    </optgroup>
+                                </logic:notEmpty>
+
+                                <logic:notEmpty name="unitStaffRecipients">
+                                    <optgroup label="Unit Staff">
+                                        <logic:iterate name="unitStaffRecipients" id="recipient" indexId="index">
+                                            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                        </logic:iterate>
+                                    </optgroup>
+                                </logic:notEmpty>
+
+                                <logic:notEmpty name="patientRecipients">
+                                    <optgroup label="Patients">
+                                        <logic:iterate name="patientRecipients" id="recipient" indexId="index">
+                                            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                        </logic:iterate>
+                                    </optgroup>
+                                </logic:notEmpty>
                             </select>
                         </div>
                     </div>
