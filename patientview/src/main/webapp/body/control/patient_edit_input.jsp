@@ -93,10 +93,9 @@
                         <html:hidden property="nhsno" name="nhsnot"/>
                         <html:submit value="Reset Password" style="float:left;" styleClass="btn formbutton"/>
                     </html:form>
-                </div>
-                <div class="row">
+
                     <logic:match value="true" name="patient" property="accountlocked">
-                        <html:form action="/control/passwordUnlock">
+                        <html:form action="/control/passwordUnlock" style="float:left;margin-left:5px;">
                             <html:hidden name="patient" property="username"/>
                             <html:hidden property="nhsno" name="nhsnot"/>
                             <html:hidden property="unitcode" name="nhsnot"/>

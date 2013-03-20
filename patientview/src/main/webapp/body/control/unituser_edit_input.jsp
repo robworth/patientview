@@ -40,22 +40,20 @@
             <html:hidden name="unitUser" property="screenname"/>
             <div class="patient-edit-form form-actions">
                 <div class="row">
-                    <html:submit value="Save" styleClass="btn btn-primary pull-right"/>
+                    <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton"/>
 
-                    <html:form action="/control/resetPassword" style="float:left;">
+                    <html:form action="/control/userDelete">
+                        <html:hidden name="unitUser" property="username"/>
+                        <html:submit value="Delete Unit User" styleClass="btn btn-danger" style="float:left;margin-left:5px;"/>
+                    </html:form>
+
+                    <html:form action="/control/resetPassword" style="float:left;margin-left:5px;">
                         <html:hidden name="unitUser" property="username"/>
                         <html:submit value="Reset Password" styleClass="btn"/>
                     </html:form>
 
-                    <html:form action="/control/userDelete" style="float:left;margin-right:5px;">
-                        <html:hidden name="unitUser" property="username"/>
-                        <html:submit value="Delete Unit User" styleClass="btn btn-danger"/>
-                    </html:form>
-                </div>
-
-                <div class="row">
                     <logic:match value="true" name="unitUser" property="accountlocked">
-                        <html:form action="/control/passwordUnlock" styleClass="pull-right">
+                        <html:form action="/control/passwordUnlock" style="float:left;margin-left:5px;">
                             <html:hidden name="unitUser" property="username"/>
 
                             <html:submit value="Unlock Password" styleClass="btn"/>

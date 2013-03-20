@@ -87,6 +87,32 @@ public class UserDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testAddGetUserBooleanAttributes() {
+
+        User user = new User();
+        user.setEmail("test@worthsolns.com");
+        user.setName("Firstname Lastname");
+        user.setPassword("password");
+        user.setUsername("test");
+        user.setScreenname("screenname");
+        user.setAccountlocked(true);
+
+        userDao.save(user);
+
+        assertTrue("Invalid id for new user", user.getId() > 0);
+
+        User checkUser = userDao.get(user.getId());
+
+        assertEquals("Name not persisted", user.getName(), checkUser.getName());
+
+        checkUser = userDao.get(user.getUsername());
+
+        assertTrue("User not found via username", checkUser != null && checkUser.equals(user));
+
+        assertTrue("Account locked not persisted", checkUser.isAccountlocked());
+    }
+
+    @Test
     public void testGetAllDelete() {
         User user = new User();
         user.setEmail("test@worthsolns.com");

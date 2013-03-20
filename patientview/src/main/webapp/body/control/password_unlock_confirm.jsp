@@ -5,30 +5,26 @@
 
 <html:xhtml/>
 
-<p class="header">Password Unlocked</p>
+<span class="span9">
+    <div class="page-header">
+        <h1>Password Unlocked</h1>
+    </div>
 
+    On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfully unlocked the password of this user:
+    <br/><br/>
 
-On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfully unlocked the password of this user:
-<br/><br/>
-
-<table cellpadding="3">
-  <tr>
-    <td><b>User Name</b></td>
-    <td><bean:write name="patient" property="username"/></td>
-  </tr>
-  <tr>
-    <td><b>Name</b></td>
-    <td><bean:write name="patient" property="name"/></td>
-  </tr>
-  <logic:notEmpty name="patient" property="nhsno">
-    <tr>
-      <td><b>NHS Number</b></td>
-      <td><bean:write name="patient" property="nhsno"/></td>
-    </tr>
-  </logic:notEmpty>
-  <tr>
-    <td><b>Email Address</b></td>
-    <td><bean:write name="patient" property="email"/></td>
-  </tr>
-</table>
-
+    <table cellpadding="3">
+        <tr>
+            <td><b>User Name</b></td>
+            <td><bean:write name="user" property="username"/></td>
+        </tr>
+        <tr>
+            <td><b>Name</b></td>
+            <td><bean:write name="user" property="name"/></td>
+        </tr>
+        <tr>
+            <td><b>Email Address</b></td>
+            <td><bean:write name="user" property="email"/></td>
+        </tr>
+    </table>
+</span>
