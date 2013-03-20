@@ -31,6 +31,9 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.PatientManager;
+import com.worthsoln.service.SecurityUserManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -387,6 +390,18 @@ public class BaseAction extends ActionSupport {
 
     protected UserManager getUserManager() {
         return getWebApplicationContext().getBean(UserManager.class);
+    }
+
+    protected SecurityUserManager getSecurityUserManager() {
+        return getWebApplicationContext().getBean(SecurityUserManager.class);
+    }
+
+    protected UnitManager getUnitManager() {
+        return getWebApplicationContext().getBean(UnitManager.class);
+    }
+
+    protected PatientManager getPatientManager() {
+        return getWebApplicationContext().getBean(PatientManager.class);
     }
 
     /**

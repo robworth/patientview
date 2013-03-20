@@ -20,7 +20,7 @@ messages.init = function() {
                     contentEl = messageModal.find('.js-message-content'),
                     errorsEl = messageModal.find('.js-message-errors');
 
-                recipientIdEl.val();
+                recipientIdEl.val('');
                 contentEl.val('');
                 errorsEl.html('').hide();
             });
@@ -40,6 +40,7 @@ messages.sendMessage = function(form) {
         originalBtnValue = submitBtn.val(),
         recipientIdEl = $form.find('.js-message-recipient-id'),
         contentEl = $form.find('.js-message-content'),
+        redirectEl = $form.find('.js-message-redirect'),
         errorsEl = $form.find('.js-message-errors'),
         errors = [],
         messagesEl = $('.js-messages'),
@@ -82,7 +83,7 @@ messages.sendMessage = function(form) {
                     if (messagesEl.length > 0) {
                         messagesEl.append(messages.getMessageHtml(data.message));
                     } else {
-                        window.location.href = '/patient/conversation.do?id=' + message.conversation.id;
+                        window.location.href = redirectEl.val() + '?id=' + data.message.conversation.id;
                     }
                 }
             },

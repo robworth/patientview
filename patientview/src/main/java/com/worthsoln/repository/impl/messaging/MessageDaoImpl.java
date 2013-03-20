@@ -130,7 +130,11 @@ public class MessageDaoImpl extends AbstractHibernateDAO<Message> implements Mes
         query.setFirstResult(0);
         query.setMaxResults(1);
 
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

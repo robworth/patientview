@@ -32,8 +32,8 @@ public class SendMessageAction extends BaseAction {
             try {
                 Message message = getMessageManager().createMessage(
                     ((DynaActionForm) form).getString(Messaging.CONTENT_PARAM),
-                        getRecipient(dynaForm),
-                        user
+                        user,
+                        getRecipient(dynaForm)
                 );
 
                 request.setAttribute(Messaging.MESSAGE_PARAM, objectMapper.writeValueAsString(message));

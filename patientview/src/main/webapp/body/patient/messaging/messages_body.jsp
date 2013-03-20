@@ -53,11 +53,32 @@
                 <h3>New message</h3>
             </div>
             <div class="modal-body">
-                <input type="hidden" class="js-message-recipient-id" name="recipientId" value="" />
-                <textarea rows="6" cols="3" name="content" class="span12 new-message js-message-content"></textarea>
-                <div class="alert alert-error js-message-errors" style="display: none">
-                    <strong>You do not have any messages.</strong>
-                </div>
+                <fieldset>
+                    <input type="hidden" class="js-message-redirect" value="<%=context%>/patient/conversation.do" />
+
+                    <div class="control-group">
+                        <label class="control-label">To</label>
+                        <div class="controls">
+                            <select name="recipientId" class="js-message-recipient-id">
+                                <option value="">Select</option>
+                                <logic:iterate name="recipients" id="recipient" indexId="index">
+                                    <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                </logic:iterate>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="passwordContainer">
+                        <label class="control-label">Message</label>
+                        <div class="controls">
+                            <textarea rows="6" cols="3" name="content" class="new-message js-message-content"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-error js-message-errors" style="display: none">
+                        <strong>You do not have any messages.</strong>
+                    </div>
+                </fieldset>
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn" data-dismiss="modal">Close</a>

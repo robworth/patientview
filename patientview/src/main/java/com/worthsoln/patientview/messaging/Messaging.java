@@ -10,5 +10,6 @@ public class Messaging {
     public static final String ERRORS_PARAM = "errors";
     public static final String RECIPIENT_ID_PARAM = "recipientId";
     public static final String CONTENT_PARAM = "content";
+    public static final String RECIPIENTS_PARAM = "recipients";
 
 }
