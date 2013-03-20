@@ -31,8 +31,10 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.nhsno), nhsno));
         wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.action), action));
 
-        // this could be extended to show data from other specialty...
-        wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.specialty), specialty));
+        if (specialty != null) {
+            // this could be extended to show data from other specialty...
+            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.specialty), specialty));
+        }
 
         buildWhereClause(criteria, wherePredicates);
 

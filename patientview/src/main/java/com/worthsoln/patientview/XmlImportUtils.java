@@ -63,11 +63,8 @@ public class XmlImportUtils {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
         emailBody += newLine;
-        emailBody += newLine + "The file named: ";
-        emailBody += newLine;
-        emailBody += newLine + xmlFileName;
-        emailBody += newLine;
-        emailBody += newLine + "has not imported to RPV correctly. This is because the file was empty. " +
+        emailBody += newLine + "The file <" + xmlFileName + "> has not imported to RPV correctly. ";
+        emailBody += "This is because the file was empty. " +
                 "The most likely cause of that is that it has not been encrypted properly at the unit before sending. ";
         emailBody += newLine;
         emailBody += newLine + "Please contact your IT department to ask them to check the encryption.";

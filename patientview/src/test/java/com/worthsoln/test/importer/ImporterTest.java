@@ -3,6 +3,8 @@ package com.worthsoln.test.importer;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
+import com.worthsoln.patientview.XmlImportUtils;
+import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Diagnostic;
 import com.worthsoln.patientview.model.Letter;
@@ -14,6 +16,7 @@ import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.service.CentreManager;
 import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.LetterManager;
+import com.worthsoln.service.LogEntryManager;
 import com.worthsoln.service.MedicineManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.TestResultManager;
@@ -76,6 +79,9 @@ public class ImporterTest extends BaseServiceTest {
     @Inject
     private RepositoryHelpers repositoryHelpers;
 
+    @Inject
+    private LogEntryManager logEntryManager;
+
     @Test
     /**
      *  Calls XmlParserUtils.updateXmlData with files and a dao ref
@@ -135,7 +141,7 @@ public class ImporterTest extends BaseServiceTest {
         mockUnit.setUnitcode("RM301");
         mockUnit.setName("RM301: RUNNING MAN TEST UNIT");
         mockUnit.setShortname("RM301");
-        mockUnit.setRenaladminemail("support@mailinator.com");
+        mockUnit.setRenaladminemail("renaladmin@mailinator.com");
 
         Specialty mockSpecialty = new Specialty();
         mockSpecialty.setName("Renal Patient View");
@@ -152,18 +158,20 @@ public class ImporterTest extends BaseServiceTest {
     @Test
     public void testXmlParserUsingEmptyIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
-                .getResource("classpath:rm301_empty_data_file.xml");
+                .getResource("classpath:rm301_emptydatafile_1234167891.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
-
         MockHttpSession mockHttpSession = new MockHttpSession();
 
         testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
         checkEmptyIBDImportFileData();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
     }
 
     private void checkEmptyIBDImportFileData() {
@@ -175,6 +183,10 @@ public class ImporterTest extends BaseServiceTest {
          * {@link setupSystem(); creates one unit so its ok if we have one unit now
          */
         assertEquals("Units were imported although data file was supposed to be empty", 1, units.size());
+    }
+
+    private void checkLogEntry(String nhsNo, String action) {
+        assertNotNull("Log entry was not created", logEntryManager.getLatestLogEntry(nhsNo, action));
     }
 
     @Test
