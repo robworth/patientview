@@ -17,7 +17,7 @@ public class TestableEmailManagerImpl extends EmailManagerImpl {
          * Don't send emails in test environment, but log them.
          */
        LOGGER.info("--- Skipping sending an email as this is test environment ---");
-       LOGGER.info("From: {}\tTo: {}\nSubject: {}\nContent:\n{}",
+       LOGGER.info("From: {}\nTo: {}\nSubject: {}\nContent:\n{}",
                new Object[] {fromAddress, toAddress, subject, emailText});
        LOGGER.info("--- End of Email ---");
     }
