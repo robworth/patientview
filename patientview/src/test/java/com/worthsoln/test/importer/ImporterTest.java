@@ -155,10 +155,17 @@ public class ImporterTest extends BaseServiceTest {
         unitManager.save(mockUnit);
     }
 
+    /**
+     * Test if importer handles empty test file. This probably means that the encryption did not work.
+     *
+     * An email should be sent to RPV admin email address and an entry should be created in log table
+     *
+     * @throws IOException
+     */
     @Test
     public void testXmlParserUsingEmptyIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
-                .getResource("classpath:rm301_emptydatafile_1234167891.xml");
+                .getResource("classpath:rm301_emptyDataFile_1234167891.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
@@ -168,26 +175,115 @@ public class ImporterTest extends BaseServiceTest {
         testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkEmptyIBDImportFileData();
+        checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
-    private void checkEmptyIBDImportFileData() {
+    /**
+     * Check if no data was imported
+     */
+    private void checkNoDataHasBeenImportedFromIBDImportFile() {
         List<Centre> centres = centreManager.getAll();
         assertEquals("Centres were imported although data file was supposed to be empty", 0, centres.size());
 
         List<Unit> units = unitManager.getAll(false);
         /**
-         * {@link setupSystem(); creates one unit so its ok if we have one unit now
+         * {@link #setupSystem()} creates one unit so its ok if we have one unit now
          */
         assertEquals("Units were imported although data file was supposed to be empty", 1, units.size());
     }
 
+    /**
+     * Check if log entry was created
+     *
+     * @param nhsNo  nhsNo of patient
+     * @param action log type
+     */
     private void checkLogEntry(String nhsNo, String action) {
         assertNotNull("Log entry was not created", logEntryManager.getLatestLogEntry(nhsNo, action));
     }
+
+    /**
+     * Test if importer handles test results with future date
+     *
+     * The whole file should be rejected, an email should be sent to RPV admin email, and a "patient data fail"
+     *      entry should be added to the log table
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckFutureTestResultDateInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results outside date ranges specified
+     *
+     * Whole file needs to be rejected, and an email needs to be sent to RPV admin email
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results with empty values
+     *
+     * Whole file needs to be rejected, n email should be sent to RPV admin and the error should be logged.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
+    }
+
 
     @Test
     public void testXmlParserUsingIBDFile() throws IOException {
