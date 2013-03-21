@@ -6,6 +6,7 @@ import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -40,9 +41,12 @@ public class ConversationsAction extends BaseAction {
             for (Unit unit : units) {
                 List<Patient> patients = getPatientManager().get(unit.getUnitcode());
 
-                // TODO: need to work out how to get this done
                 for (Patient patient : patients) {
-                    //recipients.add(getUserManager().get(patient.get()));
+                    List<UserMapping> userMappings = getUserManager().getUserMappingsForNhsNo(patient.getNhsno());
+
+                    if (!userMappings.isEmpty()) {
+                        patientRecipients.add(getUserManager().get(userMappings.get(0).getUsername()));
+                    }
                 }
             }
         } else if (getSecurityUserManager().isRolePresent("patient")) {
