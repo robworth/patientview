@@ -37,7 +37,9 @@ public class ConversationsAction extends BaseAction {
         // need to add in a list of recipients available to the user
         // if its a patient then they get unit admins in their unit
         // if an admin they get all the patients in their unit
-        if (getSecurityUserManager().isRolePresent("unitadmin")) {
+
+        if (getSecurityUserManager().isRolePresent("unitadmin")
+                || getSecurityUserManager().isRolePresent("unitstaff")) {
             for (Unit unit : units) {
                 List<Patient> patients = getPatientManager().get(unit.getUnitcode());
 
