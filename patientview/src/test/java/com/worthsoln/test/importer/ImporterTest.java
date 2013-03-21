@@ -167,7 +167,7 @@ public class ImporterTest extends BaseServiceTest {
     @Test
     public void testXmlParserUsingEmptyIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
-                .getResource("classpath:rm301_emptyDataFile_1234167891.xml");
+                .getResource("classpath:rm301_emptyfile_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
@@ -286,7 +286,11 @@ public class ImporterTest extends BaseServiceTest {
                 AddLog.PATIENT_DATA_FAIL);
     }
 
-
+    /**
+     * Test if the importer imports data
+     *
+     * @throws IOException
+     */
     @Test
     public void testXmlParserUsingIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
@@ -328,6 +332,9 @@ public class ImporterTest extends BaseServiceTest {
         // Note the results get deleted each run on date range
     }
 
+    /**
+     * check the data importer should have imported.
+     */
     private void checkIbdImportedData() {
         // test the stuff that should be the same regardless of how many imports of the file are done
 
