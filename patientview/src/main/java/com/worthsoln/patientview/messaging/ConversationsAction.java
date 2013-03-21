@@ -34,9 +34,23 @@ public class ConversationsAction extends BaseAction {
         List<User> unitStaffRecipients = new ArrayList<User>();
         List<User> patientRecipients = new ArrayList<User>();
 
-        // need to add in a list of recipients available to the user
-        // if its a patient then they get unit admins in their unit
-        // if an admin they get all the patients in their unit
+        // patients and unit staff/admin get addresses for unit admin and staff
+        // unit staff and admin also get patients
+        for (Unit unit : units) {
+            List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
+
+            for (UnitAdmin unitAdmin : unitAdmins) {
+                User unitUser = getUserManager().get(unitAdmin.getUsername());
+
+                if (!unitUser.equals(user)) {
+                    if (unitAdmin.getRole().equals("unitadmin")) {
+                        unitAdminRecipients.add(unitUser);
+                    } else if (unitAdmin.getRole().equals("unitstaff")) {
+                        unitStaffRecipients.add(unitUser);
+                    }
+                }
+            }
+        }
 
         if (getSecurityUserManager().isRolePresent("unitadmin")
                 || getSecurityUserManager().isRolePresent("unitstaff")) {
@@ -48,18 +62,6 @@ public class ConversationsAction extends BaseAction {
 
                     if (!userMappings.isEmpty()) {
                         patientRecipients.add(getUserManager().get(userMappings.get(0).getUsername()));
-                    }
-                }
-            }
-        } else if (getSecurityUserManager().isRolePresent("patient")) {
-            for (Unit unit : units) {
-                List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
-
-                for (UnitAdmin unitAdmin : unitAdmins) {
-                    if (unitAdmin.getRole().equals("unitadmin")) {
-                        unitAdminRecipients.add(getUserManager().get(unitAdmin.getUsername()));
-                    } else if (unitAdmin.getRole().equals("unitstaff")) {
-                        unitStaffRecipients.add(getUserManager().get(unitAdmin.getUsername()));
                     }
                 }
             }
