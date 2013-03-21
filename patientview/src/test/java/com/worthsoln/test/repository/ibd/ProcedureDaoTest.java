@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ProcedureDaoTest extends BaseDaoTest {
@@ -20,13 +21,44 @@ public class ProcedureDaoTest extends BaseDaoTest {
     public void testAddGetProcedure() throws Exception {
         Procedure procedure = getTestObject();
 
+        /**
+         * add
+         */
         procedureDao.save(procedure);
+        assertTrue("Can't save procedure", procedure.getId() > 0);
 
-        assertTrue("Invalid id for new procedure", procedure.getId() > 0);
-
+        /**
+         * get
+         */
         Procedure checkProcedure = procedureDao.get(procedure.getId());
-
         assertNotNull(checkProcedure);
+
+        /**
+         * delete
+         */
+        procedureDao.delete(procedure.getNhsno(), procedure.getUnitcode());
+
+        Procedure deletedProcedure = procedureDao.getProcedure(procedure.getNhsno());
+        assertNull("Can't delete procedure", deletedProcedure);
+    }
+
+    @Test
+    public void testDeleteProcedure() throws Exception {
+        Procedure procedure = getTestObject();
+
+        /**
+         * add
+         */
+        procedureDao.save(procedure);
+        assertTrue("Can't save procedure", procedure.getId() > 0);
+
+        /**
+         * delete
+         */
+        procedureDao.delete(procedure.getNhsno(), procedure.getUnitcode());
+
+        Procedure deletedProcedure = procedureDao.getProcedure(procedure.getNhsno());
+        assertNull("Can't delete procedure", deletedProcedure);
     }
 
     private Procedure getTestObject() throws Exception {

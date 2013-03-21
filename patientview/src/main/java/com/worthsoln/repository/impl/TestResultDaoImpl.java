@@ -170,7 +170,7 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = " +
                 ":unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();
