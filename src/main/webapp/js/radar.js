@@ -67,10 +67,6 @@ var patientsListingPage = {
                 0: {
                     sorter: false
                 },
-                1: {
-
-                    sorter: false
-                },
                 2:{
                     sorter: false
                 },
