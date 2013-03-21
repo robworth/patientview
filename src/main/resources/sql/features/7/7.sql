@@ -1,24 +1,23 @@
--- feature 2 way messaging
+/**
+ *  Patch: remove the CHI number from the model
+ */
 
-CREATE TABLE `conversation` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `deleted` tinyint(1) NOT NULL,
-  `started` datetime NOT NULL,
-  `participant1_id` bigint(20) NOT NULL,
-  `participant2_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`)
-);
+-- add a new enum column for nhs no type after nhs_no
+ALTER TABLE tbl_demographics ADD COLUMN NHS_NO_TYPE INT(11) NOT NULL AFTER NHS_NO;
 
-CREATE TABLE `message` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `content` text NOT NULL,
-  `date` datetime NOT NULL,
-  `deleted` tinyint(1) NOT NULL,
-  `hasRead` tinyint(1) NOT NULL,
-  `conversation_id` bigint(20) NOT NULL,
-  `recipient_id` bigint(20) NOT NULL,
-  `sender_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK9C2397E72776A072` (`conversation_id`),
-  CONSTRAINT `FK9C2397E72776A072` FOREIGN KEY (`conversation_id`) REFERENCES `conversation` (`id`)
-);
+-- set the type to be 2 for all rows with a chi_no set, also set the nhs no to be the chi no (there are no users with both an NHS and CHI no)
+UPDATE tbl_demographics SET NHS_NO_TYPE = 2, NHS_NO = CHI_NO WHERE CHI_NO IS NOT NULL;
+
+-- set the remaining rows to be type = 1
+UPDATE tbl_demographics SET NHS_NO_TYPE = 1 WHERE NHS_NO_TYPE = 0;
+
+-- remove the column chi_no
+ALTER TABLE tbl_demographics DROP COLUMN CHI_NO;
+
+-- remove the chi_no from medicine (Note: there are no rows with the chi no set)
+ALTER TABLE medicine DROP COLUMN chino;
+
+
+
+
+

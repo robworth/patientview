@@ -38,9 +38,20 @@ public class BaseTestPvDbSchema {
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
 
+    @Value("${config.environment}")
+    private String configEnvironment;
+
     @Before
     public void testDbCreate() throws Exception {
         LOGGER.info("Starting db setup");
+
+        boolean isTestEnvironment = configEnvironment != null && configEnvironment.equals("test");
+
+        if (!isTestEnvironment) {
+            throw new IllegalStateException("Cannot run tests using "
+                    + configEnvironment
+                    + " profile you risk overwriting a real database");
+        }
 
         // a list of all the sql file names we need to run in order
         List<String> sqlFileNames = new ArrayList<String>();
