@@ -2,7 +2,6 @@ package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
-import com.solidstategroup.radar.model.generic.IdType;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.generic.MedicalResultManager;
@@ -51,12 +50,8 @@ public class GenericPatientPage extends BasePage {
         demographics = new Demographics();
         demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
         demographics.setRenalUnit(patientModel.getCentre());
-
-        if (patientModel.getIdType().equals(IdType.NHS)) {
-            demographics.setNhsNumber(patientModel.getPatientId());
-        } else if (patientModel.getIdType().equals(IdType.CHI)) {
-            demographics.setChiNumber(patientModel.getPatientId());
-        }
+        demographics.setNhsNumber(patientModel.getPatientId());
+        demographics.setNhsNumberType(patientModel.getNhsNumberType());
 
         init(demographics);
     }

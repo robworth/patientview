@@ -211,7 +211,7 @@ public class SrnsPatientPage extends BasePage {
 
         pageParameters.set("renalUnitId", patientModel.getCentre().getId());
         pageParameters.set("diseaseGroupId", patientModel.getDiseaseGroup().getId());
-        pageParameters.set("idType", patientModel.getIdType().toString());
+        pageParameters.set("idType", patientModel.getNhsNumberType().toString());
         pageParameters.set("idVal", patientModel.getPatientId());
         return pageParameters;
     }

@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.model;
 
 
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.generic.GenericDiagnosis;
 import org.joda.time.DateTime;
@@ -25,9 +26,9 @@ public class Demographics extends BaseModel {
 
     private String hospitalNumber;
     private String nhsNumber;
+    private NhsNumberType nhsNumberType;
     private String renalRegistryNumber;
     private String ukTransplantNumber;
-    private String chiNumber;
 
     private Status status;
     private Consultant consultant;
@@ -204,6 +205,23 @@ public class Demographics extends BaseModel {
         this.nhsNumber = nhsNumber;
     }
 
+    public NhsNumberType getNhsNumberType() {
+        return nhsNumberType;
+    }
+
+    public void setNhsNumberType(NhsNumberType nhsNumberType) {
+        this.nhsNumberType = nhsNumberType;
+    }
+
+    // helper for templates
+    public String getChiNumber() {
+        if (getNhsNumberType().equals(NhsNumberType.CHI_NUMBER)) {
+            return nhsNumber;
+        }
+
+        return null;
+    }
+
     public String getRenalRegistryNumber() {
         return renalRegistryNumber;
     }
@@ -218,14 +236,6 @@ public class Demographics extends BaseModel {
 
     public void setUkTransplantNumber(String ukTransplantNumber) {
         this.ukTransplantNumber = ukTransplantNumber;
-    }
-
-    public String getChiNumber() {
-        return chiNumber;
-    }
-
-    public void setChiNumber(String chiNumber) {
-        this.chiNumber = chiNumber;
     }
 
     public Status getStatus() {

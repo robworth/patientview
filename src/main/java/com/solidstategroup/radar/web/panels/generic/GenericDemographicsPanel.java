@@ -4,6 +4,7 @@ import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -142,12 +143,7 @@ public class GenericDemographicsPanel extends Panel {
 
             @Override
             public boolean isVisible() {
-                if (model.getObject().getNhsNumber() != null) {
-                    if (!model.getObject().getNhsNumber().isEmpty()) {
-                        return true;
-                    }
-                }
-                return false;
+                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
             }
         };
         nhsNumberContainer.add(nhsNumber);
@@ -158,12 +154,7 @@ public class GenericDemographicsPanel extends Panel {
 
             @Override
             public boolean isVisible() {
-                if (model.getObject().getChiNumber() != null) {
-                    if (!model.getObject().getChiNumber().isEmpty()) {
-                        return true;
-                    }
-                }
-                return false;
+                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
             }
         };
 

@@ -165,10 +165,16 @@
                         <span wicket:id="hospitalNumberFeedbackIndicator"></span>
                     </td>
                 </tr>
-                <tr>
-                    <td><span id="ctl00_ContentPlaceHolder1_lblNHS">NHS Number</span></td>
+                <tr wicket:id="nhsNumberContainer">
+                    <td><span>NHS Number</span></td>
                     <td>
-                        <input type="text" wicket:id="nhsNumber" style="width:80px;"/>
+                        <label wicket:id="nhsNumber" style="width:80px;"/>
+                    </td>
+                </tr>
+                <tr wicket:id="chiNumberContainer">
+                    <td><span>CHI No. (Scotland Only)</span></td>
+                    <td>
+                        <label wicket:id="chiNumber"/>
                     </td>
                 </tr>
                 <tr>
@@ -181,12 +187,6 @@
                     <td><span id="ctl00_ContentPlaceHolder1_lblUKT">UK Transplant Number</span></td>
                     <td>
                         <input type="text" wicket:id="ukTransplantNumber" style="width:80px;"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span id="ctl00_ContentPlaceHolder1_lblCHI">CHI No. (Scotland Only)</span></td>
-                    <td>
-                        <input type="text" wicket:id="chiNumber" style="width:80px;"/>
                     </td>
                 </tr>
                 <tr>

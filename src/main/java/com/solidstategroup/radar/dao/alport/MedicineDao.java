@@ -16,8 +16,4 @@ public interface MedicineDao {
     List<Medicine> getMedicinesByNhsNo(String nhsNo);
 
     List<Medicine> getMedicinesByNhsNoAndDiseaseGroup(String nhsNo, DiseaseGroup diseaseGroup);
-
-    List<Medicine> getMedicinesByChiNo(String chiNo);
-
-    List<Medicine> getMedicinesByChiNoAndDiseaseGroup(String chiNo, DiseaseGroup diseaseGroup);
 }

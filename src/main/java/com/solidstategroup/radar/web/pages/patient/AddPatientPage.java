@@ -2,9 +2,9 @@ package com.solidstategroup.radar.web.pages.patient;
 
 import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
-import com.solidstategroup.radar.model.generic.IdType;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
@@ -31,7 +31,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -94,8 +93,18 @@ public class AddPatientPage extends BasePage {
         RadarRequiredTextField id = new RadarRequiredTextField("patientId", form, componentsToUpdateList);
 
         RadarRequiredDropdownChoice idType =
-                new RadarRequiredDropdownChoice("idType", Arrays.asList(IdType.values()),
-                        new ChoiceRenderer(), form, componentsToUpdateList);
+                new RadarRequiredDropdownChoice("nhsNumberType", NhsNumberType.getNhsNumberTypesAsList(),
+                        new ChoiceRenderer() {
+                            @Override
+                            public Object getDisplayValue(Object object) {
+                                return ((NhsNumberType) object).getName();
+                            }
+
+                            @Override
+                            public String getIdValue(Object object, int index) {
+                                return ((NhsNumberType) object).getId() + "";
+                            }
+                        }, form, componentsToUpdateList);
 
         RadarRequiredDropdownChoice diseaseGroup =
                 new RadarRequiredDropdownChoice("diseaseGroup", diseaseGroupDao.getAll(),

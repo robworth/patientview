@@ -27,8 +27,6 @@ public class MedicineManagerImpl implements MedicineManager {
     public List<Medicine> getMedicines(Demographics demographics) {
         if (demographics.getNhsNumber() != null) {
             return medicineDao.getMedicinesByNhsNo(demographics.getNhsNumber());
-        } else if (demographics.getChiNumber() != null) {
-            return medicineDao.getMedicinesByChiNo(demographics.getChiNumber());
         }
 
         return null;
@@ -37,8 +35,6 @@ public class MedicineManagerImpl implements MedicineManager {
     public List<Medicine> getMedicines(Demographics demographics, DiseaseGroup diseaseGroup) {
         if (demographics.getNhsNumber() != null) {
             return medicineDao.getMedicinesByNhsNoAndDiseaseGroup(demographics.getNhsNumber(), diseaseGroup);
-        } else if (demographics.getChiNumber() != null) {
-            return medicineDao.getMedicinesByChiNoAndDiseaseGroup(demographics.getChiNumber(), diseaseGroup);
         }
 
         return null;
