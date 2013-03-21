@@ -38,7 +38,7 @@ public class AllergyDaoImpl extends AbstractHibernateDAO<Allergy> implements All
         Query query = getEntityManager().createQuery(
                 "DELETE FROM pv_allergy WHERE nhsno = :nhsno AND unitcode = :unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

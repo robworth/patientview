@@ -39,7 +39,7 @@ public class ProcedureDaoImpl extends AbstractHibernateDAO<Procedure> implements
         Query query = getEntityManager().createQuery(
                 "DELETE FROM pv_procedure WHERE nhsno = :nhsno AND unitcode = :unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

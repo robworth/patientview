@@ -63,11 +63,8 @@ public class XmlImportUtils {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
         emailBody += newLine;
-        emailBody += newLine + "The file named: ";
-        emailBody += newLine;
-        emailBody += newLine + xmlFileName;
-        emailBody += newLine;
-        emailBody += newLine + "has not imported to RPV correctly. This is because the file is empty. " +
+        emailBody += newLine + "The file <" + xmlFileName + "> has not imported to RPV correctly. ";
+        emailBody += "This is because the file was empty. " +
                 "The most likely cause of that is that it has not been encrypted properly at the unit before sending. ";
         emailBody += newLine;
         emailBody += newLine + "Please contact your IT department to ask them to check the encryption.";
@@ -84,11 +81,7 @@ public class XmlImportUtils {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
         emailBody += newLine;
-        emailBody += newLine + "The file named: ";
-        emailBody += newLine;
-        emailBody += newLine + xmlFileName;
-        emailBody += newLine;
-        emailBody += newLine + "Has failed to import.";
+        emailBody += newLine + "The file <" + xmlFileName + "> has failed to import.";
         emailBody += newLine;
         emailBody += newLine + "It did not match the schema file named: ";
         emailBody += newLine;
@@ -147,11 +140,7 @@ public class XmlImportUtils {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
         emailBody += newLine;
-        emailBody += newLine + "The file named: ";
-        emailBody += newLine;
-        emailBody += newLine + fileName;
-        emailBody += newLine;
-        emailBody += newLine + "Has failed to import.";
+        emailBody += newLine + "The file <" + fileName + "> has failed to import.";
         emailBody += newLine;
         emailBody += newLine + "This means that the file has been received by RPV but there is something wrong with the file that prevents it being imported properly.";
         emailBody += newLine + "It might be that there is an XML tag missing or an empty result value or something similar.";

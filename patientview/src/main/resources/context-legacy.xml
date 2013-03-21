@@ -213,4 +213,13 @@
         </property>
     </bean>
 
+    <bean id="setEmailManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEmailManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="emailManager"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

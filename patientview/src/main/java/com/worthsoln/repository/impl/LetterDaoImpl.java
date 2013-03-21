@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -48,9 +49,12 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
         Query query = getEntityManager().createQuery(
                 "DELETE FROM letter WHERE nhsno = :nhsno AND unitcode = :unitcode AND date = :date");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
-        query.setParameter("date", new Timestamp(date.getTime()));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        query.setParameter("date", calendar);
 
         query.executeUpdate();
     }
@@ -60,7 +64,7 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
         Query query = getEntityManager().createQuery("DELETE FROM letter WHERE nhsno = :nhsno AND unitcode " +
                 "= :unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

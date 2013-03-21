@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Calendar;
 
-@Entity
+@Entity(name = "pv_procedure")
 @Table(name = "pv_procedure")
 public class Procedure extends BaseModel {
 

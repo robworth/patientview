@@ -10,4 +10,6 @@
     <!-- check for annotations -->
     <context:component-scan base-package="com.worthsoln.test"/>
 
+    <bean id="emailManager" class="com.worthsoln.test.helpers.impl.TestableEmailManagerImpl"/>
+
 </beans>

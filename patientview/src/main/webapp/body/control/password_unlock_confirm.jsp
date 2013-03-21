@@ -14,24 +14,17 @@
     <br/><br/>
 
     <table cellpadding="3">
-      <tr>
-        <td><b>User Name</b></td>
-        <td><bean:write name="user" property="username"/></td>
-      </tr>
-      <tr>
-        <td><b>Name</b></td>
-        <td><bean:write name="user" property="name"/></td>
-      </tr>
-      <%--<logic:notEmpty name="user" property="nhsno">--%>
-        <%--<tr>--%>
-          <%--<td><b>NHS Number</b></td>--%>
-          <%--<td><bean:write name="user" property="nhsno"/></td>--%>
-        <%--</tr>--%>
-      <%--</logic:notEmpty>--%>
-      <tr>
-        <td><b>Email Address</b></td>
-        <td><bean:write name="user" property="email"/></td>
-      </tr>
+        <tr>
+            <td><b>User Name</b></td>
+            <td><bean:write name="user" property="username"/></td>
+        </tr>
+        <tr>
+            <td><b>Name</b></td>
+            <td><bean:write name="user" property="name"/></td>
+        </tr>
+        <tr>
+            <td><b>Email Address</b></td>
+            <td><bean:write name="user" property="email"/></td>
+        </tr>
     </table>
 </span>
-

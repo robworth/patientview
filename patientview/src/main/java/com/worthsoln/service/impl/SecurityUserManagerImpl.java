@@ -53,6 +53,15 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
+    public boolean isEmailVerified() {
+        SecurityUser securityUser = getSecurityUser();
+
+        User user = userManager.get(securityUser.getUsername());
+
+        return user != null && user.isEmailverified();
+    }
+
+    @Override
     public Specialty getLoggedInSpecialty() {
 
         SecurityUser securityUser = getSecurityUser();

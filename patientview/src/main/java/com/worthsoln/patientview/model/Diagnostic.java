@@ -13,7 +13,7 @@ import java.util.Calendar;
 /**
  *      Generic holder for exams and procedure dates
  */
-@Entity
+@Entity(name = "diagnostic")
 public class Diagnostic extends BaseModel {
 
     @Column(nullable = false)

@@ -105,7 +105,6 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
         sql += ")  ORDER BY datestamp DESC";
 
-
         List<TestResult> testResult = jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
 
         if (testResult != null && !testResult.isEmpty()) {

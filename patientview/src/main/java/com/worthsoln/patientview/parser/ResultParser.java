@@ -145,15 +145,15 @@ public class ResultParser {
                             if (testResult.getDatestamped() != null) {
                                 DateTime testResultDate = new DateTime(testResult.getDatestamped());
 
-                                // make sure the result doesn't have a future date
+                                /**
+                                 * make sure the result doesn't have a future date. if it does not, make sure
+                                 *  result date is between daterange specified in the xml
+                                 */
                                 if (testResultDate.isAfterNow()) {
                                     // add this test to corrupt tests list
                                     xmlImportException.getNodeList().add(
                                             new CorruptNode(testNode, NodeError.FUTURE_RESULT));
-                                }
-
-                                // make sure result date is between daterange specified in the xml
-                                if (dateRangeStart != null && dateRangeStop != null && !(new Interval(
+                                } else if (dateRangeStart != null && dateRangeStop != null && !(new Interval(
                                         new DateTime(dateRangeStart), new DateTime(dateRangeStop)).contains(
                                         new DateTime(testResultDate)))) {
                                     // add this test to corrupt tests list

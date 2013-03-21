@@ -3,6 +3,7 @@ package com.worthsoln.patientview.logon;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
@@ -45,8 +46,7 @@ public class PatientAddAction extends Action {
 
         UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
 
-        Patient existingPatient =  LegacySpringUtils.getPatientManager().get(BeanUtils.getProperty(form, "nhsno"),
-                        BeanUtils.getProperty(form, "unitcode"));
+        User existingUser =  LegacySpringUtils.getUserManager().get(username);
 
         List existingPatientsWithSameNhsno = findExistingPatientsWithSameNhsno(nhsno);
 
@@ -56,7 +56,7 @@ public class PatientAddAction extends Action {
             mappingToFind = "input";
         }
 
-        if (existingPatient != null) {
+        if (existingUser != null) {
             request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);
             patientLogon.setUsername("");
             mappingToFind = "input";

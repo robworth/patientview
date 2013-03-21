@@ -7,6 +7,7 @@ import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.DiagnosticDao;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,6 +35,8 @@ public class DiagnosticDaoImpl extends AbstractHibernateDAO<Diagnostic> implemen
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
         } catch (NonUniqueResultException ex) {
+            return null;
+        } catch (NoResultException e) {
             return null;
         }
     }
@@ -69,7 +72,7 @@ public class DiagnosticDaoImpl extends AbstractHibernateDAO<Diagnostic> implemen
         Query query = getEntityManager().createQuery(
                 "DELETE FROM diagnostic WHERE nhsno = :nhsno AND unitcode = :unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

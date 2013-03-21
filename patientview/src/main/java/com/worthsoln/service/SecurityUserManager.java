@@ -17,6 +17,8 @@ public interface SecurityUserManager {
 
     boolean isFirstLogon();
 
+    boolean isEmailVerified();
+
     Specialty getLoggedInSpecialty();
 
     boolean isLoggedIn();

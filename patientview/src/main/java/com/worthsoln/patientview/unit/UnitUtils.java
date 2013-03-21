@@ -46,6 +46,15 @@ public class UnitUtils {
     // update the unit by setting it's properties
     public static void buildUnit(Unit unit, Object form) throws Exception {
 
+        // set defaults for sourceType and country, note this runs for updates as well as creates
+        if (unit.getSourceType() == null || unit.getSourceType().length() == 0) {
+            unit.setSourceType("renalunit");
+        }
+
+        if (unit.getCountry() == null || unit.getCountry().length() == 0) {
+            unit.setCountry("1");
+        }
+
         // build object
         unit.setUnitcode(BeanUtils.getProperty(form, "unitcode"));
         unit.setName(BeanUtils.getProperty(form, "name"));
