@@ -66,12 +66,15 @@
     <li <%=("letters".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/letters" >Letters</html:link></li>
 
     <logic:present specialty="renal">
+        <li <%= ("sharing_thoughts".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/sharingThoughts">Sharing Thoughts</html:link></li>
+    </logic:present>
+
+    <logic:present specialty="renal">
         <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/contact">Contact</html:link></li>
     </logic:present>
     <logic:present specialty="ibd">
         <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/ibd-contact">Contact</html:link></li>
     </logic:present>
-
 
     <logic:present specialty="ibd">
         <li <%= ("education".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/education">Information</html:link></li>

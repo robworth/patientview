@@ -536,7 +536,11 @@
           <forward name="success" path="/body/patient/messaging/send-message-ajax.jsp"/>
       </action>
 
-    <action path="/demo"
+      <action path="/patient/sharingThoughts" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsHomeAction" parameter="sharing_thoughts">
+          <forward name="success" path="/patient/sharing_thoughts.jsp"/>
+      </action>
+
+      <action path="/demo"
             type="com.worthsoln.patientview.IndexAction" parameter="contact">
       <forward name="success" path="/demo.jsp"/>
     </action>
