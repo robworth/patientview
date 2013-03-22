@@ -1,6 +1,8 @@
 /**
   *   This script should take a live db and make is OK to use on staging/dev
-  *   Obviously not complete at the moment!
+
+   *  You can log into patientview using real usernames and the password 'pppppp'
+   *  See bottom of script for radar users, passwords unchanged.
  */
 
 UPDATE aboutme SET aboutme = 'Something about me', talkabout = 'I want to talk about...';
@@ -46,7 +48,13 @@ DELETE FROM tbl_transplant_reject;
 UPDATE tbl_users SET uSurname =  CONCAT('Surname for uID', uID), uForename = CONCAT('Forename for uID', uID), uTitle = 'Ms', uRole = 'Some job role',
 uEmail = 'patientview-testing@solidstategroup.com';
 UPDATE unit SET renaladminemail = 'patientview-testing@solidstategroup.com', unitenquiriesemail = 'patientview-testing@solidstategroup.com', appointmentemail = 'patientview-testing@solidstategroup.com', peritonealdialysisemail = 'patientview-testing@solidstategroup.com';
+-- set all the user passwords to 'pppppp'
 UPDATE USER SET PASSWORD = '891e12e156d8c6609c6d5f3e04b2fc8da6d9ff3d7e9f906314c0909da69637eb', NAME = CONCAT('Name for id ', id), email = 'patientview-testing@solidstategroup.com', screenname = CONCAT('Screen name for id ', id);
+
+-- setup the radar test users
+UPDATE tbl_users SET uEmail = 'radarsuperuser@solidstategroup.com' WHERE uID = 28;
+UPDATE tbl_users SET uEmail = 'demo@nhs.net' WHERE uID = 37;
+UPDATE tbl_adminusers SET uEmail = 'renalreg@renalreg.com' WHERE uID = 2;
 
 
 
