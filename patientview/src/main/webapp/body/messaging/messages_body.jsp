@@ -31,6 +31,10 @@
             <logic:present name="conversations">
                 <logic:notEmpty name="conversations">
                     <logic:iterate name="conversations" id="conversation" indexId="index">
+                        <%
+                        boolean even = index % 2 == 0;
+                        %>
+
                         <a href="<%=context%>/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
                             <article class="conversation">
                                 <h2 class="title">
