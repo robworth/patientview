@@ -14,9 +14,6 @@
     } catch (Exception e) {
         // Birds the word
     }
-
-    Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
-    String context = specialty != null ? "/" + specialty.getContext() : "";
 %>
 <div class="row">
     <div class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %>">
@@ -35,7 +32,7 @@
                         boolean even = index % 2 == 0;
                         %>
 
-                        <a href="<%=context%>/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
+                        <a href="/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
                             <article class="conversation <%=even ? "" : "odd"%>">
                                 <h2 class="title">
                                     <bean:write name="conversation" property="otherUser.name" />
@@ -61,14 +58,14 @@
             </logic:present>
 
             <div id="messageModal" class="modal hide fade">
-                <form action="<%=context%>/send-message.do" class="js-message-form">
+                <form action="/send-message.do" class="js-message-form">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h3>New message</h3>
                     </div>
                     <div class="modal-body">
                         <fieldset>
-                            <input type="hidden" class="js-message-redirect" value="<%=context%>/patient/conversation.do" />
+                            <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
 
                             <div class="control-group">
                                 <label class="control-label">To</label>

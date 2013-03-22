@@ -1,12 +1,11 @@
 package com.worthsoln.service.impl;
 
-import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.service.EmailManager;
-import com.worthsoln.service.SecurityUserManager;
+import com.worthsoln.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
+import java.util.List;
 
 @Service(value = "emailManager")
 public class EmailManagerImpl implements EmailManager {
@@ -26,10 +26,10 @@ public class EmailManagerImpl implements EmailManager {
     private JavaMailSender javaMailSender;
 
     @Inject
-    private SecurityUserManager securityUserManager;
+    private UserManager userManager;
 
-    @Autowired
-    private Environment env;
+    @Value("${noreply.email}")
+    private String noReplyEmail;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailManagerImpl.class);
 
@@ -38,18 +38,29 @@ public class EmailManagerImpl implements EmailManager {
         String subject = "You have been sent a message from " + message.getSender().getName()
                 + " on Renal Patient View";
 
-        boolean isPatient = message.getRecipient().getRole().equals("patient");
-        Specialty specialty = securityUserManager.getLoggedInSpecialty();
-        String context = specialty != null ? "/" + specialty.getContext() : "";
+        // need to work out if the recipient of this message is a patient or something higher
+        // if staff or admin then they go to /control if patient they go to /patient
+        boolean isAdminOrStaff = false;
 
-        String messageUrl = context + "/" + (isPatient ? "patient" : "control")
-                + "conversation.do?id=" + message.getConversation().getId() + "#message-" + message.getId();
+        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(message.getRecipient());
 
-        String body = "<p>Dear " + message.getRecipient().getName() + "</p>";
-        body += "<p>You have received a message from " + message.getSender().getName() + " on Renal Patient View.</p>";
-        body += "<p>Click <a href=\"" + messageUrl + "\">here to response.</p>";
+        for (SpecialtyUserRole specialtyUserRole : specialtyUserRoles) {
+            if (specialtyUserRole.getRole().equals("unitadmin")
+                    || specialtyUserRole.getRole().equals("unitstaff")
+                    || specialtyUserRole.getRole().equals("superadmin")) {
+                isAdminOrStaff = true;
+                break;
+            }
+        }
 
-        sendEmail(env.getRequiredProperty("noreply.email"), new String[]{message.getRecipient().getEmail()},
+        String messageUrl = "https://www.renalpatientview.org/" + (isAdminOrStaff ? "control": "patient")
+                + "/conversation.do?id=" + message.getConversation().getId() + "#message-" + message.getId();
+
+        String body = "Dear " + message.getRecipient().getName() + "\n\n";
+        body += "You have received a message from " + message.getSender().getName() + " on Renal Patient View.\n\n";
+        body += messageUrl;
+
+        sendEmail(noReplyEmail, new String[]{message.getRecipient().getEmail()},
                 null, subject, body);
     }
 
@@ -73,7 +84,7 @@ public class EmailManagerImpl implements EmailManager {
         }
     }
 
-    private void sendEmail(String from, String[] to, String[] bcc, String subject, String body) {
+    public void sendEmail(String from, String[] to, String[] bcc, String subject, String body) {
 
         if (!StringUtils.hasLength(from)) {
             throw new IllegalArgumentException("Cannot send mail missing 'from'");

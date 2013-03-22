@@ -51,7 +51,8 @@ public class ConversationsAction extends BaseAction {
         }
 
         if (getSecurityUserManager().isRolePresent("unitadmin")
-                || getSecurityUserManager().isRolePresent("unitstaff")) {
+                || getSecurityUserManager().isRolePresent("unitstaff")
+                || getSecurityUserManager().isRolePresent("superadmin")) {
             for (Unit unit : units) {
                 patientRecipients.addAll(getUnitManager().getUnitPatientUsers(unit.getUnitcode(), unit.getSpecialty()));
             }

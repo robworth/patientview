@@ -11,4 +11,5 @@ public interface EmailManager {
     void sendEmail(ServletContext context, String fromAddress, String toAddress, String ccAddress, String subject,
                    String emailText);
 
+    void sendEmail(String from, String[] to, String[] bcc, String subject, String body);
 }
