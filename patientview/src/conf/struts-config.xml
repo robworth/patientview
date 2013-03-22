@@ -516,7 +516,7 @@
               type="com.worthsoln.patientview.messaging.ConversationsAction"
               scope="request"
               parameter="conversations">
-          <forward name="success" path="/patient/messages.jsp"/>
+          <forward name="success" path="/patient/messaging/messages.jsp"/>
           <forward name="error" path="/error.jsp"/>
       </action>
 
@@ -525,15 +525,32 @@
               scope="request"
               parameter="conversation"
               name="sendMessageForm">
-          <forward name="success" path="/patient/message.jsp"/>
+          <forward name="success" path="/patient/messaging/message.jsp"/>
           <forward name="error" path="/error.jsp"/>
       </action>
 
-      <action path="/patient/send-message" type="com.worthsoln.patientview.messaging.SendMessageAction" parameter="conversation"
+      <action path="/control/conversations"
+              type="com.worthsoln.patientview.messaging.ConversationsAction"
+              scope="request"
+              parameter="conversations">
+          <forward name="success" path="/control/messaging/messages.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/control/conversation"
+              type="com.worthsoln.patientview.messaging.ConversationAction"
+              scope="request"
+              parameter="conversation"
+              name="sendMessageForm">
+          <forward name="success" path="/control/messaging/message.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/send-message" type="com.worthsoln.patientview.messaging.SendMessageAction" parameter="conversation"
               name="sendMessageForm"
               input="input">
-          <forward name="input" path="/body/patient/messaging/send-message-ajax.jsp"/>
-          <forward name="success" path="/body/patient/messaging/send-message-ajax.jsp"/>
+          <forward name="input" path="/body/messaging/send-message-ajax.jsp"/>
+          <forward name="success" path="/body/messaging/send-message-ajax.jsp"/>
       </action>
 
     <action path="/demo"

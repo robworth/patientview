@@ -2,6 +2,7 @@ package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.PatientCount;
 import com.worthsoln.patientview.model.Unit;
@@ -132,5 +133,10 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode) {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
+    public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
+        return unitDao.getUnitPatientUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 }

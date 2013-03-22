@@ -3,6 +3,7 @@ package com.worthsoln.repository;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,4 +32,6 @@ public interface UnitDao {
 
 
     List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
+
+    List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
 }
