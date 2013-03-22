@@ -1,5 +1,6 @@
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ page import="com.worthsoln.patientview.model.Specialty" %>
+<%@ page import="com.worthsoln.patientview.model.User" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -15,6 +16,7 @@
         // Birds the word
     }
 
+    User user = LegacySpringUtils.getUserManager().getLoggedInUser();
     Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
     String context = specialty != null ? "/" + specialty.getContext() : "";
 %>
@@ -41,9 +43,26 @@
             <section class="js-messages">
                 <logic:present name="messages">
                     <logic:notEmpty name="messages">
-                        <logic:iterate name="messages" id="message" indexId="index">
+                        <logic:iterate name="messages" id="message" indexId="index" type="com.worthsoln.patientview.model.Message">
                             <article class="message" id="message-<bean:write name="message" property="id" />">
-                                <h4 class="author"><bean:write name="message" property="sender.name" /> <span class="label label-inverse pull-right date"><bean:write name="message" property="friendlyDate" /></span></h4>
+                                <h4 class="author">
+                                    <bean:write name="message" property="sender.name" />
+
+                                    <%
+                                    // check to see if they are the recipient of this message and if they have seen before
+                                    if (message.getRecipient().equals(user)) {
+                                        if (!message.isHasRead()) {
+                                        %>
+                                        <span class="badge badge-important">
+                                            New
+                                        </span>
+                                        <%
+                                        }
+                                    }
+                                    %>
+
+                                    <span class="label label-inverse pull-right date"><bean:write name="message" property="friendlyDate" /></span>
+                                </h4>
 
                                 <div class="content dull">
                                     <bean:write name="message" property="formattedContent" filter="false"/>
