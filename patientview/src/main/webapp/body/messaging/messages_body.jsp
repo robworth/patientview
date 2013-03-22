@@ -29,7 +29,7 @@
                 <logic:notEmpty name="conversations">
                     <logic:iterate name="conversations" id="conversation" indexId="index">
                         <%
-                        boolean even = index % 2 == 0;
+                            boolean even = index % 2 == 0;
                         %>
 
                         <a href="/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
@@ -47,7 +47,7 @@
                                     <bean:write name="conversation" property="latestMessageSummary" />
                                 </div>
                             </article>
-                            </a>
+                        </a>
                     </logic:iterate>
                 </logic:notEmpty>
                 <logic:empty name="conversations">
