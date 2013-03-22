@@ -3,10 +3,8 @@ package com.worthsoln.patientview.messaging;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -55,15 +53,7 @@ public class ConversationsAction extends BaseAction {
         if (getSecurityUserManager().isRolePresent("unitadmin")
                 || getSecurityUserManager().isRolePresent("unitstaff")) {
             for (Unit unit : units) {
-                List<Patient> patients = getPatientManager().get(unit.getUnitcode());
-
-                for (Patient patient : patients) {
-                    List<UserMapping> userMappings = getUserManager().getUserMappingsForNhsNo(patient.getNhsno());
-
-                    if (!userMappings.isEmpty()) {
-                        patientRecipients.add(getUserManager().get(userMappings.get(0).getUsername()));
-                    }
-                }
+                patientRecipients.addAll(getUnitManager().getUnitPatientUsers(unit.getUnitcode(), unit.getSpecialty()));
             }
         }
 

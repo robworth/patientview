@@ -189,4 +189,31 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         return unitAdmins;
     }
+
+    @Override
+    public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
+        String sql = "SELECT " +
+                "   u.* " +
+                "FROM " +
+                "   usermapping um, " +
+                "   USER u, " +
+                "   specialtyuserrole sur " +
+                "WHERE" +
+                "   um.username = u.username " +
+                "AND" +
+                "   u.id = sur.user_id " +
+                "AND" +
+                "   sur.specialty_id = :specialtyId " +
+                "AND" +
+                "   um.unitcode = :unitcode " +
+                "AND" +
+                "   sur.role = 'patient' ";
+
+        Query query = getEntityManager().createNativeQuery(sql, User.class);
+
+        query.setParameter("specialtyId", specialty.getId());
+        query.setParameter("unitcode", unitcode);
+
+        return query.getResultList();
+    }
 }
