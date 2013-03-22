@@ -1,12 +1,15 @@
 package com.solidstategroup.radar.test.dao;
 
 import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.DiagnosisDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Diagnosis;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.filter.DemographicsFilter;
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,35 +25,39 @@ public class DemographicDaoTest extends BaseDaoTest {
     @Autowired
     private DemographicsDao demographicDao;
 
+    @Autowired
+    private DiagnosisDao diagnosisDao;
+
     @Test
     public void testSaveDemographics() {
-        Demographics demographics = new Demographics();
-        demographics.setForename("Test");
-        demographics.setSurname("User");
-        demographicDao.saveDemographics(demographics);
-        assertNotNull(demographics.getId());
+        createDemographics("Test", "User");
     }
 
     @Test
     public void testGetDemographic() {
-        Demographics demographics = demographicDao.getDemographicsByRadarNumber(241L);
+        Demographics demographics = createDemographics("Test", "User");
+        Demographics check = demographicDao.getDemographicsByRadarNumber(demographics.getId());
 
         // Check it's not null
-        assertNotNull("Demographics was null", demographics);
+        assertNotNull("Demographics was null", check);
 
         // Check radar number is correct
-        assertEquals("Wrong radar number", new Long(241), demographics.getId());
+        assertEquals("Wrong radar number", demographics.getId(), check.getId());
     }
 
     @Test
     public void testGetDemographics() throws Exception {
+        createDemographics("Test", "User");
+        createDemographics("Test2", "User2");
         List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), -1, -1);
         assertNotNull("List was null", demographics);
-        assertTrue(demographics.size() > 0);
+        assertEquals(2, demographics.size());
     }
 
     @Test
     public void testGetDemographicsPage1() {
+        createDemographics("Test", "User");
+        createDemographics("Test2", "User2");
         List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), 1, 1);
         assertNotNull(demographics);
         assertTrue(demographics.size() == 1);
@@ -58,26 +65,34 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Test
     public void testSearchDemographics() {
+        addDiagnosisForDemographic(createDemographics("Test", "User"), DiagnosisCode.SRNS_ID);
+        addDiagnosisForDemographic(createDemographics("Test2", "User2"), DiagnosisCode.MPGN_ID);
         DemographicsFilter demographicsFilter = new DemographicsFilter();
         demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.DIAGNOSIS.getDatabaseFieldName(), "srns");
         List<Demographics> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
         assertNotNull(demographics);
-        assertTrue(demographics.size() > 0);
+        assertTrue(demographics.size() == 1);
     }
 
     @Test
     public void testGetDemographicsByCentre() throws Exception {
-        // Construct centre
+        // Construct centres
         Centre centre = new Centre();
         centre.setId(2L);
+
+        Centre centre2 = new Centre();
+        centre2.setId(3L);
+
+        createDemographics("Test", "User", centre);
+        createDemographics("Test2", "User2", centre);
+        createDemographics("Test3", "User3", centre2);
 
         // Call DAO
         List<Demographics> demographics = demographicDao.getDemographicsByRenalUnit(centre);
         assertNotNull("List was null", demographics);
-        assertEquals("Wrong size", 21, demographics.size());
+        assertEquals("Wrong size", 2, demographics.size());
         for (Demographics de : demographics) {
-            assertTrue("Wrong centre", de.getRenalUnit().getId().equals(2L) || de.getRenalUnitAuthorised().getId().
-                    equals(2L));
+            assertTrue("Wrong centre", de.getRenalUnit().getId().equals(2L));
         }
     }
 
@@ -105,5 +120,28 @@ public class DemographicDaoTest extends BaseDaoTest {
         List<Status> statuses = demographicDao.getStatuses();
         assertNotNull("Statuses was null", statuses);
         assertEquals("Wrong size", 6, statuses.size());
+    }
+
+    private void addDiagnosisForDemographic(Demographics demographics, Long diagnosisCodeId) {
+        Diagnosis diagnosis = new Diagnosis();
+        diagnosis.setText("Testing");
+        diagnosis.setDiagnosisCode(diagnosisDao.getDiagnosisCode(diagnosisCodeId));
+        diagnosis.setRadarNumber(demographics.getId());
+        diagnosisDao.saveDiagnosis(diagnosis);
+    }
+
+    private Demographics createDemographics(String forename, String surname, Centre centre) {
+        Demographics demographics = new Demographics();
+        demographics.setForename(forename);
+        demographics.setSurname(surname);
+        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        demographics.setRenalUnit(centre);
+        demographicDao.saveDemographics(demographics);
+        assertNotNull(demographics.getId());
+        return demographics;
+    }
+
+    private Demographics createDemographics(String forename, String surname) {
+        return createDemographics(forename, surname, null);
     }
 }

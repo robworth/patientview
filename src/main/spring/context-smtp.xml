@@ -5,10 +5,10 @@
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean id="javaMailSender" class= "org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.sendgrid.net" />
+        <property name="host" value="smtp.mandrillapp.com" />
         <property name="protocol" value="smtps" />
-        <property name="username" value="ben@solidstategroup.com" />
-        <property name="password" value="s0l1dst8" />
+        <property name="username" value="info@solidstategroup.com" />
+        <property name="password" value="2faa2524-0add-41b9-8914-91038fd8b14e" />
         <property name="javaMailProperties">
                 <props>
                     <prop key="mail.debug">true</prop>
