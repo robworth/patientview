@@ -40,19 +40,47 @@ public class LetterDaoTest extends BaseDaoTest {
     public void testAddGetLetter() throws Exception {
         Letter letter = getTestObject();
 
+        /**
+         * add
+         */
         letterDao.save(letter);
 
         assertTrue("Invalid id for new letter", letter.getId() > 0);
 
-        Letter checkLetter = letterDao.get(letter.getId());
+        /**
+         * get
+         */
+        Letter savedLetter = letterDao.get(letter.getId());
 
-        assertNotNull(checkLetter);
+        assertNotNull(savedLetter);
         assertEquals("Nhs no not persisted", letter.getNhsno(), letter.getNhsno());
         assertEquals("Content not persisted", letter.getContent(), letter.getContent());
         assertEquals("Date not persisted", letter.getDate(), letter.getDate());
         assertEquals("Type not persisted", letter.getType(), letter.getType());
         assertEquals("Unit code not persisted", letter.getUnitcode(), letter.getUnitcode());
     }
+
+    @Test
+    public void testDeleteLetter() throws Exception {
+        Letter letter = getTestObject();
+
+        /**
+         * add
+         */
+        letterDao.save(letter);
+
+        assertTrue("Invalid id for new letter", letter.getId() > 0);
+
+        /**
+         * delete
+         */
+        letterDao.delete(letter.getNhsno(), letter.getUnitcode());
+
+        List<Letter> deletedLetters = letterDao.getAll();
+
+        assertTrue("Can't delete letter", deletedLetters.size() == 0);
+    }
+
 
     @Test
     public void testGetLettersByUsername() throws Exception {
@@ -114,11 +142,13 @@ public class LetterDaoTest extends BaseDaoTest {
 
     private Letter getTestObject() {
         Letter letter = new Letter();
+
         letter.setNhsno("123456789");
         letter.setContent("Test letter");
         letter.setDate(Calendar.getInstance());
         letter.setType("testtype");
         letter.setUnitcode("testunit");
+
         return letter;
     }
 }

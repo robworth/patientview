@@ -41,7 +41,7 @@ public class MedicineDaoImpl extends AbstractHibernateDAO<Medicine> implements M
         Query query = getEntityManager().createQuery(
                 "DELETE FROM medicine WHERE nhsno = :nhsno AND unitcode = :unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

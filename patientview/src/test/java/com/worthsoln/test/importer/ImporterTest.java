@@ -167,7 +167,7 @@ public class ImporterTest extends BaseServiceTest {
     @Test
     public void testXmlParserUsingEmptyIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
-                .getResource("classpath:rm301_emptyfile_9876543210.xml");
+                .getResource("classpath:rm301_empty_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:importer/pv_schema_2.0.xsd");
 
