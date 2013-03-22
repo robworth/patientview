@@ -32,13 +32,12 @@ public class MessageManagerTest extends BaseServiceTest {
     private MessageManager messageManager;
 
     private User user;
-    private Specialty specialty;
 
     @Before
     public void setupSystem() {
         // create an admin adminUser and specialty and log them in
         user = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
-        specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        Specialty specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         serviceHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
 
         securityHelpers.loginAsUser(user.getUsername(), specialty);
@@ -167,20 +166,19 @@ public class MessageManagerTest extends BaseServiceTest {
          *
          * User 1 should then have 2 unread messages across conversations
           */
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
         User user3 = serviceHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3", "Test 3");
 
         // first convo with message from 2 to 1
-        serviceHelpers.createConversation(user1, user2, true);
-        messageManager.createMessage("This is my first message", user2, user1);
+        serviceHelpers.createConversation(user, user2, true);
+        messageManager.createMessage("This is my first message", user2, user);
 
         // second convo with message from 3 to 1
-        serviceHelpers.createConversation(user1, user3, true);
-        messageManager.createMessage("This is my first message", user3, user1);
+        serviceHelpers.createConversation(user, user3, true);
+        messageManager.createMessage("This is my first message", user3, user);
 
         // now pull back and check unread messages for user 1
-        int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user1.getId());
+        int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user.getId());
         assertEquals("Wrong number of unread messages", checkNumberUnreadMessages, 2);
     }
 }
