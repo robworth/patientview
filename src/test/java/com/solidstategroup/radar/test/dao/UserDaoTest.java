@@ -4,6 +4,7 @@ import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
@@ -78,27 +79,62 @@ public class UserDaoTest extends BaseDaoTest {
         assertNotNull("Saved user was null on getting frmo DAO", patientUser);
     }
 
-    @Test
-    public void testGetPatientUsers() {
-        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), -1, -1);
-        assertNotNull(patientUsers);
-        assertTrue(patientUsers.size() > 0);
+    private PatientUser createPatientUser(String username, long radarNo) throws Exception {
+        PatientUser patientUser = new PatientUser();
+        patientUser.setUsername(username);
+        patientUser.setRadarNumber(radarNo);
+        patientUser.setDateOfBirth(new Date());
+        patientUser.setPasswordHash(User.getPasswordHash("password12"));
+
+        // Save
+        userDao.savePatientUser(patientUser);
+
+        return patientUser;
     }
 
     @Test
-    public void testGetPatientUsersPage1() {
+    public void testGetPatientUsers() throws Exception {
+
+        // need to have tbl_Patient_Users that join to tbl_Demographics for this to work
+        Demographics demographics = createDemographics("forename", "surname");
+        createPatientUser("surname01", demographics.getId());
+
+        Demographics demographics2 = createDemographics("forename2", "surname2");
+        createPatientUser("surname02", demographics2.getId());
+
+        List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), -1, -1);
+        assertNotNull(patientUsers);
+        assertTrue(patientUsers.size() == 2);
+    }
+
+    @Test
+    public void testGetPatientUsersPage1() throws Exception {
+        Demographics demographics = createDemographics("forename", "surname");
+        createPatientUser("surname01", demographics.getId());
+
+        Demographics demographics2 = createDemographics("forename2", "surname2");
+        createPatientUser("surname02", demographics2.getId());
+
         List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), 1, 1);
         assertNotNull(patientUsers);
         assertTrue(patientUsers.size() == 1);
     }
 
     @Test
-    public void testSearchPatientUsers() {
+    public void testSearchPatientUsers() throws Exception {
+        Demographics demographics = createDemographics("forename", "surname");
+        createPatientUser("surname01", demographics.getId());
+
+        Demographics demographics2 = createDemographics("forename2", "surname2");
+        createPatientUser("surname02", demographics2.getId());
+
+
         PatientUserFilter userFilter = new PatientUserFilter();
-        userFilter.addSearchCriteria(PatientUserFilter.UserField.RADAR_NO.getDatabaseFieldName(), "246");
+        userFilter.addSearchCriteria(PatientUserFilter.UserField.RADAR_NO.getDatabaseFieldName(),
+                demographics.getId() + "");
         List<PatientUser> patientUsers = userDao.getPatientUsers(userFilter, -1, -1);
         assertNotNull(patientUsers);
-        assertTrue(patientUsers.size() > 0);
+        assertTrue(patientUsers.size() == 1);
     }
 
     @Test
@@ -230,4 +266,13 @@ public class UserDaoTest extends BaseDaoTest {
         }
     }
 
+    private Demographics createDemographics(String forename, String surname) {
+        Demographics demographics = new Demographics();
+        demographics.setForename(forename);
+        demographics.setSurname(surname);
+        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        demographicsDao.saveDemographics(demographics);
+        assertNotNull(demographics.getId());
+        return demographics;
+    }
 }
