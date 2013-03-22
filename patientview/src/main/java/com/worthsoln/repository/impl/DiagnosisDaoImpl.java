@@ -41,7 +41,7 @@ public class DiagnosisDaoImpl extends AbstractHibernateDAO<Diagnosis> implements
         Query query = getEntityManager().createQuery(
                 "DELETE FROM diagnosis WHERE nhsno = :nhsno AND unitcode = :unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

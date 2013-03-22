@@ -381,6 +381,10 @@ section article.conversation, section article.message{
     border-bottom: 1px dotted #eeeeee;
 }
 
+section article.conversation.odd{
+    background:#f6f6f6;
+}
+
 section article.conversation .badge, section article.message .badge{
     position:relative;
     top:-15px;
@@ -409,4 +413,8 @@ section article.conversation .dull, section article.message .dull{
 
 .patient-edit-form.form-actions{
     padding-left:30px;
+}
+
+.js-messages{
+    margin-bottom:20px;
 }

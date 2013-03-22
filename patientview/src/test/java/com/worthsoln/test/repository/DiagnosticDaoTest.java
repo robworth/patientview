@@ -22,8 +22,7 @@ public class DiagnosticDaoTest extends BaseDaoTest {
     private DiagnosticDao diagnosticDao;
 
     @Test
-    public void testGetSave() {
-
+    public void testSaveGetDiagnostic() {
         Diagnostic diagnostic = new Diagnostic();
         diagnostic.setDatestamp(Calendar.getInstance());
         diagnostic.setDescription("description");
@@ -31,15 +30,53 @@ public class DiagnosticDaoTest extends BaseDaoTest {
         diagnostic.setNhsno("1234567890");
         diagnostic.setUnitcode("UNITCODE1");
 
+        /**
+         * add
+         */
         diagnosticDao.save(diagnostic);
 
         assertTrue("Invalid id after save", diagnostic.getId() > 0);
 
-        Diagnostic check = diagnosticDao.get(diagnostic.getId());
+        /**
+         * get
+         */
+        Diagnostic savedDiagnostic = diagnosticDao.get(diagnostic.getId());
 
-        assertEquals("Incorrect datestamp", diagnostic.getDatestamp(), check.getDatestamp());
-        assertEquals("Incorrect description", diagnostic.getDescription(), check.getDescription());
-        assertEquals("Incorrect type", diagnostic.getDiagnosticType(), check.getDiagnosticType());
+        assertEquals("Incorrect datestamp", diagnostic.getDatestamp(), savedDiagnostic.getDatestamp());
+        assertEquals("Incorrect description", diagnostic.getDescription(), savedDiagnostic.getDescription());
+        assertEquals("Incorrect type", diagnostic.getDiagnosticType(), savedDiagnostic.getDiagnosticType());
+
+        /**
+         * delete
+         */
+        diagnosticDao.delete(savedDiagnostic.getNhsno(), savedDiagnostic.getUnitcode());
+
+        Diagnostic deletedDiagnostic = diagnosticDao.get(savedDiagnostic.getNhsno());
+        assertNull("Can't delete diagnostic", deletedDiagnostic);
+    }
+
+    @Test
+    public void testDeleteDiagnostic() {
+        Diagnostic diagnostic = new Diagnostic();
+        diagnostic.setDatestamp(Calendar.getInstance());
+        diagnostic.setDescription("description");
+        diagnostic.setDiagnosticType(DiagnosticType.IMAGING);
+        diagnostic.setNhsno("1234567890");
+        diagnostic.setUnitcode("UNITCODE1");
+
+        /**
+         * add
+         */
+        diagnosticDao.save(diagnostic);
+        assertTrue("Invalid id after save", diagnostic.getId() > 0);
+
+        /**
+         * delete
+         */
+        diagnosticDao.delete(diagnostic.getNhsno(), diagnostic.getUnitcode());
+
+        Diagnostic deletedDiagnostic = diagnosticDao.get(diagnostic.getNhsno());
+        assertNull("Can't delete diagnostic", deletedDiagnostic);
     }
 
     @Test
@@ -127,4 +164,5 @@ public class DiagnosticDaoTest extends BaseDaoTest {
 
         assertEquals("Incorrect number of results", 0, results.size());
     }
+
 }
