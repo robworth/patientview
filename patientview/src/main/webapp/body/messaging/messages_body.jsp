@@ -36,7 +36,7 @@
                         %>
 
                         <a href="<%=context%>/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
-                            <article class="conversation <%=even ? "" : "odd"%>">
+                            <article class="conversation ">
                                 <h2 class="title">
                                     <bean:write name="conversation" property="otherUser.name" />
                                     <logic:greaterThan value="0" name="conversation" property="numberUnread">
