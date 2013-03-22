@@ -108,6 +108,7 @@ public class MessageManagerImpl implements MessageManager {
             conversationDao.save(conversation);
         }
 
+        // save message before sending as they will still see it if the emails fails after
         Message message = new Message();
         message.setConversation(conversation);
         message.setSender(sender);
