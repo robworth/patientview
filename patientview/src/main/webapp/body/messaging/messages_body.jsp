@@ -41,7 +41,7 @@
                                             <bean:write name="conversation" property="numberUnread" />
                                         </span>
                                     </logic:greaterThan>
-                                    <span class="pull-right conversation-date label label-inverse"><bean:write name="conversation" property="latestMessageDate" /></span>
+                                    <span class="pull-right conversation-date label label-inverse"><bean:write name="conversation" property="friendlyLatestMessageDate" /></span>
                                 </h2>
                                 <div class="content dull">
                                     <bean:write name="conversation" property="latestMessageSummary" />

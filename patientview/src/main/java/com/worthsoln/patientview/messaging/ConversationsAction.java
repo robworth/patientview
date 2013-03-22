@@ -9,6 +9,7 @@ import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,11 +41,13 @@ public class ConversationsAction extends BaseAction {
             for (UnitAdmin unitAdmin : unitAdmins) {
                 User unitUser = getUserManager().get(unitAdmin.getUsername());
 
-                if (!unitUser.equals(user)) {
-                    if (unitAdmin.getRole().equals("unitadmin")) {
-                        unitAdminRecipients.add(unitUser);
-                    } else if (unitAdmin.getRole().equals("unitstaff")) {
-                        unitStaffRecipients.add(unitUser);
+                if (StringUtils.hasText(unitUser.getEmail())) {
+                    if (!unitUser.equals(user)) {
+                        if (unitAdmin.getRole().equals("unitadmin")) {
+                            unitAdminRecipients.add(unitUser);
+                        } else if (unitAdmin.getRole().equals("unitstaff")) {
+                            unitStaffRecipients.add(unitUser);
+                        }
                     }
                 }
             }
@@ -54,7 +57,13 @@ public class ConversationsAction extends BaseAction {
                 || getSecurityUserManager().isRolePresent("unitstaff")
                 || getSecurityUserManager().isRolePresent("superadmin")) {
             for (Unit unit : units) {
-                patientRecipients.addAll(getUnitManager().getUnitPatientUsers(unit.getUnitcode(), unit.getSpecialty()));
+                List<User> unitPatients = getUnitManager().getUnitPatientUsers(unit.getUnitcode(), unit.getSpecialty());
+
+                for (User unitPatient : unitPatients) {
+                    if (StringUtils.hasText(unitPatient.getEmail())) {
+                        patientRecipients.add(unitPatient);
+                    }
+                }
             }
         }
 

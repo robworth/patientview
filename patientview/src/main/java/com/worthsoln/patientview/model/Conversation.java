@@ -28,11 +28,15 @@ public class Conversation extends BaseModel {
     @Transient
     private int numberUnread = 0;
 
+    // all latest message stuff is controlled in the manager
     @Transient
     private String latestMessageSummary;
 
     @Transient
-    private String latestMessageDate;
+    private Date latestMessageDate;
+
+    @Transient
+    private String friendlyLatestMessageDate;
 
     // this will be set so that the user in the message being shown to the user is the other person in the message
     @Transient
@@ -86,12 +90,20 @@ public class Conversation extends BaseModel {
         this.latestMessageSummary = latestMessageSummary;
     }
 
-    public String getLatestMessageDate() {
+    public Date getLatestMessageDate() {
         return latestMessageDate;
     }
 
-    public void setLatestMessageDate(String latestMessageDate) {
+    public void setLatestMessageDate(Date latestMessageDate) {
         this.latestMessageDate = latestMessageDate;
+    }
+
+    public String getFriendlyLatestMessageDate() {
+        return friendlyLatestMessageDate;
+    }
+
+    public void setFriendlyLatestMessageDate(String friendlyLatestMessageDate) {
+        this.friendlyLatestMessageDate = friendlyLatestMessageDate;
     }
 
     public User getOtherUser() {
