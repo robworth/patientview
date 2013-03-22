@@ -51,7 +51,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         createDemographics("Test2", "User2");
         List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), -1, -1);
         assertNotNull("List was null", demographics);
-        assertTrue(demographics.size() == 2);
+        assertEquals(2, demographics.size());
     }
 
     @Test

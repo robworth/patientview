@@ -197,7 +197,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         createDemographics("Test4", "User", centre);
 
         int count = utilityDao.getPatientCountByUnit(centre);
-        assertTrue(count == 4);
+        assertEquals(4, count);
     }
 
     private Demographics createDemographics(String forename, String surname, Centre centre) {
