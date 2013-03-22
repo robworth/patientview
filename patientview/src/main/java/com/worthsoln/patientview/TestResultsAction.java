@@ -69,14 +69,15 @@ public class TestResultsAction extends Action {
 
     private void addCommentsForNhsno(String nhsno, Panel currentPanel, List<TestResultWithUnitShortname> results) {
 
-        // Note: This seems to be trying to do something with the panel and result headings.
-        // We have removed because it did appear to do anything.
+        // Comments (from the comments table) should show on the 1st panel of the results
+        if (currentPanel.getPanel() == 1) {
+            List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
 
-        List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
-
-        for (Comment comment : comments) {
-            results.add(new TestResultWithUnitShortname(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, comment.getDatestamp(),
-                    "resultcomment", Long.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
+            for (Comment comment : comments) {
+                results.add(new TestResultWithUnitShortname(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE,
+                        comment.getDatestamp(),
+                        "resultcomment", Long.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
+            }
         }
     }
 

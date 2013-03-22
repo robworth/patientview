@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class AllergyDaoTest extends BaseDaoTest {
@@ -20,13 +21,37 @@ public class AllergyDaoTest extends BaseDaoTest {
     public void testAddGetAllergy() throws Exception {
         Allergy allergy = getTestObject();
 
+        /**
+         * add
+         */
         allergyDao.save(allergy);
+        assertTrue("Can't save allergy", allergy.getId() > 0);
 
-        assertTrue("Invalid id for new procedure", allergy.getId() > 0);
+        /**
+         * get
+         */
+        Allergy savedAllergy = allergyDao.get(allergy.getId());
+        assertNotNull("Can't get allergy", savedAllergy);
+    }
 
-        Allergy checkProcedure = allergyDao.get(allergy.getId());
+    @Test
+    public void testDeleteAllergy() throws Exception {
+        Allergy allergy = getTestObject();
 
-        assertNotNull(checkProcedure);
+        /**
+         * add
+         */
+        allergyDao.save(allergy);
+        assertTrue("Can't save allergy", allergy.getId() > 0);
+
+        /**
+         * delete
+         */
+        allergyDao.delete(allergy.getNhsno(), allergy.getUnitcode());
+
+        Allergy deletedAllergy = allergyDao.getAllergy(allergy.getNhsno());
+        assertNull("Can't delete allergy", deletedAllergy);
+
     }
 
     private Allergy getTestObject() throws Exception {

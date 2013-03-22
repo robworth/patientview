@@ -41,7 +41,7 @@ public class UktStatusDaoImpl extends AbstractHibernateDAO<UktStatus> implements
 
     @Override
     public void deleteAll() {
-        Query query = getEntityManager().createQuery("DELETE FROM uktstatus");
+        Query query = getEntityManager().createNativeQuery("DELETE FROM uktstatus");
         query.executeUpdate();
     }
 }
