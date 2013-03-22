@@ -62,7 +62,7 @@
             %>
             <li class="divider"></li>
             <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
-                <html:link action="/control/conversations">
+                <a href="/control/conversations.do">
                     Messages
                     <%
                         if (numberUnreadMessages > 0) {
@@ -71,7 +71,7 @@
                     <%
                         }
                     %>
-                </html:link>
+                </a>
             </li>
             <%
                 }

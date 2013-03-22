@@ -66,7 +66,7 @@ public class ConversationDaoImpl extends AbstractHibernateDAO<Conversation> impl
 
         buildWhereClause(criteria, wherePredicates);
 
-        criteria.orderBy(builder.asc(root.get(Conversation_.started)));
+        criteria.orderBy(builder.desc(root.get(Conversation_.started)));
 
         List<Conversation> conversations = getEntityManager().createQuery(criteria).getResultList();
 

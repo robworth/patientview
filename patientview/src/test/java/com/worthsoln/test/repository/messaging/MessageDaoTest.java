@@ -6,6 +6,7 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import com.worthsoln.test.repository.BaseDaoTest;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -187,8 +188,16 @@ public class MessageDaoTest extends BaseDaoTest {
         Conversation conversation = repositoryHelpers.createConversation(user1, user2, true);
 
         // 2 messages from user 1
-        Message message1 = repositoryHelpers.createMessage(conversation, user1, user2, "Message in conversation 1", true);
-        Message message2 = repositoryHelpers.createMessage(conversation, user1, user2, "2nd Message in conversation 1", true);
+        Message message1 = repositoryHelpers.createMessage(conversation, user1, user2, "Message in conversation 1",
+                true);
+
+        // this is a bit of a hack but cause the test messages are created at almost the same time MySQL doesnt take
+        // into account the milliseconds so save the 2nd message then save again to make the time slightly different
+        Message message2 = repositoryHelpers.createMessage(conversation, user1, user2, "2nd Message in conversation 1",
+                true);
+
+        message2.setDate(new DateTime(message2.getDate()).plusMinutes(1).toDate());
+        messageDao.save(message2);
 
         Message checkMessage = messageDao.getLatestMessage(conversation.getId());
 

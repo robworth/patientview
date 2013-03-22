@@ -1,10 +1,14 @@
 package com.worthsoln.test.service;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.test.helpers.SecurityHelpers;
 import com.worthsoln.test.helpers.ServiceHelpers;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -19,17 +23,31 @@ import static org.junit.Assert.assertTrue;
 public class MessageManagerTest extends BaseServiceTest {
 
     @Inject
+    private SecurityHelpers securityHelpers;
+
+    @Inject
     private ServiceHelpers serviceHelpers;
 
     @Inject
     private MessageManager messageManager;
 
+    private User user;
+
+    @Before
+    public void setupSystem() {
+        // create an admin adminUser and specialty and log them in
+        user = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
+        Specialty specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
+
+        securityHelpers.loginAsUser(user.getUsername(), specialty);
+    }
+
     @Test
     public void testGetConversation() throws Exception {
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user1, user2, true);
+        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
 
         assertTrue("Invalid id for message", conversation.getId() > 0);
 
@@ -39,10 +57,9 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testDeleteConversation() throws Exception {
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user1, user2, true);
+        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
 
         // now delete and try to pull back
         messageManager.deleteConversation(conversation);
@@ -54,10 +71,9 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testDeleteConversationById() throws Exception {
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user1, user2, true);
+        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
 
         // now delete and try to pull back
         messageManager.deleteConversation(conversation.getId());
@@ -69,15 +85,14 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testCreateMessageForNewConversation() throws Exception {
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Message message = messageManager.createMessage("This is my first message", user1, user2);
+        Message message = messageManager.createMessage("This is my first message", user, user2);
 
         assertTrue("Invalid id for message", message.getId() > 0);
 
         // now try and pull back conversations for both users - both should have 1 conversation
-        List<Conversation> checkUser1Conversations = messageManager.getConversations(user1.getId());
+        List<Conversation> checkUser1Conversations = messageManager.getConversations(user.getId());
         assertEquals("Wrong number of conversations for user 1", checkUser1Conversations.size(), 1);
 
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
@@ -90,12 +105,11 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testCreateMessageForExistingConversation() throws Exception {
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user1, user2, true);
+        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
 
-        Message message = messageManager.createMessage("This is my first message", user1, user2);
+        Message message = messageManager.createMessage("This is my first message", user, user2);
 
         // the conversatino assigned to the message should be the same as the one created above
         assertEquals("Wrong conversation stored", conversation, message.getConversation());
@@ -112,12 +126,11 @@ public class MessageManagerTest extends BaseServiceTest {
          *
          * Then check how many unread messages they have again
          */
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        serviceHelpers.createConversation(user1, user2, true);
+        serviceHelpers.createConversation(user, user2, true);
 
-        messageManager.createMessage("This is my first message", user1, user2);
+        messageManager.createMessage("This is my first message", user, user2);
 
         // now pull abck conversation for user 2
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
@@ -153,20 +166,19 @@ public class MessageManagerTest extends BaseServiceTest {
          *
          * User 1 should then have 2 unread messages across conversations
           */
-        User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
         User user3 = serviceHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3", "Test 3");
 
         // first convo with message from 2 to 1
-        serviceHelpers.createConversation(user1, user2, true);
-        messageManager.createMessage("This is my first message", user2, user1);
+        serviceHelpers.createConversation(user, user2, true);
+        messageManager.createMessage("This is my first message", user2, user);
 
         // second convo with message from 3 to 1
-        serviceHelpers.createConversation(user1, user3, true);
-        messageManager.createMessage("This is my first message", user3, user1);
+        serviceHelpers.createConversation(user, user3, true);
+        messageManager.createMessage("This is my first message", user3, user);
 
         // now pull back and check unread messages for user 1
-        int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user1.getId());
+        int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user.getId());
         assertEquals("Wrong number of unread messages", checkNumberUnreadMessages, 2);
     }
 }

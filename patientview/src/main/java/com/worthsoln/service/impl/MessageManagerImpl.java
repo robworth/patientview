@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
+import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -15,6 +16,8 @@ import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +34,9 @@ public class MessageManagerImpl implements MessageManager {
 
     @Inject
     private MessageDao messageDao;
+
+    @Inject
+    private EmailManager emailManager;
 
     @Override
     public Conversation getConversation(Long conversationId) {
@@ -53,6 +59,15 @@ public class MessageManagerImpl implements MessageManager {
     public List<Conversation> getConversations(Long participantId) {
         List<Conversation> conversations = conversationDao.getConversations(participantId);
         populateConversations(conversations, participantId);
+
+        // conversations need to be ordered by last activity which means when the last message in the thread was sent
+        Collections.sort(conversations, new Comparator<Conversation>() {
+            @Override
+            public int compare(Conversation o1, Conversation o2) {
+                return o1.getLatestMessageDate().compareTo(o2.getLatestMessageDate()) * -1;
+            }
+        });
+
         return conversations;
     }
 
@@ -104,12 +119,16 @@ public class MessageManagerImpl implements MessageManager {
             conversationDao.save(conversation);
         }
 
+        // save message before sending as they will still see it if the emails fails after
         Message message = new Message();
         message.setConversation(conversation);
         message.setSender(sender);
         message.setRecipient(recipient);
         message.setContent(content);
         messageDao.save(message);
+
+        // now send the message
+        emailManager.sendUserMessage(message);
 
         message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
 
@@ -166,7 +185,9 @@ public class MessageManagerImpl implements MessageManager {
 
             if (latestMessage != null) {
                 conversation.setLatestMessageSummary(latestMessage.getSummary());
-                conversation.setLatestMessageDate(getFriendlyDateTime(latestMessage.getDate()));
+                conversation.setLatestMessageDate(latestMessage.getDate());
+                // also wnat to make a friendly time like 2 secs ago - doing this in here in case it gets complicated
+                conversation.setFriendlyLatestMessageDate(getFriendlyDateTime(latestMessage.getDate()));
             }
 
             // as there two users in the convo we want the front end to be able to show titles based on the other
