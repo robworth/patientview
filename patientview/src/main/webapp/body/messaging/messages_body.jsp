@@ -30,7 +30,7 @@
         <section class="conversation-container">
             <logic:present name="conversations">
                 <logic:notEmpty name="conversations">
-                    <logic:iterate name="conversations" id="conversation" indexId="index">
+                    <logic:iterate name="conversations" id="conversation" indexId="index" >
                         <a href="<%=context%>/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
                             <article class="conversation">
                                 <h2 class="title">

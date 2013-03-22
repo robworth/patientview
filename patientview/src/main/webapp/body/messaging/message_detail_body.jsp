@@ -63,7 +63,7 @@
                 <form action="<%=context%>/send-message.do" class="js-message-form">
                     <input type="hidden" name="js-message-redirect" value="<%=context%>/patient/conversation.do" />
                     <input type="hidden" class="js-message-recipient-id" name="recipientId" value="<bean:write name="recipientId" />" />
-                    <textarea rows="6" cols="3" name="content" class="span9 new-message js-message-content"></textarea>
+                    <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
                     <div class="alert alert-error js-message-errors" style="display: none">
                         <strong>You do not have any messages.</strong>
                     </div>

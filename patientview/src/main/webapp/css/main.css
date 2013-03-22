@@ -381,6 +381,10 @@ section article.conversation, section article.message{
     border-bottom: 1px dotted #eeeeee;
 }
 
+section article.conversation.odd{
+    background:#f6f6f6;
+}
+
 section article.conversation .badge, section article.message .badge{
     position:relative;
     top:-15px;
@@ -396,6 +400,8 @@ section article .content{
 section article.conversation:hover{
     cursor:pointer;
     background:#f6f6f6;
+    border: 1px solid #e2e2e2;
+    margin:-1px -1px 0 -1px;
 }
 
 section.conversation-container a:hover{
@@ -409,4 +415,8 @@ section article.conversation .dull, section article.message .dull{
 
 .patient-edit-form.form-actions{
     padding-left:30px;
+}
+
+.js-messages{
+    margin-bottom:20px;
 }
