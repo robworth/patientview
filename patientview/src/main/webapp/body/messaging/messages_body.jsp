@@ -30,9 +30,13 @@
         <section class="conversation-container">
             <logic:present name="conversations">
                 <logic:notEmpty name="conversations">
-                    <logic:iterate name="conversations" id="conversation" indexId="index" >
+                    <logic:iterate name="conversations" id="conversation" indexId="index">
+                        <%
+                        boolean even = index % 2 == 0;
+                        %>
+
                         <a href="<%=context%>/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
-                            <article class="conversation">
+                            <article class="conversation <%=even ? "" : "odd"%>">
                                 <h2 class="title">
                                     <bean:write name="conversation" property="otherUser.name" />
                                     <logic:greaterThan value="0" name="conversation" property="numberUnread">

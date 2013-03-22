@@ -400,8 +400,6 @@ section article .content{
 section article.conversation:hover{
     cursor:pointer;
     background:#f6f6f6;
-    border: 1px solid #e2e2e2;
-    margin:-1px -1px 0 -1px;
 }
 
 section.conversation-container a:hover{
