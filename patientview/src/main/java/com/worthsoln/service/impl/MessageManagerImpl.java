@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
+import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -31,6 +32,9 @@ public class MessageManagerImpl implements MessageManager {
 
     @Inject
     private MessageDao messageDao;
+
+    @Inject
+    private EmailManager emailManager;
 
     @Override
     public Conversation getConversation(Long conversationId) {
@@ -110,6 +114,9 @@ public class MessageManagerImpl implements MessageManager {
         message.setRecipient(recipient);
         message.setContent(content);
         messageDao.save(message);
+
+        // now send the message
+        emailManager.sendUserMessage(message);
 
         message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
 

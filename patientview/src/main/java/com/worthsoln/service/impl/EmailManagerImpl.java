@@ -1,8 +1,12 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.service.EmailManager;
+import com.worthsoln.service.SecurityUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -21,7 +25,33 @@ public class EmailManagerImpl implements EmailManager {
     @Inject
     private JavaMailSender javaMailSender;
 
+    @Inject
+    private SecurityUserManager securityUserManager;
+
+    @Autowired
+    private Environment env;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailManagerImpl.class);
+
+    @Override
+    public void sendUserMessage(com.worthsoln.patientview.model.Message message) {
+        String subject = "You have been sent a message from " + message.getSender().getName()
+                + " on Renal Patient View";
+
+        boolean isPatient = message.getRecipient().getRole().equals("patient");
+        Specialty specialty = securityUserManager.getLoggedInSpecialty();
+        String context = specialty != null ? "/" + specialty.getContext() : "";
+
+        String messageUrl = context + "/" + (isPatient ? "patient" : "control")
+                + "conversation.do?id=" + message.getConversation().getId() + "#message-" + message.getId();
+
+        String body = "<p>Dear " + message.getRecipient().getName() + "</p>";
+        body += "<p>You have received a message from " + message.getSender().getName() + " on Renal Patient View.</p>";
+        body += "<p>Click <a href=\"" + messageUrl + "\">here to response.</p>";
+
+        sendEmail(env.getRequiredProperty("noreply.email"), new String[]{message.getRecipient().getEmail()},
+                null, subject, body);
+    }
 
     @Override
     public void sendEmail(ServletContext context, String fromAddress, String toAddress, String ccAddress,
@@ -31,13 +61,13 @@ public class EmailManagerImpl implements EmailManager {
             String[] toAddresses = null;
             String[] bccAddresses = null;
             if (StringUtils.hasLength(toAddress)) {
-                toAddresses = new String[] {toAddress};
+                toAddresses = new String[]{toAddress};
             }
             if (StringUtils.hasLength(ccAddress)) {
-                bccAddresses = new String[] {ccAddress};
+                bccAddresses = new String[]{ccAddress};
             }
 
-            sendEmail(fromAddress, toAddresses, bccAddresses, subject,emailText);
+            sendEmail(fromAddress, toAddresses, bccAddresses, subject, emailText);
         } catch (Exception e) {
             LOGGER.error("EmailManagerImpl: Failed to send email - " + e.getMessage() + " swallowing exception!");
         }
