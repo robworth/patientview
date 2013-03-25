@@ -41,17 +41,19 @@ public class ConversationsAction extends BaseAction {
             // patients and unit staff/admin get addresses for unit admin and staff
             // unit staff and admin also get patients
             for (Unit unit : units) {
-                List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
+                if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                    List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
 
-                for (UnitAdmin unitAdmin : unitAdmins) {
-                    User unitUser = getUserManager().get(unitAdmin.getUsername());
+                    for (UnitAdmin unitAdmin : unitAdmins) {
+                        User unitUser = getUserManager().get(unitAdmin.getUsername());
 
-                    if (StringUtils.hasText(unitUser.getEmail())) {
-                        if (!unitUser.equals(user)) {
-                            if (unitAdmin.getRole().equals("unitadmin")) {
-                                unitAdminRecipients.add(unitUser);
-                            } else if (unitAdmin.getRole().equals("unitstaff")) {
-                                unitStaffRecipients.add(unitUser);
+                        if (StringUtils.hasText(unitUser.getEmail())) {
+                            if (!unitUser.equals(user)) {
+                                if (unitAdmin.getRole().equals("unitadmin")) {
+                                    unitAdminRecipients.add(unitUser);
+                                } else if (unitAdmin.getRole().equals("unitstaff")) {
+                                    unitStaffRecipients.add(unitUser);
+                                }
                             }
                         }
                     }
