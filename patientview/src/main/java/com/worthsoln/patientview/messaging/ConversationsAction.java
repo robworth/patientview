@@ -31,7 +31,6 @@ public class ConversationsAction extends BaseAction {
         if (!StringUtils.hasText(user.getEmail())) {
             request.setAttribute(Messaging.NO_EMAIL_SET_PARAM, true);
         } else {
-
             List<Unit> units = getUnitManager().getLoggedInUsersUnits();
 
             List<User> unitAdminRecipients = new ArrayList<User>();
@@ -82,10 +81,14 @@ public class ConversationsAction extends BaseAction {
             Collections.sort(unitStaffRecipients, new UserComparator());
             Collections.sort(patientRecipients, new UserComparator());
 
-            request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
-            request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
-            request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
-            request.setAttribute(Messaging.PATIENT_RECIPIENTS_PARAM, patientRecipients);
+            if (unitAdminRecipients.isEmpty() && unitStaffRecipients.isEmpty() && patientRecipients.isEmpty()) {
+                request.setAttribute(Messaging.NO_RECIPIENTS_PARAM, true);
+            } else {
+                request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
+                request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
+                request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
+                request.setAttribute(Messaging.PATIENT_RECIPIENTS_PARAM, patientRecipients);
+            }
         }
 
         return mapping.findForward(SUCCESS);
@@ -99,7 +102,7 @@ public class ConversationsAction extends BaseAction {
         return StringUtils.hasText(patient.getEmail())
                 && patient.getName() != null
                 && !patient.getName().toLowerCase().contains("-gp")
-                && !patient.getName().toLowerCase().contains("dummy");
+                && !patient.isDummypatient();
     }
 
     private class UserComparator implements Comparator<User> {
