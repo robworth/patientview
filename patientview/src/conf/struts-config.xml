@@ -593,12 +593,12 @@
           <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
       </action>
 
-<!--
+
       <action path="/patient/sharingThoughtsViewThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsViewThoughtAction" parameter="sharing_thoughts"
               name="sharingThoughtsForm">
           <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_view.jsp"/>
       </action>
--->
+
 
       <action path="/patient/sharingThoughtsUserList" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsUserListAction" parameter="sharing_thoughts">
           <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
