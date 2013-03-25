@@ -64,11 +64,14 @@ public class ConversationsAction extends BaseAction {
                     || getSecurityUserManager().isRolePresent("unitstaff")
                     || getSecurityUserManager().isRolePresent("superadmin")) {
                 for (Unit unit : units) {
-                    List<User> unitPatients = getUnitManager().getUnitPatientUsers(unit.getUnitcode(), unit.getSpecialty());
+                    if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                        List<User> unitPatients = getUnitManager().getUnitPatientUsers(unit.getUnitcode(),
+                                unit.getSpecialty());
 
-                    for (User unitPatient : unitPatients) {
-                        if (StringUtils.hasText(unitPatient.getEmail())) {
-                            patientRecipients.add(unitPatient);
+                        for (User unitPatient : unitPatients) {
+                            if (StringUtils.hasText(unitPatient.getEmail())) {
+                                patientRecipients.add(unitPatient);
+                            }
                         }
                     }
                 }
