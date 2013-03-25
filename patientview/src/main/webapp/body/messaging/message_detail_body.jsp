@@ -34,7 +34,7 @@
 
                 <h1>
                     <br />
-                    <bean:write name="conversation" property="otherUser.name" />
+                    <bean:write name="conversation" property="subject" />
                 </h1>
             </div>
 
@@ -78,8 +78,8 @@
 
             <section class="new-message-container" id="response">
                 <form action="/send-message.do" class="js-message-form">
-                    <input type="hidden" name="js-message-redirect" value="/patient/conversation.do" />
-                    <input type="hidden" class="js-message-recipient-id" name="recipientId" value="<bean:write name="recipientId" />" />
+                    <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
+                    <input type="hidden" class="js-message-conversation-id" value="<bean:write name="conversation" property="id" />" />
                     <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
                     <div class="alert alert-error js-message-errors" style="display: none">
                         <strong>You do not have any messages.</strong>

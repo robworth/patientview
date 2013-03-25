@@ -32,10 +32,10 @@
                             boolean even = index % 2 == 0;
                         %>
 
-                        <a href="/<%=actionPrefix%>/conversation.do?id=<bean:write name="conversation" property="id" />#response">
+                        <a href="/<%=actionPrefix%>/conversation.do?conversationId=<bean:write name="conversation" property="id" />#response">
                             <article class="conversation <%=even ? "" : "odd"%>">
                                 <h2 class="title">
-                                    <bean:write name="conversation" property="otherUser.name" />
+                                    <bean:write name="conversation" property="subject" />
                                     <logic:greaterThan value="0" name="conversation" property="numberUnread">
                                         <span class="badge badge-important">
                                             <bean:write name="conversation" property="numberUnread" />
@@ -43,6 +43,7 @@
                                     </logic:greaterThan>
                                     <span class="pull-right conversation-date label label-inverse"><bean:write name="conversation" property="friendlyLatestMessageDate" /></span>
                                 </h2>
+                                <h4 class="user"><bean:write name="conversation" property="otherUser.name" /></h4>
                                 <div class="content dull">
                                     <bean:write name="conversation" property="latestMessageSummary" />
                                 </div>
@@ -106,7 +107,14 @@
                                 </div>
                             </div>
 
-                            <div class="control-group" id="passwordContainer">
+                            <div class="control-group">
+                                <label class="control-label">Subject</label>
+                                <div class="controls">
+                                    <input type="text" name="subject" class="js-message-subject" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
                                 <label class="control-label">Message</label>
                                 <div class="controls">
                                     <textarea rows="6" cols="3" name="content" class="new-message js-message-content"></textarea>

@@ -47,7 +47,7 @@ public class MessageManagerTest extends BaseServiceTest {
     public void testGetConversation() throws Exception {
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
+        Conversation conversation = serviceHelpers.createConversation("Test subject", user, user2, true);
 
         assertTrue("Invalid id for message", conversation.getId() > 0);
 
@@ -59,7 +59,7 @@ public class MessageManagerTest extends BaseServiceTest {
     public void testDeleteConversation() throws Exception {
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
+        Conversation conversation = serviceHelpers.createConversation("Test subject", user, user2, true);
 
         // now delete and try to pull back
         messageManager.deleteConversation(conversation);
@@ -73,7 +73,7 @@ public class MessageManagerTest extends BaseServiceTest {
     public void testDeleteConversationById() throws Exception {
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
+        Conversation conversation = serviceHelpers.createConversation("Test subject", user, user2, true);
 
         // now delete and try to pull back
         messageManager.deleteConversation(conversation.getId());
@@ -84,10 +84,10 @@ public class MessageManagerTest extends BaseServiceTest {
     }
 
     @Test
-    public void testCreateMessageForNewConversation() throws Exception {
+    public void testCreateMessage() throws Exception {
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Message message = messageManager.createMessage("This is my first message", user, user2);
+        Message message = messageManager.createMessage("Test subject", "This is my first message", user, user2);
 
         assertTrue("Invalid id for message", message.getId() > 0);
 
@@ -104,15 +104,17 @@ public class MessageManagerTest extends BaseServiceTest {
     }
 
     @Test
-    public void testCreateMessageForExistingConversation() throws Exception {
+    public void testReplyToMessage() throws Exception {
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Conversation conversation = serviceHelpers.createConversation(user, user2, true);
+        // create a message that we can reply to
+        Message message = messageManager.createMessage("Test subject", "This is my first message", user, user2);
 
-        Message message = messageManager.createMessage("This is my first message", user, user2);
+        Message replyMessage = messageManager.replyToMessage("This is my first message",
+                message.getConversation().getId(), user2);
 
         // the conversatino assigned to the message should be the same as the one created above
-        assertEquals("Wrong conversation stored", conversation, message.getConversation());
+        assertEquals("Wrong conversation stored", message.getConversation(), replyMessage.getConversation());
     }
 
     @Test
@@ -128,9 +130,7 @@ public class MessageManagerTest extends BaseServiceTest {
          */
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        serviceHelpers.createConversation(user, user2, true);
-
-        messageManager.createMessage("This is my first message", user, user2);
+        messageManager.createMessage("Test subject", "This is my first message", user, user2);
 
         // now pull abck conversation for user 2
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
@@ -170,12 +170,10 @@ public class MessageManagerTest extends BaseServiceTest {
         User user3 = serviceHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3", "Test 3");
 
         // first convo with message from 2 to 1
-        serviceHelpers.createConversation(user, user2, true);
-        messageManager.createMessage("This is my first message", user2, user);
+        messageManager.createMessage("Test subject", "This is my first message", user2, user);
 
         // second convo with message from 3 to 1
-        serviceHelpers.createConversation(user, user3, true);
-        messageManager.createMessage("This is my first message", user3, user);
+        messageManager.createMessage("Test subject", "This is my first message", user3, user);
 
         // now pull back and check unread messages for user 1
         int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user.getId());

@@ -230,7 +230,9 @@
 
       <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
           <form-property name="content" type="java.lang.String"/>
+          <form-property name="subject" type="java.lang.String"/>
           <form-property name="recipientId" type="java.lang.Long"/>
+          <form-property name="conversationId" type="java.lang.Long"/>
       </form-bean>
   </form-beans>
     
@@ -548,6 +550,7 @@
 
       <action path="/send-message" type="com.worthsoln.patientview.messaging.SendMessageAction" parameter="conversation"
               name="sendMessageForm"
+              scope="request"
               input="input">
           <forward name="input" path="/body/messaging/send-message-ajax.jsp"/>
           <forward name="success" path="/body/messaging/send-message-ajax.jsp"/>

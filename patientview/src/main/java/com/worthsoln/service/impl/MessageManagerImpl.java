@@ -8,7 +8,6 @@ import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,7 +95,11 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public Message createMessage(String content, User sender, User recipient) {
+    public Message createMessage(String subject, String content, User sender, User recipient) {
+        if (!StringUtils.hasText(subject)) {
+            throw new IllegalArgumentException("Invalid required parameter subject");
+        }
+
         if (!StringUtils.hasText(content)) {
             throw new IllegalArgumentException("Invalid required parameter content");
         }
@@ -109,30 +112,37 @@ public class MessageManagerImpl implements MessageManager {
             throw new IllegalArgumentException("Invalid required parameter recipient");
         }
 
-        Conversation conversation = conversationDao.getConversationBetweenUsers(sender.getId(),
-                recipient.getId());
+        Conversation conversation = new Conversation();
+        conversation.setParticipant1(sender);
+        conversation.setParticipant2(recipient);
+        conversation.setSubject(subject);
+        conversationDao.save(conversation);
 
-        if (conversation == null) {
-            conversation = new Conversation();
-            conversation.setParticipant1(sender);
-            conversation.setParticipant2(recipient);
-            conversationDao.save(conversation);
+        return sendMessage(conversation, sender, recipient, content);
+    }
+
+    @Override
+    public Message replyToMessage(String content, Long conversationId, User sender) throws Exception {
+        if (!StringUtils.hasText(content)) {
+            throw new IllegalArgumentException("Invalid required parameter content");
         }
 
-        // save message before sending as they will still see it if the emails fails after
-        Message message = new Message();
-        message.setConversation(conversation);
-        message.setSender(sender);
-        message.setRecipient(recipient);
-        message.setContent(content);
-        messageDao.save(message);
+        if (conversationId == null || conversationId <= 0) {
+            throw new IllegalArgumentException("Invalid required parameter conversationId");
+        }
 
-        // now send the message
-        emailManager.sendUserMessage(message);
+        if (sender == null || !sender.hasValidId()) {
+            throw new IllegalArgumentException("Invalid required parameter sender");
+        }
 
-        message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
+        // check for the conversation
+        Conversation conversation = getConversation(conversationId);
 
-        return message;
+        if (conversation == null) {
+            throw new IllegalArgumentException("Invalid conversation");
+        }
+
+        return sendMessage(conversation, sender, getOtherUser(conversation, sender.getId()), content);
     }
 
     @Override
@@ -156,6 +166,23 @@ public class MessageManagerImpl implements MessageManager {
             message.setHasRead(true);
             messageDao.save(message);
         }
+    }
+
+    private Message sendMessage(Conversation conversation, User sender, User recipient, String content) {
+        // save message before sending as they will still see it if the emails fails after
+        Message message = new Message();
+        message.setConversation(conversation);
+        message.setSender(sender);
+        message.setRecipient(recipient);
+        message.setContent(content);
+        messageDao.save(message);
+
+        // now send the message
+        emailManager.sendUserMessage(message);
+
+        message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
+
+        return message;
     }
 
     private boolean userHasAccessToConversation(Conversation conversation, Long participantId) {
@@ -192,11 +219,7 @@ public class MessageManagerImpl implements MessageManager {
 
             // as there two users in the convo we want the front end to be able to show titles based on the other
             // user in the convo and not the user who is viewing it
-            if (conversation.getParticipant1().getId().equals(participantId)) {
-                conversation.setOtherUser(conversation.getParticipant2());
-            } else {
-                conversation.setOtherUser(conversation.getParticipant1());
-            }
+            conversation.setOtherUser(getOtherUser(conversation, participantId));
         }
     }
 
@@ -210,6 +233,14 @@ public class MessageManagerImpl implements MessageManager {
             return SHORT_DAY_FORMAT.format(date);
         } else {
             return DATE_FORMAT.format(date);
+        }
+    }
+
+    private User getOtherUser(Conversation conversation, Long participantId) {
+        if (conversation.getParticipant1().getId().equals(participantId)) {
+            return conversation.getParticipant2();
+        } else {
+            return conversation.getParticipant1();
         }
     }
 }

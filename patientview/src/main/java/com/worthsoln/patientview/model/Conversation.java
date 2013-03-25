@@ -24,6 +24,9 @@ public class Conversation extends BaseModel {
     @JoinColumn(name = "participant2_id")
     private User participant2;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String subject;
+
     // Transient methods are set by the manager and are to help the front end so we do less struts
     @Transient
     private int numberUnread = 0;
@@ -72,6 +75,14 @@ public class Conversation extends BaseModel {
 
     public void setParticipant2(User participant2) {
         this.participant2 = participant2;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public int getNumberUnread() {

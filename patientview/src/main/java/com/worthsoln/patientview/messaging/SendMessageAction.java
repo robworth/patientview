@@ -30,11 +30,25 @@ public class SendMessageAction extends BaseAction {
 
         if (validateMessage(dynaForm)) {
             try {
-                Message message = getMessageManager().createMessage(
-                    ((DynaActionForm) form).getString(Messaging.CONTENT_PARAM),
-                        user,
-                        getRecipient(dynaForm)
-                );
+                // if there is a conversation id then its a reply else its new
+                Long conversationId = getConversationId(dynaForm);
+
+                Message message;
+
+                if (conversationId != null) {
+                    message = getMessageManager().replyToMessage(
+                            dynaForm.getString(Messaging.CONTENT_PARAM),
+                            conversationId,
+                            user
+                    );
+                } else {
+                    message = getMessageManager().createMessage(
+                            dynaForm.getString(Messaging.SUBJECT_PARAM),
+                            dynaForm.getString(Messaging.CONTENT_PARAM),
+                            user,
+                            getRecipient(dynaForm)
+                    );
+                }
 
                 request.setAttribute(Messaging.MESSAGE_PARAM, objectMapper.writeValueAsString(message));
             } catch (Exception e) {
@@ -54,8 +68,16 @@ public class SendMessageAction extends BaseAction {
     private boolean validateMessage(DynaActionForm form) {
         errors.clear();
 
-        if (getRecipient(form) == null) {
-            errors.add("Invalid recipient");
+        // if there isnt a conversation id we can assume new convo so we need a subject and a recipient
+        // if there is a convo then we can work out the other person in the convo from the user in the session
+        if (getConversationId(form) == null) {
+            if (getRecipient(form) == null) {
+                errors.add("Invalid recipient");
+            }
+
+            if (!StringUtils.hasText((String) form.get(Messaging.SUBJECT_PARAM))) {
+                errors.add("Please enter a subject");
+            }
         }
 
         if (!StringUtils.hasText((String) form.get(Messaging.CONTENT_PARAM))) {
@@ -65,10 +87,21 @@ public class SendMessageAction extends BaseAction {
         return errors.isEmpty();
     }
 
+    private Long getConversationId(DynaActionForm form) {
+        Long conversationId = null;
+
+        if (form.get(Messaging.CONVERSATION_ID_PARAM) != null
+                && ((Long) form.get(Messaging.CONVERSATION_ID_PARAM)) > 0) {
+            conversationId = ((Long) form.get(Messaging.CONVERSATION_ID_PARAM));
+        }
+
+        return conversationId;
+    }
+
     private User getRecipient(DynaActionForm form) {
         User user = null;
 
-        if (form.get(Messaging.RECIPIENT_ID_PARAM) != null || ((Long) form.get(Messaging.RECIPIENT_ID_PARAM)) > 0) {
+        if (form.get(Messaging.RECIPIENT_ID_PARAM) != null && ((Long) form.get(Messaging.RECIPIENT_ID_PARAM)) > 0) {
             user = getUserManager().get(((Long) form.get(Messaging.RECIPIENT_ID_PARAM)));
         }
 
