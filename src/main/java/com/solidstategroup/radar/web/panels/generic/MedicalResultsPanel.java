@@ -39,6 +39,8 @@ public class MedicalResultsPanel extends Panel {
             "Diastolic value must be less than or equal to systolic";
     public static final String MUST_BE_BETWEEN_0_AND_15000 = "Value must be between 0 - 15000";
     public static final String MUST_BE_BETWEEN_1_AND_3000 = "Value must be between 1 - 3000";
+    public static final String FORMAT_MUST_BE_NNN_DOT_NN = "Format must be nnn.nn";
+    public static final String FORMAT_MUST_BE_NNN_DOT_N = "Format must be nnn.n";
 
     @SpringBean
     private MedicalResultManager medicalResultManager;
@@ -105,12 +107,37 @@ public class MedicalResultsPanel extends Panel {
                     }
                 }
 
-                if (medicalResult.getWeight() != null && medicalResult.getWeightDate() == null) {
-                    get("weightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                if (medicalResult.getWeight() != null) {
+                    if (medicalResult.getWeightDate() == null) {
+                        get("weightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
+
+                    // format needs to be NNN.NN or NN.NN
+                    int weightStringLength = medicalResult.getWeight().toString().length();
+                    int indexOfDot = medicalResult.getWeight().toString().indexOf(".");
+
+                    if ((weightStringLength != 4 && weightStringLength != 5 && weightStringLength != 6) ||
+                            (weightStringLength == 6 && indexOfDot != 3) ||
+                            (weightStringLength == 5 && (indexOfDot != 2 && indexOfDot != 3)) ||
+                            (weightStringLength == 4 && indexOfDot != 2)) {
+                        get("weight").error(FORMAT_MUST_BE_NNN_DOT_NN);
+                    }
                 }
 
-                if (medicalResult.getHeight() != null && medicalResult.getHeightDate() == null) {
-                    get("heightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                if (medicalResult.getHeight() != null) {
+                    if (medicalResult.getHeightDate() == null) {
+                        get("heightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
+
+                    // format needs to be NNN.N or NN.N
+                    int heightStringLength = medicalResult.getHeight().toString().length();
+                    int indexOfDot = medicalResult.getHeight().toString().indexOf(".");
+
+                    if ((heightStringLength != 4 && heightStringLength != 5) ||
+                            (heightStringLength == 5 && indexOfDot != 3) ||
+                            (heightStringLength == 4 && indexOfDot != 2)) {
+                        get("height").error(FORMAT_MUST_BE_NNN_DOT_N);
+                    }
                 }
 
                 if (medicalResult.getBpSystolic() != null || medicalResult.getBpDiastolic() != null) {
