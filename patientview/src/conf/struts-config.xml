@@ -227,11 +227,30 @@
       <form-property name="makepublic" type="java.lang.String"/>
     </form-bean>
     <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>
+    <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
+      <form-property name="content" type="java.lang.String"/>
+      <form-property name="recipientId" type="java.lang.Long"/>
+    </form-bean>
+    <form-bean name="sharingThoughtsForm" type="org.apache.struts.action.DynaActionForm">
+      <form-property name="id"                      type="java.lang.Long"/>
+      <form-property name="positiveNegative"        type="java.lang.Integer"/>
+      <form-property name="patient"                 type="java.lang.Boolean"/>
+      <form-property name="principalCarer"          type="java.lang.Boolean"/>
+      <form-property name="relative"                type="java.lang.Boolean"/>
+      <form-property name="friend"                  type="java.lang.Boolean"/>
+      <form-property name="aboutMe"                 type="java.lang.Boolean"/>
+      <form-property name="aboutOther"              type="java.lang.Boolean"/>
+      <form-property name="anonymous"               type="java.lang.Boolean"/>
+      <form-property name="dateOfExperience"        type="java.lang.String"/>
+      <form-property name="location"                type="java.lang.String"/>
+      <form-property name="description"             type="java.lang.String"/>
+      <form-property name="suggestedAction"         type="java.lang.String"/>
+      <form-property name="concernReason"           type="java.lang.String"/>
+      <form-property name="likelihoodOfRecurrence"  type="java.lang.Integer"/>
+      <form-property name="howSerious"              type="java.lang.Integer"/>
+      <form-property name="isSubmitted"             type="java.lang.Boolean"/>
+    </form-bean>
 
-      <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
-          <form-property name="content" type="java.lang.String"/>
-          <form-property name="recipientId" type="java.lang.Long"/>
-      </form-bean>
   </form-beans>
     
   <!-- ========== Global Forward Definitions ============================== -->
@@ -537,7 +556,52 @@
       </action>
 
       <action path="/patient/sharingThoughts" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsHomeAction" parameter="sharing_thoughts">
-          <forward name="success" path="/patient/sharing_thoughts.jsp"/>
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts.jsp"/>
+      </action>
+
+      <action path="/patient/sharingThoughtsPositiveNegative" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsPositiveNegativeAction" parameter="sharing_thoughts">
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_positive_negative.jsp"/>
+      </action>
+
+      <action path="/patient/sharingThoughtsPositive" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsPositiveAction" parameter="sharing_thoughts"
+              name="sharingThoughtsForm">
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_positive_add.jsp"/>
+      </action>
+
+      <action path="/patient/sharingThoughtsNegative" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsNegativeAction" parameter="sharing_thoughts"
+              name="sharingThoughtsForm">
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_negative_add.jsp"/>
+      </action>
+
+      <action path="/patient/sharingThoughtSave" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsSaveAction" parameter="sharing_thoughts"
+              name="sharingThoughtsForm"
+              scope="request">
+          <forward name="input_positive" path="/patient/sharingthoughts/sharing_thoughts_positive_add.jsp"/>
+          <forward name="input_negative" path="/patient/sharingthoughts/sharing_thoughts_negative_add.jsp"/>
+          <forward name="savedraft" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
+          <forward name="submit" path="/patient/sharingthoughts/sharing_thoughts_thank_you.jsp"/>
+      </action>
+
+      <action path="/patient/sharingThoughtsEditThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsEditThoughtAction" parameter="sharing_thoughts"
+              name="sharingThoughtsForm">
+          <forward name="edit_positive" path="/patient/sharingthoughts/sharing_thoughts_positive_edit.jsp"/>
+          <forward name="edit_negative" path="/patient/sharingthoughts/sharing_thoughts_negative_edit.jsp"/>
+      </action>
+
+      <action path="/patient/sharingThoughtsDeleteThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsDeleteThoughtAction" parameter="sharing_thoughts"
+              name="sharingThoughtsForm">
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
+      </action>
+
+<!--
+      <action path="/patient/sharingThoughtsViewThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsViewThoughtAction" parameter="sharing_thoughts"
+              name="sharingThoughtsForm">
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_view.jsp"/>
+      </action>
+-->
+
+      <action path="/patient/sharingThoughtsUserList" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsUserListAction" parameter="sharing_thoughts">
+          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
       </action>
 
       <action path="/demo"

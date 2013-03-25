@@ -1,0 +1,302 @@
+package com.worthsoln.patientview.model;
+
+import com.worthsoln.ibd.Ibd;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.util.Date;
+
+@Entity(name = "pv_st_shared_thought")
+public class SharedThought extends BaseModel {
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "positive_negative", nullable = false)
+    private int positiveNegative;
+
+    @Column(name = "is_patient")
+    private Boolean isPatient;
+
+    @Column(name = "is_principal_carer")
+    private Boolean isPrincipalCarer;
+
+    @Column(name = "is_relative")
+    private Boolean isRelative;
+
+    @Column(name = "is_friend")
+    private Boolean isFriend;
+
+    @Column(name = "is_about_me")
+    private Boolean isAboutMe;
+
+    @Column(name = "is_about_other")
+    private Boolean isAboutOther;
+
+    @Column(name = "is_anonymous")
+    private Boolean isAnonymous;
+
+    @Column(name = "date_of_experience")
+    private Date dateOfExperience;
+
+    @Column
+    private String location;
+
+    @Column
+    private String description;
+
+    @Column(name = "suggested_action")
+    private String suggestedAction;
+
+    @Column(name = "concern_reason")
+    private String concernReason;
+
+    @Column(name = "likelihood_recurrence")
+    private int likelihoodOfRecurrence;
+
+    @Column(name = "how_serious")
+    private int howSerious;
+
+    @Column(name = "is_submitted")
+    private boolean isSubmitted;
+
+    // this will be set by manager
+    @Column(name = "date_last_saved")
+    private Date dateLastSaved;
+
+    public SharedThought() {
+    }
+
+    public SharedThought(User user, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
+                         Boolean isRelative,
+                         Boolean isFriend, Boolean isAboutMe, Boolean isAboutOther, Boolean isAnonymous,
+                         Date dateOfExperience, String location, String suggestedAction,
+                         String concernDescription, String concernReason, int likelihoodOfRecurrence, int howSerious,
+                         boolean isSubmitted) {
+        this.user = user;
+        this.positiveNegative = positiveNegative;
+        this.isPatient = isPatient;
+        this.isPrincipalCarer = isPrincipalCarer;
+        this.isRelative = isRelative;
+        this.isFriend = isFriend;
+        this.isAboutMe = isAboutMe;
+        this.isAboutOther = isAboutOther;
+        this.isAnonymous = isAnonymous;
+        this.dateOfExperience = dateOfExperience;
+        this.location = location;
+        this.suggestedAction = suggestedAction;
+        this.description = concernDescription;
+        this.concernReason = concernReason;
+        this.likelihoodOfRecurrence = likelihoodOfRecurrence;
+        this.howSerious = howSerious;
+        this.isSubmitted = isSubmitted;
+    }
+    public SharedThought(long id, User user, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
+                         Boolean isRelative,
+                         Boolean isFriend, Boolean isAboutMe, Boolean isAboutOther, Boolean isAnonymous,
+                         Date dateOfExperience, String location, String suggestedAction,
+                         String concernDescription, String concernReason, int likelihoodOfRecurrence, int howSerious,
+                         boolean isSubmitted) {
+        setId(id);
+        this.user = user;
+        this.positiveNegative = positiveNegative;
+        this.isPatient = isPatient;
+        this.isPrincipalCarer = isPrincipalCarer;
+        this.isRelative = isRelative;
+        this.isFriend = isFriend;
+        this.isAboutMe = isAboutMe;
+        this.isAboutOther = isAboutOther;
+        this.isAnonymous = isAnonymous;
+        this.dateOfExperience = dateOfExperience;
+        this.location = location;
+        this.suggestedAction = suggestedAction;
+        this.description = concernDescription;
+        this.concernReason = concernReason;
+        this.likelihoodOfRecurrence = likelihoodOfRecurrence;
+        this.howSerious = howSerious;
+        this.isSubmitted = isSubmitted;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getPositiveNegative() {
+        return positiveNegative;
+    }
+
+    public void setPositiveNegative(int positiveNegative) {
+        this.positiveNegative = positiveNegative;
+    }
+
+    public Boolean getPatient() {
+        return isPatient;
+    }
+
+    public void setPatient(Boolean patient) {
+        isPatient = patient;
+    }
+
+    public Boolean getPrincipalCarer() {
+        return isPrincipalCarer;
+    }
+
+    public void setPrincipalCarer(Boolean getPrincipalCarer) {
+        this.isPrincipalCarer = isPrincipalCarer;
+    }
+
+    public Boolean getRelative() {
+        return isRelative;
+    }
+
+    public void setRelative(Boolean getRelative) {
+        this.isRelative = isRelative;
+    }
+
+    public Boolean getFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(Boolean getFriend) {
+        this.isFriend = isFriend;
+    }
+
+    public Boolean getAboutMe() {
+        return isAboutMe;
+    }
+
+    public void setAboutMe(Boolean aboutMe) {
+        this.isAboutMe = aboutMe;
+    }
+
+    public Boolean getAboutOther() {
+        return isAboutOther;
+    }
+
+    public void setAboutOther(Boolean aboutOther) {
+        isAboutOther = aboutOther;
+    }
+
+    public Boolean getAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setAnonymous(Boolean anonymous) {
+        this.isAnonymous = anonymous;
+    }
+
+    public Date getDateOfExperience() {
+        return dateOfExperience;
+    }
+
+    public void setDateOfExperience(Date dateOfExperience) {
+        this.dateOfExperience = dateOfExperience;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getSuggestedAction() {
+        return suggestedAction;
+    }
+
+    public void setSuggestedAction(String suggestedAction) {
+        this.suggestedAction = suggestedAction;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getConcernReason() {
+        return concernReason;
+    }
+
+    public void setConcernReason(String concernReason) {
+        this.concernReason = concernReason;
+    }
+
+    public int getLikelihoodOfRecurrence() {
+        return likelihoodOfRecurrence;
+    }
+
+    public void setLikelihoodOfRecurrence(int likelihoodOfRecurrence) {
+        this.likelihoodOfRecurrence = likelihoodOfRecurrence;
+    }
+
+    public int getHowSerious() {
+        return howSerious;
+    }
+
+    public void setHowSerious(int howSerious) {
+        this.howSerious = howSerious;
+    }
+
+    public Boolean isSubmitted() {
+        return isSubmitted;
+    }
+
+    public void setSubmitted(boolean submitted) {
+        isSubmitted = submitted;
+    }
+
+    public Date getDateLastSaved() {
+        return dateLastSaved;
+    }
+
+    public void setDateLastSaved(Date dateLastSaved) {
+        this.dateLastSaved = dateLastSaved;
+    }
+
+    public String getDateLastSavedFormattedDate() {
+        return getDateFormattedDate(dateLastSaved);
+    }
+
+    public String getDateLastSavedFormattedDateTime() {
+        return getDateFormattedDateTime(dateLastSaved);
+    }
+
+    public String getDateOfExperienceFormattedDate() {
+        return getDateFormattedDate(dateOfExperience);
+    }
+
+    public String getDateOfExperienceFormattedDateTime() {
+        return getDateFormattedDateTime(dateOfExperience);
+    }
+
+    private String getDateFormattedDate(Date date) {
+        if (date != null) {
+            return Ibd.DATE_FORMAT.format(date);
+        }
+
+        return "";
+    }
+
+    private String getDateFormattedDateTime(Date date) {
+        if (date != null) {
+            return Ibd.DATE_TIME_FORMAT.format(date);
+        }
+
+        return "";
+    }
+
+    public String getDescriptionBeginning() {
+        return (description.length() >= 49) ? description.substring(0, 48) : description;
+    }
+}

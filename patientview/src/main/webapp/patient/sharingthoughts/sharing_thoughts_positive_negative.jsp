@@ -2,6 +2,6 @@
 
 <tiles:insert definition="patient.layout" flush="true" >
 
-    <tiles:put name="body" value="/body/patient/sharing_thoughts.jsp" />
+    <tiles:put name="body" value="/body/patient/sharingthoughts/sharing_thoughts_positive_negative.jsp" />
 
 </tiles:insert>

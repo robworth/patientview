@@ -3,18 +3,7 @@ package com.worthsoln.ibd.action;
 import com.worthsoln.ibd.Ibd;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.MyIbdSeverityLevel;
-import com.worthsoln.ibd.model.enums.BodyPartAffected;
-import com.worthsoln.ibd.model.enums.Complication;
-import com.worthsoln.ibd.model.enums.Confidence;
-import com.worthsoln.ibd.model.enums.Diagnosis;
-import com.worthsoln.ibd.model.enums.DiseaseExtent;
-import com.worthsoln.ibd.model.enums.FamilyHistory;
-import com.worthsoln.ibd.model.enums.Feeling;
-import com.worthsoln.ibd.model.enums.Importance;
-import com.worthsoln.ibd.model.enums.Severity;
-import com.worthsoln.ibd.model.enums.Smoking;
-import com.worthsoln.ibd.model.enums.Surgery;
-import com.worthsoln.ibd.model.enums.VaccinationRecord;
+import com.worthsoln.ibd.model.enums.*;
 import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsDaytime;
 import com.worthsoln.ibd.model.enums.colitis.NumberOfStoolsNighttime;
 import com.worthsoln.ibd.model.enums.colitis.PresentBlood;
@@ -33,6 +22,7 @@ import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.service.MessageManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.SecurityUserManager;
+import com.worthsoln.service.SharedThoughtManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
@@ -109,6 +99,7 @@ public class BaseAction extends ActionSupport {
     /**
      * When the actual edit form is submitted it should have an input field named submit set to true
      * This fnc checks for this and if its not present then the actual edit form has not been submitted
+     *
      * @param form DynaActionForm
      * @return boolean
      */
@@ -284,7 +275,7 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void addSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate,
-                                                     HttpServletRequest request) {
+                                        HttpServletRequest request) {
         SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
         List<Date> existingDates = new ArrayList<Date>();
 
@@ -359,6 +350,7 @@ public class BaseAction extends ActionSupport {
 
         if (dateString != null && dateString.length() > 0) {
             try {
+                Ibd.DATE_FORMAT.setLenient(false);
                 return Ibd.DATE_FORMAT.parse(dateString);
             } catch (Exception e) {
                 return null;
@@ -386,6 +378,10 @@ public class BaseAction extends ActionSupport {
 
     protected MessageManager getMessageManager() {
         return getWebApplicationContext().getBean(MessageManager.class);
+    }
+
+    protected SharedThoughtManager getSharedThoughtManager() {
+        return getWebApplicationContext().getBean(SharedThoughtManager.class);
     }
 
     protected UserManager getUserManager() {

@@ -141,6 +141,15 @@
         </property>
     </bean>
 
+    <bean id="setSharedThoughtManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSharedThoughtManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="sharedThoughtManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setSplashPageManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSplashPageManager"/>
         <property name="arguments">

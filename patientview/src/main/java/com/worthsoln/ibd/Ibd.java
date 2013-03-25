@@ -199,6 +199,7 @@ public class Ibd {
     public static final String DATE_REQUIRED = "date.required";
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     public static final SimpleDateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy");
 
     // areas to discuss types

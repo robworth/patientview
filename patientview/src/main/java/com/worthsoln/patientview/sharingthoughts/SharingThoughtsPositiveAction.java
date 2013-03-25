@@ -9,7 +9,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SharingThoughtsHomeAction extends BaseAction {
+public class SharingThoughtsPositiveAction extends BaseAction {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)

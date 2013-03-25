@@ -1,27 +1,6 @@
 package com.worthsoln.utils;
 
-import com.worthsoln.service.AboutmeManager;
-import com.worthsoln.service.CentreManager;
-import com.worthsoln.service.CommentManager;
-import com.worthsoln.service.DiagnosisManager;
-import com.worthsoln.service.DiagnosticManager;
-import com.worthsoln.service.EdtaCodeManager;
-import com.worthsoln.service.EmailManager;
-import com.worthsoln.service.EmailVerificationManager;
-import com.worthsoln.service.FeedbackManager;
-import com.worthsoln.service.LetterManager;
-import com.worthsoln.service.LogEntryManager;
-import com.worthsoln.service.MedicineManager;
-import com.worthsoln.service.MessageManager;
-import com.worthsoln.service.NewsManager;
-import com.worthsoln.service.PatientManager;
-import com.worthsoln.service.ResultHeadingManager;
-import com.worthsoln.service.SecurityUserManager;
-import com.worthsoln.service.SplashPageManager;
-import com.worthsoln.service.TestResultManager;
-import com.worthsoln.service.UKTransplantManager;
-import com.worthsoln.service.UnitManager;
-import com.worthsoln.service.UserManager;
+import com.worthsoln.service.*;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 
@@ -61,6 +40,8 @@ public class LegacySpringUtils {
     private static ResultHeadingManager resultHeadingManager;
 
     private static SecurityUserManager securityUserManager;
+
+    private static SharedThoughtManager sharedThoughtManager;
 
     private static SplashPageManager splashPageManager;
 
@@ -198,6 +179,14 @@ public class LegacySpringUtils {
 
     public static SecurityUserManager getSecurityUserManager() {
         return securityUserManager;
+    }
+
+    public static SharedThoughtManager getSharedThoughtManager() {
+        return sharedThoughtManager;
+    }
+
+    public static void setSharedThoughtManager(SharedThoughtManager sharedThoughtManager) {
+        LegacySpringUtils.sharedThoughtManager = sharedThoughtManager;
     }
 
     public static SplashPageManager getSplashPageManager() {

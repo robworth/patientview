@@ -23,9 +23,9 @@
 </ul>
 
 
-<p align="right"><a href="positive_negative_3.html">Add New Comment >></a></p>
+<p align="right"><html:link action="/patient/sharingThoughtsPositiveNegative">Add New Comment >></html:link></p>
 
-<p align="right"><a href="pending_2.html">Partially Completed Feedback</a></p>
+<p align="right"><html:link action="/patient/sharingThoughtsUserList">Partially Completed Feedback</html:link></p>
 
 <p align="right"><a href="summary_1a.html">Feedback Summary</a></p>
 
