@@ -3,6 +3,7 @@ package com.worthsoln.patientview.messaging;
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
@@ -69,7 +70,7 @@ public class ConversationsAction extends BaseAction {
                                 unit.getSpecialty());
 
                         for (User unitPatient : unitPatients) {
-                            if (StringUtils.hasText(unitPatient.getEmail())) {
+                            if (canIncludePatient(unitPatient)) {
                                 patientRecipients.add(unitPatient);
                             }
                         }
@@ -89,6 +90,17 @@ public class ConversationsAction extends BaseAction {
         }
 
         return mapping.findForward(SUCCESS);
+    }
+
+    /**
+     * exclude patients that have no got an email set
+     * exlude patients with '-gp' or 'dummy' in the name
+      */
+    private boolean canIncludePatient(User patient) {
+        return StringUtils.hasText(patient.getEmail())
+                && patient.getName() != null
+                && !patient.getName().toLowerCase().contains("-gp")
+                && !patient.getName().toLowerCase().contains("dummy");
     }
 
     private class UserComparator implements Comparator<User> {
