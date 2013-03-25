@@ -6,6 +6,7 @@ CREATE TABLE `conversation` (
   `started` datetime NOT NULL,
   `participant1_id` bigint(20) NOT NULL,
   `participant2_id` bigint(20) NOT NULL,
+  `subject` text NOT NULL,
   PRIMARY KEY (`id`)
 );
 
