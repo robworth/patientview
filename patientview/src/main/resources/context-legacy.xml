@@ -231,4 +231,13 @@
         </property>
     </bean>
 
+    <bean id="setJoinRequestManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setJoinRequestManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="joinRequestManager"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

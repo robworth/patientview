@@ -226,6 +226,17 @@
       <form-property name="anonymous" type="java.lang.String"/>
       <form-property name="makepublic" type="java.lang.String"/>
     </form-bean>
+
+      <form-bean name="joinForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+        <form-property name="firstName" type="java.lang.String"/>
+        <form-property name="lastName" type="java.lang.String"/>
+        <form-property name="dateOfBirth" type="java.lang.String"/>
+        <form-property name="nhsNo" type="java.lang.String"/>
+        <form-property name="unitcode" type="java.lang.String"/>
+        <form-property name="email" type="java.lang.String"/>
+        <form-property name="antiSpamAnswer" type="java.lang.String"/>
+      </form-bean>
+
     <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>
 
       <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
@@ -513,6 +524,21 @@
             >
       <forward name="success" path="/patient/feedback_for_unit.jsp"/>
     </action>
+
+    <action path="/joinSubmit"
+            type="com.worthsoln.patientview.join.JoinRequestSubmitAction"
+            name="joinForm"
+            scope="request">
+        <forward name="input" path="/join.jsp"/>
+      <forward name="success" path="/join-request-confirmation.jsp"/>
+    </action>
+
+      <action path="/join"
+              type="com.worthsoln.patientview.join.JoinRequestInputAction"
+              name="joinForm"
+              scope="request">
+        <forward name="success" path="/join.jsp"/>
+      </action>
 
       <action path="/patient/conversations"
               type="com.worthsoln.patientview.messaging.ConversationsAction"

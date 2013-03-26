@@ -80,6 +80,10 @@
         <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/forums/list.page">Forum</a></li>
     </logic:present>
     <%
+        } else {
+    %>
+        <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/join">Join</html:link></li>
+    <%
         }
     %>
 
