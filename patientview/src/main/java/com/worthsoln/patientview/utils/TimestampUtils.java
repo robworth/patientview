@@ -22,7 +22,7 @@ public class TimestampUtils {
         int month = Integer.parseInt(dateTimeString.substring(3, 5));
         int day = Integer.parseInt(dateTimeString.substring(0, 2));
 
-        datestamp.set(year, month - 1, day, 0, 0, 10);
+        datestamp.set(year, month - 1, day, 0, 0, 0);
 
         if (dateTimeString.length() == 16) {
             datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(11, 13)));
@@ -32,7 +32,7 @@ public class TimestampUtils {
             datestamp.set(Calendar.MINUTE, 0);
         }
 
-        datestamp.set(Calendar.SECOND, 10);
+        datestamp.set(Calendar.SECOND, 0);
         datestamp.set(Calendar.MILLISECOND, 0);
 
         return datestamp;
@@ -44,7 +44,7 @@ public class TimestampUtils {
         int month = Integer.parseInt(dateTimeString.substring(5, 7));
         int day = Integer.parseInt(dateTimeString.substring(8, 10));
 
-        datestamp.set(year, month - 1, day, 0, 0, 10);
+        datestamp.set(year, month - 1, day, 0, 0, 0);
 
         if (-1 != dateTimeString.indexOf("T")) {
             datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(11, 13)));
@@ -56,7 +56,7 @@ public class TimestampUtils {
         } else {
             datestamp.set(Calendar.HOUR_OF_DAY, 0);
             datestamp.set(Calendar.MINUTE, 0);
-            datestamp.set(Calendar.SECOND, 10);
+            datestamp.set(Calendar.SECOND, 0);
         }
 
         datestamp.set(Calendar.MILLISECOND, 0);
