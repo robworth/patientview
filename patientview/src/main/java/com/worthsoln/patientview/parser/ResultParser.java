@@ -11,6 +11,7 @@ import com.worthsoln.patientview.model.Diagnosis;
 import com.worthsoln.patientview.model.enums.DiagnosticType;
 import com.worthsoln.patientview.model.enums.NodeError;
 import com.worthsoln.patientview.utils.TimestampUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.slf4j.Logger;
@@ -155,9 +156,10 @@ public class ResultParser {
 
                                 /**
                                  * make sure the result doesn't have a future date. if it does not, make sure
-                                 *  result date is between daterange specified in the xml
+                                 *  result date is between date range specified in the xml
                                  */
-                                if (testResultDate.isAfterNow()) {
+                                if (testResultDate.isAfter(
+                                        LegacySpringUtils.getTimeManager().getCurrentDate().getTime())) {
                                     // add this test to corrupt tests list
                                     xmlImportException.getNodeList().add(
                                             new CorruptNode(testNode, NodeError.FUTURE_RESULT));
