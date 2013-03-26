@@ -8,7 +8,7 @@
 </div>
 
 <html:form action="/joinSubmit" styleClass="form-horizontal">
-    
+
     <html:errors/>
 
     <div class="control-group">
@@ -26,10 +26,17 @@
     <div class="control-group">
         <label class="control-label">Date of birth</label>
 
-        <div class="input-append date datePicker controls" data-date="<bean:write name="joinForm" property="dateOfBirth"/>">
-            <input name="dateOfBirth" class="span2" size="16" type="text" value="<bean:write name="joinForm" property="dateOfBirth"/>" readonly>
+        <div class="date datePicker controls" data-date="<bean:write name="joinForm" property="dateOfBirth"/>">
+            <input name="dateOfBirth" class="span2" size="16" type="text"
+                   value="<bean:write name="joinForm" property="dateOfBirth"/>" readonly>
             <span class="add-on"><i class="icon-th"></i></span>
         </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">NHS No</label>
+
+        <div class="controls"><html:text property="nhsNo"/></div>
     </div>
 
     <div class="control-group">
@@ -46,6 +53,14 @@
         <label class="control-label">Email address</label>
 
         <div class="controls"><html:text property="email"/></div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">Security Question</label>
+
+        <div class="controls"><%=request.getSession().getAttribute("antiSpamQuestion")%> = ?</div>
+
+        <div class="controls"><html:text property="antiSpamAnswer"/></div>
     </div>
 
     <div class="control-group">
