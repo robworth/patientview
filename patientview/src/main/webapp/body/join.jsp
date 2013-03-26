@@ -8,6 +8,8 @@
 </div>
 
 <html:form action="/joinSubmit" styleClass="form-horizontal">
+    
+    <html:errors/>
 
     <div class="control-group">
         <label class="control-label">First name</label>
