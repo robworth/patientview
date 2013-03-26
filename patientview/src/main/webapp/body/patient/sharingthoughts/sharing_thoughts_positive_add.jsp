@@ -57,12 +57,24 @@
     </tr>
 
     <tr >
-      <td>Date of experience (dd/mm/yyyy)</td>
-      <td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.DATE_OF_EXPERIENCE%>" size="50"/></td>
+      <td>Start date (dd/mm/yyyy)</td>
+      <td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.START_DATE%>" size="50"/></td>
     </tr>
 
     <tr >
-      <td>Location</td><td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.LOCATION%>"/></td>
+      <td>End date (dd/mm/yyyy)</td>
+      <td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.END_DATE%>" size="50"/></td>
+    </tr>
+
+    <tr >
+      <td width="300">Is this still going on?</td><td>
+          Yes: <html:radio property="<%=SharingThoughts.IS_ONGOING%>" value="true" name="sharingThoughtsForm"/>&nbsp;&nbsp;&nbsp;&nbsp;
+          No: <html:radio property="<%=SharingThoughts.IS_ONGOING%>" value="false" name="sharingThoughtsForm"/>&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+    </tr>
+
+    <tr >
+      <td>Where did this happen?</td><td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.LOCATION%>"/></td>
     </tr>
 
     <tr >

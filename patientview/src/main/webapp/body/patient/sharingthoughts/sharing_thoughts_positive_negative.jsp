@@ -11,9 +11,10 @@
     <h1>Type of comment</h1>
 </div>
 
+<br />
 
-<ul>
-    <li><p><font color="green">Do you want to share something <b>positive or good</b> about your care or the care of other patients?</font> &nbsp;&nbsp;&nbsp;&nbsp;<html:link action="/patient/sharingThoughtsPositive">Yes</html:link>
-    </p><br /><br />
-    <li><p><font color="red">Do you want to share a quality or safety <b>concern</b> about your care or the care of other patients?</font>&nbsp;&nbsp;&nbsp;&nbsp;<html:link action="/patient/sharingThoughtsNegative">Yes</html:link>
-</ul>
+<p align="center">
+    <html:link action="/patient/sharingThoughtsPositive"><html:submit value="Share positive comment" styleClass="btn btn-success formbutton" /></html:link>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <html:link action="/patient/sharingThoughtsNegative"><html:submit value="Share quality or safety concern" styleClass="btn btn-danger formbutton" /></html:link>
+</p>

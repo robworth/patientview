@@ -58,26 +58,38 @@
         </tr>
 
         <tr >
-            <td>Date of experience (dd-mm-yyyy)</td>
-            <td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.DATE_OF_EXPERIENCE%>" size="50"/></td>
+            <td>Start date (dd/mm/yyyy)</td>
+            <td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.START_DATE%>" size="50"/></td>
         </tr>
 
         <tr >
-            <td>Location</td><td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.LOCATION%>"/></td>
+            <td>End date (dd/mm/yyyy)</td>
+            <td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.END_DATE%>" size="50"/></td>
         </tr>
 
         <tr >
-            <td width="300">Please describe your concern or experience</td>
+            <td width="300">Is this still going on?</td><td>
+            Yes: <html:radio property="<%=SharingThoughts.IS_ONGOING%>" value="true" name="sharingThoughtsForm"/>&nbsp;&nbsp;&nbsp;&nbsp;
+            No: <html:radio property="<%=SharingThoughts.IS_ONGOING%>" value="false" name="sharingThoughtsForm"/>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        </tr>
+
+        <tr >
+            <td>Where did this happen?</td><td><html:text name="sharingThoughtsForm" property="<%=SharingThoughts.LOCATION%>"/></td>
+        </tr>
+
+        <tr >
+            <td width="300">Please tell us what happened</td>
             <td><html:textarea property="<%=SharingThoughts.DESCRIPTION%>" name="sharingThoughtsForm" rows="10" cols="500" /></td>
         </tr>
 
         <tr >
-            <td width="300">Why do you feel this was a 'quality and safety concern' for you?</td>
+            <td width="300">Why do you feel this was a concern for you?</td>
             <td><html:textarea property="<%=SharingThoughts.CONCERN_REASON%>" name="sharingThoughtsForm" rows="10" cols="500" /></td>
         </tr>
 
         <tr>
-          <td width="300">Do you think it is likely to happen again?</td><td>
+          <td width="300">Do you think this happened before?</td><td>
             Definitely yes: <html:radio property="<%=SharingThoughts.LIKELIHOOD_0F_RECURRENCE%>" name="sharingThoughtsForm" value="1" />&nbsp;&nbsp;&nbsp;&nbsp;
             Probably yes: <html:radio property="<%=SharingThoughts.LIKELIHOOD_0F_RECURRENCE%>" name="sharingThoughtsForm" value="2" />&nbsp;&nbsp;&nbsp;&nbsp;
             Probably not:  <html:radio property="<%=SharingThoughts.LIKELIHOOD_0F_RECURRENCE%>" name="sharingThoughtsForm" value="3" />&nbsp;&nbsp;&nbsp;&nbsp;
@@ -92,12 +104,12 @@
         </tr>
 
         <tr>
-            <td width="300">On a scale of 1-5, how serious do you think your 'quality and safety concern' was?</td><td>
-            Not serious&nbsp;&nbsp;1:<html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="1" />&nbsp;&nbsp;
+            <td width="300">On a scale of 1-5, how serious do you think your concern was?</td><td>
+            Less serious&nbsp;&nbsp;1:<html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="1" />&nbsp;&nbsp;
             2: <html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="2" />&nbsp;&nbsp;
             3:  <html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="3" />&nbsp;&nbsp;
             4: <html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="4" />&nbsp;&nbsp;
-            5: <html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="5" />&nbsp;&nbsp;Extremely serious
+            5: <html:radio property="<%=SharingThoughts.HOW_SERIOUS%>" name="sharingThoughtsForm" value="5" />&nbsp;&nbsp;More serious
         </td>
         </tr>
         <tr >

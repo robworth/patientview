@@ -39,8 +39,14 @@ public class SharedThought extends BaseModel {
     @Column(name = "is_anonymous")
     private Boolean isAnonymous;
 
-    @Column(name = "date_of_experience")
-    private Date dateOfExperience;
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
+
+    @Column(name = "is_ongoing")
+    private Boolean isOngoing;
 
     @Column
     private String location;
@@ -73,7 +79,7 @@ public class SharedThought extends BaseModel {
     public SharedThought(User user, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
                          Boolean isRelative,
                          Boolean isFriend, Boolean isAboutMe, Boolean isAboutOther, Boolean isAnonymous,
-                         Date dateOfExperience, String location, String suggestedAction,
+                         Date startDate, Date endDate, Boolean isOngoing, String location, String suggestedAction,
                          String concernDescription, String concernReason, int likelihoodOfRecurrence, int howSerious,
                          boolean isSubmitted) {
         this.user = user;
@@ -85,7 +91,9 @@ public class SharedThought extends BaseModel {
         this.isAboutMe = isAboutMe;
         this.isAboutOther = isAboutOther;
         this.isAnonymous = isAnonymous;
-        this.dateOfExperience = dateOfExperience;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isOngoing = isOngoing;
         this.location = location;
         this.suggestedAction = suggestedAction;
         this.description = concernDescription;
@@ -97,8 +105,8 @@ public class SharedThought extends BaseModel {
     public SharedThought(long id, User user, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
                          Boolean isRelative,
                          Boolean isFriend, Boolean isAboutMe, Boolean isAboutOther, Boolean isAnonymous,
-                         Date dateOfExperience, String location, String suggestedAction,
-                         String concernDescription, String concernReason, int likelihoodOfRecurrence, int howSerious,
+                         Date startDate, Date endDate, Boolean isOngoing, String location, String suggestedAction,
+                         String description, String concernReason, int likelihoodOfRecurrence, int howSerious,
                          boolean isSubmitted) {
         setId(id);
         this.user = user;
@@ -110,10 +118,12 @@ public class SharedThought extends BaseModel {
         this.isAboutMe = isAboutMe;
         this.isAboutOther = isAboutOther;
         this.isAnonymous = isAnonymous;
-        this.dateOfExperience = dateOfExperience;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isOngoing = isOngoing;
         this.location = location;
         this.suggestedAction = suggestedAction;
-        this.description = concernDescription;
+        this.description = description;
         this.concernReason = concernReason;
         this.likelihoodOfRecurrence = likelihoodOfRecurrence;
         this.howSerious = howSerious;
@@ -192,12 +202,28 @@ public class SharedThought extends BaseModel {
         this.isAnonymous = anonymous;
     }
 
-    public Date getDateOfExperience() {
-        return dateOfExperience;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDateOfExperience(Date dateOfExperience) {
-        this.dateOfExperience = dateOfExperience;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean getOngoing() {
+        return isOngoing;
+    }
+
+    public void setOngoing(Boolean ongoing) {
+        isOngoing = ongoing;
     }
 
     public String getLocation() {
@@ -272,12 +298,20 @@ public class SharedThought extends BaseModel {
         return getDateFormattedDateTime(dateLastSaved);
     }
 
-    public String getDateOfExperienceFormattedDate() {
-        return getDateFormattedDate(dateOfExperience);
+    public String getStartDateFormattedDate() {
+        return getDateFormattedDate(startDate);
     }
 
-    public String getDateOfExperienceFormattedDateTime() {
-        return getDateFormattedDateTime(dateOfExperience);
+    public String getStartDateFormattedDateTime() {
+        return getDateFormattedDateTime(startDate);
+    }
+
+    public String getEndDateFormattedDate() {
+        return getDateFormattedDate(endDate);
+    }
+
+    public String getEndDateFormattedDateTime() {
+        return getDateFormattedDateTime(endDate);
     }
 
     private String getDateFormattedDate(Date date) {

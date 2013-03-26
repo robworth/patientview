@@ -102,9 +102,21 @@ public class SharingThoughtsSaveAction extends BaseAction {
         } catch (Exception ignored) {
         }
 
-        Date dateOfExperience = null;
+        Date startDate = null;
         try {
-            dateOfExperience = convertFormDateString(SharingThoughts.DATE_OF_EXPERIENCE, dynaForm);
+            startDate = convertFormDateString(SharingThoughts.START_DATE, dynaForm);
+        } catch (Exception ignored) {
+        }
+
+        Date endDate = null;
+        try {
+            endDate = convertFormDateString(SharingThoughts.END_DATE, dynaForm);
+        } catch (Exception ignored) {
+        }
+
+        Boolean isOngoing = null;
+        try {
+            isOngoing = (Boolean) dynaForm.get(SharingThoughts.IS_ONGOING);
         } catch (Exception ignored) {
         }
 
@@ -144,18 +156,14 @@ public class SharingThoughtsSaveAction extends BaseAction {
         } catch (Exception ignored) {
         }
 
-        SharedThought thought;
-        if (thoughtId == null) {
-            thought = new SharedThought(user, positiveNegative, isPatient, isPrincipalCarer, isRelative,
-                    isFriend, isAboutMe, isAboutOther, isAnonymous, dateOfExperience, location, description,
-                    suggestedAction,
-                    concernReason, likelihoodOfRecurrence, howSerious, isSubmitted);
-        } else {
-            thought = new SharedThought(thoughtId, user, positiveNegative, isPatient, isPrincipalCarer, isRelative,
-                    isFriend, isAboutMe, isAboutOther, isAnonymous, dateOfExperience, location, description,
-                    suggestedAction,
-                    concernReason, likelihoodOfRecurrence, howSerious, isSubmitted);
+        SharedThought thought = new SharedThought(user, positiveNegative, isPatient, isPrincipalCarer, isRelative,
+                isFriend, isAboutMe, isAboutOther, isAnonymous, startDate, endDate, isOngoing, location,
+                suggestedAction, description, concernReason, likelihoodOfRecurrence, howSerious, isSubmitted);
+
+        if (thoughtId != null) {
+            thought.setId(thoughtId);
         }
+
         getSharedThoughtManager().save(thought);
 
         if (!isSubmitted) {
@@ -167,6 +175,38 @@ public class SharingThoughtsSaveAction extends BaseAction {
     }
 
     private boolean validatePositiveThought(DynaActionForm form) {
+        boolean isValid = true;
+
+        isValid = validatePositiveOrNegativeThought(form);
+
+        return isValid;
+    }
+
+    private boolean validateNegativeThought(DynaActionForm form) {
+        boolean isValid = true;
+
+        isValid = validatePositiveOrNegativeThought(form);
+
+        if ((null == form.get(SharingThoughts.CONCERN_REASON)) || "".equals(form.get(SharingThoughts.CONCERN_REASON)
+        )) {
+            errors.add("Please explain the reason");
+            isValid = false;
+        }
+
+        if (null == form.get(SharingThoughts.LIKELIHOOD_0F_RECURRENCE)) {
+            errors.add("Please show how likely this is to happen again");
+            isValid = false;
+        }
+
+        if (null == form.get(SharingThoughts.HOW_SERIOUS)) {
+            errors.add("Please tell us how serious this is");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private boolean validatePositiveOrNegativeThought(DynaActionForm form) {
         boolean isValid = true;
 
         if (null == form.get(SharingThoughts.IS_PATIENT)) {
@@ -191,10 +231,21 @@ public class SharingThoughtsSaveAction extends BaseAction {
             isValid = false;
         }
 
-        if (null == form.get(SharingThoughts.DATE_OF_EXPERIENCE) ||
-                "".equals(form.get(SharingThoughts.DATE_OF_EXPERIENCE)) ||
-                null == convertFormDateString(SharingThoughts.DATE_OF_EXPERIENCE, form)) {
-            errors.add("Please enter a valid date");
+        if (null == form.get(SharingThoughts.START_DATE) ||
+                "".equals(form.get(SharingThoughts.START_DATE)) ||
+                null == convertFormDateString(SharingThoughts.START_DATE, form)) {
+            errors.add("Please enter a valid start date");
+            isValid = false;
+        }
+
+        if (null != form.get(SharingThoughts.END_DATE) && !"".equals(form.get(SharingThoughts.END_DATE)) &&
+                null == convertFormDateString(SharingThoughts.END_DATE, form)) {
+            errors.add("Please enter a valid end date");
+            isValid = false;
+        }
+
+        if (null == form.get(SharingThoughts.IS_ONGOING)) {
+            errors.add("Please show whether this is still going on");
             isValid = false;
         }
 
@@ -211,74 +262,6 @@ public class SharingThoughtsSaveAction extends BaseAction {
         if ((null == form.get(SharingThoughts.SUGGESTED_ACTION)) || "".equals(form.get(SharingThoughts
                 .SUGGESTED_ACTION))) {
             errors.add("Please tell us what can be done");
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    private boolean validateNegativeThought(DynaActionForm form) {
-        boolean isValid = true;
-
-        if (null == form.get(SharingThoughts.IS_PATIENT)) {
-            errors.add("Please tell us if you are the patient");
-            isValid = false;
-        }
-
-        if (null != form.get(SharingThoughts.IS_PATIENT) && !(Boolean) form.get(SharingThoughts.IS_PATIENT) &&
-                null == form.get(SharingThoughts.IS_PRINCIPAL_CARER) && null == form.get(SharingThoughts.IS_RELATIVE)
-                && null == form.get(SharingThoughts.IS_FRIEND)) {
-            errors.add("If you are not the patient, please indicate who you are");
-            isValid = false;
-        }
-
-        if (null == form.get(SharingThoughts.IS_ABOUT_ME) && null == form.get(SharingThoughts.IS_ABOUT_OTHER)) {
-            errors.add("Please indicate who this is about");
-            isValid = false;
-        }
-
-        if (null == form.get(SharingThoughts.IS_ANONYMOUS)) {
-            errors.add("Please show whether you wish to remain anonymous");
-            isValid = false;
-        }
-
-        if (null == form.get(SharingThoughts.DATE_OF_EXPERIENCE) ||
-                "".equals(form.get(SharingThoughts.DATE_OF_EXPERIENCE)) ||
-                null == convertFormDateString(SharingThoughts.DATE_OF_EXPERIENCE, form)) {
-            errors.add("Please enter a valid date");
-            isValid = false;
-        }
-
-        if ((null == form.get(SharingThoughts.LOCATION)) || "".equals(form.get(SharingThoughts.LOCATION))) {
-            errors.add("Please enter a location");
-            isValid = false;
-        }
-
-        if (null == form.get(SharingThoughts.DESCRIPTION) ||
-                "".equals(form.get(SharingThoughts.DESCRIPTION))) {
-            errors.add("Please describe your experience or concern");
-            isValid = false;
-        }
-
-        if ((null == form.get(SharingThoughts.CONCERN_REASON)) || "".equals(form.get(SharingThoughts.CONCERN_REASON)
-        )) {
-            errors.add("Please explain the reason");
-            isValid = false;
-        }
-
-        if (null == form.get(SharingThoughts.LIKELIHOOD_0F_RECURRENCE)) {
-            errors.add("Please show how likely this is to happen again");
-            isValid = false;
-        }
-
-        if ((null == form.get(SharingThoughts.SUGGESTED_ACTION)) || "".equals(form.get(SharingThoughts
-                .SUGGESTED_ACTION))) {
-            errors.add("Please tell us what can be done");
-            isValid = false;
-        }
-
-        if (null == form.get(SharingThoughts.HOW_SERIOUS)) {
-            errors.add("Please tell us how serious this is");
             isValid = false;
         }
 

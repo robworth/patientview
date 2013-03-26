@@ -19,9 +19,13 @@ public class SharingThoughts {
     public static final String IS_ABOUT_ME = "aboutMe";
     public static final String IS_ABOUT_OTHER = "aboutOther";
     public static final String IS_ANONYMOUS = "anonymous";
-    public static final String DATE_OF_EXPERIENCE = "dateOfExperience";
-    public static final String DATE_OF_EXPERIENCE_FORMATTED_DATE = "dateOfExperienceFormattedDate";
-    public static final String DATE_OF_EXPERIENCE_FORMATTED_DATE_TIME = "dateOfExperienceFormattedDateTime";
+    public static final String START_DATE = "startDate";
+    public static final String START_DATE_FORMATTED_DATE = "startDateFormattedDate";
+    public static final String START_DATE_FORMATTED_DATE_TIME = "startDateFormattedDateTime";
+    public static final String END_DATE = "endDate";
+    public static final String END_DATE_FORMATTED_DATE = "endDateFormattedDate";
+    public static final String END_DATE_FORMATTED_DATE_TIME = "endDateFormattedDateTime";
+    public static final String IS_ONGOING = "ongoing";
     public static final String LOCATION = "location";
     public static final String DESCRIPTION = "description";
     public static final String DESCRIPTION_BEGINNING = "descriptionBeginning";

@@ -57,15 +57,27 @@
       </td>
     </tr>
 
-    <bean:define id="dateOfExperience" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="dateOfExperienceFormattedDate" />
-
+    <bean:define id="startDate" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="startDateExperienceFormattedDate" />
     <tr >
-      <td>Date of experience (dd-mm-yyyy)</td>
-      <td><input type="text" name="<%=SharingThoughts.DATE_OF_EXPERIENCE%>" value="<bean:write name='<%=SharingThoughts.THOUGHT_PARAM%>' property='<%=SharingThoughts.DATE_OF_EXPERIENCE_FORMATTED_DATE%>' />" size="50"  /></td>
+      <td>Start date (dd-mm-yyyy)</td>
+      <td><input type="text" name="<%=SharingThoughts.START_DATE%>" value="<bean:write name='<%=SharingThoughts.THOUGHT_PARAM%>' property='<%=SharingThoughts.START_DATE_FORMATTED_DATE%>' />" size="50"  /></td>
+    </tr>
+
+    <bean:define id="endDate" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="endDateExperienceFormattedDate" />
+    <tr >
+      <td>End date (dd-mm-yyyy)</td>
+      <td><input type="text" name="<%=SharingThoughts.END_DATE%>" value="<bean:write name='<%=SharingThoughts.THOUGHT_PARAM%>' property='<%=SharingThoughts.END_DATE_FORMATTED_DATE%>' />" size="50"  /></td>
     </tr>
 
     <tr >
-      <td>Location</td><td><html:text name="<%=SharingThoughts.THOUGHT_PARAM%>" property="<%=SharingThoughts.LOCATION%>"/></td>
+      <td width="300">Is this still going on?</td><td>
+          Yes: <html:radio property="<%=SharingThoughts.IS_ONGOING%>" value="true" name="<%=SharingThoughts.THOUGHT_PARAM%>"/>&nbsp;&nbsp;&nbsp;&nbsp;
+          No: <html:radio property="<%=SharingThoughts.IS_ONGOING%>" value="false" name="<%=SharingThoughts.THOUGHT_PARAM%>"/>&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+    </tr>
+
+    <tr >
+      <td>Where did this happen?</td><td><html:text name="<%=SharingThoughts.THOUGHT_PARAM%>" property="<%=SharingThoughts.LOCATION%>"/></td>
     </tr>
 
     <tr >

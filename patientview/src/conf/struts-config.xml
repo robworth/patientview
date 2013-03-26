@@ -241,7 +241,9 @@
       <form-property name="aboutMe"                 type="java.lang.Boolean"/>
       <form-property name="aboutOther"              type="java.lang.Boolean"/>
       <form-property name="anonymous"               type="java.lang.Boolean"/>
-      <form-property name="dateOfExperience"        type="java.lang.String"/>
+      <form-property name="startDate"               type="java.lang.String"/>
+      <form-property name="endDate"                 type="java.lang.String"/>
+      <form-property name="ongoing"                 type="java.lang.Boolean"/>
       <form-property name="location"                type="java.lang.String"/>
       <form-property name="description"             type="java.lang.String"/>
       <form-property name="suggestedAction"         type="java.lang.String"/>
@@ -582,10 +584,10 @@
           <forward name="submit" path="/patient/sharingthoughts/sharing_thoughts_thank_you.jsp"/>
       </action>
 
-      <action path="/patient/sharingThoughtsEditThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsEditThoughtAction" parameter="sharing_thoughts"
+      <action path="/patient/sharingThoughtsEditThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsRetrieveThoughtAction" parameter="sharing_thoughts"
               name="sharingThoughtsForm">
-          <forward name="edit_positive" path="/patient/sharingthoughts/sharing_thoughts_positive_edit.jsp"/>
-          <forward name="edit_negative" path="/patient/sharingthoughts/sharing_thoughts_negative_edit.jsp"/>
+          <forward name="positive" path="/patient/sharingthoughts/sharing_thoughts_positive_edit.jsp"/>
+          <forward name="negative" path="/patient/sharingthoughts/sharing_thoughts_negative_edit.jsp"/>
       </action>
 
       <action path="/patient/sharingThoughtsDeleteThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsDeleteThoughtAction" parameter="sharing_thoughts"
@@ -594,9 +596,10 @@
       </action>
 
 
-      <action path="/patient/sharingThoughtsViewThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsViewThoughtAction" parameter="sharing_thoughts"
+      <action path="/patient/sharingThoughtsViewThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsRetrieveThoughtAction" parameter="sharing_thoughts"
               name="sharingThoughtsForm">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_view.jsp"/>
+          <forward name="positive" path="/patient/sharingthoughts/sharing_thoughts_view_thought.jsp"/>
+          <forward name="negative" path="/patient/sharingthoughts/sharing_thoughts_view_thought.jsp"/>
       </action>
 
 

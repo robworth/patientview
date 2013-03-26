@@ -10,7 +10,7 @@ import org.apache.struts.action.DynaActionForm;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SharingThoughtsEditThoughtAction extends BaseAction {
+public class SharingThoughtsRetrieveThoughtAction extends BaseAction {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -23,9 +23,9 @@ public class SharingThoughtsEditThoughtAction extends BaseAction {
         request.setAttribute(SharingThoughts.THOUGHT_PARAM, thought);
 
         if (thought.getPositiveNegative() == 1) {
-            return mapping.findForward("edit_positive");
+            return mapping.findForward("positive");
         } else {
-            return mapping.findForward("edit_negative");
+            return mapping.findForward("negative");
         }
     }
 }
