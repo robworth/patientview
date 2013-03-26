@@ -8,6 +8,7 @@ import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -128,8 +129,7 @@ public class JoinRequestSubmitAction extends BaseAction {
             actionErrors.add("dateOfBirth", new ActionMessage("dateOfBirth.required"));
         }
 
-        if (form.get("nhsNo") != null) {
-
+        if (StringUtils.isNotEmpty((String) form.get("nhsNo"))) {
             try {
                 if (!UserUtils.nhsNumberChecksumValid((String) form.get("nhsNo"))) {
                     actionErrors.add("nhsNo", new ActionMessage("nhsno.checksum"));
