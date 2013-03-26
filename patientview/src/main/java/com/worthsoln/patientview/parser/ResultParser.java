@@ -143,6 +143,14 @@ public class ResultParser {
                             parseDatestamp(testResult, resultDataNode);
 
                             if (testResult.getDatestamped() != null) {
+
+                                /**
+                                 *  Warning: for comparison below to work the test results need to all be created
+                                 *  in the same way as  TimestampUtils.createTimestamp method because this adds
+                                 *  10 secs to the calendar.
+                                 */
+                                testResult.getDatestamped().set(Calendar.SECOND, 10);
+
                                 DateTime testResultDate = new DateTime(testResult.getDatestamped());
 
                                 /**
