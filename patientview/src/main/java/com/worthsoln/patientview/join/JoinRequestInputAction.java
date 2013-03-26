@@ -1,5 +1,6 @@
 package com.worthsoln.patientview.join;
 
+import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -20,6 +21,8 @@ public class JoinRequestInputAction extends Action {
 
         List<Unit> units = LegacySpringUtils.getUnitManager().getAllDisregardingSpeciality(false);
         request.setAttribute("units", units);
+
+        request.getSession().setAttribute("antiSpamQuestion", ActionUtils.getAntiSpamQuestion(request));
 
         return LogonUtils.logonChecks(mapping, request);
     }

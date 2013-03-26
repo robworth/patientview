@@ -12,20 +12,6 @@
         </constant>
     </global>
     <formset>
-        <!--<form name="/join">-->
-            <!--<field property="firstName" depends="required">-->
-                <!--<msg key="join.firstName.required" name="required"/>-->
-            <!--</field>-->
-            <!--<field property="lastName" depends="required">-->
-                <!--<msg key="join.lastName.required" name="required"/>-->
-            <!--</field>-->
-            <!--<field property="dateOfBirth" depends="required">-->
-                <!--<msg key="join.dateOfBirth.required" name="required"/>-->
-            <!--</field>-->
-            <!--<field property="email" depends="required">-->
-                <!--<msg key="join.email.required" name="required"/>-->
-            <!--</field>-->
-        <!--</form>-->
         <form name="/patient/passwordChange">
             <field property="oldpassword" depends="required">
                 <msg key="oldpassword.required" name="required"/>
