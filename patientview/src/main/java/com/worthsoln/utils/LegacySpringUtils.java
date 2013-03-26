@@ -19,6 +19,7 @@ import com.worthsoln.service.ResultHeadingManager;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.SplashPageManager;
 import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.TimeManager;
 import com.worthsoln.service.UKTransplantManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
@@ -67,6 +68,8 @@ public class LegacySpringUtils {
     private static SpringApplicationContextBean springApplicationContextBean;
 
     private static TestResultManager testResultManager;
+
+    private static TimeManager timeManager;
 
     private static UKTransplantManager ukTransplantManager;
 
@@ -226,6 +229,14 @@ public class LegacySpringUtils {
 
     public static void setTestResultManager(TestResultManager testResultManager) {
         LegacySpringUtils.testResultManager = testResultManager;
+    }
+
+    public static TimeManager getTimeManager() {
+        return timeManager;
+    }
+
+    public static void setTimeManager(TimeManager timeManager) {
+        LegacySpringUtils.timeManager = timeManager;
     }
 
     public static void setUkTransplantManager(UKTransplantManager ukTransplantManager) {

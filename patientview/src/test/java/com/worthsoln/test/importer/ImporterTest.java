@@ -20,12 +20,14 @@ import com.worthsoln.service.LogEntryManager;
 import com.worthsoln.service.MedicineManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.TimeManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import com.worthsoln.test.helpers.impl.TestableResultsUpdater;
 import com.worthsoln.test.service.BaseServiceTest;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
@@ -33,6 +35,8 @@ import org.springframework.mock.web.MockHttpSession;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -258,6 +262,44 @@ public class ImporterTest extends BaseServiceTest {
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results with valid dates including edge cases.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultWithValidDates() throws IOException {
+
+        /**
+         *  Fix the current date to always be the same.
+         *
+         *  Note: this only overrides the behaviour of the timeManager reference used by LegacySpringUtils
+         *  If you need to change application wide, add a new implementation to the text-context.xml
+          */
+        LegacySpringUtils.setTimeManager(new TimeManager() {
+            @Override
+            public Date getCurrentDate() {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2013, Calendar.MARCH, 29, 11, 23, 0);
+                return calendar.getTime();
+            }
+        });
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithValidDates_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FOLLOWUP);
     }
 
     /**
