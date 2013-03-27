@@ -35,7 +35,7 @@ public class TestResultManagerImpl implements TestResultManager {
 
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel) {
-        return testResultDao.getTestResultForPatient(user.getUsername(), panel, unitManager.getUsersUnits(user));
+        return testResultDao.getTestResultForPatient(user.getUsername(), panel, null);
     }
 
     @Override
