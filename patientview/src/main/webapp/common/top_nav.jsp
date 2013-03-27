@@ -82,7 +82,7 @@
     <%
         } else {
     %>
-        <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/join">Join</html:link></li>
+        <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/join">I Want To Join</html:link></li>
     <%
         }
     %>

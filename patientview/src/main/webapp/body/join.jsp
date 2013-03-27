@@ -28,22 +28,23 @@
 
         <div class="date datePicker controls" data-date="<bean:write name="joinForm" property="dateOfBirth"/>">
             <input name="dateOfBirth" class="span2" size="16" type="text"
-                   value="<bean:write name="joinForm" property="dateOfBirth"/>" readonly>
+                   value="<bean:write name="joinForm" property="dateOfBirth"/>">
             <span class="add-on"><i class="icon-th"></i></span>
         </div>
     </div>
 
     <div class="control-group">
-        <label class="control-label">NHS No</label>
+        <label class="control-label">NHS Number</label>
 
         <div class="controls"><html:text property="nhsNo"/></div>
     </div>
 
     <div class="control-group">
-        <label class="control-label">Unit code</label>
+        <label class="control-label">Unit</label>
 
         <div class="controls">
             <html:select property="unitcode">
+                <option value="-1" selected="selected">-- Select your unit --</option>
                 <html:options collection="units" property="unitcode" labelProperty="name"/>
             </html:select>
         </div>
