@@ -25,13 +25,14 @@ public interface UnitDao {
 
     List<Unit> getAll(boolean sortByName, Specialty specialty);
 
+    List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
+
     List<Unit> getUnitsWithUser(Specialty specialty);
 
     List<Unit> get(List<String> usersUnitCodes, Specialty specialty);
 
     List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
                    Specialty specialty);
-
 
     List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
 

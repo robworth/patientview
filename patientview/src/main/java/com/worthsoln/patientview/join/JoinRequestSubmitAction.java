@@ -139,6 +139,11 @@ public class JoinRequestSubmitAction extends BaseAction {
             }
         }
 
+        if (form.get("unitcode") == null || ((String) form.get("unitcode")).length() == 0 ||
+                ((String) form.get("unitcode")).equals("-1")) {
+            actionErrors.add("unitcode", new ActionMessage("unitcode.required"));
+        }
+
         if (form.get("email") == null || ((String) form.get("email")).length() == 0) {
             actionErrors.add("email", new ActionMessage("email.required"));
         } else if (((String) form.get("email")).indexOf("@") < 0 || ((String) form.get("email")).indexOf(".") < 0) {

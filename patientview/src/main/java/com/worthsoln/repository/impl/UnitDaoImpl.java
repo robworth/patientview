@@ -89,6 +89,29 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
+    public List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
+        Root<Unit> from = criteria.from(Unit.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        if (sourceTypesToInclude != null && sourceTypesToInclude.length > 0) {
+            wherePredicates.add(from.get(Unit_.sourceType).in(sourceTypesToInclude));
+        }
+
+        if (sourceTypesToExclude != null) {
+            for (String notSourceType : sourceTypesToExclude) {
+                wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), notSourceType));
+            }
+        }
+
+        buildWhereClause(criteria, wherePredicates);
+        criteria.orderBy(builder.asc(from.get(Unit_.name)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
     public List<Unit> getUnitsWithUser(Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -98,7 +121,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
         wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
-            
+
         if (specialty != null) {
             wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         }
@@ -186,7 +209,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         query.setParameter("specialtyId", specialty.getId());
         query.setParameter("unitcode", unitcode);
 
-        List<User> users =  query.getResultList();
+        List<User> users = query.getResultList();
 
         List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
 
