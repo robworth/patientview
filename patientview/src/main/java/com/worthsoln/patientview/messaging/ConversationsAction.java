@@ -2,7 +2,6 @@ package com.worthsoln.patientview.messaging;
 
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
@@ -33,82 +32,42 @@ public class ConversationsAction extends BaseAction {
         } else {
             List<Unit> units = getUnitManager().getLoggedInUsersUnits();
 
-            List<User> unitAdminRecipients = new ArrayList<User>();
-            List<User> unitStaffRecipients = new ArrayList<User>();
-            List<User> patientRecipients = new ArrayList<User>();
-
-            // patients and unit staff/admin get addresses for unit admin and staff
-            // unit staff and admin also get patients
-            for (Unit unit : units) {
-                if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
-                    List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
-
-                    for (UnitAdmin unitAdmin : unitAdmins) {
-                        User unitUser = getUserManager().get(unitAdmin.getUsername());
-
-                        if (StringUtils.hasText(unitUser.getEmail())) {
-                            if (!unitUser.equals(user)) {
-                                if (unitAdmin.getRole().equals("unitadmin")) {
-                                    unitAdminRecipients.add(unitUser);
-                                } else if (unitAdmin.getRole().equals("unitstaff")) {
-                                    unitStaffRecipients.add(unitUser);
-                                }
-                            }
-                        }
+            // if its a super admin then they get the unit list to filter what users they need
+            // other users just get the available ones for their units
+            if (getSecurityUserManager().isRolePresent("superadmin")) {
+                // sort units alpha
+                Collections.sort(units, new Comparator<Unit>() {
+                    @Override
+                    public int compare(Unit o1, Unit o2) {
+                        return o1.getName().compareTo(o2.getName());
                     }
-                }
-            }
+                });
 
-            if (getSecurityUserManager().isRolePresent("unitadmin")
-                    || getSecurityUserManager().isRolePresent("unitstaff")
-                    || getSecurityUserManager().isRolePresent("superadmin")) {
-                for (Unit unit : units) {
-                    if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
-                        List<User> unitPatients = getUnitManager().getUnitPatientUsers(unit.getUnitcode(),
-                                unit.getSpecialty());
-
-                        for (User unitPatient : unitPatients) {
-                            if (canIncludePatient(unitPatient)) {
-                                patientRecipients.add(unitPatient);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // order the recipients by name
-            Collections.sort(unitAdminRecipients, new UserComparator());
-            Collections.sort(unitStaffRecipients, new UserComparator());
-            Collections.sort(patientRecipients, new UserComparator());
-
-            if (unitAdminRecipients.isEmpty() && unitStaffRecipients.isEmpty() && patientRecipients.isEmpty()) {
-                request.setAttribute(Messaging.NO_RECIPIENTS_PARAM, true);
+                request.setAttribute(Messaging.UNITS_PARAM, units);
             } else {
-                request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
-                request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
-                request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
-                request.setAttribute(Messaging.PATIENT_RECIPIENTS_PARAM, patientRecipients);
+                // patients and unit staff/admin get addresses for unit admin and staff
+                List<User> unitAdminRecipients = getMessageManager().getUnitAdminRecipients(units, user);
+                List<User> unitStaffRecipients = getMessageManager().getUnitStaffRecipients(units, user);
+                List<User> unitPatientRecipients = new ArrayList<User>();
+
+                // unit staff and admin also get patients
+                if (getSecurityUserManager().isRolePresent("unitadmin")
+                        || getSecurityUserManager().isRolePresent("unitstaff")) {
+                    unitPatientRecipients = getMessageManager().getUnitPatientRecipients(units, user);
+                }
+
+                if (unitAdminRecipients.isEmpty() && unitStaffRecipients.isEmpty() && unitPatientRecipients.isEmpty()) {
+                    request.setAttribute(Messaging.NO_RECIPIENTS_PARAM, true);
+                } else {
+                    request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
+                    request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
+                    request.setAttribute(Messaging.UNIT_PATIENT_RECIPIENTS_PARAM, unitPatientRecipients);
+                }
             }
         }
+
+        request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
 
         return mapping.findForward(SUCCESS);
-    }
-
-    /**
-     * exclude patients that have no got an email set
-     * exlude patients with '-gp' or 'dummy' in the name
-      */
-    private boolean canIncludePatient(User patient) {
-        return StringUtils.hasText(patient.getEmail())
-                && patient.getName() != null
-                && !patient.getName().toLowerCase().contains("-gp")
-                && !patient.isDummypatient();
-    }
-
-    private class UserComparator implements Comparator<User> {
-        @Override
-        public int compare(User o1, User o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
     }
 }
