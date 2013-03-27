@@ -5,10 +5,20 @@ messages.init = function() {
 
     // loop through any message forms on set submit
     $('.js-message-form').each(function(index, el) {
-        $(el).submit(function(e) {
+        var $form = $(el),
+            unitCodeEl = $form.find('.js-message-unit-code');
+
+        $form.submit(function(e) {
             e.preventDefault();
             messages.sendMessage(el);
-        })
+        });
+
+        // if there was a unit code el add a change event
+        if (unitCodeEl.length > 0) {
+            unitCodeEl.change(function() {
+                messages.getRecipientsByUnit($form);
+            });
+        }
     });
 
     // set up the modal view
@@ -32,6 +42,42 @@ messages.getMessageHtml = function(message) {
              '  <h4 class="author">' + message.sender.name + ' <span class="label label-inverse pull-right date">' + message.friendlyDate + '</span></h4>' +
              '  <div class="content dull">' + message.content + '</div>' +
              '</article>');
+};
+
+messages.getRecipientsByUnit = function(form) {
+    var $form = $(form),
+        unitCodeEl = $form.find('.js-message-unit-code'),
+        recipientContainer = $form.find('.js-recipient-container'),
+        recipientIdEl = $form.find('.js-message-recipient-id'),
+        loadingEl = $form.find('.js-message-unit-loading'),
+        errorsEl = $form.find('.js-message-unit-recipient-errors');
+
+    errorsEl.html('').hide();
+    recipientContainer.hide();
+    recipientIdEl.html('');
+
+    if (messages.validateString(unitCodeEl.val())) {
+        loadingEl.show();
+
+        $.ajax({
+            url: '/unit-recipients.do?unitCode=' + unitCodeEl.val(),
+            success: function(html) {
+                recipientIdEl.html(html);
+
+                if (recipientIdEl.children().length <= 1) {
+                    errorsEl.html('No recipients found in unit').show();
+                } else {
+                    recipientContainer.show();
+                }
+
+                loadingEl.hide();
+            },
+            error: function() {
+                errorsEl.html('Error retrieving recipients for unit').show();
+                loadingEl.hide();
+            }
+        });
+    }
 };
 
 messages.sendMessage = function(form) {

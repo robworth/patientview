@@ -1,12 +1,16 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.UnitManager;
+import com.worthsoln.service.UserManager;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -36,6 +41,12 @@ public class MessageManagerImpl implements MessageManager {
 
     @Inject
     private EmailManager emailManager;
+
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
+    private UserManager userManager;
 
     @Override
     public Conversation getConversation(Long conversationId) {
@@ -168,6 +179,140 @@ public class MessageManagerImpl implements MessageManager {
         }
     }
 
+    @Override
+    public List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser) {
+        List<User> unitAdminRecipients = new ArrayList<User>();
+
+        if (units != null) {
+            for (Unit unit : units) {
+                unitAdminRecipients.addAll(getUnitAdminRecipients(unit,  requestingUser));
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitAdminRecipients, new UserComparator());
+
+        return unitAdminRecipients;
+    }
+
+    @Override
+    public List<User> getUnitAdminRecipients(Unit unit, User requestingUser) {
+        List<User> unitAdminRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            unitAdminRecipients = getUnitAdminOrStaffRecipients("unitadmin", unit, requestingUser);
+        }
+
+        // sort by name
+        Collections.sort(unitAdminRecipients, new UserComparator());
+
+        return unitAdminRecipients;
+    }
+
+    @Override
+    public List<User> getUnitStaffRecipients(List<Unit> units, User requestingUser) {
+        List<User> unitStaffRecipients = new ArrayList<User>();
+
+        if (units != null) {
+            for (Unit unit : units) {
+                unitStaffRecipients.addAll(getUnitStaffRecipients(unit, requestingUser));
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitStaffRecipients, new UserComparator());
+
+        return unitStaffRecipients;
+    }
+
+    @Override
+    public List<User> getUnitStaffRecipients(Unit unit, User requestingUser) {
+        List<User> unitStaffRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            unitStaffRecipients = getUnitAdminOrStaffRecipients("unitstaff", unit, requestingUser);
+        }
+
+        // sort by name
+        Collections.sort(unitStaffRecipients, new UserComparator());
+
+        return unitStaffRecipients;
+    }
+
+    @Override
+    public List<User> getUnitPatientRecipients(List<Unit> units, User requestingUser) {
+        List<User> unitPatientRecipients = new ArrayList<User>();
+
+        if (units != null) {
+            for (Unit unit : units) {
+                unitPatientRecipients.addAll(getUnitPatientRecipients(unit, requestingUser));
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitPatientRecipients, new UserComparator());
+
+        return unitPatientRecipients;
+    }
+
+    @Override
+    public List<User> getUnitPatientRecipients(Unit unit, User requestingUser) {
+        List<User> unitPatientRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                List<User> unitPatients = unitManager.getUnitPatientUsers(unit.getUnitcode(),
+                        unit.getSpecialty());
+
+                for (User unitPatient : unitPatients) {
+                    if (canIncludePatient(unitPatient)) {
+                        unitPatientRecipients.add(unitPatient);
+                    }
+                }
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitPatientRecipients, new UserComparator());
+
+        return unitPatientRecipients;
+    }
+
+    private List<User> getUnitAdminOrStaffRecipients(String adminOrStaff, Unit unit, User requestingUser) {
+        List<User> unitAdminRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                List<UnitAdmin> unitAdmins = unitManager.getUnitUsers(unit.getUnitcode());
+
+                for (UnitAdmin unitAdmin : unitAdmins) {
+                    User unitUser = userManager.get(unitAdmin.getUsername());
+
+                    if (StringUtils.hasText(unitUser.getEmail())) {
+                        if (!unitUser.equals(requestingUser)) {
+                            if (unitAdmin.getRole().equals(adminOrStaff)) {
+                                unitAdminRecipients.add(unitUser);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return unitAdminRecipients;
+    }
+
+    /**
+     * exclude patients that have no got an email set
+     * exlude patients with '-gp' or 'dummy' in the name
+     */
+    private boolean canIncludePatient(User patient) {
+        return StringUtils.hasText(patient.getEmail())
+                && patient.getName() != null
+                && !patient.getName().toLowerCase().contains("-gp")
+                && !patient.isDummypatient();
+    }
+
     private Message sendMessage(Conversation conversation, User sender, User recipient, String content) {
         // save message before sending as they will still see it if the emails fails after
         Message message = new Message();
@@ -241,6 +386,13 @@ public class MessageManagerImpl implements MessageManager {
             return conversation.getParticipant2();
         } else {
             return conversation.getParticipant1();
+        }
+    }
+
+    private class UserComparator implements Comparator<User> {
+        @Override
+        public int compare(User o1, User o2) {
+            return o1.getName().compareTo(o2.getName());
         }
     }
 }

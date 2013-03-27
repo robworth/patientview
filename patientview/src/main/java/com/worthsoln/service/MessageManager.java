@@ -2,6 +2,7 @@ package com.worthsoln.service;
 
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 
 import java.util.List;
@@ -34,4 +35,16 @@ public interface MessageManager {
     int getTotalNumberUnreadMessages(Long recipientId);
 
     void markMessagesAsReadForConversation(Long recipientId, Long conversationId);
+
+    List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser);
+
+    List<User> getUnitAdminRecipients(Unit unit, User requestingUser);
+
+    List<User> getUnitStaffRecipients(List<Unit> units, User requestingUser);
+
+    List<User> getUnitStaffRecipients(Unit unit, User requestingUser);
+
+    List<User> getUnitPatientRecipients(List<Unit> units, User requestingUser);
+
+    List<User> getUnitPatientRecipients(Unit unit, User requestingUser);
 }
