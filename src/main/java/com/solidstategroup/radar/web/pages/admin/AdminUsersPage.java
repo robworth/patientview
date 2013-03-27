@@ -5,7 +5,6 @@ import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.service.UserManager;
-import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.components.ClearLink;
 import com.solidstategroup.radar.web.components.SearchDateField;
 import com.solidstategroup.radar.web.components.SearchField;
@@ -109,23 +108,7 @@ public class AdminUsersPage extends AdminsBasePage {
                 SearchDateField.DATABASE_DATE_PATTERN));
         item.add(new Label("GMC", user.getGmc()));
 
-        String username;
-        try {
-            username = TripleDes.decrypt(user.getUsernameHash());
-        } catch (Exception e) {
-            username = "";
-        }
-
-        item.add(new Label("username", username));
-
-        String password;
-        try {
-            password = TripleDes.decrypt(user.getPasswordHash());
-        } catch (Exception e) {
-            password = "";
-        }
-
-        item.add(new Label("password", password));
+        item.add(new Label("username", user.getUsername()));
     }
 
     /**

@@ -8,7 +8,6 @@ import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.service.ExportManager;
 import com.solidstategroup.radar.service.UserManager;
-import com.solidstategroup.radar.util.TripleDes;
 import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.components.SortLink;
 import com.solidstategroup.radar.web.dataproviders.PatientUserDataProvider;
@@ -109,15 +108,6 @@ public class AdminPatientsPage extends AdminsBasePage {
 
         item.add(new Label("dateRegistered", dateRegistered));
         item.add(new Label("username", patientUser.getUsername()));
-
-        String password;
-        try {
-            password = TripleDes.decrypt(patientUser.getPasswordHash());
-        } catch (Exception e) {
-            password = "";
-        }
-
-        item.add(new Label("password", password));
 
         AjaxLink deleteLink = new AjaxLink("deleteLink") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {

@@ -10,6 +10,7 @@ import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
 import org.springframework.security.core.AuthenticationException;
 
 import java.util.Date;
@@ -43,6 +44,8 @@ public interface UserManager {
     ProfessionalUser getProfessionalUser(Long id);
 
     ProfessionalUser getProfessionalUser(String email);
+
+    User getSuperUser(String email);
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 

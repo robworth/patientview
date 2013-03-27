@@ -124,4 +124,6 @@
     <bean id="excelDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.ExcelDocumentDataBuilder"/>
     <bean id="pdfDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.PdfDocumentDataBuilder"/>
 
+    <bean id="userUpgradeManager" class="com.solidstategroup.radar.util.impl.RadarRpvSingleUserTableExport"/>
+
 </beans>

@@ -6,7 +6,7 @@ public class ProfessionalUserFilter extends BaseFilter {
         FORENAME("uForename"),
         TITLE("uTitle"),
         ROLE("uRole"),
-        EMAIL("uEmail"),
+        EMAIL("email"),
         CENTRE("cName"),
         REGISTRATION_DATE("uDateJoin"),
         GMC("uGMC");

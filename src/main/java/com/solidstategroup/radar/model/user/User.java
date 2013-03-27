@@ -1,7 +1,7 @@
 package com.solidstategroup.radar.model.user;
 
 import com.solidstategroup.radar.model.BaseModel;
-import com.solidstategroup.radar.util.TripleDes;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +16,27 @@ public abstract class User extends BaseModel implements UserDetails {
     public static final String ROLE_PROFESSIONAL = "ROLE_PROFESSIONAL";
     public static final String ROLE_PATIENT = "ROLE_PATIENT";
     public static final String ROLE_SUPER_USER = "ROLE_SUPER_USER";
-    // super users are hardcoded by id in the previous implementation
-    protected static final long[] SUPER_USER_IDS = {28, 15};
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-    private String username, password;
+    private Long userId;
+    private String username, password, email;
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
-    private byte[] passwordHash, usernameHash;
 
     public abstract String getSecurityRole();
+
+    public abstract String getName();
+
+    public boolean hasValidUserId() {
+        return userId != null && userId > 0;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getPassword() {
         return password;
@@ -34,12 +46,16 @@ public abstract class User extends BaseModel implements UserDetails {
         this.password = password;
     }
 
-    public static byte[] getPasswordHash(String password) throws Exception {
-        return TripleDes.encrypt(password);
+    public String getEmail() {
+        return email;
     }
 
-    public static byte[] getUsernameHash(String username) throws Exception {
-        return TripleDes.encrypt(username);
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public static String getPasswordHash(String password) throws Exception {
+        return DigestUtils.sha256Hex(password);
     }
 
     public Collection<GrantedAuthority> getAuthorities() {
@@ -76,22 +92,5 @@ public abstract class User extends BaseModel implements UserDetails {
 
     public void setDateRegistered(Date dateRegistered) {
         this.dateRegistered = dateRegistered;
-    }
-
-    public byte[] getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(byte[] passwordHash) {
-        // Copy array
-        this.passwordHash = Arrays.copyOf(passwordHash, passwordHash.length);
-    }
-
-    public byte[] getUsernameHash() {
-        return usernameHash;
-    }
-
-    public void setUsernameHash(byte[] usernameHash) {
-        this.usernameHash = Arrays.copyOf(usernameHash, usernameHash.length);
     }
 }

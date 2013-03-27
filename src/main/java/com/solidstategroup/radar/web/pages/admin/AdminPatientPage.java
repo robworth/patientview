@@ -4,7 +4,6 @@ import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.UserManager;
-import com.solidstategroup.radar.util.TripleDes;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -59,16 +58,6 @@ public class AdminPatientPage extends AdminsBasePage {
         userForm.add(new Label("forename", demographics.getForename()));
         userForm.add(new Label("surname", demographics.getSurname()));
         userForm.add(new RequiredTextField("username"));
-
-        // the password is encrypted in the property passwordhash so unenctypt and set the password prop
-        // so the model can automatically map it to the textfield
-        try {
-            patientUser.setPassword(TripleDes.decrypt(patientUser.getPasswordHash()));
-        } catch (Exception e) {
-            // dunno
-        }
-
-        userForm.add(new RequiredTextField("password"));
         userForm.add(new Label("dob", patientUser.getDateOfBirth().toString()));
         userForm.add(new Label("dateRegistered", patientUser.getDateRegistered().toString()));
 

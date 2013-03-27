@@ -5,12 +5,21 @@ import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
 
 import java.util.List;
 
 public interface UserDao {
 
+    public<T extends User> T getUser(String email);
+
     AdminUser getAdminUser(String email);
+
+    AdminUser getAdminUser(Long id);
+
+    List<AdminUser> getAdminUsers();
+
+    void saveAdminUser(AdminUser adminUser) throws Exception;
 
     PatientUser getPatientUser(Long id);
 
@@ -25,6 +34,8 @@ public interface UserDao {
     ProfessionalUser getProfessionalUser(Long id);
 
     ProfessionalUser getProfessionalUser(String email);
+
+    User getSuperUser(String email);
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 

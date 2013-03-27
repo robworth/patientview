@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.pages.login;
 
 import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.RadarRequiredPasswordTextField;
@@ -49,7 +50,12 @@ public class ProfessionalsLoginPage extends BasePage {
                 RadarSecuredSession session = RadarSecuredSession.get();
                 ProfessionalUser user = getModelObject();
                 boolean loginFailed = false;
-                ProfessionalUser professionalUser = userManager.getProfessionalUser(user.getEmail());
+
+                User professionalUser = userManager.getProfessionalUser(user.getEmail());
+                // Warning: super admins login via this page too
+                if (professionalUser == null) {
+                    professionalUser = userManager.getSuperUser(user.getEmail());
+                }
                 if (professionalUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                         session.setUser(professionalUser);

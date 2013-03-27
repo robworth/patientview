@@ -136,10 +136,6 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </testResource>
-            <!--Add this so we can build the database each time for the tests-->
-            <testResource>
-                <directory>src/main/sql</directory>
-            </testResource>
         </testResources>
 
         <plugins>
@@ -346,6 +342,18 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ostermiller</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.07.00</version>
         </dependency>
 
         <!--Velocity-->
