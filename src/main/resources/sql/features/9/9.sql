@@ -1,8 +1,9 @@
 /**
       Patch: PV and Radar single user table
-
-      NOT FULLY TESTED ON DEV YET
  */
+
+ -- this should have been done ages ago
+alter table user drop column role;
 
 CREATE TABLE `rdr_user_mapping` (
   `userId` bigint(20) NOT NULL,
@@ -16,6 +17,7 @@ CREATE TABLE `rdr_user_mapping` (
 ONLY DO THIS AFTER YOU HAVE RUN THE EXPORT FILE TO MAP THESE FIELDS INTO RPV
 */
 ALTER TABLE `tbl_adminusers`
+  DROP COLUMN `uName`,
   DROP COLUMN `uEmail`,
   DROP COLUMN `uPass`,
   DROP COLUMN `uUserName`;
