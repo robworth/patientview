@@ -45,7 +45,6 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
                 "AND user.username = usermapping.username " +
                 "AND usermapping.nhsno = testresult.nhsno " +
                 "AND testresult.testcode = result_heading.headingcode " +
-                "AND testresult.unitcode = unit.unitcode " +
                 "AND result_heading.panel = ? ";
 
         List<Object> params = new ArrayList<Object>();
