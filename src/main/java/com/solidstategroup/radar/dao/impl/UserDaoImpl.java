@@ -51,7 +51,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     // admin user fields
     private static final String ADMIN_USER_ID_FIELD_NAME = "uID";
-    private static final String ADMIN_USER_NAME_FIELD_NAME = "uName";
 
     // patient table fields
     private static final String PATIENT_USER_ID_FIELD_NAME = "pId";
@@ -94,8 +93,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                         USER_MAPPING_RADAR_USER_ID_FIELD_NAME);
 
         adminUsersInsert = new SimpleJdbcInsert(dataSource).withTableName(ADMIN_USER_TABLE_NAME)
-                .usingGeneratedKeyColumns(ADMIN_USER_ID_FIELD_NAME)
-                .usingColumns(ADMIN_USER_NAME_FIELD_NAME);
+                .usingGeneratedKeyColumns(ADMIN_USER_ID_FIELD_NAME);
 
         professionalUsersInsert = new SimpleJdbcInsert(dataSource).withTableName(PROFESSIONAL_USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(PROFESSIONAL_USER_ID_FIELD_NAME)
@@ -168,7 +166,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         // save details of the user into the radar tables
         Map<String, Object> adminUserMap = new HashMap<String, Object>() {
             {
-                put(ADMIN_USER_NAME_FIELD_NAME, adminUser.getName());
                 put(ADMIN_USER_ID_FIELD_NAME, adminUser.getId());
             }
         };
@@ -240,7 +237,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         // normal sql query without any filter options
         sqlQueries.add(buildSelectFromStatement(USER_TABLE_NAME, USER_MAPPING_TABLE_NAME,
-                PROFESSIONAL_USER_TABLE_NAME, "tbl_Centres") +
+                PROFESSIONAL_USER_TABLE_NAME, "unit") +
                 " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME
                 + " = '" + User.ROLE_PROFESSIONAL + "'" + " " +
                 " AND " + PROFESSIONAL_USER_TABLE_NAME + "." + PROFESSIONAL_USER_ID_FIELD_NAME
@@ -248,7 +245,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 " AND " + USER_TABLE_NAME + "." + ID_FIELD_NAME
                 + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME +
                 " AND " + PROFESSIONAL_USER_TABLE_NAME + "." + PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME
-                + " = tbl_Centres.cID"
+                + " = unit.id"
         );
 
         // if there are search queries then build the where
@@ -417,6 +414,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         user.setUsername(resultSet.getString(USER_USERNAME_FIELD_NAME));
         user.setPassword(resultSet.getString(USER_PASSWORD_FIELD_NAME));
         user.setEmail(resultSet.getString(USER_EMAIL_FIELD_NAME));
+        user.setName(resultSet.getString(USER_NAME_FIELD_NAME));
         return user;
     }
 
@@ -587,7 +585,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         public AdminUser mapRow(ResultSet resultSet, int i) throws SQLException {
             AdminUser adminUser = (AdminUser) mapUserObject(resultSet, new AdminUser());
             adminUser.setId(resultSet.getLong(ADMIN_USER_ID_FIELD_NAME));
-            adminUser.setName(resultSet.getString(ADMIN_USER_NAME_FIELD_NAME));
             return adminUser;
         }
     }

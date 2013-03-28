@@ -1413,27 +1413,6 @@
             <null/>
         </row>
     </table>
-    <table name="tbl_AdminUsers">
-        <column>uID</column>
-        <column>uName</column>
-        <column>uEmail</column>
-        <column>uPass</column>
-        <column>uUserName</column>
-        <row>
-            <value>1</value>
-            <value><![CDATA[Ian Haynes]]></value>
-            <value>ihaynes@data-insite.co.uk</value>
-            <value>XSYK1k/XXV4=</value>
-            <value>XQEmnSFYmwjzeCWJYvTRYdfhtn4eFWVLOjp/CiawzHI=</value>
-        </row>
-        <row>
-            <value>2</value>
-            <value><![CDATA[Fiona Braddon]]></value>
-            <value>renalreg@renalreg.com</value>
-            <value>q8pr2+C7p/Cq2YMTMT2ueQ==</value>
-            <value>FHZr2+BqCCZ5yCag5/zjTYOxY/0dm0gq</value>
-        </row>
-    </table>
      <table name="tbl_Clin_Pres">
         <column>cID</column>
         <column>CLIN_PRES</column>
@@ -14179,38 +14158,6 @@ AFAFHDAH]]></value>
             <value>0</value>
         </row>
     </table>
-    <table name="tbl_Patient_Users">
-        <column>pID</column>
-        <column>RADAR_NO</column>
-        <column>pUserName</column>
-        <column>pPassWord</column>
-        <column>pDOB</column>
-        <column>pDateReg</column>
-        <row>
-            <value>1</value>
-            <value>246</value>
-            <value>ihaynes@data-insite.co.uk</value>
-            <value>1F9nWQJ7F1WZgCUJxzeBrA==</value>
-            <value><![CDATA[2006-06-06 00:00:00.0]]></value>
-            <null/>
-        </row>
-        <row>
-            <value>2</value>
-            <value>250</value>
-            <value>f.braddon@gmail.com</value>
-            <value>lj8ePYwIrqvzgiwmeYA7Zw==</value>
-            <value><![CDATA[2007-02-04 00:00:00.0]]></value>
-            <value><![CDATA[2010-02-22 12:12:06.407]]></value>
-        </row>
-        <row>
-            <value>3</value>
-            <value>236</value>
-            <value>hughjm@hotmail.com</value>
-            <value>Sa3TBL3Tdc7BcySR1/eYeQ==</value>
-            <value><![CDATA[2006-01-09 00:00:00.0]]></value>
-            <value><![CDATA[2010-02-25 11:28:38.437]]></value>
-        </row>
-    </table>
     <table name="tbl_PD_MODALITY">
         <column>pdID</column>
         <column>pdType</column>
@@ -19020,118 +18967,6 @@ AFAFHDAH]]></value>
             <value><![CDATA[2009-12-01 00:00:00.0]]></value>
             <value><![CDATA[2009-12-02 00:00:00.0]]></value>
             <null/>
-        </row>
-    </table>
-    <table name="tbl_Users">
-        <column>uID</column>
-        <column>uSurname</column>
-        <column>uForename</column>
-        <column>uTitle</column>
-        <column>uGMC</column>
-        <column>uRole</column>
-        <column>uEmail</column>
-        <column>uPhone</column>
-        <column>uCentre</column>
-        <column>uDateJoin</column>
-        <column>uPass</column>
-        <column>uUserName</column>
-        <row>
-            <value>7</value>
-            <value>Haynes</value>
-            <value>Ian</value>
-            <value>Mr</value>
-            <null/>
-            <value>Tester</value>
-            <value>ihaynes@nhs.net</value>
-            <null/>
-            <value>1</value>
-            <value><![CDATA[2009-03-18 16:52:00.0]]></value>
-            <value>sJPnTdPgYJQ=</value>
-            <value>XQEmnSFYmwi6kJ4oCwYnKg==</value>
-        </row>
-        <row>
-            <value>15</value>
-            <value>McCarthy</value>
-            <value>Hugh</value>
-            <value>Dr</value>
-            <null/>
-            <value><![CDATA[Clinical Research Fellow]]></value>
-            <value>hugh.mccarthy@UHBristol.nhs.uk</value>
-            <null/>
-            <value>3</value>
-            <value><![CDATA[2009-09-22 16:53:00.0]]></value>
-            <value>ROdP8rgON+sj8wge66+oVA==</value>
-            <value>3xW2iCMFBNAsmN6lgV/JZHj84pHikm9bkZZY/Ao8ZSk=</value>
-        </row>
-        <row>
-            <value>16</value>
-            <value>Saleem</value>
-            <value>Moin</value>
-            <value>Professor</value>
-            <null/>
-            <value><![CDATA[Principle Investigator]]></value>
-            <value>moin.saleem@UHbristol.nhs.uk</value>
-            <null/>
-            <value>3</value>
-            <value><![CDATA[2009-09-22 17:07:00.0]]></value>
-            <value>6dUiOJYa8dQ=</value>
-            <value>Im6VE2coB4pjCoE4jhOetUOx1mKYe2bRg6EyrzJM93U=</value>
-        </row>
-        <row>
-            <value>28</value>
-            <value>Braddon</value>
-            <value>Fiona</value>
-            <value>Mrs</value>
-            <null/>
-            <value>DBA</value>
-            <value>fiona.braddon@nhs.net</value>
-            <null/>
-            <value>14</value>
-            <value><![CDATA[2009-10-16 00:00:00.0]]></value>
-            <value>4+PQhaJo+bAAgvk6NA2UZA==</value>
-            <value>es1mdog5kQoHzQJyHIyu9XpUCqWPW0dg</value>
-        </row>
-        <row>
-            <value>37</value>
-            <value>Little</value>
-            <value>Mark</value>
-            <value>Dr</value>
-            <value>4659958</value>
-            <value><![CDATA[Senior Lecturer]]></value>
-            <value>marklittle@nhs.net</value>
-            <value>07740724113</value>
-            <value>1</value>
-            <value><![CDATA[2010-06-12 12:40:00.0]]></value>
-            <value>vF0NA5ZG+kRiWNGeIJHpUg==</value>
-            <value>YE4CfGsDmhpZb88RkX7zePeYGsS2UUAq</value>
-        </row>
-        <row>
-            <value>39</value>
-            <value>Adio</value>
-            <value>Abidemi</value>
-            <value>Mr</value>
-            <value>45872369</value>
-            <value><![CDATA[IT Support]]></value>
-            <value>abidemi.adio@nhs.net</value>
-            <value>01173238209</value>
-            <value>14</value>
-            <value><![CDATA[2010-10-26 16:19:00.0]]></value>
-            <value>7fulcyF4MuyKUcSpOs34aw==</value>
-            <value>Pyk3IeOHb1f5TRzirmk40GMz0WxpDAu9</value>
-        </row>
-        <row>
-            <value>40</value>
-            <value>Chatterjee</value>
-            <value>Anwar</value>
-            <value>Dr</value>
-            <null/>
-            <value><![CDATA[Consultant Paediatric Nephrologist]]></value>
-            <value>admin@data-insite.co.uk</value>
-            <value><![CDATA[01256 77 06 34]]></value>
-            <value>56</value>
-            <value><![CDATA[2011-02-28 16:11:00.0]]></value>
-            <value>maTbxtLmnPGnBBV8lPjLTQ==</value>
-            <value>EAQbTh2+iJR0KpwGWAxBRyHgBogRJgbL</value>
         </row>
     </table>
     <table name="rdr_prd_code">

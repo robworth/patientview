@@ -12,11 +12,6 @@ public class PatientUser extends User {
         return User.ROLE_PATIENT;
     }
 
-    @Override
-    public String getName() {
-        return null;
-    }
-
     public Long getRadarNumber() {
         return radarNumber;
     }

@@ -20,11 +20,12 @@ public abstract class User extends BaseModel implements UserDetails {
 
     private Long userId;
     private String username, password, email;
+
+    // todo this date should probably be in the PatientUser
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
+    private String name;
 
     public abstract String getSecurityRole();
-
-    public abstract String getName();
 
     public boolean hasValidUserId() {
         return userId != null && userId > 0;
@@ -92,5 +93,13 @@ public abstract class User extends BaseModel implements UserDetails {
 
     public void setDateRegistered(Date dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

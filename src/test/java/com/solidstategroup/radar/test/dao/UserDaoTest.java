@@ -126,6 +126,8 @@ public class UserDaoTest extends BaseDaoTest {
         // Construct the user
         PatientUser patientUser = new PatientUser();
         patientUser.setUsername("test_user");
+        patientUser.setEmail("test_user@test.com");
+        patientUser.setName("Test Name");
         patientUser.setRadarNumber(123);
         patientUser.setDateOfBirth(new Date());
         patientUser.setPassword(User.getPasswordHash("password12"));
@@ -139,8 +141,10 @@ public class UserDaoTest extends BaseDaoTest {
         assertNotNull("No date registered", patientUser.getDateRegistered());
 
         // Try and get the patient user - should get our new user
-        patientUser = userDao.getPatientUser("test_user");
-        assertNotNull("Saved user was null on getting frmo DAO", patientUser);
+        PatientUser checkUser = userDao.getPatientUser("test_user@test.com");
+        assertNotNull("Saved user was null on getting from DAO", checkUser);
+
+        assertEquals("patient name is incorrect", checkUser.getName(), patientUser.getName());
     }
 
     private PatientUser createPatientUser(String username, long radarNo) throws Exception {
