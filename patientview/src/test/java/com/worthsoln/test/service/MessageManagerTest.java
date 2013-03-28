@@ -1,6 +1,5 @@
 package com.worthsoln.test.service;
 
-import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Specialty;
@@ -10,6 +9,7 @@ import com.worthsoln.test.helpers.SecurityHelpers;
 import com.worthsoln.test.helpers.ServiceHelpers;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpSession;
 
 import javax.inject.Inject;
 
@@ -85,9 +85,12 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testCreateMessage() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        Message message = messageManager.createMessage("Test subject", "This is my first message", user, user2);
+        Message message = messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject",
+                "This is my first message", user, user2);
 
         assertTrue("Invalid id for message", message.getId() > 0);
 
@@ -105,12 +108,16 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testReplyToMessage() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
         // create a message that we can reply to
-        Message message = messageManager.createMessage("Test subject", "This is my first message", user, user2);
+        Message message = messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject",
+                "This is my first message", user, user2);
 
-        Message replyMessage = messageManager.replyToMessage("This is my first message",
+        Message replyMessage = messageManager.replyToMessage(mockHttpSession.getServletContext(),
+                "This is my first message",
                 message.getConversation().getId(), user2);
 
         // the conversatino assigned to the message should be the same as the one created above
@@ -128,9 +135,12 @@ public class MessageManagerTest extends BaseServiceTest {
          *
          * Then check how many unread messages they have again
          */
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
 
-        messageManager.createMessage("Test subject", "This is my first message", user, user2);
+        messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
+                user, user2);
 
         // now pull abck conversation for user 2
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
@@ -166,14 +176,18 @@ public class MessageManagerTest extends BaseServiceTest {
          *
          * User 1 should then have 2 unread messages across conversations
           */
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
         User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
         User user3 = serviceHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3", "Test 3");
 
         // first convo with message from 2 to 1
-        messageManager.createMessage("Test subject", "This is my first message", user2, user);
+        messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
+                user2, user);
 
         // second convo with message from 3 to 1
-        messageManager.createMessage("Test subject", "This is my first message", user3, user);
+        messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
+                user3, user);
 
         // now pull back and check unread messages for user 1
         int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user.getId());

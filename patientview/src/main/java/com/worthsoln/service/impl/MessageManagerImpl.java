@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,7 +107,7 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public Message createMessage(String subject, String content, User sender, User recipient) {
+    public Message createMessage(ServletContext context, String subject, String content, User sender, User recipient) {
         if (!StringUtils.hasText(subject)) {
             throw new IllegalArgumentException("Invalid required parameter subject");
         }
@@ -129,11 +130,12 @@ public class MessageManagerImpl implements MessageManager {
         conversation.setSubject(subject);
         conversationDao.save(conversation);
 
-        return sendMessage(conversation, sender, recipient, content);
+        return sendMessage(context, conversation, sender, recipient, content);
     }
 
     @Override
-    public Message replyToMessage(String content, Long conversationId, User sender) throws Exception {
+    public Message replyToMessage(ServletContext context, String content, Long conversationId, User sender)
+            throws Exception {
         if (!StringUtils.hasText(content)) {
             throw new IllegalArgumentException("Invalid required parameter content");
         }
@@ -153,7 +155,7 @@ public class MessageManagerImpl implements MessageManager {
             throw new IllegalArgumentException("Invalid conversation");
         }
 
-        return sendMessage(conversation, sender, getOtherUser(conversation, sender.getId()), content);
+        return sendMessage(context, conversation, sender, getOtherUser(conversation, sender.getId()), content);
     }
 
     @Override
@@ -313,7 +315,8 @@ public class MessageManagerImpl implements MessageManager {
                 && !patient.isDummypatient();
     }
 
-    private Message sendMessage(Conversation conversation, User sender, User recipient, String content) {
+    private Message sendMessage(ServletContext context, Conversation conversation, User sender, User recipient,
+                                String content) {
         // save message before sending as they will still see it if the emails fails after
         Message message = new Message();
         message.setConversation(conversation);
@@ -323,7 +326,7 @@ public class MessageManagerImpl implements MessageManager {
         messageDao.save(message);
 
         // now send the message
-        emailManager.sendUserMessage(message);
+        emailManager.sendUserMessage(context, message);
 
         message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
 

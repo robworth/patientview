@@ -37,12 +37,14 @@ public class SendMessageAction extends BaseAction {
 
                 if (conversationId != null) {
                     message = getMessageManager().replyToMessage(
+                            request.getSession().getServletContext(),
                             dynaForm.getString(Messaging.CONTENT_PARAM),
                             conversationId,
                             user
                     );
                 } else {
                     message = getMessageManager().createMessage(
+                            request.getSession().getServletContext(),
                             dynaForm.getString(Messaging.SUBJECT_PARAM),
                             dynaForm.getString(Messaging.CONTENT_PARAM),
                             user,

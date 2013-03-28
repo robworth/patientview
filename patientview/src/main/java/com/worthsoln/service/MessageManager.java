@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 
+import javax.servlet.ServletContext;
 import java.util.List;
 
 public interface MessageManager {
@@ -28,9 +29,10 @@ public interface MessageManager {
 
     List<Message> getMessages(Long conversationId);
 
-    Message createMessage(String subject, String content, User sender, User recipient) throws Exception;
+    Message createMessage(ServletContext context, String subject, String content, User sender, User recipient)
+            throws Exception;
 
-    Message replyToMessage(String content, Long conversationId, User sender) throws Exception;
+    Message replyToMessage(ServletContext context, String content, Long conversationId, User sender) throws Exception;
 
     int getTotalNumberUnreadMessages(Long recipientId);
 

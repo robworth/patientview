@@ -34,7 +34,7 @@ public class EmailManagerImpl implements EmailManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailManagerImpl.class);
 
     @Override
-    public void sendUserMessage(com.worthsoln.patientview.model.Message message) {
+    public void sendUserMessage(ServletContext context, com.worthsoln.patientview.model.Message message) {
         String subject = "You have been sent a message from " + message.getSender().getName()
                 + " on Renal Patient View";
 
@@ -53,7 +53,7 @@ public class EmailManagerImpl implements EmailManager {
             }
         }
 
-        String messageUrl = "https://www.renalpatientview.org/" + (isAdminOrStaff ? "control": "patient")
+        String messageUrl = context.getInitParameter("config.site.url") + (isAdminOrStaff ? "control": "patient")
                 + "/conversation.do?id=" + message.getConversation().getId() + "#message-" + message.getId();
 
         String body = "Dear " + message.getRecipient().getName() + "\n\n";
