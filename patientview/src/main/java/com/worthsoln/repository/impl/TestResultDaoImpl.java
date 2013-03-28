@@ -75,11 +75,6 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     }
 
     @Override
-    public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel) {
-        return getTestResultForPatient(username, panel, null);
-    }
-
-    @Override
     public List<TestResult> get(String nhsno, String unitcode) {
 
         String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? AND testresult.unitcode = ? " +
