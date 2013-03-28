@@ -30,6 +30,7 @@
             <input name="dateOfBirth" class="span2" size="16" type="text"
                    value="<bean:write name="joinForm" property="dateOfBirth"/>">
             <span class="add-on"><i class="icon-th"></i></span>
+            <span class="help-inline">dd-mm-yyyy</span>
         </div>
     </div>
 
@@ -59,9 +60,12 @@
     <div class="control-group">
         <label class="control-label">Security Question</label>
 
-        <div class="controls"><%=request.getSession().getAttribute("antiSpamQuestion")%> = ?</div>
 
-        <div class="controls"><html:text property="antiSpamAnswer"/></div>
+        <div class="controls">
+            <div class="help-block top-help-block"><%=request.getSession().getAttribute("antiSpamQuestion")%> = ?</div>
+
+            <html:text property="antiSpamAnswer"/>
+        </div>
     </div>
 
     <div class="control-group">
