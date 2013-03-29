@@ -32,4 +32,28 @@ public class UktStatusDaoTest extends BaseDaoTest {
 
         assertEquals("Check has incorrect pancreas", "pancreas", check.getPancreas());
     }
+
+    @Test
+    public void testDelete() {
+
+        UktStatus uktStatus = new UktStatus();
+        uktStatus.setKidney("kidney1");
+        uktStatus.setNhsno("nhsno1");
+        uktStatus.setPancreas("pancreas1");
+
+        uktStatusDao.save(uktStatus);
+
+        uktStatus = new UktStatus();
+        uktStatus.setKidney("kidney2");
+        uktStatus.setNhsno("nhsno2");
+        uktStatus.setPancreas("pancreas2");
+
+        uktStatusDao.save(uktStatus);
+
+        uktStatusDao.deleteAll();
+
+        UktStatus check = uktStatusDao.get(uktStatus.getNhsno());
+
+        assertNull(check);
+    }
 }

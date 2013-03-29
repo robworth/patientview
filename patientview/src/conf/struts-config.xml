@@ -226,11 +226,16 @@
       <form-property name="anonymous" type="java.lang.String"/>
       <form-property name="makepublic" type="java.lang.String"/>
     </form-bean>
-    <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>
-    <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
-      <form-property name="content" type="java.lang.String"/>
-      <form-property name="recipientId" type="java.lang.Long"/>
+    <form-bean name="joinForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="firstName" type="java.lang.String"/>
+      <form-property name="lastName" type="java.lang.String"/>
+      <form-property name="dateOfBirth" type="java.lang.String"/>
+      <form-property name="nhsNo" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="email" type="java.lang.String"/>
+      <form-property name="antiSpamAnswer" type="java.lang.String"/>
     </form-bean>
+    <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>    
     <form-bean name="sharingThoughtsForm" type="org.apache.struts.action.DynaActionForm">
       <form-property name="id"                      type="java.lang.Long"/>
       <form-property name="positiveNegative"        type="java.lang.Integer"/>
@@ -252,7 +257,12 @@
       <form-property name="howSerious"              type="java.lang.Integer"/>
       <form-property name="isSubmitted"             type="java.lang.Boolean"/>
     </form-bean>
-
+    <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
+      <form-property name="content" type="java.lang.String"/>
+      <form-property name="subject" type="java.lang.String"/>
+      <form-property name="recipientId" type="java.lang.Long"/>
+      <form-property name="conversationId" type="java.lang.Long"/>
+    </form-bean>
   </form-beans>
     
   <!-- ========== Global Forward Definitions ============================== -->
@@ -557,57 +567,7 @@
           <forward name="success" path="/body/patient/messaging/send-message-ajax.jsp"/>
       </action>
 
-      <action path="/patient/sharingThoughts" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsHomeAction" parameter="sharing_thoughts">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts.jsp"/>
-      </action>
-
-      <action path="/patient/sharingThoughtsPositiveNegative" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsPositiveNegativeAction" parameter="sharing_thoughts">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_positive_negative.jsp"/>
-      </action>
-
-      <action path="/patient/sharingThoughtsPositive" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsPositiveAction" parameter="sharing_thoughts"
-              name="sharingThoughtsForm">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_positive_add.jsp"/>
-      </action>
-
-      <action path="/patient/sharingThoughtsNegative" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsNegativeAction" parameter="sharing_thoughts"
-              name="sharingThoughtsForm">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_negative_add.jsp"/>
-      </action>
-
-      <action path="/patient/sharingThoughtSave" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsSaveAction" parameter="sharing_thoughts"
-              name="sharingThoughtsForm"
-              scope="request">
-          <forward name="input_positive" path="/patient/sharingthoughts/sharing_thoughts_positive_add.jsp"/>
-          <forward name="input_negative" path="/patient/sharingthoughts/sharing_thoughts_negative_add.jsp"/>
-          <forward name="savedraft" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
-          <forward name="submit" path="/patient/sharingthoughts/sharing_thoughts_thank_you.jsp"/>
-      </action>
-
-      <action path="/patient/sharingThoughtsEditThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsRetrieveThoughtAction" parameter="sharing_thoughts"
-              name="sharingThoughtsForm">
-          <forward name="positive" path="/patient/sharingthoughts/sharing_thoughts_positive_edit.jsp"/>
-          <forward name="negative" path="/patient/sharingthoughts/sharing_thoughts_negative_edit.jsp"/>
-      </action>
-
-      <action path="/patient/sharingThoughtsDeleteThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsDeleteThoughtAction" parameter="sharing_thoughts"
-              name="sharingThoughtsForm">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
-      </action>
-
-
-      <action path="/patient/sharingThoughtsViewThought" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsRetrieveThoughtAction" parameter="sharing_thoughts"
-              name="sharingThoughtsForm">
-          <forward name="positive" path="/patient/sharingthoughts/sharing_thoughts_view_thought.jsp"/>
-          <forward name="negative" path="/patient/sharingthoughts/sharing_thoughts_view_thought.jsp"/>
-      </action>
-
-
-      <action path="/patient/sharingThoughtsUserList" type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsUserListAction" parameter="sharing_thoughts">
-          <forward name="success" path="/patient/sharingthoughts/sharing_thoughts_thought_list.jsp"/>
-      </action>
-
-      <action path="/demo"
+    <action path="/demo"
             type="com.worthsoln.patientview.IndexAction" parameter="contact">
       <forward name="success" path="/demo.jsp"/>
     </action>

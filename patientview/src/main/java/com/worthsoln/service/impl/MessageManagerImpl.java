@@ -1,20 +1,28 @@
 package com.worthsoln.service.impl;
 
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
+import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.UnitManager;
+import com.worthsoln.service.UserManager;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +39,15 @@ public class MessageManagerImpl implements MessageManager {
 
     @Inject
     private MessageDao messageDao;
+
+    @Inject
+    private EmailManager emailManager;
+
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
+    private UserManager userManager;
 
     @Override
     public Conversation getConversation(Long conversationId) {
@@ -53,6 +70,15 @@ public class MessageManagerImpl implements MessageManager {
     public List<Conversation> getConversations(Long participantId) {
         List<Conversation> conversations = conversationDao.getConversations(participantId);
         populateConversations(conversations, participantId);
+
+        // conversations need to be ordered by last activity which means when the last message in the thread was sent
+        Collections.sort(conversations, new Comparator<Conversation>() {
+            @Override
+            public int compare(Conversation o1, Conversation o2) {
+                return o1.getLatestMessageDate().compareTo(o2.getLatestMessageDate()) * -1;
+            }
+        });
+
         return conversations;
     }
 
@@ -81,7 +107,11 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public Message createMessage(String content, User sender, User recipient) {
+    public Message createMessage(ServletContext context, String subject, String content, User sender, User recipient) {
+        if (!StringUtils.hasText(subject)) {
+            throw new IllegalArgumentException("Invalid required parameter subject");
+        }
+
         if (!StringUtils.hasText(content)) {
             throw new IllegalArgumentException("Invalid required parameter content");
         }
@@ -94,26 +124,38 @@ public class MessageManagerImpl implements MessageManager {
             throw new IllegalArgumentException("Invalid required parameter recipient");
         }
 
-        Conversation conversation = conversationDao.getConversationBetweenUsers(sender.getId(),
-                recipient.getId());
+        Conversation conversation = new Conversation();
+        conversation.setParticipant1(sender);
+        conversation.setParticipant2(recipient);
+        conversation.setSubject(subject);
+        conversationDao.save(conversation);
 
-        if (conversation == null) {
-            conversation = new Conversation();
-            conversation.setParticipant1(sender);
-            conversation.setParticipant2(recipient);
-            conversationDao.save(conversation);
+        return sendMessage(context, conversation, sender, recipient, content);
+    }
+
+    @Override
+    public Message replyToMessage(ServletContext context, String content, Long conversationId, User sender)
+            throws Exception {
+        if (!StringUtils.hasText(content)) {
+            throw new IllegalArgumentException("Invalid required parameter content");
         }
 
-        Message message = new Message();
-        message.setConversation(conversation);
-        message.setSender(sender);
-        message.setRecipient(recipient);
-        message.setContent(content);
-        messageDao.save(message);
+        if (conversationId == null || conversationId <= 0) {
+            throw new IllegalArgumentException("Invalid required parameter conversationId");
+        }
 
-        message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
+        if (sender == null || !sender.hasValidId()) {
+            throw new IllegalArgumentException("Invalid required parameter sender");
+        }
 
-        return message;
+        // check for the conversation
+        Conversation conversation = getConversation(conversationId);
+
+        if (conversation == null) {
+            throw new IllegalArgumentException("Invalid conversation");
+        }
+
+        return sendMessage(context, conversation, sender, getOtherUser(conversation, sender.getId()), content);
     }
 
     @Override
@@ -137,6 +179,158 @@ public class MessageManagerImpl implements MessageManager {
             message.setHasRead(true);
             messageDao.save(message);
         }
+    }
+
+    @Override
+    public List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser) {
+        List<User> unitAdminRecipients = new ArrayList<User>();
+
+        if (units != null) {
+            for (Unit unit : units) {
+                unitAdminRecipients.addAll(getUnitAdminRecipients(unit,  requestingUser));
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitAdminRecipients, new UserComparator());
+
+        return unitAdminRecipients;
+    }
+
+    @Override
+    public List<User> getUnitAdminRecipients(Unit unit, User requestingUser) {
+        List<User> unitAdminRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            unitAdminRecipients = getUnitAdminOrStaffRecipients("unitadmin", unit, requestingUser);
+        }
+
+        // sort by name
+        Collections.sort(unitAdminRecipients, new UserComparator());
+
+        return unitAdminRecipients;
+    }
+
+    @Override
+    public List<User> getUnitStaffRecipients(List<Unit> units, User requestingUser) {
+        List<User> unitStaffRecipients = new ArrayList<User>();
+
+        if (units != null) {
+            for (Unit unit : units) {
+                unitStaffRecipients.addAll(getUnitStaffRecipients(unit, requestingUser));
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitStaffRecipients, new UserComparator());
+
+        return unitStaffRecipients;
+    }
+
+    @Override
+    public List<User> getUnitStaffRecipients(Unit unit, User requestingUser) {
+        List<User> unitStaffRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            unitStaffRecipients = getUnitAdminOrStaffRecipients("unitstaff", unit, requestingUser);
+        }
+
+        // sort by name
+        Collections.sort(unitStaffRecipients, new UserComparator());
+
+        return unitStaffRecipients;
+    }
+
+    @Override
+    public List<User> getUnitPatientRecipients(List<Unit> units, User requestingUser) {
+        List<User> unitPatientRecipients = new ArrayList<User>();
+
+        if (units != null) {
+            for (Unit unit : units) {
+                unitPatientRecipients.addAll(getUnitPatientRecipients(unit, requestingUser));
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitPatientRecipients, new UserComparator());
+
+        return unitPatientRecipients;
+    }
+
+    @Override
+    public List<User> getUnitPatientRecipients(Unit unit, User requestingUser) {
+        List<User> unitPatientRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                List<User> unitPatients = unitManager.getUnitPatientUsers(unit.getUnitcode(),
+                        unit.getSpecialty());
+
+                for (User unitPatient : unitPatients) {
+                    if (canIncludePatient(unitPatient)) {
+                        unitPatientRecipients.add(unitPatient);
+                    }
+                }
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitPatientRecipients, new UserComparator());
+
+        return unitPatientRecipients;
+    }
+
+    private List<User> getUnitAdminOrStaffRecipients(String adminOrStaff, Unit unit, User requestingUser) {
+        List<User> unitAdminRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                List<UnitAdmin> unitAdmins = unitManager.getUnitUsers(unit.getUnitcode());
+
+                for (UnitAdmin unitAdmin : unitAdmins) {
+                    User unitUser = userManager.get(unitAdmin.getUsername());
+
+                    if (StringUtils.hasText(unitUser.getEmail())) {
+                        if (!unitUser.equals(requestingUser)) {
+                            if (unitAdmin.getRole().equals(adminOrStaff)) {
+                                unitAdminRecipients.add(unitUser);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return unitAdminRecipients;
+    }
+
+    /**
+     * exclude patients that have no got an email set
+     * exlude patients with '-gp' or 'dummy' in the name
+     */
+    private boolean canIncludePatient(User patient) {
+        return StringUtils.hasText(patient.getEmail())
+                && patient.getName() != null
+                && !patient.getName().toLowerCase().contains("-gp")
+                && !patient.isDummypatient();
+    }
+
+    private Message sendMessage(ServletContext context, Conversation conversation, User sender, User recipient,
+                                String content) {
+        // save message before sending as they will still see it if the emails fails after
+        Message message = new Message();
+        message.setConversation(conversation);
+        message.setSender(sender);
+        message.setRecipient(recipient);
+        message.setContent(content);
+        messageDao.save(message);
+
+        // now send the message
+        emailManager.sendUserMessage(context, message);
+
+        message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
+
+        return message;
     }
 
     private boolean userHasAccessToConversation(Conversation conversation, Long participantId) {
@@ -166,16 +360,14 @@ public class MessageManagerImpl implements MessageManager {
 
             if (latestMessage != null) {
                 conversation.setLatestMessageSummary(latestMessage.getSummary());
-                conversation.setLatestMessageDate(getFriendlyDateTime(latestMessage.getDate()));
+                conversation.setLatestMessageDate(latestMessage.getDate());
+                // also wnat to make a friendly time like 2 secs ago - doing this in here in case it gets complicated
+                conversation.setFriendlyLatestMessageDate(getFriendlyDateTime(latestMessage.getDate()));
             }
 
             // as there two users in the convo we want the front end to be able to show titles based on the other
             // user in the convo and not the user who is viewing it
-            if (conversation.getParticipant1().getId().equals(participantId)) {
-                conversation.setOtherUser(conversation.getParticipant2());
-            } else {
-                conversation.setOtherUser(conversation.getParticipant1());
-            }
+            conversation.setOtherUser(getOtherUser(conversation, participantId));
         }
     }
 
@@ -189,6 +381,21 @@ public class MessageManagerImpl implements MessageManager {
             return SHORT_DAY_FORMAT.format(date);
         } else {
             return DATE_FORMAT.format(date);
+        }
+    }
+
+    private User getOtherUser(Conversation conversation, Long participantId) {
+        if (conversation.getParticipant1().getId().equals(participantId)) {
+            return conversation.getParticipant2();
+        } else {
+            return conversation.getParticipant1();
+        }
+    }
+
+    private class UserComparator implements Comparator<User> {
+        @Override
+        public int compare(User o1, User o2) {
+            return o1.getName().compareTo(o2.getName());
         }
     }
 }

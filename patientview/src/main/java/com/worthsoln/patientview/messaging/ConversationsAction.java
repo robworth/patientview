@@ -2,14 +2,13 @@ package com.worthsoln.patientview.messaging;
 
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
-import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,55 +26,48 @@ public class ConversationsAction extends BaseAction {
 
         User user = UserUtils.retrieveUser(request);
 
-        List<Unit> units = getUnitManager().getLoggedInUsersUnits();
+        // if the logged in user has not got an email set then show the no email message - only really for patients
+        if (!StringUtils.hasText(user.getEmail())) {
+            request.setAttribute(Messaging.NO_EMAIL_SET_PARAM, true);
+        } else {
+            List<Unit> units = getUnitManager().getLoggedInUsersUnits();
 
-        List<User> unitAdminRecipients = new ArrayList<User>();
-        List<User> unitStaffRecipients = new ArrayList<User>();
-        List<User> patientRecipients = new ArrayList<User>();
-
-        // need to add in a list of recipients available to the user
-        // if its a patient then they get unit admins in their unit
-        // if an admin they get all the patients in their unit
-        if (getSecurityUserManager().isRolePresent("unitadmin")) {
-            for (Unit unit : units) {
-                List<Patient> patients = getPatientManager().get(unit.getUnitcode());
-
-                // TODO: need to work out how to get this done
-                for (Patient patient : patients) {
-                    //recipients.add(getUserManager().get(patient.get()));
-                }
-            }
-        } else if (getSecurityUserManager().isRolePresent("patient")) {
-            for (Unit unit : units) {
-                List<UnitAdmin> unitAdmins = getUnitManager().getUnitUsers(unit.getUnitcode());
-
-                for (UnitAdmin unitAdmin : unitAdmins) {
-                    if (unitAdmin.getRole().equals("unitadmin")) {
-                        unitAdminRecipients.add(getUserManager().get(unitAdmin.getUsername()));
-                    } else if (unitAdmin.getRole().equals("unitstaff")) {
-                        unitStaffRecipients.add(getUserManager().get(unitAdmin.getUsername()));
+            // if its a super admin then they get the unit list to filter what users they need
+            // other users just get the available ones for their units
+            if (getSecurityUserManager().isRolePresent("superadmin")) {
+                // sort units alpha
+                Collections.sort(units, new Comparator<Unit>() {
+                    @Override
+                    public int compare(Unit o1, Unit o2) {
+                        return o1.getName().compareTo(o2.getName());
                     }
+                });
+
+                request.setAttribute(Messaging.UNITS_PARAM, units);
+            } else {
+                // patients and unit staff/admin get addresses for unit admin and staff
+                List<User> unitAdminRecipients = getMessageManager().getUnitAdminRecipients(units, user);
+                List<User> unitStaffRecipients = getMessageManager().getUnitStaffRecipients(units, user);
+                List<User> unitPatientRecipients = new ArrayList<User>();
+
+                // unit staff and admin also get patients
+                if (getSecurityUserManager().isRolePresent("unitadmin")
+                        || getSecurityUserManager().isRolePresent("unitstaff")) {
+                    unitPatientRecipients = getMessageManager().getUnitPatientRecipients(units, user);
+                }
+
+                if (unitAdminRecipients.isEmpty() && unitStaffRecipients.isEmpty() && unitPatientRecipients.isEmpty()) {
+                    request.setAttribute(Messaging.NO_RECIPIENTS_PARAM, true);
+                } else {
+                    request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
+                    request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
+                    request.setAttribute(Messaging.UNIT_PATIENT_RECIPIENTS_PARAM, unitPatientRecipients);
                 }
             }
         }
-
-        // order the recipients by name
-        Collections.sort(unitAdminRecipients, new UserComparator());
-        Collections.sort(unitStaffRecipients, new UserComparator());
-        Collections.sort(patientRecipients, new UserComparator());
 
         request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
-        request.setAttribute(Messaging.UNIT_ADMIN_RECIPIENTS_PARAM, unitAdminRecipients);
-        request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM, unitStaffRecipients);
-        request.setAttribute(Messaging.PATIENT_RECIPIENTS_PARAM, patientRecipients);
 
         return mapping.findForward(SUCCESS);
-    }
-
-    private class UserComparator implements Comparator<User> {
-        @Override
-        public int compare(User o1, User o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
     }
 }

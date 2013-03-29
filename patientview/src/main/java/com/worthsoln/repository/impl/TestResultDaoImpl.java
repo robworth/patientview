@@ -38,7 +38,6 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     }
 
     @Override
-    // units is a required parameter
     public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units) {
 
         String sql = "SELECT testresult.*, unit.shortname FROM testresult, user, usermapping, result_heading, unit " +
@@ -46,25 +45,28 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
                 "AND user.username = usermapping.username " +
                 "AND usermapping.nhsno = testresult.nhsno " +
                 "AND testresult.testcode = result_heading.headingcode " +
-                "AND testresult.unitcode = unit.unitcode " +
-                "AND result_heading.panel = ? " +
-                "AND unit.unitcode IN (";
+                "AND result_heading.panel = ? ";
 
         List<Object> params = new ArrayList<Object>();
         params.add(username);
         params.add(panel.getPanel());
 
-        int i = 0;
-        for (Unit unit : units) {
-            i++;
-            sql += " ? ";
-            params.add(unit.getUnitcode());
-            if (i != units.size()) {
-                sql += ",";
-            }
-        }
+        if (units != null && !units.isEmpty()) {
+            sql += " AND unit.unitcode IN (";
 
-        sql += ") ";
+            int i = 0;
+            for (Unit unit : units) {
+                i++;
+                sql += " ? ";
+                params.add(unit.getUnitcode());
+
+                if (i != units.size()) {
+                    sql += ",";
+                }
+            }
+
+            sql += ") ";
+        }
 
         sql += "ORDER BY testresult.datestamp desc";
 
@@ -172,7 +174,7 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = " +
                 ":unitcode");
 
-        query.setParameter("nhsno", unitcode);
+        query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
 
         query.executeUpdate();

@@ -23,8 +23,8 @@ public interface ServiceHelpers {
 
     SpecialtyUserRole createSpecialtyUserRole(Specialty specialty, User user, String role);
 
-    Conversation createConversation(User participant1, User participant2, boolean store);
+    Conversation createConversation(String subject, User participant1, User participant2, boolean store);
 
-    Message createMessage(Conversation conversation, User sender, User recipient, String content, boolean store);
-
+    Message createMessage(Conversation conversation, User sender, User recipient, String content,
+                          boolean store);
 }

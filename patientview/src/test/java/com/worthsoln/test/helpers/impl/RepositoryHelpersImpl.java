@@ -98,11 +98,12 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
     }
 
     @Override
-    public Conversation createConversation(User participant1, User participant2, boolean store) {
+    public Conversation createConversation(String subject, User participant1, User participant2, boolean store) {
         Conversation conversation = new Conversation();
 
         conversation.setParticipant1(participant1);
         conversation.setParticipant2(participant2);
+        conversation.setSubject(subject);
 
         if (store) {
             conversationDao.save(conversation);
@@ -126,5 +127,4 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
         return message;
     }
-
 }

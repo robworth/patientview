@@ -38,7 +38,6 @@ public class ConversationAction extends BaseAction {
                 conversation.getId());
 
         request.setAttribute(Messaging.CONTENT_PARAM, "");
-        request.setAttribute(Messaging.RECIPIENT_ID_PARAM, conversation.getOtherUser().getId());
 
         return mapping.findForward(SUCCESS);
     }

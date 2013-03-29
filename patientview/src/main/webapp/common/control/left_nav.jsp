@@ -1,3 +1,6 @@
+<%@ page import="com.worthsoln.patientview.model.User" %>
+<%@ page import="com.worthsoln.patientview.user.UserUtils" %>
+<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <div class="span3">
@@ -49,6 +52,30 @@
         </logic:present>
             <li class="divider"></li>
             <li><html:link href="/forums/list.page">Forum</html:link></li>
+
+            <%
+            // need to get the number of unread messages if they have any
+            User user = UserUtils.retrieveUser(request);
+
+            if (user != null) {
+            int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
+            %>
+            <li class="divider"></li>
+            <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
+                <a href="/control/conversations.do">
+                    Messages
+                    <%
+                        if (numberUnreadMessages > 0) {
+                    %>
+                    <span class="badge badge-important"><%=numberUnreadMessages%></span>
+                    <%
+                        }
+                    %>
+                </a>
+            </li>
+            <%
+                }
+            %>
         </ul>
     </div>
 </div>

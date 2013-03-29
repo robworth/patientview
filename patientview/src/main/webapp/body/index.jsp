@@ -53,7 +53,18 @@
             RPV is funded by contributions from renal units in England and Wales and by the Scottish Government in
             Scotland. Development funding has come from the Department of Health in England, Scotland and Wales, and
             from NHS Kidney Care.
-        </p>    
+        </p>
+
+        <h3 class="mediumBlueTitle titleSeperator">I Want To Join</h3>
+        <p>
+            If you want to see your results on PatientView then click here to enter your details:
+
+            <div class="control-group">
+                <div class="controls">
+                    <a href="/join.do" class="btn btn-danger">I want to join</a>
+                </div>
+            </div>
+        </p>
     </div>
     <div class="span4 seperatingBorders">
         <h3 class="mediumBlueTitle titleSeperator">News</h3>

@@ -122,11 +122,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
 
         if (nhsno != null && nhsno.length() > 0) {
-            params.add(nhsno);
+            params.add('%' + nhsno + '%');
         }
 
         if (name != null && name.length() > 0) {
-            params.add(name);
+            params.add('%' + name + '%');
         }
         params.add(specialty.getId());
 

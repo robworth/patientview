@@ -14,14 +14,6 @@ public interface ConversationDao {
     Conversation get(Long id);
 
     /**
-     * Find a conversation between 2 users, there should only ever be one in the DB not including deleted ones
-     * @param participant1Id Long
-     * @param participant2Id Long
-     * @return Conversation
-     */
-    Conversation getConversationBetweenUsers(Long participant1Id, Long participant2Id);
-
-    /**
      * Get all conversations a user is part of
      * @param participantId Long
      * @return List<Conversation>

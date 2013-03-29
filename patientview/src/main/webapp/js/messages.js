@@ -5,10 +5,20 @@ messages.init = function() {
 
     // loop through any message forms on set submit
     $('.js-message-form').each(function(index, el) {
-        $(el).submit(function(e) {
+        var $form = $(el),
+            unitCodeEl = $form.find('.js-message-unit-code');
+
+        $form.submit(function(e) {
             e.preventDefault();
             messages.sendMessage(el);
-        })
+        });
+
+        // if there was a unit code el add a change event
+        if (unitCodeEl.length > 0) {
+            unitCodeEl.change(function() {
+                messages.getRecipientsByUnit($form);
+            });
+        }
     });
 
     // set up the modal view
@@ -34,16 +44,55 @@ messages.getMessageHtml = function(message) {
              '</article>');
 };
 
+messages.getRecipientsByUnit = function(form) {
+    var $form = $(form),
+        unitCodeEl = $form.find('.js-message-unit-code'),
+        recipientContainer = $form.find('.js-recipient-container'),
+        recipientIdEl = $form.find('.js-message-recipient-id'),
+        loadingEl = $form.find('.js-message-unit-loading'),
+        errorsEl = $form.find('.js-message-unit-recipient-errors');
+
+    errorsEl.html('').hide();
+    recipientContainer.hide();
+    recipientIdEl.html('');
+
+    if (messages.validateString(unitCodeEl.val())) {
+        loadingEl.show();
+
+        $.ajax({
+            url: '/unit-recipients.do?unitCode=' + unitCodeEl.val(),
+            success: function(html) {
+                recipientIdEl.html(html);
+
+                if (recipientIdEl.children().length <= 1) {
+                    errorsEl.html('No recipients found in unit').show();
+                } else {
+                    recipientContainer.show();
+                }
+
+                loadingEl.hide();
+            },
+            error: function() {
+                errorsEl.html('Error retrieving recipients for unit').show();
+                loadingEl.hide();
+            }
+        });
+    }
+};
+
 messages.sendMessage = function(form) {
     var $form = $(form),
         submitBtn = $form.find('.js-message-submit-btn'),
         originalBtnValue = submitBtn.val(),
         recipientIdEl = $form.find('.js-message-recipient-id'),
+        conversationIdEl = $form.find('.js-message-conversation-id'),
         contentEl = $form.find('.js-message-content'),
+        subjectEl = $form.find('.js-message-subject'),
         redirectEl = $form.find('.js-message-redirect'),
         errorsEl = $form.find('.js-message-errors'),
         errors = [],
         messagesEl = $('.js-messages'),
+        data = {},
         onError = function(errorSt) {
             errorsEl.html(errorSt).show();
             submitBtn.val(originalBtnValue);
@@ -53,8 +102,19 @@ messages.sendMessage = function(form) {
 
     submitBtn.val('Sending...');
 
-    if (!messages.validateNumber(recipientIdEl.val())) {
-        errors.push('Please select a recipient');
+    // if no convo el then its a new convo
+    if (conversationIdEl.length === 0) {
+        if (!messages.validateNumber(recipientIdEl.val())) {
+            errors.push('Please select a recipient');
+        }
+
+        if (!messages.validateString(subjectEl.val())) {
+            errors.push('Please enter a subject');
+        }
+    } else {
+        if (!messages.validateNumber(conversationIdEl.val())) {
+            errors.push('Invalid conversation');
+        }
     }
 
     if (!messages.validateString(contentEl.val())) {
@@ -65,25 +125,31 @@ messages.sendMessage = function(form) {
         onError(errors.join('<br />'));
         return false;
     } else {
+        data.content = contentEl.val();
+
+        if (conversationIdEl.length === 0) {
+            data.recipientId = recipientIdEl.val();
+            data.subject = subjectEl.val();
+        } else {
+            data.conversationId = conversationIdEl.val()
+        }
+
         $.ajax({
             type: "POST",
             url: $form.attr('action'),
-            data: {
-                recipientId: recipientIdEl.val(),
-                content: contentEl.val()
-            },
+            data: data,
             success: function(data) {
                 if (data.errors.length > 0) {
                    onError(data.errors.join('<br />'));
                 } else {
-                    contentEl.val('');
                     submitBtn.val(originalBtnValue);
 
                     // if the messages are on the page then append the message else forward them onto the conversation page
                     if (messagesEl.length > 0) {
                         messagesEl.append(messages.getMessageHtml(data.message));
+                        contentEl.val('');
                     } else {
-                        window.location.href = redirectEl.val() + '?id=' + data.message.conversation.id + '#response';
+                        window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
                     }
                 }
             },

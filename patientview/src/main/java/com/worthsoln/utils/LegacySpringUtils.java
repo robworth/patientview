@@ -5,7 +5,7 @@ import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 
 /**
- *  Used to connect up the methods in the old model classes that do service layer operations to the newer service
+ * Used to connect up the methods in the old model classes that do service layer operations to the newer service
  * managers. We can move stuff out of this when the service/DAO code gets moved out from the model classes.
  * When/if...
  */
@@ -49,6 +49,8 @@ public class LegacySpringUtils {
 
     private static TestResultManager testResultManager;
 
+    private static TimeManager timeManager;
+
     private static UKTransplantManager ukTransplantManager;
 
     private static UnitManager unitManager;
@@ -60,6 +62,8 @@ public class LegacySpringUtils {
     private static MessageManager messageManager;
 
     private static EmailManager emailManager;
+
+    private static JoinRequestManager joinRequestManager;
 
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
@@ -189,6 +193,14 @@ public class LegacySpringUtils {
         LegacySpringUtils.sharedThoughtManager = sharedThoughtManager;
     }
 
+    public static JoinRequestManager getJoinRequestManager() {
+        return joinRequestManager;
+    }
+
+    public static void setJoinRequestManager(JoinRequestManager joinRequestManager) {
+        LegacySpringUtils.joinRequestManager = joinRequestManager;
+    }
+
     public static SplashPageManager getSplashPageManager() {
         return splashPageManager;
     }
@@ -215,6 +227,14 @@ public class LegacySpringUtils {
 
     public static void setTestResultManager(TestResultManager testResultManager) {
         LegacySpringUtils.testResultManager = testResultManager;
+    }
+
+    public static TimeManager getTimeManager() {
+        return timeManager;
+    }
+
+    public static void setTimeManager(TimeManager timeManager) {
+        LegacySpringUtils.timeManager = timeManager;
     }
 
     public static void setUkTransplantManager(UKTransplantManager ukTransplantManager) {

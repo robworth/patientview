@@ -2,6 +2,6 @@
 
 <tiles:insert definition="default.layout" flush="true" >
 
-    <tiles:put name="body" value="/body/patient/messaging/message_detail_body.jsp" />
+    <tiles:put name="body" value="/body/join-request-confirmation.jsp" />
 
 </tiles:insert>

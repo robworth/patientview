@@ -35,7 +35,7 @@ public class ResultsUpdater {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsUpdater.class);
 
     public void update(ServletContext context, File xmlFile) {
-        File xsdFile = null;
+        File xsdFile;
         try {
             xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
                     .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
@@ -49,7 +49,7 @@ public class ResultsUpdater {
     public void update(ServletContext context, File xmlFile, File xsdFile) {
         /**
          * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin.
+         * hasn't worked. Send a mail to RPV admin, and skip validate and process
          */
         if (xmlFile.length() == 0) {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
@@ -57,9 +57,15 @@ public class ResultsUpdater {
                     XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
             XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
 
-            return;
+        } else {
+            validate(context, xmlFile, xsdFile);
         }
 
+        // always move the file, so it is not processed multiple times
+        renameDirectory(context, xmlFile);
+    }
+
+    private void validate(ServletContext context, File xmlFile, File xsdFile) {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
@@ -82,6 +88,11 @@ public class ResultsUpdater {
             }
         }
 
+        // always process regardless of validation state
+        process(context, xmlFile);
+    }
+
+    private void process(ServletContext context, File xmlFile) {
         try {
             ResultParser parser = new ResultParser();
             parser.parseResults(context, xmlFile);
@@ -110,7 +121,6 @@ public class ResultsUpdater {
 
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
-        renameDirectory(context, xmlFile);
     }
 
     protected void renameDirectory(ServletContext context, File xmlFile) {
