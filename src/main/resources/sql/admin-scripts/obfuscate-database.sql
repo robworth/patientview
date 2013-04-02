@@ -25,7 +25,6 @@ gpname = 'Dr Doctor', gpaddress1 = 'Some St', gpaddress2 = 'London', gpaddress3 
 UPDATE rdc_genetic_test SET testDoneOn = NULL, whatResultsShowed = 'Some results info', keyEvidence = 'Some facts';
 DELETE FROM rdr_alport_deafness;
 DELETE FROM rdr_hnf1b_misc;
-DELETE FROM rdr_prd_code;
 UPDATE tbl_adminusers SET uEmail = 'patientview-testing@solidstategroup.com';
 DELETE FROM tbl_clinicaldata;
 UPDATE tbl_consultants SET cSNAME = CONCAT('Surname for cID ', cID), cFNAME = CONCAT('First name for cID ', cID);
