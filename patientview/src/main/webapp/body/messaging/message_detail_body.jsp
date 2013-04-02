@@ -36,6 +36,10 @@
                     <br />
                     <bean:write name="conversation" property="subject" />
                 </h1>
+
+                <h4 class="author">
+                    <bean:write name="conversation" property="otherUser.name" />
+                </h4>
             </div>
 
             <section class="js-messages">
