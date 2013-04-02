@@ -2159,7 +2159,7 @@ CREATE TABLE usermapping (
 -- ----------------------------
 -- Table structure for table join requests
 -- ----------------------------
-
+DROP TABLE IF EXISTS pv_patientjoin_request;
 CREATE TABLE pv_patientjoin_request (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   firstname varchar(100) NOT NULL DEFAULT '',
