@@ -25,7 +25,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         users.add(userManager.getSuperUser(authentication.getName()));
         users.add(userManager.getAdminUser(authentication.getName()));
         users.add(userManager.getProfessionalUser(authentication.getName()));
-        users.add(userManager.getPatientUser(authentication.getName()));
+        users.add(userManager.getPatientUserWithUsername(authentication.getName()));
 
         for (User user : users) {
             // If we've found a user...

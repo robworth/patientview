@@ -1,8 +1,11 @@
 package com.solidstategroup.radar.test.service;
 
-import com.solidstategroup.radar.model.exception.RegistrationException;
-import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
+import com.solidstategroup.radar.dao.UserDao;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.user.PatientUser;
+import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.test.TestPvDbSchema;
 import org.junit.Test;
@@ -10,42 +13,57 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:context.xml"})
 public class UserManagerTest extends TestPvDbSchema {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    @Autowired
+    private UserDao userDao;
+
     @Autowired
     private UserManager userManager;
 
-    @Test(expected = RegistrationException.class)
-    public void testPatientUserRegistrationUnknownRadarNumber() throws RegistrationException, UserEmailAlreadyExists {
+    @Autowired
+    private DemographicsManager demographicsManager;
 
-        // Construct a patient user
-        PatientUser patientUser = new PatientUser();
-        patientUser.setRadarNumber(23232L);
-        patientUser.setUsername("test_user");
-        patientUser.setDateOfBirth(new Date());
+    @Test
+    public void testPatientUserRegistration() throws Exception {
 
-        // Try and register - will throw an exception as no matching radar number
-        userManager.registerPatient(patientUser);
-    }
+        // create a user row as per patient view
+        userDao.createRawUser("testusername", "passwordhash", "my user", "test@test.com");
 
-    @Test(expected = RegistrationException.class)
-    public void testPatientUserRegistrationUnkownDateOfBirth() throws RegistrationException, UserEmailAlreadyExists {
+        // create a demographic
+        Date dob = new Date();
+        Demographics demographics = createDemographics("Test", "User", null, "NHS123", "test@test.com", dob);
 
-        // Construct a patient user
-        PatientUser patientUser = new PatientUser();
-        patientUser.setRadarNumber(267L);
-        patientUser.setUsername("test_user");
-        patientUser.setDateOfBirth(new Date());
+        userManager.registerPatient(demographics);
 
         // Try and register - will throw an exception as no matching radar number
-        userManager.registerPatient(patientUser);
+        PatientUser patientUser = userManager.getPatientUser(demographics.getEmailAddress());
+
+        assertNotNull("registered user is null", patientUser);
+        assertNotNull("no password generated", patientUser.getPassword());
+        assertEquals("Email not set on user", demographics.getEmailAddress(), patientUser.getEmail());
+        assertNotNull("Dob not set on user", patientUser.getDateOfBirth());
     }
 
+    private Demographics createDemographics(String forename, String surname, Centre centre, String nhsno,
+                                            String email, Date dateOfBirth) {
+        Demographics demographics = new Demographics();
+        demographics.setForename(forename);
+        demographics.setSurname(surname);
+        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        demographics.setNhsNumber(nhsno);
+        demographics.setRenalUnit(centre);
+        demographics.setEmailAddress(email);
+        demographics.setDateOfBirth(dateOfBirth);
+        demographicsManager.saveDemographics(demographics);
+        assertNotNull(demographics.getId());
+        return demographics;
+    }
 }

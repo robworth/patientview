@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+/**
+ *  Note: we user the BaseModel to hold the "radarUserId"
+ */
 public abstract class User extends BaseModel implements UserDetails {
 
     // Roles, avoid an enum to make it a bit easier with Spring security

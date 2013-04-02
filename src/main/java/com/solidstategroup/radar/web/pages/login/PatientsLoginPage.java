@@ -8,7 +8,6 @@ import com.solidstategroup.radar.web.components.RadarRequiredPasswordTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
-import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -45,7 +44,9 @@ public class PatientsLoginPage extends BasePage {
                 RadarSecuredSession session = RadarSecuredSession.get();
                 PatientUser user = getModelObject();
                 boolean loginFailed = false;
-                PatientUser patientUser = userManager.getPatientUser(user.getUsername(), user.getDateOfBirth());
+                PatientUser patientUser = userManager.getPatientUserWithUsername(user.getUsername(),
+                        user.getDateOfBirth());
+
                 if (patientUser != null) {
                     if (session.signIn(user.getUsername(), passwordModel.getObject())) {
                         session.setUser(patientUser);
@@ -108,6 +109,5 @@ public class PatientsLoginPage extends BasePage {
         // Add links for forgotten password and register
         add(new BookmarkablePageLink<PatientForgottenPasswordPage>("forgottenPasswordLink",
                 PatientForgottenPasswordPage.class));
-        add(new BookmarkablePageLink<PatientRegistrationPage>("registerLink", PatientRegistrationPage.class));
     }
 }

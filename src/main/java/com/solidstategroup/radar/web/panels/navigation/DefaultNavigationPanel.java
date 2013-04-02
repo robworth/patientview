@@ -9,13 +9,11 @@ import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
 import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
-import com.solidstategroup.radar.web.pages.login.PatientsLoginPage;
 import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
 import com.solidstategroup.radar.web.pages.patient.AddPatientPage;
 import com.solidstategroup.radar.web.pages.patient.ExistingPatientsListingPage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
-import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -58,12 +56,6 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
                 new BookmarkablePageLink<ConsentFormsPage>("consentFormsPageLink", ConsentFormsPage.class)
         );
         add(cliniciansContainer);
-
-        // only want to show if on patient login page
-        BookmarkablePageLink patientRegistrationLink = new BookmarkablePageLink<PatientRegistrationPage>(
-                "patientRegistrationPageLink", PatientRegistrationPage.class);
-        patientRegistrationLink.setVisible(pageClass == PatientsLoginPage.class);
-        add(patientRegistrationLink);
 
         // only want to show on professional login page or homepage
         BookmarkablePageLink professionalRegistrationPageLink = new BookmarkablePageLink<ProfessionalRegistrationPage>(

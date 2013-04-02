@@ -25,6 +25,13 @@ public interface UserDao {
 
     PatientUser getPatientUser(String email);
 
+    PatientUser getPatientUserWithUsername(String username);
+
+    // Only use for testing purposes!
+    void createRawUser(String username, String password, String name, String email);
+
+    PatientUser getExternallyCreatedPatientUser(String nhsno);
+
     List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
     void savePatientUser(PatientUser patientUser) throws Exception;
@@ -42,4 +49,6 @@ public interface UserDao {
     void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 
     List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage);
+
+    boolean userExistsInPatientView(String nhsno);
 }

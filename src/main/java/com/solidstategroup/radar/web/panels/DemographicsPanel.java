@@ -14,6 +14,7 @@ import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.DiagnosisManager;
 import com.solidstategroup.radar.service.LabDataManager;
 import com.solidstategroup.radar.service.TherapyManager;
+import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.service.generic.DiseaseGroupManager;
 import com.solidstategroup.radar.web.RadarApplication;
@@ -53,6 +54,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,6 +77,11 @@ public class DemographicsPanel extends Panel {
     private TherapyManager therapyManager;
     @SpringBean
     private UtilityManager utilityManager;
+
+    @SpringBean
+    private UserManager userManager;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsPanel.class);
 
     public DemographicsPanel(String id, final IModel<Long> radarNumberModel) {
         this(id, radarNumberModel, null);
@@ -149,6 +157,13 @@ public class DemographicsPanel extends Panel {
                     demographics.setId(radarNumberModel.getObject());
                 }
                 demographicsManager.saveDemographics(demographics);
+                try {
+                    userManager.registerPatient(demographics);
+                } catch (Exception e) {
+                    String message = "Error registering new patient to accompany this demographic";
+                    LOGGER.error("{}, message {}", message, e.getMessage());
+                    error(message);
+                }
                 radarNumberModel.setObject(demographics.getId());
 
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab

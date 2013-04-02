@@ -17,7 +17,6 @@ import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.EmailManager;
 import com.solidstategroup.radar.service.UserManager;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -54,8 +53,20 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getPatientUser(email);
     }
 
+    public PatientUser getPatientUserWithUsername(String username) {
+        return userDao.getPatientUserWithUsername(username);
+    }
+
     public PatientUser getPatientUser(String email, Date dateOfBirth) {
         PatientUser user = userDao.getPatientUser(email);
+        if (user != null) {
+            return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
+        }
+        return null;
+    }
+
+    public PatientUser getPatientUserWithUsername(String username, Date dateOfBirth) {
+        PatientUser user = userDao.getPatientUserWithUsername(username);
         if (user != null) {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
@@ -83,55 +94,38 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    public void registerPatient(PatientUser patientUser) throws RegistrationException, UserEmailAlreadyExists {
+    public void registerPatient(Demographics demographics) throws Exception {
         // Check we have a valid radar number, email address and date of birth
-        if (patientUser == null ||
-                patientUser.getRadarNumber() <= 0L ||
-                StringUtils.isBlank(patientUser.getUsername()) ||
-                patientUser.getDateOfBirth() == null) {
-            throw new IllegalArgumentException("Must supply a non null patient user " +
-                    "with valid radar number, username and date of birth for registration");
+        if (demographics == null || demographics.getId() < 1) {
+            throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
         }
 
-        PatientUser dupliatePatientUser = getPatientUser(patientUser.getUsername());
-        if (dupliatePatientUser != null) {
-            throw new UserEmailAlreadyExists("User email already exists");
+        if (demographics.getDateOfBirth() == null) {
+            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+                    "demographics.getDateOfBirth()");
         }
 
-        // First we need to try and get a demographics user with the supplied radar number
-        Demographics demographics = demographicsDao.getDemographicsByRadarNumber(patientUser.getRadarNumber());
+        if (demographics.getNhsNumber() == null) {
+            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+                    "demographics.getNhsNumber()");
+        }
 
-        // If we get a demographic check the date of birth matches
-        if (demographics != null && demographics.getDateOfBirth() != null
-                && demographics.getDateOfBirth().equals(patientUser.getDateOfBirth())) {
+        PatientUser patientUser = userDao.getExternallyCreatedPatientUser(demographics.getNhsNumber());
 
-            // Generate the password - 8 random characters
-            String password = generateRandomPassword();
-            try {
-                patientUser.setPassword(User.getPasswordHash(password));
+        if (patientUser == null) {
+            throw new IllegalStateException("Cannot register patient. No externally created user found for nhsno "
+                    + demographics.getNhsNumber());
+        }
 
-                // form only has a username field so just use this
-                patientUser.setEmail(patientUser.getUsername());
+        // if this demographic is already an existing patient, just skip the registration
+       if (userDao.getPatientUser(patientUser.getUserId()) == null) {
 
-                // Save the patient user to the patient user table
-                userDao.savePatientUser(patientUser);
+            // now fill in the radar patient stuff
+            patientUser.setRadarNumber(demographics.getId());
+            patientUser.setDateOfBirth(demographics.getDateOfBirth());
 
-                // Send the registration email to the user
-                emailManager.sendPatientRegistrationEmail(patientUser, password);
-
-                // Send the registration email to the admin
-                emailManager.sendPatientRegistrationAdminNotificationEmail(patientUser);
-
-            } catch (Exception e) {
-                // If we get an exception getting password hash then log and throw an exception
-                LOGGER.error("Could not get password hash when registering user {}", patientUser.getUsername(), e);
-                throw new RegistrationException("Could not register patient - exception generating password", e);
-            }
-
-        } else {
-            // If there wasn't a demographic record for that radar number, or the date of birth didn't match
-            throw new RegistrationException("Could not register patient - " +
-                    "date of birth incorrect for given radar number");
+            // Update the user record created by patient view and create radar patient row and user mapping row
+            userDao.savePatientUser(patientUser);
         }
     }
 
@@ -214,6 +208,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             LOGGER.error("could not save professional user", e);
             throw new DaoException("Could not save professional user");
         }
+    }
+
+    public boolean userExistsInPatientView(String nhsno) {
+        return userDao.userExistsInPatientView(nhsno);
     }
 
     public void sendForgottenPasswordToPatient(String username) throws EmailAddressNotFoundException,

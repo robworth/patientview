@@ -64,6 +64,21 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testGetDemographicsByNhs() throws Exception {
+
+        // Note: this only works if you use uppercase nhs numbers
+
+        createDemographics("Test", "User", "NHS123");
+        createDemographics("Test2", "User2", "NHS789");
+        DemographicsFilter demographicsFilter = new DemographicsFilter();
+        demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHS_NO.toString(),
+                "NHS123");
+        List<Demographics> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
+        assertNotNull("List was null", demographics);
+        assertEquals(1, demographics.size());
+    }
+
+    @Test
     public void testSearchDemographics() {
         addDiagnosisForDemographic(createDemographics("Test", "User"), DiagnosisCode.SRNS_ID);
         addDiagnosisForDemographic(createDemographics("Test2", "User2"), DiagnosisCode.MPGN_ID);
@@ -83,9 +98,9 @@ public class DemographicDaoTest extends BaseDaoTest {
         Centre centre2 = new Centre();
         centre2.setId(3L);
 
-        createDemographics("Test", "User", centre);
-        createDemographics("Test2", "User2", centre);
-        createDemographics("Test3", "User3", centre2);
+        createDemographics("Test", "User", centre, null);
+        createDemographics("Test2", "User2", centre, null);
+        createDemographics("Test3", "User3", centre2, null);
 
         // Call DAO
         List<Demographics> demographics = demographicDao.getDemographicsByRenalUnit(centre);
@@ -130,11 +145,12 @@ public class DemographicDaoTest extends BaseDaoTest {
         diagnosisDao.saveDiagnosis(diagnosis);
     }
 
-    private Demographics createDemographics(String forename, String surname, Centre centre) {
+    private Demographics createDemographics(String forename, String surname, Centre centre, String nhsno) {
         Demographics demographics = new Demographics();
         demographics.setForename(forename);
         demographics.setSurname(surname);
         demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        demographics.setNhsNumber(nhsno);
         demographics.setRenalUnit(centre);
         demographicDao.saveDemographics(demographics);
         assertNotNull(demographics.getId());
@@ -142,6 +158,10 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     private Demographics createDemographics(String forename, String surname) {
-        return createDemographics(forename, surname, null);
+        return createDemographics(forename, surname, null, null);
+    }
+
+    private Demographics createDemographics(String forename, String surname, String nhsno) {
+        return createDemographics(forename, surname, null, nhsno);
     }
 }

@@ -31,7 +31,6 @@ import com.solidstategroup.radar.web.pages.patient.GenericPatientPage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPage;
 import com.solidstategroup.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 import com.solidstategroup.radar.web.pages.regisration.ChangeRegistrationDetails;
-import com.solidstategroup.radar.web.pages.regisration.PatientRegistrationPage;
 import com.solidstategroup.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ConverterLocator;
@@ -162,7 +161,6 @@ public class RadarApplication extends AuthenticatedWebApplication {
         mountPage("patient/edit", SrnsPatientPage.class);
         mountPage("patient/view", SrnsPatientPageReadOnly.class);
         mountPage("patients", ExistingPatientsListingPage.class);
-        mountPage("registration/patient", PatientRegistrationPage.class);
         mountPage("patient/new", AddPatientPage.class);
         mountPage("patient/edit/generic", GenericPatientPage.class);
 

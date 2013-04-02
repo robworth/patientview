@@ -3,11 +3,13 @@ package com.solidstategroup.radar.web.pages.patient;
 import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.enums.NhsNumberType;
+import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import com.solidstategroup.radar.model.generic.AddPatientModel;
 import com.solidstategroup.radar.model.generic.DiseaseGroup;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.ComponentHelper;
@@ -39,13 +41,16 @@ import java.util.List;
  */
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class AddPatientPage extends BasePage {
-    public static final String NHS_NUMBER_INVALID_MSG = "NHS number is not valid";
+    public static final String NHS_NUMBER_INVALID_MSG = "NHS or CHI number is not valid";
 
     @SpringBean
     private DiseaseGroupDao diseaseGroupDao;
 
     @SpringBean
     private DemographicsManager demographicsManager;
+
+    @SpringBean
+    private UserManager userManager;
 
     public AddPatientPage() {
         ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
@@ -63,9 +68,24 @@ public class AddPatientPage extends BasePage {
             protected void onSubmit() {
                 AddPatientModel model = getModelObject();
 
+                // just show the user one error at a time
+
+                DemographicsFilter demographicsFilter = new DemographicsFilter();
+                demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHS_NO.toString(),
+                        model.getPatientId());
+
                 // check nhs number is valid
                 if (!demographicsManager.isNhsNumberValid(model.getPatientId())) {
                     error(NHS_NUMBER_INVALID_MSG);
+
+                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
+                    // check that this nhsno does not already exist in the radar system
+                    error("A patient with this NHS or CHI number already exists");
+
+                } else if (!userManager.userExistsInPatientView(model.getPatientId())) {
+                    // If nhsno is not already in patient view inform user they need to add the patient using the
+                    // patient view application.
+                    error("Create this user in patient view!");
                 }
 
                 // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
@@ -128,7 +148,7 @@ public class AddPatientPage extends BasePage {
         final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback", new IFeedbackMessageFilter() {
             public boolean accept(FeedbackMessage feedbackMessage) {
                 String message = feedbackMessage.getMessage().toString();
-                return message.contains(NHS_NUMBER_INVALID_MSG);
+                return message != null && message.length() > 0;
             }
         });
 

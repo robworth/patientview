@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -418,6 +419,13 @@ public class UserDaoTest extends BaseDaoTest {
         // first one should patient 2
         assertEquals("First user in list is not correct", checkPatientUsers.get(0).getId(),
                 patientUser2.getId());
+    }
+
+    @Test
+    public void testUserExistsInPatientView() {
+
+        // just test the sql is valid - i.e. stop pvdbschema changes breaking this simple query in future
+        assertFalse(userDao.userExistsInPatientView("1234xyz"));
     }
 
     private Demographics createDemographics(String forename, String surname) {

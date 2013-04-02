@@ -6,6 +6,7 @@ public class DemographicsFilter extends BaseFilter {
         SURNAME("tbl_Demographics.SNAME"),
         FORENAME("tbl_Demographics.FNAME"),
         REGISTRATION_DATE("tbl_Demographics.DATE_REG"),
+        NHS_NO("tbl_Demographics.NHS_NO"),
         ADDRESS("tbl_Demographics.ADD1,tbl_Demographics.ADD2," +
                 "tbl_Demographics.ADD3,tbl_Demographics.ADD4,tbl_Demographics.POSTCODE"),
         DIAGNOSIS("tbl_DiagCode.dcAbbr"),

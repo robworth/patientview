@@ -8,6 +8,7 @@ import com.solidstategroup.radar.model.enums.NhsNumberType;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.service.generic.GenericDiagnosisManager;
 import com.solidstategroup.radar.util.RadarUtility;
@@ -44,6 +45,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -61,6 +64,11 @@ public class GenericDemographicsPanel extends Panel {
 
     @SpringBean
     private GenericDiagnosisManager genericDiagnosisManager;
+
+    @SpringBean
+    private UserManager userManager;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
 
     public GenericDemographicsPanel(String id, Demographics demographics) {
         super(id);
@@ -96,6 +104,13 @@ public class GenericDemographicsPanel extends Panel {
 
                 demographics.setGeneric(true);
                 demographicsManager.saveDemographics(demographics);
+                try {
+                    userManager.registerPatient(demographics);
+                } catch (Exception e) {
+                    String message = "Error registering new patient to accompany this demographic";
+                    LOGGER.error("{}, message {}", message, e.getMessage());
+                    error(message);
+                }
             }
         };
 
