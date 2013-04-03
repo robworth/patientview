@@ -89,23 +89,24 @@ public class JoinRequestSubmitAction extends BaseAction {
         /**
          * subject
          */
-        String subject = "New join request";
+        String subject = "[PatientView] New join request from patient";
 
         /**
          * body
          */
         String message = "Hello,\n" +
                 "\n" +
-                "The person below wants to join Patient View\n" +
+                "A patient has made a request on the website to join PatientView at your unit. Their details are below.\n" +
                 "\n" +
                 "First name: " + joinRequest.getFirstName() + "\n" +
                 "Last name: " + joinRequest.getLastName() + "\n" +
                 "NHS No: " + joinRequest.getNhsNo() + "\n" +
                 "Unit code: " + joinRequest.getUnitcode() + "\n" +
-                "Date of birth: " + joinRequest.getDateOfBirth() + "\n" +
+                "Date of birth: " + joinRequest.getDateOfBirthFormatted() + "\n" +
                 "Email address: " + joinRequest.getEmail() + "\n" +
                 "\n" +
-                "Renal Patient View";
+                "Please verify these details and follow up this request with the patient using your usual process to consent and add patients to PatientView." +
+                "\n";
 
         /**
          * send the mail

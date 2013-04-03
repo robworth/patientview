@@ -61,7 +61,7 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <a href="/join.do" class="btn btn-danger">I want to join</a>
+                    <a href="/join.do" class="btn btn-success">I want to join</a>
                 </div>
             </div>
         </p>

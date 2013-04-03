@@ -36,7 +36,7 @@ public class EmailManagerImpl implements EmailManager {
     @Override
     public void sendUserMessage(ServletContext context, com.worthsoln.patientview.model.Message message) {
         String subject = "You have been sent a message from " + message.getSender().getName()
-                + " on Renal Patient View";
+                + " on Renal PatientView";
 
         // need to work out if the recipient of this message is a patient or something higher
         // if staff or admin then they go to /control if patient they go to /patient
@@ -56,9 +56,11 @@ public class EmailManagerImpl implements EmailManager {
         String messageUrl = context.getInitParameter("config.site.url") + (isAdminOrStaff ? "control": "patient")
                 + "/conversation.do?id=" + message.getConversation().getId() + "#message-" + message.getId();
 
-        String body = "Dear " + message.getRecipient().getName() + "\n\n";
-        body += "You have received a message from " + message.getSender().getName() + " on Renal Patient View.\n\n";
+        String body = "Hello " + message.getRecipient().getName() + "\n\n";
+        body += "You have received a message from " + message.getSender().getName() + " on Renal PatientView.\n\n";
+        body += "Click the link below or logon to PatientView and go to the Messages tab to see the message.\n\n";
         body += messageUrl;
+        body += "\n\nPlease don't reply to this message no one will see it.\n\n";
 
         sendEmail(noReplyEmail, new String[]{message.getRecipient().getEmail()},
                 null, subject, body);

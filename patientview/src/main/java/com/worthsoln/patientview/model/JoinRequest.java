@@ -1,5 +1,7 @@
 package com.worthsoln.patientview.model;
 
+import com.worthsoln.ibd.Ibd;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -98,4 +100,11 @@ public class JoinRequest extends BaseModel {
         this.antiSpamAnswer = antiSpamAnswer;
     }
 
+    public String getDateOfBirthFormatted() {
+        if (dateOfBirth != null) {
+            return Ibd.DATE_FORMAT.format(dateOfBirth);
+        }
+
+        return "";
+    }
 }
