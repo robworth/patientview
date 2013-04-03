@@ -28,7 +28,8 @@ public interface UserDao {
     PatientUser getPatientUserWithUsername(String username);
 
     // Only use for testing purposes!
-    void createRawUser(String username, String password, String name, String email);
+    void createRawUser(String username, String password, String name, String email, String unitcode,
+                       String nhsno);
 
     PatientUser getExternallyCreatedPatientUser(String nhsno);
 

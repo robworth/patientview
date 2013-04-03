@@ -31,6 +31,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     // tables
     private static final String USER_TABLE_NAME = "user"; // main user table
     private static final String USER_MAPPING_TABLE_NAME = "rdr_user_mapping"; // maps user accounts to roles in radar
+    private static final String PV_USER_MAPPING_TABLE_NAME = "usermapping"; // maps user accounts to units in pv
     private static final String ADMIN_USER_TABLE_NAME = "tbl_adminusers"; // maps user accounts to roles in radar
     private static final String PROFESSIONAL_USER_TABLE_NAME = "tbl_users"; // rdr specific user
     private static final String PATIENT_USER_TABLE_NAME = "tbl_patient_users"; // rdr specific patient information
@@ -40,6 +41,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_MAPPING_USER_ID_FIELD_NAME = "userId";
     private static final String USER_MAPPING_ROLE_FIELD_NAME = "role";
     private static final String USER_MAPPING_RADAR_USER_ID_FIELD_NAME = "radarUserId";
+
+    // pv user mapping table fields
+    private static final String PV_ID_FIELD_NAME = "id";
+    private static final String PV_USER_MAPPING_USERNAME_FIELD_NAME = "username";
+    private static final String PV_USER_MAPPING_UNITCODE_FIELD_NAME = "unitcode";
+    private static final String PV_USER_MAPPING_NHSNO_FIELD_NAME = "nhsno";
+    private static final String PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME = "specialty_id";
 
     // user table fields
     private static final String USER_USERNAME_FIELD_NAME = "username";
@@ -71,6 +79,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private SimpleJdbcInsert userInsert;
     private SimpleJdbcInsert userMappingInsert;
+    private SimpleJdbcInsert pvUserMappingInsert;
     private SimpleJdbcInsert adminUsersInsert;
     private SimpleJdbcInsert professionalUsersInsert;
     private SimpleJdbcInsert patientUsersInsert;
@@ -91,6 +100,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_MAPPING_USER_ID_FIELD_NAME, USER_MAPPING_ROLE_FIELD_NAME,
                         USER_MAPPING_RADAR_USER_ID_FIELD_NAME);
+
+        pvUserMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(PV_USER_MAPPING_TABLE_NAME)
+                .usingGeneratedKeyColumns(PV_ID_FIELD_NAME)
+                .usingColumns(PV_USER_MAPPING_USERNAME_FIELD_NAME, PV_USER_MAPPING_UNITCODE_FIELD_NAME,
+                        PV_USER_MAPPING_NHSNO_FIELD_NAME, PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME);
 
         adminUsersInsert = new SimpleJdbcInsert(dataSource).withTableName(ADMIN_USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ADMIN_USER_ID_FIELD_NAME);
@@ -358,7 +372,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
-    public void createRawUser(String username, String password, String name, String email) {
+    // simulate how patient view creates a user
+    public void createRawUser(String username, String password, String name, String email, String unitcode,
+                              String nhsno) {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, username);
         userMap.put(USER_PASSWORD_FIELD_NAME, password);
@@ -368,6 +384,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_SCREEN_NAME_FIELD_NAME, "");
 
         userInsert.executeAndReturnKey(userMap);
+
+        // we only ever want one user mapping per user so just delete any existing and re add
+        userMap = new HashMap<String, Object>();
+        userMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
+        userMap.put(PV_USER_MAPPING_UNITCODE_FIELD_NAME, unitcode);
+        userMap.put(PV_USER_MAPPING_NHSNO_FIELD_NAME, nhsno);
+        userMap.put(PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME, 1);
+
+        // add mapping
+        pvUserMappingInsert.execute(userMap);
     }
 
     // users are created in Patient View without our radar mappings

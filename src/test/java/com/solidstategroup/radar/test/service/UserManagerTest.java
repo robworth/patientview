@@ -35,7 +35,7 @@ public class UserManagerTest extends TestPvDbSchema {
     public void testPatientUserRegistration() throws Exception {
 
         // create a user row as per patient view
-        userDao.createRawUser("testusername", "passwordhash", "my user", "test@test.com");
+        userDao.createRawUser("testusername", "passwordhash", "my user", "test@test.com", "unitcode1", "NHS123");
 
         // create a demographic
         Date dob = new Date();
