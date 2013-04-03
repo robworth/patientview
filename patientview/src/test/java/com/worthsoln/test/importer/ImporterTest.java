@@ -138,6 +138,9 @@ public class ImporterTest extends BaseDaoTest {
         testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FOLLOWUP);
+
         List<Centre> centres = centreManager.getAll();
 
         assertEquals("Incorrect number of centres", 1, centres.size());
@@ -343,7 +346,11 @@ public class ImporterTest extends BaseDaoTest {
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
         MockHttpSession mockHttpSession = new MockHttpSession();
 
-        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 
@@ -366,8 +373,13 @@ public class ImporterTest extends BaseDaoTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
 
         // run twice
-        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
-        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 
