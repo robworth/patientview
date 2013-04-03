@@ -126,7 +126,7 @@ public class EmailManagerImpl implements EmailManager {
             messageHelper.setText(body, true);
 
             javaMailSender.send(messageHelper.getMimeMessage());
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             LOGGER.error("Could send email", e);
         }
     }
