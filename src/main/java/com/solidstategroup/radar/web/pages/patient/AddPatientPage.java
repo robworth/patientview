@@ -10,6 +10,7 @@ import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
 import com.solidstategroup.radar.service.DemographicsManager;
 import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.web.RadarApplication;
 import com.solidstategroup.radar.web.RadarSecuredSession;
 import com.solidstategroup.radar.web.components.ComponentHelper;
@@ -29,6 +30,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -53,6 +55,9 @@ public class AddPatientPage extends BasePage {
     @SpringBean
     private UserManager userManager;
 
+    @SpringBean
+    private UtilityManager utilityManager;
+
     public AddPatientPage() {
         ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
@@ -61,6 +66,9 @@ public class AddPatientPage extends BasePage {
         final WebMarkupContainer pvMessageContainer = new WebMarkupContainer("pvMessageContainer");
         pvMessageContainer.setOutputMarkupPlaceholderTag(true);
         pvMessageContainer.setVisible(false);
+        pvMessageContainer.add(
+                new ExternalLink("patientViewLink",
+                        utilityManager.getPatientViewSiteUrl(), utilityManager.getPatientViewSiteUrl()));
 
         CompoundPropertyModel<AddPatientModel> addPatientModel =
                 new CompoundPropertyModel<AddPatientModel>(new AddPatientModel());
@@ -162,7 +170,7 @@ public class AddPatientPage extends BasePage {
         componentsToUpdateList.add(feedbackPanel);
         componentsToUpdateList.add(pvMessageContainer);
 
-        // add the components to hierachy
+        // add the components
         form.add(id, idType, diseaseGroup, submit, feedbackPanel, pvMessageContainer);
         add(form, pageNumber);
     }

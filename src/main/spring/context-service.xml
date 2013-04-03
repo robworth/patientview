@@ -79,6 +79,8 @@
 
     <bean id="utilityManager" class="com.solidstategroup.radar.service.impl.UtilityManagerImpl">
         <property name="utilityDao" ref="utilityDao"/>
+        <property name="siteUrl" value="${config.site.url}"/>
+        <property name="patientViewSiteUrl" value="${config.patientview.site.url}"/>
     </bean>
 
     <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl">
