@@ -62,13 +62,25 @@
                                     <tr>
                                         <td>
                                             <input class="saveBtn" type="button" wicket:id="submit" value="Add Patient"/>
-                                            <span class="feedback" wicket:id="feedback"></span>
                                         </td>
                                     </tr>
                                 </tb>
                             </table>
 
+                            <span class="feedback" wicket:id="feedback"></span>
 
+                            <div wicket:id="pvMessageContainer">
+                                <ul>
+                                    <li>Go to <a href="#" target="_new" wicket:id="patientViewLink"></a></li>
+                                    <li>You can use the same login that you use for this website</li>
+                                    <li>Click on "Add patient" in on the left</li>
+                                    <li>Fill in the patient&apos;s details</li>
+                                    <li>Take note of the patient&apos;s username and password so they can be sent to the patient</li>
+                                    <li>Once complete on PatientView, come back here and try again</li>
+                                </ul>
+                                <p>If you are unsure about adding a patient to PatientView and sending out passwords etc,
+                                    in the first instance talk to the member of staff in your unit who deals with PatientView registrations.</p>
+                            </div>
                         </td>
                     </tr>
                     </tbody>

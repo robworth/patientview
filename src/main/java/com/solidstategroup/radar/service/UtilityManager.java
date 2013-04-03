@@ -14,6 +14,10 @@ import java.util.Map;
 
 public interface UtilityManager {
 
+    String getSiteUrl();
+
+    String getPatientViewSiteUrl();
+
     Centre getCentre(long id);
 
     List<Centre> getCentres();

@@ -31,6 +31,26 @@ public class UtilityManagerImpl implements UtilityManager {
 
     private UtilityDao utilityDao;
 
+    private String siteUrl;
+
+    private String patientViewSiteUrl;
+
+    public String getSiteUrl() {
+        return siteUrl;
+    }
+
+    public String getPatientViewSiteUrl() {
+        return patientViewSiteUrl;
+    }
+
+    public void setPatientViewSiteUrl(String patientViewSiteUrl) {
+        this.patientViewSiteUrl = patientViewSiteUrl;
+    }
+
+    public void setSiteUrl(String siteUrl) {
+        this.siteUrl = siteUrl;
+    }
+
     public Centre getCentre(long id) {
         return utilityDao.getCentre(id);
     }
