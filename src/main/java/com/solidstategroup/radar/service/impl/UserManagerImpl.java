@@ -220,9 +220,12 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         PatientUser patientUser = userDao.getPatientUser(username);
         if (patientUser != null) {
             try {
-                // todo fix this!
-//                String password = TripleDes.decrypt(patientUser.getPasswordHash());
-//                emailManager.sendForgottenPassword(patientUser, password);
+                String password = generateRandomPassword();
+                patientUser.setPassword(ProfessionalUser.getPasswordHash(password));
+
+                userDao.savePatientUser(patientUser);
+
+                emailManager.sendForgottenPassword(patientUser, password);
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt password for forgotten password email for {}", username, e);
                 throw new DecryptionException("Could not decrypt password for forgotten password email", e);
@@ -239,10 +242,12 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         ProfessionalUser professionalUser = userDao.getProfessionalUser(username);
         if (professionalUser != null) {
             try {
-                // todo fix this!
-//                String password = TripleDes.decrypt(professionalUser.getPasswordHash());
-//                professionalUser.setUsername(TripleDes.decrypt(professionalUser.getUsernameHash()));
-                //emailManager.sendForgottenPassword(professionalUser, password);
+                String password = generateRandomPassword();
+                professionalUser.setPassword(ProfessionalUser.getPasswordHash(password));
+
+                userDao.saveProfessionalUser(professionalUser);
+
+                emailManager.sendForgottenPassword(professionalUser, password);
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt");
                 throw new DecryptionException("Could not decrypt", e);

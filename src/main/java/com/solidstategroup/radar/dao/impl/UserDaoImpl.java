@@ -569,7 +569,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private void deleteUserMapping(User user) {
         Map<String, Object> userMap = new HashMap<String, Object>();
-        userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getId());
+        userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getUserId());
 
         namedParameterJdbcTemplate.update("DELETE FROM " + USER_MAPPING_TABLE_NAME + " WHERE "
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);
