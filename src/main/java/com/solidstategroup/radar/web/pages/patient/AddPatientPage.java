@@ -25,6 +25,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
@@ -57,6 +58,9 @@ public class AddPatientPage extends BasePage {
 
         // list of items to update in ajax submits
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
+        final WebMarkupContainer pvMessageContainer = new WebMarkupContainer("pvMessageContainer");
+        pvMessageContainer.setOutputMarkupPlaceholderTag(true);
+        pvMessageContainer.setVisible(false);
 
         CompoundPropertyModel<AddPatientModel> addPatientModel =
                 new CompoundPropertyModel<AddPatientModel>(new AddPatientModel());
@@ -85,7 +89,9 @@ public class AddPatientPage extends BasePage {
                 } else if (!userManager.userExistsInPatientView(model.getPatientId())) {
                     // If nhsno is not already in patient view inform user they need to add the patient using the
                     // patient view application.
-                    error("Create this user in patient view!");
+                    pvMessageContainer.setVisible(true);
+                    error("All patients must have a PatientView user. That NHS number is not currently in " +
+                            "PatientView hence you will need to to go to PatientView to add it.");
                 }
 
                 // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
@@ -154,9 +160,10 @@ public class AddPatientPage extends BasePage {
 
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
         componentsToUpdateList.add(feedbackPanel);
+        componentsToUpdateList.add(pvMessageContainer);
 
         // add the components to hierachy
-        form.add(id, idType, diseaseGroup, submit, feedbackPanel);
+        form.add(id, idType, diseaseGroup, submit, feedbackPanel, pvMessageContainer);
         add(form, pageNumber);
     }
 }
