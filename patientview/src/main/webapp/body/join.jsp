@@ -7,6 +7,10 @@
     <h1>Join Patient View</h1>
 </div>
 
+<p>Please enter your details.</p>
+<p>Ensure they are accurate since they will be used by your unit's staff to verify who you are and to contact you to add you to PatientView.</p>
+<br />
+
 <html:form action="/joinSubmit" styleClass="form-horizontal">
 
     <html:errors/>
@@ -69,7 +73,7 @@
     </div>
 
     <div class="control-group">
-        <div class="controls"><html:submit value="Join" styleClass="btn"/></div>
+        <div class="controls"><html:submit value="Send join request" styleClass="btn"/></div>
     </div>
 
 </html:form>
