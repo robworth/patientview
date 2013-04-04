@@ -7,7 +7,7 @@ public class ProfessionalUserFilter extends BaseFilter {
         TITLE("uTitle"),
         ROLE("uRole"),
         EMAIL("email"),
-        CENTRE("cName"),
+        CENTRE("unit.name"),
         REGISTRATION_DATE("uDateJoin"),
         GMC("uGMC");
 

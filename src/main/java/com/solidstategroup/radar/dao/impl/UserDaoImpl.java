@@ -170,7 +170,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(ADMIN_USER_TABLE_NAME)
                     + buildUserWhereIdStatement(ADMIN_USER_TABLE_NAME, ADMIN_USER_ID_FIELD_NAME),
-                    new Object[]{id}, new AdminUserRowMapper());
+                    new Object[]{id, User.ROLE_ADMIN}, new AdminUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not admin user with " + ADMIN_USER_ID_FIELD_NAME + " {}", id);
         }
@@ -214,7 +214,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
                     + buildUserWhereIdStatement(PROFESSIONAL_USER_TABLE_NAME, PROFESSIONAL_USER_ID_FIELD_NAME),
-                    new Object[]{id}, new ProfessionalUserRowMapper());
+                    new Object[]{id, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not professional user with " + PROFESSIONAL_USER_ID_FIELD_NAME + " {}", id);
         }
@@ -351,7 +351,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME)
                     + buildUserWhereIdStatement(PATIENT_USER_TABLE_NAME, PATIENT_USER_ID_FIELD_NAME),
-                    new Object[]{id}, new PatientUserRowMapper());
+                    new Object[]{id, User.ROLE_PATIENT}, new PatientUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not patient user with " + ID_FIELD_NAME + " {}", id);
         }
@@ -700,6 +700,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private String buildUserWhereIdStatement(String userTable, String mapIdField) {
         return " WHERE " +
                 USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? " +
+                " AND " +
+                USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME + " = ? " +
                 " AND " +
                 userTable + "." + mapIdField + " = " + USER_MAPPING_TABLE_NAME + "."
                 + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +

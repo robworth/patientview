@@ -47,9 +47,9 @@ public class ExportManagerImpl implements ExportManager {
         // add the row data
         for (ProfessionalUser user : professionalUsers) {
             String username = "";
-//            documentData.addRow(Arrays.asList(user.getSurname(), user.getForename(), user.getTitle(), user.getRole(),
-//                    user.getEmail(), user.getCentre() != null ? user.getCentre().getName() :
-//                    "", new SimpleDateFormat(DATE_PATTERN).format(user.getDateRegistered()), user.getGmc()));
+            documentData.addRow(Arrays.asList(user.getSurname(), user.getForename(), user.getTitle(), user.getRole(),
+                    user.getEmail(), user.getCentre() != null ? user.getCentre().getName() :
+                    "", new SimpleDateFormat(DATE_PATTERN).format(user.getDateRegistered()), user.getGmc()));
         }
         return getExportData(exportType, documentData);
     }
@@ -103,8 +103,8 @@ public class ExportManagerImpl implements ExportManager {
                     format(user.getDateOfBirth()) : "";
 
             String dateRegistered = "";
-//            dateRegistered = user.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
-//                    format(user.getDateRegistered()) : "";
+            dateRegistered = user.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
+                    format(user.getDateRegistered()) : "";
 
             documentData.addRow(Arrays.asList(user.getRadarNumber().toString(), user.getUsername(), dob,
                     dateRegistered));
