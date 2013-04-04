@@ -68,7 +68,7 @@ public class AdminUserPage extends AdminsBasePage {
                         setResponsePage(AdminUsersPage.class);
                     }
                 } catch (Exception e) {
-                    error("Could not save user: " + e.toString());
+                    error("Could not save user");
                 }
             }
         };
@@ -157,7 +157,9 @@ public class AdminUserPage extends AdminsBasePage {
             }
 
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                editMode = true;
                 ajaxRequestTarget.add(feedback);
+                ajaxRequestTarget.add(userForm);
             }
         });
 
