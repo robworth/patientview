@@ -57,13 +57,13 @@
       </td>
     </tr>
 
-    <bean:define id="startDate" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="startDateExperienceFormattedDate" />
+    <bean:define id="startDate" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="startDateFormattedDate" />
     <tr >
       <td>Start date (dd-mm-yyyy)</td>
       <td><input type="text" name="<%=SharingThoughts.START_DATE%>" value="<bean:write name='<%=SharingThoughts.THOUGHT_PARAM%>' property='<%=SharingThoughts.START_DATE_FORMATTED_DATE%>' />" size="50"  /></td>
     </tr>
 
-    <bean:define id="endDate" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="endDateExperienceFormattedDate" />
+    <bean:define id="endDate" name="<%=SharingThoughts.THOUGHT_PARAM%>" property="endDateFormattedDate" />
     <tr >
       <td>End date (dd-mm-yyyy)</td>
       <td><input type="text" name="<%=SharingThoughts.END_DATE%>" value="<bean:write name='<%=SharingThoughts.THOUGHT_PARAM%>' property='<%=SharingThoughts.END_DATE_FORMATTED_DATE%>' />" size="50"  /></td>
