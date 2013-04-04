@@ -2,6 +2,7 @@ package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
@@ -32,6 +33,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_TABLE_NAME = "user"; // main user table
     private static final String USER_MAPPING_TABLE_NAME = "rdr_user_mapping"; // maps user accounts to roles in radar
     private static final String PV_USER_MAPPING_TABLE_NAME = "usermapping"; // maps user accounts to units in pv
+    private static final String PV_SPECIALTY_USER_ROLE_TABLE_NAME = "specialtyuserrole"; // maps user to a role in pv
     private static final String ADMIN_USER_TABLE_NAME = "tbl_adminusers"; // maps user accounts to roles in radar
     private static final String PROFESSIONAL_USER_TABLE_NAME = "tbl_users"; // rdr specific user
     private static final String PATIENT_USER_TABLE_NAME = "tbl_patient_users"; // rdr specific patient information
@@ -48,6 +50,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String PV_USER_MAPPING_UNITCODE_FIELD_NAME = "unitcode";
     private static final String PV_USER_MAPPING_NHSNO_FIELD_NAME = "nhsno";
     private static final String PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME = "specialty_id";
+
+    // pv specialty user role table
+    private static final String PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME = "role";
+    private static final String PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME = "specialty_id";
+    private static final String PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME = "user_id";
 
     // user table fields
     private static final String USER_USERNAME_FIELD_NAME = "username";
@@ -80,6 +87,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private SimpleJdbcInsert userInsert;
     private SimpleJdbcInsert userMappingInsert;
     private SimpleJdbcInsert pvUserMappingInsert;
+    private SimpleJdbcInsert pvSpecialtyUserRoleInsert;
     private SimpleJdbcInsert adminUsersInsert;
     private SimpleJdbcInsert professionalUsersInsert;
     private SimpleJdbcInsert patientUsersInsert;
@@ -105,6 +113,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns(PV_ID_FIELD_NAME)
                 .usingColumns(PV_USER_MAPPING_USERNAME_FIELD_NAME, PV_USER_MAPPING_UNITCODE_FIELD_NAME,
                         PV_USER_MAPPING_NHSNO_FIELD_NAME, PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME);
+
+        pvSpecialtyUserRoleInsert = new SimpleJdbcInsert(dataSource).withTableName(PV_SPECIALTY_USER_ROLE_TABLE_NAME)
+                .usingGeneratedKeyColumns(PV_ID_FIELD_NAME)
+                .usingColumns(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME,
+                        PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME);
 
         adminUsersInsert = new SimpleJdbcInsert(dataSource).withTableName(ADMIN_USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ADMIN_USER_ID_FIELD_NAME);
@@ -283,16 +296,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 new ProfessionalUserRowMapper());
     }
 
-    public boolean userExistsInPatientView(String nhsno) {
-
-        if (nhsno == null || nhsno.length() == 0) {
-            throw new IllegalArgumentException("Missing required param: nhsno");
-        }
-
-        String sql = "SELECT COUNT(*) FROM usermapping WHERE nhsno = ?";
-        return jdbcTemplate.queryForInt(sql, nhsno) > 0;
-    }
-
     public void saveProfessionalUser(final ProfessionalUser professionalUser) throws Exception {
         // save details of the user into the radar tables
         Map<String, Object> professionalUserMap = new HashMap<String, Object>() {
@@ -320,6 +323,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         // save main user login into the shared rpv table
         saveUser(professionalUser);
+
+        // create a mapping and role so they can login to PV
+        // make sure we have all the centre data as sometimes it just the id set
+        Centre centre = utilityDao.getCentre(professionalUser.getCentre().getId());
+
+        createUserMappingAndRoleInPatientView(professionalUser.getUserId(), professionalUser.getUsername(), null,
+                centre.getUnitCode(), "unitadmin");
     }
 
     public void deleteProfessionalUser(ProfessionalUser professionalUser) throws Exception {
@@ -332,6 +342,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         namedParameterJdbcTemplate.update("DELETE FROM " + PROFESSIONAL_USER_TABLE_NAME + " WHERE "
                 + PROFESSIONAL_USER_ID_FIELD_NAME + " = :" + PROFESSIONAL_USER_ID_FIELD_NAME, professionalUserMap);
+
+        // delete any of the PV mappings as well
+        deleteUserMappingAndRoleInPatientView(professionalUser.getUserId(), professionalUser.getUsername());
     }
 
     public PatientUser getPatientUser(Long id) {
@@ -485,6 +498,60 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 + PATIENT_USER_ID_FIELD_NAME + " = :" + PATIENT_USER_ID_FIELD_NAME, professionalUserMap);
     }
 
+    public boolean userExistsInPatientView(String nhsno) {
+
+        if (nhsno == null || nhsno.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: nhsno");
+        }
+
+        String sql = "SELECT COUNT(*) FROM usermapping WHERE nhsno = ?";
+        return jdbcTemplate.queryForInt(sql, nhsno) > 0;
+    }
+
+    public void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
+                                                      String rpvRole) throws Exception {
+        // first delete any existing one
+        deleteUserMappingAndRoleInPatientView(userId, username);
+
+        // also need to create a usermapping so this user can also log into rpv to add users
+        Map<String, Object> userMappingMap = new HashMap<String, Object>();
+        userMappingMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
+        userMappingMap.put(PV_USER_MAPPING_UNITCODE_FIELD_NAME, unitcode);
+        userMappingMap.put(PV_USER_MAPPING_NHSNO_FIELD_NAME, nhsno);
+        userMappingMap.put(PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME, 1);
+
+        // add mapping
+        pvUserMappingInsert.execute(userMappingMap);
+
+        Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
+
+        pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
+    }
+
+    public void deleteUserMappingAndRoleInPatientView(Long userId, String username) throws Exception {
+        Map<String, Object> userMappingMap = new HashMap<String, Object>();
+        userMappingMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
+        userMappingMap.put(PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME, 1);
+
+        namedParameterJdbcTemplate.update("DELETE FROM " + PV_USER_MAPPING_TABLE_NAME + " WHERE "
+                + PV_USER_MAPPING_USERNAME_FIELD_NAME + " = :" + PV_USER_MAPPING_USERNAME_FIELD_NAME + " AND " +
+                PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME + " = :" + PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME,
+                userMappingMap);
+
+        Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
+
+        namedParameterJdbcTemplate.update("DELETE FROM " + PV_SPECIALTY_USER_ROLE_TABLE_NAME + " WHERE "
+                + PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME + " = :" + PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME
+                + " AND " + PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME + " = :" +
+                PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME,
+                specialtyUserRoleMap);
+    }
+
     /**
      * Will map the base user properties from the RPV user table to the user being pulled out for radar
      * @param resultSet ResultSet
@@ -534,7 +601,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private void deleteUser(User user) {
         Map<String, Object> userMap = new HashMap<String, Object>();
-        userMap.put(ID_FIELD_NAME, user.getId());
+        userMap.put(ID_FIELD_NAME, user.getUserId());
 
         // delete the main user object
         namedParameterJdbcTemplate.update("DELETE FROM " + USER_TABLE_NAME + " WHERE "
@@ -569,7 +636,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private void deleteUserMapping(User user) {
         Map<String, Object> userMap = new HashMap<String, Object>();
-        userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getId());
+        userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getUserId());
 
         namedParameterJdbcTemplate.update("DELETE FROM " + USER_MAPPING_TABLE_NAME + " WHERE "
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);

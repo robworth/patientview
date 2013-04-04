@@ -198,6 +198,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             centre.setAbbreviation(resultSet.getString("shortname"));
             // Set country from our DAO
             centre.setCountry(getCountry(resultSet.getLong("country")));
+            centre.setUnitCode(resultSet.getString("unitcode"));
             return centre;
         }
     }

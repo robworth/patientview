@@ -6,6 +6,7 @@ public class Centre extends BaseModel {
     private String name;
     private String abbreviation;
     private Country country;
+    private String unitCode;
 
     public String getName() {
         return name;
@@ -29,6 +30,14 @@ public class Centre extends BaseModel {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public String getUnitCode() {
+        return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
     }
 
     public static Comparator<Centre> getComparator() {

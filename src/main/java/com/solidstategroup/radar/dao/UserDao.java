@@ -52,4 +52,9 @@ public interface UserDao {
     List<ProfessionalUser> getProfessionalUsers(ProfessionalUserFilter filter, int page, int numberPerPage);
 
     boolean userExistsInPatientView(String nhsno);
+
+    void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
+                                               String rpvRole) throws Exception;
+
+    void deleteUserMappingAndRoleInPatientView(Long userId, String username) throws Exception;
 }
