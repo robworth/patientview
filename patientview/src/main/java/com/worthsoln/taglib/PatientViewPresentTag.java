@@ -57,7 +57,7 @@ public class PatientViewPresentTag extends PresentTag {
                 for (Unit featureUnit : featureUnits) {
                     if (featureUnit.getUnitcode().equals(UnitUtils.PATIENT_ENTERS_UNITCODE)) {
                         present = true;
-                        break FeatureLoop;
+                        break;
                     } else {
                         for (Unit userUnit : usersUnits) {
                             if (userUnit.equals(featureUnit)) {
