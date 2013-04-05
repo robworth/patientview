@@ -14,7 +14,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.Address;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.StringWriter;
@@ -126,7 +125,7 @@ public class EmailManagerImpl implements EmailManager {
             messageHelper.setText(body, true);
 
             javaMailSender.send(messageHelper.getMimeMessage());
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             LOGGER.error("Could send email", e);
         }
     }
