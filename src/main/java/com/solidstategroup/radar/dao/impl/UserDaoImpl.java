@@ -198,10 +198,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         };
 
-        if (adminUser.hasValidId()) {
-            String updateSql = buildUpdateQuery(ADMIN_USER_TABLE_NAME, ADMIN_USER_ID_FIELD_NAME, adminUserMap);
-            namedParameterJdbcTemplate.update(updateSql, adminUserMap);
-        } else {
+        // the only field in this table is id so only need to do new inserts
+        if (!adminUser.hasValidId()) {
             Number id = adminUsersInsert.executeAndReturnKey(adminUserMap);
             adminUser.setId(id.longValue());
         }
@@ -343,8 +341,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         namedParameterJdbcTemplate.update("DELETE FROM " + PROFESSIONAL_USER_TABLE_NAME + " WHERE "
                 + PROFESSIONAL_USER_ID_FIELD_NAME + " = :" + PROFESSIONAL_USER_ID_FIELD_NAME, professionalUserMap);
 
-        // delete any of the PV mappings as well
-        deleteUserMappingAndRoleInPatientView(professionalUser.getUserId(), professionalUser.getUsername());
+        // remove mappings and roles in PV
+        deleteUserMappingInPatientView(professionalUser.getUsername());
+        deleteRoleInPatientView(professionalUser.getUserId());
     }
 
     public PatientUser getPatientUser(Long id) {
@@ -510,8 +509,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     public void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                       String rpvRole) throws Exception {
-        // first delete any existing one
-        deleteUserMappingAndRoleInPatientView(userId, username);
+        createUserMappingInPatientView(username, nhsno, unitcode);
+        createRoleInPatientView(userId, rpvRole);
+    }
+
+    public void createUserMappingInPatientView(String username, String nhsno, String unitcode) throws Exception {
+        deleteUserMappingInPatientView(username);
 
         // also need to create a usermapping so this user can also log into rpv to add users
         Map<String, Object> userMappingMap = new HashMap<String, Object>();
@@ -522,16 +525,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         // add mapping
         pvUserMappingInsert.execute(userMappingMap);
-
-        Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
-
-        pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
     }
 
-    public void deleteUserMappingAndRoleInPatientView(Long userId, String username) throws Exception {
+    public void deleteUserMappingInPatientView(String username) throws Exception {
         Map<String, Object> userMappingMap = new HashMap<String, Object>();
         userMappingMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
         userMappingMap.put(PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME, 1);
@@ -540,7 +536,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 + PV_USER_MAPPING_USERNAME_FIELD_NAME + " = :" + PV_USER_MAPPING_USERNAME_FIELD_NAME + " AND " +
                 PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME + " = :" + PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME,
                 userMappingMap);
+    }
 
+    public void createRoleInPatientView(Long userId, String rpvRole) throws Exception {
+        Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
+        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
+
+        pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
+    }
+
+    public void deleteRoleInPatientView(Long userId) throws Exception {
         Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
         specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
         specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
@@ -572,7 +579,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Will save the base user properties to the shared table with RPV
      * @param user User
      */
-    private void saveUser(User user) {
+    private void saveUser(User user) throws Exception {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(ID_FIELD_NAME, user.getUserId());
         userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
@@ -599,7 +606,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Remove a user from radar - this will delete the record in the shared RPV table and the radar user mapping
      * @param user User
      */
-    private void deleteUser(User user) {
+    private void deleteUser(User user) throws Exception {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(ID_FIELD_NAME, user.getUserId());
 
@@ -616,7 +623,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Radar has different roles to RPV and has its own user mapping table that has the role the user has been assigned
      * @param user User
      */
-    private void saveUserMapping(User user) {
+    public void saveUserMapping(User user) throws Exception {
         // we only ever want one user mapping per user so just delete any existing and re add
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getUserId());
@@ -634,7 +641,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Delete any user mappings roles for this user
      * @param user User
      */
-    private void deleteUserMapping(User user) {
+    public void deleteUserMapping(User user) throws Exception {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getUserId());
 

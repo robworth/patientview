@@ -1,8 +1,10 @@
 package com.solidstategroup.radar.util.impl;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -14,18 +16,46 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component(value = "userUpgradeManager")
 public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarRpvSingleUserTableExport.class);
+
+    // user table fields
+    private static final String USER_TABLE_NAME = "user"; // main user table
+    private static final String ID_FIELD_NAME = "id";
+    private static final String USER_USERNAME_FIELD_NAME = "username";
+    private static final String USER_PASSWORD_FIELD_NAME = "password";
+    private static final String USER_EMAIL_FIELD_NAME = "email";
+    private static final String USER_NAME_FIELD_NAME = "name";
+    private static final String USER_SCREEN_NAME_FIELD_NAME = "screenname";
+    private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
+    private static final String USER_EMAIL_VERIFIED_FIELD_NAME = "emailverified";
+
+    // professional table fields
+    private static final String PROFESSIONAL_USER_TABLE_NAME = "tbl_users"; // rdr specific user
+    private static final String PROFESSIONAL_USER_ID_FIELD_NAME = "uID";
+    private static final String PROFESSIONAL_USER_SURNAME_FIELD_NAME = "uSurname";
+    private static final String PROFESSIONAL_USER_FORENAME_FIELD_NAME = "uForename";
+    private static final String PROFESSIONAL_USER_TITLE_FIELD_NAME = "uTitle";
+    private static final String PROFESSIONAL_USER_PHONE_FIELD_NAME = "uPhone";
+    private static final String PROFESSIONAL_USER_DATE_JOINED_FIELD_NAME = "uDateJoin";
+    private static final String PROFESSIONAL_USER_GMC_FIELD_NAME = "uGMC";
+    private static final String PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME = "uCentre";
+    private static final String PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME = "uRole";
 
     @Autowired
     private UserDao userDao;
@@ -34,23 +64,81 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private UtilityDao utilityDao;
 
     @Autowired
+    private DemographicsDao demographicsDao;
+
+    @Autowired
     private ComboPooledDataSource dataSource;
 
     protected JdbcTemplate jdbcTemplate;
 
+    private SimpleJdbcInsert userInsert;
+
+    private SimpleJdbcInsert professionalUsersInsert;
+
+    List<String> failedUsers = new ArrayList<String>();
+
     @PostConstruct
     public void init() {
         jdbcTemplate = new JdbcTemplate(dataSource);
+
+        userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
+                .usingGeneratedKeyColumns(ID_FIELD_NAME)
+                .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
+                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
+                        USER_SCREEN_NAME_FIELD_NAME);
+
+        professionalUsersInsert = new SimpleJdbcInsert(dataSource).withTableName(PROFESSIONAL_USER_TABLE_NAME)
+                .usingGeneratedKeyColumns(PROFESSIONAL_USER_ID_FIELD_NAME)
+                .usingColumns(PROFESSIONAL_USER_SURNAME_FIELD_NAME, PROFESSIONAL_USER_FORENAME_FIELD_NAME,
+                        PROFESSIONAL_USER_TITLE_FIELD_NAME, PROFESSIONAL_USER_GMC_FIELD_NAME,
+                        PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME,
+                        PROFESSIONAL_USER_PHONE_FIELD_NAME, PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME,
+                        PROFESSIONAL_USER_DATE_JOINED_FIELD_NAME);
     }
 
     public void run() {
+        /**
+         * first we need to grab all the unitadmins from patient view as we want to create logins for these in radar
+         * but dont save them yet as we dont want to then move all the radar logins over to patient view and do it all
+         * twice
+         *
+         * grab unit admins from patient view
+         *
+         * then move all users from radar over to PV
+         *
+         * then use the unit admins we got at start and move them into radar
+         *
+         * SIMPLES!
+         */
+        List<ProfessionalUser> patientViewUnitAdmins = jdbcTemplate.query(
+                "SELECT " +
+                "   u.*, " +
+                "   un.id AS centreId " +
+                " FROM " +
+                "   USER u, " +
+                "   specialtyuserrole sur, " +
+                "   usermapping um, " +
+                "   unit un " +
+                " WHERE " +
+                "   sur.user_id = u.id " +
+                " AND " +
+                "   sur.role = 'unitadmin' " +
+                " AND " +
+                "   um.username = u.username " +
+                " AND " +
+                "   un.unitcode = um.unitcode ", new PatientViewUnitAdminRowMapper());
 
         List<AdminUser> adminUsers = jdbcTemplate.query("SELECT * FROM tbl_adminusers", new AdminUserRowMapper());
         for (AdminUser adminUser : adminUsers) {
             try {
-                userDao.saveAdminUser(adminUser);
+                if (!checkForUsername(adminUser.getUsername())) {
+                    userDao.saveAdminUser(adminUser);
+                } else {
+                    failedUsers.add("Admin user found: " + adminUser.getId() + " - " + adminUser.getEmail());
+                }
             } catch (Exception e) {
-                LOGGER.error("Could not export radar admin user " + adminUser.getId());
+                failedUsers.add("Could not save admin user found: " + adminUser.getId() + " - " + adminUser.getEmail());
+                e.printStackTrace();
             }
         }
 
@@ -58,21 +146,131 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                 new ProfessionalUserRowMapper());
         for (ProfessionalUser professionalUser : professionalUsers) {
             try {
-                userDao.saveProfessionalUser(professionalUser);
+                if (!checkForUsername(professionalUser.getUsername())) {
+                    userDao.saveProfessionalUser(professionalUser);
+                } else {
+                    failedUsers.add("Professional user found: " + professionalUser.getId() + " - "
+                            + professionalUser.getEmail());
+                }
             } catch (Exception e) {
-                LOGGER.error("Could not export radar professional user " + professionalUser.getId());
+                failedUsers.add("Could not save professional user: " + professionalUser.getId() + " - "
+                        + professionalUser.getEmail());
+                e.printStackTrace();
             }
         }
 
         List<PatientUser> patientUsers = jdbcTemplate.query("SELECT * FROM tbl_patient_users",
                 new PatientUserRowMapper());
         for (PatientUser patientUser : patientUsers) {
+            /**
+             * Each patient also needs the following created in PV for logins to work
+             *
+             *  Mappings:
+             *
+             *  1. Mapping for unitcode PATIENT
+             *  2. Mapping for unitcode RenalUnit
+             *  3. Mapping for unitcode RenalUnit + -GP
+             *  4. Mapping for unitcode RenalUnit2
+             *  5. Mapping for unitcode RenalUnit2 + -GP
+             *
+             *  Roles:
+             *  1. Role for PATIENT
+             *  2. Role for PATIENT-GP
+             */
             try {
-                userDao.savePatientUser(patientUser);
+                if (!checkForUsername(patientUser.getUsername())) {
+                    // save main patient user
+                    userDao.savePatientUser(patientUser);
+
+                    // also need to save a 2nd user record in PV only for the -GP not sure about a mapping in Radar?
+                    Map<String, Object> gpPatientUserMap = new HashMap<String, Object>();
+                    gpPatientUserMap.put(USER_USERNAME_FIELD_NAME, patientUser.getUsername() + "-GP");
+                    gpPatientUserMap.put(USER_PASSWORD_FIELD_NAME, patientUser.getPassword());
+                    gpPatientUserMap.put(USER_NAME_FIELD_NAME, patientUser.getName() + "-GP");
+                    gpPatientUserMap.put(USER_EMAIL_FIELD_NAME, null);
+                    gpPatientUserMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+                    gpPatientUserMap.put(USER_SCREEN_NAME_FIELD_NAME, "");
+                    gpPatientUserMap.put(USER_EMAIL_VERIFIED_FIELD_NAME, true);
+
+                    Number gpId = userInsert.executeAndReturnKey(gpPatientUserMap);
+
+                    // need to create mappings for patient in PV
+                    Demographics demographics = demographicsDao.getDemographicsByRadarNumber(
+                            patientUser.getRadarNumber());
+
+                    if (demographics != null) {
+                        // 1. Mapping for unitcode PATIENT
+                        userDao.createUserMappingInPatientView(patientUser.getUsername(), demographics.getNhsNumber(),
+                                "PATIENT");
+
+                        // 2. Mapping for unitcode RenalUnit
+                        userDao.createUserMappingInPatientView(patientUser.getUsername(), demographics.getNhsNumber(),
+                                demographics.getRenalUnit().getUnitCode());
+
+                        // 3. Mapping for unitcode RenalUnit + -GP
+                        userDao.createUserMappingInPatientView(patientUser.getUsername() + "-GP",
+                                demographics.getNhsNumber(),
+                                demographics.getRenalUnit().getUnitCode());
+
+                        // 4. Mapping for unitcode RenalUnit2
+                        userDao.createUserMappingInPatientView(patientUser.getUsername(), demographics.getNhsNumber(),
+                                demographics.getRenalUnitAuthorised().getUnitCode());
+
+                        // 5. Mapping for unitcode RenalUnit2 + -GP
+                        userDao.createUserMappingInPatientView(patientUser.getUsername() + "-GP",
+                                demographics.getNhsNumber(),
+                                demographics.getRenalUnitAuthorised().getUnitCode());
+
+                        // 1. Role for PATIENT
+                        userDao.createRoleInPatientView(patientUser.getUserId(), "PATIENT");
+
+                        // 2. Role for PATIENT-GP
+                        userDao.createRoleInPatientView(gpId.longValue(), "PATIENT");
+                    } else {
+                        failedUsers.add("Patient user demographic not found: " + patientUser.getId() + " - "
+                                + patientUser.getEmail());
+                    }
+                } else {
+                    failedUsers.add("Patient user found: " + patientUser.getId() + " - "
+                            + patientUser.getEmail());
+                }
             } catch (Exception e) {
-                LOGGER.error("Could not export radar patient user " + patientUser.getId());
+                failedUsers.add("Could not save patient user found: " + patientUser.getId() + " - "
+                        + patientUser.getEmail());
                 e.printStackTrace();
             }
+        }
+
+        // move pv users to radar
+        for (ProfessionalUser professionalUser : patientViewUnitAdmins) {
+            // check this user isnt in radar already as it will already have been mapped above
+            if (!checkForProfessionalUser(professionalUser.getEmail())) {
+                try {
+                    Map<String, Object> professionalUserMap = new HashMap<String, Object>();
+                    professionalUserMap.put(PROFESSIONAL_USER_SURNAME_FIELD_NAME, professionalUser.getSurname());
+                    professionalUserMap.put(PROFESSIONAL_USER_FORENAME_FIELD_NAME, professionalUser.getForename());
+                    professionalUserMap.put(PROFESSIONAL_USER_TITLE_FIELD_NAME, professionalUser.getTitle());
+                    professionalUserMap.put(PROFESSIONAL_USER_GMC_FIELD_NAME, professionalUser.getGmc());
+                    professionalUserMap.put(PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME, professionalUser.getRole());
+                    professionalUserMap.put(PROFESSIONAL_USER_PHONE_FIELD_NAME, professionalUser.getPhone());
+                    professionalUserMap.put(PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME,
+                            professionalUser.getCentre().getId());
+                    professionalUserMap.put(PROFESSIONAL_USER_DATE_JOINED_FIELD_NAME,
+                            professionalUser.getDateRegistered());
+
+                    Number id = professionalUsersInsert.executeAndReturnKey(professionalUserMap);
+                    professionalUser.setId(id.longValue());
+
+                    userDao.saveUserMapping(professionalUser);
+                } catch (Exception e) {
+                    failedUsers.add("PV unitadmin failed: " + professionalUser.getId() + " - "
+                            + professionalUser.getEmail());
+                }
+            }
+        }
+
+        for (String s : failedUsers) {
+            LOGGER.debug(s);
         }
     }
 
@@ -152,5 +350,51 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
 
             return patientUser;
         }
+    }
+
+    private class PatientViewUnitAdminRowMapper implements RowMapper<ProfessionalUser> {
+        public ProfessionalUser mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            ProfessionalUser professionalUser = new ProfessionalUser();
+
+            professionalUser.setUserId(resultSet.getLong("id"));
+
+            // name in pv is one field so just split on first space and hope its the surname
+            String[] name = resultSet.getString("name").split(" ");
+            String forename = name[0];
+            String surname = "";
+
+            if (name.length > 1) {
+                surname = name[1];
+
+                if (name.length > 2) {
+                    for (int x = 2; x < name.length; x++) {
+                        surname += " " + name[x];
+                    }
+                }
+            }
+
+            professionalUser.setSurname(surname);
+            professionalUser.setForename(forename);
+            professionalUser.setEmail(resultSet.getString("email"));
+            professionalUser.setDateRegistered(new Date());
+
+            // Set the centre
+            Long centreId = resultSet.getLong("centreId");
+            if (centreId != null && centreId > 0) {
+                professionalUser.setCentre(utilityDao.getCentre(centreId));
+            }
+
+            return professionalUser;
+        }
+    }
+
+    private boolean checkForUsername(String username) {
+        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+        return jdbcTemplate.queryForInt(sql, username) > 0;
+    }
+
+    private boolean checkForProfessionalUser(String email) {
+        String sql = "SELECT COUNT(*) FROM tbl_users WHERE uEmail = ?";
+        return jdbcTemplate.queryForInt(sql, email) > 0;
     }
 }

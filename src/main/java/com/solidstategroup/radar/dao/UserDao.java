@@ -56,5 +56,15 @@ public interface UserDao {
     void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                String rpvRole) throws Exception;
 
-    void deleteUserMappingAndRoleInPatientView(Long userId, String username) throws Exception;
+    void createUserMappingInPatientView(String username, String nhsno, String unitcode) throws Exception;
+
+    void deleteUserMappingInPatientView(String username) throws Exception;
+
+    void createRoleInPatientView(Long userId, String rpvRole) throws Exception;
+
+    void deleteRoleInPatientView(Long userId) throws Exception;
+
+    void saveUserMapping(User user) throws Exception;
+
+    void deleteUserMapping(User user) throws Exception;
 }
