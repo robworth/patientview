@@ -37,7 +37,7 @@ DELETE FROM tbl_immunsup_treatment;
 DELETE FROM tbl_issuetracker;
 DELETE FROM tbl_labdata;
 DELETE FROM tbl_pathology;
-UPDATE tbl_patient_users SET pUserName = 'patientview-testing@solidstategroup.com', pDOB = '1975-05-17 00:00:00';
+UPDATE tbl_patient_users SET pUserName = CONCAT(CONCAT(pId, 'patient'), '-testing@solidstategroup.com'), pDOB = '1975-05-17 00:00:00';
 DELETE FROM tbl_relapse;
 DELETE FROM tbl_rrt_plasma;
 DELETE FROM tbl_rrt_treatment;
@@ -45,7 +45,7 @@ DELETE FROM tbl_therapy;
 DELETE FROM tbl_transplant;
 DELETE FROM tbl_transplant_reject;
 UPDATE tbl_users SET uSurname =  CONCAT('Surname for uID', uID), uForename = CONCAT('Forename for uID', uID), uTitle = 'Ms', uRole = 'Some job role',
-uEmail = 'patientview-testing@solidstategroup.com';
+uEmail = CONCAT(CONCAT(uId, 'professional'), '-testing@solidstategroup.com');
 UPDATE unit SET renaladminemail = 'patientview-testing@solidstategroup.com', unitenquiriesemail = 'patientview-testing@solidstategroup.com', appointmentemail = 'patientview-testing@solidstategroup.com', peritonealdialysisemail = 'patientview-testing@solidstategroup.com';
 -- set all the user passwords to 'pppppp'
 UPDATE USER SET PASSWORD = '891e12e156d8c6609c6d5f3e04b2fc8da6d9ff3d7e9f906314c0909da69637eb', NAME = CONCAT('Name for ', username), email = 'patientview-testing@solidstategroup.com', screenname = CONCAT('Screen name for ', username);
