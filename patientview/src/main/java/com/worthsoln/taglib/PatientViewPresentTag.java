@@ -52,10 +52,13 @@ public class PatientViewPresentTag extends PresentTag {
                 List<Unit> usersUnits = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits();
                 List<Unit> featureUnits = LegacySpringUtils.getFeatureManager().getUnitsForFeature(feature);
 
+                UnitLoop:
                 for (Unit userUnit : usersUnits) {
                     for (Unit featureUnit : featureUnits) {
                         if (userUnit.equals(featureUnit)) {
                             present = true;
+
+                            break UnitLoop;
                         }
                     }
                 }
