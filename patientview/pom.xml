@@ -539,6 +539,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <version>1.9.2</version>
+        </dependency>
+
         <!-- jforum stuff, version taken from file names of old ant build-->
         <!-- Note: this version 1.0 is arbitrary, not idea what version it is -->
         <!--
@@ -702,7 +708,7 @@
         <dependency>
             <groupId>com.worthsoln</groupId>
             <artifactId>pvdbschema</artifactId>
-            <version>1.0-RELEASE-SNAPSHOT</version>
+            <version>1.0-DEVELOP-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 

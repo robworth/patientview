@@ -78,6 +78,15 @@
         </property>
     </bean>
 
+    <bean id="setFeatureManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setFeatureManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="featureManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setLetterManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setLetterManager"/>
         <property name="arguments">
@@ -213,11 +222,29 @@
         </property>
     </bean>
 
+    <bean id="setMessageManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setMessageManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="messageManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setEmailManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEmailManager"/>
         <property name="arguments">
             <list>
                 <ref bean="emailManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setJoinRequestManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setJoinRequestManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="joinRequestManager"/>
             </list>
         </property>
     </bean>

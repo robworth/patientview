@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  Note: I have changed the implementation to allow units to be returned when the tenancy is null
+ *  Note: I have changed the implementation to allow units to be returned when the specialty is null
  *  i.e. we are not a logged in user.  (PC 01/03/2013)
  *  The unitcode is unique so we should not get NonUniqueResultException
  */
@@ -50,6 +50,21 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
+    public List<Unit> getAll(boolean sortByName) {
+        if (sortByName) {
+            CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
+            Root<Unit> from = criteria.from(Unit.class);
+
+            criteria.orderBy(builder.asc(from.get(Unit_.name)));
+
+            return getEntityManager().createQuery(criteria).getResultList();
+        } else {
+            return getAll();
+        }
+    }
+
+    @Override
     public List<Unit> getAll(boolean sortByName, Specialty specialty) {
 
         if (sortByName) {
@@ -74,6 +89,29 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
+    public List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
+        Root<Unit> from = criteria.from(Unit.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        if (sourceTypesToInclude != null && sourceTypesToInclude.length > 0) {
+            wherePredicates.add(from.get(Unit_.sourceType).in(sourceTypesToInclude));
+        }
+
+        if (sourceTypesToExclude != null) {
+            for (String notSourceType : sourceTypesToExclude) {
+                wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), notSourceType));
+            }
+        }
+
+        buildWhereClause(criteria, wherePredicates);
+        criteria.orderBy(builder.asc(from.get(Unit_.name)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
     public List<Unit> getUnitsWithUser(Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -83,7 +121,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
         wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
-            
+
         if (specialty != null) {
             wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         }
@@ -171,7 +209,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         query.setParameter("specialtyId", specialty.getId());
         query.setParameter("unitcode", unitcode);
 
-        List<User> users =  query.getResultList();
+        List<User> users = query.getResultList();
 
         List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
 
@@ -188,5 +226,32 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         }
 
         return unitAdmins;
+    }
+
+    @Override
+    public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
+        String sql = "SELECT " +
+                "   u.* " +
+                "FROM " +
+                "   usermapping um, " +
+                "   USER u, " +
+                "   specialtyuserrole sur " +
+                "WHERE" +
+                "   um.username = u.username " +
+                "AND" +
+                "   u.id = sur.user_id " +
+                "AND" +
+                "   sur.specialty_id = :specialtyId " +
+                "AND" +
+                "   um.unitcode = :unitcode " +
+                "AND" +
+                "   sur.role = 'patient' ";
+
+        Query query = getEntityManager().createNativeQuery(sql, User.class);
+
+        query.setParameter("specialtyId", specialty.getId());
+        query.setParameter("unitcode", unitcode);
+
+        return query.getResultList();
     }
 }

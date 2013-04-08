@@ -21,7 +21,7 @@ import java.util.List;
 public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements LogEntryDao {
 
     @Override
-    public LogEntry getLatestLogEntry(String nhsno, String action, Specialty specialty) {
+    public LogEntry getLatestLogEntry(String nhsno, String action) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<LogEntry> criteria = builder.createQuery(LogEntry.class);
         Root<LogEntry> logEntryRoot = criteria.from(LogEntry.class);
@@ -30,11 +30,6 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
 
         wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.nhsno), nhsno));
         wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.action), action));
-
-        if (specialty != null) {
-            // this could be extended to show data from other specialty...
-            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.specialty), specialty));
-        }
 
         buildWhereClause(criteria, wherePredicates);
 

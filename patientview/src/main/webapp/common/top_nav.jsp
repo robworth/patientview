@@ -1,6 +1,7 @@
 <%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
 <%@ page import="com.worthsoln.ibd.model.enums.Diagnosis" %>
 <%@ page import="com.worthsoln.patientview.user.UserUtils" %>
+<%@ page import="com.worthsoln.patientview.model.User" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -79,6 +80,38 @@
         <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/forums/list.page">Forum</a></li>
     </logic:present>
     <%
+        } else {
+    %>
+        <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/join">I Want To Join</html:link></li>
+    <%
         }
     %>
+
+    <logic:present role="patient" >
+        <logic:present feature="messaging">
+            <%
+            // need to get the number of unread messages if they have any
+            User user = UserUtils.retrieveUser(request);
+
+            if (user != null) {
+                int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
+                %>
+
+                <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
+                    <a href="/patient/conversations.do">
+                        Messages
+                        <%
+                        if (numberUnreadMessages > 0) {
+                        %>
+                            <span class="badge badge-important"><%=numberUnreadMessages%></span>
+                        <%
+                        }
+                        %>
+                    </a>
+                </li>
+            <%
+            }
+            %>
+        </logic:present>
+    </logic:present>
 </ul>

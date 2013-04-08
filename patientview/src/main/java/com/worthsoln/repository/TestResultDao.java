@@ -16,8 +16,12 @@ import java.util.List;
 @Transactional(propagation = Propagation.MANDATORY)
 public interface TestResultDao {
 
-    // Get the test results for the patient for the units they belong to.
-    // The unit list is per Specialty.
+    /**
+     * Get the test results for the patient for the units they belong to.
+     * The unit list is per Specialty.
+     *
+     * @param units not mandatory
+     */
     List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units);
 
     void save(TestResult testResult);

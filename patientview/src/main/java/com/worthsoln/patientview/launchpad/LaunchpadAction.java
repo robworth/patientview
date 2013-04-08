@@ -20,7 +20,7 @@ public class LaunchpadAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        // get available tenancies for the logged in user and add them to the struts context
+        // get available specialties for the logged in user and add them to the struts context
         // the spring security should guarantee that we have a user here
         User user = LegacySpringUtils.getUserManager().getLoggedInUser();
 
