@@ -5,10 +5,15 @@ import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.ibd.model.enums.*;
 import com.worthsoln.patientview.TestResultDateRange;
+import com.worthsoln.patientview.exception.XmlImportException;
 import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.model.Diagnosis;
 import com.worthsoln.patientview.model.enums.DiagnosticType;
+import com.worthsoln.patientview.model.enums.NodeError;
 import com.worthsoln.patientview.utils.TimestampUtils;
+import com.worthsoln.utils.LegacySpringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
@@ -20,6 +25,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,14 +94,20 @@ public class ResultParser {
         }
     }
 
-    private void collectTestResults(Document doc) {
+    private void collectTestResults(Document doc) throws XmlImportException {
         NodeList testNodeList = doc.getElementsByTagName("test");
+        XmlImportException xmlImportException = new XmlImportException();
+
         for (int i = 0; i < testNodeList.getLength(); i++) {
             Node testNode = testNodeList.item(i);
             NodeList testResultNodes = testNode.getChildNodes();
             String testCode = "";
             String testName = "";
             String testUnits = "";
+            String dateRangeStartString = "";
+            String dateRangeStopString = "";
+            Calendar dateRangeStart = null;
+            Calendar dateRangeStop = null;
             for (int j = 0; j < testResultNodes.getLength(); j++) {
                 Node testResultNode = testResultNodes.item(j);
                 if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
@@ -107,6 +119,20 @@ public class ResultParser {
                 } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
                         (testResultNode.getNodeName().equals("units")) && testResultNode.getFirstChild() != null) {
                     testUnits = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
+                } else if (testResultNode.getNodeName().equals("daterange")) {
+                    NamedNodeMap namedNodeMap = testResultNode.getAttributes();
+
+                    Node startNode = namedNodeMap.getNamedItem("start");
+                    Node stopNode = namedNodeMap.getNamedItem("stop");
+                    if (startNode != null && startNode.getNodeValue() != null &&
+                            stopNode != null && stopNode.getNodeValue() != null) {
+                        dateRangeStartString = startNode.getNodeValue();
+                        dateRangeStopString = stopNode.getNodeValue();
+
+                        dateRangeStart = TimestampUtils.createTimestamp(dateRangeStartString);
+                        dateRangeStop = TimestampUtils.createTimestamp(dateRangeStopString);
+                        dateRangeStop.add(Calendar.HOUR, 24); // set it to end of day instead of beginning
+                    }
                 } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
                         (testResultNode.getNodeName().equals("result"))) {
                     TestResult testResult = new TestResult(getData("nhsno"), getData("centrecode"), null, testCode, "");
@@ -116,17 +142,58 @@ public class ResultParser {
                         if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE) &&
                                 (resultDataNode.getNodeName().equals("datestamp"))) {
                             parseDatestamp(testResult, resultDataNode);
+
+                            if (testResult.getDatestamped() != null) {
+
+                                /**
+                                 *  Warning: for comparison below to work the test results need to all be created
+                                 *  in the same way as  TimestampUtils.createTimestamp method because this adds
+                                 *  10 secs to the calendar.
+                                 */
+                                testResult.getDatestamped().set(Calendar.SECOND, 10);
+
+                                DateTime testResultDate = new DateTime(testResult.getDatestamped());
+
+                                /**
+                                 * make sure the result doesn't have a future date. if it does not, make sure
+                                 *  result date is between date range specified in the xml
+                                 */
+                                if (testResultDate.isAfter(
+                                        LegacySpringUtils.getTimeManager().getCurrentDate().getTime())) {
+                                    // add this test to corrupt tests list
+                                    xmlImportException.getNodeList().add(
+                                            new CorruptNode(testNode, NodeError.FUTURE_RESULT));
+                                } else if (dateRangeStart != null && dateRangeStop != null && !(new Interval(
+                                        new DateTime(dateRangeStart), new DateTime(dateRangeStop)).contains(
+                                        new DateTime(testResultDate)))) {
+                                    // add this test to corrupt tests list
+                                    xmlImportException.getNodeList().add(
+                                            new CorruptNode(testNode, NodeError.WRONG_DATE_RANGE));
+                                }
+                            }
                         } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE) &&
                                 (resultDataNode.getNodeName().equals("prepost"))) {
                             testResult.setPrepost(resultDataNode.getFirstChild().getNodeValue());
                         } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE) &&
                                 (resultDataNode.getNodeName().equals("value"))) {
-                            testResult.setValue(resultDataNode.getFirstChild().getNodeValue().trim());
+                            if (resultDataNode.getFirstChild() == null) {
+                                // we should not import this xml. continue execution and throw the corrupt nodes
+                                xmlImportException.getNodeList().add(
+                                        new CorruptNode(testNode, NodeError.MISSING_VALUE));
+                            } else {
+                                testResult.setValue(resultDataNode.getFirstChild().getNodeValue().trim());
+                            }
+
                         }
                     }
                     testResults.add(testResult);
                 }
             }
+        }
+
+        // if any nodes have failed, don't import this file
+        if (xmlImportException.getNodeList().size() > 0) {
+            throw xmlImportException;
         }
     }
 

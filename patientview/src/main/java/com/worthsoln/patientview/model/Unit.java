@@ -12,8 +12,8 @@ public class Unit extends BaseModel {
     private String unitcode;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tenancy_id")
-    private Tenancy tenancy;
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 
     @Column(nullable = false)
     private String name;
@@ -36,11 +36,11 @@ public class Unit extends BaseModel {
     @Column
     private String trusturl;
     @Column
-    private String rpvadminname;
+    private String renaladminname;
     @Column
-    private String rpvadminphone;
+    private String renaladminphone;
     @Column
-    private String rpvadminemail;
+    private String renaladminemail;
     @Column
     private String unitenquiriesphone;
     @Column
@@ -151,6 +151,12 @@ public class Unit extends BaseModel {
     private String haemodialysisunitlocation12;
     @Column
     private String haemodialysisuniturl12;
+    @Column
+    private String sourceType;
+
+    // Note: this is VARCHAR(100) at the moment, but could probably be an enum
+    @Column
+    private String country;
 
     public Unit() {
     }
@@ -159,8 +165,9 @@ public class Unit extends BaseModel {
         setUnitcode(unitcode);
     }
 
-    public Unit(String unitcode, Tenancy tenancy, String name, String shortname, String address1, String address2, String address3, String postcode,
-                String uniturl, String trusturl, String rpvadminname, String rpvadminphone, String rpvadminemail,
+    public Unit(String unitcode, Specialty specialty, String name, String shortname, String address1, String address2,
+                String address3, String postcode,
+                String uniturl, String trusturl, String renaladminname, String renaladminphone, String renaladminemail,
                 String unitenquiriesphone,
                 String unitenquiriesemail, String appointmentphone, String appointmentemail, String outofhours,
                 String peritonealdialysisphone, String peritonealdialysisemail, String haemodialysisunitname1,
@@ -184,7 +191,7 @@ public class Unit extends BaseModel {
                 String haemodialysisunitname12, String haemodialysisunitphone12, String haemodialysisunitlocation12,
                 String haemodialysisuniturl12) {
         setUnitcode(unitcode);
-        this.tenancy = tenancy;
+        this.specialty = specialty;
         this.name = name;
         this.shortname = shortname;
         this.address1 = address1;
@@ -193,9 +200,9 @@ public class Unit extends BaseModel {
         this.postcode = postcode;
         this.uniturl = uniturl;
         this.trusturl = trusturl;
-        this.rpvadminname = rpvadminname;
-        this.rpvadminphone = rpvadminphone;
-        this.rpvadminemail = rpvadminemail;
+        this.renaladminname = renaladminname;
+        this.renaladminphone = renaladminphone;
+        this.renaladminemail = renaladminemail;
         this.unitenquiriesphone = unitenquiriesphone;
         this.unitenquiriesemail = unitenquiriesemail;
         this.appointmentphone = appointmentphone;
@@ -261,12 +268,12 @@ public class Unit extends BaseModel {
         this.unitcode = (unitcode != null) ? unitcode.toUpperCase() : unitcode;
     }
 
-    public Tenancy getTenancy() {
-        return tenancy;
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public void setTenancy(Tenancy tenancy) {
-        this.tenancy = tenancy;
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
     }
 
     public String getName() {
@@ -365,28 +372,28 @@ public class Unit extends BaseModel {
         this.postcode = postcode;
     }
 
-    public String getRpvadminname() {
-        return rpvadminname;
+    public String getRenaladminname() {
+        return renaladminname;
     }
 
-    public void setRpvadminname(String rpvadminname) {
-        this.rpvadminname = rpvadminname;
+    public void setRenaladminname(String renaladminname) {
+        this.renaladminname = renaladminname;
     }
 
-    public String getRpvadminphone() {
-        return rpvadminphone;
+    public String getRenaladminphone() {
+        return renaladminphone;
     }
 
-    public void setRpvadminphone(String rpvadminphone) {
-        this.rpvadminphone = rpvadminphone;
+    public void setRenaladminphone(String renaladminphone) {
+        this.renaladminphone = renaladminphone;
     }
 
-    public String getRpvadminemail() {
-        return rpvadminemail;
+    public String getRenaladminemail() {
+        return renaladminemail;
     }
 
-    public void setRpvadminemail(String rpvadminemail) {
-        this.rpvadminemail = rpvadminemail;
+    public void setRenaladminemail(String renaladminemail) {
+        this.renaladminemail = renaladminemail;
     }
 
     public String getTrusturl() {
@@ -807,5 +814,21 @@ public class Unit extends BaseModel {
 
     public String getUnitNamePlusCode() {
         return name + " - " + unitcode;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

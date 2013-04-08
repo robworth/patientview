@@ -24,25 +24,25 @@ public class ResultHeadingManagerImpl implements ResultHeadingManager {
 
     @Override
     public ResultHeading get(String headingcode) {
-        return resultHeadingDao.get(headingcode, securityUserManager.getLoggedInTenancy());
+        return resultHeadingDao.get(headingcode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<ResultHeading> getAll() {
-        return resultHeadingDao.getAll(securityUserManager.getLoggedInTenancy());
+        return resultHeadingDao.getAll(securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<ResultHeading> get(int panel) {
-        return resultHeadingDao.get(panel, securityUserManager.getLoggedInTenancy());
+        return resultHeadingDao.get(panel, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public void save(ResultHeading resultHeading) {
 
-        // set the tenancy against the heading if not already set
-        if (resultHeading.getTenancy() == null) {
-            resultHeading.setTenancy(securityUserManager.getLoggedInTenancy());
+        // set the Specialty against the heading if not already set
+        if (resultHeading.getSpecialty() == null) {
+            resultHeading.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         resultHeadingDao.save(resultHeading);
@@ -50,11 +50,11 @@ public class ResultHeadingManagerImpl implements ResultHeadingManager {
 
     @Override
     public void delete(String headingCode) {
-        resultHeadingDao.delete(headingCode, securityUserManager.getLoggedInTenancy());
+        resultHeadingDao.delete(headingCode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<Panel> getPanels() {
-        return resultHeadingDao.getPanels(securityUserManager.getLoggedInTenancy());
+        return resultHeadingDao.getPanels(securityUserManager.getLoggedInSpecialty());
     }
 }

@@ -31,7 +31,7 @@
                    <td class="infostrip"><html:link forward="control">back to Admin Area</html:link></td>
                 </logic:present>
 
-                <jsp:include page="../include/tenancy_switcher.jsp"/>
+                <jsp:include page="../include/specialty_switcher.jsp"/>
 
                 <td class="infostrip" align="right"><dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format></td>
             </tr>

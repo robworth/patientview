@@ -13,4 +13,6 @@ public interface UktStatusDao {
     UktStatus get(String nhsno);
 
     void save(UktStatus uktStatus);
+
+    void deleteAll();
 }

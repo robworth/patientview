@@ -1,9 +1,10 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.database.DatabaseDAO;
+import com.worthsoln.patientview.logon.PatientLogonWithTreatment;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Patient_;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.PatientDao;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,9 +23,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
 @Repository(value = "patientDao")
 public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements PatientDao {
 
@@ -88,72 +86,97 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
     @Override
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
-                                                Tenancy tenancy) {
-
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-
-        UnitPatientsWithTreatmentDao patientDao = new UnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,
-                tenancy);
-        return dao.retrieveList(patientDao);
-
-        /*
-
-        todo could replace this with the following to run with JPA native
-
+                                                Specialty specialty) {
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, patient.treatment "
-                + "FROM user, tenancyuserrole, usermapping "
+                + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
-                + "WHERE tenancyuserrole.role = (?1) "
+                + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
-                + "AND user.id = tenancyuserrole.user_id "
+                + "AND user.id = specialtyuserrole.user_id "
                 + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' ";
 
         if (!"".equals(unitcode)) {
-            sql += "AND usermapping.unitcode = (?2) ";
+            sql += "AND usermapping.unitcode = ? ";
         }
-        sql += "AND usermapping.nhsno LIKE (?3) AND user.name LIKE (?4) ";
+
+        if (nhsno != null && nhsno.length() > 0) {
+            sql += "AND usermapping.nhsno LIKE ? ";
+        }
+
+        if (name != null && name.length() > 0) {
+            sql += "AND user.name LIKE ? ";
+        }
+
         if (!showgps) {
-            sql += "AND user.name NOT LIKE (?5) ";
+            sql += "AND user.name NOT LIKE '%-GP' ";
         }
-        sql += "AND tenancyuserrole.tenancy_id = (?6) ";
 
-        sql += "ORDER BY user.name ASC ";
+        sql += "AND specialtyuserrole.specialty_id = ? ORDER BY user.name ASC ";
 
-        Query query = getEntityManager().createNativeQuery(sql);
+        List<Object> params = new ArrayList<Object>();
 
-        query.setParameter(1, "patient");
         if (!"".equals(unitcode)) {
-            query.setParameter(2, unitcode);
+            params.add(unitcode);
         }
-        query.setParameter(3, "%" + nhsno + "%");
-        query.setParameter(4, "%" + name + "%");
-        if (!showgps) {
-            query.setParameter(5, "%-GP");
+
+        if (nhsno != null && nhsno.length() > 0) {
+            params.add('%' + nhsno + '%');
         }
-        query.setParameter(6, tenancy.getId());
 
-        List results = query.getResultList();
+        if (name != null && name.length() > 0) {
+            params.add('%' + name + '%');
+        }
+        params.add(specialty.getId());
 
-        return results;
-
-        */
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
     }
 
     @Override
-    public List getUnitPatientsAllWithTreatmentDao(String unitcode, Tenancy tenancy) {
+    public List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
+        String sql = "SELECT " +
+                "   user.username,  " +
+                "   user.password, " +
+                "   user.name, " +
+                "   user.email, " +
+                "   usermapping.nhsno, " +
+                "   usermapping.unitcode, " +
+                "   user.firstlogon, " +
+                "   patient.treatment " +
+                "FROM " +
+                "   user, " +
+                "   specialtyuserrole, " +
+                "   usermapping " +
+                "LEFT JOIN " +
+                "   patient ON usermapping.nhsno = patient.nhsno " +
+                "WHERE " +
+                "   usermapping.username = user.username " +
+                "AND " +
+                "   user.id = specialtyuserrole.user_id " +
+                "AND " +
+                "   usermapping.unitcode = ? " +
+                "AND " +
+                "   specialtyuserrole.role = 'patient' " +
+                "AND " +
+                "   user.name NOT LIKE '%-GP' " +
+                "AND " +
+                "   specialtyuserrole.specialty_id = ? " +
+                "ORDER BY " +
+                "   user.name ASC";
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
+        List<Object> params = new ArrayList<Object>();
 
-        UnitPatientsAllWithTreatmentDao patientDao = new UnitPatientsAllWithTreatmentDao(unitcode, tenancy);
-        return dao.retrieveList(patientDao);
+        params.add(unitcode);
+        params.add(specialty.getId());
+
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
     }
 
     @Override
     public List<Patient> getUktPatients() {
 
-        String sql = "SELECT DISTINCT patient.id, patient.nhsno, patient.surname, patient.forename, " +
+        String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, " +
                 " patient.dateofbirth, patient.postcode FROM patient, user, usermapping " +
                 " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno " +
                 "AND user.username = usermapping.username " +
@@ -168,7 +191,6 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
 
             Patient patient = new Patient();
-            patient.setId(resultSet.getLong("id"));
             patient.setNhsno(resultSet.getString("nhsno"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setForename(resultSet.getString("forename"));
@@ -179,5 +201,21 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
     }
 
+    private class PatientLogonWithTreatmentMapper implements RowMapper<PatientLogonWithTreatment> {
+        @Override
+        public PatientLogonWithTreatment mapRow(ResultSet resultSet, int i) throws SQLException {
+            PatientLogonWithTreatment patientLogonWithTreatment = new PatientLogonWithTreatment();
 
+            patientLogonWithTreatment.setUsername(resultSet.getString("username"));
+            patientLogonWithTreatment.setPassword(resultSet.getString("password"));
+            patientLogonWithTreatment.setName(resultSet.getString("name"));
+            patientLogonWithTreatment.setEmail(resultSet.getString("email"));
+            patientLogonWithTreatment.setNhsno(resultSet.getString("nhsno"));
+            patientLogonWithTreatment.setFirstlogon(resultSet.getBoolean("firstlogon"));
+            patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
+            patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
+
+            return patientLogonWithTreatment;
+        }
+    }
 }

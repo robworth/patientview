@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-@Entity
+@Entity(name = "testresult")
 public class TestResult extends BaseModel {
 
     @Column(nullable = false)
@@ -50,7 +50,7 @@ public class TestResult extends BaseModel {
     }
 
     public void setTimestamp(Calendar timestamp) {
-        this.datestamped = timestamp;    
+        this.datestamped = timestamp;
     }
 
     @Transient

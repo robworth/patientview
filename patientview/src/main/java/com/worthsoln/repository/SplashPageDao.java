@@ -1,7 +1,6 @@
 package com.worthsoln.repository;
 
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SplashPage;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,5 +19,5 @@ public interface SplashPageDao {
 
     void delete(SplashPage splashPage);
 
-    List<SplashPage> getAll(List<String> unitcodes, Tenancy tenancy);
+    List<SplashPage> getAll(List<String> unitcodes, Specialty specialty);
 }

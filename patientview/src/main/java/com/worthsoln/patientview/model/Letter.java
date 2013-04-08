@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-@Entity
+@Entity(name = "letter")
 public class Letter extends BaseModel {
 
     @Column(nullable = false)

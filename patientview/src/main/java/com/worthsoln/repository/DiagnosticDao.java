@@ -21,4 +21,6 @@ public interface DiagnosticDao {
     void save(Diagnostic diagnostic);
 
     List<Diagnostic> get(Set<String> nhsNos, DiagnosticType diagnosticType);
+
+    void delete(String nhsno, String unitcode);
 }

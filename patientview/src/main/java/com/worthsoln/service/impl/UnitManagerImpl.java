@@ -1,6 +1,7 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logging.AddLog;
+import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.PatientCount;
 import com.worthsoln.patientview.model.Unit;
@@ -48,15 +49,15 @@ public class UnitManagerImpl implements UnitManager {
 
     @Override
     public Unit get(String unitCode) {
-        return unitDao.get(unitCode, securityUserManager.getLoggedInTenancy());
+        return unitDao.get(unitCode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public void save(Unit unit) {
 
-        // set the tenancy against the unit if not already set
-        if (unit.getTenancy() == null) {
-            unit.setTenancy(securityUserManager.getLoggedInTenancy());
+        // set the Specialty against the unit if not already set
+        if (unit.getSpecialty() == null) {
+            unit.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         unitDao.save(unit);
@@ -64,12 +65,12 @@ public class UnitManagerImpl implements UnitManager {
 
     @Override
     public List<Unit> getAll(boolean sortByName) {
-        return unitDao.getAll(true, securityUserManager.getLoggedInTenancy());
+        return unitDao.getAll(true, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<Unit> getUnitsWithUser() {
-        return unitDao.getUnitsWithUser(securityUserManager.getLoggedInTenancy());
+        return unitDao.getUnitsWithUser(securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
@@ -80,7 +81,7 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<Unit> getUsersUnits(User user) {
         List<String> usersUnitCodes = getUsersUnitCodes(user);
-        return unitDao.get(usersUnitCodes, securityUserManager.getLoggedInTenancy());
+        return unitDao.get(usersUnitCodes, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
@@ -89,14 +90,14 @@ public class UnitManagerImpl implements UnitManager {
         List<String> usersUnitCodes = getUsersUnitCodes(userManager.getLoggedInUser());
 
         return unitDao.get(usersUnitCodes, notTheseUnitCodes, plusTheseUnitCodes,
-                securityUserManager.getLoggedInTenancy());
+                securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
-        if (!LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equals("superadmin")) {
+        if (!LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 
@@ -126,5 +127,10 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<UnitStat> getUnitStatsForUnit(String unitCode) {
         return unitStatDao.get(unitCode);
+    }
+
+    @Override
+    public List<UnitAdmin> getUnitUsers(String unitcode) {
+        return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 }

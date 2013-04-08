@@ -6,6 +6,7 @@ import com.worthsoln.service.CommentManager;
 import com.worthsoln.service.DiagnosisManager;
 import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.EdtaCodeManager;
+import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.EmailVerificationManager;
 import com.worthsoln.service.FeedbackManager;
 import com.worthsoln.service.LetterManager;
@@ -17,6 +18,7 @@ import com.worthsoln.service.ResultHeadingManager;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.SplashPageManager;
 import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.TimeManager;
 import com.worthsoln.service.UKTransplantManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
@@ -66,6 +68,8 @@ public class LegacySpringUtils {
 
     private static TestResultManager testResultManager;
 
+    private static TimeManager timeManager;
+
     private static UKTransplantManager ukTransplantManager;
 
     private static UnitManager unitManager;
@@ -73,6 +77,8 @@ public class LegacySpringUtils {
     private static UserManager userManager;
 
     private static IbdManager ibdManager;
+
+    private static EmailManager emailManager;
 
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
@@ -222,6 +228,14 @@ public class LegacySpringUtils {
         LegacySpringUtils.testResultManager = testResultManager;
     }
 
+    public static TimeManager getTimeManager() {
+        return timeManager;
+    }
+
+    public static void setTimeManager(TimeManager timeManager) {
+        LegacySpringUtils.timeManager = timeManager;
+    }
+
     public static void setUkTransplantManager(UKTransplantManager ukTransplantManager) {
         LegacySpringUtils.ukTransplantManager = ukTransplantManager;
     }
@@ -248,5 +262,13 @@ public class LegacySpringUtils {
 
     public static void setIbdManager(IbdManager ibdManager) {
         LegacySpringUtils.ibdManager = ibdManager;
+    }
+
+    public static EmailManager getEmailManager() {
+        return emailManager;
+    }
+
+    public static void setEmailManager(EmailManager emailManager) {
+        LegacySpringUtils.emailManager = emailManager;
     }
 }

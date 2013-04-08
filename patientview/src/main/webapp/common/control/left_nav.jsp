@@ -3,7 +3,7 @@
 <div class="span3">
     <div class="well noSidePadding">
         <ul class="nav nav-list">
-        <logic:present tenancy="ibd">
+        <logic:present specialty="ibd">
             <li><html:link action="/control/myibd-links-display">My IBD Links</html:link></li>
             <li><html:link action="/control/careplan-links-display">Care plan Links</html:link></li>
             <li class="divider"></li>
@@ -17,8 +17,8 @@
         </logic:present>
         <logic:present role="superadmin,unitadmin">
             <li><html:link action="/control/unitDisplay">
-                <logic:present tenancy="rpv">Renal Units</logic:present>
-                <logic:present tenancy="ibd">IBD Units</logic:present>
+                <logic:present specialty="renal">Renal Units</logic:present>
+                <logic:present specialty="ibd">IBD Units</logic:present>
             </html:link></li>
             <li class="divider"></li>
             <li><html:link action="/control/unitAdminAddInput">Add Unit User</html:link></li>
@@ -29,13 +29,13 @@
         <logic:present role="superadmin,unitadmin">
             <li><html:link action="/control/patientAddInput">Add Patient</html:link></li>
             <li><html:link action="/control/logView">View Log</html:link></li>
-            <logic:present tenancy="rpv">
+            <logic:present specialty="renal">
                 <li class="divider"></li>
                 <li><html:link action="/control/feedbackUnitSelect">Feedback</html:link></li>
                 <li class="divider"></li>
             </logic:present>
-            <logic:present tenancy="rpv">
-                <li><html:link action="/patient/patient_details">News</html:link></li>
+            <logic:present specialty="renal">
+                <li><html:link action="/control/newsView">News</html:link></li>
                 <li><html:link action="/control/newsList">News Edit</html:link></li>
                 <logic:present role="superadmin,unitadmin">
                     <li class="divider"></li>

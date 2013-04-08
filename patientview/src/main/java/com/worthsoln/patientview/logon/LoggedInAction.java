@@ -1,13 +1,13 @@
 package com.worthsoln.patientview.logon;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.patientview.news.NewsUtils;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -18,7 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoggedInAction extends DatabaseAction {
+public class LoggedInAction extends Action {
 
     private final DateFormat format = new SimpleDateFormat("d MMM yyyy HH:mm");
 
@@ -36,7 +36,7 @@ public class LoggedInAction extends DatabaseAction {
             // Not sure if this makes a difference if it's encrypted
             request.getSession().setAttribute("sso.password.attribute", user.getPassword());
 
-            final String role = LegacySpringUtils.getUserManager().getCurrentTenancyRole(user);
+            final String role = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             // Is user patient or admin?
             if ("patient".equals(role)) {
@@ -78,11 +78,4 @@ public class LoggedInAction extends DatabaseAction {
         return LogonUtils.logonChecks(mapping, request, forward);
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "user";
-    }
 }

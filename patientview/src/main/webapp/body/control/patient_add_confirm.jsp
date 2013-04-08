@@ -46,12 +46,5 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
 
 <br />
 
-<logic:notEmpty name="patient" property="email">
-    <p>A verification email has been sent to <bean:write name="patient" property="email"/>. The new user needs to
-        click the link in that email to verify their email address. The email sent does NOT contain the user's username
-        or password, so you still need to give them this information in the usual way. The verification link will expire
-        in two weeks.</p>
-</logic:notEmpty>
-
 </div>
 </div>

@@ -23,15 +23,15 @@ public class EdtaCodeManagerImpl implements EdtaCodeManager {
 
     @Override
     public EdtaCode getEdtaCode(String edtaCode) {
-        return edtaCodeDao.getEdtaCode(edtaCode, securityUserManager.getLoggedInTenancy());
+        return edtaCodeDao.getEdtaCode(edtaCode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public void save(EdtaCode edtaCode) {
 
-        // set the tenancy against the code if not already set
-        if (edtaCode.getTenancy() == null) {
-            edtaCode.setTenancy(securityUserManager.getLoggedInTenancy());
+        // set the Specialty against the code if not already set
+        if (edtaCode.getSpecialty() == null) {
+            edtaCode.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         edtaCodeDao.save(edtaCode);
@@ -39,11 +39,11 @@ public class EdtaCodeManagerImpl implements EdtaCodeManager {
 
     @Override
     public void delete(String edtaCode) {
-        edtaCodeDao.delete(edtaCode, securityUserManager.getLoggedInTenancy());
+        edtaCodeDao.delete(edtaCode, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<EdtaCode> get(String linkType) {
-        return edtaCodeDao.get(linkType, securityUserManager.getLoggedInTenancy());
+        return edtaCodeDao.get(linkType, securityUserManager.getLoggedInSpecialty());
     }
 }

@@ -40,20 +40,20 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/launchpad.do" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/launchpad-select.do" access="ROLE_ANY_USER"/>
 
-        <!-- no per tenancy security for the forums -->
+        <!-- no per specialty security for the forums -->
         <intercept-url pattern="/forums/**" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/**/*.page" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/rss/forumTopics/**" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/setscreenname.do" access="ROLE_ANY_USER"/>
 
-        <!-- RPV tenancy config -->
-        <intercept-url pattern="/rpv/control/**" access="ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/patient/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/forums/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/posts/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
-        <intercept-url pattern="/rpv/**" access="ROLE_RPV_DEMO,ROLE_RPV_PATIENT,ROLE_RPV_SUPERADMIN,ROLE_RPV_UNITADMIN,ROLE_RPV_UNITSTAFF"/>
+        <!-- Renal specialty config -->
+        <intercept-url pattern="/renal/control/**" access="ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/forums/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
 
-        <!-- IDB tenancy config -->
+        <!-- IDB specialty config -->
         <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/control/**" access="ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>

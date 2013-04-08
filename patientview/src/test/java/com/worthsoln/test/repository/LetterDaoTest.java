@@ -1,7 +1,7 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.Letter;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.repository.LetterDao;
 import com.worthsoln.repository.UserMappingDao;
@@ -29,24 +29,30 @@ public class LetterDaoTest extends BaseDaoTest {
     @Inject
     private RepositoryHelpers repositoryHelpers;
 
-    private Tenancy tenancy;
+    private Specialty specialty;
 
     @Before
     public void setupSystem() {
-        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tenancy");
+        specialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
     }
 
     @Test
     public void testAddGetLetter() throws Exception {
         Letter letter = getTestObject();
 
+        /**
+         * add
+         */
         letterDao.save(letter);
 
         assertTrue("Invalid id for new letter", letter.getId() > 0);
 
-        Letter checkLetter = letterDao.get(letter.getId());
+        /**
+         * get
+         */
+        Letter savedLetter = letterDao.get(letter.getId());
 
-        assertNotNull(checkLetter);
+        assertNotNull(savedLetter);
         assertEquals("Nhs no not persisted", letter.getNhsno(), letter.getNhsno());
         assertEquals("Content not persisted", letter.getContent(), letter.getContent());
         assertEquals("Date not persisted", letter.getDate(), letter.getDate());
@@ -55,10 +61,32 @@ public class LetterDaoTest extends BaseDaoTest {
     }
 
     @Test
+    public void testDeleteLetter() throws Exception {
+        Letter letter = getTestObject();
+
+        /**
+         * add
+         */
+        letterDao.save(letter);
+
+        assertTrue("Invalid id for new letter", letter.getId() > 0);
+
+        /**
+         * delete
+         */
+        letterDao.delete(letter.getNhsno(), letter.getUnitcode());
+
+        List<Letter> deletedLetters = letterDao.getAll();
+
+        assertTrue("Can't delete letter", deletedLetters.size() == 0);
+    }
+
+
+    @Test
     public void testGetLettersByUsername() throws Exception {
         // create some user mappings to map the letters to
         UserMapping userMapping1 = new UserMapping();
-        userMapping1.setTenancy(tenancy);
+        userMapping1.setSpecialty(specialty);
         userMapping1.setNhsno("nhsno1");
         userMapping1.setUnitcode("unicode1");
         userMapping1.setUsername("username1");
@@ -68,7 +96,7 @@ public class LetterDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new usermapping 1", userMapping1.getId() > 0);
 
         UserMapping userMapping2 = new UserMapping();
-        userMapping2.setTenancy(tenancy);
+        userMapping2.setSpecialty(specialty);
         userMapping2.setNhsno("nhsno2");
         userMapping2.setUnitcode("unicode2");
         userMapping2.setUsername("username2");
@@ -102,7 +130,7 @@ public class LetterDaoTest extends BaseDaoTest {
 
         assertTrue("Invalid id for letter 3", letter3.getId() > 0);
 
-        List<Letter> checkLetters = letterDao.get(userMapping1.getUsername(), tenancy);
+        List<Letter> checkLetters = letterDao.get(userMapping1.getUsername(), specialty);
 
         assertNotNull(checkLetters);
         assertTrue("No letters found", !checkLetters.isEmpty() && checkLetters.size() > 0);
@@ -114,11 +142,13 @@ public class LetterDaoTest extends BaseDaoTest {
 
     private Letter getTestObject() {
         Letter letter = new Letter();
+
         letter.setNhsno("123456789");
         letter.setContent("Test letter");
         letter.setDate(Calendar.getInstance());
         letter.setType("testtype");
         letter.setUnitcode("testunit");
+
         return letter;
     }
 }

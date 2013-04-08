@@ -168,6 +168,15 @@
         </property>
     </bean>
 
+    <bean id="setTimeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setTimeManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="timeManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setUkTransplantManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUkTransplantManager"/>
         <property name="arguments">
@@ -200,6 +209,15 @@
         <property name="arguments">
             <list>
                 <ref bean="ibdManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setEmailManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEmailManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="emailManager"/>
             </list>
         </property>
     </bean>

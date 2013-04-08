@@ -1,6 +1,5 @@
 package com.worthsoln.patientview.feedback;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.EmailUtils;
 import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.patientview.model.Patient;
@@ -11,6 +10,7 @@ import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -20,7 +20,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class FeedbackFormAction extends DatabaseAction {
+public class FeedbackFormAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
@@ -65,7 +65,7 @@ public class FeedbackFormAction extends DatabaseAction {
         ServletContext context = request.getSession().getServletContext();
         String fromAddress = context.getInitParameter("noreply.email");
         Unit unit = UnitUtils.retrieveUnit(feedback.getUnitcode());
-        String toAddress = unit.getRpvadminemail();
+        String toAddress = unit.getRenaladminemail();
         String subject = "[Renal PatientView] New feedback for your unit - " + unit.getShortname();
 
         String newLine = System.getProperty("line.separator");
@@ -96,11 +96,4 @@ public class FeedbackFormAction extends DatabaseAction {
         EmailUtils.sendEmail(context, fromAddress, toAddress, subject, emailBody);
     }
 
-    public String getIdentifier() {
-        return null;
-    }
-
-    public String getDatabaseName() {
-        return "patientview";
-    }
 }

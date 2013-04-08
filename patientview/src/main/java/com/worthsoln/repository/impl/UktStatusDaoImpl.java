@@ -7,6 +7,7 @@ import com.worthsoln.repository.UktStatusDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -36,5 +37,11 @@ public class UktStatusDaoImpl extends AbstractHibernateDAO<UktStatus> implements
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public void deleteAll() {
+        Query query = getEntityManager().createNativeQuery("DELETE FROM uktstatus");
+        query.executeUpdate();
     }
 }

@@ -27,7 +27,7 @@
 <ul class="thumbnails">
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryBloodPressure" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Blood Pressure</div></html:link>
+            <html:link forward="patientEntryBloodPressure" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Blood Pressure</div></html:link>
             <div class="caption">
               <h5>Enter my blood pressure</h5>
               <p><html:link forward="patientEntryBloodPressure" styleClass="btn">Enter</html:link></p>
@@ -36,7 +36,7 @@
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryGlucose" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Glucose Values</div></html:link>
+            <html:link forward="patientEntryGlucose" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Glucose Values</div></html:link>
             <div class="caption">
               <h5>Enter my glucose values</h5>
               <p><html:link forward="patientEntryGlucose" styleClass="btn">Enter</html:link></p>
@@ -45,7 +45,7 @@
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryWeight" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Weight</div></html:link>
+            <html:link forward="patientEntryWeight" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Weight</div></html:link>
             <div class="caption">
               <h5>Enter my weight</h5>
               <p><html:link forward="patientEntryWeight" styleClass="btn">Enter</html:link></p>
@@ -54,7 +54,7 @@
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryResultComment" styleClass="thumbnail"><div class="launchPadTextAlternative rpvResults">Comment</div></html:link>
+            <html:link forward="patientEntryResultComment" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Comment</div></html:link>
             <div class="caption">
               <h5>Enter a comment on my results</h5>
               <p><html:link forward="patientEntryResultComment" styleClass="btn">Enter</html:link></p>

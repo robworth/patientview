@@ -28,7 +28,7 @@ public class SplashPageListAction extends Action {
                 = LegacySpringUtils.getUnitManager().
                 getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
 
-        if (LegacySpringUtils.getUserManager().getCurrentTenancyRole(user).equals("superadmin")) {
+        if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
             Unit unitAllUnits = new Unit("ALL");
             usersUnits.add(unitAllUnits);
         }

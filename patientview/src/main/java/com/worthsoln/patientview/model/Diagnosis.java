@@ -3,7 +3,7 @@ package com.worthsoln.patientview.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "diagnosis")
 public class Diagnosis extends BaseModel {
 
     @Column(nullable = false)

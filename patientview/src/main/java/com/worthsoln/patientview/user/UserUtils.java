@@ -1,7 +1,5 @@
 package com.worthsoln.patientview.user;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -41,20 +39,8 @@ public class UserUtils {
         return LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
     }
 
-    // todo move this into hibernate manager
     public static void removePatientFromSystem(String nhsno, String unitcode) {
-        String[] tableNames = new String[]{"testresult", "letter",};        //TODO add back user
-        //String[] tableNames = new String[]{"user", "testresult", "letter",};        //TODO add medicines and diagnosis
-        for (int i = 0; i < tableNames.length; i++) {
-            runDeleteQuery("DELETE FROM " + tableNames[i] + " WHERE nhsno = ? AND unitcode = ?", nhsno, unitcode);
-        }
-        runDeleteQuery("DELETE FROM patient WHERE nhsno = ? and centreCode = ?", nhsno, unitcode);
-    }
-
-    private static void runDeleteQuery(String removePatientSql, String nhsno, String unitcode) {
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(removePatientSql, new Object[]{nhsno, unitcode});
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        dao.doExecute(query);
+        LegacySpringUtils.getPatientManager().removePatientFromSystem(nhsno, unitcode);
     }
 
     public static boolean nhsNumberChecksumValid(String nhsno) {

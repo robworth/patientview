@@ -1,6 +1,6 @@
 package com.worthsoln.patientview.launchpad;
 
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
@@ -25,8 +25,8 @@ public class LaunchpadAction extends Action {
         User user = LegacySpringUtils.getUserManager().getLoggedInUser();
 
         if (user != null) {
-            List<TenancyUserRole> tenancyUserRoles = LegacySpringUtils.getUserManager().getTenancyUserRoles(user);
-            request.setAttribute("tenancyUserRoles", tenancyUserRoles);
+            List<SpecialtyUserRole> specialtyUserRoles = LegacySpringUtils.getUserManager().getSpecialtyUserRoles(user);
+            request.setAttribute("specialtyUserRoles", specialtyUserRoles);
         }
 
         return mapping.findForward("success");

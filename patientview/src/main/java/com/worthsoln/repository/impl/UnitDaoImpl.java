@@ -1,13 +1,16 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.Unit_;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.UnitDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -25,7 +28,7 @@ import java.util.List;
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
-    public Unit get(String unitCode, Tenancy tenancy) {
+    public Unit get(String unitCode, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -34,8 +37,8 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.equal(from.get(Unit_.unitcode), unitCode));
 
-        if (tenancy != null) {
-            wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         }
 
         buildWhereClause(criteria, wherePredicates);
@@ -47,7 +50,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> getAll(boolean sortByName, Tenancy tenancy) {
+    public List<Unit> getAll(boolean sortByName, Specialty specialty) {
 
         if (sortByName) {
 
@@ -56,8 +59,8 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             Root<Unit> from = criteria.from(Unit.class);
             List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-            if (tenancy != null) {
-                wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+            if (specialty != null) {
+                wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
             }
 
             buildWhereClause(criteria, wherePredicates);
@@ -71,7 +74,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> getUnitsWithUser(Tenancy tenancy) {
+    public List<Unit> getUnitsWithUser(Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -80,9 +83,9 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
         wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
         wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
-
-        if (tenancy != null) {
-            wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+            
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         }
 
         buildWhereClause(criteria, wherePredicates);
@@ -90,17 +93,19 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<Unit> get(List<String> usersUnitCodes, Tenancy tenancy) {
+    public List<Unit> get(List<String> usersUnitCodes, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
         Root<Unit> from = criteria.from(Unit.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
+        if (usersUnitCodes != null && usersUnitCodes.size() > 0) {
+            wherePredicates.add(from.get(Unit_.unitcode).in(usersUnitCodes.toArray(new String[usersUnitCodes.size()])));
+        }
 
-        if (tenancy != null) {
-            wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         }
 
         buildWhereClause(criteria, wherePredicates);
@@ -109,7 +114,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
-                          Tenancy tenancy) {
+                          Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -132,13 +137,56 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             }
         }
 
-        if (tenancy != null) {
-            wherePredicates.add(builder.equal(from.get(Unit_.tenancy), tenancy));
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         }
 
         buildWhereClause(criteria, wherePredicates);
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
         return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
+        String sql = "SELECT " +
+                "  u.*  " +
+                "FROM " +
+                "   User u, " +
+                "   UserMapping um, " +
+                "   SpecialtyUserRole sur " +
+                "WHERE " +
+                "   u.username = um.username " +
+                "AND " +
+                "   u.id = sur.user_id " +
+                "AND " +
+                "   sur.specialty_id = :specialtyId " +
+                "AND " +
+                "   um.unitcode = :unitcode " +
+                "AND " +
+                "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+
+        Query query = getEntityManager().createNativeQuery(sql, User.class);
+
+        query.setParameter("specialtyId", specialty.getId());
+        query.setParameter("unitcode", unitcode);
+
+        List<User> users =  query.getResultList();
+
+        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
+
+        for (User user : users) {
+            UnitAdmin unitAdmin = new UnitAdmin();
+            unitAdmin.setUsername(user.getUsername());
+            unitAdmin.setName(user.getName());
+            unitAdmin.setEmail(user.getEmail());
+            unitAdmin.setEmailverfied(user.isEmailverified());
+            unitAdmin.setRole(user.getRole());
+            unitAdmin.setFirstlogon(user.isFirstlogon());
+            unitAdmins.add(unitAdmin);
+            unitAdmin.setScreenname(user.getScreenname());
+        }
+
+        return unitAdmins;
     }
 }

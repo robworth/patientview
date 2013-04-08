@@ -38,7 +38,7 @@ public class DiagnosticManagerImpl implements DiagnosticManager {
 
     @Override
     public List<Diagnostic> getForUser(User user, DiagnosticType diagnosticType) {
-        // get all nhs nos this user is known as for this tenancy to get there diagnostic results
+        // get all nhs nos this user is known as for this Specialty to get there diagnostic results
         if (user != null) {
             List<UserMapping> mappings = userManager.getUserMappings(user.getUsername());
             Set<String> nhsNos = new HashSet<String>();
@@ -50,5 +50,10 @@ public class DiagnosticManagerImpl implements DiagnosticManager {
         }
 
         return null;
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        diagnosticDao.delete(nhsno, unitcode);
     }
 }

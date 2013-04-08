@@ -112,7 +112,7 @@
     <div class="pagination">
         <ul>
             <logic:equal value="" name="pageNav" property="previousPanel">
-                <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="firstPanel" />' class="paginate">First</a></li>
+                <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="firstPanel" />' class="paginate">Newest</a></li>
                 <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="previousPanel" />' class="paginate">Prev</a></li>
             </logic:equal>
             <logic:notEqual value="" name="pageNav" property="previousPanel">
@@ -131,11 +131,11 @@
 
             <logic:equal value="" name="pageNav" property="nextPanel">
                 <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="nextPanel" />' class="paginate">Next</a></li>
-                <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">Last</a></li>
+                <li class="disabled"><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">Oldest</a></li>
             </logic:equal>
             <logic:notEqual value="" name="pageNav" property="nextPanel">
                 <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="nextPanel" />' class="paginate">Next</a></li>
-                <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">Last</a></li>
+                <li><a href='results.do?panel=<%= request.getParameter("panel")%>&page=<bean:write name="pageNav" property="lastPanel" />' class="paginate">Oldest</a></li>
             </logic:notEqual>
         </ul>
     </div>

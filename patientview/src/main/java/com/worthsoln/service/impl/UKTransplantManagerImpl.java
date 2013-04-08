@@ -25,4 +25,9 @@ public class UKTransplantManagerImpl implements UKTransplantManager {
     public void save(UktStatus uktStatus) {
         uktStatusDao.save(uktStatus);
     }
+
+    @Override
+    public void deleteAll() {
+        uktStatusDao.deleteAll();
+    }
 }

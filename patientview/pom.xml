@@ -47,7 +47,8 @@
                 <env>dev</env>
                 <tomcatmanagerurl>http://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
-                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -56,7 +57,8 @@
                 <env>staging</env>
                 <tomcatmanagerurl>http://patientview.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
-                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -65,7 +67,8 @@
                 <env>staging</env>
                 <tomcatmanagerurl>http://ibd.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
-                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -74,7 +77,8 @@
                 <env>production-ibd</env>
                 <tomcatmanagerurl>https://ibd.solidstategroup.com:9080/manager/html</tomcatmanagerurl>
                 <warpath>/</warpath>
-                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>
@@ -83,7 +87,8 @@
                 <env>production-rpv</env>
                 <tomcatmanagerurl>https://www.renalpatientview.org:9080/manager/html</tomcatmanagerurl>
                 <warpath>/</warpath>
-                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
             </properties>
         </profile>
     </profiles>
@@ -180,8 +185,8 @@
                     </connectors>
                     <!-- this config tells jetty to run with our filtered web.xml -->
                     <!--<webAppConfig>-->
-                        <!--<contextPath>/</contextPath>-->
-                        <!--<descriptor>${project.build.directory}/web.xml</descriptor>-->
+                    <!--<contextPath>/</contextPath>-->
+                    <!--<descriptor>${project.build.directory}/web.xml</descriptor>-->
                     <!--</webAppConfig>-->
                 </configuration>
             </plugin>
@@ -309,9 +314,9 @@
         </dependency>
 
         <dependency>
-        	<groupId>org.springframework</groupId>
-        	<artifactId>spring-struts</artifactId>
-        	<version>${spring.version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-struts</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -395,9 +400,9 @@
 
         <!-- hibernate 2-->
         <!--<dependency>-->
-            <!--<groupId>net.sf.hibernate</groupId>-->
-            <!--<artifactId>hibernate</artifactId>-->
-            <!--<version>2.1.8</version>-->
+        <!--<groupId>net.sf.hibernate</groupId>-->
+        <!--<artifactId>hibernate</artifactId>-->
+        <!--<version>2.1.8</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -641,6 +646,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- date time utils -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
         <!-- these xml dependencies seem to be breaking everything -->
 
         <!--<dependency>-->
@@ -652,17 +664,17 @@
 
         <!-- no idea what version of this we need for this -->
         <!--<dependency>-->
-            <!--<groupId>xmlrpc</groupId>-->
-            <!--<artifactId>xmlrpc</artifactId>-->
-            <!--<version>1.1</version>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>xmlrpc</groupId>-->
+        <!--<artifactId>xmlrpc</artifactId>-->
+        <!--<version>1.1</version>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
-            <!--<groupId>xom</groupId>-->
-            <!--<artifactId>xom</artifactId>-->
-            <!--<version>1.0</version>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>xom</groupId>-->
+        <!--<artifactId>xom</artifactId>-->
+        <!--<version>1.0</version>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
 
         <!-- test stuff -->

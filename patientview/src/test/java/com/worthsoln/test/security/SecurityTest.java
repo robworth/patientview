@@ -1,6 +1,6 @@
 package com.worthsoln.test.security;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UserManager;
@@ -47,18 +47,18 @@ public class SecurityTest extends BaseServiceTest {
 
     // Test suite wide references
     private User user;
-    Tenancy tenancy1, tenancy2, tenancy3;
+    Specialty specialty1, specialty2, specialty3;
 
     @Before
     public void setupTenancies() {
         user = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User", "Testy");
 
-        tenancy1 = serviceHelpers.createTenancy("Tenant 1", "ten1", "Test description");
-        tenancy2 = serviceHelpers.createTenancy("Tenant 2", "ten2", "Test description 2");
-        tenancy3 = serviceHelpers.createTenancy("Tenant 3", "ten3", "Test description 3");   // no access
+        specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description 2");
+        specialty3 = serviceHelpers.createSpecialty("Specialty 3", "Specialty3", "Test description 3");   // no access
 
-        serviceHelpers.createTenancyUserRole(tenancy1, user, "patient");
-        serviceHelpers.createTenancyUserRole(tenancy2, user, "admin");
+        serviceHelpers.createSpecialtyUserRole(specialty1, user, "patient");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user, "admin");
     }
 
 
@@ -76,8 +76,8 @@ public class SecurityTest extends BaseServiceTest {
         assertEquals("Incorrect number of roles", 3, authorities.size());
 
         Set<GrantedAuthority> authoritySet = new HashSet<GrantedAuthority>(authorities);
-        GrantedAuthority grantedAuthority1 = new SimpleGrantedAuthority("ROLE_TEN2_ADMIN");
-        GrantedAuthority grantedAuthority2 = new SimpleGrantedAuthority("ROLE_TEN1_PATIENT");
+        GrantedAuthority grantedAuthority1 = new SimpleGrantedAuthority("ROLE_SPECIALTY2_ADMIN");
+        GrantedAuthority grantedAuthority2 = new SimpleGrantedAuthority("ROLE_SPECIALTY1_PATIENT");
 
         assertTrue("Incorrect authority", authoritySet.contains(grantedAuthority1));
         assertTrue("Incorrect authority", authoritySet.contains(grantedAuthority2));
@@ -86,7 +86,7 @@ public class SecurityTest extends BaseServiceTest {
     @Test
     public void testIsRolePresentForSecurityUser() {
 
-        loginAsUser(user.getUsername(), tenancy1);
+        loginAsUser(user.getUsername(), specialty1);
 
         assertTrue("Patient should be present", securityUserManager.isRolePresent("patient"));
 
@@ -94,7 +94,7 @@ public class SecurityTest extends BaseServiceTest {
 
         logout();
 
-        loginAsUser(user.getUsername(), tenancy2);
+        loginAsUser(user.getUsername(), specialty2);
 
         assertFalse("Patient should not be present", securityUserManager.isRolePresent("patient"));
 
@@ -102,34 +102,34 @@ public class SecurityTest extends BaseServiceTest {
     }
 
     @Test
-    public void testGetLoggedInTenancy() {
-        loginAsUser(user.getUsername(), tenancy1);
+    public void testGetLoggedInSpecialty() {
+        loginAsUser(user.getUsername(), specialty1);
 
-        assertEquals("Incorrect logged in tenancy", tenancy1, securityUserManager.getLoggedInTenancy());
+        assertEquals("Incorrect logged in specialty", specialty1, securityUserManager.getLoggedInSpecialty());
     }
 
     @Test
-    public void testSetLoggedInTenancy() throws Exception {
+    public void testSetLoggedInSpecialty() throws Exception {
 
-        // first login without setting the tenancy
+        // first login without setting the specialty
         loginAsUser(user.getUsername());
 
-        assertNull("Tenancy found in session", securityUserManager.getLoggedInTenancy());
+        assertNull("Specialty found in session", securityUserManager.getLoggedInSpecialty());
 
-        securityUserManager.setLoggedInTenancy(tenancy1.getId());
+        securityUserManager.setLoggedInSpecialty(specialty1.getId());
 
-        assertEquals("Incorrect logged in tenancy", tenancy1, securityUserManager.getLoggedInTenancy());
+        assertEquals("Incorrect logged in specialty", specialty1, securityUserManager.getLoggedInSpecialty());
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testCannotSetLoggedInTenancyWhenNoAccess() throws Exception {
+    public void testCannotSetLoggedInSpecialtyWhenNoAccess() throws Exception {
 
-        // first login without setting the tenancy
+        // first login without setting the specialty
         loginAsUser(user.getUsername());
 
-        assertNull("Tenancy found in session", securityUserManager.getLoggedInTenancy());
+        assertNull("Specialty found in session", securityUserManager.getLoggedInSpecialty());
 
-        securityUserManager.setLoggedInTenancy(tenancy3.getId());
+        securityUserManager.setLoggedInSpecialty(specialty3.getId());
     }
 
     @Test
@@ -141,28 +141,28 @@ public class SecurityTest extends BaseServiceTest {
     }
 
     @Test
-    public void testIsTenancyPresent() {
-        loginAsUser(user.getUsername(), tenancy1);
+    public void testIsSpecialtyPresent() {
+        loginAsUser(user.getUsername(), specialty1);
 
-        assertTrue("Tenancy is not present", securityUserManager.isTenancyPresent(tenancy1.getContext()));
+        assertTrue("Specialty is not present", securityUserManager.isSpecialtyPresent(specialty1.getContext()));
     }
 
     @Test
     public void testGetLoggedInUserRole() {
-        loginAsUser(user.getUsername(), tenancy2);
+        loginAsUser(user.getUsername(), specialty2);
 
         assertEquals("Incorrect logged in user role", "admin", userManager.getLoggedInUserRole());
     }
 
     @Test
-    public void testGetCurrentTenancyRole() {
-        loginAsUser(user.getUsername(), tenancy2);
+    public void testGetCurrentSpecialtyRole() {
+        loginAsUser(user.getUsername(), specialty2);
 
-        assertEquals("Incorrect logged in user role", "admin", userManager.getCurrentTenancyRole(user));
+        assertEquals("Incorrect logged in user role", "admin", userManager.getCurrentSpecialtyRole(user));
     }
 
-    private void loginAsUser(String username, Tenancy tenancy) {
-        securityHelpers.loginAsUser(username, tenancy);
+    private void loginAsUser(String username, Specialty specialty) {
+        securityHelpers.loginAsUser(username, specialty);
     }
 
     private void loginAsUser(String username) {

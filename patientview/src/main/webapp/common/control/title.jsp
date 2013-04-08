@@ -11,8 +11,8 @@
           <span class="icon-bar"></span>
         </a>
         <html:link action="/index" styleClass="brand">
-            <logic:present tenancy="ibd">My IBD</logic:present>
-            <logic:present tenancy="rpv">RPV</logic:present>
+            <logic:present specialty="ibd">My IBD</logic:present>
+            <logic:present specialty="renal">RPV</logic:present>
             Administration Area
         </html:link>
        <div class="nav-collapse">
@@ -25,7 +25,7 @@
                 <li><html:link forward="controlPasswordChangeInput">Change password</html:link></li>
                 </logic:present>
                 <li><html:link action="logout">Logout</html:link></li>
-                <jsp:include page="../include/tenancy_switcher.jsp"/>
+                <jsp:include page="../include/specialty_switcher.jsp"/>
                 <%
                     }
                 %>

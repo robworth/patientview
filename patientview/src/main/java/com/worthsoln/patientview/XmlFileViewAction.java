@@ -1,7 +1,7 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -16,7 +16,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 
-public class XmlFileViewAction extends DatabaseAction {
+public class XmlFileViewAction extends Action {
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -54,11 +54,4 @@ public class XmlFileViewAction extends DatabaseAction {
         }
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "patient";
-    }
 }

@@ -1,9 +1,9 @@
 package com.worthsoln.service.impl;
 
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.repository.TenancyDao;
+import com.worthsoln.repository.SpecialtyDao;
 import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UserManager;
@@ -20,7 +20,7 @@ import java.util.List;
 public class SecurityUserManagerImpl implements SecurityUserManager {
 
     @Inject
-    private TenancyDao tenancyDao;
+    private SpecialtyDao specialtyDao;
 
     @Inject
     private UserManager userManager;
@@ -34,11 +34,39 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
-    public Tenancy getLoggedInTenancy() {
+    public String getLoggedInEmailAddress() {
 
         SecurityUser securityUser = getSecurityUser();
 
-        return securityUser != null ? securityUser.getTenancy() : null;
+        User user = userManager.get(securityUser.getUsername());
+
+        return user != null ? user.getEmail() : null;
+    }
+
+    @Override
+    public boolean isFirstLogon() {
+        SecurityUser securityUser = getSecurityUser();
+
+        User user = userManager.get(securityUser.getUsername());
+
+        return user != null && user.isFirstlogon();
+    }
+
+    @Override
+    public boolean isEmailVerified() {
+        SecurityUser securityUser = getSecurityUser();
+
+        User user = userManager.get(securityUser.getUsername());
+
+        return user != null && user.isEmailverified();
+    }
+
+    @Override
+    public Specialty getLoggedInSpecialty() {
+
+        SecurityUser securityUser = getSecurityUser();
+
+        return securityUser != null ? securityUser.getSpecialty() : null;
     }
 
     @Override
@@ -47,16 +75,16 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
-    public boolean isLoggedInToTenancy() {
-        return getLoggedInTenancy() != null;
+    public boolean isLoggedInToSpecialty() {
+        return getLoggedInSpecialty() != null;
     }
 
     @Override
-    public boolean isTenancyPresent(String context) {
+    public boolean isSpecialtyPresent(String context) {
 
-        Tenancy tenancy = getLoggedInTenancy();
+        Specialty specialty = getLoggedInSpecialty();
 
-        return tenancy != null && tenancy.getContext().equalsIgnoreCase(context);
+        return specialty != null && specialty.getContext().equalsIgnoreCase(context);
     }
 
     @Override
@@ -69,10 +97,10 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
             return true;
         }
 
-        if (securityUser != null && securityUser.getTenancy() != null) {
+        if (securityUser != null && securityUser.getSpecialty() != null) {
             Collection<GrantedAuthority> authorities = securityUser.getAuthorities();
 
-            // users can have one role per tenancy
+            // users can have one role per Specialty
             for (GrantedAuthority grantedAuthority : authorities) {
 
                 String userRole = grantedAuthority.getAuthority();
@@ -80,7 +108,7 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
                 if (roles != null) {
                     for (String role : roles) {
                         // convert to spring security convention
-                        role = ("ROLE_" + securityUser.getTenancy().getContext() + "_" +  role).toUpperCase();
+                        role = ("ROLE_" + securityUser.getSpecialty().getContext() + "_" + role).toUpperCase();
 
                         if (role.equals(userRole)) {
                             return true;
@@ -94,16 +122,16 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
-    public void setLoggedInTenancy(Long tenancyId) throws Exception {
+    public void setLoggedInSpecialty(Long specialtyId) throws Exception {
 
-        if (tenancyId == null) {
-            throw new IllegalArgumentException("TenancyId required");
+        if (specialtyId == null) {
+            throw new IllegalArgumentException("SpecialtyId required");
         }
 
-        Tenancy tenancy = tenancyDao.get(tenancyId);
+        Specialty specialty = specialtyDao.get(specialtyId);
 
-        if (tenancy == null) {
-            throw new IllegalArgumentException("Invalid tenancy id");
+        if (specialty == null) {
+            throw new IllegalArgumentException("Invalid specialty id");
         }
 
         SecurityUser securityUser = getSecurityUser();
@@ -113,22 +141,22 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
             throw new IllegalStateException("No logged in user");
         }
 
-        if (hasAccessToTenancy(user, tenancy)) {
-            // set the tenancy in the session for the user:
-            securityUser.setTenancy(tenancy);
+        if (hasAccessToSpecialty(user, specialty)) {
+            // set the specialty in the session for the user:
+            securityUser.setSpecialty(specialty);
         } else {
-            throw new IllegalStateException("Attempting to set tenancy for which user has no access");
+            throw new IllegalStateException("Attempting to set specialty for which user has no access");
         }
     }
 
     @Override
-    public boolean hasAccessToTenancy(User user, Tenancy tenancy) {
+    public boolean hasAccessToSpecialty(User user, Specialty specialty) {
 
-        List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(user);
+        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
 
-        for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
-            if (tenancyUserRole.getTenancy().equals(tenancy)) {
-                // the user has access to this tenancy
+        for (SpecialtyUserRole specialtyUserRole : specialtyUserRoles) {
+            if (specialtyUserRole.getSpecialty().equals(specialty)) {
+                // the user has access to this specialty
                 return true;
             }
         }

@@ -21,15 +21,15 @@ public class LaunchpadSelectAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        // Determine the tenancy selected and call manager to set tenancy in the session
+        // Determine the Specialty selected and call manager to set Specialty in the session
         try {
-            Long tenancyId = Long.decode(request.getParameter("tenancyId"));
-            LegacySpringUtils.getSecurityUserManager().setLoggedInTenancy(tenancyId);
+            Long specialtyId = Long.decode(request.getParameter("specialtyId"));
+            LegacySpringUtils.getSecurityUserManager().setLoggedInSpecialty(specialtyId);
 
         } catch (Exception e) {
 
             // for now just catch everything - there is no error page setup
-            LOGGER.error("Failed to set tenancy from launchpad: {}", e.getMessage());
+            LOGGER.error("Failed to set Specialty from launchpad: {}", e.getMessage());
             // Note: the error redirect will log out the user
             return mapping.findForward("error");
         }
