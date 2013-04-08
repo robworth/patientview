@@ -126,6 +126,11 @@
     <bean id="excelDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.ExcelDocumentDataBuilder"/>
     <bean id="pdfDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.PdfDocumentDataBuilder"/>
 
-    <bean id="userUpgradeManager" class="com.solidstategroup.radar.util.impl.RadarRpvSingleUserTableExport"/>
+    <bean id="userUpgradeManager" class="com.solidstategroup.radar.util.impl.RadarRpvSingleUserTableExport">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="demographicsDao" ref="demographicsDao"/>
+        <property name="utilityDao" ref="utilityDao"/>
+    </bean>
 
 </beans>

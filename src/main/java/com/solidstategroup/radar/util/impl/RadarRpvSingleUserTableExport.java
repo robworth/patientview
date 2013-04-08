@@ -19,7 +19,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -76,9 +76,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private SimpleJdbcInsert professionalUsersInsert;
 
     List<String> failedUsers = new ArrayList<String>();
-
-    @PostConstruct
-    public void init() {
+    public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
 
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
@@ -396,5 +394,17 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private boolean checkForProfessionalUser(String email) {
         String sql = "SELECT COUNT(*) FROM tbl_users WHERE uEmail = ?";
         return jdbcTemplate.queryForInt(sql, email) > 0;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setUtilityDao(UtilityDao utilityDao) {
+        this.utilityDao = utilityDao;
+    }
+
+    public void setDemographicsDao(DemographicsDao demographicsDao) {
+        this.demographicsDao = demographicsDao;
     }
 }
