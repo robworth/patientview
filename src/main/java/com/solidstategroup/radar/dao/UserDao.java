@@ -47,7 +47,7 @@ public interface UserDao {
 
     ProfessionalUser getProfessionalUserWithUsername(String username);
 
-    User getSuperUser(String email);
+    User getSuperUserWithUsername(String username);
 
     void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception;
 

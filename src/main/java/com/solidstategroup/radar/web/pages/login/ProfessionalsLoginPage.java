@@ -54,7 +54,7 @@ public class ProfessionalsLoginPage extends BasePage {
                 User professionalUser = userManager.getProfessionalUserWithUsername(user.getEmail());
                 // Warning: super admins login via this page too
                 if (professionalUser == null) {
-                    professionalUser = userManager.getSuperUser(user.getEmail());
+                    professionalUser = userManager.getSuperUserWithUsername(user.getEmail());
                 }
                 if (professionalUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {

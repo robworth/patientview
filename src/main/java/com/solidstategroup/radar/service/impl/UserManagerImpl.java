@@ -161,8 +161,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getProfessionalUserWithUsername(username);
     }
 
-    public User getSuperUser(String email) {
-        return userDao.getSuperUser(email);
+    public User getSuperUserWithUsername(String username) {
+        return userDao.getSuperUserWithUsername(username);
     }
 
     public void saveProfessionalUser(ProfessionalUser professionalUser) throws Exception {

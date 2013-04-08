@@ -262,7 +262,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
-    public User getSuperUser(String email) {
+    public User getSuperUserWithUsername(String username) {
 
         /**
          *  This one is an odd one.
@@ -272,12 +272,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
-                    + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_EMAIL_FIELD_NAME,
+                    + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
                     PROFESSIONAL_USER_ID_FIELD_NAME,
                     true),
-                    new Object[]{email, User.ROLE_SUPER_USER}, new ProfessionalUserRowMapper());
+                    new Object[]{username, User.ROLE_SUPER_USER}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Could not professional user with " + USER_EMAIL_FIELD_NAME + " {}", email);
+            LOGGER.debug("Could not professional user with " + USER_USERNAME_FIELD_NAME + " {}", username);
         }
 
         return null;
