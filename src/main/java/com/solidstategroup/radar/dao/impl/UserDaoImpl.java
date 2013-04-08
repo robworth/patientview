@@ -514,8 +514,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     public void createUserMappingInPatientView(String username, String nhsno, String unitcode) throws Exception {
-        deleteUserMappingInPatientView(username);
-
         // also need to create a usermapping so this user can also log into rpv to add users
         Map<String, Object> userMappingMap = new HashMap<String, Object>();
         userMappingMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
