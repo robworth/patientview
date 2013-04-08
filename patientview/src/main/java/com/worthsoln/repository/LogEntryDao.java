@@ -15,7 +15,7 @@ public interface LogEntryDao {
 
     void save(LogEntry logEntry);
 
-    LogEntry getLatestLogEntry(String nhsno, String action, Specialty specialty);
+    LogEntry getLatestLogEntry(String nhsno, String action);
 
     List<LogEntry> get(String username, Calendar startdate, Calendar enddate, Specialty specialty);
 

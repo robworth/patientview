@@ -1,5 +1,3 @@
-<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
-<%@ page import="com.worthsoln.patientview.model.Specialty" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -97,9 +95,28 @@
                             </div>
                             <div class="modal-body">
                                 <fieldset>
-                                    <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
+                                    <input type="hidden" class="js-message-redirect" value="/<%=actionPrefix%>/conversation.do" />
 
-                                    <div class="control-group">
+                                    <logic:present name="units">
+                                        <div class="control-group">
+                                            <label class="control-label">Unit</label>
+
+                                            <div class="controls">
+                                                <select name="recipientId" class="js-message-unit-code">
+                                                    <option value="">Select</option>
+
+                                                    <logic:iterate name="units" id="unit" indexId="index">
+                                                        <option value="<bean:write name="unit" property="unitcode" />"><bean:write name="unit" property="name" /></option>
+                                                    </logic:iterate>
+                                                </select>
+                                                <span class="js-message-unit-loading" style="display: none">Finding recipients from unit ...</span>
+                                            </div>
+
+                                            <div class="alert alert-error js-message-unit-recipient-errors" style="display: none"></div>
+                                        </div>
+                                    </logic:present>
+
+                                    <div class="control-group js-recipient-container" <logic:present name="units">style="display: none"</logic:present>>
                                         <label class="control-label">To</label>
                                         <div class="controls">
                                             <select name="recipientId" class="js-message-recipient-id">
@@ -125,11 +142,11 @@
                                                     </optgroup>
                                                 </logic:notEmpty>
 
-                                                <logic:notEmpty name="patientRecipients">
+                                                <logic:notEmpty name="unitPatientRecipients">
                                                     <option></option>
 
                                                     <optgroup label="Patients">
-                                                        <logic:iterate name="patientRecipients" id="recipient" indexId="index">
+                                                        <logic:iterate name="unitPatientRecipients" id="recipient" indexId="index">
                                                             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
                                                         </logic:iterate>
                                                     </optgroup>

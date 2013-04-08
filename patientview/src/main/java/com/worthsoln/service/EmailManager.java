@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 
 public interface EmailManager {
 
-    void sendUserMessage(Message message);
+    void sendUserMessage(ServletContext context, Message message);
 
     void sendEmail(ServletContext context, String fromAddress, String toAddress, String ccAddress, String subject,
                    String emailText);

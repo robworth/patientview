@@ -2,6 +2,6 @@
 
 <tiles:insert definition="default.layout" flush="true" >
 
-    <tiles:put name="body" value="/body/forgotten-password.jsp" />
+    <tiles:put name="body" value="/body/join.jsp" />
 
 </tiles:insert>

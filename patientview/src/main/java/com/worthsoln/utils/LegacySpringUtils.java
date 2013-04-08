@@ -1,28 +1,6 @@
 package com.worthsoln.utils;
 
-import com.worthsoln.service.AboutmeManager;
-import com.worthsoln.service.CentreManager;
-import com.worthsoln.service.CommentManager;
-import com.worthsoln.service.DiagnosisManager;
-import com.worthsoln.service.DiagnosticManager;
-import com.worthsoln.service.EdtaCodeManager;
-import com.worthsoln.service.EmailManager;
-import com.worthsoln.service.EmailVerificationManager;
-import com.worthsoln.service.FeedbackManager;
-import com.worthsoln.service.LetterManager;
-import com.worthsoln.service.LogEntryManager;
-import com.worthsoln.service.MedicineManager;
-import com.worthsoln.service.MessageManager;
-import com.worthsoln.service.NewsManager;
-import com.worthsoln.service.PatientManager;
-import com.worthsoln.service.ResultHeadingManager;
-import com.worthsoln.service.SecurityUserManager;
-import com.worthsoln.service.SplashPageManager;
-import com.worthsoln.service.TestResultManager;
-import com.worthsoln.service.TimeManager;
-import com.worthsoln.service.UKTransplantManager;
-import com.worthsoln.service.UnitManager;
-import com.worthsoln.service.UserManager;
+import com.worthsoln.service.*;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 
@@ -46,6 +24,8 @@ public class LegacySpringUtils {
     private static EdtaCodeManager edtaCodeManager;
 
     private static EmailVerificationManager emailVerificationManager;
+
+    private static FeatureManager featureManager;
 
     private static FeedbackManager feedbackManager;
 
@@ -82,6 +62,8 @@ public class LegacySpringUtils {
     private static MessageManager messageManager;
 
     private static EmailManager emailManager;
+    
+    private static JoinRequestManager joinRequestManager;
 
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
@@ -137,6 +119,14 @@ public class LegacySpringUtils {
 
     public static void setEmailVerificationManager(EmailVerificationManager emailVerificationManager) {
         LegacySpringUtils.emailVerificationManager = emailVerificationManager;
+    }
+
+    public static FeatureManager getFeatureManager() {
+        return featureManager;
+    }
+
+    public static void setFeatureManager(FeatureManager featureManager) {
+        LegacySpringUtils.featureManager = featureManager;
     }
 
     public static FeedbackManager getFeedbackManager() {
@@ -281,5 +271,13 @@ public class LegacySpringUtils {
 
     public static void setEmailManager(EmailManager emailManager) {
         LegacySpringUtils.emailManager = emailManager;
+    }
+    
+    public static JoinRequestManager getJoinRequestManager() {
+        return joinRequestManager;
+    }
+
+    public static void setJoinRequestManager(JoinRequestManager joinRequestManager) {
+        LegacySpringUtils.joinRequestManager = joinRequestManager;
     }
 }

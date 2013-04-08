@@ -21,7 +21,11 @@ public interface UnitDao {
 
     void save(Unit unit);
 
+    List<Unit> getAll(boolean sortByName);
+
     List<Unit> getAll(boolean sortByName, Specialty specialty);
+
+    List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
 
     List<Unit> getUnitsWithUser(Specialty specialty);
 
@@ -29,7 +33,6 @@ public interface UnitDao {
 
     List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
                    Specialty specialty);
-
 
     List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
 

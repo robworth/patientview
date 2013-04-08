@@ -7,7 +7,6 @@ import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.PatientCount;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.repository.PatientCountDao;
 import com.worthsoln.repository.UnitDao;
@@ -65,8 +64,18 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getAllDisregardingSpeciality(boolean sortByName) {
+        return unitDao.getAll(true);
+    }
+
+    @Override
     public List<Unit> getAll(boolean sortByName) {
         return unitDao.getAll(true, securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
+    public List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude) {
+        return unitDao.getAll(sourceTypesToExclude, sourceTypesToInclude);
     }
 
     @Override
@@ -98,7 +107,7 @@ public class UnitManagerImpl implements UnitManager {
     public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
-        if (!LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
+        if (user != null && !LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 

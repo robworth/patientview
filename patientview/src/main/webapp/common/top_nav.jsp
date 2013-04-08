@@ -80,32 +80,38 @@
         <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/forums/list.page">Forum</a></li>
     </logic:present>
     <%
+        } else {
+    %>
+        <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/join">I Want To Join</html:link></li>
+    <%
         }
     %>
 
-    <logic:present role="patient">
-        <%
-        // need to get the number of unread messages if they have any
-        User user = UserUtils.retrieveUser(request);
+    <logic:present role="patient" >
+        <logic:present feature="messaging">
+            <%
+            // need to get the number of unread messages if they have any
+            User user = UserUtils.retrieveUser(request);
 
-        if (user != null) {
-            int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
+            if (user != null) {
+                int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
+                %>
+
+                <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
+                    <a href="/patient/conversations.do">
+                        Messages
+                        <%
+                        if (numberUnreadMessages > 0) {
+                        %>
+                            <span class="badge badge-important"><%=numberUnreadMessages%></span>
+                        <%
+                        }
+                        %>
+                    </a>
+                </li>
+            <%
+            }
             %>
-
-            <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
-                <a href="/patient/conversations.do">
-                    Messages
-                    <%
-                    if (numberUnreadMessages > 0) {
-                    %>
-                        <span class="badge badge-important"><%=numberUnreadMessages%></span>
-                    <%
-                    }
-                    %>
-                </a>
-            </li>
-        <%
-        }
-        %>
+        </logic:present>
     </logic:present>
 </ul>
