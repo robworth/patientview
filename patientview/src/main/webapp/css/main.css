@@ -238,7 +238,7 @@ h1, h2{
     padding: 40px 0;
 }
 
-.launchPadTextAlternative.rpvResults{
+.launchPadTextAlternative.renalResults{
     background: url(/img/content/resultsThumbPlaceHolder.png);
     font-size: 20px;
     padding: 60px 0;
@@ -371,4 +371,8 @@ h1, h2{
 .tooltip-link:hover .tooltip{
     opacity: 1;
     filter: alpha(opacity=1);
+}
+
+.patient-edit-form.form-actions{
+    padding-left:30px;
 }

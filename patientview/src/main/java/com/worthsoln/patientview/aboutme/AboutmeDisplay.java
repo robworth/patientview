@@ -1,10 +1,10 @@
 package com.worthsoln.patientview.aboutme;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Aboutme;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -12,7 +12,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AboutmeDisplay extends DatabaseAction {
+public class AboutmeDisplay extends Action {
 
     public ActionForward execute(
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -32,11 +32,4 @@ public class AboutmeDisplay extends DatabaseAction {
         }
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "aboutme";
-    }
 }

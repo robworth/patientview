@@ -46,6 +46,15 @@ public class UnitUtils {
     // update the unit by setting it's properties
     public static void buildUnit(Unit unit, Object form) throws Exception {
 
+        // set defaults for sourceType and country, note this runs for updates as well as creates
+        if (unit.getSourceType() == null || unit.getSourceType().length() == 0) {
+            unit.setSourceType("renalunit");
+        }
+
+        if (unit.getCountry() == null || unit.getCountry().length() == 0) {
+            unit.setCountry("1");
+        }
+
         // build object
         unit.setUnitcode(BeanUtils.getProperty(form, "unitcode"));
         unit.setName(BeanUtils.getProperty(form, "name"));
@@ -57,9 +66,9 @@ public class UnitUtils {
         unit.setPostcode(BeanUtils.getProperty(form, "postcode"));
         unit.setUniturl(BeanUtils.getProperty(form, "uniturl"));
         unit.setTrusturl(BeanUtils.getProperty(form, "trusturl"));
-        unit.setRpvadminname(BeanUtils.getProperty(form, "rpvadminname"));
-        unit.setRpvadminphone(BeanUtils.getProperty(form, "rpvadminphone"));
-        unit.setRpvadminemail(BeanUtils.getProperty(form, "rpvadminemail"));
+        unit.setRenaladminname(BeanUtils.getProperty(form, "renaladminname"));
+        unit.setRenaladminphone(BeanUtils.getProperty(form, "renaladminphone"));
+        unit.setRenaladminemail(BeanUtils.getProperty(form, "renaladminemail"));
         unit.setUnitenquiriesphone(BeanUtils.getProperty(form, "unitenquiriesphone"));
         unit.setUnitenquiriesemail(BeanUtils.getProperty(form, "unitenquiriesemail"));
         unit.setAppointmentphone(BeanUtils.getProperty(form, "appointmentphone"));

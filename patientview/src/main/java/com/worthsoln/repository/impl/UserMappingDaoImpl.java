@@ -1,6 +1,6 @@
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.UserMapping_;
@@ -23,9 +23,9 @@ import java.util.List;
 public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implements UserMappingDao {
 
     @Override
-    public void deleteUserMappings(String username, String unitcode, Tenancy tenancy) {
+    public void deleteUserMappings(String username, String unitcode, Specialty specialty) {
 
-        List<UserMapping> userMappings = getAll(username, unitcode, tenancy);
+        List<UserMapping> userMappings = getAll(username, unitcode, specialty);
 
         try {
             for (UserMapping userMapping : userMappings) {
@@ -37,7 +37,7 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
     }
 
     @Override
-    public List<UserMapping> getAll(String username, Tenancy tenancy) {
+    public List<UserMapping> getAll(String username, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<UserMapping> criteria = builder.createQuery(UserMapping.class);
@@ -45,14 +45,14 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(UserMapping_.username), username));
-        wherePredicates.add(builder.equal(from.get(UserMapping_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(UserMapping_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<UserMapping> getAllExcludeUnitcode(String username, String unitcode, Tenancy tenancy) {
+    public List<UserMapping> getAllExcludeUnitcode(String username, String unitcode, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<UserMapping> criteria = builder.createQuery(UserMapping.class);
@@ -61,14 +61,14 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
 
         wherePredicates.add(builder.equal(from.get(UserMapping_.username), username));
         wherePredicates.add(builder.notEqual(from.get(UserMapping_.unitcode), unitcode));
-        wherePredicates.add(builder.equal(from.get(UserMapping_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(UserMapping_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<UserMapping> getAll(String username, String unitcode, Tenancy tenancy) {
+    public List<UserMapping> getAll(String username, String unitcode, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<UserMapping> criteria = builder.createQuery(UserMapping.class);
@@ -77,14 +77,14 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
 
         wherePredicates.add(builder.equal(from.get(UserMapping_.username), username));
         wherePredicates.add(builder.equal(from.get(UserMapping_.unitcode), unitcode));
-        wherePredicates.add(builder.equal(from.get(UserMapping_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(UserMapping_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<UserMapping> getAllForNhsNo(String nhsNo, Tenancy tenancy) {
+    public List<UserMapping> getAllForNhsNo(String nhsNo, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<UserMapping> criteria = builder.createQuery(UserMapping.class);
@@ -92,16 +92,16 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(UserMapping_.nhsno), nhsNo));
-        wherePredicates.add(builder.equal(from.get(UserMapping_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(UserMapping_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public String getUsersRealUnitcodeBestGuess(String username, Tenancy tenancy) {
+    public String getUsersRealUnitcodeBestGuess(String username, Specialty specialty) {
 
-        List<UserMapping> userMappings = getAllExcludeUnitcode(username, UnitUtils.PATIENT_ENTERS_UNITCODE, tenancy);
+        List<UserMapping> userMappings = getAllExcludeUnitcode(username, UnitUtils.PATIENT_ENTERS_UNITCODE, specialty);
 
         if (userMappings == null || userMappings.isEmpty()) {
             return "";
@@ -111,9 +111,9 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
     }
 
     @Override
-    public String getUsersRealNhsNoBestGuess(String username, Tenancy tenancy) {
+    public String getUsersRealNhsNoBestGuess(String username, Specialty specialty) {
 
-        List<UserMapping> userMappings = getAllExcludeUnitcode(username, UnitUtils.PATIENT_ENTERS_UNITCODE, tenancy);
+        List<UserMapping> userMappings = getAllExcludeUnitcode(username, UnitUtils.PATIENT_ENTERS_UNITCODE, specialty);
 
         if (userMappings == null || userMappings.isEmpty()) {
             return "";
@@ -123,9 +123,9 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
     }
 
     @Override
-    public UserMapping getUserMappingPatientEntered(User user, Tenancy tenancy) {
+    public UserMapping getUserMappingPatientEntered(User user, Specialty specialty) {
 
-        List<UserMapping> userMappings = getAll(user.getUsername(), tenancy);
+        List<UserMapping> userMappings = getAll(user.getUsername(), specialty);
 
         UserMapping patientEntryUserMapping = null;
         UserMapping anyOtherUserMapping = null;
@@ -143,7 +143,7 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
             if (anyOtherUserMapping != null) {
                 patientEntryUserMapping = new UserMapping(anyOtherUserMapping.getUsername(),
                         UnitUtils.PATIENT_ENTERS_UNITCODE, anyOtherUserMapping.getNhsno());
-                patientEntryUserMapping.setTenancy(tenancy);
+                patientEntryUserMapping.setSpecialty(specialty);
                 save(patientEntryUserMapping);
                 return patientEntryUserMapping;
             }
@@ -155,7 +155,7 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
     }
 
     @Override
-    public List<UserMapping> getUsersSiblings(String username, String unitcode, Tenancy tenancy) {
+    public List<UserMapping> getUsersSiblings(String username, String unitcode, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<UserMapping> criteria = builder.createQuery(UserMapping.class);
@@ -170,14 +170,14 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
 
         wherePredicates.add(builder.or(username1, username2));
         wherePredicates.add(builder.or(unitCode1, unitCode2));
-        wherePredicates.add(builder.equal(from.get(UserMapping_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(UserMapping_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
     @Override
-    public List<UserMapping> getDuplicateUsers(String nhsno, String username, Tenancy tenancy) {
+    public List<UserMapping> getDuplicateUsers(String nhsno, String username, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<UserMapping> criteria = builder.createQuery(UserMapping.class);
@@ -187,7 +187,7 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
         wherePredicates.add(builder.equal(from.get(UserMapping_.nhsno), nhsno));
         wherePredicates.add(builder.notEqual(from.get(UserMapping_.username), username));
         wherePredicates.add(builder.notLike(from.get(UserMapping_.username), "%-GP"));
-        wherePredicates.add(builder.equal(from.get(UserMapping_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(from.get(UserMapping_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
 

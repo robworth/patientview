@@ -569,7 +569,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>tenancy</name>
+            <name>specialty</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

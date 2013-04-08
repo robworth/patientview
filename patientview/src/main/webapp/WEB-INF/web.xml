@@ -24,12 +24,12 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>tenancyFilter</filter-name>
-        <filter-class>com.worthsoln.tenancy.TenancyFilter</filter-class>
+        <filter-name>specialtyFilter</filter-name>
+        <filter-class>com.worthsoln.specialty.SpecialtyFilter</filter-class>
     </filter>
 
     <filter-mapping>
-        <filter-name>tenancyFilter</filter-name>
+        <filter-name>specialtyFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
@@ -38,7 +38,7 @@
 
     <filter>
         <filter-name>clickstream-jforum</filter-name>
-        <filter-class>com.worthsoln.forum.RpvForumFilter</filter-class>
+        <filter-class>com.worthsoln.forum.RenalForumFilter</filter-class>
     </filter>
 
     <filter-mapping>

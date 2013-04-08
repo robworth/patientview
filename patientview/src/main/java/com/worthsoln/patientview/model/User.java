@@ -51,9 +51,9 @@ public class User extends BaseModel {
     }
 
     @Transient
-    // get the user's role in the currently selected tenancy
+    // get the user's role in the currently selected specialty
     public String getRole() {
-        return LegacySpringUtils.getUserManager().getCurrentTenancyRole(this);
+        return LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(this);
     }
 
     public String getName() {

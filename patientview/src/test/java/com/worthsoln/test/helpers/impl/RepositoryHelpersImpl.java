@@ -1,11 +1,11 @@
 package com.worthsoln.test.helpers.impl;
 
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
-import com.worthsoln.repository.TenancyDao;
-import com.worthsoln.repository.TenancyUserRoleDao;
+import com.worthsoln.repository.SpecialtyDao;
+import com.worthsoln.repository.SpecialtyUserRoleDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
@@ -20,7 +20,7 @@ import javax.inject.Inject;
 public class RepositoryHelpersImpl implements RepositoryHelpers {
 
     @Inject
-    private TenancyDao tenancyDao;
+    private SpecialtyDao specialtyDao;
 
     @Inject
     private UserDao userDao;
@@ -29,7 +29,7 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
     private UserMappingDao userMappingDao;
 
     @Inject
-    private TenancyUserRoleDao tenancyUserRoleDao;
+    private SpecialtyUserRoleDao specialtyUserRoleDao;
 
     @Override
     public User createUser(String username, String email, String password, String name, String screenName) {
@@ -47,12 +47,12 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
     @Override
     public User createUserWithMapping(String username, String email, String password, String name, String screenName,
-                                      String unitcode, String nhsno, Tenancy tenancy) {
+                                      String unitcode, String nhsno, Specialty specialty) {
 
         User user = createUser(username, email, password, name, screenName);
 
         UserMapping userMapping = new UserMapping();
-        userMapping.setTenancy(tenancy);
+        userMapping.setSpecialty(specialty);
         userMapping.setNhsno(nhsno);
         userMapping.setUnitcode(unitcode);
         userMapping.setUsername(username);
@@ -63,27 +63,28 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
     }
 
     @Override
-    public Tenancy createTenancy(String name, String context, String description) {
+    public Specialty createSpecialty(String name, String context, String description) {
 
-        Tenancy tenancy = new Tenancy();
-        tenancy.setName(name);
-        tenancy.setContext(context);
-        tenancy.setDescription(description);
+        Specialty specialty = new Specialty();
+        specialty.setName(name);
+        specialty.setContext(context);
+        specialty.setDescription(description);
 
-        tenancyDao.save(tenancy);
+        specialtyDao.save(specialty);
 
-        return tenancy;
+        return specialty;
     }
 
     @Override
-    public TenancyUserRole createTenancyUserRole(Tenancy tenancy, User user, String role) {
+    public SpecialtyUserRole createSpecialtyUserRole(Specialty specialty, User user, String role) {
 
-        TenancyUserRole tenancyUserRole1 = new TenancyUserRole();
-        tenancyUserRole1.setRole(role);
-        tenancyUserRole1.setTenancy(tenancy);
-        tenancyUserRole1.setUser(user);
-        tenancyUserRoleDao.save(tenancyUserRole1);
+        SpecialtyUserRole specialtyUserRole1 = new SpecialtyUserRole();
+        specialtyUserRole1.setRole(role);
+        specialtyUserRole1.setSpecialty(specialty);
+        specialtyUserRole1.setUser(user);
+        specialtyUserRoleDao.save(specialtyUserRole1);
 
-        return tenancyUserRole1;
+        return specialtyUserRole1;
     }
+
 }

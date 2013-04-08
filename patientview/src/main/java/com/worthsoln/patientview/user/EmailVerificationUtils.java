@@ -47,8 +47,6 @@ public class EmailVerificationUtils {
         emailBody += newLine;
         emailBody += "This is simply so we can be sure that your email address is correct." + newLine;
         emailBody += newLine;
-        emailBody += "Please note this link will not give access to your username and password - this will be given to you separately by your unit." + newLine;
-        emailBody += newLine;
         emailBody += "To verify this email address simply click on the link below, or if that doesn't work, copy and paste the link into the address bar of your internet browser." + newLine;
         emailBody += newLine;
         emailBody += "If you have no idea why you have been sent this email, then it is probably not for you. Please delete it." + newLine;

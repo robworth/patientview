@@ -1,6 +1,6 @@
 package com.worthsoln.test.helpers.impl;
 
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.test.helpers.SecurityHelpers;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,9 +20,9 @@ public class SecurityHelpersImpl implements SecurityHelpers {
     private UserDetailsService userDetailsService;
 
     @Override
-    public void loginAsUser(String username, Tenancy tenancy) {
+    public void loginAsUser(String username, Specialty specialty) {
         SecurityUser user = (SecurityUser) userDetailsService.loadUserByUsername(username);
-        user.setTenancy(tenancy);
+        user.setSpecialty(specialty);
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));

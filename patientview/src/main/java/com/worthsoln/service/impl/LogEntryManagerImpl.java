@@ -25,8 +25,8 @@ public class LogEntryManagerImpl implements LogEntryManager {
     @Override
     public void save(LogEntry logEntry) {
 
-        if (logEntry.getTenancy() == null) {
-            logEntry.setTenancy(securityUserManager.getLoggedInTenancy());
+        if (logEntry.getSpecialty() == null) {
+            logEntry.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
         logEntryDao.save(logEntry);
@@ -34,28 +34,28 @@ public class LogEntryManagerImpl implements LogEntryManager {
 
     @Override
     public LogEntry getLatestLogEntry(String nhsno, String action) {
-        return logEntryDao.getLatestLogEntry(nhsno, action, securityUserManager.getLoggedInTenancy());
+        return logEntryDao.getLatestLogEntry(nhsno, action, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<LogEntry> get(String username, Calendar startdate, Calendar enddate) {
-        return logEntryDao.get(username, startdate, enddate, securityUserManager.getLoggedInTenancy());
+        return logEntryDao.get(username, startdate, enddate, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action) {
-        return logEntryDao.getWithNhsNo(nhsno, startdate, enddate, action, securityUserManager.getLoggedInTenancy());
+        return logEntryDao.getWithNhsNo(nhsno, startdate, enddate, action, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
                                        Calendar startdate, Calendar enddate) {
         return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
-                securityUserManager.getLoggedInTenancy());
+                securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
     public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate) {
-        return logEntryDao.getWithUnitCode(unitcode, startdate, enddate, securityUserManager.getLoggedInTenancy());
+        return logEntryDao.getWithUnitCode(unitcode, startdate, enddate, securityUserManager.getLoggedInSpecialty());
     }
 }

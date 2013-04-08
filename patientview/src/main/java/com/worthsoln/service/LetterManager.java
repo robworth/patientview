@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.Letter;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,4 +20,8 @@ public interface LetterManager {
     List<Letter> get(String username);
 
     List<Letter> getAll();
+
+    void delete(String nhsno, String unitcode, Date date);
+
+    void delete(String nhsno, String unitcode);
 }

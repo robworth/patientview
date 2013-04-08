@@ -1,8 +1,6 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Panel;
@@ -13,6 +11,7 @@ import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -22,19 +21,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-public class TestResultsAction extends DatabaseAction {
+public class TestResultsAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        DatabaseDAO dao = getDao(request);
         User user = UserUtils.retrieveUser(request);
+
         if (user != null) {
             request.setAttribute("user", user);
 
             Panel currentPanel = managePanels(request);
-            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(dao, currentPanel, user);
+
+            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
+
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
+
             managePages(request, resultsInRecords);
             request.setAttribute("results", resultsInRecords);
 
@@ -45,12 +47,13 @@ public class TestResultsAction extends DatabaseAction {
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");
         }
+
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    private List<TestResultWithUnitShortname> extractTestResultsWithComments(DatabaseDAO dao,
-                                                                             Panel currentPanel, User user) {
+    private List<TestResultWithUnitShortname> extractTestResultsWithComments(Panel currentPanel, User user) {
         List<TestResultWithUnitShortname> results
                 = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, currentPanel);
 
@@ -66,14 +69,15 @@ public class TestResultsAction extends DatabaseAction {
 
     private void addCommentsForNhsno(String nhsno, Panel currentPanel, List<TestResultWithUnitShortname> results) {
 
-        // Note: This seems to be trying to do something with the panel and result headings.
-        // We have removed because it did appear to do anything.
+        // Comments (from the comments table) should show on the 1st panel of the results
+        if (currentPanel.getPanel() == 1) {
+            List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
 
-        List<Comment> comments = LegacySpringUtils.getCommentManager().get(nhsno);
-
-        for (Comment comment : comments) {
-            results.add(new TestResultWithUnitShortname(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, comment.getDatestamp(),
-                    "resultcomment", Long.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
+            for (Comment comment : comments) {
+                results.add(new TestResultWithUnitShortname(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE,
+                        comment.getDatestamp(),
+                        "resultcomment", Long.toString(comment.getId()), UnitUtils.PATIENT_ENTERS_UNITCODE));
+            }
         }
     }
 
@@ -152,13 +156,6 @@ public class TestResultsAction extends DatabaseAction {
         return resultsRecords.values();
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "edtaCode";
-    }
 }
 
 class TestResultId implements Comparable {
@@ -175,22 +172,19 @@ class TestResultId implements Comparable {
         this.shortname = testResult.getShortname();
     }
 
+    // Note this means that if the user has multiple nhsno they will be ordered all together
     public int compareTo(Object o) {
         TestResultId resultToCompareThisTo = (TestResultId) o;
-        if (nhsno.equals(resultToCompareThisTo.getNhsno())) {
-            if (dateStamped.equals(resultToCompareThisTo.getDateStamped())) {
-                if (prepost.equals(resultToCompareThisTo.getPrepost())) {
-                    return shortname.compareToIgnoreCase(resultToCompareThisTo.getShortname());
-                } else {
-                    return prepost.compareToIgnoreCase(resultToCompareThisTo.getPrepost());
-                }
-            } else if (dateStamped.before(resultToCompareThisTo.getDateStamped())) {
-                return 1;
+        if (dateStamped.equals(resultToCompareThisTo.getDateStamped())) {
+            if (prepost.equals(resultToCompareThisTo.getPrepost())) {
+                return shortname.compareToIgnoreCase(resultToCompareThisTo.getShortname());
             } else {
-                return -1;
+                return prepost.compareToIgnoreCase(resultToCompareThisTo.getPrepost());
             }
+        } else if (dateStamped.before(resultToCompareThisTo.getDateStamped())) {
+            return 1;
         } else {
-            return nhsno.compareToIgnoreCase(resultToCompareThisTo.getNhsno());
+            return -1;
         }
     }
 

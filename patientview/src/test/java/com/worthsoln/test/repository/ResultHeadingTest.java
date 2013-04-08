@@ -2,7 +2,7 @@ package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.ResultHeading;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.repository.ResultHeadingDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.junit.Before;
@@ -26,18 +26,18 @@ public class ResultHeadingTest extends BaseDaoTest {
     @Inject
     private RepositoryHelpers repositoryHelpers;
 
-    private Tenancy tenancy;
+    private Specialty specialty;
 
     @Before
     public void setupSystem() {
-        tenancy = repositoryHelpers.createTenancy("Tenancy1", "ten1", "A test tennacy");
+        specialty = repositoryHelpers.createSpecialty("Specialty", "specialty1", "A test Specialty");
     }
 
     @Test
     public void testSaveGet() {
 
         ResultHeading resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading");
         resultHeading.setHeadingcode("HEADA");
         resultHeading.setLink("http://www.google.com/");
@@ -49,7 +49,7 @@ public class ResultHeadingTest extends BaseDaoTest {
 
         assertTrue("Invalid id", resultHeading.getId() > 0);
 
-        ResultHeading check = resultHeadingDao.get(resultHeading.getHeadingcode(), tenancy);
+        ResultHeading check = resultHeadingDao.get(resultHeading.getHeadingcode(), specialty);
 
         assertTrue("Result heading not found via headingcode", check != null && check.getHeading().equals("heading"));
     }
@@ -58,7 +58,7 @@ public class ResultHeadingTest extends BaseDaoTest {
     public void testSaveGetAllDelete() {
 
         ResultHeading resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading");
         resultHeading.setHeadingcode("HEAD");
         resultHeading.setLink("http://www.google.com/");
@@ -69,7 +69,7 @@ public class ResultHeadingTest extends BaseDaoTest {
         resultHeadingDao.save(resultHeading);
 
         resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading2");
         resultHeading.setHeadingcode("HEAD2");
         resultHeading.setLink("http://www.google2.com/");
@@ -79,13 +79,13 @@ public class ResultHeadingTest extends BaseDaoTest {
 
         resultHeadingDao.save(resultHeading);
 
-        List<ResultHeading> results = resultHeadingDao.getAll(tenancy);
+        List<ResultHeading> results = resultHeadingDao.getAll(specialty);
 
         assertEquals("Incorrect number of results", 2, results.size());
 
-        resultHeadingDao.delete(resultHeading.getHeadingcode(), tenancy);
+        resultHeadingDao.delete(resultHeading.getHeadingcode(), specialty);
 
-        results = resultHeadingDao.getAll(tenancy);
+        results = resultHeadingDao.getAll(specialty);
 
         assertEquals("Incorrect number of results after delete", 1, results.size());
     }
@@ -94,7 +94,7 @@ public class ResultHeadingTest extends BaseDaoTest {
     public void testSaveGetUsingPanel() {
 
         ResultHeading resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading");
         resultHeading.setHeadingcode("HEAD");
         resultHeading.setLink("http://www.google.com/");
@@ -105,7 +105,7 @@ public class ResultHeadingTest extends BaseDaoTest {
         resultHeadingDao.save(resultHeading);
 
         resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading2");
         resultHeading.setHeadingcode("HEAD2");
         resultHeading.setLink("http://www.google2.com/");
@@ -116,7 +116,7 @@ public class ResultHeadingTest extends BaseDaoTest {
         resultHeadingDao.save(resultHeading);
 
         resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading3");
         resultHeading.setHeadingcode("HEAD3");
         resultHeading.setLink("http://www.google3.com/");
@@ -126,7 +126,7 @@ public class ResultHeadingTest extends BaseDaoTest {
 
         resultHeadingDao.save(resultHeading);
 
-        List<ResultHeading> results = resultHeadingDao.get(1, tenancy);
+        List<ResultHeading> results = resultHeadingDao.get(1, specialty);
 
         assertEquals("Incorrect number of results", 2, results.size());
 
@@ -138,7 +138,7 @@ public class ResultHeadingTest extends BaseDaoTest {
     public void testGetPanels() {
 
         ResultHeading resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading");
         resultHeading.setHeadingcode("HEAD");
         resultHeading.setLink("http://www.google.com/");
@@ -149,7 +149,7 @@ public class ResultHeadingTest extends BaseDaoTest {
         resultHeadingDao.save(resultHeading);
 
         resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading2");
         resultHeading.setHeadingcode("HEAD2");
         resultHeading.setLink("http://www.google2.com/");
@@ -160,7 +160,7 @@ public class ResultHeadingTest extends BaseDaoTest {
         resultHeadingDao.save(resultHeading);
 
         resultHeading = new ResultHeading();
-        resultHeading.setTenancy(tenancy);
+        resultHeading.setSpecialty(specialty);
         resultHeading.setHeading("heading3");
         resultHeading.setHeadingcode("HEAD3");
         resultHeading.setLink("http://www.google3.com/");
@@ -170,7 +170,7 @@ public class ResultHeadingTest extends BaseDaoTest {
 
         resultHeadingDao.save(resultHeading);
 
-        List<Panel> results = resultHeadingDao.getPanels(tenancy);
+        List<Panel> results = resultHeadingDao.getPanels(specialty);
 
         assertEquals("Incorrect number of results", 2, results.size());
 

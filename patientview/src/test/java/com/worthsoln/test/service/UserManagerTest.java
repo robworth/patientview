@@ -1,8 +1,8 @@
 package com.worthsoln.test.service;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.test.helpers.SecurityHelpers;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- *      These tests require an admin adminUser to be logged into a tenancy
+ *      These tests require an admin adminUser to be logged into a specialty
  */
 public class UserManagerTest extends BaseServiceTest {
 
@@ -31,17 +31,17 @@ public class UserManagerTest extends BaseServiceTest {
     @Inject
     private UserManager userManager;
 
-    private Tenancy tenancy1;
+    private Specialty specialty1;
     private UnitAdmin unitAdmin;
 
     @Before
     public void setupSystem() {
-        // create an admin adminUser and tenancy and log them in
+        // create an admin adminUser and specialty and log them in
         User adminUser = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User", "Testy");
-        tenancy1 = serviceHelpers.createTenancy("Tenant 1", "ten1", "Test description");
-        serviceHelpers.createTenancyUserRole(tenancy1, adminUser, "unitadmin");
+        specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "unitadmin");
 
-        securityHelpers.loginAsUser(adminUser.getUsername(), tenancy1);
+        securityHelpers.loginAsUser(adminUser.getUsername(), specialty1);
 
         // a new unit staff user to create
         unitAdmin = new UnitAdmin("unitstaff-username1", "pass", "Unit Staff Name",
@@ -55,12 +55,12 @@ public class UserManagerTest extends BaseServiceTest {
 
         assertTrue("Invalid id", newUser.getId() > 0);
 
-        // check new User's tenancy etc
-        List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(newUser);
+        // check new User's specialty etc
+        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(newUser);
 
-        assertEquals("Incorrect number of roles", 1, tenancyUserRoles.size());
-        assertEquals("Incorrect tenancy", tenancy1, tenancyUserRoles.get(0).getTenancy());
-        assertEquals("Incorrect tenancy role", "unitstaff", tenancyUserRoles.get(0).getRole());
+        assertEquals("Incorrect number of roles", 1, specialtyUserRoles.size());
+        assertEquals("Incorrect specialty", specialty1, specialtyUserRoles.get(0).getSpecialty());
+        assertEquals("Incorrect specialty role", "unitstaff", specialtyUserRoles.get(0).getRole());
     }
 
     @Test
@@ -75,11 +75,11 @@ public class UserManagerTest extends BaseServiceTest {
         // check the update has been made
         assertEquals("Incorrect updated name", "Updated name", updatedUser.getName());
 
-        // check new User's tenancy etc still is OK
-        List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(updatedUser);
+        // check new User's specialty etc still is OK
+        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(updatedUser);
 
-        assertEquals("Incorrect number of roles", 1, tenancyUserRoles.size());
-        assertEquals("Incorrect tenancy", tenancy1, tenancyUserRoles.get(0).getTenancy());
-        assertEquals("Incorrect tenancy role", "unitstaff", tenancyUserRoles.get(0).getRole());
+        assertEquals("Incorrect number of roles", 1, specialtyUserRoles.size());
+        assertEquals("Incorrect specialty", specialty1, specialtyUserRoles.get(0).getSpecialty());
+        assertEquals("Incorrect specialty role", "unitstaff", specialtyUserRoles.get(0).getRole());
     }
 }

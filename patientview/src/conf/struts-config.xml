@@ -69,6 +69,7 @@
       <form-property name="accountlocked" type="java.lang.String"/>
       <form-property name="showgps" type="java.lang.String"/>
       <form-property name="screenname" type="java.lang.String"/>
+      <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
     </form-bean>
     <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="unitcode" type="java.lang.String"/>
@@ -81,9 +82,9 @@
       <form-property name="postcode" type="java.lang.String"/>
       <form-property name="uniturl" type="java.lang.String"/>
       <form-property name="trusturl" type="java.lang.String"/>
-      <form-property name="rpvadminname" type="java.lang.String"/>
-      <form-property name="rpvadminphone" type="java.lang.String"/>
-      <form-property name="rpvadminemail" type="java.lang.String"/>
+      <form-property name="renaladminname" type="java.lang.String"/>
+      <form-property name="renaladminphone" type="java.lang.String"/>
+      <form-property name="renaladminemail" type="java.lang.String"/>
       <form-property name="unitenquiriesphone" type="java.lang.String"/>
       <form-property name="unitenquiriesemail" type="java.lang.String"/>
       <form-property name="appointmentphone" type="java.lang.String"/>
@@ -164,6 +165,8 @@
       <form-property name="oldpassword" type="java.lang.String"/>
       <form-property name="passwordPwd" type="java.lang.String"/>
       <form-property name="newpasswordagain" type="java.lang.String"/>
+      <form-property name="emailAddress" type="java.lang.String"/>
+      <form-property name="emailAddressAgain" type="java.lang.String"/>
     </form-bean>
     <form-bean name="logForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="nhsno" type="java.lang.String"/>
@@ -189,7 +192,7 @@
       <form-property name="message" type="java.lang.String"/>
       <form-property name="email" type="java.lang.String"/>
       <form-property name="type" type="java.lang.String"/>
-      <form-property name="rpvadminemail" type="java.lang.String"/>
+      <form-property name="renaladminemail" type="java.lang.String"/>
     </form-bean>
     <form-bean name="patientResultForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="day" type="java.lang.String"/>
@@ -749,9 +752,8 @@
     <action path="/control/resetPassword"
             type="com.worthsoln.patientview.logon.PasswordResetAction"
             name="patientForm"
-            input="input"
             scope="request">
-      <forward name="input" path="/control/patient_add_input.jsp"/>
+      <forward name="error" path="/control/password_reset_confirm.jsp"/>
       <forward name="success" path="/control/password_reset_confirm.jsp"/>
     </action>
 
@@ -986,6 +988,14 @@
       <forward name="success" path="/control/news_list.jsp"/>
     </action>
 
+      <!-- note this is for admins -->
+      <action path="/control/newsView"
+              type="com.worthsoln.patientview.news.NewsListAction"
+              name="newsForm"
+              scope="request">
+          <forward name="success" path="/control/index.jsp"/>
+      </action>
+      <!-- note this is for patients -->
     <action path="/newsView"
             type="com.worthsoln.patientview.news.NewsViewAction"
             name="newsForm"

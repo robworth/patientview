@@ -1,7 +1,5 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.database.DatabaseDAO;
-import com.worthsoln.database.DatabaseUpdateQuery;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
@@ -11,24 +9,90 @@ import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ResultsUpdater {
 
-    private DatabaseDAO dao;
-
-    public ResultsUpdater(DatabaseDAO dao) {
-        this.dao = dao;
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsUpdater.class);
 
     public void update(ServletContext context, File xmlFile) {
+        File xsdFile;
+        try {
+            xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
+                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ResultsUpdater.update()");
+        }
 
+        update(context, xmlFile, xsdFile);
+    }
+
+    public void update(ServletContext context, File xmlFile, File xsdFile) {
+        /**
+         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
+         * hasn't worked. Send a mail to RPV admin, and skip validate and process
+         */
+        if (xmlFile.length() == 0) {
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+            XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
+
+        } else {
+            validate(context, xmlFile, xsdFile);
+        }
+
+        // always move the file, so it is not processed multiple times
+        renameDirectory(context, xmlFile);
+    }
+
+    private void validate(ServletContext context, File xmlFile, File xsdFile) {
+        // Turn this off without removing the code and it getting lost in ether.
+        // The units sending the data are not honouring the xsd, so no point validating yet.
+        final boolean whenWeDecideToValidateFiles = false;
+
+        if (whenWeDecideToValidateFiles) {
+            /**
+             * Check the XML file against XSD schema
+             */
+            List<SAXParseException> exceptions = getXMLParseExceptions(xmlFile, xsdFile);
+
+            // if there are any exceptions, log them and send an email
+            if (exceptions.size() > 0) {
+                // log
+                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
+                        XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                        XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+
+                // send email, then continue importing
+                XmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions, context);
+            }
+        }
+
+        // always process regardless of validation state
+        process(context, xmlFile);
+    }
+
+    private void process(ServletContext context, File xmlFile) {
         try {
             ResultParser parser = new ResultParser();
             parser.parseResults(context, xmlFile);
@@ -46,14 +110,17 @@ public class ResultsUpdater {
             }
             //xmlFile.delete();
         } catch (Exception e) {
-            e.printStackTrace();
+
+            // these exceptions can occur because of corrupt/invalid data in xml file
+            LOGGER.error("Importer failed to import file {} {}", xmlFile, e);
+
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
                     XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
                     XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + XmlImportUtils.extractStringFromStackTrace(e));
+                    xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
+
             XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
-        renameDirectory(context, xmlFile);
     }
 
     protected void renameDirectory(ServletContext context, File xmlFile) {
@@ -89,10 +156,7 @@ public class ResultsUpdater {
     }
 
     private void deleteDiagnostics(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM diagnostic WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getDiagnosticManager().delete(nhsno, unitcode);
     }
 
     private void insertDiagnostics(Collection<Diagnostic> diagnostics) {
@@ -103,10 +167,7 @@ public class ResultsUpdater {
     }
 
     private void deleteProcedures(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM pv_procedure WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getIbdManager().deleteProcedure(nhsno, unitcode);
     }
 
     private void insertProcedures(Collection<Procedure> procedures) {
@@ -117,10 +178,7 @@ public class ResultsUpdater {
     }
 
     private void deleteAllergies(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM pv_allergy WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getIbdManager().deleteAllergy(nhsno, unitcode);
     }
 
     private void insertAllergies(Collection<Allergy> allergies) {
@@ -151,77 +209,99 @@ public class ResultsUpdater {
     }
 
     private void deleteDateRanges(Collection dateRanges) {
-        String dateRangeDeleteSql = "DELETE FROM testresult WHERE nhsno = ? AND unitcode = ? " +
-                " AND testcode = ? AND datestamp > ? AND datestamp < ?";
-        for (Iterator iterator = dateRanges.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = dateRanges.iterator(); iterator.hasNext(); ) {
             TestResultDateRange testResultDateRange = (TestResultDateRange) iterator.next();
+
             Calendar startDate = TimestampUtils.createTimestamp(testResultDateRange.getStartDate() + "T00:00");
             startDate.set(Calendar.SECOND, 0);
             Calendar stopDate = TimestampUtils.createTimestamp(testResultDateRange.getStopDate() + "T23:59");
             stopDate.set(Calendar.SECOND, 59);
-            Object[] params = new Object[5];
-            params[0] = testResultDateRange.getNhsNo();
-            params[1] = testResultDateRange.getUnitcode();
-            params[2] = testResultDateRange.getTestCode();
-            params[3] = new Timestamp(startDate.getTimeInMillis());
-            params[4] = new Timestamp(stopDate.getTimeInMillis());
-            DatabaseUpdateQuery query = new DatabaseUpdateQuery(dateRangeDeleteSql, params);
-            dao.doExecute(query);
+
+            LegacySpringUtils.getTestResultManager().deleteTestResultsWithinTimeRange(testResultDateRange.getNhsNo(),
+                    testResultDateRange.getUnitcode(), testResultDateRange.getTestCode(), startDate.getTime(),
+                    stopDate.getTime());
+
         }
     }
 
     private void insertResults(Collection testResults) {
-        for (Iterator iterator = testResults.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = testResults.iterator(); iterator.hasNext(); ) {
             TestResult testResult = (TestResult) iterator.next();
             LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
 
     private void deleteLetters(Collection letters) {
-        String letterDeleteSql = "DELETE FROM letter WHERE nhsno = ? AND unitcode = ? AND date = ?";
-        for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
             Letter letter = (Letter) iterator.next();
-            Object[] params = new Object[3];
-            params[0] = letter.getNhsno();
-            params[1] = letter.getUnitcode();
-            params[2] = new Timestamp(letter.getDate().getTimeInMillis());
-            DatabaseUpdateQuery query = new DatabaseUpdateQuery(letterDeleteSql, params);
-            dao.doExecute(query);
+
+            LegacySpringUtils.getLetterManager().delete(letter.getNhsno(), letter.getUnitcode(),
+                    letter.getDate().getTime());
         }
     }
 
     private void insertLetters(Collection letters) {
-        for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
             Letter letter = (Letter) iterator.next();
             LegacySpringUtils.getLetterManager().save(letter);
         }
     }
 
     private void deleteOtherDiagnoses(String nhsno, String unitcode) {
-        String diagnosesDeleteSql = "DELETE FROM diagnosis WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(diagnosesDeleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getDiagnosisManager().deleteOtherDiagnoses(nhsno, unitcode);
+
     }
 
     private void insertOtherDiagnoses(Collection diagnoses) {
-        for (Iterator iterator = diagnoses.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = diagnoses.iterator(); iterator.hasNext(); ) {
             Diagnosis diagnosis = (Diagnosis) iterator.next();
             LegacySpringUtils.getDiagnosisManager().save(diagnosis);
         }
     }
 
     private void deleteMedicines(String nhsno, String unitcode) {
-        String deleteSql = "DELETE FROM medicine WHERE nhsno = ? AND unitcode = ?";
-        Object[] params = new Object[]{nhsno, unitcode};
-        DatabaseUpdateQuery query = new DatabaseUpdateQuery(deleteSql, params);
-        dao.doExecute(query);
+        LegacySpringUtils.getMedicineManager().delete(nhsno, unitcode);
     }
 
     private void insertMedicines(Collection medicines) {
-        for (Iterator iterator = medicines.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = medicines.iterator(); iterator.hasNext(); ) {
             Medicine medicine = (Medicine) iterator.next();
             LegacySpringUtils.getMedicineManager().save(medicine);
         }
+    }
+
+    private List<SAXParseException> getXMLParseExceptions(File xml, File xsd) {
+        final List<SAXParseException> exceptions = new LinkedList<SAXParseException>();
+
+        try {
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(new StreamSource(xsd));
+            Validator validator = schema.newValidator();
+            validator.setErrorHandler(new ErrorHandler() {
+                @Override
+                public void warning(SAXParseException exception) throws SAXException {
+                    exceptions.add(exception);
+                }
+
+                @Override
+                public void fatalError(SAXParseException exception) throws SAXException {
+                    exceptions.add(exception);
+                }
+
+                @Override
+                public void error(SAXParseException exception) throws SAXException {
+                    exceptions.add(exception);
+                }
+            });
+
+            StreamSource xmlFile = new StreamSource(xml);
+            validator.validate(xmlFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return exceptions;
     }
 }

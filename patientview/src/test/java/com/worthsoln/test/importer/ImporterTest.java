@@ -1,43 +1,55 @@
 package com.worthsoln.test.importer;
 
-import com.worthsoln.database.DatabaseDAO;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
+import com.worthsoln.patientview.XmlImportUtils;
+import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Diagnostic;
 import com.worthsoln.patientview.model.Letter;
 import com.worthsoln.patientview.model.Medicine;
 import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.TestResult;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.service.CentreManager;
 import com.worthsoln.service.DiagnosticManager;
 import com.worthsoln.service.LetterManager;
+import com.worthsoln.service.LogEntryManager;
 import com.worthsoln.service.MedicineManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.TimeManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
+import com.worthsoln.test.helpers.RepositoryHelpers;
 import com.worthsoln.test.helpers.impl.TestableResultsUpdater;
 import com.worthsoln.test.service.BaseServiceTest;
+import com.worthsoln.utils.LegacySpringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockHttpSession;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
- *      The importer is kicked off from ParserMonitorServlet.
+ * The importer is kicked off from ParserMonitorServlet.
  *
- *      There are 3 threads - XmlParserThread, UktParserThread & UktExportThread.
+ * There are 3 threads - XmlParserThread, UktParserThread & UktExportThread.
  *
- *      There are 2 versions of the patient view xml schema in the examples directory.
+ * There are 2 versions of the patient view xml schema in the examples directory.
  *
- *      - pv_schema_1.0.xml - used by rpv
- *      - pv_schema_2.0.xml - used by ibd
+ * - pv_schema_1.0.xml - used by rpv
+ * - pv_schema_2.0.xml - used by ibd
  */
 public class ImporterTest extends BaseServiceTest {
 
@@ -65,6 +77,35 @@ public class ImporterTest extends BaseServiceTest {
     @Inject
     private IbdManager ibdManager;
 
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
+
+    @Inject
+    private LogEntryManager logEntryManager;
+
+    @Before
+    public void setupSystem() {
+        Unit mockUnit = new Unit();
+        mockUnit.setUnitcode("RM301");
+        mockUnit.setName("RM301: RUNNING MAN TEST UNIT");
+        mockUnit.setShortname("RM301");
+        mockUnit.setRenaladminemail("renaladmin@mailinator.com");
+
+        Specialty mockSpecialty = new Specialty();
+        mockSpecialty.setName("Renal Patient View");
+        mockSpecialty.setContext("renal");
+        mockSpecialty.setDescription("Renal Patient View");
+
+        mockSpecialty = repositoryHelpers.createSpecialty("", "", "");
+
+        mockUnit.setSpecialty(mockSpecialty);
+
+        unitManager.save(mockUnit);
+    }
+
     @Test
     /**
      *  Calls XmlParserUtils.updateXmlData with files and a dao ref
@@ -84,15 +125,18 @@ public class ImporterTest extends BaseServiceTest {
      *              - deleteMedicines
      *              - insertMedicines
      */
-    public void testXmlParserUsingRpvFile() throws IOException {
+    public void testXmlParserUsingRenalFile() throws IOException {
 
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
 
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
 
         List<Centre> centres = centreManager.getAll();
 
@@ -118,16 +162,219 @@ public class ImporterTest extends BaseServiceTest {
     }
 
     @Test
+    public void testTestResultIsNotDuplicatedIfDoubleRun() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:DUMMY_000002_9999999995.gpg.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        List<TestResult> results = testResultManager.get("9999999995", "DUMMY");
+
+        assertEquals("Incorrect number of results after first import", 1, results.size());
+
+        // double run
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        results = testResultManager.get("9999999995", "DUMMY");
+
+        assertEquals("Incorrect number of results after double run import", 1, results.size());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FOLLOWUP);
+    }
+
+    /**
+     * Test if importer handles empty test file. This probably means that the encryption did not work.
+     *
+     * An email should be sent to RPV admin email address and an entry should be created in log table
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserUsingEmptyIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_empty_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Check if no data was imported
+     */
+    private void checkNoDataHasBeenImportedFromIBDImportFile() {
+        List<Centre> centres = centreManager.getAll();
+        assertEquals("Centres were imported although data file was supposed to be empty", 0, centres.size());
+
+        List<Unit> units = unitManager.getAll(false);
+        /**
+         * {@link #setupSystem()} creates one unit so its ok if we have one unit now
+         */
+        assertEquals("Units were imported although data file was supposed to be empty", 1, units.size());
+    }
+
+    /**
+     * Check if log entry was created
+     *
+     * @param nhsNo  nhsNo of patient
+     * @param action log type
+     */
+    private void checkLogEntry(String nhsNo, String action) {
+        assertNotNull("Log entry was not created", logEntryManager.getLatestLogEntry(nhsNo, action));
+    }
+
+    /**
+     * Test if importer handles test results with future date
+     *
+     * The whole file should be rejected, an email should be sent to RPV admin email, and a "patient data fail"
+     *      entry should be added to the log table
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckFutureTestResultDateInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results outside date ranges specified
+     *
+     * Whole file needs to be rejected, and an email needs to be sent to RPV admin email
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results with valid dates including edge cases.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultWithValidDates() throws IOException {
+
+        /**
+         *  Fix the current date to always be the same.
+         *
+         *  Note: this only overrides the behaviour of the timeManager reference used by LegacySpringUtils
+         *  If you need to change application wide, add a new implementation to the text-context.xml
+          */
+        LegacySpringUtils.setTimeManager(new TimeManager() {
+            @Override
+            public Date getCurrentDate() {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2013, Calendar.MARCH, 29, 11, 23, 0);
+                return calendar.getTime();
+            }
+        });
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithValidDates_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FOLLOWUP);
+    }
+
+    /**
+     * Test if importer handles test results with empty values
+     *
+     * Whole file needs to be rejected, n email should be sent to RPV admin and the error should be logged.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if the importer imports data
+     *
+     * @throws IOException
+     */
+    @Test
     public void testXmlParserUsingIBDFile() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
-                        .getResource("classpath:rm301_1244_9876543210.xml");
+                .getResource("classpath:rm301_1244_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
 
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
 
-        checkIbdImportConstantData();
+        checkIbdImportedData();
 
         List<TestResult> results = testResultManager.get("9876543210", "RM301");
 
@@ -135,27 +382,31 @@ public class ImporterTest extends BaseServiceTest {
     }
 
     /**
-     *  If you run the import twice for the same file we still have the same data set
+     * If you run the import twice for the same file we still have the same data set
      */
     @Test
     public void testXmlParserUsingIBDFileMultipleRuns() throws IOException {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
 
-        DatabaseDAO dao = new DatabaseDAO("patientview");
-        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater(dao);
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
 
         // run twice
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
-        testableResultsUpdater.update(null, xmlFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
 
-        checkIbdImportConstantData();
+        checkIbdImportedData();
 
         // Note the results get deleted each run on date range
     }
 
-    private void checkIbdImportConstantData() {
-
+    /**
+     * check the data importer should have imported.
+     */
+    private void checkIbdImportedData() {
         // test the stuff that should be the same regardless of how many imports of the file are done
 
         List<Centre> centres = centreManager.getAll();

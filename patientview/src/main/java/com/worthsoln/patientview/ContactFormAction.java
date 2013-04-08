@@ -1,9 +1,9 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.database.action.DatabaseAction;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -12,7 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ContactFormAction extends DatabaseAction {
+public class ContactFormAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -30,7 +30,7 @@ public class ContactFormAction extends DatabaseAction {
 
             if ("unit".equals(type)) {
                 // Send to unit
-                String unitEmail = request.getParameter("unit.rpvadminemail");
+                String unitEmail = request.getParameter("unit.renaladminemail");
                 if (unitEmail != null && unitEmail.length() > 0) {
                     if (email != null && email.length() > 0) {
                         EmailUtils.sendEmail(context, email, unitEmail, subject, message);
@@ -71,11 +71,4 @@ public class ContactFormAction extends DatabaseAction {
         return completeMessage;
     }
 
-    public String getDatabaseName() {
-        return "patientview";
-    }
-
-    public String getIdentifier() {
-        return "patient";
-    }
 }

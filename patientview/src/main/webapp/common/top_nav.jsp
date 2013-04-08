@@ -8,21 +8,21 @@
 <ul class="nav nav-pills">
     <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/index">Home</html:link></li>
     <%
-        if (LegacySpringUtils.getSecurityUserManager().isLoggedInToTenancy()) {
+        if (LegacySpringUtils.getSecurityUserManager().isLoggedInToSpecialty()) {
     %>
 
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/patient/patient_details">My Details</html:link></li>
     </logic:present>
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/ibd-patient_details">My Details</html:link></li>
     </logic:present>
 
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <li <%= ("patient_view".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_view">Patient Info</html:link></li>
     </logic:present>
 
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <li <%=("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/myibd">My IBD</html:link></li>
 
         <%
@@ -54,7 +54,7 @@
         <li <%=("ibd_nutrition".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/nutrition">Nutrition</html:link></li>
         <li <%=("diagnostics".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/diagnostics">Diagnostics</html:link></li>
     </logic:present>
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <li <%= ("aboutme".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/aboutme">About Me</html:link></li>
         <li <%=("patient_entry".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_entry">Enter My Own Results</html:link></li>
         <li <%=("medicines".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/medicines">Medicines</html:link></li>
@@ -64,18 +64,18 @@
 
     <li <%=("letters".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/letters" >Letters</html:link></li>
 
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/contact">Contact</html:link></li>
     </logic:present>
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/ibd-contact">Contact</html:link></li>
     </logic:present>
 
 
-    <logic:present tenancy="ibd">
+    <logic:present specialty="ibd">
         <li <%= ("education".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/education">Information</html:link></li>
     </logic:present>
-    <logic:present tenancy="rpv">
+    <logic:present specialty="renal">
         <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/forums/list.page">Forum</a></li>
     </logic:present>
     <%

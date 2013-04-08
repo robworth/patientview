@@ -4,7 +4,7 @@
 <div class="row">
         <div class="span12 footer">
             <ul class="barSpeperatedNav">
-                <logic:present tenancy="rpv">
+                <logic:present specialty="renal">
                     <li><a href="/disclaimer.do">Disclaimer</a></li>
                 </logic:present>
             </ul>
@@ -22,7 +22,7 @@
 <%
     // todo tracking code should only be present on live...
 %>
-<logic:present tenancy="rpv">
+<logic:present specialty="renal">
     <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -33,7 +33,7 @@
     pageTracker._trackPageview();
     } catch(err) {}</script>
 </logic:present>
-<logic:present tenancy="ibd">
+<logic:present specialty="ibd">
     <script type="text/javascript">
 
         var _gaq = _gaq || [];

@@ -9,7 +9,7 @@ import com.worthsoln.patientview.utils.TimestampUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "medicine")
 public class Medicine extends BaseModel {
 
     @Column(nullable = false)

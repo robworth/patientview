@@ -3,7 +3,7 @@ package com.worthsoln.repository.impl;
 import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.ResultHeading;
 import com.worthsoln.patientview.model.ResultHeading_;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.ResultHeadingDao;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import java.util.List;
 public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> implements ResultHeadingDao {
 
     @Override
-    public ResultHeading get(String headingcode, Tenancy tenancy) {
+    public ResultHeading get(String headingcode, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ResultHeading> criteria = builder.createQuery(ResultHeading.class);
@@ -42,14 +42,14 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
     }
 
     @Override
-    public List<ResultHeading> getAll(Tenancy tenancy) {
+    public List<ResultHeading> getAll(Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ResultHeading> criteria = builder.createQuery(ResultHeading.class);
         Root<ResultHeading> root = criteria.from(ResultHeading.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(builder.equal(root.get(ResultHeading_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(root.get(ResultHeading_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
 
@@ -57,7 +57,7 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
     }
 
     @Override
-    public List<ResultHeading> get(int panel, Tenancy tenancy) {
+    public List<ResultHeading> get(int panel, Specialty specialty) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ResultHeading> criteria = builder.createQuery(ResultHeading.class);
@@ -65,7 +65,7 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(root.get(ResultHeading_.panel), panel));
-        wherePredicates.add(builder.equal(root.get(ResultHeading_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(root.get(ResultHeading_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
 
@@ -75,13 +75,13 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
     }
 
     @Override
-    public void delete(String headingCode, Tenancy tenancy) {
+    public void delete(String headingCode, Specialty specialty) {
 
-        delete(get(headingCode, tenancy));
+        delete(get(headingCode, specialty));
     }
 
     @Override
-    public List<Panel> getPanels(Tenancy tenancy) {
+    public List<Panel> getPanels(Specialty specialty) {
 
         String sql = "SELECT DISTINCT panel FROM result_heading WHERE panel != 0 ORDER BY panel ASC";
 

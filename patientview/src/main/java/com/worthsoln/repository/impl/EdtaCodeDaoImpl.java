@@ -2,7 +2,7 @@ package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.patientview.model.EdtaCode_;
-import com.worthsoln.patientview.model.Tenancy;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.EdtaCodeDao;
 import org.springframework.stereotype.Repository;
@@ -19,7 +19,7 @@ import java.util.List;
 public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements EdtaCodeDao {
 
     @Override
-    public EdtaCode getEdtaCode(String edtaCode, Tenancy tenancy) {
+    public EdtaCode getEdtaCode(String edtaCode, Specialty specialty) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<EdtaCode> criteria = builder.createQuery(EdtaCode.class);
         Root<EdtaCode> edtaCodeRoot = criteria.from(EdtaCode.class);
@@ -27,7 +27,7 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.edtaCode), edtaCode));
-        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.tenancy), tenancy));
+        wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.specialty), specialty));
 
         buildWhereClause(criteria, wherePredicates);
 
@@ -39,8 +39,8 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
     }
 
     @Override
-    public void delete(String edtaCode, Tenancy tenancy) {
-        EdtaCode edtaCodeToRemove = getEdtaCode(edtaCode, tenancy);
+    public void delete(String edtaCode, Specialty specialty) {
+        EdtaCode edtaCodeToRemove = getEdtaCode(edtaCode, specialty);
 
         if (edtaCodeToRemove != null) {
             delete(edtaCodeToRemove);
@@ -48,7 +48,7 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
     }
 
     @Override
-    public List<EdtaCode> get(String linkType, Tenancy tenancy) {
+    public List<EdtaCode> get(String linkType, Specialty specialty) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<EdtaCode> criteria = builder.createQuery(EdtaCode.class);
         Root<EdtaCode> edtaCodeRoot = criteria.from(EdtaCode.class);
@@ -58,8 +58,8 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
 
         // if not tenancy show all codes for all tenancies (i.e. the user is not logged in
         // this may need changing in future
-        if (tenancy != null) {
-            wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.tenancy), tenancy));
+        if (specialty != null) {
+            wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.specialty), specialty));
         }
 
         buildWhereClause(criteria, wherePredicates);

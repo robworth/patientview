@@ -11,7 +11,11 @@ public interface MedicineDao {
 
     Medicine get(Long id);
 
+    List<Medicine> getMedicines(String nhsno);
+
     void save(Medicine medicine);
 
     List<Medicine> getAll();
+
+    void delete(String nhsno, String unitcode);
 }

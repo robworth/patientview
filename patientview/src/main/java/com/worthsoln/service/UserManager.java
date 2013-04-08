@@ -2,8 +2,8 @@ package com.worthsoln.service;
 
 import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Tenancy;
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- *
- */
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface UserManager {
 
@@ -25,11 +22,11 @@ public interface UserManager {
 
     String getLoggedInUserRole();
 
-    Tenancy getCurrentTenancy(User user);
+    Specialty getCurrentSpecialty(User user);
 
-    String getCurrentTenancyRole(User user);
+    String getCurrentSpecialtyRole(User user);
 
-    List<TenancyUserRole> getTenancyUserRoles(User user);
+    List<SpecialtyUserRole> getSpecialtyUserRoles(User user);
 
     void save(User user);
 
@@ -65,5 +62,13 @@ public interface UserManager {
 
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
 
-    List<UnitAdmin> getUnitUsers(String unitcode);
+    boolean existsInRadar(String nhsno);
+
+    void incrementFailedLogins(String username);
+
+    int getFailedLogins(String username);
+
+    void lockUserAccount(String username);
+
+    void resetFailedLoginsForUser(String username);
 }

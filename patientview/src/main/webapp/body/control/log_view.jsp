@@ -106,11 +106,16 @@
         <td class="tablecell"><bean:write name="logentry" property="actor"/></td>
         <td class="tablecell"><bean:write name="logentry" property="unitcode"/></td>
         <logic:notEqual value="patient data load" name="logentry" property="action" >
-          <logic:notEqual value="patient data fail" name="logentry" property="action">
-            <td class="tablecell"><bean:write name="logentry" property="extrainfo"/></td>
+          <logic:notEqual value="patient data remove" name="logentry" property="action">
+            <logic:notEqual value="patient data fail" name="logentry" property="action">
+              <td class="tablecell"><bean:write name="logentry" property="extrainfo"/></td>
+            </logic:notEqual>
           </logic:notEqual>
         </logic:notEqual>
         <logic:equal value="patient data load" name="logentry" property="action">
+          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename"><bean:write name="logentry" property="extrainfo"/></html:link></td>
+        </logic:equal>
+        <logic:equal value="patient data remove" name="logentry" property="action">
           <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename"><bean:write name="logentry" property="extrainfo"/></html:link></td>
         </logic:equal>
         <logic:equal value="patient data fail" name="logentry" property="action">

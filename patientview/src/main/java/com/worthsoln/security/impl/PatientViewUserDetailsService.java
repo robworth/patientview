@@ -1,6 +1,6 @@
 package com.worthsoln.security.impl;
 
-import com.worthsoln.patientview.model.TenancyUserRole;
+import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.security.model.SecurityUser;
 import com.worthsoln.service.UserManager;
 import org.slf4j.Logger;
@@ -37,21 +37,21 @@ public class PatientViewUserDetailsService implements UserDetailsService {
 
         if (user != null) {
 
-            List<TenancyUserRole> tenancyUserRoles = userManager.getTenancyUserRoles(user);
+            List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
 
-            if (tenancyUserRoles != null && tenancyUserRoles.size() > 0) {
+            if (specialtyUserRoles != null && specialtyUserRoles.size() > 0) {
 
                 List<String> roles = new ArrayList<String>();
 
-                for (TenancyUserRole tenancyUserRole : tenancyUserRoles) {
+                for (SpecialtyUserRole specialtyUserRole : specialtyUserRoles) {
 
                     // convert to spring security convention
-                    String role = "ROLE_" + (tenancyUserRole.getTenancy().getContext() + "_"
-                            + tenancyUserRole.getRole()).toUpperCase();
+                    String role = "ROLE_" + (specialtyUserRole.getSpecialty().getContext() + "_"
+                            + specialtyUserRole.getRole()).toUpperCase();
                     roles.add(role);
                 }
 
-                // add in a place order role so that we can bounce users to the login page when no tenancy is set
+                // add in a place order role so that we can bounce users to the login page when no Specialty is set
                 roles.add("ROLE_ANY_USER");
 
                 List<GrantedAuthority> authorities
