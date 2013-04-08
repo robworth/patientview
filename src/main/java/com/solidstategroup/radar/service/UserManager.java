@@ -21,6 +21,8 @@ public interface UserManager {
 
     AdminUser getAdminUser(String email);
 
+    AdminUser getAdminUserWithUsername(String username);
+
     PatientUser getPatientUser(Long id);
 
     PatientUser getPatientUser(String email);

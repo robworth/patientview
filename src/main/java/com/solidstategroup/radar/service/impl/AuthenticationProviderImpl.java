@@ -23,7 +23,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         // Get the user by their email, try admin, then professional, then patient - this is fine in terms of security
         // as the login pages have an extra check to see the user name exists for the the user type
         users.add(userManager.getSuperUser(authentication.getName()));
-        users.add(userManager.getAdminUser(authentication.getName()));
+        users.add(userManager.getAdminUserWithUsername(authentication.getName()));
         users.add(userManager.getProfessionalUserWithUsername(authentication.getName()));
         users.add(userManager.getPatientUserWithUsername(authentication.getName()));
 

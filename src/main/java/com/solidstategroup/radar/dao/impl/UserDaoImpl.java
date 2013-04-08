@@ -166,6 +166,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
+    public AdminUser getAdminUserWithUsername(String username) {
+        try {
+            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(ADMIN_USER_TABLE_NAME)
+                    + buildUserWhereEmailStatement(ADMIN_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
+                    ADMIN_USER_ID_FIELD_NAME, true),
+                    new Object[]{username, User.ROLE_ADMIN}, new AdminUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not admin user " + USER_TABLE_NAME + " with " + USER_USERNAME_FIELD_NAME + " {}",
+                    username);
+        }
+
+        return null;
+    }
+
     public AdminUser getAdminUser(Long id) {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(ADMIN_USER_TABLE_NAME)

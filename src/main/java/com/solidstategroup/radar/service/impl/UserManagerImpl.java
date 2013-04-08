@@ -45,6 +45,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getAdminUser(email);
     }
 
+    public AdminUser getAdminUserWithUsername(String username) {
+        return userDao.getAdminUserWithUsername(username);
+    }
+
     public PatientUser getPatientUser(Long id) {
         return userDao.getPatientUser(id);
     }

@@ -145,7 +145,12 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
         for (ProfessionalUser professionalUser : professionalUsers) {
             try {
                 if (!checkForUsername(professionalUser.getUsername())) {
-                    userDao.saveProfessionalUser(professionalUser);
+                    if (professionalUser.getUsername() != null && professionalUser.getUsername().length() > 0) {
+                        userDao.saveProfessionalUser(professionalUser);
+                    } else {
+                        failedUsers.add("Could not save professional user username was null: "
+                                + professionalUser.getId() + " - " + professionalUser.getEmail());
+                    }
                 } else {
                     failedUsers.add("Professional user found: " + professionalUser.getId() + " - "
                             + professionalUser.getEmail());
@@ -180,17 +185,22 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                     // save main patient user
                     userDao.savePatientUser(patientUser);
 
-                    // also need to save a 2nd user record in PV only for the -GP not sure about a mapping in Radar?
-                    Map<String, Object> gpPatientUserMap = new HashMap<String, Object>();
-                    gpPatientUserMap.put(USER_USERNAME_FIELD_NAME, patientUser.getUsername() + "-GP");
-                    gpPatientUserMap.put(USER_PASSWORD_FIELD_NAME, patientUser.getPassword());
-                    gpPatientUserMap.put(USER_NAME_FIELD_NAME, patientUser.getName() + "-GP");
-                    gpPatientUserMap.put(USER_EMAIL_FIELD_NAME, null);
-                    gpPatientUserMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
-                    gpPatientUserMap.put(USER_SCREEN_NAME_FIELD_NAME, "");
-                    gpPatientUserMap.put(USER_EMAIL_VERIFIED_FIELD_NAME, true);
+                    Long gpId = getGPUserId(patientUser.getUsername() + "-GP");
 
-                    Number gpId = userInsert.executeAndReturnKey(gpPatientUserMap);
+                    // if there isnt already a record for a gp then create one
+                    if (gpId == null || gpId <= 0) {
+                        // also need to save a 2nd user record in PV only for the -GP not sure about a mapping in Radar?
+                        Map<String, Object> gpPatientUserMap = new HashMap<String, Object>();
+                        gpPatientUserMap.put(USER_USERNAME_FIELD_NAME, patientUser.getUsername() + "-GP");
+                        gpPatientUserMap.put(USER_PASSWORD_FIELD_NAME, patientUser.getPassword());
+                        gpPatientUserMap.put(USER_NAME_FIELD_NAME, patientUser.getName() + "-GP");
+                        gpPatientUserMap.put(USER_EMAIL_FIELD_NAME, null);
+                        gpPatientUserMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+                        gpPatientUserMap.put(USER_SCREEN_NAME_FIELD_NAME, "");
+                        gpPatientUserMap.put(USER_EMAIL_VERIFIED_FIELD_NAME, true);
+
+                        gpId = userInsert.executeAndReturnKey(gpPatientUserMap).longValue();
+                    }
 
                     // need to create mappings for patient in PV
                     Demographics demographics = demographicsDao.getDemographicsByRadarNumber(
@@ -211,19 +221,22 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                                 demographics.getRenalUnit().getUnitCode());
 
                         // 4. Mapping for unitcode RenalUnit2
-                        userDao.createUserMappingInPatientView(patientUser.getUsername(), demographics.getNhsNumber(),
-                                demographics.getRenalUnitAuthorised().getUnitCode());
+                        if (demographics.getRenalUnitAuthorised() != null) {
+                            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                                    demographics.getNhsNumber(),
+                                    demographics.getRenalUnitAuthorised().getUnitCode());
 
-                        // 5. Mapping for unitcode RenalUnit2 + -GP
-                        userDao.createUserMappingInPatientView(patientUser.getUsername() + "-GP",
-                                demographics.getNhsNumber(),
-                                demographics.getRenalUnitAuthorised().getUnitCode());
+                            // 5. Mapping for unitcode RenalUnit2 + -GP
+                            userDao.createUserMappingInPatientView(patientUser.getUsername() + "-GP",
+                                    demographics.getNhsNumber(),
+                                    demographics.getRenalUnitAuthorised().getUnitCode());
+                        }
 
                         // 1. Role for PATIENT
                         userDao.createRoleInPatientView(patientUser.getUserId(), "PATIENT");
 
                         // 2. Role for PATIENT-GP
-                        userDao.createRoleInPatientView(gpId.longValue(), "PATIENT");
+                        userDao.createRoleInPatientView(gpId, "PATIENT");
                     } else {
                         failedUsers.add("Patient user demographic not found: " + patientUser.getId() + " - "
                                 + patientUser.getEmail());
@@ -268,7 +281,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
         }
 
         for (String s : failedUsers) {
-            LOGGER.debug(s);
+            LOGGER.error(s);
         }
     }
 
@@ -321,7 +334,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                 professionalUser.setPassword(User.getPasswordHash(decryptField(resultSet.getBytes("uPass"))));
                 professionalUser.setUsername(decryptField(resultSet.getBytes("uUserName")));
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt user information for professional user ", professionalUser.getId());
+                professionalUser.setUsername(resultSet.getString("uEmail"));
             }
 
             return professionalUser;
@@ -394,6 +407,21 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private boolean checkForProfessionalUser(String email) {
         String sql = "SELECT COUNT(*) FROM tbl_users WHERE uEmail = ?";
         return jdbcTemplate.queryForInt(sql, email) > 0;
+    }
+
+    private Long getGPUserId(String username) {
+        String sql = "SELECT id FROM user WHERE username = '" + username + "'";
+        List<Long> gpUserId = jdbcTemplate.query(sql, new RowMapper<Long>() {
+            public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getLong("id");
+            }
+        });
+
+        if (!gpUserId.isEmpty()) {
+            return gpUserId.get(0);
+        }
+
+        return null;
     }
 
     public void setUserDao(UserDao userDao) {

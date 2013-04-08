@@ -15,6 +15,8 @@ public interface UserDao {
 
     AdminUser getAdminUser(String email);
 
+    AdminUser getAdminUserWithUsername(String username);
+
     AdminUser getAdminUser(Long id);
 
     List<AdminUser> getAdminUsers();

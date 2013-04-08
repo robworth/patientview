@@ -46,7 +46,7 @@ public class AdminsLoginPage extends BasePage {
                 AdminUser user = getModelObject();
                 boolean loginFailed = false;
                 // do an extra check to that an admin user exists with the username
-                AdminUser adminUser = userManager.getAdminUser(user.getEmail());
+                AdminUser adminUser = userManager.getAdminUserWithUsername(user.getEmail());
                 if (adminUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                         session.setUser(adminUser);
