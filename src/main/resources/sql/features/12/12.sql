@@ -7,3 +7,5 @@ CREATE TABLE `pv_feature_access` (
 `unit_id` bigint(20) NOT NULL,
 PRIMARY KEY (`id`)
 );
+
+insert into pv_feature_access (name, unit_id) values ('messaging', 1007);
