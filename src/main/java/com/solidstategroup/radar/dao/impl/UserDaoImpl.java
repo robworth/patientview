@@ -234,6 +234,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
+    public ProfessionalUser getProfessionalUserWithUsername(String username) {
+        try {
+            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
+                    + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
+                    PROFESSIONAL_USER_ID_FIELD_NAME,
+                    true),
+                    new Object[]{username, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not professional user with " + USER_USERNAME_FIELD_NAME + " {}", username);
+        }
+
+        return null;
+    }
+
     public User getSuperUser(String email) {
 
         /**

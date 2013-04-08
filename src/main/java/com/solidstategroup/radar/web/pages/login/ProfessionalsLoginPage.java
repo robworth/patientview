@@ -51,7 +51,7 @@ public class ProfessionalsLoginPage extends BasePage {
                 ProfessionalUser user = getModelObject();
                 boolean loginFailed = false;
 
-                User professionalUser = userManager.getProfessionalUser(user.getEmail());
+                User professionalUser = userManager.getProfessionalUserWithUsername(user.getEmail());
                 // Warning: super admins login via this page too
                 if (professionalUser == null) {
                     professionalUser = userManager.getSuperUser(user.getEmail());
