@@ -138,8 +138,6 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         Root<Unit> from = criteria.from(Unit.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(builder.isNotNull(from.get(Unit_.unituser)));
-        wherePredicates.add(builder.notEqual(from.get(Unit_.unituser), ""));
         wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
         wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
 
