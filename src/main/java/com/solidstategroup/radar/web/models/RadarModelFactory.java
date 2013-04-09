@@ -197,7 +197,7 @@ public class RadarModelFactory {
         return new LoadableDetachableModel() {
             @Override
             protected Object load() {
-                return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("h:m:s").
+                return form.hasError() ? "" : "Save was successful: " + new SimpleDateFormat("H:m:s").
                         format(new Date());
             }
         };
