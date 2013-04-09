@@ -57,6 +57,7 @@
             <li class="divider"></li>
             <li><html:link href="/forums/list.page">Forum</html:link></li>
 
+            <logic:present feature="messaging">
             <%
             // need to get the number of unread messages if they have any
             User user = UserUtils.retrieveUser(request);
@@ -80,6 +81,8 @@
             <%
                 }
             %>
+            </logic:present>
+
         </ul>
     </div>
 </div>

@@ -39,7 +39,7 @@ public class LoggedInAction extends Action {
             final String role = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             // Is user patient or admin?
-            if ("patient".equals(role)) {
+            if ("patient".equalsIgnoreCase(role)) {
                 request.setAttribute("isPatient", true);
             }
             if ((user.getLastlogon() != null)) {
@@ -49,7 +49,7 @@ public class LoggedInAction extends Action {
 
             LegacySpringUtils.getUserManager().save(user);
 
-            if ("patient".equals(role)) {
+            if ("patient".equalsIgnoreCase(role)) {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 

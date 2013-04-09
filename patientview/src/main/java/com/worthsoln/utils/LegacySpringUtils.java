@@ -25,6 +25,8 @@ public class LegacySpringUtils {
 
     private static EmailVerificationManager emailVerificationManager;
 
+    private static FeatureManager featureManager;
+
     private static FeedbackManager feedbackManager;
 
     private static LetterManager letterManager;
@@ -119,6 +121,14 @@ public class LegacySpringUtils {
 
     public static void setEmailVerificationManager(EmailVerificationManager emailVerificationManager) {
         LegacySpringUtils.emailVerificationManager = emailVerificationManager;
+    }
+
+    public static FeatureManager getFeatureManager() {
+        return featureManager;
+    }
+
+    public static void setFeatureManager(FeatureManager featureManager) {
+        LegacySpringUtils.featureManager = featureManager;
     }
 
     public static FeedbackManager getFeedbackManager() {

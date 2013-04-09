@@ -107,7 +107,7 @@ public class UnitManagerImpl implements UnitManager {
     public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
-        if (!LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
+        if (user != null && !LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 
