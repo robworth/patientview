@@ -2,11 +2,11 @@ package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.PatientCount;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.repository.PatientCountDao;
 import com.worthsoln.repository.UnitDao;
@@ -64,13 +64,28 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getAllDisregardingSpeciality(boolean sortByName) {
+        return unitDao.getAll(true);
+    }
+
+    @Override
     public List<Unit> getAll(boolean sortByName) {
         return unitDao.getAll(true, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
+    public List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude) {
+        return unitDao.getAll(sourceTypesToExclude, sourceTypesToInclude);
+    }
+
+    @Override
     public List<Unit> getUnitsWithUser() {
         return unitDao.getUnitsWithUser(securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
+    public List<Unit> getAdminsUnits() {
+        return unitDao.getAdminsUnits(securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
@@ -87,7 +102,12 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes) {
 
-        List<String> usersUnitCodes = getUsersUnitCodes(userManager.getLoggedInUser());
+        User user = userManager.getLoggedInUser();
+        List<String> usersUnitCodes = getUsersUnitCodes(user);
+
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            return getAdminsUnits();
+        }
 
         return unitDao.get(usersUnitCodes, notTheseUnitCodes, plusTheseUnitCodes,
                 securityUserManager.getLoggedInSpecialty());
@@ -97,7 +117,7 @@ public class UnitManagerImpl implements UnitManager {
     public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
-        if (!LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
+        if (user != null && !LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 
@@ -132,5 +152,10 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode) {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
+    public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
+        return unitDao.getUnitPatientUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 }

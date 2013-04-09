@@ -1,7 +1,9 @@
 package com.worthsoln.actionutils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 
@@ -21,5 +23,25 @@ public class ActionUtils {
         }
         return propertyValue;
     }
-    
+
+    /**
+     * Anti-spam question for the quick contact form
+     * Generate a very basic random math operation for users and sets the answer in the session
+     * Sets the answer in session
+     *
+     * @return the math question
+     */
+    public static String getAntiSpamQuestion(HttpServletRequest request) {
+        Random randomGenerator = new Random();
+
+        int firstNumber = randomGenerator.nextInt(10);
+        int secondNumber = randomGenerator.nextInt(10);
+
+        String question = firstNumber + " + " + secondNumber;
+
+        request.getSession().setAttribute("ANTI_SPAM_ANSWER", Integer.toString(firstNumber + secondNumber));
+
+        return question;
+    }
+
 }

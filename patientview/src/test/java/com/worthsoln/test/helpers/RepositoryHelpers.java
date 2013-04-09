@@ -1,15 +1,14 @@
 package com.worthsoln.test.helpers;
 
+import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import com.worthsoln.patientview.model.Conversation;
 
 /**
  *
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface RepositoryHelpers {
 
     User createUser(String username, String email, String password, String name, String screenName);
@@ -21,4 +20,7 @@ public interface RepositoryHelpers {
 
     SpecialtyUserRole createSpecialtyUserRole(Specialty specialty, User user, String role);
 
+    Conversation createConversation(String subject, User participant1, User participant2, boolean store);
+
+    Message createMessage(Conversation conversation, User sender, User recipient, String content, boolean store);
 }

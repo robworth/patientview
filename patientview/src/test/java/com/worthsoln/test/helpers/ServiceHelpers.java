@@ -1,5 +1,7 @@
 package com.worthsoln.test.helpers;
 
+import com.worthsoln.patientview.model.Conversation;
+import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
@@ -20,4 +22,9 @@ public interface ServiceHelpers {
     Specialty createSpecialty(String name, String context, String description);
 
     SpecialtyUserRole createSpecialtyUserRole(Specialty specialty, User user, String role);
+
+    Conversation createConversation(String subject, User participant1, User participant2, boolean store);
+
+    Message createMessage(Conversation conversation, User sender, User recipient, String content,
+                          boolean store);
 }
