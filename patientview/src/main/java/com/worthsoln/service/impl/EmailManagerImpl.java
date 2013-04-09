@@ -60,7 +60,7 @@ public class EmailManagerImpl implements EmailManager {
         body += "You have received a message from " + message.getSender().getName() + " on Renal PatientView.\n\n";
         body += "Click the link below or logon to PatientView and go to the Messages tab to see the message.\n\n";
         body += messageUrl;
-        body += "\n\nPlease don't reply to this message no one will see it.\n\n";
+        body += "\n\nPlease don't reply to this message. No one will see it.\n\n";
 
         sendEmail(noReplyEmail, new String[]{message.getRecipient().getEmail()},
                 null, subject, body);
