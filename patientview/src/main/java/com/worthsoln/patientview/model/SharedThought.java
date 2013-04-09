@@ -15,6 +15,10 @@ public class SharedThought extends BaseModel {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+
     @Column(name = "positive_negative", nullable = false)
     private int positiveNegative;
 
@@ -72,6 +76,29 @@ public class SharedThought extends BaseModel {
     // this will be set by manager
     @Column(name = "date_last_saved")
     private Date dateLastSaved;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "allocation_user_id")
+    private User allocationUser;
+
+    @Column(name = "is_action_taken")
+    private Boolean isActionTaken;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "filterer_user_id")
+    private User filtererUser;
+
+    @Column(name = "is_patient_contacted")
+    private Boolean isPatientContacted;
+
+    @Column(name = "notes")
+    private String notes;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "is_viewed")
+    private Boolean isViewed;
 
     public SharedThought() {
     }
@@ -136,6 +163,14 @@ public class SharedThought extends BaseModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     public int getPositiveNegative() {
@@ -288,6 +323,62 @@ public class SharedThought extends BaseModel {
 
     public void setDateLastSaved(Date dateLastSaved) {
         this.dateLastSaved = dateLastSaved;
+    }
+
+    public User getAllocationUser() {
+        return allocationUser;
+    }
+
+    public void setAllocationUser(User allocationUser) {
+        this.allocationUser = allocationUser;
+    }
+
+    public Boolean getActionTaken() {
+        return isActionTaken;
+    }
+
+    public void setActionTaken(Boolean actionTaken) {
+        isActionTaken = actionTaken;
+    }
+
+    public User getFiltererUser() {
+        return filtererUser;
+    }
+
+    public void setFiltererUser(User filtererUser) {
+        this.filtererUser = filtererUser;
+    }
+
+    public Boolean getPatientContacted() {
+        return isPatientContacted;
+    }
+
+    public void setPatientContacted(Boolean patientContacted) {
+        isPatientContacted = patientContacted;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Boolean getViewed() {
+        return isViewed;
+    }
+
+    public void setViewed(Boolean viewed) {
+        isViewed = viewed;
     }
 
     public String getDateLastSavedFormattedDate() {

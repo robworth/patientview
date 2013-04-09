@@ -11,6 +11,7 @@ import java.util.List;
 public class SharingThoughts {
 
     public static final String ID = "id";
+    public static final String UNIT_ID = "unitId";
     public static final String IS_PATIENT = "patient";
     public static final String POSITIVE_NEGATIVE = "positiveNegative";
     public static final String IS_PRINCIPAL_CARER = "principalCarer";

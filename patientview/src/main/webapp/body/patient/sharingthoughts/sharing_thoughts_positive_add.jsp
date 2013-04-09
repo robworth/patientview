@@ -78,6 +78,10 @@
     </tr>
 
     <tr >
+      <td>Which unit does this relate to?</td><td><html:select property="unitId"><html:options collection="units" property="id" labelProperty="name"/></html:select></td>
+    </tr>
+
+    <tr >
       <td width="300">Please describe what was good about the care that you or others have received</td>
       <td><html:textarea property="<%=SharingThoughts.DESCRIPTION%>" name="sharingThoughtsForm" rows="10" cols="50" /></td>
     </tr>

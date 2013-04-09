@@ -2,6 +2,7 @@ package com.worthsoln.patientview.sharingthoughts;
 
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.SharedThought;
+import com.worthsoln.patientview.unit.UnitUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -21,6 +22,8 @@ public class SharingThoughtsRetrieveThoughtAction extends BaseAction {
         SharedThought thought = getSharedThoughtManager().getSharedThought(thoughtId);
 
         request.setAttribute(SharingThoughts.THOUGHT_PARAM, thought);
+
+        UnitUtils.putRelevantUnitsInRequest(request);
 
         if (thought.getPositiveNegative() == 1) {
             return mapping.findForward("positive");

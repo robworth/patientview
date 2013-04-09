@@ -238,6 +238,7 @@
     <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>    
     <form-bean name="sharingThoughtsForm" type="org.apache.struts.action.DynaActionForm">
       <form-property name="id"                      type="java.lang.Long"/>
+      <form-property name="unitId"                  type="java.lang.Long"/>
       <form-property name="positiveNegative"        type="java.lang.Integer"/>
       <form-property name="patient"                 type="java.lang.Boolean"/>
       <form-property name="principalCarer"          type="java.lang.Boolean"/>
@@ -1151,6 +1152,11 @@
             name="splashPageForm"
             scope="request">
       <forward name="success" path="/control/splash_page_list.jsp"/>
+    </action>
+
+    <action path="/control/sharingThoughtsAdminHome"
+            type="com.worthsoln.patientview.sharingthoughts.SharingThoughtsHomeAction">
+      <forward name="success" path="/control/sharingthoughts/sharing_thoughts_home.jsp"/>
     </action>
 
     <action path="/control/version"

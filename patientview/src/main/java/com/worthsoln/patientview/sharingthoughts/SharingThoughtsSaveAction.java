@@ -4,6 +4,7 @@ import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.SharedThought;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -29,6 +30,9 @@ public class SharingThoughtsSaveAction extends BaseAction {
         String forwardMapping = "";
 
         User user = UserUtils.retrieveUser(request);
+
+        Long unitId = (Long) dynaForm.get(SharingThoughts.UNIT_ID);
+        LegacySpringUtils.getUnitManager().get(unitId);
 
         int positiveNegative = (Integer) dynaForm.get(SharingThoughts.POSITIVE_NEGATIVE);
 
