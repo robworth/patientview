@@ -91,6 +91,13 @@
                                            id="ctl00_ContentPlaceHolder1_tblRelapseAdd">
                                         <tbody>
                                         <tr>
+                                            <td>
+                                                <input type="button" wicket:id="saveTop" value="Save">
+                                                <input type="button" wicket:id="cancelTop" value="Cancel">
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
                                             <td width="150">Date of relapse</td>
                                             <td>
                                                 <input type="text" style="width:80px;" wicket:id="dateOfRelapse">
@@ -168,8 +175,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <input type="button" wicket:id="save" value="Save">
-                                                <input type="button" wicket:id="cancel" value="Cancel">
+                                                <input type="button" wicket:id="saveBottom" value="Save">
+                                                <input type="button" wicket:id="cancelBottom" value="Cancel">
                                                 <span style="font-weight: bold;" wicket:id="successMessage"/>
                                                 <p class="error" wicket:id="errorMessage"/>
                                             </td>

@@ -3,15 +3,22 @@
 
         <div id="mainBlock">
 
+            <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+            <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+
             <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
             <div wicket:id="patientDetail">
 
             </div>
+
             <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
                    class="style3">
                 <tr>
                     <td style="width:90%; vertical-align:top;">
+
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+
                         <table cellpadding="5" style="width: 100%; border-collapse:collapse">
                             <tr>
                                 <td>
@@ -106,7 +113,7 @@
                         </table>
                         <br/><br/>
                         <br/><br/>
-                        <input type="button" wicket:id="save" value="Save" class="saveBtn"/>
+                        <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
 
                     </td>
                     <td style="vertical-align:top;">
@@ -117,8 +124,8 @@
                 </tr>
             </table>
             <div class="feedback" wicket:id="formFeedbackPanel"></div>
-            <span style="font-weight:bold;" wicket:id="successMessage"></span>
-            <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+            <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+            <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
 
         </div>
 

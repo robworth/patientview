@@ -71,7 +71,7 @@ public class AdminConsultantPage extends AdminsBasePage {
         List<Centre> centres = utilityManager.getCentres();
         Collections.sort(centres, Centre.getComparator());
 
-        DropDownChoice<Centre> centre = new DropDownChoice<Centre>("centre", centres, 
+        DropDownChoice<Centre> centre = new DropDownChoice<Centre>("centre", centres,
                 new ChoiceRenderer<Centre>("name", "id"));
         centre.setRequired(true);
         userForm.add(centre);
@@ -91,7 +91,7 @@ public class AdminConsultantPage extends AdminsBasePage {
         delete.setVisible(!newConsultant);
         userForm.add(delete);
 
-        userForm.add(new AjaxSubmitLink("save") {
+        userForm.add(new AjaxSubmitLink("saveTop") {
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 setResponsePage(AdminConsultantsPage.class);
             }
@@ -101,7 +101,23 @@ public class AdminConsultantPage extends AdminsBasePage {
             }
         });
 
-        userForm.add(new AjaxLink("cancel") {
+        userForm.add(new AjaxLink("cancelTop") {
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                setResponsePage(AdminConsultantsPage.class);
+            }
+        });
+
+        userForm.add(new AjaxSubmitLink("saveBottom") {
+            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                setResponsePage(AdminConsultantsPage.class);
+            }
+
+            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                ajaxRequestTarget.add(feedback);
+            }
+        });
+
+        userForm.add(new AjaxLink("cancelBottom") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 setResponsePage(AdminConsultantsPage.class);
             }

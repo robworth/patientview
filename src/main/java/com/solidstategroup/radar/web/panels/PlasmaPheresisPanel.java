@@ -125,7 +125,7 @@ public class PlasmaPheresisPanel extends Panel {
                 new CompoundPropertyModel<Plasmapheresis>(editPlasmapheresisModel),
                 editPlasmapheresisComponentsToUpdate);
 
-        editPlasmapheresisForm.add(new AjaxSubmitLink("save") {
+        editPlasmapheresisForm.add(new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(editPlasmapheresisContainer);
@@ -147,7 +147,38 @@ public class PlasmaPheresisPanel extends Panel {
                         editPlasmapheresisComponentsToUpdate.size()]));
             }
         });
-        editPlasmapheresisForm.add(new AjaxLink("cancel") {
+
+        editPlasmapheresisForm.add(new AjaxLink("cancelTop") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                editPlasmapheresisModel.setObject(null);
+                target.add(editPlasmapheresisContainer);
+            }
+        });
+
+        editPlasmapheresisForm.add(new AjaxSubmitLink("saveBottom") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                target.add(editPlasmapheresisContainer);
+                target.add(plasmapheresisContainer);
+                try {
+                    plasmapheresisManager.savePlasmapheresis((Plasmapheresis) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+                form.getModel().setObject(null);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(editPlasmapheresisComponentsToUpdate.toArray(new Component[
+                        editPlasmapheresisComponentsToUpdate.size()]));
+            }
+        });
+        editPlasmapheresisForm.add(new AjaxLink("cancelBottom") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 editPlasmapheresisModel.setObject(null);
@@ -214,7 +245,7 @@ public class PlasmaPheresisPanel extends Panel {
 
             RadarRequiredDropdownChoice response = new RadarRequiredDropdownChoice("response",
                     Arrays.asList(RemissionAchieved.COMPLETE,
-                    RemissionAchieved.PARTIAL, RemissionAchieved.NONE), new ChoiceRenderer("label", "id"),
+                            RemissionAchieved.PARTIAL, RemissionAchieved.NONE), new ChoiceRenderer("label", "id"),
                     this, componentsToUpdate);
             add(response);
 

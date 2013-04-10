@@ -126,7 +126,22 @@ public class ProteinuriaPanel extends Panel {
                 componentsToUpdateList);
         Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
 
-        form.add(new AjaxSubmitLink("save") {
+        form.add(new AjaxSubmitLink("saveTop") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+                target.add(formFeedback);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.add(formFeedback);
+            }
+        });
+
+        form.add(new AjaxSubmitLink("saveBottom") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);

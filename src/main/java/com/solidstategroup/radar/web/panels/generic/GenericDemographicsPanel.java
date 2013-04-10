@@ -155,7 +155,6 @@ public class GenericDemographicsPanel extends Panel {
         Label nhsNumber = new Label("nhsNumber");
 
         WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
-
             @Override
             public boolean isVisible() {
                 return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
@@ -166,7 +165,6 @@ public class GenericDemographicsPanel extends Panel {
         Label chiNumber = new Label("chiNumber");
 
         WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
-
             @Override
             public boolean isVisible() {
                 return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
@@ -375,7 +373,7 @@ public class GenericDemographicsPanel extends Panel {
                     Demographics demographics = model.getObject();
                     if (demographics != null) {
                         centreNumber.setObject(demographics.getRenalUnit() != null ?
-                                demographics.getRenalUnit().getId():
+                                demographics.getRenalUnit().getId() :
                                 null);
                     }
 
@@ -437,8 +435,7 @@ public class GenericDemographicsPanel extends Panel {
         Label errorMessageUp = RadarComponentFactory.getErrorMessageLabel("errorMessageUp", form,
                 "Please complete all mandatory fields", componentsToUpdateList);
 
-        AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("save") {
-
+        AjaxSubmitLink ajaxSubmitLinkTop = new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
@@ -451,7 +448,21 @@ public class GenericDemographicsPanel extends Panel {
             }
         };
 
-        form.add(ajaxSubmitLink);
+        AjaxSubmitLink ajaxSubmitLinkBottom = new AjaxSubmitLink("saveBottom") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+            }
+        };
+
+        form.add(ajaxSubmitLinkTop);
+        form.add(ajaxSubmitLinkBottom);
     }
 
     private static class AddIdModel implements Serializable {

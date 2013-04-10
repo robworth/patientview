@@ -99,7 +99,7 @@ public class AdminIssuePage extends AdminsBasePage {
         updated.add(new DatePicker());
         issueForm.add(updated);
 
-        issueForm.add(new AjaxSubmitLink("save") {
+        issueForm.add(new AjaxSubmitLink("saveTop") {
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 setResponsePage(AdminIssuesPage.class);
             }
@@ -109,7 +109,23 @@ public class AdminIssuePage extends AdminsBasePage {
             }
         });
 
-        issueForm.add(new AjaxLink("cancel") {
+        issueForm.add(new AjaxLink("cancelTop") {
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                setResponsePage(AdminIssuesPage.class);
+            }
+        });
+
+        issueForm.add(new AjaxSubmitLink("saveBottom") {
+            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                setResponsePage(AdminIssuesPage.class);
+            }
+
+            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                ajaxRequestTarget.add(feedback);
+            }
+        });
+
+        issueForm.add(new AjaxLink("cancelBottom") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 setResponsePage(AdminIssuesPage.class);
             }

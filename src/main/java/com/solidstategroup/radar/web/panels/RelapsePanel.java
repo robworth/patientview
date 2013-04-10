@@ -168,7 +168,7 @@ public class RelapsePanel extends Panel {
         RelapseForm editRelapseForm = new RelapseForm("editRelapseForm",
                 new CompoundPropertyModel<Relapse>(editRelapseModel), editRelapseComponentsToUpdate);
 
-        editRelapseForm.add(new AjaxSubmitLink("save") {
+        editRelapseForm.add(new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 relapseManager.saveRelapse((Relapse) form.getModelObject());
@@ -185,7 +185,34 @@ public class RelapsePanel extends Panel {
                         editRelapseComponentsToUpdate.size()]));
             }
         });
-        editRelapseForm.add(new AjaxLink("cancel") {
+
+        editRelapseForm.add(new AjaxLink("cancelTop") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                editRelapseModel.setObject(null);
+                target.add(editRelapseContainer);
+            }
+        });
+
+        editRelapseForm.add(new AjaxSubmitLink("saveBottom") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                relapseManager.saveRelapse((Relapse) form.getModelObject());
+                form.getModel().setObject(null);
+                target.add(editRelapseContainer);
+                target.add(relapseListViewContainer);
+                target.add(form);
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(editRelapseComponentsToUpdate.toArray(new Component[
+                        editRelapseComponentsToUpdate.size()]));
+            }
+        });
+
+        editRelapseForm.add(new AjaxLink("cancelBottom") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 editRelapseModel.setObject(null);
@@ -278,6 +305,7 @@ public class RelapsePanel extends Panel {
 
             add(RadarComponentFactory.getSuccessMessageLabel("successMessage", this, componentsToUpdate));
             add(RadarComponentFactory.getErrorMessageLabel("errorMessage", this, componentsToUpdate));
+
         }
     }
 }

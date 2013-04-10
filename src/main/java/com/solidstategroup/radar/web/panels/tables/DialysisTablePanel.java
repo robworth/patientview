@@ -120,7 +120,8 @@ public class DialysisTablePanel extends Panel {
         DialysisForm editDialysisForm =
                 new DialysisForm("editDialysisForm", new CompoundPropertyModel<Treatment>(editDialysisModel),
                         editDialysisFormComponentsToUpdate);
-        editDialysisForm.add(new AjaxSubmitLink("save") {
+
+        editDialysisForm.add(new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(editDialysisContainer);
@@ -142,13 +143,46 @@ public class DialysisTablePanel extends Panel {
                         editDialysisFormComponentsToUpdate.size()]));
             }
         });
-        editDialysisForm.add(new AjaxLink("cancel") {
+
+        editDialysisForm.add(new AjaxLink("cancelTop") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 editDialysisModel.setObject(null);
                 target.add(editDialysisContainer);
             }
         });
+
+        editDialysisForm.add(new AjaxSubmitLink("saveBottom") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                target.add(editDialysisContainer);
+                target.add(dialysisContainer);
+                try {
+                    treatmentManager.saveTreatment((Treatment) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+                form.getModel().setObject(null);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(editDialysisFormComponentsToUpdate.toArray(new Component[
+                        editDialysisFormComponentsToUpdate.size()]));
+            }
+        });
+
+        editDialysisForm.add(new AjaxLink("cancelBottom") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                editDialysisModel.setObject(null);
+                target.add(editDialysisContainer);
+            }
+        });
+
         editDialysisContainer.add(editDialysisForm);
 
 
