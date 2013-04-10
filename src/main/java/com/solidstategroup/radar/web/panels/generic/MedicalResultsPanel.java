@@ -91,16 +91,20 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 // test result cannot have a null date
-                if (medicalResult.getBloodUrea() != null && medicalResult.getBloodUreaDate() == null) {
-                    get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                if (medicalResult.getBloodUrea() != null) {
+                    if (medicalResult.getBloodUreaDate() == null) {
+                        get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
 
                     if (medicalResult.getBloodUrea() < 1 || medicalResult.getBloodUrea() > 100) {
                         get("bloodUreaDate").error(". " + MUST_BE_BETWEEN_1_AND_100);
                     }
                 }
 
-                if (medicalResult.getSerumCreatanine() != null && medicalResult.getCreatanineDate() == null) {
-                    get("creatanineDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                if (medicalResult.getSerumCreatanine() != null) {
+                    if (medicalResult.getCreatanineDate() == null) {
+                        get("creatanineDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
 
                     if (medicalResult.getSerumCreatanine() < 10 || medicalResult.getSerumCreatanine() > 2800) {
                         get("serumCreatanine").error(MUST_BE_BETWEEN_10_AND_2800);
