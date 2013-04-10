@@ -2,6 +2,9 @@
     <form wicket:id="form">
         <div id="mainBlock">
 
+            <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+            <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+
             <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
             <div wicket:id="patientDetail">
@@ -68,8 +71,8 @@
             </table>
 
             <div class="feedback" wicket:id="formFeedbackPanel"></div>
-            <span style="font-weight:bold;" wicket:id="successMessage"></span>
-            <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+            <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+            <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
         </div>
     </form>
 </wicket:panel>

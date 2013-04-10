@@ -170,9 +170,15 @@ public class HNF1BMiscPanel extends Panel {
         TextArea genitalMalformationDetails = new TextArea("genitalMalformationDetails");
         form.add(genitalMalformationDetails);
 
-        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+        final Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
                 componentsToUpdateList);
-        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
+        Label errorMessageTop = RadarComponentFactory.getErrorMessageLabel("errorMessageTop", form,
+                componentsToUpdateList);
+
+        final Label successMessageBottom = RadarComponentFactory.getSuccessMessageLabel("successMessageBottom", form,
+                        componentsToUpdateList);
+        Label errorMessageBottom = RadarComponentFactory.getErrorMessageLabel("errorMessageBottom", form,
+                componentsToUpdateList);
 
         form.add(new AjaxSubmitLink("saveTop") {
             @Override

@@ -122,9 +122,15 @@ public class DeafnessPanel extends Panel {
         evidenceOfDeafnessRadioGroup.add(new Radio<Deafness.EvidenceOfDeafness>("evidenceOfDeafnessYesHearingAidNeeded",
                 new Model<Deafness.EvidenceOfDeafness>(Deafness.EvidenceOfDeafness.YES_HEARING_AID_NEEDED)));
 
-        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+        Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
+                        componentsToUpdateList);
+        Label errorMessageTop = RadarComponentFactory.getErrorMessageLabel("errorMessageTop", form,
                 componentsToUpdateList);
-        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
+
+        Label successMessageBottom = RadarComponentFactory.getSuccessMessageLabel("successMessageBottom", form,
+                        componentsToUpdateList);
+        Label errorMessageBottom = RadarComponentFactory.getErrorMessageLabel("errorMessageBottom",
+                form, componentsToUpdateList);
 
         form.add(new AjaxSubmitLink("saveTop") {
             @Override

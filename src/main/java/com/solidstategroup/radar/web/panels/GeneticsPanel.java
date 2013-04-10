@@ -105,9 +105,15 @@ public class GeneticsPanel extends Panel {
         form.add(new TextArea<String>("whatResultsShowed"));
         form.add(new TextArea<String>("keyEvidence"));
 
-        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+        Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
                 componentsToUpdateList);
-        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
+        Label errorMessageTop = RadarComponentFactory.getErrorMessageLabel("errorMessageTop", form,
+                componentsToUpdateList);
+
+        Label successMessageBottom = RadarComponentFactory.getSuccessMessageLabel("successMessageBottom", form,
+                        componentsToUpdateList);
+        Label errorMessageBottom = RadarComponentFactory.getErrorMessageLabel("errorMessageBottom",
+                form, componentsToUpdateList);
 
         form.add(new AjaxSubmitLink("saveTop") {
             @Override
