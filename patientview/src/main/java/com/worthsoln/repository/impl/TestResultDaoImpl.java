@@ -40,37 +40,20 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units) {
 
-        String sql = "SELECT testresult.*, unit.shortname FROM testresult, user, usermapping, result_heading, unit " +
-                "WHERE user.username = ? " +
-                "AND user.username = usermapping.username " +
-                "AND usermapping.nhsno = testresult.nhsno " +
-                "AND testresult.testcode = result_heading.headingcode " +
-                "AND testresult.unitcode = usermapping.unitcode " +
-                "AND testresult.unitcode = unit.unitcode " +
-                "AND result_heading.panel = ? ";
+        String sql = " SELECT DISTINCT testresult.*, unit.shortname " +
+                " FROM testresult " +
+                " LEFT JOIN unit ON unit.unitcode = testresult.unitcode " +
+                " JOIN user, usermapping, result_heading " +
+                " WHERE user.username = ? " +
+                " AND user.username = usermapping.username " +
+                " AND usermapping.nhsno = testresult.nhsno " +
+                " AND testresult.testcode = result_heading.headingcode " +
+                " AND result_heading.panel = ? " +
+                " ORDER BY testresult.datestamp desc ";
 
         List<Object> params = new ArrayList<Object>();
         params.add(username);
         params.add(panel.getPanel());
-
-        if (units != null && !units.isEmpty()) {
-            sql += " AND unit.unitcode IN (";
-
-            int i = 0;
-            for (Unit unit : units) {
-                i++;
-                sql += " ? ";
-                params.add(unit.getUnitcode());
-
-                if (i != units.size()) {
-                    sql += ",";
-                }
-            }
-
-            sql += ") ";
-        }
-
-        sql += "ORDER BY testresult.datestamp desc";
 
         return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
     }

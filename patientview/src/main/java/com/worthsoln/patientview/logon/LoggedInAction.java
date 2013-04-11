@@ -57,7 +57,7 @@ public class LoggedInAction extends Action {
                     LogEntry log = LegacySpringUtils.getLogEntryManager().getLatestLogEntry(nhsno,
                             AddLog.PATIENT_DATA_FOLLOWUP);
                     if (log != null) {
-                        request.setAttribute("lastDataDate", log.getDate().getTime());
+                        request.setAttribute("lastDataDate", format.format(log.getDate().getTime()));
                         // Get the unit from the unitcode
                         String unitcode = log.getUnitcode();
                         if (unitcode != null) {
