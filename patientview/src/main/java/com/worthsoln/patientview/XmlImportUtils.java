@@ -35,7 +35,7 @@ public class XmlImportUtils {
         String toAddress = allocateToAddress(context, unit);
 
         EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
-                            "[RPV] File import failed: " + fileName, emailBody);
+                "[PatientView] File import failed: " + fileName, emailBody);
     }
 
     public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
@@ -53,7 +53,7 @@ public class XmlImportUtils {
 
         for (String toAddress : toAddresses) {
             EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
-                    "[RPV] File import failed: " + xmlFileName, emailBody);
+                    "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
     }
 
@@ -127,7 +127,7 @@ public class XmlImportUtils {
             String emailBody = createEmailBody(context, stacktrace, fileName);
 
             EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
-                    "[RENAL] File import failed: " + fileName, emailBody);
+                    "[PatientView] File import failed: " + fileName, emailBody);
 
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -143,7 +143,12 @@ public class XmlImportUtils {
         emailBody += newLine + "The file <" + fileName + "> has failed to import.";
         emailBody += newLine;
         emailBody += newLine + "This means that the file has been received by RPV but there is something wrong with the file that prevents it being imported properly.";
-        emailBody += newLine + "It might be that there is an XML tag missing or an empty result value or something similar.";
+        emailBody += newLine;
+        emailBody += newLine + "You will most likely need to correct the data in your local system before the file is resent to PatientView.";
+        emailBody += newLine;
+        emailBody += newLine + errors;
+        emailBody += newLine;
+        emailBody += newLine + "Otherwise, it might be that there is an XML tag missing or an empty result value or something similar.";
         emailBody += newLine;
         emailBody += newLine + "Before contacting the email address below please ensure that:";
         emailBody += newLine + " - The file is not empty.";
@@ -151,9 +156,6 @@ public class XmlImportUtils {
         emailBody += newLine + " - The file matches the RPV XML schema.";
         emailBody += newLine + " - There are no missing values.";
         emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine;
-        emailBody += newLine + errors;
-        emailBody += newLine;
         emailBody += newLine + "For further help, please contact " + context.getInitParameter("support.email");
         emailBody += newLine;
         return emailBody;
@@ -182,10 +184,20 @@ public class XmlImportUtils {
             errors += newLine + "These are the error(s) that have been found in this xml:";
             errors += newLine;
 
+            int numberOfErrors = 0;
+
             for (CorruptNode corruptNode : ((XmlImportException) e).getNodeList()) {
+                numberOfErrors++;
+
+                if (numberOfErrors > 20) {
+                    // truncate this information
+                    errors += newLine + "There are further errors.  Truncating email!";
+                    break;
+                }
+
                 switch (corruptNode.getError()) {
                     case FUTURE_RESULT:
-                        errors += newLine + "This result has a future date:";
+                        errors += newLine + "This result has a date in the future:";
                         errors += newLine;
                         errors += getNodeAsString(corruptNode.getNode());
                         errors += newLine;
@@ -199,9 +211,14 @@ public class XmlImportUtils {
 
                         break;
                     case WRONG_DATE_RANGE:
-                        errors += newLine + "This result has a date that's not between the daterange specified";
+                        errors += newLine + "This result has a date that's not within the date range specified:";
                         errors += newLine;
                         errors += getNodeAsString(corruptNode.getNode());
+                        errors += newLine;
+
+                        break;
+                    default:
+                        errors += newLine + "Found an unknown error:";
                         errors += newLine;
 
                         break;
