@@ -45,7 +45,7 @@
             <id>dev</id>
             <properties>
                 <env>dev</env>
-                <tomcatmanagerurl>http://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <tomcatmanagerurl>http://sharingthoughts.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
                 </profile.build.output-webapp-dir>
@@ -55,7 +55,7 @@
             <id>staging</id>
             <properties>
                 <env>staging</env>
-                <tomcatmanagerurl>http://patientview.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <tomcatmanagerurl>http://sharingthoughts.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
                 </profile.build.output-webapp-dir>
