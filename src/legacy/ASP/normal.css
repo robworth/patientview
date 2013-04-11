@@ -132,6 +132,9 @@ vertical-align:text-top;
 }
 
 .saveBtn {
-background-color:Green;
-color: White;
+    background-color: Green;
+    border: 1px solid #B6DF9F;
+    color: White;
+    font-size: 14px;
+    padding: 2px 9px;
 }
