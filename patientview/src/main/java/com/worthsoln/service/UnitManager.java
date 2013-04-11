@@ -26,8 +26,10 @@ public interface UnitManager {
     List<Unit> getAllDisregardingSpeciality(boolean sortByName);
 
     List<Unit> getAll(boolean sortByName);
-
+    
     List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
+
+    List<Unit> getAdminsUnits();
 
     List<Unit> getUnitsWithUser();
 
