@@ -492,36 +492,74 @@ public class DemographicsPanel extends Panel {
 
         form.add(new BookmarkablePageLink<ConsentFormsPage>("consentFormsLink", ConsentFormsPage.class));
 
-        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+        final Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
+                componentsToUpdateList);
+        final Label successMessageBottom = RadarComponentFactory.getSuccessMessageLabel("successMessageBottom", form,
                 componentsToUpdateList);
 
         Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
 
-        AjaxSubmitLink ajaxSubmitLink = new AjaxSubmitLink("save") {
+        AjaxSubmitLink ajaxSubmitLinkTop = new AjaxSubmitLink("saveTop") {
 
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
-                successMessage.setVisible(true);
-                ajaxRequestTarget.add(successMessage);
+                successMessageTop.setVisible(true);
+                successMessageBottom.setVisible(true);
+                ajaxRequestTarget.add(successMessageTop);
+                ajaxRequestTarget.add(successMessageBottom);
                 ajaxRequestTarget.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
             }
 
             @Override
             protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
-                successMessage.setVisible(false);
-                ajaxRequestTarget.add(successMessage);
+                successMessageTop.setVisible(false);
+                successMessageBottom.setVisible(false);
+                ajaxRequestTarget.add(successMessageTop);
+                ajaxRequestTarget.add(successMessageBottom);
             }
         };
 
-        ajaxSubmitLink.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
+        ajaxSubmitLinkTop.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
             @Override
             public Object getObject() {
                 return radarNumberModel.getObject() == null ? "Add this patient" : "Update";
             }
         }));
-        form.add(ajaxSubmitLink);
+
+        form.add(ajaxSubmitLinkTop);
+
+        AjaxSubmitLink ajaxSubmitLinkBottom = new AjaxSubmitLink("saveBottom") {
+
+            @Override
+            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                successMessageTop.setVisible(true);
+                successMessageBottom.setVisible(true);
+                ajaxRequestTarget.add(successMessageTop);
+                ajaxRequestTarget.add(successMessageBottom);
+                ajaxRequestTarget.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+                successMessageTop.setVisible(false);
+                successMessageBottom.setVisible(false);
+                ajaxRequestTarget.add(successMessageTop);
+                ajaxRequestTarget.add(successMessageBottom);
+            }
+        };
+
+        ajaxSubmitLinkBottom.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
+            @Override
+            public Object getObject() {
+                return radarNumberModel.getObject() == null ? "Add this patient" : "Update";
+            }
+        }));
+
+        form.add(ajaxSubmitLinkBottom);
     }
 
     @Override

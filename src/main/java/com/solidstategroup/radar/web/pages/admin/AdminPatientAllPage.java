@@ -72,7 +72,7 @@ public class AdminPatientAllPage extends AdminsBasePage {
         diagnosisCode.setRequired(true);
         userForm.add(diagnosisCode);
 
-        userForm.add(new AjaxSubmitLink("update") {
+        userForm.add(new AjaxSubmitLink("updateTop") {
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 setResponsePage(AdminPatientsAllPage.class);
             }
@@ -82,7 +82,23 @@ public class AdminPatientAllPage extends AdminsBasePage {
             }
         });
 
-        userForm.add(new AjaxLink("cancel") {
+        userForm.add(new AjaxLink("cancelTop") {
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                setResponsePage(AdminPatientsAllPage.class);
+            }
+        });
+
+        userForm.add(new AjaxSubmitLink("updateBottom") {
+            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                setResponsePage(AdminPatientsAllPage.class);
+            }
+
+            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                ajaxRequestTarget.add(feedback);
+            }
+        });
+
+        userForm.add(new AjaxLink("cancelBottom") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 setResponsePage(AdminPatientsAllPage.class);
             }

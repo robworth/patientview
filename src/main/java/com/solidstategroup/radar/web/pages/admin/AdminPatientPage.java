@@ -61,7 +61,7 @@ public class AdminPatientPage extends AdminsBasePage {
         userForm.add(new Label("dob", patientUser.getDateOfBirth().toString()));
         userForm.add(new Label("dateRegistered", patientUser.getDateRegistered().toString()));
 
-        userForm.add(new AjaxSubmitLink("update") {
+        userForm.add(new AjaxSubmitLink("updateTop") {
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
                 setResponsePage(AdminPatientsPage.class);
             }
@@ -71,7 +71,23 @@ public class AdminPatientPage extends AdminsBasePage {
             }
         });
 
-        userForm.add(new AjaxLink("cancel") {
+        userForm.add(new AjaxLink("cancelTop") {
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                setResponsePage(AdminPatientsPage.class);
+            }
+        });
+
+        userForm.add(new AjaxSubmitLink("updateBottom") {
+            protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                setResponsePage(AdminPatientsPage.class);
+            }
+
+            protected void onError(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                ajaxRequestTarget.add(feedback);
+            }
+        });
+
+        userForm.add(new AjaxLink("cancelBottom") {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 setResponsePage(AdminPatientsPage.class);
             }

@@ -310,7 +310,7 @@ public class RrtTherapyPanel extends Panel {
                         editTransplantFormComponentsToUpdate);
         editTransplantContainer.add(editTransplantForm);
 
-        editTransplantForm.add(new AjaxSubmitLink("save") {
+        editTransplantForm.add(new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(editTransplantContainer);
@@ -335,7 +335,42 @@ public class RrtTherapyPanel extends Panel {
                         new Component[editTransplantFormComponentsToUpdate.size()]));
             }
         });
-        editTransplantForm.add(new AjaxLink("cancel") {
+
+        editTransplantForm.add(new AjaxLink("cancelTop") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                editTransplantModel.setObject(null);
+                target.add(editTransplantContainer);
+            }
+        });
+
+        editTransplantForm.add(new AjaxSubmitLink("saveBottom") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                target.add(editTransplantContainer);
+                target.add(transplantsContainer);
+
+                try {
+                    transplantManager.saveTransplant((Transplant) form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+
+                editTransplantModel.setObject(null);
+
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(editTransplantFormComponentsToUpdate.toArray(
+                        new Component[editTransplantFormComponentsToUpdate.size()]));
+            }
+        });
+
+        editTransplantForm.add(new AjaxLink("cancelBottom") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 editTransplantModel.setObject(null);
@@ -432,13 +467,13 @@ public class RrtTherapyPanel extends Panel {
 
             FeedbackPanel editTransplantFeedback = new FeedbackPanel("transplantFeedback",
                     new IFeedbackMessageFilter() {
-                public boolean accept(FeedbackMessage feedbackMessage) {
-                    List<String> acceptedErrorMessages = new ArrayList<String>();
-                    acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);
-                    acceptedErrorMessages.addAll(TransplantManager.ERROR_MESSAGES);
-                    return acceptedErrorMessages.contains(feedbackMessage.getMessage());
-                }
-            });
+                        public boolean accept(FeedbackMessage feedbackMessage) {
+                            List<String> acceptedErrorMessages = new ArrayList<String>();
+                            acceptedErrorMessages.addAll(TreatmentManager.ERROR_MESSAGES);
+                            acceptedErrorMessages.addAll(TransplantManager.ERROR_MESSAGES);
+                            return acceptedErrorMessages.contains(feedbackMessage.getMessage());
+                        }
+                    });
 
             add(editTransplantFeedback);
             editTransplantFeedback.setOutputMarkupPlaceholderTag(true);

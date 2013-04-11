@@ -80,9 +80,14 @@
                                 </td>
                                 <td class="col45" valign="bottom"></td>
                                 <td class="col250">
-                                    <input type="submit" value="Save" wicket:id="save"/>
+                                    <input type="submit" value="Save" wicket:id="saveTop"/>
                                     &nbsp;
-                                    <input type="submit" value="Cancel" wicket:id="cancel"/>
+                                    <input type="submit" value="Cancel" wicket:id="cancelTop"/>
+                                </td>
+                                <td class="col250">
+                                    <input type="submit" value="Save" wicket:id="saveBottom"/>
+                                    &nbsp;
+                                    <input type="submit" value="Cancel" wicket:id="cancelBottom"/>
                                 </td>
                             </tr>
                             <tr>
@@ -170,10 +175,15 @@
                 <fieldset>
                     <legend>Drugs</legend>
                     <br>
+                    <input wicket:id="saveTop" type="button" class="saveBtn" value="Save">
+                    <span style="font-weight: bold;" wicket:id="successMessageTop"></span>
+                    <span style="font-weight: bold; color: red;" wicket:id="errorMessageTop"></span>
+                    <br>
                     Date of Treatment record
                     <input wicket:id="treatmentRecordDate" type="text" style="width:70px;">
                     <span wicket:id="treatmentRecordDateFeedbackIndicator"></span>
                     <span class="feedback" wicket:id="treatmentRecordDateFeedback"></span>
+
                     <table border="1px" cellpadding="5" id="tblDrugs" class="style13">
                         <tbody>
                         <tr>
@@ -331,9 +341,9 @@
                         </tbody>
                     </table>
                     <br/>
-                    <input wicket:id="save" type="button" class="saveBtn" value="Save">
-                    <span style="font-weight: bold;" wicket:id="successMessage"></span>
-                    <span style="font-weight: bold; color: red;" wicket:id="errorMessage"></span>
+                    <input wicket:id="saveBottom" type="button" class="saveBtn" value="Save">
+                    <span style="font-weight: bold;" wicket:id="successMessageBottom"></span>
+                    <span style="font-weight: bold; color: red;" wicket:id="errorMessageBottom"></span>
                 </fieldset>
             </form>
             &nbsp;</div>

@@ -172,7 +172,7 @@ public class TreatmentPanel extends Panel {
                         new CompoundPropertyModel<ImmunosuppressionTreatment>(editImmunosuppressionTreatmentIModel),
                         editImmunoSuppressComponentsToUpdate);
 
-        editImmunosuppressionForm.add(new AjaxSubmitLink("save") {
+        editImmunosuppressionForm.add(new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
                 target.add(editContainer);
@@ -197,14 +197,51 @@ public class TreatmentPanel extends Panel {
                         new Component[editImmunoSuppressComponentsToUpdate.size()]));
             }
         });
-        editImmunosuppressionForm.add(new AjaxLink("cancel") {
+
+        editImmunosuppressionForm.add(new AjaxLink("cancelTop") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 editImmunosuppressionTreatmentIModel.setObject(null);
                 target.add(editContainer);
             }
         });
+
+        editImmunosuppressionForm.add(new AjaxSubmitLink("saveBottom") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                target.add(editContainer);
+                target.add(immunosuppressionTreatmentsContainer);
+                try {
+                    immunosuppressionManager.saveImmunosuppressionTreatment((ImmunosuppressionTreatment)
+                            form.getModelObject());
+                } catch (InvalidModelException e) {
+                    for (String error : e.getErrors()) {
+                        error(error);
+                    }
+                    return;
+                }
+                editImmunosuppressionTreatmentIModel.setObject(null);
+                addImmunosuppressionForm.clearInput();
+                target.add(addImmunosuppressionForm);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(editImmunoSuppressComponentsToUpdate.toArray(
+                        new Component[editImmunoSuppressComponentsToUpdate.size()]));
+            }
+        });
+
+        editImmunosuppressionForm.add(new AjaxLink("cancelBottom") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                editImmunosuppressionTreatmentIModel.setObject(null);
+                target.add(editContainer);
+            }
+        });
+
         editContainer.add(editImmunosuppressionForm);
+
         add(editContainer);
 
         addImmunosuppressionForm.add(new AjaxSubmitLink("submit") {
@@ -281,10 +318,16 @@ public class TreatmentPanel extends Panel {
                 return isSrnsModel.getObject() ? "Prior to Referral" : "Drugs in the 4 weeks after Biopsy";
             }
         };
-        Label successLabel = RadarComponentFactory.getSuccessMessageLabel("successMessage", therapyForm,
+        Label successLabelTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", therapyForm,
                 therapyFormComponentsToUpdate);
 
-        Label errorLabel = RadarComponentFactory.getErrorMessageLabel("errorMessage", therapyForm,
+        Label errorLabelTop = RadarComponentFactory.getErrorMessageLabel("errorMessageTop", therapyForm,
+                therapyFormComponentsToUpdate);
+
+        Label successLabelBottom = RadarComponentFactory.getSuccessMessageLabel("successMessageBottom", therapyForm,
+                therapyFormComponentsToUpdate);
+
+        Label errorLabelBottom = RadarComponentFactory.getErrorMessageLabel("errorMessageBottom", therapyForm,
                 therapyFormComponentsToUpdate);
 
         RadarRequiredDateTextField treatmentRecordDate = new RadarRequiredDateTextField("treatmentRecordDate",
@@ -354,23 +397,25 @@ public class TreatmentPanel extends Panel {
 
         AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour =
                 new AjaxFormChoiceComponentUpdatingBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensive());
+                    @Override
+                    protected void onUpdate(AjaxRequestTarget target) {
+                        antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensive());
 
-                target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
-            }
-        };
+                        target.add(therapyFormComponentsToUpdate.toArray(
+                                new Component[therapyFormComponentsToUpdate.size()]));
+                    }
+                };
 
         AjaxFormChoiceComponentUpdatingBehavior antihypertensiveToggleBehaviour2 =
                 new AjaxFormChoiceComponentUpdatingBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensivePrior());
+                    @Override
+                    protected void onUpdate(AjaxRequestTarget target) {
+                        antihypertensiveToggleModel.setObject(therapyForm.getModelObject().getAntihypertensivePrior());
 
-                target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
-            }
-        };
+                        target.add(therapyFormComponentsToUpdate.toArray(
+                                new Component[therapyFormComponentsToUpdate.size()]));
+                    }
+                };
 
         YesNoRadioGroupPanel antihypertensiveContainer = new YesNoRadioGroupPanel("antihypertensiveContainer", true,
                 therapyFormModel,
@@ -583,7 +628,7 @@ public class TreatmentPanel extends Panel {
         therapyForm.add(other4PriorContainer);
 
 
-        AjaxSubmitLink save = new AjaxSubmitLink("save", therapyForm) {
+        AjaxSubmitLink saveTop = new AjaxSubmitLink("saveTop", therapyForm) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
@@ -596,7 +641,23 @@ public class TreatmentPanel extends Panel {
             }
         };
 
-        therapyForm.add(save);
+        therapyForm.add(saveTop);
+        add(therapyForm);
+
+        AjaxSubmitLink saveBottom = new AjaxSubmitLink("saveBottom", therapyForm) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(therapyFormComponentsToUpdate.toArray(new Component[therapyFormComponentsToUpdate.size()]));
+            }
+        };
+
+        therapyForm.add(saveBottom);
         add(therapyForm);
 
         // Plasmapheresis

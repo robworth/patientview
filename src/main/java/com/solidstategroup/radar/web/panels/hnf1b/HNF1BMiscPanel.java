@@ -170,11 +170,32 @@ public class HNF1BMiscPanel extends Panel {
         TextArea genitalMalformationDetails = new TextArea("genitalMalformationDetails");
         form.add(genitalMalformationDetails);
 
-        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+        final Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
                 componentsToUpdateList);
-        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form, componentsToUpdateList);
+        Label errorMessageTop = RadarComponentFactory.getErrorMessageLabel("errorMessageTop", form,
+                componentsToUpdateList);
 
-        form.add(new AjaxSubmitLink("save") {
+        final Label successMessageBottom = RadarComponentFactory.getSuccessMessageLabel("successMessageBottom", form,
+                        componentsToUpdateList);
+        Label errorMessageBottom = RadarComponentFactory.getErrorMessageLabel("errorMessageBottom", form,
+                componentsToUpdateList);
+
+        form.add(new AjaxSubmitLink("saveTop") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+                target.add(formFeedback);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.add(formFeedback);
+            }
+        });
+
+        form.add(new AjaxSubmitLink("saveBottom") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);

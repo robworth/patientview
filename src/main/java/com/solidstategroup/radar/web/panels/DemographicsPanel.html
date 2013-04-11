@@ -6,6 +6,7 @@
 
 <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
+<span style="font-weight:bold;" wicket:id="successMessageTop"></span>
 <table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
     <tr>
         <td style="height:30px;">
@@ -39,10 +40,14 @@
         </td>
     </tr>
 </table>
+
 <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
        class="style3">
     <tr>
         <td style="width:50%; vertical-align:top;">
+
+            <input type="button" wicket:id="saveTop" value="Add this Patient" class="saveBtn"/>
+
             <table cellpadding="5" style="width: 100%; border-collapse:collapse">
                 <tr>
                     <td>
@@ -149,7 +154,7 @@
 
             </div>
             <br/><br/>
-            <input type="button" wicket:id="save" value="Add this Patient" class="saveBtn"/>
+            <input type="button" wicket:id="saveBottom" value="Add this Patient" class="saveBtn"/>
 
         </td>
         <td style="vertical-align:top;">
@@ -239,7 +244,7 @@
         </td>
     </tr>
 </table>
-<span style="font-weight:bold;" wicket:id="successMessage"></span>
+<span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
 <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
 
 </div>
