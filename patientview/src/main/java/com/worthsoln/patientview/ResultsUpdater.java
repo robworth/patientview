@@ -112,7 +112,7 @@ public class ResultsUpdater {
         } catch (Exception e) {
 
             // these exceptions can occur because of corrupt/invalid data in xml file
-            LOGGER.error("Importer failed to import file {} {}", xmlFile, e);
+            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
 
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
                     XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),

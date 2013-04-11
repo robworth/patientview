@@ -184,7 +184,17 @@ public class XmlImportUtils {
             errors += newLine + "These are the error(s) that have been found in this xml:";
             errors += newLine;
 
+            int numberOfErrors = 0;
+
             for (CorruptNode corruptNode : ((XmlImportException) e).getNodeList()) {
+                numberOfErrors++;
+
+                if (numberOfErrors > 20) {
+                    // truncate this information
+                    errors += newLine + "There are further errors.  Truncating email!";
+                    break;
+                }
+
                 switch (corruptNode.getError()) {
                     case FUTURE_RESULT:
                         errors += newLine + "This result has a date in the future:";
@@ -204,6 +214,11 @@ public class XmlImportUtils {
                         errors += newLine + "This result has a date that's not within the date range specified:";
                         errors += newLine;
                         errors += getNodeAsString(corruptNode.getNode());
+                        errors += newLine;
+
+                        break;
+                    default:
+                        errors += newLine + "Found an unknown error:";
                         errors += newLine;
 
                         break;

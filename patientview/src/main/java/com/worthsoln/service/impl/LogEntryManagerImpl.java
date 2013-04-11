@@ -29,6 +29,13 @@ public class LogEntryManagerImpl implements LogEntryManager {
             logEntry.setSpecialty(securityUserManager.getLoggedInSpecialty());
         }
 
+        // manually truncate the data to fit into the TEXT column, don't want to run an alter table command on this
+        // massive table.  If this is not acceptable set the column to be a LONGTEXT and possible increase
+        // the max_allowed_packet size
+        if (logEntry.getExtrainfo() != null && logEntry.getExtrainfo().length() > 65000) {
+            logEntry.setExtrainfo(logEntry.getExtrainfo().substring(0, 65000));
+        }
+
         logEntryDao.save(logEntry);
     }
 
