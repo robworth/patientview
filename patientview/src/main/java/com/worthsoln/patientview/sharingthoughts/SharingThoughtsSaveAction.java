@@ -2,6 +2,7 @@ package com.worthsoln.patientview.sharingthoughts;
 
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.SharedThought;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -30,9 +31,6 @@ public class SharingThoughtsSaveAction extends BaseAction {
         String forwardMapping = "";
 
         User user = UserUtils.retrieveUser(request);
-
-        Long unitId = (Long) dynaForm.get(SharingThoughts.UNIT_ID);
-        LegacySpringUtils.getUnitManager().get(unitId);
 
         int positiveNegative = (Integer) dynaForm.get(SharingThoughts.POSITIVE_NEGATIVE);
 
@@ -130,6 +128,13 @@ public class SharingThoughtsSaveAction extends BaseAction {
         } catch (Exception ignored) {
         }
 
+        Unit unit = null;
+        try {
+            Long unitId = (Long) dynaForm.get(SharingThoughts.UNIT_ID);
+            unit = LegacySpringUtils.getUnitManager().get(unitId);
+        } catch (Exception ignored) {
+        }
+
         String description = null;
         try {
             description = (String) dynaForm.get(SharingThoughts.DESCRIPTION);
@@ -160,7 +165,7 @@ public class SharingThoughtsSaveAction extends BaseAction {
         } catch (Exception ignored) {
         }
 
-        SharedThought thought = new SharedThought(user, positiveNegative, isPatient, isPrincipalCarer, isRelative,
+        SharedThought thought = new SharedThought(user, unit, positiveNegative, isPatient, isPrincipalCarer, isRelative,
                 isFriend, isAboutMe, isAboutOther, isAnonymous, startDate, endDate, isOngoing, location,
                 suggestedAction, description, concernReason, likelihoodOfRecurrence, howSerious, isSubmitted);
 
