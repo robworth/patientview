@@ -103,13 +103,14 @@ public class SharedThought extends BaseModel {
     public SharedThought() {
     }
 
-    public SharedThought(User user, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
+    public SharedThought(User user, Unit unit, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
                          Boolean isRelative,
                          Boolean isFriend, Boolean isAboutMe, Boolean isAboutOther, Boolean isAnonymous,
                          Date startDate, Date endDate, Boolean isOngoing, String location, String suggestedAction,
                          String concernDescription, String concernReason, int likelihoodOfRecurrence, int howSerious,
                          boolean isSubmitted) {
         this.user = user;
+        this.unit = unit;
         this.positiveNegative = positiveNegative;
         this.isPatient = isPatient;
         this.isPrincipalCarer = isPrincipalCarer;
@@ -129,7 +130,7 @@ public class SharedThought extends BaseModel {
         this.howSerious = howSerious;
         this.isSubmitted = isSubmitted;
     }
-    public SharedThought(long id, User user, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
+    public SharedThought(long id, User user, Unit unit, int positiveNegative, Boolean isPatient, Boolean isPrincipalCarer,
                          Boolean isRelative,
                          Boolean isFriend, Boolean isAboutMe, Boolean isAboutOther, Boolean isAnonymous,
                          Date startDate, Date endDate, Boolean isOngoing, String location, String suggestedAction,
@@ -137,6 +138,7 @@ public class SharedThought extends BaseModel {
                          boolean isSubmitted) {
         setId(id);
         this.user = user;
+        this.unit = unit;
         this.positiveNegative = positiveNegative;
         this.isPatient = isPatient;
         this.isPrincipalCarer = isPrincipalCarer;
