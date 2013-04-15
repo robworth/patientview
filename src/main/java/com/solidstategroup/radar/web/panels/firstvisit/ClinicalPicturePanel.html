@@ -64,14 +64,7 @@
 <td style="width:48%; vertical-align:top;">
     <table style="width: 100%">
         <tbody>
-        <tr>
-            <td style="height:40px; vertical-align:top;" colspan="2">
-                <input wicket:id="save" type="button" class="saveBtn" value="Save">
-                <span style="font-weight:bold;" wicket:id="successMessage"></span>
-                <span style="font-weight:bold; color: red;" wicket:id="errorMessage"></span>
 
-            </td>
-        </tr>
         <tr>
             <td style="width: 140px" class="style4">Height cm</td>
             <td>
@@ -191,13 +184,6 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input wicket:id="saveDown" type="button" class="saveBtn" value="Save">
-                <span style="font-weight:bold;" wicket:id="successMessageDown"></span>
-                <span style="font-weight:bold; color: red;" wicket:id="errorMessageDown"></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
                 &nbsp;</td>
         </tr>
         <tr>
@@ -216,6 +202,16 @@
 <td style="width:50%; vertical-align:top;">
 <table>
     <tbody>
+    <tr>
+        <td style="height:40px; vertical-align:top;" colspan="2">
+            <input wicket:id="save" type="button" class="saveBtn" value="Save">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessage"></span>
+                <span style="font-weight:bold; color: red;" wicket:id="errorMessage"></span>
+            </div>
+        </td>
+    </tr>
     <tr>
         <td style="width:200px;">
 
@@ -631,6 +627,21 @@
     </tr>
 
     </tbody>
+</table>
+
+<table style="width:75%">
+    <tbody>
+    <tr>
+        <td style="height:40px; vertical-align:top;" colspan="2">
+            <input wicket:id="saveDown" type="button" class="saveBtn" value="Save">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageDown"></span>
+                <span style="font-weight:bold; color: red;" wicket:id="errorMessageDown"></span>
+            </div>
+        </td>
+    </tr>
+     </tbody>
 </table>
 
 </td>
