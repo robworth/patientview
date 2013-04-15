@@ -74,27 +74,27 @@ public class DiagnosisPanel extends Panel {
         // Set up loadable detachable, working for null radar numbers (new patients) and existing
         final CompoundPropertyModel<Diagnosis> model = new CompoundPropertyModel<Diagnosis>(
                 new LoadableDetachableModel<Diagnosis>() {
-            @Override
-            protected Diagnosis load() {
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
+                    @Override
+                    protected Diagnosis load() {
+                        if (radarNumberModel.getObject() != null) {
+                            Long radarNumber;
+                            try {
+                                radarNumber = radarNumberModel.getObject();
+                            } catch (ClassCastException e) {
+                                Object obj = radarNumberModel.getObject();
+                                radarNumber = Long.parseLong((String) obj);
+                            }
+                            Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(radarNumber);
+                            if (diagnosis != null) {
+                                return diagnosis;
+                            } else {
+                                return new Diagnosis();
+                            }
+                        } else {
+                            return new Diagnosis();
+                        }
                     }
-                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(radarNumber);
-                    if (diagnosis != null) {
-                        return diagnosis;
-                    } else {
-                        return new Diagnosis();
-                    }
-                } else {
-                    return new Diagnosis();
-                }
-            }
-        });
+                });
 
         // Clinical presentation A - goes here in the file as referenced in form submit
         final DropDownChoice<ClinicalPresentation> clinicalPresentationA =

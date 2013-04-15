@@ -67,8 +67,12 @@
 <tr>
     <td style="height:40px;" colspan="3">
         <input type="button" class="saveBtn" wicket:id="save" value="Save">
-        <span style="font-weight: bold;" wicket:id="successMessage"></span>
-        <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
+
+        <div style="text-align: right">
+            <span style="font-weight: bold;" wicket:id="successMessage"></span>
+            <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
+        </div>
+
         &nbsp;
 
         &nbsp;
@@ -219,14 +223,6 @@
         <tbody>
         <tr>
             <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td>
-                <input type="button" class="saveBtn" wicket:id="saveDown" value="Save">
-                <span style="font-weight: bold;" wicket:id="successMessageDown"></span>
-                <span style="font-weight: bold; color: red" wicket:id="errorMessageDown"></span>
-
-            </td>
         </tr>
         </tbody>
     </table>
@@ -498,6 +494,16 @@
         </table>
     </fieldset>
 </td>
+</tr>
+<tr>
+    <td colspan="3">
+        <input type="button" class="saveBtn" wicket:id="saveDown" value="Save">
+
+        <div style="text-align: right">
+            <span style="font-weight: bold;" wicket:id="successMessageDown"></span>
+            <span style="font-weight: bold; color: red" wicket:id="errorMessageDown"></span>
+        </div>
+    </td>
 </tr>
 </tbody>
 </table>

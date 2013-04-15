@@ -2,8 +2,10 @@
     <form wicket:id="form">
         <div id="mainBlock">
 
-            <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
-            <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+            </div>
 
             <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
@@ -71,8 +73,11 @@
             </table>
 
             <div class="feedback" wicket:id="formFeedbackPanel"></div>
-            <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
-            <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+            </div>
         </div>
     </form>
 </wicket:panel>

@@ -39,13 +39,6 @@
 <table cellpadding="5" style="width: 95%" class="style1">
     <tbody>
     <tr>
-        <td style="height:35px;" colspan="2">
-            <input class="saveBtn" wicket:id="save" type="button" value="Save"/>
-            <span style="font-weight: bold;" wicket:id="successMessage"></span>
-            <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
-        </td>
-    </tr>
-    <tr>
         <td class="style3"><label id="ctl00_ContentPlaceHolder1_lblDiagnosis"
                                   for="ctl00_ContentPlaceHolder1_DropDownList7">Diagnosis</label>
 
@@ -249,9 +242,6 @@
 </fieldset>
 
 <br><br>
-<input class="saveBtn" wicket:id="saveDown" type="button" value="Save"/>
-<span style="font-weight: bold;" wicket:id="successMessageDown"></span>
-<span style="font-weight: bold; color: red;" wicket:id="errorMessageDown"></span>
 
 &nbsp;
 <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
@@ -264,8 +254,11 @@
 <table cellpadding="5" style="width: 100%; background-color:#EEF6ED;">
     <tbody>
     <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        <td style="height:35px;text-align: right;" colspan="2">
+            <input class="saveBtn" wicket:id="save" type="button" value="Save"/>
+            <span style="font-weight: bold; text-align: right;" wicket:id="successMessage"></span>
+            <span style="font-weight: bold; text-align: right; color: red" wicket:id="errorMessage"></span>
+        </td>
     </tr>
     <tr>
         <td style="width:200px">
@@ -281,9 +274,6 @@
 
 <table wicket:id="geneMutationContainer" cellpadding="5" style="width: 100%; background-color:#EEF6ED;">
     <tbody>
-    <tr>
-        <td></td>
-    </tr>
     <tr id="ctl00_ContentPlaceHolder1_rowGeneLabel">
         <td colspan="2"><span wicket:id="geneMutationLabel">Gene Mutation</span></td>
     </tr>
@@ -441,6 +431,8 @@
     </tr>
 
 
+
+
     <tr wicket:id="relative1Container">
 
     </tr>
@@ -467,6 +459,15 @@
 </table>
 </td>
 </tr>
+
+<tr>
+    <td colspan="2" style="text-align: right;">
+        <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageDown"></span>
+        <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageDown"></span>
+        <input type="button" wicket:id="saveDown" value="Save" class="saveBtn"/>
+    </td>
+</tr>
+
 </tbody>
 </table>
 </div>

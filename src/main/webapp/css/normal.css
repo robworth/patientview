@@ -136,7 +136,9 @@ vertical-align:text-top;
     background-color: Green;
     border: 1px solid #B6DF9F;
     color: White;
+    float:right;
     font-size: 14px;
+    margin: 0 8px;
     padding: 2px 9px;
 }
 

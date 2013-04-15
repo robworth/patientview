@@ -59,7 +59,7 @@
                        id="ctl00_ContentPlaceHolder1_tblMain">
                     <tbody>
                     <tr>
-                        <td style="height:40px;" colspan="2">
+                        <td style="height:40px;text-align: right;" colspan="2" >
                             <input wicket:id="save" type="submit" class="saveBtn" value="Save">
                             <span style="font-weight: bold;" wicket:id="successMessage"></span>
                             <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
@@ -125,12 +125,17 @@
                             </fieldset>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right;">
+                            <input type="submit" class="saveBtn" value="Save" wicket:id="saveDown">
+                            <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageDown"></span>
+                            <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageDown"></span>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
 
-                <input type="submit" class="saveBtn" value="Save" wicket:id="saveDown">
-                <span style="font-weight: bold;" wicket:id="successMessageDown"></span>
-                <span style="font-weight: bold; color: red" wicket:id="errorMessageDown"></span>
+
             </form>
         </div>
 

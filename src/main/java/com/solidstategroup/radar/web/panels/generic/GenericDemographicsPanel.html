@@ -16,17 +16,6 @@
 <td style="width:50%; vertical-align:top;">
     <table cellpadding="5" style="width: 100%; border-collapse:collapse">
         <tr>
-            <td>
-                <span style="font-weight:bold;" wicket:id="successMessageUp"></span>
-                <span style="font-weight: bold; color:red" wicket:id="errorMessageUp"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
-            </td>
-        </tr>
-        <tr>
             <td>Surname <strong><span wicket:id="surnameFeedbackIndicator"></span></strong></td>
             <td>
                 <input type="text" wicket:id="surname"/>
@@ -110,15 +99,21 @@
     </table>
     <br/><br/>
 
-    <br/><br/>
-    <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+
 
 </td>
 <td style="vertical-align:top;">
     <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td colspan="2" style="text-align: right;">
+                <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageUp"></span>
+                <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageUp"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+            </td>
         </tr>
         <tr wicket:id="nhsNumberContainer">
             <td><span>NHS Number</span></td>
@@ -231,22 +226,27 @@
             <td>Comments</td>
             <td><textarea wicket:id="comments" rows="7" cols="8"/></td>
         </tr>
-        <tr>
-            <td colspan="2">&nbsp;</td>
-        </tr>
-
 
         <tr id="ctl00_ContentPlaceHolder1_rowConsent2">
             <td colspan="2">
                 &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessage"></span>
+                <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessage"></span>
+            </td>
         </tr>
 
     </table>
 </td>
 </tr>
 </table>
-<span style="font-weight:bold;" wicket:id="successMessage"></span>
-<span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
 
 </div>
 

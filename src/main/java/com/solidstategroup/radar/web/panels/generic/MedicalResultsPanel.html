@@ -3,8 +3,10 @@
 
         <div id="mainBlock">
 
-            <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
-            <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+            <div style="text-align: right">
+                <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageTop"></span>
+                <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageTop"></span>
+            </div>
 
             <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
@@ -123,9 +125,12 @@
                     </td>
                 </tr>
             </table>
-            <div class="feedback" wicket:id="formFeedbackPanel"></div>
-            <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
-            <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+
+            <div style="text-align: right">
+                <div class="feedback" wicket:id="formFeedbackPanel"></div>
+                <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+            </div>
 
         </div>
 

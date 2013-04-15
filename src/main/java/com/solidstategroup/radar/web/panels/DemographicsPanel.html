@@ -6,7 +6,10 @@
 
 <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
 
-<span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+<div style="text-align: right">
+    <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+</div>
+
 <table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
     <tr>
         <td style="height:30px;">
@@ -45,8 +48,6 @@
        class="style3">
     <tr>
         <td style="width:50%; vertical-align:top;">
-
-            <input type="button" wicket:id="saveTop" value="Add this Patient" class="saveBtn"/>
 
             <table cellpadding="5" style="width: 100%; border-collapse:collapse">
                 <tr>
@@ -140,11 +141,6 @@
                                                                                       class="info"><em>Help</em><span>This is important if the patient has moved into your care from a different hospital</span></a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
-
                 </table>
             </fieldset>
             <br/><br/>
@@ -154,14 +150,15 @@
 
             </div>
             <br/><br/>
-            <input type="button" wicket:id="saveBottom" value="Add this Patient" class="saveBtn"/>
+
 
         </td>
         <td style="vertical-align:top;">
             <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td colspan="2">
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+                    </td>
                 </tr>
                 <tr>
                     <td>Hospital Number</td>
@@ -239,13 +236,21 @@
                     <td colspan="2">
                         &nbsp;</td>
                 </tr>
-
             </table>
         </td>
     </tr>
+
+    <tr>
+        <td colspan="2">
+            <input type="button" wicket:id="saveBottom" value="Add this Patient" class="saveBtn"/>
+        </td>
+
+    </tr>
 </table>
-<span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
-<span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+<div style="text-align: right">
+    <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+    <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+</div>
 
 </div>
 
