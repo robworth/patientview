@@ -36,7 +36,7 @@ public class LogEntry extends BaseModel {
     @Column(nullable = true)
     private String unitcode;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String extrainfo;
 
     public LogEntry() {

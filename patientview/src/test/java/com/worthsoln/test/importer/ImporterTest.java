@@ -164,6 +164,35 @@ public class ImporterTest extends BaseDaoTest {
         assertEquals("Incorrect number of letters", 2, letters.size());
     }
 
+    @Test
+    public void testTestResultIsNotDuplicatedIfDoubleRun() throws IOException {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:DUMMY_000002_9999999995.gpg.xml");
+        Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:importer/pv_schema_2.0.xsd");
+
+        TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        List<TestResult> results = testResultManager.get("9999999995", "DUMMY");
+
+        assertEquals("Incorrect number of results after first import", 1, results.size());
+
+        // double run
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        results = testResultManager.get("9999999995", "DUMMY");
+
+        assertEquals("Incorrect number of results after double run import", 1, results.size());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FOLLOWUP);
+    }
+
     /**
      * Test if importer handles empty test file. This probably means that the encryption did not work.
      *

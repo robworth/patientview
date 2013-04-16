@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.servlet.ServletContext;
 import com.worthsoln.patientview.FindXmlFiles;
 import com.worthsoln.patientview.ParserThread;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class XmlParserThread implements Runnable, ParserThread {
 
@@ -16,6 +18,8 @@ public class XmlParserThread implements Runnable, ParserThread {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ServletContext servletContext;
     private String[] fileEndings;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlParserThread.class);
 
     public XmlParserThread(String[] fileEndings) {
         this.fileEndings = fileEndings;
@@ -44,10 +48,19 @@ public class XmlParserThread implements Runnable, ParserThread {
     }
 
     private void updateXmlFiles(File[] xmlFiles) {
-        for (int i = 0; i < xmlFiles.length; i++) {
-            XmlParserUtils.updateXmlData(servletContext, xmlFiles[i]);
-            //xmlFiles[i].delete();
+
+        if (xmlFiles != null && xmlFiles.length > 0) {
+
+            LOGGER.info("Starting XmlParserThread for {} files", xmlFiles.length);
+
+            for (int i = 0; i < xmlFiles.length; i++) {
+                LOGGER.debug("Starting XmlParserThread for {} file", xmlFiles[i].getAbsolutePath());
+                XmlParserUtils.updateXmlData(servletContext, xmlFiles[i]);
+                //xmlFiles[i].delete();
+            }
         }
+
+        LOGGER.info("Finished XmlParserThread");
     }
 
     public String getPrebit() {
