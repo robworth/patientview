@@ -76,4 +76,6 @@ public interface UserManager {
     boolean userExistsInRadar(Long userId);
 
     void createProfessionalUserInRadar(User user, String unitcode);
+
+    void removeUserFromRadar(Long userId);
 }

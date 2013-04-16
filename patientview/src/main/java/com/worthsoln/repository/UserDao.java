@@ -1,6 +1,5 @@
 package com.worthsoln.repository;
 
-import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +18,4 @@ public interface UserDao {
     void delete(User user);
 
     List<User> getAll();
-
-    boolean userExistsInRadar(Long userId);
-
-    void createProfessionalUserInRadar(User user, Unit unit);
 }

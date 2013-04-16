@@ -1,8 +1,6 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.Specialty;
-import com.worthsoln.patientview.model.Unit;
-import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
@@ -26,9 +24,6 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Inject
     private UserDao userDao;
-
-    @Inject
-    private UnitDao unitDao;
 
     @Inject
     private UserMappingDao userMappingDao;
@@ -289,35 +284,5 @@ public class UserDaoTest extends BaseDaoTest {
         assertEquals("incorrect number of duplicates found for nhsno1", 1, userMappings.size());
 
         assertEquals("incorrect duplicate found for nhsno1", "usernameDuplicate1", userMappings.get(0).getUsername());
-    }
-
-    @Test
-    public void testCreateProfessionalUserInRadar() throws Exception {
-        Unit unit = new Unit();
-        unit.setSpecialty(specialty);
-        // required fields
-        unit.setUnitcode("UNITCODE1");
-        unit.setName("z");
-        unit.setShortname("nam1");
-        unitDao.save(unit);
-
-        // first create a user
-        User user = new User();
-        user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
-        user.setPassword("password");
-        user.setUsername("test");
-        user.setScreenname("screenname");
-
-        userDao.save(user);
-
-        // first test to see if its in there which it should be
-        assertFalse(userDao.userExistsInRadar(user.getId()));
-
-        // then create a user in radar and try again
-        userDao.createProfessionalUserInRadar(user, unit);
-
-        // check again
-        assertTrue(userDao.userExistsInRadar(user.getId()));
     }
 }

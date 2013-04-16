@@ -4,13 +4,13 @@ import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
-import com.worthsoln.patientview.model.Demographics;
+import com.worthsoln.patientview.model.radar.Demographics;
 import com.worthsoln.patientview.model.PatientUser;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.repository.RadarDao;
 import com.worthsoln.repository.SpecialtyUserRoleDao;
-import com.worthsoln.repository.DemographicsDao;
 import com.worthsoln.repository.PatientUserDao;
 import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UserDao;
@@ -42,7 +42,7 @@ public class UserManagerImpl implements UserManager {
     private SpecialtyUserRoleDao specialtyUserRoleDao;
 
     @Inject
-    private DemographicsDao demographicsDao;
+    private RadarDao radarDao;
 
     @Inject
     private PatientUserDao patientUserDao;
@@ -206,6 +206,9 @@ public class UserManagerImpl implements UserManager {
     @Override
     public void delete(User user) {
         userDao.delete(user);
+
+        // remove the user from radar aswell
+        radarDao.removeUserFromRadar(user.getId());
     }
 
     @Override
@@ -289,7 +292,7 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public boolean existsInRadar(String nhsno) {
-        Demographics demographics = demographicsDao.getDemographicsByNhsNo(nhsno);
+        Demographics demographics = radarDao.getDemographicsByNhsNo(nhsno);
 
         if (demographics != null) {
             PatientUser patientUser = patientUserDao.getPatientUserByRadarNo(demographics.getRadarNo());
@@ -343,7 +346,7 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public boolean userExistsInRadar(Long userId) {
-        return userDao.userExistsInRadar(userId);
+        return radarDao.userExistsInRadar(userId);
     }
 
     @Override
@@ -352,9 +355,14 @@ public class UserManagerImpl implements UserManager {
         Unit unit = unitDao.get(unitcode, null);
 
         if (unit != null) {
-            userDao.createProfessionalUserInRadar(user, unit);
+            radarDao.createProfessionalUserInRadar(user, unit);
         } else {
             LOGGER.error("Could not create admin user in radar " + user.getId());
         }
+    }
+
+    @Override
+    public void removeUserFromRadar(Long userId) {
+        radarDao.removeUserFromRadar(userId);
     }
 }

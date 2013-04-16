@@ -1,4 +1,6 @@
-package com.worthsoln.patientview.model;
+package com.worthsoln.patientview.model.radar;
+
+import com.worthsoln.patientview.model.BaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
