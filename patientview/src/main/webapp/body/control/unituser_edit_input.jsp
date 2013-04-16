@@ -38,29 +38,33 @@
             <html:hidden name="unitUser" property="failedlogons"/>
             <html:hidden name="unitUser" property="accountlocked"/>
             <html:hidden name="unitUser" property="screenname"/>
-            <div class="patient-edit-form form-actions">
-                <div class="row">
-                    <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton"/>
-
-                    <html:form action="/control/userDelete">
-                        <html:hidden name="unitUser" property="username"/>
-                        <html:submit value="Delete Unit User" styleClass="btn btn-danger" style="float:left;margin-left:5px;"/>
-                    </html:form>
-
-                    <html:form action="/control/resetPassword" style="float:left;margin-left:5px;">
-                        <html:hidden name="unitUser" property="username"/>
-                        <html:submit value="Reset Password" styleClass="btn"/>
-                    </html:form>
-
-                    <logic:match value="true" name="unitUser" property="accountlocked">
-                        <html:form action="/control/passwordUnlock" style="float:left;margin-left:5px;">
-                            <html:hidden name="unitUser" property="username"/>
-
-                            <html:submit value="Unlock Password" styleClass="btn"/>
-                        </html:form>
-                    </logic:match>
-                </div>
-            </div>
+            <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton"/>
         </html:form>
+
+        <div class="patient-edit-form form-actions">
+            <div class="row">
+
+                <html:form action="/control/userDelete">
+                    <html:hidden name="unitUser" property="username"/>
+                    <html:hidden name="unitcodeThing" property="unitcode"/>
+                    <html:submit value="Delete Unit User" styleClass="btn btn-danger" style="float:left;margin-left:5px;"/>
+                </html:form>
+
+                <html:form action="/control/resetPassword" style="float:left;margin-left:5px;">
+                    <html:hidden name="unitUser" property="username"/>
+                    <html:hidden name="unitcodeThing" property="unitcode"/>
+                    <html:submit value="Reset Password" styleClass="btn"/>
+                </html:form>
+
+                <logic:match value="true" name="unitUser" property="accountlocked">
+                    <html:form action="/control/passwordUnlock" style="float:left;margin-left:5px;">
+                        <html:hidden name="unitUser" property="username"/>
+                        <html:hidden name="unitcodeThing" property="unitcode"/>
+                        <html:submit value="Unlock Password" styleClass="btn"/>
+                    </html:form>
+                </logic:match>
+            </div>
+        </div>
+
     </div>
 </div>
