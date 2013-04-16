@@ -4,6 +4,7 @@ import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
@@ -71,4 +72,8 @@ public interface UserManager {
     void lockUserAccount(String username);
 
     void resetFailedLoginsForUser(String username);
+
+    boolean userExistsInRadar(Long userId);
+
+    void createProfessionalUserInRadar(User user, String unitcode);
 }
