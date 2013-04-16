@@ -176,10 +176,16 @@ class TestResultId implements Comparable {
     public int compareTo(Object o) {
         TestResultId resultToCompareThisTo = (TestResultId) o;
         if (dateStamped.equals(resultToCompareThisTo.getDateStamped())) {
-            if (prepost.equals(resultToCompareThisTo.getPrepost())) {
+
+            String compareToPrepost = resultToCompareThisTo.getPrepost() != null
+                    ? resultToCompareThisTo.getPrepost() : "";
+
+            String thisPrepost = this.prepost != null ? this.prepost : "";
+
+            if (thisPrepost.equals(compareToPrepost)) {
                 return shortname.compareToIgnoreCase(resultToCompareThisTo.getShortname());
             } else {
-                return prepost.compareToIgnoreCase(resultToCompareThisTo.getPrepost());
+                return thisPrepost.compareToIgnoreCase(compareToPrepost);
             }
         } else if (dateStamped.before(resultToCompareThisTo.getDateStamped())) {
             return 1;
