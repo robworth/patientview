@@ -94,7 +94,7 @@
         <profile>
             <id>dev-sharingthoughts</id>
             <properties>
-                <env>dev</env>
+                <env>dev-sharingthoughts</env>
                 <tomcatmanagerurl>http://sharingthoughts.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
