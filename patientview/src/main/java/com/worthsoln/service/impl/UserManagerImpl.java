@@ -6,15 +6,19 @@ import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.Demographics;
 import com.worthsoln.patientview.model.PatientUser;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.SpecialtyUserRoleDao;
 import com.worthsoln.repository.DemographicsDao;
 import com.worthsoln.repository.PatientUserDao;
+import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UserManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -22,6 +26,8 @@ import java.util.List;
 
 @Service(value = "userManager")
 public class UserManagerImpl implements UserManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
 
     @Inject
     private UserDao userDao;
@@ -40,6 +46,9 @@ public class UserManagerImpl implements UserManager {
 
     @Inject
     private PatientUserDao patientUserDao;
+
+    @Inject
+    private UnitDao unitDao;
 
     @Override
     public User getLoggedInUser() {
@@ -329,6 +338,23 @@ public class UserManagerImpl implements UserManager {
         if (user != null) {
             user.setFailedlogons(0);
             userDao.save(user);
+        }
+    }
+
+    @Override
+    public boolean userExistsInRadar(Long userId) {
+        return userDao.userExistsInRadar(userId);
+    }
+
+    @Override
+    public void createProfessionalUserInRadar(User user, String unitcode) {
+        // check to see if this user has an account already in radar and if they dont create one
+        Unit unit = unitDao.get(unitcode, null);
+
+        if (unit != null) {
+            userDao.createProfessionalUserInRadar(user, unit);
+        } else {
+            LOGGER.error("Could not create admin user in radar " + user.getId());
         }
     }
 }
