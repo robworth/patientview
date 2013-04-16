@@ -411,8 +411,16 @@ section article.conversation .dull, section article.message .dull{
     color:#9b9b9b;
 }
 
+.float-in-form-actions{
+    margin: 18px 18px 0;
+}
+
 .patient-edit-form.form-actions{
     padding-left:30px;
+}
+
+.form-actions form{
+    margin: 0;
 }
 
 .js-messages{

@@ -76,7 +76,7 @@
             <html:hidden name="patient" property="failedlogons"/>
             <html:hidden name="patient" property="accountlocked"/>
             <html:hidden name="patient" property="screenname"/>
-            <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton"/>
+            <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton float-in-form-actions"/>
         </html:form>
 
             <div class="patient-edit-form form-actions">
