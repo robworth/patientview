@@ -88,7 +88,10 @@
         </tr>
         <tr>
             <td>Mobile</td>
-            <td><input wicket:id="mobile" type="text"/></td>
+            <td>
+                <input wicket:id="mobile" type="text"/>
+                <span class="feedback" wicket:id="mobileFeedback"/>
+            </td>
         </tr>
 
 
@@ -179,7 +182,9 @@
             </td>
         </tr>
         <tr>
-            <td>RRT Modality</td>
+            <td>RRT Modality
+                <strong><span wicket:id="rrtModalityFeedbackIndicator"></span></strong>
+            </td>
             <td>
                 <div wicket:id="rrtModality">
                     <label>HD</label> <input wicket:id="hd" type="radio" style="margin-left: 0; margin-right: 10px;"/>
@@ -187,6 +192,8 @@
                     <label>Tx</label> <input wicket:id="tx" type="radio" style="margin-left: 0; margin-right: 10px;"/>
                     <label>none</label> <input wicket:id="none" type="radio"/>
                 </div>
+
+                <span class="feedback" wicket:id="rrtModalityFeedback"/>
             </td>
         </tr>
         <tr>

@@ -18,6 +18,7 @@ import com.solidstategroup.radar.web.components.CentreDropDown;
 import com.solidstategroup.radar.web.components.ComponentHelper;
 import com.solidstategroup.radar.web.components.ConsultantDropDown;
 import com.solidstategroup.radar.web.components.RadarComponentFactory;
+import com.solidstategroup.radar.web.components.RadarFormComponentFeedbackIndicator;
 import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
@@ -28,6 +29,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -39,11 +41,13 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -400,7 +404,10 @@ public class GenericDemographicsPanel extends Panel {
         TextField emailAddress = new TextField("emailAddress");
         TextField phone1 = new TextField("phone1");
         TextField phone2 = new TextField("phone2");
-        TextField mobile = new TextField("mobile");
+
+        RadarTextFieldWithValidation mobile = new RadarTextFieldWithValidation("mobile",
+                        new PatternValidator(MetaPattern.DIGITS), form,
+                        componentsToUpdateList);
 
         RadarRequiredDropdownChoice genericDiagnosis =
                 new RadarRequiredDropdownChoice("genericDiagnosis", genericDiagnosisManager.getByDiseaseGroup(
@@ -422,7 +429,51 @@ public class GenericDemographicsPanel extends Panel {
         rrtModalityRadioGroup.add(new Radio("pd", new Model(Demographics.RRTModality.PD)));
         rrtModalityRadioGroup.add(new Radio("tx", new Model(Demographics.RRTModality.Tx)));
         rrtModalityRadioGroup.add(new Radio("none", new Model(Demographics.RRTModality.NONE)));
+
+        /**
+         * todo rrt modality feedback - coped from RadarTextFieldWithValidation
+         *
+         * todo roberts to have a look!
+         */
+
+        final ComponentFeedbackPanel feedbackPanel = new ComponentFeedbackPanel("rrtModalityFeedback", this) {
+            @Override
+            public boolean isVisible() {
+                List<FeedbackMessage> feedbackMessages = getCurrentMessages();
+                for (FeedbackMessage feedbackMessage : feedbackMessages) {
+                    if (feedbackMessage.getMessage().toString().contains("required")) {
+                        return false;
+                    }
+                }
+                return super.isVisible();
+            }
+        };
+        feedbackPanel.setOutputMarkupId(true);
+        feedbackPanel.setOutputMarkupPlaceholderTag(true);
+        form.add(feedbackPanel);
+        componentsToUpdateList.add(feedbackPanel);
+
+        rrtModalityRadioGroup.setRequired(true);
+        RadarFormComponentFeedbackIndicator radarFormComponentFeedbackIndicator =
+                new RadarFormComponentFeedbackIndicator("rrtModalityFeedbackIndicator", this) {
+                    @Override
+                    public boolean isVisible() {
+                        if (feedbackPanel.isVisible()) {
+                            return false;
+                        }
+                        return super.isVisible();
+                    }
+                };
+        form.add(radarFormComponentFeedbackIndicator);
+        radarFormComponentFeedbackIndicator.setOutputMarkupId(true);
+        radarFormComponentFeedbackIndicator.setOutputMarkupPlaceholderTag(true);
+        componentsToUpdateList.add(radarFormComponentFeedbackIndicator);
+
         form.add(rrtModalityRadioGroup);
+
+        /**
+         * todo validation ends
+         */
 
         final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
                 componentsToUpdateList);
