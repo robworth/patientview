@@ -141,11 +141,6 @@ Writing JSP templates
 - CSS, there will be a common base CSS for all tenancies, if necessary we can have custom .css files for each tenancies.
 - The application will not supply different HTML markup per tenancy.
 
-Forum tenancy filtering
-=======================
-
-- Todo
-
 Administration Area
 ====================
 - Superadmin users can now be setup per tenancy.  A per tenancy superadmin implements the "specialityadmin" role described in the spec.
