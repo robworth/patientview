@@ -35,14 +35,14 @@ public class PatientAddAction extends Action {
         boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
         
         PatientLogon patientLogon =
-                new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false, "");
+                new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false);
         
         UserMapping userMapping = new UserMapping(username, unitcode, nhsno);
         UserMapping userMappingPatientEnters = new UserMapping(username, UnitUtils.PATIENT_ENTERS_UNITCODE, nhsno);
         
         PatientLogon gpPatientLogon =
                 new PatientLogon(username + "-GP", gppassword, name + "-GP", null, false, true, dummypatient,
-                        null, 0, false, "");
+                        null, 0, false);
 
         UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
 

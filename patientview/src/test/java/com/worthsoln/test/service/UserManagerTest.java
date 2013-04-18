@@ -37,7 +37,7 @@ public class UserManagerTest extends BaseServiceTest {
     @Before
     public void setupSystem() {
         // create an admin adminUser and specialty and log them in
-        User adminUser = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User", "Testy");
+        User adminUser = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User");
         specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "unitadmin");
 

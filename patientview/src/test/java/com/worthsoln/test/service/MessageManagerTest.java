@@ -36,7 +36,7 @@ public class MessageManagerTest extends BaseServiceTest {
     @Before
     public void setupSystem() {
         // create an admin adminUser and specialty and log them in
-        user = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1", "Test 1");
+        user = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1");
         Specialty specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         serviceHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
 
@@ -45,7 +45,7 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testGetConversation() throws Exception {
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
 
         Conversation conversation = serviceHelpers.createConversation("Test subject", user, user2, true);
 
@@ -57,7 +57,7 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testDeleteConversation() throws Exception {
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
 
         Conversation conversation = serviceHelpers.createConversation("Test subject", user, user2, true);
 
@@ -71,7 +71,7 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Test
     public void testDeleteConversationById() throws Exception {
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
 
         Conversation conversation = serviceHelpers.createConversation("Test subject", user, user2, true);
 
@@ -87,7 +87,7 @@ public class MessageManagerTest extends BaseServiceTest {
     public void testCreateMessage() throws Exception {
         MockHttpSession mockHttpSession = new MockHttpSession();
 
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
 
         Message message = messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject",
                 "This is my first message", user, user2);
@@ -110,7 +110,7 @@ public class MessageManagerTest extends BaseServiceTest {
     public void testReplyToMessage() throws Exception {
         MockHttpSession mockHttpSession = new MockHttpSession();
 
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
 
         // create a message that we can reply to
         Message message = messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject",
@@ -137,7 +137,7 @@ public class MessageManagerTest extends BaseServiceTest {
          */
         MockHttpSession mockHttpSession = new MockHttpSession();
 
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
 
         messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
                 user, user2);
@@ -178,8 +178,8 @@ public class MessageManagerTest extends BaseServiceTest {
           */
         MockHttpSession mockHttpSession = new MockHttpSession();
 
-        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2", "Test 2");
-        User user3 = serviceHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3", "Test 3");
+        User user2 = serviceHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
+        User user3 = serviceHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3");
 
         // first convo with message from 2 to 1
         messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
