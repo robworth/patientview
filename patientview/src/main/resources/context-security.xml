@@ -50,7 +50,6 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/forums/**" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/**/*.page" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/rss/forumTopics/**" access="ROLE_ANY_USER"/>
-        <intercept-url pattern="/setscreenname.do" access="ROLE_ANY_USER"/>
 
         <!-- Renal specialty config -->
         <intercept-url pattern="/renal/control/**" access="ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>

@@ -14,7 +14,6 @@ public class UnitAdmin extends Logon implements Cloneable {
         setEmailverfied(emailverified);
         setRole(role);
         setFirstlogon(firstlogon);
-        setScreenname("");
     }
 
     protected Object clone() throws CloneNotSupportedException {

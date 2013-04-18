@@ -40,9 +40,6 @@ public class User extends BaseModel {
     @Column(nullable = true)
     private boolean accountlocked;
 
-    @Column(nullable = false)
-    private String screenname;
-
     public User() {
     }
 
@@ -136,11 +133,4 @@ public class User extends BaseModel {
         this.accountlocked = accountlocked;
     }
 
-    public String getScreenname() {
-        return screenname;
-    }
-
-    public void setScreenname(String screenname) {
-        this.screenname = screenname;
-    }
 }

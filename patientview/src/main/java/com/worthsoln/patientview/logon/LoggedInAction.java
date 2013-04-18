@@ -32,9 +32,9 @@ public class LoggedInAction extends Action {
         if (user != null) {
 
             // For JForum SSO need to set some variables in the session
-            request.getSession().setAttribute("sso.email.attribute", user.getEmail());
+//            request.getSession().setAttribute("sso.email.attribute", user.getEmail());
             // Not sure if this makes a difference if it's encrypted
-            request.getSession().setAttribute("sso.password.attribute", user.getPassword());
+//            request.getSession().setAttribute("sso.password.attribute", user.getPassword());
 
             final String role = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 

@@ -23,7 +23,6 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -49,7 +48,7 @@ public class ResultsUpdater {
     public void update(ServletContext context, File xmlFile, File xsdFile) {
         /**
          * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin, and skip validate and process
+         * hasn't worked. Send a mail to RPV admin, and skip validateAndProcess and process
          */
         if (xmlFile.length() == 0) {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
@@ -58,14 +57,14 @@ public class ResultsUpdater {
             XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
 
         } else {
-            validate(context, xmlFile, xsdFile);
+            validateAndProcess(context, xmlFile, xsdFile);
         }
 
         // always move the file, so it is not processed multiple times
         renameDirectory(context, xmlFile);
     }
 
-    private void validate(ServletContext context, File xmlFile, File xsdFile) {
+    private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;

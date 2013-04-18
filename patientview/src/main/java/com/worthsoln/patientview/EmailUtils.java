@@ -29,4 +29,9 @@ public class EmailUtils {
                                  String subject, String emailText) {
         LegacySpringUtils.getEmailManager().sendEmail(context, fromAddress, toAddress, ccAddress, subject, emailText);
     }
+
+    public static void sendEmail(String fromAddress, String[] toAddresses, String[] ccAddresses,
+                                 String subject, String emailText) {
+        LegacySpringUtils.getEmailManager().sendEmail(fromAddress, toAddresses, ccAddresses, subject, emailText);
+    }
 }

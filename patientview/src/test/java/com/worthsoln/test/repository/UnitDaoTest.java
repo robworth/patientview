@@ -253,10 +253,10 @@ public class UnitDaoTest extends BaseDaoTest {
 
         unitDao.save(unit);
 
-        User user = repositoryHelpers.createUserWithMapping("paulc", "paul@test.com", "p", "Paul", "", "UNITCODEA",
+        User user = repositoryHelpers.createUserWithMapping("paulc", "paul@test.com", "p", "Paul", "UNITCODEA",
                 "nhs1", specialty);
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
-        user = repositoryHelpers.createUserWithMapping("deniz", "deniz@test.com", "d", "Deniz", "", "UNITCODEA", "nhs2",
+        user = repositoryHelpers.createUserWithMapping("deniz", "deniz@test.com", "d", "Deniz", "UNITCODEA", "nhs2",
                 specialty);
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
 
@@ -269,7 +269,7 @@ public class UnitDaoTest extends BaseDaoTest {
 
         unitDao.save(unit);
 
-        user = repositoryHelpers.createUserWithMapping("dave", "dave@test.com", "d", "Dave", "", "UNITCODEB", "nhs3",
+        user = repositoryHelpers.createUserWithMapping("dave", "dave@test.com", "d", "Dave", "UNITCODEB", "nhs3",
                 specialty);
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
 

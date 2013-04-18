@@ -68,7 +68,6 @@
       <form-property name="failedlogons" type="java.lang.String"/>
       <form-property name="accountlocked" type="java.lang.String"/>
       <form-property name="showgps" type="java.lang.String"/>
-      <form-property name="screenname" type="java.lang.String"/>
       <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
     </form-bean>
     <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
@@ -297,13 +296,6 @@
           <forward name="error" path="/logout.do" redirect="true"/>
           <forward name="success" path="/logged_in.do" redirect="true"/>
       </action>
-
-    <action path="/setscreenname"
-      type="com.worthsoln.forum.ScreenNameAction" parameter="index">
-      <forward name="input" redirect="false" path="/set-screenname.jsp"/>
-      <forward name="success" redirect="true" path="/forums/list.page"/>
-    </action>
-
 
     <action path="/emailverification"
             type="com.worthsoln.patientview.user.EmailVerificationAction" parameter="index">

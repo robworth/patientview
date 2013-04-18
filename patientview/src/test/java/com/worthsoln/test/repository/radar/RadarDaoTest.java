@@ -44,7 +44,6 @@ public class RadarDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
-        user.setScreenname("screenname");
 
         userDao.save(user);
 
@@ -74,7 +73,6 @@ public class RadarDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
-        user.setScreenname("screenname");
 
         userDao.save(user);
 

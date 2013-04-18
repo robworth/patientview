@@ -239,7 +239,6 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             unitAdmin.setRole(user.getRole());
             unitAdmin.setFirstlogon(user.isFirstlogon());
             unitAdmins.add(unitAdmin);
-            unitAdmin.setScreenname(user.getScreenname());
         }
 
         return unitAdmins;

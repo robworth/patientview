@@ -145,7 +145,6 @@ public class UserManagerImpl implements UserManager {
         user.setLastlogon(unitAdmin.getLastlogon());
         user.setName(unitAdmin.getName());
         user.setPassword(unitAdmin.getPassword());
-        user.setScreenname(unitAdmin.getScreenname());
         user.setUsername(unitAdmin.getUsername());
 
         save(user);
@@ -176,7 +175,6 @@ public class UserManagerImpl implements UserManager {
         user.setLastlogon(patientLogon.getLastlogon());
         user.setName(patientLogon.getName());
         user.setPassword(patientLogon.getPassword());
-        user.setScreenname(patientLogon.getScreenname());
         user.setUsername(patientLogon.getUsername());
 
         save(user);

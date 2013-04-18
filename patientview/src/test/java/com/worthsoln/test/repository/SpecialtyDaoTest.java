@@ -47,8 +47,8 @@ public class SpecialtyDaoTest extends BaseDaoTest {
 
         Specialty specialty2 = repositoryHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description 2");
 
-        User user = repositoryHelpers.createUser("test", "test@worthsolns.com", "password", "Firstname Lastname",
-                "screenname");
+        User user = repositoryHelpers.createUser("test", "test@worthsolns.com", "password", "Firstname Lastname"
+        );
 
         SpecialtyUserRole specialtyUserRole1 = repositoryHelpers.createSpecialtyUserRole(specialty, user, "patient");
 
@@ -64,8 +64,8 @@ public class SpecialtyDaoTest extends BaseDaoTest {
     public void testUniqueSpecialtyUserRoleConstraint() {
         Specialty specialty = repositoryHelpers.createSpecialty("Specialty 1", "Specialty", "Test description");
 
-        User user = repositoryHelpers.createUser("test", "test@worthsolns.com", "password", "Firstname Lastname",
-                "screenname");
+        User user = repositoryHelpers.createUser("test", "test@worthsolns.com", "password", "Firstname Lastname"
+        );
 
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "patient");
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "patient");
