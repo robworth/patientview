@@ -38,19 +38,19 @@ public class UnitStatsAction extends Action {
         if ((startDateString == null) || ("".equals(startDateString))) {
             startdate = LoggingUtils.getStartDateForLogQuery(Calendar.MONTH, -1);
         } else {
-            startdate = getSensibleDate(startDateString, "00:00");
+            startdate = TimestampUtils.createTimestampEndDay(startDateString);
         }
         return startdate;
     }
 
     private Calendar determineEndDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        String startDateString = BeanUtils.getProperty(form, "enddate");
+        String endDateString = BeanUtils.getProperty(form, "enddate");
         Calendar startdate;
-        if ((startDateString == null) || ("".equals(startDateString))) {
+        if ((endDateString == null) || ("".equals(endDateString))) {
             startdate = LoggingUtils.getDefaultEndDateForLogQuery();
         } else {
-            startdate = getSensibleDate(startDateString, "23:59");
+            startdate = TimestampUtils.createTimestampEndDay(endDateString);
         }
         return startdate;
     }
@@ -61,17 +61,5 @@ public class UnitStatsAction extends Action {
             logEntries = LegacySpringUtils.getLogEntryManager().getWithUnitCode(unitcode, startdate, enddate);
         }
         return logEntries;
-    }
-
-    private static Calendar getSensibleDate(String dateString, String timeString) {
-        Calendar cal = Calendar.getInstance();
-        if (dateString.length() >= 10) {
-            try {
-                cal = TimestampUtils.createTimestamp(dateString + " " + timeString);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return cal;
     }
 }

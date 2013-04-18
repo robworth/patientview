@@ -212,10 +212,8 @@ public class ResultsUpdater {
         for (Iterator iterator = dateRanges.iterator(); iterator.hasNext(); ) {
             TestResultDateRange testResultDateRange = (TestResultDateRange) iterator.next();
 
-            Calendar startDate = TimestampUtils.createTimestamp(testResultDateRange.getStartDate() + "T00:00");
-            startDate.set(Calendar.SECOND, 0);
-            Calendar stopDate = TimestampUtils.createTimestamp(testResultDateRange.getStopDate() + "T23:59");
-            stopDate.set(Calendar.SECOND, 59);
+            Calendar startDate = TimestampUtils.createTimestampStartDay(testResultDateRange.getStartDate());
+            Calendar stopDate = TimestampUtils.createTimestampEndDay(testResultDateRange.getStopDate());
 
             LegacySpringUtils.getTestResultManager().deleteTestResultsWithinTimeRange(testResultDateRange.getNhsNo(),
                     testResultDateRange.getUnitcode(), testResultDateRange.getTestCode(), startDate.getTime(),

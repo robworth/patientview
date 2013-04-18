@@ -1,21 +1,21 @@
 package com.worthsoln.patientview.logging;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.unit.UnitUtils;
+import com.worthsoln.patientview.utils.TimestampUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.patientview.utils.TimestampUtils;
-import com.worthsoln.patientview.logon.LogonUtils;
-import com.worthsoln.patientview.unit.UnitUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class LogViewAction extends Action {
 
@@ -42,19 +42,19 @@ public class LogViewAction extends Action {
         if ((startDateString == null) || ("".equals(startDateString))) {
             startdate = LoggingUtils.getDefaultStartDateForLogQuery();
         } else {
-            startdate = getSensibleDate(startDateString, "00:00");
+            startdate = TimestampUtils.createTimestampStartDay(startDateString);
         }
         return startdate;
     }
 
     private Calendar determineEndDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        String startDateString = BeanUtils.getProperty(form, "enddate");
+        String endDateString = BeanUtils.getProperty(form, "enddate");
         Calendar startdate;
-        if ((startDateString == null) || ("".equals(startDateString))) {
+        if ((endDateString == null) || ("".equals(endDateString))) {
             startdate = LoggingUtils.getDefaultEndDateForLogQuery();
         } else {
-            startdate = getSensibleDate(startDateString, "23:59");
+            startdate = TimestampUtils.createTimestampEndDay(endDateString);
         }
         return startdate;
     }
@@ -67,17 +67,5 @@ public class LogViewAction extends Action {
                     startdate, enddate);
         }
         return logEntries;
-    }
-
-    private static Calendar getSensibleDate(String dateString, String timeString) {
-        Calendar cal = Calendar.getInstance();
-        if (dateString.length() >= 10) {
-            try {
-                cal = TimestampUtils.createTimestamp(dateString + " " + timeString);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return cal;
     }
 }
