@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TimestampUtils {
 
     public static final SimpleDateFormat DAY_FORMAT_SLASH = new SimpleDateFormat("dd/MM/yyyy");
+    public static final SimpleDateFormat DAY_FORMAT_SLASH_BACKWARDS = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat DAY_FORMAT_DASH = new SimpleDateFormat("dd-MM-yyyy");
 
     public static Calendar createTimestamp(String dateTimeString) throws IllegalFieldValueException {
@@ -36,13 +37,24 @@ public class TimestampUtils {
             }
         } else {
             AtomicReference<Date> date = new AtomicReference<Date>();
-            try {
+            if (dateTimeString.indexOf("/") == 2) {
+                try {
                 date.set(DAY_FORMAT_SLASH.parse(dateTimeString));
             } catch (ParseException e) {
                 cal = null;
                 return cal;
             }
             cal.setTime(date.get());
+            } else {
+                try {
+                    date.set(DAY_FORMAT_SLASH_BACKWARDS.parse(dateTimeString));
+                } catch (ParseException e) {
+                    cal = null;
+                    return cal;
+                }
+                cal.setTime(date.get());
+
+            }
         }
 
         return cal;

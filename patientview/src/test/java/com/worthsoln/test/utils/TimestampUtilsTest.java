@@ -38,6 +38,12 @@ public class TimestampUtilsTest {
     }
 
     @Test
+    public void testCreateTimestampGoodDaySlashBackwards() {
+        assertEquals("Timestamp not equal", "2011-05-22T00:00:00.000+01:00", new DateTime((TimestampUtils
+                .createTimestamp("2011/05/22")).getTime().getTime()).toString());
+    }
+
+    @Test
     public void testCreateTimestampGoodDayDash() {
         assertEquals("Timestamp not equal", "2011-05-22T00:00:00.000+01:00", new DateTime((TimestampUtils
                 .createTimestamp("22-05-2011")).getTime().getTime()).toString());
