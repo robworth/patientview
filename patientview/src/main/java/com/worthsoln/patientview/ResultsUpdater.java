@@ -48,7 +48,7 @@ public class ResultsUpdater {
     public void update(ServletContext context, File xmlFile, File xsdFile) {
         /**
          * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin, and skip validateAndProcess and process
+         * hasn't worked. Send a mail to RPV admin, and skip validate and process
          */
         if (xmlFile.length() == 0) {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
