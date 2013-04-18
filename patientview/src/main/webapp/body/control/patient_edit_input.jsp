@@ -82,12 +82,15 @@
             <div class="patient-edit-form form-actions">
                 <div class="row">
 
-                    <html:form action="/control/userDelete">
-                        <html:hidden name="patient" property="username"/>
-                        <html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/>
-                        <html:hidden property="unitcode" name="nhsnot"/>
-                        <html:hidden property="nhsno" name="nhsnot"/>
-                    </html:form>
+                    <%
+                        // Note: this is hidden.  To be added back in a future story
+                    %>
+                    <%--<html:form action="/control/userDelete">--%>
+                        <%--<html:hidden name="patient" property="username"/>--%>
+                        <%--<html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/>--%>
+                        <%--<html:hidden property="unitcode" name="nhsnot"/>--%>
+                        <%--<html:hidden property="nhsno" name="nhsnot"/>--%>
+                    <%--</html:form>--%>
 
                     <html:form action="/control/resetPassword"  style="float:left;margin-left:5px;">
                         <html:hidden name="patient" property="username"/>
