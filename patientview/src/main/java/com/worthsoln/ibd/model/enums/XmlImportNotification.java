@@ -5,6 +5,7 @@ import java.util.List;
 
 public enum XmlImportNotification  {
 
+    DEFAULT(0, "Default"),
     FAILED_IMPORT(1, "Failed Import"),
     IMPORTER_STOPPED(2, "Importer Stopped");
 

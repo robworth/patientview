@@ -14,4 +14,6 @@ public interface AdminNotificationDao {
 
     List<String> getEmailAddresses(XmlImportNotification xmlImportNotification);
 
+    String getSupportEmail();
+
 }

@@ -7,6 +7,7 @@ import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.AdminNotificationDao;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -31,5 +32,27 @@ public class AdminNotificationDaoImpl extends AbstractHibernateDAO<AdminNotifica
         }
 
         return emailAddresses;
+    }
+
+    @Override
+    public String getSupportEmail() {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<AdminNotification> criteria = builder.createQuery(AdminNotification.class);
+        Root<AdminNotification> adminNotificationRoot = criteria.from(AdminNotification.class);
+
+        criteria.where(builder.equal(adminNotificationRoot.get(AdminNotification_.xmlImportNotificationId),
+                XmlImportNotification.DEFAULT.getId()));
+
+        try {
+            AdminNotification adminNotification = getEntityManager().createQuery(criteria).getSingleResult();
+
+            if (adminNotification != null) {
+                return adminNotification.getEmail();
+            }
+        } catch (NoResultException e) {
+            return null;
+        }
+
+        return null;
     }
 }

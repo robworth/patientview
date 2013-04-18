@@ -6,7 +6,6 @@ import com.worthsoln.patientview.model.CorruptNode;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 
@@ -178,7 +177,7 @@ public class XmlImportUtils {
         String toAddress = "";
 
         if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
-            toAddress = context.getInitParameter("support.email");
+            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress(context);
         } else {
             toAddress = unit.getRenaladminemail();
         }
