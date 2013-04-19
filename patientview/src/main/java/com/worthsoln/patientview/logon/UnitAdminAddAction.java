@@ -54,20 +54,13 @@ public class UnitAdminAddAction extends Action {
             // create the new user
             UnitAdmin hashedUnitAdmin = (UnitAdmin) unitAdmin.clone();
             hashedUnitAdmin.setPassword(LogonUtils.hashPassword(hashedUnitAdmin.getPassword()));
-            User user = LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin);
-
-            UserMapping userMapping = new UserMapping(username, unitcode, "");
-            LegacySpringUtils.getUserManager().save(userMapping);
-
-            // create mappings in radar if they dont already exist
-            if (!LegacySpringUtils.getUserManager().userExistsInRadar(user.getId())) {
-                LegacySpringUtils.getUserManager().createProfessionalUserInRadar(user, unitcode);
-            }
+            User user = LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin, unitcode);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD,
                     unitAdmin.getUsername(), "",
                     unitcode, "");
-            EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(), request);
+            EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(),
+                    request);
             mappingToFind = "success";
         }
         request.setAttribute("adminuser", unitAdmin);
