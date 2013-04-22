@@ -18,5 +18,6 @@ public class Messaging {
     public static final String NO_RECIPIENTS_PARAM = "noRecipients";
     public static final String UNITS_PARAM = "units";
     public static final String UNIT_CODE_PARAM = "unitCode";
+    public static final String IS_READER_THE_RECIPIENT = "isReaderTheRecipient";
 
 }
