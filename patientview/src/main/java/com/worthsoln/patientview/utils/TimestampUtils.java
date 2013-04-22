@@ -2,6 +2,8 @@ package com.worthsoln.patientview.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,45 +18,38 @@ public class TimestampUtils {
     public static final SimpleDateFormat DAY_FORMAT_SLASH_BACKWARDS = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat DAY_FORMAT_DASH = new SimpleDateFormat("dd-MM-yyyy");
 
-    public static Calendar createTimestamp(String dateTimeString) throws IllegalFieldValueException {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimestampUtils.class);
 
+    public static Calendar createTimestamp(String dateTimeString) throws IllegalFieldValueException {
         Calendar cal = new GregorianCalendar();
-        if (dateTimeString.contains("-")) {
-            if (dateTimeString.indexOf("-") == 2) {
-                Date date;
-                try {
-                    date = (DAY_FORMAT_DASH.parse(dateTimeString));
+
+        try {
+            if (dateTimeString.contains("-")) {
+                if (dateTimeString.indexOf("-") == 2) {
+                    Date date = (DAY_FORMAT_DASH.parse(dateTimeString));
+
                     if (date != null) {
                         cal.setTime(date);
                     }
-                } catch (ParseException e) {
-                    cal = null;
-                    return cal;
+                } else {
+                    DateTime dateTime = new DateTime(dateTimeString);
+                    cal.setTime(dateTime.toDate());
                 }
             } else {
-                DateTime dateTime = new DateTime(dateTimeString);
-                cal.setTime(dateTime.toDate());
-            }
-        } else {
-            AtomicReference<Date> date = new AtomicReference<Date>();
-            if (dateTimeString.indexOf("/") == 2) {
-                try {
-                date.set(DAY_FORMAT_SLASH.parse(dateTimeString));
-            } catch (ParseException e) {
-                cal = null;
-                return cal;
-            }
-            cal.setTime(date.get());
-            } else {
-                try {
-                    date.set(DAY_FORMAT_SLASH_BACKWARDS.parse(dateTimeString));
-                } catch (ParseException e) {
-                    cal = null;
-                    return cal;
-                }
-                cal.setTime(date.get());
+                AtomicReference<Date> date = new AtomicReference<Date>();
 
+                if (dateTimeString.indexOf("/") == 2) {
+                    date.set(DAY_FORMAT_SLASH.parse(dateTimeString));
+                    cal.setTime(date.get());
+                } else {
+                    date.set(DAY_FORMAT_SLASH_BACKWARDS.parse(dateTimeString));
+                    cal.setTime(date.get());
+                }
             }
+        } catch (Exception e) {
+            LOGGER.error("Can not parse date {}", dateTimeString, e.getMessage());
+
+            cal = null;
         }
 
         return cal;

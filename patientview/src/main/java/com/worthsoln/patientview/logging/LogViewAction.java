@@ -28,44 +28,54 @@ public class LogViewAction extends Action {
         String actor = BeanUtils.getProperty(form, "actor");
         String action = BeanUtils.getProperty(form, "action");
         String unitcode = BeanUtils.getProperty(form, "unitcode");
+
         List log = getLogEntries(nhsno, user, actor, action, unitcode, startdate, enddate);
         request.setAttribute("log", log);
+
         UnitUtils.putRelevantUnitsInRequest(request);
+
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
     private Calendar determineStartDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String startDateString = BeanUtils.getProperty(form, "startdate");
-        Calendar startdate;
+        Calendar startDate;
+
         if ((startDateString == null) || ("".equals(startDateString))) {
-            startdate = LoggingUtils.getDefaultStartDateForLogQuery();
+            startDate = LoggingUtils.getDefaultStartDateForLogQuery();
         } else {
-            startdate = TimestampUtils.createTimestampStartDay(startDateString);
+            startDate = TimestampUtils.createTimestampStartDay(startDateString);
         }
-        return startdate;
+
+        return startDate;
     }
 
     private Calendar determineEndDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String endDateString = BeanUtils.getProperty(form, "enddate");
-        Calendar startdate;
+        Calendar endDate;
+
         if ((endDateString == null) || ("".equals(endDateString))) {
-            startdate = LoggingUtils.getDefaultEndDateForLogQuery();
+            endDate = LoggingUtils.getDefaultEndDateForLogQuery();
         } else {
-            startdate = TimestampUtils.createTimestampEndDay(endDateString);
+            endDate = TimestampUtils.createTimestampEndDay(endDateString);
         }
-        return startdate;
+
+        return endDate;
     }
 
     private List getLogEntries(String nhsno, String user, String actor, String action, String unitcode,
                                Calendar startdate, Calendar enddate) throws Exception {
         List logEntries = new ArrayList();
+
         if (!((nhsno.equals("")) && (user.equals("")) && (actor.equals("")) && (action.equals("")))) {
             logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, user, actor, action, unitcode,
                     startdate, enddate);
         }
+
         return logEntries;
     }
 }

@@ -24,35 +24,43 @@ public class UnitStatsAction extends Action {
         Calendar startdate = determineStartDate(form);
         Calendar enddate = determineEndDate(form);
         String unitcode = BeanUtils.getProperty(form, "unitcode");
+
         List log = getUnitStats(unitcode, startdate, enddate);
         request.setAttribute("log", log);
+
         UnitUtils.putRelevantUnitsInRequest(request);
+
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
     private Calendar determineStartDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String startDateString = BeanUtils.getProperty(form, "startdate");
-        Calendar startdate;
+        Calendar startDate;
+
         if ((startDateString == null) || ("".equals(startDateString))) {
-            startdate = LoggingUtils.getStartDateForLogQuery(Calendar.MONTH, -1);
+            startDate = LoggingUtils.getStartDateForLogQuery(Calendar.MONTH, -1);
         } else {
-            startdate = TimestampUtils.createTimestampEndDay(startDateString);
+            startDate = TimestampUtils.createTimestampEndDay(startDateString);
         }
-        return startdate;
+
+        return startDate;
     }
 
     private Calendar determineEndDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String endDateString = BeanUtils.getProperty(form, "enddate");
-        Calendar startdate;
+        Calendar endDate;
+
         if ((endDateString == null) || ("".equals(endDateString))) {
-            startdate = LoggingUtils.getDefaultEndDateForLogQuery();
+            endDate = LoggingUtils.getDefaultEndDateForLogQuery();
         } else {
-            startdate = TimestampUtils.createTimestampEndDay(endDateString);
+            endDate = TimestampUtils.createTimestampEndDay(endDateString);
         }
-        return startdate;
+
+        return endDate;
     }
 
     private static List getUnitStats(String unitcode, Calendar startdate, Calendar enddate) throws Exception {

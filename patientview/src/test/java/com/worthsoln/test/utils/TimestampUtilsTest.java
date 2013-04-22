@@ -49,14 +49,14 @@ public class TimestampUtilsTest {
                 .createTimestamp("22-05-2011")).getTime().getTime()).toString());
     }
 
-    @Test(expected = org.joda.time.IllegalFieldValueException.class)
-    public void testCreateTimestampBadDayOfMonth() throws IllegalFieldValueException {
-        TimestampUtils.createTimestamp("2012-02-32");
+    @Test
+    public void testCreateTimestampBadDayOfMonth() {
+        assertNull(TimestampUtils.createTimestamp("2012-02-32"));
     }
 
-    @Test(expected = org.joda.time.IllegalFieldValueException.class)
-    public void testCreateTimestampBadMonth() throws IllegalFieldValueException {
-        TimestampUtils.createTimestamp("2012-13-15");
+    @Test
+    public void testCreateTimestampBadMonth() {
+        assertNull(TimestampUtils.createTimestamp("2012-13-15"));
     }
 
     @Test
