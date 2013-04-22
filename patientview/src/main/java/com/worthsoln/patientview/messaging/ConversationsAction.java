@@ -66,6 +66,11 @@ public class ConversationsAction extends BaseAction {
             }
         }
 
+        boolean readerIsTheRecipient = user.getId().equals(getUserManager().getLoggedInUser().getId());
+        if (!readerIsTheRecipient) {
+            request.setAttribute(Messaging.IS_READER_THE_RECIPIENT, "false");
+        }
+
         request.setAttribute(Messaging.CONVERSATIONS_PARAM, getMessageManager().getConversations(user.getId()));
 
         return mapping.findForward(SUCCESS);

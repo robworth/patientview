@@ -25,7 +25,7 @@ public class ConversationAction extends BaseAction {
          * Whereas {@link LegacySpringUtils.getUserManager().getLoggedInUser} would return the admin.
          */
         User user = UserUtils.retrieveUser(request);
-        User loggedInUser = LegacySpringUtils.getUserManager().getLoggedInUser();
+        User loggedInUser = getUserManager().getLoggedInUser();
 
         // add the conversation and messages to the page
         Conversation conversation = getMessageManager().getConversationForUser(getConversationId(request),

@@ -49,7 +49,10 @@
                 <div class="page-header">
                     <h1>
                         Messages
-                        <button type="button" data-toggle="modal" data-target="#messageModal" class="pull-right btn btn-primary">+ Create Message</button>
+
+                        <logic:notPresent name="isReaderTheRecipient">
+                            <button type="button" data-toggle="modal" data-target="#messageModal" class="pull-right btn btn-primary">+ Create Message</button>
+                        </logic:notPresent>
                     </h1>
                 </div>
 
