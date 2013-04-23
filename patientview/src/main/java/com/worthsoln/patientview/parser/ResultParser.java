@@ -112,24 +112,32 @@ public class ResultParser {
             Node testNode = testNodeList.item(i);
             NodeList testResultNodes = testNode.getChildNodes();
             String testCode = "";
-            String testName = "";
-            String testUnits = "";
-            String dateRangeStartString = "";
-            String dateRangeStopString = "";
+//            String testName;
+//            String testUnits;
+            String dateRangeStartString;
+            String dateRangeStopString;
             Calendar dateRangeStart = null;
             Calendar dateRangeStop = null;
             for (int j = 0; j < testResultNodes.getLength(); j++) {
                 Node testResultNode = testResultNodes.item(j);
                 if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("testname"))) {
-                    testName = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
-                } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
                         (testResultNode.getNodeName().equals("testcode"))) {
                     testCode = testResultNode.getFirstChild().getNodeValue();
-                } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
+                } else
+/* We're not storing the test name at the moment
+                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
+                        (testResultNode.getNodeName().equals("testname"))) {
+                    testName = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
+                } else
+*/
+
+/* We're not storing units at the moment
+                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
                         (testResultNode.getNodeName().equals("units")) && testResultNode.getFirstChild() != null) {
                     testUnits = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
-                } else if (testResultNode.getNodeName().equals("daterange")) {
+                } else
+*/
+                if (testResultNode.getNodeName().equals("daterange")) {
                     NamedNodeMap namedNodeMap = testResultNode.getAttributes();
 
                     Node startNode = namedNodeMap.getNamedItem("start");
@@ -154,14 +162,6 @@ public class ResultParser {
                             parseDatestamp(testResult, resultDataNode);
 
                             if (testResult.getDatestamped() != null) {
-
-                                /**
-                                 *  Warning: for comparison below to work the test results need to all be created
-                                 *  in the same way as  TimestampUtils.createTimestamp method because this adds
-                                 *  10 secs to the calendar.
-                                 */
-                                testResult.getDatestamped().set(Calendar.SECOND, 10);
-
                                 DateTime testResultDate = new DateTime(testResult.getDatestamped());
 
                                 /**
