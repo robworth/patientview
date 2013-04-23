@@ -28,3 +28,12 @@
 <div>
     <bean:write name="letter" property="formattedContent" filter="false"/>
 </div>
+
+<logic:present role="unitadmin,superadmin">
+    <div>
+        <html:form action="/control/letterDelete">
+            <html:hidden name="letter" property="id"/>
+            <html:submit value="Delete Letter" styleClass="btn-danger"/>
+        </html:form>
+    </div>
+</logic:present>
