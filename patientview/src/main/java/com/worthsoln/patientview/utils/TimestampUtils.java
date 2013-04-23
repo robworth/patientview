@@ -2,10 +2,11 @@ package com.worthsoln.patientview.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,32 +17,37 @@ public class TimestampUtils {
 
     public static final SimpleDateFormat DAY_FORMAT_SLASH = new SimpleDateFormat("dd/MM/yyyy");
     public static final SimpleDateFormat DAY_FORMAT_SLASH_BACKWARDS = new SimpleDateFormat("yyyy/MM/dd");
-    public static final SimpleDateFormat DAY_FORMAT_DASH = new SimpleDateFormat("dd-MM-yyyy");
-    public static final SimpleDateFormat DAY_FORMAT_DASH_BACKWARDS = new SimpleDateFormat("yyyy-MM-dd");
+    public static final String DAY_FORMAT_DASH = "dd-MM-yyyy";
+    public static final String DAY_FORMAT_DASH_BACKWARDS = "yyyy-MM-dd";
+    public static final String DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_AND_MINUTE = "yyyy-MM-dd'T'HH:mm";
+    public static final String DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_MINUTE_AND_SECOND = "yyyy-MM-dd'T'HH:mm:ss";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimestampUtils.class);
 
     public static Calendar createTimestamp(String dateTimeString) throws IllegalFieldValueException {
         Calendar cal = new GregorianCalendar();
+        DateTimeFormatter formatter = null;
 
         try {
             if (dateTimeString.contains("-")) {
                 if (dateTimeString.indexOf("-") == 2) {
-                    Date date = DAY_FORMAT_DASH.parse(dateTimeString);
-
-                    if (date != null) {
-                        cal.setTime(date);
-                    }
-                } else if (dateTimeString.indexOf("-") == 4) {
-                    Date date = DAY_FORMAT_DASH_BACKWARDS.parse(dateTimeString);
-
-                    if (date != null) {
-                        cal.setTime(date);
-                    }
-                } else {
-                    DateTime dateTime = new DateTime(dateTimeString);
-                    cal.setTime(dateTime.toDate());
+                    formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH);
+                } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 19) {
+                    formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_MINUTE_AND_SECOND);
+                } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 16) {
+                    formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_AND_MINUTE);
+                } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 10) {
+                    formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH_BACKWARDS);
                 }
+
+                DateTime dateTime;
+                if (formatter == null) {
+                    dateTime = new DateTime(dateTimeString);
+                } else {
+                    dateTime = formatter.parseDateTime(dateTimeString);
+                }
+
+                cal.setTime(dateTime.toDate());
             } else {
                 AtomicReference<Date> date = new AtomicReference<Date>();
 
