@@ -17,6 +17,7 @@ public class TimestampUtils {
     public static final SimpleDateFormat DAY_FORMAT_SLASH = new SimpleDateFormat("dd/MM/yyyy");
     public static final SimpleDateFormat DAY_FORMAT_SLASH_BACKWARDS = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat DAY_FORMAT_DASH = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DAY_FORMAT_DASH_BACKWARDS = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimestampUtils.class);
 
@@ -26,7 +27,13 @@ public class TimestampUtils {
         try {
             if (dateTimeString.contains("-")) {
                 if (dateTimeString.indexOf("-") == 2) {
-                    Date date = (DAY_FORMAT_DASH.parse(dateTimeString));
+                    Date date = DAY_FORMAT_DASH.parse(dateTimeString);
+
+                    if (date != null) {
+                        cal.setTime(date);
+                    }
+                } else if (dateTimeString.indexOf("-") == 4) {
+                    Date date = DAY_FORMAT_DASH_BACKWARDS.parse(dateTimeString);
 
                     if (date != null) {
                         cal.setTime(date);
