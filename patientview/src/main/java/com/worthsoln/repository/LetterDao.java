@@ -22,4 +22,6 @@ public interface LetterDao {
     void delete(String nhsno, String unitcode, Date date);
 
     void delete(String nhsno, String unitcode);
+
+    void delete(Long id);
 }

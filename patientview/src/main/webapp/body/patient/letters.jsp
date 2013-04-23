@@ -39,6 +39,7 @@
             <th>Date</th>
             <th>Letter Type</th>
             <th>&nbsp;</th>
+            <logic:present role="unitadmin,superadmin"><th>&nbsp;</th></logic:present>
           </tr>
       </thead>
 
@@ -47,6 +48,7 @@
            <td class="tablecell"><bean:write name="letter" property="formattedDate"/></td>
           <td class="tablecell"><bean:write name="letter" property="type"/></td>
           <td class="tablecell"><html:link action="/patient/letterDetail" paramName="letter" paramProperty="id" paramId="letterId">read letter...</html:link>&nbsp;</td>
+            <logic:present role="unitadmin,superadmin"><td class="tablecell"><html:form action="/control/letterDelete"><html:hidden name="letter" property="id"/><html:submit value="Delete" styleClass="btn"/></html:form>&nbsp;</td></logic:present>
         </tr>
       </logic:iterate>
 
