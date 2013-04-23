@@ -192,7 +192,7 @@ public class MessageManagerImpl implements MessageManager {
 
         if (units != null) {
             for (Unit unit : units) {
-                unitAdminRecipients.addAll(getUnitAdminRecipients(unit,  requestingUser));
+                unitAdminRecipients.addAll(getUnitAdminRecipients(unit, requestingUser));
             }
         }
 
@@ -295,11 +295,9 @@ public class MessageManagerImpl implements MessageManager {
                 for (UnitAdmin unitAdmin : unitAdmins) {
                     User unitUser = userManager.get(unitAdmin.getUsername());
 
-                    if (StringUtils.hasText(unitUser.getEmail())) {
-                        if (!unitUser.equals(requestingUser)) {
-                            if (unitAdmin.getRole().equals(adminOrStaff)) {
-                                unitAdminRecipients.add(unitUser);
-                            }
+                    if (!unitUser.equals(requestingUser)) {
+                        if (unitAdmin.getRole().equals(adminOrStaff)) {
+                            unitAdminRecipients.add(unitUser);
                         }
                     }
                 }
@@ -314,8 +312,7 @@ public class MessageManagerImpl implements MessageManager {
      * exlude patients with '-gp' or 'dummy' in the name
      */
     private boolean canIncludePatient(User patient) {
-        return StringUtils.hasText(patient.getEmail())
-                && patient.getName() != null
+        return patient.getName() != null
                 && !patient.getName().toLowerCase().contains("-gp")
                 && !patient.isDummypatient();
     }
@@ -330,8 +327,10 @@ public class MessageManagerImpl implements MessageManager {
         message.setContent(content);
         messageDao.save(message);
 
-        // now send the message
-        emailManager.sendUserMessage(context, message);
+        // if the recipient has an email address, send an email
+        if (StringUtils.hasText(message.getRecipient().getEmail())) {
+            emailManager.sendUserMessage(context, message);
+        }
 
         message.setFriendlyDate(getFriendlyDateTime(message.getDate()));
 
