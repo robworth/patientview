@@ -20,11 +20,20 @@ public class TimestampUtils {
     public static final String DAY_FORMAT_DASH = "dd-MM-yyyy";
     public static final String DAY_FORMAT_DASH_BACKWARDS = "yyyy-MM-dd";
     public static final String DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_AND_MINUTE = "yyyy-MM-dd'T'HH:mm";
-    public static final String DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_MINUTE_AND_SECOND = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_MINUTE_AND_SECOND = "yyyy-MM-dd HH:mm:ss";
+    public static final String DAY_FORMAT_DASH_BACKWARDS_WITH_T_HOUR_MINUTE_AND_SECOND = "yyyy-MM-dd'T'HH:mm:ss";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimestampUtils.class);
 
-    public static Calendar createTimestamp(String dateTimeString) throws IllegalFieldValueException {
+    /**
+     * Given a date string, this method attempts to figure out which format it has and then returns a calendar object
+     *
+     * Ideally this method should get format as a parameter in order to avoid possible ambiguous dates like 2/1/2012
+     *
+     * @param dateTimeString a date in an recognised format
+     * @return date object if date format is recognised
+     */
+    public static Calendar createTimestamp(String dateTimeString) {
         Calendar cal = new GregorianCalendar();
         DateTimeFormatter formatter = null;
 
@@ -32,7 +41,11 @@ public class TimestampUtils {
             if (dateTimeString.contains("-")) {
                 if (dateTimeString.indexOf("-") == 2) {
                     formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH);
-                } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 19) {
+                } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 19 &&
+                        dateTimeString.indexOf("T") == 10) {
+                    formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH_BACKWARDS_WITH_T_HOUR_MINUTE_AND_SECOND);
+                } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 19 &&
+                        dateTimeString.indexOf(" ") == 10) {
                     formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_MINUTE_AND_SECOND);
                 } else if (dateTimeString.indexOf("-") == 4 && dateTimeString.length() == 16) {
                     formatter = DateTimeFormat.forPattern(DAY_FORMAT_DASH_BACKWARDS_WITH_HOUR_AND_MINUTE);
