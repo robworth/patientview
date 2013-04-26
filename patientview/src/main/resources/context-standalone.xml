@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+    <bean id="emailManager" class="com.worthsoln.service.impl.EmailManagerImpl">
+        <!--<property name="javaMailSender" ref="javaMailSender"/>-->
+    </bean>
+
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${smtp.host}"/>
+        <property name="protocol" value="smtps"/>
+        <property name="username" value="usernametest"/>
+        <property name="password" value="${smtp.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.debug">false</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.ssl.enable">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.port">465</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:patientview.properties"/>
+    </bean>
+
+</beans>
