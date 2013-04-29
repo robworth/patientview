@@ -109,8 +109,6 @@ public class ImportMonitor {
 
             String[] toAddresses = {props.getProperty("support.email")};
 
-            System.out.println("To address: " + toAddresses[0]);
-
             sendEmail(fromAddress, toAddresses, null, subject, body);
         } catch (IOException e) {
             LOGGER.error("Could not find properties file: {}", e);
@@ -224,8 +222,8 @@ public class ImportMonitor {
             return false;
         }
 
-        System.out.println("protonFilesAreStatic " + protonFilesAreStatic);
-        System.out.println("rpvXmlFilesAreStatic " + rpvXmlFilesAreStatic);
+        LOGGER.debug("Proton files are static: " + protonFilesAreStatic);
+        LOGGER.debug("RpvXml files are static: " + rpvXmlFilesAreStatic);
 
         return protonFilesAreStatic || rpvXmlFilesAreStatic;
     }
@@ -238,9 +236,9 @@ public class ImportMonitor {
 
             CountRecord latestRecord = countRecordsToTest.get(0);
 
-            System.out.println("proton exceeds limit " +
+            LOGGER.debug("Proton files exceed limit: {}",
                     (latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit));
-            System.out.println("rpv exceeds limit " +
+            LOGGER.debug("RpvXml files exceed limit: " +
                     (latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit));
 
             if (latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit ||
