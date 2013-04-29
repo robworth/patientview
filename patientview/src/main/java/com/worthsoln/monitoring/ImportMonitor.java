@@ -1,6 +1,5 @@
 package com.worthsoln.monitoring;
 
-import com.worthsoln.service.EmailManager;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -8,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Monitors XML Import process to see if it is stalled or not working properly
@@ -57,10 +59,20 @@ public class ImportMonitor {
         LOGGER.info("ImportMonitor starts");
 
         /**
-         * Read some lines from the files
+         * Read some lines from the file
          */
-        List<String> lines = getLastNLinesOfFile(new File("/Users/deniz/Desktop/rpvxmlnofiles"),
-                NUMBER_OF_LINES_TO_READ);
+
+        List<String> lines = new ArrayList<String>();
+        Resource resource = new ClassPathResource("/patientview.properties");
+        try {
+            Properties props = PropertiesLoaderUtils.loadProperties(resource);
+
+            String fileLocation = props.getProperty("importer.data.file.location");
+
+            lines = getLastNLinesOfFile(new File(fileLocation), NUMBER_OF_LINES_TO_READ);
+        } catch (IOException e) {
+            LOGGER.error("Could not find properties file: {}", e);
+        }
 
         /**
          * Convert them to Record objects
@@ -85,21 +97,24 @@ public class ImportMonitor {
     }
 
     private static void sendWarningEmail(ImporterError importerError, List<CountRecord> countRecords) {
-
-        String fromAddress = "no_reply@renalpatientview.org";
-
-        String[] toAddresses = {"support.rpv.org@mailinator.com"};
-
         String subject = "Problems detected in Patient View XML Importer";
 
         String body = getWarningEmailBody(importerError, countRecords);
 
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext(new String[]{"classpath*:context-standalone.xml"});
+        try {
+            Resource resource = new ClassPathResource("/patientview.properties");
+            Properties props = PropertiesLoaderUtils.loadProperties(resource);
 
-        EmailManager emailManager = (EmailManager) context.getBean("emailManager");
+            String fromAddress = props.getProperty("noreply.email");
 
-        sendEmail(fromAddress, toAddresses, null, subject, body);
+            String[] toAddresses = {props.getProperty("support.email")};
+
+            System.out.println("To address: " + toAddresses[0]);
+
+            sendEmail(fromAddress, toAddresses, null, subject, body);
+        } catch (IOException e) {
+            LOGGER.error("Could not find properties file: {}", e);
+        }
     }
 
     public static void sendEmail(String from, String[] to, String[] bcc, String subject, String body) {
@@ -120,7 +135,7 @@ public class ImportMonitor {
         }
 
         ApplicationContext context =
-                        new ClassPathXmlApplicationContext(new String[]{"classpath*:context-standalone.xml"});
+                new ClassPathXmlApplicationContext(new String[]{"classpath*:context-standalone.xml"});
 
         JavaMailSender javaMailSender = (JavaMailSender) context.getBean("javaMailSender");
 
@@ -140,9 +155,6 @@ public class ImportMonitor {
             messageHelper.setFrom(from);
             messageHelper.setSubject(subject);
             messageHelper.setText(body, false); // Note: the second param indicates to send plaintext
-
-            System.out.println("Host:" + ((JavaMailSenderImpl) javaMailSender).getHost());
-            System.out.println("Username:" + ((JavaMailSenderImpl) javaMailSender).getUsername());
 
             javaMailSender.send(messageHelper.getMimeMessage());
         } catch (Exception e) {

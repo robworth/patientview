@@ -36,22 +36,25 @@
 
 
     <build>
+        <resources>
+            <!-- resource files with filtering to output to target/classes -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <filters>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay cms.properties, other property files -->
+            <filter>src/main/filters/${env}-filters.properties</filter>
+        </filters>
+
         <plugins>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.2</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -67,9 +70,6 @@
                             <mainClass>com.worthsoln.monitoring.ImportMonitor</mainClass>
                         </manifest>
                     </archive>
-                    <filters>
-                        <filter>src/main/resources/deniz.properties</filter>
-                    </filters>
                 </configuration>
                 <executions>
                     <execution>
@@ -79,6 +79,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <includes>
+                        <include>com/worthsoln/monitoring/*.java</include>
+                    </includes>
+                </configuration>
             </plugin>
 
         </plugins>
@@ -108,7 +121,7 @@
             <version>1.6.2</version>
         </dependency>
 
-        <!-- mailing -  (a bit bizarre) -->
+        <!-- mailing - (a bit bizarre) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -120,7 +133,6 @@
             <artifactId>mail</artifactId>
             <version>1.4</version>
         </dependency>
-
 
     </dependencies>
 
