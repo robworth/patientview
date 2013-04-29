@@ -1,7 +1,6 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Letter;
-import com.worthsoln.patientview.model.Letter_;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.LetterDao;
@@ -10,10 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -27,18 +22,19 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
 
     @Override
     public List<Letter> get(String username, Specialty specialty) {
-        String usersNhsNo = userMappingDao.getUsersRealNhsNoBestGuess(username, specialty);
+        if (null != username && !"".equals(username)) {
+            String sql = "SELECT DISTINCT letter.* FROM letter, usermapping " +
+                    "WHERE letter.nhsno = usermapping.nhsno " +
+                    "AND usermapping.username = :username " +
+                    "ORDER BY letter.date DESC";
 
-        if (usersNhsNo != null && usersNhsNo.length() > 0) {
-            CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-            CriteriaQuery<Letter> criteria = builder.createQuery(Letter.class);
-            Root<Letter> letterRoot = criteria.from(Letter.class);
+            Query query = getEntityManager().createNativeQuery(sql, Letter.class);
 
-            criteria.where(builder.equal(letterRoot.get(Letter_.nhsno), usersNhsNo));
+            query.setParameter("username", username);
 
-            criteria.orderBy(builder.desc(letterRoot.get(Letter_.date)));
+            List<Letter> letters = query.getResultList();
 
-            return getEntityManager().createQuery(criteria).getResultList();
+            return letters;
         }
 
         return Collections.emptyList();
