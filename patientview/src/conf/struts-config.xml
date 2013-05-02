@@ -330,6 +330,12 @@
           <forward name="success" path="/patient/patient_details.do?success=true"/>
       </action>
 
+    <!-- TODO get rid of this temporary action -->
+    <action path="/patient/forum"
+            type="com.worthsoln.patientview.IndexAction" parameter="forum">
+      <forward name="success" path="/patient/forum.jsp"/>
+    </action>
+
     <action path="/patient/index"
             type="com.worthsoln.patientview.IndexAction" parameter="index">
       <forward name="success" path="/patient/index.jsp"/>

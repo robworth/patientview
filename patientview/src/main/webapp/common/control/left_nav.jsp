@@ -50,8 +50,6 @@
                 </logic:present>
             </logic:present>
         </logic:present>
-            <li class="divider"></li>
-            <li><html:link href="/forums/list.page">Forum</html:link></li>
 
             <logic:present feature="messaging">
             <%
