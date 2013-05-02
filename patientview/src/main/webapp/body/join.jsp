@@ -7,8 +7,9 @@
     <h1>Join Patient View</h1>
 </div>
 
-<p>Please enter your details.</p>
+<p>Please enter your details. You need to be a patient of a renal unit.</p>
 <p>Ensure they are accurate since they will be used by your unit's staff to verify who you are and to contact you to add you to PatientView.</p>
+<p>If your local unit has PatientView, the message will go to the local PatientView admin.  If it doesn't, we'll send it to someone senior at the unit.  See if your unit has PatientView on the map at <a href ="http://bit.ly/rpvsites" target="_blank">bit.ly/rpvsites</a></p>
 <br />
 
 <html:form action="/joinSubmit" styleClass="form-horizontal">
@@ -41,7 +42,7 @@
     <div class="control-group">
         <label class="control-label">NHS Number</label>
 
-        <div class="controls"><html:text property="nhsNo"/></div>
+        <div class="controls"><html:text property="nhsNo"/> (optional but useful)</div>
     </div>
 
     <div class="control-group">
