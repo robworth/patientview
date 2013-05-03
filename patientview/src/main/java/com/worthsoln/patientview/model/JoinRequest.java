@@ -28,6 +28,9 @@ public class JoinRequest extends BaseModel {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private Date dateOfRequest;
+
     @Transient
     private String antiSpamAnswer;
 
@@ -92,6 +95,14 @@ public class JoinRequest extends BaseModel {
         this.nhsNo = nhsNo;
     }
 
+    public Date getDateOfRequest() {
+        return dateOfRequest;
+    }
+
+    public void setDateOfRequest(Date dateOfRequest) {
+        this.dateOfRequest = dateOfRequest;
+    }
+
     public String getAntiSpamAnswer() {
         return antiSpamAnswer;
     }
@@ -103,6 +114,14 @@ public class JoinRequest extends BaseModel {
     public String getDateOfBirthFormatted() {
         if (dateOfBirth != null) {
             return Ibd.DATE_FORMAT.format(dateOfBirth);
+        }
+
+        return "";
+    }
+
+    public String getDateOfRequestFormatted() {
+        if (dateOfRequest != null) {
+            return Ibd.DATE_FORMAT.format(dateOfRequest);
         }
 
         return "";
