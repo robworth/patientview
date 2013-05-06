@@ -30,6 +30,7 @@
 </div>
 
 <logic:present role="unitadmin,superadmin">
+    <br>
     <div>
         <html:form action="/control/letterDelete">
             <html:hidden name="letter" property="id"/>
