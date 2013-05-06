@@ -19,14 +19,17 @@ public class LetterDisplayAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        // set current nav
+        setUpLettersDisplay(mapping, request);
+
+        return LogonUtils.logonChecks(mapping, request);
+    }
+
+    static void setUpLettersDisplay(ActionMapping mapping, HttpServletRequest request) {
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
         User user = UserUtils.retrieveUser(request);
         List letters = LegacySpringUtils.getLetterManager().get(user.getUsername());
         request.setAttribute("letters", letters);
         request.setAttribute("user", user);
-        return LogonUtils.logonChecks(mapping, request);
     }
-
 }
