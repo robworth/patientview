@@ -54,7 +54,7 @@ public class UnitAdminAddAction extends Action {
             // create the new user
             UnitAdmin hashedUnitAdmin = (UnitAdmin) unitAdmin.clone();
             hashedUnitAdmin.setPassword(LogonUtils.hashPassword(hashedUnitAdmin.getPassword()));
-            User user = LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin);
+            User user = LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin, unitcode);
 
             UserMapping userMapping = new UserMapping(username, unitcode, "");
             LegacySpringUtils.getUserManager().save(userMapping);
@@ -67,7 +67,8 @@ public class UnitAdminAddAction extends Action {
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD,
                     unitAdmin.getUsername(), "",
                     unitcode, "");
-            EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(), request);
+            EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(),
+                    request);
             mappingToFind = "success";
         }
         request.setAttribute("adminuser", unitAdmin);

@@ -76,7 +76,7 @@ public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements 
 
     @Override
     public void createProfessionalUserInRadar(User user, Unit unit) {
-        String[] name =user.getName().split(" ");
+        String[] name = user.getName().split(" ");
         String forename = name[0];
         String surname = "";
 
