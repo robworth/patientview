@@ -76,16 +76,21 @@
             <html:hidden name="patient" property="failedlogons"/>
             <html:hidden name="patient" property="accountlocked"/>
             <html:hidden name="patient" property="screenname"/>
+            <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton float-in-form-actions"/>
+        </html:form>
 
             <div class="patient-edit-form form-actions">
                 <div class="row">
-                    <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton"/>
-                    <html:form action="/control/userDelete">
-                        <html:hidden name="patient" property="username"/>
-                        <html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/>
-                        <html:hidden property="unitcode" name="nhsnot"/>
-                        <html:hidden property="nhsno" name="nhsnot"/>
-                    </html:form>
+
+                    <%
+                        // Note: this is hidden.  To be added back in a future story
+                    %>
+                    <%--<html:form action="/control/userDelete">--%>
+                        <%--<html:hidden name="patient" property="username"/>--%>
+                        <%--<html:submit value="Delete Patient" style="float:left;" styleClass="btn btn-danger formbutton"/>--%>
+                        <%--<html:hidden property="unitcode" name="nhsnot"/>--%>
+                        <%--<html:hidden property="nhsno" name="nhsnot"/>--%>
+                    <%--</html:form>--%>
 
                     <html:form action="/control/resetPassword"  style="float:left;margin-left:5px;">
                         <html:hidden name="patient" property="username"/>
@@ -105,7 +110,7 @@
                 </div>
             </div>
 
-        </html:form>
+
 
     </div>
 </div>

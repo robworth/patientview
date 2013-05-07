@@ -22,7 +22,7 @@ public class UnitsDisplayAction extends Action {
 
         List items;
         if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
-            items = LegacySpringUtils.getUnitManager().getAll(true);
+            items = LegacySpringUtils.getUnitManager().getAdminsUnits();
         } else {
             items = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits();
         }

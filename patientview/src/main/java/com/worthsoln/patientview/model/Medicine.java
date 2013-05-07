@@ -94,13 +94,23 @@ public class Medicine extends BaseModel {
     }
 
     public String getFormattedStartDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
-        if ((startdate.get(Calendar.HOUR_OF_DAY) == 0) && (startdate.get(Calendar.MINUTE) == 0)) {
-            return dateFormat.format(startdate.getTime());
-        } else {
-            return dateTimeFormat.format(startdate.getTime());
+        SimpleDateFormat dateWithoutHourAndMinutes = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat dateWithHourAndMinutes = new SimpleDateFormat("dd/MM/yy HH:mm");
+
+        String formattedStartDate = "";
+
+        if (startdate != null) {
+            /**
+             * if hour and minute information exist, parse it as well.
+             */
+            if ((startdate.get(Calendar.HOUR_OF_DAY) == 0) && (startdate.get(Calendar.MINUTE) == 0)) {
+                formattedStartDate = dateWithoutHourAndMinutes.format(startdate.getTime());
+            } else {
+                formattedStartDate = dateWithHourAndMinutes.format(startdate.getTime());
+            }
         }
+
+        return formattedStartDate;
     }
 
 }

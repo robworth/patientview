@@ -56,7 +56,7 @@ public class EdtaCodeDaoImpl extends AbstractHibernateDAO<EdtaCode> implements E
 
         wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.linkType), linkType));
 
-        // if not tenancy show all codes for all tenancies (i.e. the user is not logged in
+        // if not specialty show all codes for all specialties (i.e. the user is not logged in
         // this may need changing in future
         if (specialty != null) {
             wherePredicates.add(builder.equal(edtaCodeRoot.get(EdtaCode_.specialty), specialty));

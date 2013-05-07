@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
+import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;

@@ -26,7 +26,7 @@ import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import com.worthsoln.test.helpers.impl.TestableResultsUpdater;
-import com.worthsoln.test.service.BaseServiceTest;
+import com.worthsoln.test.repository.BaseDaoTest;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  * - pv_schema_1.0.xml - used by rpv
  * - pv_schema_2.0.xml - used by ibd
  */
-public class ImporterTest extends BaseServiceTest {
+public class ImporterTest extends BaseDaoTest {
 
     @Inject
     private SpringApplicationContextBean springApplicationContextBean;
@@ -99,7 +99,7 @@ public class ImporterTest extends BaseServiceTest {
         mockSpecialty.setContext("renal");
         mockSpecialty.setDescription("Renal Patient View");
 
-        mockSpecialty = repositoryHelpers.createSpecialty("", "", "");
+        mockSpecialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
 
         mockUnit.setSpecialty(mockSpecialty);
 
@@ -137,6 +137,9 @@ public class ImporterTest extends BaseServiceTest {
 
         testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FOLLOWUP);
 
         List<Centre> centres = centreManager.getAll();
 
@@ -372,7 +375,11 @@ public class ImporterTest extends BaseServiceTest {
         TestableResultsUpdater testableResultsUpdater = new TestableResultsUpdater();
         MockHttpSession mockHttpSession = new MockHttpSession();
 
-        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 
@@ -395,8 +402,13 @@ public class ImporterTest extends BaseServiceTest {
         MockHttpSession mockHttpSession = new MockHttpSession();
 
         // run twice
-        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
-        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(), xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+        testableResultsUpdater.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
+                xsdFileResource.getFile());
+
+        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 

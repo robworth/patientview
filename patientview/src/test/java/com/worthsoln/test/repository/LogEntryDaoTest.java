@@ -76,7 +76,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new log entry 3", logEntry3.getId() > 0);
 
         // entry 2 was the newest so would expect this back
-        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction", specialty);
+        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction");
         assertNotNull(checkLogEntry);
         assertEquals("Incorrect log entry retrieved", checkLogEntry.getId(), logEntry2.getId());
     }
@@ -318,7 +318,7 @@ public class LogEntryDaoTest extends BaseDaoTest {
         assertTrue("Invalid id for new log entry 3", logEntry3.getId() > 0);
 
         // entry 2 was the newest so would expect this back
-        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction", specialty);
+        LogEntry checkLogEntry = logEntryDao.getLatestLogEntry(logEntry2.getNhsno(), "TestAction");
         assertNotNull(checkLogEntry);
         assertEquals("Incorrect log entry retrieved", checkLogEntry.getId(), logEntry2.getId());
         assertEquals("Specialty not correct", specialty, checkLogEntry.getSpecialty());

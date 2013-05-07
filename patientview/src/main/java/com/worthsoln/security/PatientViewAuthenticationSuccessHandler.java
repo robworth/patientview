@@ -44,7 +44,7 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
         // currently we push all logins through the logged_in action to ensure correct routing to admin pages
 
         if (specialtyUserRoles.size() > 1) {
-            // if this user has multiple tenancies then route to the launchpad page
+            // if this user has multiple specialties then route to the launchpad page
             response.sendRedirect("/launchpad.do");
 
         } else if (specialtyUserRoles.size() == 1) {

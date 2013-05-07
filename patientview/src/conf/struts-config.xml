@@ -226,7 +226,25 @@
       <form-property name="anonymous" type="java.lang.String"/>
       <form-property name="makepublic" type="java.lang.String"/>
     </form-bean>
+
+      <form-bean name="joinForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+        <form-property name="firstName" type="java.lang.String"/>
+        <form-property name="lastName" type="java.lang.String"/>
+        <form-property name="dateOfBirth" type="java.lang.String"/>
+        <form-property name="nhsNo" type="java.lang.String"/>
+        <form-property name="unitcode" type="java.lang.String"/>
+        <form-property name="email" type="java.lang.String"/>
+        <form-property name="antiSpamAnswer" type="java.lang.String"/>
+      </form-bean>
+
     <form-bean name="aboutmeImageUploadForm" type="com.worthsoln.patientview.aboutme.AboutmeImageUploadForm"/>
+
+      <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
+          <form-property name="content" type="java.lang.String"/>
+          <form-property name="subject" type="java.lang.String"/>
+          <form-property name="recipientId" type="java.lang.Long"/>
+          <form-property name="conversationId" type="java.lang.Long"/>
+      </form-bean>
   </form-beans>
     
   <!-- ========== Global Forward Definitions ============================== -->
@@ -311,6 +329,12 @@
           <forward name="input" path="/patient/patient_details.jsp"/>
           <forward name="success" path="/patient/patient_details.do?success=true"/>
       </action>
+
+    <!-- TODO get rid of this temporary action -->
+    <action path="/patient/forum"
+            type="com.worthsoln.patientview.IndexAction" parameter="forum">
+      <forward name="success" path="/patient/forum.jsp"/>
+    </action>
 
     <action path="/patient/index"
             type="com.worthsoln.patientview.IndexAction" parameter="index">
@@ -506,6 +530,67 @@
             >
       <forward name="success" path="/patient/feedback_for_unit.jsp"/>
     </action>
+
+    <action path="/joinSubmit"
+            type="com.worthsoln.patientview.join.JoinRequestSubmitAction"
+            name="joinForm"
+            scope="request">
+        <forward name="input" path="/join.jsp"/>
+      <forward name="success" path="/join-request-confirmation.jsp"/>
+    </action>
+
+      <action path="/join"
+              type="com.worthsoln.patientview.join.JoinRequestInputAction"
+              name="joinForm"
+              scope="request">
+        <forward name="success" path="/join.jsp"/>
+      </action>
+
+      <action path="/patient/conversations"
+              type="com.worthsoln.patientview.messaging.ConversationsAction"
+              scope="request"
+              parameter="conversations">
+          <forward name="success" path="/patient/messaging/messages.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/patient/conversation"
+              type="com.worthsoln.patientview.messaging.ConversationAction"
+              scope="request"
+              parameter="conversation"
+              name="sendMessageForm">
+          <forward name="success" path="/patient/messaging/message.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/control/conversations"
+              type="com.worthsoln.patientview.messaging.ConversationsAction"
+              scope="request"
+              parameter="conversations">
+          <forward name="success" path="/control/messaging/messages.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/control/conversation"
+              type="com.worthsoln.patientview.messaging.ConversationAction"
+              scope="request"
+              parameter="conversation"
+              name="sendMessageForm">
+          <forward name="success" path="/control/messaging/message.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/send-message" type="com.worthsoln.patientview.messaging.SendMessageAction" parameter="conversation"
+              name="sendMessageForm"
+              scope="request"
+              input="input">
+          <forward name="input" path="/body/messaging/send-message-ajax.jsp"/>
+          <forward name="success" path="/body/messaging/send-message-ajax.jsp"/>
+      </action>
+
+      <action path="/unit-recipients" type="com.worthsoln.patientview.messaging.RecipientByUnitAction" parameter="conversation">
+          <forward name="success" path="/body/messaging/unit-recipients-ajax.jsp"/>
+      </action>
 
     <action path="/demo"
             type="com.worthsoln.patientview.IndexAction" parameter="contact">

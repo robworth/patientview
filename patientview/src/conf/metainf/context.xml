@@ -3,6 +3,8 @@
 
     <!--<Parameter name="run.import.export.threads" value="false" override="false"/>-->
 
+    <Parameter name="config.site.url" value="${config.site.url}" override="false"/>
+
     <Parameter name="xml.archive.directory" value="${xml.archive.directory}" override="false"/>
     <Parameter name="xml.directory" value="${xml.directory}" override="false"/>
     <Parameter name="xml.patient.data.load.directory" value="${xml.patient.data.load.directory}" override="false"/>

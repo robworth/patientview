@@ -4,17 +4,23 @@ import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
-import com.worthsoln.patientview.model.Demographics;
+import com.worthsoln.patientview.model.radar.Demographics;
 import com.worthsoln.patientview.model.PatientUser;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.unit.UnitUtils;
+import com.worthsoln.patientview.user.UserUtils;
+import com.worthsoln.repository.RadarDao;
 import com.worthsoln.repository.SpecialtyUserRoleDao;
-import com.worthsoln.repository.DemographicsDao;
 import com.worthsoln.repository.PatientUserDao;
+import com.worthsoln.repository.UnitDao;
 import com.worthsoln.repository.UserDao;
 import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UserManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -22,6 +28,8 @@ import java.util.List;
 
 @Service(value = "userManager")
 public class UserManagerImpl implements UserManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
 
     @Inject
     private UserDao userDao;
@@ -36,10 +44,13 @@ public class UserManagerImpl implements UserManager {
     private SpecialtyUserRoleDao specialtyUserRoleDao;
 
     @Inject
-    private DemographicsDao demographicsDao;
+    private RadarDao radarDao;
 
     @Inject
     private PatientUserDao patientUserDao;
+
+    @Inject
+    private UnitDao unitDao;
 
     @Override
     public User getLoggedInUser() {
@@ -118,15 +129,18 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public User saveUserFromUnitAdmin(UnitAdmin unitAdmin) {
+    public User saveUserFromUnitAdmin(UnitAdmin unitAdmin, String unitcode) {
 
         // check for an existing user
         User user = get(unitAdmin.getUsername());
 
-        if (user == null) {
+        final boolean isNewUser = user == null;
+
+        if (isNewUser) {
             // create a user to save based on the unitAdmin
             user = new User();
         }
+
         user.setAccountlocked(unitAdmin.isAccountlocked());
         user.setDummypatient(unitAdmin.isDummypatient());
         user.setEmail(unitAdmin.getEmail());
@@ -142,6 +156,17 @@ public class UserManagerImpl implements UserManager {
         save(user);
 
         addEditUserSpecialtyRole(user, unitAdmin.getRole());
+
+        if (isNewUser) {
+
+            UserMapping userMapping = new UserMapping(user.getUsername(), unitcode, "");
+            save(userMapping);
+
+            // create mappings in radar if they don't already exist
+            if (!userExistsInRadar(user.getId())) {
+                createProfessionalUserInRadar(user, unitcode);
+            }
+        }
 
         return user;
     }
@@ -194,19 +219,52 @@ public class UserManagerImpl implements UserManager {
         specialtyUserRoleDao.save(specialtyUserRole);
     }
 
-    @Override
-    public void delete(User user) {
-        userDao.delete(user);
+    private void delete(User user, String unitcode) {
+
+        List<UserMapping> userMappings = getUserMappingsExcludeUnitcode(user.getUsername(),
+                UnitUtils.PATIENT_ENTERS_UNITCODE);
+
+        if (userMappings.size() == 1) {
+
+            // this is a user that exists in only one unit -> full delete
+
+            specialtyUserRoleDao.delete(getCurrentSpecialtyUserRole(user));
+
+            deleteUserMappings(user.getUsername(), unitcode); // deletes from usermapping table
+            deleteUserMappings(user.getUsername() + "-GP", unitcode);
+            deleteUserMappings(user.getUsername(), UnitUtils.PATIENT_ENTERS_UNITCODE);
+            userDao.delete(user); // deletes from user table
+
+            User gpUser = get(user.getUsername() + "-GP");
+            if (gpUser != null) {
+                userDao.delete(gpUser);
+            }
+
+            // patients get all their records deleted
+            if ("patient".equals(getCurrentSpecialtyRole(user))) {
+                UserUtils.removePatientFromSystem(user.getUsername(), unitcode);
+            }
+
+            // remove the user from radar as well
+            radarDao.removeUserFromRadar(user.getId());
+
+        } else {
+
+            // this is a user that exists in multiple units -> just remove their unit access/mapping
+
+            deleteUserMappings(user.getUsername(), unitcode);
+            deleteUserMappings(user.getUsername() + "-GP", unitcode);
+        }
     }
 
     @Override
-    public void delete(String username) {
+    public void delete(String username, String unitcode) {
 
         User user = get(username);
 
         if (user != null) {
             try {
-                delete(user);
+                delete(user, unitcode);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -279,8 +337,8 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public boolean existsInRadar(String nhsno) {
-        Demographics demographics = demographicsDao.getDemographicsByNhsNo(nhsno);
+    public boolean patientExistsInRadar(String nhsno) {
+        Demographics demographics = radarDao.getDemographicsByNhsNo(nhsno);
 
         if (demographics != null) {
             PatientUser patientUser = patientUserDao.getPatientUserByRadarNo(demographics.getRadarNo());
@@ -330,5 +388,27 @@ public class UserManagerImpl implements UserManager {
             user.setFailedlogons(0);
             userDao.save(user);
         }
+    }
+
+    @Override
+    public boolean userExistsInRadar(Long userId) {
+        return radarDao.userExistsInRadar(userId);
+    }
+
+    @Override
+    public void createProfessionalUserInRadar(User user, String unitcode) {
+        // check to see if this user has an account already in radar and if they dont create one
+        Unit unit = unitDao.get(unitcode, null);
+
+        if (unit != null) {
+            radarDao.createProfessionalUserInRadar(user, unit);
+        } else {
+            LOGGER.error("Could not create admin user in radar " + user.getId());
+        }
+    }
+
+    @Override
+    public void removeUserFromRadar(Long userId) {
+        radarDao.removeUserFromRadar(userId);
     }
 }

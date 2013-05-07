@@ -4,6 +4,7 @@ import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,13 +31,11 @@ public interface UserManager {
 
     void save(User user);
 
-    User saveUserFromUnitAdmin(UnitAdmin unitAdmin);
+    User saveUserFromUnitAdmin(UnitAdmin unitAdmin, String unitcode);
 
     User saveUserFromPatient(PatientLogon patientLogon);
 
-    void delete(User user);
-
-    void delete(String username);
+    void delete(String username, String unitcode);
 
     List<User> getAllUsers();
 
@@ -62,7 +61,7 @@ public interface UserManager {
 
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
 
-    boolean existsInRadar(String nhsno);
+    boolean patientExistsInRadar(String nhsno);
 
     void incrementFailedLogins(String username);
 
@@ -71,4 +70,10 @@ public interface UserManager {
     void lockUserAccount(String username);
 
     void resetFailedLoginsForUser(String username);
+
+    boolean userExistsInRadar(Long userId);
+
+    void createProfessionalUserInRadar(User user, String unitcode);
+
+    void removeUserFromRadar(Long userId);
 }
