@@ -38,13 +38,14 @@ public class JoinRequest extends BaseModel {
     }
 
     public JoinRequest(String firstName, String lastName, Date dateOfBirth, String nhsNo, String unitcode,
-                       String email) {
+                       String email, Date dateOfRequest) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.nhsNo = nhsNo;
         this.unitcode = unitcode;
         this.email = email;
+        this.dateOfRequest = dateOfRequest;
     }
 
     public String getFirstName() {

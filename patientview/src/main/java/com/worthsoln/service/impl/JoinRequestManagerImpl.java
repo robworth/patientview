@@ -1,7 +1,6 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.model.JoinRequest;
-import com.worthsoln.patientview.model.News;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.JoinRequestDao;
 import com.worthsoln.service.JoinRequestManager;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
@@ -32,7 +30,6 @@ public class JoinRequestManagerImpl implements JoinRequestManager {
 
     @Override
     public void save(JoinRequest joinRequest) {
-        joinRequest.setDateOfRequest(new GregorianCalendar().getTime());
         joinRequestDao.save(joinRequest);
     }
 
