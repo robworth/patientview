@@ -474,7 +474,7 @@
         <dependency>
             <groupId>com.worthsoln</groupId>
             <artifactId>pvdbschema</artifactId>
-            <version>1.0-DEVELOP-SNAPSHOT</version>
+            <version>1.0-RELEASE-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 
