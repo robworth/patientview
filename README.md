@@ -23,7 +23,7 @@ Running locally using Intellij Idea or similar IDE
 
 - Setup your properties file.  It should be located at /src/main/filters/localhost-filters.properties.
 Copy this manually and complete for your local environment.  There is an example file in /src/main/resources/developer/localhost-filters.properties
-(Note: can may need to remove the submodule for filters that points to git@git.solidstategroup.com:patient_view_filters.git in the .gitmodules file)
+(Note: you may need to remove the submodule for filters that points to git@git.solidstategroup.com:patient_view_filters.git in the .gitmodules file)
 
 - Setup a maven run configuration that will build the following command:
 
