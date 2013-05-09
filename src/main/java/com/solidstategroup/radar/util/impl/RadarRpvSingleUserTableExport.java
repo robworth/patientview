@@ -41,7 +41,6 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private static final String USER_PASSWORD_FIELD_NAME = "password";
     private static final String USER_EMAIL_FIELD_NAME = "email";
     private static final String USER_NAME_FIELD_NAME = "name";
-    private static final String USER_SCREEN_NAME_FIELD_NAME = "screenname";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
     private static final String USER_EMAIL_VERIFIED_FIELD_NAME = "emailverified";
 
@@ -82,8 +81,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
-                        USER_SCREEN_NAME_FIELD_NAME);
+                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME);
 
         professionalUsersInsert = new SimpleJdbcInsert(dataSource).withTableName(PROFESSIONAL_USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(PROFESSIONAL_USER_ID_FIELD_NAME)
@@ -196,7 +194,6 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                         gpPatientUserMap.put(USER_NAME_FIELD_NAME, patientUser.getName() + "-GP");
                         gpPatientUserMap.put(USER_EMAIL_FIELD_NAME, null);
                         gpPatientUserMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
-                        gpPatientUserMap.put(USER_SCREEN_NAME_FIELD_NAME, "");
                         gpPatientUserMap.put(USER_EMAIL_VERIFIED_FIELD_NAME, true);
 
                         gpId = userInsert.executeAndReturnKey(gpPatientUserMap).longValue();

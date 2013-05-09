@@ -61,7 +61,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_PASSWORD_FIELD_NAME = "password";
     private static final String USER_EMAIL_FIELD_NAME = "email";
     private static final String USER_NAME_FIELD_NAME = "name";
-    private static final String USER_SCREEN_NAME_FIELD_NAME = "screenname";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
 
     // admin user fields
@@ -101,8 +100,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
-                        USER_SCREEN_NAME_FIELD_NAME);
+                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
@@ -421,7 +419,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, name);
         userMap.put(USER_EMAIL_FIELD_NAME, email);
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
-        userMap.put(USER_SCREEN_NAME_FIELD_NAME, "");
 
         userInsert.executeAndReturnKey(userMap);
 
@@ -613,7 +610,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, user.getName());
         userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
-        userMap.put(USER_SCREEN_NAME_FIELD_NAME, user.getUsername());
 
         if (user.hasValidUserId()) {
             namedParameterJdbcTemplate.update(buildUpdateQuery(USER_TABLE_NAME, ID_FIELD_NAME, userMap), userMap);
