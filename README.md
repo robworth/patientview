@@ -1,5 +1,73 @@
-patientview
-===========
+Patient View
+============
+
+Patient View allows patients to login and see their details, medicines, renal test results.
+
+Data is supplied by the patients renal unit.  It is sent to the Patient View server from the renal unit(s) via encrypted XML over SFTP,
+ then imported into the database.
+
+Health care professional can login to Patient View to administrate patients and unit users.
+
+
+Getting Starting
+================
+
+- Get running locally with the test database (see below)
+- Login as a patient and a superadmin (see below)
+
+
+Running locally using Intellij Idea or similar IDE
+==================================================
+
+- Import the mysql dump (/src/main/resources/developer/schema_data_patientview_develop.sql) into a local database called 'patientview'
+
+- Setup your properties file.  It should be located at /src/main/filters/localhost-filters.properties.
+Copy this manually and complete for your local environment.  There is an example file in /src/main/resources/developer/localhost-filters.properties
+(Note: can may need to remove the submodule for filters that points to git@git.solidstategroup.com:patient_view_filters.git in the .gitmodules file)
+
+- Setup a maven run configuration that will build the following command:
+
+`clean compile war:inplace tomcat7:run -Plocalhost`
+
+- Supply the following VM parameters to the run configuration runner tab to allocate enough memory and to allow the JSPs to compile:
+
+`-Xmx512m -XX:MaxPermSize=128m -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false`
+
+This will clear down any temporary files (as specified by the maven clean plugin and .gitignore file).
+Build the exploded war over the main/src/webapp directory.
+Starts an embedded Tomcat 7 server and runs the webapp.
+
+NOTE: The build is still dependent on Tomcat some of the configuration so you cannot use Jetty.
+
+
+Test Users
+==========
+
+- username: patient1    pass:  pppppp
+- username: patient2    pass:  pppppp
+- username: superadmin  pass:  pppppp
+
+
+Outsourced Development Process
+==============================
+
+- fork the outsourcing branch - it is called 'shinetech'
+- clone your new repo
+- implement new feature/bug fix
+- commit/push fix into your forked repo
+- submit pull request from your forked repo into https://github.com/robworth/patientview/tree/shinetech
+
+
+Debugging JSPs using Intellij Idea
+==================================
+
+- Not possible using the embedded tomcat maven plugin
+- Build the webapp using maven:
+
+`clean compile war:inplace`
+
+- Create a local Tomcat 7 run configuration and run the webapp directory as an exploded war artifact.
+- Make sure you turn off any "before launch" options so not to interfere with the maven output.
 
 
 Building a deployable WAR file & setting up a database
@@ -15,46 +83,17 @@ Building a deployable WAR file & setting up a database
 The war file will be built to the maven target directory.
 
 
-Running locally using Intellij Idea
-===================================
-
-- Setup a maven run configuration with the following goals:
-
-`clean compile war:inplace tomcat7:run`
-
-- Select the localhost profile
-
-- Supply the following VM parameters to the run configuration runner tab to allocate enough memory and to allow the JSPs to compile:
-
-`-Xmx512m -XX:MaxPermSize=128m -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false`
-
-This will clear down any temporary files (as specified by the maven clean plugin and .gitignore file).
-Build the exploded war over the main/src/webapp directory.
-Starts an embedded Tomcat 7 server and runs the webapp.
-
-NOTE: The build is still dependent of Tomcat due to datasource and configuration so you cannot use Jetty.
-
-
-Debugging JSPs using Intellij Idea
-==================================
-
-- Not possible using the embedded tomcat maven plugin
-- Build the webapp using maven:
-
-`clean compile war:inplace`
-
-- Create a local Tomcat 7 run configuration and run the webapp directory as an exploded war artifact.
-- Make sure you turn off any "before launch" options so not to interfere with the maven output.
-
-
 JPA annotations in Intellij Idea
 ================================
+
+It is best to let Maven handle this.  If you have issues with your IDE, you can try:
 
 - From the settings menu, go to Compiler - Annotation Processors
 - Enable annotation processing
 - Add an annotation processor: org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
 - Turn on processing for the patientview module: generated sources directory name: target/generated-sources
 - Make sure you have set the generated-sources directory to be on the classpath for the project
+
 
 Notes on using Git submodules
 =============================
@@ -114,20 +153,10 @@ The tenancy servlet filter
 - This filter has no responsibility for security - that is ALL handled by spring security.
 
 
-Enhancements to the spring security configuration
+Spring security configuration
 =================================================
 
-- Requests that don't start with a valid tenancy context will need to be dropped and considered an attempt to bypass spring security
-- The following should pass through:
-- /**/*.css
-- /**/*.js
-- /images/**/*
-- /login.jsp
-- /newsView.do?id=xyz
-- /disclaimer.do
-- /help.do
-- /index.do
-- /infoLinks.do
+- see context-security.xml
 
 Securing features per tenancy
 =============================
@@ -145,15 +174,3 @@ Administration Area
 ====================
 - Superadmin users can now be setup per tenancy.  A per tenancy superadmin implements the "specialityadmin" role described in the spec.
 
-Tasks for upgrading to JPA
-==========================
-
-- Refactor Hibernate code from Utils and Action classes into Manager and Dao interfaces
-- Move all classes managed by JPA into model package
-- Replace hibernate xml mappings with JPA annotations
-- Add id pk columns to tables
-- Review service level transactions are sufficient
-- Write test cases for each new Dao and Manager method
-
-- Review patients - it mixes JDBC and hibernate
-- Review how adding a PK to model classes will break all the forms - in particular the edit screens
