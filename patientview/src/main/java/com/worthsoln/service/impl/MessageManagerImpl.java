@@ -176,7 +176,7 @@ public class MessageManagerImpl implements MessageManager {
         Conversation conversation = getConversation(conversationId);
 
         // check if the logged in user is the recipient
-        if (conversation.getParticipant2().getId().equals(loggedInUserId)) {
+        if (conversation.getParticipant1().getId().equals(loggedInUserId)) {
             List<Message> unreadMessages = messageDao.getUnreadMessages(loggedInUserId, conversationId);
 
             for (Message message : unreadMessages) {
