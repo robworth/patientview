@@ -640,13 +640,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.worthsoln</groupId>
-            <artifactId>pvdbschema</artifactId>
-            <version>1.0-DEVELOP-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
 </project>
