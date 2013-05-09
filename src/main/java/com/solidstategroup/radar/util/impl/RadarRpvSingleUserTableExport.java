@@ -4,7 +4,6 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.Demographics;
 import com.solidstategroup.radar.model.user.AdminUser;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -118,136 +117,13 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                 " WHERE " +
                 "   sur.user_id = u.id " +
                 " AND " +
-                "   sur.role = 'unitadmin' " +
+                "   sur.role = 'unitstaff' " +
                 " AND " +
                 "   um.username = u.username " +
                 " AND " +
                 "   un.unitcode = um.unitcode ", new PatientViewUnitAdminRowMapper());
 
-        List<AdminUser> adminUsers = jdbcTemplate.query("SELECT * FROM tbl_adminusers", new AdminUserRowMapper());
-        for (AdminUser adminUser : adminUsers) {
-            try {
-                if (!checkForUsername(adminUser.getUsername())) {
-                    userDao.saveAdminUser(adminUser);
-                } else {
-                    failedUsers.add("Admin user found: " + adminUser.getId() + " - " + adminUser.getEmail());
-                }
-            } catch (Exception e) {
-                failedUsers.add("Could not save admin user found: " + adminUser.getId() + " - " + adminUser.getEmail());
-                e.printStackTrace();
-            }
-        }
 
-        List<ProfessionalUser> professionalUsers = jdbcTemplate.query("SELECT * FROM tbl_users",
-                new ProfessionalUserRowMapper());
-        for (ProfessionalUser professionalUser : professionalUsers) {
-            try {
-                if (!checkForUsername(professionalUser.getUsername())) {
-                    if (professionalUser.getUsername() != null && professionalUser.getUsername().length() > 0) {
-                        userDao.saveProfessionalUser(professionalUser);
-                    } else {
-                        failedUsers.add("Could not save professional user username was null: "
-                                + professionalUser.getId() + " - " + professionalUser.getEmail());
-                    }
-                } else {
-                    failedUsers.add("Professional user found: " + professionalUser.getId() + " - "
-                            + professionalUser.getEmail());
-                }
-            } catch (Exception e) {
-                failedUsers.add("Could not save professional user: " + professionalUser.getId() + " - "
-                        + professionalUser.getEmail());
-                e.printStackTrace();
-            }
-        }
-
-        List<PatientUser> patientUsers = jdbcTemplate.query("SELECT * FROM tbl_patient_users",
-                new PatientUserRowMapper());
-        for (PatientUser patientUser : patientUsers) {
-            /**
-             * Each patient also needs the following created in PV for logins to work
-             *
-             *  Mappings:
-             *
-             *  1. Mapping for unitcode PATIENT
-             *  2. Mapping for unitcode RenalUnit
-             *  3. Mapping for unitcode RenalUnit + -GP
-             *  4. Mapping for unitcode RenalUnit2
-             *  5. Mapping for unitcode RenalUnit2 + -GP
-             *
-             *  Roles:
-             *  1. Role for PATIENT
-             *  2. Role for PATIENT-GP
-             */
-            try {
-                if (!checkForUsername(patientUser.getUsername())) {
-                    // save main patient user
-                    userDao.savePatientUser(patientUser);
-
-                    Long gpId = getGPUserId(patientUser.getUsername() + "-GP");
-
-                    // if there isnt already a record for a gp then create one
-                    if (gpId == null || gpId <= 0) {
-                        // also need to save a 2nd user record in PV only for the -GP not sure about a mapping in Radar?
-                        Map<String, Object> gpPatientUserMap = new HashMap<String, Object>();
-                        gpPatientUserMap.put(USER_USERNAME_FIELD_NAME, patientUser.getUsername() + "-GP");
-                        gpPatientUserMap.put(USER_PASSWORD_FIELD_NAME, patientUser.getPassword());
-                        gpPatientUserMap.put(USER_NAME_FIELD_NAME, patientUser.getName() + "-GP");
-                        gpPatientUserMap.put(USER_EMAIL_FIELD_NAME, null);
-                        gpPatientUserMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
-                        gpPatientUserMap.put(USER_EMAIL_VERIFIED_FIELD_NAME, true);
-
-                        gpId = userInsert.executeAndReturnKey(gpPatientUserMap).longValue();
-                    }
-
-                    // need to create mappings for patient in PV
-                    Demographics demographics = demographicsDao.getDemographicsByRadarNumber(
-                            patientUser.getRadarNumber());
-
-                    if (demographics != null) {
-                        // 1. Mapping for unitcode PATIENT
-                        userDao.createUserMappingInPatientView(patientUser.getUsername(), demographics.getNhsNumber(),
-                                "PATIENT");
-
-                        // 2. Mapping for unitcode RenalUnit
-                        userDao.createUserMappingInPatientView(patientUser.getUsername(), demographics.getNhsNumber(),
-                                demographics.getRenalUnit().getUnitCode());
-
-                        // 3. Mapping for unitcode RenalUnit + -GP
-                        userDao.createUserMappingInPatientView(patientUser.getUsername() + "-GP",
-                                demographics.getNhsNumber(),
-                                demographics.getRenalUnit().getUnitCode());
-
-                        // 4. Mapping for unitcode RenalUnit2
-                        if (demographics.getRenalUnitAuthorised() != null) {
-                            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                                    demographics.getNhsNumber(),
-                                    demographics.getRenalUnitAuthorised().getUnitCode());
-
-                            // 5. Mapping for unitcode RenalUnit2 + -GP
-                            userDao.createUserMappingInPatientView(patientUser.getUsername() + "-GP",
-                                    demographics.getNhsNumber(),
-                                    demographics.getRenalUnitAuthorised().getUnitCode());
-                        }
-
-                        // 1. Role for PATIENT
-                        userDao.createRoleInPatientView(patientUser.getUserId(), "PATIENT");
-
-                        // 2. Role for PATIENT-GP
-                        userDao.createRoleInPatientView(gpId, "PATIENT");
-                    } else {
-                        failedUsers.add("Patient user demographic not found: " + patientUser.getId() + " - "
-                                + patientUser.getEmail());
-                    }
-                } else {
-                    failedUsers.add("Patient user found: " + patientUser.getId() + " - "
-                            + patientUser.getEmail());
-                }
-            } catch (Exception e) {
-                failedUsers.add("Could not save patient user found: " + patientUser.getId() + " - "
-                        + patientUser.getEmail());
-                e.printStackTrace();
-            }
-        }
 
         // move pv users to radar
         for (ProfessionalUser professionalUser : patientViewUnitAdmins) {
@@ -270,6 +146,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                     professionalUser.setId(id.longValue());
 
                     userDao.saveUserMapping(professionalUser);
+                    LOGGER.info("updated unitstaff: " + professionalUser.getUsername());
                 } catch (Exception e) {
                     failedUsers.add("PV unitadmin failed: " + professionalUser.getId() + " - "
                             + professionalUser.getEmail());
