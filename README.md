@@ -48,6 +48,19 @@ Test Users
 - username: superadmin  pass:  pppppp
 
 
+Running Tests
+=============
+
+Tests run against a separate db and rebuild the schema and data from scratch for each test run.
+
+- Setup your properties file.  It should be located at /src/main/filters/test-filters.properties.
+  Copy this manually and complete for your local environment.
+- Set your jdbc.databasename and jdbc.url properties to point to a new empty database
+- Run the tests
+
+`mvn test -Ptest
+
+
 Outsourced Development Process
 ==============================
 
