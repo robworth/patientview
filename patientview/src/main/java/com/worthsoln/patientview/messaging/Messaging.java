@@ -16,7 +16,7 @@ public class Messaging {
     public static final String UNIT_PATIENT_RECIPIENTS_PARAM = "unitPatientRecipients";
     public static final String NO_EMAIL_SET_PARAM = "noEmailSet";
     public static final String NO_RECIPIENTS_PARAM = "noRecipients";
-    public static final String UNITS_PARAM = "units";
+    public static final String UNITS_PARAM = "units_for_messaging";
     public static final String UNIT_CODE_PARAM = "unitCode";
     public static final String IS_READER_THE_RECIPIENT = "isReaderTheRecipient";
 
