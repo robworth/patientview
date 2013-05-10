@@ -58,7 +58,7 @@ Tests run against a separate db and rebuild the schema and data from scratch for
 - Set your jdbc.databasename and jdbc.url properties to point to a new empty database
 - Run the tests
 
-`mvn test -Ptest
+`mvn test -Ptest'
 
 
 Outsourced Development Process
