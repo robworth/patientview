@@ -19,6 +19,7 @@ import org.apache.struts.action.DynaActionForm;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class JoinRequestSubmitAction extends BaseAction {
@@ -55,7 +56,8 @@ public class JoinRequestSubmitAction extends BaseAction {
         /**
          * save the join request
          */
-        JoinRequest joinRequest = new JoinRequest(firstName, lastName, dateOfBirth, nhsNo, unitcode, email);
+        JoinRequest joinRequest = new JoinRequest(firstName, lastName, dateOfBirth, nhsNo, unitcode, email,
+                new GregorianCalendar().getTime());
         LegacySpringUtils.getJoinRequestManager().save(joinRequest);
 
         /**
@@ -81,7 +83,7 @@ public class JoinRequestSubmitAction extends BaseAction {
         Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
 
         if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
-            toAddress = request.getSession().getServletContext().getInitParameter("support.email");
+            toAddress = request.getSession().getServletContext().getInitParameter("admin.email.to");
         } else {
             toAddress = unit.getRenaladminemail();
         }

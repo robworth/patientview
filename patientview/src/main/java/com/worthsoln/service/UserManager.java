@@ -31,13 +31,11 @@ public interface UserManager {
 
     void save(User user);
 
-    User saveUserFromUnitAdmin(UnitAdmin unitAdmin);
+    User saveUserFromUnitAdmin(UnitAdmin unitAdmin, String unitcode);
 
     User saveUserFromPatient(PatientLogon patientLogon);
 
-    void delete(User user);
-
-    void delete(String username);
+    void delete(String username, String unitcode);
 
     List<User> getAllUsers();
 
@@ -63,7 +61,7 @@ public interface UserManager {
 
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
 
-    boolean existsInRadar(String nhsno);
+    boolean patientExistsInRadar(String nhsno);
 
     void incrementFailedLogins(String username);
 

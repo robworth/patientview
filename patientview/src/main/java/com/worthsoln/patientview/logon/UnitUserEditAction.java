@@ -28,7 +28,7 @@ public class UnitUserEditAction extends Action {
 
         UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
 
-        LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin);
+        LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin, unitcode);
 
         Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
         request.setAttribute("unit", unit);

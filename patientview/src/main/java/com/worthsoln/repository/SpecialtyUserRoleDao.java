@@ -16,4 +16,6 @@ public interface SpecialtyUserRoleDao {
     List<SpecialtyUserRole> get(User user);
 
     void save(SpecialtyUserRole specialtyUserRole);
+
+    void delete(SpecialtyUserRole specialtyUserRole);
 }

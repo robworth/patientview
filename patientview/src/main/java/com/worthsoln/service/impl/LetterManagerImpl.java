@@ -51,4 +51,9 @@ public class LetterManagerImpl implements LetterManager {
     public void delete(String nhsno, String unitcode) {
         letterDao.delete(nhsno, unitcode);
     }
+
+    @Override
+    public void delete(Long id) {
+        letterDao.delete(id);
+    }
 }
