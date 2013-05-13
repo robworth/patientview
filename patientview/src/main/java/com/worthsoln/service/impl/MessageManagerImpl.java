@@ -173,13 +173,11 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public void markMessagesAsReadForConversation(Long loggedInUserId, Long conversationId) {
-        Conversation conversation = getConversation(conversationId);
+        List<Message> unreadMessages = messageDao.getUnreadMessages(loggedInUserId, conversationId);
 
-        // check if the logged in user is the recipient
-        if (conversation.getParticipant2().getId().equals(loggedInUserId)) {
-            List<Message> unreadMessages = messageDao.getUnreadMessages(loggedInUserId, conversationId);
-
-            for (Message message : unreadMessages) {
+        for (Message message : unreadMessages) {
+            // check if the logged in user is the recipient
+            if (message.getRecipient().getId().equals(loggedInUserId)) {
                 message.setHasRead(true);
                 messageDao.save(message);
             }

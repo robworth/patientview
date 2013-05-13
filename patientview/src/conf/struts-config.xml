@@ -279,6 +279,11 @@
       <forward name="patient" path="/login-success.jsp"/>
       <forward name="admin" path="/control/index.jsp"/>
     </action>
+    <action path="/back_to_admin"
+              type="com.worthsoln.patientview.logon.BackToAdminAction" parameter="index">
+          <forward name="patient" path="/login-success.jsp"/>
+          <forward name="admin" path="/control/index.jsp"/>
+    </action>
     <action path="/logout"
             type="com.worthsoln.patientview.logon.LogoutAction" parameter="index">
       <forward name="success" path="/index.jsp"/>
@@ -1121,7 +1126,13 @@
       <forward name="success" path="/control/splash_page_list.jsp"/>
     </action>
 
-    <action path="/control/version"
+      <action path="/control/joinReqestList"
+              type="com.worthsoln.patientview.join.JoinRequestListForUnitAction"
+             >
+          <forward name="success" path="/control/join_request_list.jsp"/>
+      </action>
+
+      <action path="/control/version"
             type="com.worthsoln.patientview.IndexAction" parameter="index">
       <forward name="success" path="/control/version.jsp"/>
     </action>
