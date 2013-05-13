@@ -84,6 +84,8 @@
         }
     %>
 
+    <li><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Help?</html:link></li>
+
     <logic:present feature="messaging">
         <%
         // need to get the number of unread messages if they have any
