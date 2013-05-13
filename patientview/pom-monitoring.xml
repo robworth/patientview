@@ -18,9 +18,9 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>staging</id>
             <properties>
-                <env>dev</env>
+                <env>staging</env>
             </properties>
         </profile>
         <profile>
@@ -42,7 +42,7 @@
 
         <filters>
             <!--Uses e.g. filters/<env>-filters.properties to overlay patientview.properties, other property files -->
-            <filter>src/main/filters/${env}-monitor-filters.properties</filter>
+            <filter>src/main/filters/${env}-filters.properties</filter>
         </filters>
 
         <plugins>

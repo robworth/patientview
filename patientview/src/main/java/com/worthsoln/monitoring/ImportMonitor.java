@@ -20,7 +20,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,8 +32,6 @@ import java.util.Properties;
 
 /**
  * Monitors XML Import process to see if it is stalled or not working properly
- * <p/>
- * Assumes records are created every minute in the file that contains file counts
  *
  * @author Deniz Ozger
  */
@@ -56,7 +56,6 @@ public class ImportMonitor {
     private static final int CARRIAGE_RETURN = 0xD;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportMonitor.class);
-    private static final Logger COUNT_LOGGER = LoggerFactory.getLogger("count");
 
     public static void main(String[] args) {
         LOGGER.info("ImportMonitor starts");
@@ -70,7 +69,6 @@ public class ImportMonitor {
         /**
          * Write the counts to the file
          */
-        // todo create a new logging level
         logNumberOfFiles(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
 
         /**
@@ -101,22 +99,45 @@ public class ImportMonitor {
         LOGGER.info("ImportMonitor ends");
     }
 
+    /**
+     * Appends the current time and file counts to importer data file
+     */
     private static void logNumberOfFiles(int protonDirectoryFileCount, int rpvXmlDirectoryFileCount) {
+        File countFile = new File(getProperty("importer.data.file.location"));
 
+        try {
+            FileOutputStream fileOutStream = new FileOutputStream(countFile, true); // append data
 
-        COUNT_LOGGER.info("protonDirectoryFileCount {}", protonDirectoryFileCount);
-        COUNT_LOGGER.info("rpvXmlDirectoryFileCount {}", rpvXmlDirectoryFileCount);
+            fileOutStream.write(
+                    getCountDataToWriteToFile(protonDirectoryFileCount, rpvXmlDirectoryFileCount).getBytes());
 
-
+            fileOutStream.flush();
+            fileOutStream.close();
+        } catch (IOException e) {
+            LOGGER.error("Could not persist number of Proton and RpvXml files", e);
+        }
     }
 
+    /**
+     * Returns the record that needs to be appended to importer data file
+     */
+    private static String getCountDataToWriteToFile(int protonDirectoryFileCount, int rpvXmlDirectoryFileCount) {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(RECORD_DATE_FORMAT);
+
+        return "\n" + dateTimeFormat.format(new Date()) + RECORD_DATA_DELIMITER + protonDirectoryFileCount +
+                RECORD_DATA_DELIMITER + rpvXmlDirectoryFileCount;
+    }
+
+    /**
+     * Returns number of files in a directory, excluding hidden files of unix environment and directories
+     */
     private static int getNumberOfFilesInDirectory(String directoryPath) {
         File[] files = new File(directoryPath).listFiles();
 
         int count = 0;
         if (files != null) {
             for (File file : files) {
-                if (file.isFile() && !file.getName().startsWith(".")) { // don't want hidden files
+                if (file.isFile() && !file.getName().startsWith(".")) { // no no no, we don't want any hidden files
                     count++;
                 }
             }
@@ -131,7 +152,7 @@ public class ImportMonitor {
         String body = getWarningEmailBody(importerError, countRecords);
 
         try {
-            Resource resource = new ClassPathResource("/patientview.properties");
+            Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
             Properties props = PropertiesLoaderUtils.loadProperties(resource);
 
             String fromAddress = props.getProperty("noreply.email");
@@ -149,6 +170,10 @@ public class ImportMonitor {
             throw new IllegalArgumentException("Cannot send mail missing 'from'");
         }
 
+        if ((to == null || to.length == 0) && (bcc == null || bcc.length == 0)) {
+            throw new IllegalArgumentException("Cannot send mail missing recipients");
+        }
+
         if (!StringUtils.hasLength(subject)) {
             throw new IllegalArgumentException("Cannot send mail missing 'subject'");
         }
@@ -157,9 +182,9 @@ public class ImportMonitor {
             throw new IllegalArgumentException("Cannot send mail missing 'body'");
         }
 
-        if ((to == null || to.length == 0) && (bcc == null || bcc.length == 0)) {
-            throw new IllegalArgumentException("Cannot send mail missing recipients");
-        }
+        System.out.println("From: " + from);
+        System.out.println("To: " + to[0]);
+
 
         ApplicationContext context =
                 new ClassPathXmlApplicationContext(new String[]{"classpath*:context-standalone.xml"});
@@ -219,6 +244,9 @@ public class ImportMonitor {
         return emailBody;
     }
 
+    /**
+     * Checks if the number of files in given directories are static over a certain period of time
+     */
     private static boolean isNumberOfFilesStatic(List<CountRecord> countRecords) {
         boolean protonFilesAreStatic = true;
         boolean rpvXmlFilesAreStatic = true;
@@ -257,6 +285,11 @@ public class ImportMonitor {
         return protonFilesAreStatic || rpvXmlFilesAreStatic;
     }
 
+    /**
+     * Checks if the number of pending files for importer exceeds a given limit
+     *
+     * @param pendingFileLimit max number of files that's allowed
+     */
     private static boolean doesNumberOfPendingFilesExceedLimit(List<CountRecord> countRecords, int pendingFileLimit) {
         if (countRecords.size() > 0) {
             List<CountRecord> countRecordsToTest = new ArrayList<CountRecord>(countRecords);
@@ -310,12 +343,19 @@ public class ImportMonitor {
                     if (numberOfLinesRead == numberOfLinesToReturn) {
                         break;
                     }
-
                     /**
                      * add line to line list
                      */
-                    lastNLines.add(sb.reverse().toString());
+                    String currentLine = sb.reverse().toString();
                     sb = new StringBuilder();
+
+                    if (StringUtils.hasLength(currentLine)) {
+                        lastNLines.add(currentLine);
+
+                    } else {
+                        LOGGER.error("Read line does not contain any data");
+                        continue;
+                    }
                 } else {
                     sb.append((char) readByte);
                 }
@@ -327,10 +367,10 @@ public class ImportMonitor {
             lastNLines.add(sb.reverse().toString());
 
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can not read file {}", fileLocationProperty, e.getMessage());
+            LOGGER.error("Can not read file {}", fileLocationProperty, e);
         } catch (IOException e) {
             LOGGER.error("Can not read file {} or properties file {}",
-                    new Object[]{fileLocationProperty, PROJECT_PROPERTIES_FILE}, e.getMessage());
+                    new Object[]{fileLocationProperty, PROJECT_PROPERTIES_FILE}, e);
         } finally {
             if (fileHandler != null) {
                 try {
@@ -378,7 +418,7 @@ public class ImportMonitor {
                         Integer.parseInt(numberOfFilesInProtonDirectory),
                         Integer.parseInt(numberOfFilesInRpvXmlDirectory)));
             } else {
-                LOGGER.error("Invalid record {}", line);
+                LOGGER.error("Invalid record: {}", line);
             }
         }
 
@@ -403,7 +443,7 @@ public class ImportMonitor {
             DateTime dateTime = fmt.parseDateTime(maybeDate);
             date = dateTime.toDate();
         } catch (Exception e) {
-            LOGGER.error("Invalid date: {}", maybeDate, e.getMessage());
+            LOGGER.error("Invalid date: {}", maybeDate, e);
         }
 
         return date;
