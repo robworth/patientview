@@ -32,6 +32,8 @@
         <logic:present role="superadmin,unitadmin">
             <li><html:link action="/control/patientAddInput">Add Patient</html:link></li>
             <li><html:link action="/control/logView">View Log</html:link></li>
+            <li class="divider"></li>
+            <li><html:link action="/control/joinReqestList">Join Requests</html:link></li>
             <logic:present specialty="renal">
                 <li class="divider"></li>
                 <li><html:link action="/control/feedbackUnitSelect">Feedback</html:link></li>

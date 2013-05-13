@@ -19,6 +19,7 @@ import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +45,7 @@ public class ImportMonitor {
     private static final int DATE_POSITION_IN_RECORD = 0;
     private static final int NUMBER_OF_FILES_IN_PROTON_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 1;
     private static final int NUMBER_OF_FILES_IN_RPV_XML_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 2;
+    private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
 
     private static enum ImporterError {
         NUMBER_OF_FILES_IS_STATIC,
@@ -54,25 +56,28 @@ public class ImportMonitor {
     private static final int CARRIAGE_RETURN = 0xD;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportMonitor.class);
+    private static final Logger COUNT_LOGGER = LoggerFactory.getLogger("count");
 
     public static void main(String[] args) {
         LOGGER.info("ImportMonitor starts");
 
         /**
+         * Count the number of pending files in both importer directories
+         */
+        int protonDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.proton_files.directory.path"));
+        int rpvXmlDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.rpvxml_files.directory.path"));
+
+        /**
+         * Write the counts to the file
+         */
+        // todo create a new logging level
+        logNumberOfFiles(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
+
+        /**
          * Read some lines from the file
          */
 
-        List<String> lines = new ArrayList<String>();
-        Resource resource = new ClassPathResource("/patientview.properties");
-        try {
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
-
-            String fileLocation = props.getProperty("importer.data.file.location");
-
-            lines = getLastNLinesOfFile(new File(fileLocation), NUMBER_OF_LINES_TO_READ);
-        } catch (IOException e) {
-            LOGGER.error("Could not find properties file: {}", e);
-        }
+        List<String> lines = getLastNLinesOfFile("importer.data.file.location", NUMBER_OF_LINES_TO_READ);
 
         /**
          * Convert them to Record objects
@@ -94,6 +99,30 @@ public class ImportMonitor {
         }
 
         LOGGER.info("ImportMonitor ends");
+    }
+
+    private static void logNumberOfFiles(int protonDirectoryFileCount, int rpvXmlDirectoryFileCount) {
+
+
+        COUNT_LOGGER.info("protonDirectoryFileCount {}", protonDirectoryFileCount);
+        COUNT_LOGGER.info("rpvXmlDirectoryFileCount {}", rpvXmlDirectoryFileCount);
+
+
+    }
+
+    private static int getNumberOfFilesInDirectory(String directoryPath) {
+        File[] files = new File(directoryPath).listFiles();
+
+        int count = 0;
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && !file.getName().startsWith(".")) { // don't want hidden files
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     private static void sendWarningEmail(ImporterError importerError, List<CountRecord> countRecords) {
@@ -253,11 +282,13 @@ public class ImportMonitor {
     /**
      * Returns the last N lines of a file. Assumes lines are terminated by |n ascii character
      */
-    private static List<String> getLastNLinesOfFile(File file, int numberOfLinesToReturn) {
+    private static List<String> getLastNLinesOfFile(String fileLocationProperty, int numberOfLinesToReturn) {
         List<String> lastNLines = new ArrayList<String>();
         java.io.RandomAccessFile fileHandler = null;
 
         try {
+            File file = new File(getProperty(fileLocationProperty));
+
             fileHandler = new java.io.RandomAccessFile(file, "r");
 
             long totalNumberOfCharactersInFile = file.length() - 1;
@@ -295,10 +326,11 @@ public class ImportMonitor {
              */
             lastNLines.add(sb.reverse().toString());
 
-        } catch (java.io.FileNotFoundException e) {
-            LOGGER.error("Can not read file {}", file.getAbsolutePath() + file.getName(), e.getMessage());
-        } catch (java.io.IOException e) {
-            LOGGER.error("Can not read file {}", file.getAbsolutePath() + file.getName(), e.getMessage());
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can not read file {}", fileLocationProperty, e.getMessage());
+        } catch (IOException e) {
+            LOGGER.error("Can not read file {} or properties file {}",
+                    new Object[]{fileLocationProperty, PROJECT_PROPERTIES_FILE}, e.getMessage());
         } finally {
             if (fileHandler != null) {
                 try {
@@ -310,6 +342,22 @@ public class ImportMonitor {
         }
 
         return lastNLines;
+    }
+
+    private static String getProperty(String propertyName) {
+        Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
+        Properties props = null;
+        String propertyValue = "";
+
+        try {
+            props = PropertiesLoaderUtils.loadProperties(resource);
+
+            propertyValue = props.getProperty(propertyName);
+        } catch (IOException e) {
+            LOGGER.error("Could not find properties file: {}", e);
+        }
+
+        return propertyValue;
     }
 
     /**

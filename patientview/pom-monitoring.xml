@@ -31,10 +31,6 @@
         </profile>
     </profiles>
 
-
-    <!-- mvn clean compile assembly:single -->
-
-
     <build>
         <resources>
             <!-- resource files with filtering to output to target/classes -->
@@ -45,8 +41,8 @@
         </resources>
 
         <filters>
-            <!--Uses e.g. filters/<env>-filters.properties to overlay cms.properties, other property files -->
-            <filter>src/main/filters/${env}-filters.properties</filter>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay patientview.properties, other property files -->
+            <filter>src/main/filters/${env}-monitor-filters.properties</filter>
         </filters>
 
         <plugins>
