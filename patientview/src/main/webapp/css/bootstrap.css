@@ -4981,3 +4981,7 @@ a.badge:hover {
 .invisible {
   visibility: hidden;
 }
+
+.details-tbl-width {
+    width: 620px;
+}
