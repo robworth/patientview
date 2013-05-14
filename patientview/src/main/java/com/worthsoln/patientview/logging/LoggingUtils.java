@@ -20,17 +20,24 @@ class LoggingUtils {
     }
 
     static Calendar getDefaultEndDateForLogQuery() {
-        Calendar startdate = Calendar.getInstance();
-        startdate.set(Calendar.HOUR_OF_DAY, 23);
-        startdate.set(Calendar.MINUTE, 59);
-        return startdate;
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(Calendar.HOUR_OF_DAY, 23);
+        endDate.set(Calendar.MINUTE, 59);
+        endDate.set(Calendar.SECOND, 59);
+        endDate.set(Calendar.MILLISECOND, 999);
+
+        return endDate;
     }
 
     static Calendar getStartDateForLogQuery(int calendarField, int amountToAdd) {
-        Calendar startdate = Calendar.getInstance();
-        startdate.set(Calendar.HOUR_OF_DAY, 0);
-        startdate.set(Calendar.MINUTE, 0);
-        startdate.add(calendarField, amountToAdd);
-        return startdate;
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+        startDate.set(Calendar.SECOND, 0);
+        startDate.set(Calendar.MILLISECOND, 0);
+
+        startDate.add(calendarField, amountToAdd);
+
+        return startDate;
     }
 }

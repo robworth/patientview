@@ -1,9 +1,11 @@
 package com.worthsoln.patientview;
 
+import com.worthsoln.ibd.model.enums.XmlImportNotification;
 import com.worthsoln.patientview.exception.XmlImportException;
 import com.worthsoln.patientview.model.CorruptNode;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
+import com.worthsoln.utils.LegacySpringUtils;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 
@@ -34,8 +36,12 @@ public class XmlImportUtils {
 
         String toAddress = allocateToAddress(context, unit);
 
-        EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
-                            "[PatientView] File import failed: " + fileName, emailBody);
+        List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                                    XmlImportNotification.FAILED_IMPORT);
+
+        EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+                                        ccAddresses.toArray(new String[ccAddresses.size()]),
+                                        "[PatientView] File import failed: " + fileName, emailBody);
     }
 
     public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
@@ -49,11 +55,15 @@ public class XmlImportUtils {
 
         String[] toAddresses = new String[]{context.getInitParameter("warning.email"), rpvAdminEmailAddress};
 
+        List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                            XmlImportNotification.FAILED_IMPORT);
+
         String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName, context);
 
         for (String toAddress : toAddresses) {
-            EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
-                    "[PatientView] File import failed: " + xmlFileName, emailBody);
+            EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+                                ccAddresses.toArray(new String[ccAddresses.size()]),
+                                "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
     }
 
@@ -117,16 +127,18 @@ public class XmlImportUtils {
             String stacktrace = extractErrorsFromException(e);
 
             String fileName = xmlFile.getName();
-
             String unitcode = fileName.substring(0, fileName.indexOf("_"));
 
             Unit unit = UnitUtils.retrieveUnit(unitcode);
-
             String toAddress = allocateToAddress(context, unit);
+
+            List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                    XmlImportNotification.FAILED_IMPORT);
 
             String emailBody = createEmailBody(context, stacktrace, fileName);
 
-            EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), toAddress,
+            EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+                    ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
 
         } catch (Exception e1) {
@@ -165,7 +177,7 @@ public class XmlImportUtils {
         String toAddress = "";
 
         if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
-            toAddress = context.getInitParameter("support.email");
+            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress(context);
         } else {
             toAddress = unit.getRenaladminemail();
         }

@@ -40,13 +40,13 @@ public class PatientManagerTest extends BaseServiceTest {
         specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description 2");
 
         // create an admin adminUser and specialty and log them in
-        User adminUser = serviceHelpers.createUser("admin1", "admin1@test.com", "pass", "Test Unit Admin", "Testy");
+        User adminUser = serviceHelpers.createUser("admin1", "admin1@test.com", "pass", "Test Unit Admin");
         serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "unitadmin");
         securityHelpers.loginAsUser(adminUser.getUsername(), specialty1);
 
         // setup a system with a user with 2 specialty roles
         user = serviceHelpers.createUserWithMapping("Username", "username@test.com", "pass", "Test User",
-                "Testy", "unitcode1", "nhsno1", specialty1);
+                "unitcode1", "nhsno1", specialty1);
 
 
         serviceHelpers.createSpecialtyUserRole(specialty1, user, "patient");

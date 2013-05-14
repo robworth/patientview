@@ -1,8 +1,0 @@
-Hello, 
-
-Az�rt kaptad ezt az e-mailt, mert valaki �j t�m�t ind�tott a f�rumunkban. Az �j t�ma c�me:  "${topic.title}",
-�s a k�vetkez� c�men �rheted el: 
-
-${path}
-
-Ha nem akarsz t�bb �rtes�t�st kapni err�l a f�rumr�l, akkor kattints ide: ${unwatch}

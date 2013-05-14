@@ -56,6 +56,14 @@ public class UnitAdminAddAction extends Action {
             hashedUnitAdmin.setPassword(LogonUtils.hashPassword(hashedUnitAdmin.getPassword()));
             User user = LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin, unitcode);
 
+            UserMapping userMapping = new UserMapping(username, unitcode, "");
+            LegacySpringUtils.getUserManager().save(userMapping);
+
+            // create mappings in radar if they dont already exist
+            if (!LegacySpringUtils.getUserManager().userExistsInRadar(user.getId())) {
+                LegacySpringUtils.getUserManager().createProfessionalUserInRadar(user, unitcode);
+            }
+
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD,
                     unitAdmin.getUsername(), "",
                     unitcode, "");

@@ -34,7 +34,6 @@ public class PatientEditAction extends Action {
         String failedlogonsstring = BeanUtils.getProperty(form, "failedlogons");
         int failedlogons = Integer.decode(failedlogonsstring);
         boolean accountlocked = "true".equals(BeanUtils.getProperty(form, "accountlocked"));
-        String screenname = BeanUtils.getProperty(form, "screenname");
         String mappingToFind = "";
 
         List duplicateUsers = findDuplicateUsers(nhsno, username);
@@ -46,7 +45,7 @@ public class PatientEditAction extends Action {
 
             PatientLogon patient =
                     new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient, lastlogon,
-                            failedlogons, accountlocked, screenname);
+                            failedlogons, accountlocked);
             LegacySpringUtils.getUserManager().saveUserFromPatient(patient);
 
             List<UserMapping> userMappings = findUsersSiblings(username, unitcode);

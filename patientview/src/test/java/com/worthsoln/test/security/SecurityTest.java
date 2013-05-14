@@ -51,7 +51,7 @@ public class SecurityTest extends BaseServiceTest {
 
     @Before
     public void setupSpecialties() {
-        user = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User", "Testy");
+        user = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User");
 
         specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description 2");

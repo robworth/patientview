@@ -68,7 +68,6 @@
       <form-property name="failedlogons" type="java.lang.String"/>
       <form-property name="accountlocked" type="java.lang.String"/>
       <form-property name="showgps" type="java.lang.String"/>
-      <form-property name="screenname" type="java.lang.String"/>
       <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
     </form-bean>
     <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
@@ -216,6 +215,9 @@
       <form-property name="aboutme" type="java.lang.String"/>
       <form-property name="talkabout" type="java.lang.String"/>
     </form-bean>
+    <form-bean name="letterForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+    </form-bean>
     <form-bean name="feedbackForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="id" type="java.lang.String"/>
       <form-property name="username" type="java.lang.String"/>
@@ -277,6 +279,11 @@
       <forward name="patient" path="/login-success.jsp"/>
       <forward name="admin" path="/control/index.jsp"/>
     </action>
+    <action path="/back_to_admin"
+              type="com.worthsoln.patientview.logon.BackToAdminAction" parameter="index">
+          <forward name="patient" path="/login-success.jsp"/>
+          <forward name="admin" path="/control/index.jsp"/>
+    </action>
     <action path="/logout"
             type="com.worthsoln.patientview.logon.LogoutAction" parameter="index">
       <forward name="success" path="/index.jsp"/>
@@ -297,13 +304,6 @@
           <forward name="error" path="/logout.do" redirect="true"/>
           <forward name="success" path="/logged_in.do" redirect="true"/>
       </action>
-
-    <action path="/setscreenname"
-      type="com.worthsoln.forum.ScreenNameAction" parameter="index">
-      <forward name="input" redirect="false" path="/set-screenname.jsp"/>
-      <forward name="success" redirect="true" path="/forums/list.page"/>
-    </action>
-
 
     <action path="/emailverification"
             type="com.worthsoln.patientview.user.EmailVerificationAction" parameter="index">
@@ -329,12 +329,6 @@
           <forward name="input" path="/patient/patient_details.jsp"/>
           <forward name="success" path="/patient/patient_details.do?success=true"/>
       </action>
-
-    <!-- TODO get rid of this temporary action -->
-    <action path="/patient/forum"
-            type="com.worthsoln.patientview.IndexAction" parameter="forum">
-      <forward name="success" path="/patient/forum.jsp"/>
-    </action>
 
     <action path="/patient/index"
             type="com.worthsoln.patientview.IndexAction" parameter="index">
@@ -686,7 +680,13 @@
       <forward name="success" path="/control/edta_codes.jsp"/>
     </action>
 
-    <action path="/control/resultHeadingDisplay"
+      <action path="/control/letterDelete"
+              type="com.worthsoln.patientview.letter.LetterDeleteAction" parameter="letters"
+              name="letterForm">
+          <forward name="success" path="/patient/letters.jsp"/>
+      </action>
+
+      <action path="/control/resultHeadingDisplay"
             type="com.worthsoln.patientview.resultheading.ResultHeadingDisplayAction"
             parameter="resultHeading">
       <forward name="success" path="/control/result_headings.jsp"/>

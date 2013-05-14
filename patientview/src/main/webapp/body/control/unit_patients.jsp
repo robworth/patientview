@@ -24,6 +24,7 @@
             <tr>
                 <th class="tableheader">Name<br />(edit)</th>
                 <th class="tableheader">NHS Number<br />(view patient)</th>
+                <th class="tableheader">Unit Code</th>
                 <th class="tableheader">Treatment</th>
                 <th colspan="4">&nbsp;</th>
             </tr>
@@ -62,6 +63,9 @@
                         <html:link action="/control/patientView" paramId="username" paramName="patient" paramProperty="username" >
                             <bean:write name="patient" property="nhsno"/>
                         </html:link>
+                    </td>
+                    <td class="tablecell">
+                        <bean:write name="patient" property="unitcode"/>
                     </td>
                     <td class="tablecell">
                         <logic:empty name="patient" property="treatment">(no record)</logic:empty>

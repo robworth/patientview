@@ -249,4 +249,13 @@
         </property>
     </bean>
 
+    <bean id="setAdminNotificationManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setAdminNotificationManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="adminNotificationManager"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

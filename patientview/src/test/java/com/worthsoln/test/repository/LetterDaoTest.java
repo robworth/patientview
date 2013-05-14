@@ -61,7 +61,7 @@ public class LetterDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testDeleteLetter() throws Exception {
+    public void testDeleteLetterByParameters() throws Exception {
         Letter letter = getTestObject();
 
         /**
@@ -75,6 +75,27 @@ public class LetterDaoTest extends BaseDaoTest {
          * delete
          */
         letterDao.delete(letter.getNhsno(), letter.getUnitcode());
+
+        List<Letter> deletedLetters = letterDao.getAll();
+
+        assertTrue("Can't delete letter", deletedLetters.size() == 0);
+    }
+
+    @Test
+    public void testDeleteLetterById() throws Exception {
+        Letter letter = getTestObject();
+
+        /**
+         * add
+         */
+        letterDao.save(letter);
+
+        assertTrue("Invalid id for new letter", letter.getId() > 0);
+
+        /**
+         * delete
+         */
+        letterDao.delete(letter.getId());
 
         List<Letter> deletedLetters = letterDao.getAll();
 

@@ -1,16 +1,17 @@
 package com.worthsoln.patientview.uktransplant;
 
+import com.Ostermiller.util.CSVPrinter;
+import com.worthsoln.patientview.ParserThread;
+import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.utils.LegacySpringUtils;
+
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.servlet.ServletContext;
-import com.Ostermiller.util.CSVPrinter;
-import com.worthsoln.patientview.ParserThread;
-import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.utils.LegacySpringUtils;
 
 public class UktExportThread implements Runnable, ParserThread {
 
@@ -60,11 +61,11 @@ public class UktExportThread implements Runnable, ParserThread {
         String[][] patientArray = new String[patientList.size()][5];
         for (int i = 0; i < patientList.size(); i++) {
             Patient patient = (Patient) patientList.get(i);
-            patientArray[i][0] = patient.getNhsno();
-            patientArray[i][1] = patient.getSurname().replaceAll("\"", "");
-            patientArray[i][2] = patient.getForename().replaceAll("\"", "");
-            patientArray[i][3] = patient.getDateofbirth();
-            patientArray[i][4] = patient.getPostcode();
+            patientArray[i][0] = (patient.getNhsno() == null) ? "" : patient.getNhsno();
+            patientArray[i][1] = (patient.getSurname() == null) ? "" : patient.getSurname().replaceAll("\"", "");
+            patientArray[i][2] = (patient.getForename() == null) ? "" : patient.getForename().replaceAll("\"", "");
+            patientArray[i][3] = (patient.getDateofbirth() == null) ? "" : patient.getDateofbirth();
+            patientArray[i][4] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
         }
         return patientArray;
     }

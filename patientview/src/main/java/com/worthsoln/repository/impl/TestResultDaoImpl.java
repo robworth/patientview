@@ -143,7 +143,7 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
                                                  Date endDate) {
 
         Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = " +
-                ":unitcode AND testcode = :testcode AND datestamp > :startDate AND datestamp < :endDate");
+                ":unitcode AND testcode = :testcode AND datestamp >= :startDate AND datestamp <= :endDate");
 
         query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);

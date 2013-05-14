@@ -1,6 +1,0 @@
-<#setting number_format = "#"/>
-Ol� ${user.username}, 
-
-Voc� possui uma nova mensagem privada no ${forumName}. Voc� pode l�-la clicando no link abaixo:
-
-${path}

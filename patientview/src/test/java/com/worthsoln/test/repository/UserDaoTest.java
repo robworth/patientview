@@ -72,7 +72,6 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
-        user.setScreenname("screenname");
 
         userDao.save(user);
 
@@ -95,7 +94,6 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
-        user.setScreenname("screenname");
         user.setAccountlocked(true);
 
         userDao.save(user);
@@ -120,7 +118,6 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname");
         user.setPassword("password");
         user.setUsername("test");
-        user.setScreenname("screenname1");
         userDao.save(user);
 
         user = new User();
@@ -128,7 +125,6 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname2");
         user.setPassword("password2");
         user.setUsername("test2");
-        user.setScreenname("screenname2");
         userDao.save(user);
 
         user = new User();
@@ -136,7 +132,6 @@ public class UserDaoTest extends BaseDaoTest {
         user.setName("Firstname Lastname3");
         user.setPassword("password3");
         user.setUsername("test3");
-        user.setScreenname("screenname3");
         userDao.save(user);
 
         assertEquals("Incorrect number of users", 3, userDao.getAll().size());

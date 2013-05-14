@@ -76,9 +76,6 @@
     <logic:present specialty="ibd">
         <li <%= ("education".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/education">Information</html:link></li>
     </logic:present>
-    <logic:present specialty="renal">
-        <li <%= ("xxxxxxx".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/forum">Forum</html:link></li>
-    </logic:present>
     <%
         } else {
     %>
@@ -87,31 +84,29 @@
         }
     %>
 
-    <logic:present role="patient" >
-        <logic:present feature="messaging">
-            <%
-            // need to get the number of unread messages if they have any
-            User user = UserUtils.retrieveUser(request);
+    <logic:present feature="messaging">
+        <%
+        // need to get the number of unread messages if they have any
+        User user = UserUtils.retrieveUser(request);
 
-            if (user != null) {
-                int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
-                %>
-
-                <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
-                    <a href="/patient/conversations.do">
-                        Messages
-                        <%
-                        if (numberUnreadMessages > 0) {
-                        %>
-                            <span class="badge badge-important"><%=numberUnreadMessages%></span>
-                        <%
-                        }
-                        %>
-                    </a>
-                </li>
-            <%
-            }
+        if (user != null) {
+            int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
             %>
-        </logic:present>
+
+            <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
+                <a href="/patient/conversations.do">
+                    Messages
+                    <%
+                    if (numberUnreadMessages > 0) {
+                    %>
+                        <span class="badge badge-important"><%=numberUnreadMessages%></span>
+                    <%
+                    }
+                    %>
+                </a>
+            </li>
+        <%
+        }
+        %>
     </logic:present>
 </ul>

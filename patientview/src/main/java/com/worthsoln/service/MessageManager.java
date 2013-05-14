@@ -36,7 +36,10 @@ public interface MessageManager {
 
     int getTotalNumberUnreadMessages(Long recipientId);
 
-    void markMessagesAsReadForConversation(Long recipientId, Long conversationId);
+    /**
+     * Marks the conversation as read only if logged in user is the recipient
+     */
+    void markMessagesAsReadForConversation(Long loggedInUserId, Long conversationId);
 
     List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser);
 

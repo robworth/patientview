@@ -42,24 +42,23 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
     private MessageDao messageDao;
 
     @Override
-    public User createUser(String username, String email, String password, String name, String screenName) {
+    public User createUser(String username, String email, String password, String name) {
 
         User user = new User();
         user.setEmail(email);
         user.setName(name);
         user.setPassword(password);
         user.setUsername(username);
-        user.setScreenname(screenName);
         userDao.save(user);
 
         return user;
     }
 
     @Override
-    public User createUserWithMapping(String username, String email, String password, String name, String screenName,
+    public User createUserWithMapping(String username, String email, String password, String name,
                                       String unitcode, String nhsno, Specialty specialty) {
 
-        User user = createUser(username, email, password, name, screenName);
+        User user = createUser(username, email, password, name);
 
         UserMapping userMapping = new UserMapping();
         userMapping.setSpecialty(specialty);

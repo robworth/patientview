@@ -33,38 +33,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--Stuff for JForum-->
-    <!-- Clickstream -->
-
-    <filter>
-        <filter-name>clickstream-jforum</filter-name>
-        <filter-class>com.worthsoln.forum.RenalForumFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>clickstream-jforum</filter-name>
-        <url-pattern>*.page</url-pattern>
-    </filter-mapping>
-
-    <listener>
-        <listener-class>net.jforum.ForumSessionListener</listener-class>
-    </listener>
-
-    <servlet>
-        <servlet-name>jforum</servlet-name>
-        <servlet-class>net.jforum.JForum</servlet-class>
-
-        <init-param>
-            <param-name>development</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>jforum</servlet-name>
-        <url-pattern>*.page</url-pattern>
-    </servlet-mapping>
-
     <servlet>
         <servlet-name>action</servlet-name>
         <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>

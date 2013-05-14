@@ -7,10 +7,6 @@
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <!-- check for annotations -->
-    <context:component-scan base-package="com.worthsoln.service"/>
-    <context:component-scan base-package="com.worthsoln.service.ibd"/>
-
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${smtp.host}"/>
         <property name="protocol" value="smtps"/>
@@ -25,6 +21,10 @@
                 <prop key="mail.smtp.port">465</prop>
             </props>
         </property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:patientview.properties"/>
     </bean>
 
 </beans>
