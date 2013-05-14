@@ -3,11 +3,17 @@ package com.worthsoln.patientview.parser;
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
-import com.worthsoln.ibd.model.enums.*;
+import com.worthsoln.ibd.model.enums.DiseaseExtent;
 import com.worthsoln.patientview.TestResultDateRange;
 import com.worthsoln.patientview.exception.XmlImportException;
-import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.Centre;
+import com.worthsoln.patientview.model.CorruptNode;
 import com.worthsoln.patientview.model.Diagnosis;
+import com.worthsoln.patientview.model.Diagnostic;
+import com.worthsoln.patientview.model.Letter;
+import com.worthsoln.patientview.model.Medicine;
+import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.enums.DiagnosticType;
 import com.worthsoln.patientview.model.enums.NodeError;
 import com.worthsoln.patientview.utils.TimestampUtils;
@@ -16,7 +22,11 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
@@ -183,7 +193,6 @@ public class ResultParser {
                             } else {
                                 testResult.setValue(resultDataNode.getFirstChild().getNodeValue().trim());
                             }
-
                         }
                     }
                     testResults.add(testResult);
@@ -356,8 +365,6 @@ public class ResultParser {
         for (int i = 0; i < medicineNodes.getLength(); i++) {
             Node medicineNode = medicineNodes.item(i);
             Medicine medicine = new Medicine();
-            medicine.setNhsno(getData("nhsno"));
-            medicine.setUnitcode(getData("centrecode"));
             NodeList medicineDetailNodes = medicineNode.getChildNodes();
             for (int j = 0; j < medicineDetailNodes.getLength(); j++) {
                 try {
@@ -376,7 +383,12 @@ public class ResultParser {
                     e.printStackTrace();
                 }
             }
-            medicines.add(medicine);
+            if (medicine.getStartdate() != null && medicine.getName() != null) {
+                // TODO: add error email sent to unit admin here
+                medicine.setNhsno(getData("nhsno"));
+                medicine.setUnitcode(getData("centrecode"));
+                medicines.add(medicine);
+            }
         }
     }
 
@@ -478,7 +490,8 @@ public class ResultParser {
                     myIbd.setYearForSurveillanceColonoscopy(
                             IMPORT_DATE_FORMAT.parse((String) xmlData.get("colonoscopysurveillance")));
                 } catch (ParseException e) {
-                    LOGGER.error("Could not parse colonoscopysurveillance for MyIbd with NHS No {}", myIbd.getNhsno(), e);
+                    LOGGER.error("Could not parse colonoscopysurveillance for MyIbd with NHS No {}",
+                            myIbd.getNhsno(), e);
                 }
             }
             return myIbd;

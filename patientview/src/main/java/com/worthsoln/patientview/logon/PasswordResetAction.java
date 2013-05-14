@@ -31,6 +31,8 @@ public class PasswordResetAction extends Action {
             String password = LogonUtils.generateNewPassword();
             user.setPassword(LogonUtils.hashPassword(password));
             user.setFirstlogon(true);
+            user.setFailedlogons(0);
+            user.setAccountlocked(false);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_RESET,
                     user.getUsername(), "", UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");

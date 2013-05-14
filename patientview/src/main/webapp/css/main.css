@@ -373,6 +373,61 @@ h1, h2{
     filter: alpha(opacity=1);
 }
 
+/** MESSAGES **/
+
+
+section article.conversation, section article.message{
+    padding:18px 18px;
+    border-bottom: 1px dotted #eeeeee;
+}
+
+section article.conversation.odd{
+    background:#f6f6f6;
+}
+
+section article.conversation .badge, section article.message .badge{
+    position:relative;
+    top:-15px;
+}
+
+section article.message{
+    padding: 18px 0;
+}
+
+section article .content{
+    margin-top:10px;
+}
+section article.conversation:hover{
+    cursor:pointer;
+    background:#f6f6f6;
+}
+
+section.conversation-container a:hover{
+    text-decoration:none;
+    color:#0066CC;
+}
+
+section article.conversation .dull, section article.message .dull{
+    color:#9b9b9b;
+}
+
+.float-in-form-actions{
+    margin: 18px 18px 0;
+}
+
 .patient-edit-form.form-actions{
     padding-left:30px;
 }
+
+.form-actions form{
+    margin: 0;
+}
+
+.js-messages{
+    margin-bottom:20px;
+}
+
+.form-horizontal .top-help-block, .top-help-block {
+    margin-top: 6px;
+}
+

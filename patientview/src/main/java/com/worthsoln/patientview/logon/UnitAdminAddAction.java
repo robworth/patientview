@@ -1,6 +1,7 @@
 package com.worthsoln.patientview.logon;
 
 import com.worthsoln.patientview.logging.AddLog;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.EmailVerificationUtils;
@@ -53,15 +54,13 @@ public class UnitAdminAddAction extends Action {
             // create the new user
             UnitAdmin hashedUnitAdmin = (UnitAdmin) unitAdmin.clone();
             hashedUnitAdmin.setPassword(LogonUtils.hashPassword(hashedUnitAdmin.getPassword()));
-            LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin);
-
-            UserMapping userMapping = new UserMapping(username, unitcode, "");
-            LegacySpringUtils.getUserManager().save(userMapping);
+            User user = LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(hashedUnitAdmin, unitcode);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD,
                     unitAdmin.getUsername(), "",
                     unitcode, "");
-            EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(), request);
+            EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(),
+                    request);
             mappingToFind = "success";
         }
         request.setAttribute("adminuser", unitAdmin);

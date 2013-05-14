@@ -1,6 +1,7 @@
 package com.worthsoln.service;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
+import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UnitStat;
 import com.worthsoln.patientview.model.User;
@@ -22,7 +23,13 @@ public interface UnitManager {
 
     void save(Unit unit);
 
+    List<Unit> getAllDisregardingSpeciality(boolean sortByName);
+
     List<Unit> getAll(boolean sortByName);
+    
+    List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
+
+    List<Unit> getAdminsUnits();
 
     List<Unit> getUnitsWithUser();
 
@@ -39,4 +46,6 @@ public interface UnitManager {
     List<UnitStat> getUnitStatsForUnit(String unitCode);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
+
+    List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
 }

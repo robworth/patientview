@@ -39,7 +39,7 @@ public class LoggedInAction extends Action {
             final String role = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
             // Is user patient or admin?
-            if ("patient".equals(role)) {
+            if ("patient".equalsIgnoreCase(role)) {
                 request.setAttribute("isPatient", true);
             }
             if ((user.getLastlogon() != null)) {
@@ -49,7 +49,7 @@ public class LoggedInAction extends Action {
 
             LegacySpringUtils.getUserManager().save(user);
 
-            if ("patient".equals(role)) {
+            if ("patient".equalsIgnoreCase(role)) {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 
@@ -57,7 +57,7 @@ public class LoggedInAction extends Action {
                     LogEntry log = LegacySpringUtils.getLogEntryManager().getLatestLogEntry(nhsno,
                             AddLog.PATIENT_DATA_FOLLOWUP);
                     if (log != null) {
-                        request.setAttribute("lastDataDate", log.getDate().getTime());
+                        request.setAttribute("lastDataDate", format.format(log.getDate().getTime()));
                         // Get the unit from the unitcode
                         String unitcode = log.getUnitcode();
                         if (unitcode != null) {

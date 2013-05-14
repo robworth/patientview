@@ -42,7 +42,7 @@
         %>
         <tr>
             <th>Last data received for this record</th>
-            <td>On <%=request.getAttribute("lastDataDate")%>
+            <td><%=request.getAttribute("lastDataDate")%>
             <%
               if (request.getAttribute("lastDataFrom") != null) {
             %>
