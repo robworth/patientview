@@ -11,6 +11,7 @@
      <div class="page-header">
          <h1>My Details</h1>
      </div>
+<div class="details-tbl-width pull-left">
      <%
          if (request.getParameter("success") != null) {
      %>
@@ -269,11 +270,13 @@
 </html:form>
 
 </logic:iterate>
-    
 
 </logic:notEmpty>
 
+
 </logic:present>
+</div>
+<jsp:include page="../../common/include/news_list.jsp"/>
 
 </div>
 </div>
