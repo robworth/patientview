@@ -1,5 +1,6 @@
 package com.worthsoln.patientview.logon;
 
+import com.worthsoln.ibd.Ibd;
 import com.worthsoln.service.UserManager;
 import com.worthsoln.utils.LegacySpringUtils;
 
@@ -120,6 +121,14 @@ public abstract class Logon {
 
     public Date getLastlogon() {
         return lastlogon;
+    }
+
+    public String getLastlogonFormatted() {
+        if (lastlogon != null) {
+            return Ibd.DATE_FORMAT.format(lastlogon);
+        }
+
+        return "";
     }
 
     public void setLastlogon(Date lastlogon) {

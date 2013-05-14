@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 
 <html:xhtml/>
 <div class="span9">
@@ -11,19 +12,41 @@
 <logic:notEmpty name="unitUsers">
   <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
       <tr>
-        <td class="tableheader">Name</td>
-        <td class="tableheader">Username</td>
-        <td class="tableheader">Role</td>
-        <td></td>
-        <td></td>
+        <th class="tableheader">Name</th>
+        <th class="tableheader">Username</th>
+        <th class="tableheader">Role</th>
+        <th class="tableheader">Email</th>
+        <th class="tableheader">Email Verified</th>
+        <th class="tableheader">Last Login</th>
+        <th class="tableheader">Password Locked</th>
+        <th></th>
+        <th></th>
       </tr>
     <logic:iterate id="unitUser" name="unitUsers">
       <tr>
         <td class="tablecell"><bean:write name="unitUser" property="name"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="username"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="displayRole"/></td>
+        <td class="tablecell"><bean:write name="unitUser" property="email"/></td>
+        <td class="tablecell">
+            <logic:equal value="false" name="unitUser" property="emailverfied">
+                <big><font color="red">&#10008;</font></big>
+            </logic:equal>
+            <logic:equal value="true" name="unitUser" property="emailverfied">
+                <big><font color="green">&#10004;</font></big>
+            </logic:equal>
+        </td>
+        <td class="tablecell"><bean:write name="unitUser" property="lastlogonFormatted"/></td>
+          <td class="tablecell">
+              <logic:equal value="true" name="unitUser" property="accountlocked">
+                  <font color="red">locked</font>
+              </logic:equal>
+              <logic:equal value="false" name="unitUser" property="accountlocked">
+                  <big><font color="green">&#10004;</font></big>
+              </logic:equal>
+          </td>
 
-        <logic:present role="superadmin,unitadmin">
+          <logic:present role="superadmin,unitadmin">
             <td>
               <html:form action="/control/unitUserEditInput">
                 <html:hidden name="unitUser" property="username" />

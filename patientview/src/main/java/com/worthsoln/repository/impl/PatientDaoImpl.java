@@ -89,7 +89,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                                                 Specialty specialty) {
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
-                + "user.firstlogon, patient.treatment "
+                + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
                 + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
                 + "WHERE specialtyuserrole.role = 'patient' "
@@ -212,8 +212,10 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setEmail(resultSet.getString("email"));
             patientLogonWithTreatment.setNhsno(resultSet.getString("nhsno"));
             patientLogonWithTreatment.setFirstlogon(resultSet.getBoolean("firstlogon"));
+            patientLogonWithTreatment.setLastlogon(resultSet.getDate("lastlogon"));
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
+            patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
 
             return patientLogonWithTreatment;
         }
