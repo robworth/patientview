@@ -207,7 +207,8 @@ public class ImportMonitor {
                 LOGGER.error("Could not find properties file: {}", e);
             }
         } else {
-            LOGGER.info("There aren't enough data ({} lines) to monitor or everything works well.");
+            LOGGER.info("There aren't enough data ({} lines) to monitor or everything works well.",
+                    countRecords.size());
         }
     }
 
