@@ -19,7 +19,6 @@
     <h1>Welcome <%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%>, you have logged in successfully</h1>
 </div>
 
-<div class="details-tbl-width pull-left">
 <div class="alert alert-info"><b>This is a confidential record.</b> If you should not be reading it please <html:link action="logout">log out</html:link> now.</div>
 
 
@@ -86,5 +85,3 @@
 %>
 
 <a href="/password-advice.jsp">Find out more about secure passwords.</a>
-</div>
-<jsp:include page="../common/include/news_list.jsp"/>
