@@ -24,8 +24,13 @@
             <tr>
                 <th class="tableheader">Name<br />(edit)</th>
                 <th class="tableheader">NHS Number<br />(view patient)</th>
+                <th class="tableheader">DoB</th>
                 <th class="tableheader">Unit Code</th>
                 <th class="tableheader">Treatment</th>
+                <th class="tableheader">Email</th>
+                <th class="tableheader">Email Verified</th>
+                <th class="tableheader">Last Logon</th>
+                <th class="tableheader">Password Locked</th>
                 <th colspan="4">&nbsp;</th>
             </tr>
             </thead>
@@ -42,15 +47,9 @@
                 <tr>
                     <td class="tablecell">
                         <logic:present role="superadmin,unitadmin">
-                            <%--
-                                        <html:link action="/control/patientEditInput" paramId="username" paramName="patient" paramProperty="username">
-                                          <bean:write name="patient" property="name"/>
-                                        </html:link>
-                            --%>
                             <html:link action="/control/patientEditInput" name="patientKeyParams">
                                 <bean:write name="patient" property="name"/>
                             </html:link>
-
                         </logic:present>
 
                         <logic:present role="unitstaff">
@@ -58,12 +57,11 @@
                         </logic:present>
                     </td>
                     <td class="tablecell">
-                            <%--   <html:link action="/control/patientView" paramId="nhsno" paramName="patient" paramProperty="nhsno" >   --%>
-                            <%--   <html:link action="/control/patientView" name="patientKeyParams" > --%>
                         <html:link action="/control/patientView" paramId="username" paramName="patient" paramProperty="username" >
                             <bean:write name="patient" property="nhsno"/>
                         </html:link>
                     </td>
+                    <td class="tablecell"><bean:write name="patient" property="dateofbirthFormatted"/></td>
                     <td class="tablecell">
                         <bean:write name="patient" property="unitcode"/>
                     </td>
@@ -73,21 +71,24 @@
                             <bean:write name="patient" property="treatment"/>
                         </logic:notEmpty>
                     </td>
-                        <%--
-                                <logic:present role="superadmin,unitadmin">
-                                  <html:form action="/control/patientEditInput">
-                                    <html:hidden name="patient" property="username" />
-                                    <td><html:submit value="Edit" styleClass="formbutton" /></td>
-                                  </html:form>
-                                </logic:present>
-
-                                <logic:present role="superadmin,unitadmin,unitstaff">
-                                  <html:form action="/control/patientView">
-                                    <html:hidden name="patient" property="nhsno" />
-                                    <td><html:submit value="Patient" styleClass="formbutton" /></td>
-                                  </html:form>
-                                </logic:present>
-                        --%>
+                    <td class="tablecell"><bean:write name="patient" property="email"/></td>
+                    <td class="tablecell">
+                        <logic:equal value="false" name="patient" property="emailverfied">
+                            <big><font color="red">&#10008;</font></big>
+                        </logic:equal>
+                        <logic:equal value="true" name="patient" property="emailverfied">
+                            <big><font color="green">&#10004;</font></big>
+                        </logic:equal>
+                    </td>
+                    <td class="tablecell"><bean:write name="patient" property="lastlogonFormatted"/></td>
+                    <td class="tablecell">
+                        <logic:equal value="true" name="patient" property="accountlocked">
+                            <font color="red">locked</font>
+                        </logic:equal>
+                        <logic:equal value="false" name="patient" property="accountlocked">
+                            <big><font color="green">&#10004;</font></big>
+                        </logic:equal>
+                    </td>
 
                     <logic:present role="superadmin,unitadmin">
                         <td>
