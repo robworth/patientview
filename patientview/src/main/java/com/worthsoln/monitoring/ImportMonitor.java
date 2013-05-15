@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
@@ -250,6 +251,17 @@ public class ImportMonitor {
             messageHelper.setFrom(from);
             messageHelper.setSubject(subject);
             messageHelper.setText(body, false); // Note: the second param indicates to send plaintext
+
+            // todo to be removed after sending relay mails with jar file is fixed
+            LOGGER.info("Trying to send an email about Importer issues. From: {} To: {} Host: {} " +
+                    "Username: {} Password length: {} Port: {} Protocol: {}", new Object[] {from, Arrays.toString(to),
+                    ((JavaMailSenderImpl) javaMailSender).getHost(),
+                    ((JavaMailSenderImpl) javaMailSender).getUsername(),
+                    ((JavaMailSenderImpl) javaMailSender).getPassword().length(),
+                    ((JavaMailSenderImpl) javaMailSender).getPort(),
+                    ((JavaMailSenderImpl) javaMailSender).getProtocol()});
+
+            System.out.println(((JavaMailSenderImpl) javaMailSender).getHost());
 
             javaMailSender.send(messageHelper.getMimeMessage());
 
