@@ -1,22 +1,22 @@
-Patient View
-============
+PatientView
+===========
 
-Patient View allows patients to login and see their details, medicines, renal test results.
+PatientView allows patients to login and see their details, medicines and test results.
 
-Data is supplied by the patients renal unit.  It is sent to the Patient View server from the renal unit(s) via encrypted XML over SFTP,
+Data is supplied by the patients renal unit.  It is sent to the PatientView server from the hospital units via encrypted XML over sFTP,
  then imported into the database.
 
-Health care professional can login to Patient View to administrate patients and unit users.
+Health care professionals can login to PatientView to administrate patients and unit users.
 
 
-Getting Starting
-================
+Getting Started
+===============
 
 - Get running locally with the test database (see below)
 - Login as a patient and a superadmin (see below)
 
 
-Running locally using Intellij Idea or similar IDE
+Running locally using Intellij IDEA or similar IDE
 ==================================================
 
 - Import the mysql dump (/src/main/resources/developer/schema_data_patientview_develop.sql) into a local database called 'patientview'
@@ -37,7 +37,7 @@ This will clear down any temporary files (as specified by the maven clean plugin
 Build the exploded war over the main/src/webapp directory.
 Starts an embedded Tomcat 7 server and runs the webapp.
 
-NOTE: The build is still dependent on Tomcat some of the configuration so you cannot use Jetty.
+NOTE: The build is still dependent on Tomcat for some of the configuration so you cannot use Jetty.
 
 
 Test Users
@@ -71,7 +71,7 @@ Outsourced Development Process
 - submit pull request from your forked repo into https://github.com/robworth/patientview/tree/shinetech
 
 
-Debugging JSPs using Intellij Idea
+Debugging JSPs using Intellij IDEA
 ==================================
 
 - Not possible using the embedded tomcat maven plugin
@@ -96,7 +96,7 @@ Building a deployable WAR file & setting up a database
 The war file will be built to the maven target directory.
 
 
-JPA annotations in Intellij Idea
+JPA annotations in Intellij IDEA
 ================================
 
 It is best to let Maven handle this.  If you have issues with your IDE, you can try:
@@ -133,57 +133,57 @@ To update submodules when building setup this execute shell pre step:
 `git submodule foreach git pull`
 
 
-Notes on Multi-tenant
+Notes on Multi-specialty
 =====================
 
 Logging in
 ==========
 
 - Users land at www.patientview.org
-- Tenancy generic landing page invites uses to login
-- We will extract user login details out of the user table into a tenant schema
-- The spring security success handler will check the user's tenancies.  Single tenancy uses will be forwarded directly to the tenancy landing page,  e.g. www.patientview.org/rpv
-- Multi-tenant users will hit www.patientview.org/launchpad which will allow them to select a tenancy to be redirected to.
-- Should the user have no tenancy the user will not even be able to log in
+- Specialty generic landing page invites uses to login
+- We will extract user login details out of the user table into a specialty schema
+- The spring security success handler will check the user's specialties.  Single specialty users will be forwarded directly to the specialty landing page,  e.g. www.patientview.org/rpv
+- Multi-specialty users will hit www.patientview.org/launchpad which will allow them to select a specialty to be redirected to.
+- Should the user have no specialty the user will not even be able to log in
 
-Using a tenancy
-===============
+Using a specialty
+=================
 
-- Once the user arrives at a tenancy their session will be noted as associated with that tenancy.  We will have new methods to get the current user role for the tenancy.
-- User can change tenancy via the tenancy switcher or by logging out.
-- Should the user try to manually change their URL to view data from a separate tenancy they will either get a not authorised error HTTP 403 (if the user doesn't have a role for that tenancy) or they will get a HTTP 404 response.
-- All secure links/URLs in the application must be prefixed by the tenancy context, e.g. www.patientview.org/rpv/patient/patient_details.do
-- Each tenancy will have a spring security configuration to secure URLs with roles, e.g. /rpv/* requires ROLE_RPV_PATIENT or RPV_ROLE_UNITADMIN
-- The links in the templates will be directed to the tenancy context automatically using PatientViewLinkTag that overrides via `<html:link>`
+- Once the user arrives at a specialty their session will be noted as associated with that specialty.  We will have new methods to get the current user role for the specialty.
+- User can change specialty via the specialty switcher or by logging out.
+- Should the user try to manually change their URL to view data from a separate specialty they will either get a not authorised error HTTP 403 (if the user doesn't have a role for that specialty) or they will get a HTTP 404 response.
+- All secure links/URLs in the application must be prefixed by the specialty context, e.g. www.patientview.org/renal/patient/patient_details.do
+- Each specialty will have a spring security configuration to secure URLs with roles, e.g. /renal/* requires ROLE_RPV_PATIENT or RPV_ROLE_UNITADMIN
+- The links in the templates will be directed to the specialty context automatically using PatientViewLinkTag that overrides via `<html:link>`
 
-The tenancy servlet filter
-==========================
+The specialty servlet filter
+============================
 
-- We will implement a custom tenancy servlet filter that appears after the spring security filter in the stack.
-- This will create a virtual tenancy context without need for rewriting anything in struts or the JSPs
-- The filter will strip off tenancy context and forward down the filter chain
-- It will NOT check the tenancy requested matches the tenancy selected in the user's session to control tenancy switching.
-- This filter has no responsibility for security - that is ALL handled by spring security.
+- We will implement a custom specialty servlet filter that appears after the spring security filter in the stack
+- This will create a virtual specialty context without need for rewriting anything in struts or the JSPs
+- The filter will strip off specialty context and forward down the filter chain
+- It will NOT check that the specialty requested matches the specialty selected in the user's session to control specialty switching
+- This filter has no responsibility for security - that is ALL handled by spring security
 
 
 Spring security configuration
-=================================================
+=============================
 
 - see context-security.xml
 
-Securing features per tenancy
-=============================
+Securing features per specialty
+===============================
 
-- There will be no security to stop users accessing "hidden" tenancy specific features
-- Templates will have tenancy specific content by extending the PatientViewPresentTag to allow conditional templates e.g. `<logic:present tenancy="rpv">`
+- There will be no security to stop users accessing "hidden" specialty specific features
+- Templates will have specialty specific content by extending the PatientViewPresentTag to allow conditional templates e.g. `<logic:present specialty="renal">`
 
 Writing JSP templates
 =====================
 
-- CSS, there will be a common base CSS for all tenancies, if necessary we can have custom .css files for each tenancies.
-- The application will not supply different HTML markup per tenancy.
+- CSS, there will be a common base CSS for all specialties, if necessary we can have custom .css files for each specialty.
+- The application will not supply different HTML markup per specialty.
 
 Administration Area
 ====================
-- Superadmin users can now be setup per tenancy.  A per tenancy superadmin implements the "specialityadmin" role described in the spec.
+- Superadmin users can now be setup per specialty.  A per specialty superadmin implements the "specialityadmin" role described in the spec.
 
