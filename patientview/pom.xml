@@ -238,7 +238,7 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <url>file://${project.basedir}/lib</url>
         </repository>
@@ -643,7 +643,7 @@
         <dependency>
             <groupId>com.worthsoln</groupId>
             <artifactId>pvdbschema</artifactId>
-            <version>1.0-RELEASE-SNAPSHOT</version>
+            <version>1.0-DEVELOP-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 
