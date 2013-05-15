@@ -11,7 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
@@ -121,9 +120,14 @@ public class ImportMonitor {
         List<CountRecord> countRecords = getCountRecordsFromLines(lines);
 
         /**
-         * Check if files are static or they exceed the limit, send an email if they are
+         * Check the records to see if files are static or they exceed the limit
          */
-        checkForErrorsAndSendAWarningEmail(countRecords);
+        if (isImporterNotWorkingProperly(countRecords)) {
+            /**
+             * Send an email if there are problems with the importer
+             */
+            sendAWarningEmail(countRecords);
+        }
     }
 
     /**
@@ -185,31 +189,44 @@ public class ImportMonitor {
         return count;
     }
 
-    private static void checkForErrorsAndSendAWarningEmail(List<CountRecord> countRecords) {
-        if (countRecords.size() == NUMBER_OF_LINES_TO_READ && (isNumberOfProtonFilesStatic(countRecords) ||
+    private static boolean isImporterNotWorkingProperly(List<CountRecord> countRecords) {
+        boolean importerIsNotWorkingProperly = countRecords.size() == NUMBER_OF_LINES_TO_READ && (isNumberOfProtonFilesStatic(countRecords) ||
                 isNumberOfRpvXmlFilesStatic(countRecords) ||
                 doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT) ||
-                doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT))) {
+                doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT));
 
-            try {
-                Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
-                Properties props = PropertiesLoaderUtils.loadProperties(resource);
-
-                String subject = "Problems encountered in Patient View XML Importer";
-
-                String body = getWarningEmailBody(countRecords);
-
-                String fromAddress = props.getProperty("noreply.email");
-
-                String[] toAddresses = {props.getProperty("support.email")};
-
-                sendEmail(fromAddress, toAddresses, null, subject, body);
-            } catch (IOException e) {
-                LOGGER.error("Could not find properties file: {}", e);
+        /**
+         * Some logging for feedback if the importer looks like working
+         */
+        if (!importerIsNotWorkingProperly) {
+            if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
+                LOGGER.info("Importer is working fine");
+            } else {
+                LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines " +
+                        "for Import monitor to process.",
+                        countRecords.size(), NUMBER_OF_LINES_TO_READ);
             }
-        } else {
-            LOGGER.info("There aren't enough data ({} lines) to monitor or everything works well.",
-                    countRecords.size());
+        }
+
+        return importerIsNotWorkingProperly;
+    }
+
+    private static void sendAWarningEmail(List<CountRecord> countRecords) {
+        try {
+            Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
+            Properties props = PropertiesLoaderUtils.loadProperties(resource);
+
+            String subject = "Problems encountered in Patient View XML Importer";
+
+            String body = getWarningEmailBody(countRecords);
+
+            String fromAddress = props.getProperty("noreply.email");
+
+            String[] toAddresses = {props.getProperty("support.email")};
+
+            sendEmail(fromAddress, toAddresses, null, subject, body);
+        } catch (IOException e) {
+            LOGGER.error("Could not find properties file: {}", e);
         }
     }
 
@@ -252,17 +269,6 @@ public class ImportMonitor {
             messageHelper.setSubject(subject);
             messageHelper.setText(body, false); // Note: the second param indicates to send plaintext
 
-            // todo to be removed after sending relay mails with jar file is fixed
-            LOGGER.info("Trying to send an email about Importer issues. From: {} To: {} Host: {} " +
-                    "Username: {} Password length: {} Port: {} Protocol: {}", new Object[] {from, Arrays.toString(to),
-                    ((JavaMailSenderImpl) javaMailSender).getHost(),
-                    ((JavaMailSenderImpl) javaMailSender).getUsername(),
-                    ((JavaMailSenderImpl) javaMailSender).getPassword().length(),
-                    ((JavaMailSenderImpl) javaMailSender).getPort(),
-                    ((JavaMailSenderImpl) javaMailSender).getProtocol()});
-
-            System.out.println(((JavaMailSenderImpl) javaMailSender).getHost());
-
             javaMailSender.send(messageHelper.getMimeMessage());
 
             LOGGER.info("Sent an email about Importer issues. From: {} To: {}", from, Arrays.toString(to));
@@ -292,12 +298,14 @@ public class ImportMonitor {
         }
 
         if (doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Proton files waiting to be imported is above threshold.";
+            emailBody += newLine + "Number of Proton files waiting to be imported is above the threshold (" +
+                    PENDING_FILE_LIMIT + ").";
             emailBody += newLine;
         }
 
         if (doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above threshold.";
+            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above the threshold (" +
+                    PENDING_FILE_LIMIT + ").";
             emailBody += newLine;
         }
 
@@ -388,13 +396,16 @@ public class ImportMonitor {
 
             CountRecord latestRecord = countRecordsToTest.get(0);
 
-            LOGGER.debug("Proton files exceed limit: {}",
-                    (latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit));
-            LOGGER.debug("RpvXml files exceed limit: " +
-                    (latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit));
+            if (fileType == FileType.PROTON && latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit) {
+                LOGGER.debug("Proton files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInProtonDirectory(),
+                        pendingFileLimit);
 
-            if (latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit ||
+                return true;
+            } else if (fileType == FileType.RPV_XML &&
                     latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit) {
+                LOGGER.debug("RpvXml files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInRpvXmlDirectory(),
+                        pendingFileLimit);
+
                 return true;
             }
         }
