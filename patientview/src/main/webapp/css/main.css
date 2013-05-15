@@ -431,3 +431,7 @@ section article.conversation .dull, section article.message .dull{
     margin-top: 6px;
 }
 
+.details-tbl-width {
+    width: 620px
+}
+
