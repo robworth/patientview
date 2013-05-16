@@ -3,7 +3,14 @@ package com.worthsoln.patientview.model;
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import org.apache.commons.lang.StringUtils;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import java.util.Date;
 
 @Entity
