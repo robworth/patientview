@@ -34,7 +34,7 @@ public class ImportMonitor {
 
     private static final int NUMBER_OF_LINES_TO_READ = 10;
     private static final int PENDING_FILE_LIMIT = 10;
-    private static final int IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES = 1;
+    private static final int IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES = 10;
 
     private static final String RECORD_DATA_DELIMITER = ",";
     private static final String RECORD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -66,9 +66,12 @@ public class ImportMonitor {
             monitorImportProcess();
 
             sw.stop();
-            LOGGER.info("ImportMonitor ends, it took {} ",
+            LOGGER.info("ImportMonitor ends, it took {} (mm:ss)",
                     new SimpleDateFormat("mm:ss").format(sw.getTotalTimeMillis()));
 
+            /**
+             * Sleep for frequency - execution time
+             */
             long maxTimeToSleep = IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES * 60 * 1000;
             long executionTime = sw.getTotalTimeMillis();
             long timeToSleep = maxTimeToSleep - executionTime;
@@ -78,7 +81,7 @@ public class ImportMonitor {
                 timeToSleep = maxTimeToSleep;
             }
 
-            LOGGER.info("Importer will sleep for {} seconds", timeToSleep / 1000);
+            LOGGER.info("Importer will now sleep for {} (mm:ss)", new SimpleDateFormat("mm:ss").format(timeToSleep));
 
             try {
                 Thread.sleep(timeToSleep);
@@ -135,7 +138,7 @@ public class ImportMonitor {
             String countRecord = getCountDataToWriteToFile(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
 
             fileOutStream.write(countRecord.getBytes());
-            LOGGER.info("Appended {} to count file {}", countRecord, countFile.getAbsolutePath());
+            LOGGER.info("Appended this line: \"{}\" to count file {}", countRecord, countFile.getAbsolutePath());
 
             fileOutStream.flush();
             fileOutStream.close();
