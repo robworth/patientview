@@ -70,7 +70,7 @@ public class ImportMonitor {
                     new SimpleDateFormat("mm:ss").format(sw.getTotalTimeMillis()));
 
             /**
-             * Sleep for frequency - execution time
+             * Sleep for (frequency - execution time) seconds
              */
             long maxTimeToSleep = IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES * 60 * 1000;
             long executionTime = sw.getTotalTimeMillis();
