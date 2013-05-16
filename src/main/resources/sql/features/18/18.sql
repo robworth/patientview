@@ -1,0 +1,1 @@
+ALTER TABLE `PV_ADMIN_NOTIFICATION` ADD UNIQUE KEY (`notification_id`, `email`);
