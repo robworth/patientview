@@ -56,6 +56,10 @@ public class ConversationsAction extends BaseAction {
                     unitPatientRecipients = getMessageManager().getUnitPatientRecipients(units, user);
                 }
 
+                if (getSecurityUserManager().isRolePresent("unitadmin")) {
+                    request.setAttribute(Messaging.IS_UNIT_ADMIN_PARAM, true);
+                }
+
                 if (unitAdminRecipients.isEmpty() && unitStaffRecipients.isEmpty() && unitPatientRecipients.isEmpty()) {
                     request.setAttribute(Messaging.NO_RECIPIENTS_PARAM, true);
                 } else {
