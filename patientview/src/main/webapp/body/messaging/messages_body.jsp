@@ -130,6 +130,9 @@
                                                     <option></option>
 
                                                     <optgroup label="Unit Admins">
+                                                        <logic:present name="<%=Messaging.IS_UNIT_ADMIN_PARAM%>">
+                                                            <option value="allAdmins">All Admins</option>
+                                                        </logic:present>
                                                         <logic:iterate name="unitAdminRecipients" id="recipient" indexId="index">
                                                             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
                                                         </logic:iterate>
@@ -140,6 +143,9 @@
                                                     <option></option>
 
                                                     <optgroup label="Unit Staff">
+                                                        <logic:present name="<%=Messaging.IS_UNIT_ADMIN_PARAM%>">
+                                                            <option value="allStaff">All Staff</option>
+                                                        </logic:present>
                                                         <logic:iterate name="unitStaffRecipients" id="recipient" indexId="index">
                                                             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
                                                         </logic:iterate>
@@ -150,6 +156,9 @@
                                                     <option></option>
 
                                                     <optgroup label="Patients">
+                                                        <logic:present name="<%=Messaging.IS_UNIT_ADMIN_PARAM%>">
+                                                            <option value="allPatients">All Patients</option>
+                                                        </logic:present>
                                                         <logic:iterate name="unitPatientRecipients" id="recipient" indexId="index">
                                                             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
                                                         </logic:iterate>

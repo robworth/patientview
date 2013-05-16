@@ -5,6 +5,7 @@ import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailManager;
@@ -131,6 +132,58 @@ public class MessageManagerImpl implements MessageManager {
         conversationDao.save(conversation);
 
         return sendMessage(context, conversation, sender, recipient, content);
+    }
+
+    @Override
+    public Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type) throws Exception {
+        if (!StringUtils.hasText(subject)) {
+            throw new IllegalArgumentException("Invalid required parameter subject");
+        }
+
+        if (!StringUtils.hasText(content)) {
+            throw new IllegalArgumentException("Invalid required parameter content");
+        }
+
+        if (sender == null || !sender.hasValidId()) {
+            throw new IllegalArgumentException("Invalid required parameter sender");
+        }
+
+        Conversation conversation = new Conversation();
+        Message message = new Message();
+
+        conversation.setParticipant1(sender);
+        conversation.setParticipant2(sender);
+        conversation.setSubject(subject);
+        conversation.setType(type);
+
+        if (groupName != null) {
+            if ("allAdmins".equals(groupName)) {
+                conversation.setGroupEnum(GroupEnum.ALL_ADMINS);
+                message.setGroupEnum(GroupEnum.ALL_ADMINS);
+            }
+
+            if ("allPatients".equals(groupName)) {
+                conversation.setGroupEnum(GroupEnum.ALL_PATIENTS);
+                message.setGroupEnum(GroupEnum.ALL_PATIENTS);
+            }
+
+            if ("allStaff".equals(groupName)) {
+                conversation.setGroupEnum(GroupEnum.ALL_STAFF);
+                message.setGroupEnum(GroupEnum.ALL_STAFF);
+            }
+        }
+
+        conversationDao.save(conversation);
+
+        // add group message
+        message.setConversation(conversation);
+        message.setSender(sender);
+        message.setRecipient(sender);
+        message.setContent(content);
+        message.setType(type);
+        messageDao.save(message);
+
+        return message;
     }
 
     @Override
