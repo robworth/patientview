@@ -44,13 +44,6 @@ public class ImportMonitor {
     private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
     private static final String COUNT_LOG_FILENAME_FORMAT = "yyyy-MM-dd";
 
-    private static enum ImporterError {
-        NUMBER_OF_PROTON_FILES_IS_STATIC,
-        NUMBER_OF_RPV_XML_FILES_IS_STATIC,
-        NUMBER_OF_PROTON_FILES_EXCEEDS_LIMIT,
-        NUMBER_OF_RPV_XML_FILES_EXCEEDS_LIMIT
-    }
-
     private static enum FileType {
         PROTON,
         RPV_XML
