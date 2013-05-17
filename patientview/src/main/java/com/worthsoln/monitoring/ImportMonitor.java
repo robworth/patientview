@@ -218,7 +218,9 @@ public class ImportMonitor {
 
             String fromAddress = props.getProperty("noreply.email");
 
-            String[] toAddresses = {props.getProperty("support.email")};
+            // todo For testing purposes this property is overridden
+//            String[] toAddresses = {props.getProperty("support.email")};
+            String[] toAddresses = {"patientview-testing@solidstategroup.com"};
 
             sendEmail(fromAddress, toAddresses, null, subject, body);
         } catch (IOException e) {
