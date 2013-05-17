@@ -121,8 +121,8 @@ public class SendMessageAction extends BaseAction {
     private User getRecipient(DynaActionForm form) {
         User user = null;
 
-        if (form.get(Messaging.RECIPIENT_ID_PARAM) != null && ((Long) form.get(Messaging.RECIPIENT_ID_PARAM)) > 0) {
-            user = getUserManager().get(((Long) form.get(Messaging.RECIPIENT_ID_PARAM)));
+        if (form.get(Messaging.RECIPIENT_ID_PARAM) != null && (Long.parseLong(form.get(Messaging.RECIPIENT_ID_PARAM).toString())) > 0) {
+            user = getUserManager().get(Long.parseLong(form.get(Messaging.RECIPIENT_ID_PARAM).toString()));
         }
 
         return user;

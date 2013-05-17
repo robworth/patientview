@@ -12,6 +12,9 @@ import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import com.worthsoln.service.GroupMessageManager;
+import com.worthsoln.service.SecurityUserManager;
+
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,6 +53,12 @@ public class MessageManagerImpl implements MessageManager {
     @Inject
     private UserManager userManager;
 
+    @Inject
+    private GroupMessageManager groupMessageManager;
+
+    @Inject
+    private SecurityUserManager securityUserManager;
+
     @Override
     public Conversation getConversation(Long conversationId) {
         return conversationDao.get(conversationId);
@@ -59,9 +68,12 @@ public class MessageManagerImpl implements MessageManager {
     public Conversation getConversationForUser(Long conversationId, Long participantId) {
         Conversation conversation = conversationDao.get(conversationId);
 
-        if (!userHasAccessToConversation(conversation, participantId)) {
-            return null;
+        if (conversation.getType() == null) {
+            if (!userHasAccessToConversation(conversation, participantId)) {
+                return null;
+            }
         }
+
 
         populateConversation(conversation, participantId);
         return conversation;
@@ -145,7 +157,7 @@ public class MessageManagerImpl implements MessageManager {
         }
 
         if (sender == null || !sender.hasValidId()) {
-            throw new IllegalArgumentException("Invalid required parameter sender");
+            throw new IllegalArgumentException("Invalid required  parametersender");
         }
 
         Conversation conversation = new Conversation();
@@ -214,10 +226,12 @@ public class MessageManagerImpl implements MessageManager {
     @Override
     public int getTotalNumberUnreadMessages(Long recipientId) {
         int total = 0;
-
         List<Conversation> conversations = getConversations(recipientId);
 
         for (Conversation conversation : conversations) {
+            if (conversation.getType() != null && groupMessageManager.get(recipientId, conversation) != null) {
+                continue;
+            }
             total += conversation.getNumberUnread();
         }
 
@@ -407,8 +421,26 @@ public class MessageManagerImpl implements MessageManager {
     // need to go through and show how many messages in a convo that user needs to read
     private void populateConversation(Conversation conversation, Long participantId) {
         if (conversation != null) {
-            conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
+            // type is not null indicate the group message
+            if (conversation.getType() != null) {
+
+                GroupEnum groupEnum = GroupEnum.ALL_ADMINS;
+                if (securityUserManager.isRolePresent("unitadmin")) {
+                    groupEnum = GroupEnum.ALL_ADMINS;
+                } else if (securityUserManager.isRolePresent("unitstaff")) {
+                    groupEnum = GroupEnum.ALL_STAFF;
+                } else if (securityUserManager.isRolePresent("patient")) {
+                    groupEnum = GroupEnum.ALL_PATIENTS;
+                } else {}
+
+                if (groupMessageManager.getNumberOfUnreadGroupMessages(participantId, groupEnum) ==  0) {
+                    conversation.setNumberUnread(1);
+                }
+            } else {
+                conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
                     participantId, conversation.getId()).intValue());
+            }
+
 
             // set the summary details for the convo to the last message
             Message latestMessage = messageDao.getLatestMessage(conversation.getId());

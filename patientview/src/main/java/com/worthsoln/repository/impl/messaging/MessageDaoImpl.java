@@ -2,6 +2,9 @@ package com.worthsoln.repository.impl.messaging;
 
 import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Message_;
+import com.worthsoln.patientview.model.GroupMessage;
+import com.worthsoln.patientview.model.GroupMessage_;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.messaging.MessageDao;
 import org.springframework.stereotype.Repository;

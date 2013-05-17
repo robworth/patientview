@@ -33,7 +33,7 @@ public interface MessageManager {
             throws Exception;
 
     Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type)
-            throws Exception;;
+            throws Exception;
 
     Message replyToMessage(ServletContext context, String content, Long conversationId, User sender) throws Exception;
 

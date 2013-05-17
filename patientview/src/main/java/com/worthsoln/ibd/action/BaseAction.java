@@ -31,6 +31,7 @@ import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.GroupMessageManager;
 import com.worthsoln.service.PatientManager;
 import com.worthsoln.service.SecurityUserManager;
 import com.worthsoln.service.UnitManager;
@@ -386,6 +387,10 @@ public class BaseAction extends ActionSupport {
 
     protected MessageManager getMessageManager() {
         return getWebApplicationContext().getBean(MessageManager.class);
+    }
+
+    protected GroupMessageManager getGroupMessageManager() {
+        return getWebApplicationContext().getBean(GroupMessageManager.class);
     }
 
     protected UserManager getUserManager() {

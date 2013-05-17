@@ -54,7 +54,8 @@ public class ConversationDaoImpl extends AbstractHibernateDAO<Conversation> impl
 
         wherePredicates.add(builder.equal(root.get(Conversation_.deleted), false));
         wherePredicates.add(builder.or(builder.equal(root.get(Conversation_.participant1), participantId),
-                builder.equal(root.get(Conversation_.participant2), participantId)));
+                builder.equal(root.get(Conversation_.participant2), participantId),
+                builder.equal(root.get(Conversation_.type), "BULK")));
 
         buildWhereClause(criteria, wherePredicates);
 

@@ -1,6 +1,7 @@
 package com.worthsoln.repository.messaging;
 
 import com.worthsoln.patientview.model.Message;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 
 import java.util.List;
 

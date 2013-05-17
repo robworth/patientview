@@ -149,7 +149,11 @@ messages.sendMessage = function(form) {
                         messagesEl.append(messages.getMessageHtml(data.message));
                         contentEl.val('');
                     } else {
-                        window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
+                        if (recipientIdEl.val() == "allAdmins" || recipientIdEl.val() == "allPatients" || recipientIdEl.val() == "allStaff") {
+                            window.location.href = "/control/messaging/message_confirm.jsp"
+                        } else {
+                            window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
+                        }
                     }
                 }
             },
