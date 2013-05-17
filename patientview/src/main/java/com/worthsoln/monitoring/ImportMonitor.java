@@ -69,7 +69,8 @@ public class ImportMonitor {
         int importFileCheckCount = 0;
 
         while (true) {
-            LOGGER.info("ImportMonitor wakes up. Import file counts will be logged every {} minutes, whereas a " +
+            LOGGER.info("******** ImportMonitor wakes up ********");
+            LOGGER.info("Import file counts will be logged every {} minutes, whereas a " +
                     "health check will be done every {} minutes. Each monitoring will check the last {} lines " +
                     "of the log", new Object[] {FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
                     FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES, NUMBER_OF_LINES_TO_READ});
