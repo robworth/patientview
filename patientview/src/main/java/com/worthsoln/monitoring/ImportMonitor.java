@@ -81,7 +81,7 @@ public class ImportMonitor {
                 timeToSleep = maxTimeToSleep;
             }
 
-            LOGGER.info("Importer will now sleep for {} (mm:ss)", new SimpleDateFormat("mm:ss").format(timeToSleep));
+            LOGGER.info("ImportMonitor will now sleep for {} (mm:ss)", new SimpleDateFormat("mm:ss").format(timeToSleep));
 
             try {
                 Thread.sleep(timeToSleep);
@@ -111,7 +111,7 @@ public class ImportMonitor {
         List<String> lines = getLastNLinesOfFile(NUMBER_OF_LINES_TO_READ);
 
         /**
-         * Convert them to Record objects
+         * Convert them to meaningful objects
          */
         List<CountRecord> countRecords = getCountRecordsFromLines(lines);
 
