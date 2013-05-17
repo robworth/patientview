@@ -32,38 +32,66 @@ import java.util.*;
  */
 public class ImportMonitor {
 
+    // Timings and limitations
+    private static final int FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES = 1;
+    private static final int FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES = 10;
+    /**
+     * should always be equal to FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES /
+            FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES
+     */
     private static final int NUMBER_OF_LINES_TO_READ = 10;
-    private static final int PENDING_FILE_LIMIT = 10;
-    private static final int IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES = 10;
 
+
+    private static final int PENDING_FILE_LIMIT = 10;
+
+    // Import data file format
     private static final String RECORD_DATA_DELIMITER = ",";
     private static final String RECORD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final int DATE_POSITION_IN_RECORD = 0;
     private static final int NUMBER_OF_FILES_IN_PROTON_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 1;
     private static final int NUMBER_OF_FILES_IN_RPV_XML_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 2;
-    private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
     private static final String COUNT_LOG_FILENAME_FORMAT = "yyyy-MM-dd";
+
+    // Class constants
+    private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImportMonitor.class);
+
+    private static final int LINE_FEED = 0xA;
+    private static final int CARRIAGE_RETURN = 0xD;
 
     private static enum FileType {
         PROTON,
         RPV_XML
     }
 
-    private static final int LINE_FEED = 0xA;
-    private static final int CARRIAGE_RETURN = 0xD;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImportMonitor.class);
-
     public static void main(String[] args) {
+
+        int importFileCheckCount = 0;
+
         while (true) {
-            LOGGER.info("ImportMonitor wakes up");
+            LOGGER.info("ImportMonitor wakes up. Import file counts will be logged every {} minutes, whereas a " +
+                    "health check will be done every {} minutes. Each monitoring will check the last {} lines " +
+                    "of the log", new Object[] {FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
+                    FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES, NUMBER_OF_LINES_TO_READ});
+
             StopWatch sw = new StopWatch();
             sw.start();
 
+            importFileCheckCount = importFileCheckCount + FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES;
+
             /**
-             * Check if importer is working fine
+             * Log number of pending data files
              */
-            monitorImportProcess();
+            logNumberOfPendingDataFiles();
+
+            /**
+             * If it is time, check the overall monitor stability as well
+             */
+            if (importFileCheckCount == NUMBER_OF_LINES_TO_READ) {
+                monitorImportProcess();
+
+                importFileCheckCount = 0;
+            }
 
             sw.stop();
             LOGGER.info("ImportMonitor ends, it took {} (mm:ss)",
@@ -72,7 +100,7 @@ public class ImportMonitor {
             /**
              * Sleep for (frequency - execution time) seconds
              */
-            long maxTimeToSleep = IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES * 60 * 1000;
+            long maxTimeToSleep = FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES * 60 * 1000;
             long executionTime = sw.getTotalTimeMillis();
             long timeToSleep = maxTimeToSleep - executionTime;
 
@@ -94,17 +122,6 @@ public class ImportMonitor {
 
     private static void monitorImportProcess() {
         /**
-         * Count the number of pending files in both importer directories
-         */
-        int protonDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.proton_files.directory.path"));
-        int rpvXmlDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.rpvxml_files.directory.path"));
-
-        /**
-         * Write the counts to the file
-         */
-        logNumberOfFiles(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
-
-        /**
          * Read some lines from the file
          */
 
@@ -124,6 +141,19 @@ public class ImportMonitor {
              */
             sendAWarningEmail(countRecords);
         }
+    }
+
+    private static void logNumberOfPendingDataFiles() {
+        /**
+         * Count the number of pending files in both importer directories
+         */
+        int protonDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.proton_files.directory.path"));
+        int rpvXmlDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.rpvxml_files.directory.path"));
+
+        /**
+         * Write the counts to the file
+         */
+        logNumberOfFiles(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
     }
 
     /**
