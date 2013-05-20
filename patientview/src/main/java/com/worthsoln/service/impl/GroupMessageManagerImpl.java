@@ -21,11 +21,6 @@ public class GroupMessageManagerImpl implements GroupMessageManager {
     private GroupMessageDao groupMessageDao;
 
     @Override
-    public int getNumberOfUnreadGroupMessages(Long conversationId, GroupEnum groupEnum) {
-        return groupMessageDao.getNumberOfUnreadMessages(conversationId, groupEnum);
-    }
-
-    @Override
     public void markGroupMessageAsReadForConversation(User recipient, Conversation conversation) {
 
         if (groupMessageDao.get(recipient.getId(), conversation.getId()) == null) {

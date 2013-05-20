@@ -10,8 +10,6 @@ public interface GroupMessageDao {
 
     void save(GroupMessage groupMessage);
 
-    int getNumberOfUnreadMessages(Long conversationId, GroupEnum groupEnum);
-
     GroupMessage get(Long recipientId, Long conversationId);
 
 }

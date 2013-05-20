@@ -15,8 +15,6 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface GroupMessageManager {
 
-    int getNumberOfUnreadGroupMessages(Long conversationId, GroupEnum groupEnum);
-
     void markGroupMessageAsReadForConversation(User recipient, Conversation conversation);
 
     GroupMessage get(Long recipientId, Conversation conversation);

@@ -81,7 +81,16 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<Conversation> getConversations(Long participantId) {
-        List<Conversation> conversations = conversationDao.getConversations(participantId);
+        GroupEnum groupEnum = GroupEnum.ALL_ADMINS;
+        if (securityUserManager.isRolePresent("unitadmin")) {
+            groupEnum = GroupEnum.ALL_ADMINS;
+        } else if (securityUserManager.isRolePresent("unitstaff")) {
+            groupEnum = GroupEnum.ALL_STAFF;
+        } else if (securityUserManager.isRolePresent("patient")) {
+            groupEnum = GroupEnum.ALL_PATIENTS;
+        } else {}
+
+        List<Conversation> conversations = conversationDao.getConversations(participantId, groupEnum);
         populateConversations(conversations, participantId);
 
         // conversations need to be ordered by last activity which means when the last message in the thread was sent
@@ -229,9 +238,6 @@ public class MessageManagerImpl implements MessageManager {
         List<Conversation> conversations = getConversations(recipientId);
 
         for (Conversation conversation : conversations) {
-            if (conversation.getType() != null && groupMessageManager.get(recipientId, conversation) != null) {
-                continue;
-            }
             total += conversation.getNumberUnread();
         }
 
@@ -423,18 +429,11 @@ public class MessageManagerImpl implements MessageManager {
         if (conversation != null) {
             // type is not null indicate the group message
             if (conversation.getType() != null) {
-
-                GroupEnum groupEnum = GroupEnum.ALL_ADMINS;
-                if (securityUserManager.isRolePresent("unitadmin")) {
-                    groupEnum = GroupEnum.ALL_ADMINS;
-                } else if (securityUserManager.isRolePresent("unitstaff")) {
-                    groupEnum = GroupEnum.ALL_STAFF;
-                } else if (securityUserManager.isRolePresent("patient")) {
-                    groupEnum = GroupEnum.ALL_PATIENTS;
-                } else {}
-
-                if (groupMessageManager.getNumberOfUnreadGroupMessages(participantId, groupEnum) ==  0) {
+                // the bulk message is not new for unitadmin who send it
+                if (!(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()) && participantId.equals(conversation.getParticipant2().getId()))) {
+                    if (groupMessageManager.get(participantId, conversation) ==  null) {
                     conversation.setNumberUnread(1);
+                    }
                 }
             } else {
                 conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
