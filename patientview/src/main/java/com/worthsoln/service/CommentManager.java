@@ -9,7 +9,7 @@ import java.util.List;
 /**
  *
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public interface CommentManager {
 
     Comment get(Long id);

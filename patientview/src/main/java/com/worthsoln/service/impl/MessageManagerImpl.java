@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 @Service(value = "messageManager")
 public class MessageManagerImpl implements MessageManager {
 

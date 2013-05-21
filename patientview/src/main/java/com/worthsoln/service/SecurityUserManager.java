@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *  Access the spring security user details
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public interface SecurityUserManager {
 
     String getLoggedInUsername();

@@ -1,9 +1,9 @@
 package com.worthsoln.test.service;
 
-import com.worthsoln.test.BaseTestPvDbSchema;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *  All service tests should extend.
@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
-public abstract class BaseServiceTest extends BaseTestPvDbSchema {
+@Transactional
+public abstract class BaseServiceTest {
 
 }

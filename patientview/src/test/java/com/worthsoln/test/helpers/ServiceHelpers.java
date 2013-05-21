@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *  As per RepositoryHelpers but these are Transactional
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public interface ServiceHelpers {
 
     User createUser(String username, String email, String password, String name);
