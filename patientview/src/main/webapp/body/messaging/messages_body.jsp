@@ -22,6 +22,12 @@
                 <h1>
                     Messages
                 </h1>
+                <br/>
+                <div style="color: rgb(0, 136, 204)">
+                    IMPORTANT: We are still testing messaging. Do not send urgent information or questions this way yet! Click on messages
+                    to see the full conversation. To send a new message, click on "Create Message" above right. When you send a message,
+                    the recipient will receive and email asking them to log in to read it, if they have an email address in the system.
+                </div>
             </div>
 
             <section class="conversation-container">
@@ -36,6 +42,12 @@
                 <h1>
                     Messages
                 </h1>
+                <br/>
+                <div style="color: rgb(0, 136, 204)">
+                    IMPORTANT: We are still testing messaging. Do not send urgent information or questions this way yet! Click on messages
+                    to see the full conversation. To send a new message, click on "Create Message" above right. When you send a message,
+                    the recipient will receive and email asking them to log in to read it, if they have an email address in the system.
+                </div>
             </div>
 
             <section class="conversation-container">
@@ -55,6 +67,12 @@
                             <button type="button" data-toggle="modal" data-target="#messageModal" class="pull-right btn btn-primary">+ Create Message</button>
                         </logic:notPresent>
                     </h1>
+                    <br/>
+                    <div style="color: rgb(0, 136, 204)">
+                        IMPORTANT: We are still testing messaging. Do not send urgent information or questions this way yet! Click on messages
+                        to see the full conversation. To send a new message, click on "Create Message" above right. When you send a message,
+                        the recipient will receive and email asking them to log in to read it, if they have an email address in the system.
+                    </div>
                 </div>
 
                 <section class="conversation-container">
@@ -68,7 +86,7 @@
                                 <a href="/<%=actionPrefix%>/conversation.do?conversationId=<bean:write name="conversation" property="id" />#response">
                                     <article class="conversation <%=even ? "" : "odd"%>">
                                         <h2 class="title">
-                                            <bean:write name="conversation" property="subject" />
+                                            <bean:write name="conversation" property="otherUser.name" />
                                             <logic:greaterThan value="0" name="conversation" property="numberUnread">
                                                 <span class="badge badge-important">
                                                     <bean:write name="conversation" property="numberUnread" />
@@ -76,7 +94,7 @@
                                             </logic:greaterThan>
                                             <span class="pull-right conversation-date label label-inverse"><bean:write name="conversation" property="friendlyLatestMessageDate" /></span>
                                         </h2>
-                                        <h4 class="user"><bean:write name="conversation" property="otherUser.name" /></h4>
+                                        <h4 class="user"><bean:write name="conversation" property="subject" /></h4>
                                         <div class="content dull">
                                             <bean:write name="conversation" property="latestMessageSummary" />
                                         </div>

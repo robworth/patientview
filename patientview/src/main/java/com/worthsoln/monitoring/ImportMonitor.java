@@ -32,51 +32,76 @@ import java.util.*;
  */
 public class ImportMonitor {
 
+    // Timings and limitations
+    private static final int FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES = 1;
+    private static final int FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES = 10;
+    /**
+     * should always be equal to FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES /
+            FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES
+     */
     private static final int NUMBER_OF_LINES_TO_READ = 10;
-    private static final int PENDING_FILE_LIMIT = 10;
-    private static final int IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES = 1;
 
+
+    private static final int PENDING_FILE_LIMIT = 10;
+
+    // Import data file format
     private static final String RECORD_DATA_DELIMITER = ",";
     private static final String RECORD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final int DATE_POSITION_IN_RECORD = 0;
     private static final int NUMBER_OF_FILES_IN_PROTON_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 1;
     private static final int NUMBER_OF_FILES_IN_RPV_XML_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 2;
-    private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
     private static final String COUNT_LOG_FILENAME_FORMAT = "yyyy-MM-dd";
 
-    private static enum ImporterError {
-        NUMBER_OF_PROTON_FILES_IS_STATIC,
-        NUMBER_OF_RPV_XML_FILES_IS_STATIC,
-        NUMBER_OF_PROTON_FILES_EXCEEDS_LIMIT,
-        NUMBER_OF_RPV_XML_FILES_EXCEEDS_LIMIT
-    }
+    // Class constants
+    private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImportMonitor.class);
+
+    private static final int LINE_FEED = 0xA;
+    private static final int CARRIAGE_RETURN = 0xD;
 
     private static enum FileType {
         PROTON,
         RPV_XML
     }
 
-    private static final int LINE_FEED = 0xA;
-    private static final int CARRIAGE_RETURN = 0xD;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImportMonitor.class);
-
     public static void main(String[] args) {
+
+        int importFileCheckCount = 0;
+
         while (true) {
-            LOGGER.info("ImportMonitor wakes up");
+            LOGGER.info("******** ImportMonitor wakes up ********");
+            LOGGER.info("Import file counts will be logged every {} minutes, whereas a " +
+                    "health check will be done every {} minutes. Each monitoring will check the last {} lines " +
+                    "of the log", new Object[] {FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
+                    FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES, NUMBER_OF_LINES_TO_READ});
+
             StopWatch sw = new StopWatch();
             sw.start();
 
+            importFileCheckCount = importFileCheckCount + FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES;
+
             /**
-             * Check if importer is working fine
+             * Log number of pending data files
              */
-            monitorImportProcess();
+            logNumberOfPendingDataFiles();
+
+            /**
+             * If it is time, check the overall monitor stability as well
+             */
+            if (importFileCheckCount == NUMBER_OF_LINES_TO_READ) {
+                monitorImportProcess();
+
+                importFileCheckCount = 0;
+            }
 
             sw.stop();
-            LOGGER.info("ImportMonitor ends, it took {} ",
+            LOGGER.info("ImportMonitor ends, it took {} (mm:ss)",
                     new SimpleDateFormat("mm:ss").format(sw.getTotalTimeMillis()));
 
-            long maxTimeToSleep = IMPORTER_EXECUTION_FREQUENCY_IN_MINUTES * 60 * 1000;
+            /**
+             * Sleep for (frequency - execution time) seconds
+             */
+            long maxTimeToSleep = FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES * 60 * 1000;
             long executionTime = sw.getTotalTimeMillis();
             long timeToSleep = maxTimeToSleep - executionTime;
 
@@ -85,7 +110,7 @@ public class ImportMonitor {
                 timeToSleep = maxTimeToSleep;
             }
 
-            LOGGER.info("Importer will sleep for {} seconds", timeToSleep / 1000);
+            LOGGER.info("ImportMonitor will now sleep for {} (mm:ss)", new SimpleDateFormat("mm:ss").format(timeToSleep));
 
             try {
                 Thread.sleep(timeToSleep);
@@ -98,6 +123,29 @@ public class ImportMonitor {
 
     private static void monitorImportProcess() {
         /**
+         * Read some lines from the file
+         */
+
+        List<String> lines = getLastNLinesOfFile(NUMBER_OF_LINES_TO_READ);
+
+        /**
+         * Convert them to meaningful objects
+         */
+        List<CountRecord> countRecords = getCountRecordsFromLines(lines);
+
+        /**
+         * Check the records to see if files are static or they exceed the limit
+         */
+        if (isImporterNotWorkingProperly(countRecords)) {
+            /**
+             * Send an email if there are problems with the importer
+             */
+            sendAWarningEmail(countRecords);
+        }
+    }
+
+    private static void logNumberOfPendingDataFiles() {
+        /**
          * Count the number of pending files in both importer directories
          */
         int protonDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.proton_files.directory.path"));
@@ -107,22 +155,6 @@ public class ImportMonitor {
          * Write the counts to the file
          */
         logNumberOfFiles(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
-
-        /**
-         * Read some lines from the file
-         */
-
-        List<String> lines = getLastNLinesOfFile(NUMBER_OF_LINES_TO_READ);
-
-        /**
-         * Convert them to Record objects
-         */
-        List<CountRecord> countRecords = getCountRecordsFromLines(lines);
-
-        /**
-         * Check if files are static or they exceed the limit, send an email if they are
-         */
-        checkForErrorsAndSendAWarningEmail(countRecords);
     }
 
     /**
@@ -137,7 +169,7 @@ public class ImportMonitor {
             String countRecord = getCountDataToWriteToFile(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
 
             fileOutStream.write(countRecord.getBytes());
-            LOGGER.info("Appended {} to count file {}", countRecord, countFile.getAbsolutePath());
+            LOGGER.info("Appended this line: \"{}\" to count file {}", countRecord, countFile.getAbsolutePath());
 
             fileOutStream.flush();
             fileOutStream.close();
@@ -184,31 +216,46 @@ public class ImportMonitor {
         return count;
     }
 
-    private static void checkForErrorsAndSendAWarningEmail(List<CountRecord> countRecords) {
-        if (countRecords.size() == NUMBER_OF_LINES_TO_READ && (isNumberOfProtonFilesStatic(countRecords) ||
+    private static boolean isImporterNotWorkingProperly(List<CountRecord> countRecords) {
+        boolean importerIsNotWorkingProperly = countRecords.size() == NUMBER_OF_LINES_TO_READ && (isNumberOfProtonFilesStatic(countRecords) ||
                 isNumberOfRpvXmlFilesStatic(countRecords) ||
                 doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT) ||
-                doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT))) {
+                doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT));
 
-            try {
-                Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
-                Properties props = PropertiesLoaderUtils.loadProperties(resource);
-
-                String subject = "Problems encountered in Patient View XML Importer";
-
-                String body = getWarningEmailBody(countRecords);
-
-                String fromAddress = props.getProperty("noreply.email");
-
-                String[] toAddresses = {props.getProperty("support.email")};
-
-                sendEmail(fromAddress, toAddresses, null, subject, body);
-            } catch (IOException e) {
-                LOGGER.error("Could not find properties file: {}", e);
+        /**
+         * Some logging for feedback if the importer looks like working
+         */
+        if (!importerIsNotWorkingProperly) {
+            if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
+                LOGGER.info("Importer is working fine");
+            } else {
+                LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines " +
+                        "for Import monitor to process.",
+                        countRecords.size(), NUMBER_OF_LINES_TO_READ);
             }
-        } else {
-            LOGGER.info("There aren't enough data ({} lines) to monitor or everything works well.",
-                    countRecords.size());
+        }
+
+        return importerIsNotWorkingProperly;
+    }
+
+    private static void sendAWarningEmail(List<CountRecord> countRecords) {
+        try {
+            Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
+            Properties props = PropertiesLoaderUtils.loadProperties(resource);
+
+            String subject = "Problems encountered in Patient View XML Importer";
+
+            String body = getWarningEmailBody(countRecords);
+
+            String fromAddress = props.getProperty("noreply.email");
+
+            // todo For testing purposes this property is overridden
+//            String[] toAddresses = {props.getProperty("support.email")};
+            String[] toAddresses = {"patientview-testing@solidstategroup.com"};
+
+            sendEmail(fromAddress, toAddresses, null, subject, body);
+        } catch (IOException e) {
+            LOGGER.error("Could not find properties file: {}", e);
         }
     }
 
@@ -280,12 +327,14 @@ public class ImportMonitor {
         }
 
         if (doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Proton files waiting to be imported is above threshold.";
+            emailBody += newLine + "Number of Proton files waiting to be imported is above the threshold (" +
+                    PENDING_FILE_LIMIT + ").";
             emailBody += newLine;
         }
 
         if (doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above threshold.";
+            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above the threshold (" +
+                    PENDING_FILE_LIMIT + ").";
             emailBody += newLine;
         }
 
@@ -376,13 +425,16 @@ public class ImportMonitor {
 
             CountRecord latestRecord = countRecordsToTest.get(0);
 
-            LOGGER.debug("Proton files exceed limit: {}",
-                    (latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit));
-            LOGGER.debug("RpvXml files exceed limit: " +
-                    (latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit));
+            if (fileType == FileType.PROTON && latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit) {
+                LOGGER.debug("Proton files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInProtonDirectory(),
+                        pendingFileLimit);
 
-            if (latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit ||
+                return true;
+            } else if (fileType == FileType.RPV_XML &&
                     latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit) {
+                LOGGER.debug("RpvXml files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInRpvXmlDirectory(),
+                        pendingFileLimit);
+
                 return true;
             }
         }
