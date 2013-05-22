@@ -1,9 +1,20 @@
 package com.worthsoln.patientview.model.radar;
 
-public class RadarUserMapping {
+import com.worthsoln.patientview.model.BaseModel;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity(name = "rdr_user_mapping")
+public class RadarUserMapping extends BaseModel {
+
+    @Column
     private Long userId;
+
+    @Column(name = "radarUserId")
     private Long radarId;
+
+    @Column
     private String role;
 
     public Long getUserId() {
