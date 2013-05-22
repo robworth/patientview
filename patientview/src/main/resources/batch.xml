@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringFacetInspection -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+           http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+    <context:annotation-config />
+    <context:component-scan base-package="com.worthsoln" />
+
+    <!--Define jobLauncher-->
+    <bean id="jobLauncher" autowire="byType" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+
+    <!--Define jobRepository-->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+        <property name="transactionManager">
+            <bean class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+        </property>
+    </bean>
+
+    <!--Define skip policy-->
+    <bean id="alwaysSkipItemSkipPolicy" class="org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy" />
+
+    <!--Define createEamilQueueJob details-->
+    <batch:job id="createEamilQueueBatchJob">
+        <batch:step id="createEmailQueueStep">
+            <batch:tasklet transaction-manager="transactionManager">
+                <batch:chunk reader="createEmailQueueReader" writer="createEmailQueueWriter"
+                             commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
+                </batch:chunk>
+                <batch:listeners>
+                    <batch:listener ref="createEmailQueueJob"/>
+                </batch:listeners>
+            </batch:tasklet>
+        </batch:step>
+        <batch:listeners>
+            <batch:listener ref="createEmailQueueJob"/>
+        </batch:listeners>
+    </batch:job>
+
+    <!--Define sendEmailJob details-->
+    <batch:job id="sendEmailBatchJob">
+        <batch:step id="sendEmailStep">
+            <batch:tasklet transaction-manager="transactionManager">
+                <batch:chunk reader="sendEmailReader" writer="sendEmailWriter"
+                             commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
+                </batch:chunk>
+                <batch:listeners>
+                    <batch:listener ref="sendEmailJob"/>
+                </batch:listeners>
+            </batch:tasklet>
+        </batch:step>
+        <batch:listeners>
+            <batch:listener ref="sendEmailJob"/>
+        </batch:listeners>
+    </batch:job>
+
+
+</beans>

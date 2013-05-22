@@ -7,26 +7,26 @@
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <!--Define GetUnsentMessage class-->
-    <bean id="getUnsentMessageJob" class="com.worthsoln.job.GetUnsentMessageJob" />
+    <!--Define CreateEmailQueueJob class-->
+    <bean id="createEmailQueueJob" class="com.worthsoln.job.CreateEmailQueueJob" />
 
-    <!--Define SendMailJob class-->
-    <bean id="sendMailJob" class="com.worthsoln.job.SendMailJob" />
+    <!--Define SendEmailJob class-->
+    <bean id="sendEmailJob" class="com.worthsoln.job.SendEmailJob" />
 
-    <!--Define SendMailJob's method configuration-->
-    <bean id="getUnsentMessageJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <!--Define SendEmailJob's method configuration-->
+    <bean id="createEmailQueueJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
-            <ref bean="getUnsentMessageJob" />
+            <ref bean="createEmailQueueJob" />
         </property>
         <property name="targetMethod">
             <value>execute</value>
         </property>
     </bean>
 
-    <!--Define SendMailJob's method configuration-->
-    <bean id="sendMailJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <!--Define SendEmailJob's method configuration-->
+    <bean id="sendEmailJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
-            <ref bean="sendMailJob" />
+            <ref bean="sendEmailJob" />
         </property>
         <property name="targetMethod">
             <value>execute</value>
@@ -34,22 +34,22 @@
     </bean>
 
     <!--triggers -->
-    <bean id="getUnsentMessageJobProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="getUnsentMessageJobTask" />
-        <property name="cronExpression" value="${quartz.getUnsentMsg.cron}" />
+    <bean id="createEmailQueueJobProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="createEmailQueueJobTask" />
+        <property name="cronExpression" value="${quartz.createEmailQueue.cron}" />
     </bean>
 
     <!--triggers -->
-    <bean id="sendMailProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="sendMailJobTask" />
+    <bean id="sendEmailProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="sendEmailJobTask" />
         <property name="cronExpression" value="${quartz.sendMail.cron}" />
     </bean>
 
     <bean id="startQuartz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="getUnsentMessageJobProcessDoTime" />
-                <ref bean="sendMailProcessDoTime" />
+                <ref bean="createEmailQueueJobProcessDoTime" />
+                <ref bean="sendEmailProcessDoTime" />
             </list>
         </property>
         <property name="taskExecutor" ref="executor" />

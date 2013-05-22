@@ -6,9 +6,7 @@ import java.util.Date;
 /**
  * Send the email to special group members after the unitadmin send the bulk message
  */
-public class SendMailJob {
+public class SendEmailJob {
 
-    public void execute() {
-        // todo
-    }
+    //todo
 }
