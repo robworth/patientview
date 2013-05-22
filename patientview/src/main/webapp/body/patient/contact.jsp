@@ -3,6 +3,29 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
 
+<%--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  --%>
+
 <html:xhtml/>
 
 <logic:notPresent name="emailSent">
@@ -55,7 +78,7 @@
                 <html:hidden property="type" value="unit" />
                 <div class="form-actions">
                     <html:submit value="Send"  styleClass="btn" />
-                </div>            
+                </div>
             </fieldset>
         </html:form>
     </logic:notEmpty>
@@ -118,7 +141,7 @@
 
         <html:form action="/patient/feedbackForm" styleClass="form-horizontal">
             <fieldset>
-            <div class="control-group"> 
+            <div class="control-group">
                 <label class="control-label">Please enter your message below</label>
                 <div class="controls"><html:textarea rows="6" cols="30" property="comment" styleClass="input-xlarge"/></div>
             </div>
@@ -218,7 +241,7 @@
         </tr>
      </table>
 </logic:present>
- 
+
 
 <logic:present name="contact" property="unit">
 

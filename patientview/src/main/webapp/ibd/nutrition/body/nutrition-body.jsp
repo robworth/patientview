@@ -3,7 +3,30 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-        <div class="page-header">
+        <%--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  --%>
+
+<div class="page-header">
             <h1>Nutrition <small>Discover up-to date information about food and IBD</small></h1>
         </div>
         <ul class="padded-list">
@@ -38,7 +61,7 @@
             </li>
             <li>
                 Make a list of the foods that you have eaten and what symptoms it may have caused (e.g. abdominal pain
-                or diarrhoea). 
+                or diarrhoea).
             </li>
             <li>
                 Stop eating this particular food for a few weeks and then try it again.
