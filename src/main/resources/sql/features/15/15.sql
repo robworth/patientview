@@ -6,7 +6,7 @@ CREATE TABLE `pv_admin_notification` (
   PRIMARY KEY (`id`)
 );
 
-insert into pv_admin_notification (id, notification_id, email) values (1, 0, 'patientview-testing@solidstategroup.com');
-insert into pv_admin_notification (id, notification_id, email) values (2, 1, 'patientview-testing@solidstategroup.com');
-insert into pv_admin_notification (id, notification_id, email) values (3, 1, 'patientview-testing@solidstategroup.com');
-insert into pv_admin_notification (id, notification_id, email) values (4, 2, 'patientview-testing@solidstategroup.com');
+insert into pv_admin_notification (id, notification_id, email) values (1, 0, 'rob.worth@worthsolutions.com');
+insert into pv_admin_notification (id, notification_id, email) values (2, 1, 'rob.worth@worthsolutions.com');
+insert into pv_admin_notification (id, notification_id, email) values (3, 1, 'rob.worth@worthsolutions.com');
+insert into pv_admin_notification (id, notification_id, email) values (4, 2, 'rob.worth@worthsolutions.com');
