@@ -409,4 +409,10 @@ public class UserManagerImpl implements UserManager {
     public void removeUserFromRadar(Long userId) {
         radarDao.removeUserFromRadar(userId);
     }
+
+    @Override
+    public List<User> getUsers(User user, Specialty specialty, String userType) {
+
+        return userDao.get(user, specialty, userType);
+    }
 }

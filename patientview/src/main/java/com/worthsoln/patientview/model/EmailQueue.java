@@ -36,20 +36,20 @@ public class EmailQueue extends BaseModel {
         this.message = message;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
     public User getRecipient() {
         return recipient;
     }
 
     public void setRecipient(User recipient) {
         this.recipient = recipient;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public SendEmailEnum getStatus() {
@@ -60,11 +60,11 @@ public class EmailQueue extends BaseModel {
         this.status = status;
     }
 
-    public Job getJob() {
-        return job;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

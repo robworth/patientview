@@ -7,16 +7,16 @@
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <!--Define CreateEmailQueueJob class-->
-    <bean id="createEmailQueueJob" class="com.worthsoln.job.CreateEmailQueueJob" />
+    <!--Define CreateEmailQueueJobQuartzScheduler class-->
+    <bean id="createEmailQueueJobQuartzScheduler" class="com.worthsoln.quartz.CreateEmailQueueJobQuartzScheduler" />
 
-    <!--Define SendEmailJob class-->
-    <bean id="sendEmailJob" class="com.worthsoln.job.SendEmailJob" />
+    <!--Define SendEmailJobQuartzScheduler class-->
+    <bean id="sendEmailJobQuartzScheduler" class="com.worthsoln.quartz.SendEmailJobQuartzScheduler" />
 
     <!--Define SendEmailJob's method configuration-->
     <bean id="createEmailQueueJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
-            <ref bean="createEmailQueueJob" />
+            <ref bean="createEmailQueueJobQuartzScheduler" />
         </property>
         <property name="targetMethod">
             <value>execute</value>
@@ -26,7 +26,7 @@
     <!--Define SendEmailJob's method configuration-->
     <bean id="sendEmailJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
-            <ref bean="sendEmailJob" />
+            <ref bean="sendEmailJobQuartzScheduler" />
         </property>
         <property name="targetMethod">
             <value>execute</value>
@@ -49,7 +49,7 @@
         <property name="triggers">
             <list>
                 <ref bean="createEmailQueueJobProcessDoTime" />
-                <ref bean="sendEmailProcessDoTime" />
+                <!--<ref bean="sendEmailProcessDoTime" />-->
             </list>
         </property>
         <property name="taskExecutor" ref="executor" />

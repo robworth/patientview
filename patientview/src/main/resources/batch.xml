@@ -15,7 +15,6 @@
 
     <!--Define jobLauncher-->
     <bean id="jobLauncher" autowire="byType" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-        <property name="jobRepository" ref="jobRepository" />
     </bean>
 
     <!--Define jobRepository-->
@@ -45,7 +44,7 @@
         </batch:listeners>
     </batch:job>
 
-    <!--Define sendEmailJob details-->
+    <!--Define sendEmailJob details
     <batch:job id="sendEmailBatchJob">
         <batch:step id="sendEmailStep">
             <batch:tasklet transaction-manager="transactionManager">
@@ -60,7 +59,7 @@
         <batch:listeners>
             <batch:listener ref="sendEmailJob"/>
         </batch:listeners>
-    </batch:job>
+    </batch:job> -->
 
 
 </beans>

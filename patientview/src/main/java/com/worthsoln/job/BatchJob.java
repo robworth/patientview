@@ -2,32 +2,52 @@ package com.worthsoln.job;
 
 import com.worthsoln.patientview.model.Job;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.annotation.AfterJob;
 import org.springframework.batch.core.annotation.BeforeJob;
 import org.springframework.batch.core.annotation.OnReadError;
 import org.springframework.batch.core.annotation.OnSkipInWrite;
-import org.springframework.batch.core.launch.JobLauncher;
 import org.slf4j.Logger;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Definitions base use methods for job
  */
-public class BaseJob {
+public abstract class BatchJob {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseJob.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchJob.class);
 
-    //@Autowired
-    //protected JobLauncher jobLauncher;
+    @Autowired
+    protected JobLauncher jobLauncher;
 
     protected Job job;
 
-    public void execute(){
-        // todo
+    protected abstract void setJob();
+
+    public void run(){
+
+        Map<String, JobParameter> map = new HashMap<String, JobParameter>();
+        map.put("key", new JobParameter(new Date()));
+        try {
+            JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (JobRestartException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
     }
 
     /**
@@ -88,4 +108,6 @@ public class BaseJob {
     public void updateJobStatusSuccessed(Job job) {
 
     }
+
+    protected abstract org.springframework.batch.core.Job getBatchJob();
 }

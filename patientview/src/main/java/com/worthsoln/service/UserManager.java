@@ -76,4 +76,6 @@ public interface UserManager {
     void createProfessionalUserInRadar(User user, String unitcode);
 
     void removeUserFromRadar(Long userId);
+
+    List<User> getUsers(User user, Specialty specialty, String userType);
 }
