@@ -65,6 +65,8 @@ public class LegacySpringUtils {
     
     private static JoinRequestManager joinRequestManager;
 
+    private static AdminNotificationManager adminNotificationManager;
+
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;
     }
@@ -279,5 +281,13 @@ public class LegacySpringUtils {
 
     public static void setJoinRequestManager(JoinRequestManager joinRequestManager) {
         LegacySpringUtils.joinRequestManager = joinRequestManager;
+    }
+
+    public static AdminNotificationManager getAdminNotificationManager() {
+        return adminNotificationManager;
+    }
+
+    public static void setAdminNotificationManager(AdminNotificationManager adminNotificationManager) {
+        LegacySpringUtils.adminNotificationManager = adminNotificationManager;
     }
 }

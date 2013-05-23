@@ -23,7 +23,6 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,14 +57,14 @@ public class ResultsUpdater {
             XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
 
         } else {
-            validate(context, xmlFile, xsdFile);
+            validateAndProcess(context, xmlFile, xsdFile);
         }
 
         // always move the file, so it is not processed multiple times
         renameDirectory(context, xmlFile);
     }
 
-    private void validate(ServletContext context, File xmlFile, File xsdFile) {
+    private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
@@ -212,10 +211,8 @@ public class ResultsUpdater {
         for (Iterator iterator = dateRanges.iterator(); iterator.hasNext(); ) {
             TestResultDateRange testResultDateRange = (TestResultDateRange) iterator.next();
 
-            Calendar startDate = TimestampUtils.createTimestamp(testResultDateRange.getStartDate() + "T00:00");
-            startDate.set(Calendar.SECOND, 0);
-            Calendar stopDate = TimestampUtils.createTimestamp(testResultDateRange.getStopDate() + "T23:59");
-            stopDate.set(Calendar.SECOND, 59);
+            Calendar startDate = TimestampUtils.createTimestampStartDay(testResultDateRange.getStartDate());
+            Calendar stopDate = TimestampUtils.createTimestampEndDay(testResultDateRange.getStopDate());
 
             LegacySpringUtils.getTestResultManager().deleteTestResultsWithinTimeRange(testResultDateRange.getNhsNo(),
                     testResultDateRange.getUnitcode(), testResultDateRange.getTestCode(), startDate.getTime(),

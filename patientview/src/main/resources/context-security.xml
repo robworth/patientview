@@ -16,7 +16,6 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/images/**" security="none"/>
     <http pattern="/img/**" security="none"/>
     <http pattern="/templates/default/images/**" security="none"/>
-    <http pattern="/forum/images/**" security="none"/>
     <http pattern="/favicon.ico" security="none"/>
 
     <http>
@@ -46,16 +45,9 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/launchpad.do" access="ROLE_ANY_USER"/>
         <intercept-url pattern="/launchpad-select.do" access="ROLE_ANY_USER"/>
 
-        <!-- no per specialty security for the forums -->
-        <intercept-url pattern="/forums/**" access="ROLE_ANY_USER"/>
-        <intercept-url pattern="/**/*.page" access="ROLE_ANY_USER"/>
-        <intercept-url pattern="/rss/forumTopics/**" access="ROLE_ANY_USER"/>
-        <intercept-url pattern="/setscreenname.do" access="ROLE_ANY_USER"/>
-
         <!-- Renal specialty config -->
         <intercept-url pattern="/renal/control/**" access="ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
         <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/renal/forums/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
         <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
         <intercept-url pattern="/renal/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
 
@@ -63,7 +55,6 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/control/**" access="ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/forums/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
 

@@ -11,9 +11,9 @@ import com.worthsoln.patientview.model.Conversation;
  */
 public interface RepositoryHelpers {
 
-    User createUser(String username, String email, String password, String name, String screenName);
+    User createUser(String username, String email, String password, String name);
 
-    User createUserWithMapping(String username, String email, String password, String name, String screenName,
+    User createUserWithMapping(String username, String email, String password, String name,
                                String unitcode, String nhsno, Specialty specialty);
 
     Specialty createSpecialty(String name, String context, String description);

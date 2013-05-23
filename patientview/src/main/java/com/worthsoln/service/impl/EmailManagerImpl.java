@@ -126,4 +126,12 @@ public class EmailManagerImpl implements EmailManager {
             LOGGER.error("Could send email: {}", e);
         }
     }
+
+    public JavaMailSender getJavaMailSender() {
+        return javaMailSender;
+    }
+
+    public void setJavaMailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 }

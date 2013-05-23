@@ -8,7 +8,6 @@ import com.worthsoln.patientview.model.SpecialtyUserRole;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.repository.PatientCountDao;
 import com.worthsoln.repository.PatientDao;
-import com.worthsoln.repository.UserMappingDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class PatientDaoTest extends BaseDaoTest {
         specialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
 
         user = repositoryHelpers.createUserWithMapping("username1", "test@test.com", "password", NAME_OF_USER,
-                "screenname", CENTRE_1, NHS_NO_1, specialty);
+                CENTRE_1, NHS_NO_1, specialty);
 
         specialtyUserRole = repositoryHelpers.createSpecialtyUserRole(specialty, user, "patient");
     }

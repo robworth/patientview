@@ -1,3 +1,4 @@
+<%@ page import="com.worthsoln.patientview.messaging.Messaging" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -49,7 +50,10 @@
                 <div class="page-header">
                     <h1>
                         Messages
-                        <button type="button" data-toggle="modal" data-target="#messageModal" class="pull-right btn btn-primary">+ Create Message</button>
+
+                        <logic:notPresent name="isReaderTheRecipient">
+                            <button type="button" data-toggle="modal" data-target="#messageModal" class="pull-right btn btn-primary">+ Create Message</button>
+                        </logic:notPresent>
                     </h1>
                 </div>
 
@@ -97,7 +101,7 @@
                                 <fieldset>
                                     <input type="hidden" class="js-message-redirect" value="/<%=actionPrefix%>/conversation.do" />
 
-                                    <logic:present name="units">
+                                    <logic:present name="<%=Messaging.UNITS_PARAM%>">
                                         <div class="control-group">
                                             <label class="control-label">Unit</label>
 
@@ -105,7 +109,7 @@
                                                 <select name="recipientId" class="js-message-unit-code">
                                                     <option value="">Select</option>
 
-                                                    <logic:iterate name="units" id="unit" indexId="index">
+                                                    <logic:iterate name="<%=Messaging.UNITS_PARAM%>" id="unit" indexId="index">
                                                         <option value="<bean:write name="unit" property="unitcode" />"><bean:write name="unit" property="name" /></option>
                                                     </logic:iterate>
                                                 </select>
@@ -116,7 +120,7 @@
                                         </div>
                                     </logic:present>
 
-                                    <div class="control-group js-recipient-container" <logic:present name="units">style="display: none"</logic:present>>
+                                    <div class="control-group js-recipient-container" <logic:present name="<%=Messaging.UNITS_PARAM%>">style="display: none"</logic:present>>
                                         <label class="control-label">To</label>
                                         <div class="controls">
                                             <select name="recipientId" class="js-message-recipient-id">

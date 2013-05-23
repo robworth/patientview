@@ -220,10 +220,10 @@
                 <configuration>
                     <!-- when creating the war file use the filtered web.xml -->
                     <!--<webXml>${project.build.directory}/web.xml</webXml>-->
-                    <!-- overwite the default files with any build/environment specific ones -->
-
+                    <!-- overwrite the default files with any build/environment specific ones -->
                 </configuration>
             </plugin>
+
         </plugins>
 
     </build>
@@ -374,8 +374,7 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <!--rolled back to version 2.3 for jforum <version>20030203.000129</version>-->
-            <version>2.3</version>
+            <version>2.6</version>
         </dependency>
 
         <dependency>
@@ -397,13 +396,6 @@
             <artifactId>commons-validator</artifactId>
             <version>1.4.0</version>
         </dependency>
-
-        <!-- hibernate 2-->
-        <!--<dependency>-->
-        <!--<groupId>net.sf.hibernate</groupId>-->
-        <!--<artifactId>hibernate</artifactId>-->
-        <!--<version>2.1.8</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -496,14 +488,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Ehcache stuff (was 0.9)-->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>1.2</version>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
@@ -543,48 +527,6 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <groupId>org.codehaus.jackson</groupId>
             <version>1.9.2</version>
-        </dependency>
-
-        <!-- jforum stuff, version taken from file names of old ant build-->
-        <!-- Note: this version 1.0 is arbitrary, not idea what version it is -->
-        <!--
-
-        mvn install:install-file -Dfile=jforum.jar -DgroupId=net.jforum -DartifactId=jforum -Dversion=1.0 -Dpackaging=jar
-
-        mvn deploy:deploy-file -Dfile=jforum-2.1.8.jar -DgroupId=net.jforum -DartifactId=jforum -Dversion=1.0 -Dpackaging=jar -DrepositoryId=ssg -Durl=http://nexus.solidstategroup.com/content/repositories/thirdparty/
-        -->
-        <dependency>
-            <groupId>jforum</groupId>
-            <artifactId>jforum</artifactId>
-            <version>2.1.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.19</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>2.3.2</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers</artifactId>
-            <version>2.3.2</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-highlighter</artifactId>
-            <version>2.3.2</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -635,13 +577,6 @@
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>1.8.0.10</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.octo.captcha</groupId>
-            <artifactId>jcaptcha-all</artifactId>
-            <version>1.0-RC-2.0.1</version>
             <scope>runtime</scope>
         </dependency>
 

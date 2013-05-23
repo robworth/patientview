@@ -38,7 +38,7 @@
                         <li><html:link forward="controlPasswordChangeInput">Change password</html:link></li>
                     </logic:present>
                     <logic:present role="superadmin,unitadmin,unitstaff">
-                        <li><html:link action="logged_in">Back to Admin Area</html:link></li>
+                        <li><html:link action="back_to_admin">Back to Admin Area</html:link></li>
                     </logic:present>
                     <li><html:link action="logout">Logout</html:link></li>
                     <jsp:include page="include/specialty_switcher.jsp"/>

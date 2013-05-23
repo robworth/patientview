@@ -24,35 +24,43 @@ public class UnitStatsAction extends Action {
         Calendar startdate = determineStartDate(form);
         Calendar enddate = determineEndDate(form);
         String unitcode = BeanUtils.getProperty(form, "unitcode");
+
         List log = getUnitStats(unitcode, startdate, enddate);
         request.setAttribute("log", log);
+
         UnitUtils.putRelevantUnitsInRequest(request);
+
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
     private Calendar determineStartDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String startDateString = BeanUtils.getProperty(form, "startdate");
-        Calendar startdate;
+        Calendar startDate;
+
         if ((startDateString == null) || ("".equals(startDateString))) {
-            startdate = LoggingUtils.getStartDateForLogQuery(Calendar.MONTH, -1);
+            startDate = LoggingUtils.getStartDateForLogQuery(Calendar.MONTH, -1);
         } else {
-            startdate = getSensibleDate(startDateString, "00:00");
+            startDate = TimestampUtils.createTimestampEndDay(startDateString);
         }
-        return startdate;
+
+        return startDate;
     }
 
     private Calendar determineEndDate(ActionForm form)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        String startDateString = BeanUtils.getProperty(form, "enddate");
-        Calendar startdate;
-        if ((startDateString == null) || ("".equals(startDateString))) {
-            startdate = LoggingUtils.getDefaultEndDateForLogQuery();
+        String endDateString = BeanUtils.getProperty(form, "enddate");
+        Calendar endDate;
+
+        if ((endDateString == null) || ("".equals(endDateString))) {
+            endDate = LoggingUtils.getDefaultEndDateForLogQuery();
         } else {
-            startdate = getSensibleDate(startDateString, "23:59");
+            endDate = TimestampUtils.createTimestampEndDay(endDateString);
         }
-        return startdate;
+
+        return endDate;
     }
 
     private static List getUnitStats(String unitcode, Calendar startdate, Calendar enddate) throws Exception {
@@ -61,17 +69,5 @@ public class UnitStatsAction extends Action {
             logEntries = LegacySpringUtils.getLogEntryManager().getWithUnitCode(unitcode, startdate, enddate);
         }
         return logEntries;
-    }
-
-    private static Calendar getSensibleDate(String dateString, String timeString) {
-        Calendar cal = Calendar.getInstance();
-        if (dateString.length() >= 10) {
-            try {
-                cal = TimestampUtils.createTimestamp(dateString + " " + timeString);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return cal;
     }
 }

@@ -81,7 +81,7 @@ public class JoinRequestSubmitAction extends BaseAction {
         Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
 
         if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
-            toAddress = request.getSession().getServletContext().getInitParameter("support.email");
+            toAddress = request.getSession().getServletContext().getInitParameter("admin.email.to");
         } else {
             toAddress = unit.getRenaladminemail();
         }

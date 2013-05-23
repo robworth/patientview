@@ -80,17 +80,22 @@
                 </logic:present>
             </section>
 
-            <section class="new-message-container" id="response">
-                <form action="/send-message.do" class="js-message-form">
-                    <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
-                    <input type="hidden" class="js-message-conversation-id" value="<bean:write name="conversation" property="id" />" />
-                    <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
-                    <div class="alert alert-error js-message-errors" style="display: none">
-                        <strong>You do not have any messages.</strong>
-                    </div>
-                    <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
-                </form>
-            </section>
+            <logic:notPresent name="isReaderTheRecipient">
+
+                <section class="new-message-container" id="response">
+                    <form action="/send-message.do" class="js-message-form">
+                        <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
+                        <input type="hidden" class="js-message-conversation-id" value="<bean:write name="conversation" property="id" />" />
+                        <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
+                        <div class="alert alert-error js-message-errors" style="display: none">
+                            <strong>You do not have any messages.</strong>
+                        </div>
+                        <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
+                    </form>
+                </section>
+
+            </logic:notPresent>
+
         </logic:present>
     </div>
 </div>
