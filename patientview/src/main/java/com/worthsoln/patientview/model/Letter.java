@@ -48,6 +48,8 @@ public class Letter extends BaseModel {
     @Column(nullable = true)
     private String content;
 
+    private static final int HASH_SEED = 31;
+
     public Letter() {
     }
 
@@ -90,6 +92,7 @@ public class Letter extends BaseModel {
 
     /**
      * Will return the content with the carriage returns replace with <br />
+     *
      * @return String
      */
     public String getFormattedContent() {
@@ -136,12 +139,18 @@ public class Letter extends BaseModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Letter letter = (Letter) o;
 
-        if (!this.getId().equals(letter.getId())) return false;
+        if (!this.getId().equals(letter.getId())) {
+            return false;
+        }
 
         return true;
     }
@@ -149,11 +158,11 @@ public class Letter extends BaseModel {
     @Override
     public int hashCode() {
         long result = this.getId();
-        result = 31 * result + (nhsno != null ? nhsno.hashCode() : 0);
-        result = 31 * result + (unitcode != null ? unitcode.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (content != null ? content.hashCode() : 0);
+        result = HASH_SEED * result + (nhsno != null ? nhsno.hashCode() : 0);
+        result = HASH_SEED * result + (unitcode != null ? unitcode.hashCode() : 0);
+        result = HASH_SEED * result + (date != null ? date.hashCode() : 0);
+        result = HASH_SEED * result + (type != null ? type.hashCode() : 0);
+        result = HASH_SEED * result + (content != null ? content.hashCode() : 0);
         return (int) result;
     }
 }

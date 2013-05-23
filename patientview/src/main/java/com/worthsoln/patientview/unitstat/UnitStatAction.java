@@ -98,7 +98,8 @@ public class UnitStatAction extends Action {
         return statsHeadings;
     }
 
-    private Collection<UnitMonthStats> turnUnitStatsListIntoRecords(List<UnitStat> unitStatsList, List<UnitStat> patientCountStatsList) {
+    private Collection<UnitMonthStats> turnUnitStatsListIntoRecords(List<UnitStat> unitStatsList,
+                                                                    List<UnitStat> patientCountStatsList) {
         TreeMap<UnitStatId, UnitMonthStats> unitStatsRecords = new TreeMap<UnitStatId, UnitMonthStats>();
         addStatsToTree(unitStatsList, unitStatsRecords);
         addStatsToTree(patientCountStatsList, unitStatsRecords);

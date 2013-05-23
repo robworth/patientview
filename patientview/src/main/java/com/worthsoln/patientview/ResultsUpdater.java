@@ -27,7 +27,13 @@ import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.Centre;
+import com.worthsoln.patientview.model.Diagnosis;
+import com.worthsoln.patientview.model.Diagnostic;
+import com.worthsoln.patientview.model.Letter;
+import com.worthsoln.patientview.model.Medicine;
+import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
@@ -78,7 +84,6 @@ public class ResultsUpdater {
                     XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
                     XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
             XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
-
         } else {
             validateAndProcess(context, xmlFile, xsdFile);
         }
@@ -119,9 +124,9 @@ public class ResultsUpdater {
             ResultParser parser = new ResultParser();
             parser.parseResults(context, xmlFile);
 
-            if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag()) ||
-                    "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag()) ||
-                    "Suspend".equalsIgnoreCase(parser.getFlag())) {
+            if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
+                    || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
+                    || "Suspend".equalsIgnoreCase(parser.getFlag())) {
                 removePatientFromSystem(parser);
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
                         parser.getPatient().getCentreCode(), xmlFile.getName());
@@ -182,7 +187,7 @@ public class ResultsUpdater {
     }
 
     private void insertDiagnostics(Collection<Diagnostic> diagnostics) {
-        for (Iterator iterator = diagnostics.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = diagnostics.iterator(); iterator.hasNext();) {
             Diagnostic diagnostic = (Diagnostic) iterator.next();
             LegacySpringUtils.getDiagnosticManager().save(diagnostic);
         }
@@ -193,7 +198,7 @@ public class ResultsUpdater {
     }
 
     private void insertProcedures(Collection<Procedure> procedures) {
-        for (Iterator iterator = procedures.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = procedures.iterator(); iterator.hasNext();) {
             Procedure procedure = (Procedure) iterator.next();
             LegacySpringUtils.getIbdManager().saveProcedure(procedure);
         }
@@ -204,7 +209,7 @@ public class ResultsUpdater {
     }
 
     private void insertAllergies(Collection<Allergy> allergies) {
-        for (Iterator iterator = allergies.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = allergies.iterator(); iterator.hasNext();) {
             Allergy allergy = (Allergy) iterator.next();
             LegacySpringUtils.getIbdManager().saveAllergy(allergy);
         }
@@ -231,7 +236,7 @@ public class ResultsUpdater {
     }
 
     private void deleteDateRanges(Collection dateRanges) {
-        for (Iterator iterator = dateRanges.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = dateRanges.iterator(); iterator.hasNext();) {
             TestResultDateRange testResultDateRange = (TestResultDateRange) iterator.next();
 
             Calendar startDate = TimestampUtils.createTimestampStartDay(testResultDateRange.getStartDate());
@@ -240,19 +245,18 @@ public class ResultsUpdater {
             LegacySpringUtils.getTestResultManager().deleteTestResultsWithinTimeRange(testResultDateRange.getNhsNo(),
                     testResultDateRange.getUnitcode(), testResultDateRange.getTestCode(), startDate.getTime(),
                     stopDate.getTime());
-
         }
     }
 
     private void insertResults(Collection testResults) {
-        for (Iterator iterator = testResults.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = testResults.iterator(); iterator.hasNext();) {
             TestResult testResult = (TestResult) iterator.next();
             LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
 
     private void deleteLetters(Collection letters) {
-        for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
             Letter letter = (Letter) iterator.next();
 
             LegacySpringUtils.getLetterManager().delete(letter.getNhsno(), letter.getUnitcode(),
@@ -261,7 +265,7 @@ public class ResultsUpdater {
     }
 
     private void insertLetters(Collection letters) {
-        for (Iterator iterator = letters.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
             Letter letter = (Letter) iterator.next();
             LegacySpringUtils.getLetterManager().save(letter);
         }
@@ -269,11 +273,10 @@ public class ResultsUpdater {
 
     private void deleteOtherDiagnoses(String nhsno, String unitcode) {
         LegacySpringUtils.getDiagnosisManager().deleteOtherDiagnoses(nhsno, unitcode);
-
     }
 
     private void insertOtherDiagnoses(Collection diagnoses) {
-        for (Iterator iterator = diagnoses.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = diagnoses.iterator(); iterator.hasNext();) {
             Diagnosis diagnosis = (Diagnosis) iterator.next();
             LegacySpringUtils.getDiagnosisManager().save(diagnosis);
         }
@@ -284,7 +287,7 @@ public class ResultsUpdater {
     }
 
     private void insertMedicines(Collection medicines) {
-        for (Iterator iterator = medicines.iterator(); iterator.hasNext(); ) {
+        for (Iterator iterator = medicines.iterator(); iterator.hasNext();) {
             Medicine medicine = (Medicine) iterator.next();
             LegacySpringUtils.getMedicineManager().save(medicine);
         }

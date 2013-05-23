@@ -40,58 +40,58 @@ import java.util.Date;
 public class CarePlan extends BaseModel {
 
     @Transient
-    private final int DEFAULT_SCORE = 5;
+    private final int defaultScore = 5;
 
     @Column(nullable = false)
     private String nhsno;
 
     @Column(nullable = true)
-    private Integer overallMyConditionScore = DEFAULT_SCORE;
+    private Integer overallMyConditionScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer tirednessFatigueScore = DEFAULT_SCORE;
+    private Integer tirednessFatigueScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer managingPainScore = DEFAULT_SCORE;
+    private Integer managingPainScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer stressAndWorryScore = DEFAULT_SCORE;
+    private Integer stressAndWorryScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer supportFromFamilyAndFriendsScore = DEFAULT_SCORE;
+    private Integer supportFromFamilyAndFriendsScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer managingMySocialLifeHobbiesScore = DEFAULT_SCORE;
+    private Integer managingMySocialLifeHobbiesScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer managingWorkStudiesScore = DEFAULT_SCORE;
+    private Integer managingWorkStudiesScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer takingMyMedicinesRegularlyScore = DEFAULT_SCORE;
+    private Integer takingMyMedicinesRegularlyScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer managingFlareUpsScore = DEFAULT_SCORE;
+    private Integer managingFlareUpsScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer stoppingSmokingScore = DEFAULT_SCORE;
+    private Integer stoppingSmokingScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer sleepingScore = DEFAULT_SCORE;
+    private Integer sleepingScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer sexualRelationshipsScore = DEFAULT_SCORE;
+    private Integer sexualRelationshipsScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer fertilityPregnancyScore = DEFAULT_SCORE;
+    private Integer fertilityPregnancyScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer learningAboutMyConditionScore = DEFAULT_SCORE;
+    private Integer learningAboutMyConditionScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer eatingAHealthyDietScore = DEFAULT_SCORE;
+    private Integer eatingAHealthyDietScore = defaultScore;
 
     @Column(nullable = true)
-    private Integer travellingScore = DEFAULT_SCORE;
+    private Integer travellingScore = defaultScore;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String otherAreasToDiscuss;

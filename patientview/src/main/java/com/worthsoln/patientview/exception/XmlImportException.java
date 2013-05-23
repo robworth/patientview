@@ -30,7 +30,7 @@ import java.util.List;
 
 public class XmlImportException extends Exception {
 
-    List<CorruptNode> nodeList;
+    private List<CorruptNode> nodeList;
 
     public XmlImportException() {
         this.nodeList = new ArrayList<CorruptNode>();

@@ -38,12 +38,10 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class MyIbdUpdateAction extends BaseAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) throws Exception {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
@@ -67,7 +65,8 @@ public class MyIbdUpdateAction extends BaseAction {
         myIbd.setDiseaseExtentId((Long) dynaForm.get(Ibd.DISEASE_EXTENT_ID_PARAM));
         myIbd.setYearOfDiagnosis(convertFormDateString(Ibd.YEAR_OF_DIAGNOSIS_PARAM, dynaForm));
         myIbd.setBodyPartAffected((String) dynaForm.get(Ibd.BODY_PART_AFFECTED_PARAM));
-        myIbd.setYearForSurveillanceColonoscopy(convertFormDateString(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, dynaForm));
+        myIbd.setYearForSurveillanceColonoscopy(convertFormDateString(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM,
+                dynaForm));
         myIbd.setNamedConsultant((String) dynaForm.get(Ibd.NAMED_CONSULTANT_PARAM));
         myIbd.setNurses((String) dynaForm.get(Ibd.NURSES_PARAM));
         myIbd.setFamilyHistory((String) dynaForm.get(Ibd.FAMILY_HISTORY_PARAM));
@@ -104,8 +103,7 @@ public class MyIbdUpdateAction extends BaseAction {
             actionErrors.add(Ibd.YEAR_OF_DIAGNOSIS_PARAM, new ActionMessage(Ibd.YEAR_OF_DIAGNOSIS_REQUIRED));
         }
 
-        if (form.get(Ibd.COMPLICATIONS_PARAM) == null
-                || form.get(Ibd.COMPLICATIONS_PARAM).toString().length() == 0) {
+        if (form.get(Ibd.COMPLICATIONS_PARAM) == null || form.get(Ibd.COMPLICATIONS_PARAM).toString().length() == 0) {
             actionErrors.add(Ibd.COMPLICATIONS_PARAM, new ActionMessage(Ibd.COMPLICATIONS_REQUIRED));
         }
 
@@ -114,8 +112,7 @@ public class MyIbdUpdateAction extends BaseAction {
             actionErrors.add(Ibd.BODY_PART_AFFECTED_PARAM, new ActionMessage(Ibd.BODY_PART_AFFECTED_REQUIRED));
         }
 
-        if (form.get(Ibd.FAMILY_HISTORY_PARAM) == null
-                || form.get(Ibd.FAMILY_HISTORY_PARAM).toString().length() == 0) {
+        if (form.get(Ibd.FAMILY_HISTORY_PARAM) == null || form.get(Ibd.FAMILY_HISTORY_PARAM).toString().length() == 0) {
             actionErrors.add(Ibd.FAMILY_HISTORY_PARAM, new ActionMessage(Ibd.FAMILY_HISTORY_REQUIRED));
         }
 

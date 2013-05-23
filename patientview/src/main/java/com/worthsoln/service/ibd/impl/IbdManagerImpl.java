@@ -89,7 +89,7 @@ public class IbdManagerImpl implements IbdManager {
     private MedicationTypeDao medicationTypeDao;
 
     @Inject
-    MyMedicationDao myMedicationDao;
+    private MyMedicationDao myMedicationDao;
 
     @Inject
     private NutritionDao nutritionDao;

@@ -29,7 +29,7 @@ public class Panel {
 
     private int panel;
     private boolean currentPanel;
-    List<ResultHeading> resultHeadings;
+    private List<ResultHeading> resultHeadings;
 
     public Panel() {
     }

@@ -41,5 +41,5 @@ public interface DiagnosisDao {
 
     void save(Diagnosis diagnosis);
 
-    public void deleteOtherDiagnoses(String nhsno, String unitcode);
+    void deleteOtherDiagnoses(String nhsno, String unitcode);
 }

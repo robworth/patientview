@@ -77,9 +77,9 @@ public class EmailManagerImpl implements EmailManager {
             }
         }
 
-        String messageUrl = context.getInitParameter("config.site.url") + (isAdminOrStaff ? "control": "patient")
-                + "/conversation.do?" + Messaging.CONVERSATION_ID_PARAM + "=" + message.getConversation().getId() +
-                "#message-" + message.getId();
+        String messageUrl = context.getInitParameter("config.site.url") + (isAdminOrStaff ? "control" : "patient")
+                + "/conversation.do?" + Messaging.CONVERSATION_ID_PARAM + "=" + message.getConversation().getId()
+                + "#message-" + message.getId();
 
         String body = "Hello " + message.getRecipient().getName() + "\n\n";
         body += "You have received a message from " + message.getSender().getName() + " on Renal PatientView.\n\n";

@@ -24,12 +24,12 @@
 package com.worthsoln.patientview.feedback;
 
 import com.worthsoln.patientview.EmailUtils;
+import com.worthsoln.patientview.PatientUtils;
+import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.PatientUtils;
-import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -70,7 +70,6 @@ public class FeedbackFormAction extends Action {
 
                 Unit unit = LegacySpringUtils.getUnitManager().get(patient.getCentreCode());
                 request.setAttribute("unit", unit);
-
             } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
                 return LogonUtils.logonChecks(mapping, request, "control");
             }
@@ -95,7 +94,9 @@ public class FeedbackFormAction extends Action {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]" + newLine;
         emailBody += newLine;
-        emailBody += "A patient has posted some feedback about " + unit.getShortname() + ". Please login to Renal PatientView to see the feedback in full and approve it for viewing by other patients." + newLine;
+        emailBody += "A patient has posted some feedback about " + unit.getShortname()
+                + ". Please login to Renal PatientView to see the feedback in full "
+                + "and approve it for viewing by other patients." + newLine;
         emailBody += newLine;
         emailBody += "The comment is as follows:" + newLine;
         emailBody += newLine;
@@ -114,9 +115,10 @@ public class FeedbackFormAction extends Action {
         emailBody += newLine;
         emailBody += "------------------------" + newLine;
         emailBody += newLine;
-        emailBody += "Please note that Renal PatientView will never send you an email with link to click to ask you to log in to do anything. If you ever get an email like that, please let us know, because it it probably some kind of scam or phishing attempt." + newLine;
+        emailBody += "Please note that Renal PatientView will never send you an email with link to click "
+                + "to ask you to log in to do anything. If you ever get an email like that, please let us know, "
+                + "because it it probably some kind of scam or phishing attempt." + newLine;
 
         EmailUtils.sendEmail(context, fromAddress, toAddress, subject, emailBody);
     }
-
 }

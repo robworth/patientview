@@ -30,7 +30,17 @@ import com.worthsoln.utils.LegacySpringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class UserUtils {
+public final class UserUtils {
+
+    private static final int NHSNO_LENGTH = 10;
+    private static final int LAST_MAIN_DIGIT_POSITION = 8;
+    private static final int CHECKSUM_DIGIT_POSITION = 9;
+    private static final int TEN = 10;
+    private static final int CHECKSUM_MODULUS = 11;
+
+    private UserUtils() {
+
+    }
 
     public static User retrieveUser(HttpServletRequest request) {
         String username = null;
@@ -67,25 +77,25 @@ public class UserUtils {
     }
 
     public static boolean nhsNumberChecksumValid(String nhsno) {
-        if (nhsno.length() != 10) {
+        if (nhsno.length() != NHSNO_LENGTH) {
             return false;
         } else { //generate the checksum using modulus 11 algorithm
             int checksum = 0;
 
             //multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= 8; i++) {//sum of each
+            for (int i = 0; i <= LAST_MAIN_DIGIT_POSITION; i++) { //sum of each
                 int digit = Integer.parseInt(nhsno.substring(i, i + 1));
-                checksum += digit * (10 - i);
+                checksum += digit * (TEN - i);
             }
             //(modulus 11)
-            checksum = 11 - checksum % 11;
+            checksum = CHECKSUM_MODULUS - checksum % CHECKSUM_MODULUS;
 
-            if (checksum == 11) {
+            if (checksum == CHECKSUM_MODULUS) {
                 checksum = 0;
             }
 
             //does checksum match the 10th digit?
-            return checksum == Integer.parseInt(nhsno.substring(9));
+            return checksum == Integer.parseInt(nhsno.substring(CHECKSUM_DIGIT_POSITION));
         }
     }
 }

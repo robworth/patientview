@@ -23,17 +23,20 @@
 
 package com.worthsoln.patientview.aboutme;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class AboutmeImageUploadForm extends ActionForm {
+
     private FormFile aboutmeImage;
     private String nhsno;
+
+    private static final int FIVE_HUNDRED_KB = 500480;
 
     public FormFile getAboutmeImageFile() {
         return aboutmeImage;
@@ -59,14 +62,9 @@ public class AboutmeImageUploadForm extends ActionForm {
                 && !aboutmeImage.getContentType().equals("image/gif")
                 && !aboutmeImage.getContentType().equals("image/png")) {
             errors.add("file", new ActionMessage("aboutme.image.file.type"));
-        }
-        /**
-         * If the file size is greater than 500kb.
-         */
-        else if (aboutmeImage.getFileSize() > 500480) {
+        } else if (aboutmeImage.getFileSize() > FIVE_HUNDRED_KB) {            // If the file size is greater than 500kb
             errors.add("file", new ActionMessage("aboutme.image.file.size"));
         }
         return errors;
     }
-
 }

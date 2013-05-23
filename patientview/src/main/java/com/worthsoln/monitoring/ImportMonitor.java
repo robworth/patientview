@@ -46,21 +46,31 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Monitors XML Import process to see if it is stalled or not working properly
  *
  * @author Deniz Ozger
  */
-public class ImportMonitor {
+public final class ImportMonitor {
+
+    private ImportMonitor() {
+
+    }
 
     // Timings and limitations
     private static final int FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES = 1;
     private static final int FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES = 10;
     /**
      * should always be equal to FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES /
-            FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES
+     * FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES
      */
     private static final int NUMBER_OF_LINES_TO_READ = 10;
 
@@ -82,6 +92,10 @@ public class ImportMonitor {
     private static final int LINE_FEED = 0xA;
     private static final int CARRIAGE_RETURN = 0xD;
 
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
+
+
     private static enum FileType {
         PROTON,
         RPV_XML
@@ -93,9 +107,9 @@ public class ImportMonitor {
 
         while (true) {
             LOGGER.info("******** ImportMonitor wakes up ********");
-            LOGGER.info("Import file counts will be logged every {} minutes, whereas a " +
-                    "health check will be done every {} minutes. Each monitoring will check the last {} lines " +
-                    "of the log", new Object[] {FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
+            LOGGER.info("Import file counts will be logged every {} minutes, whereas a "
+                    + "health check will be done every {} minutes. Each monitoring will check the last {} lines "
+                    + "of the log", new Object[]{FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
                     FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES, NUMBER_OF_LINES_TO_READ});
 
             StopWatch sw = new StopWatch();
@@ -124,7 +138,7 @@ public class ImportMonitor {
             /**
              * Sleep for (frequency - execution time) seconds
              */
-            long maxTimeToSleep = FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES * 60 * 1000;
+            long maxTimeToSleep = FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES * SECONDS_IN_MINUTE * MILLISECONDS;
             long executionTime = sw.getTotalTimeMillis();
             long timeToSleep = maxTimeToSleep - executionTime;
 
@@ -133,7 +147,8 @@ public class ImportMonitor {
                 timeToSleep = maxTimeToSleep;
             }
 
-            LOGGER.info("ImportMonitor will now sleep for {} (mm:ss)", new SimpleDateFormat("mm:ss").format(timeToSleep));
+            LOGGER.info("ImportMonitor will now sleep for {} (mm:ss)",
+                    new SimpleDateFormat("mm:ss").format(timeToSleep));
 
             try {
                 Thread.sleep(timeToSleep);
@@ -215,8 +230,8 @@ public class ImportMonitor {
     private static String getCountDataToWriteToFile(int protonDirectoryFileCount, int rpvXmlDirectoryFileCount) {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat(RECORD_DATE_FORMAT);
 
-        return "\n" + dateTimeFormat.format(new Date()) + RECORD_DATA_DELIMITER + protonDirectoryFileCount +
-                RECORD_DATA_DELIMITER + rpvXmlDirectoryFileCount;
+        return "\n" + dateTimeFormat.format(new Date()) + RECORD_DATA_DELIMITER + protonDirectoryFileCount
+                + RECORD_DATA_DELIMITER + rpvXmlDirectoryFileCount;
     }
 
     /**
@@ -240,10 +255,10 @@ public class ImportMonitor {
     }
 
     private static boolean isImporterNotWorkingProperly(List<CountRecord> countRecords) {
-        boolean importerIsNotWorkingProperly = countRecords.size() == NUMBER_OF_LINES_TO_READ && (isNumberOfProtonFilesStatic(countRecords) ||
-                isNumberOfRpvXmlFilesStatic(countRecords) ||
-                doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT) ||
-                doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT));
+        boolean importerIsNotWorkingProperly = countRecords.size() == NUMBER_OF_LINES_TO_READ
+                && (isNumberOfProtonFilesStatic(countRecords) || isNumberOfRpvXmlFilesStatic(countRecords)
+                || doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)
+                || doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT));
 
         /**
          * Some logging for feedback if the importer looks like working
@@ -252,8 +267,8 @@ public class ImportMonitor {
             if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
                 LOGGER.info("Importer is working fine");
             } else {
-                LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines " +
-                        "for Import monitor to process.",
+                LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines "
+                        + "for Import monitor to process.",
                         countRecords.size(), NUMBER_OF_LINES_TO_READ);
             }
         }
@@ -350,14 +365,14 @@ public class ImportMonitor {
         }
 
         if (doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Proton files waiting to be imported is above the threshold (" +
-                    PENDING_FILE_LIMIT + ").";
+            emailBody += newLine + "Number of Proton files waiting to be imported is above the threshold ("
+                    + PENDING_FILE_LIMIT + ").";
             emailBody += newLine;
         }
 
         if (doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above the threshold (" +
-                    PENDING_FILE_LIMIT + ").";
+            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above the threshold ("
+                    + PENDING_FILE_LIMIT + ").";
             emailBody += newLine;
         }
 
@@ -412,10 +427,10 @@ public class ImportMonitor {
             }
 
             for (CountRecord countRecord : countRecords) {
-                if ((fileType == FileType.PROTON &&
-                        countRecord.getNumberOfFilesInProtonDirectory() != firstRecordsFileCount) ||
-                        (fileType == FileType.RPV_XML &&
-                                countRecord.getNumberOfFilesInRpvXmlDirectory() != firstRecordsFileCount)) {
+                if ((fileType == FileType.PROTON
+                        && countRecord.getNumberOfFilesInProtonDirectory() != firstRecordsFileCount)
+                        || (fileType == FileType.RPV_XML
+                        && countRecord.getNumberOfFilesInRpvXmlDirectory() != firstRecordsFileCount)) {
                     filesAreStatic = false;
                 }
             }
@@ -453,8 +468,8 @@ public class ImportMonitor {
                         pendingFileLimit);
 
                 return true;
-            } else if (fileType == FileType.RPV_XML &&
-                    latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit) {
+            } else if (fileType == FileType.RPV_XML
+                    && latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit) {
                 LOGGER.debug("RpvXml files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInRpvXmlDirectory(),
                         pendingFileLimit);
 
@@ -504,7 +519,6 @@ public class ImportMonitor {
 
                     if (StringUtils.hasLength(currentLine)) {
                         lastNLines.add(currentLine);
-
                     } else {
                         LOGGER.error("Read line does not contain any data");
                         continue;
@@ -518,7 +532,6 @@ public class ImportMonitor {
              * add the last line
              */
             lastNLines.add(sb.reverse().toString());
-
         } catch (Exception e) {
             LOGGER.error("Can not find today's file", e);
         } finally {
@@ -585,8 +598,8 @@ public class ImportMonitor {
     private static boolean isValidCountRecord(String dateString, String dateFormant,
                                               String numberOfFilesInProtonDirectory,
                                               String numberOfFilesInRpvXmlDirectory) {
-        return isInteger(numberOfFilesInProtonDirectory) && isInteger(numberOfFilesInRpvXmlDirectory) &&
-                parseDate(dateString, dateFormant) != null;
+        return isInteger(numberOfFilesInProtonDirectory) && isInteger(numberOfFilesInRpvXmlDirectory)
+                && parseDate(dateString, dateFormant) != null;
     }
 
     private static Date parseDate(String maybeDate, String format) {
@@ -638,7 +651,7 @@ public class ImportMonitor {
         }
     }
 
-    private static class CountRecord {
+    private static final class CountRecord {
         private Date recordTime;
         private int numberOfFilesInProtonDirectory;
         private int numberOfFilesInRpvXmlDirectory;
@@ -701,9 +714,9 @@ public class ImportMonitor {
         }
 
         public String toString() {
-            return "Date: " + recordTime + ", " +
-                    "Proton directory file count: " + numberOfFilesInProtonDirectory + ", " +
-                    "Rpv Xml directory file count: " + numberOfFilesInRpvXmlDirectory;
+            return "Date: " + recordTime + ", "
+                    + "Proton directory file count: " + numberOfFilesInProtonDirectory + ", "
+                    + "Rpv Xml directory file count: " + numberOfFilesInRpvXmlDirectory;
         }
     }
 }

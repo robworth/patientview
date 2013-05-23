@@ -28,7 +28,6 @@ import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
-import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

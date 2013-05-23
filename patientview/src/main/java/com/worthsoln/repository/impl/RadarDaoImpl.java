@@ -73,9 +73,9 @@ public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements 
     @Override
     public Demographics getDemographicsByNhsNo(String nhsno) {
         Query query = getEntityManager().createQuery(
-                "SELECT radarNo " +
-                        "FROM tbl_demographics " +
-                        "WHERE NHS_NO = :nhsno");
+                "SELECT radarNo "
+                        + "FROM tbl_demographics "
+                        + "WHERE NHS_NO = :nhsno");
         query.setParameter("nhsno", nhsno);
 
         List<Long> rawDemograpicsList = query.getResultList();
@@ -91,8 +91,7 @@ public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements 
 
     @Override
     public boolean userExistsInRadar(Long userId) {
-        Integer count = jdbcTemplate.queryForInt("SELECT count(*) FROM rdr_user_mapping WHERE userId = " +
-                userId);
+        Integer count = jdbcTemplate.queryForInt("SELECT count(*) FROM rdr_user_mapping WHERE userId = " + userId);
 
         return count != null && count > 0;
     }
@@ -134,8 +133,8 @@ public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements 
     public void removeUserFromRadar(Long userId) {
         if (userExistsInRadar(userId)) {
             // work out what sort of user they are
-            RadarUserMapping radarUserMapping = jdbcTemplate.queryForObject("SELECT * FROM rdr_user_mapping " +
-                    "WHERE userId = " + userId, new RadarUserMappingRowMapper());
+            RadarUserMapping radarUserMapping = jdbcTemplate.queryForObject("SELECT * FROM rdr_user_mapping "
+                    + "WHERE userId = " + userId, new RadarUserMappingRowMapper());
 
             // work out what tables we need to remove the user data from
             if (radarUserMapping != null) {

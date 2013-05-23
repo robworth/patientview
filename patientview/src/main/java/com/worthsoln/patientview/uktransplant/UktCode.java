@@ -29,6 +29,8 @@ public class UktCode {
     private String uktcode;
     private String description;
 
+    private static final int HASH_SEED = 29;
+
     public UktCode() {
     }
 
@@ -81,7 +83,7 @@ public class UktCode {
     public int hashCode() {
         int result;
         result = (uktcode != null ? uktcode.hashCode() : 0);
-        result = 29 * result + (description != null ? description.hashCode() : 0);
+        result = HASH_SEED * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 }

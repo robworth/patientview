@@ -23,18 +23,19 @@
 
 package com.worthsoln.patientview;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Arrays;
-import java.util.Comparator;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.worthsoln.patientview.logon.LogonUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.patientview.logon.LogonUtils;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class FindXmlFiles extends Action {
 
@@ -65,7 +66,7 @@ public class FindXmlFiles extends Action {
 
 class XmlFileFilter implements FilenameFilter {
 
-    String[] fileEndings;
+    private String[] fileEndings;
 
     public XmlFileFilter(String[] fileEndings) {
         this.fileEndings = fileEndings;
@@ -78,7 +79,6 @@ class XmlFileFilter implements FilenameFilter {
                 accepted = true;
                 break;
             }
-
         }
         return accepted;
     }

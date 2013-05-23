@@ -58,16 +58,18 @@ public class ForgottenPasswordAction extends Action {
                         user.setFirstlogon(true);
 
                         // Email password
-                        String message = "[This is an automated email from Renal PatientView - do not reply to this email]\n" +
-                                "\n" +
-                                "Hello User,\n" +
-                                "\n" +
-                                "We received a request on the web site to reset your password. Your new password is\n\n" +
-                                password + "\n" +
-                                "\n" +
-                                "Enjoy the site,\n" +
-                                "\n" +
-                                "Renal Patient View";
+                        String message = "[This is an automated email from Renal PatientView - "
+                                + "do not reply to this email]\n"
+                                + "\n"
+                                + "Hello User,\n"
+                                + "\n"
+                                + "We received a request on the web site to reset your password. "
+                                + "Your new password is\n\n"
+                                + password + "\n"
+                                + "\n"
+                                + "Enjoy the site,\n"
+                                + "\n"
+                                + "Renal Patient View";
                         String fromAddress = request.getSession().getServletContext().getInitParameter("noreply.email");
                         EmailUtils.sendEmail(request.getSession().getServletContext(), fromAddress, user.getEmail(),
                                 "[Renal PatientView] Your password has been reset", message);
@@ -93,5 +95,4 @@ public class ForgottenPasswordAction extends Action {
         }
         return mapping.findForward(forwardMapping);
     }
-
 }

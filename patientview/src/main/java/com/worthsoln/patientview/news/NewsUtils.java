@@ -23,13 +23,16 @@
 
 package com.worthsoln.patientview.news;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-
 import com.worthsoln.patientview.model.News;
 import com.worthsoln.utils.LegacySpringUtils;
 
-public class NewsUtils {
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+public final class NewsUtils {
+
+    private NewsUtils() {
+    }
 
     public static void putAppropriateNewsForViewingInRequest(HttpServletRequest request) throws Exception {
 

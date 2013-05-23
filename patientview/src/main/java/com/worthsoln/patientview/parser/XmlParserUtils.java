@@ -23,11 +23,15 @@
 
 package com.worthsoln.patientview.parser;
 
-import java.io.File;
-import javax.servlet.ServletContext;
 import com.worthsoln.patientview.ResultsUpdater;
 
-public class XmlParserUtils {
+import javax.servlet.ServletContext;
+import java.io.File;
+
+public final class XmlParserUtils {
+
+    private XmlParserUtils() {
+    }
 
     public static void updateXmlData(ServletContext context, File xmlFile) {
         ResultsUpdater updater = new ResultsUpdater();

@@ -26,8 +26,8 @@ package com.worthsoln.ibd.model.symptoms;
 import com.worthsoln.ibd.Ibd;
 
 public class SymptomsData {
-    public int score;
-    public String date;
+    private int score;
+    private String date;
 
     public SymptomsData(BaseSymptoms baseSymptoms) {
         this.score = baseSymptoms.getScore();

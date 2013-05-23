@@ -51,7 +51,7 @@ public class SplashPage extends BaseModel {
     @Column(nullable = false)
     private String unitcode;
 
-    private static String IDENTIFIER = "splashPage";
+    private static final String IDENTIFIER = "splashPage";
 
     public SplashPage() {
     }

@@ -88,10 +88,9 @@ public class ContactFormAction extends Action {
         completeMessage += "\n";
         completeMessage += "Message:" + "\n";
         completeMessage += "------------" + "\n";
-        completeMessage += message+ "\n";
+        completeMessage += message + "\n";
         completeMessage += "------------" + "\n";
 
         return completeMessage;
     }
-
 }

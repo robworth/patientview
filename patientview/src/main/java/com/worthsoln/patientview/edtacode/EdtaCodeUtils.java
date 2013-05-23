@@ -30,7 +30,10 @@ import com.worthsoln.patientview.model.EdtaCode;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 
-public class EdtaCodeUtils {
+public final class EdtaCodeUtils {
+
+    private EdtaCodeUtils() {
+    }
 
     public static void addEdtaCodeToRequest(String code, String attributeName, HttpServletRequest request) {
         EdtaCode edtaCode = LegacySpringUtils.getEdtaCodeManager().getEdtaCode(code);

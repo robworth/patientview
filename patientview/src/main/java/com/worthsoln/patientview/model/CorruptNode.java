@@ -28,8 +28,8 @@ import org.w3c.dom.Node;
 
 public class CorruptNode implements Comparable<CorruptNode> {
 
-    Node node;
-    NodeError error;
+    private Node node;
+    private NodeError error;
 
     public CorruptNode(Node node, NodeError error) {
         this.node = node;

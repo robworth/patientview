@@ -40,6 +40,19 @@ import java.util.List;
 
 public class PatientEditAction extends Action {
 
+    private static final int YEAR_START = 0;
+    private static final int YEAR_END = 4;
+    private static final int MONTH_START = 5;
+    private static final int MONTH_END = 7;
+    private static final int DAY_START = 8;
+    private static final int DAY_END = 10;
+    private static final int HOUR_START = 11;
+    private static final int HOUR_END = 13;
+    private static final int MINUTE_START = 14;
+    private static final int MINUTE_END = 16;
+    private static final int SECOND_START = 17;
+    private static final int SECOND_END = 19;
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         String username = BeanUtils.getProperty(form, "username");
@@ -67,8 +80,8 @@ public class PatientEditAction extends Action {
         } else {
 
             PatientLogon patient =
-                    new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient, lastlogon,
-                            failedlogons, accountlocked);
+                    new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient,
+                            lastlogon, failedlogons, accountlocked);
             LegacySpringUtils.getUserManager().saveUserFromPatient(patient);
 
             List<UserMapping> userMappings = findUsersSiblings(username, unitcode);
@@ -106,21 +119,20 @@ public class PatientEditAction extends Action {
         if (!"".equals(dateTimeString)) {
             datestamp = Calendar.getInstance();
 
-            int year = Integer.parseInt(dateTimeString.substring(0, 4));
-            int month = Integer.parseInt(dateTimeString.substring(5, 7));
-            int day = Integer.parseInt(dateTimeString.substring(8, 10));
+            int year = Integer.parseInt(dateTimeString.substring(YEAR_START, YEAR_END));
+            int month = Integer.parseInt(dateTimeString.substring(MONTH_START, MONTH_END));
+            int day = Integer.parseInt(dateTimeString.substring(DAY_START, DAY_END));
 
-            datestamp.set(year, month - 1, day, 0, 0, 10);
-            datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(11, 13)));
-            datestamp.set(Calendar.MINUTE, Integer.parseInt(dateTimeString.substring(14, 16)));
+            datestamp.set(year, month - 1, day, 0, 0, 0);
+            datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(HOUR_START, HOUR_END)));
+            datestamp.set(Calendar.MINUTE, Integer.parseInt(dateTimeString.substring(MINUTE_START, MINUTE_END)));
 
-            if (dateTimeString.length() == 19) {
-                datestamp.set(Calendar.SECOND, Integer.parseInt(dateTimeString.substring(17, 19)));
+            if (dateTimeString.length() == SECOND_END) {
+                datestamp.set(Calendar.SECOND, Integer.parseInt(dateTimeString.substring(SECOND_START, SECOND_END)));
             }
 
             datestamp.set(Calendar.MILLISECOND, 0);
         }
         return datestamp;
     }
-
 }

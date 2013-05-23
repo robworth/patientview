@@ -24,10 +24,10 @@
 package com.worthsoln.patientview.logon;
 
 import com.Ostermiller.util.RandPass;
-import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.model.SplashPageUserSeen;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.splashpage.SplashPageUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -39,13 +39,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-public class LogonUtils {
+public final class LogonUtils {
 
     public static final String USER_ALREADY_EXISTS = "userAlreadyExists";
     public static final String NHSNO_ALREADY_EXISTS = "nhsnoAlreadyExists";
     public static final String PATIENTS_WITH_SAME_NHSNO = "nhsnoAlreadyExists";
     public static final String INVALID_NHSNO = "invalidNhsno";
     public static final String PATIENT_ALREADY_IN_UNIT = "patientAlreadyInUnit";
+    public static final int NEW_PASSWORD_LENGTH = 8;
+
+    private LogonUtils() {
+    }
 
     public static ActionForward logonChecks(ActionMapping mapping, HttpServletRequest request, String defaultForward) {
         String resultForward = defaultForward;
@@ -138,7 +142,7 @@ public class LogonUtils {
     }
 
     public static String generateNewPassword() {
-        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(NEW_PASSWORD_LENGTH);
     }
 
     public static String displayRole(String role) {

@@ -43,7 +43,7 @@ public class SendMessageAction extends BaseAction {
 
     private List<String> errors = new ArrayList<String>();
 
-    protected ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {

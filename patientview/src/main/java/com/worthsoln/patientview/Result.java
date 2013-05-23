@@ -38,6 +38,8 @@ public class Result {
     private String shortname;
     private Map results = new HashMap();
 
+    private static final int HASH_SEED = 29;
+
     public Result(TestResultWithUnitShortname testResult) {
         this.nhsno = testResult.getNhsno();
         this.prepost = testResult.getPrepost();
@@ -133,13 +135,13 @@ public class Result {
         result = ((nhsno != null)
                   ? nhsno.hashCode()
                   : 0);
-        result = 29 * result + ((timeStamp != null)
+        result = HASH_SEED * result + ((timeStamp != null)
                                 ? timeStamp.hashCode()
                                 : 0);
-        result = 29 * result + ((prepost != null)
+        result = HASH_SEED * result + ((prepost != null)
                                 ? prepost.hashCode()
                                 : 0);
-        result = 29 * result + ((shortname != null)
+        result = HASH_SEED * result + ((shortname != null)
                                 ? shortname.hashCode()
                                 : 0);
 

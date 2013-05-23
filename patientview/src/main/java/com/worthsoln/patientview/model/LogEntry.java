@@ -23,15 +23,14 @@
 
 package com.worthsoln.patientview.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import com.worthsoln.patientview.utils.TimestampUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 @Entity(name = "log")
 public class LogEntry extends BaseModel {
@@ -151,9 +150,9 @@ public class LogEntry extends BaseModel {
 
     public String getExtrainfolessxmlfilename() {
         String extrainfoReturn = extrainfo;
-        String xmlFilename =  getXmlfilename();
-        if(xmlFilename.length() != 0) {
-           extrainfoReturn = extrainfo.substring(xmlFilename.length());
+        String xmlFilename = getXmlfilename();
+        if (xmlFilename.length() != 0) {
+            extrainfoReturn = extrainfo.substring(xmlFilename.length());
         }
         return extrainfoReturn;
     }

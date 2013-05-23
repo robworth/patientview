@@ -40,15 +40,15 @@ public class FeatureDaoImpl extends AbstractHibernateDAO<Letter> implements Feat
     public List<Unit> getUnitsForFeature(String feature) {
 
         if (null != feature && !"".equals(feature)) {
-            String sql = "SELECT " +
-                    "  u.*  " +
-                    "FROM " +
-                    "   unit u, " +
-                    "   pv_feature_access f " +
-                    "WHERE " +
-                    "   f.unit_id = u.id " +
-                    "AND " +
-                    "   f.name = :featureName ";
+            String sql = "SELECT "
+                    + "  u.*  "
+                    + "FROM "
+                    + "   unit u, "
+                    + "   pv_feature_access f "
+                    + "WHERE "
+                    + "   f.unit_id = u.id "
+                    + "AND "
+                    + "   f.name = :featureName ";
 
             Query query = getEntityManager().createNativeQuery(sql, Unit.class);
 

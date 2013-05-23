@@ -24,7 +24,6 @@
 package com.worthsoln.patientview.logon;
 
 import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
@@ -69,7 +68,7 @@ public class PatientAddAction extends Action {
 
         UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
 
-        User existingUser =  LegacySpringUtils.getUserManager().get(username);
+        User existingUser = LegacySpringUtils.getUserManager().get(username);
 
         List existingPatientsWithSameNhsno = findExistingPatientsWithSameNhsno(nhsno);
 
@@ -85,8 +84,8 @@ public class PatientAddAction extends Action {
             mappingToFind = "input";
         }
 
-        if (existingPatientsWithSameNhsno != null && !existingPatientsWithSameNhsno.isEmpty() &&
-                !overrideDuplicateNhsno.equals("on")) {
+        if (existingPatientsWithSameNhsno != null && !existingPatientsWithSameNhsno.isEmpty()
+                && !overrideDuplicateNhsno.equals("on")) {
             for (Object obj : existingPatientsWithSameNhsno) {
                 UserMapping userMappingWithSameNhsno = (UserMapping) obj;
                 if (userMappingWithSameNhsno.getUnitcode().equalsIgnoreCase(unitcode)) {
@@ -135,5 +134,4 @@ public class PatientAddAction extends Action {
     private List findExistingPatientsWithSameNhsno(String nhsno) {
         return LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
     }
-
 }

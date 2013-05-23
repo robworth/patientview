@@ -37,16 +37,23 @@ public class TestResult extends BaseModel {
 
     @Column(nullable = false)
     private String nhsno;
+
     @Column(nullable = false)
     private String unitcode;
+
     @Column(nullable = false, name = "datestamp")
     private Calendar datestamped;
+
     @Column(nullable = true)
     private String prepost;
+
     @Column(nullable = false)
     private String testcode;
+
     @Column(nullable = false)
     private String value;
+
+    private static final int HASH_SEED = 31;
 
     public TestResult() {
     }
@@ -185,11 +192,11 @@ public class TestResult extends BaseModel {
     public int hashCode() {
         int result;
         result = (nhsno != null ? nhsno.hashCode() : 0);
-        result = 31 * result + (unitcode != null ? unitcode.hashCode() : 0);
-        result = 31 * result + (datestamped != null ? datestamped.hashCode() : 0);
-        result = 31 * result + (prepost != null ? prepost.hashCode() : 0);
-        result = 31 * result + (testcode != null ? testcode.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = HASH_SEED * result + (unitcode != null ? unitcode.hashCode() : 0);
+        result = HASH_SEED * result + (datestamped != null ? datestamped.hashCode() : 0);
+        result = HASH_SEED * result + (prepost != null ? prepost.hashCode() : 0);
+        result = HASH_SEED * result + (testcode != null ? testcode.hashCode() : 0);
+        result = HASH_SEED * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 }

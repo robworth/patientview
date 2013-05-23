@@ -24,13 +24,13 @@
 package com.worthsoln.patientview;
 
 import com.worthsoln.actionutils.ActionUtils;
-import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.logon.LogonUtils;
+import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.model.Panel;
-import com.worthsoln.patientview.model.TestResultWithUnitShortname;
-import com.worthsoln.patientview.model.UserMapping;
-import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.ResultHeading;
+import com.worthsoln.patientview.model.TestResultWithUnitShortname;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -42,7 +42,12 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TestResultsAction extends Action {
 
@@ -178,7 +183,6 @@ public class TestResultsAction extends Action {
         }
         return resultsRecords.values();
     }
-
 }
 
 class TestResultId implements Comparable {

@@ -44,6 +44,9 @@ public class XmlParserThread implements Runnable, ParserThread {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlParserThread.class);
 
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
+
     public XmlParserThread(String[] fileEndings) {
         this.fileEndings = fileEndings;
     }
@@ -61,7 +64,7 @@ public class XmlParserThread implements Runnable, ParserThread {
             while (true) {
                 File[] xmlFiles = FindXmlFiles.findXmlFiles(directory, fileEndings);
                 updateXmlFiles(xmlFiles);
-                Thread.sleep(1000 * 60 * minutesBetweenWait);
+                Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("XmlParserThread " + dateFormat.format(now));
             }

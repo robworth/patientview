@@ -27,7 +27,10 @@ import com.worthsoln.patientview.model.Aboutme;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.utils.LegacySpringUtils;
 
-public class AboutmeUtils {
+public final class AboutmeUtils {
+
+    private AboutmeUtils() {
+    }
 
     static Aboutme fetchAboutmeForPatient(User user) throws Exception {
         return LegacySpringUtils.getAboutmeManager().getForPatient(user);

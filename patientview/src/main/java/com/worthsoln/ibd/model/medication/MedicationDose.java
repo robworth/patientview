@@ -35,8 +35,11 @@ import java.text.DecimalFormat;
 @Table(name = "ibd_medication_dose")
 public class MedicationDose extends BaseModel {
 
+    private static final int MILLION = 1000000;
+    private static final int THOUSAND = 1000;
+
     @Transient
-    private static final DecimalFormat format = new DecimalFormat();
+    private static final DecimalFormat FORMAT = new DecimalFormat();
 
     @Column(nullable = true)
     private Double mg;
@@ -45,7 +48,7 @@ public class MedicationDose extends BaseModel {
     private String extraInformation;
 
     public MedicationDose() {
-        format.setDecimalSeparatorAlwaysShown(false);
+        FORMAT.setDecimalSeparatorAlwaysShown(false);
     }
 
     public String getFormattedValue() {
@@ -57,12 +60,12 @@ public class MedicationDose extends BaseModel {
              * If the mg is grt OR eq to 1,000 then convert to Grams
              * Else just leave as mg
              */
-            if (mg >= 1000000) {
-                doseValueAsString = format.format((mg / (1000 * 1000))) + "Kg";
-            } else if (mg >= 1000) {
-                doseValueAsString = format.format((mg / 1000)) + "G";
+            if (mg >= MILLION) {
+                doseValueAsString = FORMAT.format((mg / (THOUSAND * THOUSAND))) + "Kg";
+            } else if (mg >= THOUSAND) {
+                doseValueAsString = FORMAT.format((mg / THOUSAND)) + "G";
             } else {
-                doseValueAsString = format.format(mg) + "mg";
+                doseValueAsString = FORMAT.format(mg) + "mg";
             }
         }
 

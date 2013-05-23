@@ -69,7 +69,7 @@ public class CrohnsUpdateAction extends BaseAction {
         crohnsSymptoms.setFeelingId((Integer) dynaForm.get(Ibd.FEELING_PARAM));
         crohnsSymptoms.setComplicationId((Integer) dynaForm.get(Ibd.COMPLICATION_PARAM));
         crohnsSymptoms.setMassInTummyId((Integer) dynaForm.get(Ibd.MASS_IN_TUMMY_PARAM));
-        crohnsSymptoms.setSymptomDate(convertFormDateString(Ibd.SYMPTOM_DATE_PARAM,  dynaForm));
+        crohnsSymptoms.setSymptomDate(convertFormDateString(Ibd.SYMPTOM_DATE_PARAM, dynaForm));
 
         getIbdManager().saveCrohns(crohnsSymptoms);
 
@@ -84,8 +84,8 @@ public class CrohnsUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
+        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null
+                || ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
             actionErrors.add(Ibd.SYMPTOM_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
 

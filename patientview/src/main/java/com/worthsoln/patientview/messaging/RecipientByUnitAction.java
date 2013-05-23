@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RecipientByUnitAction extends BaseAction {
 
-    protected ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {

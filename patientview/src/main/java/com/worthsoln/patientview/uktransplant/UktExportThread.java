@@ -45,6 +45,13 @@ public class UktExportThread implements Runnable, ParserThread {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ServletContext servletContext;
 
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
+
+    private static final int NUMBER_OF_COLUMNS = 5;
+    private static final int THREE = 3;
+    private static final int FOUR = 4;
+
     public UktExportThread() {
     }
 
@@ -70,7 +77,7 @@ public class UktExportThread implements Runnable, ParserThread {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Thread.sleep(1000 * 60 * minutesBetweenWait);
+                Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("UktExportThread " + dateFormat.format(now));
             }
@@ -81,14 +88,14 @@ public class UktExportThread implements Runnable, ParserThread {
 
     private String[][] getPatients() {
         List patientList = LegacySpringUtils.getPatientManager().getUktPatients();
-        String[][] patientArray = new String[patientList.size()][5];
+        String[][] patientArray = new String[patientList.size()][NUMBER_OF_COLUMNS];
         for (int i = 0; i < patientList.size(); i++) {
             Patient patient = (Patient) patientList.get(i);
             patientArray[i][0] = (patient.getNhsno() == null) ? "" : patient.getNhsno();
             patientArray[i][1] = (patient.getSurname() == null) ? "" : patient.getSurname().replaceAll("\"", "");
             patientArray[i][2] = (patient.getForename() == null) ? "" : patient.getForename().replaceAll("\"", "");
-            patientArray[i][3] = (patient.getDateofbirth() == null) ? "" : patient.getDateofbirth();
-            patientArray[i][4] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
+            patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateofbirth();
+            patientArray[i][FOUR] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
         }
         return patientArray;
     }

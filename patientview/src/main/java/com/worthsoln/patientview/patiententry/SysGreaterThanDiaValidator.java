@@ -33,7 +33,10 @@ import org.apache.struts.validator.Resources;
 import javax.servlet.http.HttpServletRequest;
 
 
-public class SysGreaterThanDiaValidator {
+public final class SysGreaterThanDiaValidator {
+
+    private SysGreaterThanDiaValidator() {
+    }
 
     public static boolean sysGreaterThanDia(
             Object bean,

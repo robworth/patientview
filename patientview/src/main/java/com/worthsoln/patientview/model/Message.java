@@ -63,13 +63,15 @@ public class Message extends BaseModel {
     @Transient
     private String friendlyDate;
 
+    private static final int SUMMARY_LENGTH = 500;
+
     public String getFormattedContent() {
         return content.replaceAll("\n", "<br/>");
     }
 
     public String getSummary() {
-        if (content.length() > 500) {
-            return StringUtils.substring(content, 0, 500) + " ...";
+        if (content.length() > SUMMARY_LENGTH) {
+            return StringUtils.substring(content, 0, SUMMARY_LENGTH) + " ...";
         }
 
         return content;

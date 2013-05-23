@@ -69,13 +69,12 @@ public class NutritionUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.NUTRITION_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.NUTRITION_DATE_PARAM)).length() == 0) {
+        if (form.get(Ibd.NUTRITION_DATE_PARAM) == null || ((String) form.get(Ibd.NUTRITION_DATE_PARAM)).length() == 0) {
             actionErrors.add(Ibd.NUTRITION_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
 
-        if (form.get(Ibd.FOODS_THAT_DISAGREE_PARAM) == null ||
-                ((String) form.get(Ibd.FOODS_THAT_DISAGREE_PARAM)).length() == 0) {
+        if (form.get(Ibd.FOODS_THAT_DISAGREE_PARAM) == null
+                || ((String) form.get(Ibd.FOODS_THAT_DISAGREE_PARAM)).length() == 0) {
             actionErrors.add(Ibd.FOODS_THAT_DISAGREE_PARAM, new ActionMessage(Ibd.FOODS_THAT_DISAGREE_REQUIRED));
         }
 

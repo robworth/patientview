@@ -39,12 +39,12 @@ public class PatientResultDeleteAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-
         String patientResultKeyString = BeanUtils.getProperty(form, "patientResultKey");
         String patientResultName = BeanUtils.getProperty(form, "patientResultName");
 
         HttpSession session = request.getSession();
-        Map<Long, PatientEnteredResult> patientResults = (Map<Long, PatientEnteredResult>) session.getAttribute(patientResultName);
+        Map<Long, PatientEnteredResult> patientResults =
+                (Map<Long, PatientEnteredResult>) session.getAttribute(patientResultName);
 
         Long patientResultKey = Long.decode(patientResultKeyString);
 

@@ -23,14 +23,20 @@
 
 package com.worthsoln.actionutils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 
-public class ActionUtils {
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
+
+public final class ActionUtils {
+
+    private static final int RANDOM_RANGE = 10;
+
+    private ActionUtils() {
+
+    }
 
     public static void setUpNavLink(String parameter, HttpServletRequest request) {
         if ((parameter != null) && !("".equals(parameter))) {
@@ -57,8 +63,8 @@ public class ActionUtils {
     public static String getAntiSpamQuestion(HttpServletRequest request) {
         Random randomGenerator = new Random();
 
-        int firstNumber = randomGenerator.nextInt(10);
-        int secondNumber = randomGenerator.nextInt(10);
+        int firstNumber = randomGenerator.nextInt(RANDOM_RANGE);
+        int secondNumber = randomGenerator.nextInt(RANDOM_RANGE);
 
         String question = firstNumber + " + " + secondNumber;
 
@@ -66,5 +72,4 @@ public class ActionUtils {
 
         return question;
     }
-
 }

@@ -114,7 +114,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
                 + "FROM user, specialtyuserrole, usermapping "
-                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
+                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno "
+                + "AND usermapping.unitcode = patient.centreCode "
                 + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
@@ -158,35 +159,35 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
     @Override
     public List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
-        String sql = "SELECT " +
-                "   user.username,  " +
-                "   user.password, " +
-                "   user.name, " +
-                "   user.email, " +
-                "   usermapping.nhsno, " +
-                "   usermapping.unitcode, " +
-                "   user.firstlogon, " +
-                "   patient.treatment " +
-                "FROM " +
-                "   user, " +
-                "   specialtyuserrole, " +
-                "   usermapping " +
-                "LEFT JOIN " +
-                "   patient ON usermapping.nhsno = patient.nhsno " +
-                "WHERE " +
-                "   usermapping.username = user.username " +
-                "AND " +
-                "   user.id = specialtyuserrole.user_id " +
-                "AND " +
-                "   usermapping.unitcode = ? " +
-                "AND " +
-                "   specialtyuserrole.role = 'patient' " +
-                "AND " +
-                "   user.name NOT LIKE '%-GP' " +
-                "AND " +
-                "   specialtyuserrole.specialty_id = ? " +
-                "ORDER BY " +
-                "   user.name ASC";
+        String sql = "SELECT "
+                + "   user.username,  "
+                + "   user.password, "
+                + "   user.name, "
+                + "   user.email, "
+                + "   usermapping.nhsno, "
+                + "   usermapping.unitcode, "
+                + "   user.firstlogon, "
+                + "   patient.treatment "
+                + "FROM "
+                + "   user, "
+                + "   specialtyuserrole, "
+                + "   usermapping "
+                + "LEFT JOIN "
+                + "   patient ON usermapping.nhsno = patient.nhsno "
+                + "WHERE "
+                + "   usermapping.username = user.username "
+                + "AND "
+                + "   user.id = specialtyuserrole.user_id "
+                + "AND "
+                + "   usermapping.unitcode = ? "
+                + "AND "
+                + "   specialtyuserrole.role = 'patient' "
+                + "AND "
+                + "   user.name NOT LIKE '%-GP' "
+                + "AND "
+                + "   specialtyuserrole.specialty_id = ? "
+                + "ORDER BY "
+                + "   user.name ASC";
 
         List<Object> params = new ArrayList<Object>();
 
@@ -199,11 +200,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     @Override
     public List<Patient> getUktPatients() {
 
-        String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, " +
-                " patient.dateofbirth, patient.postcode FROM patient, user, usermapping " +
-                " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno " +
-                "AND user.username = usermapping.username " +
-                " AND usermapping.username NOT LIKE '%-GP' AND user.dummypatient = 0";
+        String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, "
+                + " patient.dateofbirth, patient.postcode FROM patient, user, usermapping "
+                + " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno "
+                + "AND user.username = usermapping.username "
+                + " AND usermapping.username NOT LIKE '%-GP' AND user.dummypatient = 0";
 
         return jdbcTemplate.query(sql, new PatientMapper());
     }

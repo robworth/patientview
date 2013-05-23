@@ -38,10 +38,10 @@ import java.util.Date;
 public class Patient extends BaseModel {
 
     @Transient
-    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Transient
-    private final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private static final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
     @Column(nullable = false)
     private String nhsno;

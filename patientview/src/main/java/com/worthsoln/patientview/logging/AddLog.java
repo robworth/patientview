@@ -26,7 +26,10 @@ package com.worthsoln.patientview.logging;
 import com.worthsoln.patientview.model.LogEntry;
 import com.worthsoln.utils.LegacySpringUtils;
 
-public class AddLog {
+public final class AddLog {
+
+    private AddLog() {
+    }
 
     public static final String PASSWORD_RESET_FORGOTTEN = "password reset forgotten";
     public static final String PASSWORD_RESET = "password reset";

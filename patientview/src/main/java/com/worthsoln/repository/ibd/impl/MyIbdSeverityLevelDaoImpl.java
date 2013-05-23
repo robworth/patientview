@@ -46,7 +46,7 @@ public class MyIbdSeverityLevelDaoImpl extends AbstractHibernateDAO<MyIbdSeverit
         implements MyIbdSeverityLevelDao {
 
     @Inject
-    MyIbdDao myIbdDao;
+    private MyIbdDao myIbdDao;
 
     @Override
     public MyIbdSeverityLevel get(String nhsno, Severity severity) {

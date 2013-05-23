@@ -30,11 +30,13 @@ import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class SplashPageUtils {
+public final class SplashPageUtils {
+
+    private SplashPageUtils() {
+    }
 
     public static List<SplashPage> retrieveSplashPagesForPatient(User user) {
         return LegacySpringUtils.getSplashPageManager().getAllForPatient(user);

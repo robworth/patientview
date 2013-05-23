@@ -34,16 +34,23 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- *  todo move the functionallity out of here into the EmailVerificationManager
+ * TODO: move the functionallity out of here into the EmailVerificationManager
  */
-public class EmailVerificationUtils {
+public final class EmailVerificationUtils {
+
+    private static final int VERIFICATION_CODE_LENGTH = 50;
+
+    private EmailVerificationUtils() {
+
+    }
 
     public static void createEmailVerification(String username, String email, HttpServletRequest request) {
         if (null != email && !"".equals(email)) {
             try {
                 LegacySpringUtils.getEmailVerificationManager().delete(username);
 
-                String verificationCode = new RandPass(RandPass.NUMBERS_AND_LETTERS_ALPHABET).getPass(50);
+                String verificationCode =
+                        new RandPass(RandPass.NUMBERS_AND_LETTERS_ALPHABET).getPass(VERIFICATION_CODE_LENGTH);
                 Calendar now = GregorianCalendar.getInstance();
                 ServletContext context = request.getSession().getServletContext();
                 int daysToAdd = Integer.decode(context.getInitParameter("email.verification.best.before.days"));
@@ -66,23 +73,36 @@ public class EmailVerificationUtils {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]" + newLine;
         emailBody += newLine;
-        emailBody += "Either you have requested that your email be verified or you have recently been added to Renal PatientView with an email address and it needs to be verified." + newLine;
+        emailBody += "Either you have requested that your email be verified or you have recently been added to "
+                + "Renal PatientView with an email address and it needs to be verified." + newLine;
         emailBody += newLine;
         emailBody += "This is simply so we can be sure that your email address is correct." + newLine;
         emailBody += newLine;
-        emailBody += "To verify this email address simply click on the link below, or if that doesn't work, copy and paste the link into the address bar of your internet browser." + newLine;
+        emailBody +=
+                "To verify this email address simply click on the link below, or if that doesn't work, "
+                        + "copy and paste the link into the address bar of your internet browser."
+                        + newLine;
         emailBody += newLine;
-        emailBody += "If you have no idea why you have been sent this email, then it is probably not for you. Please delete it." + newLine;
+        emailBody +=
+                "If you have no idea why you have been sent this email, then it is probably not for you. Please "
+                        + "delete it."
+                        + newLine;
         emailBody += newLine;
         emailBody += "Click this link to verify:" + newLine;
         emailBody += newLine;
-        emailBody += context.getInitParameter("config.site.url") + "emailverification.do?v=" + emailVerification.getVerificationcode() + newLine;
+        emailBody += context.getInitParameter("config.site.url") + "emailverification.do?v="
+                + emailVerification.getVerificationcode() + newLine;
         emailBody += newLine;
         emailBody += newLine;
         emailBody += "------------------------" + newLine;
         emailBody += newLine;
-        emailBody += "Please note that Renal PatientView will never send you an email with link to click to ask you to log in to do anything. If you ever get an email like that, please let us know, because it it probably some kind of scam or phishing attempt." + newLine;
+        emailBody +=
+                "Please note that Renal PatientView will never send you an email with link to click to ask you to log"
+                        + " in to do anything. If you ever get an email like that, please let us know, "
+                        + "because it it probably some kind of scam or phishing attempt."
+                        + newLine;
 
-        EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), emailVerification.getEmail(), "[Renal PatientView] Verify email address", emailBody);
+        EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), emailVerification.getEmail(),
+                "[Renal PatientView] Verify email address", emailBody);
     }
 }

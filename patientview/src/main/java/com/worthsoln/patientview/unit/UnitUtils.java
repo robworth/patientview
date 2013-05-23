@@ -33,9 +33,12 @@ import org.apache.commons.beanutils.BeanUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class UnitUtils {
+public final class UnitUtils {
 
-    public static String PATIENT_ENTERS_UNITCODE = "PATIENT";
+    public static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
+
+    private UnitUtils() {
+    }
 
     public static void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {
         putRelevantUnitsInRequestMinusSomeUnits(request, new String[]{PATIENT_ENTERS_UNITCODE}, new String[]{});

@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MyIbdEditAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                         HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) throws Exception {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
@@ -54,7 +54,8 @@ public class MyIbdEditAction extends BaseAction {
         dynaForm.set(Ibd.DISEASE_EXTENT_ID_PARAM, myIbd.getDiseaseExtentId());
         dynaForm.set(Ibd.YEAR_OF_DIAGNOSIS_PARAM, convertFormDateString(myIbd.getYearOfDiagnosis()));
         dynaForm.set(Ibd.BODY_PART_AFFECTED_PARAM, myIbd.getBodyPartAffected());
-        dynaForm.set(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, convertFormDateString(myIbd.getYearForSurveillanceColonoscopy()));
+        dynaForm.set(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, convertFormDateString(myIbd
+                .getYearForSurveillanceColonoscopy()));
         dynaForm.set(Ibd.NAMED_CONSULTANT_PARAM, myIbd.getNamedConsultant());
         dynaForm.set(Ibd.NURSES_PARAM, myIbd.getNurses());
         dynaForm.set(Ibd.FAMILY_HISTORY_PARAM, myIbd.getFamilyHistory());

@@ -31,7 +31,10 @@ import com.worthsoln.utils.LegacySpringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class CommentUtils {
+public final class CommentUtils {
+
+    private CommentUtils() {
+    }
 
     public static boolean verifyPermissionToReadItem(HttpServletRequest request, String nhsno) throws Exception {
         boolean permissionToReadComment = false;
@@ -50,7 +53,8 @@ public class CommentUtils {
                         = LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
 
                 for (UserMapping userMappingComment : userMappingsForComment) {
-                    if ("patient".equalsIgnoreCase(role) && userMappingComment.getUsername().equalsIgnoreCase(user.getUsername())) {
+                    if ("patient".equalsIgnoreCase(role)
+                            && userMappingComment.getUsername().equalsIgnoreCase(user.getUsername())) {
                         permissionToReadComment = true;
                         break;
                     }

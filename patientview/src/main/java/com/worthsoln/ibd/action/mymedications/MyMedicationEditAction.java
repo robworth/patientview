@@ -37,6 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MyMedicationEditAction extends BaseAction {
 
+    static final int MEDICATION_TYPE_ID_PARAM_MINUS_1 = -1;
+    static final int MEDICATION_TYPE_ID_PARAM_MINUS_2 = -2;
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         // set current nav
@@ -51,15 +54,15 @@ public class MyMedicationEditAction extends BaseAction {
         if (myMedication.getMedicationType() != null) {
             dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, myMedication.getMedicationType().getId());
         } else {
-            dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, new Long(-1));
+            dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, new Long(MEDICATION_TYPE_ID_PARAM_MINUS_1));
         }
 
         if (myMedication.getMedication() != null) {
             dynaForm.set(Ibd.MEDICATION_ID_PARAM, myMedication.getMedication().getId());
         } else if (myMedication.getOtherMedication() != null && myMedication.getOtherMedication().length() > 0) {
-            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(-2));
+            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(MEDICATION_TYPE_ID_PARAM_MINUS_2));
         } else {
-            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(-1));
+            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(MEDICATION_TYPE_ID_PARAM_MINUS_1));
         }
 
         String otherMedication = "";

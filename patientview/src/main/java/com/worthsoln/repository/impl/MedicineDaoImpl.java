@@ -23,11 +23,8 @@
 
 package com.worthsoln.repository.impl;
 
-import com.worthsoln.patientview.model.Comment;
-import com.worthsoln.patientview.model.Comment_;
 import com.worthsoln.patientview.model.Medicine;
 import com.worthsoln.patientview.model.Medicine_;
-import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.MedicineDao;
 import org.springframework.stereotype.Repository;

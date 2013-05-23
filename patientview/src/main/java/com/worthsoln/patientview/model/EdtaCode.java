@@ -116,7 +116,7 @@ public class EdtaCode extends BaseModel {
     @Column(nullable = true)
     private String patientLinkText06;
 
-    private static String IDENTIFIER = "edtaCode";
+    private static final String IDENTIFIER = "edtaCode";
 
     public EdtaCode() {
     }
@@ -125,13 +125,14 @@ public class EdtaCode extends BaseModel {
         this.edtaCode = edtaCode;
     }
 
-    public EdtaCode(String edtaCode, Specialty specialty, String linkType, String description, String medicalLink01,
-                    String medicalLink02,
-                    String medicalLink03, String medicalLink04, String medicalLink05, String medicalLink06,
+    public EdtaCode(String edtaCode, Specialty specialty, String linkType, String description,
+                    String medicalLink01, String medicalLink02, String medicalLink03,
+                    String medicalLink04, String medicalLink05, String medicalLink06,
                     String medicalLinkText01, String medicalLinkText02, String medicalLinkText03,
-                    String medicalLinkText04, String medicalLinkText05, String medicalLinkText06, String patientLink01,
-                    String patientLink02, String patientLink03, String patientLink04, String patientLink05,
-                    String patientLink06, String patientLinkText01, String patientLinkText02, String patientLinkText03,
+                    String medicalLinkText04, String medicalLinkText05, String medicalLinkText06,
+                    String patientLink01, String patientLink02, String patientLink03,
+                    String patientLink04, String patientLink05, String patientLink06,
+                    String patientLinkText01, String patientLinkText02, String patientLinkText03,
                     String patientLinkText04, String patientLinkText05, String patientLinkText06) {
         this.description = description;
         this.specialty = specialty;

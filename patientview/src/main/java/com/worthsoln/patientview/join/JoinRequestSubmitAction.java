@@ -119,19 +119,21 @@ public class JoinRequestSubmitAction extends BaseAction {
         /**
          * body
          */
-        String message = "Hello,\n" +
-                "\n" +
-                "A patient has made a request on the website to join PatientView at your unit. Their details are below.\n" +
-                "\n" +
-                "First name: " + joinRequest.getFirstName() + "\n" +
-                "Last name: " + joinRequest.getLastName() + "\n" +
-                "NHS No: " + joinRequest.getNhsNo() + "\n" +
-                "Unit code: " + joinRequest.getUnitcode() + "\n" +
-                "Date of birth: " + joinRequest.getDateOfBirthFormatted() + "\n" +
-                "Email address: " + joinRequest.getEmail() + "\n" +
-                "\n" +
-                "Please verify these details and follow up this request with the patient using your usual process to consent and add patients to PatientView." +
-                "\n";
+        String message = "Hello,\n"
+                + "\n"
+                + "A patient has made a request on the website to join PatientView at your unit. "
+                + "Their details are below.\n"
+                + "\n"
+                + "First name: " + joinRequest.getFirstName() + "\n"
+                + "Last name: " + joinRequest.getLastName() + "\n"
+                + "NHS No: " + joinRequest.getNhsNo() + "\n"
+                + "Unit code: " + joinRequest.getUnitcode() + "\n"
+                + "Date of birth: " + joinRequest.getDateOfBirthFormatted() + "\n"
+                + "Email address: " + joinRequest.getEmail() + "\n"
+                + "\n"
+                + "Please verify these details and follow up this request with the patient "
+                + "using your usual process to consent and add patients to PatientView."
+                + "\n";
 
         /**
          * send the mail
@@ -165,8 +167,8 @@ public class JoinRequestSubmitAction extends BaseAction {
             }
         }
 
-        if (form.get("unitcode") == null || ((String) form.get("unitcode")).length() == 0 ||
-                ((String) form.get("unitcode")).equals("-1")) {
+        if (form.get("unitcode") == null || ((String) form.get("unitcode")).length() == 0
+                || (form.get("unitcode")).equals("-1")) {
             actionErrors.add("unitcode", new ActionMessage("unitcode.required"));
         }
 
@@ -176,7 +178,7 @@ public class JoinRequestSubmitAction extends BaseAction {
             actionErrors.add("email", new ActionMessage("email.valid"));
         }
 
-        if (form.get("antiSpamAnswer") == null || !((String) form.get("antiSpamAnswer")).equals(
+        if (form.get("antiSpamAnswer") == null || !(form.get("antiSpamAnswer")).equals(
                 request.getSession().getAttribute("ANTI_SPAM_ANSWER"))) {
             actionErrors.add("antiSpamAnswer", new ActionMessage("antispam.wrong.answer"));
         }
@@ -188,5 +190,4 @@ public class JoinRequestSubmitAction extends BaseAction {
 
         return true;
     }
-
 }

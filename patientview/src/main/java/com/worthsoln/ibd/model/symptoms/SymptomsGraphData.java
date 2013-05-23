@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SymptomsGraphData {
-    public String error = "";
+    private String error = "";
     private List<SymptomsData> graphData = new ArrayList<SymptomsData>();
     private int severeLevel, moderateLevel, mildLevel;
 

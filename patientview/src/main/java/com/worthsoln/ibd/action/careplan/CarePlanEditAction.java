@@ -52,7 +52,7 @@ public class CarePlanEditAction extends BaseAction {
             put("Managing work / studies", Ibd.MANAGING_WORK_STUDIES_LINK_PARAM);
             put("Taking my medicines regularly", Ibd.TAKING_MY_MEDICINES_REGULARLY_LINK_PARAM);
             put("Managing flare ups", Ibd.MANAGING_FLARE_UPS_LINK_PARAM);
-            put("Stopping smoking", Ibd.STOPPING_SMOKING__LINK_PARAM);
+            put("Stopping smoking", Ibd.STOPPING_SMOKING_LINK_PARAM);
             put("Sleeping", Ibd.SLEEPING_LINK_PARAM);
             put("Sexual relationships", Ibd.SEXUAL_RELATIONSHIPS_LINK_PARAM);
             put("Fertility / Pregnancy", Ibd.FERTILITY_PREGNANCY_LINK_PARAM);

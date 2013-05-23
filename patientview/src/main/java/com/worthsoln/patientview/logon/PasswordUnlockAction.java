@@ -23,21 +23,19 @@
 
 package com.worthsoln.patientview.logon;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.worthsoln.patientview.model.Patient;
+import com.worthsoln.patientview.logging.AddLog;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.worthsoln.patientview.logging.AddLog;
-import com.worthsoln.patientview.model.Unit;
-import com.worthsoln.patientview.user.UserUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class PasswordUnlockAction extends Action {

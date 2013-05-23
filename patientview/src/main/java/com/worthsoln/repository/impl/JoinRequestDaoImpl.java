@@ -44,8 +44,8 @@ public class JoinRequestDaoImpl extends AbstractHibernateDAO<JoinRequest> implem
         CriteriaQuery<JoinRequest> criteria = builder.createQuery(JoinRequest.class);
         Root<JoinRequest> from = criteria.from(JoinRequest.class);
 
-        Predicate unitCodePredicate = from.get(JoinRequest_.unitcode).in(unitcodes.toArray(new String[unitcodes.size
-                ()]));
+        Predicate unitCodePredicate = from.get(JoinRequest_.unitcode).
+                in(unitcodes.toArray(new String[unitcodes.size()]));
 
         criteria.where(unitCodePredicate);
 

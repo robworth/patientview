@@ -23,12 +23,13 @@
 
 package com.worthsoln.patientview.uktransplant;
 
+import com.worthsoln.patientview.ParserThread;
+
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.servlet.ServletContext;
-import com.worthsoln.patientview.ParserThread;
 
 public class UktParserThread implements Runnable, ParserThread {
 
@@ -38,6 +39,9 @@ public class UktParserThread implements Runnable, ParserThread {
     private int minutesBetweenWait;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ServletContext servletContext;
+
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
 
     public UktParserThread() {
     }
@@ -56,7 +60,7 @@ public class UktParserThread implements Runnable, ParserThread {
                 File uktDir = new File(directory);
                 File[] uktFiles = uktDir.listFiles(new UktFileFilter());
                 updateUktFiles(uktFiles);
-                Thread.sleep(1000 * 60 * minutesBetweenWait);
+                Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("UktParserThread " + dateFormat.format(now));
             }

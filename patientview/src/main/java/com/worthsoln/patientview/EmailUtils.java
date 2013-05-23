@@ -27,7 +27,11 @@ import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 
-public class EmailUtils {
+public final class EmailUtils {
+
+    private EmailUtils() {
+
+    }
 
     public static void sendEmail(ServletContext context, String emailText) {
         sendEmail(context, "Intranet Feedback", emailText);

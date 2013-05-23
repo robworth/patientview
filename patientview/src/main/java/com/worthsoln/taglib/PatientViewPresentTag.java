@@ -92,8 +92,7 @@ public class PatientViewPresentTag extends PresentTag {
                 }
             }
         } else {
-            JspException e = new JspException
-                    (messages.getMessage("logic.selector"));
+            JspException e = new JspException(messages.getMessage("logic.selector"));
             TagUtils.getInstance().saveException(pageContext, e);
             throw e;
         }

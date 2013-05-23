@@ -27,7 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import com.worthsoln.patientview.model.UktStatus;
 import com.worthsoln.utils.LegacySpringUtils;
 
-public class UktUtils {
+public final class UktUtils {
+
+    private UktUtils() {
+    }
 
     public static void addUktStatusToRequest(String nhsno, HttpServletRequest request)
             throws Exception {

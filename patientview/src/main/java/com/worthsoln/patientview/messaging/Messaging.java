@@ -23,7 +23,10 @@
 
 package com.worthsoln.patientview.messaging;
 
-public class Messaging {
+public final class Messaging {
+
+    private Messaging() {
+    }
 
     public static final String CONVERSATION_ID_PARAM = "conversationId";
     public static final String CONVERSATION_PARAM = "conversation";
@@ -42,5 +45,4 @@ public class Messaging {
     public static final String UNITS_PARAM = "units_for_messaging";
     public static final String UNIT_CODE_PARAM = "unitCode";
     public static final String IS_READER_THE_RECIPIENT = "isReaderTheRecipient";
-
 }

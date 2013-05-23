@@ -85,8 +85,7 @@ public class ColitisUpdateAction extends BaseAction {
             actionErrors.add(Ibd.NHS_NO_PARAM, new ActionMessage(Ibd.NHS_NO_NOT_FOUND));
         }
 
-        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null ||
-                ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
+        if (form.get(Ibd.SYMPTOM_DATE_PARAM) == null || ((String) form.get(Ibd.SYMPTOM_DATE_PARAM)).length() == 0) {
             actionErrors.add(Ibd.SYMPTOM_DATE_PARAM, new ActionMessage(Ibd.DATE_REQUIRED));
         }
         if (actionErrors.size() > 0) {

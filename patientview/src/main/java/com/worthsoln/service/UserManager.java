@@ -27,9 +27,8 @@ import com.worthsoln.patientview.logon.PatientLogon;
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.SpecialtyUserRole;
-import com.worthsoln.patientview.model.Unit;
-import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

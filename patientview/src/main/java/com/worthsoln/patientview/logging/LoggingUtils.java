@@ -29,7 +29,15 @@ import java.util.Calendar;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.ActionForm;
 
-class LoggingUtils {
+final class LoggingUtils {
+
+    private static final int LAST_HOUR = 23;
+    private static final int LAST_MINUTE = 59;
+    private static final int LAST_SECOND = 59;
+    private static final int LAST_MILLISECOND = 999;
+
+    private LoggingUtils() {
+    }
 
     static void defaultDatesInForm(ActionForm form, Calendar startdate, Calendar enddate)
             throws IllegalAccessException, InvocationTargetException {
@@ -44,10 +52,10 @@ class LoggingUtils {
 
     static Calendar getDefaultEndDateForLogQuery() {
         Calendar endDate = Calendar.getInstance();
-        endDate.set(Calendar.HOUR_OF_DAY, 23);
-        endDate.set(Calendar.MINUTE, 59);
-        endDate.set(Calendar.SECOND, 59);
-        endDate.set(Calendar.MILLISECOND, 999);
+        endDate.set(Calendar.HOUR_OF_DAY, LAST_HOUR);
+        endDate.set(Calendar.MINUTE, LAST_MINUTE);
+        endDate.set(Calendar.SECOND, LAST_SECOND);
+        endDate.set(Calendar.MILLISECOND, LAST_MILLISECOND);
 
         return endDate;
     }

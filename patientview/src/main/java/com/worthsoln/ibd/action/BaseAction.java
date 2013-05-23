@@ -127,11 +127,14 @@ public class BaseAction extends ActionSupport {
         }
     };
 
-    protected static List<OpenBowel> openBowelList;
+    private static List<OpenBowel> openBowelList;
+
+    private static final int MAX_NUM_ERRORS_TO_LIST = 20;
 
     /**
      * When the actual edit form is submitted it should have an input field named submit set to true
      * This fnc checks for this and if its not present then the actual edit form has not been submitted
+     *
      * @param form DynaActionForm
      * @return boolean
      */
@@ -229,7 +232,7 @@ public class BaseAction extends ActionSupport {
         if (openBowelList == null) {
             openBowelList = new ArrayList<OpenBowel>();
 
-            for (int x = 0; x <= 20; x++) {
+            for (int x = 0; x <= MAX_NUM_ERRORS_TO_LIST; x++) {
                 openBowelList.add(new OpenBowel(x));
             }
         }
@@ -307,7 +310,7 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void addSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate,
-                                                     HttpServletRequest request) {
+                                        HttpServletRequest request) {
         SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
         List<Date> existingDates = new ArrayList<Date>();
 

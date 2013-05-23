@@ -227,22 +227,22 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
-        String sql = "SELECT " +
-                "  u.*  " +
-                "FROM " +
-                "   User u, " +
-                "   UserMapping um, " +
-                "   SpecialtyUserRole sur " +
-                "WHERE " +
-                "   u.username = um.username " +
-                "AND " +
-                "   u.id = sur.user_id " +
-                "AND " +
-                "   sur.specialty_id = :specialtyId " +
-                "AND " +
-                "   um.unitcode = :unitcode " +
-                "AND " +
-                "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+        String sql = "SELECT "
+                + "  u.*  "
+                + "FROM "
+                + "   User u, "
+                + "   UserMapping um, "
+                + "   SpecialtyUserRole sur "
+                + "WHERE "
+                + "   u.username = um.username "
+                + "AND "
+                + "   u.id = sur.user_id "
+                + "AND "
+                + "   sur.specialty_id = :specialtyId "
+                + "AND "
+                + "   um.unitcode = :unitcode "
+                + "AND "
+                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
@@ -271,22 +271,22 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
-        String sql = "SELECT " +
-                "   u.* " +
-                "FROM " +
-                "   usermapping um, " +
-                "   USER u, " +
-                "   specialtyuserrole sur " +
-                "WHERE" +
-                "   um.username = u.username " +
-                "AND" +
-                "   u.id = sur.user_id " +
-                "AND" +
-                "   sur.specialty_id = :specialtyId " +
-                "AND" +
-                "   um.unitcode = :unitcode " +
-                "AND" +
-                "   sur.role = 'patient' ";
+        String sql = "SELECT "
+                + "   u.* "
+                + "FROM "
+                + "   usermapping um, "
+                + "   USER u, "
+                + "   specialtyuserrole sur "
+                + "WHERE"
+                + "   um.username = u.username "
+                + "AND"
+                + "   u.id = sur.user_id "
+                + "AND"
+                + "   sur.specialty_id = :specialtyId "
+                + "AND"
+                + "   um.unitcode = :unitcode "
+                + "AND"
+                + "   sur.role = 'patient' ";
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 

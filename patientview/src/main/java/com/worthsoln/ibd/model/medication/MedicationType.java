@@ -45,12 +45,12 @@ public class MedicationType extends BaseModel {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "ibd_medication_type_medications",
-            joinColumns = {@JoinColumn(name = "medication_type_id")},
-            inverseJoinColumns = {@JoinColumn(name = "medication_id")}
+            joinColumns = { @JoinColumn(name = "medication_type_id") },
+            inverseJoinColumns = { @JoinColumn(name = "medication_id") }
     )
     private List<Medication> medications;
 

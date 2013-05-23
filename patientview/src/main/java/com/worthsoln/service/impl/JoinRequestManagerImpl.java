@@ -43,7 +43,7 @@ import java.util.List;
 public class JoinRequestManagerImpl implements JoinRequestManager {
 
     @Inject
-    JoinRequestDao joinRequestDao;
+    private JoinRequestDao joinRequestDao;
 
     @Inject
     private UserManager userManager;
@@ -59,20 +59,18 @@ public class JoinRequestManagerImpl implements JoinRequestManager {
     @Override
     public List<JoinRequest> getUsersJoinRequests() {
         List<JoinRequest> joinRequests = new ArrayList<JoinRequest>();
-        User user  = userManager.getLoggedInUser();
+        User user = userManager.getLoggedInUser();
 
-            String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
+        String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
-            if ("superadmin".equals(userType)) {
+        if ("superadmin".equals(userType)) {
 
-                joinRequests = joinRequestDao.getAll();
+            joinRequests = joinRequestDao.getAll();
+        } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
 
-            } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
-
-                List<String> unitCodes = unitManager.getUsersUnitCodes(user);
-                joinRequests = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes);
-
-            }
+            List<String> unitCodes = unitManager.getUsersUnitCodes(user);
+            joinRequests = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes);
+        }
 
         return joinRequests;
     }

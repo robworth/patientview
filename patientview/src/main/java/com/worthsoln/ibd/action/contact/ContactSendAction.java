@@ -75,7 +75,7 @@ public class ContactSendAction extends BaseAction {
         }
     }
 
-    private void sendHealthEmail(HttpServletRequest request, DynaActionForm form,Patient patient) {
+    private void sendHealthEmail(HttpServletRequest request, DynaActionForm form, Patient patient) {
         sendEmail(request, HEALTH_FORM_EMAIL, "IBD Question about health", createMessage(patient, form));
     }
 
@@ -111,7 +111,7 @@ public class ContactSendAction extends BaseAction {
         completeMessage += "\n";
         completeMessage += "Message:" + "\n";
         completeMessage += "------------" + "\n";
-        completeMessage += message+ "\n";
+        completeMessage += message + "\n";
         completeMessage += "------------" + "\n";
 
         return completeMessage;

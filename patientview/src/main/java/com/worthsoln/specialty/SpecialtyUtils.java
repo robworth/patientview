@@ -28,9 +28,13 @@ import com.worthsoln.utils.LegacySpringUtils;
 
 
 /**
- *      todo spring bean?
+ * todo spring bean?
  */
-public class SpecialtyUtils {
+public final class SpecialtyUtils {
+
+    private SpecialtyUtils() {
+
+    }
 
     public static String rewriteSpecialtyUriRemoveContext(String uri) {
 

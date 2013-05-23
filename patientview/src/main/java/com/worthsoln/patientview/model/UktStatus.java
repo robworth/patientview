@@ -38,6 +38,8 @@ public class UktStatus extends BaseModel {
     @Column
     private String pancreas;
 
+    private static final int HASH_SEED = 29;
+
     public UktStatus() {
     }
 
@@ -98,8 +100,8 @@ public class UktStatus extends BaseModel {
     public int hashCode() {
         int result;
         result = (nhsno != null ? nhsno.hashCode() : 0);
-        result = 29 * result + (kidney != null ? kidney.hashCode() : 0);
-        result = 29 * result + (pancreas != null ? pancreas.hashCode() : 0);
+        result = HASH_SEED * result + (kidney != null ? kidney.hashCode() : 0);
+        result = HASH_SEED * result + (pancreas != null ? pancreas.hashCode() : 0);
         return result;
     }
 }

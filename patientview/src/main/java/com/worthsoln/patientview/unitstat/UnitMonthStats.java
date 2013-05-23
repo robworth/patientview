@@ -35,6 +35,8 @@ public class UnitMonthStats {
     private String downloadFilename;
     private Map<String, String> stats = new HashMap<String, String>();
 
+    private static final int HASH_SEED = 31;
+
     public UnitMonthStats(String unitcode, String yearmonth) {
         this.unitcode = unitcode;
         this.yearmonth = yearmonth;
@@ -96,8 +98,8 @@ public class UnitMonthStats {
 
     public int hashCode() {
         int result = unitcode != null ? unitcode.hashCode() : 0;
-        result = 31 * result + (yearmonth != null ? yearmonth.hashCode() : 0);
-        result = 31 * result + (stats != null ? stats.hashCode() : 0);
+        result = HASH_SEED * result + (yearmonth != null ? yearmonth.hashCode() : 0);
+        result = HASH_SEED * result + (stats != null ? stats.hashCode() : 0);
         return result;
     }
 }

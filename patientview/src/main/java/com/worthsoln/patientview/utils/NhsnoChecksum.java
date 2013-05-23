@@ -32,7 +32,11 @@ import org.apache.struts.validator.Resources;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class NhsnoChecksum {
+public final class NhsnoChecksum {
+
+    private NhsnoChecksum() {
+
+    }
 
     public static boolean nhsnoChecksum(
             Object bean,

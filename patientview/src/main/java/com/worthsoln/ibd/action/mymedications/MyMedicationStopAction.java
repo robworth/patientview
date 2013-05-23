@@ -72,9 +72,10 @@ public class MyMedicationStopAction extends BaseAction {
 
     /**
      * This will handle the actual medicine stop form submission
-     * @param mapping ActionMapping
+     *
+     * @param mapping  ActionMapping
      * @param dynaForm DynaActionForm
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @return ActionForward
      */
     private ActionForward handleFormSubmission(ActionMapping mapping, DynaActionForm dynaForm,

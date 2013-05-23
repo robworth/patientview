@@ -32,7 +32,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *      Grab the user from the database
+ * Grab the user from the database
  */
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class PatientViewUserDetailsService implements UserDetailsService {
@@ -52,7 +51,7 @@ public class PatientViewUserDetailsService implements UserDetailsService {
     private UserManager userManager;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String s) {
 
         LOGGER.debug("Attempting to load user for name {}", s);
         SecurityUser securityUser = null;
@@ -89,7 +88,6 @@ public class PatientViewUserDetailsService implements UserDetailsService {
                         true, // credentials not expired
                         !user.isAccountlocked(), // true - account not locked
                         authorities);
-
             } else {
                 LOGGER.debug("Unable to find roles for user to attempt login from database: {}", s);
             }

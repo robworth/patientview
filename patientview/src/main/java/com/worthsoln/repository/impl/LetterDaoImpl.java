@@ -46,10 +46,10 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
     @Override
     public List<Letter> get(String username, Specialty specialty) {
         if (null != username && !"".equals(username)) {
-            String sql = "SELECT DISTINCT letter.* FROM letter, usermapping " +
-                    "WHERE letter.nhsno = usermapping.nhsno " +
-                    "AND usermapping.username = :username " +
-                    "ORDER BY letter.date DESC";
+            String sql = "SELECT DISTINCT letter.* FROM letter, usermapping "
+                    + "WHERE letter.nhsno = usermapping.nhsno "
+                    + "AND usermapping.username = :username "
+                    + "ORDER BY letter.date DESC";
 
             Query query = getEntityManager().createNativeQuery(sql, Letter.class);
 
@@ -80,8 +80,8 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
 
     @Override
     public void delete(String nhsno, String unitcode) {
-        Query query = getEntityManager().createQuery("DELETE FROM letter WHERE nhsno = :nhsno AND unitcode " +
-                "= :unitcode");
+        Query query = getEntityManager().createQuery("DELETE FROM letter WHERE nhsno = :nhsno AND unitcode "
+                + "= :unitcode");
 
         query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);

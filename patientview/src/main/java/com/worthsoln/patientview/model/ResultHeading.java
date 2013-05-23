@@ -60,7 +60,8 @@ public class ResultHeading extends BaseModel {
         this.headingcode = headingcode;
     }
 
-    public ResultHeading(String heading, Specialty specialty, String rollover, String headingcode, String link, int panel, int panelorder) {
+    public ResultHeading(String heading, Specialty specialty, String rollover, String headingcode, String link,
+                         int panel, int panelorder) {
         this.heading = heading;
         this.specialty = specialty;
         this.rollover = rollover;

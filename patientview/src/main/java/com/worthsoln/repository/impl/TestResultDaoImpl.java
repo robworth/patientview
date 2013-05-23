@@ -23,9 +23,9 @@
 
 package com.worthsoln.repository.impl;
 
+import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.TestResultWithUnitShortname;
-import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.TestResultDao;
@@ -63,16 +63,16 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units) {
 
-        String sql = " SELECT DISTINCT testresult.*, unit.shortname " +
-                " FROM testresult " +
-                " LEFT JOIN unit ON unit.unitcode = testresult.unitcode " +
-                " JOIN user, usermapping, result_heading " +
-                " WHERE user.username = ? " +
-                " AND user.username = usermapping.username " +
-                " AND usermapping.nhsno = testresult.nhsno " +
-                " AND testresult.testcode = result_heading.headingcode " +
-                " AND result_heading.panel = ? " +
-                " ORDER BY testresult.datestamp desc ";
+        String sql = " SELECT DISTINCT testresult.*, unit.shortname "
+                + " FROM testresult "
+                + " LEFT JOIN unit ON unit.unitcode = testresult.unitcode "
+                + " JOIN user, usermapping, result_heading "
+                + " WHERE user.username = ? "
+                + " AND user.username = usermapping.username "
+                + " AND usermapping.nhsno = testresult.nhsno "
+                + " AND testresult.testcode = result_heading.headingcode "
+                + " AND result_heading.panel = ? "
+                + " ORDER BY testresult.datestamp desc ";
 
         List<Object> params = new ArrayList<Object>();
         params.add(username);
@@ -84,8 +84,8 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     @Override
     public List<TestResult> get(String nhsno, String unitcode) {
 
-        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? AND testresult.unitcode = ? " +
-                " ORDER BY testcode, datestamp";
+        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? AND testresult.unitcode = ? "
+                + " ORDER BY testcode, datestamp";
 
         List<Object> params = new ArrayList<Object>();
         params.add(nhsno);
@@ -100,8 +100,8 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         params.add(nhsno);
         params.add("weight");
 
-        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? " +
-                " AND testresult.testcode = ? AND testresult.unitcode IN (";
+        String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? "
+                + " AND testresult.testcode = ? AND testresult.unitcode IN (";
 
         for (int x = 0; x < unitcodes.size(); x++) {
             sql += " ? ";
@@ -165,8 +165,8 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     public void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate,
                                                  Date endDate) {
 
-        Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = " +
-                ":unitcode AND testcode = :testcode AND datestamp >= :startDate AND datestamp <= :endDate");
+        Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = "
+                + ":unitcode AND testcode = :testcode AND datestamp >= :startDate AND datestamp <= :endDate");
 
         query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);
@@ -179,8 +179,8 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
     @Override
     public void deleteTestResults(String nhsno, String unitcode) {
-        Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = " +
-                ":unitcode");
+        Query query = getEntityManager().createQuery("DELETE FROM testresult WHERE nhsno = :nhsno AND unitcode = "
+                + ":unitcode");
 
         query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);

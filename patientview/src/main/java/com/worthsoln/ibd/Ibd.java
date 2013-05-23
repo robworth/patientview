@@ -25,7 +25,7 @@ package com.worthsoln.ibd;
 
 import java.text.SimpleDateFormat;
 
-public class Ibd {
+public final class Ibd {
 
     public static final int OTHER_MEDICATION_TYPE_ID = 6;
 
@@ -87,7 +87,7 @@ public class Ibd {
     public static final String MANAGING_WORK_STUDIES_LINK_PARAM = "managingWorkStudiesLink";
     public static final String TAKING_MY_MEDICINES_REGULARLY_LINK_PARAM = "takingMyMedicinesRegularlyLink";
     public static final String MANAGING_FLARE_UPS_LINK_PARAM = "managingFlareUpsLink";
-    public static final String STOPPING_SMOKING__LINK_PARAM = "stoppingSmokingLink";
+    public static final String STOPPING_SMOKING_LINK_PARAM = "stoppingSmokingLink";
     public static final String SLEEPING_LINK_PARAM = "sleepingLink";
     public static final String SEXUAL_RELATIONSHIPS_LINK_PARAM = "sexualRelationshipsLink";
     public static final String FERTILITY_PREGNANCY_LINK_PARAM = "fertilityPregnancyLink";
@@ -227,4 +227,8 @@ public class Ibd {
     // areas to discuss types
     public static final int AREA_TO_DISCUSS_CONCERN_TYPE_ID = 1;
     public static final int AREA_TO_DISCUSS_HELP_TYPE_ID = 2;
+
+    private Ibd() {
+
+    }
 }

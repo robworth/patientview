@@ -35,6 +35,8 @@ public class PatientEnteredResult {
     private String resultCode2;
     private String value2;
 
+    private static final int SECONDS_IN_MINUTE = 59;
+
     public PatientEnteredResult() {
     }
 
@@ -61,7 +63,8 @@ public class PatientEnteredResult {
         this.datetime = Calendar.getInstance();
 
         datetime.set(Integer.decode(year), Integer.decode(month)
-                , Integer.decode(day), Integer.decode(hour), Integer.decode(minute), (int) (Math.random() * 59));
+                , Integer.decode(day), Integer.decode(hour), Integer.decode(minute),
+                (int) (Math.random() * SECONDS_IN_MINUTE));
     }
 
     public String getStringDate() {

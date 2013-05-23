@@ -49,8 +49,10 @@ public class PatientResultAddAction extends Action {
         String resultName = BeanUtils.getProperty(form, "patientResultName");
         String resultCode1 = BeanUtils.getProperty(form, "patientResultCode1");
         String resultValue1 = BeanUtils.getProperty(form, "patientResultValue1");
-        String resultCode2 = (BeanUtils.getProperty(form, "patientResultCode2") != null) ? BeanUtils.getProperty(form, "patientResultCode2") : "";
-        String resultValue2 = (BeanUtils.getProperty(form, "patientResultValue2") != null) ? BeanUtils.getProperty(form, "patientResultValue2") : "";
+        String resultCode2 = (BeanUtils.getProperty(form, "patientResultCode2") != null)
+                ? BeanUtils.getProperty(form, "patientResultCode2") : "";
+        String resultValue2 = (BeanUtils.getProperty(form, "patientResultValue2") != null)
+                ? BeanUtils.getProperty(form, "patientResultValue2") : "";
 
         HttpSession session = request.getSession();
         Map<Long, PatientEnteredResult> results = (Map<Long, PatientEnteredResult>) session.getAttribute(resultName);

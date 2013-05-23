@@ -37,9 +37,9 @@ public class PatientUserDaoImpl extends AbstractHibernateDAO<PatientUser> implem
     @Override
     public PatientUser getPatientUserByRadarNo(long radarNo) {
         Query query = getEntityManager().createQuery(
-                "SELECT patientUserId " +
-                "FROM tbl_patient_users " +
-                "WHERE RADAR_NO = :radarNo");
+                "SELECT patientUserId "
+                        + "FROM tbl_patient_users "
+                        + "WHERE RADAR_NO = :radarNo");
         query.setParameter("radarNo", radarNo);
 
         List<Integer> rawPatientUserList = query.getResultList();
@@ -53,5 +53,4 @@ public class PatientUserDaoImpl extends AbstractHibernateDAO<PatientUser> implem
 
         return patientUser;
     }
-
 }

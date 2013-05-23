@@ -26,7 +26,6 @@ package com.worthsoln.service.impl;
 import com.worthsoln.patientview.model.Panel;
 import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.model.TestResultWithUnitShortname;
-import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
@@ -91,7 +90,7 @@ public class TestResultManagerImpl implements TestResultManager {
 
     @Override
     public void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate,
-                                          Date endDate) {
+                                                 Date endDate) {
         testResultDao.deleteTestResultsWithinTimeRange(nhsno, unitcode, testcode, startDate, endDate);
     }
 

@@ -110,9 +110,11 @@ public class MyMedicationUpdateAction extends BaseAction {
             Long medicationId = (Long) form.get(Ibd.MEDICATION_ID_PARAM);
             String otherMedication = (String) form.get(Ibd.OTHER_MEDICATION_ID_PARAM);
 
-            if (medicationId == null || (medicationId <= 0 && medicationId != -2)) {
+            if (medicationId == null
+                    || (medicationId <= 0 && medicationId != MyMedicationEditAction.MEDICATION_TYPE_ID_PARAM_MINUS_2)) {
                 actionErrors.add(Ibd.MEDICATION_ID_PARAM, new ActionMessage(Ibd.MEDICATION_REQUIRED));
-            } else if (medicationId == -2 && (otherMedication == null || otherMedication.length() == 0)) {
+            } else if (medicationId == MyMedicationEditAction.MEDICATION_TYPE_ID_PARAM_MINUS_2
+                    && (otherMedication == null || otherMedication.length() == 0)) {
                 actionErrors.add(Ibd.OTHER_MEDICATION_ID_PARAM, new ActionMessage(Ibd.OTHER_MEDICATION_REQUIRED));
             }
 

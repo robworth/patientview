@@ -23,7 +23,7 @@
 
 package com.worthsoln.patientview.model.radar;
 
-public class Radar {
+public final class Radar {
 
     public static final String PROFESSIONAL_USER_TABLE_NAME = "tbl_users"; // rdr specific user
     public static final String PROFESSIONAL_USER_ID_FIELD_NAME = "uID";
@@ -35,4 +35,7 @@ public class Radar {
     public static final String USER_MAPPING_USER_ID_FIELD_NAME = "userId";
     public static final String USER_MAPPING_ROLE_FIELD_NAME = "role";
     public static final String USER_MAPPING_RADAR_USER_ID_FIELD_NAME = "radarUserId";
+
+    private Radar() {
+    }
 }

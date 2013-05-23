@@ -86,6 +86,8 @@ public class ResultParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultParser.class);
 
+    private static final int HOURS_IN_DAY = 24;
+
     public void parseResults(ServletContext context, File resultsFile) throws Exception {
         Document doc = getDocument(context, resultsFile);
         for (int i = 0; i < topLevelElements.length; i++) {
@@ -111,13 +113,13 @@ public class ResultParser {
             String stopDate = "";
             for (int j = 0; j < testResultNodes.getLength(); j++) {
                 Node testResultNode = testResultNodes.item(j);
-                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("daterange"))) {
+                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
+                        && (testResultNode.getNodeName().equals("daterange"))) {
                     NamedNodeMap attributes = testResultNode.getAttributes();
                     startDate = attributes.getNamedItem("start").getNodeValue();
                     stopDate = attributes.getNamedItem("stop").getNodeValue();
-                } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("testcode"))) {
+                } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
+                        && (testResultNode.getNodeName().equals("testcode"))) {
                     testCode = testResultNode.getFirstChild().getNodeValue();
                 }
             }
@@ -143,8 +145,8 @@ public class ResultParser {
             Calendar dateRangeStop = null;
             for (int j = 0; j < testResultNodes.getLength(); j++) {
                 Node testResultNode = testResultNodes.item(j);
-                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("testcode"))) {
+                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
+                        && (testResultNode.getNodeName().equals("testcode"))) {
                     testCode = testResultNode.getFirstChild().getNodeValue();
                 } else
 /* We're not storing the test name at the moment
@@ -160,66 +162,67 @@ public class ResultParser {
                     testUnits = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
                 } else
 */
-                if (testResultNode.getNodeName().equals("daterange")) {
-                    NamedNodeMap namedNodeMap = testResultNode.getAttributes();
+                    if (testResultNode.getNodeName().equals("daterange")) {
+                        NamedNodeMap namedNodeMap = testResultNode.getAttributes();
 
-                    Node startNode = namedNodeMap.getNamedItem("start");
-                    Node stopNode = namedNodeMap.getNamedItem("stop");
-                    if (startNode != null && startNode.getNodeValue() != null &&
-                            stopNode != null && stopNode.getNodeValue() != null) {
-                        dateRangeStartString = startNode.getNodeValue();
-                        dateRangeStopString = stopNode.getNodeValue();
+                        Node startNode = namedNodeMap.getNamedItem("start");
+                        Node stopNode = namedNodeMap.getNamedItem("stop");
+                        if (startNode != null && startNode.getNodeValue() != null
+                                && stopNode != null && stopNode.getNodeValue() != null) {
+                            dateRangeStartString = startNode.getNodeValue();
+                            dateRangeStopString = stopNode.getNodeValue();
 
-                        dateRangeStart = TimestampUtils.createTimestamp(dateRangeStartString);
-                        dateRangeStop = TimestampUtils.createTimestamp(dateRangeStopString);
-                        dateRangeStop.add(Calendar.HOUR, 24); // set it to end of day instead of beginning
-                    }
-                } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("result"))) {
-                    TestResult testResult = new TestResult(getData("nhsno"), getData("centrecode"), null, testCode, "");
-                    NodeList resultDataNodes = testResultNode.getChildNodes();
-                    for (int k = 0; k < resultDataNodes.getLength(); k++) {
-                        Node resultDataNode = resultDataNodes.item(k);
-                        if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE) &&
-                                (resultDataNode.getNodeName().equals("datestamp"))) {
-                            parseDatestamp(testResult, resultDataNode);
+                            dateRangeStart = TimestampUtils.createTimestamp(dateRangeStartString);
+                            dateRangeStop = TimestampUtils.createTimestamp(dateRangeStopString);
+                            dateRangeStop.add(Calendar.HOUR, HOURS_IN_DAY); // set it to end of day instead of beginning
+                        }
+                    } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (testResultNode.getNodeName().equals("result"))) {
+                        TestResult testResult = new TestResult(getData("nhsno"), getData("centrecode"), null,
+                                testCode, "");
+                        NodeList resultDataNodes = testResultNode.getChildNodes();
+                        for (int k = 0; k < resultDataNodes.getLength(); k++) {
+                            Node resultDataNode = resultDataNodes.item(k);
+                            if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE)
+                                    && (resultDataNode.getNodeName().equals("datestamp"))) {
+                                parseDatestamp(testResult, resultDataNode);
 
-                            if (testResult.getDatestamped() != null) {
-                                DateTime testResultDate = new DateTime(testResult.getDatestamped());
+                                if (testResult.getDatestamped() != null) {
+                                    DateTime testResultDate = new DateTime(testResult.getDatestamped());
 
-                                /**
-                                 * make sure the result doesn't have a future date. if it does not, make sure
-                                 *  result date is between date range specified in the xml
-                                 */
-                                if (testResultDate.isAfter(
-                                        LegacySpringUtils.getTimeManager().getCurrentDate().getTime())) {
-                                    // add this test to corrupt tests list
+                                    /**
+                                     * make sure the result doesn't have a future date. if it does not, make sure
+                                     *  result date is between date range specified in the xml
+                                     */
+                                    if (testResultDate.isAfter(
+                                            LegacySpringUtils.getTimeManager().getCurrentDate().getTime())) {
+                                        // add this test to corrupt tests list
+                                        xmlImportException.getNodeList().add(
+                                                new CorruptNode(testNode, NodeError.FUTURE_RESULT));
+                                    } else if (dateRangeStart != null && dateRangeStop != null && !(new Interval(
+                                            new DateTime(dateRangeStart), new DateTime(dateRangeStop)).contains(
+                                            new DateTime(testResultDate)))) {
+                                        // add this test to corrupt tests list
+                                        xmlImportException.getNodeList().add(
+                                                new CorruptNode(testNode, NodeError.WRONG_DATE_RANGE));
+                                    }
+                                }
+                            } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE)
+                                    && (resultDataNode.getNodeName().equals("prepost"))) {
+                                testResult.setPrepost(resultDataNode.getFirstChild().getNodeValue());
+                            } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE)
+                                    && (resultDataNode.getNodeName().equals("value"))) {
+                                if (resultDataNode.getFirstChild() == null) {
+                                    // we should not import this xml. continue execution and throw the corrupt nodes
                                     xmlImportException.getNodeList().add(
-                                            new CorruptNode(testNode, NodeError.FUTURE_RESULT));
-                                } else if (dateRangeStart != null && dateRangeStop != null && !(new Interval(
-                                        new DateTime(dateRangeStart), new DateTime(dateRangeStop)).contains(
-                                        new DateTime(testResultDate)))) {
-                                    // add this test to corrupt tests list
-                                    xmlImportException.getNodeList().add(
-                                            new CorruptNode(testNode, NodeError.WRONG_DATE_RANGE));
+                                            new CorruptNode(testNode, NodeError.MISSING_VALUE));
+                                } else {
+                                    testResult.setValue(resultDataNode.getFirstChild().getNodeValue().trim());
                                 }
                             }
-                        } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE) &&
-                                (resultDataNode.getNodeName().equals("prepost"))) {
-                            testResult.setPrepost(resultDataNode.getFirstChild().getNodeValue());
-                        } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE) &&
-                                (resultDataNode.getNodeName().equals("value"))) {
-                            if (resultDataNode.getFirstChild() == null) {
-                                // we should not import this xml. continue execution and throw the corrupt nodes
-                                xmlImportException.getNodeList().add(
-                                        new CorruptNode(testNode, NodeError.MISSING_VALUE));
-                            } else {
-                                testResult.setValue(resultDataNode.getFirstChild().getNodeValue().trim());
-                            }
                         }
+                        testResults.add(testResult);
                     }
-                    testResults.add(testResult);
-                }
             }
         }
 
@@ -239,14 +242,14 @@ public class ResultParser {
             NodeList letterDetailNodes = letterNode.getChildNodes();
             for (int j = 0; j < letterDetailNodes.getLength(); j++) {
                 Node letterDetailNode = letterDetailNodes.item(j);
-                if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (letterDetailNode.getNodeName().equals("letterdate"))) {
+                if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                        && (letterDetailNode.getNodeName().equals("letterdate"))) {
                     letter.setStringDate(letterDetailNode.getFirstChild().getNodeValue());
-                } else if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (letterDetailNode.getNodeName().equals("lettertype"))) {
+                } else if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                        && (letterDetailNode.getNodeName().equals("lettertype"))) {
                     letter.setType(letterDetailNode.getFirstChild().getNodeValue());
-                } else if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (letterDetailNode.getNodeName().equals("lettercontent"))) {
+                } else if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                        && (letterDetailNode.getNodeName().equals("lettercontent"))) {
                     NodeList nodes = letterDetailNode.getChildNodes();
                     for (int k = 0; k < nodes.getLength(); k++) {
                         Node node = nodes.item(k);
@@ -288,11 +291,11 @@ public class ResultParser {
             for (int j = 0; j < procedureDetailNodes.getLength(); j++) {
                 try {
                     Node procedureDetailNode = procedureDetailNodes.item(j);
-                    if ((procedureDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (procedureDetailNode.getNodeName().equals("procedurename"))) {
+                    if ((procedureDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (procedureDetailNode.getNodeName().equals("procedurename"))) {
                         procedure.setProcedure(procedureNode.getFirstChild().getNodeValue());
-                    } else if ((procedureDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (procedureDetailNode.getNodeName().equals("proceduredate"))) {
+                    } else if ((procedureDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (procedureDetailNode.getNodeName().equals("proceduredate"))) {
                         procedure.setDate(procedureDetailNode.getFirstChild().getNodeValue());
                     }
                 } catch (NullPointerException e) {
@@ -316,15 +319,15 @@ public class ResultParser {
             for (int j = 0; j < diagnosticsDetailNodes.getLength(); j++) {
                 try {
                     Node diagnosticDetailNode = diagnosticsDetailNodes.item(j);
-                    if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (diagnosticDetailNode.getNodeName().equals("diagnosticname"))) {
+                    if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (diagnosticDetailNode.getNodeName().equals("diagnosticname"))) {
                         diagnostic.setDescription(diagnosticDetailNode.getFirstChild().getNodeValue());
-                    } else if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (diagnosticDetailNode.getNodeName().equals("diagnosticdate"))) {
+                    } else if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (diagnosticDetailNode.getNodeName().equals("diagnosticdate"))) {
                         diagnostic.setDatestamp(TimestampUtils.createTimestamp(
                                 diagnosticDetailNode.getFirstChild().getNodeValue()));
-                    } else if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (diagnosticDetailNode.getNodeName().equals("diagnostictype"))) {
+                    } else if ((diagnosticDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (diagnosticDetailNode.getNodeName().equals("diagnostictype"))) {
                         diagnostic.setDiagnosticType(DiagnosticType.getDiagnosticType(
                                 diagnosticDetailNode.getFirstChild().getNodeValue()));
                     }
@@ -350,29 +353,29 @@ public class ResultParser {
             for (int j = 0; j < allergyDetailNodes.getLength(); j++) {
                 try {
                     Node allergyDetailNode = allergyDetailNodes.item(j);
-                    if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergysubstance"))) {
+                    if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergysubstance"))) {
                         allergy.setSubstance(allergyNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergytypecode"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergytypecode"))) {
                         allergy.setTypeCode(allergyDetailNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergyreaction"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergyreaction"))) {
                         allergy.setReaction(allergyDetailNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergyconfidencelevel"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergyconfidencelevel"))) {
                         allergy.setConfidenceLevel(allergyDetailNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergyinfosource"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergyinfosource"))) {
                         allergy.setInfoSource(allergyDetailNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergystatus"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergystatus"))) {
                         allergy.setStatus(allergyDetailNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergydescription"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergydescription"))) {
                         allergy.setDescription(allergyDetailNode.getFirstChild().getNodeValue());
-                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (allergyDetailNode.getNodeName().equals("allergyrecordeddate"))) {
+                    } else if ((allergyDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (allergyDetailNode.getNodeName().equals("allergyrecordeddate"))) {
                         allergy.setRecordedDate(allergyDetailNode.getFirstChild().getNodeValue());
                     }
                 } catch (NullPointerException e) {
@@ -392,14 +395,14 @@ public class ResultParser {
             for (int j = 0; j < medicineDetailNodes.getLength(); j++) {
                 try {
                     Node medicineDetailNode = medicineDetailNodes.item(j);
-                    if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (medicineDetailNode.getNodeName().equals("drugstartdate"))) {
+                    if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (medicineDetailNode.getNodeName().equals("drugstartdate"))) {
                         medicine.setStartdate(medicineDetailNode.getFirstChild().getNodeValue());
-                    } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (medicineDetailNode.getNodeName().equals("drugname"))) {
+                    } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (medicineDetailNode.getNodeName().equals("drugname"))) {
                         medicine.setName(medicineDetailNode.getFirstChild().getNodeValue());
-                    } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE) &&
-                            (medicineDetailNode.getNodeName().equals("drugdose"))) {
+                    } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                            && (medicineDetailNode.getNodeName().equals("drugdose"))) {
                         medicine.setDose(medicineDetailNode.getFirstChild().getNodeValue());
                     }
                 } catch (NullPointerException e) {

@@ -23,16 +23,19 @@
 
 package com.worthsoln.patientview;
 
-import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class PatientUtils {
+public final class PatientUtils {
+
+    private PatientUtils() {
+    }
 
     public static String retrieveNhsNo(HttpServletRequest request) {
         User user = UserUtils.retrieveUser(request);

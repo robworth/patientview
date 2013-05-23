@@ -32,7 +32,8 @@ public class TestResultWithUnitShortname extends TestResult {
     public TestResultWithUnitShortname() {
     }
 
-    public TestResultWithUnitShortname(String nhsno, String unitcode, Calendar datestamp, String testcode, String value, String shortname) {
+    public TestResultWithUnitShortname(String nhsno, String unitcode, Calendar datestamp, String testcode,
+                                       String value, String shortname) {
         super(nhsno, unitcode, datestamp, testcode, value);
         this.shortname = shortname;
     }

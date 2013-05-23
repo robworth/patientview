@@ -23,16 +23,41 @@
 
 package com.worthsoln.utils;
 
-import com.worthsoln.service.*;
+import com.worthsoln.service.AboutmeManager;
+import com.worthsoln.service.AdminNotificationManager;
+import com.worthsoln.service.CentreManager;
+import com.worthsoln.service.CommentManager;
+import com.worthsoln.service.DiagnosisManager;
+import com.worthsoln.service.DiagnosticManager;
+import com.worthsoln.service.EdtaCodeManager;
+import com.worthsoln.service.EmailManager;
+import com.worthsoln.service.EmailVerificationManager;
+import com.worthsoln.service.FeatureManager;
+import com.worthsoln.service.FeedbackManager;
+import com.worthsoln.service.JoinRequestManager;
+import com.worthsoln.service.LetterManager;
+import com.worthsoln.service.LogEntryManager;
+import com.worthsoln.service.MedicineManager;
+import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.NewsManager;
+import com.worthsoln.service.PatientManager;
+import com.worthsoln.service.ResultHeadingManager;
+import com.worthsoln.service.SecurityUserManager;
+import com.worthsoln.service.SplashPageManager;
+import com.worthsoln.service.TestResultManager;
+import com.worthsoln.service.TimeManager;
+import com.worthsoln.service.UKTransplantManager;
+import com.worthsoln.service.UnitManager;
+import com.worthsoln.service.UserManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
 
 /**
- *  Used to connect up the methods in the old model classes that do service layer operations to the newer service
+ * Used to connect up the methods in the old model classes that do service layer operations to the newer service
  * managers. We can move stuff out of this when the service/DAO code gets moved out from the model classes.
  * When/if...
  */
-public class LegacySpringUtils {
+public final class LegacySpringUtils {
 
     private static AboutmeManager aboutmeManager;
 
@@ -89,6 +114,10 @@ public class LegacySpringUtils {
     private static JoinRequestManager joinRequestManager;
 
     private static AdminNotificationManager adminNotificationManager;
+
+    private LegacySpringUtils() {
+
+    }
 
     public static AboutmeManager getAboutmeManager() {
         return aboutmeManager;

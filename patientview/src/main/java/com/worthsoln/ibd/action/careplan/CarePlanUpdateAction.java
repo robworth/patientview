@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CarePlanUpdateAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                         HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) throws Exception {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
