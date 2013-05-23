@@ -40,7 +40,6 @@ public final class Messaging {
     public static final String UNIT_ADMIN_RECIPIENTS_PARAM = "unitAdminRecipients";
     public static final String UNIT_STAFF_RECIPIENTS_PARAM = "unitStaffRecipients";
     public static final String UNIT_PATIENT_RECIPIENTS_PARAM = "unitPatientRecipients";
-    public static final String NO_EMAIL_SET_PARAM = "noEmailSet";
     public static final String NO_RECIPIENTS_PARAM = "noRecipients";
     public static final String UNITS_PARAM = "units_for_messaging";
     public static final String UNIT_CODE_PARAM = "unitCode";

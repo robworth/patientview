@@ -210,7 +210,12 @@ class TestResultId implements Comparable {
             String thisPrepost = this.prepost != null ? this.prepost : "";
 
             if (thisPrepost.equals(compareToPrepost)) {
-                return shortname.compareToIgnoreCase(resultToCompareThisTo.getShortname());
+                String compareToShortname = resultToCompareThisTo.getShortname() != null
+                        ? resultToCompareThisTo.getShortname() : "";
+
+                String thisShortname = this.shortname != null ? this.shortname : "";
+
+                return thisShortname.compareToIgnoreCase(compareToShortname);
             } else {
                 return thisPrepost.compareToIgnoreCase(compareToPrepost);
             }

@@ -60,7 +60,6 @@
             <html:hidden name="unitUser" property="lastlogon"/>
             <html:hidden name="unitUser" property="failedlogons"/>
             <html:hidden name="unitUser" property="accountlocked"/>
-            <html:hidden name="unitUser" property="screenname"/>
             <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton float-in-form-actions"/>
         </html:form>
 
