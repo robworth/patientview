@@ -33,37 +33,31 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
     }
 
     @Override
-    public List<User> get(User user, Specialty specialty, String userType) {
+    public List<User> get(User user, Specialty specialty, String userType, String messageId) {
         String sql = "SELECT " +
-                "  u.*  " +
+                "  u.*, eq.recipient_id " +
                 "FROM " +
-                "   User u, " +
-                "   UserMapping um, " +
-                "   SpecialtyUserRole sur " +
-                "WHERE " +
-                "   u.username = um.username " +
-                "AND " +
-                "   u.id = sur.user_id " +
-                "AND " +
-                "   sur.role = :userType " +
-                "AND " +
-                "   um.unitcode IN ( " +
-                            "SELECT " +
-                            "    unitcode " +
-                            "FROM " +
-                            "    UserMapping " +
-                            "WHERE " +
-                            "  username = :username " +
-                            "AND " +
-                            "   sur.specialty_id = :specialtyId " +
+                "  User u LEFT OUTER JOIN EmailQueue eq ON u.id = eq.recipient_id  AND eq.message_id = :messageId, " +
+                "  UserMapping um, " +
+                "  SpecialtyUserRole sur " +
+                "WHERE u.username = um.username " +
+                "AND u.id = sur.user_id " +
+                "AND sur.role = :userType " +
+                "AND eq.recipient_id is NULL " +
+                "AND u.username NOT LIKE '%-GP%' " +
+                "AND um.unitcode " +
+                "   IN ( " +
+                            "SELECT unitcode " +
+                            "FROM UserMapping " +
+                            "WHERE username = :username " +
+                            "AND sur.specialty_id = :specialtyId " +
                     ")";
-
-
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
+        query.setParameter("messageId", messageId);
         query.setParameter("userType", userType);
-        query.setParameter("username", user.getName());
+        query.setParameter("username", user.getUsername());
         query.setParameter("specialtyId", specialty.getId());
 
         return query.getResultList();

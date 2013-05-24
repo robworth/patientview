@@ -49,7 +49,7 @@
         <property name="triggers">
             <list>
                 <ref bean="createEmailQueueJobProcessDoTime" />
-                <!--<ref bean="sendEmailProcessDoTime" />-->
+                <ref bean="sendEmailProcessDoTime" />
             </list>
         </property>
         <property name="taskExecutor" ref="executor" />

@@ -28,7 +28,7 @@ public class ListItemReader<T> implements ItemReader<T> {
     @Override
     public T read() {
 
-        if (!list.isEmpty()) {
+        if (list != null && !list.isEmpty()) {
             T remove = list.remove(0);
             while (remove == null && !list.isEmpty()) {
                 remove = list.remove(0);

@@ -5,15 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * Quartz SendEmailJobQuartzScheduler Job
  */
-//@Component
 public class SendEmailJobQuartzScheduler extends BaseQuartzScheduler {
 
-    //@Autowired
+    @Autowired
     private SendEmailJob sendEmailJob;
 
-    //@Override
+   @Override
     protected void setJob() {
         this.batchJob = sendEmailJob;
     }

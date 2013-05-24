@@ -4,7 +4,7 @@ import com.worthsoln.job.CreateEmailQueueJob;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- *
+ * Quartz CreateEmailQueueJobQuartzScheduler Job
  */
 public class CreateEmailQueueJobQuartzScheduler extends BaseQuartzScheduler {
 

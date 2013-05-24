@@ -1,24 +1,31 @@
 package com.worthsoln.quartz;
 
 import com.worthsoln.job.BatchJob;
+import com.worthsoln.patientview.model.enums.SendEmailEnum;
+import com.worthsoln.service.JobManager;
 import org.springframework.batch.core.Job;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: 13-5-23
- * Time: 上午10:24
- * To change this template use File | Settings | File Templates.
+ * Quartz Scheduler Job
  */
 public abstract class BaseQuartzScheduler {
 
     protected BatchJob batchJob;
 
+    @Resource(name = "jobManager")
+    private JobManager jobManager;
+
     protected abstract void setJob();
 
     public synchronized void execute() {
-        // todo
-        setJob();
-        batchJob.run();
+        // search status of job list to see wether has job running now
+        com.worthsoln.patientview.model.Job job = jobManager.getJobList(SendEmailEnum.RUNNING);
+        if (job == null) {
+            setJob();
+            batchJob.run();
+        }
     }
 }

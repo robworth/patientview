@@ -31,41 +31,36 @@ public class CreateEmailQueueReader extends ListItemReader<Object> {
     @Autowired
     private MessageManager messageManager;
 
-    public void refresh() {
+    public void refresh(Job job) {
 
         List<User> users = new ArrayList<User>();
         List<Object> emailQueues = new ArrayList<Object>();
-        List<Job> jobList = jobManager.getJobList(SendEmailEnum.PENDING);
         EmailQueue queue;
         String userType = "";
 
-        if (jobList != null && !jobList.isEmpty()) {
-            for (Job job : jobList) {
+        if (job != null && GroupEnum.ALL_ADMINS.equals(job.getGroupEnum())) {
+            userType = "unitadmin";
+        } else if (job != null && GroupEnum.ALL_STAFF.equals(job.getGroupEnum())) {
+            userType = "unitstaff";
+        } else if (job != null && GroupEnum.ALL_PATIENTS.equals(job.getGroupEnum())) {
+            userType = "patient";
+        } else {}
 
-                if (job != null && GroupEnum.ALL_ADMINS.equals(job.getGroupEnum())) {
-                    userType = GroupEnum.ALL_ADMINS.name();
-                } else if (job != null && GroupEnum.ALL_STAFF.equals(job.getGroupEnum())) {
-                    userType = GroupEnum.ALL_STAFF.name();
-                } else if (job != null && GroupEnum.ALL_PATIENTS.equals(job.getGroupEnum())) {
-                    userType = GroupEnum.ALL_PATIENTS.name();
-                } else {}
+        users.addAll(jobManager.getSpecialGroupUsers(
+                            job.getCreator(),
+                            job.getSpecialty(),
+                            userType,
+                            job.getMessage().getId().toString()));
 
-                users.addAll(jobManager.getSpecialGroupUsers(
-                                    job.getCreator(),
-                                    job.getSpecialty(),
-                                    GroupEnum.ALL_ADMINS.name()));
+        if (!users.isEmpty()) {
+            for (User user : users) {
+                queue = new EmailQueue();
+                queue.setJob(job);
+                queue.setMessage(job.getMessage());
+                queue.setRecipient(user);
+                queue.setStatus(SendEmailEnum.SENDING);
 
-                if (!users.isEmpty()) {
-                    for (User user : users) {
-                        queue = new EmailQueue();
-                        queue.setJob(job);
-                        queue.setMessage(job.getMessage());
-                        queue.setRecipient(user);
-                        queue.setStatus(SendEmailEnum.SENDING);
-
-                        emailQueues.add(queue);
-                    }
-                }
+                emailQueues.add(queue);
             }
             setList(emailQueues);
         }

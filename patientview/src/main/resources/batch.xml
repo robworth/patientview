@@ -15,6 +15,9 @@
 
     <!--Define jobLauncher-->
     <bean id="jobLauncher" autowire="byType" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository">
+            <ref bean="jobRepository"/>
+        </property>
     </bean>
 
     <!--Define jobRepository-->
@@ -27,10 +30,12 @@
     <!--Define skip policy-->
     <bean id="alwaysSkipItemSkipPolicy" class="org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy" />
 
+    <bean id="batchTransationManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
     <!--Define createEamilQueueJob details-->
     <batch:job id="createEamilQueueBatchJob">
         <batch:step id="createEmailQueueStep">
-            <batch:tasklet transaction-manager="transactionManager">
+            <batch:tasklet transaction-manager="batchTransationManager">
                 <batch:chunk reader="createEmailQueueReader" writer="createEmailQueueWriter"
                              commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
                 </batch:chunk>
@@ -44,7 +49,7 @@
         </batch:listeners>
     </batch:job>
 
-    <!--Define sendEmailJob details
+    <!--Define sendEmailJob details-->
     <batch:job id="sendEmailBatchJob">
         <batch:step id="sendEmailStep">
             <batch:tasklet transaction-manager="transactionManager">
@@ -59,7 +64,7 @@
         <batch:listeners>
             <batch:listener ref="sendEmailJob"/>
         </batch:listeners>
-    </batch:job> -->
+    </batch:job>
 
 
 </beans>

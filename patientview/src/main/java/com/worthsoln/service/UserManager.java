@@ -77,5 +77,5 @@ public interface UserManager {
 
     void removeUserFromRadar(Long userId);
 
-    List<User> getUsers(User user, Specialty specialty, String userType);
+    List<User> getUsers(User user, Specialty specialty, String userType, String messageId);
 }

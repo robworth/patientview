@@ -49,8 +49,19 @@ public class Job extends BaseModel {
     private long errorCount;
 
     @Transient
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private StringBuilder reports;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String report;
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
 
     public Message getMessage() {
         return message;
@@ -130,5 +141,23 @@ public class Job extends BaseModel {
 
     public void setReports(StringBuilder reports) {
         this.reports = reports;
+    }
+
+    public void addReport(String report) {
+        if (reports == null) {
+            reports = new StringBuilder();
+        }
+        reports.append(report);
+        reports.append("\n");
+    }
+
+    public void addErrorCount() {
+        errorCount++;
+    }
+
+    public void convertReports() {
+        if (reports != null) {
+            report = reports.toString();
+        }
     }
 }

@@ -17,5 +17,5 @@ public interface EmailQueueDao {
 
     void update(EmailQueue emailQueue);
 
-    void save();
+    void save(EmailQueue emailQueue);
 }

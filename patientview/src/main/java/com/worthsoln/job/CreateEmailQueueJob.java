@@ -1,12 +1,14 @@
 package com.worthsoln.job;
 
 import com.worthsoln.batch.CreateEmailQueueReader;
+import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import org.springframework.batch.core.Job;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 /**
  * Get the unsent messages related members's information then insert the records to EamilQueue
@@ -21,17 +23,16 @@ public class CreateEmailQueueJob extends BatchJob {
     private CreateEmailQueueReader reader;
 
     @Override
-    protected void setJob() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     protected Job getBatchJob() {
         return batchJob;
     }
 
 
-    protected void prepare(){
+    protected void prepare(com.worthsoln.patientview.model.Job job){
+        reader.refresh(job);
+    }
 
+    protected  void setJob() {
+       this.job = jobManager.getJobList(SendEmailEnum.PENDING);
     }
 }

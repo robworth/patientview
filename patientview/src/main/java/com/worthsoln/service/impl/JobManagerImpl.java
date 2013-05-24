@@ -29,8 +29,13 @@ public class JobManagerImpl implements JobManager {
     }
 
     @Override
-    public List<Job> getJobList(SendEmailEnum status) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Job getJobList(SendEmailEnum status) {
+        List<Job> jobs = jobDao.getJobList(status);
+        Job job = null;
+        if (jobs != null && !jobs.isEmpty()) {
+            job = jobs.get(0);
+        }
+        return job;
     }
 
     @Override
@@ -39,7 +44,7 @@ public class JobManagerImpl implements JobManager {
     }
 
     @Override
-    public List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType) {
-        return userManager.getUsers(user, specialty, userType);
+    public List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType, String messageId) {
+        return userManager.getUsers(user, specialty, userType, messageId);
     }
 }

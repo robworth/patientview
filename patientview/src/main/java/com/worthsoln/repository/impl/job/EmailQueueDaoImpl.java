@@ -26,11 +26,11 @@ public class EmailQueueDaoImpl extends AbstractHibernateDAO<EmailQueue> implemen
 
     @Override
     public void update(EmailQueue emailQueue) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        super.save(emailQueue);
     }
 
     @Override
-    public void save() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void save(EmailQueue emailQueue) {
+        super.save(emailQueue);
     }
 }

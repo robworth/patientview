@@ -1,6 +1,9 @@
 package com.worthsoln.job;
 
+import com.worthsoln.patientview.model.EmailQueue;
 import com.worthsoln.patientview.model.Job;
+import com.worthsoln.patientview.model.enums.SendEmailEnum;
+import com.worthsoln.service.JobManager;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.annotation.AfterJob;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,11 +32,32 @@ public abstract class BatchJob {
     @Autowired
     protected JobLauncher jobLauncher;
 
+    //@Resource(name = "jobManager")
+    @Autowired
+    protected JobManager jobManager;
+
     protected Job job;
 
-    protected abstract void setJob();
+    private boolean isSkip = false;
 
+    /**
+     * Set job list which status is PENDING
+     */
+    protected  void setJob() {}
+
+    /**
+     *
+     */
     public void run(){
+
+        setJob();
+        if (this.job == null) {
+            return;
+        }
+
+        // update jobs' start time and status
+        updateJobStatusRunning();
+        isSkip = false;
 
         Map<String, JobParameter> map = new HashMap<String, JobParameter>();
         map.put("key", new JobParameter(new Date()));
@@ -55,7 +80,7 @@ public abstract class BatchJob {
      */
     @BeforeJob
     public void beforeJob() {
-        prepare();
+        prepare(job);
     }
 
     /**
@@ -67,10 +92,15 @@ public abstract class BatchJob {
     public void afterJob(JobExecution result) {
         LOGGER.debug(result.toString());
 
-        if (result.getStatus() != BatchStatus.COMPLETED) {
+        if (result.getStatus() != BatchStatus.COMPLETED || isSkip) {
+
             updateJobStatusFailded(job);
         } else {
-            updateJobStatusSuccessed(job);
+            if (getBatchJob().getName().equals("createEamilQueueBatchJob")) {
+                updateJobStatusSending(job);
+            } else {
+                updateJobStatusSuccessed(job);
+            }
         }
     }
 
@@ -81,7 +111,6 @@ public abstract class BatchJob {
      */
     @OnReadError
     public void onReadError(Exception e) {
-        // todo
         LOGGER.debug(e.getMessage());
     }
 
@@ -93,20 +122,68 @@ public abstract class BatchJob {
      */
     @OnSkipInWrite
     public void onSkipInWriter(Object holder, Throwable problem) {
-        // todo
+
+        isSkip = true;
+        if (holder instanceof EmailQueue) {
+            EmailQueue emailQueue = (EmailQueue) holder;
+            Job job = emailQueue.getJob();
+
+            job.addReport("username=" + emailQueue.getRecipient().getUsername()
+                    + ",messageId=" + emailQueue.getMessage().getId()
+                    + " : " +problem.getMessage());
+
+            job.addErrorCount();
+
+            jobManager.save(job);
+        }
     }
 
     /**
      * Prepare job configuration before batch reader
      */
-    protected void prepare() {}
+    protected void prepare(Job job) {}
 
-    public void updateJobStatusFailded(Job job) {
-        //todo
+    /**
+     * Update the jobs' status to RUNNING
+     */
+    public void updateJobStatusRunning() {
+        LOGGER.debug("==update running status==");
+        job.setStarted(new Date());
+        job.setStatus(SendEmailEnum.RUNNING);
+        jobManager.save(job);
     }
 
-    public void updateJobStatusSuccessed(Job job) {
+    /**
+     * Update the jobs' status to FAILED
+     *
+     * @param job
+     */
+    public void updateJobStatusFailded(Job job) {
+        LOGGER.debug("==update failed status==");
+        job.convertReports();
+        job.setFinished(new Date());
+        job.setStatus(SendEmailEnum.FAILED);
+        jobManager.save(job);
+    }
 
+    /**
+     * Update the jobs' status to SUCCESSED
+     * @param job
+     */
+    public void updateJobStatusSuccessed(Job job) {
+        LOGGER.debug("==update successed status==");
+
+        job.setFinished(new Date());
+        job.setStatus(SendEmailEnum.SUCCESSED);
+        jobManager.save(job);
+    }
+
+    public void updateJobStatusSending(Job job) {
+        LOGGER.debug("==update sending status==");
+
+        job.setFinished(new Date());
+        job.setStatus(SendEmailEnum.SENDING);
+        jobManager.save(job);
     }
 
     protected abstract org.springframework.batch.core.Job getBatchJob();
