@@ -1,5 +1,8 @@
 package com.worthsoln.monitoring;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -13,7 +16,6 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.StopWatch;
-import org.springframework.util.StringUtils;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -26,7 +28,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Monitors XML Import process to see if it is stalled or not working properly
+ * Logs the number of files that XML Import needs to process
+ *
+ * Monitors those files to see if the XML Import is stalled or not working properly
  *
  * @author Deniz Ozger
  */
@@ -34,23 +38,18 @@ public class ImportMonitor {
 
     // Timings and limitations
     private static final int FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES = 1;
-    private static final int FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES = 10;
     /**
-     * should always be equal to FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES /
-            FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES
+     * Should always be equal to monitoringFrequencyInMinutes /
+     * FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES. Thus; it is calculated in runtime.
      */
-    private static final int NUMBER_OF_LINES_TO_READ = 10;
-
-
-    private static final int PENDING_FILE_LIMIT = 10;
+    private static int NUMBER_OF_LINES_TO_READ = -1;
 
     // Import data file format
     private static final String RECORD_DATA_DELIMITER = ",";
     private static final String RECORD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final int DATE_POSITION_IN_RECORD = 0;
-    private static final int NUMBER_OF_FILES_IN_PROTON_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 1;
-    private static final int NUMBER_OF_FILES_IN_RPV_XML_DIRECTORY_INFORMATION_POSITION_IN_RECORD = 2;
     private static final String COUNT_LOG_FILENAME_FORMAT = "yyyy-MM-dd";
+    private static final String COMMENT_PREFIX = "#";
 
     // Class constants
     private static final String PROJECT_PROPERTIES_FILE = "patientview.properties";
@@ -59,21 +58,20 @@ public class ImportMonitor {
     private static final int LINE_FEED = 0xA;
     private static final int CARRIAGE_RETURN = 0xD;
 
-    private static enum FileType {
-        PROTON,
-        RPV_XML
-    }
-
     public static void main(String[] args) {
 
         int importFileCheckCount = 0;
 
         while (true) {
-            LOGGER.info("******** ImportMonitor wakes up ********");
+            LOGGER.info("******** Import Logger & Monitor wakes up ********");
+
+            int monitoringFrequencyInMinutes = Integer.parseInt(getProperty("importerMonitor.frequency.minutes"));
+            NUMBER_OF_LINES_TO_READ = monitoringFrequencyInMinutes / FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES;
+
             LOGGER.info("Import file counts will be logged every {} minutes, whereas a " +
                     "health check will be done every {} minutes. Each monitoring will check the last {} lines " +
-                    "of the log", new Object[] {FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
-                    FREQUENCY_OF_MONITORING_THE_IMPORTER_IN_MINUTES, NUMBER_OF_LINES_TO_READ});
+                    "of the log", new Object[]{FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
+                    monitoringFrequencyInMinutes, NUMBER_OF_LINES_TO_READ});
 
             StopWatch sw = new StopWatch();
             sw.start();
@@ -81,17 +79,29 @@ public class ImportMonitor {
             importFileCheckCount = importFileCheckCount + FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES;
 
             /**
-             * Log number of pending data files
+             * Get the folders that will be monitored
              */
-            logNumberOfPendingDataFiles();
+            List<FolderToMonitor> foldersToMonitor = getFoldersToMonitor();
+
+            /**
+             * Count the number of files in these folders
+             */
+            setTheNumberOfCurrentFilesToFolderObjects(foldersToMonitor);
+
+            /**
+             * Log counts to a file
+             */
+            logNumberOfFiles(foldersToMonitor);
 
             /**
              * If it is time, check the overall monitor stability as well
              */
             if (importFileCheckCount == NUMBER_OF_LINES_TO_READ) {
-                monitorImportProcess();
+                monitorImportProcess(foldersToMonitor);
 
                 importFileCheckCount = 0;
+            } else {
+                LOGGER.info("Next monitoring will happen in {} minutes", NUMBER_OF_LINES_TO_READ - importFileCheckCount);
             }
 
             sw.stop();
@@ -121,7 +131,17 @@ public class ImportMonitor {
         }
     }
 
-    private static void monitorImportProcess() {
+    /**
+     * Counts the number of files in folders and sets those values to folder objects
+     */
+    private static void setTheNumberOfCurrentFilesToFolderObjects(List<FolderToMonitor> foldersToMonitor) {
+        for (FolderToMonitor folderToMonitor : foldersToMonitor) {
+            folderToMonitor.setCurrentNumberOfFiles(getNumberOfFilesInDirectory(
+                    folderToMonitor.getPathIncludingName()));
+        }
+    }
+
+    private static void monitorImportProcess(List<FolderToMonitor> foldersToMonitor) {
         /**
          * Read some lines from the file
          */
@@ -129,44 +149,139 @@ public class ImportMonitor {
         List<String> lines = getLastNLinesOfFile(NUMBER_OF_LINES_TO_READ);
 
         /**
-         * Convert them to meaningful objects
+         * Make sure all lines have the same number of folders, and that matches folders to monitor now
          */
-        List<CountRecord> countRecords = getCountRecordsFromLines(lines);
-
-        /**
-         * Check the records to see if files are static or they exceed the limit
-         */
-        if (isImporterNotWorkingProperly(countRecords)) {
+        if (doNumberOfFoldersInLogFileAndPropertiesFileMatch(lines, foldersToMonitor)) {
             /**
-             * Send an email if there are problems with the importer
+             * Convert them to meaningful objects
              */
-            sendAWarningEmail(countRecords);
+            List<CountRecord> countRecords = getCountRecordsFromLines(lines, foldersToMonitor);
+
+            /**
+             * Check the records to see if files are static or they exceed the limit
+             */
+            if (areThereEnoughDataToMonitor(countRecords)) {
+
+                List<FolderToMonitor> foldersThatHaveStaticFiles = getFoldersWhoseNumberOfFilesAreStatic(countRecords);
+                List<FolderToMonitor> foldersWhoseNumberOfFilesExceedTheirLimits =
+                        getFoldersWhoseNumberOfFilesExceedTheirLimits(countRecords);
+
+                if (foldersThatHaveStaticFiles.size() > 0 || foldersWhoseNumberOfFilesExceedTheirLimits.size() > 0) {
+                    /**
+                     * Send an email if there are problems with the importer
+                     */
+                    sendAWarningEmail(foldersThatHaveStaticFiles, foldersWhoseNumberOfFilesExceedTheirLimits,
+                            countRecords);
+                }
+
+            }
+        } else {
+            LOGGER.warn("Skipping monitoring folders as number of folders in log file and number of folders " +
+                    "defined in properties file do not match.");
         }
     }
 
-    private static void logNumberOfPendingDataFiles() {
-        /**
-         * Count the number of pending files in both importer directories
-         */
-        int protonDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.proton_files.directory.path"));
-        int rpvXmlDirectoryFileCount = getNumberOfFilesInDirectory(getProperty("importer.rpvxml_files.directory.path"));
+    private static boolean doNumberOfFoldersInLogFileAndPropertiesFileMatch(List<String> logLines,
+                                                                            List<FolderToMonitor> foldersToMonitor) {
+        boolean folderSizeInLinesMatch;
+        int lastFolderSizeInLine = -1;
 
         /**
-         * Write the counts to the file
+         * Check if lines in log file have the same number of folders
          */
-        logNumberOfFiles(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
+        if (logLines.size() > 0) {
+            lastFolderSizeInLine = getNumberOfFoldersInLogLine(logLines.get(0));
+        }
+
+        for (String line : logLines) {
+            if (StringUtils.isBlank(line)) {
+                LOGGER.info("Empty record is encountered, this might be the first line");
+            } else {
+                int currentNumberOfFoldersInThisLogLine = getNumberOfFoldersInLogLine(line);
+
+                folderSizeInLinesMatch = lastFolderSizeInLine == currentNumberOfFoldersInThisLogLine;
+
+                if (!folderSizeInLinesMatch) {
+                    LOGGER.warn("Folders in properties file and log file do not match. If some folders were " +
+                            "added/removed recently, then this may be the reason. Folder count of previous line " +
+                            " is {}, whereas another line's count is {} ({})",
+                            new Object[]{currentNumberOfFoldersInThisLogLine, lastFolderSizeInLine, line});
+
+                    return false;
+                } else {
+                    lastFolderSizeInLine = getNumberOfFoldersInLogLine(line);
+                }
+            }
+        }
+
+        /**
+         * Compare the folder count in log lines with the count of folders that we will monitor now
+         */
+        return foldersToMonitor.size() == lastFolderSizeInLine;
+    }
+
+    /**
+     * Returns the number of folders defined in a line of log.
+     * <p/>
+     * If log file looks like 1985-07-03,1,2,3 then it returns 3
+     */
+    private static int getNumberOfFoldersInLogLine(String line) {
+        String[] recordDataSections = line.split(RECORD_DATA_DELIMITER);
+
+        if (recordDataSections != null) {
+            // first part is date, and the last part is comment sections, so subtract 2 from the total number
+            return recordDataSections.length - 2;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Lists the folders to be monitored, which are defined in properties files
+     */
+    private static List<FolderToMonitor> getFoldersToMonitor() {
+        List<FolderToMonitor> foldersToMonitor = new ArrayList<FolderToMonitor>();
+
+        List<String> propertyNames = getPropertyNamesStartingWith("importerMonitor.directory.path");
+
+        FolderToMonitor folderToMonitor;
+        for (String propertyName : propertyNames) {
+            folderToMonitor = new FolderToMonitor();
+
+            String[] propertyNameParts = propertyName.split("\\.");
+
+            if (propertyNameParts != null && propertyNameParts.length > 0) {
+                try {
+                    folderToMonitor.setId(Integer.parseInt(propertyNameParts[propertyNameParts.length - 1]));
+                    folderToMonitor.setPathIncludingName(getProperty(propertyName));
+                    folderToMonitor.setMaxNumberOfFiles(Integer.parseInt(getProperty(
+                            "importerMonitor.directory.maxNumberOfFiles." + folderToMonitor.getId())));
+                } catch (NumberFormatException e) {
+                    LOGGER.error("Could not retrieve property value {}, possible faulty property name definition",
+                            propertyName, e);
+                }
+
+                if (!foldersToMonitor.contains(folderToMonitor)) {
+                    foldersToMonitor.add(folderToMonitor);
+                }
+            }
+        }
+
+        Collections.sort(foldersToMonitor, FolderToMonitor.Order.ById.descending());
+
+        return foldersToMonitor;
     }
 
     /**
      * Appends the current time and file counts to importer data file
      */
-    private static void logNumberOfFiles(int protonDirectoryFileCount, int rpvXmlDirectoryFileCount) {
+    private static void logNumberOfFiles(List<FolderToMonitor> foldersToMonitor) {
         File countFile = getTodaysCountFile();
 
         try {
             FileOutputStream fileOutStream = new FileOutputStream(countFile, true); // append data
 
-            String countRecord = getCountDataToWriteToFile(protonDirectoryFileCount, rpvXmlDirectoryFileCount);
+            String countRecord = getCountDataToWriteToFile(foldersToMonitor);
 
             fileOutStream.write(countRecord.getBytes());
             LOGGER.info("Appended this line: \"{}\" to count file {}", countRecord, countFile.getAbsolutePath());
@@ -178,6 +293,9 @@ public class ImportMonitor {
         }
     }
 
+    /**
+     * Returns the log file that will be used today - there is a rotation in log files
+     */
     private static File getTodaysCountFile() {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat(COUNT_LOG_FILENAME_FORMAT);
 
@@ -189,11 +307,27 @@ public class ImportMonitor {
     /**
      * Returns the record that needs to be appended to importer data file
      */
-    private static String getCountDataToWriteToFile(int protonDirectoryFileCount, int rpvXmlDirectoryFileCount) {
+    private static String getCountDataToWriteToFile(List<FolderToMonitor> foldersToMonitor) {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat(RECORD_DATE_FORMAT);
 
-        return "\n" + dateTimeFormat.format(new Date()) + RECORD_DATA_DELIMITER + protonDirectoryFileCount +
-                RECORD_DATA_DELIMITER + rpvXmlDirectoryFileCount;
+        String countData = "\n" + dateTimeFormat.format(new Date());
+
+        /**
+         * Append counts
+         */
+        for (FolderToMonitor folderToMonitor : foldersToMonitor) {
+            countData = countData + RECORD_DATA_DELIMITER + folderToMonitor.getCurrentNumberOfFiles();
+        }
+
+        /**
+         * Append folder names for reference
+         */
+        countData = countData + "," + COMMENT_PREFIX + "Folders:";
+        for (FolderToMonitor folderToMonitor : foldersToMonitor) {
+            countData = countData + folderToMonitor.getName() + "-";
+        }
+
+        return countData;
     }
 
     /**
@@ -216,42 +350,154 @@ public class ImportMonitor {
         return count;
     }
 
-    private static boolean isImporterNotWorkingProperly(List<CountRecord> countRecords) {
-        boolean importerIsNotWorkingProperly = countRecords.size() == NUMBER_OF_LINES_TO_READ && (isNumberOfProtonFilesStatic(countRecords) ||
-                isNumberOfRpvXmlFilesStatic(countRecords) ||
-                doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT) ||
-                doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT));
+    /**
+     * Checks if there is enough data (file counts) in log file for monitoring
+     */
+    private static boolean areThereEnoughDataToMonitor(List<CountRecord> countRecords) {
+        if (countRecords.size() != NUMBER_OF_LINES_TO_READ) {
+            LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines " +
+                    "for Import monitor to process.",
+                    countRecords.size(), NUMBER_OF_LINES_TO_READ);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the number of files in given directories are static over a certain period of time
+     */
+    private static List<FolderToMonitor> getFoldersWhoseNumberOfFilesAreStatic(List<CountRecord> countRecords) {
+        List<FolderToMonitor> foldersWhoseFilesAreStatic = new ArrayList<FolderToMonitor>();
 
         /**
-         * Some logging for feedback if the importer looks like working
+         * First, treat all folders as static
          */
-        if (!importerIsNotWorkingProperly) {
-            if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
-                LOGGER.info("Importer is working fine");
-            } else {
-                LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines " +
-                        "for Import monitor to process.",
-                        countRecords.size(), NUMBER_OF_LINES_TO_READ);
+        for (CountRecord countRecord : countRecords) {
+            for (FolderToMonitor folderToMonitor : countRecord.getFoldersToMonitor()) {
+                if (!foldersWhoseFilesAreStatic.contains(folderToMonitor)) {
+                    foldersWhoseFilesAreStatic.add(folderToMonitor);
+                }
             }
         }
 
-        return importerIsNotWorkingProperly;
+        /**
+         * What we have in log files is a matrix (x,y) where x denotes folders and y denotes number of files in
+         *      that folder. It is advised that you see the log file before continuing.. The data is stored in a
+         *      primitive file instead of a relational database, hence the long explanations..
+         *
+         * We will first compare (x, y), (x, y+1), (x, y+2) to see if files in a folder was static over time.
+         * Then we will check the rest of the folders, starting by comparing (x+1, y), (x+1, y+1), (x+1, y+2) ...
+         */
+
+        if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
+
+            // first line of the log
+            CountRecord firstLogRecord = countRecords.get(0);
+
+            // total number of folders that are logged in his line
+            int numberOfFoldersToCheck = firstLogRecord.getFoldersToMonitor().size();
+
+            /**
+             * We will make iterations totaling to the number of folders that needs to be monitored
+             */
+            for (int i = 0; i < numberOfFoldersToCheck; i++) {
+
+                /**
+                 * i-th folder of the first log record. We will compare this value with other log records (other
+                 *      recordings recently)
+                 */
+                int firstRecordsFolderFileCount = firstLogRecord.getFoldersToMonitor().get(i).getCurrentNumberOfFiles();
+
+                /**
+                 * Go backwards in time (logs) to see if the file count was always the same or not
+                 */
+                for (CountRecord countRecord : countRecords) {
+
+                    // i-th folder of the current log record
+                    FolderToMonitor thisRecordsFolder = countRecord.getFoldersToMonitor().get(i);
+
+                    // number of files of i-th folder of the current log record
+                    int thisRecordsFolderFileCount = thisRecordsFolder.getCurrentNumberOfFiles();
+
+                    /**
+                     * If this log record's i-th folder's file count is different than the first log record's
+                     *      i-th folder's file count, then it means importer is working on this folder
+                     */
+                    if ((firstRecordsFolderFileCount != 0 && thisRecordsFolderFileCount != 0) &&
+                            firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
+
+                       foldersWhoseFilesAreStatic.remove(thisRecordsFolder);
+                    }
+                }
+            }
+        } else {
+            LOGGER.warn("There are not enough records to check (only {} records in the file)", countRecords.size());
+        }
+
+        /**
+         * Log the findings
+         */
+        for (FolderToMonitor monitoredFolder : foldersWhoseFilesAreStatic) {
+            LOGGER.info("Files are static in directory {}", monitoredFolder.getPathIncludingName());
+        }
+
+        return foldersWhoseFilesAreStatic;
     }
 
-    private static void sendAWarningEmail(List<CountRecord> countRecords) {
+    /**
+     * Checks if the number of pending files for importer exceeds a given limit
+     */
+    private static List<FolderToMonitor> getFoldersWhoseNumberOfFilesExceedTheirLimits(List<CountRecord> countRecords) {
+        List<FolderToMonitor> foldersWhoseFilesExceedTheirLimits = new ArrayList<FolderToMonitor>();
+
+        if (countRecords.size() > 0) {
+            List<CountRecord> countRecordsToTest = new ArrayList<CountRecord>(countRecords);
+
+            Collections.sort(countRecordsToTest, CountRecord.Order.ByRecordTime.descending());
+            CountRecord firstCountRecord = countRecords.get(0);
+
+            int numberOfFoldersToCheck = firstCountRecord.getFoldersToMonitor().size();
+
+            for (int i = 0; i < numberOfFoldersToCheck; i++) {
+
+                for (CountRecord countRecord : countRecords) {
+
+                    FolderToMonitor thisRecordsFolder = countRecord.getFoldersToMonitor().get(i);
+
+                    if (thisRecordsFolder.getCurrentNumberOfFiles() > thisRecordsFolder.getMaxNumberOfFiles() &&
+                            !foldersWhoseFilesExceedTheirLimits.contains(thisRecordsFolder)) {
+                        LOGGER.info("Folder {}'s files ({}) exceed its limit ({})",
+                                new Object[]{thisRecordsFolder.getId(), thisRecordsFolder.getCurrentNumberOfFiles(),
+                                        thisRecordsFolder.getMaxNumberOfFiles()});
+
+                        foldersWhoseFilesExceedTheirLimits.add(thisRecordsFolder);
+                    }
+                }
+            }
+        }
+
+        return foldersWhoseFilesExceedTheirLimits;
+    }
+
+    private static void sendAWarningEmail(List<FolderToMonitor> foldersThatHaveStaticFiles,
+                                          List<FolderToMonitor> foldersWhoseNumberOfFilesExceedTheirLimits,
+                                          List<CountRecord> countRecords) {
         try {
             Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
             Properties props = PropertiesLoaderUtils.loadProperties(resource);
 
             String subject = "Problems encountered in Patient View XML Importer";
 
-            String body = getWarningEmailBody(countRecords);
+            String body = getWarningEmailBody(foldersThatHaveStaticFiles, foldersWhoseNumberOfFilesExceedTheirLimits,
+                    countRecords);
 
             String fromAddress = props.getProperty("noreply.email");
 
             // todo For testing purposes this property is overridden
 //            String[] toAddresses = {props.getProperty("support.email")};
-            String[] toAddresses = {"patientview-testing@solidstategroup.com"};
+            String[] toAddresses = {"deniz@solidstategroup.com"};
 
             sendEmail(fromAddress, toAddresses, null, subject, body);
         } catch (IOException e) {
@@ -260,7 +506,7 @@ public class ImportMonitor {
     }
 
     public static void sendEmail(String from, String[] to, String[] bcc, String subject, String body) {
-        if (!StringUtils.hasLength(from)) {
+        if (StringUtils.isBlank(from)) {
             throw new IllegalArgumentException("Cannot send mail missing 'from'");
         }
 
@@ -268,11 +514,11 @@ public class ImportMonitor {
             throw new IllegalArgumentException("Cannot send mail missing recipients");
         }
 
-        if (!StringUtils.hasLength(subject)) {
+        if (StringUtils.isBlank(subject)) {
             throw new IllegalArgumentException("Cannot send mail missing 'subject'");
         }
 
-        if (!StringUtils.hasLength(body)) {
+        if (StringUtils.isBlank(body)) {
             throw new IllegalArgumentException("Cannot send mail missing 'body'");
         }
 
@@ -306,7 +552,9 @@ public class ImportMonitor {
         }
     }
 
-    private static String getWarningEmailBody(List<CountRecord> countRecords) {
+    private static String getWarningEmailBody(List<FolderToMonitor> foldersThatHaveStaticFiles,
+                                              List<FolderToMonitor> foldersWhoseNumberOfFilesExceedTheirLimits,
+                                              List<CountRecord> countRecords) {
         String emailBody = "";
         String newLine = System.getProperty("line.separator");
 
@@ -314,132 +562,44 @@ public class ImportMonitor {
         emailBody += newLine;
         emailBody += newLine + "There are some problems in XML Importer. Please see below for details.";
         emailBody += newLine;
-        emailBody += newLine;
 
-        if (isNumberOfProtonFilesStatic(countRecords)) {
-            emailBody += newLine + "Importer has not imported any Proton files recently.";
+        if (foldersThatHaveStaticFiles.size() > 0) {
+            emailBody += newLine + "Importer has not imported any files in some folders recently. These folders are:";
+            emailBody += newLine;
+
+            for (FolderToMonitor folder : foldersThatHaveStaticFiles) {
+                emailBody += newLine + "Folder ID: " + folder.getId() + " Path: " + folder.getPathIncludingName() +
+                        " Number of files: " + folder.getCurrentNumberOfFiles();
+            }
+
+            emailBody += newLine;
             emailBody += newLine;
         }
 
-        if (isNumberOfRpvXmlFilesStatic(countRecords)) {
-            emailBody += newLine + "Importer has not imported any RpvXml files recently.";
+        if (foldersWhoseNumberOfFilesExceedTheirLimits.size() > 0) {
+            emailBody += newLine + "Files are in some folders are above the threshold. These folders are:";
             emailBody += newLine;
-        }
 
-        if (doesNumberOfPendingProtonFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Proton files waiting to be imported is above the threshold (" +
-                    PENDING_FILE_LIMIT + ").";
-            emailBody += newLine;
-        }
-
-        if (doesNumberOfPendingXmlRpvFilesExceedLimit(countRecords, PENDING_FILE_LIMIT)) {
-            emailBody += newLine + "Number of Rpv Xml files waiting to be imported is above the threshold (" +
-                    PENDING_FILE_LIMIT + ").";
-            emailBody += newLine;
+            for (FolderToMonitor folder : foldersWhoseNumberOfFilesExceedTheirLimits) {
+                emailBody += newLine + "Folder ID: " + folder.getId() + " Path: " + folder.getPathIncludingName() +
+                        " Number of files: " + folder.getCurrentNumberOfFiles() + " Threshold: " +
+                        folder.getMaxNumberOfFiles();
+            }
         }
 
         emailBody += newLine;
         emailBody += newLine;
-        emailBody += newLine + "Please see the following most recent file count records:";
-        emailBody += newLine;
+        emailBody += newLine + "Please see the following most recent file count records for reference:";
         emailBody += newLine;
 
         List<CountRecord> countRecordsToSend = new ArrayList<CountRecord>(countRecords);
-        Collections.sort(countRecordsToSend, CountRecord.Order.ByRecordTime.ascending());
+        Collections.sort(countRecordsToSend, CountRecord.Order.ByRecordTime.descending());
 
         for (CountRecord countRecord : countRecordsToSend) {
-            emailBody += newLine + countRecord;
-            emailBody += newLine;
+            emailBody += countRecord;
         }
 
         return emailBody;
-    }
-
-    private static boolean isNumberOfProtonFilesStatic(List<CountRecord> countRecords) {
-        return isNumberOfFilesStatic(FileType.PROTON, countRecords);
-    }
-
-    private static boolean isNumberOfRpvXmlFilesStatic(List<CountRecord> countRecords) {
-        return isNumberOfFilesStatic(FileType.RPV_XML, countRecords);
-    }
-
-    private static boolean doesNumberOfPendingProtonFilesExceedLimit(List<CountRecord> countRecords,
-                                                                     int pendingFileLimit) {
-        return doesNumberOfPendingFilesExceedLimit(FileType.PROTON, countRecords, pendingFileLimit);
-    }
-
-    private static boolean doesNumberOfPendingXmlRpvFilesExceedLimit(List<CountRecord> countRecords,
-                                                                     int pendingFileLimit) {
-        return doesNumberOfPendingFilesExceedLimit(FileType.RPV_XML, countRecords, pendingFileLimit);
-    }
-
-    /**
-     * Checks if the number of files in given directories are static over a certain period of time
-     */
-    private static boolean isNumberOfFilesStatic(FileType fileType, List<CountRecord> countRecords) {
-        boolean filesAreStatic = true;
-
-        if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
-            int firstRecordsFileCount;
-
-            if (fileType == FileType.PROTON) {
-                firstRecordsFileCount = countRecords.get(0).getNumberOfFilesInProtonDirectory();
-            } else {
-                firstRecordsFileCount = countRecords.get(0).getNumberOfFilesInRpvXmlDirectory();
-            }
-
-            for (CountRecord countRecord : countRecords) {
-                if ((fileType == FileType.PROTON &&
-                        countRecord.getNumberOfFilesInProtonDirectory() != firstRecordsFileCount) ||
-                        (fileType == FileType.RPV_XML &&
-                                countRecord.getNumberOfFilesInRpvXmlDirectory() != firstRecordsFileCount)) {
-                    filesAreStatic = false;
-                }
-            }
-
-            if (firstRecordsFileCount == 0) { // ignore if the file count is 0
-                filesAreStatic = false;
-            }
-        } else {
-            LOGGER.warn("There are not enough records to check (only {} records in the file)", countRecords.size());
-
-            return false;
-        }
-
-        LOGGER.debug("{} files are static: {}", fileType, filesAreStatic);
-
-        return filesAreStatic;
-    }
-
-    /**
-     * Checks if the number of pending files for importer exceeds a given limit
-     *
-     * @param pendingFileLimit max number of files that's allowed
-     */
-    private static boolean doesNumberOfPendingFilesExceedLimit(FileType fileType, List<CountRecord> countRecords,
-                                                               int pendingFileLimit) {
-        if (countRecords.size() > 0) {
-            List<CountRecord> countRecordsToTest = new ArrayList<CountRecord>(countRecords);
-
-            Collections.sort(countRecordsToTest, CountRecord.Order.ByRecordTime.descending());
-
-            CountRecord latestRecord = countRecordsToTest.get(0);
-
-            if (fileType == FileType.PROTON && latestRecord.getNumberOfFilesInProtonDirectory() > pendingFileLimit) {
-                LOGGER.debug("Proton files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInProtonDirectory(),
-                        pendingFileLimit);
-
-                return true;
-            } else if (fileType == FileType.RPV_XML &&
-                    latestRecord.getNumberOfFilesInRpvXmlDirectory() > pendingFileLimit) {
-                LOGGER.debug("RpvXml files ({}) exceed limit ({})", latestRecord.getNumberOfFilesInRpvXmlDirectory(),
-                        pendingFileLimit);
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -479,7 +639,7 @@ public class ImportMonitor {
                     String currentLine = sb.reverse().toString();
                     sb = new StringBuilder();
 
-                    if (StringUtils.hasLength(currentLine)) {
+                    if (StringUtils.isNotBlank(currentLine)) {
                         lastNLines.add(currentLine);
 
                     } else {
@@ -528,28 +688,51 @@ public class ImportMonitor {
     }
 
     /**
+     * Returns all property names that starts with the given string
+     *
+     * @return empty array list if no property name is found
+     */
+    private static List<String> getPropertyNamesStartingWith(String queriedProperyName) {
+        Resource resource = new ClassPathResource("/" + PROJECT_PROPERTIES_FILE);
+        Properties props = null;
+        Set<String> allPropertyNames;
+        List<String> propertyNames = new ArrayList<String>();
+
+        try {
+            props = PropertiesLoaderUtils.loadProperties(resource);
+
+            allPropertyNames = props.stringPropertyNames();
+
+            for (String propertyName : allPropertyNames) {
+                if (propertyName.startsWith(queriedProperyName)) {
+                    propertyNames.add(propertyName);
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.error("Could not find properties file: {}", e);
+        }
+
+        return propertyNames;
+    }
+
+    /**
      * Convert lines on the file into sensible objects
      */
-    private static List<CountRecord> getCountRecordsFromLines(List<String> lines) {
+    private static List<CountRecord> getCountRecordsFromLines(List<String> lines,
+                                                              List<FolderToMonitor> foldersToMonitor) {
         List<CountRecord> countRecords = new ArrayList<CountRecord>();
 
         for (String line : lines) {
             String date = extractDateAsString(line);
-            String numberOfFilesInProtonDirectory = extractNumberOfFilesInProtonDirectoryAsString(line);
-            String numberOfFilesInRpvXmlDirectory = extractNumberOfFilesInRpvXmlDirectoryAsString(line);
 
-            if (isValidCountRecord(date, RECORD_DATE_FORMAT, numberOfFilesInProtonDirectory,
-                    numberOfFilesInRpvXmlDirectory)) {
+            List<Integer> numberOfFilesInDirectories = extractNumberOfFilesInDirectories(line);
 
-                countRecords.add(CountRecord.fromDateProtonAndRpvXmlCounts(date, RECORD_DATE_FORMAT,
-                        Integer.parseInt(numberOfFilesInProtonDirectory),
-                        Integer.parseInt(numberOfFilesInRpvXmlDirectory)));
+            if (isValidCountRecord(date, RECORD_DATE_FORMAT, numberOfFilesInDirectories)) {
+
+                countRecords.add(CountRecord.fromDateAndFileCounts(date, RECORD_DATE_FORMAT,
+                        numberOfFilesInDirectories, foldersToMonitor));
             } else {
-                if (!StringUtils.hasLength(line)) {
-                    LOGGER.info("Empty record is encountered, this might be the first line");
-                } else {
-                    LOGGER.error("Invalid record: {}", line);
-                }
+                LOGGER.error("Invalid record: {}", line);
             }
         }
 
@@ -560,9 +743,8 @@ public class ImportMonitor {
      * Check if the parameters are in correct formats
      */
     private static boolean isValidCountRecord(String dateString, String dateFormant,
-                                              String numberOfFilesInProtonDirectory,
-                                              String numberOfFilesInRpvXmlDirectory) {
-        return isInteger(numberOfFilesInProtonDirectory) && isInteger(numberOfFilesInRpvXmlDirectory) &&
+                                              List<Integer> numberOfFilesInDirectories) {
+        return numberOfFilesInDirectories != null && numberOfFilesInDirectories.size() > 0 &&
                 parseDate(dateString, dateFormant) != null;
     }
 
@@ -580,29 +762,32 @@ public class ImportMonitor {
         return date;
     }
 
-    public static boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
-
-
     private static String extractDateAsString(String line) {
         return extractRecordDataOnThisPosition(line, DATE_POSITION_IN_RECORD);
     }
 
-    private static String extractNumberOfFilesInProtonDirectoryAsString(String line) {
-        return extractRecordDataOnThisPosition(line,
-                NUMBER_OF_FILES_IN_PROTON_DIRECTORY_INFORMATION_POSITION_IN_RECORD);
-    }
+    private static List<Integer> extractNumberOfFilesInDirectories(String line) {
+        List<Integer> numberOfFilesList = new ArrayList<Integer>();
 
-    private static String extractNumberOfFilesInRpvXmlDirectoryAsString(String line) {
-        return extractRecordDataOnThisPosition(line,
-                NUMBER_OF_FILES_IN_RPV_XML_DIRECTORY_INFORMATION_POSITION_IN_RECORD);
+        if (StringUtils.isBlank(line)) {
+            LOGGER.info("Empty record is encountered, this might be the first line");
+        } else {
+            String[] recordDataSections = line.split(RECORD_DATA_DELIMITER);
+
+            for (int i = DATE_POSITION_IN_RECORD + 1; recordDataSections.length > i; i++) {
+                try {
+                    if (!recordDataSections[i].startsWith(COMMENT_PREFIX)) {
+                        numberOfFilesList.add(Integer.parseInt(recordDataSections[i]));
+                    }
+                } catch (NumberFormatException e) {
+                    LOGGER.error("Could not parse file count {} into an integer. The log line is: {}",
+                            new Object[]{recordDataSections[i], line}, e);
+                    break;
+                }
+            }
+        }
+
+        return numberOfFilesList;
     }
 
     private static String extractRecordDataOnThisPosition(String line, int position) {
@@ -615,22 +800,127 @@ public class ImportMonitor {
         }
     }
 
+    private static class FolderToMonitor {
+
+        private int id;
+        private String pathIncludingName;
+        private int maxNumberOfFiles;
+        private int currentNumberOfFiles;
+
+        public String getPathIncludingName() {
+            return pathIncludingName;
+        }
+
+        public void setPathIncludingName(String pathIncludingName) {
+            this.pathIncludingName = pathIncludingName;
+        }
+
+        public int getMaxNumberOfFiles() {
+            return maxNumberOfFiles;
+        }
+
+        public void setMaxNumberOfFiles(int maxNumberOfFiles) {
+            this.maxNumberOfFiles = maxNumberOfFiles;
+        }
+
+        public String getName() {
+            if (StringUtils.isNotBlank(pathIncludingName)) {
+                String[] pathParts = pathIncludingName.split("\\/");
+
+                if (pathParts != null && pathParts.length > 0) {
+                    return pathParts[pathParts.length - 1];
+                } else {
+                    LOGGER.error("Could not retrieve folder name from path {}");
+                }
+            }
+
+            return pathIncludingName;
+        }
+
+        public int getCurrentNumberOfFiles() {
+            return currentNumberOfFiles;
+        }
+
+        public void setCurrentNumberOfFiles(int currentNumberOfFiles) {
+            this.currentNumberOfFiles = currentNumberOfFiles;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public static enum Order implements Comparator<FolderToMonitor> {
+            ById() {
+                public int compare(FolderToMonitor leftRecord, FolderToMonitor rightRecord) {
+                    return Double.compare(leftRecord.getId(), rightRecord.getId()) * -1;
+                }
+            };
+
+            public abstract int compare(FolderToMonitor leftRecord, FolderToMonitor rightRecord);
+
+            public Comparator ascending() {
+                return this;
+            }
+
+            public Comparator descending() {
+                return Collections.reverseOrder(this);
+            }
+        }
+
+        public boolean equals(Object obj) {
+            if (obj == null)
+                return false;
+            if (obj == this)
+                return true;
+            if (!(obj instanceof FolderToMonitor))
+                return false;
+
+            FolderToMonitor rhs = (FolderToMonitor) obj;
+            return new EqualsBuilder().
+                    append(pathIncludingName, rhs.getPathIncludingName()).
+                    isEquals();
+        }
+
+        public int hashCode() {
+            return new HashCodeBuilder(17, 31).append(pathIncludingName).append(maxNumberOfFiles).toHashCode();
+        }
+    }
+
     private static class CountRecord {
-        private Date recordTime;
-        private int numberOfFilesInProtonDirectory;
-        private int numberOfFilesInRpvXmlDirectory;
+        private Date recordTime = null;
+        private List<FolderToMonitor> foldersToMonitor;
 
         private CountRecord() {
 
         }
 
-        public static CountRecord fromDateProtonAndRpvXmlCounts(String dateString, String dateFormat,
-                                                                int numberOfFilesInProtonDirectory,
-                                                                int numberOfFilesInRpvXmlDirectory) {
+        public static CountRecord fromDateAndFileCounts(String dateString, String dateFormat,
+                                                        List<Integer> currentFileCountsInFolders,
+                                                        List<FolderToMonitor> foldersInPropertiesFileToMonitor) {
             CountRecord countRecord = new CountRecord();
             countRecord.setRecordTime(parseDate(dateString, dateFormat));
-            countRecord.setNumberOfFilesInProtonDirectory(numberOfFilesInProtonDirectory);
-            countRecord.setNumberOfFilesInRpvXmlDirectory(numberOfFilesInRpvXmlDirectory);
+
+            List<FolderToMonitor> foldersInLogFileToMonitor = new ArrayList<FolderToMonitor>();
+
+            for (int i = 0; i < currentFileCountsInFolders.size() &&
+                    i < foldersInPropertiesFileToMonitor.size(); i++) {
+
+                FolderToMonitor folderToMonitorInPropertiesFile = foldersInPropertiesFileToMonitor.get(i);
+
+                FolderToMonitor folderToMonitor = new FolderToMonitor();
+                folderToMonitor.setId(folderToMonitorInPropertiesFile.getId());
+                folderToMonitor.setPathIncludingName(folderToMonitorInPropertiesFile.getPathIncludingName());
+                folderToMonitor.setMaxNumberOfFiles(folderToMonitorInPropertiesFile.getMaxNumberOfFiles());
+                folderToMonitor.setCurrentNumberOfFiles(currentFileCountsInFolders.get(i));
+
+                foldersInLogFileToMonitor.add(folderToMonitor);
+            }
+
+            countRecord.setFoldersToMonitor(foldersInLogFileToMonitor);
 
             return countRecord;
         }
@@ -638,7 +928,7 @@ public class ImportMonitor {
         public static enum Order implements Comparator<CountRecord> {
             ByRecordTime() {
                 public int compare(CountRecord leftRecord, CountRecord rightRecord) {
-                    return leftRecord.getRecordTime().compareTo(rightRecord.getRecordTime());
+                    return leftRecord.getRecordTime().compareTo(rightRecord.getRecordTime()) * -1;
                 }
             };
 
@@ -661,26 +951,29 @@ public class ImportMonitor {
             this.recordTime = recordTime;
         }
 
-        public int getNumberOfFilesInProtonDirectory() {
-            return numberOfFilesInProtonDirectory;
+        public List<FolderToMonitor> getFoldersToMonitor() {
+            return foldersToMonitor;
         }
 
-        public void setNumberOfFilesInProtonDirectory(int numberOfFilesInProtonDirectory) {
-            this.numberOfFilesInProtonDirectory = numberOfFilesInProtonDirectory;
-        }
-
-        public int getNumberOfFilesInRpvXmlDirectory() {
-            return numberOfFilesInRpvXmlDirectory;
-        }
-
-        public void setNumberOfFilesInRpvXmlDirectory(int numberOfFilesInRpvXmlDirectory) {
-            this.numberOfFilesInRpvXmlDirectory = numberOfFilesInRpvXmlDirectory;
+        public void setFoldersToMonitor(List<FolderToMonitor> foldersToMonitor) {
+            this.foldersToMonitor = foldersToMonitor;
         }
 
         public String toString() {
-            return "Date: " + recordTime + ", " +
-                    "Proton directory file count: " + numberOfFilesInProtonDirectory + ", " +
-                    "Rpv Xml directory file count: " + numberOfFilesInRpvXmlDirectory;
+            SimpleDateFormat dateTimeFormat = new SimpleDateFormat(RECORD_DATE_FORMAT);
+            String countRecordAsString = "\n" + dateTimeFormat.format(recordTime);
+
+            for (FolderToMonitor folderToMonitor : foldersToMonitor) {
+                countRecordAsString = countRecordAsString + RECORD_DATA_DELIMITER +
+                        folderToMonitor.getCurrentNumberOfFiles();
+            }
+
+            countRecordAsString = countRecordAsString + "," + COMMENT_PREFIX + "Folders:";
+            for (FolderToMonitor folderToMonitor : foldersToMonitor) {
+                countRecordAsString = countRecordAsString + folderToMonitor.getName() + "-";
+            }
+
+            return countRecordAsString;
         }
     }
 }
