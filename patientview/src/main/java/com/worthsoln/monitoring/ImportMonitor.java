@@ -497,7 +497,7 @@ public class ImportMonitor {
 
             // todo For testing purposes this property is overridden
 //            String[] toAddresses = {props.getProperty("support.email")};
-            String[] toAddresses = {"deniz@solidstategroup.com"};
+            String[] toAddresses = {"patientview-testing@solidstategroup.com"};
 
             sendEmail(fromAddress, toAddresses, null, subject, body);
         } catch (IOException e) {
