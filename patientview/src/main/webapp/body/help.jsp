@@ -1,4 +1,5 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib prefix="logic" uri="http://struts.apache.org/tags-logic" %>
 
 <html:xhtml/>
 
@@ -8,13 +9,13 @@
 </div>
  <dl class="flush-dl">
           <dt>Questions about your own information<dt>
-            <dd>If you are a patient, and suspect that wrong information is being shown, you need to contact your local PatientView administrator. If you are logged in you can <html:link action="/patient/contact">Click here to send a message.</html:link> (see box at the foot of that page). </dd>
+            <dd>If you are a patient, and suspect that wrong information is being shown, you need to contact your local PatientView administrator. <logic:present role="patient">If you are logged in you can <html:link action="/patient/contact">click here to send a message.</html:link></logic:present></dd>
 
         <dt>Other questions</dt>
-        <dd>The first place to contact is usually your local PatientView administrator. If you are logged in you can <html:link action="/patient/contact">Click here to send a message.</html:link> (see box at the foot of that page). </dd>
+        <dd>The first place to contact is usually your local PatientView administrator. <logic:present role="patient">If you are logged in you can <html:link action="/patient/contact">click here to send a message.</html:link></logic:present></dd>
 
         <dt>Comments about the system generally</dt>
-        <dd>You can send a message to the system designers.  If you are logged in you can <html:link action="/patient/contact">Click here to send a message.</html:link> (see box at the foot of that page). <dd>
+        <dd>You can send a message to the system designers.  <logic:present role="patient">If you are logged in you can <html:link action="/patient/contact">click here to send a message.</html:link></logic:present><dd>
 
         <dt>FAQs</dt>
         <dd>
@@ -88,18 +89,16 @@
                 </ul>
                 <p>Patients may share their logins with relatives, staff in clinics that they are referred to, staff at other surgeries or foreign hospitals - or anyone else they choose.  They can change their password at any time to restrict access again.  </p>
                 <p>Staff must not share their logins. </p>
-            </dd>                                                                                                                                                                                                                                                             
+            </dd>
 
         <dt><a name="Anchor-Is-44867"></a>Is it safe?  Security and confidentiality</dt>
             <dd>
                 <p>We believe the system is very safe. It uses security systems like the ones used for online credit card payments. </p>
                 <p>All information is encrypted during transmission. The web server is very secure. External review of the system's security is undertaken. A log of who has accessed your information is kept, and you can ask to see it.</p>
-                <blockquote>
-                    <p><strong>Patients</strong>:  The major risk is of someone else finding out or guessing your username/password.  If you think someone may have discovered your password, you can change it at any time. Your information only goes onto Renal PatientView at your request, and you can have it all removed from the system if you want.    </p>
-                </blockquote>
-                <blockquote>
-                    <p><strong>Staff</strong>:  The major risk is of a username/password combination being guessed or discovered. You will be aware how sensitive some information could be, and it is essential that you keep your login details secret and safe.  Staff logins must not be shared.  The correct way to permit an external person to see a PatientView record is for the patient to share their username and password.</p>
-                </blockquote>
+                <ul>
+                    <li><strong>Patients</strong>:  The major risk is of someone else finding out or guessing your username/password.  If you think someone may have discovered your password, you can change it at any time. Your information only goes onto Renal PatientView at your request, and you can have it all removed from the system if you want.
+                    <li><strong>Staff</strong>:  The major risk is of a username/password combination being guessed or discovered. You will be aware how sensitive some information could be, and it is essential that you keep your login details secret and safe.  Staff logins must not be shared.  The correct way to permit an external person to see a PatientView record is for the patient to share their username and password.
+                </ul>
             </dd>
 
         <dt><a name="Anchor-How-33869"></a>How can I change what is shown?</dt>
