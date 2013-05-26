@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.monitoring;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,16 +48,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Logs the number of files that XML Import needs to process
- *
+ * <p/>
  * Monitors those files to see if the XML Import is stalled or not working properly
  *
  * @author Deniz Ozger
  */
-public class ImportMonitor {
+public final class ImportMonitor {
 
     // Timings and limitations
     private static final int FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES = 1;
@@ -42,7 +72,7 @@ public class ImportMonitor {
      * Should always be equal to monitoringFrequencyInMinutes /
      * FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES. Thus; it is calculated in runtime.
      */
-    private static int NUMBER_OF_LINES_TO_READ = -1;
+    private static int numberOfLinesToRead = -1;
 
     // Import data file format
     private static final String RECORD_DATA_DELIMITER = ",";
@@ -58,6 +88,16 @@ public class ImportMonitor {
     private static final int LINE_FEED = 0xA;
     private static final int CARRIAGE_RETURN = 0xD;
 
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
+
+    private static final int HASH_SEED_17 = 17;
+    private static final int HASH_SEED_31 = 31;
+
+    private ImportMonitor() {
+
+    }
+
     public static void main(String[] args) {
 
         int importFileCheckCount = 0;
@@ -66,12 +106,12 @@ public class ImportMonitor {
             LOGGER.info("******** Import Logger & Monitor wakes up ********");
 
             int monitoringFrequencyInMinutes = Integer.parseInt(getProperty("importerMonitor.frequency.minutes"));
-            NUMBER_OF_LINES_TO_READ = monitoringFrequencyInMinutes / FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES;
+            numberOfLinesToRead = monitoringFrequencyInMinutes / FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES;
 
-            LOGGER.info("Import file counts will be logged every {} minutes, whereas a " +
-                    "health check will be done every {} minutes. Each monitoring will check the last {} lines " +
-                    "of the log", new Object[]{FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
-                    monitoringFrequencyInMinutes, NUMBER_OF_LINES_TO_READ});
+            LOGGER.info("Import file counts will be logged every {} minutes, whereas a "
+                    + "health check will be done every {} minutes. Each monitoring will check the last {} lines "
+                    + "of the log", new Object[]{FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES,
+                    monitoringFrequencyInMinutes, numberOfLinesToRead});
 
             StopWatch sw = new StopWatch();
             sw.start();
@@ -96,12 +136,13 @@ public class ImportMonitor {
             /**
              * If it is time, check the overall monitor stability as well
              */
-            if (importFileCheckCount == NUMBER_OF_LINES_TO_READ) {
+            if (importFileCheckCount == numberOfLinesToRead) {
                 monitorImportProcess(foldersToMonitor);
 
                 importFileCheckCount = 0;
             } else {
-                LOGGER.info("Next monitoring will happen in {} minutes", NUMBER_OF_LINES_TO_READ - importFileCheckCount);
+                LOGGER.info("Next monitoring will happen in {} minutes",
+                        numberOfLinesToRead - importFileCheckCount);
             }
 
             sw.stop();
@@ -111,7 +152,7 @@ public class ImportMonitor {
             /**
              * Sleep for (frequency - execution time) seconds
              */
-            long maxTimeToSleep = FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES * 60 * 1000;
+            long maxTimeToSleep = FREQUENCY_OF_LOGGING_IMPORT_FILE_COUNTS_IN_MINUTES * SECONDS_IN_MINUTE * MILLISECONDS;
             long executionTime = sw.getTotalTimeMillis();
             long timeToSleep = maxTimeToSleep - executionTime;
 
@@ -120,7 +161,8 @@ public class ImportMonitor {
                 timeToSleep = maxTimeToSleep;
             }
 
-            LOGGER.info("ImportMonitor will now sleep for {} (mm:ss)", new SimpleDateFormat("mm:ss").format(timeToSleep));
+            LOGGER.info("ImportMonitor will now sleep for {} (mm:ss)",
+                    new SimpleDateFormat("mm:ss").format(timeToSleep));
 
             try {
                 Thread.sleep(timeToSleep);
@@ -146,7 +188,7 @@ public class ImportMonitor {
          * Read some lines from the file
          */
 
-        List<String> lines = getLastNLinesOfFile(NUMBER_OF_LINES_TO_READ);
+        List<String> lines = getLastNLinesOfFile(numberOfLinesToRead);
 
         /**
          * Make sure all lines have the same number of folders, and that matches folders to monitor now
@@ -173,11 +215,10 @@ public class ImportMonitor {
                     sendAWarningEmail(foldersThatHaveStaticFiles, foldersWhoseNumberOfFilesExceedTheirLimits,
                             countRecords);
                 }
-
             }
         } else {
-            LOGGER.warn("Skipping monitoring folders as number of folders in log file and number of folders " +
-                    "defined in properties file do not match.");
+            LOGGER.warn("Skipping monitoring folders as number of folders in log file and number of folders "
+                    + "defined in properties file do not match.");
         }
     }
 
@@ -202,9 +243,9 @@ public class ImportMonitor {
                 folderSizeInLinesMatch = lastFolderSizeInLine == currentNumberOfFoldersInThisLogLine;
 
                 if (!folderSizeInLinesMatch) {
-                    LOGGER.warn("Folders in properties file and log file do not match. If some folders were " +
-                            "added/removed recently, then this may be the reason. Folder count of previous line " +
-                            " is {}, whereas another line's count is {} ({})",
+                    LOGGER.warn("Folders in properties file and log file do not match. If some folders were "
+                            + "added/removed recently, then this may be the reason. Folder count of previous line "
+                            + " is {}, whereas another line's count is {} ({})",
                             new Object[]{currentNumberOfFoldersInThisLogLine, lastFolderSizeInLine, line});
 
                     return false;
@@ -354,10 +395,10 @@ public class ImportMonitor {
      * Checks if there is enough data (file counts) in log file for monitoring
      */
     private static boolean areThereEnoughDataToMonitor(List<CountRecord> countRecords) {
-        if (countRecords.size() != NUMBER_OF_LINES_TO_READ) {
-            LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines " +
-                    "for Import monitor to process.",
-                    countRecords.size(), NUMBER_OF_LINES_TO_READ);
+        if (countRecords.size() != numberOfLinesToRead) {
+            LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines "
+                    + "for Import monitor to process.",
+                    countRecords.size(), numberOfLinesToRead);
 
             return false;
         }
@@ -391,7 +432,7 @@ public class ImportMonitor {
          * Then we will check the rest of the folders, starting by comparing (x+1, y), (x+1, y+1), (x+1, y+2) ...
          */
 
-        if (countRecords.size() == NUMBER_OF_LINES_TO_READ) {
+        if (countRecords.size() == numberOfLinesToRead) {
 
             // first line of the log
             CountRecord firstLogRecord = countRecords.get(0);
@@ -425,10 +466,10 @@ public class ImportMonitor {
                      * If this log record's i-th folder's file count is different than the first log record's
                      *      i-th folder's file count, then it means importer is working on this folder
                      */
-                    if ((firstRecordsFolderFileCount != 0 && thisRecordsFolderFileCount != 0) &&
-                            firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
+                    if ((firstRecordsFolderFileCount != 0 && thisRecordsFolderFileCount != 0)
+                            && firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
 
-                       foldersWhoseFilesAreStatic.remove(thisRecordsFolder);
+                        foldersWhoseFilesAreStatic.remove(thisRecordsFolder);
                     }
                 }
             }
@@ -466,8 +507,8 @@ public class ImportMonitor {
 
                     FolderToMonitor thisRecordsFolder = countRecord.getFoldersToMonitor().get(i);
 
-                    if (thisRecordsFolder.getCurrentNumberOfFiles() > thisRecordsFolder.getMaxNumberOfFiles() &&
-                            !foldersWhoseFilesExceedTheirLimits.contains(thisRecordsFolder)) {
+                    if (thisRecordsFolder.getCurrentNumberOfFiles() > thisRecordsFolder.getMaxNumberOfFiles()
+                            && !foldersWhoseFilesExceedTheirLimits.contains(thisRecordsFolder)) {
                         LOGGER.info("Folder {}'s files ({}) exceed its limit ({})",
                                 new Object[]{thisRecordsFolder.getId(), thisRecordsFolder.getCurrentNumberOfFiles(),
                                         thisRecordsFolder.getMaxNumberOfFiles()});
@@ -568,8 +609,8 @@ public class ImportMonitor {
             emailBody += newLine;
 
             for (FolderToMonitor folder : foldersThatHaveStaticFiles) {
-                emailBody += newLine + "Folder ID: " + folder.getId() + " Path: " + folder.getPathIncludingName() +
-                        " Number of files: " + folder.getCurrentNumberOfFiles();
+                emailBody += newLine + "Folder ID: " + folder.getId() + " Path: " + folder.getPathIncludingName()
+                        + " Number of files: " + folder.getCurrentNumberOfFiles();
             }
 
             emailBody += newLine;
@@ -581,9 +622,9 @@ public class ImportMonitor {
             emailBody += newLine;
 
             for (FolderToMonitor folder : foldersWhoseNumberOfFilesExceedTheirLimits) {
-                emailBody += newLine + "Folder ID: " + folder.getId() + " Path: " + folder.getPathIncludingName() +
-                        " Number of files: " + folder.getCurrentNumberOfFiles() + " Threshold: " +
-                        folder.getMaxNumberOfFiles();
+                emailBody += newLine + "Folder ID: " + folder.getId() + " Path: " + folder.getPathIncludingName()
+                        + " Number of files: " + folder.getCurrentNumberOfFiles() + " Threshold: "
+                        + folder.getMaxNumberOfFiles();
             }
         }
 
@@ -641,7 +682,6 @@ public class ImportMonitor {
 
                     if (StringUtils.isNotBlank(currentLine)) {
                         lastNLines.add(currentLine);
-
                     } else {
                         LOGGER.error("Read line does not contain any data");
                         continue;
@@ -655,7 +695,6 @@ public class ImportMonitor {
              * add the last line
              */
             lastNLines.add(sb.reverse().toString());
-
         } catch (Exception e) {
             LOGGER.error("Can not find today's file", e);
         } finally {
@@ -744,8 +783,8 @@ public class ImportMonitor {
      */
     private static boolean isValidCountRecord(String dateString, String dateFormant,
                                               List<Integer> numberOfFilesInDirectories) {
-        return numberOfFilesInDirectories != null && numberOfFilesInDirectories.size() > 0 &&
-                parseDate(dateString, dateFormant) != null;
+        return numberOfFilesInDirectories != null && numberOfFilesInDirectories.size() > 0
+                && parseDate(dateString, dateFormant) != null;
     }
 
     private static Date parseDate(String maybeDate, String format) {
@@ -872,25 +911,27 @@ public class ImportMonitor {
         }
 
         public boolean equals(Object obj) {
-            if (obj == null)
+            if (obj == null) {
                 return false;
-            if (obj == this)
+            }
+            if (obj == this) {
                 return true;
-            if (!(obj instanceof FolderToMonitor))
+            }
+            if (!(obj instanceof FolderToMonitor)) {
                 return false;
+            }
 
             FolderToMonitor rhs = (FolderToMonitor) obj;
-            return new EqualsBuilder().
-                    append(pathIncludingName, rhs.getPathIncludingName()).
-                    isEquals();
+            return new EqualsBuilder().append(pathIncludingName, rhs.getPathIncludingName()).isEquals();
         }
 
         public int hashCode() {
-            return new HashCodeBuilder(17, 31).append(pathIncludingName).append(maxNumberOfFiles).toHashCode();
+            return new HashCodeBuilder(HASH_SEED_17, HASH_SEED_31).append(pathIncludingName)
+                    .append(maxNumberOfFiles).toHashCode();
         }
     }
 
-    private static class CountRecord {
+    private static final class CountRecord {
         private Date recordTime = null;
         private List<FolderToMonitor> foldersToMonitor;
 
@@ -906,8 +947,8 @@ public class ImportMonitor {
 
             List<FolderToMonitor> foldersInLogFileToMonitor = new ArrayList<FolderToMonitor>();
 
-            for (int i = 0; i < currentFileCountsInFolders.size() &&
-                    i < foldersInPropertiesFileToMonitor.size(); i++) {
+            for (int i = 0; i < currentFileCountsInFolders.size()
+                    && i < foldersInPropertiesFileToMonitor.size(); i++) {
 
                 FolderToMonitor folderToMonitorInPropertiesFile = foldersInPropertiesFileToMonitor.get(i);
 
@@ -964,8 +1005,8 @@ public class ImportMonitor {
             String countRecordAsString = "\n" + dateTimeFormat.format(recordTime);
 
             for (FolderToMonitor folderToMonitor : foldersToMonitor) {
-                countRecordAsString = countRecordAsString + RECORD_DATA_DELIMITER +
-                        folderToMonitor.getCurrentNumberOfFiles();
+                countRecordAsString = countRecordAsString + RECORD_DATA_DELIMITER
+                        + folderToMonitor.getCurrentNumberOfFiles();
             }
 
             countRecordAsString = countRecordAsString + "," + COMMENT_PREFIX + "Folders:";
