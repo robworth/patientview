@@ -277,6 +277,8 @@
     <forward name="control"                    path="/control/index.jsp"/>
     <forward name="patientPasswordChangeInput" path="/patient/password_change.jsp"/>
     <forward name="controlPasswordChangeInput" path="/control/password_change.jsp"/>
+    <forward name="patientAccountUpdateInput"  path="/patient/account.jsp"/>
+    <forward name="controlAccountUpdateInput"  path="/control/account.jsp"/>
     <forward name="patientEntryBloodPressure"  path="/patient/patient_entry_bp.jsp"/>
     <forward name="patientEntryGlucose"        path="/patient/patient_entry_glucose.jsp"/>
     <forward name="patientEntryWeight"         path="/patient/patient_entry_weight.jsp"/>
@@ -1009,6 +1011,42 @@
             scope="request">
       <forward name="input" path="/control/password_change.jsp"/>
       <forward name="success" path="/control/password_change_confirm.jsp"/>
+    </action>
+
+    <action path="/patient/passwordAccountChange"
+            type="com.worthsoln.patientview.logon.PasswordChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/patient/account.jsp"/>
+      <forward name="success" path="/patient/account.jsp"/>
+    </action>
+
+    <action path="/control/passwordAccountChange"
+            type="com.worthsoln.patientview.logon.PasswordChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+        <forward name="input" path="/control/account.jsp"/>
+        <forward name="success" path="/control/account.jsp"/>
+    </action>
+
+    <action path="/patient/emailChange"
+            type="com.worthsoln.patientview.logon.EmailChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/patient/account.jsp"/>
+      <forward name="success" path="/patient/account.jsp"/>
+    </action>
+
+    <action path="/control/emailChange"
+            type="com.worthsoln.patientview.logon.EmailChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/account.jsp"/>
+      <forward name="success" path="/control/account.jsp"/>
     </action>
 
     <action path="/control/logView"

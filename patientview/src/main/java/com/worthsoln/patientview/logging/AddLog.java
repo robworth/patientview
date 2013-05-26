@@ -36,6 +36,7 @@ public final class AddLog {
     public static final String PASSWORD_CHANGE = "password change";
     public static final String PASSWORD_LOCKED = "password locked";
     public static final String PASSWORD_UNLOCKED = "password unlocked";
+    public static final String EMAIL_CHANGED = "email changed";
     public static final String ACTOR_SYSTEM = "system";
     public static final String PATIENT_DATA_FOLLOWUP = "patient data load";
     public static final String PATIENT_DATA_FAIL = "patient data fail";

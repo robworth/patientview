@@ -88,6 +88,91 @@
                 </var>
             </field>
         </form>
+        <form name="/patient/passwordAccountChange">
+            <field property="oldpassword" depends="required">
+                <msg key="oldpassword.required" name="required"/>
+                <arg0 key="oldpassword"/>
+            </field>
+            <field property="passwordPwd" depends="required,minlength,validwhen">
+                <msg key="passwordPwd.required" name="required"/>
+                <msg key="passwordPwd.minlength" name="minlength"/>
+                <msg key="passwordPwd.sameasold" name="validwhen"/>
+                <arg0 key="passwordPwd"/>
+                <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+                <var>
+                    <var-name>minlength</var-name>
+                    <var-value>6</var-value>
+                </var>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* != oldpassword)</var-value>
+                </var>
+            </field>
+            <field property="newpasswordagain" depends="required,validwhen">
+                <msg key="newpasswordagain.required" name="required"/>
+                <msg key="newpasswordagain.match" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == passwordPwd)</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/control/passwordAccountChange">
+            <field property="oldpassword" depends="required">
+                <msg key="oldpassword.required" name="required"/>
+                <arg0 key="oldpassword"/>
+            </field>
+            <field property="passwordPwd" depends="required,minlength">
+                <msg key="passwordPwd.required" name="required"/>
+                <msg key="passwordPwd.minlength" name="minlength"/>
+                <arg0 key="passwordPwd"/>
+                <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+                <var>
+                    <var-name>minlength</var-name>
+                    <var-value>6</var-value>
+                </var>
+            </field>
+            <field property="newpasswordagain" depends="required,validwhen">
+                <msg key="newpasswordagain.required" name="required"/>
+                <msg key="newpasswordagain.match" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == passwordPwd)</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/patient/emailChange">
+            <field property="emailAddress" depends="required,email">
+                <msg key="emailAddress.required" name="required"/>
+                <msg key="email.valid" name="email"/>
+                <arg0 key="emailAddress"/>
+            </field>
+            <field property="emailAddressAgain" depends="required,email,validwhen">
+                <msg key="emailAddressAgain.required" name="required"/>
+                <msg key="email.valid" name="email"/>
+                <msg key="emailAddressAgain.match" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == emailAddressAgain)</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/control/emailChange">
+            <field property="emailAddress" depends="required,email">
+                <msg key="emailAddress.required" name="required"/>
+                <msg key="email.valid" name="email"/>
+                <arg0 key="emailAddress"/>
+            </field>
+            <field property="emailAddressAgain" depends="required,email,validwhen">
+                <msg key="emailAddressAgain.required" name="required"/>
+                <msg key="email.valid" name="email"/>
+                <msg key="emailAddressAgain.match" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == emailAddressAgain)</var-value>
+                </var>
+            </field>
+        </form>
         <form name="/control/edtaCodeAdd">
             <field property="edtaCode" depends="required">
                 <msg key="code.required" name="required"/>
