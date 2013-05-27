@@ -20,5 +20,5 @@ public interface UserDao {
 
     List<User> getAll();
 
-    List<User> get(User user, Specialty specialty, String userType, String messageId);
+    List<User> get(User user, Specialty specialty, String userType);
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * SendEmailJob reader
  */
 @Component
 public class SendEmailReader extends ListItemReader<Object> {
@@ -26,11 +26,13 @@ public class SendEmailReader extends ListItemReader<Object> {
     @Autowired
     private JobManager jobManager;
 
-    @Autowired
-    private MessageManager messageManager;
+    public void refresh(List<Job> jobs) {
 
-    public void refresh(Job job) {
-        // TODO
+        List<Object> emailQueues = new ArrayList<Object>();
+
+        emailQueues.addAll(emailQueueManager.getEmailQueueList());
+
+        setList(emailQueues);
 
     }
 }

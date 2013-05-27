@@ -411,8 +411,8 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<User> getUsers(User user, Specialty specialty, String userType, String messageId) {
+    public List<User> getUsers(User user, Specialty specialty, String userType) {
 
-        return userDao.get(user, specialty, userType, messageId);
+        return userDao.get(user, specialty, userType);
     }
 }

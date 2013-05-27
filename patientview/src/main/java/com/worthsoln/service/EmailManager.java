@@ -12,4 +12,6 @@ public interface EmailManager {
                    String emailText);
 
     void sendEmail(String from, String[] to, String[] bcc, String subject, String body);
+
+    void sendEmail(String from, String[] to, String subject, String body) throws Exception;
 }

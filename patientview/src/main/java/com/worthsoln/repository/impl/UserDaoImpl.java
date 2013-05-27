@@ -33,17 +33,16 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
     }
 
     @Override
-    public List<User> get(User user, Specialty specialty, String userType, String messageId) {
+    public List<User> get(User user, Specialty specialty, String userType) {
         String sql = "SELECT " +
-                "  u.*, eq.recipient_id " +
+                "  u.* " +
                 "FROM " +
-                "  User u LEFT OUTER JOIN EmailQueue eq ON u.id = eq.recipient_id  AND eq.message_id = :messageId, " +
+                "  User u, " +
                 "  UserMapping um, " +
                 "  SpecialtyUserRole sur " +
                 "WHERE u.username = um.username " +
                 "AND u.id = sur.user_id " +
                 "AND sur.role = :userType " +
-                "AND eq.recipient_id is NULL " +
                 "AND u.username NOT LIKE '%-GP%' " +
                 "AND um.unitcode " +
                 "   IN ( " +
@@ -55,7 +54,6 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
-        query.setParameter("messageId", messageId);
         query.setParameter("userType", userType);
         query.setParameter("username", user.getUsername());
         query.setParameter("specialtyId", specialty.getId());

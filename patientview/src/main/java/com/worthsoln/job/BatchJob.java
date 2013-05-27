@@ -27,31 +27,25 @@ import java.util.Map;
  */
 public abstract class BatchJob {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BatchJob.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(BatchJob.class);
 
     @Autowired
     protected JobLauncher jobLauncher;
 
-    //@Resource(name = "jobManager")
     @Autowired
     protected JobManager jobManager;
 
-    protected Job job;
+    protected List<Job> jobs;
 
-    private boolean isSkip = false;
-
-    /**
-     * Set job list which status is PENDING
-     */
-    protected  void setJob() {}
+    protected boolean isSkip = false;
 
     /**
-     *
+     * Run the batch job
      */
     public void run(){
 
-        setJob();
-        if (this.job == null) {
+        setJobs();
+        if (this.jobs == null || jobs.isEmpty()) {
             return;
         }
 
@@ -63,16 +57,10 @@ public abstract class BatchJob {
         map.put("key", new JobParameter(new Date()));
         try {
             JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
-        } catch (JobParametersInvalidException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (JobExecutionAlreadyRunningException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (JobRestartException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (JobInstanceAlreadyCompleteException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            LOGGER.debug(e.getStackTrace().toString());
+            updateJobStatusFailded(jobs);
         }
-
     }
 
     /**
@@ -80,7 +68,7 @@ public abstract class BatchJob {
      */
     @BeforeJob
     public void beforeJob() {
-        prepare(job);
+        prepare(jobs);
     }
 
     /**
@@ -93,14 +81,9 @@ public abstract class BatchJob {
         LOGGER.debug(result.toString());
 
         if (result.getStatus() != BatchStatus.COMPLETED || isSkip) {
-
-            updateJobStatusFailded(job);
+            updateJobStatusFailded(jobs);
         } else {
-            if (getBatchJob().getName().equals("createEamilQueueBatchJob")) {
-                updateJobStatusSending(job);
-            } else {
-                updateJobStatusSuccessed(job);
-            }
+            updateJobAfterJob(jobs);
         }
     }
 
@@ -122,69 +105,55 @@ public abstract class BatchJob {
      */
     @OnSkipInWrite
     public void onSkipInWriter(Object holder, Throwable problem) {
-
-        isSkip = true;
-        if (holder instanceof EmailQueue) {
-            EmailQueue emailQueue = (EmailQueue) holder;
-            Job job = emailQueue.getJob();
-
-            job.addReport("username=" + emailQueue.getRecipient().getUsername()
-                    + ",messageId=" + emailQueue.getMessage().getId()
-                    + " : " +problem.getMessage());
-
-            job.addErrorCount();
-
-            jobManager.save(job);
-        }
+        onJobSkipInWriter(holder, problem);
     }
-
-    /**
-     * Prepare job configuration before batch reader
-     */
-    protected void prepare(Job job) {}
 
     /**
      * Update the jobs' status to RUNNING
      */
     public void updateJobStatusRunning() {
         LOGGER.debug("==update running status==");
-        job.setStarted(new Date());
-        job.setStatus(SendEmailEnum.RUNNING);
-        jobManager.save(job);
+        for (Job job : jobs) {
+            job.setStarted(new Date());
+            job.setStatus(SendEmailEnum.RUNNING);
+            jobManager.save(job);
+        }
     }
+
+     /**
+     * According to the status, select and set the jobs from Job entry
+     */
+    protected abstract  void setJobs();
+
+    /**
+     * Prepare job configuration before batch reader
+     */
+    protected void prepare(List<Job> job) {}
 
     /**
      * Update the jobs' status to FAILED
      *
-     * @param job
+     * @param jobs
      */
-    public void updateJobStatusFailded(Job job) {
-        LOGGER.debug("==update failed status==");
-        job.convertReports();
-        job.setFinished(new Date());
-        job.setStatus(SendEmailEnum.FAILED);
-        jobManager.save(job);
-    }
+    protected abstract void updateJobStatusFailded(List<Job> jobs);
 
     /**
-     * Update the jobs' status to SUCCESSED
-     * @param job
+     * Update the jobs' status after finished
+     * @param jobs
      */
-    public void updateJobStatusSuccessed(Job job) {
-        LOGGER.debug("==update successed status==");
+    protected abstract void updateJobAfterJob(List<Job> jobs);
 
-        job.setFinished(new Date());
-        job.setStatus(SendEmailEnum.SUCCESSED);
-        jobManager.save(job);
-    }
-
-    public void updateJobStatusSending(Job job) {
-        LOGGER.debug("==update sending status==");
-
-        job.setFinished(new Date());
-        job.setStatus(SendEmailEnum.SENDING);
-        jobManager.save(job);
-    }
-
+    /**
+     * Get the runnable org.springframework.batch.core.Job instance
+     * @return Job
+     */
     protected abstract org.springframework.batch.core.Job getBatchJob();
+
+    /**
+     * Do something when skip in writer
+     *
+     * @param holder
+     * @param problem
+     */
+    protected abstract void onJobSkipInWriter(Object holder, Throwable problem);
 }

@@ -28,6 +28,9 @@ public class EmailQueue extends BaseModel {
     @Column(nullable = false)
     private Date created;
 
+    @Column(nullable = true)
+    private Date finished;
+
     public Message getMessage() {
         return message;
     }
@@ -66,5 +69,13 @@ public class EmailQueue extends BaseModel {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public Date getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Date finished) {
+        this.finished = finished;
     }
 }

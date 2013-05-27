@@ -1,11 +1,10 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Conversation;
-import com.worthsoln.patientview.model.Message;
-import com.worthsoln.patientview.model.Unit;
-import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.model.enums.GroupEnum;
+import com.worthsoln.patientview.model.enums.SendEmailEnum;
+import com.worthsoln.repository.job.JobDao;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailManager;
@@ -43,6 +42,9 @@ public class MessageManagerImpl implements MessageManager {
 
     @Inject
     private MessageDao messageDao;
+
+    @Inject
+    private JobDao jobDao;
 
     @Inject
     private EmailManager emailManager;
@@ -171,6 +173,7 @@ public class MessageManagerImpl implements MessageManager {
 
         Conversation conversation = new Conversation();
         Message message = new Message();
+        Job job = new Job();
 
         conversation.setParticipant1(sender);
         conversation.setParticipant2(sender);
@@ -181,16 +184,19 @@ public class MessageManagerImpl implements MessageManager {
             if ("allAdmins".equals(groupName)) {
                 conversation.setGroupEnum(GroupEnum.ALL_ADMINS);
                 message.setGroupEnum(GroupEnum.ALL_ADMINS);
+                job.setGroupEnum(GroupEnum.ALL_ADMINS);
             }
 
             if ("allPatients".equals(groupName)) {
                 conversation.setGroupEnum(GroupEnum.ALL_PATIENTS);
                 message.setGroupEnum(GroupEnum.ALL_PATIENTS);
+                job.setGroupEnum(GroupEnum.ALL_PATIENTS);
             }
 
             if ("allStaff".equals(groupName)) {
                 conversation.setGroupEnum(GroupEnum.ALL_STAFF);
                 message.setGroupEnum(GroupEnum.ALL_STAFF);
+                job.setGroupEnum(GroupEnum.ALL_STAFF);
             }
         }
 
@@ -203,6 +209,13 @@ public class MessageManagerImpl implements MessageManager {
         message.setContent(content);
         message.setType(type);
         messageDao.save(message);
+
+        // add a Job
+        job.setStatus(SendEmailEnum.PENDING);
+        job.setCreator(sender);
+        job.setMessage(message);
+        job.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        jobDao.save(job);
 
         return message;
     }

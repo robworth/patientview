@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- *
+ * CreateEmailQueueJob writer
  */
 @Component
 @Lazy

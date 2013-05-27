@@ -50,11 +50,12 @@
     </batch:job>
 
     <!--Define sendEmailJob details-->
-    <batch:job id="sendEmailBatchJob">
+    <batch:job id="sendEmailBatchJob" restartable="false">
         <batch:step id="sendEmailStep">
             <batch:tasklet transaction-manager="transactionManager">
                 <batch:chunk reader="sendEmailReader" writer="sendEmailWriter"
                              commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
+
                 </batch:chunk>
                 <batch:listeners>
                     <batch:listener ref="sendEmailJob"/>

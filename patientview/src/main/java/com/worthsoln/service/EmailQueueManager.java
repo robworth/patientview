@@ -12,7 +12,9 @@ public interface EmailQueueManager {
 
     void save(EmailQueue emailQueue) throws Exception;
 
-    List<EmailQueue> getJobList(SendEmailEnum status);
+    List<EmailQueue> getEmailQueueList();
 
     void update(EmailQueue emailQueue) throws Exception;
+
+    EmailQueue get(Long jobId, Long messageId, Long userId);
 }

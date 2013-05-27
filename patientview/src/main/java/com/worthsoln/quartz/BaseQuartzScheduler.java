@@ -22,8 +22,8 @@ public abstract class BaseQuartzScheduler {
 
     public synchronized void execute() {
         // search status of job list to see wether has job running now
-        com.worthsoln.patientview.model.Job job = jobManager.getJobList(SendEmailEnum.RUNNING);
-        if (job == null) {
+        List<com.worthsoln.patientview.model.Job> jobs = jobManager.getJobList(SendEmailEnum.RUNNING);
+        if (jobs == null || jobs.isEmpty()) {
             setJob();
             batchJob.run();
         }
