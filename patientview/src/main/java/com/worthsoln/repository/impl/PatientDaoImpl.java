@@ -140,10 +140,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 "   user.password, " +
                 "   user.name, " +
                 "   user.email, " +
+                "   user.lastlogon, " +
                 "   usermapping.nhsno, " +
                 "   usermapping.unitcode, " +
                 "   user.firstlogon, " +
-                "   patient.treatment " +
+                "   patient.treatment, " +
+                "   patient.dateofbirth " +
                 "FROM " +
                 "   user, " +
                 "   specialtyuserrole, " +
