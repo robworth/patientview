@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service(value = "messageManager")
@@ -186,7 +188,7 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser) {
-        List<User> unitAdminRecipients = new ArrayList<User>();
+        Set<User> unitAdminRecipients = new HashSet<User>();
 
         if (units != null) {
             for (Unit unit : units) {
@@ -195,9 +197,10 @@ public class MessageManagerImpl implements MessageManager {
         }
 
         // sort by name
-        Collections.sort(unitAdminRecipients, new UserComparator());
+        List<User> resultsList = new ArrayList<User>(unitAdminRecipients);
+        Collections.sort(resultsList, new UserComparator());
 
-        return unitAdminRecipients;
+        return resultsList;
     }
 
     @Override
