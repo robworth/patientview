@@ -214,10 +214,12 @@ public final class ImportMonitor {
                      */
                     sendAWarningEmail(foldersThatHaveStaticFiles, foldersWhoseNumberOfFilesExceedTheirLimits,
                             countRecords);
+                } else {
+                    LOGGER.info("Importer appears to be working fine.");
                 }
             }
         } else {
-            LOGGER.warn("Skipping monitoring folders as number of folders in log file and number of folders "
+            LOGGER.error("Skipping monitoring folders as number of folders in log file and number of folders "
                     + "defined in properties file do not match.");
         }
     }
@@ -413,11 +415,12 @@ public final class ImportMonitor {
         List<FolderToMonitor> foldersWhoseFilesAreStatic = new ArrayList<FolderToMonitor>();
 
         /**
-         * First, treat all folders as static
+         * First, treat all folders with files as static
          */
         for (CountRecord countRecord : countRecords) {
             for (FolderToMonitor folderToMonitor : countRecord.getFoldersToMonitor()) {
-                if (!foldersWhoseFilesAreStatic.contains(folderToMonitor)) {
+                if (folderToMonitor.getCurrentNumberOfFiles() > 0 &&
+                        !foldersWhoseFilesAreStatic.contains(folderToMonitor)) {
                     foldersWhoseFilesAreStatic.add(folderToMonitor);
                 }
             }
@@ -466,9 +469,7 @@ public final class ImportMonitor {
                      * If this log record's i-th folder's file count is different than the first log record's
                      *      i-th folder's file count, then it means importer is working on this folder
                      */
-                    if ((firstRecordsFolderFileCount != 0 && thisRecordsFolderFileCount != 0)
-                            && firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
-
+                    if (firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
                         foldersWhoseFilesAreStatic.remove(thisRecordsFolder);
                     }
                 }
@@ -669,11 +670,12 @@ public final class ImportMonitor {
                 int readByte = fileHandler.readByte();
 
                 if (readByte == LINE_FEED || readByte == CARRIAGE_RETURN) {
-                    numberOfLinesRead++;
-
                     if (numberOfLinesRead == numberOfLinesToReturn) {
                         break;
                     }
+
+                    numberOfLinesRead++;
+
                     /**
                      * add line to line list
                      */
