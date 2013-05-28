@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * CreateEmailQueueJob writer
+ * Create EmailQueue entry
  */
 @Component
 @Lazy
@@ -24,9 +24,7 @@ public class CreateEmailQueueWriter implements ItemWriter<Object> {
     @Override
     public void write(List<? extends Object> items) throws Exception {
         for (Object obj : items) {
-            if (obj instanceof EmailQueue) {
-                emailQueueManager.save((EmailQueue)obj);
-            }
+            emailQueueManager.save((EmailQueue)obj);
         }
     }
 }

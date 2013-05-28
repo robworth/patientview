@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * JobDao implement Class
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository(value = "jobDao")
@@ -43,8 +43,4 @@ public class JobDaoImpl extends AbstractHibernateDAO<Job> implements JobDao {
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
-    @Override
-    public void update(Job job) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

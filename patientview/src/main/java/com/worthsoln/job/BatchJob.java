@@ -35,23 +35,10 @@ public abstract class BatchJob {
     @Autowired
     protected JobManager jobManager;
 
-    protected List<Job> jobs;
-
-    protected boolean isSkip = false;
-
     /**
      * Run the batch job
      */
     public void run(){
-
-        setJobs();
-        if (this.jobs == null || jobs.isEmpty()) {
-            return;
-        }
-
-        // update jobs' start time and status
-        updateJobStatusRunning();
-        isSkip = false;
 
         Map<String, JobParameter> map = new HashMap<String, JobParameter>();
         map.put("key", new JobParameter(new Date()));
@@ -59,7 +46,7 @@ public abstract class BatchJob {
             JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
         } catch (Exception e) {
             LOGGER.debug(e.getStackTrace().toString());
-            updateJobStatusFailded(jobs);
+            onRunError(e);
         }
     }
 
@@ -68,7 +55,7 @@ public abstract class BatchJob {
      */
     @BeforeJob
     public void beforeJob() {
-        prepare(jobs);
+        prepare();
     }
 
     /**
@@ -79,12 +66,7 @@ public abstract class BatchJob {
     @AfterJob
     public void afterJob(JobExecution result) {
         LOGGER.debug(result.toString());
-
-        if (result.getStatus() != BatchStatus.COMPLETED || isSkip) {
-            updateJobStatusFailded(jobs);
-        } else {
-            updateJobAfterJob(jobs);
-        }
+        afterBatchJob(result);
     }
 
     /**
@@ -109,39 +91,9 @@ public abstract class BatchJob {
     }
 
     /**
-     * Update the jobs' status to RUNNING
-     */
-    public void updateJobStatusRunning() {
-        LOGGER.debug("==update running status==");
-        for (Job job : jobs) {
-            job.setStarted(new Date());
-            job.setStatus(SendEmailEnum.RUNNING);
-            jobManager.save(job);
-        }
-    }
-
-     /**
-     * According to the status, select and set the jobs from Job entry
-     */
-    protected abstract  void setJobs();
-
-    /**
      * Prepare job configuration before batch reader
      */
-    protected void prepare(List<Job> job) {}
-
-    /**
-     * Update the jobs' status to FAILED
-     *
-     * @param jobs
-     */
-    protected abstract void updateJobStatusFailded(List<Job> jobs);
-
-    /**
-     * Update the jobs' status after finished
-     * @param jobs
-     */
-    protected abstract void updateJobAfterJob(List<Job> jobs);
+    protected abstract void prepare();
 
     /**
      * Get the runnable org.springframework.batch.core.Job instance
@@ -156,4 +108,17 @@ public abstract class BatchJob {
      * @param problem
      */
     protected abstract void onJobSkipInWriter(Object holder, Throwable problem);
+
+    /**
+     * Do something after job
+     * @param result
+     */
+    protected abstract void afterBatchJob(JobExecution result);
+
+    /**
+     *
+     * @param e
+     */
+    protected abstract void onRunError(Exception e);
+
 }

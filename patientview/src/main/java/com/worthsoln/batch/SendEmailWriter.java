@@ -2,7 +2,6 @@ package com.worthsoln.batch;
 
 import com.worthsoln.patientview.EmailUtils;
 import com.worthsoln.patientview.model.EmailQueue;
-import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.service.EmailQueueManager;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * SendEmailJob writer
@@ -70,24 +67,16 @@ public class SendEmailWriter implements ItemWriter<Object> {
                     EmailUtils.sendEmail(noReplyEmail, new String[]{emailQueue.getRecipient().getEmail()}, subject.toString(), body.toString());
 
                     emailQueue.setFinished(new Date());
-                    emailQueue.setStatus(SendEmailEnum.SUCCESSED);
+                    emailQueue.setStatus(SendEmailEnum.SUCCEEDED);
                     emailQueueManager.save(emailQueue);
 
                 } catch (Exception e) {
                     emailQueue.setFinished(new Date());
                     emailQueue.setStatus(SendEmailEnum.FAILED);
+                    emailQueue.addReport(e.getMessage());
+                    emailQueue.convertReports();
                     emailQueueManager.save(emailQueue);
 
-                    emailQueue.getJob().addReport(
-                          "username=" + emailQueue.getRecipient().getUsername()
-                        + ",messageId=" + emailQueue.getMessage().getId()
-                        + " : " + e.getMessage());
-                    System.out.println(e.getLocalizedMessage());
-
-                    emailQueue.getJob().convertReports();
-                    emailQueue.getJob().addErrorCount();
-                    emailQueue.getJob().setStatus(SendEmailEnum.FAILED);
-                    jobManager.save(emailQueue.getJob());
                 }
             }
         }

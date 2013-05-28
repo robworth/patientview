@@ -7,9 +7,6 @@ import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.service.EmailQueueManager;
 import com.worthsoln.service.JobManager;
-import com.worthsoln.service.MessageManager;
-import com.worthsoln.service.UserManager;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

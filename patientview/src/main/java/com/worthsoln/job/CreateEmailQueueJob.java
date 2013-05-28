@@ -3,12 +3,12 @@ package com.worthsoln.job;
 import com.worthsoln.batch.CreateEmailQueueReader;
 import com.worthsoln.patientview.model.EmailQueue;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
-import java.sql.PreparedStatement;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +24,8 @@ public class CreateEmailQueueJob extends BatchJob {
     @Resource(name = "createEmailQueueReader")
     private CreateEmailQueueReader reader;
 
+    private List<com.worthsoln.patientview.model.Job> jobs;
+
     @Override
     protected Job getBatchJob() {
         return batchJob;
@@ -32,7 +34,6 @@ public class CreateEmailQueueJob extends BatchJob {
     @Override
     protected void onJobSkipInWriter(Object holder, Throwable problem) {
 
-       isSkip = true;
         if (holder instanceof EmailQueue) {
             EmailQueue emailQueue = (EmailQueue) holder;
             com.worthsoln.patientview.model.Job job = emailQueue.getJob();
@@ -50,12 +51,37 @@ public class CreateEmailQueueJob extends BatchJob {
         }
     }
 
-
-    protected void prepare(List<com.worthsoln.patientview.model.Job> jobs){
-        reader.refresh(jobs);
+    @Override
+    protected void afterBatchJob(JobExecution result) {
+        if (result.getStatus() != BatchStatus.COMPLETED) {
+            updateJobStatusFailded(jobs);
+        } else {
+            updateJobStatusSucceeded(jobs);
+        }
     }
 
     @Override
+    protected void onRunError(Exception e) {
+        LOGGER.debug(e.getMessage());
+        for (com.worthsoln.patientview.model.Job job : jobs) {
+            job.addReport(e.getMessage());
+            job.convertReports();
+            job.setFinished(new Date());
+            job.setStatus(SendEmailEnum.FAILED);
+            jobManager.save(job);
+        }
+    }
+
+    @Override
+    protected void prepare() {
+        jobs = jobManager.getJobList(SendEmailEnum.PENDING);
+        reader.refresh(jobs);
+    }
+
+    /**
+     * Update the jobs' status to FAILED
+     * @param jobs
+     */
     protected void updateJobStatusFailded(List<com.worthsoln.patientview.model.Job> jobs) {
         LOGGER.debug("==update failed status==");
         for (com.worthsoln.patientview.model.Job job : jobs) {
@@ -66,19 +92,22 @@ public class CreateEmailQueueJob extends BatchJob {
         }
     }
 
-    @Override
-    protected void updateJobAfterJob(List<com.worthsoln.patientview.model.Job> jobs) {
-        LOGGER.debug("==update sending status==");
+    private void updateJobStatusSucceeded(List<com.worthsoln.patientview.model.Job> jobs) {
+        LOGGER.debug("==update sent status==");
         for (com.worthsoln.patientview.model.Job job : jobs) {
+            job.convertReports();
             job.setFinished(new Date());
-            if (SendEmailEnum.RUNNING.equals(job.getStatus())) {
-                job.setStatus(SendEmailEnum.SENDING);
+            if (!SendEmailEnum.FAILED.equals(job.getStatus())) {
+                job.setStatus(SendEmailEnum.SENT);
             }
             jobManager.save(job);
         }
     }
 
-    protected  void setJobs() {
+    /**
+     * According to the status, select and set the jobs from Job entry
+     */
+    private  void setJobs() {
        this.jobs = jobManager.getJobList(SendEmailEnum.PENDING);
     }
 }

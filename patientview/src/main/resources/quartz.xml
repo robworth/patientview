@@ -45,7 +45,7 @@
         <property name="cronExpression" value="${quartz.sendMail.cron}" />
     </bean>
 
-    <bean id="startQuartz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean id="startQuartz" lazy-init="true" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
                 <ref bean="createEmailQueueJobProcessDoTime" />

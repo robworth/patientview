@@ -23,10 +23,7 @@ public class SendEmailReader extends ListItemReader<Object> {
     @Autowired
     private EmailQueueManager emailQueueManager;
 
-    @Autowired
-    private JobManager jobManager;
-
-    public void refresh(List<Job> jobs) {
+    public void refresh() {
 
         List<Object> emailQueues = new ArrayList<Object>();
 

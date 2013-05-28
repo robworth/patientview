@@ -13,20 +13,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * EmailQueueDao implement Class
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository(value = "emailQueueDao")
 public class EmailQueueDaoImpl extends AbstractHibernateDAO<EmailQueue> implements EmailQueueDao {
-
-    @Override
-    public void update(EmailQueue emailQueue) {
-        super.save(emailQueue);
-    }
 
     @Override
     public void save(EmailQueue emailQueue) {
@@ -78,6 +72,5 @@ public class EmailQueueDaoImpl extends AbstractHibernateDAO<EmailQueue> implemen
             return null;
         }
     }
-
 
 }

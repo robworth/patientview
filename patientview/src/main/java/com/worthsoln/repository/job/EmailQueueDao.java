@@ -9,12 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Job dao interface
+ * EmailQueue dao interface
  */
 @Transactional(propagation = Propagation.MANDATORY)
 public interface EmailQueueDao {
-
-    void update(EmailQueue emailQueue);
 
     void save(EmailQueue emailQueue);
 

@@ -17,5 +17,4 @@ public interface JobDao {
 
     List<Job> getJobList(SendEmailEnum status);
 
-    void update(Job job);
 }

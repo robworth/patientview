@@ -2,8 +2,9 @@ package com.worthsoln.patientview.model.enums;
 
 public enum SendEmailEnum {
 
+    SENT,
     SENDING,
-    SUCCESSED,
+    SUCCEEDED,
     FAILED,
     PENDING,
     RUNNING

@@ -36,11 +36,6 @@ public class EmailQueueManagerImpl implements EmailQueueManager {
     }
 
     @Override
-    public void update(EmailQueue emailQueue) throws Exception {
-        emailQueueDao.update(emailQueue);
-    }
-
-    @Override
     public EmailQueue get(Long jobId, Long messageId, Long userId) {
         return emailQueueDao.get(jobId, messageId, userId);
     }

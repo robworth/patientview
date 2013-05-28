@@ -14,7 +14,5 @@ public interface EmailQueueManager {
 
     List<EmailQueue> getEmailQueueList();
 
-    void update(EmailQueue emailQueue) throws Exception;
-
     EmailQueue get(Long jobId, Long messageId, Long userId);
 }

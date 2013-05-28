@@ -31,6 +31,13 @@ public class EmailQueue extends BaseModel {
     @Column(nullable = true)
     private Date finished;
 
+    @Transient
+    @Column(nullable = false)
+    private StringBuilder reports;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String report;
+
     public Message getMessage() {
         return message;
     }
@@ -77,5 +84,35 @@ public class EmailQueue extends BaseModel {
 
     public void setFinished(Date finished) {
         this.finished = finished;
+    }
+
+    public StringBuilder getReports() {
+        return reports;
+    }
+
+    public void setReports(StringBuilder reports) {
+        this.reports = reports;
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+
+    public void addReport(String report) {
+        if (reports == null) {
+            reports = new StringBuilder();
+        }
+        reports.append(report);
+        reports.append("\n");
+    }
+
+    public void convertReports() {
+        if (reports != null) {
+            report = reports.toString();
+        }
     }
 }

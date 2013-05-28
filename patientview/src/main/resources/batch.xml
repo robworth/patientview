@@ -15,9 +15,6 @@
 
     <!--Define jobLauncher-->
     <bean id="jobLauncher" autowire="byType" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-        <property name="jobRepository">
-            <ref bean="jobRepository"/>
-        </property>
     </bean>
 
     <!--Define jobRepository-->
