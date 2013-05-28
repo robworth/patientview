@@ -330,7 +330,7 @@ public final class ImportMonitor {
             fileOutStream.flush();
             fileOutStream.close();
         } catch (IOException e) {
-            LOGGER.error("Could not persist number of Proton and RpvXml files", e);
+            LOGGER.error("Could not persist number of files in folders", e);
         }
     }
 
