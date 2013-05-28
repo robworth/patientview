@@ -251,9 +251,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.10</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
                     <headerLocation>src/main/resources/checkstyle/checkstyle.license</headerLocation>
+                    <failsOnError>true</failsOnError>
                 </configuration>
             </plugin>
 
