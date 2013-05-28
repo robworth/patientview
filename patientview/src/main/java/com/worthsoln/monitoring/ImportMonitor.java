@@ -419,8 +419,7 @@ public final class ImportMonitor {
          */
         for (CountRecord countRecord : countRecords) {
             for (FolderToMonitor folderToMonitor : countRecord.getFoldersToMonitor()) {
-                if (folderToMonitor.getCurrentNumberOfFiles() > 0 &&
-                        !foldersWhoseFilesAreStatic.contains(folderToMonitor)) {
+                if (folderToMonitor.getCurrentNumberOfFiles() > 0 && !foldersWhoseFilesAreStatic.contains(folderToMonitor)) {
                     foldersWhoseFilesAreStatic.add(folderToMonitor);
                 }
             }
