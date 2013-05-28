@@ -93,6 +93,7 @@
                                                 </span>
                                             </logic:greaterThan>
                                             <span class="pull-right conversation-date label label-inverse"><bean:write name="conversation" property="friendlyLatestMessageDate" /></span>
+                                            <span class="action-test dull">Click to open conversation</span>
                                         </h2>
                                         <h4 class="user"><bean:write name="conversation" property="subject" /></h4>
                                         <div class="content dull">

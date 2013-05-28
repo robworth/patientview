@@ -435,3 +435,16 @@ section article.conversation .dull, section article.message .dull{
     width: 620px
 }
 
+.action-test {
+    display: none;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 16px;
+    margin-left: 10px;
+    position: relative;
+    top: -1px;
+}
+
+.conversation-container a:hover .action-test {
+    display: inline;
+}
