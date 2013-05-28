@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.logon.PatientLogonWithTreatment;
@@ -91,7 +114,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
                 + "FROM user, specialtyuserrole, usermapping "
-                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
+                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno "
+                + "AND usermapping.unitcode = patient.centreCode "
                 + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
@@ -135,35 +159,35 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
     @Override
     public List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty) {
-        String sql = "SELECT " +
-                "   user.username,  " +
-                "   user.password, " +
-                "   user.name, " +
-                "   user.email, " +
-                "   usermapping.nhsno, " +
-                "   usermapping.unitcode, " +
-                "   user.firstlogon, " +
-                "   patient.treatment " +
-                "FROM " +
-                "   user, " +
-                "   specialtyuserrole, " +
-                "   usermapping " +
-                "LEFT JOIN " +
-                "   patient ON usermapping.nhsno = patient.nhsno " +
-                "WHERE " +
-                "   usermapping.username = user.username " +
-                "AND " +
-                "   user.id = specialtyuserrole.user_id " +
-                "AND " +
-                "   usermapping.unitcode = ? " +
-                "AND " +
-                "   specialtyuserrole.role = 'patient' " +
-                "AND " +
-                "   user.name NOT LIKE '%-GP' " +
-                "AND " +
-                "   specialtyuserrole.specialty_id = ? " +
-                "ORDER BY " +
-                "   user.name ASC";
+        String sql = "SELECT "
+                + "   user.username,  "
+                + "   user.password, "
+                + "   user.name, "
+                + "   user.email, "
+                + "   usermapping.nhsno, "
+                + "   usermapping.unitcode, "
+                + "   user.firstlogon, "
+                + "   patient.treatment "
+                + "FROM "
+                + "   user, "
+                + "   specialtyuserrole, "
+                + "   usermapping "
+                + "LEFT JOIN "
+                + "   patient ON usermapping.nhsno = patient.nhsno "
+                + "WHERE "
+                + "   usermapping.username = user.username "
+                + "AND "
+                + "   user.id = specialtyuserrole.user_id "
+                + "AND "
+                + "   usermapping.unitcode = ? "
+                + "AND "
+                + "   specialtyuserrole.role = 'patient' "
+                + "AND "
+                + "   user.name NOT LIKE '%-GP' "
+                + "AND "
+                + "   specialtyuserrole.specialty_id = ? "
+                + "ORDER BY "
+                + "   user.name ASC";
 
         List<Object> params = new ArrayList<Object>();
 
@@ -176,11 +200,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     @Override
     public List<Patient> getUktPatients() {
 
-        String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, " +
-                " patient.dateofbirth, patient.postcode FROM patient, user, usermapping " +
-                " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno " +
-                "AND user.username = usermapping.username " +
-                " AND usermapping.username NOT LIKE '%-GP' AND user.dummypatient = 0";
+        String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, "
+                + " patient.dateofbirth, patient.postcode FROM patient, user, usermapping "
+                + " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno "
+                + "AND user.username = usermapping.username "
+                + " AND usermapping.username NOT LIKE '%-GP' AND user.dummypatient = 0";
 
         return jdbcTemplate.query(sql, new PatientMapper());
     }

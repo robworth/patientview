@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview;
 
 import com.worthsoln.patientview.logging.AddLog;
@@ -35,16 +58,18 @@ public class ForgottenPasswordAction extends Action {
                         user.setFirstlogon(true);
 
                         // Email password
-                        String message = "[This is an automated email from Renal PatientView - do not reply to this email]\n" +
-                                "\n" +
-                                "Hello User,\n" +
-                                "\n" +
-                                "We received a request on the web site to reset your password. Your new password is\n\n" +
-                                password + "\n" +
-                                "\n" +
-                                "Enjoy the site,\n" +
-                                "\n" +
-                                "Renal Patient View";
+                        String message = "[This is an automated email from Renal PatientView - "
+                                + "do not reply to this email]\n"
+                                + "\n"
+                                + "Hello User,\n"
+                                + "\n"
+                                + "We received a request on the web site to reset your password. "
+                                + "Your new password is\n\n"
+                                + password + "\n"
+                                + "\n"
+                                + "Enjoy the site,\n"
+                                + "\n"
+                                + "Renal Patient View";
                         String fromAddress = request.getSession().getServletContext().getInitParameter("noreply.email");
                         EmailUtils.sendEmail(request.getSession().getServletContext(), fromAddress, user.getEmail(),
                                 "[Renal PatientView] Your password has been reset", message);
@@ -70,5 +95,4 @@ public class ForgottenPasswordAction extends Action {
         }
         return mapping.findForward(forwardMapping);
     }
-
 }

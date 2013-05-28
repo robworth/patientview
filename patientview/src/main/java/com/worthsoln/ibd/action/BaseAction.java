@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.ibd.action;
 
 import com.worthsoln.ibd.Ibd;
@@ -104,11 +127,14 @@ public class BaseAction extends ActionSupport {
         }
     };
 
-    protected static List<OpenBowel> openBowelList;
+    private static List<OpenBowel> openBowelList;
+
+    private static final int MAX_NUM_ERRORS_TO_LIST = 20;
 
     /**
      * When the actual edit form is submitted it should have an input field named submit set to true
      * This fnc checks for this and if its not present then the actual edit form has not been submitted
+     *
      * @param form DynaActionForm
      * @return boolean
      */
@@ -206,7 +232,7 @@ public class BaseAction extends ActionSupport {
         if (openBowelList == null) {
             openBowelList = new ArrayList<OpenBowel>();
 
-            for (int x = 0; x <= 20; x++) {
+            for (int x = 0; x <= MAX_NUM_ERRORS_TO_LIST; x++) {
                 openBowelList.add(new OpenBowel(x));
             }
         }
@@ -284,7 +310,7 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void addSymptomsGraphData(User user, Integer graphType, Date fromDate, Date toDate,
-                                                     HttpServletRequest request) {
+                                        HttpServletRequest request) {
         SymptomsGraphData symptomsGraphData = new SymptomsGraphData();
         List<Date> existingDates = new ArrayList<Date>();
 

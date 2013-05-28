@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.ibd.action.myibd;
 
 import com.worthsoln.actionutils.ActionUtils;
@@ -15,12 +38,10 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class MyIbdUpdateAction extends BaseAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) throws Exception {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
@@ -44,7 +65,8 @@ public class MyIbdUpdateAction extends BaseAction {
         myIbd.setDiseaseExtentId((Long) dynaForm.get(Ibd.DISEASE_EXTENT_ID_PARAM));
         myIbd.setYearOfDiagnosis(convertFormDateString(Ibd.YEAR_OF_DIAGNOSIS_PARAM, dynaForm));
         myIbd.setBodyPartAffected((String) dynaForm.get(Ibd.BODY_PART_AFFECTED_PARAM));
-        myIbd.setYearForSurveillanceColonoscopy(convertFormDateString(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM, dynaForm));
+        myIbd.setYearForSurveillanceColonoscopy(convertFormDateString(Ibd.YEAR_FOR_SURVEILLANCE_COLONOSCOPY_PARAM,
+                dynaForm));
         myIbd.setNamedConsultant((String) dynaForm.get(Ibd.NAMED_CONSULTANT_PARAM));
         myIbd.setNurses((String) dynaForm.get(Ibd.NURSES_PARAM));
         myIbd.setFamilyHistory((String) dynaForm.get(Ibd.FAMILY_HISTORY_PARAM));
@@ -81,8 +103,7 @@ public class MyIbdUpdateAction extends BaseAction {
             actionErrors.add(Ibd.YEAR_OF_DIAGNOSIS_PARAM, new ActionMessage(Ibd.YEAR_OF_DIAGNOSIS_REQUIRED));
         }
 
-        if (form.get(Ibd.COMPLICATIONS_PARAM) == null
-                || form.get(Ibd.COMPLICATIONS_PARAM).toString().length() == 0) {
+        if (form.get(Ibd.COMPLICATIONS_PARAM) == null || form.get(Ibd.COMPLICATIONS_PARAM).toString().length() == 0) {
             actionErrors.add(Ibd.COMPLICATIONS_PARAM, new ActionMessage(Ibd.COMPLICATIONS_REQUIRED));
         }
 
@@ -91,8 +112,7 @@ public class MyIbdUpdateAction extends BaseAction {
             actionErrors.add(Ibd.BODY_PART_AFFECTED_PARAM, new ActionMessage(Ibd.BODY_PART_AFFECTED_REQUIRED));
         }
 
-        if (form.get(Ibd.FAMILY_HISTORY_PARAM) == null
-                || form.get(Ibd.FAMILY_HISTORY_PARAM).toString().length() == 0) {
+        if (form.get(Ibd.FAMILY_HISTORY_PARAM) == null || form.get(Ibd.FAMILY_HISTORY_PARAM).toString().length() == 0) {
             actionErrors.add(Ibd.FAMILY_HISTORY_PARAM, new ActionMessage(Ibd.FAMILY_HISTORY_REQUIRED));
         }
 

@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.ibd.action.mymedications;
 
 import com.worthsoln.actionutils.ActionUtils;
@@ -14,6 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MyMedicationEditAction extends BaseAction {
 
+    static final int MEDICATION_TYPE_ID_PARAM_MINUS_1 = -1;
+    static final int MEDICATION_TYPE_ID_PARAM_MINUS_2 = -2;
+
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         // set current nav
@@ -28,15 +54,15 @@ public class MyMedicationEditAction extends BaseAction {
         if (myMedication.getMedicationType() != null) {
             dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, myMedication.getMedicationType().getId());
         } else {
-            dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, new Long(-1));
+            dynaForm.set(Ibd.MEDICATION_TYPE_ID_PARAM, new Long(MEDICATION_TYPE_ID_PARAM_MINUS_1));
         }
 
         if (myMedication.getMedication() != null) {
             dynaForm.set(Ibd.MEDICATION_ID_PARAM, myMedication.getMedication().getId());
         } else if (myMedication.getOtherMedication() != null && myMedication.getOtherMedication().length() > 0) {
-            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(-2));
+            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(MEDICATION_TYPE_ID_PARAM_MINUS_2));
         } else {
-            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(-1));
+            dynaForm.set(Ibd.MEDICATION_ID_PARAM, new Long(MEDICATION_TYPE_ID_PARAM_MINUS_1));
         }
 
         String otherMedication = "";

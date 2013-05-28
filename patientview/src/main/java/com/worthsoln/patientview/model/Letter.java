@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
@@ -24,6 +47,8 @@ public class Letter extends BaseModel {
 
     @Column(nullable = true)
     private String content;
+
+    private static final int HASH_SEED = 31;
 
     public Letter() {
     }
@@ -67,6 +92,7 @@ public class Letter extends BaseModel {
 
     /**
      * Will return the content with the carriage returns replace with <br />
+     *
      * @return String
      */
     public String getFormattedContent() {
@@ -113,12 +139,18 @@ public class Letter extends BaseModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Letter letter = (Letter) o;
 
-        if (!this.getId().equals(letter.getId())) return false;
+        if (!this.getId().equals(letter.getId())) {
+            return false;
+        }
 
         return true;
     }
@@ -126,11 +158,11 @@ public class Letter extends BaseModel {
     @Override
     public int hashCode() {
         long result = this.getId();
-        result = 31 * result + (nhsno != null ? nhsno.hashCode() : 0);
-        result = 31 * result + (unitcode != null ? unitcode.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (content != null ? content.hashCode() : 0);
+        result = HASH_SEED * result + (nhsno != null ? nhsno.hashCode() : 0);
+        result = HASH_SEED * result + (unitcode != null ? unitcode.hashCode() : 0);
+        result = HASH_SEED * result + (date != null ? date.hashCode() : 0);
+        result = HASH_SEED * result + (type != null ? type.hashCode() : 0);
+        result = HASH_SEED * result + (content != null ? content.hashCode() : 0);
         return (int) result;
     }
 }

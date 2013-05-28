@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.patiententry;
 
 import java.text.DateFormat;
@@ -11,6 +34,8 @@ public class PatientEnteredResult {
     private String value1;
     private String resultCode2;
     private String value2;
+
+    private static final int SECONDS_IN_MINUTE = 59;
 
     public PatientEnteredResult() {
     }
@@ -38,7 +63,8 @@ public class PatientEnteredResult {
         this.datetime = Calendar.getInstance();
 
         datetime.set(Integer.decode(year), Integer.decode(month)
-                , Integer.decode(day), Integer.decode(hour), Integer.decode(minute), (int) (Math.random() * 59));
+                , Integer.decode(day), Integer.decode(hour), Integer.decode(minute),
+                (int) (Math.random() * SECONDS_IN_MINUTE));
     }
 
     public String getStringDate() {

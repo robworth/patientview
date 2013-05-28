@@ -1,10 +1,33 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.logon;
 
 import com.Ostermiller.util.RandPass;
-import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.SplashPage;
 import com.worthsoln.patientview.model.SplashPageUserSeen;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.splashpage.SplashPageUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -16,13 +39,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-public class LogonUtils {
+public final class LogonUtils {
 
     public static final String USER_ALREADY_EXISTS = "userAlreadyExists";
     public static final String NHSNO_ALREADY_EXISTS = "nhsnoAlreadyExists";
     public static final String PATIENTS_WITH_SAME_NHSNO = "nhsnoAlreadyExists";
     public static final String INVALID_NHSNO = "invalidNhsno";
     public static final String PATIENT_ALREADY_IN_UNIT = "patientAlreadyInUnit";
+    public static final int NEW_PASSWORD_LENGTH = 8;
+
+    private LogonUtils() {
+    }
 
     public static ActionForward logonChecks(ActionMapping mapping, HttpServletRequest request, String defaultForward) {
         String resultForward = defaultForward;
@@ -115,7 +142,7 @@ public class LogonUtils {
     }
 
     public static String generateNewPassword() {
-        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(NEW_PASSWORD_LENGTH);
     }
 
     public static String displayRole(String role) {

@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.utils.TimestampUtils;
@@ -14,16 +37,23 @@ public class TestResult extends BaseModel {
 
     @Column(nullable = false)
     private String nhsno;
+
     @Column(nullable = false)
     private String unitcode;
+
     @Column(nullable = false, name = "datestamp")
     private Calendar datestamped;
+
     @Column(nullable = true)
     private String prepost;
+
     @Column(nullable = false)
     private String testcode;
+
     @Column(nullable = false)
     private String value;
+
+    private static final int HASH_SEED = 31;
 
     public TestResult() {
     }
@@ -162,11 +192,11 @@ public class TestResult extends BaseModel {
     public int hashCode() {
         int result;
         result = (nhsno != null ? nhsno.hashCode() : 0);
-        result = 31 * result + (unitcode != null ? unitcode.hashCode() : 0);
-        result = 31 * result + (datestamped != null ? datestamped.hashCode() : 0);
-        result = 31 * result + (prepost != null ? prepost.hashCode() : 0);
-        result = 31 * result + (testcode != null ? testcode.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = HASH_SEED * result + (unitcode != null ? unitcode.hashCode() : 0);
+        result = HASH_SEED * result + (datestamped != null ? datestamped.hashCode() : 0);
+        result = HASH_SEED * result + (prepost != null ? prepost.hashCode() : 0);
+        result = HASH_SEED * result + (testcode != null ? testcode.hashCode() : 0);
+        result = HASH_SEED * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 }

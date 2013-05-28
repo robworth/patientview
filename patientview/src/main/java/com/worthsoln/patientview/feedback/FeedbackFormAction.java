@@ -1,12 +1,35 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.feedback;
 
 import com.worthsoln.patientview.EmailUtils;
+import com.worthsoln.patientview.PatientUtils;
+import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Feedback;
 import com.worthsoln.patientview.model.Patient;
-import com.worthsoln.patientview.PatientUtils;
-import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -47,7 +70,6 @@ public class FeedbackFormAction extends Action {
 
                 Unit unit = LegacySpringUtils.getUnitManager().get(patient.getCentreCode());
                 request.setAttribute("unit", unit);
-
             } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
                 return LogonUtils.logonChecks(mapping, request, "control");
             }
@@ -72,7 +94,9 @@ public class FeedbackFormAction extends Action {
         String emailBody = "";
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]" + newLine;
         emailBody += newLine;
-        emailBody += "A patient has posted some feedback about " + unit.getShortname() + ". Please login to Renal PatientView to see the feedback in full and approve it for viewing by other patients." + newLine;
+        emailBody += "A patient has posted some feedback about " + unit.getShortname()
+                + ". Please login to Renal PatientView to see the feedback in full "
+                + "and approve it for viewing by other patients." + newLine;
         emailBody += newLine;
         emailBody += "The comment is as follows:" + newLine;
         emailBody += newLine;
@@ -91,9 +115,10 @@ public class FeedbackFormAction extends Action {
         emailBody += newLine;
         emailBody += "------------------------" + newLine;
         emailBody += newLine;
-        emailBody += "Please note that Renal PatientView will never send you an email with link to click to ask you to log in to do anything. If you ever get an email like that, please let us know, because it it probably some kind of scam or phishing attempt." + newLine;
+        emailBody += "Please note that Renal PatientView will never send you an email with link to click "
+                + "to ask you to log in to do anything. If you ever get an email like that, please let us know, "
+                + "because it it probably some kind of scam or phishing attempt." + newLine;
 
         EmailUtils.sendEmail(context, fromAddress, toAddress, subject, emailBody);
     }
-
 }

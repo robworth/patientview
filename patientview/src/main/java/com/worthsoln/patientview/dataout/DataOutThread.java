@@ -1,9 +1,32 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.dataout;
 
 import com.worthsoln.patientview.ParserThread;
+import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.model.Patient;
 import com.worthsoln.patientview.model.TestResult;
-import com.worthsoln.patientview.model.Comment;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.utils.LegacySpringUtils;
@@ -22,10 +45,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.GregorianCalendar;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 
 public class DataOutThread implements Runnable, ParserThread {
@@ -36,6 +59,9 @@ public class DataOutThread implements Runnable, ParserThread {
     private int minutesBetweenWait;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ServletContext servletContext;
+
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
 
     public DataOutThread() {
     }
@@ -68,7 +94,7 @@ public class DataOutThread implements Runnable, ParserThread {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Thread.sleep(1000 * 60 * minutesBetweenWait);
+                Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("DataOutThread " + dateFormat.format(now));
             }
@@ -145,10 +171,10 @@ public class DataOutThread implements Runnable, ParserThread {
             for (Comment comment : comments) {
 
                 Element commentTag = addChildElement(doc, commentsTag, "comment");
-                Element commentDate = addChildElement(doc, commentsTag, "commentdate",comment.getIsoFormattedDatestamp());
+                Element commentDate = addChildElement(doc, commentsTag, "commentdate",
+                        comment.getIsoFormattedDatestamp());
                 Element commentContent = addChildElement(doc, commentsTag, "commentbody", comment.getBody());
             }
-
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
@@ -214,7 +240,8 @@ public class DataOutThread implements Runnable, ParserThread {
         return units;
     }
 
-    private void writeDataOutFile(Document doc, Patient patient, Unit unit) throws ParserConfigurationException, TransformerException {
+    private void writeDataOutFile(Document doc, Patient patient, Unit unit)
+            throws ParserConfigurationException, TransformerException {
         String directory1stPart = directory;
         String directory2ndPart = unit.getUnituser();
         String directory3rdPart = servletContext.getInitParameter(prebit + ".directory.thirdpart");
@@ -224,7 +251,6 @@ public class DataOutThread implements Runnable, ParserThread {
         File uktDir = new File(filePath);
         File uktExportFile = new File(uktDir, "data_out_" + unit.getUnitcode() + "_" + patient.getNhsno() + ".xml");
 
-
         //write the content into xml file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -233,7 +259,6 @@ public class DataOutThread implements Runnable, ParserThread {
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(uktExportFile);
         transformer.transform(source, result);
-
     }
 
     public String getPrebit() {

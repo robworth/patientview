@@ -1,11 +1,35 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.uktransplant;
 
+import com.worthsoln.patientview.ParserThread;
+
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.servlet.ServletContext;
-import com.worthsoln.patientview.ParserThread;
 
 public class UktParserThread implements Runnable, ParserThread {
 
@@ -15,6 +39,9 @@ public class UktParserThread implements Runnable, ParserThread {
     private int minutesBetweenWait;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ServletContext servletContext;
+
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS = 1000;
 
     public UktParserThread() {
     }
@@ -33,7 +60,7 @@ public class UktParserThread implements Runnable, ParserThread {
                 File uktDir = new File(directory);
                 File[] uktFiles = uktDir.listFiles(new UktFileFilter());
                 updateUktFiles(uktFiles);
-                Thread.sleep(1000 * 60 * minutesBetweenWait);
+                Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("UktParserThread " + dateFormat.format(now));
             }

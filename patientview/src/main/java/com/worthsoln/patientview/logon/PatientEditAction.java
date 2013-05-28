@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.logon;
 
 import com.worthsoln.patientview.model.Unit;
@@ -16,6 +39,19 @@ import java.util.Date;
 import java.util.List;
 
 public class PatientEditAction extends Action {
+
+    private static final int YEAR_START = 0;
+    private static final int YEAR_END = 4;
+    private static final int MONTH_START = 5;
+    private static final int MONTH_END = 7;
+    private static final int DAY_START = 8;
+    private static final int DAY_END = 10;
+    private static final int HOUR_START = 11;
+    private static final int HOUR_END = 13;
+    private static final int MINUTE_START = 14;
+    private static final int MINUTE_END = 16;
+    private static final int SECOND_START = 17;
+    private static final int SECOND_END = 19;
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -44,8 +80,8 @@ public class PatientEditAction extends Action {
         } else {
 
             PatientLogon patient =
-                    new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient, lastlogon,
-                            failedlogons, accountlocked);
+                    new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient,
+                            lastlogon, failedlogons, accountlocked);
             LegacySpringUtils.getUserManager().saveUserFromPatient(patient);
 
             List<UserMapping> userMappings = findUsersSiblings(username, unitcode);
@@ -83,21 +119,20 @@ public class PatientEditAction extends Action {
         if (!"".equals(dateTimeString)) {
             datestamp = Calendar.getInstance();
 
-            int year = Integer.parseInt(dateTimeString.substring(0, 4));
-            int month = Integer.parseInt(dateTimeString.substring(5, 7));
-            int day = Integer.parseInt(dateTimeString.substring(8, 10));
+            int year = Integer.parseInt(dateTimeString.substring(YEAR_START, YEAR_END));
+            int month = Integer.parseInt(dateTimeString.substring(MONTH_START, MONTH_END));
+            int day = Integer.parseInt(dateTimeString.substring(DAY_START, DAY_END));
 
-            datestamp.set(year, month - 1, day, 0, 0, 10);
-            datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(11, 13)));
-            datestamp.set(Calendar.MINUTE, Integer.parseInt(dateTimeString.substring(14, 16)));
+            datestamp.set(year, month - 1, day, 0, 0, 0);
+            datestamp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(dateTimeString.substring(HOUR_START, HOUR_END)));
+            datestamp.set(Calendar.MINUTE, Integer.parseInt(dateTimeString.substring(MINUTE_START, MINUTE_END)));
 
-            if (dateTimeString.length() == 19) {
-                datestamp.set(Calendar.SECOND, Integer.parseInt(dateTimeString.substring(17, 19)));
+            if (dateTimeString.length() == SECOND_END) {
+                datestamp.set(Calendar.SECOND, Integer.parseInt(dateTimeString.substring(SECOND_START, SECOND_END)));
             }
 
             datestamp.set(Calendar.MILLISECOND, 0);
         }
         return datestamp;
     }
-
 }

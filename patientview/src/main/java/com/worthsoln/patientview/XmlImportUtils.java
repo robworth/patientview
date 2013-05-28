@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview;
 
 import com.worthsoln.ibd.model.enums.XmlImportNotification;
@@ -22,7 +45,12 @@ import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 
-public class XmlImportUtils {
+public final class XmlImportUtils {
+
+    private XmlImportUtils() {
+    }
+
+    private static final int MAX_NUM_ERRORS_TO_LIST = 20;
 
     public static void sendEmptyFileEmailToUnitAdmin(File file, ServletContext context) {
 
@@ -37,11 +65,11 @@ public class XmlImportUtils {
         String toAddress = allocateToAddress(context, unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
-                                    XmlImportNotification.FAILED_IMPORT);
+                XmlImportNotification.FAILED_IMPORT);
 
         EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
-                                        ccAddresses.toArray(new String[ccAddresses.size()]),
-                                        "[PatientView] File import failed: " + fileName, emailBody);
+                ccAddresses.toArray(new String[ccAddresses.size()]),
+                "[PatientView] File import failed: " + fileName, emailBody);
     }
 
     public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
@@ -56,14 +84,14 @@ public class XmlImportUtils {
         String[] toAddresses = new String[]{context.getInitParameter("warning.email"), rpvAdminEmailAddress};
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
-                            XmlImportNotification.FAILED_IMPORT);
+                XmlImportNotification.FAILED_IMPORT);
 
         String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName, context);
 
         for (String toAddress : toAddresses) {
             EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
-                                ccAddresses.toArray(new String[ccAddresses.size()]),
-                                "[PatientView] File import failed: " + xmlFileName, emailBody);
+                    ccAddresses.toArray(new String[ccAddresses.size()]),
+                    "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
     }
 
@@ -74,14 +102,13 @@ public class XmlImportUtils {
         emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
         emailBody += newLine;
         emailBody += newLine + "The file <" + xmlFileName + "> has not imported to RPV correctly. ";
-        emailBody += "This is because the file was empty. " +
-                "The most likely cause of that is that it has not been encrypted properly at the unit before sending. ";
+        emailBody += "This is because the file was empty. The most likely cause of that is "
+                + "that it has not been encrypted properly at the unit before sending. ";
         emailBody += newLine;
         emailBody += newLine + "Please contact your IT department to ask them to check the encryption.";
         emailBody += newLine;
 
         return emailBody;
-
     }
 
     private static String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
@@ -104,7 +131,9 @@ public class XmlImportUtils {
         emailBody += newLine + " - There are no missing values.";
         emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
         emailBody += newLine;
-        emailBody += newLine + "Please carefully read the stack trace below, there is often a good hint in there as to why your file failed:";
+        emailBody += newLine
+                + "Please carefully read the stack trace below, there is often a good hint in there as to why your "
+                + "file failed:";
         emailBody += newLine;
         emailBody += newLine + "Validation errors:";
         emailBody += newLine;
@@ -140,7 +169,6 @@ public class XmlImportUtils {
             EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
-
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -154,13 +182,19 @@ public class XmlImportUtils {
         emailBody += newLine;
         emailBody += newLine + "The file <" + fileName + "> has failed to import.";
         emailBody += newLine;
-        emailBody += newLine + "This means that the file has been received by RPV but there is something wrong with the file that prevents it being imported properly.";
+        emailBody += newLine
+                + "This means that the file has been received by RPV but there is something wrong with the file that "
+                + "prevents it being imported properly.";
         emailBody += newLine;
-        emailBody += newLine + "You will most likely need to correct the data in your local system before the file is resent to PatientView.";
+        emailBody += newLine
+                + "You will most likely need to correct the data in your local system before the file is resent to "
+                + "PatientView.";
         emailBody += newLine;
         emailBody += newLine + errors;
         emailBody += newLine;
-        emailBody += newLine + "Otherwise, it might be that there is an XML tag missing or an empty result value or something similar.";
+        emailBody += newLine
+                + "Otherwise, it might be that there is an XML tag missing or an empty result value or something "
+                + "similar.";
         emailBody += newLine;
         emailBody += newLine + "Before contacting the email address below please ensure that:";
         emailBody += newLine + " - The file is not empty.";
@@ -201,7 +235,7 @@ public class XmlImportUtils {
             for (CorruptNode corruptNode : ((XmlImportException) e).getNodeList()) {
                 numberOfErrors++;
 
-                if (numberOfErrors > 20) {
+                if (numberOfErrors > MAX_NUM_ERRORS_TO_LIST) {
                     // truncate this information
                     errors += newLine + "There are further errors.  Truncating email!";
                     break;
@@ -237,7 +271,9 @@ public class XmlImportUtils {
                 }
             }
         } else {
-            errors += newLine + "Please carefully read the stack trace below, there is often a good hint in there as to why your file failed:";
+            errors += newLine
+                    + "Please carefully read the stack trace below, there is often a good hint in there as to why "
+                    + "your file failed:";
             errors += newLine;
             errors += newLine + "Stack Trace:";
             errors += newLine;

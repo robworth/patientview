@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.patientview.model;
 
 import javax.persistence.Column;
@@ -93,7 +116,7 @@ public class EdtaCode extends BaseModel {
     @Column(nullable = true)
     private String patientLinkText06;
 
-    private static String IDENTIFIER = "edtaCode";
+    private static final String IDENTIFIER = "edtaCode";
 
     public EdtaCode() {
     }
@@ -102,13 +125,14 @@ public class EdtaCode extends BaseModel {
         this.edtaCode = edtaCode;
     }
 
-    public EdtaCode(String edtaCode, Specialty specialty, String linkType, String description, String medicalLink01,
-                    String medicalLink02,
-                    String medicalLink03, String medicalLink04, String medicalLink05, String medicalLink06,
+    public EdtaCode(String edtaCode, Specialty specialty, String linkType, String description,
+                    String medicalLink01, String medicalLink02, String medicalLink03,
+                    String medicalLink04, String medicalLink05, String medicalLink06,
                     String medicalLinkText01, String medicalLinkText02, String medicalLinkText03,
-                    String medicalLinkText04, String medicalLinkText05, String medicalLinkText06, String patientLink01,
-                    String patientLink02, String patientLink03, String patientLink04, String patientLink05,
-                    String patientLink06, String patientLinkText01, String patientLinkText02, String patientLinkText03,
+                    String medicalLinkText04, String medicalLinkText05, String medicalLinkText06,
+                    String patientLink01, String patientLink02, String patientLink03,
+                    String patientLink04, String patientLink05, String patientLink06,
+                    String patientLinkText01, String patientLinkText02, String patientLinkText03,
                     String patientLinkText04, String patientLinkText05, String patientLinkText06) {
         this.description = description;
         this.specialty = specialty;

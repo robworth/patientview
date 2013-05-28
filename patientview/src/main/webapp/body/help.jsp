@@ -1,5 +1,28 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
+<%--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  --%>
+
 <html:xhtml/>
 
 
@@ -88,7 +111,7 @@
                 </ul>
                 <p>Patients may share their logins with relatives, staff in clinics that they are referred to, staff at other surgeries or foreign hospitals - or anyone else they choose.  They can change their password at any time to restrict access again.  </p>
                 <p>Staff must not share their logins. </p>
-            </dd>                                                                                                                                                                                                                                                             
+            </dd>
 
         <dt><a name="Anchor-Is-44867"></a>Is it safe?  Security and confidentiality</dt>
             <dd>

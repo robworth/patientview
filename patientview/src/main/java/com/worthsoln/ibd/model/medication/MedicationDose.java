@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.ibd.model.medication;
 
 import com.worthsoln.patientview.model.BaseModel;
@@ -12,8 +35,11 @@ import java.text.DecimalFormat;
 @Table(name = "ibd_medication_dose")
 public class MedicationDose extends BaseModel {
 
+    private static final int MILLION = 1000000;
+    private static final int THOUSAND = 1000;
+
     @Transient
-    private static final DecimalFormat format = new DecimalFormat();
+    private static final DecimalFormat FORMAT = new DecimalFormat();
 
     @Column(nullable = true)
     private Double mg;
@@ -22,7 +48,7 @@ public class MedicationDose extends BaseModel {
     private String extraInformation;
 
     public MedicationDose() {
-        format.setDecimalSeparatorAlwaysShown(false);
+        FORMAT.setDecimalSeparatorAlwaysShown(false);
     }
 
     public String getFormattedValue() {
@@ -34,12 +60,12 @@ public class MedicationDose extends BaseModel {
              * If the mg is grt OR eq to 1,000 then convert to Grams
              * Else just leave as mg
              */
-            if (mg >= 1000000) {
-                doseValueAsString = format.format((mg / (1000 * 1000))) + "Kg";
-            } else if (mg >= 1000) {
-                doseValueAsString = format.format((mg / 1000)) + "G";
+            if (mg >= MILLION) {
+                doseValueAsString = FORMAT.format((mg / (THOUSAND * THOUSAND))) + "Kg";
+            } else if (mg >= THOUSAND) {
+                doseValueAsString = FORMAT.format((mg / THOUSAND)) + "G";
             } else {
-                doseValueAsString = format.format(mg) + "mg";
+                doseValueAsString = FORMAT.format(mg) + "mg";
             }
         }
 

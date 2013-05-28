@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.model.JoinRequest;
@@ -20,7 +43,7 @@ import java.util.List;
 public class JoinRequestManagerImpl implements JoinRequestManager {
 
     @Inject
-    JoinRequestDao joinRequestDao;
+    private JoinRequestDao joinRequestDao;
 
     @Inject
     private UserManager userManager;
@@ -36,20 +59,18 @@ public class JoinRequestManagerImpl implements JoinRequestManager {
     @Override
     public List<JoinRequest> getUsersJoinRequests() {
         List<JoinRequest> joinRequests = new ArrayList<JoinRequest>();
-        User user  = userManager.getLoggedInUser();
+        User user = userManager.getLoggedInUser();
 
-            String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
+        String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
 
-            if ("superadmin".equals(userType)) {
+        if ("superadmin".equals(userType)) {
 
-                joinRequests = joinRequestDao.getAll();
+            joinRequests = joinRequestDao.getAll();
+        } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
 
-            } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
-
-                List<String> unitCodes = unitManager.getUsersUnitCodes(user);
-                joinRequests = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes);
-
-            }
+            List<String> unitCodes = unitManager.getUsersUnitCodes(user);
+            joinRequests = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes);
+        }
 
         return joinRequests;
     }

@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package com.worthsoln.ibd.util;
 
 import com.worthsoln.ibd.model.medication.Medication;
@@ -22,22 +45,22 @@ import java.util.List;
 
 /**
  * Will import medication from a spread sheet NOT A CSV!
- *
+ * <p/>
  * Spread sheet is expected to have column headers in the first row
  * Required columns are -
- *
+ * <p/>
  * Medication Type, Medication Name, Medication Dose MG
- *
+ * <p/>
  * If you have multiple medications for a medication type you need a row for each with the same medication type name
  * in each row
- *
+ * <p/>
  * The allowed dosages for a medication need to be in mg and seperated by a :
  * If a dosage has no MG value then you have to put 0 as the value
  * If a dosage has extra information you can seperate the mg value and the extra info with a _
  * e.g. 400:800:1200:1600:2400_This is extra information:3200:4800
- *
+ * <p/>
  * Example below for 1 medication type with two medications
- *
+ * <p/>
  * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 800 mg tablet, 400:800:1200:1600:2400_Test info:3200:4800
  * Aminosalicylates (Mesalazine / 5 ASAs), Asacol MR 400 mg tablet, 800:1600:2400:3200:4800
  */
@@ -49,11 +72,11 @@ public class MedicationImporter {
     private static final int MEDICATION_NAME_COL = 1;
     private static final int MEDICATION_DOSAGES_COL = 2;
 
-    Long medicationTypeCurrentId = 1L;
-    Long medicationCurrentId = 1L;
-    Long medicationDoseCurrentId = 1L;
+    private Long medicationTypeCurrentId = 1L;
+    private Long medicationCurrentId = 1L;
+    private Long medicationDoseCurrentId = 1L;
 
-    LinkedHashMap<String, MedicationType> medicationTypes = new LinkedHashMap<String, MedicationType>();
+    private LinkedHashMap<String, MedicationType> medicationTypes = new LinkedHashMap<String, MedicationType>();
 
     private String outputFileLocation;
 
@@ -113,7 +136,7 @@ public class MedicationImporter {
                                     medicationType = new MedicationType();
                                     medicationType.setName(medicationTypeName);
                                     medicationType.setMedications(new ArrayList<Medication>());
-                                    medicationTypes.put(medicationTypeName,  medicationType);
+                                    medicationTypes.put(medicationTypeName, medicationType);
 
                                     // set the id and increment for the next one
                                     medicationType.setId(medicationTypeCurrentId);
@@ -183,7 +206,8 @@ public class MedicationImporter {
                 extraInfo = "'" + medicationDose.getExtraInformation() + "'";
             }
 
-            writeLine("insert into `ibd_medication_dose`(`id`,`extraInformation`,`mg`) values (" + medicationDose.getId()
+            writeLine("insert into `ibd_medication_dose`(`id`,`extraInformation`,"
+                    + "`mg`) values (" + medicationDose.getId()
                     + "," + extraInfo + "," + medicationDose.getMg() + ");");
 
             // then map our dosage to the medication
@@ -207,6 +231,7 @@ public class MedicationImporter {
     /**
      * Will take a string in the format of 400:600:800 where is dosage is in mg and seperated by a semicolon
      * To add extra information to a dosage use the format 400:600_Extra Info:800 where extra info is split with a _
+     *
      * @param dosages String of dosages
      * @return List<MedicationDose>
      */
@@ -218,7 +243,7 @@ public class MedicationImporter {
         if (dosages.contains(":")) {
             dosagesArray = dosages.split(":");
         } else {
-            dosagesArray = new String[] {dosages};
+            dosagesArray = new String[]{dosages};
         }
 
         if (dosagesArray != null) {
@@ -234,7 +259,7 @@ public class MedicationImporter {
                     if (doseInfo.length > 1) {
                         doseExtraInfo = doseInfo[1];
                     }
-                }  else {
+                } else {
                     doseMg = s;
                 }
 
@@ -264,6 +289,7 @@ public class MedicationImporter {
 
     /**
      * Check if a file exists
+     *
      * @param fname File location
      * @return true/false
      */
@@ -273,6 +299,7 @@ public class MedicationImporter {
 
     /**
      * Delete a file from the system
+     *
      * @param fname File location
      * @return success/failure
      */
@@ -283,6 +310,7 @@ public class MedicationImporter {
 
     /**
      * will append a line to a file
+     *
      * @param s New line
      */
     private void writeLine(String s) {
@@ -300,13 +328,13 @@ public class MedicationImporter {
                 try {
                     bw.close();
                 } catch (Exception e) {
-                    // just ignore it
+                    int j = 1;
                 }
             }
         }
     }
 
-    public static void main(String params[]) {
+    public static void main(String[] params) {
         MedicationImporter medicationImporter = new MedicationImporter();
         medicationImporter.run("C:\\Users\\David\\Documents\\ibd\\medicationImport.xls",
                 "C:\\Users\\David\\Documents\\ibd\\medicationImport.sql");
