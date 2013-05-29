@@ -47,6 +47,22 @@ public class EmailQueueDaoImpl extends AbstractHibernateDAO<EmailQueue> implemen
     }
 
     @Override
+    public List<EmailQueue> getEmailQueueList(Long jobId) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<EmailQueue> criteria = builder.createQuery(EmailQueue.class);
+
+        Root<EmailQueue> root = criteria.from(EmailQueue.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(root.get(EmailQueue_.job), jobId));
+        wherePredicates.add(builder.equal(root.get(EmailQueue_.status), SendEmailEnum.FAILED));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
     public EmailQueue get(Long jobId, Long messageId, Long userId) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<EmailQueue> criteria = builder.createQuery(EmailQueue.class);
@@ -58,7 +74,6 @@ public class EmailQueueDaoImpl extends AbstractHibernateDAO<EmailQueue> implemen
         wherePredicates.add(builder.equal(root.get(EmailQueue_.job), jobId));
         wherePredicates.add(builder.equal(root.get(EmailQueue_.message), messageId));
         wherePredicates.add(builder.equal(root.get(EmailQueue_.recipient), userId));
-
 
         buildWhereClause(criteria, wherePredicates);
 

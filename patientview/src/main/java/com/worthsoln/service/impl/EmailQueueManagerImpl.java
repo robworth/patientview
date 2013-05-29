@@ -36,6 +36,11 @@ public class EmailQueueManagerImpl implements EmailQueueManager {
     }
 
     @Override
+    public List<EmailQueue> getEmailQueueList(Long jobId) {
+        return emailQueueDao.getEmailQueueList(jobId);
+    }
+
+    @Override
     public EmailQueue get(Long jobId, Long messageId, Long userId) {
         return emailQueueDao.get(jobId, messageId, userId);
     }

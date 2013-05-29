@@ -13,6 +13,9 @@
     <!--Define SendEmailJobQuartzScheduler class-->
     <bean id="sendEmailJobQuartzScheduler" class="com.worthsoln.quartz.SendEmailJobQuartzScheduler" />
 
+    <!--Define CheckSendEmailStatusJobQuartzScheduler class-->
+    <bean id="checkSendEmailStatusJobQuartzScheduler" class="com.worthsoln.quartz.CheckSendEmailStatusJobQuartzScheduler" />
+
     <!--Define SendEmailJob's method configuration-->
     <bean id="createEmailQueueJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
@@ -33,6 +36,16 @@
         </property>
     </bean>
 
+    <!--Define checkSendEamilStatusJob's method configuration-->
+    <bean id="checkSendEamilStatusJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="checkSendEmailStatusJobQuartzScheduler" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+    </bean>
+
     <!--triggers -->
     <bean id="createEmailQueueJobProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="createEmailQueueJobTask" />
@@ -45,11 +58,18 @@
         <property name="cronExpression" value="${quartz.sendMail.cron}" />
     </bean>
 
+    <!--triggers -->
+    <bean id="checkSendEmailStatusProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="checkSendEamilStatusJobTask" />
+        <property name="cronExpression" value="${quartz.checkSendEmailStatus.cron}" />
+    </bean>
+
     <bean id="startQuartz" lazy-init="true" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
                 <ref bean="createEmailQueueJobProcessDoTime" />
                 <ref bean="sendEmailProcessDoTime" />
+                <ref bean="checkSendEmailStatusProcessDoTime" />
             </list>
         </property>
         <property name="taskExecutor" ref="executor" />

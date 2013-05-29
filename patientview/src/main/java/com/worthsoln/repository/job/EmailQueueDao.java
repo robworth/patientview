@@ -18,5 +18,7 @@ public interface EmailQueueDao {
 
     List<EmailQueue> getEmailQueueList();
 
+    List<EmailQueue> getEmailQueueList(Long jobId);
+
     EmailQueue get(Long jobId, Long messageId, Long userId);
 }

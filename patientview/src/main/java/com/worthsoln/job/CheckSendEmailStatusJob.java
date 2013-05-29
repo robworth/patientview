@@ -1,5 +1,6 @@
 package com.worthsoln.job;
 
+import com.worthsoln.batch.CheckSendEmailStatusReader;
 import com.worthsoln.batch.SendEmailReader;
 import com.worthsoln.patientview.model.EmailQueue;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
@@ -12,19 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
 
 /**
- * Send the email to special group members after the unitadmin send the bulk message
+ * According the status of every entry in EmailQueue,to check whether the job succeeded
  */
 @Component
-public class SendEmailJob extends BatchJob {
+public class CheckSendEmailStatusJob extends BatchJob {
 
-    @Resource(name = "sendEmailBatchJob")
+    @Resource(name = "checkSendEmailStatusBatchJob")
     private Job batchJob;
 
-    @Resource(name = "sendEmailReader")
-    private SendEmailReader reader;
+    @Resource(name = "checkSendEmailStatusReader")
+    private CheckSendEmailStatusReader reader;
 
     @Autowired
     private EmailQueueManager emailQueueManager;
@@ -39,21 +40,8 @@ public class SendEmailJob extends BatchJob {
 
     @Override
     protected void onJobSkipInWriter(Object holder, Throwable problem) {
+        LOGGER.debug(problem.getMessage());
 
-        if (holder instanceof EmailQueue) {
-            EmailQueue emailQueue = (EmailQueue) holder;
-
-            try {
-                emailQueue.setStatus(SendEmailEnum.FAILED);
-                emailQueue.setFinished(new Date());
-                emailQueue.addReport(problem.getMessage());
-                emailQueue.convertReports();
-                emailQueueManager.save((EmailQueue) holder);
-
-            } catch (Exception e) {
-                LOGGER.debug(e.getMessage());
-            }
-        }
     }
 
     @Override
