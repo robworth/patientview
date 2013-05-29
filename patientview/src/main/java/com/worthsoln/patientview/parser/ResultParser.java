@@ -129,7 +129,7 @@ public class ResultParser {
         }
     }
 
-    private void collectTestResults(Document doc) throws XmlImportException {
+    private void collectTestResults(Document doc) throws Exception {
         NodeList testNodeList = doc.getElementsByTagName("test");
         XmlImportException xmlImportException = new XmlImportException();
 
