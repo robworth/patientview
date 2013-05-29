@@ -12,7 +12,5 @@ public interface JobManager {
 
     List<Job> getJobList(SendEmailEnum status);
 
-    void update(Job job);
-
     List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType);
 }

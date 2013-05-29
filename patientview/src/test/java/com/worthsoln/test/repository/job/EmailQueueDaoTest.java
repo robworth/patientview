@@ -46,10 +46,11 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         assertEquals("User not stored", checkEmailQueue.getRecipient(), job.getCreator());
     }
 
+    @Test
     public void testGetEmailQueueList() throws Exception {
-        User user1 = repositoryHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1");
-        User user2 = repositoryHelpers.createUser("test 2", "tester2@test.com", "test2", "Test 2");
-        User user3 = repositoryHelpers.createUser("test 3", "tester3@test.com", "test3", "Test 3");
+        User user1 = repositoryHelpers.createUser("test 4", "tester1@test.com", "test1", "Test 1");
+        User user2 = repositoryHelpers.createUser("test 5", "tester2@test.com", "test2", "Test 2");
+        User user3 = repositoryHelpers.createUser("test 6", "tester3@test.com", "test3", "Test 3");
         Job job = getJob();
 
         EmailQueue queue1 = new EmailQueue();
@@ -62,14 +63,14 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         EmailQueue queue2 = new EmailQueue();
         queue2.setJob(job);
         queue2.setMessage(job.getMessage());
-        queue2.setRecipient(user1);
-        queue1.setStatus(SendEmailEnum.FAILED);
+        queue2.setRecipient(user2);
+        queue2.setStatus(SendEmailEnum.FAILED);
         emailQueueDao.save(queue2);
 
         EmailQueue queue3 = new EmailQueue();
         queue3.setJob(job);
         queue3.setMessage(job.getMessage());
-        queue3.setRecipient(user1);
+        queue3.setRecipient(user3);
         queue3.setStatus(SendEmailEnum.SUCCEEDED);
         emailQueueDao.save(queue3);
 
@@ -77,13 +78,13 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         List<EmailQueue> checkEmailQueueList2 = emailQueueDao.getEmailQueueList(job.getId());
 
         assertNotNull(checkEmailQueueList1);
-        assertEquals("Wrong number of job size", checkEmailQueueList1.size(), 2);
+        assertEquals("Wrong number of job list 1 size", checkEmailQueueList1.size(), 2);
         assertFalse("EmailQueue 3 found in SendEmailEnum SUCCEEDED", checkEmailQueueList1.contains(queue3));
         assertTrue("EmailQueue 1 not found in SendEmailEnum SENDING", checkEmailQueueList1.contains(queue1));
         assertTrue("EmailQueue 2 not found in SendEmailEnum FAILED", checkEmailQueueList1.contains(queue2));
 
         assertNotNull(checkEmailQueueList2);
-        assertEquals("Wrong number of job size", checkEmailQueueList2.size(), 1);
+        assertEquals("Wrong number of job list 2 size", checkEmailQueueList2.size(), 1);
         assertFalse("EmailQueue 1 found in SendEmailEnum SUCCEEDED", checkEmailQueueList2.contains(queue1));
         assertFalse("EmailQueue 3 found in SendEmailEnum SUCCEEDED", checkEmailQueueList2.contains(queue3));
         assertTrue("EmailQueue 2 not found in SendEmailEnum SENDING", checkEmailQueueList2.contains(queue2));

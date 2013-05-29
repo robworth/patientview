@@ -34,11 +34,6 @@ public class JobManagerImpl implements JobManager {
     }
 
     @Override
-    public void update(Job job) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType) {
         return userManager.getUsers(user, specialty, userType);
     }
