@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *      Test UserMappingDao and UserDao
@@ -279,5 +280,84 @@ public class UserDaoTest extends BaseDaoTest {
         assertEquals("incorrect number of duplicates found for nhsno1", 1, userMappings.size());
 
         assertEquals("incorrect duplicate found for nhsno1", "usernameDuplicate1", userMappings.get(0).getUsername());
+    }
+
+    @Test
+    public void testGetUsers() {
+        // Add usermapping
+        UserMapping userMapping1 = new UserMapping();
+        userMapping1.setSpecialty(specialty);
+        userMapping1.setNhsno("nhsno1");
+        userMapping1.setUnitcode("unitcode1");
+        userMapping1.setUsername("testname1");
+
+        userMappingDao.save(userMapping1);
+
+        UserMapping userMapping2 = new UserMapping();
+        userMapping2.setSpecialty(specialty);
+        userMapping2.setNhsno("nhsno1");
+        userMapping2.setUnitcode("unitcode1");
+        userMapping2.setUsername("testname2");
+
+        userMappingDao.save(userMapping2);
+
+        UserMapping userMapping3 = new UserMapping();
+        userMapping3.setSpecialty(specialty);
+        userMapping3.setNhsno("nhsno1");
+        userMapping3.setUnitcode("unitcode1");
+        userMapping3.setUsername("testname3-GP");
+
+        userMappingDao.save(userMapping3);
+
+        // Add user
+        User user = new User();
+        user.setEmail("test@worthsolns.com");
+        user.setName("Firstname Lastname");
+        user.setPassword("password");
+        user.setUsername("username1");
+        userDao.save(user);
+
+        User user1 = new User();
+        user1.setEmail("test1@worthsolns.com");
+        user1.setName("Firstname Lastname1");
+        user1.setPassword("password1");
+        user1.setUsername("testname1");
+        userDao.save(user1);
+
+        User user2 = new User();
+        user2.setEmail("test2@worthsolns.com");
+        user2.setName("Firstname Lastname2");
+        user2.setPassword("password2");
+        user2.setUsername("testname2");
+        userDao.save(user2);
+
+        User user3 = new User();
+        user3.setEmail("test3@worthsolns.com");
+        user3.setName("Firstname Lastname3");
+        user3.setPassword("password3");
+        user3.setUsername("testname3-GP");
+        userDao.save(user3);
+
+        User user4 = new User();
+        user4.setEmail("test2@worthsolns.com");
+        user4.setName("Firstname Lastname2");
+        user4.setPassword("password2");
+        user4.setUsername("username2");
+        userDao.save(user4);
+
+        // Add SpecialtyUserRole
+        repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
+        repositoryHelpers.createSpecialtyUserRole(specialty, user1, "patient");
+        repositoryHelpers.createSpecialtyUserRole(specialty, user2, "patient");
+        repositoryHelpers.createSpecialtyUserRole(specialty, user3, "patient");
+        repositoryHelpers.createSpecialtyUserRole(specialty, user4, "patient");
+
+        List<User> checkUserList = userDao.get(user, specialty, "patient");
+
+        assertEquals("Wrong number of users", checkUserList.size(), 2);
+        assertFalse("User 3 found in users", checkUserList.contains(user3));
+        assertFalse("User 4 found in users", checkUserList.contains(user4));
+        assertTrue("User 1 not found in users", checkUserList.contains(user1));
+        assertTrue("User 2 not found in users", checkUserList.contains(user2));
     }
 }
