@@ -88,7 +88,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
         String sql = "SELECT "
-                + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
+                + "user.username,  user.password, user.name, user.email, user.emailverified, user.accountlocked, "
+                + "usermapping.nhsno, usermapping.unitcode, "
                 + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
                 + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = patient.centreCode "
@@ -140,10 +141,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 "   user.password, " +
                 "   user.name, " +
                 "   user.email, " +
+                "   user.emailverified, " +
                 "   user.lastlogon, " +
                 "   usermapping.nhsno, " +
                 "   usermapping.unitcode, " +
                 "   user.firstlogon, " +
+                "   user.accountlocked, " +
                 "   patient.treatment, " +
                 "   patient.dateofbirth " +
                 "FROM " +
@@ -212,6 +215,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setPassword(resultSet.getString("password"));
             patientLogonWithTreatment.setName(resultSet.getString("name"));
             patientLogonWithTreatment.setEmail(resultSet.getString("email"));
+            patientLogonWithTreatment.setEmailverfied(resultSet.getBoolean("emailverified"));
+            patientLogonWithTreatment.setAccountlocked(resultSet.getBoolean("accountlocked"));
             patientLogonWithTreatment.setNhsno(resultSet.getString("nhsno"));
             patientLogonWithTreatment.setFirstlogon(resultSet.getBoolean("firstlogon"));
             patientLogonWithTreatment.setLastlogon(resultSet.getDate("lastlogon"));
