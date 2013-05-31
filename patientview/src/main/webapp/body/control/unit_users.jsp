@@ -18,7 +18,7 @@
         <th class="tableheader">Email</th>
         <th class="tableheader">Email Verified</th>
         <th class="tableheader">Last Login</th>
-        <th class="tableheader">Password Locked</th>
+        <th class="tableheader">Password</th>
         <th></th>
         <th></th>
       </tr>
