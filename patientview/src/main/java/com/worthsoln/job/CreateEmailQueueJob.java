@@ -63,12 +63,14 @@ public class CreateEmailQueueJob extends BatchJob {
     @Override
     protected void onRunError(Exception e) {
         LOGGER.debug(e.getMessage());
-        for (com.worthsoln.patientview.model.Job job : jobs) {
-            job.addReport(e.getMessage());
-            job.convertReports();
-            job.setFinished(new Date());
-            job.setStatus(SendEmailEnum.FAILED);
-            jobManager.save(job);
+        if (jobs != null) {
+            for (com.worthsoln.patientview.model.Job job : jobs) {
+                job.addReport(e.getMessage());
+                job.convertReports();
+                job.setFinished(new Date());
+                job.setStatus(SendEmailEnum.FAILED);
+                jobManager.save(job);
+            }
         }
     }
 

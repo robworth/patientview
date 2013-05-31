@@ -6,6 +6,5 @@ public enum SendEmailEnum {
     SENDING,
     SUCCEEDED,
     FAILED,
-    PENDING,
-    RUNNING
+    PENDING
 }

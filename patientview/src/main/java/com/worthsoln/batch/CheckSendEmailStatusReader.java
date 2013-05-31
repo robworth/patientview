@@ -29,17 +29,50 @@ public class CheckSendEmailStatusReader extends ListItemReader<Object> {
         List<Object> list = new ArrayList<Object>();
         List<Job> jobs = jobManager.getJobList(SendEmailEnum.SENT);
         List<EmailQueue> emailQueues;
+        boolean isFailed = false;
+        boolean hasSucceeded = false;
+        boolean hasSending = false;
 
         for (Job job : jobs) {
+            isFailed = false;
+            hasSucceeded = false;
+            hasSending = false;
+
             emailQueues = emailQueueManager.getEmailQueueList(job.getId());
 
-            if (emailQueues != null && !emailQueues.isEmpty()) {
-                job.setStatus(SendEmailEnum.FAILED);
-            } else {
-                job.setStatus(SendEmailEnum.SUCCEEDED);
+            for (EmailQueue queue : emailQueues) {
+                if (SendEmailEnum.SENDING.equals(queue.getStatus())) {
+                    hasSending = true;
+                    break;
+                }
+                if (SendEmailEnum.SUCCEEDED.equals(queue.getStatus())) {
+                    hasSucceeded = true;
+                }
+
+                if (SendEmailEnum.FAILED.equals(queue.getStatus())) {
+                    isFailed = true;
+                    break;
+                }
             }
-            list.add(job);
+
+            if (hasSending) {
+                continue;
+            }
+
+            if (emailQueues != null && !emailQueues.isEmpty()) {
+                if (hasSucceeded == true && isFailed == true) {
+                    job.setStatus(SendEmailEnum.FAILED);
+                    list.add(job);
+                } else if (hasSucceeded == true && isFailed == false) {
+                    job.setStatus(SendEmailEnum.SUCCEEDED);
+                    list.add(job);
+                } else if (hasSucceeded == false && isFailed == true) {
+                    job.setStatus(SendEmailEnum.FAILED);
+                    list.add(job);
+                } else {}
+            }
         }
+
         setList(list);
     }
 }

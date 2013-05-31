@@ -52,12 +52,9 @@ public class EmailQueueDaoImpl extends AbstractHibernateDAO<EmailQueue> implemen
         CriteriaQuery<EmailQueue> criteria = builder.createQuery(EmailQueue.class);
 
         Root<EmailQueue> root = criteria.from(EmailQueue.class);
-        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(builder.equal(root.get(EmailQueue_.job), jobId));
-        wherePredicates.add(builder.equal(root.get(EmailQueue_.status), SendEmailEnum.FAILED));
-
-        buildWhereClause(criteria, wherePredicates);
+        criteria.where(builder.equal(root.get(EmailQueue_.job), jobId));
+        criteria.orderBy(builder.desc(root.get(EmailQueue_.status)));
 
         return getEntityManager().createQuery(criteria).getResultList();
     }

@@ -79,15 +79,15 @@ public class EmailQueueDaoTest extends BaseDaoTest {
 
         assertNotNull(checkEmailQueueList1);
         assertEquals("Wrong number of job list 1 size", checkEmailQueueList1.size(), 2);
-        assertFalse("EmailQueue 3 found in SendEmailEnum SUCCEEDED", checkEmailQueueList1.contains(queue3));
+        assertFalse("EmailQueue 3 found in SendEmailEnum SENDING", checkEmailQueueList1.contains(queue3));
         assertTrue("EmailQueue 1 not found in SendEmailEnum SENDING", checkEmailQueueList1.contains(queue1));
         assertTrue("EmailQueue 2 not found in SendEmailEnum FAILED", checkEmailQueueList1.contains(queue2));
 
         assertNotNull(checkEmailQueueList2);
-        assertEquals("Wrong number of job list 2 size", checkEmailQueueList2.size(), 1);
-        assertFalse("EmailQueue 1 found in SendEmailEnum SUCCEEDED", checkEmailQueueList2.contains(queue1));
-        assertFalse("EmailQueue 3 found in SendEmailEnum SUCCEEDED", checkEmailQueueList2.contains(queue3));
-        assertTrue("EmailQueue 2 not found in SendEmailEnum SENDING", checkEmailQueueList2.contains(queue2));
+        assertEquals("Wrong number of job list 2 size", checkEmailQueueList2.size(), 3);
+        assertTrue("EmailQueue 1 found in SendEmailEnum SUCCEEDED", checkEmailQueueList2.contains(queue1));
+        assertTrue("EmailQueue 2 found in SendEmailEnum FAILED", checkEmailQueueList2.contains(queue1));
+        assertTrue("EmailQueue 3 found in SendEmailEnum SUCCEEDED", checkEmailQueueList2.contains(queue3));
     }
 
     private Job getJob(){

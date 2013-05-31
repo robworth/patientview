@@ -1,9 +1,7 @@
 package com.worthsoln.batch;
 
 import com.worthsoln.patientview.model.EmailQueue;
-import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.EmailQueueManager;
-import org.apache.poi.hssf.record.formula.functions.T;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

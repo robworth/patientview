@@ -24,15 +24,15 @@
         </property>
     </bean>
 
+    <bean id="batchTransactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+
     <!--Define skip policy-->
     <bean id="alwaysSkipItemSkipPolicy" class="org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy" />
-
-    <bean id="batchTransationManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
 
     <!--Define createEamilQueueJob details-->
     <batch:job id="createEamilQueueBatchJob">
         <batch:step id="createEmailQueueStep">
-            <batch:tasklet transaction-manager="batchTransationManager">
+            <batch:tasklet transaction-manager="batchTransactionManager">
                 <batch:chunk reader="createEmailQueueReader" writer="createEmailQueueWriter"
                              commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
                 </batch:chunk>
@@ -49,7 +49,7 @@
     <!--Define sendEmailJob details-->
     <batch:job id="sendEmailBatchJob" restartable="false">
         <batch:step id="sendEmailStep">
-            <batch:tasklet transaction-manager="transactionManager">
+            <batch:tasklet transaction-manager="batchTransactionManager">
                 <batch:chunk reader="sendEmailReader" writer="sendEmailWriter"
                              commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
                 </batch:chunk>
@@ -66,7 +66,7 @@
     <!--Define checkSendEmailStatusJob details-->
     <batch:job id="checkSendEmailStatusBatchJob">
         <batch:step id="checkSendEmailStatusStep">
-            <batch:tasklet transaction-manager="batchTransationManager">
+            <batch:tasklet transaction-manager="batchTransactionManager">
                 <batch:chunk reader="checkSendEmailStatusReader" writer="checkSendEmailStatusWriter"
                              commit-interval="100" skip-policy="alwaysSkipItemSkipPolicy">
                 </batch:chunk>
