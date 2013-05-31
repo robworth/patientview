@@ -30,7 +30,7 @@
                 <th class="tableheader">Email</th>
                 <th class="tableheader">Email Verified</th>
                 <th class="tableheader">Last Logon</th>
-                <th class="tableheader">Password Locked</th>
+                <th class="tableheader">Password</th>
                 <th colspan="4">&nbsp;</th>
             </tr>
             </thead>
