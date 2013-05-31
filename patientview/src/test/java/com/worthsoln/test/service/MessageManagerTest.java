@@ -4,6 +4,7 @@ import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Specialty;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.service.MessageManager;
 import com.worthsoln.test.helpers.SecurityHelpers;
 import com.worthsoln.test.helpers.ServiceHelpers;
@@ -192,5 +193,24 @@ public class MessageManagerTest extends BaseServiceTest {
         // now pull back and check unread messages for user 1
         int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user.getId());
         assertEquals("Wrong number of unread messages", checkNumberUnreadMessages, 2);
+    }
+
+    @Test
+    public void testCreateGroupMessage() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        Message message = messageManager.createGroupMessage(mockHttpSession.getServletContext(), "Test subject",
+                "This is my first message", user, "allPatients", "BULK");
+
+        assertTrue("Invalid id for message", message.getId() > 0);
+
+        // now try and pull back conversations for both users - both should have 1 conversation
+        List<Conversation> checkUser1Conversations = messageManager.getConversations(user.getId());
+        assertEquals("Wrong number of conversations for user 2", checkUser1Conversations.size(), 1);
+
+        // now pull back the messages for a conversation to see if the message was actually saved
+        List<Message> checkMessages = messageManager.getMessages(checkUser1Conversations.get(0).getId());
+        assertEquals("Wrong number of messages for conversation", checkMessages.size(), 1);
+        assertEquals("Wrong GroupEnum of messages ", checkMessages.get(0).getGroupEnum(), GroupEnum.ALL_PATIENTS);
     }
 }

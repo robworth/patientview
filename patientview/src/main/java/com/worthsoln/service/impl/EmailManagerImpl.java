@@ -127,6 +127,38 @@ public class EmailManagerImpl implements EmailManager {
         }
     }
 
+    @Override
+    public void sendEmail(String from, String[] to, String subject, String body) throws Exception{
+
+        if (!StringUtils.hasLength(from)) {
+            throw new IllegalArgumentException("Cannot send mail missing 'from'");
+        }
+
+        if (!StringUtils.hasLength(subject)) {
+            throw new IllegalArgumentException("Cannot send mail missing 'subject'");
+        }
+
+        if (!StringUtils.hasLength(body)) {
+            throw new IllegalArgumentException("Cannot send mail missing 'body'");
+        }
+
+        if ((to == null || to.length == 0)) {
+            throw new IllegalArgumentException("Cannot send mail missing recipients");
+        }
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper;
+
+        messageHelper = new MimeMessageHelper(message, true);
+        messageHelper.setTo(to);
+        messageHelper.setFrom(from);
+        messageHelper.setSubject(subject);
+        messageHelper.setText(body, false);
+
+        javaMailSender.send(messageHelper.getMimeMessage());
+    }
+
+
     public JavaMailSender getJavaMailSender() {
         return javaMailSender;
     }

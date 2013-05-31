@@ -127,4 +127,29 @@ public class UserManagerTest extends BaseServiceTest {
 
         assertFalse("User still exists in Radar", userManager.userExistsInRadar(newUser.getId()));
     }
+
+    @Test
+    public void testGetUsers() {
+
+        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "unitA", "nhs1", specialty1);
+        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "unitA", "nhstest1", specialty1);
+        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "unitA", "nhstest2", specialty1);
+        User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "unitA", "nhstest3", specialty1);
+        User user4 = serviceHelpers.createUserWithMapping("testname4", "test4@admin.com", "p", "test4", "unitB", "nhstest4", specialty1);
+
+        // Add SpecialtyUserRole
+        serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "unitadmin");
+        serviceHelpers.createSpecialtyUserRole(specialty1, user1, "patient");
+        serviceHelpers.createSpecialtyUserRole(specialty1, user2, "patient");
+        serviceHelpers.createSpecialtyUserRole(specialty1, user3, "patient");
+        serviceHelpers.createSpecialtyUserRole(specialty1, user4, "patient");
+
+        List<User> checkUserList = userManager.getUsers(adminUser, specialty1, "patient");
+
+        assertEquals("Wrong number of users", checkUserList.size(), 2);
+        assertFalse("User 3 found in users", checkUserList.contains(user3));
+        assertFalse("User 4 found in users", checkUserList.contains(user4));
+        assertTrue("User 1 not found in users", checkUserList.contains(user1));
+        assertTrue("User 2 not found in users", checkUserList.contains(user2));
+    }
 }

@@ -90,7 +90,9 @@
                         <div class="alert alert-error js-message-errors" style="display: none">
                             <strong>You do not have any messages.</strong>
                         </div>
-                        <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
+                        <logic:notPresent name="isBulkMessage">
+                            <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
+                        </logic:notPresent>
                     </form>
                 </section>
 
