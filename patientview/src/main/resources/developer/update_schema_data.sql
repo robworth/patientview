@@ -103,6 +103,14 @@ Alter TABLE message
 ADD COLUMN type varchar(255) DEFAULT NULL,
 ADD COLUMN groupEnum varchar(255) DEFAULT NULL;
 
+--
+-- Update user table
+--
+UPDATE user
+SET
+    isrecipient = 0,
+    isclinician = 0;
+
 
 
 SET AUTOCOMMIT=1;
