@@ -38,7 +38,13 @@ public class ConversationAction extends BaseAction {
         request.setAttribute(Messaging.CONVERSATION_PARAM, conversation);
         request.setAttribute(Messaging.MESSAGES_PARAM, getMessageManager().getMessages(conversation.getId()));
 
-        getMessageManager().markMessagesAsReadForConversation(loggedInUser.getId(), conversation.getId());
+        // single message the type is null
+        if (conversation.getType() == null) {
+            getMessageManager().markMessagesAsReadForConversation(loggedInUser.getId(), conversation.getId());
+        } else {
+            getGroupMessageManager().markGroupMessageAsReadForConversation(loggedInUser, conversation);
+            request.setAttribute(Messaging.IS_BULK_MESSAGE_PARAM, true);
+        }
 
         request.setAttribute(Messaging.CONTENT_PARAM, "");
 

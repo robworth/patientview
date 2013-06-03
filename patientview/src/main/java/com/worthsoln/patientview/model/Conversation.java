@@ -1,10 +1,14 @@
 package com.worthsoln.patientview.model;
 
+import com.worthsoln.patientview.model.enums.GroupEnum;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Date;
 
 @Entity
@@ -44,6 +48,13 @@ public class Conversation extends BaseModel {
     // this will be set so that the user in the message being shown to the user is the other person in the message
     @Transient
     private User otherUser;
+
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private GroupEnum groupEnum;
+
+    @Column(nullable = true)
+    private String type;
 
     public boolean isDeleted() {
         return deleted;
@@ -123,5 +134,21 @@ public class Conversation extends BaseModel {
 
     public void setOtherUser(User otherUser) {
         this.otherUser = otherUser;
+    }
+
+    public GroupEnum getGroupEnum() {
+        return groupEnum;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setGroupEnum(GroupEnum groupEnum) {
+        this.groupEnum = groupEnum;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

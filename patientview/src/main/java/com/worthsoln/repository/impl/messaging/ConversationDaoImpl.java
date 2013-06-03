@@ -2,6 +2,7 @@ package com.worthsoln.repository.impl.messaging;
 
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Conversation_;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.messaging.ConversationDao;
 import org.springframework.stereotype.Repository;
@@ -57,6 +58,33 @@ public class ConversationDaoImpl extends AbstractHibernateDAO<Conversation> impl
                 builder.equal(root.get(Conversation_.participant2), participantId)));
 
         buildWhereClause(criteria, wherePredicates);
+
+        criteria.orderBy(builder.asc(root.get(Conversation_.started)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<Conversation> getConversations(Long participantId, GroupEnum groupEnum) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Conversation> criteria = builder.createQuery(Conversation.class);
+
+        Root<Conversation> root = criteria.from(Conversation.class);
+
+        Predicate predicate1 = builder.and(
+                builder.equal(root.get(Conversation_.deleted), false),
+                builder.or(builder.equal(root.get(Conversation_.participant1), participantId),
+                builder.equal(root.get(Conversation_.participant2), participantId)));
+
+        Predicate predicate2 = builder.and(
+                builder.equal(root.get(Conversation_.deleted), false),
+                builder.equal(root.get(Conversation_.type), "BULK"),
+                builder.equal(root.get(Conversation_.groupEnum), groupEnum)
+        );
+
+        predicate2 = builder.or(predicate1, predicate2);
+
+        criteria.where(predicate2);
 
         criteria.orderBy(builder.asc(root.get(Conversation_.started)));
 

@@ -104,7 +104,7 @@ messages.sendMessage = function(form) {
 
     // if no convo el then its a new convo
     if (conversationIdEl.length === 0) {
-        if (!messages.validateNumber(recipientIdEl.val())) {
+        if (!messages.validateRecipient(recipientIdEl.val())) {
             errors.push('Please select a recipient');
         }
 
@@ -149,7 +149,11 @@ messages.sendMessage = function(form) {
                         messagesEl.append(messages.getMessageHtml(data.message));
                         contentEl.val('');
                     } else {
-                        window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
+                        if (recipientIdEl.val() == "allAdmins" || recipientIdEl.val() == "allPatients" || recipientIdEl.val() == "allStaff") {
+                            window.location.href = "/control/messaging/message_confirm.jsp"
+                        } else {
+                            window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
+                        }
                     }
                 }
             },
@@ -167,6 +171,10 @@ messages.validateString = function(s) {
 
 messages.validateNumber = function(n) {
     return n > 0 && !isNaN(n);
+};
+
+messages.validateRecipient = function(n) {
+    return n != null && n != "";
 };
 
 // add in a dom ready to fire utils.init

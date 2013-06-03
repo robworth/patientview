@@ -244,7 +244,7 @@
       <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
           <form-property name="content" type="java.lang.String"/>
           <form-property name="subject" type="java.lang.String"/>
-          <form-property name="recipientId" type="java.lang.Long"/>
+          <form-property name="recipientId" type="java.lang.String"/>
           <form-property name="conversationId" type="java.lang.Long"/>
       </form-bean>
   </form-beans>

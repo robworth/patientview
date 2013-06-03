@@ -34,4 +34,9 @@ public class EmailUtils {
                                  String subject, String emailText) {
         LegacySpringUtils.getEmailManager().sendEmail(fromAddress, toAddresses, ccAddresses, subject, emailText);
     }
+
+    public static void sendEmail(String fromAddress, String[] toAddresses, String subject, String emailText)
+            throws Exception {
+        LegacySpringUtils.getEmailManager().sendEmail(fromAddress, toAddresses, subject, emailText);
+    }
 }
