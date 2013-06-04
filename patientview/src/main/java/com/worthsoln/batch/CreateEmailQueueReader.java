@@ -9,6 +9,7 @@ import com.worthsoln.service.EmailQueueManager;
 import com.worthsoln.service.JobManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,9 @@ public class CreateEmailQueueReader extends ListItemReader<Object> {
 
             if (!users.isEmpty()) {
                 for (User user : users) {
-                    if (emailQueueManager.get(job.getId(), job.getMessage().getId(), user.getId()) == null) {
+                    if (StringUtils.hasText(user.getEmail())
+                            && !job.getCreator().getId().equals(user.getId())
+                            && emailQueueManager.get(job.getId(), job.getMessage().getId(), user.getId()) == null) {
                         queue = new EmailQueue();
                         queue.setJob(job);
                         queue.setMessage(job.getMessage());

@@ -3,17 +3,12 @@ package com.worthsoln.patientview.model;
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Column;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.util.Date;
 
 @Entity
+@Table(name = "pv_job")
 public class Job extends BaseModel {
 
     @ManyToOne(optional = false)

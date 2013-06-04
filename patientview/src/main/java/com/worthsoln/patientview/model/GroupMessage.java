@@ -6,8 +6,11 @@ import com.worthsoln.patientview.model.Conversation;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;@Entity
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "pv_groupmessage")
 public class GroupMessage extends BaseModel {
 
     @ManyToOne(optional = false)

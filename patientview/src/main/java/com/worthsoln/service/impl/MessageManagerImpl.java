@@ -205,7 +205,6 @@ public class MessageManagerImpl implements MessageManager {
         // add group message
         message.setConversation(conversation);
         message.setSender(sender);
-        message.setRecipient(sender);
         message.setContent(content);
         message.setType(type);
         messageDao.save(message);
@@ -443,9 +442,9 @@ public class MessageManagerImpl implements MessageManager {
             // type is not null indicate the group message
             if (conversation.getType() != null) {
                 // the bulk message is not new for unitadmin who send it
-                if (!(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()) && participantId.equals(conversation.getParticipant2().getId()))) {
+                if (!(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()))) {
                     if (groupMessageManager.get(participantId, conversation) ==  null) {
-                    conversation.setNumberUnread(1);
+                        conversation.setNumberUnread(1);
                     }
                 }
             } else {
