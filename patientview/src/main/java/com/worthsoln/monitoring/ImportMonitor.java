@@ -397,7 +397,7 @@ public final class ImportMonitor {
      * Checks if there is enough data (file counts) in log file for monitoring
      */
     private static boolean areThereEnoughDataToMonitor(List<CountRecord> countRecords) {
-        if (countRecords.size() != numberOfLinesToRead) {
+        if (countRecords.size() < numberOfLinesToRead) {
             LOGGER.info("There are not enough data (only {} lines) to monitor. There should be at least {} lines "
                     + "for Import monitor to process.",
                     countRecords.size(), numberOfLinesToRead);
