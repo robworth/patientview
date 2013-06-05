@@ -60,35 +60,62 @@ public class DemographicsManagerImpl implements DemographicsManager {
     }
 
     public boolean isNhsNumberValid(String nhsNumber) {
-        nhsNumber = nhsNumber.trim().replace(" ", "");  //remove spaces before checking
+        return isNhsNumberValid(nhsNumber, false);
+    }
+
+    public boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
+
+        // Remove all whitespace and non-visible characters such as tab, new line etc
+        nhsNumber = nhsNumber.replaceAll("\\s", "");
+
+        // Only permit 10 characters
         if (nhsNumber.length() != 10) {
             return false;
         }
 
-        //generate the checksum using modulus 11 algorithm
-        int checksum = 0;
-        //multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-        for (int i = 0; i <= 8; i++) {
-            int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
-            checksum += value;
-        }
-        //(modulus 11)
-        checksum = 11 - checksum % 11;
-        if (checksum == 11) {
-            checksum = 0;
+        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
+        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
+
+        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
+            return true;
         }
 
-        //does checksum match the 10th digit?
-        if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
-            return true;
-        } else {
-            return false;
+        return isNhsChecksumValid(nhsNumber);
+    }
+
+    private boolean isNhsChecksumValid(String nhsNumber) {
+        /**
+         * Generate the checksum using modulus 11 algorithm
+         */
+        int checksum = 0;
+
+        try {
+            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
+            for (int i = 0; i <= 8; i++) {
+                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
+                checksum += value;
+            }
+
+            //(modulus 11)
+            checksum = 11 - checksum % 11;
+
+            if (checksum == 11) {
+                checksum = 0;
+            }
+
+            // Does checksum match the 10th digit?
+            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false; // nhsNumber contains letters
         }
     }
 
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
     }
-
 
 }
