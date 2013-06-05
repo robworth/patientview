@@ -14,6 +14,7 @@ import com.worthsoln.service.UserManager;
 import com.worthsoln.service.GroupMessageManager;
 import com.worthsoln.service.SecurityUserManager;
 
+import org.apache.poi.util.StringUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -90,9 +91,12 @@ public class MessageManagerImpl implements MessageManager {
             groupEnum = GroupEnum.ALL_STAFF;
         } else if (securityUserManager.isRolePresent("patient")) {
             groupEnum = GroupEnum.ALL_PATIENTS;
-        } else {}
+        } else {
+            groupEnum = null;
+        }
 
         List<Conversation> conversations = conversationDao.getConversations(participantId, groupEnum);
+        conversations = this.canIncludeInConversations(conversations, participantId);
         populateConversations(conversations, participantId);
 
         // conversations need to be ordered by last activity which means when the last message in the thread was sent
@@ -104,6 +108,35 @@ public class MessageManagerImpl implements MessageManager {
         });
 
         return conversations;
+    }
+
+    public List<Conversation> canIncludeInConversations(List<Conversation> conversations, Long participantId) {
+        List<Conversation> conversationList = new ArrayList<Conversation>();
+        List<Message> messages;
+        User user = userManager.get(participantId);
+        List<Unit> units = unitManager.getUsersUnits(user);
+
+        if (conversations != null) {
+            for (Conversation conversation : conversations) {
+
+                if (StringUtils.hasLength(conversation.getType())) {
+                    messages = getMessages(conversation.getId());
+
+                    if (messages != null && !messages.isEmpty()) {
+                        for (Unit unit : units) {
+                            if (unit != null && unit.getId().equals(messages.get(0).getUnit().getId())) {
+                                conversationList.add(conversation);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    conversationList.add(conversation);
+                }
+            }
+        }
+
+        return conversationList;
     }
 
     @Override

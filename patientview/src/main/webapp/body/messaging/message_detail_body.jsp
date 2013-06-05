@@ -86,6 +86,11 @@
                     <form action="/send-message.do" class="js-message-form">
                         <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
                         <input type="hidden" class="js-message-conversation-id" value="<bean:write name="conversation" property="id" />" />
+                        <logic:present name="isBulkMessage">
+                            <div class="alert">
+                            <strong>This message was sent to <bean:write name="bulk_message_recipient"/> in <bean:write name="recipient_unit"/>. It is not possible to reply to it.</strong>
+                        </div>
+                        </logic:present>
                         <logic:notPresent name="isBulkMessage">
                             <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
                         </logic:notPresent>

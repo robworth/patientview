@@ -1,11 +1,9 @@
 package com.worthsoln.test.service;
 
-import com.worthsoln.patientview.model.Conversation;
-import com.worthsoln.patientview.model.Message;
-import com.worthsoln.patientview.model.Specialty;
-import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.test.helpers.SecurityHelpers;
 import com.worthsoln.test.helpers.ServiceHelpers;
 import org.junit.Before;
@@ -31,6 +29,9 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Inject
     private MessageManager messageManager;
+
+    @Inject
+    private UnitManager unitManager;
 
     private User user;
 
@@ -99,6 +100,10 @@ public class MessageManagerTest extends BaseServiceTest {
         List<Conversation> checkUser1Conversations = messageManager.getConversations(user.getId());
         assertEquals("Wrong number of conversations for user 1", checkUser1Conversations.size(), 1);
 
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user2, "unitadmin");
+
+        securityHelpers.loginAsUser(user2.getUsername(), specialty2);
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
         assertEquals("Wrong number of conversations for user 2", checkUser2Conversations.size(), 1);
 
@@ -142,6 +147,11 @@ public class MessageManagerTest extends BaseServiceTest {
 
         messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
                 user, user2);
+
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user2, "unitadmin");
+
+        securityHelpers.loginAsUser(user2.getUsername(), specialty2);
 
         // now pull abck conversation for user 2
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
@@ -199,8 +209,21 @@ public class MessageManagerTest extends BaseServiceTest {
     public void testCreateGroupMessage() throws Exception {
         MockHttpSession mockHttpSession = new MockHttpSession();
 
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user, "unitadmin");
+
+        securityHelpers.loginAsUser(user.getUsername(), specialty2);
+
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("UNITA");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty2);
+        unitManager.save(unitRm301);
+
         Message message = messageManager.createGroupMessage(mockHttpSession.getServletContext(), "Test subject",
-                "This is my first message", user, "allPatients", "BULK");
+                "This is my first message", user, "allPatients", "BULK", unitRm301);
 
         assertTrue("Invalid id for message", message.getId() > 0);
 

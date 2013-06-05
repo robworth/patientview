@@ -27,6 +27,8 @@ public class JobManagerTest extends BaseServiceTest {
     @Inject
     private JobManager jobManager;
 
+    @Inject
+    private UnitManager unitManager;
 
     @Test
     public void testAddGetJob() throws Exception {
@@ -69,10 +71,10 @@ public class JobManagerTest extends BaseServiceTest {
     @Test
     public void testGetSpecialGroupUsers() {
         Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
-        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "unitA", "nhs1", specialty1);
-        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "unitA", "nhstest1", specialty1);
-        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "unitA", "nhstest2", specialty1);
-        User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "unitA", "nhstest3", specialty1);
+        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "UNITA", "nhs1", specialty1);
+        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA", "nhstest1", specialty1);
+        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "UNITA", "nhstest2", specialty1);
+        User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "UNITA", "nhstest3", specialty1);
         User user4 = serviceHelpers.createUserWithMapping("testname4", "test4@admin.com", "p", "test4", "unitB", "nhstest4", specialty1);
 
         // Add SpecialtyUserRole
@@ -82,7 +84,15 @@ public class JobManagerTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty1, user3, "patient");
         serviceHelpers.createSpecialtyUserRole(specialty1, user4, "patient");
 
-        List<User> checkUserList = jobManager.getSpecialGroupUsers(adminUser, specialty1, "patient");
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("unitA");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty1);
+        unitManager.save(unitRm301);
+
+        List<User> checkUserList = jobManager.getSpecialGroupUsers(adminUser, specialty1, "patient", unitRm301);
 
         assertEquals("Wrong number of users", checkUserList.size(), 2);
         assertFalse("User 3 found in users", checkUserList.contains(user3));
