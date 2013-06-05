@@ -6,7 +6,6 @@ import com.solidstategroup.radar.web.pages.HomePage;
 import com.solidstategroup.radar.web.pages.ProfessionalsPage;
 import com.solidstategroup.radar.web.pages.RecruitmentPage;
 import com.solidstategroup.radar.web.pages.content.ConsentFormsPage;
-import com.solidstategroup.radar.web.pages.content.DiseaseIndexPage;
 import com.solidstategroup.radar.web.pages.content.MpgnPage;
 import com.solidstategroup.radar.web.pages.content.SrnsPage;
 import com.solidstategroup.radar.web.pages.login.ProfessionalsLoginPage;
@@ -29,7 +28,7 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
 
         addLogoutLink(userLoggedIn);
 
-        add(new BookmarkablePageLink<DiseaseIndexPage>("diseaseIndexPageLink", DiseaseIndexPage.class));
+//        add(new BookmarkablePageLink<DiseaseIndexPage>("diseaseIndexPageLink", DiseaseIndexPage.class));
 
         // Enter new patient - only visible when a professional is logged in
         BookmarkablePageLink enterNewPatientPageLink =
