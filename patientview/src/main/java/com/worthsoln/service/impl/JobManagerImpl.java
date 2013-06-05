@@ -34,7 +34,7 @@ public class JobManagerImpl implements JobManager {
     }
 
     @Override
-    public List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType) {
-        return userManager.getUsers(user, specialty, userType);
+    public List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType, Unit unit) {
+        return userManager.getUsers(user, specialty, userType, unit);
     }
 }

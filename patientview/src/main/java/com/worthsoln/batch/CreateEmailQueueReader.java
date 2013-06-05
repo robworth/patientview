@@ -45,7 +45,8 @@ public class CreateEmailQueueReader extends ListItemReader<Object> {
             users.addAll(jobManager.getSpecialGroupUsers(
                                 job.getCreator(),
                                 job.getSpecialty(),
-                                userType));
+                                userType,
+                                job.getMessage().getUnit()));
 
             if (!users.isEmpty()) {
                 for (User user : users) {

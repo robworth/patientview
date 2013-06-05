@@ -248,6 +248,7 @@
           <form-property name="subject" type="java.lang.String"/>
           <form-property name="recipientId" type="java.lang.String"/>
           <form-property name="conversationId" type="java.lang.Long"/>
+          <form-property name="unitCode" type="java.lang.String"/>
       </form-bean>
   </form-beans>
     

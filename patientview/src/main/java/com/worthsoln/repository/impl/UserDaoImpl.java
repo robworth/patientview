@@ -1,6 +1,7 @@
 package com.worthsoln.repository.impl;
 
 import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.model.User_;
 import com.worthsoln.repository.AbstractHibernateDAO;
@@ -33,7 +34,7 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
     }
 
     @Override
-    public List<User> get(User user, Specialty specialty, String userType) {
+    public List<User> get(User user, Specialty specialty, String userType, Unit unit) {
         String sql = "SELECT " +
                 "  u.* " +
                 "FROM " +
@@ -44,19 +45,15 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
                 "AND u.id = sur.user_id " +
                 "AND sur.role = :userType " +
                 "AND u.username NOT LIKE '%-GP%' " +
-                "AND um.unitcode " +
-                "   IN ( " +
-                            "SELECT unitcode " +
-                            "FROM UserMapping " +
-                            "WHERE username = :username " +
-                            "AND sur.specialty_id = :specialtyId " +
-                    ")";
+                "AND um.unitcode = :unitcode  " +
+                "AND sur.specialty_id = :specialtyId ";
+
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
         query.setParameter("userType", userType);
-        query.setParameter("username", user.getUsername());
         query.setParameter("specialtyId", specialty.getId());
+        query.setParameter("unitcode", unit.getUnitcode());
 
         return query.getResultList();
     }

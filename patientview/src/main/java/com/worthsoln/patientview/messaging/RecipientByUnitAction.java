@@ -22,7 +22,7 @@ public class RecipientByUnitAction extends BaseAction {
         User user = UserUtils.retrieveUser(request);
 
         // only do this if its a superadmin
-        if (getSecurityUserManager().isRolePresent("superadmin")) {
+        if (getSecurityUserManager().isRolePresent("superadmin") || getSecurityUserManager().isRolePresent("unitadmin")) {
             String unitCode = getUnitCode(request);
 
             if (StringUtils.hasText(unitCode)) {
@@ -35,6 +35,7 @@ public class RecipientByUnitAction extends BaseAction {
                             getMessageManager().getUnitStaffRecipients(unit, user));
                     request.setAttribute(Messaging.UNIT_PATIENT_RECIPIENTS_PARAM,
                             getMessageManager().getUnitPatientRecipients(unit, user));
+                    request.setAttribute(Messaging.UNIT_NAME_PARAM, unit.getName());
                 }
             }
         }

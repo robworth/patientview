@@ -158,7 +158,7 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type) throws Exception {
+    public Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type, Unit unit) throws Exception {
         if (!StringUtils.hasText(subject)) {
             throw new IllegalArgumentException("Invalid required parameter subject");
         }
@@ -168,7 +168,11 @@ public class MessageManagerImpl implements MessageManager {
         }
 
         if (sender == null || !sender.hasValidId()) {
-            throw new IllegalArgumentException("Invalid required  parametersender");
+            throw new IllegalArgumentException("Invalid required  parameter sender");
+        }
+
+        if (unit == null || !unit.hasValidId()) {
+            throw new IllegalArgumentException("Invalid required  parameter unit");
         }
 
         Conversation conversation = new Conversation();
@@ -207,6 +211,7 @@ public class MessageManagerImpl implements MessageManager {
         message.setSender(sender);
         message.setContent(content);
         message.setType(type);
+        message.setUnit(unit);
         messageDao.save(message);
 
         // add a Job
@@ -442,7 +447,7 @@ public class MessageManagerImpl implements MessageManager {
             // type is not null indicate the group message
             if (conversation.getType() != null) {
                 // the bulk message is not new for unitadmin who send it
-                if (!(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()))) {
+                if (!securityUserManager.isRolePresent("superadmin") && !(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()))) {
                     if (groupMessageManager.get(participantId, conversation) ==  null) {
                         conversation.setNumberUnread(1);
                     }

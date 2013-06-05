@@ -30,7 +30,7 @@ public class Message extends BaseModel {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "recipient_id")
     private User recipient;
 
@@ -50,6 +50,10 @@ public class Message extends BaseModel {
 
     @Column(nullable = true)
     private String type;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
 
     public String getFormattedContent() {
         return content.replaceAll("\n", "<br/>");
@@ -141,5 +145,13 @@ public class Message extends BaseModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }
