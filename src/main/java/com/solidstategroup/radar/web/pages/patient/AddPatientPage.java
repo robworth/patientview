@@ -170,8 +170,20 @@ public class AddPatientPage extends BasePage {
         componentsToUpdateList.add(feedbackPanel);
         componentsToUpdateList.add(pvMessageContainer);
 
+        final WebMarkupContainer guidanceContainer = new WebMarkupContainer("guidanceContainer");
+        guidanceContainer.setOutputMarkupPlaceholderTag(true);
+        guidanceContainer.setVisible(true);
+
+        guidanceContainer.add(
+                new ExternalLink("consentFormsAndDiseaseGroupsCriteriaLink",
+                        "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+        guidanceContainer.add(
+                new ExternalLink("enrollingAPatientGuideLink", "http://www.rarerenal.org/join/radar-admin-guide/"));
+
         // add the components
-        form.add(id, idType, diseaseGroup, submit, feedbackPanel, pvMessageContainer);
+        form.add(id, idType, diseaseGroup, submit, feedbackPanel, pvMessageContainer, guidanceContainer);
+
         add(form, pageNumber);
     }
 }
