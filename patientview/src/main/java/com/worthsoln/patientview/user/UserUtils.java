@@ -109,7 +109,7 @@ public final class UserUtils {
         try {
             // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
             for (int i = 0; i <= LAST_MAIN_DIGIT_POSITION; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
+                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (TEN - i);
                 checksum += value;
             }
 
