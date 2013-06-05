@@ -76,17 +76,43 @@ public final class UserUtils {
         LegacySpringUtils.getPatientManager().removePatientFromSystem(nhsno, unitcode);
     }
 
-    public static boolean nhsNumberChecksumValid(String nhsno) {
-        if (nhsno.length() != NHSNO_LENGTH) {
-            return false;
-        } else { //generate the checksum using modulus 11 algorithm
-            int checksum = 0;
+    public static boolean nhsNumberChecksumValid(String nhsNumber) {
+        return isNhsNumberValid(nhsNumber, false);
+    }
 
-            //multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= LAST_MAIN_DIGIT_POSITION; i++) { //sum of each
-                int digit = Integer.parseInt(nhsno.substring(i, i + 1));
-                checksum += digit * (TEN - i);
+    public static boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
+
+        // Remove all whitespace and non-visible characters such as tab, new line etc
+        nhsNumber = nhsNumber.replaceAll("\\s", "");
+
+        // Only permit 10 characters
+        if (nhsNumber.length() != NHSNO_LENGTH) {
+            return false;
+        }
+
+        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
+        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
+
+        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
+            return true;
+        }
+
+        return isNhsChecksumValid(nhsNumber);
+    }
+
+    private static boolean isNhsChecksumValid(String nhsNumber) {
+        /**
+         * Generate the checksum using modulus 11 algorithm
+         */
+        int checksum = 0;
+
+        try {
+            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
+            for (int i = 0; i <= LAST_MAIN_DIGIT_POSITION; i++) {
+                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
+                checksum += value;
             }
+
             //(modulus 11)
             checksum = CHECKSUM_MODULUS - checksum % CHECKSUM_MODULUS;
 
@@ -94,8 +120,14 @@ public final class UserUtils {
                 checksum = 0;
             }
 
-            //does checksum match the 10th digit?
-            return checksum == Integer.parseInt(nhsno.substring(CHECKSUM_DIGIT_POSITION));
+            // Does checksum match the 10th digit?
+            if (checksum == Integer.parseInt(nhsNumber.substring(CHECKSUM_DIGIT_POSITION))) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false; // nhsNumber contains letters
         }
     }
 }
