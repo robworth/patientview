@@ -76,7 +76,7 @@ public final class UserUtils {
         LegacySpringUtils.getPatientManager().removePatientFromSystem(nhsno, unitcode);
     }
 
-    public static boolean nhsNumberChecksumValid(String nhsNumber) {
+    public static boolean isNhsNumberValid(String nhsNumber) {
         return isNhsNumberValid(nhsNumber, false);
     }
 

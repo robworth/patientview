@@ -159,7 +159,7 @@ public class JoinRequestSubmitAction extends BaseAction {
 
         if (StringUtils.isNotEmpty((String) form.get("nhsNo"))) {
             try {
-                if (!UserUtils.nhsNumberChecksumValid((String) form.get("nhsNo"))) {
+                if (!UserUtils.isNhsNumberValid((String) form.get("nhsNo"))) {
                     actionErrors.add("nhsNo", new ActionMessage("nhsno.checksum"));
                 }
             } catch (NumberFormatException e) {

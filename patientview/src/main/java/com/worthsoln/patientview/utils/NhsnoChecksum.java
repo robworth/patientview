@@ -49,7 +49,7 @@ public final class NhsnoChecksum {
                 bean,
                 field.getProperty());
 
-        boolean checksumValid = UserUtils.nhsNumberChecksumValid(value);
+        boolean checksumValid = UserUtils.isNhsNumberValid(value);
 
         if (!checksumValid) {
             errors.add(field.getKey(), Resources.getActionMessage(request, va, field));

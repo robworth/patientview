@@ -73,7 +73,7 @@ public class PatientAddAction extends Action {
         List existingPatientsWithSameNhsno = findExistingPatientsWithSameNhsno(nhsno);
 
         String mappingToFind = "";
-        if (!"on".equals(overrideInvalidNhsno) && !UserUtils.nhsNumberChecksumValid(nhsno)) {
+        if (!"on".equals(overrideInvalidNhsno) && !UserUtils.isNhsNumberValid(nhsno)) {
             request.setAttribute(LogonUtils.INVALID_NHSNO, nhsno);
             mappingToFind = "input";
         }
