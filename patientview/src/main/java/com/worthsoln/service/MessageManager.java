@@ -27,6 +27,7 @@ import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.MessageRecipient;
 
 import javax.servlet.ServletContext;
 import java.util.List;
@@ -64,15 +65,15 @@ public interface MessageManager {
      */
     void markMessagesAsReadForConversation(Long loggedInUserId, Long conversationId);
 
-    List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser);
+    List<MessageRecipient> getUnitAdminRecipients(List<Unit> units, User requestingUser);
 
     List<User> getUnitAdminRecipients(Unit unit, User requestingUser);
 
-    List<User> getUnitStaffRecipients(List<Unit> units, User requestingUser);
+    List<MessageRecipient> getUnitStaffRecipients(List<Unit> units, User requestingUser);
 
     List<User> getUnitStaffRecipients(Unit unit, User requestingUser);
 
-    List<User> getUnitPatientRecipients(List<Unit> units, User requestingUser);
+    List<MessageRecipient> getUnitPatientRecipients(List<Unit> units, User requestingUser);
 
     List<User> getUnitPatientRecipients(Unit unit, User requestingUser);
 }

@@ -28,12 +28,14 @@ import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.Message;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.MessageRecipient;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.MessageManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
+import com.worthsoln.service.FeatureManager;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -71,6 +73,9 @@ public class MessageManagerImpl implements MessageManager {
 
     @Inject
     private UserManager userManager;
+
+    @Inject
+    private FeatureManager featureManager;
 
     @Override
     public Conversation getConversation(Long conversationId) {
@@ -208,17 +213,22 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<User> getUnitAdminRecipients(List<Unit> units, User requestingUser) {
-        List<User> unitAdminRecipients = new ArrayList<User>();
+    public List<MessageRecipient> getUnitAdminRecipients(List<Unit> units, User requestingUser) {
+        List<MessageRecipient> unitAdminRecipients = new ArrayList<MessageRecipient>();
 
         if (units != null) {
+            List<Unit> messagingEnabledUnits = featureManager.getUnitsForFeature("messaging");
+
+            units.retainAll(messagingEnabledUnits);
+
             for (Unit unit : units) {
-                unitAdminRecipients.addAll(getUnitAdminRecipients(unit, requestingUser));
+                for (User user : getUnitAdminRecipients(unit, requestingUser)) {
+                    unitAdminRecipients.add(new MessageRecipient(user, unit));
+                }
             }
         }
 
-        // sort by name
-        Collections.sort(unitAdminRecipients, new UserComparator());
+        Collections.sort(unitAdminRecipients, MessageRecipient.Order.ByUsername.ascending());
 
         return unitAdminRecipients;
     }
@@ -238,17 +248,22 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<User> getUnitStaffRecipients(List<Unit> units, User requestingUser) {
-        List<User> unitStaffRecipients = new ArrayList<User>();
+    public List<MessageRecipient> getUnitStaffRecipients(List<Unit> units, User requestingUser) {
+        List<MessageRecipient> unitStaffRecipients = new ArrayList<MessageRecipient>();
 
         if (units != null) {
+            List<Unit> messagingEnabledUnits = featureManager.getUnitsForFeature("messaging");
+
+            units.retainAll(messagingEnabledUnits);
+
             for (Unit unit : units) {
-                unitStaffRecipients.addAll(getUnitStaffRecipients(unit, requestingUser));
+                for (User user : getUnitStaffRecipients(unit, requestingUser)) {
+                    unitStaffRecipients.add(new MessageRecipient(user, unit));
+                }
             }
         }
 
-        // sort by name
-        Collections.sort(unitStaffRecipients, new UserComparator());
+        Collections.sort(unitStaffRecipients, MessageRecipient.Order.ByUsername.ascending());
 
         return unitStaffRecipients;
     }
@@ -268,17 +283,22 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public List<User> getUnitPatientRecipients(List<Unit> units, User requestingUser) {
-        List<User> unitPatientRecipients = new ArrayList<User>();
+    public List<MessageRecipient> getUnitPatientRecipients(List<Unit> units, User requestingUser) {
+        List<MessageRecipient> unitPatientRecipients = new ArrayList<MessageRecipient>();
 
         if (units != null) {
+            List<Unit> messagingEnabledUnits = featureManager.getUnitsForFeature("messaging");
+
+            units.retainAll(messagingEnabledUnits);
+
             for (Unit unit : units) {
-                unitPatientRecipients.addAll(getUnitPatientRecipients(unit, requestingUser));
+                for (User user : getUnitPatientRecipients(unit, requestingUser)) {
+                    unitPatientRecipients.add(new MessageRecipient(user, unit));
+                }
             }
         }
 
-        // sort by name
-        Collections.sort(unitPatientRecipients, new UserComparator());
+        Collections.sort(unitPatientRecipients, MessageRecipient.Order.ByUsername.ascending());
 
         return unitPatientRecipients;
     }

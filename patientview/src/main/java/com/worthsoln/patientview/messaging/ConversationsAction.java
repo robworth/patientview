@@ -25,6 +25,7 @@ package com.worthsoln.patientview.messaging;
 
 import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
+import com.worthsoln.patientview.model.MessageRecipient;
 import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.user.UserUtils;
@@ -64,9 +65,9 @@ public class ConversationsAction extends BaseAction {
             request.setAttribute(Messaging.UNITS_PARAM, units);
         } else {
             // patients and unit staff/admin get addresses for unit admin and staff
-            List<User> unitAdminRecipients = getMessageManager().getUnitAdminRecipients(units, user);
-            List<User> unitStaffRecipients = getMessageManager().getUnitStaffRecipients(units, user);
-            List<User> unitPatientRecipients = new ArrayList<User>();
+            List<MessageRecipient> unitAdminRecipients = getMessageManager().getUnitAdminRecipients(units, user);
+            List<MessageRecipient> unitStaffRecipients = getMessageManager().getUnitStaffRecipients(units, user);
+            List<MessageRecipient> unitPatientRecipients = new ArrayList<MessageRecipient>();
 
             // unit staff and admin also get patients
             if (getSecurityUserManager().isRolePresent("unitadmin")

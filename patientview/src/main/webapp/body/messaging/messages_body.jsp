@@ -172,9 +172,15 @@
                                                 <logic:notEmpty name="unitAdminRecipients">
                                                     <option></option>
 
-                                                    <optgroup label="Unit Admins">
+                                                    <!-- display the first recipient's unit shortcode. not sure how they used to get the first item of a list in 80s -->
+                                                    <logic:iterate name="unitAdminRecipients" id="recipient" indexId="index">
+                                                        <logic:equal name="index" value="0">
+                                                            <optgroup label="Unit Admins - <bean:write name="recipient" property="unit.shortname" />">">
+                                                        </logic:equal>
+                                                    </logic:iterate>
+
                                                         <logic:iterate name="unitAdminRecipients" id="recipient" indexId="index">
-                                                            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                                            <option value="<bean:write name="recipient" property="user.id" />"><bean:write name="recipient" property="user.name" /></option>
                                                         </logic:iterate>
                                                     </optgroup>
                                                 </logic:notEmpty>
@@ -182,9 +188,14 @@
                                                 <logic:notEmpty name="unitStaffRecipients">
                                                     <option></option>
 
-                                                    <optgroup label="Unit Staff">
+                                                    <logic:iterate name="unitStaffRecipients" id="recipient" indexId="index">
+                                                        <logic:equal name="index" value="0">
+                                                            <optgroup label="Unit Staff - <bean:write name="recipient" property="unit.shortname" />">">
+                                                        </logic:equal>
+                                                    </logic:iterate>
+
                                                         <logic:iterate name="unitStaffRecipients" id="recipient" indexId="index">
-                                                            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                                            <option value="<bean:write name="recipient" property="user.id" />"><bean:write name="recipient" property="user.name" /></option>
                                                         </logic:iterate>
                                                     </optgroup>
                                                 </logic:notEmpty>
@@ -192,9 +203,14 @@
                                                 <logic:notEmpty name="unitPatientRecipients">
                                                     <option></option>
 
-                                                    <optgroup label="Patients">
+                                                    <logic:iterate name="unitStaffRecipients" id="recipient" indexId="index">
+                                                        <logic:equal name="index" value="0">
+                                                            <optgroup label="Patients - <bean:write name="recipient" property="unit.shortname" />">">
+                                                        </logic:equal>
+                                                    </logic:iterate>
+
                                                         <logic:iterate name="unitPatientRecipients" id="recipient" indexId="index">
-                                                            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+                                                            <option value="<bean:write name="recipient" property="user.id" />"><bean:write name="recipient" property="user.name" /></option>
                                                         </logic:iterate>
                                                     </optgroup>
                                                 </logic:notEmpty>
