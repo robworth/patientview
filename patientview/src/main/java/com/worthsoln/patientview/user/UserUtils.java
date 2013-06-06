@@ -35,7 +35,6 @@ public final class UserUtils {
     private static final int NHSNO_LENGTH = 10;
     private static final int LAST_MAIN_DIGIT_POSITION = 8;
     private static final int CHECKSUM_DIGIT_POSITION = 9;
-    private static final int TEN = 10;
     private static final int CHECKSUM_MODULUS = 11;
 
     private UserUtils() {
@@ -109,7 +108,7 @@ public final class UserUtils {
         try {
             // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
             for (int i = 0; i <= LAST_MAIN_DIGIT_POSITION; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (TEN - i);
+                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (NHSNO_LENGTH - i);
                 checksum += value;
             }
 
