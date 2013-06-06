@@ -263,6 +263,7 @@
                     <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
                     <headerLocation>src/main/resources/checkstyle/checkstyle.license</headerLocation>
                     <failsOnError>true</failsOnError>
+                    <consoleOutput>true</consoleOutput>
                 </configuration>
             </plugin>
 
