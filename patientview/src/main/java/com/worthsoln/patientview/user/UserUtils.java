@@ -121,11 +121,7 @@ public final class UserUtils {
             }
 
             // Does checksum match the 10th digit?
-            if (checksum == Integer.parseInt(nhsNumber.substring(CHECKSUM_DIGIT_POSITION))) {
-                return true;
-            } else {
-                return false;
-            }
+            return checksum == Integer.parseInt(nhsNumber.substring(CHECKSUM_DIGIT_POSITION));
         } catch (NumberFormatException e) {
             return false; // nhsNumber contains letters
         }
