@@ -8,6 +8,7 @@ import com.solidstategroup.radar.web.behaviours.RadarBehaviourFactory;
 import com.solidstategroup.radar.web.pages.BasePage;
 import com.solidstategroup.radar.web.panels.GeneticsPanel;
 import com.solidstategroup.radar.web.panels.generic.GenericDemographicsPanel;
+import com.solidstategroup.radar.web.panels.generic.MedicalResultsPanel;
 import com.solidstategroup.radar.web.panels.hnf1b.HNF1BMiscPanel;
 import com.solidstategroup.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
@@ -33,7 +34,8 @@ public class HNF1BPatientPage extends BasePage {
         DEMOGRAPHICS(1),
         GENETICS(2),
         PROTEINURIA(3),
-        HNF1BMisc(4);
+        HNF1BMisc(4),
+        MEDICAL_RESULTS(5);
 
         private int pageNumber;
 
@@ -58,6 +60,7 @@ public class HNF1BPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
     private GeneticsPanel geneticsPanel;
     private HNF1BMiscPanel hnf1BMiscPanel;
+    private MedicalResultsPanel medicalResultsPanel;
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
@@ -104,6 +107,17 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(hnf1BMiscPanel);
 
+        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.MEDICAL_RESULTS);
+            }
+        };
+
+        medicalResultsPanel.setOutputMarkupPlaceholderTag(true);
+
+        add(medicalResultsPanel);
+
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
         linksContainer.setOutputMarkupId(true);
@@ -113,6 +127,7 @@ public class HNF1BPatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
         linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
         linksContainer.add(new TabAjaxLink("hnf1BMiscLink", Tab.HNF1BMisc));
+        linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
 
         IModel<Integer> pageNumberModel = new Model<Integer>();
         pageNumberModel.setObject(Tab.DEMOGRAPHICS.getPageNumber());
@@ -161,7 +176,7 @@ public class HNF1BPatientPage extends BasePage {
                 target.add(linksContainer);
 
                 // add each panel to the response
-                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel);
+                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();
