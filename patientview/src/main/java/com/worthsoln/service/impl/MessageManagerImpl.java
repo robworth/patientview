@@ -417,7 +417,7 @@ public class MessageManagerImpl implements MessageManager {
                     User unitUser = userManager.get(unitAdmin.getUsername());
 
                     if (!unitUser.equals(requestingUser)) {
-                        if (unitAdmin.getRole().equals(adminOrStaff)) {
+                        if (unitAdmin.getRole().equals(adminOrStaff) && unitUser.isIsrecipient()) {
                             unitAdminRecipients.add(unitUser);
                         }
                     }

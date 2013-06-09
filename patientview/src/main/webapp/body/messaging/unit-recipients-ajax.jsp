@@ -17,6 +17,15 @@
     </optgroup>
 </logic:notEmpty>
 
+<logic:empty name="unitAdminRecipients">
+    <logic:present role="unitadmin">
+        <option></option>
+        <optgroup label="Unit Admins">
+            <option value="allAdmins">All <bean:write name="unit_name"/> Admins</option>
+        </optgroup>
+    </logic:present>
+</logic:empty>
+
 <logic:notEmpty name="unitStaffRecipients">
     <option></option>
 
@@ -29,6 +38,15 @@
         </logic:iterate>
     </optgroup>
 </logic:notEmpty>
+
+<logic:empty name="unitStaffRecipients">
+    <logic:present role="unitadmin">
+        <option></option>
+        <optgroup label="Unit Staff">
+            <option value="allStaff">All <bean:write name="unit_name"/> Staff</option>
+        </optgroup>
+    </logic:present>
+</logic:empty>
 
 <logic:notEmpty name="unitPatientRecipients">
     <option></option>
