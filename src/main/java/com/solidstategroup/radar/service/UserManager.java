@@ -1,11 +1,12 @@
 package com.solidstategroup.radar.service;
 
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.exception.InvalidSecurityQuestionAnswer;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.exception.DaoException;
 import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
 import com.solidstategroup.radar.model.exception.RegistrationException;
-import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
@@ -46,7 +47,7 @@ public interface UserManager {
     void registerPatient(Demographics demographics) throws Exception;
 
     void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
-            RegistrationException;
+            RegistrationException, InvalidSecurityQuestionAnswer;
 
     ProfessionalUser getProfessionalUser(Long id);
 

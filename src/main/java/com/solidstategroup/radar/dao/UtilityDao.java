@@ -3,9 +3,9 @@ package com.solidstategroup.radar.dao;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
 
 import java.util.List;
@@ -42,5 +42,7 @@ public interface UtilityDao {
     Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode);
 
     int getPatientCountByUnit(Centre centre);
+
+    List<String> getAdminNotifications();
 
 }

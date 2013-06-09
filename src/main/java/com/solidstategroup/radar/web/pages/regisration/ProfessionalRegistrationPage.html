@@ -90,7 +90,7 @@
                         </td>
                         <td>
                             <input wicket:id="email" type="text" style="width:230px;"/>
-                            <span wicket:id="emailFeedbackIndicator"></span>
+                            <span wicket:id="emailFeedback"></span>
                         </td>
                     </tr>
 
@@ -111,6 +111,24 @@
                         <td>
                             <select wicket:id="centre"/>
                             <span wicket:id="centreFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Security Question:</label>
+                        </td>
+                        <td>
+                            <span wicket:id="securityQuestionMessage"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="securityQuestionContainer">
+                        <td></td>
+                        <td>
+                            <input wicket:id="securityQuestion" type="text" style="width:230px;">
+                            <span wicket:id="securityQuestionFeedbackIndicator"></span>
+                            <input wicket:id="securityQuestionAnsw" type="hidden">
                         </td>
                     </tr>
 
