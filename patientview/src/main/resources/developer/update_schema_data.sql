@@ -101,15 +101,20 @@ ADD COLUMN groupEnum varchar(255) DEFAULT NULL;
 --
 Alter TABLE message
 ADD COLUMN type varchar(255) DEFAULT NULL,
-ADD COLUMN groupEnum varchar(255) DEFAULT NULL;
+ADD COLUMN groupEnum varchar(255) DEFAULT NULL,
+ADD COLUMN unit_id BIGINT(20) DEFAULT NULL;
+
+ALTER TABLE `message`
+ADD CONSTRAINT `fk_message_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`);
+
+ALTER TABLE `message`
+MODIFY COLUMN `recipient_id` bigint(20);
 
 --
 -- Update user table
 --
-UPDATE user
-SET
-    isrecipient = 0,
-    isclinician = 0;
+ALTER TABLE USER ADD COLUMN isrecipient TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE USER ADD COLUMN isclinician TINYINT(1) NOT NULL DEFAULT 0;;
 
 
 

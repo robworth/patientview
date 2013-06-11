@@ -124,7 +124,8 @@ public class MessageManagerImpl implements MessageManager {
 
                     if (messages != null && !messages.isEmpty()) {
                         for (Unit unit : units) {
-                            if (unit != null && unit.getId().equals(messages.get(0).getUnit().getId())) {
+                            Unit messageUnit = messages.get(0).getUnit();
+                            if (unit != null && messageUnit != null && unit.getId().equals(messageUnit.getId())) {
                                 conversationList.add(conversation);
                                 break;
                             }

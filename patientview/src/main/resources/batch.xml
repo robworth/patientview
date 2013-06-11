@@ -29,8 +29,8 @@
     <!--Define skip policy-->
     <bean id="alwaysSkipItemSkipPolicy" class="org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy" />
 
-    <!--Define createEamilQueueJob details-->
-    <batch:job id="createEamilQueueBatchJob">
+    <!--Define createEmailQueueBatchJob details-->
+    <batch:job id="createEmailQueueBatchJob">
         <batch:step id="createEmailQueueStep">
             <batch:tasklet transaction-manager="batchTransactionManager">
                 <batch:chunk reader="createEmailQueueReader" writer="createEmailQueueWriter"

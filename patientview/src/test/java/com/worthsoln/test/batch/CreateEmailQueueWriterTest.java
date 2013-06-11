@@ -87,12 +87,12 @@ public class CreateEmailQueueWriterTest extends BaseServiceTest {
         List<EmailQueue> checkEmailQueues = emailQueueManager.getEmailQueueList();
         assertEquals("Wrong number of EmailQueue list", 2, checkEmailQueues.size());
 
-        assertTrue("Job not stored", checkEmailQueues.get(0).getJob().getId() == job.getId());
-        assertTrue("Job not stored", checkEmailQueues.get(1).getJob().getId() == job.getId());
-        assertTrue("Message not stored", checkEmailQueues.get(0).getMessage().getId() == message.getId());
-        assertTrue("Message not stored", checkEmailQueues.get(1).getMessage().getId() == message.getId());
-        assertTrue("User 1 not stored", checkEmailQueues.get(0).getRecipient().getId() == user1.getId());
-        assertTrue("User 2 not stored", checkEmailQueues.get(1).getRecipient().getId() == user2.getId());
+        assertEquals("Job not stored", checkEmailQueues.get(0).getJob().getId(), job.getId());
+        assertEquals("Job not stored", checkEmailQueues.get(1).getJob().getId(), job.getId());
+        assertEquals("Message not stored", checkEmailQueues.get(0).getMessage().getId(), message.getId());
+        assertEquals("Message not stored", checkEmailQueues.get(1).getMessage().getId(), message.getId());
+        assertEquals("User 1 not stored", checkEmailQueues.get(0).getRecipient().getId(), user1.getId());
+        assertEquals("User 2 not stored", checkEmailQueues.get(1).getRecipient().getId(), user2.getId());
 
     }
 

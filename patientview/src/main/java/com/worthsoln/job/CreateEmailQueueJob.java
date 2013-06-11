@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 public class CreateEmailQueueJob extends BatchJob {
 
-    @Resource(name = "createEamilQueueBatchJob")
+    @Resource(name = "createEmailQueueBatchJob")
     private Job batchJob;
 
     @Resource(name = "createEmailQueueReader")
