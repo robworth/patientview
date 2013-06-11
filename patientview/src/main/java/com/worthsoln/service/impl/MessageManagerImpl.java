@@ -24,18 +24,21 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.Conversation;
-import com.worthsoln.patientview.model.Message;
-import com.worthsoln.patientview.model.Unit;
-import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.model.MessageRecipient;
+import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.enums.GroupEnum;
+import com.worthsoln.patientview.model.enums.SendEmailEnum;
+import com.worthsoln.repository.job.JobDao;
 import com.worthsoln.repository.messaging.ConversationDao;
 import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailManager;
+import com.worthsoln.service.FeatureManager;
 import com.worthsoln.service.MessageManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.UserManager;
-import com.worthsoln.service.FeatureManager;
+import com.worthsoln.service.GroupMessageManager;
+import com.worthsoln.service.SecurityUserManager;
+
+import org.apache.poi.util.StringUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -51,7 +54,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 @Service(value = "messageManager")
 public class MessageManagerImpl implements MessageManager {
 
@@ -63,7 +66,13 @@ public class MessageManagerImpl implements MessageManager {
     private ConversationDao conversationDao;
 
     @Inject
+    private FeatureManager featureManager;
+
+    @Inject
     private MessageDao messageDao;
+
+    @Inject
+    private JobDao jobDao;
 
     @Inject
     private EmailManager emailManager;
@@ -75,7 +84,10 @@ public class MessageManagerImpl implements MessageManager {
     private UserManager userManager;
 
     @Inject
-    private FeatureManager featureManager;
+    private GroupMessageManager groupMessageManager;
+
+    @Inject
+    private SecurityUserManager securityUserManager;
 
     @Override
     public Conversation getConversation(Long conversationId) {
@@ -86,9 +98,12 @@ public class MessageManagerImpl implements MessageManager {
     public Conversation getConversationForUser(Long conversationId, Long participantId) {
         Conversation conversation = conversationDao.get(conversationId);
 
-        if (!userHasAccessToConversation(conversation, participantId)) {
-            return null;
+        if (conversation.getType() == null) {
+            if (!userHasAccessToConversation(conversation, participantId)) {
+                return null;
+            }
         }
+
 
         populateConversation(conversation, participantId);
         return conversation;
@@ -96,7 +111,19 @@ public class MessageManagerImpl implements MessageManager {
 
     @Override
     public List<Conversation> getConversations(Long participantId) {
-        List<Conversation> conversations = conversationDao.getConversations(participantId);
+        GroupEnum groupEnum = GroupEnum.ALL_ADMINS;
+        if (securityUserManager.isRolePresent("unitadmin")) {
+            groupEnum = GroupEnum.ALL_ADMINS;
+        } else if (securityUserManager.isRolePresent("unitstaff")) {
+            groupEnum = GroupEnum.ALL_STAFF;
+        } else if (securityUserManager.isRolePresent("patient")) {
+            groupEnum = GroupEnum.ALL_PATIENTS;
+        } else {
+            groupEnum = null;
+        }
+
+        List<Conversation> conversations = conversationDao.getConversations(participantId, groupEnum);
+        conversations = this.canIncludeInConversations(conversations, participantId);
         populateConversations(conversations, participantId);
 
         // conversations need to be ordered by last activity which means when the last message in the thread was sent
@@ -108,6 +135,36 @@ public class MessageManagerImpl implements MessageManager {
         });
 
         return conversations;
+    }
+
+    public List<Conversation> canIncludeInConversations(List<Conversation> conversations, Long participantId) {
+        List<Conversation> conversationList = new ArrayList<Conversation>();
+        List<Message> messages;
+        User user = userManager.get(participantId);
+        List<Unit> units = unitManager.getUsersUnits(user);
+
+        if (conversations != null) {
+            for (Conversation conversation : conversations) {
+
+                if (StringUtils.hasLength(conversation.getType())) {
+                    messages = getMessages(conversation.getId());
+
+                    if (messages != null && !messages.isEmpty()) {
+                        for (Unit unit : units) {
+                            Unit messageUnit = messages.get(0).getUnit();
+                            if (unit != null && messageUnit != null && unit.getId().equals(messageUnit.getId())) {
+                                conversationList.add(conversation);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    conversationList.add(conversation);
+                }
+            }
+        }
+
+        return conversationList;
     }
 
     @Override
@@ -159,6 +216,73 @@ public class MessageManagerImpl implements MessageManager {
         conversationDao.save(conversation);
 
         return sendMessage(context, conversation, sender, recipient, content);
+    }
+
+    @Override
+    public Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type, Unit unit) throws Exception {
+        if (!StringUtils.hasText(subject)) {
+            throw new IllegalArgumentException("Invalid required parameter subject");
+        }
+
+        if (!StringUtils.hasText(content)) {
+            throw new IllegalArgumentException("Invalid required parameter content");
+        }
+
+        if (sender == null || !sender.hasValidId()) {
+            throw new IllegalArgumentException("Invalid required  parameter sender");
+        }
+
+        if (unit == null || !unit.hasValidId()) {
+            throw new IllegalArgumentException("Invalid required  parameter unit");
+        }
+
+        Conversation conversation = new Conversation();
+        Message message = new Message();
+        Job job = new Job();
+
+        conversation.setParticipant1(sender);
+        conversation.setParticipant2(sender);
+        conversation.setSubject(subject);
+        conversation.setType(type);
+
+        if (groupName != null) {
+            if ("allAdmins".equals(groupName)) {
+                conversation.setGroupEnum(GroupEnum.ALL_ADMINS);
+                message.setGroupEnum(GroupEnum.ALL_ADMINS);
+                job.setGroupEnum(GroupEnum.ALL_ADMINS);
+            }
+
+            if ("allPatients".equals(groupName)) {
+                conversation.setGroupEnum(GroupEnum.ALL_PATIENTS);
+                message.setGroupEnum(GroupEnum.ALL_PATIENTS);
+                job.setGroupEnum(GroupEnum.ALL_PATIENTS);
+            }
+
+            if ("allStaff".equals(groupName)) {
+                conversation.setGroupEnum(GroupEnum.ALL_STAFF);
+                message.setGroupEnum(GroupEnum.ALL_STAFF);
+                job.setGroupEnum(GroupEnum.ALL_STAFF);
+            }
+        }
+
+        conversationDao.save(conversation);
+
+        // add group message
+        message.setConversation(conversation);
+        message.setSender(sender);
+        message.setContent(content);
+        message.setType(type);
+        message.setUnit(unit);
+        messageDao.save(message);
+
+        // add a Job
+        job.setStatus(SendEmailEnum.PENDING);
+        job.setCreator(sender);
+        job.setMessage(message);
+        job.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        jobDao.save(job);
+
+        return message;
     }
 
     @Override
@@ -337,7 +461,7 @@ public class MessageManagerImpl implements MessageManager {
                     User unitUser = userManager.get(unitAdmin.getUsername());
 
                     if (!unitUser.equals(requestingUser)) {
-                        if (unitAdmin.getRole().equals(adminOrStaff)) {
+                        if (unitAdmin.getRole().equals(adminOrStaff) && unitUser.isIsrecipient()) {
                             unitAdminRecipients.add(unitUser);
                         }
                     }
@@ -397,8 +521,19 @@ public class MessageManagerImpl implements MessageManager {
     // need to go through and show how many messages in a convo that user needs to read
     private void populateConversation(Conversation conversation, Long participantId) {
         if (conversation != null) {
-            conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
+            // type is not null indicate the group message
+            if (conversation.getType() != null) {
+                // the bulk message is not new for unitadmin who send it
+                if (!securityUserManager.isRolePresent("superadmin") && !(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()))) {
+                    if (groupMessageManager.get(participantId, conversation) ==  null) {
+                        conversation.setNumberUnread(1);
+                    }
+                }
+            } else {
+                conversation.setNumberUnread(messageDao.getNumberOfUnreadMessages(
                     participantId, conversation.getId()).intValue());
+            }
+
 
             // set the summary details for the convo to the last message
             Message latestMessage = messageDao.getLatestMessage(conversation.getId());

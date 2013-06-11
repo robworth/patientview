@@ -23,7 +23,7 @@
 
 package com.worthsoln.service.impl;
 
-import com.worthsoln.ibd.model.enums.XmlImportNotification;
+import com.worthsoln.patientview.model.enums.XmlImportNotification;
 import com.worthsoln.repository.AdminNotificationDao;
 import com.worthsoln.service.AdminNotificationManager;
 import org.apache.commons.lang.StringUtils;

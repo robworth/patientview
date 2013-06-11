@@ -23,11 +23,7 @@
 
 package com.worthsoln.service;
 
-import com.worthsoln.patientview.model.Conversation;
-import com.worthsoln.patientview.model.Message;
-import com.worthsoln.patientview.model.Unit;
-import com.worthsoln.patientview.model.User;
-import com.worthsoln.patientview.model.MessageRecipient;
+import com.worthsoln.patientview.model.*;
 
 import javax.servlet.ServletContext;
 import java.util.List;
@@ -54,6 +50,9 @@ public interface MessageManager {
     List<Message> getMessages(Long conversationId);
 
     Message createMessage(ServletContext context, String subject, String content, User sender, User recipient)
+            throws Exception;
+
+    Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type, Unit unit)
             throws Exception;
 
     Message replyToMessage(ServletContext context, String content, Long conversationId, User sender) throws Exception;

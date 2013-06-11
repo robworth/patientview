@@ -51,16 +51,16 @@ public class ConversationsAction extends BaseAction {
 
         List<Unit> units = getUnitManager().getLoggedInUsersUnits();
 
-        // if its a super admin then they get the unit list to filter what users they need
-        // other users just get the available ones for their units
-        if (getSecurityUserManager().isRolePresent("superadmin")) {
-            // sort units alpha
-            Collections.sort(units, new Comparator<Unit>() {
-                @Override
-                public int compare(Unit o1, Unit o2) {
-                    return o1.getName().compareTo(o2.getName());
-                }
-            });
+            // if its a super admin then they get the unit list to filter what users they need
+            // other users just get the available ones for their units
+            if (getSecurityUserManager().isRolePresent("superadmin") || getSecurityUserManager().isRolePresent("unitadmin")) {
+                // sort units alpha
+                Collections.sort(units, new Comparator<Unit>() {
+                    @Override
+                    public int compare(Unit o1, Unit o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
 
             request.setAttribute(Messaging.UNITS_PARAM, units);
         } else {
@@ -69,11 +69,15 @@ public class ConversationsAction extends BaseAction {
             List<MessageRecipient> unitStaffRecipients = getMessageManager().getUnitStaffRecipients(units, user);
             List<MessageRecipient> unitPatientRecipients = new ArrayList<MessageRecipient>();
 
-            // unit staff and admin also get patients
-            if (getSecurityUserManager().isRolePresent("unitadmin")
-                    || getSecurityUserManager().isRolePresent("unitstaff")) {
-                unitPatientRecipients = getMessageManager().getUnitPatientRecipients(units, user);
-            }
+                // unit staff and admin also get patients
+                if (getSecurityUserManager().isRolePresent("unitadmin")
+                        || getSecurityUserManager().isRolePresent("unitstaff")) {
+                    unitPatientRecipients = getMessageManager().getUnitPatientRecipients(units, user);
+                }
+
+                if (getSecurityUserManager().isRolePresent("unitadmin")) {
+                    request.setAttribute(Messaging.IS_UNIT_ADMIN_PARAM, true);
+                }
 
             if (unitAdminRecipients.isEmpty() && unitStaffRecipients.isEmpty() && unitPatientRecipients.isEmpty()) {
                 request.setAttribute(Messaging.NO_RECIPIENTS_PARAM, true);

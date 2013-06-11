@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public interface UserManager {
 
     User getLoggedInUser();
@@ -98,4 +98,6 @@ public interface UserManager {
     void createProfessionalUserInRadar(User user, String unitcode);
 
     void removeUserFromRadar(Long userId);
+
+    List<User> getUsers(User user, Specialty specialty, String userType, Unit unit);
 }

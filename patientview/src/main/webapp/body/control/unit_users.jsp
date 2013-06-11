@@ -42,6 +42,8 @@
         <th class="tableheader">Email Verified</th>
         <th class="tableheader">Last Login</th>
         <th class="tableheader">Password Locked</th>
+        <th class="tableheader">Message Recipient</th>
+        <th class="tableheader">Clinician</th>  
         <th></th>
         <th></th>
       </tr>
@@ -67,6 +69,15 @@
               <logic:equal value="false" name="unitUser" property="accountlocked">
                   <big><font color="green">&#10004;</font></big>
               </logic:equal>
+          </td>
+
+          <td class="tablecell">
+              <logic:equal name="unitUser" property="isrecipient" value="false">No</logic:equal>
+              <logic:equal name="unitUser" property="isrecipient" value="true">Yes</logic:equal>
+          </td>
+          <td class="tablecell">
+              <logic:equal name="unitUser" property="isclinician" value="false">No</logic:equal>
+              <logic:equal name="unitUser" property="isclinician" value="true">Yes</logic:equal>
           </td>
 
           <logic:present role="superadmin,unitadmin">

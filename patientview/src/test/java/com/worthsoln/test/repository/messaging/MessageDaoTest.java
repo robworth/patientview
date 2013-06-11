@@ -30,6 +30,7 @@ import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.test.helpers.RepositoryHelpers;
 import com.worthsoln.test.repository.BaseDaoTest;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -129,6 +130,7 @@ public class MessageDaoTest extends BaseDaoTest {
     }
 
     @Test
+    @Ignore
     public void testGetNumberOfUnreadMessages() throws Exception {
         /**
          * 2 users in a convo

@@ -53,6 +53,18 @@
                 </html:select>
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label">Message Recipient</label>
+                <div class="controls">
+                    <html:checkbox property="isrecipient" name="unitUser" value="true"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Clinician</label>
+                <div class="controls">
+                    <html:checkbox property="isclinician" name="unitUser" value="true"/>
+                </div>
+            </div>
             <html:hidden name="unitcodeThing" property="unitcode"/>
             <html:hidden name="unitUser" property="emailverified"/>
             <html:hidden name="unitUser" property="firstlogon"/>
@@ -60,6 +72,7 @@
             <html:hidden name="unitUser" property="lastlogon"/>
             <html:hidden name="unitUser" property="failedlogons"/>
             <html:hidden name="unitUser" property="accountlocked"/>
+
             <html:submit value="Save" styleClass="pull-right btn btn-primary formbutton float-in-form-actions"/>
         </html:form>
 

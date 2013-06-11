@@ -23,11 +23,11 @@
 
 package com.worthsoln.test.service;
 
-import com.worthsoln.patientview.model.Conversation;
-import com.worthsoln.patientview.model.Message;
-import com.worthsoln.patientview.model.Specialty;
-import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.enums.GroupEnum;
+import com.worthsoln.repository.UserDao;
 import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.test.helpers.SecurityHelpers;
 import com.worthsoln.test.helpers.ServiceHelpers;
 import org.junit.Before;
@@ -53,6 +53,12 @@ public class MessageManagerTest extends BaseServiceTest {
 
     @Inject
     private MessageManager messageManager;
+
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
+    private UserDao userDao;
 
     private User user;
 
@@ -121,6 +127,10 @@ public class MessageManagerTest extends BaseServiceTest {
         List<Conversation> checkUser1Conversations = messageManager.getConversations(user.getId());
         assertEquals("Wrong number of conversations for user 1", checkUser1Conversations.size(), 1);
 
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user2, "unitadmin");
+
+        securityHelpers.loginAsUser(user2.getUsername(), specialty2);
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
         assertEquals("Wrong number of conversations for user 2", checkUser2Conversations.size(), 1);
 
@@ -164,6 +174,11 @@ public class MessageManagerTest extends BaseServiceTest {
 
         messageManager.createMessage(mockHttpSession.getServletContext(), "Test subject", "This is my first message",
                 user, user2);
+
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user2, "unitadmin");
+
+        securityHelpers.loginAsUser(user2.getUsername(), specialty2);
 
         // now pull abck conversation for user 2
         List<Conversation> checkUser2Conversations = messageManager.getConversations(user2.getId());
@@ -215,5 +230,106 @@ public class MessageManagerTest extends BaseServiceTest {
         // now pull back and check unread messages for user 1
         int checkNumberUnreadMessages = messageManager.getTotalNumberUnreadMessages(user.getId());
         assertEquals("Wrong number of unread messages", checkNumberUnreadMessages, 2);
+    }
+
+    @Test
+    public void testCreateGroupMessage() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user, "unitadmin");
+
+        securityHelpers.loginAsUser(user.getUsername(), specialty2);
+
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("UNITA");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty2);
+        unitManager.save(unitRm301);
+
+        Message message = messageManager.createGroupMessage(mockHttpSession.getServletContext(), "Test subject",
+                "This is my first message", user, "allPatients", "BULK", unitRm301);
+
+        assertTrue("Invalid id for message", message.getId() > 0);
+
+        // now try and pull back conversations for both users - both should have 1 conversation
+        List<Conversation> checkUser1Conversations = messageManager.getConversations(user.getId());
+        assertEquals("Wrong number of conversations for user 2", checkUser1Conversations.size(), 1);
+
+        // now pull back the messages for a conversation to see if the message was actually saved
+        List<Message> checkMessages = messageManager.getMessages(checkUser1Conversations.get(0).getId());
+        assertEquals("Wrong number of messages for conversation", checkMessages.size(), 1);
+        assertEquals("Wrong GroupEnum of messages ", checkMessages.get(0).getGroupEnum(), GroupEnum.ALL_PATIENTS);
+    }
+
+    @Test
+    public void testGetUnitAdminRecipients() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "UNITA", "nhs1", specialty2);
+        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA", "nhstest1", specialty2);
+        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "UNITA", "nhstest2", specialty2);
+        user1.setIsrecipient(true);
+        userDao.save(user1);
+        user2.setIsrecipient(false);
+        userDao.save(user2);
+        serviceHelpers.createSpecialtyUserRole(specialty2, adminUser, "unitadmin");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user1, "unitadmin");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user2, "unitadmin");
+
+        securityHelpers.loginAsUser(adminUser.getUsername(), specialty2);
+
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("UNITA");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty2);
+        unitManager.save(unitRm301);
+
+        List<User> checkUsers = messageManager.getUnitAdminRecipients(unitRm301, adminUser);
+
+        assertEquals("Wrong number of user list", 1, checkUsers.size());
+        assertTrue("User isRecipient is incorrect", checkUsers.get(0).isIsrecipient());
+    }
+
+    @Test
+    public void testGetUnitStaffRecipients() throws Exception {
+        MockHttpSession mockHttpSession = new MockHttpSession();
+
+        Specialty specialty2 = serviceHelpers.createSpecialty("Specialty 2", "Specialty2", "Test description");
+        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "UNITA", "nhs1", specialty2);
+        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA", "nhstest1", specialty2);
+        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "UNITA", "nhstest2", specialty2);
+        User user3 = serviceHelpers.createUserWithMapping("testname3", "test3@admin.com", "p", "test2", "UNITA", "nhstest2", specialty2);
+        user1.setIsrecipient(true);
+        userDao.save(user1);
+        user2.setIsrecipient(false);
+        userDao.save(user2);
+        user3.setIsrecipient(true);
+        userDao.save(user3);
+        serviceHelpers.createSpecialtyUserRole(specialty2, adminUser, "unitadmin");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user1, "unitstaff");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user2, "unitstaff");
+        serviceHelpers.createSpecialtyUserRole(specialty2, user3, "unitstaff");
+
+        securityHelpers.loginAsUser(adminUser.getUsername(), specialty2);
+
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("UNITA");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty2);
+        unitManager.save(unitRm301);
+
+        List<User> checkUsers = messageManager.getUnitStaffRecipients(unitRm301, adminUser);
+
+        assertEquals("Wrong number of user list", 2, checkUsers.size());
+        assertTrue("User1 isRecipient is incorrect", checkUsers.get(0).isIsrecipient());
+        assertTrue("User3 isRecipient is incorrect", checkUsers.get(1).isIsrecipient());
     }
 }

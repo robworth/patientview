@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * Grab the user from the database
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public class PatientViewUserDetailsService implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientViewUserDetailsService.class);

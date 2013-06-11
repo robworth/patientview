@@ -23,6 +23,7 @@
 
 package com.worthsoln.patientview.model;
 
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Column;
@@ -30,6 +31,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import java.util.Date;
 
 @Entity
@@ -49,7 +53,7 @@ public class Message extends BaseModel {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "recipient_id")
     private User recipient;
 
@@ -62,6 +66,17 @@ public class Message extends BaseModel {
     // this will be set by manager
     @Transient
     private String friendlyDate;
+
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private GroupEnum groupEnum;
+
+    @Column(nullable = true)
+    private String type;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
 
     private static final int SUMMARY_LENGTH = 500;
 
@@ -139,5 +154,29 @@ public class Message extends BaseModel {
 
     public void setFriendlyDate(String friendlyDate) {
         this.friendlyDate = friendlyDate;
+    }
+
+    public GroupEnum getGroupEnum() {
+        return groupEnum;
+    }
+
+    public void setGroupEnum(GroupEnum groupEnum) {
+        this.groupEnum = groupEnum;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

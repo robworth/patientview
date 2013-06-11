@@ -75,7 +75,7 @@
 
                                     <%
                                     // check to see if they are the recipient of this message and if they have seen before
-                                    if (message.getRecipient().equals(user)) {
+                                    if (message.getType() == null && message.getRecipient().equals(user)) {
                                         if (!message.isHasRead()) {
                                         %>
                                         <span class="badge badge-important">
@@ -109,11 +109,20 @@
                     <form action="/send-message.do" class="js-message-form">
                         <input type="hidden" class="js-message-redirect" value="/patient/conversation.do" />
                         <input type="hidden" class="js-message-conversation-id" value="<bean:write name="conversation" property="id" />" />
-                        <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
+                        <logic:present name="isBulkMessage">
+                            <div class="alert">
+                            <strong>This message was sent to <bean:write name="bulk_message_recipient"/> in <bean:write name="recipient_unit"/>. It is not possible to reply to it.</strong>
+                        </div>
+                        </logic:present>
+                        <logic:notPresent name="isBulkMessage">
+                            <textarea rows="6" cols="3" name="content" class="<%= (actionPrefix.equals("patient") ? "span12" : "span9") %> new-message js-message-content"></textarea>
+                        </logic:notPresent>
                         <div class="alert alert-error js-message-errors" style="display: none">
                             <strong>You do not have any messages.</strong>
                         </div>
-                        <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
+                        <logic:notPresent name="isBulkMessage">
+                            <input type="submit" value="Reply" class="pull-right btn btn-primary js-message-submit-btn" />
+                        </logic:notPresent>
                     </form>
                 </section>
 

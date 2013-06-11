@@ -108,6 +108,7 @@ messages.sendMessage = function(form) {
         submitBtn = $form.find('.js-message-submit-btn'),
         originalBtnValue = submitBtn.val(),
         recipientIdEl = $form.find('.js-message-recipient-id'),
+        unitCodeEl = $form.find('.js-message-unit-code'),
         conversationIdEl = $form.find('.js-message-conversation-id'),
         contentEl = $form.find('.js-message-content'),
         subjectEl = $form.find('.js-message-subject'),
@@ -127,7 +128,7 @@ messages.sendMessage = function(form) {
 
     // if no convo el then its a new convo
     if (conversationIdEl.length === 0) {
-        if (!messages.validateNumber(recipientIdEl.val())) {
+        if (!messages.validateRecipient(recipientIdEl.val())) {
             errors.push('Please select a recipient');
         }
 
@@ -153,6 +154,7 @@ messages.sendMessage = function(form) {
         if (conversationIdEl.length === 0) {
             data.recipientId = recipientIdEl.val();
             data.subject = subjectEl.val();
+            data.unitCode = unitCodeEl.val();
         } else {
             data.conversationId = conversationIdEl.val()
         }
@@ -172,7 +174,11 @@ messages.sendMessage = function(form) {
                         messagesEl.append(messages.getMessageHtml(data.message));
                         contentEl.val('');
                     } else {
-                        window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
+                        if (recipientIdEl.val() == "allAdmins" || recipientIdEl.val() == "allPatients" || recipientIdEl.val() == "allStaff") {
+                            window.location.href = "/control/messaging/message_confirm.jsp"
+                        } else {
+                            window.location.href = redirectEl.val() + '?conversationId=' + data.message.conversation.id + '#response';
+                        }
                     }
                 }
             },
@@ -190,6 +196,10 @@ messages.validateString = function(s) {
 
 messages.validateNumber = function(n) {
     return n > 0 && !isNaN(n);
+};
+
+messages.validateRecipient = function(n) {
+    return n != null && n != "";
 };
 
 // add in a dom ready to fire utils.init

@@ -27,6 +27,7 @@ import com.worthsoln.actionutils.ActionUtils;
 import com.worthsoln.ibd.action.BaseAction;
 import com.worthsoln.patientview.model.Conversation;
 import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -60,7 +61,26 @@ public class ConversationAction extends BaseAction {
         request.setAttribute(Messaging.CONVERSATION_PARAM, conversation);
         request.setAttribute(Messaging.MESSAGES_PARAM, getMessageManager().getMessages(conversation.getId()));
 
-        getMessageManager().markMessagesAsReadForConversation(loggedInUser.getId(), conversation.getId());
+        // single message the type is null
+        if (conversation.getType() == null) {
+            getMessageManager().markMessagesAsReadForConversation(loggedInUser.getId(), conversation.getId());
+        } else {
+            getGroupMessageManager().markGroupMessageAsReadForConversation(loggedInUser, conversation);
+            request.setAttribute(Messaging.IS_BULK_MESSAGE_PARAM, true);
+            String userType = "";
+            if (GroupEnum.ALL_ADMINS.equals(conversation.getGroupEnum())) {
+                userType = "all admins";
+            } else if (GroupEnum.ALL_PATIENTS.equals(conversation.getGroupEnum())) {
+                userType = "all patients";
+            } else if (GroupEnum.ALL_STAFF.equals(conversation.getGroupEnum())) {
+                userType = "all staff";
+            } else {}
+
+            request.setAttribute(Messaging.BULK_MESSAGE_RECIPIENT, userType);
+            request.setAttribute(Messaging.RECIPIENT_UNIT_PARAM, getMessageManager().getMessages(conversation.getId()).get(0).getUnit().getName());
+
+
+        }
 
         request.setAttribute(Messaging.CONTENT_PARAM, "");
 
