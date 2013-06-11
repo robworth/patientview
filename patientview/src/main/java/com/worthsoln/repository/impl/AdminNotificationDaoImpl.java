@@ -2,7 +2,7 @@ package com.worthsoln.repository.impl;
 
 import com.worthsoln.ibd.model.AdminNotification;
 import com.worthsoln.ibd.model.AdminNotification_;
-import com.worthsoln.ibd.model.enums.XmlImportNotification;
+import com.worthsoln.patientview.model.enums.XmlImportNotification;
 import com.worthsoln.repository.AbstractHibernateDAO;
 import com.worthsoln.repository.AdminNotificationDao;
 import org.springframework.stereotype.Repository;

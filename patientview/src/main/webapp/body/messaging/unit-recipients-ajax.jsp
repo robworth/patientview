@@ -8,26 +8,53 @@
     <option></option>
 
     <optgroup label="Unit Admins">
+        <logic:present role="unitadmin">
+            <option value="allAdmins">All <bean:write name="unit_name"/> Admins</option>
+        </logic:present>
         <logic:iterate name="unitAdminRecipients" id="recipient" indexId="index">
             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
         </logic:iterate>
     </optgroup>
 </logic:notEmpty>
 
+<logic:empty name="unitAdminRecipients">
+    <logic:present role="unitadmin">
+        <option></option>
+        <optgroup label="Unit Admins">
+            <option value="allAdmins">All <bean:write name="unit_name"/> Admins</option>
+        </optgroup>
+    </logic:present>
+</logic:empty>
+
 <logic:notEmpty name="unitStaffRecipients">
     <option></option>
 
     <optgroup label="Unit Staff">
+        <logic:present role="unitadmin">
+            <option value="allStaff">All <bean:write name="unit_name"/> Staff</option>
+        </logic:present>
         <logic:iterate name="unitStaffRecipients" id="recipient" indexId="index">
             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
         </logic:iterate>
     </optgroup>
 </logic:notEmpty>
 
+<logic:empty name="unitStaffRecipients">
+    <logic:present role="unitadmin">
+        <option></option>
+        <optgroup label="Unit Staff">
+            <option value="allStaff">All <bean:write name="unit_name"/> Staff</option>
+        </optgroup>
+    </logic:present>
+</logic:empty>
+
 <logic:notEmpty name="unitPatientRecipients">
     <option></option>
 
     <optgroup label="Patients">
+        <logic:present role="unitadmin">
+            <option value="allPatients">All <bean:write name="unit_name"/> Patients</option>
+        </logic:present>
         <logic:iterate name="unitPatientRecipients" id="recipient" indexId="index">
             <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
         </logic:iterate>

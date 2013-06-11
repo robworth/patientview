@@ -85,6 +85,7 @@ messages.sendMessage = function(form) {
         submitBtn = $form.find('.js-message-submit-btn'),
         originalBtnValue = submitBtn.val(),
         recipientIdEl = $form.find('.js-message-recipient-id'),
+        unitCodeEl = $form.find('.js-message-unit-code'),
         conversationIdEl = $form.find('.js-message-conversation-id'),
         contentEl = $form.find('.js-message-content'),
         subjectEl = $form.find('.js-message-subject'),
@@ -130,6 +131,7 @@ messages.sendMessage = function(form) {
         if (conversationIdEl.length === 0) {
             data.recipientId = recipientIdEl.val();
             data.subject = subjectEl.val();
+            data.unitCode = unitCodeEl.val();
         } else {
             data.conversationId = conversationIdEl.val()
         }

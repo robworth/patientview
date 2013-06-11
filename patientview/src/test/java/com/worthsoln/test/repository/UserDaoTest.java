@@ -1,6 +1,7 @@
 package com.worthsoln.test.repository;
 
 import com.worthsoln.patientview.model.Specialty;
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.patientview.model.UserMapping;
 import com.worthsoln.patientview.model.User;
 import com.worthsoln.patientview.unit.UnitUtils;
@@ -28,6 +29,9 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Inject
     private UserMappingDao userMappingDao;
+
+    @Inject
+    private UnitDao unitDao;
 
     @Inject
     private RepositoryHelpers repositoryHelpers;
@@ -96,6 +100,8 @@ public class UserDaoTest extends BaseDaoTest {
         user.setPassword("password");
         user.setUsername("test");
         user.setAccountlocked(true);
+        user.setIsclinician(true);
+        user.setIsrecipient(false);
 
         userDao.save(user);
 
@@ -110,6 +116,8 @@ public class UserDaoTest extends BaseDaoTest {
         assertTrue("User not found via username", checkUser != null && checkUser.equals(user));
 
         assertTrue("Account locked not persisted", checkUser.isAccountlocked());
+        assertFalse("IsRecipient not persisted", checkUser.isIsrecipient());
+        assertTrue("IsClinician not persisted", checkUser.isIsclinician());
     }
 
     @Test
@@ -288,7 +296,7 @@ public class UserDaoTest extends BaseDaoTest {
         UserMapping userMapping1 = new UserMapping();
         userMapping1.setSpecialty(specialty);
         userMapping1.setNhsno("nhsno1");
-        userMapping1.setUnitcode("unitcode1");
+        userMapping1.setUnitcode("UNITCODE1");
         userMapping1.setUsername("testname1");
 
         userMappingDao.save(userMapping1);
@@ -296,7 +304,7 @@ public class UserDaoTest extends BaseDaoTest {
         UserMapping userMapping2 = new UserMapping();
         userMapping2.setSpecialty(specialty);
         userMapping2.setNhsno("nhsno1");
-        userMapping2.setUnitcode("unitcode1");
+        userMapping2.setUnitcode("UNITCODE1");
         userMapping2.setUsername("testname2");
 
         userMappingDao.save(userMapping2);
@@ -304,7 +312,7 @@ public class UserDaoTest extends BaseDaoTest {
         UserMapping userMapping3 = new UserMapping();
         userMapping3.setSpecialty(specialty);
         userMapping3.setNhsno("nhsno1");
-        userMapping3.setUnitcode("unitcode1");
+        userMapping3.setUnitcode("UNITCODE1");
         userMapping3.setUsername("testname3-GP");
 
         userMappingDao.save(userMapping3);
@@ -352,7 +360,15 @@ public class UserDaoTest extends BaseDaoTest {
         repositoryHelpers.createSpecialtyUserRole(specialty, user3, "patient");
         repositoryHelpers.createSpecialtyUserRole(specialty, user4, "patient");
 
-        List<User> checkUserList = userDao.get(user, specialty, "patient");
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("UNITCODE1");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty);
+        //unitDao.save(unitRm301);
+
+        List<User> checkUserList = userDao.get(user, specialty, "patient", unitRm301); System.out.println("unitcode = " +unitRm301.getUnitcode());
 
         assertEquals("Wrong number of users", checkUserList.size(), 2);
         assertFalse("User 3 found in users", checkUserList.contains(user3));

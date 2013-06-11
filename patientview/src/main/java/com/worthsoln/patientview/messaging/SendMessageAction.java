@@ -62,7 +62,8 @@ public class SendMessageAction extends BaseAction {
                                 dynaForm.getString(Messaging.CONTENT_PARAM),
                                 user,
                                 dynaForm.getString(Messaging.RECIPIENT_ID_PARAM),
-                                "BULK"
+                                "BULK",
+                                getUnit(dynaForm)
                         );
                     }
                 }
@@ -92,6 +93,12 @@ public class SendMessageAction extends BaseAction {
             if (form.get(Messaging.RECIPIENT_ID_PARAM) != null && form.get(Messaging.RECIPIENT_ID_PARAM).toString().matches("[0-9]*")) {
                 if (getRecipient(form) == null) {
                     errors.add("Invalid recipient");
+                }
+            }
+
+            if (form.get(Messaging.UNIT_CODE_PARAM) != null) {
+                if (getUnit(form) == null) {
+                    errors.add("Invalid unit");
                 }
             }
 
@@ -126,6 +133,16 @@ public class SendMessageAction extends BaseAction {
         }
 
         return user;
+    }
+
+    private Unit getUnit(DynaActionForm form) {
+        Unit unit = null;
+
+        if (form.get(Messaging.UNIT_CODE_PARAM) != null) {
+            unit = getUnitManager().get(form.get(Messaging.UNIT_CODE_PARAM).toString());
+        }
+
+        return unit;
     }
 
 }

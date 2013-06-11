@@ -4,8 +4,11 @@ import com.worthsoln.batch.CreateEmailQueueReader;
 import com.worthsoln.patientview.model.*;
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
+import com.worthsoln.repository.messaging.MessageDao;
 import com.worthsoln.service.EmailQueueManager;
 import com.worthsoln.service.JobManager;
+import com.worthsoln.service.MessageManager;
+import com.worthsoln.service.UnitManager;
 import com.worthsoln.test.helpers.ServiceHelpers;
 import com.worthsoln.test.service.BaseServiceTest;
 import org.junit.Test;
@@ -33,16 +36,22 @@ public class CreateEmailQueueReaderTest extends BaseServiceTest {
     private JobManager jobManager;
 
     @Inject
+    private MessageDao messageDao;
+
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
     private EmailQueueManager emailQueueManager;
 
 
     @Test
     public void testRead() throws Exception {
         Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
-        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "unitA", "nhs1", specialty1);
-        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "unitA", "nhstest1", specialty1);
-        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "unitA", "nhstest2", specialty1);
-        User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "unitA", "nhstest3", specialty1);
+        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "UNITA", "nhs1", specialty1);
+        User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA", "nhstest1", specialty1);
+        User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "UNITA", "nhstest2", specialty1);
+        User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "UNITA", "nhstest3", specialty1);
         User user4 = serviceHelpers.createUserWithMapping("testname4", "test4@admin.com", "p", "test4", "unitB", "nhstest4", specialty1);
 
         Conversation conversation = serviceHelpers.createConversation("Test subject", user1, user2, true);
@@ -54,6 +63,17 @@ public class CreateEmailQueueReaderTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty1, user2, "patient");
         serviceHelpers.createSpecialtyUserRole(specialty1, user3, "patient");
         serviceHelpers.createSpecialtyUserRole(specialty1, user4, "patient");
+
+        Unit unitRm301 = new Unit();
+        unitRm301.setUnitcode("UNITA");
+        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
+        unitRm301.setShortname("RM301");
+        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
+        unitRm301.setSpecialty(specialty1);
+        unitManager.save(unitRm301);
+
+        message.setUnit(unitRm301);
+        messageDao.save(message);
 
         Job job = new Job();
         job.setCreator(adminUser);

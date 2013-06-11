@@ -1,4 +1,4 @@
-package com.worthsoln.ibd.model.enums;
+package com.worthsoln.patientview.model.enums;
 
 import java.util.Arrays;
 import java.util.List;

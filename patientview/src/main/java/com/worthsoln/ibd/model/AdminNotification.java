@@ -1,7 +1,7 @@
 package com.worthsoln.ibd.model;
 
 
-import com.worthsoln.ibd.model.enums.XmlImportNotification;
+import com.worthsoln.patientview.model.enums.XmlImportNotification;
 import com.worthsoln.patientview.model.BaseModel;
 
 import javax.persistence.Access;

@@ -151,6 +151,8 @@ public class UserManagerImpl implements UserManager {
         user.setName(unitAdmin.getName());
         user.setPassword(unitAdmin.getPassword());
         user.setUsername(unitAdmin.getUsername());
+        user.setIsrecipient(unitAdmin.isIsrecipient());
+        user.setIsclinician(unitAdmin.isIsclinician());
 
         save(user);
 
@@ -411,8 +413,8 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public List<User> getUsers(User user, Specialty specialty, String userType) {
+    public List<User> getUsers(User user, Specialty specialty, String userType, Unit unit) {
 
-        return userDao.get(user, specialty, userType);
+        return userDao.get(user, specialty, userType, unit);
     }
 }

@@ -9,8 +9,11 @@
 
             <h1>
                 <br />
-                Bulk messages are sending, this may take a few minutes.
+                Messages are sending
             </h1>
         </div>
+        <p>
+            This may take a few minutes.
+        </p>
     </div>
 </div>

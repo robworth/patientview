@@ -51,6 +51,14 @@
              <html:options collection="units" property="unitcode" labelProperty="name"/>
           </html:select></td>
     </tr>
+    <tr>
+        <td><b>Message Recipient</b></td>
+        <td><html:checkbox property="isrecipient" value="true"/></td>
+    </tr>
+    <tr>
+        <td><b>Clinician</b></td>
+        <td><html:checkbox property="isclinician" value="true"/></td>
+    </tr>
     <tr align="right">
       <td><html:submit value="Add" styleClass="btn" /></td>
     </tr>

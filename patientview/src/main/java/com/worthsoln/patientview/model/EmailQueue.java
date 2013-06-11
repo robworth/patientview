@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import java.util.Date;
 
 @Entity
+@Table(name = "pv_emailqueue")
 public class EmailQueue extends BaseModel {
 
     @ManyToOne(optional = false)

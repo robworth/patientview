@@ -3,11 +3,11 @@ SET AUTOCOMMIT=0;
 
 
 --
--- Source for table job
+-- Source for table pv_job
 --
 
-DROP TABLE IF EXISTS `job`;
-CREATE TABLE `job` (
+DROP TABLE IF EXISTS `pv_job`;
+CREATE TABLE `pv_job` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created` datetime NOT NULL,
   `errorCount` bigint(20) NOT NULL,
@@ -23,20 +23,20 @@ CREATE TABLE `job` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table job
+-- Dumping data for table pv_job
 --
 
-LOCK TABLES `job` WRITE;
-/*!40000 ALTER TABLE `job` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job` ENABLE KEYS */;
+LOCK TABLES `pv_job` WRITE;
+/*!40000 ALTER TABLE `pv_job` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pv_job` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Source for table emailqueue
+-- Source for table pv_emailqueue
 --
 
-DROP TABLE IF EXISTS `emailqueue`;
-CREATE TABLE `emailqueue` (
+DROP TABLE IF EXISTS `pv_emailqueue`;
+CREATE TABLE `pv_emailqueue` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created` datetime NOT NULL,
   `status` varchar(255) NOT NULL,
@@ -50,28 +50,28 @@ CREATE TABLE `emailqueue` (
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table emailqueue
+-- Dumping data for table pv_emailqueue
 --
 
-LOCK TABLES `emailqueue` WRITE;
-/*!40000 ALTER TABLE `emailqueue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `emailqueue` ENABLE KEYS */;
+LOCK TABLES `pv_emailqueue` WRITE;
+/*!40000 ALTER TABLE `pv_emailqueue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pv_emailqueue` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
---  Foreign keys for table emailqueue
+--  Foreign keys for table pv_emailqueue
 --
 
-ALTER TABLE `emailqueue`
-ADD CONSTRAINT `FKC4A69AF58F35B002` FOREIGN KEY (`job_id`) REFERENCES `job` (`id`);
+ALTER TABLE `pv_emailqueue`
+ADD CONSTRAINT `FKC4A69AF58F35B002` FOREIGN KEY (`job_id`) REFERENCES `pv_job` (`id`);
 
 
 --
--- Source for table groupmessage
+-- Source for table pv_groupmessage
 --
 
-DROP TABLE IF EXISTS `groupmessage`;
-CREATE TABLE `groupmessage` (
+DROP TABLE IF EXISTS `pv_groupmessage`;
+CREATE TABLE `pv_groupmessage` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `conversation_id` bigint(20) NOT NULL,
   `recipient_id` bigint(20) NOT NULL,
@@ -79,12 +79,12 @@ CREATE TABLE `groupmessage` (
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table groupmessage
+-- Dumping data for table pv_groupmessage
 --
 
-LOCK TABLES `groupmessage` WRITE;
-/*!40000 ALTER TABLE `groupmessage` DISABLE KEYS */;
-/*!40000 ALTER TABLE `groupmessage` ENABLE KEYS */;
+LOCK TABLES `pv_groupmessage` WRITE;
+/*!40000 ALTER TABLE `pv_groupmessage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pv_groupmessage` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -102,6 +102,14 @@ ADD COLUMN groupEnum varchar(255) DEFAULT NULL;
 Alter TABLE message
 ADD COLUMN type varchar(255) DEFAULT NULL,
 ADD COLUMN groupEnum varchar(255) DEFAULT NULL;
+
+--
+-- Update user table
+--
+UPDATE user
+SET
+    isrecipient = 0,
+    isclinician = 0;
 
 
 
