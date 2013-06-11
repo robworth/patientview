@@ -1,6 +1,6 @@
 package com.worthsoln.service;
 
-import com.worthsoln.ibd.model.enums.XmlImportNotification;
+import com.worthsoln.patientview.model.enums.XmlImportNotification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

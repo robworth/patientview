@@ -1,6 +1,6 @@
 package com.worthsoln.patientview;
 
-import com.worthsoln.ibd.model.enums.XmlImportNotification;
+import com.worthsoln.patientview.model.enums.XmlImportNotification;
 import com.worthsoln.patientview.exception.XmlImportException;
 import com.worthsoln.patientview.model.CorruptNode;
 import com.worthsoln.patientview.model.Unit;

@@ -26,7 +26,9 @@ public class UnitAdminAddAction extends Action {
         String email = BeanUtils.getProperty(form, "email");
         String unitcode = BeanUtils.getProperty(form, "unitcode");
         String role = BeanUtils.getProperty(form, "role");
-        UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, false, role, true);
+        boolean isRecipient = "true".equals(BeanUtils.getProperty(form, "isrecipient"));
+        boolean isClinician = "true".equals(BeanUtils.getProperty(form, "isclinician"));
+        UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, false, role, true, isRecipient, isClinician);
 
         List<UserMapping> usermappingList = LegacySpringUtils.getUserManager().getUserMappings(username);
 

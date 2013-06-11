@@ -21,5 +21,8 @@ public class Messaging {
     public static final String IS_READER_THE_RECIPIENT = "isReaderTheRecipient";
     public static final String IS_UNIT_ADMIN_PARAM = "isUnitAdmin";
     public static final String IS_BULK_MESSAGE_PARAM = "isBulkMessage";
+    public static final String BULK_MESSAGE_RECIPIENT = "bulk_message_recipient";
+    public static final String RECIPIENT_UNIT_PARAM = "recipient_unit";
+    public static final String UNIT_NAME_PARAM = "unit_name";
 
 }

@@ -34,7 +34,7 @@ public class ConversationsAction extends BaseAction {
 
             // if its a super admin then they get the unit list to filter what users they need
             // other users just get the available ones for their units
-            if (getSecurityUserManager().isRolePresent("superadmin")) {
+            if (getSecurityUserManager().isRolePresent("superadmin") || getSecurityUserManager().isRolePresent("unitadmin")) {
                 // sort units alpha
                 Collections.sort(units, new Comparator<Unit>() {
                     @Override

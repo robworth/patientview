@@ -14,6 +14,8 @@
         <td class="tableheader">Name</td>
         <td class="tableheader">Username</td>
         <td class="tableheader">Role</td>
+        <td class="tableheader">Message Recipient</td>
+        <td class="tableheader">Clinician</td>
         <td></td>
         <td></td>
       </tr>
@@ -22,6 +24,14 @@
         <td class="tablecell"><bean:write name="unitUser" property="name"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="username"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="displayRole"/></td>
+        <td class="tablecell">
+            <logic:equal name="unitUser" property="isrecipient" value="false">No</logic:equal>
+            <logic:equal name="unitUser" property="isrecipient" value="true">Yes</logic:equal>
+        </td>
+        <td class="tablecell">
+            <logic:equal name="unitUser" property="isclinician" value="false">No</logic:equal>
+            <logic:equal name="unitUser" property="isclinician" value="true">Yes</logic:equal>
+        </td>
 
         <logic:present role="superadmin,unitadmin">
             <td>

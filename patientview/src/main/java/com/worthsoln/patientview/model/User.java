@@ -40,6 +40,12 @@ public class User extends BaseModel {
     @Column(nullable = true)
     private boolean accountlocked;
 
+    @Column(nullable = true)
+    private boolean isrecipient;
+
+    @Column(nullable = true)
+    private boolean isclinician;
+
     public User() {
     }
 
@@ -133,4 +139,19 @@ public class User extends BaseModel {
         this.accountlocked = accountlocked;
     }
 
+    public boolean isIsrecipient() {
+        return isrecipient;
+    }
+
+    public void setIsrecipient(boolean isrecipient) {
+        this.isrecipient = isrecipient;
+    }
+
+    public boolean isIsclinician() {
+        return isclinician;
+    }
+
+    public void setIsclinician(boolean isclinician) {
+        this.isclinician = isclinician;
+    }
 }
