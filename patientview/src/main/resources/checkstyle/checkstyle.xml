@@ -139,10 +139,7 @@
         </module>
         <module name="MethodLength"/>
         <module name="MethodName"/>
-        <module name="ParameterNumber"> <!-- TODO: refactor code until we revert the the default (7 params) -->
-            <property name="max" value="8"/>
-            <property name="tokens" value="METHOD_DEF"/>
-        </module>
+        <module name="ParameterNumber"/>
 
 
         <!-- Checks for whitespace                               -->
@@ -204,6 +201,10 @@
         <!--<module name="TodoComment"/> TODO: turn this back on -->
         <module name="UpperEll"/>
 
+    </module>
+
+    <module name="SuppressionFilter">
+        <property name="file" value="src/main/resources/checkstyle/checkstyle-suppressions.xml"/>
     </module>
 
 </module>
