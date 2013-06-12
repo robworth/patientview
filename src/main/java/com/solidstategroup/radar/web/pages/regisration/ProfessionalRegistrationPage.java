@@ -1,6 +1,7 @@
 package com.solidstategroup.radar.web.pages.regisration;
 
 
+import com.solidstategroup.radar.model.exception.InvalidSecurityQuestionAnswer;
 import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
@@ -8,6 +9,7 @@ import com.solidstategroup.radar.service.UserManager;
 import com.solidstategroup.radar.service.UtilityManager;
 import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
 import com.solidstategroup.radar.web.components.RadarRequiredTextField;
+import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,22 +23,26 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class ProfessionalRegistrationPage extends BasePage {
 
     public static final String AREA1 = "GB and Ireland";
     public static final String AREA2 = "Outside GB and Ireland";
     public static final String ERROR_MESSAGE = "An unexpected error has occurred";
+    private IModel<String> securityQuestionAnswModel = new Model<String>();
     @SpringBean
     UtilityManager utilityManager;
     @SpringBean
@@ -46,14 +52,23 @@ public class ProfessionalRegistrationPage extends BasePage {
 
         final List<Component> componentsToUpdate = new ArrayList<Component>();
 
+        Random randomGenerator = new Random();
+        int firstNumber = randomGenerator.nextInt(10);
+        int secondNumber = randomGenerator.nextInt(10);
+
         final Form<ProfessionalUser> form = new Form<ProfessionalUser>("form",
                 new CompoundPropertyModel<ProfessionalUser>(new ProfessionalUser())) {
             @Override
             protected void onSubmit() {
                 try {
-                    userManager.registerProfessional(getModelObject());
+                    ProfessionalUser professionalUser = getModelObject();
+                    professionalUser.setSecurityQuestionAnsw(securityQuestionAnswModel.getObject());
+                    userManager.registerProfessional(professionalUser);
                 } catch (UserEmailAlreadyExists professionalUserEmailAlreadyExists) {
                     get("emailContainer").get("email").error("This email address has already been taken");
+                } catch (InvalidSecurityQuestionAnswer invalidSecurityQuestionAnswer) {
+                    get("securityQuestionContainer").get("securityQuestion")
+                            .error("Wrong answer to the anti-spam question, please try again.");
                 } catch (RegistrationException e) {
                     error(ERROR_MESSAGE);
                 }
@@ -125,7 +140,10 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-        RadarRequiredTextField email = new RadarRequiredTextField("email", emailContainer, componentsToUpdate);
+        RadarTextFieldWithValidation email = new RadarTextFieldWithValidation("email",
+                EmailAddressValidator.getInstance(), true, emailContainer, componentsToUpdate);
+
+        //RadarRequiredTextField email = new RadarRequiredTextField("email", emailContainer, componentsToUpdate);
         emailContainer.add(email);
         form.add(emailContainer);
         componentsToUpdate.add(emailContainer);
@@ -160,10 +178,35 @@ public class ProfessionalRegistrationPage extends BasePage {
         };
 
         RadarRequiredDropdownChoice centre = new RadarRequiredDropdownChoice("centre", utilityManager.getCentres(),
-                new ChoiceRenderer("abbreviation", "id"), centreContainer, componentsToUpdate);
+                new ChoiceRenderer("name", "id"), centreContainer, componentsToUpdate);
         centreContainer.add(centre);
         form.add(centreContainer);
         componentsToUpdate.add(centreContainer);
+
+        WebMarkupContainer securityQuestionContainer = new WebMarkupContainer("securityQuestionContainer") {
+            {
+                setOutputMarkupId(true);
+                setOutputMarkupPlaceholderTag(true);
+            }
+
+            @Override
+            public boolean isVisible() {
+                return areaModel.getObject() != null;
+            }
+        };
+
+        RadarRequiredTextField securityQuestion = new RadarRequiredTextField("securityQuestion",
+                securityQuestionContainer, componentsToUpdate);
+        securityQuestionContainer.add(securityQuestion);
+        form.add(securityQuestionContainer);
+        componentsToUpdate.add(securityQuestionContainer);
+
+        securityQuestionAnswModel.setObject(String.valueOf(firstNumber + secondNumber));
+        HiddenField securityQuestionAnsw = new HiddenField("securityQuestionAnsw", securityQuestionAnswModel);
+        securityQuestionContainer.add(securityQuestionAnsw);
+        form.add(securityQuestionContainer);
+        componentsToUpdate.add(securityQuestionContainer);
+
 
         Label successMessage = new Label("successMessage", "Thank you. Your registration has been successful and will" +
                 " be confirmed by email shortly") {
@@ -180,7 +223,6 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-
         Label errorMessage = new Label("errorMessage", "Please fix all errors") {
             {
                 setOutputMarkupId(true);
@@ -192,6 +234,21 @@ public class ProfessionalRegistrationPage extends BasePage {
             @Override
             public boolean isVisible() {
                 return form.isSubmitted() && form.hasError();
+            }
+        };
+
+        Label securityQuestionMessage = new Label("securityQuestionMessage",
+                firstNumber + " + " + secondNumber + " = ? ") {
+            {
+                setOutputMarkupId(true);
+                setOutputMarkupPlaceholderTag(true);
+                form.add(this);
+                componentsToUpdate.add(this);
+            }
+
+            @Override
+            public boolean isVisible() {
+                return areaModel.getObject() != null;
             }
         };
 

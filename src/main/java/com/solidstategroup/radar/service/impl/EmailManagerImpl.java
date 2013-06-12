@@ -1,5 +1,7 @@
 package com.solidstategroup.radar.service.impl;
 
+import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.user.PatientUser;
 import com.solidstategroup.radar.model.user.ProfessionalUser;
 import com.solidstategroup.radar.model.user.User;
@@ -20,16 +22,20 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmailManagerImpl implements EmailManager {
     private String emailAddressApplication;
     private String emailAddressAdmin1;
     private String emailAddressAdmin2;
+    private String adminEmailTo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailManagerImpl.class);
     private JavaMailSender javaMailSender;
     private VelocityEngine velocityEngine;
+
+    private UtilityDao utilityDao;
 
     private boolean debug;
 
@@ -82,9 +88,23 @@ public class EmailManagerImpl implements EmailManager {
     public void sendProfessionalRegistrationAdminNotificationEmail(ProfessionalUser professionalUser) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("user", professionalUser);
+        String toAddress = "";
+        String[] bccAddress;
         String emailBody = renderTemplate(map, "professional-registration-admin-notification.vm");
-        sendEmail(emailAddressApplication, new String[]{emailAddressAdmin1, emailAddressAdmin2},
-                new String[]{emailAddressAdmin1}, "New Radar site registrant on: " +
+
+        Centre centre = utilityDao.getCentre(professionalUser.getCentre().getId());
+
+        if (null == centre || null == centre.getRenalAdminEmail() || "".equals(centre.getRenalAdminEmail())) {
+            toAddress = adminEmailTo;
+        } else {
+            toAddress = centre.getRenalAdminEmail();
+        }
+
+        List<String> emailAddresses = utilityDao.getAdminNotifications();
+        bccAddress = emailAddresses != null ? emailAddresses.toArray(new String[emailAddresses.size()]) : new String[0];
+
+        sendEmail(emailAddressApplication, new String[]{toAddress},
+                bccAddress, "New Radar site registrant on: " +
                 new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(professionalUser.getDateRegistered()),
                 emailBody);
     }
@@ -179,5 +199,17 @@ public class EmailManagerImpl implements EmailManager {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    public String getAdminEmailTo() {
+        return adminEmailTo;
+    }
+
+    public void setAdminEmailTo(String adminEmailTo) {
+        this.adminEmailTo = adminEmailTo;
+    }
+
+    public void setUtilityDao(UtilityDao utilityDao) {
+        this.utilityDao = utilityDao;
     }
 }

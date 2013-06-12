@@ -3,11 +3,12 @@ package com.solidstategroup.radar.service.impl;
 import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UserDao;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
+import com.solidstategroup.radar.model.exception.InvalidSecurityQuestionAnswer;
+import com.solidstategroup.radar.model.exception.RegistrationException;
 import com.solidstategroup.radar.model.exception.DaoException;
 import com.solidstategroup.radar.model.exception.DecryptionException;
 import com.solidstategroup.radar.model.exception.EmailAddressNotFoundException;
-import com.solidstategroup.radar.model.exception.RegistrationException;
-import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
 import com.solidstategroup.radar.model.filter.PatientUserFilter;
 import com.solidstategroup.radar.model.filter.ProfessionalUserFilter;
 import com.solidstategroup.radar.model.user.AdminUser;
@@ -134,10 +135,14 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
     public void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
-            RegistrationException {
+            InvalidSecurityQuestionAnswer, RegistrationException {
         User user = userDao.getProfessionalUser(professionalUser.getEmail());
         if (user != null) {
             throw new UserEmailAlreadyExists("Email address already exists");
+        }
+
+        if (!professionalUser.getSecurityQuestion().equals(professionalUser.getSecurityQuestionAnsw())) {
+            throw new InvalidSecurityQuestionAnswer("Security question answer is incorrect");
         }
 
         try {

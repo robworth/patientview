@@ -1,12 +1,14 @@
 package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.model.AdminNotification;
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.enums.XmlImportNotification;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -43,7 +45,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public List<Centre> getCentres() {
-        return jdbcTemplate.query("SELECT * FROM unit WHERE sourceType = ?", new Object[]{"renalunit"},
+        return jdbcTemplate.query("SELECT * FROM unit WHERE sourceType = ? ORDER BY name", new Object[]{"renalunit"},
                 new CentreRowMapper());
     }
 
@@ -189,6 +191,12 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+    public List<String> getAdminNotifications() {
+        return jdbcTemplate.queryForList("SELECT email FROM pv_admin_notification " +
+                "WHERE notification_id = ? ",
+                new Object[]{XmlImportNotification.RADAR_PROF_REQUEST.getId()}, String.class);
+    }
+
     private class CentreRowMapper implements RowMapper<Centre> {
         public Centre mapRow(ResultSet resultSet, int i) throws SQLException {
             // Create a centre and set the fields from the resultset
@@ -285,4 +293,12 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+    private class AdminNotificationRowMapper implements RowMapper<AdminNotification> {
+        public AdminNotification mapRow(ResultSet resultSet, int i) throws SQLException {
+            AdminNotification adminNotification = new AdminNotification();
+            adminNotification.setEmail(resultSet.getString("email"));
+            adminNotification.setXmlImportNotificationId(resultSet.getLong("notification_id"));
+            return adminNotification;
+        }
+    }
 }
