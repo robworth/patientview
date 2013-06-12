@@ -51,7 +51,9 @@ public class UnitUserEditAction extends Action {
         boolean isRecipient = "true".equals(BeanUtils.getProperty(form, "isrecipient"));
         boolean isClinician = "true".equals(BeanUtils.getProperty(form, "isclinician"));
 
-        UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon, isRecipient, isClinician);
+        UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
+        unitAdmin.setIsrecipient(isRecipient);
+        unitAdmin.setIsclinician(isClinician);
 
         LegacySpringUtils.getUserManager().saveUserFromUnitAdmin(unitAdmin, unitcode);
 

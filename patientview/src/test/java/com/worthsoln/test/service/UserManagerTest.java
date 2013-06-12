@@ -84,7 +84,9 @@ public class UserManagerTest extends BaseServiceTest {
 
         // a new unit staff user to create
         unitAdmin = new UnitAdmin("unitstaff-username1", "pass", "Unit Staff Name",
-                "unitstaff-username1@patientview.org", false, "unitstaff", true, false, true);
+                "unitstaff-username1@patientview.org", false, "unitstaff", true);
+        unitAdmin.setIsrecipient(false);
+        unitAdmin.setIsclinician(true);
     }
 
     @Test

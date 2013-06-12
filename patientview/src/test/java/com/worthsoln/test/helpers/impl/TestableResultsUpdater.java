@@ -24,6 +24,7 @@
 package com.worthsoln.test.helpers.impl;
 
 import com.worthsoln.patientview.ResultsUpdater;
+import org.junit.Ignore;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -31,6 +32,7 @@ import java.io.File;
 /**
  *
  */
+@Ignore
 public class TestableResultsUpdater extends ResultsUpdater {
 
     @Override
