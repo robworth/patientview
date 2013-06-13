@@ -153,7 +153,7 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     @Override
-    public void sendEmail(String from, String[] to, String subject, String body) throws Exception{
+    public void sendEmail(String from, String[] to, String subject, String body) throws Exception {
 
         if (!StringUtils.hasLength(from)) {
             throw new IllegalArgumentException("Cannot send mail missing 'from'");

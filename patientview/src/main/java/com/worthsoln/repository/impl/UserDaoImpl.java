@@ -58,19 +58,18 @@ public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
 
     @Override
     public List<User> get(User user, Specialty specialty, String userType, Unit unit) {
-        String sql = "SELECT " +
-                "  u.* " +
-                "FROM " +
-                "  User u, " +
-                "  UserMapping um, " +
-                "  SpecialtyUserRole sur " +
-                "WHERE u.username = um.username " +
-                "AND u.id = sur.user_id " +
-                "AND sur.role = :userType " +
-                "AND u.username NOT LIKE '%-GP%' " +
-                "AND um.unitcode = :unitcode  " +
-                "AND sur.specialty_id = :specialtyId ";
-
+        String sql = "SELECT "
+                + "  u.* "
+                + "FROM "
+                + "  User u, "
+                + "  UserMapping um, "
+                + "  SpecialtyUserRole sur "
+                + "WHERE u.username = um.username "
+                + "AND u.id = sur.user_id "
+                + "AND sur.role = :userType "
+                + "AND u.username NOT LIKE '%-GP%' "
+                + "AND um.unitcode = :unitcode  "
+                + "AND sur.specialty_id = :specialtyId ";
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 

@@ -74,11 +74,13 @@ public class ConversationAction extends BaseAction {
                 userType = "all patients";
             } else if (GroupEnum.ALL_STAFF.equals(conversation.getGroupEnum())) {
                 userType = "all staff";
-            } else {}
+            } else {
+                userType = "";
+            }
 
             request.setAttribute(Messaging.BULK_MESSAGE_RECIPIENT, userType);
-            request.setAttribute(Messaging.RECIPIENT_UNIT_PARAM, getMessageManager().getMessages(conversation.getId()).get(0).getUnit().getName());
-
+            request.setAttribute(Messaging.RECIPIENT_UNIT_PARAM,
+                    getMessageManager().getMessages(conversation.getId()).get(0).getUnit().getName());
 
         }
 

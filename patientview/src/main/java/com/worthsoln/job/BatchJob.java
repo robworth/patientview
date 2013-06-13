@@ -1,25 +1,42 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
 package com.worthsoln.job;
 
-import com.worthsoln.patientview.model.EmailQueue;
-import com.worthsoln.patientview.model.Job;
-import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.service.JobManager;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.annotation.AfterJob;
 import org.springframework.batch.core.annotation.BeforeJob;
 import org.springframework.batch.core.annotation.OnReadError;
 import org.springframework.batch.core.annotation.OnSkipInWrite;
 import org.slf4j.Logger;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,15 +47,15 @@ public abstract class BatchJob {
     protected static final Logger LOGGER = LoggerFactory.getLogger(BatchJob.class);
 
     @Autowired
-    protected JobLauncher jobLauncher;
+    private JobLauncher jobLauncher;
 
     @Autowired
-    protected JobManager jobManager;
+    private JobManager jobManager;
 
     /**
      * Run the batch job
      */
-    public void run(){
+    public void run() {
 
         Map<String, JobParameter> map = new HashMap<String, JobParameter>();
         map.put("key", new JobParameter(new Date()));
@@ -121,4 +138,11 @@ public abstract class BatchJob {
      */
     protected abstract void onRunError(Exception e);
 
+    public JobManager getJobManager() {
+        return jobManager;
+    }
+
+    public void setJobManager(JobManager jobManager) {
+        this.jobManager = jobManager;
+    }
 }

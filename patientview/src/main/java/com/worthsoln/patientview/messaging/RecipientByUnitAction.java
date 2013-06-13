@@ -45,7 +45,9 @@ public class RecipientByUnitAction extends BaseAction {
         User user = UserUtils.retrieveUser(request);
 
         // only do this if its a superadmin
-        if (getSecurityUserManager().isRolePresent("superadmin") || getSecurityUserManager().isRolePresent("unitadmin")) {
+        if (getSecurityUserManager().isRolePresent("superadmin")
+                || getSecurityUserManager().isRolePresent("unitadmin")) {
+
             String unitCode = getUnitCode(request);
 
             if (StringUtils.hasText(unitCode)) {
