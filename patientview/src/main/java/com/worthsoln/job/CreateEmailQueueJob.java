@@ -1,3 +1,25 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
 package com.worthsoln.job;
 
 import com.worthsoln.batch.CreateEmailQueueReader;
@@ -38,11 +60,11 @@ public class CreateEmailQueueJob extends BatchJob {
             EmailQueue emailQueue = (EmailQueue) holder;
             com.worthsoln.patientview.model.Job job = emailQueue.getJob();
             int jobIndex = jobs.indexOf(job);
-            if ( jobIndex != -1) {
+            if (jobIndex != -1) {
                 job.addReport(
                       "username=" + emailQueue.getRecipient().getUsername()
                     + ",messageId=" + emailQueue.getMessage().getId()
-                    + " : " +problem.getMessage());
+                    + " : " + problem.getMessage());
 
                 job.addErrorCount();
                 job.setStatus(SendEmailEnum.FAILED);
@@ -69,14 +91,14 @@ public class CreateEmailQueueJob extends BatchJob {
                 job.convertReports();
                 job.setFinished(new Date());
                 job.setStatus(SendEmailEnum.FAILED);
-                jobManager.save(job);
+                getJobManager().save(job);
             }
         }
     }
 
     @Override
     protected void prepare() {
-        jobs = jobManager.getJobList(SendEmailEnum.PENDING);
+        jobs = getJobManager().getJobList(SendEmailEnum.PENDING);
         reader.refresh(jobs);
     }
 
@@ -90,7 +112,7 @@ public class CreateEmailQueueJob extends BatchJob {
             job.convertReports();
             job.setFinished(new Date());
             job.setStatus(SendEmailEnum.FAILED);
-            jobManager.save(job);
+            getJobManager().save(job);
         }
     }
 
@@ -102,7 +124,7 @@ public class CreateEmailQueueJob extends BatchJob {
             if (!SendEmailEnum.FAILED.equals(job.getStatus())) {
                 job.setStatus(SendEmailEnum.SENT);
             }
-            jobManager.save(job);
+            getJobManager().save(job);
         }
     }
 
@@ -110,6 +132,6 @@ public class CreateEmailQueueJob extends BatchJob {
      * According to the status, select and set the jobs from Job entry
      */
     private  void setJobs() {
-       this.jobs = jobManager.getJobList(SendEmailEnum.PENDING);
+       this.jobs = getJobManager().getJobList(SendEmailEnum.PENDING);
     }
 }

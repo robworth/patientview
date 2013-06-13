@@ -23,6 +23,9 @@
 
 package com.worthsoln.test.importer;
 
+import org.junit.Ignore;
+
+@Ignore
 public class ImportMonitorTest {
 
 

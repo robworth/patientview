@@ -24,7 +24,12 @@
 package com.worthsoln.service.impl;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
-import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.Conversation;
+import com.worthsoln.patientview.model.Message;
+import com.worthsoln.patientview.model.User;
+import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.model.Job;
+import com.worthsoln.patientview.model.MessageRecipient;
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.repository.job.JobDao;
@@ -38,7 +43,6 @@ import com.worthsoln.service.UserManager;
 import com.worthsoln.service.GroupMessageManager;
 import com.worthsoln.service.SecurityUserManager;
 
-import org.apache.poi.util.StringUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -219,7 +223,8 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
-    public Message createGroupMessage(ServletContext context, String subject, String content, User sender, String groupName, String type, Unit unit) throws Exception {
+    public Message createGroupMessage(ServletContext context, String subject, String content, User sender,
+                                      String groupName, String type, Unit unit) throws Exception {
         if (!StringUtils.hasText(subject)) {
             throw new IllegalArgumentException("Invalid required parameter subject");
         }
@@ -524,7 +529,9 @@ public class MessageManagerImpl implements MessageManager {
             // type is not null indicate the group message
             if (conversation.getType() != null) {
                 // the bulk message is not new for unitadmin who send it
-                if (!securityUserManager.isRolePresent("superadmin") && !(securityUserManager.isRolePresent("unitadmin") && participantId.equals(conversation.getParticipant1().getId()))) {
+                if (!securityUserManager.isRolePresent("superadmin")
+                        && !(securityUserManager.isRolePresent("unitadmin")
+                        && participantId.equals(conversation.getParticipant1().getId()))) {
                     if (groupMessageManager.get(participantId, conversation) ==  null) {
                         conversation.setNumberUnread(1);
                     }
