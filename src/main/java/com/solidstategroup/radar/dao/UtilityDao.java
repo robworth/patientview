@@ -43,6 +43,4 @@ public interface UtilityDao {
 
     int getPatientCountByUnit(Centre centre);
 
-    List<String> getAdminNotifications();
-
 }

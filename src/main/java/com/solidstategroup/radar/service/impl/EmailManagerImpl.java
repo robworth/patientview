@@ -22,7 +22,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EmailManagerImpl implements EmailManager {
@@ -89,7 +88,6 @@ public class EmailManagerImpl implements EmailManager {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("user", professionalUser);
         String toAddress = "";
-        String[] bccAddress;
         String emailBody = renderTemplate(map, "professional-registration-admin-notification.vm");
 
         Centre centre = utilityDao.getCentre(professionalUser.getCentre().getId());
@@ -100,11 +98,8 @@ public class EmailManagerImpl implements EmailManager {
             toAddress = centre.getRenalAdminEmail();
         }
 
-        List<String> emailAddresses = utilityDao.getAdminNotifications();
-        bccAddress = emailAddresses != null ? emailAddresses.toArray(new String[emailAddresses.size()]) : new String[0];
-
         sendEmail(emailAddressApplication, new String[]{toAddress},
-                bccAddress, "New Radar site registrant on: " +
+                new String[]{}, "New Radar site registrant on: " +
                 new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(professionalUser.getDateRegistered()),
                 emailBody);
     }
