@@ -11,6 +11,7 @@ import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
 import com.solidstategroup.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
@@ -81,122 +82,124 @@ public class MedicalResultsPanel extends Panel {
             protected void onSubmit() {
                 MedicalResult medicalResult = getModelObject();
 
-                if (medicalResult.getBloodUrea() == null
-                        && medicalResult.getSerumCreatanine() == null
-                        && medicalResult.getWeight() == null
-                        && medicalResult.getHeight() == null
-                        && medicalResult.getBpSystolic() == null
-                        && medicalResult.getAntihypertensiveDrugs() == null) {
-                    error(TEST_RESULT_AT_LEAST_ONE);
+                if (medicalResult.isToBeValidated()) {
+                    if (medicalResult.getBloodUrea() == null
+                            && medicalResult.getSerumCreatanine() == null
+                            && medicalResult.getWeight() == null
+                            && medicalResult.getHeight() == null
+                            && medicalResult.getBpSystolic() == null
+                            && medicalResult.getAntihypertensiveDrugs() == null) {
+                        error(TEST_RESULT_AT_LEAST_ONE);
+                    }
+
+                    // test result cannot have a null date
+                    if (medicalResult.getBloodUrea() != null) {
+                        if (medicalResult.getBloodUreaDate() == null) {
+                            get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+
+                        if (medicalResult.getBloodUrea() < 1 || medicalResult.getBloodUrea() > 100) {
+                            get("bloodUreaDate").error(". " + MUST_BE_BETWEEN_1_AND_100);
+                        }
+                    }
+
+                    if (medicalResult.getSerumCreatanine() != null) {
+                        if (medicalResult.getCreatanineDate() == null) {
+                            get("creatanineDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+
+                        if (medicalResult.getSerumCreatanine() < 10 || medicalResult.getSerumCreatanine() > 2800) {
+                            get("serumCreatanine").error(MUST_BE_BETWEEN_10_AND_2800);
+                        }
+                    }
+
+                    if (medicalResult.getWeight() != null) {
+                        if (medicalResult.getWeightDate() == null) {
+                            get("weightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+
+                        // format needs to be NNN.NN or NN.NN
+                        int weightStringLength = medicalResult.getWeight().toString().length();
+                        int indexOfDot = medicalResult.getWeight().toString().indexOf(".");
+
+                        if ((weightStringLength != 4 && weightStringLength != 5 && weightStringLength != 6) ||
+                                (weightStringLength == 6 && indexOfDot != 3) ||
+                                (weightStringLength == 5 && (indexOfDot != 2 && indexOfDot != 3)) ||
+                                (weightStringLength == 4 && indexOfDot != 2)) {
+                            get("weight").error(FORMAT_MUST_BE_NNN_DOT_NN);
+                        }
+                    }
+
+                    if (medicalResult.getHeight() != null) {
+                        if (medicalResult.getHeightDate() == null) {
+                            get("heightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+
+                        // format needs to be NNN.N or NN.N
+                        int heightStringLength = medicalResult.getHeight().toString().length();
+                        int indexOfDot = medicalResult.getHeight().toString().indexOf(".");
+
+                        if ((heightStringLength != 4 && heightStringLength != 5) ||
+                                (heightStringLength == 5 && indexOfDot != 3) ||
+                                (heightStringLength == 4 && indexOfDot != 2)) {
+                            get("height").error(FORMAT_MUST_BE_NNN_DOT_N);
+                        }
+                    }
+
+                    if (medicalResult.getBpSystolic() != null || medicalResult.getBpDiastolic() != null) {
+                        // if one has been entered need to make sure the other one is
+                        if (medicalResult.getBpSystolic() == null || medicalResult.getBpDiastolic() == null) {
+                            get("bpDate").error(TEST_RESULT_BP);
+                        }
+
+                        if (medicalResult.getBpDate() == null) {
+                            get("bpDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+
+                        if (medicalResult.getBpSystolic() != null &&
+                                (medicalResult.getBpSystolic() < 1 || medicalResult.getBpSystolic() > 250)) {
+                            get("bpSystolic").error(MUST_BE_BETWEEN_1_AND_250);
+                        }
+
+                        if (medicalResult.getBpDiastolic() != null &&
+                                (medicalResult.getBpDiastolic() < 1 || medicalResult.getBpDiastolic() > 250)) {
+                            get("bpDiastolic").error(MUST_BE_BETWEEN_1_AND_250);
+                        }
+
+                        if (medicalResult.getBpSystolic() != null && medicalResult.getBpDiastolic() != null &&
+                                medicalResult.getBpDiastolic() > medicalResult.getBpSystolic()) {
+                            get("bpDiastolic").error(DIASTOLIC_MUST_BE_LESS_THAN_OR_EQUAL_TO_SYSTOLIC);
+                        }
+                    }
+
+                    if (medicalResult.getAntihypertensiveDrugs() != null
+                            && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
+                            && medicalResult.getAntihypertensiveDrugsDate() == null) {
+                        get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                    }
+
+                    if (medicalResult.getPcr() != null) {
+                        if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 15000) {
+                            get("pcr").error(MUST_BE_BETWEEN_0_AND_15000);
+                        }
+
+                        if (medicalResult.getPcrDate() == null) {
+                            get("pcrDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+                    }
+
+                    if (medicalResult.getAcr() != null) {
+                        if (medicalResult.getAcr() < 1 || medicalResult.getAcr() > 3000) {
+                            get("acr").error(MUST_BE_BETWEEN_1_AND_3000);
+                        }
+
+                        if (medicalResult.getAcrDate() == null) {
+                            get("acrDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+                        }
+                    }
                 }
 
-                // test result cannot have a null date
-                if (medicalResult.getBloodUrea() != null) {
-                    if (medicalResult.getBloodUreaDate() == null) {
-                        get("bloodUreaDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-
-                    if (medicalResult.getBloodUrea() < 1 || medicalResult.getBloodUrea() > 100) {
-                        get("bloodUreaDate").error(". " + MUST_BE_BETWEEN_1_AND_100);
-                    }
-                }
-
-                if (medicalResult.getSerumCreatanine() != null) {
-                    if (medicalResult.getCreatanineDate() == null) {
-                        get("creatanineDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-
-                    if (medicalResult.getSerumCreatanine() < 10 || medicalResult.getSerumCreatanine() > 2800) {
-                        get("serumCreatanine").error(MUST_BE_BETWEEN_10_AND_2800);
-                    }
-                }
-
-                if (medicalResult.getWeight() != null) {
-                    if (medicalResult.getWeightDate() == null) {
-                        get("weightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-
-                    // format needs to be NNN.NN or NN.NN
-                    int weightStringLength = medicalResult.getWeight().toString().length();
-                    int indexOfDot = medicalResult.getWeight().toString().indexOf(".");
-
-                    if ((weightStringLength != 4 && weightStringLength != 5 && weightStringLength != 6) ||
-                            (weightStringLength == 6 && indexOfDot != 3) ||
-                            (weightStringLength == 5 && (indexOfDot != 2 && indexOfDot != 3)) ||
-                            (weightStringLength == 4 && indexOfDot != 2)) {
-                        get("weight").error(FORMAT_MUST_BE_NNN_DOT_NN);
-                    }
-                }
-
-                if (medicalResult.getHeight() != null) {
-                    if (medicalResult.getHeightDate() == null) {
-                        get("heightDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-
-                    // format needs to be NNN.N or NN.N
-                    int heightStringLength = medicalResult.getHeight().toString().length();
-                    int indexOfDot = medicalResult.getHeight().toString().indexOf(".");
-
-                    if ((heightStringLength != 4 && heightStringLength != 5) ||
-                            (heightStringLength == 5 && indexOfDot != 3) ||
-                            (heightStringLength == 4 && indexOfDot != 2)) {
-                        get("height").error(FORMAT_MUST_BE_NNN_DOT_N);
-                    }
-                }
-
-                if (medicalResult.getBpSystolic() != null || medicalResult.getBpDiastolic() != null) {
-                    // if one has been entered need to make sure the other one is
-                    if (medicalResult.getBpSystolic() == null || medicalResult.getBpDiastolic() == null) {
-                        get("bpDate").error(TEST_RESULT_BP);
-                    }
-
-                    if (medicalResult.getBpDate() == null) {
-                        get("bpDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-
-                    if (medicalResult.getBpSystolic() != null &&
-                            (medicalResult.getBpSystolic() < 1 || medicalResult.getBpSystolic() > 250)) {
-                        get("bpSystolic").error(MUST_BE_BETWEEN_1_AND_250);
-                    }
-
-                    if (medicalResult.getBpDiastolic() != null &&
-                            (medicalResult.getBpDiastolic() < 1 || medicalResult.getBpDiastolic() > 250)) {
-                        get("bpDiastolic").error(MUST_BE_BETWEEN_1_AND_250);
-                    }
-
-                    if (medicalResult.getBpSystolic() != null && medicalResult.getBpDiastolic() != null &&
-                            medicalResult.getBpDiastolic() > medicalResult.getBpSystolic()) {
-                        get("bpDiastolic").error(DIASTOLIC_MUST_BE_LESS_THAN_OR_EQUAL_TO_SYSTOLIC);
-                    }
-                }
-
-                if (medicalResult.getAntihypertensiveDrugs() != null
-                        && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
-                        && medicalResult.getAntihypertensiveDrugsDate() == null) {
-                    get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                }
-
-                if (medicalResult.getPcr() != null) {
-                    if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 15000) {
-                        get("pcr").error(MUST_BE_BETWEEN_0_AND_15000);
-                    }
-
-                    if (medicalResult.getPcrDate() == null) {
-                        get("pcrDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-                }
-
-                if (medicalResult.getAcr() != null) {
-                    if (medicalResult.getAcr() < 1 || medicalResult.getAcr() > 3000) {
-                        get("acr").error(MUST_BE_BETWEEN_1_AND_3000);
-                    }
-
-                    if (medicalResult.getAcrDate() == null) {
-                        get("acrDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
-                }
-
-                if (!hasError()) {
+                if (medicalResult.isToBeValidated() && !hasError()) {
                     medicalResult.setRadarNo(demographics.getId());
                     medicalResult.setNhsNo(demographics.getNhsNumber());
                     medicalResultManager.save(medicalResult);
@@ -259,6 +262,11 @@ public class MedicalResultsPanel extends Panel {
         form.add(new AjaxSubmitLink("saveTop") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                Form<MedicalResult> medicalResultForm = (Form<MedicalResult>) form;
+                MedicalResult medicalResult = medicalResultForm.getModelObject();
+                medicalResult.setToBeUpdated(true);
+                medicalResult.setToBeValidated(true);
+
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
                 target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
                 target.add(formFeedback);
@@ -274,6 +282,34 @@ public class MedicalResultsPanel extends Panel {
         form.add(new AjaxSubmitLink("saveBottom") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                Form<MedicalResult> medicalResultForm = (Form<MedicalResult>) form;
+                MedicalResult medicalResult = medicalResultForm.getModelObject();
+                medicalResult.setToBeUpdated(true);
+                medicalResult.setToBeValidated(true);
+
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
+                target.add(formFeedback);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
+                target.add(formFeedback);
+            }
+        });
+
+        form.add(new AjaxButton("clearForm") {
+
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                Form<MedicalResult> medicalResultForm = (Form<MedicalResult>) form;
+                MedicalResult medicalResult = medicalResultForm.getModelObject();
+
+                medicalResult.setToBeUpdated(false);
+                medicalResult.setToBeValidated(false);
+                medicalResult.clearValues();
+
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
                 target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
                 target.add(formFeedback);
@@ -286,4 +322,5 @@ public class MedicalResultsPanel extends Panel {
             }
         });
     }
+
 }

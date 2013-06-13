@@ -66,7 +66,9 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
             // see if there is already a row for this test per uni and radar no and update
             MedicalResultItem medicalResultItem = getMedicalResultItem(medicalResult.getRadarNo(), unitCode, testCode);
 
-            if (medicalResultItem != null && medicalResultItem.hasValidId()) {
+            if (medicalResultItem != null && medicalResultItem.hasValidId() &&
+                    !medicalResult.isToBeUpdated()) {
+
                 // if the value is not null then update it else delete the existing result
                 if (value != null) {
                     String setString = " SET ";

@@ -28,6 +28,9 @@ public class MedicalResult implements Serializable {
     private Date acrDate;
     private DiseaseGroup diseaseGroup;
 
+    boolean toBeUpdated = true; // to determine if medical results form is cleared and a new values will be entered
+    boolean toBeValidated = true; // to find out if a submission from FE to BE needs to be saved to DB
+
     public enum YesNo {
         YES("1"),
         NO("0"),
@@ -227,4 +230,41 @@ public class MedicalResult implements Serializable {
     public void setDiseaseGroup(DiseaseGroup diseaseGroup) {
         this.diseaseGroup = diseaseGroup;
     }
+
+    public boolean isToBeUpdated() {
+        return toBeUpdated;
+    }
+
+    public void setToBeUpdated(boolean toBeUpdated) {
+        this.toBeUpdated = toBeUpdated;
+    }
+
+    public boolean isToBeValidated() {
+        return toBeValidated;
+    }
+
+    public void setToBeValidated(boolean toBeValidated) {
+        this.toBeValidated = toBeValidated;
+    }
+
+    public void clearValues() {
+        this.bloodUrea = null;
+        this.bloodUreaDate = null;
+        this.serumCreatanine = null;
+        this.creatanineDate = null;
+        this.weight = null;
+        this.weightDate = null;
+        this.height = null;
+        this.heightDate = null;
+        this.bpSystolic = null;
+        this.bpDiastolic = null;
+        this.bpDate = null;
+        this.antihypertensiveDrugs = null;
+        this.antihypertensiveDrugsDate = null;
+        this.pcr = null;
+        this.pcrDate = null;
+        this.acr = null;
+        this.acrDate = null;
+    }
+
 }
