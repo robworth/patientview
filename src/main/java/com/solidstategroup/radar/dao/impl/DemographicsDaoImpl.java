@@ -4,9 +4,9 @@ import com.solidstategroup.radar.dao.DemographicsDao;
 import com.solidstategroup.radar.dao.UtilityDao;
 import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
 import com.solidstategroup.radar.dao.generic.GenericDiagnosisDao;
-import com.solidstategroup.radar.model.Centre;
-import com.solidstategroup.radar.model.Consultant;
 import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Clinician;
+import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Sex;
 import com.solidstategroup.radar.model.Status;
 import com.solidstategroup.radar.model.enums.NhsNumberType;
@@ -124,7 +124,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     demographics.getPreviousPostcode(),
                     demographics.isConsent(),
                     demographics.getDateRegistered(),
-                    demographics.getConsultant() != null ? demographics.getConsultant().getId() : null,
+                    demographics.getClinician() != null ? demographics.getClinician().getId() : null,
                     demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null,
                     demographics.getRenalUnitAuthorised() != null ?
                             demographics.getRenalUnitAuthorised().getId() : null,
@@ -172,7 +172,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("POSTCODE_OLD", demographics.getPreviousPostcode());
                     put("CONSENT", demographics.isConsent());
                     put("DATE_BAPN_REG", null); // Todo: Fix
-                    put("CONS_NEPH", demographics.getConsultant() != null ? demographics.getConsultant().getId()
+                    put("CONS_NEPH", demographics.getClinician() != null ? demographics.getClinician().getId()
                             : null);
                     put("RENAL_UNIT", demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null);
                     put("RENAL_UNIT_2", demographics.getRenalUnitAuthorised() != null ?
@@ -375,8 +375,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             Long consultantId = resultSet.getLong("CONS_NEPH");
             if (!resultSet.wasNull()) {
-                Consultant consultant = utilityDao.getConsultant(consultantId);
-                demographics.setConsultant(consultant);
+                Clinician clinician = utilityDao.getClinician(consultantId);
+                if (clinician != null) {
+                    demographics.setClinician(clinician);
+                }
             }
 
             Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");

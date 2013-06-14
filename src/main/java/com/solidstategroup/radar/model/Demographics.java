@@ -31,7 +31,7 @@ public class Demographics extends BaseModel {
     private String ukTransplantNumber;
 
     private Status status;
-    private Consultant consultant;
+    private Clinician clinician;
     private Centre renalUnit;
 
     private boolean consent;
@@ -246,14 +246,6 @@ public class Demographics extends BaseModel {
         this.status = status;
     }
 
-    public Consultant getConsultant() {
-        return consultant;
-    }
-
-    public void setConsultant(Consultant consultant) {
-        this.consultant = consultant;
-    }
-
     public Centre getRenalUnit() {
         return renalUnit;
     }
@@ -397,5 +389,13 @@ public class Demographics extends BaseModel {
 
     public void setGeneric(boolean generic) {
         this.generic = generic;
+    }
+
+    public Clinician getClinician() {
+        return clinician;
+    }
+
+    public void setClinician(Clinician clinician) {
+        this.clinician = clinician;
     }
 }

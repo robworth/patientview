@@ -7,6 +7,7 @@ import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
+import com.solidstategroup.radar.model.Clinician;
 
 import java.util.List;
 import java.util.Map;
@@ -42,5 +43,11 @@ public interface UtilityDao {
     Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode);
 
     int getPatientCountByUnit(Centre centre);
+
+    Clinician getClinician(Long id);
+
+    List<Clinician> getClinicians(Centre centre);
+
+    Centre getCentre(String unitCode);
 
 }
