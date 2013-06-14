@@ -84,8 +84,8 @@ public class ExportManagerImpl implements ExportManager {
                     demographics.getForename(), demographics.getSurname(),
                     demographics.getAddress1() + ", " + demographics.getAddress2() + ", " +
                             demographics.getAddress3() + ". " + demographics.getAddress4(), diagnosisCodeAbbr,
-                    demographics.getConsultant() != null ? demographics.getConsultant().getForename() : "",
-                    demographics.getConsultant() != null ? demographics.getConsultant().getSurname() : "",
+                    demographics.getClinician() != null ? demographics.getClinician().getForename() : "",
+                    demographics.getClinician() != null ? demographics.getClinician().getSurname() : "",
                     demographics.getRenalUnit() != null ? demographics.getRenalUnit().getAbbreviation() : ""));
         }
 

@@ -2,6 +2,7 @@ package com.solidstategroup.radar.service;
 
 import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
+import com.solidstategroup.radar.model.Clinician;
 import com.solidstategroup.radar.model.Country;
 import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
@@ -53,4 +54,6 @@ public interface UtilityManager {
     int getPatientCountByUnit(Centre centre);
 
     JFreeChart getPatientCountPerUnitChart();
+
+    List<Clinician> getCliniciansByCentre(Centre centre);
 }
