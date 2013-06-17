@@ -31,7 +31,7 @@
 
     <p class="header"><bean:write name="splashPage" property="headline"/></p>
 
-    <p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodytext"/></p>
+    <p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodyTextForHtml"/></p>
 
     <br />
     <hr class="thinblue" />

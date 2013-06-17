@@ -25,6 +25,7 @@ package com.worthsoln.patientview.model;
 
 import com.worthsoln.patientview.model.enums.GroupEnum;
 import org.apache.commons.lang.StringUtils;
+import org.owasp.esapi.ESAPI;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -81,7 +82,8 @@ public class Message extends BaseModel {
     private static final int SUMMARY_LENGTH = 500;
 
     public String getFormattedContent() {
-        return content.replaceAll("\n", "<br/>");
+        content = ESAPI.encoder().encodeForHTML(content);
+        return content.replace("&#xa;", "<br/>");
     }
 
     public String getSummary() {
