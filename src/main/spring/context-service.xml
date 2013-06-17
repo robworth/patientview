@@ -85,9 +85,11 @@
 
     <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl">
         <property name="javaMailSender" ref="javaMailSender"/>
+        <property name="utilityDao" ref="utilityDao"/>
         <property name="emailAddressAdmin1" value="${email.admin1}"/>
         <property name="emailAddressAdmin2" value="${email.admin2}"/>
         <property name="emailAddressApplication" value="${email.application}"/>
+        <property name="adminEmailTo" value="${admin.email.to}"/>
         <property name="debug" value="${debug}"/>
     </bean>
 

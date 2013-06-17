@@ -190,12 +190,12 @@ public class AdminPatientsAllPage extends AdminsBasePage {
 
         String consultantSurname = "", consultantForename = "", centreAbbrv = "";
 
-        if (demographics.getConsultant() != null) {
-            consultantSurname = demographics.getConsultant().getSurname();
-            consultantForename = demographics.getConsultant().getForename();
+        if (demographics.getClinician() != null) {
+            consultantSurname = demographics.getClinician().getSurname();
+            consultantForename = demographics.getClinician().getForename();
 
-            if (demographics.getConsultant().getCentre() != null) {
-                centreAbbrv = demographics.getConsultant().getCentre().getAbbreviation();
+            if (demographics.getClinician().getCentre() != null) {
+                centreAbbrv = demographics.getClinician().getCentre().getAbbreviation();
             }
         }
 

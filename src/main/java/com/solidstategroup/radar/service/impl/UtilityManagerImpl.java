@@ -1,12 +1,13 @@
 package com.solidstategroup.radar.service.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.Centre;
 import com.solidstategroup.radar.model.Consultant;
-import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.DiagnosisCode;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Clinician;
 import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Country;
 import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
 import com.solidstategroup.radar.service.UtilityManager;
 import org.jfree.chart.ChartFactory;
@@ -207,6 +208,10 @@ public class UtilityManagerImpl implements UtilityManager {
         // OPTIONAL CUSTOMISATION COMPLETED.
 
         return chart;
+    }
+
+    public List<Clinician> getCliniciansByCentre(Centre centre) {
+        return utilityDao.getClinicians(centre);
     }
 
     public UtilityDao getUtilityDao() {

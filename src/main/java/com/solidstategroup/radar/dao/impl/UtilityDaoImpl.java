@@ -1,12 +1,13 @@
 package com.solidstategroup.radar.dao.impl;
 
 import com.solidstategroup.radar.dao.UtilityDao;
-import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Clinician;
 import com.solidstategroup.radar.model.Consultant;
-import com.solidstategroup.radar.model.Country;
-import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.Ethnicity;
 import com.solidstategroup.radar.model.Relative;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Country;
+import com.solidstategroup.radar.model.DiagnosisCode;
 import com.solidstategroup.radar.model.filter.ConsultantFilter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public List<Centre> getCentres() {
-        return jdbcTemplate.query("SELECT * FROM unit WHERE sourceType = ?", new Object[]{"renalunit"},
+        return jdbcTemplate.query("SELECT * FROM unit WHERE sourceType = ? ORDER BY name", new Object[]{"renalunit"},
                 new CentreRowMapper());
     }
 
@@ -285,4 +286,50 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+    public Clinician getClinician(Long id) {
+        List<Clinician> clinicians = jdbcTemplate.query("SELECT " +
+                " u.id, u.username, u.name, um.unitcode " +
+                "FROM user u, usermapping um " +
+                "WHERE " +
+                "    u.username = um.username " +
+                "AND u.id = ? ", new Long[]{id}, new ClinicianRowMapper());
+
+        if (clinicians != null && !clinicians.isEmpty()) {
+            return clinicians.get(0);
+        }
+
+        return null;
+    }
+
+    public List<Clinician> getClinicians(Centre centre) {
+        return jdbcTemplate.query("SELECT " +
+                " u.*, um.unitcode " +
+                "FROM user u, usermapping um " +
+                "WHERE " +
+                "    u.username = um.username " +
+                "AND u.isclinician = 1 " +
+                "AND um.unitcode = ? ", new String[]{centre.getUnitCode()}, new ClinicianRowMapper());
+    }
+
+    public Centre getCentre(String unitCode) {
+        return jdbcTemplate
+                .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
+    }
+
+    private class ClinicianRowMapper implements RowMapper<Clinician> {
+        public Clinician mapRow(ResultSet resultSet, int i) throws SQLException {
+            // Construct a relative object and set all the fields
+            Clinician clinician = new Clinician();
+            clinician.setId(resultSet.getLong("id"));
+            clinician.setSurname(resultSet.getString("username"));
+            clinician.setForename(resultSet.getString("name"));
+
+             // Centre could be null, in which case we get a 0 returned by getLong
+            String unitcode = resultSet.getString("unitcode");
+            if (unitcode != null && !"".equals(unitcode)) {
+                clinician.setCentre(getCentre(unitcode));
+            }
+            return clinician;
+        }
+    }
 }

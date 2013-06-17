@@ -4,6 +4,19 @@
     color: #000000;
     font-size: 12px;
 } </style>
-<p>A new user has registered with the Radar website as follows:</p>
-<p>${user.title} ${user.forename} ${user.surname} of:</p>
-<p>${user.centre.name}</p>
+<p>Hello,</p>
+<br/>
+<p>A professional has made a request on the website to join PatientView at your unit. Their details are below.</p>
+<br/>
+<p>Surname: ${user.surname}</p>
+<p>Forename: ${user.forename}</p>
+<p>Title: ${user.title}</p>
+#if (${user.gmc} != "")
+<p>GMC/NMC No.: ${user.gmc}</p>
+#end
+<p>Role: ${user.role}</p>
+<p>Email Address: ${user.email}</p>
+<p>Telephone number: ${user.phone}</p>
+<p>Centre: ${user.centre.name}</p>
+<br/>
+<p>Please verify these details and follow up this request with the staff using your usual process to consent and add staff to PatientView.</p>

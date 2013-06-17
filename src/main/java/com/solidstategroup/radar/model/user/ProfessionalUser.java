@@ -7,7 +7,8 @@ public class ProfessionalUser extends User {
     // super users are hardcoded by id in the previous implementation
     private static final long[] SUPER_USER_IDS = {28, 15};
 
-    private String surname = "", forename = "", title = "", gmc = "", role = "", phone = "";
+    private String surname = "", forename = "", title = "", gmc = "", role = "", phone = ""
+            , securityQuestion = "", securityQuestionAnsw = "";
     private Centre centre = new Centre();
 
     @Override
@@ -79,5 +80,21 @@ public class ProfessionalUser extends User {
 
     public void setCentre(Centre centre) {
         this.centre = centre;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getSecurityQuestionAnsw() {
+        return securityQuestionAnsw;
+    }
+
+    public void setSecurityQuestionAnsw(String securityQuestionAnsw) {
+        this.securityQuestionAnsw = securityQuestionAnsw;
     }
 }

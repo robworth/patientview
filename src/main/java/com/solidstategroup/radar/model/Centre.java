@@ -7,6 +7,7 @@ public class Centre extends BaseModel {
     private String abbreviation;
     private Country country;
     private String unitCode;
+    private String renalAdminEmail;
 
     public String getName() {
         return name;
@@ -38,6 +39,14 @@ public class Centre extends BaseModel {
 
     public void setUnitCode(String unitCode) {
         this.unitCode = unitCode;
+    }
+
+    public String getRenalAdminEmail() {
+        return renalAdminEmail;
+    }
+
+    public void setRenalAdminEmail(String renalAdminEmail) {
+        this.renalAdminEmail = renalAdminEmail;
     }
 
     public static Comparator<Centre> getComparator() {
