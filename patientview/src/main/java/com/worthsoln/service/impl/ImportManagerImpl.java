@@ -20,12 +20,13 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-
-package com.worthsoln.patientview;
+package com.worthsoln.service.impl;
 
 import com.worthsoln.ibd.model.Allergy;
 import com.worthsoln.ibd.model.MyIbd;
 import com.worthsoln.ibd.model.Procedure;
+import com.worthsoln.patientview.TestResultDateRange;
+import com.worthsoln.patientview.XmlImportUtils;
 import com.worthsoln.patientview.logging.AddLog;
 import com.worthsoln.patientview.model.Centre;
 import com.worthsoln.patientview.model.Diagnosis;
@@ -37,9 +38,13 @@ import com.worthsoln.patientview.model.TestResult;
 import com.worthsoln.patientview.parser.ResultParser;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.patientview.utils.TimestampUtils;
+import com.worthsoln.service.ImportManager;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -58,22 +63,29 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ResultsUpdater {
+/**
+ *
+ */
+@Service(value = "importManager")
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public class ImportManagerImpl implements ImportManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsUpdater.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
 
+    @Override
     public void update(ServletContext context, File xmlFile) {
         File xsdFile;
         try {
             xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
                     .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
         } catch (IOException e) {
-            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ResultsUpdater.update()");
+            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ImportManagerImpl.update()");
         }
 
         update(context, xmlFile, xsdFile);
     }
 
+    @Override
     public void update(ServletContext context, File xmlFile, File xsdFile) {
         /**
          * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption

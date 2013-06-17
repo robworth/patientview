@@ -1,6 +1,7 @@
 package com.worthsoln.test.repository.job;
 
 import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.repository.job.JobDao;
 import com.worthsoln.repository.messaging.GroupMessageDao;
@@ -38,6 +39,7 @@ public class JobDaoTest extends BaseDaoTest {
         job1.setMessage(message);
         job1.setSpecialty(specialty);
         job1.setStatus(SendEmailEnum.PENDING);
+        job1.setGroupEnum(GroupEnum.ALL_ADMINS);
         jobDao.save(job1);
 
         Job job2 = new Job();
@@ -45,6 +47,7 @@ public class JobDaoTest extends BaseDaoTest {
         job2.setMessage(message);
         job2.setSpecialty(specialty);
         job2.setStatus(SendEmailEnum.FAILED);
+        job2.setGroupEnum(GroupEnum.ALL_PATIENTS);
         jobDao.save(job2);
 
 

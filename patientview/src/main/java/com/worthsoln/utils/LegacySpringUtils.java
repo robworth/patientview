@@ -34,6 +34,7 @@ import com.worthsoln.service.EmailManager;
 import com.worthsoln.service.EmailVerificationManager;
 import com.worthsoln.service.FeatureManager;
 import com.worthsoln.service.FeedbackManager;
+import com.worthsoln.service.ImportManager;
 import com.worthsoln.service.JoinRequestManager;
 import com.worthsoln.service.LetterManager;
 import com.worthsoln.service.LogEntryManager;
@@ -76,6 +77,8 @@ public final class LegacySpringUtils {
     private static FeatureManager featureManager;
 
     private static FeedbackManager feedbackManager;
+
+    private static ImportManager importManager;
 
     private static LetterManager letterManager;
 
@@ -181,6 +184,14 @@ public final class LegacySpringUtils {
 
     public static void setFeatureManager(FeatureManager featureManager) {
         LegacySpringUtils.featureManager = featureManager;
+    }
+
+    public static ImportManager getImportManager() {
+        return importManager;
+    }
+
+    public static void setImportManager(ImportManager importManager) {
+        LegacySpringUtils.importManager = importManager;
     }
 
     public static FeedbackManager getFeedbackManager() {

@@ -20,20 +20,17 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-
-package com.worthsoln.patientview.parser;
-
-import com.worthsoln.utils.LegacySpringUtils;
+package com.worthsoln.service;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 
-public final class XmlParserUtils {
+/**
+ *
+ */
+public interface ImportManager {
 
-    private XmlParserUtils() {
-    }
+    void update(ServletContext context, File xmlFile);
 
-    public static void updateXmlData(ServletContext context, File xmlFile) {
-        LegacySpringUtils.getImportManager().update(context, xmlFile);
-    }
+    void update(ServletContext context, File xmlFile, File xsdFile);
 }

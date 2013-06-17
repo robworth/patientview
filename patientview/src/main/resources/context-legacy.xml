@@ -110,6 +110,15 @@
         </property>
     </bean>
 
+    <bean id="setImportManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setImportManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="importManager"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="setLetterManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setLetterManager"/>
         <property name="arguments">

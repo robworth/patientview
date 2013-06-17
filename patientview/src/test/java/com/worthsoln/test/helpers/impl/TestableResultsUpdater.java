@@ -23,7 +23,7 @@
 
 package com.worthsoln.test.helpers.impl;
 
-import com.worthsoln.patientview.ResultsUpdater;
+import com.worthsoln.service.impl.ImportManagerImpl;
 import org.junit.Ignore;
 
 import javax.servlet.ServletContext;
@@ -33,7 +33,7 @@ import java.io.File;
  *
  */
 @Ignore
-public class TestableResultsUpdater extends ResultsUpdater {
+public class TestableResultsUpdater extends ImportManagerImpl {
 
     @Override
     protected void renameDirectory(ServletContext context, File xmlFile) {

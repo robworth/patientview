@@ -35,4 +35,6 @@
 
     <bean id="emailManager" class="com.worthsoln.test.helpers.impl.TestableEmailManagerImpl"/>
 
+    <bean id="importManager" class="com.worthsoln.test.helpers.impl.TestableResultsUpdater"/>
+
 </beans>

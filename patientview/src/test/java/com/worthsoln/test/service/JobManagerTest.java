@@ -2,6 +2,7 @@ package com.worthsoln.test.service;
 
 import com.worthsoln.patientview.logon.UnitAdmin;
 import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.service.JobManager;
 import com.worthsoln.service.UnitManager;
@@ -44,6 +45,7 @@ public class JobManagerTest extends BaseServiceTest {
         job1.setMessage(message);
         job1.setSpecialty(specialty);
         job1.setStatus(SendEmailEnum.PENDING);
+        job1.setGroupEnum(GroupEnum.ALL_ADMINS);
         jobManager.save(job1);
 
         Job job2 = new Job();
@@ -51,6 +53,7 @@ public class JobManagerTest extends BaseServiceTest {
         job2.setMessage(message);
         job2.setSpecialty(specialty);
         job2.setStatus(SendEmailEnum.FAILED);
+        job2.setGroupEnum(GroupEnum.ALL_PATIENTS);
         jobManager.save(job2);
 
 
