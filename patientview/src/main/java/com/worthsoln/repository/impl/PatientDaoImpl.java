@@ -111,8 +111,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
         String sql = "SELECT "
-                + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, " +
-                " user.emailverified, user.accountlocked, "
+                + "user.username,  user.password, user.name, user.email, usermapping.nhsno, usermapping.unitcode, "
+                + " user.emailverified, user.accountlocked, "
                 + "user.firstlogon, patient.treatment, patient.dateofbirth "
                 + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno "
