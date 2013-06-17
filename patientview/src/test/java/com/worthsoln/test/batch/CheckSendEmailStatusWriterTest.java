@@ -50,6 +50,7 @@ public class CheckSendEmailStatusWriterTest extends BaseServiceTest {
         job1.setMessage(message);
         job1.setSpecialty(specialty);
         job1.setStatus(SendEmailEnum.SUCCEEDED);
+        job1.setGroupEnum(GroupEnum.ALL_ADMINS);
 
         jobManager.save(job1);
         jobs.add(job1);
@@ -59,6 +60,7 @@ public class CheckSendEmailStatusWriterTest extends BaseServiceTest {
         job2.setMessage(message);
         job2.setSpecialty(specialty);
         job2.setStatus(SendEmailEnum.FAILED);
+        job2.setGroupEnum(GroupEnum.ALL_PATIENTS);
 
         jobManager.save(job2);
         jobs.add(job2);
@@ -73,12 +75,12 @@ public class CheckSendEmailStatusWriterTest extends BaseServiceTest {
         assertEquals("Wrong number of job list 2", 1, checkJobs2.size());
         assertEquals("Wrong number of job list 3", 0, checkJobs3.size());
 
-        assertTrue("Message not found", checkJobs1.get(0).getMessage().getId() == message.getId());
-        assertTrue("Message not found", checkJobs2.get(0).getMessage().getId() == message.getId());
-        assertTrue("User 1 not found", checkJobs1.get(0).getCreator().getId() == user1.getId());
-        assertTrue("User 2 not found", checkJobs2.get(0).getCreator().getId() == user2.getId());
-        assertTrue("Specialty not found", checkJobs1.get(0).getSpecialty().getId() == specialty.getId());
-        assertTrue("Specialty not found", checkJobs2.get(0).getSpecialty().getId() == specialty.getId());
+        assertEquals("Message not found", checkJobs1.get(0).getMessage(), message);
+        assertEquals("Message not found", checkJobs2.get(0).getMessage(), message);
+        assertEquals("User 1 not found", checkJobs1.get(0).getCreator(), user1);
+        assertEquals("User 2 not found", checkJobs2.get(0).getCreator(), user2);
+        assertEquals("Specialty not found", checkJobs1.get(0).getSpecialty(),  specialty);
+        assertEquals("Specialty not found", checkJobs2.get(0).getSpecialty(), specialty);
 
     }
 

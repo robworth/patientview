@@ -88,6 +88,7 @@ public class SendEmailReaderTest extends BaseServiceTest {
         job.setMessage(message);
         job.setSpecialty(specialty);
         job.setStatus(SendEmailEnum.PENDING);
+        job.setGroupEnum(GroupEnum.ALL_ADMINS);
         jobManager.save(job);
 
         return job;

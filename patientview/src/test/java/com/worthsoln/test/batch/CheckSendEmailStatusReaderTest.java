@@ -90,6 +90,7 @@ public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
         job1.setMessage(message);
         job1.setSpecialty(specialty);
         job1.setStatus(SendEmailEnum.SENT);
+        job1.setGroupEnum(GroupEnum.ALL_ADMINS);
 
         jobManager.save(job1);
         jobs.add(job1);
@@ -99,6 +100,7 @@ public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
         job2.setMessage(message);
         job2.setSpecialty(specialty);
         job2.setStatus(SendEmailEnum.SENT);
+        job2.setGroupEnum(GroupEnum.ALL_PATIENTS);
 
         jobManager.save(job2);
         jobs.add(job2);

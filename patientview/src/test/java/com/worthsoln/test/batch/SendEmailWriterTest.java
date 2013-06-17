@@ -3,6 +3,7 @@ package com.worthsoln.test.batch;
 import com.worthsoln.batch.SendEmailReader;
 import com.worthsoln.batch.SendEmailWriter;
 import com.worthsoln.patientview.model.*;
+import com.worthsoln.patientview.model.enums.GroupEnum;
 import com.worthsoln.patientview.model.enums.SendEmailEnum;
 import com.worthsoln.service.EmailQueueManager;
 import com.worthsoln.service.JobManager;
@@ -77,6 +78,7 @@ public class SendEmailWriterTest extends BaseServiceTest {
         job.setMessage(message);
         job.setSpecialty(specialty);
         job.setStatus(SendEmailEnum.PENDING);
+        job.setGroupEnum(GroupEnum.ALL_ADMINS);
         jobManager.save(job);
 
         return job;
