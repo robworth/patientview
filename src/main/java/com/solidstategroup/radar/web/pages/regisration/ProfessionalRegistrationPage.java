@@ -195,6 +195,18 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
+        WebMarkupContainer securityQuestionMsgContainer = new WebMarkupContainer("securityQuestionMsgContainer") {
+            {
+                setOutputMarkupId(true);
+                setOutputMarkupPlaceholderTag(true);
+            }
+
+            @Override
+            public boolean isVisible() {
+                return areaModel.getObject() != null;
+            }
+        };
+
         RadarRequiredTextField securityQuestion = new RadarRequiredTextField("securityQuestion",
                 securityQuestionContainer, componentsToUpdate);
         securityQuestionContainer.add(securityQuestion);
@@ -251,6 +263,9 @@ public class ProfessionalRegistrationPage extends BasePage {
                 return areaModel.getObject() != null;
             }
         };
+        securityQuestionMsgContainer.add(securityQuestionMessage);
+        form.add(securityQuestionMsgContainer);
+        componentsToUpdate.add(securityQuestionMsgContainer);
 
         // Construct feedback panel
         // for errors not specific to a particular component
