@@ -10,6 +10,7 @@ import com.worthsoln.test.repository.BaseDaoTest;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -34,6 +35,8 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         queue.setJob(job);
         queue.setMessage(job.getMessage());
         queue.setRecipient(job.getCreator());
+        queue.setCreated(new Date());
+        queue.setStatus(SendEmailEnum.PENDING);
         emailQueueDao.save(queue);
 
 
@@ -59,6 +62,7 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         queue1.setMessage(job.getMessage());
         queue1.setRecipient(user1);
         queue1.setStatus(SendEmailEnum.SENDING);
+        queue1.setCreated(new Date());
         emailQueueDao.save(queue1);
 
         EmailQueue queue2 = new EmailQueue();
@@ -66,6 +70,7 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         queue2.setMessage(job.getMessage());
         queue2.setRecipient(user2);
         queue2.setStatus(SendEmailEnum.FAILED);
+        queue2.setCreated(new Date());
         emailQueueDao.save(queue2);
 
         EmailQueue queue3 = new EmailQueue();
@@ -73,6 +78,7 @@ public class EmailQueueDaoTest extends BaseDaoTest {
         queue3.setMessage(job.getMessage());
         queue3.setRecipient(user3);
         queue3.setStatus(SendEmailEnum.SUCCEEDED);
+        queue3.setCreated(new Date());
         emailQueueDao.save(queue3);
 
         List<EmailQueue> checkEmailQueueList1 = emailQueueDao.getEmailQueueList();

@@ -9,6 +9,7 @@ import com.worthsoln.test.helpers.ServiceHelpers;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -36,6 +37,8 @@ public class EmailQueueManagerTest extends BaseServiceTest {
         queue.setJob(job);
         queue.setMessage(job.getMessage());
         queue.setRecipient(job.getCreator());
+        queue.setCreated(new Date());
+        queue.setStatus(SendEmailEnum.PENDING);
         emailQueueManager.save(queue);
 
 

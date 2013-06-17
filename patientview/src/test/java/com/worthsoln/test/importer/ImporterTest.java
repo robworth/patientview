@@ -48,8 +48,8 @@ import com.worthsoln.service.TimeManager;
 import com.worthsoln.service.UnitManager;
 import com.worthsoln.service.ibd.IbdManager;
 import com.worthsoln.service.impl.SpringApplicationContextBean;
-import com.worthsoln.test.helpers.RepositoryHelpers;
-import com.worthsoln.test.repository.BaseDaoTest;
+import com.worthsoln.test.helpers.ServiceHelpers;
+import com.worthsoln.test.service.BaseServiceTest;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,7 +74,7 @@ import static org.junit.Assert.*;
  * - pv_schema_1.0.xml - used by rpv
  * - pv_schema_2.0.xml - used by ibd
  */
-public class ImporterTest extends BaseDaoTest {
+public class ImporterTest extends BaseServiceTest {
 
     @Inject
     private SpringApplicationContextBean springApplicationContextBean;
@@ -107,7 +107,7 @@ public class ImporterTest extends BaseDaoTest {
     private UnitManager unitManager;
 
     @Inject
-    private RepositoryHelpers repositoryHelpers;
+    private ServiceHelpers serviceHelpers;
 
     @Inject
     private LogEntryManager logEntryManager;
@@ -125,7 +125,7 @@ public class ImporterTest extends BaseDaoTest {
         mockSpecialty.setContext("renal");
         mockSpecialty.setDescription("Renal Patient View");
 
-        mockSpecialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
+        mockSpecialty = serviceHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
 
         mockUnit.setSpecialty(mockSpecialty);
 
