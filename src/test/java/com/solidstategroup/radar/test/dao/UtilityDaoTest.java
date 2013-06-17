@@ -218,10 +218,4 @@ public class UtilityDaoTest extends BaseDaoTest {
         diagnosis.setRadarNumber(demographics.getId());
         diagnosisDao.saveDiagnosis(diagnosis);
     }
-
-    @Test
-    public void testGetAdminNotifications() {
-        List<String> emails = utilityDao.getAdminNotifications();
-        assertNotNull("Email list is null", emails);
-    }
 }
