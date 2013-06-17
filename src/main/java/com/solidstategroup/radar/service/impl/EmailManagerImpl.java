@@ -28,7 +28,6 @@ public class EmailManagerImpl implements EmailManager {
     private String emailAddressApplication;
     private String emailAddressAdmin1;
     private String emailAddressAdmin2;
-    private String adminEmailTo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailManagerImpl.class);
     private JavaMailSender javaMailSender;
@@ -87,18 +86,18 @@ public class EmailManagerImpl implements EmailManager {
     public void sendProfessionalRegistrationAdminNotificationEmail(ProfessionalUser professionalUser) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("user", professionalUser);
-        String toAddress = "";
+        String[] toAddress;
         String emailBody = renderTemplate(map, "professional-registration-admin-notification.vm");
 
         Centre centre = utilityDao.getCentre(professionalUser.getCentre().getId());
 
         if (null == centre || null == centre.getRenalAdminEmail() || "".equals(centre.getRenalAdminEmail())) {
-            toAddress = adminEmailTo;
+            toAddress =  new String[] {emailAddressAdmin1, emailAddressAdmin2};
         } else {
-            toAddress = centre.getRenalAdminEmail();
+            toAddress = new String[] {centre.getRenalAdminEmail()};
         }
 
-        sendEmail(emailAddressApplication, new String[]{toAddress},
+        sendEmail(emailAddressApplication, toAddress,
                 new String[]{}, "New Radar site registrant on: " +
                 new SimpleDateFormat(RadarApplication.DATE_PATTERN).format(professionalUser.getDateRegistered()),
                 emailBody);
@@ -194,14 +193,6 @@ public class EmailManagerImpl implements EmailManager {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
-    }
-
-    public String getAdminEmailTo() {
-        return adminEmailTo;
-    }
-
-    public void setAdminEmailTo(String adminEmailTo) {
-        this.adminEmailTo = adminEmailTo;
     }
 
     public void setUtilityDao(UtilityDao utilityDao) {
