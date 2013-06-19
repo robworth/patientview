@@ -49,14 +49,14 @@ public class DataLoadsForPatientAction extends Action {
         request.setAttribute("log", log);
         UnitUtils.putRelevantUnitsInRequest(request);
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
-        BeanUtils.setProperty(form, "action", AddLog.PATIENT_DATA_FOLLOWUP);
         return LogonUtils.logonChecks(mapping, request);
     }
 
     private List getLogEntries(String nhsno, Calendar startdate, Calendar enddate) throws Exception {
         List logEntries = new ArrayList();
         if (nhsno != null && !nhsno.equals("")) {
-            LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, startdate, enddate, "patient data");
+            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, "", "", "", "",
+                    startdate, enddate);
         }
         return logEntries;
     }
