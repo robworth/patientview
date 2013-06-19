@@ -304,6 +304,8 @@ public class MedicalResultsPanel extends Panel {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 Form<MedicalResult> medicalResultForm = (Form<MedicalResult>) form;
+                form.clearInput();
+
                 MedicalResult medicalResult = medicalResultForm.getModelObject();
 
                 medicalResult.setToBeUpdated(false);
@@ -313,6 +315,7 @@ public class MedicalResultsPanel extends Panel {
                 ComponentHelper.updateComponentsIfParentIsVisible(target, componentsToUpdateList);
                 target.appendJavaScript(RadarApplication.FORM_IS_DIRTY_FALSE_SCRIPT);
                 target.add(formFeedback);
+                target.add(form);
             }
 
             @Override
