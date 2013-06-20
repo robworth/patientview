@@ -50,8 +50,8 @@ Tests run against a separate db and rebuild the schema and data from scratch for
 `mvn test -Ptest'
 
 
-Outsourced Development Process
-==============================
+Outsourced Development Processes
+================================
 
 - fork the outsourcing branch - it is called 'shinetech'
 - clone your new repo
