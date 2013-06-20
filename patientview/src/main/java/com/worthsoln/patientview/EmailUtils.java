@@ -23,7 +23,9 @@
 
 package com.worthsoln.patientview;
 
+import com.worthsoln.patientview.model.Unit;
 import com.worthsoln.utils.LegacySpringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.ServletContext;
 
@@ -65,5 +67,17 @@ public final class EmailUtils {
     public static void sendEmail(String fromAddress, String[] toAddresses, String subject, String emailText)
             throws Exception {
         LegacySpringUtils.getEmailManager().sendEmail(fromAddress, toAddresses, subject, emailText);
+    }
+
+    public static String getUnitOrSystemAdminEmailAddress(ServletContext servletContext, Unit unit) {
+        String toAddress = "";
+
+        if (unit == null || StringUtils.isBlank(unit.getRenaladminemail())) {
+            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress(servletContext);
+        } else {
+            toAddress = unit.getRenaladminemail();
+        }
+
+        return toAddress;
     }
 }

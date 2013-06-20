@@ -28,6 +28,7 @@ import com.worthsoln.patientview.EmailUtils;
 import com.worthsoln.patientview.logon.LogonUtils;
 import com.worthsoln.patientview.model.JoinRequest;
 import com.worthsoln.patientview.model.Unit;
+import com.worthsoln.patientview.unit.UnitUtils;
 import com.worthsoln.patientview.user.UserUtils;
 import com.worthsoln.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -101,15 +102,8 @@ public class JoinRequestSubmitAction extends BaseAction {
         /**
          * to
          */
-        String toAddress = "";
-
-        Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-
-        if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
-            toAddress = request.getSession().getServletContext().getInitParameter("admin.email.to");
-        } else {
-            toAddress = unit.getRenaladminemail();
-        }
+        Unit unit = UnitUtils.retrieveUnit(unitcode);
+        String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(request.getSession().getServletContext(), unit);
 
         /**
          * subject

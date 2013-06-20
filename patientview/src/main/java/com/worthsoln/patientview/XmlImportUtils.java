@@ -62,7 +62,7 @@ public final class XmlImportUtils {
 
         String emailBody = createEmailBodyForEmptyXML(fileName);
 
-        String toAddress = allocateToAddress(context, unit);
+        String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
@@ -79,7 +79,7 @@ public final class XmlImportUtils {
 
         String unitcode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
         Unit unit = UnitUtils.retrieveUnit(unitcode);
-        String rpvAdminEmailAddress = allocateToAddress(context, unit);
+        String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
         String[] toAddresses = new String[]{context.getInitParameter("warning.email"), rpvAdminEmailAddress};
 
@@ -159,7 +159,7 @@ public final class XmlImportUtils {
             String unitcode = fileName.substring(0, fileName.indexOf("_"));
 
             Unit unit = UnitUtils.retrieveUnit(unitcode);
-            String toAddress = allocateToAddress(context, unit);
+            String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
             List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                     XmlImportNotification.FAILED_IMPORT);
@@ -205,18 +205,6 @@ public final class XmlImportUtils {
         emailBody += newLine + "For further help, please contact " + context.getInitParameter("support.email");
         emailBody += newLine;
         return emailBody;
-    }
-
-    private static String allocateToAddress(ServletContext context, Unit unit) {
-        String toAddress = "";
-
-        if (null == unit || null == unit.getRenaladminemail() || "".equals(unit.getRenaladminemail())) {
-            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress(context);
-        } else {
-            toAddress = unit.getRenaladminemail();
-        }
-
-        return toAddress;
     }
 
     public static String extractErrorsFromException(Exception e) {
