@@ -11,7 +11,7 @@
            http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
     <context:annotation-config />
-    <context:component-scan base-package="com.worthsoln" />
+    <context:component-scan base-package="org.patientview" />
 
     <!--Define jobLauncher-->
     <bean id="jobLauncher" autowire="byType" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
