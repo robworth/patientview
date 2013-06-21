@@ -27,8 +27,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.worthsoln</groupId>
-    <artifactId>patientview-monitoring</artifactId>
+    <parent>
+        <groupId>org.patientview</groupId>
+        <artifactId>patientview-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.patientview</groupId>
+    <artifactId>monitoring</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -40,6 +46,12 @@
     </properties>
 
     <profiles>
+        <profile>
+            <id>localhost</id>
+            <properties>
+                <env>localhost</env>
+            </properties>
+        </profile>
         <profile>
             <id>staging</id>
             <properties>

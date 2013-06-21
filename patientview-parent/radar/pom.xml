@@ -8,13 +8,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.solidstategroup</groupId>
+    <groupId>org.patientview</groupId>
     <artifactId>radar</artifactId>
     <packaging>war</packaging>
 
     <version>1.0-SNAPSHOT</version>
 
-    <name>radar</name>
+    <name>Radar</name>
 
     <organization>
         <name>Solid State Group</name>
@@ -41,6 +41,15 @@
             <properties>
                 <env>test</env>
                 <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+            </properties>
+        </profile>
+        <profile>
+            <id>localhost</id>
+            <properties>
+                <env>localhost</env>
+                <tomcatmanagerurl>http://radar.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
             </properties>
         </profile>
         <profile>

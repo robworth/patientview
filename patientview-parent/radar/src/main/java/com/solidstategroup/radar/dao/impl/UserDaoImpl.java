@@ -748,13 +748,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private String buildUserWhereEmailStatement(String userTable, String whereField, String mapIdField,
                                                 boolean includeRole) {
         String sql = " WHERE " +
-                    USER_TABLE_NAME + "" + whereField + " = ? ";
+                    USER_TABLE_NAME + "." + whereField + " = ? ";
                 if (includeRole) {
                     sql += "AND " +
-                    USER_MAPPING_TABLE_NAME + "" + USER_MAPPING_ROLE_FIELD_NAME + " = ? ";
+                    USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME + " = ? ";
                 }
                 sql += "AND " +
-                    USER_TABLE_NAME + "" + ID_FIELD_NAME + " = " + USER_MAPPING_TABLE_NAME + "."
+                    USER_TABLE_NAME + "." + ID_FIELD_NAME + " = " + USER_MAPPING_TABLE_NAME + "."
                     + USER_MAPPING_USER_ID_FIELD_NAME + " " +
                     "AND " +
                     userTable + "." + mapIdField + " = " + USER_MAPPING_TABLE_NAME + "."
