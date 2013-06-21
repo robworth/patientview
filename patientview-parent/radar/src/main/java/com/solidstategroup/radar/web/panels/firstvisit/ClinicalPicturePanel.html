@@ -1,0 +1,655 @@
+<wicket:panel>
+
+<div id="subBlock">
+
+<table cellpadding="5" class="style1" style="width: 100%; background-color: #B6DF9F;">
+    <tbody>
+    <tr wicket:id="followupContainer">
+        <td class="btmBorder">
+            <select wicket:id="clinicalPicturesSwitcher">
+            </select>
+
+            &nbsp;Select previous visit record by date&nbsp;
+            <input wicket:id="addNew" type="button" value="Add new visit record">
+        </td>
+        <td class="style2, btmBorder">&nbsp;</td>
+        <td class="style2, btmBorder" style="width:120px">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div wicket:id="clinicalPictureContainer">
+<form wicket:id="form">
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;" class="style1">
+    <tbody>
+    <tr>
+
+        <td>
+            <span style="font-weight:bold;"
+                  id="ctl00_ContentPlaceHolder1_lblTitle">Clinical Features</span>
+        </td>
+        <td class="style2"><strong>RaDaR No.</strong></td>
+        <td style="width:120px;" class="style2">
+            <input wicket:id="radarNumber" style="width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    <tr>
+        <td><b>Name:</b>
+            <input readonly="readonly" wicket:id="firstName"/>&nbsp;
+            <input readonly="readonly" style="display:inline-block;width:120px;" wicket:id="surname"/>
+            &nbsp;&nbsp;<b>DoB:</b>&nbsp;<input readonly="readonly" wicket:id="dob"/>
+        </td>
+        <td class="style2"><strong>Hospital No.</strong></td>
+        <td class="style2">
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    <tr>
+        <td>Date of Clinical Picture
+            <input wicket:id="clinicalPictureDate" type="text" style="width:70px;">
+            <span class="feedback" wicket:id="clinicalPictureDateFeedbackIndicator"></span>
+            <span class="feedback" wicket:id="clinicalPictureDateFeedback"></span>
+        </td>
+        <td class="style2"><strong>Diagnosis</strong></td>
+        <td class="style2">
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="style1" style="width: 100%; background-color:#EEF6ED;" id="ctl00_ContentPlaceHolder1_mainForm">
+<tbody>
+<tr>
+<td style="width:48%; vertical-align:top;">
+    <table style="width: 100%">
+        <tbody>
+
+        <tr>
+            <td style="width: 140px" class="style4">Height cm</td>
+            <td>
+                <input type="text" style="width:40px;" wicket:id="height"/>
+                <span class="feedback" wicket:id="heightFeedback"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 140px" class="style4">Weight Kg</td>
+            <td>
+                <input type="text" style="width:40px;" wicket:id="weight"/>
+                <span class="feedback" wicket:id="weightFeedback"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 140px" class="style4">BP&nbsp;</td>
+            <td>
+                <input type="text" style="width:40px;" wicket:id="systolicBloodPressure"/>
+                <span class="feedback" wicket:id="systolicBloodPressureFeedback"></span>
+                &nbsp;<strong>/</strong>&nbsp;
+                <input type="text" style="width:40px;" wicket:id="diastolicBloodPressure">
+                <span class="feedback" wicket:id="diastolicBloodPressureFeedback"></span>
+                &nbsp;
+                <input type="text" style="font-style:italic;width:40px;" wicket:id="meanArterialPressure">
+                &nbsp;MAP
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="width: 140px">
+                <span style="color:Red;visibility:hidden;"
+                      id="ctl00_ContentPlaceHolder1_RangeValidator1">Sys BP 50-200</span>
+            </td>
+            <td>
+                <span style="color:Red;visibility:hidden;" class="inline"
+                      id="ctl00_ContentPlaceHolder1_RangeValidator2">DAI BP 20-150</span>
+            </td>
+        </tr>
+        <tr wicket:id="phenotypeContainer1">
+            <td style="width: 140px; text-align:right; padding-right:20px;">
+                <span id="ctl00_ContentPlaceHolder1_lblPhenotype1">Phenotype 1</span>
+            </td>
+            <td>
+                <select wicket:id="phenotype1"/>
+            </td>
+        </tr>
+        <tr wicket:id="phenotypeContainer2">
+            <td style="width: 140px; text-align:right; padding-right:20px;">
+                <span id="ctl00_ContentPlaceHolder1_lblPhenotype2">Phenotype 2</span>
+            </td>
+            <td>
+                <select wicket:id="phenotype2"/>
+            </td>
+        </tr>
+        <tr wicket:id="phenotypeContainer3">
+            <td style="width: 140px; text-align:right; padding-right:20px;">
+                <span id="ctl00_ContentPlaceHolder1_lblPhenotype3">Phenotype 3</span>
+            </td>
+            <td>
+                <select wicket:id="phenotype3"/>
+            </td>
+        </tr>
+        <tr wicket:id="phenotypeContainer4">
+            <td style="width: 140px; text-align:right; padding-right:20px;">
+                <span id="ctl00_ContentPlaceHolder1_lblPhenotype4">Phenotype 4</span>
+            </td>
+            <td>
+                <select wicket:id="phenotype4"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 140px">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">Comments&nbsp; <a href="#" class="info">Help <span>Enter any
+                    other relevant clinical features</span></a></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <textarea style="width:100%;" cols="20" rows="15" wicket:id="comments"></textarea>
+            </td>
+
+        </tr>
+        <tr>
+            <td style="width: 140px">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">&nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 140px">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</td>
+<td style="width:50%; vertical-align:top;">
+<table>
+    <tbody>
+    <tr>
+        <td style="height:40px; vertical-align:top;" colspan="2">
+            <input wicket:id="save" type="button" class="saveBtn" value="Save">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessage"></span>
+                <span style="font-weight:bold; color: red;" wicket:id="errorMessage"></span>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:200px;">
+
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Additional Significant Diagnosis 1</td>
+        <td>
+            <input type="text" title="From Diagnosis page" wicket:id="significantDiagnosis1"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Additional Significant Diagnosis 2</td>
+        <td>
+            <input type="text" title="From Diagnosis page" wicket:id="significantDiagnosis2"/>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table wicket:id="patientDetailsContainer" cellpadding="4" style="width: 100%" class="style1">
+<tbody>
+<tr>
+    <td style="width:200px;"></td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td class="indent">Oedema</td>
+    <td class="style6">
+        <span wicket:id="oedema">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+
+        </span>
+
+    </td>
+</tr>
+
+<tr>
+    <td class="indent">Hypovalaemia</td>
+    <td>
+        <span wicket:id="hypovalaemia">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+             <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
+    </td>
+</tr>
+<tr>
+    <td class="indent">Fever &gt; 38°C</td>
+    <td>
+        <span wicket:id="fever">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+            <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
+    </td>
+</tr>
+<tr wicket:id="thrombosisContainer">
+    <td class="indent">Thrombosis</td>
+    <td>
+        <span wicket:id="thrombosis">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+            <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
+    </td>
+</tr>
+
+<tr wicket:id="peritonitisContainer">
+    <td class="indent">Peritonitis</td>
+    <td>
+        <span wicket:id="peritonitis">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+
+    </td>
+</tr>
+
+<tr wicket:id="pulmonaryOedemaContainer">
+    <td class="indent">Pulmonary Oedema</td>
+    <td>
+       <span wicket:id="pulmonaryOedema">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+            <label wicket:id="unknownLabel">Un</label></span>
+       </span>
+
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowHyperten">
+    <td class="indent">Hypertension, req Rx</td>
+    <td>
+     <span wicket:id="hypertension">
+        <input type="radio" wicket:id="yes"/>
+        <label wicket:id="yesLabel">Yes</label>
+        &nbsp;
+        <input type="radio" wicket:id="no"/>
+        <label wicket:id="noLabel">No</label>
+        &nbsp;
+        <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+        <label wicket:id="unknownLabel">Un</label></span>
+    </span>
+
+    </td>
+</tr>
+
+<tr wicket:id="urticariaContainer">
+    <td class="indent">Urticaria</td>
+    <td>
+        <span wicket:id="urticaria">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+
+<tr wicket:id="urticariaDetailContainer">
+    <td colspan="2" class="indent">
+        <textarea style="width:350px;" cols="20" rows="4" wicket:id="rashDetail"></textarea>
+    </td>
+</tr>
+
+<tr wicket:id="diabetesTypeContainer">
+    <td class="indent">Diabetes: Type</td>
+    <td>
+        <select wicket:id="diabetesType"/>
+    </td>
+</tr>
+
+<tr wicket:id="rashContainer">
+    <td valign="top" class="indent">
+        <span id="ctl00_ContentPlaceHolder1_lblRash">Rash</span>
+    </td>
+    <td>
+        <span wicket:id="rash">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+
+<tr wicket:id="rashDetailContainer">
+    <td colspan="2" class="indent">
+        <textarea style="width:350px;" cols="20" rows="4" wicket:id="rashDetail"></textarea>
+
+    </td>
+</tr>
+
+<tr wicket:id="possibleImmunisationTriggerContainer">
+    <td class="indent">Possible Immunisation trigger</td>
+    <td>
+        <span wicket:id="possibleImmunisationTrigger">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+
+<tr wicket:id="partialLipodystrophyContainer">
+    <td class="indent">Partial Lipodystrophy</td>
+    <td>
+        <span wicket:id="partialLipodystrophy">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+<tr wicket:id="preceedingInfectionContainer">
+    <td class="indent">Preceeding Infection ( inactive)</td>
+    <td>
+        <span wicket:id="preceedingInfection">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+<tr wicket:id="preceedingInfectionDetailContainer">
+    <td class="indent" colspan="2">
+        <textarea style="width:350px;" cols="20" rows="5" wicket:id="preceedingInfectionDetail" class="grey"></textarea>
+    </td>
+</tr>
+<tr wicket:id="chronicInfectionActiveContainer">
+    <td class="indent">Chronic infection (active)</td>
+    <td>
+        <span wicket:id="chronicInfection">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+<tr wicket:id="chronicInfectionDetailContainer">
+    <td class="indent" colspan="2">
+        <textarea style="width:350px;" cols="20" rows="5" wicket:id="chronicInfectionDetail" class="grey"></textarea>
+    </td>
+</tr>
+
+<tr>
+    <td class="indent">
+        <span id="ctl00_ContentPlaceHolder1_lblOpth">Ophthalmoscopy</span>
+    </td>
+    <td>
+        <span wicket:id="ophthalmoscopy">
+            <input type="radio" wicket:id="yes"/>
+            <label wicket:id="yesLabel">Yes</label>
+            &nbsp;
+            <input type="radio" wicket:id="no"/>
+            <label wicket:id="noLabel">No</label>
+            &nbsp;
+            <span title="Unknown"><input type="radio" wicket:id="unknown"/>
+                <label wicket:id="unknownLabel">Un</label></span>
+        </span>
+    </td>
+</tr>
+
+<tr wicket:id="ophthalmoscopyDetailContainer">
+    <td class="indent" colspan="2">
+        <textarea style="width:350px;" cols="20" rows="5" wicket:id="ophthalmoscopyDetail" class="grey"></textarea>
+    </td>
+</tr>
+
+<tr>
+    <td colspan="2" class="indent">
+        <input type="hidden" id="ctl00_ContentPlaceHolder1_txtOpDetail_TextBoxWatermarkExtender_ClientState"
+               name="ctl00$ContentPlaceHolder1$txtOpDetail_TextBoxWatermarkExtender_ClientState">
+    </td>
+</tr>
+</tbody>
+</table>
+
+<table wicket:id="complicationsContainer" cellpadding="4" style="width: 100%" class="style1">
+    <tr>
+        <td colspan="2">
+            <fieldset>
+                <legend>Complications</legend>
+                <br>
+                <table cellpadding="4" class="style5">
+
+                    <tbody>
+                    <tr>
+                        <td colspan="2">
+                        <span wicket:id="infectionNecessitatingHospitalisation">
+                                                  Infection necessitating hospitalisation
+                        <input type="radio" wicket:id="yes"/>
+                        Yes
+                        <input type="radio" wicket:id="no"/>
+                        No
+                        </span>
+
+                        </td>
+                    </tr>
+                    <tr wicket:id="infectionDetailContainer">
+                        <td colspan="2">
+                            <textarea style="width:100%;" cols="20" rows="4"
+                                      wicket:id="infectionDetail"></textarea>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                        <span wicket:id="complicationThrombosis">
+                                                  Thrombosis
+                                    <span style="display:inline-block;border-width:0px;">
+                                        <input type="radio" wicket:id="yes"/></span>
+                        &nbsp;Yes
+                                    <span style="display:inline-block;border-width:0px;"><input type="radio"
+                                                                                                wicket:id="no"/></span>
+                        &nbsp;No
+                        </span>
+
+                        </td>
+                    </tr>
+                    <tr wicket:id="complicationThrombosisContainer">
+                        <td colspan="2">
+                            <textarea style="width:100%;" cols="20" rows="4"
+                                      wicket:id="complicationThrombosisDetail"></textarea>
+                        </td>
+                    </tr>
+                    <tr id="ctl00_ContentPlaceHolder1_rowHypertension">
+                        <td colspan="2">
+                        <span wicket:id="hypertension">
+                                              Hypertension requiring RX:&nbsp;&nbsp;
+                        <input type="radio" wicket:id="yes"/>
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no"/>
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                                <span title="Unknown"><input type="radio" wicket:id="unknown">
+                                    <label wicket:id="unknownLabel">Un</label></span>
+                        </span>
+
+                        </td>
+                    </tr>
+
+                    <tr id="ctl00_ContentPlaceHolder1_rowCKD">
+                        <td colspan="2">
+                        <span wicket:id="ckdStage">
+                        CKD Stage:&nbsp;&nbsp;
+                        <input type="radio" wicket:id="one"/><label wicket:id="oneLabel">1</label>&nbsp;
+                        <input type="radio" wicket:id="two"/><label wicket:id="twoLabel">2</label>&nbsp;
+                        <input type="radio" wicket:id="three"/><label wicket:id="threeLabel">3</label>&nbsp;
+                        <input type="radio" wicket:id="four"/><label wicket:id="fourLabel">4</label>&nbsp;
+                        <input type="radio" wicket:id="five"/><label wicket:id="fiveLabel">5</label>&nbsp;
+                        <input type="radio" wicket:id="unknown"/><label wicket:id="unknownLabel">Un</label>&nbsp;
+                        </span>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tbody>
+    <tr>
+        <td style="width:200px;">
+
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+
+    <tr wicket:id="listedForTransplantContainer">
+        <td>
+            <span class="indent" id="ctl00_ContentPlaceHolder1_lblTx">Listed for Transplant</span> ?
+        </td>
+        <td>
+        <span wicket:id="listedForTransplant">
+        <span title="Yes"><input type="radio" wicket:id="yes"/><label
+                wicket:id="yesLabel">Yes</label></span>
+        &nbsp;
+        <span title="No"><input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label></span>
+        </span>
+
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<table style="width:75%">
+    <tbody>
+    <tr>
+        <td style="height:40px; vertical-align:top;" colspan="2">
+            <input wicket:id="saveDown" type="button" class="saveBtn" value="Save">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageDown"></span>
+                <span style="font-weight:bold; color: red;" wicket:id="errorMessageDown"></span>
+            </div>
+        </td>
+    </tr>
+     </tbody>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+</form>
+</div>
+</div>
+
+</wicket:panel>

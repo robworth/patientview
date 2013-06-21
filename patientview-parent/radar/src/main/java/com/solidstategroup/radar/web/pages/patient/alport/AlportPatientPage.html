@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta id="ctl00_IE8CompatibilityMeta" http-equiv="X-UA-Compatible" content="IE=7"/>
+
+    <wicket:head>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
+
+        <style type="text/css">
+            .style3 {
+                border-collapse: collapse;
+                border-style: none;
+                border-color: inherit;
+                border-width: 0;
+                background-color: #EEF6ED;
+            }
+        </style>
+
+    </wicket:head>
+</head>
+<body>
+<wicket:extend>
+
+    <div id="tabsC">
+        <ul wicket:id="linksContainer">
+            <li><a wicket:id="demographicsLink" title="Demographics"><span wicket:id="span">Demographics</span></a></li>
+            <li><a wicket:id="medicalResultsLink" title="Medical Results"><span wicket:id="span">Medical Results</span></a></li>
+            <li><a wicket:id="geneticsLink" title="Genetics"><span wicket:id="span">Genetics</span></a></li>
+            <li><a wicket:id="deafnessLink" title="Deafness"><span wicket:id="span">Deafness</span></a></li>
+            <li><a wicket:id="medicineLink" title="Medicine"><span wicket:id="span">Medicine</span></a></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <div wicket:id="demographicsPanel"/>
+    <div wicket:id="medicalResultsPanel"/>
+    <div wicket:id="geneticsPanel"/>
+    <div wicket:id="deafnessPanel"/>
+    <div wicket:id="medicinePanel"/>
+
+
+    <p wicket:id="pageNumber"></p>
+
+</wicket:extend>
+</body>
+</html>

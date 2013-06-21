@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="medicineDao" class="com.solidstategroup.radar.dao.alport.impl.MedicineDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="diseaseGroupDao" ref="diseasGroupDao" />
+    </bean>
+
+    <bean id="geneticsDao" class="com.solidstategroup.radar.dao.alport.impl.GeneticsDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="deafnessDao" class="com.solidstategroup.radar.dao.alport.impl.DeafnessDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="hnf1BMiscDao" class="com.solidstategroup.radar.dao.hnf1b.impl.HNF1BMiscDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="issueDao" class="com.solidstategroup.radar.dao.impl.IssueDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="clinicalDataDao" class="com.solidstategroup.radar.dao.impl.ClinicalDataDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="demographicsDao" class="com.solidstategroup.radar.dao.impl.DemographicsDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+        <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
+    </bean>
+
+    <bean id="diagnosisDao" class="com.solidstategroup.radar.dao.impl.DiagnosisDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="hospitalisationDao" class="com.solidstategroup.radar.dao.impl.HospitalisationDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="immunosuppressionDao" class="com.solidstategroup.radar.dao.impl.ImmunosuppressionDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="labDataDao" class="com.solidstategroup.radar.dao.impl.LabDataDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="pathologyDao" class="com.solidstategroup.radar.dao.impl.PathologyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="plasmapheresisDao" class="com.solidstategroup.radar.dao.impl.PlasmapheresisDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="relapseDao" class="com.solidstategroup.radar.dao.impl.RelapseDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="therapyDao" class="com.solidstategroup.radar.dao.impl.TherapyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transplantDao" class="com.solidstategroup.radar.dao.impl.TransplantDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="treatmentDao" class="com.solidstategroup.radar.dao.impl.TreatmentDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="utilityDao" class="com.solidstategroup.radar.dao.impl.UtilityDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="userDao" class="com.solidstategroup.radar.dao.impl.UserDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- radarv generic daos -->
+    <bean id="diseasGroupDao" class="com.solidstategroup.radar.dao.impl.DiseaseGroupDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="genericDiagnosisDao" class="com.solidstategroup.radar.dao.impl.GenericDiagnosisDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="medicalResultDao" class="com.solidstategroup.radar.dao.impl.MedicalResultDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+    </bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="testConnectionOnCheckout" value="true"/>
+        <property name="preferredTestQuery" value="select 1"/>
+
+        <!--Below shows the full list of properties available - may be necessary for some cases (but preferably avoided)-->
+        <!--<property name="maxPoolSize" value="${cms.jdbc.maxPoolSize}"/>-->
+        <!--<property name="maxIdleTime" value="${cms.jdbc.maxIdleTime}"/>-->
+        <!--<property name="checkoutTimeout" value="${cms.jdbc.checkoutTimeout}"/>-->
+        <!--<property name="minPoolSize" value=""/>-->
+        <!--<property name="unreturnedConnectionTimeout" value=""/>-->
+        <!--<property name="debugUnreturnedConnectionStackTraces" value="true"/>-->
+        <!--<property name="idleConnectionTestPeriod" value=""/>-->
+        <!--<property name="acquireRetryAttempts" value=""/>-->
+        <!--<property name="acquireRetryDelay" value=""/>-->
+        <!--<property name="breakAfterAcquireFailure" value=""/>-->
+    </bean>
+
+</beans>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Users</h2>
+
+    <div>
+        <br /><br />
+        <div wicket:id="feedback"></div>
+
+        <form wicket:id="consultantForm">
+            <table cellspacing="0" cellpadding="5" rules="all" border="1" style="border-color:Black;border-width:1px;border-style:solid;font-size:90%;height:50px;width:500px;border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="dxgvHeader" style="width: 35px;">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv" colspan="2">
+                            <div style="float: right">
+                                <button wicket:id="cancelTop" value="Cancel" class="button">Cancel</button>
+                                <button wicket:id="saveTop" value="Save" class="button">Save</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Surname</td>
+                        <td class="dxgv">
+                            <input type="text" wicket:id="surname"/>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Forename</td>
+                        <td class="dxgv">
+                            <input type="text" wicket:id="forename"/>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Centre</td>
+                        <td class="dxgv">
+                            <select wicket:id="centre" />
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv" colspan="2">
+                            <button wicket:id="delete" type="submit" value="Delete" class="button">Delete</button>
+                            <div style="float: right">
+                                <button wicket:id="cancelBottom" value="Cancel" class="button">Cancel</button>
+                                <button wicket:id="saveBottom" value="Save" class="button">Save</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</wicket:extend>
+
+</body>
+</html>

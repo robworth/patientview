@@ -1,0 +1,44 @@
+﻿<%@ Master Language="VB" CodeFile="AdminMaster.master.vb" Inherits="admin_AdminMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta id="IE8CompatibilityMeta" runat="server" http-equiv="X-UA-Compatible" content="IE=7" />
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+      <link href="../normal.css" rel="stylesheet" type="text/css" />
+	<link href="../layout.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+	.headstrap {
+		margin-top: 30px;
+		margin-left:20px;
+		
+	}
+	</style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="outerWrapper">
+  <div id="header">
+	  <div class="headstrap"><h1 style="display:inline">RADAR</h1>&nbsp;&nbsp;<h2 style="display:inline">National Renal Rare Disease Registry</h2><h2 style="float:right;font-size:150%; display:inline;">Site Admin</h2></div>   
+		</div>  
+		
+  <div id="topNavigation"><a href="Default.aspx">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<asp:HyperLink ID="lnkLog" runat="server" Text=""></asp:HyperLink><div id="rightNav" ><asp:HyperLink ID="lnkUsers" runat="server" Text="Users" NavigateUrl="users.aspx"></asp:HyperLink><asp:Label ID="lblSpace" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink runat="server" NavigateUrl="patients.aspx" Text="Patients" ID="lnkPatients"></asp:HyperLink>
+		<asp:Label ID="lblSpace2" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink runat="server" ID="lnkIssues" NavigateUrl="~/admin/issues.aspx" ToolTip="Issue Tracking" Text="Issues"></asp:HyperLink><asp:Label ID="lblSpace3" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label></div>
+ 
+	  </div>
+
+<div id="contentWrapper"> <div id="content">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+        </div>
+ <div id="clearFooter"></div>
+
+    </div> </div>
+    <div id="footer">&copy;2009 The Renal Association</div>
+    </form>
+</body>
+</html>

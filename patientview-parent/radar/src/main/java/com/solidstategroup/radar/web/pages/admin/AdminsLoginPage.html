@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+
+    <div id="ctl00_ContentPlaceHolder1_pnlLogIn">
+
+        <h1 style="display:inline;">Log In</h1>&nbsp;&nbsp;&nbsp;
+
+        <p>Please enter your username and password</p>
+
+        <form wicket:id="form">
+            <table cellpadding="8" class="style2">
+                <tr>
+                    <td class="style3">
+                        <label for="ctl00_ContentPlaceHolder1_txtUid"
+                               id="ctl00_ContentPlaceHolder1_lblUser">Username</label>
+                    </td>
+                    <td>
+                        <input wicket:id="email" type="text" id="ctl00_ContentPlaceHolder1_txtUid"
+                               style="width:200px;"/>
+                        <span wicket:id="emailFeedbackIndicator"></span>
+
+                    </td>
+                </tr>
+                <tr>
+
+                    <td class="style3">
+                        <label for="ctl00_ContentPlaceHolder1_txtPwd"
+                               id="ctl00_ContentPlaceHolder1_lblPass">Password</label>
+                    </td>
+                    <td>
+                        <input wicket:id="password" type="password" id="ctl00_ContentPlaceHolder1_txtPwd"/>
+                        <span wicket:id="passwordFeedbackIndicator"></span>
+                    </td>
+                </tr>
+            </table>
+
+
+            <p>
+                <input type="submit" value="Enter" wicket:id="submit"/>
+                <span class="feedback" wicket:id="feedback"/>
+            </p>
+
+        </form>
+
+
+    </div>
+
+</wicket:extend>
+</body>
+</html>

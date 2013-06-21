@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Issues</h2>
+
+    <p>
+        <button wicket:id="addNewIssue" type="submit" value="Add a new issue" class="button">Add a new Issue</button>
+    </p>
+
+    <p>
+        Use the boxes in the header to sort entries. Use % or * when the full text is unknown. Click the column titles to sort.
+    </p>
+
+    <div>
+        <table cellspacing="0" cellpadding="0" class="dxgvTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="dxgvHeader firstCell" style="width: 34px;">#</th>
+                    <th class="dxgvHeader" wicket:id="orderById">ID</th>
+                    <th class="dxgvHeader" wicket:id="orderByType">Type</th>
+                    <th class="dxgvHeader" wicket:id="orderByPage">Page</th>
+                    <th class="dxgvHeader" wicket:id="orderByDateLogged">Date Logged</th>
+                    <th class="dxgvHeader" wicket:id="orderByDateResolved">Date Resolved</th>
+                    <th class="dxgvHeader" wicket:id="orderByDescription">Description</th>
+                    <th class="dxgvHeader" wicket:id="orderByComment">Comment</th>
+                    <th class="dxgvHeader" wicket:id="orderByPriority">Priority</th>
+                    <th class="dxgvHeader" wicket:id="orderByStatus">Status</th>
+                    <th class="dxgvHeader" wicket:id="orderByUpdated">Date Live</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="dxgvFilterRow" id="filterRow">
+                    <td class="dxgv firstCell"><a wicket:id="clearButton">Clear</a></td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchId" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <select wicket:id="searchType" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" ></select>
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchPage" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchDateLogged" type="text" class="dxeEditArea" style="border-width: 0; width: 75%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchDateResolved" type="text" class="dxeEditArea" style="border-width: 0; width: 75%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchDescription" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchComment" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <select wicket:id="searchPriority" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" ></select>
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <select wicket:id="searchStatus" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" ></select>
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchUpdated" type="text" class="dxeEditArea" style="border-width: 0; width: 75%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody wicket:id="issuesContainer">
+                <tr class="dxgvDataRow" wicket:id="issues">
+                    <td class="dxgv"><a wicket:id="edit">Edit</a></td>
+                    <td class="dxgv"><span wicket:id="id">id</span></td>
+                    <td class="dxgv"><span wicket:id="type">type</span></td>
+                    <td class="dxgv"><span wicket:id="page">page</span></td>
+                    <td class="dxgv"><span wicket:id="dateLogged">date logged</span></td>
+                    <td class="dxgv"><span wicket:id="dateResolved">date resolved</span></td>
+                    <td class="dxgv"><span wicket:id="description">description</span></td>
+                    <td class="dxgv"><span wicket:id="comment">comment</span></td>
+                    <td class="dxgv"><span wicket:id="priority">priority</span></td>
+                    <td class="dxgv"><span wicket:id="status">status</span></td>
+                    <td class="dxgv"><span wicket:id="updated">updated</span></td>
+                </tr>
+                <tr>
+                    <td class="dxgv firstCell" colspan="12">
+                        <span wicket:id="navigator" class="paging"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>

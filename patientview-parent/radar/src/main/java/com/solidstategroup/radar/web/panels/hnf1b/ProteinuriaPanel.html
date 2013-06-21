@@ -1,0 +1,75 @@
+<wicket:panel>
+    <form wicket:id="form">
+        <div id="mainBlock">
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+            <div wicket:id="patientDetail">
+
+            </div>
+
+            <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+                   class="style3">
+                <tr>
+                    <td style="width:90%; vertical-align:top;">
+
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+
+                        <table cellpadding="5" style="width: 70%; border-collapse:collapse">
+                            <tr>
+                                <td valign="top">
+                                    <strong>Any evidence of deafness?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="evidenceOfDeafness">
+                                        <input type="radio" wicket:id="evidenceOfDeafnessNo" id="evidenceOfDeafnessNo"/><label for="evidenceOfDeafnessNo">No</label>
+                                        <br />
+                                        <input type="radio" wicket:id="evidenceOfDeafnessYesMinor" id="evidenceOfDeafnessYesMinor"/><label for="evidenceOfDeafnessYesMinor">Yes, Minor</label>
+                                        <br />
+                                        <input type="radio" wicket:id="evidenceOfDeafnessYesHearingAidNeeded" id="evidenceOfDeafnessYesHearingAidNeeded"/><label for="evidenceOfDeafnessYesHearingAidNeeded">Yes, Hearing aid needed</label>
+                                        <br />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>If yes, please enter:</strong>
+                                    <br />
+                                    <em>(as closely as you can)</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Age problem first noticed:</strong>
+                                </td>
+                                <td>
+                                    <select wicket:id="ageProblemFirstNoticed"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Age started using hearing aid:</strong>
+                                </td>
+                                <td>
+                                    <select wicket:id="ageStartedUsingHearingAid"></select>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <br />
+                        <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="feedback" wicket:id="formFeedbackPanel"></div>
+            <span style="font-weight:bold;" wicket:id="successMessage"></span>
+            <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+        </div>
+    </form>
+</wicket:panel>
