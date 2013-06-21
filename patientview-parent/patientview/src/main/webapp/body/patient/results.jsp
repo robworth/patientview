@@ -51,7 +51,7 @@
                     <li >
                         <html:link action="/patient/results"  paramId="panel" paramName="panel" paramProperty="panel" styleClass="tooltip-link"><bean:write name="panel" property="panel" />
                             <span class="tooltip">
-                                <logic:iterate name="panel" property="resultHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
+                                <logic:iterate name="panel" property="resultHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
                                     <%= heading.getHeadingcode() %>,
                                 </logic:iterate>
                             </span>
@@ -99,11 +99,11 @@
                 <td width="" class="tablecellbold">Source</td>
             </tr>
 
-            <logic:iterate name="results" id="result" type="com.worthsoln.patientview.Result" length="resultsPerPage" offset="resultsOffset" >
+            <logic:iterate name="results" id="result" type="org.patientview.patientview.Result" length="resultsPerPage" offset="resultsOffset" >
                 <tr>
                     <td width="" class="tablecellbold" nowrap="true"><b><bean:write name="result" property="formattedTimeStamp"/></b></td>
                     <td width="" class="tablecellbold"><bean:write name="result" property="prepost"/></td>
-                    <logic:iterate name="resultsHeadings" id="heading" type="com.worthsoln.patientview.model.ResultHeading" >
+                    <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
                         <bean:define id="content" value="<%= result.getValue(heading.getHeadingcode()) %>" />
 
                         <logic:empty name="content">

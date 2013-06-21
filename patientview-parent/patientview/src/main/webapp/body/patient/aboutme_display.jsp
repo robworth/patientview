@@ -33,7 +33,7 @@
 <div class="row">
 <logic:present name="aboutme">
 <logic:notEmpty name="aboutme">
-        <jsp:useBean id="aboutme" class="com.worthsoln.patientview.model.Aboutme" scope="request"/>
+        <jsp:useBean id="aboutme" class="org.patientview.patientview.model.Aboutme" scope="request"/>
     <div class="span3">
         <img src="aboutmeimage/<%= aboutme.getNhsno() %>" alt="" width="200">
     </div>

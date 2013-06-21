@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.worthsoln.ibd.model.symptoms.SymptomsData" %>
+<%@ page import="org.patientview.ibd.model.symptoms.SymptomsData" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -28,7 +28,7 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
-<bean:define id="symptomsGraphData" name="graphData" type="com.worthsoln.ibd.model.symptoms.SymptomsGraphData" />
+<bean:define id="symptomsGraphData" name="graphData" type="org.patientview.ibd.model.symptoms.SymptomsGraphData" />
 <%
     String scoresString = "";
     String datesString = "";

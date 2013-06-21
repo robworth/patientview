@@ -1,4 +1,4 @@
-<%@ page import="com.worthsoln.ibd.Ibd" %>
+<%@ page import="org.patientview.ibd.Ibd" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -64,7 +64,7 @@
                 <div class="control-group">
                     <label class="control-label">Medication:</label>
                     <div class="controls" id="medicationLists">
-                        <logic:iterate name="medicationTypeList" id="medicationType" type="com.worthsoln.ibd.model.medication.MedicationType">
+                        <logic:iterate name="medicationTypeList" id="medicationType" type="org.patientview.ibd.model.medication.MedicationType">
                             <bean:define id="medications" name="medicationType" property="medications"/>
 
                             <%
@@ -94,7 +94,7 @@
                             <logic:iterate name="medicationTypeList" id="medicationType">
                                 <bean:define id="medications" name="medicationType" property="medications" />
 
-                                <logic:iterate name="medications" id="medication" type="com.worthsoln.ibd.model.medication.Medication">
+                                <logic:iterate name="medications" id="medication" type="org.patientview.ibd.model.medication.Medication">
                                     <bean:define id="allowedDosages" name="medication" property="allowedDosages" />
 
                                     <%

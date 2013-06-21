@@ -1,6 +1,6 @@
 package com.solidstategroup.radar.test;
 
-import com.worthsoln.test.BaseTestPvDbSchema;
+import org.patientview.test.BaseTestPvDbSchema;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.dataset.xml.XmlDataSet;

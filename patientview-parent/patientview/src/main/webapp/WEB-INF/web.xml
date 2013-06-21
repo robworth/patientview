@@ -48,7 +48,7 @@
 
     <filter>
         <filter-name>specialtyFilter</filter-name>
-        <filter-class>com.worthsoln.specialty.SpecialtyFilter</filter-class>
+        <filter-class>org.patientview.specialty.SpecialtyFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -68,7 +68,7 @@
 
     <servlet>
         <servlet-name>xmlParser</servlet-name>
-        <servlet-class>com.worthsoln.patientview.ParserMonitorServlet</servlet-class>
+        <servlet-class>org.patientview.patientview.ParserMonitorServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
 

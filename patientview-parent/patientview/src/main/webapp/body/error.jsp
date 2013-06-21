@@ -1,4 +1,4 @@
-<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 <%--
   ~ PatientView
   ~

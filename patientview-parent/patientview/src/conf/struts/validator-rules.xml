@@ -297,7 +297,7 @@
                    msg="errors.url"/>
 
         <validator name="sysgreaterthandia"
-                   classname="com.worthsoln.patientview.patiententry.SysGreaterThanDiaValidator"
+                   classname="org.patientview.patientview.patiententry.SysGreaterThanDiaValidator"
                    method="sysGreaterThanDia"
                    methodParams="java.lang.Object,
                      org.apache.commons.validator.ValidatorAction,
@@ -308,7 +308,7 @@
                    msg="errors.sysgreaterthandia"/>
 
         <validator name="nhsnochecksum"
-                   classname="com.worthsoln.patientview.utils.NhsnoChecksum"
+                   classname="org.patientview.patientview.utils.NhsnoChecksum"
                    method="nhsnoChecksum"
                    methodParams="java.lang.Object,
                      org.apache.commons.validator.ValidatorAction,

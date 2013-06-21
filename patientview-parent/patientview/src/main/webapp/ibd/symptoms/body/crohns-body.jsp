@@ -1,4 +1,4 @@
-<%@ page import="com.worthsoln.ibd.model.enums.Severity" %>
+<%@ page import="org.patientview.ibd.model.enums.Severity" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -163,7 +163,7 @@
             <logic:present name="myIbdSeverityLevel">
                 <div>
                     <bean:define id="myIbdSeverityLevel" name="myIbdSeverityLevel"
-                                 type="com.worthsoln.ibd.model.MyIbdSeverityLevel"/>
+                                 type="org.patientview.ibd.model.MyIbdSeverityLevel"/>
 
 
                     <%

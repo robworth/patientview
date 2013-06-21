@@ -154,7 +154,7 @@
 
         <action path="/control/ibduser-edit"
                 name="manageIbdUserForm"
-                type="com.worthsoln.ibd.action.admin.IbdUserEditAction"
+                type="org.patientview.ibd.action.admin.IbdUserEditAction"
                 input="input"
                 scope="request"
                 validate="true">
@@ -163,7 +163,7 @@
         </action>
 
         <action path="/myibd"
-                type="com.worthsoln.ibd.action.myibd.MyIbdAction"
+                type="org.patientview.ibd.action.myibd.MyIbdAction"
                 scope="request"
                 parameter="ibd_myibd">
             <forward name="success" path="/ibd/myibd/myibd.jsp"/>
@@ -171,7 +171,7 @@
 
         <action path="/myibd-edit"
                 name="myIbdForm"
-                type="com.worthsoln.ibd.action.myibd.MyIbdEditAction"
+                type="org.patientview.ibd.action.myibd.MyIbdEditAction"
                 scope="request"
                 parameter="ibd_myibd">
             <forward name="success" path="/ibd/myibd/myibd-edit.jsp"/>
@@ -179,7 +179,7 @@
 
         <action path="/myibd-update"
                 name="myIbdForm"
-                type="com.worthsoln.ibd.action.myibd.MyIbdUpdateAction"
+                type="org.patientview.ibd.action.myibd.MyIbdUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -190,14 +190,14 @@
 
         <action path="/careplan"
                 name="carePlanForm"
-                type="com.worthsoln.ibd.action.careplan.CarePlanEditAction"
+                type="org.patientview.ibd.action.careplan.CarePlanEditAction"
                 scope="request"
                 parameter="ibd_careplan">
             <forward name="success" path="/ibd/careplan/careplan-edit.jsp"/>
         </action>
 
         <action path="/careplan-update" name="carePlanForm"
-                type="com.worthsoln.ibd.action.careplan.CarePlanUpdateAction"
+                type="org.patientview.ibd.action.careplan.CarePlanUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -207,7 +207,7 @@
         </action>
 
         <action path="/medications"
-                type="com.worthsoln.ibd.action.mymedications.MyMedicationsAction"
+                type="org.patientview.ibd.action.mymedications.MyMedicationsAction"
                 scope="request"
                 parameter="ibd_medications">
             <forward name="success" path="/ibd/medicine/medications.jsp"/>
@@ -215,14 +215,14 @@
 
         <action path="/medication-add"
                 name="medicationForm"
-                type="com.worthsoln.ibd.action.mymedications.MyMedicationEditAction"
+                type="org.patientview.ibd.action.mymedications.MyMedicationEditAction"
                 scope="request"
                 parameter="ibd_medications">
             <forward name="success" path="/ibd/medicine/medication-add.jsp"/>
         </action>
 
         <action path="/medication-update" name="medicationForm"
-                type="com.worthsoln.ibd.action.mymedications.MyMedicationUpdateAction"
+                type="org.patientview.ibd.action.mymedications.MyMedicationUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -233,7 +233,7 @@
         </action>
 
         <action path="/medication-stop" name="stopMedicationForm"
-                type="com.worthsoln.ibd.action.mymedications.MyMedicationStopAction"
+                type="org.patientview.ibd.action.mymedications.MyMedicationStopAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -244,7 +244,7 @@
 
         <action path="/nutrition"
                 name="nutritionForm"
-                type="com.worthsoln.ibd.action.nutrition.NutritionAction"
+                type="org.patientview.ibd.action.nutrition.NutritionAction"
                 scope="request"
                 parameter="ibd_nutrition">
             <forward name="success" path="/ibd/nutrition/nutrition.jsp"/>
@@ -252,7 +252,7 @@
 
         <action path="/nutrition-edit"
                 name="nutritionForm"
-                type="com.worthsoln.ibd.action.nutrition.NutritionEditAction"
+                type="org.patientview.ibd.action.nutrition.NutritionEditAction"
                 scope="request"
                 parameter="ibd_nutrition">
             <forward name="input" path="/ibd/nutrition/nutrition-edit.jsp"/>
@@ -261,7 +261,7 @@
 
         <action path="/nutrition-update"
                 name="nutritionForm"
-                type="com.worthsoln.ibd.action.nutrition.NutritionUpdateAction"
+                type="org.patientview.ibd.action.nutrition.NutritionUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -272,7 +272,7 @@
 
         <action path="/crohns-edit"
                 name="crohnsSymptomsForm"
-                type="com.worthsoln.ibd.action.symptoms.crohns.CrohnsEditAction"
+                type="org.patientview.ibd.action.symptoms.crohns.CrohnsEditAction"
                 scope="request"
                 parameter="ibd_entersymptoms">
             <forward name="success" path="/ibd/symptoms/crohns.jsp"/>
@@ -280,7 +280,7 @@
 
         <action path="/crohns-update"
                 name="crohnsSymptomsForm"
-                type="com.worthsoln.ibd.action.symptoms.crohns.CrohnsUpdateAction"
+                type="org.patientview.ibd.action.symptoms.crohns.CrohnsUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -291,7 +291,7 @@
 
         <action path="/colitis-edit"
                 name="colitisSymptomsForm"
-                type="com.worthsoln.ibd.action.symptoms.colitis.ColitisEditAction"
+                type="org.patientview.ibd.action.symptoms.colitis.ColitisEditAction"
                 scope="request"
                 parameter="ibd_entersymptoms">
             <forward name="success" path="/ibd/symptoms/colitis.jsp"/>
@@ -299,7 +299,7 @@
 
         <action path="/colitis-update"
                 name="colitisSymptomsForm"
-                type="com.worthsoln.ibd.action.symptoms.colitis.ColitisUpdateAction"
+                type="org.patientview.ibd.action.symptoms.colitis.ColitisUpdateAction"
                 input="input"
                 scope="request"
                 validate="true"
@@ -310,19 +310,19 @@
 
         <action path="/graph-data"
                 name="graphDataForm"
-                type="com.worthsoln.ibd.action.symptoms.GraphDataAction"
+                type="org.patientview.ibd.action.symptoms.GraphDataAction"
                 scope="request">
             <forward name="success" path="/ibd/symptoms/body/graph-data.jsp"/>
         </action>
 
         <action path="/ibd-help"
-                type="com.worthsoln.patientview.IndexAction" parameter="help">
+                type="org.patientview.patientview.IndexAction" parameter="help">
             <forward name="success" path="/ibd/help.jsp"/>
         </action>
 
         <action path="/ibd-patient_details"
                 name="ibdPatientDetailsForm"
-                type="com.worthsoln.ibd.action.mydetails.MyDetailsAction"
+                type="org.patientview.ibd.action.mydetails.MyDetailsAction"
                 scope="request"
                 parameter="patient_details">
             <forward name="success" path="/patient/patient_details.jsp"/>
@@ -330,20 +330,20 @@
 
         <!-- custom actions for myibd static help links -->
         <action path="/control/myibd-links-display"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeDisplayAction"
                 parameter="myIbdLinks">
             <forward name="success" path="/ibd/admin/myibd-links.jsp"/>
         </action>
 
         <action path="/control/myibd-links-edit"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeEditAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeEditAction"
                 name="edtaCodeForm"
                 scope="request">
             <forward name="success" path="/ibd/admin/myibd-link-edit.jsp"/>
         </action>
 
         <action path="/control/myibd-links-update"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeUpdateAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeUpdateAction"
                 name="edtaCodeForm"
                 input="input"
                 scope="request">
@@ -352,14 +352,14 @@
         </action>
 
         <action path="/control/myibd-links-add"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeAddInputAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeAddInputAction"
                 name="edtaCodeForm"
                 scope="request">
             <forward name="success" path="/ibd/admin/myibd-links-add.jsp"/>
         </action>
 
         <action path="/control/myibd-links-add-save"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeAddAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeAddAction"
                 name="edtaCodeForm"
                 input="input"
                 scope="request">
@@ -369,20 +369,20 @@
 
         <!-- custom actions for static links on symptoms pages -->
         <action path="/control/careplan-links-display"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeDisplayAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeDisplayAction"
                 parameter="careplanLinks">
             <forward name="success" path="/ibd/admin/careplan-links.jsp"/>
         </action>
 
         <action path="/control/careplan-links-edit"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeEditAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeEditAction"
                 name="edtaCodeForm"
                 scope="request">
             <forward name="success" path="/ibd/admin/careplan-link-edit.jsp"/>
         </action>
 
         <action path="/control/careplan-links-update"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeUpdateAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeUpdateAction"
                 name="edtaCodeForm"
                 input="input"
                 scope="request">
@@ -391,14 +391,14 @@
         </action>
 
         <action path="/control/careplan-links-add"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeAddInputAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeAddInputAction"
                 name="edtaCodeForm"
                 scope="request">
             <forward name="success" path="/ibd/admin/careplan-links-add.jsp"/>
         </action>
 
         <action path="/control/careplan-links-add-save"
-                type="com.worthsoln.patientview.edtacode.EdtaCodeAddAction"
+                type="org.patientview.patientview.edtacode.EdtaCodeAddAction"
                 name="edtaCodeForm"
                 input="input"
                 scope="request">
@@ -407,12 +407,12 @@
         </action>
 
         <action path="/patient/ibd-contact"
-                type="com.worthsoln.ibd.action.contact.ContactAction" parameter="contact"
+                type="org.patientview.ibd.action.contact.ContactAction" parameter="contact"
                 name="myIbdContactForm">
             <forward name="success" path="/ibd/contact/contact.jsp"/>
         </action>
 
-        <action path="/patient/ibd-contact-send" type="com.worthsoln.ibd.action.contact.ContactSendAction" parameter="contact"
+        <action path="/patient/ibd-contact-send" type="org.patientview.ibd.action.contact.ContactSendAction" parameter="contact"
                 name="myIbdContactForm"
                 input="input">
             <forward name="input" path="/ibd/contact/contact.jsp"/>

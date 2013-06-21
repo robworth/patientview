@@ -70,7 +70,7 @@
             </tr>
             </thead>
             <tbody>
-            <logic:iterate name="diagnosticsImaging" id="image" type="com.worthsoln.patientview.model.Diagnostic">
+            <logic:iterate name="diagnosticsImaging" id="image" type="org.patientview.patientview.model.Diagnostic">
                 <tr>
                     <td>
                         <bean:write name="image" property="formattedDatestamp"/>
@@ -92,7 +92,7 @@
             </tr>
             </thead>
             <tbody>
-            <logic:iterate name="diagnosticsEndoscopy" id="endoscopy" type="com.worthsoln.patientview.model.Diagnostic">
+            <logic:iterate name="diagnosticsEndoscopy" id="endoscopy" type="org.patientview.patientview.model.Diagnostic">
                 <tr>
                     <td>
                         <bean:write name="endoscopy" property="formattedDatestamp"/>

@@ -1,4 +1,4 @@
-<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib prefix="bean" uri="http://struts.apache.org/tags-bean" %>

@@ -481,7 +481,7 @@
     </tag>
     <tag>
         <name>notPresent</name>
-        <tagclass>com.worthsoln.taglib.PatientViewNotPresentTag</tagclass>
+        <tagclass>org.patientview.taglib.PatientViewNotPresentTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>cookie</name>
@@ -526,7 +526,7 @@
     </tag>
     <tag>
         <name>present</name>
-        <tagclass>com.worthsoln.taglib.PatientViewPresentTag</tagclass>
+        <tagclass>org.patientview.taglib.PatientViewPresentTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>cookie</name>

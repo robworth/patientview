@@ -610,7 +610,7 @@
 </tag>
 <tag>
 <name>form</name>
-<tagclass>com.worthsoln.taglib.PatientViewFormTag</tagclass>
+<tagclass>org.patientview.taglib.PatientViewFormTag</tagclass>
 <bodycontent>JSP</bodycontent>
 <attribute>
 <name>action</name>
@@ -1423,7 +1423,7 @@
 </tag>
 <tag>
 <name>link</name>
-<tagclass>com.worthsoln.taglib.PatientViewLinkTag</tagclass>
+<tagclass>org.patientview.taglib.PatientViewLinkTag</tagclass>
 <attribute>
 <name>accesskey</name>
 <required>false</required>

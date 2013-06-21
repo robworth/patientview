@@ -1,7 +1,7 @@
-<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
-<%@ page import="com.worthsoln.ibd.model.enums.Diagnosis" %>
-<%@ page import="com.worthsoln.patientview.user.UserUtils" %>
-<%@ page import="com.worthsoln.patientview.model.User" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
+<%@ page import="org.patientview.ibd.model.enums.Diagnosis" %>
+<%@ page import="org.patientview.patientview.user.UserUtils" %>
+<%@ page import="org.patientview.patientview.model.User" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>

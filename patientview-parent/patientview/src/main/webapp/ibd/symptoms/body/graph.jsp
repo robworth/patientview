@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.worthsoln.ibd.model.symptoms.SymptomsData" %>
+<%@ page import="org.patientview.ibd.model.symptoms.SymptomsData" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -52,7 +52,7 @@
         <div id="graph" class="linegraph"></div>
     </div>
 
-    <bean:define id="symptomsGraphData" name="graphData" type="com.worthsoln.ibd.model.symptoms.SymptomsGraphData" />
+    <bean:define id="symptomsGraphData" name="graphData" type="org.patientview.ibd.model.symptoms.SymptomsGraphData" />
     <%
         List<Integer> graphScores = new ArrayList<Integer>();
         List<String> graphDates = new ArrayList<String>();

@@ -76,7 +76,7 @@
                 </tr>
             </thead>
             <tbody>
-            <logic:iterate name="nutritionList" id="nutrition" type="com.worthsoln.ibd.model.Nutrition">
+            <logic:iterate name="nutritionList" id="nutrition" type="org.patientview.ibd.model.Nutrition">
                 <tr>
                     <td>
                         <bean:write name="nutrition" property="formattedNutritionDate"/>

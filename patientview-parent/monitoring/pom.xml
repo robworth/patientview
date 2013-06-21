@@ -98,7 +98,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.worthsoln.monitoring.ImportMonitor</mainClass>
+                            <mainClass>org.patientview.monitoring.ImportMonitor</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

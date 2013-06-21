@@ -8,13 +8,13 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <!--Define CreateEmailQueueJobQuartzScheduler class-->
-    <bean id="createEmailQueueJobQuartzScheduler" class="com.worthsoln.quartz.CreateEmailQueueJobQuartzScheduler" />
+    <bean id="createEmailQueueJobQuartzScheduler" class="org.patientview.quartz.CreateEmailQueueJobQuartzScheduler" />
 
     <!--Define SendEmailJobQuartzScheduler class-->
-    <bean id="sendEmailJobQuartzScheduler" class="com.worthsoln.quartz.SendEmailJobQuartzScheduler" />
+    <bean id="sendEmailJobQuartzScheduler" class="org.patientview.quartz.SendEmailJobQuartzScheduler" />
 
     <!--Define CheckSendEmailStatusJobQuartzScheduler class-->
-    <bean id="checkSendEmailStatusJobQuartzScheduler" class="com.worthsoln.quartz.CheckSendEmailStatusJobQuartzScheduler" />
+    <bean id="checkSendEmailStatusJobQuartzScheduler" class="org.patientview.quartz.CheckSendEmailStatusJobQuartzScheduler" />
 
     <!--Define SendEmailJob's method configuration-->
     <bean id="createEmailQueueJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

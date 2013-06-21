@@ -30,7 +30,7 @@
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
     <bean id="setAboutmeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setAboutmeManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setAboutmeManager"/>
         <property name="arguments">
             <list>
                 <ref bean="aboutmeManager"/>
@@ -39,7 +39,7 @@
     </bean>
 
     <bean id="setCentreManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setCentreManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setCentreManager"/>
         <property name="arguments">
             <list>
                 <ref bean="centreManager"/>
@@ -48,7 +48,7 @@
     </bean>
 
     <bean id="setCommentManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setCommentManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setCommentManager"/>
         <property name="arguments">
             <list>
                 <ref bean="commentManager"/>
@@ -57,7 +57,7 @@
     </bean>
 
     <bean id="setDiagnosisManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setDiagnosisManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setDiagnosisManager"/>
         <property name="arguments">
             <list>
                 <ref bean="diagnosisManager"/>
@@ -66,7 +66,7 @@
     </bean>
 
     <bean id="setDiagnosticManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setDiagnosticManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setDiagnosticManager"/>
         <property name="arguments">
             <list>
                 <ref bean="diagnosticManager"/>
@@ -75,7 +75,7 @@
     </bean>
 
     <bean id="setEdtaCodeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEdtaCodeManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setEdtaCodeManager"/>
         <property name="arguments">
             <list>
                 <ref bean="edtaCodeManager"/>
@@ -84,7 +84,7 @@
     </bean>
 
     <bean id="setEmailVerificationManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEmailVerificationManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setEmailVerificationManager"/>
         <property name="arguments">
             <list>
                 <ref bean="emailVerificationManager"/>
@@ -93,7 +93,7 @@
     </bean>
 
     <bean id="setFeedbackManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setFeedbackManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setFeedbackManager"/>
         <property name="arguments">
             <list>
                 <ref bean="feedbackManager"/>
@@ -102,7 +102,7 @@
     </bean>
 
     <bean id="setFeatureManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setFeatureManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setFeatureManager"/>
         <property name="arguments">
             <list>
                 <ref bean="featureManager"/>
@@ -111,7 +111,7 @@
     </bean>
 
     <bean id="setImportManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setImportManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setImportManager"/>
         <property name="arguments">
             <list>
                 <ref bean="importManager"/>
@@ -120,7 +120,7 @@
     </bean>
 
     <bean id="setLetterManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setLetterManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setLetterManager"/>
         <property name="arguments">
             <list>
                 <ref bean="letterManager"/>
@@ -129,7 +129,7 @@
     </bean>
 
     <bean id="setLogEntryManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setLogEntryManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setLogEntryManager"/>
         <property name="arguments">
             <list>
                 <ref bean="logEntryManager"/>
@@ -138,7 +138,7 @@
     </bean>
 
     <bean id="setMedicineManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setMedicineManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setMedicineManager"/>
         <property name="arguments">
             <list>
                 <ref bean="medicineManager"/>
@@ -147,7 +147,7 @@
     </bean>
 
     <bean id="setNewsManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setNewsManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setNewsManager"/>
         <property name="arguments">
             <list>
                 <ref bean="newsManager"/>
@@ -156,7 +156,7 @@
     </bean>
 
     <bean id="setPatientManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setPatientManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setPatientManager"/>
         <property name="arguments">
             <list>
                 <ref bean="patientManager"/>
@@ -165,7 +165,7 @@
     </bean>
 
     <bean id="setResultHeadingManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setResultHeadingManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setResultHeadingManager"/>
         <property name="arguments">
             <list>
                 <ref bean="resultHeadingManager"/>
@@ -174,7 +174,7 @@
     </bean>
 
     <bean id="setSecurityUserManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSecurityUserManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setSecurityUserManager"/>
         <property name="arguments">
             <list>
                 <ref bean="securityUserManager"/>
@@ -183,7 +183,7 @@
     </bean>
 
     <bean id="setSplashPageManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSplashPageManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setSplashPageManager"/>
         <property name="arguments">
             <list>
                 <ref bean="splashPageManager"/>
@@ -192,7 +192,7 @@
     </bean>
 
     <bean id="setSpringApplicationContextBean" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setSpringApplicationContextBean"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setSpringApplicationContextBean"/>
         <property name="arguments">
             <list>
                 <ref bean="springApplicationContextBean"/>
@@ -201,7 +201,7 @@
     </bean>
 
     <bean id="setTestResultManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setTestResultManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setTestResultManager"/>
         <property name="arguments">
             <list>
                 <ref bean="testResultManager"/>
@@ -210,7 +210,7 @@
     </bean>
 
     <bean id="setTimeManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setTimeManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setTimeManager"/>
         <property name="arguments">
             <list>
                 <ref bean="timeManager"/>
@@ -219,7 +219,7 @@
     </bean>
 
     <bean id="setUkTransplantManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUkTransplantManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setUkTransplantManager"/>
         <property name="arguments">
             <list>
                 <ref bean="uKTransplantManager"/>
@@ -228,7 +228,7 @@
     </bean>
 
     <bean id="setUserManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUserManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setUserManager"/>
         <property name="arguments">
             <list>
                 <ref bean="userManager"/>
@@ -237,7 +237,7 @@
     </bean>
 
     <bean id="setUnitManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setUnitManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setUnitManager"/>
         <property name="arguments">
             <list>
                 <ref bean="unitManager"/>
@@ -246,7 +246,7 @@
     </bean>
 
     <bean id="setIbdManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setIbdManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setIbdManager"/>
         <property name="arguments">
             <list>
                 <ref bean="ibdManager"/>
@@ -255,7 +255,7 @@
     </bean>
 
     <bean id="setMessageManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setMessageManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setMessageManager"/>
         <property name="arguments">
             <list>
                 <ref bean="messageManager"/>
@@ -264,7 +264,7 @@
     </bean>
 
     <bean id="setEmailManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setEmailManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setEmailManager"/>
         <property name="arguments">
             <list>
                 <ref bean="emailManager"/>
@@ -273,7 +273,7 @@
     </bean>
 
     <bean id="setJoinRequestManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setJoinRequestManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setJoinRequestManager"/>
         <property name="arguments">
             <list>
                 <ref bean="joinRequestManager"/>
@@ -282,7 +282,7 @@
     </bean>
 
     <bean id="setAdminNotificationManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.worthsoln.utils.LegacySpringUtils.setAdminNotificationManager"/>
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setAdminNotificationManager"/>
         <property name="arguments">
             <list>
                 <ref bean="adminNotificationManager"/>

@@ -63,11 +63,11 @@
                 </tr>
                 </thead>
 
-                <logic:iterate name="unitstats" id="stat" type="com.worthsoln.patientview.unitstat.UnitMonthStats">
+                <logic:iterate name="unitstats" id="stat" type="org.patientview.patientview.unitstat.UnitMonthStats">
                 <tr>
                     <td width="23%" class="tablecellbold"><b><bean:write name="stat" property="yearmonth"/></b></td>
 
-                    <logic:iterate name="statsHeadings" id="heading" type="com.worthsoln.patientview.unitstat.StatsHeading">
+                    <logic:iterate name="statsHeadings" id="heading" type="org.patientview.patientview.unitstat.StatsHeading">
                     <td width="7%" class="tablecell" align="center"><%= stat.getValue(heading.getHeading()) %>
                     </td>
                     </logic:iterate>

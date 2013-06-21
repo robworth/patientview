@@ -1,6 +1,6 @@
-<%@ page import="com.worthsoln.utils.LegacySpringUtils" %>
-<%@ page import="com.worthsoln.patientview.model.Specialty" %>
-<%@ page import="com.worthsoln.patientview.model.User" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
+<%@ page import="org.patientview.patientview.model.Specialty" %>
+<%@ page import="org.patientview.patientview.model.User" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -68,7 +68,7 @@
             <section class="js-messages">
                 <logic:present name="messages">
                     <logic:notEmpty name="messages">
-                        <logic:iterate name="messages" id="message" indexId="index" type="com.worthsoln.patientview.model.Message">
+                        <logic:iterate name="messages" id="message" indexId="index" type="org.patientview.patientview.model.Message">
                             <article class="message" id="message-<bean:write name="message" property="id" />">
                                 <h4 class="author">
                                     <bean:write name="message" property="sender.name" />

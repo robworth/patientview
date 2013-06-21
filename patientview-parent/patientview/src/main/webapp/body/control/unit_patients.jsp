@@ -57,7 +57,7 @@
                 <th colspan="4">&nbsp;</th>
             </tr>
             </thead>
-            <logic:iterate id="patient" name="patients" type="com.worthsoln.patientview.logon.PatientLogon">
+            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon">
 
                 <%
                     Map <String, String> patientKeyParams = new HashMap <String, String>();

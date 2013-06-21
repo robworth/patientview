@@ -31,10 +31,10 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <!-- check for annotations -->
-    <context:component-scan base-package="com.worthsoln.test"/>
+    <context:component-scan base-package="org.patientview.test"/>
 
-    <bean id="emailManager" class="com.worthsoln.test.helpers.impl.TestableEmailManagerImpl"/>
+    <bean id="emailManager" class="org.patientview.test.helpers.impl.TestableEmailManagerImpl"/>
 
-    <bean id="importManager" class="com.worthsoln.test.helpers.impl.TestableResultsUpdater"/>
+    <bean id="importManager" class="org.patientview.test.helpers.impl.TestableResultsUpdater"/>
 
 </beans>
