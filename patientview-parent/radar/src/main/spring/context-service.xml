@@ -5,85 +5,85 @@
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-    <bean id="deafnessManager" class="com.solidstategroup.radar.service.alport.impl.DeafnessManagerImpl">
+    <bean id="deafnessManager" class="org.patientview.radar.service.alport.impl.DeafnessManagerImpl">
         <property name="deafnessDao" ref="deafnessDao"/>
     </bean>
 
-    <bean id="hnf1BMiscManager" class="com.solidstategroup.radar.service.hnf1b.impl.HNF1BMiscManagerImpl">
+    <bean id="hnf1BMiscManager" class="org.patientview.radar.service.hnf1b.impl.HNF1BMiscManagerImpl">
         <property name="hnf1BMiscDao" ref="hnf1BMiscDao"/>
     </bean>
 
-    <bean id="medicineManager" class="com.solidstategroup.radar.service.alport.impl.MedicineManagerImpl">
+    <bean id="medicineManager" class="org.patientview.radar.service.alport.impl.MedicineManagerImpl">
         <property name="medicineDao" ref="medicineDao"/>
     </bean>
 
-    <bean id="geneticsManager" class="com.solidstategroup.radar.service.alport.impl.GeneticsManagerImpl">
+    <bean id="geneticsManager" class="org.patientview.radar.service.alport.impl.GeneticsManagerImpl">
         <property name="geneticsDao" ref="geneticsDao"/>
     </bean>
 
-    <bean id="issueManager" class="com.solidstategroup.radar.service.impl.IssueManagerImpl">
+    <bean id="issueManager" class="org.patientview.radar.service.impl.IssueManagerImpl">
         <property name="issueDao" ref="issueDao"/>
     </bean>
 
-    <bean id="clinicalDataManager" class="com.solidstategroup.radar.service.impl.ClinicalDataManagerImpl">
+    <bean id="clinicalDataManager" class="org.patientview.radar.service.impl.ClinicalDataManagerImpl">
         <property name="clinicalDataDao" ref="clinicalDataDao"/>
     </bean>
 
-    <bean id="demographicsManager" class="com.solidstategroup.radar.service.impl.DemographicsManagerImpl">
+    <bean id="demographicsManager" class="org.patientview.radar.service.impl.DemographicsManagerImpl">
         <property name="demographicsDao" ref="demographicsDao"/>
     </bean>
 
-    <bean id="diagnosisManager" class="com.solidstategroup.radar.service.impl.DiagnosisManagerImpl">
+    <bean id="diagnosisManager" class="org.patientview.radar.service.impl.DiagnosisManagerImpl">
         <property name="diagnosisDao" ref="diagnosisDao"/>
     </bean>
 
-    <bean id="hospitalisationManager" class="com.solidstategroup.radar.service.impl.HospitalisationManagerImpl">
+    <bean id="hospitalisationManager" class="org.patientview.radar.service.impl.HospitalisationManagerImpl">
         <property name="hospitalisationDao" ref="hospitalisationDao"/>
     </bean>
 
-    <bean id="immunosuppressionManager" class="com.solidstategroup.radar.service.impl.ImmunosuppressionManagerImpl">
+    <bean id="immunosuppressionManager" class="org.patientview.radar.service.impl.ImmunosuppressionManagerImpl">
         <property name="immunosuppressionDao" ref="immunosuppressionDao"/>
         <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
-    <bean id="labDataManager" class="com.solidstategroup.radar.service.impl.LabDataManagerImpl">
+    <bean id="labDataManager" class="org.patientview.radar.service.impl.LabDataManagerImpl">
         <property name="labDataDao" ref="labDataDao"/>
     </bean>
 
-    <bean id="pathologyManager" class="com.solidstategroup.radar.service.impl.PathologyManagerImpl">
+    <bean id="pathologyManager" class="org.patientview.radar.service.impl.PathologyManagerImpl">
         <property name="pathologyDao" ref="pathologyDao"/>
     </bean>
 
-    <bean id="plasmapheresisManager" class="com.solidstategroup.radar.service.impl.PlasmapheresisManagerImpl">
+    <bean id="plasmapheresisManager" class="org.patientview.radar.service.impl.PlasmapheresisManagerImpl">
         <property name="plasmapheresisDao" ref="plasmapheresisDao"/>
         <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
-    <bean id="relapseManager" class="com.solidstategroup.radar.service.impl.RelapseManagerImpl">
+    <bean id="relapseManager" class="org.patientview.radar.service.impl.RelapseManagerImpl">
         <property name="relapseDao" ref="relapseDao"/>
     </bean>
 
-    <bean id="therapyManager" class="com.solidstategroup.radar.service.impl.TherapyManagerImpl">
+    <bean id="therapyManager" class="org.patientview.radar.service.impl.TherapyManagerImpl">
         <property name="therapyDao" ref="therapyDao"/>
     </bean>
 
-    <bean id="transplantManager" class="com.solidstategroup.radar.service.impl.TransplantManagerImpl">
+    <bean id="transplantManager" class="org.patientview.radar.service.impl.TransplantManagerImpl">
         <property name="transplantDao" ref="transplantDao"/>
         <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
-    <bean id="treatmentManager" class="com.solidstategroup.radar.service.impl.TreatmentManagerImpl">
+    <bean id="treatmentManager" class="org.patientview.radar.service.impl.TreatmentManagerImpl">
         <property name="treatmentDao" ref="treatmentDao"/>
         <property name="demographicsManager" ref="demographicsManager"/>
     </bean>
 
-    <bean id="utilityManager" class="com.solidstategroup.radar.service.impl.UtilityManagerImpl">
+    <bean id="utilityManager" class="org.patientview.radar.service.impl.UtilityManagerImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="siteUrl" value="${config.site.url}"/>
         <property name="patientViewSiteUrl" value="${config.patientview.site.url}"/>
     </bean>
 
-    <bean id="emailManager" class="com.solidstategroup.radar.service.impl.EmailManagerImpl">
+    <bean id="emailManager" class="org.patientview.radar.service.impl.EmailManagerImpl">
         <property name="javaMailSender" ref="javaMailSender"/>
         <property name="utilityDao" ref="utilityDao"/>
         <property name="emailAddressAdmin1" value="${email.admin1}"/>
@@ -92,14 +92,14 @@
         <property name="debug" value="${debug}"/>
     </bean>
 
-    <bean id="userManager" class="com.solidstategroup.radar.service.impl.UserManagerImpl">
+    <bean id="userManager" class="org.patientview.radar.service.impl.UserManagerImpl">
         <property name="emailManager" ref="emailManager"/>
         <property name="demographicsDao" ref="demographicsDao"/>
         <property name="userDao" ref="userDao"/>
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
-    <bean id="exportManager" class="com.solidstategroup.radar.service.impl.ExportManagerImpl">
+    <bean id="exportManager" class="org.patientview.radar.service.impl.ExportManagerImpl">
         <property name="userManager" ref="userManager"/>
         <property name="utilityManager" ref="utilityManager"/>
         <property name="demographicsManager" ref="demographicsManager"/>
@@ -111,23 +111,23 @@
     </bean>
 
     <!-- generic manager -->
-    <bean id="diseaseGroupManager" class="com.solidstategroup.radar.service.impl.DiseaseGroupManagerImpl">
+    <bean id="diseaseGroupManager" class="org.patientview.radar.service.impl.DiseaseGroupManagerImpl">
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
     </bean>
 
-    <bean id="genericDiagnosisManager" class="com.solidstategroup.radar.service.impl.GenericDiagnosisManagerImpl">
+    <bean id="genericDiagnosisManager" class="org.patientview.radar.service.impl.GenericDiagnosisManagerImpl">
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
     </bean>
 
-    <bean id="medicalResultManager" class="com.solidstategroup.radar.service.impl.MedicalResultManagerImpl">
+    <bean id="medicalResultManager" class="org.patientview.radar.service.impl.MedicalResultManagerImpl">
         <property name="medicalResultDao" ref="medicalResultDao"/>
     </bean>
 
-    <bean id="csvDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.CsvDocumentDataBuilder"/>
-    <bean id="excelDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.ExcelDocumentDataBuilder"/>
-    <bean id="pdfDocumentDataBuilder" class="com.solidstategroup.radar.service.impl.PdfDocumentDataBuilder"/>
+    <bean id="csvDocumentDataBuilder" class="org.patientview.radar.service.impl.CsvDocumentDataBuilder"/>
+    <bean id="excelDocumentDataBuilder" class="org.patientview.radar.service.impl.ExcelDocumentDataBuilder"/>
+    <bean id="pdfDocumentDataBuilder" class="org.patientview.radar.service.impl.PdfDocumentDataBuilder"/>
 
-    <bean id="userUpgradeManager" class="com.solidstategroup.radar.util.impl.RadarRpvSingleUserTableExport">
+    <bean id="userUpgradeManager" class="org.patientview.radar.util.impl.RadarRpvSingleUserTableExport">
         <property name="dataSource" ref="dataSource"/>
         <property name="userDao" ref="userDao"/>
         <property name="demographicsDao" ref="demographicsDao"/>

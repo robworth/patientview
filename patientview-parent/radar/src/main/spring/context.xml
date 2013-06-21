@@ -17,7 +17,7 @@
         <property name="location" value="classpath:radar.properties"/>
     </bean>
 
-    <bean id="radarApplication" class="com.solidstategroup.radar.web.RadarApplication">
+    <bean id="radarApplication" class="org.patientview.radar.web.RadarApplication">
         <property name="ajaxDebug" value="${ajax.debug}"/>
     </bean>
 

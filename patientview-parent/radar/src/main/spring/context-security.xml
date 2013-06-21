@@ -13,7 +13,7 @@
         <security:authentication-provider ref="authenticationProvider"/>
     </security:authentication-manager>
 
-    <bean id="authenticationProvider" class="com.solidstategroup.radar.service.impl.AuthenticationProviderImpl">
+    <bean id="authenticationProvider" class="org.patientview.radar.service.impl.AuthenticationProviderImpl">
         <property name="userManager" ref="userManager"/>
     </bean>
 

@@ -4,98 +4,98 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="medicineDao" class="com.solidstategroup.radar.dao.alport.impl.MedicineDaoImpl">
+    <bean id="medicineDao" class="org.patientview.radar.dao.alport.impl.MedicineDaoImpl">
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao" />
     </bean>
 
-    <bean id="geneticsDao" class="com.solidstategroup.radar.dao.alport.impl.GeneticsDaoImpl">
+    <bean id="geneticsDao" class="org.patientview.radar.dao.alport.impl.GeneticsDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="deafnessDao" class="com.solidstategroup.radar.dao.alport.impl.DeafnessDaoImpl">
+    <bean id="deafnessDao" class="org.patientview.radar.dao.alport.impl.DeafnessDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="hnf1BMiscDao" class="com.solidstategroup.radar.dao.hnf1b.impl.HNF1BMiscDaoImpl">
+    <bean id="hnf1BMiscDao" class="org.patientview.radar.dao.hnf1b.impl.HNF1BMiscDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="issueDao" class="com.solidstategroup.radar.dao.impl.IssueDaoImpl">
+    <bean id="issueDao" class="org.patientview.radar.dao.impl.IssueDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="clinicalDataDao" class="com.solidstategroup.radar.dao.impl.ClinicalDataDaoImpl">
+    <bean id="clinicalDataDao" class="org.patientview.radar.dao.impl.ClinicalDataDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="demographicsDao" class="com.solidstategroup.radar.dao.impl.DemographicsDaoImpl">
+    <bean id="demographicsDao" class="org.patientview.radar.dao.impl.DemographicsDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
     </bean>
 
-    <bean id="diagnosisDao" class="com.solidstategroup.radar.dao.impl.DiagnosisDaoImpl">
+    <bean id="diagnosisDao" class="org.patientview.radar.dao.impl.DiagnosisDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="hospitalisationDao" class="com.solidstategroup.radar.dao.impl.HospitalisationDaoImpl">
+    <bean id="hospitalisationDao" class="org.patientview.radar.dao.impl.HospitalisationDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="immunosuppressionDao" class="com.solidstategroup.radar.dao.impl.ImmunosuppressionDaoImpl">
+    <bean id="immunosuppressionDao" class="org.patientview.radar.dao.impl.ImmunosuppressionDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="labDataDao" class="com.solidstategroup.radar.dao.impl.LabDataDaoImpl">
+    <bean id="labDataDao" class="org.patientview.radar.dao.impl.LabDataDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="pathologyDao" class="com.solidstategroup.radar.dao.impl.PathologyDaoImpl">
+    <bean id="pathologyDao" class="org.patientview.radar.dao.impl.PathologyDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="plasmapheresisDao" class="com.solidstategroup.radar.dao.impl.PlasmapheresisDaoImpl">
+    <bean id="plasmapheresisDao" class="org.patientview.radar.dao.impl.PlasmapheresisDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="relapseDao" class="com.solidstategroup.radar.dao.impl.RelapseDaoImpl">
+    <bean id="relapseDao" class="org.patientview.radar.dao.impl.RelapseDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="therapyDao" class="com.solidstategroup.radar.dao.impl.TherapyDaoImpl">
+    <bean id="therapyDao" class="org.patientview.radar.dao.impl.TherapyDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="transplantDao" class="com.solidstategroup.radar.dao.impl.TransplantDaoImpl">
+    <bean id="transplantDao" class="org.patientview.radar.dao.impl.TransplantDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="treatmentDao" class="com.solidstategroup.radar.dao.impl.TreatmentDaoImpl">
+    <bean id="treatmentDao" class="org.patientview.radar.dao.impl.TreatmentDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="utilityDao" class="com.solidstategroup.radar.dao.impl.UtilityDaoImpl">
+    <bean id="utilityDao" class="org.patientview.radar.dao.impl.UtilityDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="userDao" class="com.solidstategroup.radar.dao.impl.UserDaoImpl">
+    <bean id="userDao" class="org.patientview.radar.dao.impl.UserDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <!-- radarv generic daos -->
-    <bean id="diseasGroupDao" class="com.solidstategroup.radar.dao.impl.DiseaseGroupDaoImpl">
+    <bean id="diseasGroupDao" class="org.patientview.radar.dao.impl.DiseaseGroupDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="genericDiagnosisDao" class="com.solidstategroup.radar.dao.impl.GenericDiagnosisDaoImpl">
+    <bean id="genericDiagnosisDao" class="org.patientview.radar.dao.impl.GenericDiagnosisDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="medicalResultDao" class="com.solidstategroup.radar.dao.impl.MedicalResultDaoImpl">
+    <bean id="medicalResultDao" class="org.patientview.radar.dao.impl.MedicalResultDaoImpl">
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
     </bean>
