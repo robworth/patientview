@@ -1,3 +1,6 @@
 [submodule "patientview-parent/patientview/src/main/filters"]
 	path = patientview-parent/patientview/src/main/filters
 	url = git@bitbucket.org:solidstategroup/patientview-filters.git
+[submodule "patientview-parent/radar/src/main/filters"]
+	path = patientview-parent/radar/src/main/filters
+	url = git@bitbucket.org:solidstategroup/radar-filters.git
