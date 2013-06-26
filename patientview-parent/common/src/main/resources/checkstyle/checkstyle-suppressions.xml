@@ -52,5 +52,8 @@
     <suppress checks="ParameterNumber"
               files="LogEntryDao.java"
               lines="48"/>
+    <suppress checks="ParameterNumber"
+              files="LogEntryDaoImpl.java"
+              lines="97"/>
 </suppressions>
 
