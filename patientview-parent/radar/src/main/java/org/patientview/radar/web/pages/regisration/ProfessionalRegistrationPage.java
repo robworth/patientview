@@ -1,16 +1,15 @@
-package org.patientview.radar.web.pages.regisration;
+package com.solidstategroup.radar.web.pages.regisration;
 
 
-import org.patientview.radar.model.exception.InvalidSecurityQuestionAnswer;
-import org.patientview.radar.model.exception.RegistrationException;
-import org.patientview.radar.model.exception.UserEmailAlreadyExists;
-import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.pages.BasePage;
+import com.solidstategroup.radar.model.exception.InvalidSecurityQuestionAnswer;
+import com.solidstategroup.radar.model.exception.RegistrationException;
+import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.service.UtilityManager;
+import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
+import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -77,8 +76,8 @@ public class ProfessionalRegistrationPage extends BasePage {
 
         final IModel<String> areaModel = new Model<String>();
 
-        form.add(new RadarRequiredTextField("surname", form, componentsToUpdate));
-        form.add(new RadarRequiredTextField("forename", form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("surname", null, true, form, componentsToUpdate));
+        form.add(new RadarTextFieldWithValidation("forename", null, true, form, componentsToUpdate));
         form.add(new RadarRequiredDropdownChoice("title", Arrays.asList("Dr", "Professor", "Mr", "Mrs", "Miss"),
                 new ChoiceRenderer(), form, componentsToUpdate));
 
@@ -106,7 +105,8 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-        RadarRequiredTextField gmc = new RadarRequiredTextField("gmc", gmcContainer, componentsToUpdate);
+        RadarTextFieldWithValidation gmc = new RadarTextFieldWithValidation("gmc", null, true, gmcContainer,
+                componentsToUpdate);
         gmcContainer.add(gmc);
         form.add(gmcContainer);
         componentsToUpdate.add(gmcContainer);
@@ -123,7 +123,8 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-        RadarRequiredTextField role = new RadarRequiredTextField("role", roleContainer, componentsToUpdate);
+        RadarTextFieldWithValidation role = new RadarTextFieldWithValidation("role", null, true,
+                roleContainer, componentsToUpdate);
         roleContainer.add(role);
         form.add(roleContainer);
         componentsToUpdate.add(roleContainer);
@@ -159,7 +160,8 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-        RadarRequiredTextField phone = new RadarRequiredTextField("phone", phoneContainer, componentsToUpdate);
+        RadarTextFieldWithValidation phone = new RadarTextFieldWithValidation("phone", null, true,
+                phoneContainer, componentsToUpdate);
         phoneContainer.add(phone);
         form.add(phoneContainer);
         componentsToUpdate.add(phoneContainer);
@@ -206,8 +208,8 @@ public class ProfessionalRegistrationPage extends BasePage {
             }
         };
 
-        RadarRequiredTextField securityQuestion = new RadarRequiredTextField("securityQuestion",
-                securityQuestionContainer, componentsToUpdate);
+        RadarTextFieldWithValidation securityQuestion = new RadarTextFieldWithValidation("securityQuestion",
+                null, true, securityQuestionContainer, componentsToUpdate);
         securityQuestionContainer.add(securityQuestion);
         form.add(securityQuestionContainer);
         componentsToUpdate.add(securityQuestionContainer);
