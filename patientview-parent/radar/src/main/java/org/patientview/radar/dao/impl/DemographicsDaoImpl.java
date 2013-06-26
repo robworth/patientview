@@ -1,16 +1,16 @@
-package org.patientview.radar.dao.impl;
+package com.solidstategroup.radar.dao.impl;
 
-import org.patientview.radar.dao.DemographicsDao;
-import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.dao.generic.DiseaseGroupDao;
-import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Clinician;
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.Status;
-import org.patientview.radar.model.enums.NhsNumberType;
-import org.patientview.radar.model.filter.DemographicsFilter;
+import com.solidstategroup.radar.dao.DemographicsDao;
+import com.solidstategroup.radar.dao.UtilityDao;
+import com.solidstategroup.radar.dao.generic.DiseaseGroupDao;
+import com.solidstategroup.radar.dao.generic.GenericDiagnosisDao;
+import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Clinician;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.Status;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
+import com.solidstategroup.radar.model.filter.DemographicsFilter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -375,10 +375,18 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             Long consultantId = resultSet.getLong("CONS_NEPH");
             if (!resultSet.wasNull()) {
-                Clinician clinician = utilityDao.getClinician(consultantId);
-                if (clinician != null) {
-                    demographics.setClinician(clinician);
+
+                try {
+                    Clinician clinician = utilityDao.getClinician(consultantId);
+                    if (clinician != null) {
+                        demographics.setClinician(clinician);
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("Unable to access consultant using consultantId {}", consultantId);
+                    e.printStackTrace();
                 }
+
+
             }
 
             Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");
@@ -395,7 +403,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             demographics.setEmailAddress(resultSet.getString("emailAddress")); //emailAddress,
             demographics.setPhone1(resultSet.getString("phone1")); //phone1,
             demographics.setPhone2(resultSet.getString("phone2")); //phone2,
-            demographics.setMobile("mobile"); //mobile,
+            demographics.setMobile(resultSet.getString("mobile")); //mobile,
             Integer rrtModalityId = getIntegerWithNullCheck("RRT_modality", resultSet); //RRT_modality,
             if (rrtModalityId != null) {
                 demographics.setRrtModality(getEnumValue(Demographics.RRTModality.class, rrtModalityId));

@@ -1,34 +1,32 @@
-package org.patientview.radar.web.panels.generic;
+package com.solidstategroup.radar.web.panels.generic;
 
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Ethnicity;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.enums.NhsNumberType;
-import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.service.generic.GenericDiagnosisManager;
-import org.patientview.radar.util.RadarUtility;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
-import org.patientview.radar.web.components.ComponentHelper;
-import org.patientview.radar.web.components.ClinicianDropDown;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarFormComponentFeedbackIndicator;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.panels.PatientDetailPanel;
+import com.solidstategroup.radar.model.Centre;
+import com.solidstategroup.radar.model.Demographics;
+import com.solidstategroup.radar.model.Ethnicity;
+import com.solidstategroup.radar.model.Sex;
+import com.solidstategroup.radar.model.enums.NhsNumberType;
+import com.solidstategroup.radar.model.user.ProfessionalUser;
+import com.solidstategroup.radar.model.user.User;
+import com.solidstategroup.radar.service.DemographicsManager;
+import com.solidstategroup.radar.service.UserManager;
+import com.solidstategroup.radar.service.UtilityManager;
+import com.solidstategroup.radar.service.generic.GenericDiagnosisManager;
+import com.solidstategroup.radar.util.RadarUtility;
+import com.solidstategroup.radar.web.RadarApplication;
+import com.solidstategroup.radar.web.RadarSecuredSession;
+import com.solidstategroup.radar.web.components.CentreDropDown;
+import com.solidstategroup.radar.web.components.ComponentHelper;
+import com.solidstategroup.radar.web.components.ClinicianDropDown;
+import com.solidstategroup.radar.web.components.RadarComponentFactory;
+import com.solidstategroup.radar.web.components.RadarRequiredDateTextField;
+import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
+import com.solidstategroup.radar.web.components.RadarRequiredTextField;
+import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
+import com.solidstategroup.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -40,7 +38,6 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -404,8 +401,8 @@ public class GenericDemographicsPanel extends Panel {
         TextField phone2 = new TextField("phone2");
 
         RadarTextFieldWithValidation mobile = new RadarTextFieldWithValidation("mobile",
-                        new PatternValidator(MetaPattern.DIGITS), form,
-                        componentsToUpdateList);
+                new PatternValidator(MetaPattern.DIGITS), form,
+                componentsToUpdateList);
 
         RadarRequiredDropdownChoice genericDiagnosis =
                 new RadarRequiredDropdownChoice("genericDiagnosis", genericDiagnosisManager.getByDiseaseGroup(
@@ -428,60 +425,17 @@ public class GenericDemographicsPanel extends Panel {
         rrtModalityRadioGroup.add(new Radio("tx", new Model(Demographics.RRTModality.Tx)));
         rrtModalityRadioGroup.add(new Radio("none", new Model(Demographics.RRTModality.NONE)));
 
-        /**
-         * todo rrt modality feedback - coped from RadarTextFieldWithValidation
-         *
-         * todo roberts to have a look!
-         */
-
-        final ComponentFeedbackPanel feedbackPanel = new ComponentFeedbackPanel("rrtModalityFeedback", this) {
-            @Override
-            public boolean isVisible() {
-                List<FeedbackMessage> feedbackMessages = getCurrentMessages();
-                for (FeedbackMessage feedbackMessage : feedbackMessages) {
-                    if (feedbackMessage.getMessage().toString().contains("required")) {
-                        return false;
-                    }
-                }
-                return super.isVisible();
-            }
-        };
-        feedbackPanel.setOutputMarkupId(true);
-        feedbackPanel.setOutputMarkupPlaceholderTag(true);
-        form.add(feedbackPanel);
-        componentsToUpdateList.add(feedbackPanel);
-
-        rrtModalityRadioGroup.setRequired(true);
-        RadarFormComponentFeedbackIndicator radarFormComponentFeedbackIndicator =
-                new RadarFormComponentFeedbackIndicator("rrtModalityFeedbackIndicator", this) {
-                    @Override
-                    public boolean isVisible() {
-                        if (feedbackPanel.isVisible()) {
-                            return false;
-                        }
-                        return super.isVisible();
-                    }
-                };
-        form.add(radarFormComponentFeedbackIndicator);
-        radarFormComponentFeedbackIndicator.setOutputMarkupId(true);
-        radarFormComponentFeedbackIndicator.setOutputMarkupPlaceholderTag(true);
-        componentsToUpdateList.add(radarFormComponentFeedbackIndicator);
-
         form.add(rrtModalityRadioGroup);
 
-        /**
-         * todo validation ends
-         */
-
-        final Label successMessage = RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
+        RadarComponentFactory.getSuccessMessageLabel("successMessage", form,
                 componentsToUpdateList);
 
-        final Label successMessageUp = RadarComponentFactory.getSuccessMessageLabel("successMessageUp", form,
+        RadarComponentFactory.getSuccessMessageLabel("successMessageUp", form,
                 componentsToUpdateList);
 
-        Label errorMessage = RadarComponentFactory.getErrorMessageLabel("errorMessage", form,
+        RadarComponentFactory.getErrorMessageLabel("errorMessage", form,
                 "Please complete all mandatory fields", componentsToUpdateList);
-        Label errorMessageUp = RadarComponentFactory.getErrorMessageLabel("errorMessageUp", form,
+        RadarComponentFactory.getErrorMessageLabel("errorMessageUp", form,
                 "Please complete all mandatory fields", componentsToUpdateList);
 
         AjaxSubmitLink ajaxSubmitLinkTop = new AjaxSubmitLink("saveTop") {
