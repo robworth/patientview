@@ -187,6 +187,25 @@
                 </configuration>
             </plugin>
 
+            <!-- http://maven.apache.org/plugins/maven-remote-resources-plugin/usage.html -->
+            <plugin>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>process-remote-resources</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.patientview:common:${project.version}</resourceBundle>
+                            </resourceBundles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -254,25 +273,26 @@
                 </configuration>
             </plugin>
 
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
-                <!--<version>2.10</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>validate</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>checkstyle</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>-->
-                    <!--<headerLocation>src/main/resources/checkstyle/checkstyle.license</headerLocation>-->
-                    <!--<failsOnError>true</failsOnError>-->
-                    <!--<consoleOutput>true</consoleOutput>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>  <!-- needs to be compile because we have to pull in the common resources-->
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle.xml</configLocation>
+                    <headerLocation>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle.license</headerLocation>
+                    <suppressionsFile>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle-suppressions.xml</suppressionsFile>
+                    <failsOnError>true</failsOnError>
+                    <consoleOutput>true</consoleOutput>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -91,13 +91,6 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
-    <!-- Checks for Headers                                -->
-    <!-- See http://checkstyle.sf.net/config_header.html   -->
-    <module name="Header">
-        <property name="headerFile" value="src/main/resources/checkstyle/checkstyle.license"/>
-        <property name="fileExtensions" value="java"/>
-    </module>
-
     <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
@@ -201,10 +194,6 @@
         <!--<module name="TodoComment"/> TODO: turn this back on -->
         <module name="UpperEll"/>
 
-    </module>
-
-    <module name="SuppressionFilter">
-        <property name="file" value="src/main/resources/checkstyle/checkstyle-suppressions.xml"/>
     </module>
 
 </module>

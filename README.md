@@ -1,3 +1,12 @@
+Repository Structure
+====================
+
+Common Code
+
+Common Resources
+
+
+
 PatientView
 ===========
 

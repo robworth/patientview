@@ -2,6 +2,7 @@ package org.patientview.test;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class BaseTestPvDbSchema {
 
@@ -60,11 +59,11 @@ public class BaseTestPvDbSchema {
         // work out the feature number we need to increment the db to
         Resource txtResource = applicationContext.getResource("classpath:current-db-feature-num.txt");
 
-        assertTrue("null resource", txtResource != null && txtResource.exists());
+        Assert.assertTrue("null resource", txtResource != null && txtResource.exists());
 
         int featureNum = Integer.parseInt(IOUtils.toString(txtResource.getInputStream()));
 
-        assertTrue("Invalid feature version", featureNum > 0);
+        Assert.assertTrue("Invalid feature version", featureNum > 0);
 
         // iterate through the features folders and grab the features we need
         for (int i = 1; i <= featureNum; i++) {
@@ -99,7 +98,7 @@ public class BaseTestPvDbSchema {
 
         Statement dropStatement = connection.createStatement();
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             String tableName =  resultSet.getString(1);
             dropStatement.execute("DROP table " + tableName);
         }
@@ -145,9 +144,9 @@ public class BaseTestPvDbSchema {
     protected InputStream readFileFromClasspath(String filename) throws IOException {
         Resource resource
                 = applicationContext.getResource("classpath:" + filename);
-        assertTrue("null resource", resource != null);
+        Assert.assertTrue("null resource", resource != null);
         InputStream inputStream = resource.getInputStream();
-        assertTrue("inputStream resource", inputStream != null);
+        Assert.assertTrue("inputStream resource", inputStream != null);
         return inputStream;
     }
 }
