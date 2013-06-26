@@ -23,7 +23,7 @@ public class ErrorPage extends BasePage {
 
     public ErrorPage(PageParameters parameters) {
         String type = parameters.get("type").toString();
-        if (type.equals(ERROR_TYPE_404)) {
+        if (type != null && type.equals(ERROR_TYPE_404)) {
             LOGGER.error("A 404 error occured");
             init(ERROR_404_MESSAGE);
         } else {

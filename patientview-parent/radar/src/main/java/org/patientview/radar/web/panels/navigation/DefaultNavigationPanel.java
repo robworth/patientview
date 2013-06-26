@@ -2,18 +2,15 @@ package org.patientview.radar.web.panels.navigation;
 
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.pages.HomePage;
 import org.patientview.radar.web.pages.ProfessionalsPage;
 import org.patientview.radar.web.pages.RecruitmentPage;
 import org.patientview.radar.web.pages.content.ConsentFormsPage;
 import org.patientview.radar.web.pages.content.MpgnPage;
 import org.patientview.radar.web.pages.content.SrnsPage;
-import org.patientview.radar.web.pages.login.ProfessionalsLoginPage;
 import org.patientview.radar.web.pages.patient.AddPatientPage;
 import org.patientview.radar.web.pages.patient.ExistingPatientsListingPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
-import org.patientview.radar.web.pages.regisration.ProfessionalRegistrationPage;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -55,13 +52,6 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
                 new BookmarkablePageLink<ConsentFormsPage>("consentFormsPageLink", ConsentFormsPage.class)
         );
         add(cliniciansContainer);
-
-        // only want to show on professional login page or homepage
-        BookmarkablePageLink professionalRegistrationPageLink = new BookmarkablePageLink<ProfessionalRegistrationPage>(
-                "professionalRegistrationPageLink", ProfessionalRegistrationPage.class);
-        professionalRegistrationPageLink.setVisible(pageClass == ProfessionalsLoginPage.class
-                || pageClass == HomePage.class);
-        add(professionalRegistrationPageLink);
 
         BookmarkablePageLink professionalsPageLink = new BookmarkablePageLink<ProfessionalsPage>(
                 "professionalsPageLink", ProfessionalsPage.class);

@@ -143,7 +143,6 @@ public class ProfessionalRegistrationPage extends BasePage {
         RadarTextFieldWithValidation email = new RadarTextFieldWithValidation("email",
                 EmailAddressValidator.getInstance(), true, emailContainer, componentsToUpdate);
 
-        //RadarRequiredTextField email = new RadarRequiredTextField("email", emailContainer, componentsToUpdate);
         emailContainer.add(email);
         form.add(emailContainer);
         componentsToUpdate.add(emailContainer);
