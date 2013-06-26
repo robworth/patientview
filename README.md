@@ -4,7 +4,7 @@ PatientView & RaDaR Combined Repository
 This repository contains a multi-module Maven build comprising all the artifacts used for the PatientView and Radar projects.
 
 Repository Structure
-====================
+--------------------
 
 - **PatientView Parent**: a parent module encompassing all modules in the project
 - **PatientView Common**: a module for common code and resources, including a database schema definition
@@ -13,7 +13,7 @@ Repository Structure
 - **Radar**: a module for the Renal Radar web application
 
 Getting Started
-===============
+---------------
 
 Each module has a README.md in it's root directory, please refer to them for more information.
 
