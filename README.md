@@ -19,7 +19,9 @@ Each module has a README.md in it's root directory, please refer to them for mor
 
 To get the code and build the project, running the tests you need Java, Maven and GIT installed then:
 
-'git clone https://github.com/robworth/patientview.git'
+```sh
+git clone https://github.com/robworth/patientview.git
+```
 
 Then configure your properties file for each module (see module READMEs for details), then:
 
