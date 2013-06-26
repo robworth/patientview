@@ -31,4 +31,6 @@ public interface DemographicsManager {
     List<Status> getStatuses();
 
     boolean isNhsNumberValid(String nhsNumber);
+
+    boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber);
 }

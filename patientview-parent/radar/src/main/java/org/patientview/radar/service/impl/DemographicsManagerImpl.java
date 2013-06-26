@@ -63,7 +63,11 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return isNhsNumberValid(nhsNumber, false);
     }
 
-    public boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
+    public boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
+        return isNhsNumberValid(nhsNumber, true);
+    }
+
+    private boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
 
         // Remove all whitespace and non-visible characters such as tab, new line etc
         nhsNumber = nhsNumber.replaceAll("\\s", "");
