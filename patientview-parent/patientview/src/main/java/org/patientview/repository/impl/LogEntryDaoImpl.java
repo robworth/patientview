@@ -91,6 +91,9 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         return getLogEntries(null, null, null, unitcode, null, startdate, enddate, specialty);
     }
 
+    /**
+     * @param action all entries containing this action text is returned, ie. it's used as a pattern
+     */
     private List<LogEntry> getLogEntries(String nhsno, String user, String actor, String unitcode, String action,
                                          Calendar startdate, Calendar enddate, Specialty specialty) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -117,7 +120,6 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         }
 
         if (action != null && action.length() > 0) {
-            // TODO: not sure if this really has to be a like it all seemed very dodgy
             wherePredicates.add(builder.like(logEntryRoot.get(LogEntry_.action), '%' + action + '%'));
         }
 

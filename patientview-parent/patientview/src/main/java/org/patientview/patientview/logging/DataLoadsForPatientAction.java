@@ -55,7 +55,7 @@ public class DataLoadsForPatientAction extends Action {
     private List getLogEntries(String nhsno, Calendar startdate, Calendar enddate) throws Exception {
         List logEntries = new ArrayList();
         if (nhsno != null && !nhsno.equals("")) {
-            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, "", "", "", "",
+            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, "", "", AddLog.PATIENT_DATA, "",
                     startdate, enddate);
         }
         return logEntries;
