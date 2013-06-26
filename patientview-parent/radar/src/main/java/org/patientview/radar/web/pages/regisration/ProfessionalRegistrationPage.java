@@ -1,15 +1,15 @@
-package com.solidstategroup.radar.web.pages.regisration;
+package org.patientview.radar.web.pages.regisration;
 
 
-import com.solidstategroup.radar.model.exception.InvalidSecurityQuestionAnswer;
-import com.solidstategroup.radar.model.exception.RegistrationException;
-import com.solidstategroup.radar.model.exception.UserEmailAlreadyExists;
-import com.solidstategroup.radar.model.user.ProfessionalUser;
-import com.solidstategroup.radar.service.UserManager;
-import com.solidstategroup.radar.service.UtilityManager;
-import com.solidstategroup.radar.web.components.RadarRequiredDropdownChoice;
-import com.solidstategroup.radar.web.components.RadarTextFieldWithValidation;
-import com.solidstategroup.radar.web.pages.BasePage;
+import org.patientview.radar.model.exception.InvalidSecurityQuestionAnswer;
+import org.patientview.radar.model.exception.RegistrationException;
+import org.patientview.radar.model.exception.UserEmailAlreadyExists;
+import org.patientview.radar.model.user.ProfessionalUser;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
+import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
