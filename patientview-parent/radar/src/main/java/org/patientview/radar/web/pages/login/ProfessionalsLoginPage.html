@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+
+    <div id="ctl00_ContentPlaceHolder1_pnlLogIn">
+
+        <h1 style="display:inline;">
+            Health Professional Log In</h1>&nbsp;&nbsp;&nbsp;
+
+        <p>Please enter your username and password
+            <span style="margin-left:400px;"><a
+                    href="javascript:bookmarksite('RaDaR', 'http://www.renalradar.org/professionals')">Bookmark
+                this page</a></span>
+        </p>
+
+        <form wicket:id="form">
+            <table cellpadding="8" class="style2">
+                <tr>
+                    <td class="style3">
+                        <label id="ctl00_ContentPlaceHolder1_lblUser">Username</label>
+                    </td>
+                    <td>
+                        <input wicket:id="email" type="text" style="width:200px;"/>
+                        <span wicket:id="emailFeedbackIndicator"></span>
+
+                    </td>
+                </tr>
+                <tr>
+
+                    <td class="style3">
+                        <label>Password</label>
+                    </td>
+                    <td>
+                        <input wicket:id="password" type="password"/>
+                        <span wicket:id="passwordFeedbackIndicator"></span>
+                    </td>
+                </tr>
+            </table>
+
+            <p>
+                <input type="submit" value="Enter" wicket:id="submit"/>
+                <span class="feedback" wicket:id="feedback"/>
+            </p>
+
+
+        </form>
+
+        <p>
+            <a href="#" wicket:id="forgotPasswordLink">Forgotten your password?</a>
+        </p>
+
+        <p>
+            <a href="#" wicket:id="changeDetailsLink">Change registration details</a>
+        </p>
+
+    </div>
+
+</wicket:extend>
+</body>
+</html>

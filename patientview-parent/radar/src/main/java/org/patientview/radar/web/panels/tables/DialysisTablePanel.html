@@ -1,0 +1,115 @@
+<wicket:panel>
+
+    <legend>Dialysis</legend>
+    <br>
+
+    <div>
+        <table wicket:id="dialysisContainer" border="1" cellspacing="0" cellpadding="3"
+               style="font-size:85%;width:100%;border-collapse:collapse;"
+               id="ctl00_ContentPlaceHolder1_GridView2" rules="all">
+            <tbody>
+            <tr style="color:#3C982D;">
+                <th scope="col" class="col500">Dialysis Type</th>
+                <th scope="col" class="col120">Date Started</th>
+                <th scope="col" class="col120">Date Stopped</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr wicket:id="dialysis">
+                <td wicket:id="treatmentModality.description"/>
+                <td wicket:id="startDate"/>
+                <td wicket:id="endDate"/>
+                <td>
+                    <input type="submit" value="Delete" wicket:id="deleteLink"/>
+                    <input type="submit" value="Edit" wicket:id="editLink"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div wicket:id="editDialysisContainer">
+        <form wicket:id="editDialysisForm">
+            <br>
+            <fieldset style="border:2px solid red;">
+                <legend>Edit</legend>
+                <table width="100%" style="margin-top:10px; font-size:85%; " class="style4">
+                    <tbody>
+                    <tr>
+                        <td class="col500">Dialysis Type<br>
+                        </td>
+                        <td class="col120">Date Started <br/>
+                            <span class="feedback" wicket:id="startDateFeedback"></span>
+                        </td>
+                        <td class="col120">Date Stopped <br/>
+                           <span class="feedback" wicket:id="endDateFeedback"></span>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="Save" wicket:id="saveTop"/>
+                            &nbsp;
+                            <input type="submit" value="Cancel" wicket:id="cancelTop"/>
+                        </td>
+                        <td>
+                            <select wicket:id="treatmentModality"/>
+                            <span wicket:id="treatmentModalityFeedbackIndicator"></span>
+                        </td>
+                        <td>
+                            <input type="text" style="width:80px;" wicket:id="startDate"/>
+                            <span wicket:id="startDateFeedbackIndicator"></span>
+                        </td>
+                        <td>
+                            <input type="text" style="width:80px;" wicket:id="endDate"/>
+                            <span class="endDateFeedbackIndicator"></span>
+                        </td>
+                        <td>
+                            <input type="submit" value="Save" wicket:id="saveBottom"/>
+                            &nbsp;
+                            <input type="submit" value="Cancel" wicket:id="cancelBottom"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <span class="red" wicket:id="dialysisFeedback"></span>
+        </form>
+    </div>
+
+    <form wicket:id="addDialysisForm">
+        <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px;" class="style2">
+            <tbody>
+            <tr>
+                <td class="col500">Dialysis Type</td>
+                <td class="col130">Date Started<br>
+                    <span class="feedback" wicket:id="startDateFeedback"/>
+                </td>
+                <td class="col130">Date Stopped<br>
+                    <span class="feedback" wicket:id="endDateFeedback"/>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <select style="font-size:100%;" wicket:id="treatmentModality"/>
+                    <span wicket:id="treatmentModalityFeedbackIndicator"/>
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                    <span wicket:id="startDateFeedbackIndicator"/>
+                </td>
+                <td>
+                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+
+                </td>
+                <td>
+                    <input type="submit" value="Add" wicket:id="save"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <span class="red" wicket:id="dialysisFeedback"></span>
+    </form>
+</wicket:panel>

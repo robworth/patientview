@@ -1,0 +1,136 @@
+<wicket:panel>
+    <form wicket:id="form">
+        <div id="mainBlock">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+            </div>
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+            <div wicket:id="patientDetail">
+
+            </div>
+
+            <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+                   class="style3">
+                <tr>
+                    <td style="width:90%; vertical-align:top;">
+
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+
+                        <table cellpadding="5" style="width: 70%; border-collapse:collapse">
+                            <tr>
+                                <td valign="top">
+                                    <strong>Has a genetic test been done?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="testsDone">
+                                        <input type="radio" wicket:id="testsDoneNo" id="testsDoneNo"/><label for="testsDoneNo">No</label>
+                                        <br />
+                                        <input type="radio" wicket:id="testsDoneYesInThisPatient" id="testsDoneYesInThisPatient"/><label for="testsDoneYesInThisPatient">Yes, in this patient</label>
+                                        <br />
+                                        <input type="radio" wicket:id="testsDoneYesInAnotherFamilyMember" id="testsDoneYesInAnotherFamilyMember"/><label for="testsDoneYesInAnotherFamilyMember">Yes, in another family member</label>
+                                        <br />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>If yes:</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Lab where the test was done:</strong>
+                                </td>
+                                <td>
+                                    <input type="text" wicket:id="labWhereTestWasDone" />
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Who was the test done on:</strong>
+                                    <br />
+                                    <em>(If not the patient, please give Name, DoB. Do not put a relative's name here if
+                                        this info is not known to the index patient.  This is not the place for them to
+                                        find out.)</em>
+                                </td>
+                                <td>
+                                    <input type="text" wicket:id="testDoneOn" />
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Result ref number:</strong>
+                                    <br />
+                                    <em>(If possible)</em>
+                                </td>
+                                <td>
+                                    <input type="text" wicket:id="referenceNumber" />
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <br />
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+                            <tr>
+                                <td colspan="2">
+                                    <strong>What did the results show?</strong>
+                                    <br />
+                                    <em>Eg "A causative COL4A5 deletion was shown" or "a probably causative mutation in COL4A4 was shown",
+                                        or "linkage to X chromosome markers has been established in this family", or "No causative mutation
+                                        identified", or "It’s complicated ...". Note that patients will read this.  Please avoid being more
+                                        definite than is justified by the report.  An interpretation that doesn't use very complex terms is
+                                        likely to be appreciated, but it is even more important to give an accurate explanation.
+                                        Avoid confidential third party info here, but third party info that the patient is aware of is not a problem.</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea rows="10" cols="5" wicket:id="whatResultsShowed"></textarea>
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Summarise the key evidence for the diagnosis:</strong>
+                                    <br />
+                                    <em>Eg "Maternal uncles had deafness and ESRD in teens/twenties. Renal biopsy aged 7; EM showed
+                                        characteristic changes". Note that patients will read this.  Do not put confidential
+                                        third party info here, but third party info that the patient is aware of is not a
+                                        problem.  You can mention that there is some relevant additional info if it isn't
+                                        easy to explain otherwise.</em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea rows="10" cols="5" wicket:id="keyEvidence"></textarea>
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <br/><br/>
+                        <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="feedback" wicket:id="formFeedbackPanel"></div>
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+            </div>
+        </div>
+    </form>
+</wicket:panel>

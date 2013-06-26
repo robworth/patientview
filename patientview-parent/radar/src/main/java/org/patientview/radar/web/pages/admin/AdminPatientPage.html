@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Patients</h2>
+
+    <div>
+        <div wicket:id="feedback"></div>
+
+        <form wicket:id="patientForm">
+            <table cellspacing="0" cellpadding="5" rules="all" border="1" style="font-size:90%;height:50px;width:500px;">
+                <tbody>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">
+                            <button wicket:id="updateTop" type="submit" value="Update" class="button">Update</button>
+                        </td>
+                        <td class="dxgv">
+                            <button wicket:id="cancelTop" type="submit" value="Cancel" class="button">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">RaDaR Number</td>
+                        <td class="dxgv">
+                            <span wicket:id="radarNo">radar no</span>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Forename</td>
+                        <td class="dxgv">
+                            <span wicket:id="forename">forename</span>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Surname</td>
+                        <td class="dxgv">
+                            <span wicket:id="surname">surname</span>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Username</td>
+                        <td class="dxgv">
+                            <input type="text" wicket:id="username" />
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">DOB</td>
+                        <td class="dxgv">
+                            <span wicket:id="dob">dob</span>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Date Registered</td>
+                        <td class="dxgv">
+                            <span wicket:id="dateRegistered">date registered</span>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">
+                            <button wicket:id="updateBottom" type="submit" value="Update" class="button">Update</button>
+                        </td>
+                        <td class="dxgv">
+                            <button wicket:id="cancelBottom" type="submit" value="Cancel" class="button">Cancel</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</wicket:extend>
+
+</body>
+</html>

@@ -1,0 +1,822 @@
+<wicket:panel>
+
+<form wicket:id="form">
+
+<table cellspacing="10" cellpadding="4" style="width: 100%; background-color:#eef6ed" class="style1"
+       id="ctl00_ContentPlaceHolder1_tblMain">
+<tbody>
+<tr>
+    <td>
+        Date of LAB Results&nbsp;
+        <input wicket:id="date" type="text" style="width:70px;"/>
+        <span wicket:id="dateFeedbackIndicator"></span>
+        <span class="feedback" wicket:id="dateFeedback"></span>
+    </td>
+    <td colspan="3" style="text-align: right;">
+        <input type="submit" class="saveBtn" value="Save" wicket:id="save">
+        <span style="font-weight:bold;" wicket:id="successMessage"></span>
+        <span style="font-weight:bold; color:red;" wicket:id="errorMessage"></span>
+        <br/>
+    </td>
+</tr>
+<tr>
+<td valign="top" style="width:25%">
+<fieldset>
+<legend style="font-weight:bold;">Bloods</legend>
+<table cellpadding="4" style="width: 100%; margin-top:15px;" class="style1" id="bloodsResults">
+
+<tbody>
+<tr>
+    <td>Hb g/dL<br>
+
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="2.0-20" id="ctl00_ContentPlaceHolder1_txtHB" maxlength="4"
+               wicket:id="hb">
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="hbFeedback"></span>
+    </td>
+</tr>
+<tr>
+    <td>
+        WBC 10<sup>9</sup>/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.1-30" id="ctl00_ContentPlaceHolder1_txtWBC" maxlength="4"
+               wicket:id="wbc">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="wbcFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Neutrophils 10<sup>9</sup>/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.1-80" id="ctl00_ContentPlaceHolder1_txtNEUTRO" maxlength="4"
+               wicket:id="neutrophils">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="neutrophilsFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Platelets 10<sup>9</sup>/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="1-800" id="ctl00_ContentPlaceHolder1_txtPLATELETS" maxlength="3"
+               wicket:id="platelets">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="plateletsFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Sodium Na mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="90-180" id="ctl00_ContentPlaceHolder1_txtSODIUM" maxlength="3"
+               wicket:id="sodium">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="sodiumFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Potassium K mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="1.0-9.9" id="ctl00_ContentPlaceHolder1_txtPOTASSIUM" maxlength="3"
+               wicket:id="potassium">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="potassiumFeedback"></span>
+    </td>
+</tr>
+
+
+<tr>
+    <td>
+        BUN Blood Urea mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="1.0-100.0" id="ctl00_ContentPlaceHolder1_txtUREA_SER"
+               maxlength="5" wicket:id="bun">
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="bunFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Serum Creatinine umol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="10-2800" id="ctl00_ContentPlaceHolder1_txtCreatSer" maxlength="4"
+               wicket:id="serumCreatinine">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="serumCreatinineFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>Protein g/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="5-90" id="ctl00_ContentPlaceHolder1_txtPROTEIN" maxlength="2"
+               wicket:id="protein">
+
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="proteinFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>Albumin g/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="5-60" id="ctl00_ContentPlaceHolder1_txtALBUMIN" maxlength="2"
+               wicket:id="albumin">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="albuminFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblCRP">CRP</span>
+        &nbsp;mU/L<br>
+        <br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0-200" id="ctl00_ContentPlaceHolder1_txtCRP" maxlength="3"
+               wicket:id="crp">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="crpFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>Total Cholesterol mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="1.0-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_TOTAL"
+               maxlength="4" wicket:id="totalCholesterol">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="totalCholesterolFeedback"></span>
+    </td>
+</tr>
+
+
+<tr wicket:id="hdlCholesterolContainer">
+    <td>HDL Cholesterol mmol/L<br>
+        <br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.1-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_HDL" maxlength="4"
+               wicket:id="hdlCholesterol">
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="hdlCholesterolFeedback"></span>
+    </td>
+</tr>
+
+
+<tr wicket:id="ldlCholesterolContainer">
+    <td>LDL Cholesterol mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="1.0-30.0" id="ctl00_ContentPlaceHolder1_txtCHOL_LDL" maxlength="4"
+               wicket:id="ldlCholesterol">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="ldlCholesterolFeedback"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Triglycerides mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.0-30.0" id="ctl00_ContentPlaceHolder1_txtTRIG" maxlength="4"
+               wicket:id="triglycerides">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="triglyceridesFeedback"></span>
+    </td>
+</tr>
+
+
+<tr>
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblTHYROX">Thyroxine T4 pmol/L</span>
+        <br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.0-30.0" id="ctl00_ContentPlaceHolder1_txtTHYROX" maxlength="4"
+               wicket:id="thyroxine">
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="thyroxineFeedback"></span>
+
+    </td>
+</tr>
+
+<tr>
+    <td>
+        TSH mu/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.00-50" id="ctl00_ContentPlaceHolder1_txtTSH" maxlength="5"
+               wicket:id="tsh">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="tshFeedback"></span>
+    </td>
+</tr>
+
+<tr wicket:id="phosphateContainer">
+    <td>
+        Phosphate PO4 mmol/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.10-5.6" id="ctl00_ContentPlaceHolder1_txtPHOS" maxlength="4"
+               wicket:id="phosphate">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="phosphateFeedback"></span>
+    </td>
+</tr>
+
+
+<tr wicket:id="ferritinContainer">
+    <td>Ferritin ug/L<br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="1-5000" id="ctl00_ContentPlaceHolder1_txtFERRITIN" maxlength="4"
+               wicket:id="ferritin">
+
+    </td>
+</tr>
+
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="ferritinFeedback"></span>
+    </td>
+</tr>
+
+
+<tr wicket:id="inrContainer">
+    <td>INR<br>
+        <br>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" title="0.5-5.0" id="ctl00_ContentPlaceHolder1_txtINR" maxlength="3"
+               wicket:id="inr">
+
+    </td>
+</tr>
+<tr>
+    <td class="feedbackCell">
+        <span class="feedback" wicket:id="inrFeedback"></span>
+    </td>
+</tr>
+</tbody>
+</table>
+</fieldset>
+</td>
+<td valign="top" style="width:41%">
+
+
+    <fieldset>
+        <legend style="font-weight:bold;">Urinalysis - Dipstick</legend>
+        <table style="width: 100%; margin-top:15px;">
+
+            <tbody>
+            <tr style="display:none">
+                <td>Urine Volume Condition</td>
+                <td>
+                    <select wicket:id="urineVolumeCondition"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Haematuria</td>
+                <td>
+                    <select wicket:id="haematuria"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Proteinuria</td>
+                <td><select wicket:id="proteinuria"/></td>
+            </tr>
+            <tr style="display:none" id="ctl00_ContentPlaceHolder1_rowAlbuminaria">
+                <td>Albuminuria</td>
+                <td>
+                    <select wicket:id="albuminuria"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Leucocytes in urine &gt;50</td>
+                <td style="height: 26px">
+                    <span wicket:id="leucocytesUrine">
+                        <input type="radio" wicket:id="yes">
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no">
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="nd">
+                        <label wicket:id="ndLabel">ND</label>
+                    </span>
+
+                </td>
+            </tr>
+            <tr id="ctl00_ContentPlaceHolder1_rowNitrite">
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblNITRITE">Nitrite</span>
+                </td>
+                <td>
+                    <span wicket:id="nitrite">
+                        <input type="radio" wicket:id="yes">
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no">
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="nd">
+                        <label wicket:id="ndLabel">ND</label>
+                    </span>
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>Glucose in urine</td>
+                <td>
+                    <span wicket:id="glucose">
+                        <input type="radio" wicket:id="yes">
+                        <label wicket:id="yesLabel">Yes</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="no">
+                        <label wicket:id="noLabel">No</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="nd">
+                        <label wicket:id="ndLabel">ND</label>
+                    </span>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend style="font-weight:bold;">Urinalysis - Lab</legend>
+        <table style="width: 100%; margin-top:15px;">
+
+            <tbody>
+            <tr>
+                <td>Protein Creatinine Ratio mg/mmol&nbsp;
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0.0-15000"
+                           id="ctl00_ContentPlaceHolder1_txtPROT_CREAT_RAT" maxlength="6"
+                           wicket:id="proteinCreatinineRatio">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="feedback" wicket:id="proteinCreatinineRatioFeedback"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Albumin Creatinine Ratio mg/mmol&nbsp;
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="1.0-3000"
+                           id="ctl00_ContentPlaceHolder1_txtALB_CREAT_RAT" maxlength="6"
+                           wicket:id="albuminCreatinineRatio">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="feedback" wicket:id="albuminCreatinineRatioFeedback"></span>
+
+                </td>
+            </tr>
+
+
+            <tr wicket:id="bacteriaContainer">
+                <td>Bacteria in urine &gt;10<sup>5</sup>/ml</td>
+                <td>
+                    <input type="checkbox" name="ctl00$ContentPlaceHolder1$chkBACT_URINE"
+                           wicket:id="bacteria">
+                </td>
+            </tr>
+
+            <tr wicket:id="osmolalityContainer">
+                <td>Osmolality&nbsp;
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="200-350" id="ctl00_ContentPlaceHolder1_txtOSMOLALITY"
+                           maxlength="3" wicket:id="osmolality">
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="feedback" wicket:id="osmolalityFeedback"></span>
+                </td>
+            </tr>
+
+            <tr wicket:id="dysmorphicErythrocytesContainer">
+                <td>Dysmorphic Erythrocytes in urine</td>
+                <td>
+                    <select wicket:id="dysmorphicErythrocytes"/>
+                </td>
+            </tr>
+            <tr wicket:id="redCellCastContainer">
+                <td>Red Cell Cast in urine</td>
+                <td>
+                    <select wicket:id="redCellCast"/>
+                </td>
+            </tr>
+            <tr wicket:id="whiteCellCastsContainer">
+                <td>White Cell Casts in urine &gt;50<br></td>
+                <td>
+                    <select wicket:id="whiteCellCasts"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend style="font-weight:bold;">Creatinine Clearance</legend>
+        <table style="width: 100%; margin-top:15px;">
+
+            <tbody>
+            <tr>
+                <td>Creatinine Clearance Schwartz Method ml/min/per 1.73m<sup>2</sup>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="Calculated"
+                           id="ctl00_ContentPlaceHolder1_txtCREAT_CLEAR_SCHZ" readonly="readonly" value="Calc"
+                           wicket:id="creatinineClearance">
+                    <a href="javascript:void(0)" class="info"><em>Help</em><span>Calculated using height entered in
+                        the Clinical Picture section and Serum Creatanine on the left<br><br></span> </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="color:Red;" wicket:id="creatanineClearanceInfo"></span>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </fieldset>
+
+</td>
+<td valign="top">
+<fieldset>
+<legend style="font-weight:bold;">Antibodies &amp; Infections</legend>
+<table cellpadding="4" style="margin-top:15px; table-layout:fixed " class="style7">
+
+<tbody>
+<tr>
+    <td style="width:120px">ANCA</td>
+    <td>
+        <select wicket:id="anca"/>
+    </td>
+</tr>
+<tr>
+    <td>ENA</td>
+    <td>
+        <select wicket:id="ena"/>
+    </td>
+</tr>
+<tr>
+    <td>ANA</td>
+    <td>
+        <select wicket:id="ana"/>
+    </td>
+</tr>
+
+<tr>
+    <td>Anti-dsDNA</td>
+    <td>
+        <select wicket:id="antiDsDna"/>
+    </td>
+</tr>
+<tr>
+    <td>Cryoglobulins</td>
+    <td>
+        <select wicket:id="cryoglobulins"/>
+    </td>
+</tr>
+<tr>
+    <td>Anti-GBM</td>
+    <td>
+        <select wicket:id="antiGbm"/>
+    </td>
+</tr>
+<tr style="display:none" id="ctl00_ContentPlaceHolder1_rowDNA_ANTIB">
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblDNA_ANTIB">DNA Antibodies (desc + titre</span>
+    </td>
+    <td>
+        <textarea id="ctl00_ContentPlaceHolder1_txtDNA_ANTIB" cols="20" rows="3"
+                  wicket:id="dnaAntibodies"></textarea>
+    </td>
+</tr>
+<tr id="ctl00_ContentPlaceHolder1_rowIGG">
+    <td><span id="ctl00_ContentPlaceHolder1_lblIGG">IgG g/L</span></td>
+    <td>
+        <input type="text" style="width:50px;" title="0.0-20.0" id="ctl00_ContentPlaceHolder1_txtIGG"
+               wicket:id="igG">
+        &nbsp;
+    </td>
+
+</tr>
+
+<tr>
+    <td>
+        <span class="feedback" wicket:id="igGFeedback"></span>
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowIGA">
+    <td><span id="ctl00_ContentPlaceHolder1_lblIGA">IgA g/L</span></td>
+    <td>
+        <input type="text" style="width:50px;" title="0.0-10.0" id="ctl00_ContentPlaceHolder1_txtIGA"
+               wicket:id="igA">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td>
+        <span class="feedback" wicket:id="igAFeedback"></span>
+
+    </td>
+</tr>
+
+<tr id="ctl00_ContentPlaceHolder1_rowIGM">
+    <td><span id="ctl00_ContentPlaceHolder1_lblIGM">IgM g/L</span></td>
+    <td>
+        <input type="text" style="width:50px;" title="0.0-10.0" id="ctl00_ContentPlaceHolder1_txtIGM"
+               wicket:id="igM">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td>
+        <span class="feedback" wicket:id="igMFeedback"></span>
+
+    </td>
+</tr>
+
+<tr wicket:id="complementC3Container">
+    <td>Complement C3</td>
+    <td>
+        <input type="text" style="width:50px;" title="0.01-9.99" id="ctl00_ContentPlaceHolder1_txtCOMP_C3"
+               maxlength="4"
+               wicket:id="complementC3">&nbsp;
+
+    </td>
+</tr>
+<tr>
+    <td>
+        <span class="feedback" wicket:id="complementC3Feedback"></span>
+
+    </td>
+</tr>
+
+<tr>
+    <td>Complement C4</td>
+    <td>
+        <input type="text" style="width:50px;" title="0.01-9.99" id="ctl00_ContentPlaceHolder1_txtCOMP_C4"
+               maxlength="4"
+               wicket:id="complementC4">&nbsp;
+    </td>
+</tr>
+<tr>
+    <td>
+        <span class="feedback" wicket:id="complementC4Feedback"></span>
+
+    </td>
+</tr>
+
+<tr>
+    <td>
+        Complement Other
+    </td>
+    <td>
+        &nbsp;
+        <input type="checkbox" wicket:id="complementOtherSelected"/>
+    </td>
+</tr>
+
+<tr wicket:id="complementOtherDetailContainer">
+    <td colspan="2">
+        Other detail<br>
+        <textarea style="width:257px;" cols="20" rows="5" wicket:id="complementOther"></textarea>
+    </td>
+</tr>
+
+<tr wicket:id="c3NephriticFactorContainer">
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblC3_NEPH_FAC">C3 Nephritic factor</span>
+    </td>
+    <td>
+        <select wicket:id="c3NephriticFactor"/>
+    </td>
+</tr>
+<tr wicket:id="antiClqAntibodiesContainer">
+    <td>Anti Clq Antibodies</td>
+    <td>
+        <input type="text" style="width:50px;" title="0.0-150.0" id="ctl00_ContentPlaceHolder1_txtANTI_CLQ"
+               maxlength="5" wicket:id="antiClqAntibodies"/>
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td>
+        <span class="feedback" wicket:id="antiClqAntibodiesFeedback"></span>
+
+    </td>
+</tr>
+
+
+<tr wicket:id="antistreptolysinContainer">
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblANTI_STREP_O">Antistreptolysin 0 titre IU</span>
+    </td>
+    <td>
+        <input type="text" style="width:50px;" id="ctl00_ContentPlaceHolder1_txtANTI_STREP_O"
+               wicket:id="antistreptolysin">
+    </td>
+</tr>
+<tr>
+    <td>Hepatitis B Antibody</td>
+    <td>
+        <select wicket:id="hepatitisB"/>
+    </td>
+</tr>
+<tr>
+    <td>Hepatitis C Antigen</td>
+    <td><select wicket:id="hepatitisC"/>
+    </td>
+</tr>
+<tr id="ctl00_ContentPlaceHolder1_rowHIV">
+    <td>HIV Antibody</td>
+    <td><select wicket:id="hivAntibody"/>
+    </td>
+</tr>
+<tr wicket:id="dnaTakenFactorHContainer">
+    <td>DNA taken for genetic Factor H</td>
+    <td>
+    <span wicket:id="dnaTakenFactorH">
+
+        <input type="radio" wicket:id="yes"
+               id="ctl00_ContentPlaceHolder1_radDNAYes"><label
+            for="ctl00_ContentPlaceHolder1_radDNAYes">Yes</label>
+        &nbsp;<input type="radio" wicket:id="no"
+                     id="ctl00_ContentPlaceHolder1_radDNANo"><label
+            for="ctl00_ContentPlaceHolder1_radDNANo">No</label>
+    </span>
+    </td>
+</tr>
+
+<tr>
+    <td>EBV</td>
+    <td>
+        <select wicket:id="ebv"/>
+    </td>
+</tr>
+<tr>
+    <td>CMV serology</td>
+    <td>
+        <select wicket:id="cmvSerology"/>
+    </td>
+</tr>
+<tr wicket:id="cmvSymptomaticContainer">
+    <td>CMV symptomatic</td>
+    <td>
+        <input type="checkbox" wicket:id="cmvSymptomatic"/>
+    </td>
+</tr>
+<tr wicket:id="parvovirusAntibodyContainer">
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblPARVO_ANTIB">Parvovirus antibody</span>
+    </td>
+    <td>
+        <select wicket:id="parvovirusAntibody"/>
+    </td>
+</tr>
+<tr>
+    <td>Other infection</td>
+    <td>
+        <span style="display:inline-block;border-style:None;">
+            <input type="checkbox" wicket:id="otherInfection"/>
+        </span>
+    </td>
+</tr>
+
+<tr wicket:id="otherInfectionDetailContainer">
+    <td colspan="2">Other infection specify<br>
+        <textarea wicket:id="otherInfectionDetail" rows="5" cols="20" style="width:257px;"></textarea>
+    </td>
+</tr>
+
+</tbody>
+</table>
+</fieldset>
+</td>
+</tr>
+<tr>
+    <td colspan="3" style="text-align: right;">
+        <input type="submit" class="saveBtn" value="Save" wicket:id="saveDown"/>
+        <span style="font-weight:bold;" wicket:id="successMessageDown"></span>
+        <span style="font-weight:bold; color: red;" wicket:id="errorMessageDown"></span>
+    </td>
+</tr>
+</tbody>
+</table>
+</form>
+
+</wicket:panel>

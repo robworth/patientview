@@ -1,0 +1,516 @@
+<wicket:panel>
+
+<div id="mainBlock">
+
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+    <tbody>
+    <tr>
+        <td class="btmBorder">
+            <select wicket:id="pathologySwitcher"/>
+
+            &nbsp;Select previous record by date&nbsp;
+            <input type="submit" value="Add new record" wicket:id="addNew"/>
+        </td>
+        <td class="btmBorder">&nbsp;</td>
+        <td style="width:120px" class="btmBorder"><strong>Pathology</strong></td>
+    </tr>
+    </tbody>
+</table>
+
+<div wicket:id="pathologyContainer">
+
+<form wicket:id="form">
+
+<table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+
+    <tbody>
+    <tr>
+        <td><b>Biopsy Record</b></td>
+        <td class="style2"><strong>RaDaR No.</strong></td>
+        <td style="width:120px" class="style2">
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly" value="511">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Name:</b>
+
+            <input type="text" wicket:id="firstName" readonly="readonly"/>
+            <input wicket:id="surname" type="text" readonly="readonly"/>
+
+            <b>DoB:</b>
+            <input wicket:id="dob" type="text" style="width:100px;" readonly="readonly"/>
+
+        </td>
+        <td class="style2"><strong>Hospital No.</strong></td>
+        <td class="style2">
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Date of Biopsy
+            <input wicket:id="biopsyDate" type="text" style="width:70px;">
+            <span wicket:id="biopsyDateFeedbackIndicator"></span>
+            <span class="feedback" wicket:id="biopsyDateFeedback"></span>
+        </td>
+        <td class="style2"><strong>Diagnosis</strong></td>
+        <td class="style2">
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly"/>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table cellspacing="0" cellpadding="5" style="width:100%; background-color:#EEF6ED; font-size:85%; table-layout:fixed"
+       id="ctl00_ContentPlaceHolder1_tblMain">
+<tbody>
+<tr>
+    <td style="height:40px;" colspan="3">
+        <input type="button" class="saveBtn" wicket:id="save" value="Save">
+
+        <div style="text-align: right">
+            <span style="font-weight: bold;" wicket:id="successMessage"></span>
+            <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
+        </div>
+
+        &nbsp;
+
+        &nbsp;
+        <span id="ctl00_ContentPlaceHolder1_lblUpdate2"></span>
+    </td>
+</tr>
+<tr>
+<td style="width:33%">
+    <br>
+    <fieldset>
+        <table cellspacing="0" cellpadding="5" id="tblSample" class="style3">
+
+            <tbody>
+            <tr>
+                <td>
+                    <b>Sample</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span wicket:id="KidneyTransplantedNative">
+                        <input type="radio" wicket:id="native">
+                        <label>Native</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="txKidney">
+                        <label>Tx Kidney</label>
+                    </span>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span wicket:id="side">
+                         Side:&nbsp;
+                        <input type="radio" wicket:id="left">
+                        <label>Left</label>
+                        &nbsp;
+                        <input type="radio" wicket:id="right">
+                        <label>Right</label>
+                    </span>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblLabNo">Lab No. of sample</span>
+                    &nbsp;<input type="text" style="border-width:1px;border-style:solid;"
+                                 id="ctl00_ContentPlaceHolder1_txtSAMPLE_LAB_NO"
+                                 wicket:id="sampleLabNumber">
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellspacing="0" cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblInt" for="ctl00_ContentPlaceHolder1_txtINTER_INFLAM_INFIL">Interstital
+                        inflamatory infiltrate</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtINTER_INFLAM_INFIL" cols="20"
+                              rows="3" wicket:id="interstitalInflmatoryInfilitrate"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblArterial" for="ctl00_ContentPlaceHolder1_txtART_ABNORMAL">Arterial
+                        &amp; arteriolar abnormalities</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtART_ABNORMAL" cols="20" rows="3"
+                              wicket:id="arterialAbnormalities"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblImmunoFind"
+                           for="ctl00_ContentPlaceHolder1_txtIMM_HIST_FIND">Immunohistological findings</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtIMM_HIST_FIND" cols="20" rows="3"
+                              wicket:id="immunohistologicalFindings"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="ctl00_ContentPlaceHolder1_lblElectron"
+                           for="ctl00_ContentPlaceHolder1_txtELECT_MSCOPE_FIND">Electron microscopic findings</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtELECT_MSCOPE_FIND" cols="20" rows="3"
+                              wicket:id="electronMicroscopicFindings"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <table cellpadding="5" class="style3">
+        <tbody>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+
+</td>
+<td style="width:33%; vertical-align:top;">
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <b>Diagnosis</b></td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <b>Tubules</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">Extent of atrophy + internal fibrosis</td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblEstimated" for="ctl00_ContentPlaceHolder1_txtEstimated">Estimated
+                        %</label>
+                </td>
+                <td>
+                    <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtEstimated"
+                           wicket:id="estimatedTubules">
+                    <span class="feedback" wicket:id="estimatedTubulesFeedback"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblMeasured" for="ctl00_ContentPlaceHolder1_txtMeasured">Measured
+                        %</label>
+                </td>
+                <td>
+                    <input type="text" style="width:80px;" id="ctl00_ContentPlaceHolder1_txtMeasured"
+                           wicket:id="measuredTubules">
+                    <span class="feedback" wicket:id="measuredTubulesFeedback"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblOther" for="ctl00_ContentPlaceHolder1_txtTUB_OTHER_FEAT">Other
+                        feature</label>
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtTUB_OTHER_FEAT" cols="20" rows="3"
+                              wicket:id="tubulesOtherFeature"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblImages">Images</span>
+                    &nbsp;enter the full url, inc http://
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg1">1</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage1"
+                                 wicket:id="imageUrl1">
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg2">2</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage2"
+                                 wicket:id="imageUrl2">
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg3">3</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage3"
+                                 wicket:id="imageUrl3">
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg4">4</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage4"
+                                 wicket:id="imageUrl4">
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br>
+                    <span id="ctl00_ContentPlaceHolder1_lblImg5">5</span>
+                    &nbsp;<input type="text" style="width:210px;" id="ctl00_ContentPlaceHolder1_txtImage5"
+                                 wicket:id="imageUrl5">
+                    <br>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <p>
+        <span style="color:#EEF6ED;font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblUploadWarn">Uploading images, please wait .....</span>
+    </p>
+</td>
+<td valign="top">
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+            <tbody>
+            <tr>
+                <td>
+                    <b>Glomeruli</b></td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    Total No
+                    <span class="feedback" wicket:id="totalNumberFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" maxlength="3" wicket:id="totalNumber"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No globally Sclerosed&nbsp;
+                    <span class="feedback" wicket:id="numberSclerosedFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_GLOB_SCL"
+                           maxlength="3" wicket:id="numberSclerosed"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No segmentally sclerosed&nbsp;
+                    <span class="feedback" wicket:id="numberSegmentallySclerosedFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_SEQ_SCL"
+                           maxlength="3" wicket:id="numberSegmentallySclerosed"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with cellular/fibrocellular crescents<br>
+                    <span class="feedback" wicket:id="numberCellularCrescentsFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150"
+                           maxlength="3"
+                           wicket:id="numberCellularCrescents"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with fibrous crescents&nbsp;
+                    <span class="feedback" wicket:id="numberFibrousCrescentsFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIB_CRES"
+                           maxlength="3" wicket:id="numberFibrousCrescents"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with endocapillary hypercellularity<br>
+                    <span class="feedback" wicket:id="numberEndocapillaryHypercelluarityFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" maxlength="3"
+                           wicket:id="numberEndocapillaryHypercelluarity"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    No with fibrinoid necrosis&nbsp;
+                    <span class="feedback" wicket:id="numberFibrinoidNecrosisFeedback"></span>
+                </td>
+                <td>
+                    <input type="text" style="width:50px;" title="0-150" id="ctl00_ContentPlaceHolder1_txtGLOM_FIN_NEC"
+                           maxlength="3" wicket:id="numberFibrinoidNecrosis"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="ctl00_ContentPlaceHolder1_lblGLOM_OTHER"
+                           for="ctl00_ContentPlaceHolder1_txtGLOM_ANY_OTH_FEAT">Other feature</label>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtGLOM_ANY_OTH_FEAT" cols="20" rows="3"
+                              wicket:id="otherFeature"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <br>
+    <fieldset>
+        <table cellpadding="5" class="style3">
+
+            <tbody>
+            <tr>
+                <td>
+                    <span id="ctl00_ContentPlaceHolder1_lblPATH_TEXT">Histological Summary</span>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea style="width:100%;" id="ctl00_ContentPlaceHolder1_txtPATH_TEXT" cols="20" rows="15"
+                              wicket:id="histologicalSummary"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</td>
+</tr>
+<tr>
+    <td colspan="3">
+        <input type="button" class="saveBtn" wicket:id="saveDown" value="Save">
+
+        <div style="text-align: right">
+            <span style="font-weight: bold;" wicket:id="successMessageDown"></span>
+            <span style="font-weight: bold; color: red" wicket:id="errorMessageDown"></span>
+        </div>
+    </td>
+</tr>
+</tbody>
+</table>
+</form>
+
+</div>
+
+</div>
+
+</wicket:panel>

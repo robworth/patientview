@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Patients (Users)</h2>
+
+    <p>
+        <button wicket:id="exportPdf" value="Export to pdf" class="button">Export to pdf</button>
+        &nbsp;
+        <button wicket:id="exportExcel" value="Export to excel" class="button">Export to excel</button>
+        &nbsp;
+        The complete list will be exported
+    </p>
+
+    <p>
+        Click column headings to sort.
+    </p>
+
+    <div>
+        <div wicket:id="feedback"></div>
+        <table cellspacing="0" cellpadding="0" class="dxgvTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="dxgvHeader">Edit</th>
+                    <th class="dxgvHeader" wicket:id="orderByRadarNo">RaDaR No</th>
+                    <th class="dxgvHeader">Forename</th>
+                    <th class="dxgvHeader">Surname</th>
+                    <th class="dxgvHeader" wicket:id="orderByUsername">Username</th>
+                    <th class="dxgvHeader" wicket:id="orderByDob">DOB</th>
+                    <th class="dxgvHeader" wicket:id="orderByDateRegistered">Date Reg</th>
+                    <th class="dxgvHeader">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody wicket:id="patientsContainer">
+                <tr class="dxgvDataRow" wicket:id="patients">
+                    <td class="dxgv"><a wicket:id="edit">Edit</a></td>
+                    <td class="dxgv"><span wicket:id="radarNo">radar no</span></td>
+                    <td class="dxgv"><span wicket:id="forename">forename</span></td>
+                    <td class="dxgv"><span wicket:id="surname">surname</span></td>
+                    <td class="dxgv"><span wicket:id="username">username</span></td>
+                    <td class="dxgv"><span wicket:id="dob">dob</span></td>
+                    <td class="dxgv"><span wicket:id="dateRegistered">date reg</span></td>
+                    <td class="dxgv">
+                        <a wicket:id="deleteLink">Delete</a>&nbsp;<a wicket:id="emailLink">Email</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dxgv firstCell" colspan="9">
+                        <span wicket:id="navigator" class="paging"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>

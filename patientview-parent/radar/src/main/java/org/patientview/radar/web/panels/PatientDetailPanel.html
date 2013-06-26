@@ -1,0 +1,35 @@
+<wicket:panel>
+    <div wicket:id="details">
+    <table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
+        <tr>
+            <td style="height:30px;">
+                <span wicket:id="title" style="font-weight:bold;">Demographics</span>
+            </td>
+            <td><span wicket:id="nameLabel">Patient Name</span></td>
+            <td style="height:30px;">
+                <input wicket:id="forename" type="text" readonly="readonly" style="background-color:#EEF6ED;font-style:italic;"/>
+                <input wicket:id="surname" type="text" readonly="readonly" style="background-color:#EEF6ED;font-style:italic;"/>
+            </td>
+            <td style="text-align:right; padding-right:10px;"><b>RaDaR Number</b></td>
+            <td style="width:150px;">
+                <input wicket:id="id" type="text" readonly="readonly"
+                       style="background-color:#EEF6ED;font-style:italic;"/></td>
+        </tr>
+        <tr>
+            <td style="height:30px;">
+                <label class="lblPad"
+                       style="width:150px;">&nbsp;Disease Group:</label>
+                <label wicket:id="diseaseGroup"></label>
+            </td>
+            <td><span wicket:id="dobLabel">Patient DOB</span></td>
+            <td style="height:30px;">
+                <input wicket:id="dob" type="text" readonly="readonly" style="background-color:#EEF6ED;font-style:italic;"/>
+            </td>
+            <td style="text-align:right; padding-right:10px;">Date Registered</td>
+            <td><input wicket:id="dateRegistered" type="text" readonly="readonly"
+                       style="background-color:#EEF6ED;font-style:italic;"/>
+            </td>
+        </tr>
+    </table>
+    </div>
+</wicket:panel>

@@ -1,0 +1,21 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <security:http create-session="never" auto-config="true">
+        <security:remember-me/>
+        <security:intercept-url pattern="/**"/>
+    </security:http>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="authenticationProvider"/>
+    </security:authentication-manager>
+
+    <bean id="authenticationProvider" class="org.patientview.radar.service.impl.AuthenticationProviderImpl">
+        <property name="userManager" ref="userManager"/>
+    </bean>
+
+    <security:global-method-security secured-annotations="enabled"/>
+</beans>

@@ -1,0 +1,31 @@
+﻿<%@ Master Language="VB" MasterPageFile="~/MasterPage.master" AutoEventWireup="false" CodeFile="MasterPage2.master.vb" Inherits="MasterPage2" %>
+
+<asp:Content ID="subContentHead" ContentPlaceHolderID="head" Runat="Server">
+    <link href="tabs.css" rel="stylesheet" type="text/css" />
+<!--[if IE]>
+	<style type="text/css">
+	#mainBlock {
+	margin-top:0;
+	}
+	
+	</style>
+	<![endif]-->	
+<style type="text/css">
+#ctl00_ContentPlaceHolder1_FormView1 table {
+margin:0;
+}
+
+</style>
+<asp:ContentPlaceHolder ID="childContentHead" runat="server">
+</asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="subContent1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
+    <div id="tabsC" > 
+  <ul> 
+    <li><asp:hyperlink ID="lnkEntry" NavigateUrl="patient-entry2.aspx" tooltip="Demographics" runat="server"><span id="spnDemo" >Demographics</span></asp:hyperlink></li><li><asp:hyperlink runat="server" NavigateUrl="diagnosis.aspx" ID="lnkDiagnosis" ToolTip="Diagnosis"><span id="spnDiag"  >Diagnosis</span></asp:hyperlink></li><li><asp:hyperlink runat="server" NavigateUrl="clinical.aspx" ID="lnkClinical" Tooltip="Clinical Picture"><span id="spnClinical" >Clinical Picture</span></asp:hyperlink></li><li><asp:hyperlink runat="server" NavigateUrl="labresults.aspx" ID="lnkLabResults" Tootip="Laboratory Results"><span>Laboratory Results</span></asp:hyperlink></li><li><asp:hyperlink runat="server" NavigateUrl="therapy.aspx" ID="lnkTherapy" Tooltip="Therapy"><span>Therapy</span></asp:hyperlink></li><li><asp:hyperlink runat="server" NavigateUrl="threemonths.aspx" ID="lnk3Months" Tooltip="3 Month Follow Up"><span>6 Month Follow Up</span></asp:hyperlink></li></ul></div><div id="mainBlock">
+<asp:ContentPlaceHolder ID="childContent1" runat="server">
+</asp:ContentPlaceHolder>
+</div>
+</asp:Content>
+
