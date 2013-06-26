@@ -53,6 +53,12 @@
             </properties>
         </profile>
         <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        <profile>
             <id>staging</id>
             <properties>
                 <env>staging</env>
