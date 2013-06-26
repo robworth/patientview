@@ -13,6 +13,12 @@ Getting Starting
 - Get running locally with the test database.  The Radar database is shared with PatientView, see instructions here https://github.com/robworth/patientview.
 - Login as a patient, professional, and an admin and review the application screens.
 
+Note:
+=====
+
+Now that this module is part of a multi-module project, all commands in the documentation are from the context of the module pom.xml directory,
+i.e. patientview-parent/radar.
+
 
 Running locally using Intellij Idea or similar IDE
 ==================================================
