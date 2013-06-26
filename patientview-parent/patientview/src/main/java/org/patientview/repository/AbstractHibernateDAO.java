@@ -65,6 +65,7 @@ public class AbstractHibernateDAO<T extends BaseModel> {
 
     public void delete(final T entity) {
         entityManager.remove(entity);
+        entityManager.flush();
     }
 
     public void delete(final Long entityId) {
