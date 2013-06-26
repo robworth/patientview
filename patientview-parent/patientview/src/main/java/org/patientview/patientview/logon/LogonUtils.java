@@ -45,6 +45,7 @@ public final class LogonUtils {
     public static final String NHSNO_ALREADY_EXISTS = "nhsnoAlreadyExists";
     public static final String PATIENTS_WITH_SAME_NHSNO = "nhsnoAlreadyExists";
     public static final String INVALID_NHSNO = "invalidNhsno";
+    public static final String OFFER_TO_ALLOW_INVALID_NHSNO = "offerToAllowInvalidNhsno";
     public static final String PATIENT_ALREADY_IN_UNIT = "patientAlreadyInUnit";
     public static final int NEW_PASSWORD_LENGTH = 8;
 

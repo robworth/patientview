@@ -75,6 +75,11 @@ public class PatientAddAction extends Action {
         String mappingToFind = "";
         if (!"on".equals(overrideInvalidNhsno) && !UserUtils.isNhsNumberValid(nhsno)) {
             request.setAttribute(LogonUtils.INVALID_NHSNO, nhsno);
+
+            if (UserUtils.isNhsNumberValidWhenUppercaseLettersAreAllowed(nhsno)) {
+                request.setAttribute(LogonUtils.OFFER_TO_ALLOW_INVALID_NHSNO, nhsno);
+            }
+
             mappingToFind = "input";
         }
 

@@ -72,7 +72,7 @@
       <logic:notPresent name="nhsnoAlreadyExists" >
         <html:hidden property="overrideDuplicateNhsno" value="" />
       </logic:notPresent>
-      <logic:present name="invalidNhsno" >
+        <logic:present name="offerToAllowInvalidNhsno" >
         <td><b>Add patient with invalid NHS number</b></td>
         <td><html:checkbox property="overrideInvalidNhsno"/></td>
       </logic:present>
