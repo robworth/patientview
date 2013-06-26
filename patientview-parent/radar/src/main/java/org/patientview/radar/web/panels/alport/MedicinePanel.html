@@ -1,0 +1,131 @@
+<wicket:panel>
+    <div id="mainBlock">
+        <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+        <div wicket:id="patientDetail"></div>
+
+        <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="10" style="width: 100%; border-collapse:collapse"
+               class="style3">
+            <tr>
+                <td style="width:90%; vertical-align:top;">
+                    <fieldset style="width:90%;">
+                        <legend>Medicines</legend>
+                        <div>
+                            <table wicket:id="medicinesContainer" border="1" cellspacing="0" cellpadding="3"
+                                   style="font-size:85%;width:600px;border-collapse:collapse;" rules="all">
+                                <tbody>
+                                    <tr style="color:#3C982D;">
+                                        <th scope="col">Name</th>
+                                        <th style="width:120px;" scope="col">Dose</th>
+                                        <th scope="col">Start date</th>
+                                        <th scope="col">End Date</th>
+                                        <th scope="col">&nbsp;</th>
+                                    </tr>
+                                    <tr wicket:id="medicines">
+                                        <td wicket:id="name">
+                                            Name
+                                        </td>
+                                        <td style="width:120px;" >
+                                            <span wicket:id="dose"></span>
+                                        </td>
+                                        <td wicket:id="startDate">
+                                            Start date
+                                        </td>
+                                        <td wicket:id="endDate">
+                                            End date
+                                        </td>
+                                        <td valign="top">
+                                            <input type="submit" wicket:id="deleteLink" value="Delete" />
+                                            <input type="submit" wicket:id="editLink" value="Edit"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div wicket:id="editMedicinesContainer">
+                                <br />
+                                <br />
+                                <h2>Edit Medicine</h2>
+                                <form wicket:id="editMedicineForm">
+                                    <table border="1" cellspacing="0" cellpadding="3"
+                                           style="font-size:85%;width:700px;border-collapse:collapse;" rules="all">
+                                        <tbody>
+                                            <tr style="color:#3C982D;">
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Dose</th>
+                                                <th scope="col">Start Date</th>
+                                                <th scope="col">End Date</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="style7">
+                                                    <input wicket:id="name" type="text" />
+                                                </td>
+                                                <td class="style7">
+                                                    <input wicket:id="dose" type="text" />
+                                                </td>
+                                                <td class="style7">
+                                                    <input wicket:id="startDate" type="text" />
+                                                    <span class="feedback" wicket:id="startDateFeedback"></span>
+                                                </td>
+                                                <td class="style7">
+                                                    <input wicket:id="endDate" type="text" />
+                                                    <span class="feedback" wicket:id="endDateFeedback"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p>
+                                        <input type="submit" value="Save" wicket:id="submit"/>
+                                        <input type="submit" value="Cancel" wicket:id="cancel"/>
+                                    </p>
+
+                                    <span class="red" wicket:id="formFeedback"></span>
+                                </form>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <br />
+                    <h2>Add Medicine</h2>
+                    <form wicket:id="addMedicineForm">
+                        <table border="1" cellspacing="0" cellpadding="3"
+                               style="font-size:85%;width:700px;border-collapse:collapse;" rules="all">
+                            <tbody>
+                                <tr style="color:#3C982D;">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Dose</th>
+                                    <th scope="col">Start Date</th>
+                                    <th scope="col">End Date</th>
+                                </tr>
+                                <tr>
+                                    <td class="style7">
+                                        <input wicket:id="name" type="text" />
+                                    </td>
+                                    <td class="style7">
+                                        <input wicket:id="dose" type="text" />
+                                    </td>
+                                    <td class="style7">
+                                        <input wicket:id="startDate" type="text" />
+                                        <span class="feedback" wicket:id="startDateFeedback"></span>
+                                    </td>
+                                    <td class="style7">
+                                        <input wicket:id="endDate" type="text" />
+                                        <span class="feedback" wicket:id="endDateFeedback"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <input type="submit" value="Add" wicket:id="submit"/>
+                        </p>
+                        <span class="red" wicket:id="formFeedback"></span>
+                    </form>
+                </td>
+                <td style="vertical-align:top;">
+                    <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</wicket:panel>

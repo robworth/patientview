@@ -1,0 +1,56 @@
+﻿<%@ Master Language="VB" CodeFile="MasterPage3.master.vb" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="normal.css" rel="stylesheet" type="text/css" />
+	<link href="layout.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+	.style1 {
+		margin-top: 30px;
+		margin-left:20px;
+		
+	}
+	</style>
+	
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="outerWrapper">
+  <div id="header">
+	<img alt="Renal RaDaR" src="images/logos/RADAR_logo_small.jpg" title="Renal RaDaR" style="float:right" />	</div>  
+        
+		
+  <div id="topNavigation"><a href="Default.aspx">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<asp:HyperLink ID="lnkReg" Text="Health Professional Registration" NavigateUrl="register.aspx" runat="server"></asp:HyperLink>
+	 <div id="rightNav" ><asp:HyperLink ID="lnkAbout" runat="server" Text="" ></asp:HyperLink><asp:Label ID="lblSpace" runat="server" Visible="false">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkStudy" runat="server" Text="" ></asp:HyperLink>
+		<asp:Label ID="lblSpace2" runat="server" Visible="false">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkProfessionals" runat="server"  Text="Professionals" Visible="true" NavigateUrl="~/professionals.aspx"></asp:HyperLink><asp:Label ID="lblSpace3" runat="server" Visible="true">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkPatients" NavigateUrl="patients.aspx" runat="server" Text="Patients" Visible="true"></asp:HyperLink><asp:Label ID="lblSpace4" runat="server" Visible="true">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink runat="server" ID="lnkDiseases" Text="Disease Index" NavigateUrl="~/Default5.aspx" Visible="true"></asp:HyperLink></div>
+ 
+	  </div>
+
+<div id="contentWrapper"> <div id="content">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+   
+    
+  
+
+        </asp:ContentPlaceHolder></div>
+       <div id="clearFooter"></div>
+
+    </div> </div>
+    <div id="footer">
+    <script language="javacript" type="text/javascript">
+    document.write('&copy; The Renal Association 2009-'+(new Date()).getFullYear());
+    </script>
+
+	
+	<noscript>&copy; The Renal Association</noscript>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+
+    <div id="ctl00_ContentPlaceHolder1_pnlLoggedIn">
+
+        <h1>Professionals</h1>
+
+        <p>
+            This section of the website allows professional users to enter and maintain
+            patient details.
+        </p>
+
+        <p>You are also able to give access to these details to other users at your centre.</p>
+
+        <p>&nbsp;</p>
+
+        <p>Use the menus above for patient data entry and management.</p>
+
+        <p>&nbsp;</p>
+
+        <div style="width:750px; border: 1px solid green; padding:20px;">
+
+            <div>
+                <p style="font-weight:bold;" wicket:id="renalUnit"></p>
+                <p>The number of patients currently registered at this unit is: <span wicket:id="count">9</span>
+                    &nbsp;
+                    <input wicket:id="showGraph" type="button" value="Graph">
+                </p>
+
+                <p>
+
+                </p>
+
+            </div>
+            <div>
+                <img wicket:id="graph">
+            </div>
+        </div>
+        <p>
+            &nbsp;</p>
+
+        <p>If you have any comments or questions about this website or need help using it,
+            please contact
+            <br>
+            Fiona Braddon on 0117 323 8209 or by email at <a
+                    href="mailto:fiona.braddon@nhs.net">fiona.braddon@nhs.net</a></p>
+
+
+    </div>
+    <p></p>
+
+</wicket:extend>
+</body>
+</html>

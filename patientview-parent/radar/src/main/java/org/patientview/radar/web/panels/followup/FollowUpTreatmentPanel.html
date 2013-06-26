@@ -1,0 +1,65 @@
+<wicket:panel>
+    <div id="subBlock">
+
+        <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;" class="style1">
+            <tbody>
+            <tr>
+                <td class="btmBorder">
+                    <select wicket:id="treatmentSwitcher">
+                    </select>
+
+                    &nbsp;Select previous visit record by date&nbsp;
+                    <input type="submit" wicket:id="addNew" value="Add new visit record">
+                </td>
+                <td class="style2, btmBorder">&nbsp;</td>
+                <td style="width:120px" class="style2, btmBorder">
+                    <strong>Treatment</strong></td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="ctl00_ContentPlaceHolder1_pnlAdd">
+
+            <table wicket:id="treatmentContainer" cellpadding="4" id="tblHeader" style="width: 100%;" class="style1">
+                <tbody>
+                <tr>
+                    <td>
+                        <b>Follow Up Treatment</b></td>
+                    <td style="width:100px; text-align:right;">RaDaR No:</td>
+                    <td style="width:120px;padding-right:10px;">
+                        <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style11">Name
+                        <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly"/>
+                        &nbsp;<input wicket:id="surname" type="text" style="width:120px;" readonly="readonly"/>
+                        &nbsp; DoB
+                        <input wicket:id="dob"  type="text" style="width:80px;" readonly="readonly"/>
+                        &nbsp;
+                    </td>
+                    <td class="style11" style="text-align:right;">Hospital No:</td>
+                    <td class="style11">
+                        <input wicket:id="hospitalNumber"  type="text" style="width:100px;" readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        </td>
+                    <td style="width:100px; text-align:right;">Diagnosis</td>
+                    <td>
+                        <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <div wicket:id="treatmentPanel"/>
+        </div>
+    </div>
+
+</wicket:panel>

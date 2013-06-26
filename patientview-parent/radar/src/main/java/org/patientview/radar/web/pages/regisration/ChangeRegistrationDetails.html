@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+<wicket:extend>
+    <h1>
+        Clinicians - Change your registration details
+    </h1>
+
+    <div wicket:id="authenticationPanel">
+        <p>
+            Please enter you current username and password:
+        </p>
+
+        <form wicket:id="authenticationForm">
+            <table cellpadding="5" class="style1">
+                <tbody>
+                <tr>
+                    <td class="style2">
+                        <label style="width:140px;">Username
+                        </label>
+                    </td>
+                    <td>
+                        <input wicket:id="username" autocomplete="off">
+                        <span wicket:id="usernameFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style2">
+                        <label style="width:140px;">Password</label>
+                    </td>
+                    <td>
+                        <input wicket:id="password" type="password" autocomplete="off">
+                        <span wicket:id="passwordFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style2"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="style2">
+                        <input wicket:id="authenticationSubmit" type="button" value="Enter">
+                    </td>
+                    <td>
+                        <span class="feedback" wicket:id="feedback"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div wicket:id="changeDetailsPanel">
+        <p>Please enter a new password</p>
+
+        <form wicket:id="changeDetailsForm">
+
+            <table cellpadding="5" class="style1">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>New Password</span>
+                    </td>
+                    <td>
+                        <input wicket:id="password1" type="password"> Between 6 and 10 characters
+                        <span wicket:id="password1FeedbackIndicator"></span>
+                        <span class="feedback" wicket:id="password1Feedback"></span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Please Repeat the password
+                    </td>
+                    <td>
+                        <input wicket:id="password2" type="password">
+                        <span wicket:id="password2FeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="style2">
+                        <input wicket:id="changeDetailsSubmit" type="button" value="Submit">
+                    </td>
+                    <td>
+                        <span class="feedback" wicket:id="feedback"></span>
+                        <span wicket:id="successMessage"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</wicket:extend>
+</body>
+</html>

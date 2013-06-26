@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--Define CreateEmailQueueJobQuartzScheduler class-->
+    <bean id="createEmailQueueJobQuartzScheduler" class="org.patientview.quartz.CreateEmailQueueJobQuartzScheduler" />
+
+    <!--Define SendEmailJobQuartzScheduler class-->
+    <bean id="sendEmailJobQuartzScheduler" class="org.patientview.quartz.SendEmailJobQuartzScheduler" />
+
+    <!--Define CheckSendEmailStatusJobQuartzScheduler class-->
+    <bean id="checkSendEmailStatusJobQuartzScheduler" class="org.patientview.quartz.CheckSendEmailStatusJobQuartzScheduler" />
+
+    <!--Define SendEmailJob's method configuration-->
+    <bean id="createEmailQueueJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="createEmailQueueJobQuartzScheduler" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+    </bean>
+
+    <!--Define SendEmailJob's method configuration-->
+    <bean id="sendEmailJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="sendEmailJobQuartzScheduler" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+    </bean>
+
+    <!--Define checkSendEamilStatusJob's method configuration-->
+    <bean id="checkSendEamilStatusJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="checkSendEmailStatusJobQuartzScheduler" />
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+    </bean>
+
+    <!--triggers -->
+    <bean id="createEmailQueueJobProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="createEmailQueueJobTask" />
+        <property name="cronExpression" value="${quartz.createEmailQueue.cron}" />
+    </bean>
+
+    <!--triggers -->
+    <bean id="sendEmailProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="sendEmailJobTask" />
+        <property name="cronExpression" value="${quartz.sendMail.cron}" />
+    </bean>
+
+    <!--triggers -->
+    <bean id="checkSendEmailStatusProcessDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="checkSendEamilStatusJobTask" />
+        <property name="cronExpression" value="${quartz.checkSendEmailStatus.cron}" />
+    </bean>
+
+    <bean id="startQuartz" lazy-init="true" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="createEmailQueueJobProcessDoTime" />
+                <ref bean="sendEmailProcessDoTime" />
+                <ref bean="checkSendEmailStatusProcessDoTime" />
+            </list>
+        </property>
+        <property name="taskExecutor" ref="executor" />
+    </bean>
+
+    <bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="${quartz.corePool.size}" />
+        <property name="maxPoolSize" value="${quartz.maxPool.size}" />
+        <property name="queueCapacity" value="${quartz.queue.capacity}" />
+    </bean>
+</beans>

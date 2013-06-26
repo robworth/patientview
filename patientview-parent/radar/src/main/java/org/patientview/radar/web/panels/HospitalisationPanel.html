@@ -1,0 +1,144 @@
+<wicket:panel>
+
+    <div id="mainBlock">
+        <table cellpadding="5" style="width: 100%; background-color: #B6DF9F;">
+            <tbody>
+            <tr>
+                <td class="btmBorder">
+                    <select wicket:id="hospitilisationSwitcher"/>
+                    &nbsp;Select previous record by admission date&nbsp;
+                    <input type="submit" value="Add new record" wicket:id="addNew"/>
+                </td>
+                <td class="btmBorder">&nbsp;</td>
+                <td style="width:120px" class="btmBorder">
+                    <strong>Hospitalisation</strong>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div wicket:id="hospitalisationContainer">
+
+            <form wicket:id="form">
+                <table cellpadding="4" id="tblHeader" style="width: 100%;">
+                    <tbody>
+                    <tr>
+                        <td align="left" class="style4"><b>Hospitalisation Record</b></td>
+                        <td class="style2" style="text-align:right; ">RaDaR No.</td>
+                        <td>
+                            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">Name
+                            <input type="text" wicket:id="firstName" readonly="readonly"/>
+
+                            <input wicket:id="surname" type="text" readonly="readonly"/>
+                            &nbsp;DoB
+
+                            <input wicket:id="dob" type="text" style="width:100px;" readonly="readonly"/>
+                        </td>
+                        <td style="text-align:right; ">Hospital No.</td>
+                        <td>
+                            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">&nbsp;
+                            <input type="text" style="color:#B6DF9F;background-color:#B6DF9F;border-color:#B6DF9F;"/>
+                        </td>
+                        <td style="text-align:right; ">Diagnosis</td>
+                        <td>
+                            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;"
+                                   readonly="readonly"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table cellpadding="10" style="width:100%; background-color:#eef6ed; font-size:85%"
+                       id="ctl00_ContentPlaceHolder1_tblMain">
+                    <tbody>
+                    <tr>
+                        <td style="height:40px;text-align: right;" colspan="2" >
+                            <input wicket:id="save" type="submit" class="saveBtn" value="Save">
+                            <span style="font-weight: bold;" wicket:id="successMessage"></span>
+                            <span style="font-weight: bold; color: red" wicket:id="errorMessage"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">
+                            <fieldset style="width:95%; height:100px;">
+                                <table cellpadding="5" style="width:100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td class="style5">
+                                            <b>Admission</b></td>
+                                        <td>
+                                            &nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="style5">
+                                            Date of admission
+                                        </td>
+                                        <td>
+                                            <input type="text" style="width:80px;" wicket:id="dateOfAdmission"/>
+                                            <span wicket:id="dateOfAdmissionFeedbackIndicator"></span>
+                                            <span class="feedback" wicket:id="dateOfAdmissionFeedback"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="style5">
+                                            Date of Discharge
+                                        </td>
+                                        <td>
+                                            <input type="text" style="width:80px;" wicket:id="dateOfDischarge"/>
+                                            <span class="feedback" wicket:id="dateOfDischargeFeedback"></span>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </td>
+                        <td valign="top" style="width:50%">
+                            <fieldset style="width:95%; height:100px;">
+                                <table cellpadding="5" style="width:100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" style="width:150px;"><b>Reason for Admission</b></td>
+                                        <td><textarea style="width:95%;" cols="20" rows="5"
+                                                      wicket:id="reason"></textarea></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <fieldset style="width:97%; padding:10px;">
+                                <p style="font-weight: 700">Comments&nbsp;
+                                    <span style="color:#EEF6ED;" id="ctl00_ContentPlaceHolder1_lblHid"></span>
+                                </p>
+                                <textarea style="width:95%;" cols="20" rows="20" wicket:id="comments"></textarea>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right;">
+                            <input type="submit" class="saveBtn" value="Save" wicket:id="saveDown">
+                            <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageDown"></span>
+                            <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageDown"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </form>
+        </div>
+
+    </div>
+
+</wicket:panel>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
+    <title wicket:id="title">RADAR - National Renal Rare Disease Registry</title>
+
+    <!-- javascript -->
+    <script src="js/ajxmenu-formatted.js" type="text/javascript"></script>
+    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="js/radar.js" type="text/javascript"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/normal.css" />
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/ajxmenu.css" />
+    <link rel="stylesheet" type="text/css" href="css/admin.css" />
+    <link rel="stylesheet" type="text/css" href="css/tabs_lab.css" />
+
+</head>
+<body>
+
+<div id="outerWrapper">
+    <div id="header">
+        <img alt="Renal RaDaR" src="images/logos/RADAR_logo_small.jpg" title="Renal RaDaR" style="float:right"/>
+    </div>
+
+    <wicket:container wicket:id="navigationPanel"/>
+
+    <div id="contentWrapper">
+        <div id="content">
+            <wicket:child/>
+        </div>
+        <div id="clearFooter"></div>
+
+    </div>
+</div>
+<div id="footer">
+    <script language="javacript" type="text/javascript">
+        document.write('&copy; The Renal Association 2009-'+(new Date()).getFullYear());
+    </script>
+
+
+    <noscript>&copy; The Renal Association</noscript>
+</div>
+</body>
+</html>

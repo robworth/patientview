@@ -1,0 +1,154 @@
+<wicket:panel>
+    <fieldset>
+        <legend>Plasmapheresis</legend>
+        <br>
+
+        <div>
+
+            <table wicket:id="plasmapheresisContainer" border="1" cellspacing="0" cellpadding="3"
+                   style="font-size:85%;width:95%;border-collapse:collapse;" rules="all">
+                <tbody>
+                <tr style="color:#3C982D;">
+                    <th scope="col">Date Started</th>
+                    <th scope="col">Date Stopped</th>
+                    <th scope="col">No of Exchanges</th>
+                    <th scope="col">Response</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+                <tr wicket:id="plasmapheresis">
+                    <td wicket:id="startDate"/>
+                    <td wicket:id="endDate"/>
+                    <td wicket:id="plasmapheresisExchanges.name"/>
+                    <td wicket:id="response.label"/>
+                    <td>
+                        <input type="submit" value="Delete" wicket:id="deleteLink"
+                               onclick="return confirm('Are you sure you want to delete this record?');"/>
+                        <input type="submit" value="Edit" wicket:id="editLink"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+        <br>
+
+        <div wicket:id="editPlasmapheresisContainer">
+            <form wicket:id="editPlasmapheresisForm">
+                <fieldset style="border-color:Red">
+                    <legend>Edit</legend>
+                    <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
+                        <tbody>
+                        <tr>
+                            <td>Date Started<br/>
+                             <span class="feedback" wicket:id="startDateFeedback"/>
+                            </td>
+                            <td>Date Stopped<br/>
+                              <span class="feedback" wicket:id="endDateFeedback"/>
+                            </td>
+                            <td>No of Exchanges</td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Response
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="submit" value="Save" wicket:id="saveTop"/>
+                                <input type="submit" value="Cancel" wicket:id="cancelTop"/>
+                            </td>
+                            <td>
+                                <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                <span wicket:id="startDateFeedbackIndicator"/>
+
+                            </td>
+                            <td>
+                                <input type="text" style="width:70px;" wicket:id="endDate">
+
+                            </td>
+                            <td>
+                                <select wicket:id="plasmapheresisExchanges"/>
+                                <span wicket:id="plasmapheresisExchangesFeedbackIndicator"/>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select wicket:id="response"/>
+                                <span wicket:id="responseFeedbackIndicator"/>
+                            </td>
+                            <td>
+                                <input type="submit" value="Save" wicket:id="saveBottom"/>
+                                <input type="submit" value="Cancel" wicket:id="cancelBottom"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblPlasmaEditWarn"></span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <span class="red" wicket:id="plasmapheresisFeedback"></span>
+            </form>
+        </div>
+        <br>
+
+        <form wicket:id="addPlasmapheresisForm">
+            <table cellpadding="5" style="width: 100%; font-size:85%; margin-top:10px" class="style2">
+                <tbody>
+                <tr>
+                    <td>Date Started<br/>
+                       <span class="feedback" wicket:id="startDateFeedback"/>
+                    </td>
+                    <td>Date Stopped<br/>
+                       <span class="feedback" wicket:id="endDateFeedback"/>
+                    </td>
+                    <td>No of Exchanges</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        Response&nbsp;&nbsp;<a style="color:Green;font-weight:bold;" href="#" class="info" id="ctl00_ContentPlaceHolder1_hypRemission">
+                        Help<span>Complete: protein:creatinine ratio &lt; 40mg/mmol; Partial: protein:creatinine ratio &lt; 200mg/mmol.</span></a>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="startDate"/>
+                        <span wicket:id="startDateFeedbackIndicator"/>
+                    </td>
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="endDate"/>
+                    </td>
+                    <td>
+                        <select wicket:id="plasmapheresisExchanges"/>
+                        <span wicket:id="plasmapheresisExchangesFeedbackIndicator"/>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <select wicket:id="response"/>
+                        <span wicket:id="responseFeedbackIndicator"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="Add" wicket:id="save"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnP"></span></td>
+                    <td>&nbsp;</td>
+                    <td>
+                        &nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+            <span class="red" wicket:id="plasmapheresisFeedback"></span>
+        </form>
+    </fieldset>
+</wicket:panel>
