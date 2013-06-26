@@ -192,7 +192,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     public List<AdminUser> getAdminUsers() {
         String sql = buildBaseUserSelectFromStatement(ADMIN_USER_TABLE_NAME) +
-                " WHERE " + USER_MAPPING_TABLE_NAME + "" + USER_MAPPING_ROLE_FIELD_NAME
+                " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME
                 + " = '" + User.ROLE_ADMIN + "'" + " " +
                 " AND " + ADMIN_USER_TABLE_NAME + "." + ADMIN_USER_ID_FIELD_NAME
                 + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
@@ -292,7 +292,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         // normal sql query without any filter options
         sqlQueries.add(buildSelectFromStatement(USER_TABLE_NAME, USER_MAPPING_TABLE_NAME,
                 PROFESSIONAL_USER_TABLE_NAME, "unit") +
-                " WHERE " + USER_MAPPING_TABLE_NAME + "" + USER_MAPPING_ROLE_FIELD_NAME
+                " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME
                 + " = '" + User.ROLE_PROFESSIONAL + "'" + " " +
                 " AND " + PROFESSIONAL_USER_TABLE_NAME + "." + PROFESSIONAL_USER_ID_FIELD_NAME
                 + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
@@ -461,7 +461,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         // normal sql query without any filter options
         sqlQueries.add(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME) +
-                " WHERE " + USER_MAPPING_TABLE_NAME + "" + USER_MAPPING_ROLE_FIELD_NAME
+                " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME
                 + " = '" + User.ROLE_PATIENT + "'" + " " +
                 " AND " + PATIENT_USER_TABLE_NAME + "." + PATIENT_USER_ID_FIELD_NAME
                 + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
@@ -675,7 +675,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
             return jdbcTemplate.queryForObject(buildSelectFromStatement(USER_TABLE_NAME, USER_MAPPING_TABLE_NAME) +
                     " WHERE " +
-                    USER_TABLE_NAME + "" + USER_EMAIL_FIELD_NAME + " = ? " +
+                    USER_TABLE_NAME + "." + USER_EMAIL_FIELD_NAME + " = ? " +
                     " AND " +
                     USER_TABLE_NAME + "." + ID_FIELD_NAME + " = " + USER_MAPPING_TABLE_NAME + "."
                     + USER_MAPPING_USER_ID_FIELD_NAME,
@@ -728,7 +728,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private String buildUserWhereIdStatement(String userTable, String mapIdField) {
         return " WHERE " +
-                USER_MAPPING_TABLE_NAME + "" + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? " +
+                USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? " +
                 " AND " +
                 USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME + " = ? " +
                 " AND " +
