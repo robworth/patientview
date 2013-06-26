@@ -80,4 +80,6 @@ public interface MessageManager {
     List<MessageRecipient> getUnitPatientRecipients(List<Unit> units, User requestingUser);
 
     List<User> getUnitPatientRecipients(Unit unit, User requestingUser);
+
+    List<Unit> getMessagingEnabledUnitsForLoggedInUser();
 }

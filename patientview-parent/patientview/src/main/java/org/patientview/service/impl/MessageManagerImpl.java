@@ -455,6 +455,17 @@ public class MessageManagerImpl implements MessageManager {
         return unitPatientRecipients;
     }
 
+    @Override
+    public List<Unit> getMessagingEnabledUnitsForLoggedInUser() {
+        List<Unit> loggedInUsersUnits = unitManager.getLoggedInUsersUnits();
+
+        List<Unit> messagingEnabledUnits = featureManager.getUnitsForFeature("messaging");
+
+        loggedInUsersUnits.retainAll(messagingEnabledUnits);
+
+        return loggedInUsersUnits;
+    }
+
     private List<User> getUnitAdminOrStaffRecipients(String adminOrStaff, Unit unit, User requestingUser) {
         List<User> unitAdminRecipients = new ArrayList<User>();
 
