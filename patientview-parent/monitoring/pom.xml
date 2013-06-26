@@ -53,6 +53,12 @@
             </properties>
         </profile>
         <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
             <id>dev</id>
             <properties>
                 <env>dev</env>
