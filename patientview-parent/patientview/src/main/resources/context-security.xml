@@ -81,6 +81,13 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
         <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
 
+        <!-- DIABETES specialty config -->
+        <intercept-url pattern="/diabetes/logged_in.do" access="ROLE_DIABETES_DEMO,ROLE_DIABETES_PATIENT,ROLE_DIABETES_SUPERADMIN,ROLE_DIABETES_UNITADMIN,ROLE_DIABETES_UNITSTAFF"/>
+        <intercept-url pattern="/diabetes/control/**" access="ROLE_DIABETES_SUPERADMIN,ROLE_DIABETES_UNITADMIN,ROLE_DIABETES_UNITSTAFF"/>
+        <intercept-url pattern="/diabetes/patient/**" access="ROLE_DIABETES_DEMO,ROLE_DIABETES_PATIENT,ROLE_DIABETES_SUPERADMIN,ROLE_DIABETES_UNITADMIN,ROLE_DIABETES_UNITSTAFF"/>
+        <intercept-url pattern="/diabetes/posts/**" access="ROLE_DIABETES_DEMO,ROLE_DIABETES_PATIENT,ROLE_DIABETES_SUPERADMIN,ROLE_DIABETES_UNITADMIN,ROLE_DIABETES_UNITSTAFF"/>
+        <intercept-url pattern="/diabetes/**" access="ROLE_DIABETES_DEMO,ROLE_DIABETES_PATIENT,ROLE_DIABETES_SUPERADMIN,ROLE_DIABETES_UNITADMIN,ROLE_DIABETES_UNITSTAFF"/>
+
         <!-- messages -->
         <intercept-url pattern="/control/messaging/message_confirm.jsp" access="ROLE_RENAL_UNITADMIN"/>
         <intercept-url pattern="/patient/conversation**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
