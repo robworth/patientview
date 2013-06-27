@@ -87,7 +87,7 @@ public class AddPatientPage extends BasePage {
                         model.getPatientId());
 
                 // check nhs number is valid
-                if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId()) ) {
+                if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     error(NHS_NUMBER_INVALID_MSG);
 
                 } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
