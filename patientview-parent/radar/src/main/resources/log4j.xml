@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+  <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{MM/dd HH:mm:ss} %-5p %30.30c %x - %m\n"/>
+    </layout>
+  </appender>
+
+  <appender name="FileAppender" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="$\{catalina.home\}/logs/radar.log"/>
+    <param name="MaxFileSize" value="10MB"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{MM/dd HH:mm:ss} %-5p %30.30c %x - %m\n"/>
+    </layout>
+  </appender>
+
+  <root>
+    <level value="${log.level}"/>
+    <appender-ref ref="ConsoleAppender"/>
+    <appender-ref ref="FileAppender"/>
+  </root>
+</log4j:configuration>

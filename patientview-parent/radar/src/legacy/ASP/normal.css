@@ -1,0 +1,140 @@
+﻿body, h1, h2, h3, h4, h5 {
+margin:0;
+padding:0;
+border:0;
+}
+
+body {
+font-family:Verdana, Arial, Sans-Serif;
+font-size:80%;
+margin:10px;
+}
+
+textarea {
+font-family:Verdana, Arial, Sans-Serif;
+font-size:100%;
+
+}
+
+.inline {
+display:inline;
+}
+
+.red {
+color:Red;
+}
+
+#outerWrapper #rightNav {
+position:absolute;
+top:112px; /* was 112pc */
+right:40px;
+width:700px;
+text-align:right;
+}
+
+a.info, a.info:visited {
+	position: relative; /*this is the key*/;
+	z-index: 0;
+	color: #000;
+	background-color:#eef6ed;
+	text-decoration: underline;
+	font-weight:normal;
+}
+a.info:hover {
+	z-index: 0;
+	color: #000;
+	text-decoration: none;
+	background-color: #eef6ed;
+	cursor: help;
+	/*font-weight:normal;*/
+
+}
+a.info span {
+	display: none;
+}
+a.info:hover span {
+	/*the span will display just on :hover state*/
+    display: block;
+	position: absolute;
+	padding: 5px;
+	top: -6px;
+	left: 50px;
+	width: 300px;
+	border: 1px solid #000;
+	background-color: #b6df9f;
+	color: #000;
+	text-align: left;
+	text-decoration: none;
+	cursor: help;
+	font-weight:normal;
+	font-size:95%;
+	z-index:0;
+}
+
+.dialog {
+line-height:200%;
+font-size:120%;
+} 
+
+a.info2, a.info2:visited {
+	position: relative; /*this is the key*/;
+	z-index: 0;
+	color:#FF3300;
+	background-color:#B6DF9F;
+	text-decoration: underline;
+	font-weight:normal;
+}
+a.info2:hover {
+	z-index: 0;
+	color: #000;
+	text-decoration: none;
+	background-color: #b6df9f;
+	cursor: help;
+	/*font-weight:normal;*/
+
+}
+a.info2 span {
+	display: none;
+}
+a.info2:hover span {
+	/*the span will display just on :hover state*/
+    display: block;
+	position: absolute;
+	padding: 5px;
+	top: -6px;
+	left: 50px;
+	width: 200px;
+	border: 1px solid #000;
+	background-color: #eef6ed;
+	color: #000;
+	text-align: left;
+	text-decoration: none;
+	cursor: help;
+	font-weight:normal;
+	font-size:90%;
+}
+.grey {
+	color:gray;
+	font-style:italic;
+}
+
+a.btnEdit:link, a.btnEdit:visited {
+text-decoration:none;
+border: 1px solid #808080;
+background-color:#f0f0f0;
+font-size:85%;
+color:#2d2e2e;
+font-weight:normal;
+padding:2px 2px 3px 2px;
+margin-top:-1px;
+margin-bottom:5px;
+vertical-align:text-top;
+}
+
+.saveBtn {
+    background-color: Green;
+    border: 1px solid #B6DF9F;
+    color: White;
+    font-size: 14px;
+    padding: 2px 9px;
+}

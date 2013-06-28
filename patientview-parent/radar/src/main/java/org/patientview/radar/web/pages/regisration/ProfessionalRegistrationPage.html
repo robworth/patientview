@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<wicket:extend>
+    <div>
+
+        <h1>
+            Health Professional
+            Registration</h1>
+
+        <p>
+            To register please enter your name, NHS email address and Centre below. </p>
+
+        <p>
+            Once
+            validated you will be given a username and password to enter the site</p>
+
+        <form wicket:id="form">
+            <fieldset style="padding:10px; width:760px;">
+                <table cellpadding="4" class="style1">
+                    <tbody>
+                    <tr>
+                        <td style="width:140px;">
+                            <label>Surname:</label>
+                        </td>
+                        <td>
+                            <input wicket:id="surname" type="text" style="width:230px;"/>
+                            <span class="feedback" wicket:id="surnameFeedback"></span>
+                            <span wicket:id="surnameFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Forename:</label>
+                        </td>
+                        <td>
+                            <input wicket:id="forename" type="text" style="width:230px;"/>
+                            <span class="feedback" wicket:id="forenameFeedback"></span>
+                            <span wicket:id="forenameFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Title:</label>
+                        </td>
+                        <td>
+                            <select wicket:id="title">
+                            </select>
+                            <span wicket:id="titleFeedbackIndicator"></span>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Geographic area
+                        </td>
+                        <td>
+                            <select wicket:id="areaDropDown">
+                            </select>
+                            <span wicket:id="areaDropDownFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+                    <tr wicket:id="gmcContainer">
+                        <td>
+                            <span>GMC/NMC No.:</span>
+                        </td>
+                        <td>
+                            <input type="text" wicket:id="gmc" style="width:230px;"/>
+                            <span class="feedback" wicket:id="gmcFeedback"></span>
+                            <span wicket:id="gmcFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="roleContainer">
+                        <td>
+                            <label>Role:</label>
+                        </td>
+                        <td>
+                            <input wicket:id="role" type="text" style="width:230px;"/>
+                            <span class="feedback" wicket:id="roleFeedback"></span>
+                            <span wicket:id="roleFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="emailContainer">
+                        <td>
+                            <label>Email
+                                Address</label>
+                        </td>
+                        <td>
+                            <input wicket:id="email" type="text" style="width:230px;"/>
+                            <span class="feedback" wicket:id="emailFeedback"></span>
+                            <span wicket:id="emailFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="phoneContainer">
+                        <td>
+                            Telephone number:
+                        </td>
+                        <td>
+                            <input wicket:id="phone" type="text" style="width:230px;">
+                            <span class="feedback" wicket:id="phoneFeedback"></span>
+                            <span wicket:id="phoneFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="centreContainer">
+                        <td>
+                            <label>Unit:</label>
+                        </td>
+                        <td>
+                            <select wicket:id="centre"/>
+                            <span wicket:id="centreFeedbackIndicator"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="securityQuestionMsgContainer">
+                        <td>
+                            <label>Security Question:</label>
+                        </td>
+                        <td>
+                            <span wicket:id="securityQuestionMessage"></span>
+                        </td>
+                    </tr>
+
+                    <tr wicket:id="securityQuestionContainer">
+                        <td></td>
+                        <td>
+                            <input wicket:id="securityQuestion" type="text" style="width:230px;">
+                            <span class="feedback" wicket:id="securityQuestionFeedback"></span>
+                            <span wicket:id="securityQuestionFeedbackIndicator"></span>
+                            <input wicket:id="securityQuestionAnsw" type="hidden">
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            &nbsp;</td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button wicket:id="submit" type="button" value="Register" class="inline">
+                                <label wicket:id="submitLabel">Continue</label>
+                            </button>
+
+                        </td>
+                        <td>
+                            <span class="successMessage" wicket:id="successMessage"></span>
+                            <span class="feedback" wicket:id="errorFeedback"></span>
+                            <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                &nbsp;</fieldset>
+        </form>
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>

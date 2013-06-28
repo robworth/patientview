@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Consultants</h2>
+
+    <p>
+        <button wicket:id="exportPdf" value="Export to pdf" class="button">Export to pdf</button>
+        &nbsp;
+        <button wicket:id="exportExcel" value="Export to excel" class="button">Export to excel</button>
+        &nbsp;
+        The complete list will be exported
+    </p>
+
+    <p>
+        Click column headings to sort.
+    </p>
+    
+    <p>
+        <button wicket:id="addNewConsultant" type="submit" value="Add a new consultant" class="button">Add a new Consultant</button>
+    </p>
+
+    <div>
+        <table cellspacing="0" cellpadding="0" class="dxgvTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="dxgvHeader" style="width: 35px;">Edit</th>
+                    <th class="dxgvHeader" wicket:id="orderBySurname" style="width: 80px;">Surname</th>
+                    <th class="dxgvHeader" wicket:id="orderByForename" style="width: 80px;">Forename</th>
+                    <th class="dxgvHeader" wicket:id="orderByCentre">Centre</th>
+                    <th class="dxgvHeader">No of patients</th>
+                </tr>
+            </thead>
+            <tbody wicket:id="consultantsContainer">
+                <tr class="dxgvDataRow" wicket:id="consultants">
+                    <td class="dxgv"><a wicket:id="edit">Edit</a></td>
+                    <td class="dxgv"><span wicket:id="surname">surname</span></td>
+                    <td class="dxgv"><span wicket:id="forename">forename</span></td>
+                    <td class="dxgv"><span wicket:id="centre">centre</span></td>
+                    <td class="dxgv"><span wicket:id="numberOfPatients">numberOfPatients</span></td>
+                </tr>
+                <tr>
+                    <td class="dxgv firstCell" colspan="5">
+                        <span wicket:id="navigator" class="paging"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>

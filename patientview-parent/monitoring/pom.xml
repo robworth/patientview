@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.patientview</groupId>
+        <artifactId>patientview-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.patientview</groupId>
+    <artifactId>monitoring</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>PatientView Monitoring</name>
+    <url>https://www.renalpatientview.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>localhost</id>
+            <properties>
+                <env>localhost</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <env>staging</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>production-rpv</id>
+            <properties>
+                <env>production-rpv</env>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <!-- resource files with filtering to output to target/classes -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <filters>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay patientview.properties, other property files -->
+            <filter>src/main/filters/${env}-filters.properties</filter>
+        </filters>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.patientview.monitoring.ImportMonitor</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <includes>
+                        <include>com/worthsoln/monitoring/*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.2.2.RELEASE</version>
+        </dependency>
+
+        <!-- date time utils -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <!-- mailing - (a bit bizarre) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.2.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

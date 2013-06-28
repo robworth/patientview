@@ -1,0 +1,38 @@
+<wicket:panel>
+
+<div id="subBlock">
+
+<table cellpadding="4" id="tblHeader" style="width: 100%;" class="style1">
+    <tbody>
+    <tr>
+        <td>
+            <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblTitle">First Visit - Treatment</span></td>
+        <td style="width:100px; text-align:right;">RaDaR No:</td>
+        <td style="width:160px;padding-right:10px;">
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly"></td>
+    </tr>
+    <tr>
+        <td>Name
+            <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly"/>&nbsp;
+            <input wicket:id="surname" type="text" style="width:120px;" readonly="readonly"/>&nbsp;
+            DoB
+            <input wicket:id="dob" type="text" style="width:80px;" readonly="readonly">&nbsp;</td>
+        <td class="style9" style="text-align:right;">Hospital No:</td>
+        <td>
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;"  readonly="readonly"></td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width:100px; text-align:right;">Diagnosis</td>
+        <td>
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly"></td>
+    </tr>
+    </tbody>
+</table>
+
+<wicket:container wicket:id="treatmentPanel"/>
+
+</div>
+
+</wicket:panel>

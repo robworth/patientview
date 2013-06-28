@@ -1,0 +1,60 @@
+﻿<%@ Master Language="VB" CodeFile="MasterPage.master.vb" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta id="IE8CompatibilityMeta" runat="server" http-equiv="X-UA-Compatible" content="IE=7" />
+        
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="normal.css" rel="stylesheet" type="text/css" />
+	<link href="layout.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+	.style1 {
+		margin-top: 30px;
+		margin-left:20px;
+		
+	}
+	</style>
+	
+</head>
+<body runat="server" id="body">
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"/>
+    
+    <div id="outerWrapper">
+  <div id="header">
+	  <div class="style1"><h1 style="display:inline">RADAR</h1>&nbsp;&nbsp;<h2 style="display:inline">National Renal Rare Disease Registry</h2></div>   
+		</div>  
+		
+  <div id="topNavigation"><a href="Default.aspx">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<asp:HyperLink ID="lnkReg" Text="Register" NavigateUrl="register.aspx" runat="server"></asp:HyperLink>
+	 <div id="rightNav" ><asp:HyperLink ID="lnkEnter" runat="server" Text="Enter New Patient" NavigateUrl="entry.aspx"></asp:HyperLink><asp:Label ID="lblSpace" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkModify" runat="server" Text="Modify Existing Patient" NavigateUrl="view.aspx"></asp:HyperLink>
+		<asp:Label ID="lblSpace2" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><%--<asp:HyperLink ID="lnkCurrent" runat="server" Text="Current Patient Data" Visible="false"></asp:HyperLink><asp:Label ID="lblSpace3" Visible="false" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label>--%><asp:HyperLink ID="lnkClinician" runat="server" Text="Information for Clinicians" NavigateUrl="~/clinician.aspx"></asp:HyperLink></div>
+ 
+	  </div>
+
+<div id="contentWrapper"> <div id="content">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+   
+    
+  
+
+        </asp:ContentPlaceHolder></div>
+       <div id="clearFooter"></div>
+
+    </div> </div>
+   
+    <div id="footer"><script language="javacript" type="text/javascript">
+    document.write('&copy The Renal Association 2009-'+(new Date()).getFullYear());
+    </script>
+
+	
+	<noscript>&copy; The Renal Association</noscript>
+
+    
+    </div>
+    </form>
+</body>
+</html>

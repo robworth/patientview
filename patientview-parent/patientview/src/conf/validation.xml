@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<!DOCTYPE form-validation PUBLIC
+        "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+        "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+    <global>
+        <constant>
+            <constant-name>password.minlength</constant-name>
+            <constant-value>6</constant-value>
+        </constant>
+    </global>
+    <formset>
+        <form name="/patient/passwordChange">
+            <field property="oldpassword" depends="required">
+                <msg key="oldpassword.required" name="required"/>
+                <arg0 key="oldpassword"/>
+            </field>
+            <field property="passwordPwd" depends="required,minlength,validwhen">
+                <msg key="passwordPwd.required" name="required"/>
+                <msg key="passwordPwd.minlength" name="minlength"/>
+                <msg key="passwordPwd.sameasold" name="validwhen"/>
+                <arg0 key="passwordPwd"/>
+                <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+                <var>
+                    <var-name>minlength</var-name>
+                    <var-value>6</var-value>
+                </var>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* != oldpassword)</var-value>
+                </var>
+            </field>
+            <field property="newpasswordagain" depends="required,validwhen">
+                <msg key="newpasswordagain.required" name="required"/>
+                <msg key="newpasswordagain.match" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == passwordPwd)</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/control/passwordChange">
+            <field property="oldpassword" depends="required">
+                <msg key="oldpassword.required" name="required"/>
+                <arg0 key="oldpassword"/>
+            </field>
+            <field property="passwordPwd" depends="required,minlength">
+                <msg key="passwordPwd.required" name="required"/>
+                <msg key="passwordPwd.minlength" name="minlength"/>
+                <arg0 key="passwordPwd"/>
+                <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+                <var>
+                    <var-name>minlength</var-name>
+                    <var-value>6</var-value>
+                </var>
+            </field>
+            <field property="newpasswordagain" depends="required,validwhen">
+                <msg key="newpasswordagain.required" name="required"/>
+                <msg key="newpasswordagain.match" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == passwordPwd)</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/control/edtaCodeAdd">
+            <field property="edtaCode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="description" depends="required">
+                <msg key="description.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/edtaCodeUpdate">
+            <field property="edtaCode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="description" depends="required">
+                <msg key="description.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/resultHeadingAdd">
+            <field property="headingcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="heading" depends="required">
+                <msg key="heading.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/resultHeadingUpdate">
+            <field property="headingcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="heading" depends="required">
+                <msg key="heading.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/unitAdd">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/unitUpdate">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/patientAdd">
+            <field property="username" depends="required">
+                <msg key="username.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+            <field property="nhsno" depends="required,mask">
+                <msg key="nhsno.required" name="required"/>
+                <msg key="nhsno.mask" name="mask"/>
+                <msg key="nhsno.checksum" name="nhsnochecksum"/>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[a-zA-Z0-9]{10}$</var-value>
+                </var>
+            </field>
+            <field property="email" depends="email">
+                <msg key="email.valid" name="email"/>
+            </field>
+            <field property="unitcode" depends="required">
+                <msg key="unitcode.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/patientEditX">
+            <field property="username" depends="required">
+                <msg key="username.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+            <field property="nhsno" depends="required,mask">
+                <msg key="nhsno.required" name="required"/>
+                <msg key="nhsno.mask" name="mask"/>
+                <msg key="nhsno.checksum" name="nhsnochecksum"/>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[a-zA-Z0-9]{10}$</var-value>
+                </var>
+            </field>
+            <field property="email" depends="email">
+                <msg key="email.valid" name="email"/>
+            </field>
+            <field property="unitcode" depends="required">
+                <msg key="unitcode.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/unitAdminAdd">
+            <field property="username" depends="required">
+                <msg key="username.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+            <field property="email" depends="email">
+                <msg key="email.valid" name="email"/>
+            </field>
+            <field property="role" depends="required">
+                <msg key="role.required" name="required"/>
+            </field>
+            <field property="unitcode" depends="validwhen">
+                <msg key="unitcode.required" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((role == "superadmin") or (*this* != null))</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/control/newsAdd">
+            <field property="headline" depends="required">
+                <msg key="news.headline.required" name="required"/>
+            </field>
+            <field property="body" depends="required">
+                <msg key="news.body.required" name="required"/>
+            </field>
+        </form>
+        <form name="/patient/patientAddsBloodPressure">
+            <field property="day" depends="required">
+                <msg key="dayofmonth.required" name="required"/>
+            </field>
+            <field property="month" depends="required">
+                <msg key="month.required" name="required"/>
+            </field>
+            <field property="year" depends="required">
+                <msg key="year.required" name="required"/>
+            </field>
+            <field property="hour" depends="required">
+                <msg key="hour.required" name="required"/>
+            </field>
+            <field property="minute" depends="required">
+                <msg key="minute.required" name="required"/>
+            </field>
+            <field property="patientResultValue1" depends="required,integer">
+                <msg key="bpsys.required" name="required"/>
+                <msg key="bpsys.integer" name="integer"/>
+            </field>
+            <field property="patientResultValue2" depends="required,integer,sysgreaterthandia">
+                <msg key="bpdia.required" name="required"/>
+                <msg key="bpdia.integer" name="integer"/>
+                <var>
+                    <var-name>secondProperty</var-name>
+                    <var-value>patientResultValue1</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="/patient/patientAddsGlucose">
+            <field property="day" depends="required">
+                <msg key="dayofmonth.required" name="required"/>
+            </field>
+            <field property="month" depends="required">
+                <msg key="month.required" name="required"/>
+            </field>
+            <field property="year" depends="required">
+                <msg key="year.required" name="required"/>
+            </field>
+            <field property="hour" depends="required">
+                <msg key="hour.required" name="required"/>
+            </field>
+            <field property="minute" depends="required">
+                <msg key="minute.required" name="required"/>
+            </field>
+            <field property="patientResultValue1" depends="required,float">
+                <msg key="glucose.required" name="required"/>
+                <msg key="glucose.float" name="float"/>
+            </field>
+        </form>
+        <form name="/patient/patientAddsWeight">
+            <field property="day" depends="required">
+                <msg key="dayofmonth.required" name="required"/>
+            </field>
+            <field property="month" depends="required">
+                <msg key="month.required" name="required"/>
+            </field>
+            <field property="year" depends="required">
+                <msg key="year.required" name="required"/>
+            </field>
+            <field property="hour" depends="required">
+                <msg key="hour.required" name="required"/>
+            </field>
+            <field property="minute" depends="required">
+                <msg key="minute.required" name="required"/>
+            </field>
+            <field property="patientResultValue1" depends="required,float">
+                <msg key="weight.required" name="required"/>
+                <msg key="weight.float" name="float"/>
+            </field>
+        </form>
+        <form name="/patient/patientAddsResultComment">
+            <field property="day" depends="required">
+                <msg key="dayofmonth.required" name="required"/>
+            </field>
+            <field property="month" depends="required">
+                <msg key="month.required" name="required"/>
+            </field>
+            <field property="year" depends="required">
+                <msg key="year.required" name="required"/>
+            </field>
+            <field property="hour" depends="required">
+                <msg key="hour.required" name="required"/>
+            </field>
+            <field property="minute" depends="required">
+                <msg key="minute.required" name="required"/>
+            </field>
+            <field property="patientResultValue1" depends="required,maxlength">
+                <msg key="result.comment.required" name="required"/>
+                <arg position="0" name="maxlength" key="${var:maxlength}" resource="false"/>
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>100</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="/control/splashPageUpdate">
+            <field property="name" depends="required">
+                <msg key="splashpage.name.required" name="required"/>
+            </field>
+            <field property="headline" depends="required">
+                <msg key="splashpage.headline.required" name="required"/>
+            </field>
+            <field property="unitcode" depends="required">
+                <msg key="splashpage.unitcode.required" name="required"/>
+            </field>
+            <field property="bodytext" depends="required">
+                <msg key="splashpage.bodytext.required" name="required"/>
+            </field>
+        </form>
+
+    </formset>
+
+</form-validation>

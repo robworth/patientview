@@ -1,0 +1,466 @@
+
+ <!-- /*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
+********************** LINKS **************** -->
+
+.--{;}
+
+
+
+a:link{
+	font-family: Verdana, Arial, Helvetica;
+	font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+.link{
+	font-family: Verdana, Arial, Helvetica;
+	font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+a:active{
+	font-family: Verdana, Arial, Helvetica;
+	font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+
+a:visited {
+	font-family: Verdana, Arial, Helvetica;
+	font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+
+a:hover{
+	font-family: Verdana, Arial, Helvetica;
+	font-style:normal; font-weight:normal; color:#49AAE8; text-decoration:underline;
+}
+
+
+
+
+ <!-- **********************GENERAL **************** -->
+
+.--{;}
+
+
+body{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA; text-decoration:none;
+}
+
+p{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA;  text-decoration:none; text-align:justify; padding-right:12px;
+}
+
+b{
+	font-weight:bold;
+}
+
+strong{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#006BBA;  text-decoration:none;
+}
+
+
+.small{
+	font-family: Arial, Helvetica;
+	font-size:10px; font-style:normal; font-weight:normal;  text-decoration:none;
+}
+
+
+s{
+	font-family: Arial, Helvetica; font-size:11px; font-style:normal;
+	font-weight:normal; color:#006BBA; text-decoration:none;
+}
+
+td{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA;  text-decoration:none;
+}
+
+td.password{
+	font-family: Courier;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA;  text-decoration:none;
+}
+
+
+
+ul{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA;  text-decoration:none; text-align:left;
+}
+
+ol{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA;  text-decoration:none; text-align:left;
+}
+
+
+li{
+	font-family: Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA;  text-decoration:none; text-align:left;
+}
+
+i{
+	font-style:italic;
+}
+
+
+
+
+
+ <!-- **********************SPECIAL **************** -->
+
+.--{;}
+
+
+.header{
+font-family: Arial, Helvetica;
+ font-size:16px; font-style:normal; font-weight:bold; color:#006BBA;  text-decoration:none; text-align:left; padding-top:12px;
+}
+
+.subheader{
+font-family: Arial, Helvetica;
+ font-size:12px; font-style:normal; font-weight:bold; color:#5999E1;  text-decoration:none; text-align:left; padding-top:12px;
+}
+
+
+.infostrip{
+font-family:Verdana, Arial, Helvetica;
+font-size:12px; font-style:normal; font-weight:normal; color:#000000; background-color: #ffffff; border-bottom-width: 1px; border-right-width: 0; border-color: #CFE6FC; border-style: solid; border-left-width: 0; border-top-width: 0; height:35px; padding-left:12px; padding-right:12px
+}
+
+
+.left{
+font-family:Arial, Helvetica;
+font-size:12px; font-style:normal; font-weight:normal; color:#006BBA; background-color: #ffffff; border-bottom-width: 0px; border-right-width: 1; border-color: #CFE6FC; border-style: solid; border-left-width: 0; border-top-width: 0; width:140px; text-align:left; padding-left:20px; padding-top:12px; padding-right:5px;
+}
+
+
+ .picture {  margin-top:10px; padding-left: 20px;}
+
+.mainbody{
+font-family:Arial, Helvetica;
+font-size:12px; font-style:normal; font-weight:normal; width:500px; text-align:left; padding-left:12px; padding-bottom:20px; height:300px;
+}
+
+
+.allborders {  background-color: White; border: #BAD3ED; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px}
+
+
+.thinblue {  color: #BAD3ED; background-color: #BAD3ED; border: #BAD3ED; height: 1px}
+
+
+
+.copyprob{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:16px; font-style:normal; font-weight:bold; color:#ff3300; text-decoration:none;
+}
+
+
+ <!-- ******************** FORM ********************** -->
+.--{;}
+
+
+
+ .smallform{
+	font-family: Arial, Helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#000000; text-decoration:none; padding-right:5px;
+}
+
+
+
+ .adminform{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA; background-color: #ffffff;  border-color: #8BC3F7; border-style: solid; border-width: 1; width: 300px;
+}
+
+
+
+ .dropdown{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA; background-color: #ffffff;  border-color: #8BC3F7; border-style: solid; border-width: 1; padding-left:3px;
+}
+
+.loginform{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:10px; font-style:normal; font-weight:normal; color:#000000; background-color: #ffffff;  border-color: #8BC3F7; border-style: solid; border-width: 1; height:16px;  padding-left:3px; width:100px;
+}
+
+
+.form{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#006BBA; background-color: #ffffff;  border-color: #8BC3F7; border-style: solid; border-width: 1; height:20px;  padding-left:3px; width:130px;
+}
+
+.formbutton{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:10px; font-style:normal; font-weight:bold; color:#ffffff; background-color: #5999E1; border-color: #8BC3F7; border-style: outset; border-width: 1;
+}
+
+ <!-- ******************** TABLE CELLS ********************** -->
+ .--{;}
+
+
+
+
+.tablecell{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:normal; color:#037AC3; background-color:#ECF1FB; text-decoration:none; padding-left:8;
+}
+
+
+
+.tablecellbold{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#037AC3; background-color:#ECF1FB; text-decoration:none; padding-left:8;
+}
+
+
+.tableheader{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#ffffff; background-color:#8BC3F7; text-decoration:none; padding-left:8;
+}
+
+
+
+
+
+
+
+
+
+ <!-- ******************** NAV TABLE ********************** -->
+ .--{;}
+
+
+
+
+.navcell-empty{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; background-color: #8BC3F7; border-bottom-width: 1; border-right-width: 0; border-color: #CFE6FC #ffffff #59A3E1 #ffffff; border-style: solid; border-left-width: 0; border-top-width: 6; height:25px; width:10px;
+}
+
+
+
+
+
+.navcell-right{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; background-color: #8BC3F7; border-bottom-width: 1; border-right-width: 0; border-color: #CFE6FC #ffffff #59A3E1 #ffffff; border-style: solid; border-left-width: 0; border-top-width: 6; height:25px; text-align:center; white-space:nowrap
+}
+
+
+.navcell{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; background-color: #8BC3F7; border-bottom-width: 1; border-right-width: 1; border-color: #CFE6FC #ffffff #59A3E1 #ffffff; border-style: solid; border-left-width: 0; border-top-width: 6; height:25px; text-align:center; white-space:nowrap
+}
+
+
+a.navlink{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #8BC3F7; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+
+.navlink{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #8BC3F7; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+
+
+a.navlink:active{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #8BC3F7; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+a.navlink:visited{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #8BC3F7; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+
+a.navlink:hover{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #ECF1FB; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+
+
+a.navlinkon{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #ECF1FB; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+
+.navlinkon{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #ECF1FB; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+a.navlinkon:visited{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #ECF1FB; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+a.navlinkon:active{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #ECF1FB; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+a.navlinkon:hover{
+	font-family:Verdana, Arial, Helvetica;
+	font-size:12px; font-style:normal; font-weight:bold; color:#000000; text-decoration:none; background-color: #ECF1FB; height:30px; padding:6px; border-top-width: 1; border-left-width: 0;  border-right-width: 0;  border-bottom-width: 0;  border-style: solid; border-color: #59A3E1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a.smalllink{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+
+.smalllink{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+
+
+a.smalllink:hover{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#3687D9; text-decoration:underline;
+}
+
+a.smalllink:active{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+
+a.smalllink:visited{
+	font-family: Verdana, Arial, Helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#006BBA; text-decoration:underline;
+}
+
+
+
+
+
+a.wlink{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#59A3E1; text-decoration:underline;
+}
+.wlink{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#59A3E1; text-decoration:underline;
+}
+a.wlink:visited{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#59A3E1; text-decoration:underline;
+}
+
+a.wlink:active{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#59A3E1; text-decoration:underline;
+}
+
+a.wlink:hover{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#7C7C7C; text-decoration:underline;
+}
+
+.w{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#59A3E1; text-decoration:none;
+}
+
+
+a.paginate{
+	font-family:arial, helvetica;
+	font-size:11px; font-style:normal; font-weight:normal; color:#59A3E1; text-decoration:none;
+}
+
+.resultsPanels li{
+    list-style-type: none;
+    display: block;
+    width: 13px;
+    float: left;
+}
+
+.resultsPanels{
+    width: 400px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.resultsPanels li a .hover{
+    display: none;
+}
+
+.resultsPanels li a:hover .hover{
+    display: block;
+    position: absolute;
+    border: 1px solid #8BC3F7;
+    background-color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+}
+
+#resultsPanelsLabel{
+    display: block;
+    width: 125px;
+    float: left;
+    padding: 0;
+}
+
+.pagination{
+    float: left;
+}
+
+.contact label{
+    display: block;
+}
+
+.contact textarea{
+    width: 440px;
+    margin: 5px 0;
+    border:1px solid #8BC3F7;
+}
+
+.contact input, .forgotenPassword label{
+    display: block;
+}
+
+ .forgotenPassword input{
+    display: block;
+    margin: 5px 0;
+    border:1px solid #8BC3F7;

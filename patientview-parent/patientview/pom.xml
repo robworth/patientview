@@ -1,0 +1,750 @@
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.patientview</groupId>
+        <artifactId>patientview-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.patientview</groupId>
+    <artifactId>patientview</artifactId>
+    <packaging>war</packaging>
+
+    <!--Snapshot means a version is downloaded every runtime-->
+    <version>1.0-SNAPSHOT</version>
+
+    <name>Renal Patient View</name>
+    <url>https://www.renalpatientview.org</url>
+
+    <properties>
+        <jetty.version>8.1.3.v20120416</jetty.version>
+        <spring.version>3.1.1.RELEASE</spring.version>
+        <spring-security.version>3.1.0.RELEASE</spring-security.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>localhost</id>
+            <properties>
+                <env>localhost</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/patientview</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+                <tomcatmanagerurl>http://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <env>staging</env>
+                <tomcatmanagerurl>http://patientview.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging-ibd</id>
+            <properties>
+                <env>staging</env>
+                <tomcatmanagerurl>http://ibd.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>production-ibd</id>
+            <properties>
+                <env>production-ibd</env>
+                <tomcatmanagerurl>https://ibd.solidstategroup.com:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>production-rpv</id>
+            <properties>
+                <env>production-rpv</env>
+                <tomcatmanagerurl>https://www.renalpatientview.org:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <!-- resource files with filtering to output to target/classes -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/conf</directory>
+                <filtering>false</filtering>
+                <targetPath>${profile.build.output-webapp-dir}/WEB-INF</targetPath>
+                <includes>
+                    <include>*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/conf/config</directory>
+                <filtering>true</filtering>
+                <targetPath>${profile.build.output-webapp-dir}/WEB-INF/config</targetPath>
+            </resource>
+            <resource>
+                <directory>src/conf/struts</directory>
+                <filtering>false</filtering>
+                <targetPath>${profile.build.output-webapp-dir}/WEB-INF/struts</targetPath>
+            </resource>
+            <resource>
+                <directory>src/conf/metainf</directory>
+                <filtering>true</filtering>
+                <targetPath>${profile.build.output-webapp-dir}/META-INF</targetPath>
+            </resource>
+        </resources>
+
+        <filters>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay cms.properties, other property files -->
+            <filter>src/main/filters/${env}-filters.properties</filter>
+        </filters>
+
+        <plugins>
+
+            <!-- clear down any temporary files when running war:place localhost profile -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/webapp/META-INF</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>web.xml</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <!-- http://maven.apache.org/plugins/maven-remote-resources-plugin/usage.html -->
+            <plugin>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>process-remote-resources</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>org.patientview:common:${project.version}</resourceBundle>
+                            </resourceBundles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+
+            <!--For running standalone-->
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8080</port>
+                            <maxIdleTime>3600000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                    <!-- this config tells jetty to run with our filtered web.xml -->
+                    <!--<webAppConfig>-->
+                    <!--<contextPath>/</contextPath>-->
+                    <!--<descriptor>${project.build.directory}/web.xml</descriptor>-->
+                    <!--</webAppConfig>-->
+                </configuration>
+            </plugin>
+
+            <!--For deploying to Tomcat-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <url>${tomcatmanagerurl}</url>
+                    <server>tomcatmanager</server>
+                    <path>${warpath}</path>
+                </configuration>
+            </plugin>
+
+            <!-- for running an embedded tomcat 7 server -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
+                <configuration>
+                    <path>/</path>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <!-- when creating the war file use the filtered web.xml -->
+                    <!--<webXml>${project.build.directory}/web.xml</webXml>-->
+                    <!-- overwrite the default files with any build/environment specific ones -->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>  <!-- needs to be compile because we have to pull in the common resources-->
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle.xml</configLocation>
+                    <headerLocation>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle.license</headerLocation>
+                    <suppressionsFile>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle-suppressions.xml</suppressionsFile>
+                    <failsOnError>true</failsOnError>
+                    <consoleOutput>true</consoleOutput>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- be careful not to bypass this repos, e.g. by setting a mirror to <mirrorOf>*</mirrorOf> in your settings.xml -->
+    <repositories>
+        <repository>
+            <id>lib</id>
+            <name>lib</name>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <!-- our common code -->
+        <dependency>
+            <groupId>org.patientview</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- POI - USED FOR EXCEL API -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.7</version>
+        </dependency>
+
+        <!-- force correct latest version for hibernate -->
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+            <!-- will come with all needed Spring dependencies such as spring-core and spring-beans-->
+        </dependency>
+
+        <!-- spring security stuff -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+
+        <!-- there following are required for spring security to force the correct version (3.1) to be used
+        http://stackoverflow.com/questions/10216563/spring-security-error-creating-bean-org-springframework-security-filterchains -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-struts</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+            <version>2.1.9.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
+        <!-- apache commons stuff -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>20030211.134440</version>
+        </dependency>
+
+        <!-- rolled back to 1.6 to get DigestUtils.sha256Hex -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>20040616</version>
+        </dependency>
+
+        <!-- The latest version of this is 1.4 but anything over 1.0 is causing Calendar-datetime mapping errors on the medicines page-->
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>20030825.183949</version>
+        </dependency>
+
+        <!-- missing common-resources -->
+
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.1.1.Final</version>
+            <!-- will come with Hibernate core-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>1.2.0.Final</version>
+        </dependency>
+
+        <!-- struts -->
+        <dependency>
+            <groupId>struts</groupId>
+            <artifactId>struts</artifactId>
+            <version>1.2.9</version>
+        </dependency>
+
+        <!-- container -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+        To install to local:
+
+        mvn install:install-file -Dfile=jGpg-0.2.jar -DgroupId=com.plmatrix.gpg -DartifactId=gpg-tool-free -Dversion=0.2 -Dpackaging=jar
+
+        To deploy to ssg nexus repository
+
+        mvn deploy:deploy-file -Dfile=gpg-tool-free-0.2.jar -DgroupId=com.plmatrix.gpg -DartifactId=gpg-tool-free -Dversion=0.2 -Dpackaging=jar -DrepositoryId=ssg -Durl=http://nexus.solidstategroup.com/content/repositories/thirdparty/
+        -->
+        <dependency>
+            <groupId>com.plmatrix.gpg</groupId>
+            <artifactId>gpg-tool-free</artifactId>
+            <version>0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ostermiller</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.07.00</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+
+        <!-- runtime dependencies -->
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <!--<version>20040902.021138</version>-->
+            <version>1.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.19</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>datetime</artifactId>
+            <version>1.0.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>string</artifactId>
+            <version>1.1.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <version>1.9.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>quartz</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.5.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.htmlparser</groupId>
+            <artifactId>htmlparser</artifactId>
+            <version>1.6</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>bsh</groupId>
+            <artifactId>bsh</artifactId>
+            <version>2.0b4</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>concurrent</groupId>
+            <artifactId>concurrent</artifactId>
+            <version>1.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Ehcache 1.1 but ehcache already in build-->
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.1.3</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- date time utils -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <!-- these xml dependencies seem to be breaking everything -->
+
+        <!--<dependency>-->
+        <!--<groupId>jaxen</groupId>-->
+        <!--<artifactId>jaxen</artifactId>-->
+        <!--<version>1.1</version>-->
+        <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
+
+        <!-- no idea what version of this we need for this -->
+        <!--<dependency>-->
+        <!--<groupId>xmlrpc</groupId>-->
+        <!--<artifactId>xmlrpc</artifactId>-->
+        <!--<version>1.1</version>-->
+        <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>xom</groupId>-->
+        <!--<artifactId>xom</artifactId>-->
+        <!--<version>1.0</version>-->
+        <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
+
+        <!-- test stuff -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.165</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-test</artifactId>
+            <version>2.1.9.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

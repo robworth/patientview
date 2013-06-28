@@ -1,0 +1,69 @@
+﻿<%@ Master Language="VB" CodeFile="Lab.master.vb" Inherits="Lab" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="normal.css" rel="stylesheet" type="text/css" />
+	<link href="layout.css" rel="stylesheet" type="text/css" />
+	<link href="tabs.css" rel="stylesheet" type="text/css" />
+	<link href="tabs_lab.css" rel="stylesheet" type="text/css" />
+
+	<style type="text/css">
+	.style1 {
+		margin-top: 20px;
+		margin-left:20px;
+	}
+	#mainBlock {
+	margin-top:0px; margin-left:70px;
+	}
+	
+	#tabsC {
+	top:-30px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="outerWrapper">
+  <div id="header">
+	  <h1 class="style1">Renal Disease Database  </h1>
+		</div>  
+		
+  <div id="topNavigation"><a href="Default.aspx">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<asp:HyperLink ID="lnkReg" Text="Register" NavigateUrl="register.aspx" runat="server"></asp:HyperLink>
+	 <div id="rightNav" ><asp:HyperLink ID="lnkEnter" runat="server" Text="Enter New Patient" NavigateUrl="entry.aspx"></asp:HyperLink><asp:Label ID="lblSpace" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkModify" runat="server" Text="Modify Existing Patient" NavigateUrl="view.aspx"></asp:HyperLink>
+		<asp:Label ID="lblSpace2" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkCurrent" runat="server" Text="Current Patient Data"></asp:HyperLink><asp:Label ID="lblSpace3" runat="server">&nbsp;&nbsp;|&nbsp;&nbsp;</asp:Label><asp:HyperLink ID="lnkDisease" runat="server" Text="Diseases"></asp:HyperLink></div>
+ 
+	  </div>
+
+<div id="contentWrapper">
+<div id="content>">
+<div id="tabsC" style="margin-top:40px; margin-left:20px;" > 
+  <ul> 
+    <li><a href="patient-entry2.aspx" title="Demographics"><span>Demographics</span></a></li> 
+    <li><asp:hyperlink runat="server" ID="lnkDiagnosis" NavigateUrl="diagnosis2.aspx" ToolTip="Diagnosis"><span >Diagnosis</span></asp:hyperlink></li> 
+<%--    <li><asp:hyperlink runat="server" ID="lnkClinical" NavigateUrl="clinical3.aspx" Tooltip="Clinical Picture"><span>Clinical Picture</span></asp:hyperlink></li> 
+--%>    <li><asp:hyperlink runat="server" ID="lnkLabResults" NavigateUrl="#" Tootip="Laboratory Results"><span class="hovered">First Visit</span></asp:hyperlink></li> 
+    <li><asp:hyperlink runat="server" ID="lnk3Months" NavigateUrl="six-month.aspx" Tooltip="Follow Up"><span>Follow Up</span></asp:hyperlink></li> 
+  </ul> 
+</div> 
+<div id="mainBlock">
+
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+   
+    
+  
+
+        </asp:ContentPlaceHolder></div></div>
+       <div id="clearFooter"></div>
+
+     </div></div>
+    <div id="footer">&copy;2009 The Renal Association</div>
+    </form>
+</body>
+</html>

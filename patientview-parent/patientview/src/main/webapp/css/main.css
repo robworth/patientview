@@ -1,0 +1,473 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
+h1, h2{
+	color: #0066cc;
+}
+
+.navbar-inner{
+	background: #0066cc;
+    filter: none;
+	box-shadow: none;
+	border-radius: 0;
+	color: #fff;
+}
+
+.navbar .brand{
+	background: url(../img/NHSlogo.gif) no-repeat 0 3px;
+	color: white;
+    font-weight: bold;
+    height: 18px;
+    margin-top: 2px;
+    margin-left: 0;
+    padding-left: 85px;
+    padding-top: 3px;
+    font-size: 12px;
+    width: 300px;
+    line-height: 1.2;
+}
+
+.navbar .navText{
+    padding: 9px 10px 11px;
+}
+
+.navbar .container {
+	width: 940px;
+}
+
+.navbar-form input{
+	margin-top: 0;
+}
+
+.navbar .nav > li > a{
+	color: #fff;
+	font-size: 14px;
+	width: 100%;
+}
+
+.nav-pills{
+	border-bottom: 5px solid #ddd;
+}
+
+.nav-pills > li > a{
+	color: #333;
+	font-size: 13px;
+	font-weight: bold;
+	padding-right: 7px;
+	padding-left: 7px;
+}
+
+.nav-pills > li:first-child > a{
+	padding-left: 0;
+}
+
+.nav-pills > li:last-child > a{
+	padding-right: 0;
+}
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover{
+	background: none;
+	color: #0066cc;
+}
+
+.nav li > a:hover{
+	background: none;
+	color: #06C;
+}
+
+.carousel .item{
+	height: 292px;
+}
+
+.carousel-caption{
+	background-color: rgba(0,102,204,0.75);
+	left: 0;
+	font-size: 14px;
+	line-height: 16px;
+	height: 262px;
+	padding: 15px;
+	width: 270px;
+}
+
+.carousel-control{
+	background: none;
+	border: 0;
+}
+
+.carousel-control.right{
+	position: absolute;
+	bottom: 5px;
+	top: auto;
+	right: 5px;
+}
+
+.carousel-control.left{
+	position: absolute;
+	bottom: 5px;
+	left: auto;
+	top: auto;
+	right: 25px;
+}
+
+.readMoreBlueBox{
+	bottom: 15px;
+	color: #fff;
+	display: inline-block;
+	background-color: #003C77;
+	border: 1px solid #011830;
+	right: 15px;
+	padding: 5px;
+	position: absolute;
+}
+
+.readMoreBlueBox:hover{
+	color: #fff;
+}
+
+
+.largeCarouselTitle{
+	font-size: 40px;
+	line-height: 40px;
+	padding-bottom: 20px;
+}
+
+.seperatingBorders{
+	border: solid #333;
+	border-width: 4px 0;
+	font-size: 12px;
+}
+
+.seperatingBorders img.pull-right{
+	margin: 5px 0 5px 5px;
+}
+
+.mediumBlueTitle{
+	color: #0066cc;
+	font-size: 14px;
+}
+
+.titleSeperator{
+	border-bottom: 1px solid #333;
+	margin-bottom: 5px;
+	padding-bottom: 3px;
+}
+
+.readMoreParagraph{
+	color: #003c77;
+	font-weight: bold;
+
+}
+
+.endOfParagraphLink{
+	line-height: 40px;
+}
+
+.linkList{
+	list-style-type: none;
+	margin: 0;
+}
+
+.linkList li{
+	border: solid #ddd;
+	border-width: 0 0 1px 0;
+	font-size: 12px;
+	padding: 5px 0 3px 0;
+}
+
+.footer{
+	margin-top: 80px;
+	border-top: 5px solid #ddd;
+	padding-top: 10px;
+	margin-bottom: 40px;
+}
+
+.barSpeperatedNav{
+	list-style-type: none;
+	margin: 0;
+}
+
+.barSpeperatedNav li{
+	float: left;
+	margin-right: 5px;
+}
+
+.barSpeperatedNav li:not(:last-child):after{
+	content : " | ";
+}
+
+.barSpeperatedNav li a{
+	color: #003c77;
+	font-weight: bold;
+}
+
+.medicalDiagram{
+	text-align: center;
+	margin: 0 0 20px 0;
+}
+
+.no-top-padding, .form-horizontal .control-label.no-top-padding{
+    padding-top: 0;
+}
+
+.checkbox.inline.span6 {
+    width: 447px;
+}
+
+.paragraphSizeTopMargin{
+    margin-top: 9px;
+}
+
+.noSidePadding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.flush-dl dt{
+    margin-top: 9px;
+}
+
+.flush-dl dd{
+    margin-left: 0;
+}
+
+.hidden {
+    display: none!important;
+}
+
+.launchPadTextAlternative{
+    background: url(/img/content/launchPadPlaceHolder.png);
+    font-size: 25px;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.launchPadTextAlternative.renalResults{
+    background: url(/img/content/resultsThumbPlaceHolder.png);
+    font-size: 20px;
+    padding: 60px 0;
+}
+
+.thumbnail .caption{
+    text-align: center;
+}
+
+.thumbnail .caption h5{
+    padding-bottom: 5px;
+}
+
+/* graph styles */
+.linegraph {
+    width: 540px;
+    height: 350px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.severe {
+    color: #FE2E2E
+}
+
+.moderate {
+    color: #FFBF00
+}
+
+.mild {
+    color: #01DF01
+}
+
+.heroList {
+    color: #fff;
+    font-size: 16px;
+}
+
+.heroList li{
+    margin-bottom: 5px;
+}
+
+.control-label{
+    font-weight: bold;
+}
+
+.medicalDiagramKey{
+    margin-right: 10px;
+}
+
+.medicalDiagramKey dd{
+    float: left;
+    text-align: left;
+}
+
+.keyItem{
+    background-color: red;
+    border: 1px solid black;
+    float: left;
+    width: 10px;
+    height: 10px;
+    text-indent:-9999px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.sliderGroup {
+    margin-top: 10px;
+}
+
+.sliderGroup .sliderHeading{
+    display: inline-block;
+    padding-left: 151px;
+}
+
+.sliderGroup .sliderHeading .bottomValue{
+    float: left;
+    font-weight: bold;
+    text-align: center;
+    width: 150px;
+}
+
+.sliderGroup .sliderHeading .topValue{
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    width: 130px;
+}
+
+.sliderGroup .control-label{
+    font-weight: normal;
+    height: 35px;
+    margin-bottom: 0;
+    text-align: left;
+    width: 170px;
+}
+
+.sliderGroup .sliderContainer{
+    padding-top: 2px;
+}
+
+.sliderGroup .smile{
+    float: left;
+    display: block;
+    font-style: normal;
+    font-size: 17px;
+    padding: 0 5px;
+}
+
+.padded-list li {
+    margin-bottom: 5px;
+}
+
+.table-massive{
+    border-collapse: collapse;
+    margin-right: 40px;
+}
+
+.table-massive th{
+    min-width: 90px;
+}
+
+.tooltip{
+    background: #fff;
+    color: #08c;
+    border: 1px solid #ddd;
+    margin-top: -5px;;
+}
+
+.tooltip-link:hover .tooltip{
+    opacity: 1;
+    filter: alpha(opacity=1);
+}
+
+/** MESSAGES **/
+
+
+section article.conversation, section article.message{
+    padding:18px 18px;
+    border-bottom: 1px dotted #eeeeee;
+}
+
+section article.conversation.odd{
+    background:#f6f6f6;
+}
+
+section article.conversation .badge, section article.message .badge{
+    position:relative;
+    top:-15px;
+}
+
+section article.message{
+    padding: 18px 0;
+}
+
+section article .content{
+    margin-top:10px;
+}
+section article.conversation:hover{
+    cursor:pointer;
+    background:#f6f6f6;
+}
+
+section.conversation-container a:hover{
+    text-decoration:none;
+    color:#0066CC;
+}
+
+section article.conversation .dull, section article.message .dull, .dull{
+    color:#9b9b9b;
+}
+
+.float-in-form-actions{
+    margin: 18px 18px 0;
+}
+
+.patient-edit-form.form-actions{
+    padding-left:30px;
+}
+
+.form-actions form{
+    margin: 0;
+}
+
+.js-messages{
+    margin-bottom:20px;
+}
+
+.form-horizontal .top-help-block, .top-help-block {
+    margin-top: 6px;
+}
+
+.details-tbl-width {
+    width: 620px
+}
+
+.action-test {
+    display: none;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 16px;
+    margin-left: 10px;
+    position: relative;
+    top: -1px;
+}
+
+.conversation-container a:hover .action-test {
+    display: inline;
+}

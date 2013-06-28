@@ -6,5 +6,6 @@ out/
 *.iml
 *.ipr
 *.iws
-src/main/webapp/WEB-INF/
-!src/main/webapp/WEB-INF/web.xml
+patientview-parent/patientview/src/main/webapp/WEB-INF/
+!patientview-parent/patientview/src/main/webapp/WEB-INF/web.xml
+patientview-parent/patientview/src/main/webapp/META-INF/

@@ -1,0 +1,1710 @@
+<?xml version="1.0"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<patientview>
+    <sequence>00794</sequence>
+    <dateofreport>2012-03-21T09:51:44</dateofreport>
+    <flag>Follow-up-report</flag>
+    <centredetails>
+        <centrecode>A</centrecode>
+        <centrename>Centre Name</centrename>
+        <centreaddress1>Centre Address 1</centreaddress1>
+        <centreaddress2>Centre Address 2</centreaddress2>
+        <centreaddress3>Centre Address 3</centreaddress3>
+        <centreaddress4>Centre Address 4</centreaddress4>
+        <centrepostcode>Centre Postcode</centrepostcode>
+        <centretelephone>020 22222 2222</centretelephone>
+        <centreemail>centre@email.com</centreemail>
+    </centredetails>
+    <gpdetails>
+        <gpname>Dr GP Name</gpname>
+        <gpaddress1>GP address 1</gpaddress1>
+        <gpaddress2>GP address 2</gpaddress2>
+        <gpaddress3>GP address 3</gpaddress3>
+        <gppostcode>GP Postcode</gppostcode>
+        <gptelephone>020 1111 1111</gptelephone>
+    </gpdetails>
+    <patient>
+        <personaldetails>
+            <surname>Surname</surname>
+            <forename>Forename</forename>
+            <dateofbirth>1961-09-08</dateofbirth>
+            <sex>Male</sex>
+            <nhsno>1234567890</nhsno>
+            <ethnicorigin>White</ethnicorigin>
+            <hospitalnumber>1111111</hospitalnumber>
+            <address1>Patient Address 1</address1>
+            <address2>Patient Address 2</address2>
+            <address3>Patient Address 3</address3>
+            <address4>Patient Address 4</address4>
+            <postcode>Patient Postcode</postcode>
+            <telephone1>020 9999 8888</telephone1>
+            <telephone2>020 7777 6666</telephone2>
+            <mobile>0777 123 456</mobile>
+        </personaldetails>
+        <clinicaldetails>
+            <rrtstatus>HD</rrtstatus>
+            <tpstatus>N</tpstatus>
+            <diagnosisdate>2005-01-25</diagnosisdate>
+            <diagnosis>Crohn's Disease</diagnosis>
+            <ibddiseaseextent>Crohn's Colitis</ibddiseaseextent>
+            <ibddiseasecomplications>Peri-anal disease (fissures, fistulas,abscesses): Large bowel stricturing:
+                Osteopaenia
+            </ibddiseasecomplications>
+            <ibdeimanifestations>IBD EI Manifestations</ibdeimanifestations>
+            <bodypartsaffected>Body parts affected</bodypartsaffected>
+            <familyhistory>Family history of bowel cancer</familyhistory>
+            <smokinghistory>Never smoked</smokinghistory>
+            <surgicalhistory>Other procedure - please specify, subtotal colcectomy, ileo-rectal anastomosis
+            </surgicalhistory>
+            <vaccinationrecord>Previous history of chicken pox, Previous TB (BCG) vaccination</vaccinationrecord>
+            <colonoscopysurveillance>2012-05-31</colonoscopysurveillance>
+            <bmdexam>2013-02-22</bmdexam>
+            <namedconsultant>Dr Named Consultant</namedconsultant>
+            <ibdnurse>Nurse IBD</ibdnurse>
+            <bloodgroup>O Pos</bloodgroup>
+        </clinicaldetails>
+        <testdetails>
+            <test>
+                <testname>Hb</testname>
+                <testcode>hb</testcode>
+                <units>gm/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T14:00:00</datestamp>
+                    <value>8.60</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>8.90</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>9.30</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>8.90</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28</datestamp>
+                    <value>9.80</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-21T14:00:00</datestamp>
+                    <value>9.50</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>10.50</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>11.50</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-31T14:00:00</datestamp>
+                    <value>12.10</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>11.90</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>WBC</testname>
+                <testcode>wbc</testcode>
+                <units>x10^9/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T14:00:00</datestamp>
+                    <value>6.00</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>4.10</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>4.50</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>4.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28</datestamp>
+                    <value>9.00</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-21T14:00:00</datestamp>
+                    <value>5.40</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>6.80</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>8.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-31T14:00:00</datestamp>
+                    <value>7.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>5.10</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Platelets</testname>
+                <testcode>platelets</testcode>
+                <units>x10^12/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T14:00:00</datestamp>
+                    <value>113</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>115</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>118</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>114</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28</datestamp>
+                    <value>111</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-21T14:00:00</datestamp>
+                    <value>111</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>105</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>120</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-31T14:00:00</datestamp>
+                    <value>122</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>104</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Serum Urea</testname>
+                <testcode>urea</testcode>
+                <units>mmol/l</units>
+                <daterange start="2012-02-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>4.10</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>19.40</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-10T18:00:00</datestamp>
+                    <value>4.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>7.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>16.80</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>22.90</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-11</datestamp>
+                    <value>11.70</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>30.10</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>26.30</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>17.30</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Serum Creatinine</testname>
+                <testcode>creatinine</testcode>
+                <units>umol/l</units>
+                <daterange start="2012-02-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>285</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>1077</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-10T18:00:00</datestamp>
+                    <value>248</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>351</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>783</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>1001</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-11</datestamp>
+                    <value>638</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>1623</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>1412</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>882</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Potassium</testname>
+                <testcode>potassium</testcode>
+                <units>mmol/l</units>
+                <daterange start="2012-02-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>2.70</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>4.30</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-10T18:00:00</datestamp>
+                    <value>3.70</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>2.80</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>3.10</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>4.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-11</datestamp>
+                    <value>3.40</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>4.80</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>5.20</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>4.10</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Calcium</testname>
+                <testcode>calcium</testcode>
+                <units>mmol/l</units>
+                <daterange start="2010-02-07" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2010-02-16T07:00:00</datestamp>
+                    <value>1.99</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-15T07:00:00</datestamp>
+                    <value>1.97</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-14T07:00:00</datestamp>
+                    <value>1.97</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-13T07:00:00</datestamp>
+                    <value>1.9</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-12T07:00:00</datestamp>
+                    <value>1.82</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-11T07:00:00</datestamp>
+                    <value>1.98</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-10T07:00:00</datestamp>
+                    <value>1.65</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-09T07:00:00</datestamp>
+                    <value>1.57</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-08T07:00:00</datestamp>
+                    <value>1.71</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-07T07:00:00</datestamp>
+                    <value>1.82</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Adjusted Calcium</testname>
+                <testcode>adjustedcalcium</testcode>
+                <units>mmol/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>2.07</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>2.08</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>2.68</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>2.67</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>2.41</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>2.57</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>2.70</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>2.25</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>2.24</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>1.98</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Phosphate</testname>
+                <testcode>phosphate</testcode>
+                <units>mmol/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>0.86</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>0.74</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>2.45</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>2.32</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>1.35</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>2.12</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>1.96</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>1.98</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>1.39</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>2.01</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Albumin</testname>
+                <testcode>albumin</testcode>
+                <units>g/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>40</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>38</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>37</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>40</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>37</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>39</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>38</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>40</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>43</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>38</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>CRP</testname>
+                <testcode>crp</testcode>
+                <units>mg/l</units>
+                <daterange start="2011-12-05" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>6</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28</datestamp>
+                    <value>25</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>11</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-24</datestamp>
+                    <value>29</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-17</datestamp>
+                    <value>6</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-05T14:00:00</datestamp>
+                    <value>12</value>
+                </result>
+                <result>
+                    <datestamp>2011-12-08T14:00:00</datestamp>
+                    <value>14</value>
+                </result>
+                <result>
+                    <datestamp>2011-12-07T07:00:00</datestamp>
+                    <value>29</value>
+                </result>
+                <result>
+                    <datestamp>2011-12-06T08:00:00</datestamp>
+                    <value>45</value>
+                </result>
+                <result>
+                    <datestamp>2011-12-05T08:00:00</datestamp>
+                    <value>73</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>PTH</testname>
+                <testcode>pth</testcode>
+                <units>pmol/l</units>
+                <daterange start="2010-03-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>0.9</value>
+                </result>
+                <result>
+                    <datestamp>2011-11-05T14:00:00</datestamp>
+                    <value>4.6</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-12T14:00:00</datestamp>
+                    <value>23.3</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-05T14:00:00</datestamp>
+                    <value>26</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>36</value>
+                </result>
+                <result>
+                    <datestamp>2010-11-04T15:38:00</datestamp>
+                    <value>7.2</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>10.8</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-06T16:16:00</datestamp>
+                    <value>2.9</value>
+                </result>
+                <result>
+                    <datestamp>2010-04-05T09:20:00</datestamp>
+                    <value>13.7</value>
+                </result>
+                <result>
+                    <datestamp>2010-03-04T11:52:00</datestamp>
+                    <value>18.9</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Cholesterol</testname>
+                <testcode>cholesterol</testcode>
+                <units>mmol/l</units>
+                <daterange start="2009-11-16" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>5.1</value>
+                </result>
+                <result>
+                    <datestamp>2010-11-11T07:43:00</datestamp>
+                    <value>2.6</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>4.7</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-27T13:27:00</datestamp>
+                    <value>4.3</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-07T18:12:00</datestamp>
+                    <value>5.1</value>
+                </result>
+                <result>
+                    <datestamp>2009-11-16T08:06:00</datestamp>
+                    <value>2.4</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Triglycerides</testname>
+                <testcode>tg</testcode>
+                <units>mmol/l</units>
+                <daterange start="2009-11-16" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>0.99</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>0.94</value>
+                </result>
+                <result>
+                    <datestamp>2010-11-11T07:43:00</datestamp>
+                    <value>1.07</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>1.81</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-27T13:27:00</datestamp>
+                    <value>3.3</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-07T18:12:00</datestamp>
+                    <value>1.15</value>
+                </result>
+                <result>
+                    <datestamp>2009-11-16T08:06:00</datestamp>
+                    <value>1.14</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Glucose</testname>
+                <testcode>glucose</testcode>
+                <units>mmol/l</units>
+                <daterange start="2010-02-13" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2011-10-17T17:30:00</datestamp>
+                    <value>5.6</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-02</datestamp>
+                    <value>5.8</value>
+                </result>
+                <result>
+                    <datestamp>2011-07-13</datestamp>
+                    <value>8.8</value>
+                </result>
+                <result>
+                    <datestamp>2011-07-12</datestamp>
+                    <value>5.2</value>
+                </result>
+                <result>
+                    <datestamp>2010-11-11T07:43:00</datestamp>
+                    <value>5</value>
+                </result>
+                <result>
+                    <datestamp>2010-10-16T17:54:00</datestamp>
+                    <value>5.1</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-16T07:00:00</datestamp>
+                    <value>4.1</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-15T07:00:00</datestamp>
+                    <value>6.4</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-14T07:00:00</datestamp>
+                    <value>4.4</value>
+                </result>
+                <result>
+                    <datestamp>2010-02-13T07:00:00</datestamp>
+                    <value>3.3</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>HbA1c</testname>
+                <testcode>hba1c</testcode>
+                <units>%</units>
+                <daterange start="2012-02-02" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>5</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>URR</testname>
+                <testcode>urr</testcode>
+                <units>%</units>
+                <daterange start="2011-06-02" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>57</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02T18:00:00</datestamp>
+                    <value>51</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-05T17:00:00</datestamp>
+                    <value>42</value>
+                </result>
+                <result>
+                    <datestamp>2011-12-13T16:00:00</datestamp>
+                    <value>72</value>
+                </result>
+                <result>
+                    <datestamp>2011-11-05T18:00:00</datestamp>
+                    <value>76</value>
+                </result>
+                <result>
+                    <datestamp>2011-10-06T18:00:00</datestamp>
+                    <value>79</value>
+                </result>
+                <result>
+                    <datestamp>2011-09-08T18:00:00</datestamp>
+                    <value>68</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-06T14:30:00</datestamp>
+                    <value>46</value>
+                </result>
+                <result>
+                    <datestamp>2011-07-07T18:00:00</datestamp>
+                    <value>69</value>
+                </result>
+                <result>
+                    <datestamp>2011-06-02T18:00:00</datestamp>
+                    <value>67</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>BP sys</testname>
+                <testcode>bpsys</testcode>
+                <units>mm mg</units>
+                <daterange start="2012-02-28" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T13:55:00</datestamp>
+                    <value>122</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-20T13:55:00</datestamp>
+                    <value>130</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-17T14:55:00</datestamp>
+                    <value>117</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-17T14:55:00</datestamp>
+                    <value>109</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-15T15:20:00</datestamp>
+                    <value>98</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-15T15:20:00</datestamp>
+                    <value>107</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-03T13:55:00</datestamp>
+                    <value>150</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-03T13:55:00</datestamp>
+                    <value>154</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28T13:55:00</datestamp>
+                    <value>137</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28T13:55:00</datestamp>
+                    <value>131</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>BP dia</testname>
+                <testcode>bpdia</testcode>
+                <units>mm mg</units>
+                <daterange start="2012-02-28" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T13:55:00</datestamp>
+                    <value>85</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-20T13:55:00</datestamp>
+                    <value>78</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-17T14:55:00</datestamp>
+                    <value>78</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-17T14:55:00</datestamp>
+                    <value>71</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-15T15:20:00</datestamp>
+                    <value>74</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-15T15:20:00</datestamp>
+                    <value>70</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-03T13:55:00</datestamp>
+                    <value>79</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-03T13:55:00</datestamp>
+                    <value>106</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28T13:55:00</datestamp>
+                    <value>67</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28T13:55:00</datestamp>
+                    <value>85</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Height</testname>
+                <testcode>height</testcode>
+                <units>cm</units>
+                <daterange start="2011-12-13" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2011-12-24</datestamp>
+                    <value>175</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Weight</testname>
+                <testcode>weight</testcode>
+                <units>kg</units>
+                <daterange start="2012-02-23" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T13:55:00</datestamp>
+                    <value>94.2</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-20T13:55:00</datestamp>
+                    <value>97.4</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-17T14:55:00</datestamp>
+                    <value>95.6</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-15T15:20:00</datestamp>
+                    <value>93.2</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-15T15:20:00</datestamp>
+                    <value>95.6</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-03T13:55:00</datestamp>
+                    <value>92</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-03T13:55:00</datestamp>
+                    <value>94.5</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28T13:55:00</datestamp>
+                    <value>92.4</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-28T13:55:00</datestamp>
+                    <value>94.7</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-23T14:00:00</datestamp>
+                    <value>92.4</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>eGFR</testname>
+                <testcode>egfr</testcode>
+                <units>ml/min/1.73m^2</units>
+                <daterange start="2012-02-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>21</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-10T18:00:00</datestamp>
+                    <value>25</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>16</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>6</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>5</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-11</datestamp>
+                    <value>8</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>3</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>3</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>6</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>HCO3</testname>
+                <testcode>hco3</testcode>
+                <units>mmol/l</units>
+                <daterange start="2012-02-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>26</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>17</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-10T18:00:00</datestamp>
+                    <value>25</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>23</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>19</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>19</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-11</datestamp>
+                    <value>19</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>12</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>19</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>18</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>INR</testname>
+                <testcode>inr</testcode>
+                <units></units>
+                <daterange start="2011-08-06" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2011-08-25</datestamp>
+                    <value>2.3</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-23T18:40:00</datestamp>
+                    <value>2.7</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-23T08:00:00</datestamp>
+                    <value>2.6</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-18</datestamp>
+                    <value>2.6</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-13</datestamp>
+                    <value>2.5</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-11</datestamp>
+                    <value>2.6</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-09T08:00:00</datestamp>
+                    <value>1.9</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-08T08:00:00</datestamp>
+                    <value>1.7</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-07</datestamp>
+                    <value>1.7</value>
+                </result>
+                <result>
+                    <datestamp>2011-08-06T14:30:00</datestamp>
+                    <value>1.1</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Sodium</testname>
+                <testcode>sodium</testcode>
+                <units>mmol/l</units>
+                <daterange start="2012-02-04" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>139</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>144</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-10T18:00:00</datestamp>
+                    <value>138</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T18:00:00</datestamp>
+                    <value>142</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>146</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-06T14:00:00</datestamp>
+                    <value>145</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-11</datestamp>
+                    <value>143</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>139</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>137</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>140</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Bilirubin</testname>
+                <testcode>bili</testcode>
+                <units>umol/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>3</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>3</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>4</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>AST</testname>
+                <testcode>ast</testcode>
+                <units>Iu/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>9</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>9</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>9</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>9</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>11</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>13</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>ALT</testname>
+                <testcode>alt</testcode>
+                <units>Iu/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>7</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>9</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>8</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>8</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>12</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>12</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>11</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>ALP</testname>
+                <testcode>alp</testcode>
+                <units>Iu/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>47</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>45</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>53</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>57</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>51</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>53</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>56</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>63</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>70</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>64</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>GGT</testname>
+                <testcode>ggt</testcode>
+                <units>Iu/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>22</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-08T14:00:00</datestamp>
+                    <value>23</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-07</datestamp>
+                    <value>22</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-06T12:00:00</datestamp>
+                    <value>26</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T16:45:00</datestamp>
+                    <value>29</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>30</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>35</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-30T15:10:00</datestamp>
+                    <value>47</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-28</datestamp>
+                    <value>52</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>45</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Ferritin</testname>
+                <testcode>ferritin</testcode>
+                <units>ug/l</units>
+                <daterange start="2010-01-29" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-04T14:00:00</datestamp>
+                    <value>477</value>
+                </result>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>532</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-12T14:00:00</datestamp>
+                    <value>300</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-05T14:00:00</datestamp>
+                    <value>313</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>191</value>
+                </result>
+                <result>
+                    <datestamp>2010-11-04T15:38:00</datestamp>
+                    <value>232</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>188</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-06T16:16:00</datestamp>
+                    <value>322</value>
+                </result>
+                <result>
+                    <datestamp>2010-03-04T11:52:00</datestamp>
+                    <value>1475</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-29T09:23:00</datestamp>
+                    <value>509</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Iron</testname>
+                <testcode>iron</testcode>
+                <units>umol/l</units>
+                <daterange start="2010-01-07" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>15</value>
+                </result>
+                <result>
+                    <datestamp>2011-11-05T14:00:00</datestamp>
+                    <value>9</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-12T14:00:00</datestamp>
+                    <value>11</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-05T14:00:00</datestamp>
+                    <value>11</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>8</value>
+                </result>
+                <result>
+                    <datestamp>2010-10-07T15:55:00</datestamp>
+                    <value>4</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-06T16:16:00</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2010-03-04T11:52:00</datestamp>
+                    <value>15</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-07T18:12:00</datestamp>
+                    <value>16</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>Transferrin</testname>
+                <testcode>transferrin</testcode>
+                <units>g/l</units>
+                <daterange start="2010-01-07" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>1.5</value>
+                </result>
+                <result>
+                    <datestamp>2011-11-05T14:00:00</datestamp>
+                    <value>1.6</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-12T14:00:00</datestamp>
+                    <value>1.7</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-05T14:00:00</datestamp>
+                    <value>1.7</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>1.5</value>
+                </result>
+                <result>
+                    <datestamp>2010-10-07T15:55:00</datestamp>
+                    <value>1.8</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>1.6</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-06T16:16:00</datestamp>
+                    <value>1.6</value>
+                </result>
+                <result>
+                    <datestamp>2010-03-04T11:52:00</datestamp>
+                    <value>1.6</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-07T18:12:00</datestamp>
+                    <value>1.5</value>
+                </result>
+            </test>
+            <test>
+                <testname>Iron Saturation</testname>
+                <testcode>ironsat</testcode>
+                <units>%</units>
+                <daterange start="2010-01-07" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-02-02</datestamp>
+                    <value>45</value>
+                </result>
+                <result>
+                    <datestamp>2011-11-05T14:00:00</datestamp>
+                    <value>25</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-12T14:00:00</datestamp>
+                    <value>29</value>
+                </result>
+                <result>
+                    <datestamp>2011-05-05T14:00:00</datestamp>
+                    <value>29</value>
+                </result>
+                <result>
+                    <datestamp>2011-02-03T15:39:00</datestamp>
+                    <value>24</value>
+                </result>
+                <result>
+                    <datestamp>2010-10-07T15:55:00</datestamp>
+                    <value>10</value>
+                </result>
+                <result>
+                    <datestamp>2010-07-08T16:33:00</datestamp>
+                    <value>28</value>
+                </result>
+                <result>
+                    <datestamp>2010-05-06T16:16:00</datestamp>
+                    <value>28</value>
+                </result>
+                <result>
+                    <datestamp>2010-03-04T11:52:00</datestamp>
+                    <value>42</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-07T18:12:00</datestamp>
+                    <value>48</value>
+                </result>
+            </test>
+        </testdetails>
+        <drugdetails>
+            <drug>
+                <drugstartdate>2012-03-15</drugstartdate>
+                <drugname>Darbepoetin alfa</drugname>
+                <drugdose>20 micro g PreFillSyringe Iv Weekly on dialysis.</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2012-02-23T14:46:47</drugstartdate>
+                <drugname>Ramipril</drugname>
+                <drugdose>5 mg. Capsules Oral Daily</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2012-01-19</drugstartdate>
+                <drugname>Aspirin</drugname>
+                <drugdose>75 mg. Tabs (Soluble) Oral In the morning</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2011-12-13T14:01:12</drugstartdate>
+                <drugname>Prednisolone</drugname>
+                <drugdose>5 mg. Tablet/s Oral In the morning</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2011-08-08</drugstartdate>
+                <drugname>Sevelamer HCl (Renagel)</drugname>
+                <drugdose>2 Tablet/s Oral 3 x day @ meals</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2011-05-09</drugstartdate>
+                <drugname>Levothyroxine</drugname>
+                <drugdose>175 micro g Tablet/s Oral In the morning</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2011-05-09</drugstartdate>
+                <drugname>Omeprazole</drugname>
+                <drugdose>20 mg. Capsules Oral In the morning</drugdose>
+            </drug>
+            <drug>
+                <drugstartdate>2010-11-09</drugstartdate>
+                <drugname>Venofer</drugname>
+                <drugdose>100 mg. Iv weekly.</drugdose>
+            </drug>
+        </drugdetails>
+        <letterdetails>
+            <letter>
+                <letterdate>2012-01-24T11:24:06</letterdate>
+                <lettertype>Sample Letter</lettertype>
+                <lettercontent>
+                    <![CDATA[
+Sample letter
+
+sdfdf
+
+dfdf
+
+dfdf
+
+]]></lettercontent>
+            </letter>
+            <letter>
+                <letterdate>2012-01-18T10:38:30</letterdate>
+                <lettertype>Another Letter</lettertype>
+                <lettercontent>
+                    <![CDATA[
+Another letter
+
+
+
+]]></lettercontent>
+            </letter>
+        </letterdetails>
+        <allergydetails>
+            <allergy>
+                <allergysubstance>alleryg substance 1</allergysubstance>
+                <allergytypecode>allergy type code 1</allergytypecode>
+                <allergyreaction>allergy reaction 1</allergyreaction>
+                <allergyconfidencelevel>allergy confidence level 1</allergyconfidencelevel>
+                <allergyinfosource>allergy info source 1</allergyinfosource>
+                <allergystatus>allergy status 1</allergystatus>
+                <allergydescription>allergy description 1</allergydescription>
+                <allergyrecordeddate>2011-01-21</allergyrecordeddate>
+            </allergy>
+            <allergy>
+                <allergysubstance>alleryg substance 2</allergysubstance>
+                <allergytypecode>allergy type code 2</allergytypecode>
+                <allergyreaction>allergy reaction 2</allergyreaction>
+                <allergyconfidencelevel>allergy confidence level 2</allergyconfidencelevel>
+                <allergyinfosource>allergy info source 2</allergyinfosource>
+                <allergystatus>allergy status 2</allergystatus>
+                <allergydescription>allergy description 2</allergydescription>
+                <allergyrecordeddate>2012-02-22</allergyrecordeddate>
+            </allergy>
+            <allergy>
+                <allergysubstance>alleryg substance 3</allergysubstance>
+                <allergytypecode>allergy type code 3</allergytypecode>
+                <allergyreaction>allergy reaction 3</allergyreaction>
+                <allergyconfidencelevel>allergy confidence level 3</allergyconfidencelevel>
+                <allergyinfosource>allergy info source 3</allergyinfosource>
+                <allergystatus>allergy status 3</allergystatus>
+                <allergydescription>allergy description 3</allergydescription>
+                <allergyrecordeddate>2013-03-23</allergyrecordeddate>
+            </allergy>
+        </allergydetails>
+        <diagnostics>
+            <diagnostic>
+                <diagnosticname>Xray Chest</diagnosticname>
+                <diagnostictype>imaging</diagnostictype>
+                <diagnosticdate>2012-01-27</diagnosticdate>
+            </diagnostic>
+            <diagnostic>
+                <diagnosticname>MRI Small Bowel Study</diagnosticname>
+                <diagnostictype>imaging</diagnostictype>
+                <diagnosticdate>2012-04-18</diagnosticdate>
+            </diagnostic>
+            <diagnostic>
+                <diagnosticname>Endoscopy Examination</diagnosticname>
+                <diagnostictype>endoscopy</diagnostictype>
+                <diagnosticdate>2012-06-29</diagnosticdate>
+            </diagnostic>
+        </diagnostics>
+    </patient>
+</patientview>

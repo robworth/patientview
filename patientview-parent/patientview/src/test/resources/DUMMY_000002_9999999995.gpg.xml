@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<renalpatientview xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <sequence>000364</sequence>
+    <dateofreport>2013-03-26</dateofreport>
+    <flag>Include</flag>
+    <centredetails>
+        <centrecode>DUMMY</centrecode>
+        <centrename>Dummy County Hospital</centrename>
+        <centreaddress1>Hospital Road</centreaddress1>
+        <centreaddress2>dummton</centreaddress2>
+        <centreaddress3>Co. Tyrone</centreaddress3>
+        <centreaddress4/>
+        <centrepostcode>BT79 0NS</centrepostcode>
+        <centretelephone>345348735</centretelephone>
+        <centreemail>dummy@example.com</centreemail>
+    </centredetails>
+    <gpdetails>
+        <gpname>Dr S Dummo</gpname>
+        <gpaddress1>BUNCRANA</gpaddress1>
+        <gppostcode/>
+        <gptelephone>4564564</gptelephone>
+        <gpemail/>
+    </gpdetails>
+    <patient>
+        <personaldetails>
+            <surname>Dummy</surname>
+            <forename>Dum</forename>
+            <dateofbirth>1954-05-07</dateofbirth>
+            <sex>M</sex>
+            <nhsno>9999999995</nhsno>
+            <ethnicorigin>White</ethnicorigin>
+            <hospitalnumber>TC 169148</hospitalnumber>
+            <address1>dfdfg</address1>
+            <address2>dgsdg</address2>
+            <address3>gfdg</address3>
+            <address4/>
+            <postcode/>
+            <telephone1/>
+            <telephone2/>
+            <mobile/>
+        </personaldetails>
+        <clinicaldetails>
+            <rrtstatus>HD</rrtstatus>
+            <tpstatus/>
+            <diagnosisedta>86</diagnosisedta>
+            <diagnosis>Goodpasture's syndrome</diagnosis>
+        </clinicaldetails>
+
+        <testdetails>
+            <test>
+                <testname>Urea (serum)</testname>
+                <testcode>urea</testcode>
+                <units/>
+                <daterange start="2013-03-19" stop="2013-03-25"/>
+                <result>
+                    <datestamp>2013-03-19T10:15:00</datestamp>
+                    <value>11</value>
+                </result>
+            </test>
+        </testdetails>
+    </patient>
+</renalpatientview>

@@ -1,0 +1,328 @@
+<wicket:panel>
+<div id="subBlock">
+
+<div id="ctl00_ContentPlaceHolder1_UpdatePanel1">
+
+<table cellpadding="4" id="tblHeader" style="width: 100%;" class="style1">
+    <tbody>
+    <tr>
+        <td>
+            <b>RR Therapy</b></td>
+        <td style="width:100px; text-align:right;">RaDaR No:</td>
+        <td style="width:120px;padding-right:10px;">
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    <tr>
+        <td>Name
+            <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly">
+            &nbsp;<input wicket:id="surname" type="text" style="width:120px;" readonly="readonly">
+            &nbsp; DoB
+            <input wicket:id="dob" type="text" style="width:90px;" readonly="readonly">
+            &nbsp;
+        </td>
+        <td style="text-align:right;">Hospital No:</td>
+        <td>
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width:100px; text-align:right;">Diagnosis</td>
+        <td>
+            <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    <tr>
+        <td style="font-size:85%;" colspan="3">
+            <strong>Date of ESRF:</strong>
+            <span wicket:id="esrfNotEnteredContainer">
+               <span id="ctl00_ContentPlaceHolder1_lblESRF"><em>Not entered</em></span>
+            &nbsp; (Can be entered/amended on the <a class="diagnosisRedirect" href="javascript:void(0)">Diagnosis page
+            </a>)
+            </span>
+            <span wicket:id="esrfDate"></span>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table cellspacing="10" cellpadding="0" style="width: 100%; background-color:#EEF6ED; border:0px solid red;"
+       id="ctl00_ContentPlaceHolder1_tblMain">
+<tbody>
+<tr>
+    <td>
+        <span id="ctl00_ContentPlaceHolder1_lblLogAll">Log ALL treatments in last six months</span>
+    </td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65%;">
+
+<br>
+<fieldset wicket:id="dialysisContainer"/>
+<br><br>
+
+
+<fieldset>
+<legend>Transplant</legend>
+
+<div>
+    <table wicket:id="transplantsContainer" border="1" cellspacing="0" cellpadding="5"
+           style="font-size:80%;border-collapse:collapse;">
+        <tbody>
+        <tr style="color:#3C982D;">
+            <th scope="col" class="col120">Date Tx</th>
+            <th align="left" scope="col" class="col250">Type</th>
+            <th scope="col" class="col45">Recurr</th>
+            <th scope="col" class="col120">Date Recurr</th>
+            <th scope="col" class="col120">Date Failure</th>
+            <th align="left" style="font-size:85%;" scope="col" class="col190">Date rejection &nbsp;&nbsp; Date biopsy</th>
+            <th scope="col" class="col80">&nbsp;</th>
+        </tr>
+        <tr valign="top" wicket:id="transplants">
+            <td wicket:id="date"/>
+            <td wicket:id="modality.description"/>
+            <td align="center" style="width:45px;"><span wicket:id="recurr"/></td>
+            <td wicket:id="dateRecurr"/>
+            <td wicket:id="dateFailureRejectData.failureDate"/>
+            <td style="padding: 0;">
+                <div wicket:id="rejectDataListContainer">
+                    <table class="zeroPadd" cellspacing="0" cellpadding="5" rules="all" border="0"
+                           id="ctl00_ContentPlaceHolder1_GridView3_ctl02_GridView4"
+                           style="border-width:0px;font-size:100%;border-collapse:collapse;">
+                        <tbody>
+                        <tr style="display:none;">
+                            <th scope="col" style="color:#EEF6ED;">Date rejection</th>
+                            <th scope="col" style="color:#EEF6ED;">Date biopsy</th>
+                            <th scope="col" style="color:#EEF6ED;">xxx</th>
+                        </tr>
+                        <tr wicket:id="rejectDataList">
+                            <td wicket:id="rejectedDate"></td>
+                            <td wicket:id="biopsyDate"></td>
+                            <td>
+                                <input type="submit" value="X" wicket:id="deleteLink" title="Delete"
+                                       style="color:Red;background-color:#EEF6ED;border-width:0px;font-weight:bold;"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;" value="Delete"
+                       wicket:id="deleteLink"/>
+                <input type="submit" style="border-color:Gray;border-width:1px;border-style:solid;" value="Edit"
+                       wicket:id="editLink"/>
+                <br/>
+                <input type="submit" style="border: 1px solid Gray; margin-top: 4px;"
+                       title="Add Reject Data" value="Add Reject"
+                       wicket:id="addRejectLink"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div wicket:id="rejectDataContainer">
+
+    <form wicket:id="form">
+        <fieldset style="border:1px solid red; width:550px;">
+            <legend> Add reject data</legend>
+            <table cellpadding="5" style="font-size:85%;" class="style1">
+                <tbody>
+                <tr>
+                    <td>Date rejection</td>
+                    <td>Date biopsy</td>
+
+                    <td>
+                        <input type="text"
+                               style="color:#EEF6ED;background-color:#EEF6ED;border-color:#EEF6ED;width:30px;"
+                               id="ctl00_ContentPlaceHolder1_txtTrID" value="42"
+                               name="ctl00$ContentPlaceHolder1$txtTrID">
+                    </td>
+                    <td>
+                        <input type="text" style="color:#EEF6ED;background-color:#EEF6ED;border-color:#EEF6ED;"
+                               id="ctl00_ContentPlaceHolder1_txtDateTxCompare" value="25/12/2011"
+                               name="ctl00$ContentPlaceHolder1$txtDateTxCompare">
+                    </td>
+                    <td>
+                        <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblTxDate">Date of Tx</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" style="width:80px;" wicket:id="rejectedDate"/>
+                        <span class="feedback" wicket:id="rejectedDateFeedback"></span>
+                    </td>
+                    <td>
+                        <input type="text" style="width:80px;" wicket:id="biopsyDate"/>
+                        <span class="feedback" wicket:id="biopsyDateFeedback"></span>
+                    </td>
+
+                    <td>
+                        <input type="submit" wicket:id="add" value="Add"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="Cancel" wicket:id="cancel"/>
+                    </td>
+                    <td>
+                        <span style="font-weight:bold;" wicket:id="transplantDate">25/12/2011</span>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        &nbsp;</td>
+                    <td colspan="2">
+
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <span wicket:id="dateRejectFeedback" class="red"></span>
+        </fieldset>
+    </form>
+</div>
+
+<div wicket:id="editTransplantContainer">
+
+    <form wicket:id="form">
+        <fieldset style="border:2px solid red">
+            <legend>Edit</legend>
+            <table cellpadding="5" style="width: 100%; font-size:80%; margin-top:10px; " class="style2" id="Table1">
+                <tbody>
+                <tr>
+                    <td class="col110">
+                        Date Tx<br/>
+                        <span class="feedback" wicket:id="dateFeedback"></span>
+                    </td>
+                    <td valign="top">Type</td>
+                    <td class="col45" valign="top">Recurr</td>
+                    <td class="col120">
+                        Date Recurr
+                        <span class="feedback" wicket:id="dateRecurrFeedback"></span>
+                    </td>
+                    <td class="col120">
+                        Date Failure<br/>
+                        <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align:  right;">
+                        <input type="submit" value="Save" wicket:id="saveTop"/>
+                        <input type="submit" value="Cancel" wicket:id="cancelTop"/>
+                    </td>
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="date"/>
+                        <span wicket:id="dateFeedbackIndicator"></span>
+                    </td>
+                    <td>
+                        <select wicket:id="modality"/>
+                        <span wicket:id="modalityFeedbackIndicator"></span>
+                    </td>
+
+                    <td>
+                        <span wicket:id="recurr">
+                            <input type="radio" wicket:id="yes" class="nomargin"/>
+                            <label wicket:id="yesLabel">Yes</label>
+                            <br/>
+                            <input type="radio" wicket:id="no" class="nomargin"/>
+                            <label wicket:id="noLabel">No</label>
+                        </span>
+
+                    </td>
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="dateRecurr"/>
+                    </td>
+
+                    <td>
+                        <input type="text" style="width:70px;" wicket:id="dateFailureRejectData.failureDate"/>
+                    </td>
+                    <td style="text-align:  right;">
+                        <input type="submit" value="Save" wicket:id="saveBottom"/>
+                        <input type="submit" value="Cancel" wicket:id="cancelBottom"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+        <span class="red" wicket:id="transplantFeedback"></span>
+
+    </form>
+</div>
+
+<form wicket:id="addTransplantForm">
+    <table cellpadding="5" style="font-size:80%; margin-top:10px; " class="style2" id="txEntry">
+        <tbody>
+        <tr>
+            <td style="height:30px; vertical-align:top;" class="col100">Date Tx <br/>
+               <span class="feedback" wicket:id="dateFeedback"></span>
+            </td>
+            <td class="col130">Type
+            </td>
+            <td class="style4 col45">Recurr</td>
+            <td class="style5 col120">Date Recurr <br/>
+                <span class="feedback" wicket:id="dateRecurrFeedback"></span>
+            </td>
+            <td class="style5 col120"> Date Failure <br/>
+               <span class="feedback" wicket:id="dateFailureRejectData.failureDateFeedback"></span>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <input type="text" style="height:15px;width:70px;" wicket:id="date"/>
+                <span wicket:id="dateFeedbackIndicator"></span>
+            </td>
+            <td valign="middle">
+                <select wicket:id="modality"/>
+                <span wicket:id="modalityFeedbackIndicator"></span>
+            </td>
+
+            <td class="style4">
+            <span wicket:id="recurr">
+            <input type="radio" wicket:id="yes"/><label wicket:id="yesLabel">Yes</label>
+            <br/>
+            <input type="radio" wicket:id="no"/><label wicket:id="noLabel">No</label>
+            </span>
+            </td>
+
+            <td valign="baseline" class="style5">
+                <input type="text" style="height:15px;width:70px;" wicket:id="dateRecurr"/>
+            </td>
+            <td class="style5">
+                <input type="text" style="height:15px;width:70px;" wicket:id="dateFailureRejectData.failureDate"/>
+            </td>
+            <td><input type="submit" value="Add" wicket:id="add"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <span class="red" wicket:id="transplantFeedback"></span>
+</form>
+
+<br>
+
+
+</fieldset>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+&nbsp;&nbsp;
+
+<br>
+<br>
+<span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+
+</div>
+
+
+</div>
+
+</wicket:panel>
