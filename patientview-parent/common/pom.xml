@@ -50,6 +50,19 @@
                 <version>2.3.2</version>
             </plugin>
 
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <optimize>true</optimize>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+
             <!-- http://maven.apache.org/plugins/maven-remote-resources-plugin/examples/sharing-resources.html -->
             <plugin>
                 <artifactId>maven-remote-resources-plugin</artifactId>
