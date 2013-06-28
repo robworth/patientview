@@ -1,4 +1,4 @@
-package org.patientview.test;
+package org.patientview.common.test;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
