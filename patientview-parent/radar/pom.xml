@@ -132,7 +132,7 @@
         </resources>
 
         <filters>
-            <!--Uses e.g. filters/radar-localhost.properties to overlay radar.properties-->
+            <!--Uses e.g. filters/radar-dev.properties to overlay radar.properties-->
             <filter>src/main/filters/radar-${env}.properties</filter>
         </filters>
 
