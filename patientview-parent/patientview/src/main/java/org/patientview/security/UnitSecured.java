@@ -30,8 +30,6 @@ import java.lang.annotation.Target;
 
 /**
  *      Used to annotate service level methods that require security in addition to Role.
- *
- *      User authorisation can be per: Unit, Task, Organisation, Funding, User
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD })
