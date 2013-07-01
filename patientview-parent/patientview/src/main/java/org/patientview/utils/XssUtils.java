@@ -24,7 +24,9 @@
 package org.patientview.utils;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
+import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -61,7 +63,9 @@ public final class XssUtils {
                             // get the data, clean it and invoke the setter with the new data
                             String dirtyString = (String) getter.invoke(object);
                             if (dirtyString != null) {
-                                String cleanString = Jsoup.clean(dirtyString, Whitelist.none());
+                                String cleanString = Jsoup.clean(dirtyString, "", Whitelist.none(),
+                                        new Document.OutputSettings().prettyPrint(false));
+
 
                                 // set the clean string
                                 method.invoke(object, cleanString);
@@ -83,6 +87,15 @@ public final class XssUtils {
     private boolean isStringGetter(Method method) {
         return method.getName().startsWith("get") && method.getParameterTypes().length == 0
                 && method.getReturnType().equals(String.class);
+    }
+
+    public static String encodeForHTML(String strSrc, String[] strReplace) {
+        strSrc = ESAPI.encoder().encodeForHTML(strSrc);
+        for (String replace : strReplace) {
+            strSrc = strSrc.replace(replace, "<br/>");
+        }
+
+        return strSrc;
     }
 
 }

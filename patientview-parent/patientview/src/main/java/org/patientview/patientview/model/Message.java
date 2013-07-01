@@ -25,7 +25,7 @@ package org.patientview.patientview.model;
 
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.apache.commons.lang.StringUtils;
-import org.owasp.esapi.ESAPI;
+import org.patientview.utils.XssUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -82,8 +82,7 @@ public class Message extends BaseModel {
     private static final int SUMMARY_LENGTH = 500;
 
     public String getFormattedContent() {
-        content = ESAPI.encoder().encodeForHTML(content);
-        return content.replace("&#xa;", "<br/>");
+        return XssUtils.encodeForHTML(content, new String[] {"&#xa;" });
     }
 
     public String getSummary() {

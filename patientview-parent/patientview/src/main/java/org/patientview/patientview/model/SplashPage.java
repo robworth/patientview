@@ -24,7 +24,7 @@
 package org.patientview.patientview.model;
 
 
-import org.owasp.esapi.ESAPI;
+import org.patientview.utils.XssUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -124,6 +124,7 @@ public class SplashPage extends BaseModel {
     }
 
      public String getBodyTextForHtml() {
-        return ESAPI.encoder().encodeForHTML(getBodytext()).replace("&#xd;&#xa;", "<br/>");
+
+        return XssUtils.encodeForHTML(getBodytext(), new String[]{"&#xd;&#xa;"});
     }
 }

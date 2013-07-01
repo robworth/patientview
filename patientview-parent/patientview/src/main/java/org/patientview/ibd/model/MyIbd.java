@@ -29,7 +29,7 @@ import org.patientview.ibd.model.enums.Diagnosis;
 import org.patientview.ibd.model.enums.DiseaseExtent;
 import org.patientview.patientview.model.BaseModel;
 
-import org.owasp.esapi.ESAPI;
+import org.patientview.utils.XssUtils;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -166,7 +166,7 @@ public class MyIbd extends BaseModel {
 
     public String getFormattedComplications() {
         if (complications != null) {
-            return ESAPI.encoder().encodeForHTML(complications).replace("&#xa;", "<br/>").replaceAll(",", "<br />");
+            return XssUtils.encodeForHTML(complications, new String[]{"&#xa;", ","});
         }
 
         return null;
