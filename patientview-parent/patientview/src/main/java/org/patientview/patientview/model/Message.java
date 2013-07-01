@@ -25,6 +25,7 @@ package org.patientview.patientview.model;
 
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.apache.commons.lang.StringUtils;
+import org.patientview.utils.XssUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -81,7 +82,7 @@ public class Message extends BaseModel {
     private static final int SUMMARY_LENGTH = 500;
 
     public String getFormattedContent() {
-        return content.replaceAll("\n", "<br/>");
+        return XssUtils.encodeForHTML(content, new String[] {"&#xa;" });
     }
 
     public String getSummary() {
