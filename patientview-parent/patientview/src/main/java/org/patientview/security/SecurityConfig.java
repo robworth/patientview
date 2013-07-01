@@ -20,28 +20,20 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-
-package org.patientview.service;
-
-import org.patientview.patientview.model.Feedback;
-import org.patientview.security.UnitSecured;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+package org.patientview.security;
 
 /**
- *
+ *      Used to annotate service level methods that require security in addition to Role.
  */
-@Transactional(propagation = Propagation.REQUIRED)
-@Secured(value = { "ROLE_ANY_USER" })
-public interface FeedbackManager {
+public final class SecurityConfig {
 
-    Feedback get(Long id);
+    private SecurityConfig() {
 
-    void save(Feedback feedback);
+    }
 
-    @UnitSecured(value = "UNIT_FEEDBACK_READ_AUTH")
-    List<Feedback> get(String unitcode);
+    public static final String UNIT_USER_READ_AUTH = "UNIT_USER_READ_AUTH";
+
+    public static final String UNIT_READ_AUTH = "UNIT_READ_AUTH";
+
+    public static final String UNIT_FEEDBACK_READ_AUTH = "UNIT_FEEDBACK_READ_AUTH";
 }

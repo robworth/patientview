@@ -20,28 +20,22 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+package org.patientview.security;
 
-package org.patientview.service;
-
-import org.patientview.patientview.model.Feedback;
-import org.patientview.security.UnitSecured;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ *      Used to annotate service level methods that require security in addition to Role.
  *
+ *      User authorisation can be per: Unit, Task, Organisation, Funding, User
  */
-@Transactional(propagation = Propagation.REQUIRED)
-@Secured(value = { "ROLE_ANY_USER" })
-public interface FeedbackManager {
-
-    Feedback get(Long id);
-
-    void save(Feedback feedback);
-
-    @UnitSecured(value = "UNIT_FEEDBACK_READ_AUTH")
-    List<Feedback> get(String unitcode);
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD })
+@Inherited
+public @interface UnitSecured {
+    String value();
 }

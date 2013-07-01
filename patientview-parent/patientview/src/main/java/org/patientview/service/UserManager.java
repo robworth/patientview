@@ -28,20 +28,23 @@ import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
+import org.patientview.security.UnitSecured;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
+@Secured(value = { "ROLE_ANY_USER" })
 public interface UserManager {
 
     User getLoggedInUser();
 
     User get(Long id);
 
+    @UnitSecured(value = "UNIT_USER_READ_AUTH")
     User get(String username);
 
     String getLoggedInUserRole();
@@ -100,5 +103,4 @@ public interface UserManager {
 
     void removeUserFromRadar(Long userId);
 
-    List<User> getUsers(User user, Specialty specialty, String userType, Unit unit);
 }
