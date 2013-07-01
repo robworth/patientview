@@ -119,6 +119,12 @@ public class SendMessageAction extends BaseAction {
                 }
             }
 
+            if (StringUtils.hasText(form.get(Messaging.UNIT_CODE_PARAM).toString())) {
+                if (getUnit(form) == null) {
+                    errors.add("Invalid unit");
+                }
+            }
+
             if (!StringUtils.hasText((String) form.get(Messaging.SUBJECT_PARAM))) {
                 errors.add("Please enter a subject");
             }

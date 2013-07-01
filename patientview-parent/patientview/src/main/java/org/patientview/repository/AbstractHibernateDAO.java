@@ -24,7 +24,9 @@
 package org.patientview.repository;
 
 import org.patientview.patientview.model.BaseModel;
+import org.patientview.utils.XssUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
@@ -43,6 +45,9 @@ public class AbstractHibernateDAO<T extends BaseModel> {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Inject
+    private XssUtils xssUtils;
+
     public T get(final Long id) {
         return entityManager.find(clazz, id);
     }
@@ -52,6 +57,8 @@ public class AbstractHibernateDAO<T extends BaseModel> {
     }
 
     public void save(final T entity) {
+
+        xssUtils.cleanObjectForXss(entity);
 
         if (!entity.hasValidId()) {
 
