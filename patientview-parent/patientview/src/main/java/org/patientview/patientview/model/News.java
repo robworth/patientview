@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.patientview.patientview.utils.TimestampUtils;
+import org.owasp.esapi.ESAPI;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -157,6 +158,6 @@ public class News extends BaseModel {
     }
 
     public String getBodyForHtml() {
-        return getBody().replaceAll("\r\n", "<br />");
+        return ESAPI.encoder().encodeForHTML(getBody()).replace("&#xd;&#xa;", "<br/>");
     }
 }

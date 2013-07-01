@@ -24,6 +24,7 @@
 package org.patientview.patientview.model;
 
 import org.patientview.patientview.utils.TimestampUtils;
+import org.owasp.esapi.ESAPI;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -97,7 +98,7 @@ public class Letter extends BaseModel {
      */
     public String getFormattedContent() {
         if (content != null) {
-            return content.replace("\n", "<br />");
+            return ESAPI.encoder().encodeForHTML(content).replace("&#xa;", "<br/>");
         }
 
         return "";
