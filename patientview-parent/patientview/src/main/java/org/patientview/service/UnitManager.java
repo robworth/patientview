@@ -28,6 +28,8 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.patientview.model.User;
+import org.patientview.security.UnitSecured;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,10 +40,12 @@ import java.util.List;
  *
  */
 @Transactional(propagation = Propagation.REQUIRED)
+@Secured(value = { "ROLE_ANY_USER" })
 public interface UnitManager {
 
     Unit get(Long id);
 
+    @UnitSecured(value = "UNIT_READ_AUTH")
     Unit get(String unitCode);
 
     void save(Unit unit);

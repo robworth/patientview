@@ -41,7 +41,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/templates/default/images/**" security="none"/>
     <http pattern="/favicon.ico" security="none"/>
 
-    <http>
+    <http access-decision-manager-ref="accessDecisionManager">
         <!-- these pages can be viewed without logging in, but need to run with the filter chain (so we can view login details etc-->
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/index.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -69,24 +69,24 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/launchpad-select.do" access="ROLE_ANY_USER"/>
 
         <!-- Renal specialty config -->
-        <intercept-url pattern="/renal/control/**" access="ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/renal/**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/control/**" access="ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/renal/**" access="ROLE_ANY_USER"/>
 
         <!-- IBD specialty config -->
-        <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/control/**" access="ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
-        <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO,ROLE_IBD_PATIENT,ROLE_IBD_SUPERADMIN,ROLE_IBD_UNITADMIN,ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO"/>
+        <intercept-url pattern="/ibd/control/**" access="ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO"/>
+        <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO"/>
+        <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO"/>
 
         <!-- messages -->
         <intercept-url pattern="/control/messaging/message_confirm.jsp" access="ROLE_RENAL_UNITADMIN"/>
-        <intercept-url pattern="/patient/conversation**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/control/conversation**" access="ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/send-message**" access="ROLE_RENAL_DEMO,ROLE_RENAL_PATIENT,ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN,ROLE_RENAL_UNITSTAFF"/>
-        <intercept-url pattern="/unit-recipients**" access="ROLE_RENAL_SUPERADMIN,ROLE_RENAL_UNITADMIN"/>
+        <intercept-url pattern="/patient/conversation**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/control/conversation**" access="ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/send-message**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/unit-recipients**" access="ROLE_RENAL_UNITADMIN"/>
 
         <!-- URLs that don't require any security -->
         <intercept-url pattern="/join.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -127,5 +127,42 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
             <password-encoder ref="encoder"/>
         </authentication-provider>
     </authentication-manager>
+
+    <global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager"/>
+    <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+        <beans:property name="decisionVoters">
+            <beans:list>
+                <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+                <beans:ref bean="roleVoter"/>
+                <beans:bean class="org.patientview.security.impl.UnitVoter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+        <beans:constructor-arg ref="roleHierarchy"/>
+    </beans:bean>
+
+    <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+        <beans:property name="hierarchy">
+            <beans:value>
+                ROLE_RENAL_SUPERADMIN > ROLE_RENAL_UNITADMIN
+                ROLE_RENAL_UNITADMIN > ROLE_RENAL_UNITSTAFF
+                ROLE_RENAL_UNITSTAFF > ROLE_RENAL_PATIENT
+                ROLE_RENAL_PATIENT > ROLE_ANONYMOUS
+                ROLE_ANONYMOUS > ROLE_ANY_USER
+                ROLE_ANY_USER > ROLE_RENAL_DEMO
+                ROLE_RENAL_DEMO > IS_AUTHENTICATED_ANONYMOUSLY
+
+                ROLE_IBD_SUPERADMIN > ROLE_IBD_UNITADMIN
+                ROLE_IBD_UNITADMIN > ROLE_IBD_UNITSTAFF
+                ROLE_IBD_UNITSTAFF > ROLE_IBD_PATIENT
+                ROLE_IBD_PATIENT > ROLE_ANONYMOUS
+                ROLE_ANONYMOUS > ROLE_ANY_USER
+                ROLE_ANY_USER > ROLE_IBD_DEMO
+                ROLE_IBD_DEMO > IS_AUTHENTICATED_ANONYMOUSLY
+            </beans:value>
+        </beans:property>
+    </beans:bean>
 
 </beans:beans>

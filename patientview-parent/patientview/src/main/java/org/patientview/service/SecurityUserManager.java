@@ -24,9 +24,12 @@
 package org.patientview.service;
 
 import org.patientview.patientview.model.Specialty;
+import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  *  Access the spring security user details
@@ -55,4 +58,14 @@ public interface SecurityUserManager {
     void setLoggedInSpecialty(Long specialtyId) throws Exception;
 
     boolean hasAccessToSpecialty(User user, Specialty specialty);
+
+    boolean userHasReadAccessToUnitUser(String username);
+
+    User get(String username);
+
+    List<SpecialtyUserRole> getSpecialtyUserRoles(User user);
+
+    boolean userHasReadAccessToUnitFeedback(String unitCode);
+
+    boolean userHasReadAccessToUnit(String unitCode);
 }

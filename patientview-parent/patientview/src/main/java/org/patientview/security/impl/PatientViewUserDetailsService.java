@@ -25,7 +25,7 @@ package org.patientview.security.impl;
 
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.security.model.SecurityUser;
-import org.patientview.service.UserManager;
+import org.patientview.service.SecurityUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,18 +48,18 @@ public class PatientViewUserDetailsService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientViewUserDetailsService.class);
 
     @Inject
-    private UserManager userManager;
+    private SecurityUserManager securityUserManager;
 
     @Override
     public UserDetails loadUserByUsername(String s) {
 
         LOGGER.debug("Attempting to load user for name {}", s);
         SecurityUser securityUser = null;
-        org.patientview.patientview.model.User user = userManager.get(s);
+        org.patientview.patientview.model.User user = securityUserManager.get(s);
 
         if (user != null) {
 
-            List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
+            List<SpecialtyUserRole> specialtyUserRoles = securityUserManager.getSpecialtyUserRoles(user);
 
             if (specialtyUserRoles != null && specialtyUserRoles.size() > 0) {
 
