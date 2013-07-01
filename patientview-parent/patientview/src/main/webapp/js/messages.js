@@ -63,7 +63,7 @@ messages.init = function() {
 messages.getMessageHtml = function(message) {
     return $('<article class="message" id="message-' + message.id + '">' +
              '  <h4 class="author">' + message.sender.name + ' <span class="label label-inverse pull-right date">' + message.friendlyDate + '</span></h4>' +
-             '  <div class="content dull">' + message.content + '</div>' +
+             '  <div class="content dull">' + message.formattedContent + '</div>' +
              '</article>');
 };
 
