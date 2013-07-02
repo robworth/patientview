@@ -45,7 +45,7 @@ public interface UnitManager {
 
     Unit get(Long id);
 
-    @UnitSecured(value = "UNIT_READ_AUTH")
+    @UnitSecured(value = "UNIT_ACCESS")
     Unit get(String unitCode);
 
     void save(Unit unit);

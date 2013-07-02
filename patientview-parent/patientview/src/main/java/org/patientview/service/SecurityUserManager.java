@@ -65,7 +65,5 @@ public interface SecurityUserManager {
 
     List<SpecialtyUserRole> getSpecialtyUserRoles(User user);
 
-    boolean userHasReadAccessToUnitFeedback(String unitCode);
-
     boolean userHasReadAccessToUnit(String unitCode);
 }

@@ -227,30 +227,6 @@ public class SecurityTest extends BaseServiceTest {
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void testGetFeedbackUnit() {
-
-        User user1 = serviceHelpers.createUserWithMapping("testuser2", "paul@test.com", "p", "Testuser2", "UNITCODEA",
-                "nhs1", specialty2);
-        serviceHelpers.createSpecialtyUserRole(specialty2, user1, "unitadmin");
-        loginAsUser(user1.getUsername(), specialty2);
-
-        Unit unitRm301 = new Unit();
-        unitRm301.setUnitcode("UNITCODEA");
-        unitRm301.setName("RM301: RUNNING MAN TEST UNIT");
-        unitRm301.setShortname("RM301");
-        unitRm301.setRenaladminemail("renaladmin@mailinator.com");
-        unitRm301.setSpecialty(specialty2);
-        unitManager.save(unitRm301);
-
-        List<Unit> units = unitManager.getUsersUnits(user1);
-        assertEquals("Wrong number of login user's unit size ", 1, units.size());
-        assertEquals("Unit code is wrong", "UNITCODEA", units.get(0).getUnitcode());
-
-        // request the invalid unit
-        List<Feedback> feedbacks = feedbackManager.get("testunit");
-    }
-
-    @Test(expected = AccessDeniedException.class)
     public void testGetUnitUser() {
 
         User adminUser = serviceHelpers.createUserWithMapping("adminuser", "adminuser@test.com", "p", "Adminuser", "UNITCODEA",
@@ -290,6 +266,33 @@ public class SecurityTest extends BaseServiceTest {
 
         // request the invalid user
         User checkInvalidUser = userManager.get(invalidUser.getUsername());
+    }
+
+    @Test
+    public void testGetValidUnitUser() {
+
+        User adminUser = serviceHelpers.createUserWithMapping("adminuser", "adminuser@test.com", "p", "Adminuser", "UNITCODEA",
+                "nhs1", specialty2);
+        serviceHelpers.createSpecialtyUserRole(specialty2, adminUser, "unitadmin");
+
+        User validUser = serviceHelpers.createUserWithMapping("validUser", "validUser@test.com", "p", "ValidUser", "UNITCODEA",
+                "nhs1", specialty2);
+        serviceHelpers.createSpecialtyUserRole(specialty2, validUser, "unitadmin");
+
+        loginAsUser(adminUser.getUsername(), specialty2);
+
+        Unit validUnit = new Unit();
+        validUnit.setUnitcode("UNITCODEA");
+        validUnit.setName("UNITCODEA");
+        validUnit.setShortname("UNITCODEA");
+        validUnit.setRenaladminemail("test@mailinator.com");
+        validUnit.setSpecialty(specialty2);
+        unitManager.save(validUnit);
+
+        User checkValidUser = userManager.get(validUser.getUsername());
+        assertNotNull(checkValidUser);
+        assertEquals("Got the Invalid user ", checkValidUser.getUsername(), "validUser");
+
     }
 
     private void loginAsUser(String username, Specialty specialty) {

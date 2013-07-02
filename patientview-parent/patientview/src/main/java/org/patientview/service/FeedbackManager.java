@@ -24,8 +24,6 @@
 package org.patientview.service;
 
 import org.patientview.patientview.model.Feedback;
-import org.patientview.security.UnitSecured;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,13 +33,11 @@ import java.util.List;
  *
  */
 @Transactional(propagation = Propagation.REQUIRED)
-@Secured(value = { "ROLE_ANY_USER" })
 public interface FeedbackManager {
 
     Feedback get(Long id);
 
     void save(Feedback feedback);
 
-    @UnitSecured(value = "UNIT_FEEDBACK_READ_AUTH")
     List<Feedback> get(String unitcode);
 }

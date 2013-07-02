@@ -44,7 +44,7 @@ public interface UserManager {
 
     User get(Long id);
 
-    @UnitSecured(value = "UNIT_USER_READ_AUTH")
+    @UnitSecured(value = "UNIT_ACCESS")
     User get(String username);
 
     String getLoggedInUserRole();
