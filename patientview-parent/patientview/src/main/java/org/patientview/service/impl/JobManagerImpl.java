@@ -28,6 +28,7 @@ import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.repository.UserDao;
 import org.patientview.repository.job.JobDao;
 import org.patientview.service.JobManager;
 import org.patientview.service.UserManager;
@@ -49,6 +50,8 @@ public class JobManagerImpl implements JobManager {
     @Autowired
     private UserManager userManager;
 
+    @Inject
+    private UserDao userDao;
 
     @Override
     public void save(Job job) {
@@ -62,6 +65,6 @@ public class JobManagerImpl implements JobManager {
 
     @Override
     public List<User> getSpecialGroupUsers(User user, Specialty specialty, String userType, Unit unit) {
-        return userManager.getUsers(user, specialty, userType, unit);
+        return userDao.get(user, specialty, userType, unit);
     }
 }
