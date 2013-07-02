@@ -255,12 +255,6 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
     }
 
     @Override
-    public boolean userHasReadAccessToUnitFeedback(String unitCode) {
-
-        return userHasReadAccessToUnit(unitCode);
-    }
-
-    @Override
     public boolean userHasReadAccessToUnit(String unitCode) {
 
         if (StringUtils.isBlank(unitCode)) {

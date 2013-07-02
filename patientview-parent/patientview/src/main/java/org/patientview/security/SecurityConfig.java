@@ -31,9 +31,6 @@ public final class SecurityConfig {
 
     }
 
-    public static final String UNIT_USER_READ_AUTH = "UNIT_USER_READ_AUTH";
+    public static final String UNIT_ACCESS = "UNIT_ACCESS";
 
-    public static final String UNIT_READ_AUTH = "UNIT_READ_AUTH";
-
-    public static final String UNIT_FEEDBACK_READ_AUTH = "UNIT_FEEDBACK_READ_AUTH";
 }

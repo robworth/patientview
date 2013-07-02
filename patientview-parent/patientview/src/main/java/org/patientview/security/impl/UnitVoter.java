@@ -26,6 +26,8 @@ import org.patientview.security.SecurityConfig;
 import org.patientview.security.UnitSecured;
 import org.patientview.security.model.SecurityUser;
 import org.patientview.service.SecurityUserManager;
+import org.patientview.service.UnitManager;
+import org.patientview.service.UserManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
@@ -64,11 +66,11 @@ public class UnitVoter implements AccessDecisionVoter {
      *  o: the actual secure object invocation,
      *
      *  e.g. for method based security: ReflectiveMethodInvocation:
-     *  com.worthsoln.service.get(String unitCode);
-     *  target is of class [com.worthsoln.service.impl.UnitManagerImpl]
+     *  org.patientview.service.get(String unitCode);
+     *  target is of class [org.patientview.service.impl.UnitManagerImpl]
      *
      *  collection: A list of ConfigAttribute, typically, SecurityConfig, which hold the attributes supplied by the
-     *  @Secured("ROLE_USER") annotation
+     *  @Secured("ROLE_ANY_USER") annotation
      */
     public int vote(Authentication authentication, Object o, Collection collection) {
 
@@ -97,12 +99,8 @@ public class UnitVoter implements AccessDecisionVoter {
             UnitSecured securedAnnotation = methodInvocation.getMethod().getAnnotation(UnitSecured.class);
 
             if (securedAnnotation != null && securedAnnotation.value() != null) {
-                if (securedAnnotation.value().equals(SecurityConfig.UNIT_USER_READ_AUTH)) {
-                    result = voteOnUserReadMethodInvocation(methodInvocation, user);
-                } else if (securedAnnotation.value().equals(SecurityConfig.UNIT_FEEDBACK_READ_AUTH)) {
-                    result = voteOnFeedbackReadMethodInvocation(methodInvocation, user);
-                } else if (securedAnnotation.value().equals(SecurityConfig.UNIT_READ_AUTH)) {
-                    result = voteOnUnitReadMethodInvocation(methodInvocation, user);
+                if (securedAnnotation.value().equals(SecurityConfig.UNIT_ACCESS)) {
+                    result = voteOnUnitAccessMethodInvocation(methodInvocation);
                 }
 
             } else {
@@ -125,51 +123,26 @@ public class UnitVoter implements AccessDecisionVoter {
     }
 
     /**
-     * Authenticate the login user request the user that belongs to valid unit.
+     * Authenticate the login user request valid user or unit.
      *
      * @param methodInvocation
-     * @param securityUser
      * @return 1: valid request, -1: invalid request
      */
-    private int voteOnUserReadMethodInvocation(MethodInvocation methodInvocation, SecurityUser securityUser) {
+    private int voteOnUnitAccessMethodInvocation(MethodInvocation methodInvocation) {
 
-        String username = getUserName(methodInvocation);
-        if (securityUserManager.userHasReadAccessToUnitUser(username)) {
-            return ACCESS_GRANTED;
-        }
+        String argument = getMethodArgument(methodInvocation);
 
-        return ACCESS_DENIED;
-    }
+        if (methodInvocation.getMethod().getDeclaringClass().getSimpleName()
+                .equals(UnitManager.class.getSimpleName())) {
+            if (securityUserManager.userHasReadAccessToUnit(argument)) {
+                return ACCESS_GRANTED;
+            }
 
-    /**
-     * Authenticate the login user request the feedback that belongs to valid unit.
-     *
-     * @param methodInvocation
-     * @param securityUser
-     * @return 1: valid request, -1: invalid request
-     */
-    private int voteOnFeedbackReadMethodInvocation(MethodInvocation methodInvocation, SecurityUser securityUser) {
-
-        Object username = getUnitCode(methodInvocation);
-        if (securityUserManager.userHasReadAccessToUnitFeedback(username.toString())) {
-            return ACCESS_GRANTED;
-        }
-
-        return ACCESS_DENIED;
-    }
-
-    /**
-     * Authenticate the login user request unit code that belongs to valid unit.
-     *
-     * @param methodInvocation
-     * @param securityUser
-     * @return
-     */
-    private int voteOnUnitReadMethodInvocation(MethodInvocation methodInvocation, SecurityUser securityUser) {
-
-        Object username = getUnitCode(methodInvocation);
-        if (securityUserManager.userHasReadAccessToUnitFeedback(username.toString())) {
-            return ACCESS_GRANTED;
+        } else if (methodInvocation.getMethod().getDeclaringClass().getSimpleName()
+                .equals(UserManager.class.getSimpleName())) {
+            if (securityUserManager.userHasReadAccessToUnitUser(argument)) {
+                return ACCESS_GRANTED;
+            }
         }
 
         return ACCESS_DENIED;
@@ -181,7 +154,7 @@ public class UnitVoter implements AccessDecisionVoter {
      * @param methodInvocation method
      * @return username
      */
-    private String getUserName(MethodInvocation methodInvocation) {
+    private String getMethodArgument(MethodInvocation methodInvocation) {
         String result = null;
 
         try {
@@ -194,30 +167,6 @@ public class UnitVoter implements AccessDecisionVoter {
             }
         } catch (Exception e) {
             LOGGER.error("Error parsing username id from methodInvocation: " + e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
-     * Get the unit code associated with the method invocation
-     *
-     * @param methodInvocation method
-     * @return unitcode
-     */
-    private String getUnitCode(MethodInvocation methodInvocation) {
-        String result = null;
-
-        try {
-            Object[] arguments = methodInvocation.getArguments();
-            if (arguments.length > 0) {
-                Object arg0 = arguments[0];
-                if (arg0 instanceof String) {
-                    result = String.valueOf(arg0);
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error parsing unitcode from methodInvocation: " + e.getMessage());
         }
 
         return result;
