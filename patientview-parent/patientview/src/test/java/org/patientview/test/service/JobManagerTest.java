@@ -71,6 +71,7 @@ public class JobManagerTest extends BaseServiceTest {
     public void testGetSpecialGroupUsers() {
         Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         User adminUser = serviceHelpers.createUserWithMapping("adminuser", "test@admin.com", "p", "Admin", "UNITA", "nhs1", specialty1);
+        serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "ROLE_RENAL_UNITADMIN");
         User user1 = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA", "nhstest1", specialty1);
         User user2 = serviceHelpers.createUserWithMapping("testname2", "test2@admin.com", "p", "test2", "UNITA", "nhstest2", specialty1);
         User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "UNITA", "nhstest3", specialty1);
