@@ -210,34 +210,19 @@ public class ImportManagerImpl implements ImportManager {
         process(xmlFile);
     }
 
-    private void process(ServletContext context, File xmlFile) {
-        try {
-            ResultParser parser = new ResultParser();
-            parser.parseResults(context, xmlFile);
-
-            if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
-                    || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
-                    || "Suspend".equalsIgnoreCase(parser.getFlag())) {
-                removePatientFromSystem(parser);
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getUnitcode(), xmlFile.getName());
-            } else {
-                updatePatientData(parser);
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getUnitcode(), xmlFile.getName());
-            }
-            //xmlFile.delete();
-        } catch (Exception e) {
-
-            // these exceptions can occur because of corrupt/invalid data in xml file
-            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
-
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
-
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
+    private void process(ServletContext context, File xmlFile) throws Exception {
+        ResultParser parser = new ResultParser();
+        parser.parseResults(context, xmlFile);
+        if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
+                || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
+                || "Suspend".equalsIgnoreCase(parser.getFlag())) {
+            removePatientFromSystem(parser);
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
+                    parser.getPatient().getUnitcode(), xmlFile.getName());
+        } else {
+            updatePatientData(parser);
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
+                    parser.getPatient().getUnitcode(), xmlFile.getName());
         }
     }
 

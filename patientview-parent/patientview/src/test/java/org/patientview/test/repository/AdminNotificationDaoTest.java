@@ -52,7 +52,7 @@ public class AdminNotificationDaoTest extends BaseDaoTest {
         List<String> emails = adminNotificationDao.getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        assertTrue(emails.size() == 0);
+        assertTrue("Wrong size of email", emails.size() == 0);
     }
 
 }
