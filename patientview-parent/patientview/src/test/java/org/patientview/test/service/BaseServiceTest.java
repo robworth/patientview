@@ -25,9 +25,12 @@ package org.patientview.test.service;
 
 import org.junit.runner.RunWith;
 import org.patientview.common.test.BaseTestPvDbSchema;
+import org.patientview.test.helpers.SecurityHelpers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
 
 /**
  *  All service tests should extend.
@@ -42,4 +45,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class BaseServiceTest extends BaseTestPvDbSchema {
 
+    @Inject
+    protected SecurityHelpers securityHelpers;
 }

@@ -76,6 +76,8 @@ public class JobManagerTest extends BaseServiceTest {
         User user3 = serviceHelpers.createUserWithMapping("testname3-GP", "test3@admin.com", "p", "test3", "UNITA", "nhstest3", specialty1);
         User user4 = serviceHelpers.createUserWithMapping("testname4", "test4@admin.com", "p", "test4", "unitB", "nhstest4", specialty1);
 
+        securityHelpers.loginAsUser(adminUser.getUsername());
+
         // Add SpecialtyUserRole
         serviceHelpers.createSpecialtyUserRole(specialty1, adminUser, "unitadmin");
         serviceHelpers.createSpecialtyUserRole(specialty1, user1, "patient");
