@@ -27,6 +27,7 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.security.model.SecurityUser;
+import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.security.core.Authentication;
@@ -49,6 +50,9 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
     @Inject
     private UserManager userManager;
 
+    @Inject
+    private SecurityUserManager securityUserManager;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
@@ -58,7 +62,7 @@ public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAu
         // remove the account locked token from the session, we don't get any incorrect login error messages
         request.getSession().setAttribute(PatientViewAuthenticationFailureHandler.ACCOUNT_LOCKED_SESSION_TOKEN, null);
 
-        User user = userManager.get(securityUser.getUsername());
+        User user = securityUserManager.get(securityUser.getUsername());
 
         List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
 
