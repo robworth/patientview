@@ -20,31 +20,17 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-
-package org.patientview.test.service;
-
-import org.junit.runner.RunWith;
-import org.patientview.common.test.BaseTestPvDbSchema;
-import org.patientview.test.helpers.SecurityHelpers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
+package org.patientview.security;
 
 /**
- *  All service tests should extend.
- *
- *  Sets up everything required for hibernate, persistence.
- *
- *  NOTE: these tests are not transaction driven, the transactions are create new in the service layer,
- *  hence the need to manually roll back the database in between each test.
+ *      Used to annotate service level methods that require security in addition to Role.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
-@Transactional
-public abstract class BaseServiceTest extends BaseTestPvDbSchema {
+public final class SecurityConfig {
 
-    @Inject
-    protected SecurityHelpers securityHelpers;
+    private SecurityConfig() {
+
+    }
+
+    public static final String UNIT_ACCESS = "UNIT_ACCESS";
+
 }

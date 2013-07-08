@@ -87,7 +87,7 @@
 
 <p class="header"><bean:write name="splashPage" property="headline" ignore="true"/></p>
 
-<p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodytext"  ignore="true"/></p>
+<p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodyTextForHtml"  ignore="true"/></p>
 
 </div>
 </div>
