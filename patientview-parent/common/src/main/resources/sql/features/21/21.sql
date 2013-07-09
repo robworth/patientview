@@ -1,7 +1,6 @@
 /**
       Merge tbl_demographics into patient table
  */
-
 ALTER TABLE patient ADD COLUMN  `RADAR_NO` int(11) NULL;
 ALTER TABLE patient ADD COLUMN  `RR_NO` varchar(10) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `DATE_REG` datetime DEFAULT NULL;
@@ -15,7 +14,6 @@ ALTER TABLE patient ADD COLUMN   `CONSENT` bit(1) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `DATE_BAPN_REG` datetime DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `CONS_NEPH` varchar(6) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `STATUS` int(11) DEFAULT NULL;
-ALTER TABLE patient ADD COLUMN   `RDG` varchar(100) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `emailAddress` varchar(50) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `RRT_modality` int(10) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `otherClinicianAndContactInfo` varchar(500) DEFAULT NULL;
@@ -25,17 +23,16 @@ ALTER TABLE patient ADD COLUMN   `isleOfManId` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `channelIslandsId` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `indiaId` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `generic` tinyint(1) DEFAULT NULL;
-ALTER TABLE patient ADD COLUMN   `RENAL_UNIT_2` int(11) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `genericDiagnosis` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `dateOfGenericDiagnosis` datetime DEFAULT NULL;
+ALTER TABLE patient ADD COLUMN   `unitcode` varchar(20) NOT NULL DEFAULT '';
 
+UPDATE patient p
+SET p.unitcode = p.centreCode;
 
-ALTER TABLE patient add constraint fk_RDG Foreign Key (RDG) References unit (unitcode);
-ALTER TABLE patient add constraint fk_genericDiagnosis Foreign Key (genericDiagnosis) References rdr_prd_code (ERA_EDTA_PRD_code);
+ALTER TABLE patient DROP INDEX nhsno;
+ALTER TABLE patient DROP COLUMN `centreCode`;
 
-
-
-
-
-
-
+ALTER TABLE patient ADD UNIQUE `nhsno` (`nhsno`,`unitcode`);
+ALTER TABLE patient ADD CONSTRAINT fk_unitcode Foreign Key (unitcode) References unit (unitcode);
+ALTER TABLE patient add CONSTRAINT fk_genericDiagnosis Foreign Key (genericDiagnosis) References rdr_prd_code (ERA_EDTA_PRD_code);
