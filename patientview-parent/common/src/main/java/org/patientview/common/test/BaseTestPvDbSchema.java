@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -40,50 +41,60 @@ public class BaseTestPvDbSchema {
     @Value("${config.environment}")
     private String configEnvironment;
 
+    private boolean isLocalTestEnvironment;
+
+    @PostConstruct
+    public void init() {
+        isLocalTestEnvironment = configEnvironment != null && configEnvironment.equals("localhost-test");
+    }
+
     @Before
     public void testDbCreate() throws Exception {
-        LOGGER.info("Starting db setup");
 
-        boolean isTestEnvironment = configEnvironment != null && configEnvironment.equals("test");
+        if (!isLocalTestEnvironment) {
+            boolean isTestEnvironment = configEnvironment != null && configEnvironment.equals("test");
 
-        if (!isTestEnvironment) {
-            throw new IllegalStateException("Cannot run tests using "
-                    + configEnvironment
-                    + " profile you risk overwriting a real database");
-        }
+            if (!isTestEnvironment) {
+                throw new IllegalStateException("Cannot run tests using "
+                        + configEnvironment
+                        + " profile you risk overwriting a real database");
+            }
 
-        // a list of all the sql file names we need to run in order
-        List<String> sqlFileNames = new ArrayList<String>();
-        sqlFileNames.add("sql/1-pvdbschema-create.sql");
+            LOGGER.info("Starting db setup");
 
-        // work out the feature number we need to increment the db to
-        Resource txtResource = applicationContext.getResource("classpath:current-db-feature-num.txt");
+            // a list of all the sql file names we need to run in order
+            List<String> sqlFileNames = new ArrayList<String>();
+            sqlFileNames.add("sql/1-pvdbschema-create.sql");
 
-        Assert.assertTrue("null resource", txtResource != null && txtResource.exists());
+            // work out the feature number we need to increment the db to
+            Resource txtResource = applicationContext.getResource("classpath:current-db-feature-num.txt");
 
-        int featureNum = Integer.parseInt(IOUtils.toString(txtResource.getInputStream()));
+            Assert.assertTrue("null resource", txtResource != null && txtResource.exists());
 
-        Assert.assertTrue("Invalid feature version", featureNum > 0);
+            int featureNum = Integer.parseInt(IOUtils.toString(txtResource.getInputStream()));
 
-        // iterate through the features folders and grab the features we need
-        for (int i = 1; i <= featureNum; i++) {
-            sqlFileNames.add("sql/features/" + i + "/" + i + ".sql");
-        }
+            Assert.assertTrue("Invalid feature version", featureNum > 0);
 
-        if (!sqlFileNames.isEmpty()) {
-            Connection connection = null;
+            // iterate through the features folders and grab the features we need
+            for (int i = 1; i <= featureNum; i++) {
+                sqlFileNames.add("sql/features/" + i + "/" + i + ".sql");
+            }
 
-            try {
-                connection = dataSource.getConnection();
+            if (!sqlFileNames.isEmpty()) {
+                Connection connection = null;
 
-                // empty db
-                emptyDatabase(connection);
+                try {
+                    connection = dataSource.getConnection();
 
-                // create tables
-                createTables(connection, sqlFileNames);
-            } finally {
-                if (connection != null) {
-                    connection.close();
+                    // empty db
+                    emptyDatabase(connection);
+
+                    // create tables
+                    createTables(connection, sqlFileNames);
+                } finally {
+                    if (connection != null) {
+                        connection.close();
+                    }
                 }
             }
         }
@@ -148,5 +159,9 @@ public class BaseTestPvDbSchema {
         InputStream inputStream = resource.getInputStream();
         Assert.assertTrue("inputStream resource", inputStream != null);
         return inputStream;
+    }
+
+    protected boolean isLocalTestEnvironment() {
+        return isLocalTestEnvironment;
     }
 }

@@ -62,11 +62,21 @@
             </properties>
         </profile>
         <profile>
+            <id>localhost-test</id>
+            <properties>
+                <env>localhost-test</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/patientview</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
             <id>localhost</id>
             <properties>
                 <env>localhost</env>
                 <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
-                <warpath>/patientview</warpath>
+                <warpath>/</warpath>
                 <!-- localhost is designed to build and run with war:inplace -->
                 <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
             </properties>
