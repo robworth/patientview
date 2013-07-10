@@ -54,8 +54,8 @@ Test Users
 - username: superadmin  pass:  pppppp
 
 
-Running Tests
-=============
+Running Tests Against Mysql
+===========================
 
 Tests run against a separate db and rebuild the schema and data from scratch for each test run.
 
@@ -65,6 +65,18 @@ Tests run against a separate db and rebuild the schema and data from scratch for
 - Run the tests
 
 `mvn test -Ptest'
+
+
+Running Tests In Memory
+=======================
+
+Tests run against a separate db and rebuild the schema and data from scratch for each test run.
+
+- Setup your properties file.  It should be located at /src/main/filters/localhost-test-filters.properties.
+  Copy this manually and complete for your local environment.
+- Run the tests
+
+`mvn test -Plocalhost-test'
 
 
 Outsourced Development Process
