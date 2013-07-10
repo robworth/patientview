@@ -70,7 +70,7 @@ public class Patient extends BaseModel {
     @Column
     private String mobile;
     @Column(nullable = false)
-    private String centreCode;
+    private String unitcode;
     @Column
     private String diagnosis;
     @Column
@@ -110,14 +110,14 @@ public class Patient extends BaseModel {
     public Patient() {
     }
 
-    public Patient(String nhsno, String centreCode) {
+    public Patient(String nhsno, String unitCode) {
         this.nhsno = nhsno;
-        this.centreCode = centreCode;
+        this.unitcode = unitCode;
     }
 
     public Patient(String nhsno, String surname, String forename, String dateofbirth, String sex, String address1,
                    String address2, String address3, String address4, String postcode, String telephone1,
-                   String telephone2, String mobile, String centreCode, String diagnosis, String diagnosisDate,
+                   String telephone2, String mobile, String unitCode, String diagnosis, String diagnosisDate,
                    String treatment, String transplantstatus, String hospitalnumber, String gpname, String gpaddress1,
                    String gpaddress2, String gpaddress3, String gppostcode, String gptelephone, String gpemail,
                    String bmdexam, String bloodgroup) {
@@ -125,7 +125,7 @@ public class Patient extends BaseModel {
         this.address2 = address2;
         this.address3 = address3;
         this.address4 = address4;
-        setCentreCode(centreCode);
+        setUnitcode(unitCode);
         this.dateofbirth = dateofbirth;
         this.forename = forename;
         this.nhsno = nhsno;
@@ -195,12 +195,12 @@ public class Patient extends BaseModel {
         this.address4 = address4;
     }
 
-    public String getCentreCode() {
-        return centreCode;
+    public String getUnitcode() {
+        return unitcode;
     }
 
-    public void setCentreCode(String centreCode) {
-        this.centreCode = (centreCode != null) ? centreCode.toUpperCase() : centreCode;
+    public void setUnitcode(String unitCode) {
+        this.unitcode = (unitCode != null) ? unitCode.toUpperCase() : unitCode;
     }
 
     public String getDateofbirth() {

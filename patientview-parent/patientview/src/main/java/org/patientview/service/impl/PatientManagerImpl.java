@@ -148,7 +148,7 @@ public class PatientManagerImpl implements PatientManager {
                 patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
                 patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
                 patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                        patient.getCentreCode()));
+                        patient.getUnitcode()));
 
                 // TODO: dont really know bout this UktUtils ?
                 patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
@@ -157,7 +157,7 @@ public class PatientManagerImpl implements PatientManager {
 
                 AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
                         AddLog.PATIENT_VIEW, "", patient.getNhsno(),
-                        patient.getCentreCode(), "");
+                        patient.getUnitcode(), "");
             }
         }
 

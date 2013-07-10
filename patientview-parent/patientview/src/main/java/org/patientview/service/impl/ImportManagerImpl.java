@@ -141,11 +141,11 @@ public class ImportManagerImpl implements ImportManager {
                     || "Suspend".equalsIgnoreCase(parser.getFlag())) {
                 removePatientFromSystem(parser);
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getCentreCode(), xmlFile.getName());
+                        parser.getPatient().getUnitcode(), xmlFile.getName());
             } else {
                 updatePatientData(parser);
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getCentreCode(), xmlFile.getName());
+                        parser.getPatient().getUnitcode(), xmlFile.getName());
             }
             //xmlFile.delete();
         } catch (Exception e) {
@@ -238,7 +238,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void updatePatientDetails(Patient patient) {
-        LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getCentreCode());
+        LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getUnitcode());
         LegacySpringUtils.getPatientManager().save(patient);
     }
 

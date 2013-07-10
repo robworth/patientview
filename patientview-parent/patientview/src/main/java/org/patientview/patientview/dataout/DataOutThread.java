@@ -124,7 +124,7 @@ public class DataOutThread implements Runnable, ParserThread {
             Element dateOfReport = addChildElement(doc, rootElement, "dateofreport", getTimeStampNow());
 
             Element centreDetails = addChildElement(doc, rootElement, "centredetails");
-            Element centreCode = addChildElement(doc, centreDetails, "centrecode", patient.getCentreCode());
+            Element centreCode = addChildElement(doc, centreDetails, "centrecode", patient.getUnitcode());
 
             Element patientTag = addChildElement(doc, rootElement, "patient");
             Element personalDetails = addChildElement(doc, patientTag, "personaldetails");

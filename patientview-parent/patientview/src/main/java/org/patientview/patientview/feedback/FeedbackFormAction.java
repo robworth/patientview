@@ -68,7 +68,7 @@ public class FeedbackFormAction extends Action {
             if (patient != null) {
                 request.setAttribute("patient", patient);
 
-                Unit unit = LegacySpringUtils.getUnitManager().get(patient.getCentreCode());
+                Unit unit = LegacySpringUtils.getUnitManager().get(patient.getUnitcode());
                 request.setAttribute("unit", unit);
             } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
                 return LogonUtils.logonChecks(mapping, request, "control");

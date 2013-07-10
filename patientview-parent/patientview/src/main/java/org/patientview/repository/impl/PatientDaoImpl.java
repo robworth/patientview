@@ -68,7 +68,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsno));
-        wherePredicates.add(builder.equal(from.get(Patient_.centreCode), unitcode));
+        wherePredicates.add(builder.equal(from.get(Patient_.unitcode), unitcode));
 
         buildWhereClause(criteria, wherePredicates);
 
@@ -101,7 +101,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         Root<Patient> from = criteria.from(Patient.class);
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        wherePredicates.add(builder.equal(from.get(Patient_.centreCode), centreCode));
+        wherePredicates.add(builder.equal(from.get(Patient_.unitcode), centreCode));
 
         buildWhereClause(criteria, wherePredicates);
         return getEntityManager().createQuery(criteria).getResultList();

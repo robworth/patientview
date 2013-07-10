@@ -86,7 +86,7 @@ public class PatientDaoTest extends BaseDaoTest {
         // create a patient
         Patient patient = new Patient();
         patient.setNhsno(NHS_NO_1);
-        patient.setCentreCode(CENTRE_1);
+        patient.setUnitcode(CENTRE_1);
         patient.setSurname("surname1");
 
         // save it
@@ -96,7 +96,7 @@ public class PatientDaoTest extends BaseDaoTest {
         // create another patient
         patient = new Patient();
         patient.setNhsno("nhsno2");
-        patient.setCentreCode(CENTRE_1);
+        patient.setUnitcode(CENTRE_1);
         patient.setSurname("surname2");
 
         // save it too
@@ -106,7 +106,7 @@ public class PatientDaoTest extends BaseDaoTest {
         /**
          * get
          */
-        List<Patient> patients = patientDao.get(patient.getCentreCode());
+        List<Patient> patients = patientDao.get(patient.getUnitcode());
 
         assertEquals("Incorrect number of patients found", 2, patients.size());
         assertEquals("Incorrect first patient surname", "surname1", patients.get(0).getSurname());
