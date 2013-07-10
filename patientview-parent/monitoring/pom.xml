@@ -132,7 +132,7 @@
                     <source>1.6</source>
                     <target>1.6</target>
                     <includes>
-                        <include>com/worthsoln/monitoring/*.java</include>
+                        <include>org/patientview/monitoring/*.java</include>
                     </includes>
                 </configuration>
             </plugin>
