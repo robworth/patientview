@@ -435,48 +435,44 @@ public final class ImportMonitor {
          * Then we will check the rest of the folders, starting by comparing (x+1, y), (x+1, y+1), (x+1, y+2) ...
          */
 
-        if (countRecords.size() == numberOfLinesToRead) {
+        // first line of the log
+        CountRecord firstLogRecord = countRecords.get(0);
 
-            // first line of the log
-            CountRecord firstLogRecord = countRecords.get(0);
+        // total number of folders that are logged in his line
+        int numberOfFoldersToCheck = firstLogRecord.getFoldersToMonitor().size();
 
-            // total number of folders that are logged in his line
-            int numberOfFoldersToCheck = firstLogRecord.getFoldersToMonitor().size();
+        /**
+         * We will make iterations totaling to the number of folders that needs to be monitored
+         */
+        for (int i = 0; i < numberOfFoldersToCheck; i++) {
 
             /**
-             * We will make iterations totaling to the number of folders that needs to be monitored
+             * i-th folder of the first log record. We will compare this value with other log records (other
+             *      recordings recently)
              */
-            for (int i = 0; i < numberOfFoldersToCheck; i++) {
+            int firstRecordsFolderFileCount = firstLogRecord.getFoldersToMonitor().get(i).getCurrentNumberOfFiles();
+
+            /**
+             * Go backwards in time (logs) to see if the file count was always the same or not
+             */
+            for (CountRecord countRecord : countRecords) {
+
+                // i-th folder of the current log record
+                FolderToMonitor thisRecordsFolder = countRecord.getFoldersToMonitor().get(i);
+
+                // number of files of i-th folder of the current log record
+                int thisRecordsFolderFileCount = thisRecordsFolder.getCurrentNumberOfFiles();
 
                 /**
-                 * i-th folder of the first log record. We will compare this value with other log records (other
-                 *      recordings recently)
+                 * If this log record's i-th folder's file count is different than the first log record's
+                 *      i-th folder's file count, then it means importer is working on this folder
                  */
-                int firstRecordsFolderFileCount = firstLogRecord.getFoldersToMonitor().get(i).getCurrentNumberOfFiles();
-
-                /**
-                 * Go backwards in time (logs) to see if the file count was always the same or not
-                 */
-                for (CountRecord countRecord : countRecords) {
-
-                    // i-th folder of the current log record
-                    FolderToMonitor thisRecordsFolder = countRecord.getFoldersToMonitor().get(i);
-
-                    // number of files of i-th folder of the current log record
-                    int thisRecordsFolderFileCount = thisRecordsFolder.getCurrentNumberOfFiles();
-
-                    /**
-                     * If this log record's i-th folder's file count is different than the first log record's
-                     *      i-th folder's file count, then it means importer is working on this folder
-                     */
-                    if (firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
-                        foldersWhoseFilesAreStatic.remove(thisRecordsFolder);
-                    }
+                if (firstRecordsFolderFileCount != thisRecordsFolderFileCount) {
+                    foldersWhoseFilesAreStatic.remove(thisRecordsFolder);
                 }
             }
-        } else {
-            LOGGER.warn("There are not enough records to check (only {} records in the file)", countRecords.size());
         }
+
 
         /**
          * Log the findings
