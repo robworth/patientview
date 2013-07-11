@@ -21,10 +21,8 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.model;
+package org.patientview.model;
 
-import org.patientview.ibd.Ibd;
-import org.patientview.patientview.parser.ResultParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.persistence.Column;
@@ -36,6 +34,7 @@ import java.util.Date;
 
 @Entity
 public class Patient extends BaseModel {
+
 
     @Transient
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -138,7 +137,7 @@ public class Patient extends BaseModel {
         this.diagnosis = diagnosis;
         if (diagnosisDate != null) {
             try {
-                this.diagnosisDate = ResultParser.IMPORT_DATE_FORMAT.parse(diagnosisDate);
+                this.diagnosisDate = DATE_FORMAT.parse(diagnosisDate);
             } catch (ParseException e) {
                 LOGGER.error("Could not parse diagnosisDate {} {}", diagnosisDate, e);
             }
@@ -155,7 +154,7 @@ public class Patient extends BaseModel {
         this.gpemail = gpemail;
         if (bmdexam != null) {
             try {
-                this.bmdexam = Ibd.DATE_FORMAT.parse(bmdexam);
+                this.bmdexam = DATE_FORMAT.parse(bmdexam);
             } catch (ParseException e) {
                 LOGGER.error("Could not parse bmdexam {} {}", bmdexam, e);
             }

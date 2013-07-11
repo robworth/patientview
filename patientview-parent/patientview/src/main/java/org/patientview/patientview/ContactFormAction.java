@@ -23,8 +23,8 @@
 
 package org.patientview.patientview;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Patient;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

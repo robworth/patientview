@@ -23,9 +23,9 @@
 
 package org.patientview.patientview.dataout;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.ParserThread;
 import org.patientview.patientview.model.Comment;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;

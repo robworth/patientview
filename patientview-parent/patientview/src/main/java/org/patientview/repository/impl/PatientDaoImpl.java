@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.Patient_;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.unit.UnitUtils;

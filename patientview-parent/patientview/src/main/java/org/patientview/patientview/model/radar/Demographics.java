@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.model.radar;
 
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

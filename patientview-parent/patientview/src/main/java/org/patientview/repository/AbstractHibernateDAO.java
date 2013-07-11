@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

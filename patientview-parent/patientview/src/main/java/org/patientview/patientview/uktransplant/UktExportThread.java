@@ -24,8 +24,8 @@
 package org.patientview.patientview.uktransplant;
 
 import com.Ostermiller.util.CSVPrinter;
+import org.patientview.model.Patient;
 import org.patientview.patientview.ParserThread;
-import org.patientview.patientview.model.Patient;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;

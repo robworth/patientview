@@ -21,7 +21,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.model;
+package org.patientview.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -79,7 +79,6 @@ public class BaseModel implements Serializable, Comparable {
         }
     }
 
-    @Override
     public int compareTo(Object o) {
 
         BaseModel baseModel = (BaseModel) o;

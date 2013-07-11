@@ -24,8 +24,8 @@
 package org.patientview.ibd.model;
 
 
+import org.patientview.model.BaseModel;
 import org.patientview.patientview.model.enums.XmlImportNotification;
-import org.patientview.patientview.model.BaseModel;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

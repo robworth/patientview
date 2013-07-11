@@ -23,8 +23,8 @@
 
 package org.patientview.test.repository;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.PatientCount;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;

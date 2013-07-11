@@ -23,9 +23,9 @@
 
 package org.patientview.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.PatientDetails;
 import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
