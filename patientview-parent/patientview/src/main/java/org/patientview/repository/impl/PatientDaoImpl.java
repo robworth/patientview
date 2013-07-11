@@ -25,7 +25,7 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Patient_;
+import org.patientview.model.Patient_;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.repository.AbstractHibernateDAO;
@@ -116,7 +116,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
                 + "FROM user, specialtyuserrole, usermapping "
                 + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = "
-                + "patient.centreCode "
+                + "patient.unitcode "
                 + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
