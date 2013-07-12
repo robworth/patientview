@@ -1,0 +1,5 @@
+for UNIT in `cat /root/scripts/allunits.txt`
+do
+    echo "Moving files from $UNIT"
+    find /home/$UNIT/incoming -type f -mmin +5 -exec mv {} /home/manager/proton \;
+done
