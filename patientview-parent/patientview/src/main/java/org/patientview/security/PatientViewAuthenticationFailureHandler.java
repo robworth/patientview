@@ -71,10 +71,10 @@ public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAut
             } else {
 
                 // assume a failed login that contributes to an account lockout
-                LegacySpringUtils.getUserManager().incrementFailedLogins(username);
+                LegacySpringUtils.getSecurityUserManager().incrementFailedLogins(username);
 
-                if (LegacySpringUtils.getUserManager().getFailedLogins(username) >= allowedfailedlogons) {
-                    LegacySpringUtils.getUserManager().lockUserAccount(username);
+                if (LegacySpringUtils.getSecurityUserManager().getFailedLogins(username) >= allowedfailedlogons) {
+                    LegacySpringUtils.getSecurityUserManager().lockUserAccount(username);
                     addAccountLockedTokenToSession(request);
                     LOGGER.info("User locked out, username: {}", username);
                 }

@@ -53,7 +53,7 @@ public class PatientViewUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) {
 
-        LOGGER.info("Attempting to load user for name {}", s);
+        LOGGER.debug("Attempting to load user for name {}", s);
         SecurityUser securityUser = null;
         org.patientview.patientview.model.User user = securityUserManager.get(s);
 
@@ -89,10 +89,10 @@ public class PatientViewUserDetailsService implements UserDetailsService {
                         !user.isAccountlocked(), // true - account not locked
                         authorities);
             } else {
-                LOGGER.info("Unable to find roles for user to attempt login from database: {}", s);
+                LOGGER.debug("Unable to find roles for user to attempt login from database: {}", s);
             }
         } else {
-            LOGGER.info("Unable to find user to attempt login from database: {}", s);
+            LOGGER.debug("Unable to find user to attempt login from database: {}", s);
         }
 
         return securityUser;

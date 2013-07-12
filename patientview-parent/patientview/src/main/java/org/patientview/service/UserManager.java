@@ -36,6 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ *  Note: all these methods now require a logged in user
+ */
 @Transactional(propagation = Propagation.REQUIRED)
 @Secured(value = { "ROLE_ANY_USER" })
 public interface UserManager {
@@ -88,14 +91,6 @@ public interface UserManager {
     List<UserMapping> getDuplicateUsers(String nhsno, String username);
 
     boolean patientExistsInRadar(String nhsno);
-
-    void incrementFailedLogins(String username);
-
-    int getFailedLogins(String username);
-
-    void lockUserAccount(String username);
-
-    void resetFailedLoginsForUser(String username);
 
     boolean userExistsInRadar(Long userId);
 
