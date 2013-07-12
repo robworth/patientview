@@ -1,11 +1,11 @@
 package org.patientview.radar.web.pages.patient;
 
+import org.patientview.model.Sex;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.enums.NhsNumberType;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;

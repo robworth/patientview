@@ -1,8 +1,8 @@
 package org.patientview.radar.dao.impl;
 
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.model.generic.DiseaseGroup;
-import org.patientview.radar.model.generic.GenericDiagnosis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;

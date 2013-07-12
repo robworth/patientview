@@ -1,8 +1,8 @@
 package org.patientview.radar.web.pages.patient;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;

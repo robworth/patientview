@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages.admin;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
 import org.patientview.radar.model.Consultant;
 import org.patientview.radar.service.UtilityManager;
 import org.apache.wicket.ajax.AjaxRequestTarget;

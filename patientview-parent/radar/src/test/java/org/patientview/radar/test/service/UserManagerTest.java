@@ -1,9 +1,9 @@
 package org.patientview.radar.test.service;
 
+import org.patientview.model.Centre;
+import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.UserDao;
-import org.patientview.radar.model.Centre;
 import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.enums.NhsNumberType;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.UserManager;

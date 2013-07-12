@@ -1,9 +1,9 @@
 package org.patientview.radar.web.pages.patient.srns;
 
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.ClinicalDataManager;
 import org.patientview.radar.service.DemographicsManager;

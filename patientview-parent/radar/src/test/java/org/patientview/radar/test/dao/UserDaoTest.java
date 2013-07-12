@@ -1,10 +1,10 @@
 package org.patientview.radar.test.dao;
 
+import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.enums.NhsNumberType;
 
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;

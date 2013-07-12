@@ -1,9 +1,9 @@
 package org.patientview.radar.service.alport.impl;
 
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.alport.MedicineDao;
 import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.alport.Medicine;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.service.alport.MedicineManager;
 
 import java.util.List;

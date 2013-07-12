@@ -1,4 +1,4 @@
-package org.patientview.radar.model;
+package org.patientview.model;
 
 import java.util.Comparator;
 

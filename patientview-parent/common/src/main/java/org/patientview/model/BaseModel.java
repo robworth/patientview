@@ -85,4 +85,18 @@ public class BaseModel implements Serializable, Comparable {
 
         return this.id.compareTo(baseModel.getId());
     }
+
+    public static String getLabelFromEnum(String enumString) {
+        String label = enumString;
+        label = label.replace("_", " ");
+        String[] parts = label.split(" ");
+        label = "";
+        for (String part : parts) {
+            String formatted = part.toLowerCase();
+            formatted = Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
+            label += formatted;
+            label += " ";
+        }
+        return label;
+    }
 }

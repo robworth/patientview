@@ -1,6 +1,6 @@
 package org.patientview.radar.web.dataproviders;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
 import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.service.DemographicsManager;

@@ -1,11 +1,15 @@
 package org.patientview.radar.model;
 
-
-import org.patientview.radar.model.enums.NhsNumberType;
-import org.patientview.radar.model.generic.DiseaseGroup;
-import org.patientview.radar.model.generic.GenericDiagnosis;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
+import org.patientview.model.Clinician;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
+import org.patientview.model.Centre;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 
 import java.util.Date;
 

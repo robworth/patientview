@@ -23,11 +23,15 @@
 
 package org.patientview.model;
 
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import javax.persistence.Column;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -105,6 +109,119 @@ public class Patient extends BaseModel {
     private String otherConditions;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Patient.class);
+
+    @Column
+    private Long radarNo;
+
+    @Column
+    private String rrNo;
+
+    @Column
+    private Date dateGeg;
+
+    @Column
+    private String nhsNoType;
+
+    @Column
+    private String uktNo;
+
+    @Column
+    private String snameAlias;
+
+    @Column
+    private Integer age;
+
+    @Column
+    private String ethnicGp;
+
+    @Column
+    private String postcodeOld;
+
+    @Column
+    private boolean consent;
+
+    @Column
+    private Date dateBapnReg;
+
+    @Column
+    private String consNeph;
+
+    @Column
+    private Long status;
+
+    @Column
+    private String emailAddress;
+
+    @Column
+    private Integer rrtModality;
+
+    @Column
+    private String otherClinicianAndContactInfo;
+
+    @Column
+    private String comments;
+
+    @Column
+    private String republicOfIrelandId;
+
+    @Column
+    private String isleOfManId;
+
+    @Column
+    private String channelIslandsId;
+
+    @Column
+    private String indiaId;
+
+    @Column
+    private boolean generic;
+
+    @Column
+    private String genericDiagnosis;
+
+    @Column
+    private Date dateOfGenericDiagnosis;
+
+    private Clinician clinician;
+
+    private Centre renalUnit;
+
+    private GenericDiagnosis genericDiagnosisModel;
+
+    private Sex sexModel;
+
+    private Centre renalUnitAuthorised;
+
+    private Ethnicity ethnicity;
+
+    private NhsNumberType nhsNumberType;
+
+    private DiseaseGroup diseaseGroup;
+
+    private RRTModality rrtModalityEunm;
+
+    private Status statusModel;
+
+    public enum RRTModality {
+        HD(1),
+        PD(2),
+        Tx(3),
+        NONE(-1);
+
+        private int id;
+
+        RRTModality(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    }
 
     public Patient() {
     }
@@ -400,6 +517,278 @@ public class Patient extends BaseModel {
 
     public void setBloodgroup(String bloodgroup) {
         this.bloodgroup = bloodgroup;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public boolean isConsent() {
+        return consent;
+    }
+
+    public void setConsent(boolean consent) {
+        this.consent = consent;
+    }
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getOtherClinicianAndContactInfo() {
+        return otherClinicianAndContactInfo;
+    }
+
+    public void setOtherClinicianAndContactInfo(String otherClinicianAndContactInfo) {
+        this.otherClinicianAndContactInfo = otherClinicianAndContactInfo;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getRepublicOfIrelandId() {
+        return republicOfIrelandId;
+    }
+
+    public void setRepublicOfIrelandId(String republicOfIrelandId) {
+        this.republicOfIrelandId = republicOfIrelandId;
+    }
+
+    public String getIsleOfManId() {
+        return isleOfManId;
+    }
+
+    public void setIsleOfManId(String isleOfManId) {
+        this.isleOfManId = isleOfManId;
+    }
+
+    public String getChannelIslandsId() {
+        return channelIslandsId;
+    }
+
+    public void setChannelIslandsId(String channelIslandsId) {
+        this.channelIslandsId = channelIslandsId;
+    }
+
+    public String getIndiaId() {
+        return indiaId;
+    }
+
+    public void setIndiaId(String indiaId) {
+        this.indiaId = indiaId;
+    }
+
+    public boolean isGeneric() {
+        return generic;
+    }
+
+    public void setGeneric(boolean generic) {
+        this.generic = generic;
+    }
+
+    public String getGenericDiagnosis() {
+        return genericDiagnosis;
+    }
+
+    public void setGenericDiagnosis(String genericDiagnosis) {
+        this.genericDiagnosis = genericDiagnosis;
+    }
+
+    public Date getDateOfGenericDiagnosis() {
+        return dateOfGenericDiagnosis;
+    }
+
+    public void setDateOfGenericDiagnosis(Date dateOfGenericDiagnosis) {
+        this.dateOfGenericDiagnosis = dateOfGenericDiagnosis;
+    }
+
+    public Clinician getClinician() {
+        return clinician;
+    }
+
+    public void setClinician(Clinician clinician) {
+        this.clinician = clinician;
+    }
+
+    public Centre getRenalUnit() {
+        return renalUnit;
+    }
+
+    public void setRenalUnit(Centre renalUnit) {
+        this.renalUnit = renalUnit;
+    }
+
+    public GenericDiagnosis getGenericDiagnosisModel() {
+        return genericDiagnosisModel;
+    }
+
+    public void setGenericDiagnosisModel(GenericDiagnosis genericDiagnosisModel) {
+        this.genericDiagnosisModel = genericDiagnosisModel;
+    }
+
+    public Sex getSexModel() {
+        return sexModel;
+    }
+
+    public void setSexModel(Sex sexModel) {
+        this.sexModel = sexModel;
+    }
+
+    public Centre getRenalUnitAuthorised() {
+        return renalUnitAuthorised;
+    }
+
+    public void setRenalUnitAuthorised(Centre renalUnitAuthorised) {
+        this.renalUnitAuthorised = renalUnitAuthorised;
+    }
+
+    public Ethnicity getEthnicity() {
+        return ethnicity;
+    }
+
+    public void setEthnicity(Ethnicity ethnicity) {
+        this.ethnicity = ethnicity;
+    }
+
+    public Long getRadarNo() {
+        return radarNo;
+    }
+
+    public void setRadarNo(Long radarNo) {
+        this.radarNo = radarNo;
+    }
+
+    public String getRrNo() {
+        return rrNo;
+    }
+
+    public void setRrNo(String rrNo) {
+        this.rrNo = rrNo;
+    }
+
+    public Date getDateGeg() {
+        return dateGeg;
+    }
+
+    public void setDateGeg(Date dateGeg) {
+        this.dateGeg = dateGeg;
+    }
+
+    public String getNhsNoType() {
+        return nhsNoType;
+    }
+
+    public void setNhsNoType(String nhsNoType) {
+        this.nhsNoType = nhsNoType;
+    }
+
+    public String getUktNo() {
+        return uktNo;
+    }
+
+    public void setUktNo(String uktNo) {
+        this.uktNo = uktNo;
+    }
+
+    public String getSnameAlias() {
+        return snameAlias;
+    }
+
+    public void setSnameAlias(String snameAlias) {
+        this.snameAlias = snameAlias;
+    }
+
+    public String getEthnicGp() {
+        return ethnicGp;
+    }
+
+    public void setEthnicGp(String ethnicGp) {
+        this.ethnicGp = ethnicGp;
+    }
+
+    public String getPostcodeOld() {
+        return postcodeOld;
+    }
+
+    public void setPostcodeOld(String postcodeOld) {
+        this.postcodeOld = postcodeOld;
+    }
+
+    public Date getDateBapnReg() {
+        return dateBapnReg;
+    }
+
+    public void setDateBapnReg(Date dateBapnReg) {
+        this.dateBapnReg = dateBapnReg;
+    }
+
+    public String getConsNeph() {
+        return consNeph;
+    }
+
+    public void setConsNeph(String consNeph) {
+        this.consNeph = consNeph;
+    }
+
+    public NhsNumberType getNhsNumberType() {
+        return nhsNumberType;
+    }
+
+    public void setNhsNumberType(NhsNumberType nhsNumberType) {
+        this.nhsNumberType = nhsNumberType;
+    }
+
+    public DiseaseGroup getDiseaseGroup() {
+        return diseaseGroup;
+    }
+
+    public void setDiseaseGroup(DiseaseGroup diseaseGroup) {
+        this.diseaseGroup = diseaseGroup;
+    }
+
+    public Status getStatusModel() {
+        return statusModel;
+    }
+
+    public void setStatusModel(Status statusModel) {
+        this.statusModel = statusModel;
+    }
+
+    public Integer getRrtModality() {
+        return rrtModality;
+    }
+
+    public void setRrtModality(Integer rrtModality) {
+        this.rrtModality = rrtModality;
+    }
+
+    public RRTModality getRrtModalityEunm() {
+        return rrtModalityEunm;
+    }
+
+    public void setRrtModalityEunm(RRTModality rrtModalityEunm) {
+        this.rrtModalityEunm = rrtModalityEunm;
     }
 }
 

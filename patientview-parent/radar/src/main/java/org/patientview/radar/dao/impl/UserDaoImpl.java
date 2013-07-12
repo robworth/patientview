@@ -1,8 +1,8 @@
 package org.patientview.radar.dao.impl;
 
+import org.patientview.model.Centre;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Centre;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;

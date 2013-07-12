@@ -1,5 +1,7 @@
 package org.patientview.radar.model;
 
+import org.patientview.model.Centre;
+
 public class Consultant extends BaseModel {
 
     private String surname;

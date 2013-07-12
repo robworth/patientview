@@ -1,10 +1,10 @@
 package org.patientview.radar.web.panels.generic;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Sex;
+import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Ethnicity;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.enums.NhsNumberType;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;

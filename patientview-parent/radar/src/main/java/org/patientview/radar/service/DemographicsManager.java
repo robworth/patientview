@@ -1,9 +1,9 @@
 package org.patientview.radar.service;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
 import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.Status;
 import org.patientview.radar.model.filter.DemographicsFilter;
 
 import java.util.List;

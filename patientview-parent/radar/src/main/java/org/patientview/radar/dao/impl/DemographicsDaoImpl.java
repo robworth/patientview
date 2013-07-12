@@ -1,15 +1,15 @@
 package org.patientview.radar.dao.impl;
 
+import org.patientview.model.Centre;
+import org.patientview.model.Clinician;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
+import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
 import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Clinician;
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.Status;
-import org.patientview.radar.model.enums.NhsNumberType;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
