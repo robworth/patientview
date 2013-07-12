@@ -1,7 +1,7 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.DocumentData;
 import org.patientview.radar.model.enums.ExportType;
 import org.patientview.radar.model.user.PatientUser;
@@ -68,25 +68,25 @@ public class ExportManagerImpl implements ExportManager {
     }
 
     public byte[] getDemographicsExportData(ExportType exportType) {
-        List<Demographics> demographicsList = demographicsManager.getDemographics();
+        List<Patient> patientList = demographicsManager.getDemographics();
         DocumentData documentData = new DocumentData();
         documentData.setHeaders(Arrays.asList("RADAR No", "Date Reg", "First Name", "Surname", "Address", "Diagnosis",
                 "Consultant", "", "Centre"));
 
-        for (Demographics demographics : demographicsList) {
-            String diagnosisCodeAbbr = diagnosisManager.getDiagnosisName(demographics);
+        for (Patient patient : patientList) {
+            String diagnosisCodeAbbr = diagnosisManager.getDiagnosisName(patient);
 
             String dateRegistered = "";
-            dateRegistered = demographics.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
-                    format(demographics.getDateRegistered()) : "";
+            dateRegistered = patient.getDateReg() != null ? new SimpleDateFormat(DATE_PATTERN).
+                    format(patient.getDateReg()) : "";
 
-            documentData.addRow(Arrays.asList(demographics.getId().toString(), dateRegistered,
-                    demographics.getForename(), demographics.getSurname(),
-                    demographics.getAddress1() + ", " + demographics.getAddress2() + ", " +
-                            demographics.getAddress3() + ". " + demographics.getAddress4(), diagnosisCodeAbbr,
-                    demographics.getClinician() != null ? demographics.getClinician().getForename() : "",
-                    demographics.getClinician() != null ? demographics.getClinician().getSurname() : "",
-                    demographics.getRenalUnit() != null ? demographics.getRenalUnit().getAbbreviation() : ""));
+            documentData.addRow(Arrays.asList(patient.getId().toString(), dateRegistered,
+                    patient.getForename(), patient.getSurname(),
+                    patient.getAddress1() + ", " + patient.getAddress2() + ", " +
+                            patient.getAddress3() + ". " + patient.getAddress4(), diagnosisCodeAbbr,
+                    patient.getClinician() != null ? patient.getClinician().getForename() : "",
+                    patient.getClinician() != null ? patient.getClinician().getSurname() : "",
+                    patient.getRenalUnit() != null ? patient.getRenalUnit().getAbbreviation() : ""));
         }
 
         return getExportData(exportType, documentData);

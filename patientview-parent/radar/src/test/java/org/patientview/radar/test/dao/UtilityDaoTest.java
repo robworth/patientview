@@ -3,15 +3,12 @@ package org.patientview.radar.test.dao;
 import org.patientview.model.Centre;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.Relative;
+import org.patientview.radar.model.*;
 import org.patientview.radar.model.filter.ConsultantFilter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,22 +197,22 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertEquals(4, count);
     }
 
-    private Demographics createDemographics(String forename, String surname, Centre centre) {
-        Demographics demographics = new Demographics();
-        demographics.setForename(forename);
-        demographics.setSurname(surname);
-        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-        demographics.setRenalUnit(centre);
-        demographicDao.saveDemographics(demographics);
-        assertNotNull(demographics.getId());
-        return demographics;
+    private Patient createDemographics(String forename, String surname, Centre centre) {
+        Patient patient = new Patient();
+        patient.setForename(forename);
+        patient.setSurname(surname);
+        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        patient.setRenalUnit(centre);
+        demographicDao.saveDemographics(patient);
+        assertNotNull(patient.getId());
+        return patient;
     }
 
-    private void addDiagnosisForDemographic(Demographics demographics, Long diagnosisCodeId) {
+    private void addDiagnosisForDemographic(Patient patient, Long diagnosisCodeId) {
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.setText("Testing");
         diagnosis.setDiagnosisCode(diagnosisDao.getDiagnosisCode(diagnosisCodeId));
-        diagnosis.setRadarNumber(demographics.getId());
+        diagnosis.setRadarNumber(patient.getId());
         diagnosisDao.saveDiagnosis(diagnosis);
     }
 }

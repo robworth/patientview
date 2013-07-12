@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages.admin;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.enums.ExportType;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.user.PatientUser;
@@ -90,15 +90,15 @@ public class AdminPatientsPage extends AdminsBasePage {
      */
     private void builtDataViewRow(final Item<PatientUser> item, final FeedbackPanel feedback) {
         final PatientUser patientUser = item.getModelObject();
-        final Demographics demographics = demographicsManager.getDemographicsByRadarNumber(
+        final Patient patient = demographicsManager.getDemographicsByRadarNumber(
                 patientUser.getRadarNumber());
 
         item.add(new BookmarkablePageLink<AdminConsultantPage>("edit", AdminPatientPage.class,
                 AdminPatientPage.getPageParameters(patientUser))); //
 
         item.add(new Label("radarNo", patientUser.getRadarNumber().toString()));
-        item.add(new Label("forename", demographics.getForename()));
-        item.add(new Label("surname", demographics.getSurname()));
+        item.add(new Label("forename", patient.getForename()));
+        item.add(new Label("surname", patient.getSurname()));
         item.add(new Label("dob", patientUser.getDateOfBirth().toString()));
 
         String dateRegistered = "";

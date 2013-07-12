@@ -2,9 +2,9 @@ package org.patientview.radar.web.panels.generic;
 
 import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.enums.NhsNumberType;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -70,42 +70,42 @@ public class GenericDemographicsPanel extends Panel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
 
-    public GenericDemographicsPanel(String id, Demographics demographics) {
+    public GenericDemographicsPanel(String id, Patient patient) {
         super(id);
-        init(demographics);
+        init(patient);
     }
 
-    private void init(Demographics demographics) {
+    private void init(Patient patient) {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
         ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
-        if (demographics.getDateRegistered() == null) {
-            demographics.setDateRegistered(new Date());
+        if (patient.getDob() == null) {
+            patient.setDob(new Date());
         }
 
         // components to update on ajax refresh
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
 
         // add form
-        final IModel<Demographics> model = new Model(demographics);
+        final IModel<Patient> model = new Model(patient);
 
 
-        Form<Demographics> form = new Form<Demographics>("form", new CompoundPropertyModel(model)) {
+        Form<Patient> form = new Form<Patient>("form", new CompoundPropertyModel(model)) {
             @Override
             protected void onSubmit() {
-                Demographics demographics = getModel().getObject();
+                Patient patient = getModel().getObject();
 
                 // make sure diagnosis date is after dob
-                if (demographics.getDateOfGenericDiagnosis().compareTo(demographics.getDateOfBirth()) < 0) {
+                if (patient.getDateOfGenericDiagnosis().compareTo(patient.getDob()) < 0) {
                     get("dateOfGenericDiagnosis").error("Your diagnosis date cannot be before your date of birth");
                 }
 
-                demographics.setGeneric(true);
-                demographicsManager.saveDemographics(demographics);
+                patient.setGeneric(true);
+                demographicsManager.saveDemographics(patient);
                 try {
-                    userManager.registerPatient(demographics);
+                    userManager.registerPatient(patient);
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());
@@ -116,7 +116,7 @@ public class GenericDemographicsPanel extends Panel {
 
         add(form);
 
-        WebMarkupContainer patientDetail = new PatientDetailPanel("patientDetail", demographics, "Demographics");
+        WebMarkupContainer patientDetail = new PatientDetailPanel("patientDetail", patient, "Demographics");
         patientDetail.setOutputMarkupId(true);
         patientDetail.setOutputMarkupPlaceholderTag(true);
         form.add(patientDetail);
@@ -181,26 +181,26 @@ public class GenericDemographicsPanel extends Panel {
             @Override
             protected void onSubmit() {
                 AddIdModel idModel = getModel().getObject();
-                Demographics demographics = model.getObject();
+                Patient patient = model.getObject();
                 String id = idModel.getId();
                 if (idModel.getIdType() != null) {
                     if (idModel.getIdType().equals(IdType.CHANNELS_ISLANDS)) {
-                        demographics.setChannelIslandsId(id);
+                        patient.setChannelIslandsId(id);
                     }
                     if (idModel.getIdType().equals(IdType.HOSPITAL_NUMBER)) {
-                        demographics.setHospitalNumber(id);
+                        patient.setHospitalnumber(id);
                     }
                     if (idModel.getIdType().equals(IdType.INDIA)) {
-                        demographics.setIndiaId(id);
+                        patient.setIndiaId(id);
                     }
                     if (idModel.getIdType().equals(IdType.RENAL_REGISTRY_NUMBER)) {
-                        demographics.setRenalRegistryNumber(id);
+                        patient.setRrNo(id);
                     }
                     if (idModel.getIdType().equals(IdType.REPUBLIC_OF_IRELAND)) {
-                        demographics.setRepublicOfIrelandId(id);
+                        patient.setRepublicOfIrelandId(id);
                     }
                     if (idModel.getIdType().equals(IdType.UK_TRANSPLANT_NUMBER)) {
-                        demographics.setUkTransplantNumber(id);
+                        patient.setUktNo(id);
                     }
                 }
             }
@@ -231,8 +231,8 @@ public class GenericDemographicsPanel extends Panel {
         WebMarkupContainer hospitalNumberContainer = new WebMarkupContainer("hospitalNumberContainer") {
             @Override
             public boolean isVisible() {
-                if (model.getObject().getHospitalNumber() != null) {
-                    if (!model.getObject().getHospitalNumber().isEmpty()) {
+                if (model.getObject().getHospitalnumber() != null) {
+                    if (!model.getObject().getHospitalnumber().isEmpty()) {
                         return true;
                     }
                 }
@@ -246,8 +246,8 @@ public class GenericDemographicsPanel extends Panel {
         WebMarkupContainer renalRegistryNumberContainer = new WebMarkupContainer("renalRegistryNumberContainer") {
             @Override
             public boolean isVisible() {
-                if (model.getObject().getRenalRegistryNumber() != null) {
-                    if (!model.getObject().getRenalRegistryNumber().isEmpty()) {
+                if (model.getObject().getRrNo() != null) {
+                    if (!model.getObject().getRrNo().isEmpty()) {
                         return true;
                     }
                 }
@@ -261,8 +261,8 @@ public class GenericDemographicsPanel extends Panel {
         WebMarkupContainer ukTransplantNumberContainer = new WebMarkupContainer("ukTransplantNumberContainer") {
             @Override
             public boolean isVisible() {
-                if (model.getObject().getUkTransplantNumber() != null) {
-                    if (!model.getObject().getUkTransplantNumber().isEmpty()) {
+                if (model.getObject().getUktNo() != null) {
+                    if (!model.getObject().getUktNo().isEmpty()) {
                         return true;
                     }
                 }
@@ -370,10 +370,10 @@ public class GenericDemographicsPanel extends Panel {
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
-                    Demographics demographics = model.getObject();
-                    if (demographics != null) {
-                        centreNumber.setObject(demographics.getRenalUnit() != null ?
-                                demographics.getRenalUnit().getUnitCode() :
+                    Patient patient = model.getObject();
+                    if (patient != null) {
+                        centreNumber.setObject(patient.getRenalUnit() != null ?
+                                patient.getRenalUnit().getUnitCode() :
                                 null);
                     }
 
@@ -406,7 +406,7 @@ public class GenericDemographicsPanel extends Panel {
 
         RadarRequiredDropdownChoice genericDiagnosis =
                 new RadarRequiredDropdownChoice("genericDiagnosis", genericDiagnosisManager.getByDiseaseGroup(
-                        demographics.getDiseaseGroup()), new ChoiceRenderer("term", "id"), form,
+                        patient.getDiseaseGroup()), new ChoiceRenderer("term", "id"), form,
                         componentsToUpdateList);
 
         RadarRequiredDateTextField dateOfGenericDiagnosis = new RadarRequiredDateTextField("dateOfGenericDiagnosis",
@@ -418,12 +418,12 @@ public class GenericDemographicsPanel extends Panel {
         form.add(emailAddress, phone1, phone2, mobile, genericDiagnosis, dateOfGenericDiagnosis,
                 otherClinicianAndContactInfo, comments);
 
-        RadioGroup<Demographics.RRTModality> rrtModalityRadioGroup = new RadioGroup<Demographics.RRTModality>(
+        RadioGroup<Patient.RRTModality> rrtModalityRadioGroup = new RadioGroup<Patient.RRTModality>(
                 "rrtModality");
-        rrtModalityRadioGroup.add(new Radio("hd", new Model(Demographics.RRTModality.HD)));
-        rrtModalityRadioGroup.add(new Radio("pd", new Model(Demographics.RRTModality.PD)));
-        rrtModalityRadioGroup.add(new Radio("tx", new Model(Demographics.RRTModality.Tx)));
-        rrtModalityRadioGroup.add(new Radio("none", new Model(Demographics.RRTModality.NONE)));
+        rrtModalityRadioGroup.add(new Radio("hd", new Model(Patient.RRTModality.HD)));
+        rrtModalityRadioGroup.add(new Radio("pd", new Model(Patient.RRTModality.PD)));
+        rrtModalityRadioGroup.add(new Radio("tx", new Model(Patient.RRTModality.Tx)));
+        rrtModalityRadioGroup.add(new Radio("none", new Model(Patient.RRTModality.NONE)));
 
         form.add(rrtModalityRadioGroup);
 

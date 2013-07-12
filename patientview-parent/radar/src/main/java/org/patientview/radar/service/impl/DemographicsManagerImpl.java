@@ -1,10 +1,10 @@
 package org.patientview.radar.service.impl;
 
 import org.patientview.model.Centre;
+import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.radar.dao.DemographicsDao;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.service.DemographicsManager;
 
@@ -14,28 +14,28 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     private DemographicsDao demographicsDao;
 
-    public void saveDemographics(Demographics demographics) {
+    public void saveDemographics(Patient patient) {
         // Save or update the demographics object
-        demographicsDao.saveDemographics(demographics);
+        demographicsDao.saveDemographics(patient);
     }
 
-    public Demographics getDemographicsByRadarNumber(long radarNumber) {
+    public Patient getDemographicsByRadarNumber(long radarNumber) {
         return demographicsDao.getDemographicsByRadarNumber(radarNumber);
     }
 
-    public List<Demographics> getDemographicsByRenalUnit(Centre centre) {
+    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
         return demographicsDao.getDemographicsByRenalUnit(centre);
     }
 
-    public List<Demographics> getDemographics() {
+    public List<Patient> getDemographics() {
         return getDemographics(new DemographicsFilter(), -1, -1);
     }
 
-    public List<Demographics> getDemographics(DemographicsFilter filter) {
+    public List<Patient> getDemographics(DemographicsFilter filter) {
         return getDemographics(filter, -1, -1);
     }
 
-    public List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
+    public List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
         return demographicsDao.getDemographics(filter, page, numberPerPage);
     }
 

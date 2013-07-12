@@ -1,12 +1,12 @@
 package org.patientview.radar.test.dao;
 
 import org.patientview.model.Centre;
+import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
@@ -35,21 +35,21 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetDemographic() {
-        Demographics demographics = createDemographics("Test", "User");
-        Demographics check = demographicDao.getDemographicsByRadarNumber(demographics.getId());
+        Patient patient = createDemographics("Test", "User");
+        Patient check = demographicDao.getDemographicsByRadarNumber(patient.getId());
 
         // Check it's not null
         assertNotNull("Demographics was null", check);
 
         // Check radar number is correct
-        assertEquals("Wrong radar number", demographics.getId(), check.getId());
+        assertEquals("Wrong radar number", patient.getId(), check.getId());
     }
 
     @Test
     public void testGetDemographics() throws Exception {
         createDemographics("Test", "User");
         createDemographics("Test2", "User2");
-        List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), -1, -1);
+        List<Patient> demographics = demographicDao.getDemographics(new DemographicsFilter(), -1, -1);
         assertNotNull("List was null", demographics);
         assertEquals(2, demographics.size());
     }
@@ -58,7 +58,7 @@ public class DemographicDaoTest extends BaseDaoTest {
     public void testGetDemographicsPage1() {
         createDemographics("Test", "User");
         createDemographics("Test2", "User2");
-        List<Demographics> demographics = demographicDao.getDemographics(new DemographicsFilter(), 1, 1);
+        List<Patient> demographics = demographicDao.getDemographics(new DemographicsFilter(), 1, 1);
         assertNotNull(demographics);
         assertTrue(demographics.size() == 1);
     }
@@ -73,7 +73,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         DemographicsFilter demographicsFilter = new DemographicsFilter();
         demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHS_NO.toString(),
                 "NHS123");
-        List<Demographics> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
+        List<Patient> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
         assertNotNull("List was null", demographics);
         assertEquals(1, demographics.size());
     }
@@ -84,7 +84,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         addDiagnosisForDemographic(createDemographics("Test2", "User2"), DiagnosisCode.MPGN_ID);
         DemographicsFilter demographicsFilter = new DemographicsFilter();
         demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.DIAGNOSIS.getDatabaseFieldName(), "srns");
-        List<Demographics> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
+        List<Patient> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
         assertNotNull(demographics);
         assertTrue(demographics.size() == 1);
     }
@@ -103,10 +103,10 @@ public class DemographicDaoTest extends BaseDaoTest {
         createDemographics("Test3", "User3", centre2, null);
 
         // Call DAO
-        List<Demographics> demographics = demographicDao.getDemographicsByRenalUnit(centre);
+        List<Patient> demographics = demographicDao.getDemographicsByRenalUnit(centre);
         assertNotNull("List was null", demographics);
         assertEquals("Wrong size", 2, demographics.size());
-        for (Demographics de : demographics) {
+        for (Patient de : demographics) {
             assertTrue("Wrong centre", de.getRenalUnit().getId().equals(2L));
         }
     }
@@ -137,31 +137,31 @@ public class DemographicDaoTest extends BaseDaoTest {
         assertEquals("Wrong size", 6, statuses.size());
     }
 
-    private void addDiagnosisForDemographic(Demographics demographics, Long diagnosisCodeId) {
+    private void addDiagnosisForDemographic(Patient patient, Long diagnosisCodeId) {
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.setText("Testing");
         diagnosis.setDiagnosisCode(diagnosisDao.getDiagnosisCode(diagnosisCodeId));
-        diagnosis.setRadarNumber(demographics.getId());
+        diagnosis.setRadarNumber(patient.getId());
         diagnosisDao.saveDiagnosis(diagnosis);
     }
 
-    private Demographics createDemographics(String forename, String surname, Centre centre, String nhsno) {
-        Demographics demographics = new Demographics();
-        demographics.setForename(forename);
-        demographics.setSurname(surname);
-        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-        demographics.setNhsNumber(nhsno);
-        demographics.setRenalUnit(centre);
-        demographicDao.saveDemographics(demographics);
-        assertNotNull(demographics.getId());
-        return demographics;
+    private Patient createDemographics(String forename, String surname, Centre centre, String nhsno) {
+        Patient patient = new Patient();
+        patient.setForename(forename);
+        patient.setSurname(surname);
+        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        patient.setNhsno(nhsno);
+        patient.setRenalUnit(centre);
+        demographicDao.saveDemographics(patient);
+        assertNotNull(patient.getId());
+        return patient;
     }
 
-    private Demographics createDemographics(String forename, String surname) {
+    private Patient createDemographics(String forename, String surname) {
         return createDemographics(forename, surname, null, null);
     }
 
-    private Demographics createDemographics(String forename, String surname, String nhsno) {
+    private Patient createDemographics(String forename, String surname, String nhsno) {
         return createDemographics(forename, surname, null, nhsno);
     }
 }

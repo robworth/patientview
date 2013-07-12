@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages.patient.hnf1b;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -53,7 +53,7 @@ public class HNF1BPatientPage extends BasePage {
     @SpringBean
     private DemographicsManager demographicsManager;
 
-    private Demographics demographics;
+    private Patient patient;
     private MarkupContainer linksContainer;
 
     // The panels we are using
@@ -66,24 +66,24 @@ public class HNF1BPatientPage extends BasePage {
 
     public HNF1BPatientPage(AddPatientModel patientModel) {
         // set the nhs id or chi id based on model
-        demographics = new Demographics();
-        demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
-        demographics.setRenalUnit(patientModel.getCentre());
-        demographics.setNhsNumber(patientModel.getPatientId());
-        demographics.setNhsNumberType(patientModel.getNhsNumberType());
+        patient = new Patient();
+        patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+        patient.setRenalUnit(patientModel.getCentre());
+        patient.setNhsno(patientModel.getPatientId());
+        patient.setNhsNumberType(patientModel.getNhsNumberType());
 
-        init(demographics);
+        init(patient);
     }
 
     public HNF1BPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
-        demographics = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
-        init(demographics);
+        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
+        init(patient);
     }
 
-    public void init(Demographics demographics) {
+    public void init(Patient patient) {
         // init all the panels
-        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
+        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.DEMOGRAPHICS);
@@ -91,7 +91,7 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(genericDemographicsPanel);
 
-        geneticsPanel = new GeneticsPanel("geneticsPanel", demographics) {
+        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);
@@ -99,7 +99,7 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(geneticsPanel);
 
-        hnf1BMiscPanel = new HNF1BMiscPanel("hnf1BMiscPanel", demographics) {
+        hnf1BMiscPanel = new HNF1BMiscPanel("hnf1BMiscPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.HNF1BMisc);
@@ -107,7 +107,7 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(hnf1BMiscPanel);
 
-        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
+        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICAL_RESULTS);
@@ -140,8 +140,8 @@ public class HNF1BPatientPage extends BasePage {
         add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
     }
 
-    public static PageParameters getPageParameters(Demographics demographics) {
-        return new PageParameters().set(PARAM_ID, demographics.getId());
+    public static PageParameters getPageParameters(Patient patient) {
+        return new PageParameters().set(PARAM_ID, patient.getId());
     }
 
     public Tab getCurrentTab() {
@@ -170,7 +170,7 @@ public class HNF1BPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            if (demographics != null && demographics.hasValidId()) {
+            if (patient != null && patient.hasValidId()) {
                 currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);

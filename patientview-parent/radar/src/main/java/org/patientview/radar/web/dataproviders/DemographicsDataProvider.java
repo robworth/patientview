@@ -1,7 +1,7 @@
 package org.patientview.radar.web.dataproviders;
 
 import org.patientview.model.Centre;
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.service.DemographicsManager;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel;
 import java.util.Iterator;
 import java.util.List;
 
-public class DemographicsDataProvider implements IDataProvider<Demographics>, SortableDataProvider {
+public class DemographicsDataProvider implements IDataProvider<Patient>, SortableDataProvider {
 
     private Centre centre;
     private DemographicsManager demographicsManager;
@@ -28,7 +28,7 @@ public class DemographicsDataProvider implements IDataProvider<Demographics>, So
         demographicsFilter = new DemographicsFilter();
     }
 
-    public Iterator<? extends Demographics> iterator(int i, int i1) {
+    public Iterator<? extends Patient> iterator(int i, int i1) {
         int pageNumber = (i / i1) + 1;
         return getResults(pageNumber, i1).iterator();
     }
@@ -69,7 +69,7 @@ public class DemographicsDataProvider implements IDataProvider<Demographics>, So
         demographicsFilter.getSearchFields().clear();
     }
 
-    private List<Demographics> getResults(int page, int resultsPerPage) {
+    private List<Patient> getResults(int page, int resultsPerPage) {
         if (centre != null) {
             return demographicsManager.getDemographicsByRenalUnit(centre);
         } else {
@@ -77,8 +77,8 @@ public class DemographicsDataProvider implements IDataProvider<Demographics>, So
         }
     }
 
-    public IModel<Demographics> model(Demographics demographics) {
-        return new CompoundPropertyModel<Demographics>(demographics);
+    public IModel<Patient> model(Patient patient) {
+        return new CompoundPropertyModel<Patient>(patient);
     }
 
     public void detach() {

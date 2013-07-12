@@ -9,7 +9,7 @@ import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -57,9 +57,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                         "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
     }
 
-    public void saveDemographics(final Demographics demographics) {
+    public void saveDemographics(final Patient patient) {
         // If we have an ID then update, otherwise insert new and set the ID
-        if (demographics.hasValidId()) {
+        if (patient.hasValidId()) {
             jdbcTemplate.update(
                     "UPDATE tbl_Demographics SET " +
                             "RR_NO = ?, " +
@@ -103,105 +103,105 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "indiaId = ?, " +
                             "generic = ? " +
                             " WHERE RADAR_NO = ?",
-                    demographics.getRenalRegistryNumber(),
-                    demographics.getDateRegistered(),
-                    demographics.getNhsNumber(),
-                    demographics.getNhsNumberType().getId(),
-                    demographics.getHospitalNumber(),
-                    demographics.getUkTransplantNumber(),
-                    demographics.getSurname(),
-                    demographics.getSurnameAlias(),
-                    demographics.getForename(),
-                    new SimpleDateFormat(DATE_FORMAT).format(demographics.getDateOfBirth()),
-                    demographics.getAge(),
-                    demographics.getSex() != null ? demographics.getSex().getId() : null,
-                    demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null,
-                    demographics.getAddress1(),
-                    demographics.getAddress2(),
-                    demographics.getAddress3(),
-                    demographics.getAddress4(),
-                    demographics.getPostcode(),
-                    demographics.getPreviousPostcode(),
-                    demographics.isConsent(),
-                    demographics.getDateRegistered(),
-                    demographics.getClinician() != null ? demographics.getClinician().getId() : null,
-                    demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null,
-                    demographics.getRenalUnitAuthorised() != null ?
-                            demographics.getRenalUnitAuthorised().getId() : null,
-                    demographics.getStatus() != null ? demographics.getStatus().getId() : null,
-                    demographics.getDiseaseGroup() != null ? demographics.getDiseaseGroup().getId() : null,
-                    demographics.getEmailAddress(),
-                    demographics.getPhone1(),
-                    demographics.getPhone2(),
-                    demographics.getMobile(),
-                    demographics.getRrtModality() != null ? demographics.getRrtModality().getId() : null,
-                    demographics.getGenericDiagnosis() != null ? demographics.getGenericDiagnosis().getId() : null,
-                    demographics.getDateOfGenericDiagnosis(),
-                    demographics.getOtherClinicianAndContactInfo(),
-                    demographics.getComments(),
-                    demographics.getRepublicOfIrelandId(),
-                    demographics.getIsleOfManId(),
-                    demographics.getChannelIslandsId(),
-                    demographics.getIndiaId(),
-                    demographics.isGeneric(),
-                    demographics.getId());
+                    patient.getRrNo(),
+                    patient.getDateReg(),
+                    patient.getNhsno(),
+                    patient.getNhsNumberType().getId(),
+                    patient.getHospitalnumber(),
+                    patient.getUktNo(),
+                    patient.getSurname(),
+                    patient.getSnameAlias(),
+                    patient.getForename(),
+                    new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()),
+                    patient.getAge(),
+                    patient.getSex() != null ? patient.getSexModel().getId() : null,
+                    patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
+                    patient.getAddress1(),
+                    patient.getAddress2(),
+                    patient.getAddress3(),
+                    patient.getAddress4(),
+                    patient.getPostcode(),
+                    patient.getPostcodeOld(),
+                    patient.isConsent(),
+                    patient.getDateReg(),
+                    patient.getClinician() != null ? patient.getClinician().getId() : null,
+                    patient.getRenalUnit() != null ? patient.getRenalUnit().getId() : null,
+                    patient.getRenalUnitAuthorised() != null ?
+                            patient.getRenalUnitAuthorised().getId() : null,
+                    patient.getStatus() != null ? patient.getStatusModel().getId() : null,
+                    patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null,
+                    patient.getEmailAddress(),
+                    patient.getTelephone1(),
+                    patient.getTelephone2(),
+                    patient.getMobile(),
+                    patient.getRrtModality() != null ? patient.getRrtModalityEunm().getId() : null,
+                    patient.getGenericDiagnosis() != null ? patient.getGenericDiagnosisModel().getId() : null,
+                    patient.getDateOfGenericDiagnosis(),
+                    patient.getOtherClinicianAndContactInfo(),
+                    patient.getComments(),
+                    patient.getRepublicOfIrelandId(),
+                    patient.getIsleOfManId(),
+                    patient.getChannelIslandsId(),
+                    patient.getIndiaId(),
+                    patient.isGeneric(),
+                    patient.getId());
         } else {
             Number id = demographicsInsert.executeAndReturnKey(new HashMap<String, Object>() {
                 {
-                    put("RR_NO", demographics.getRenalRegistryNumber());
-                    put("DATE_REG", demographics.getDateRegistered());
-                    put("NHS_NO", demographics.getNhsNumber());
-                    put("NHS_NO_TYPE", demographics.getNhsNumberType().getId());
-                    put("HOSP_NO", demographics.getHospitalNumber());
-                    put("UKT_NO", demographics.getUkTransplantNumber());
-                    put("SNAME", demographics.getSurname());
-                    put("SNAME_ALIAS", demographics.getSurnameAlias());
-                    put("FNAME", demographics.getForename());
-                    put("DOB", demographics.getDateOfBirth() != null ?
+                    put("RR_NO", patient.getRrNo());
+                    put("DATE_REG", patient.getDateReg());
+                    put("NHS_NO", patient.getNhsno());
+                    put("NHS_NO_TYPE", patient.getNhsNumberType().getId());
+                    put("HOSP_NO", patient.getHospitalnumber());
+                    put("UKT_NO", patient.getUktNo());
+                    put("SNAME", patient.getSurname());
+                    put("SNAME_ALIAS", patient.getSnameAlias());
+                    put("FNAME", patient.getForename());
+                    put("DOB", patient.getDob() != null ?
                             new SimpleDateFormat(DATE_FORMAT).format(
-                                    demographics.getDateOfBirth()) : null);
-                    put("AGE", demographics.getAge());
-                    put("SEX", demographics.getSex() != null ? demographics.getSex().getId() : null);
+                                    patient.getDob()) : null);
+                    put("AGE", patient.getAge());
+                    put("SEX", patient.getSex() != null ? patient.getSexModel().getId() : null);
                     put("ETHNIC_GP",
-                            demographics.getEthnicity() != null ? demographics.getEthnicity().getCode() : null);
-                    put("ADD1", demographics.getAddress1());
-                    put("ADD2", demographics.getAddress2());
-                    put("ADD3", demographics.getAddress3());
-                    put("ADD4", demographics.getAddress4());
-                    put("POSTCODE", demographics.getPostcode());
-                    put("POSTCODE_OLD", demographics.getPreviousPostcode());
-                    put("CONSENT", demographics.isConsent());
+                            patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null);
+                    put("ADD1", patient.getAddress1());
+                    put("ADD2", patient.getAddress2());
+                    put("ADD3", patient.getAddress3());
+                    put("ADD4", patient.getAddress4());
+                    put("POSTCODE", patient.getPostcode());
+                    put("POSTCODE_OLD", patient.getPostcodeOld());
+                    put("CONSENT", patient.isConsent());
                     put("DATE_BAPN_REG", null); // Todo: Fix
-                    put("CONS_NEPH", demographics.getClinician() != null ? demographics.getClinician().getId()
+                    put("CONS_NEPH", patient.getClinician() != null ? patient.getClinician().getId()
                             : null);
-                    put("RENAL_UNIT", demographics.getRenalUnit() != null ? demographics.getRenalUnit().getId() : null);
-                    put("RENAL_UNIT_2", demographics.getRenalUnitAuthorised() != null ?
-                            demographics.getRenalUnitAuthorised().getId() : null);
-                    put("STATUS", demographics.getStatus() != null ? demographics.getStatus().getId() : null);
-                    put("RDG", demographics.getDiseaseGroup() != null ? demographics.getDiseaseGroup().getId() : null);
-                    put("emailAddress", demographics.getEmailAddress());
-                    put("phone1", demographics.getPhone1());
-                    put("phone2", demographics.getPhone2());
-                    put("mobile", demographics.getMobile());
-                    put("RRT_modality", demographics.getRrtModality() != null ? demographics.getRrtModality().getId()
+                    put("RENAL_UNIT", patient.getRenalUnit() != null ? patient.getRenalUnit().getId() : null);
+                    put("RENAL_UNIT_2", patient.getRenalUnitAuthorised() != null ?
+                            patient.getRenalUnitAuthorised().getId() : null);
+                    put("STATUS", patient.getStatus() != null ? patient.getStatusModel().getId() : null);
+                    put("RDG", patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null);
+                    put("emailAddress", patient.getEmailAddress());
+                    put("phone1", patient.getTelephone1());
+                    put("phone2", patient.getTelephone2());
+                    put("mobile", patient.getMobile());
+                    put("RRT_modality", patient.getRrtModality() != null ? patient.getRrtModalityEunm().getId()
                             : null);
-                    put("genericDiagnosis", demographics.getGenericDiagnosis() != null ?
-                            demographics.getGenericDiagnosis().getId() : null);
-                    put("dateOfGenericDiagnosis", demographics.getDateOfGenericDiagnosis());
-                    put("otherClinicianAndContactInfo", demographics.getOtherClinicianAndContactInfo());
-                    put("comments", demographics.getComments());
-                    put("republicOfIrelandId", demographics.getRepublicOfIrelandId());
-                    put("isleOfManId", demographics.getIsleOfManId());
-                    put("channelIslandsId", demographics.getChannelIslandsId());
-                    put("indiaId", demographics.getIndiaId());
-                    put("generic", demographics.isGeneric());
+                    put("genericDiagnosis", patient.getGenericDiagnosis() != null ?
+                            patient.getGenericDiagnosisModel().getId() : null);
+                    put("dateOfGenericDiagnosis", patient.getDateOfGenericDiagnosis());
+                    put("otherClinicianAndContactInfo", patient.getOtherClinicianAndContactInfo());
+                    put("comments", patient.getComments());
+                    put("republicOfIrelandId", patient.getRepublicOfIrelandId());
+                    put("isleOfManId", patient.getIsleOfManId());
+                    put("channelIslandsId", patient.getChannelIslandsId());
+                    put("indiaId", patient.getIndiaId());
+                    put("generic", patient.isGeneric());
                 }
             });
-            demographics.setId(id.longValue());
+            patient.setId(id.longValue());
         }
     }
 
-    public Demographics getDemographicsByRadarNumber(long radarNumber) {
+    public Patient getDemographicsByRadarNumber(long radarNumber) {
         try {
             return jdbcTemplate.queryForObject("SELECT * FROM tbl_Demographics WHERE RADAR_NO = ?",
                     new Object[]{radarNumber}, new DemographicsRowMapper());
@@ -211,12 +211,12 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         }
     }
 
-    public List<Demographics> getDemographicsByRenalUnit(Centre centre) {
+    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
         return jdbcTemplate.query("SELECT * FROM tbl_Demographics WHERE RENAL_UNIT = ? OR RENAL_UNIT_2 = ? ",
                 new Object[]{centre.getId(), centre.getId()}, new DemographicsRowMapper());
     }
 
-    public List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
+    public List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
         if (filter == null) {
             filter = new DemographicsFilter();
         }
@@ -297,26 +297,26 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     }
 
 
-    public class DemographicsRowMapper implements RowMapper<Demographics> {
-        public Demographics mapRow(ResultSet resultSet, int i) throws SQLException {
+    public class DemographicsRowMapper implements RowMapper<Patient> {
+        public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct object and set radar number
-            Demographics demographics = new Demographics();
+            Patient patient = new Patient();
             Long radarId = resultSet.getLong("RADAR_NO");
-            demographics.setId(radarId);
-            demographics.setDateRegistered(resultSet.getDate("DATE_REG"));
+            patient.setId(radarId);
+            patient.setDateReg(resultSet.getDate("DATE_REG"));
 
             // Renal registry number
-            demographics.setRenalRegistryNumber(resultSet.getString("RR_NO"));
+            patient.setRrNo(resultSet.getString("RR_NO"));
 
             // UK transplant number
-            demographics.setUkTransplantNumber(resultSet.getString("UKT_NO"));
+            patient.setUktNo(resultSet.getString("UKT_NO"));
 
-            demographics.setNhsNumber(resultSet.getString("NHS_NO"));
-            demographics.setNhsNumberType(NhsNumberType.getNhsNumberType(resultSet.getLong("NHS_NO_TYPE")));
-            demographics.setHospitalNumber(resultSet.getString("HOSP_NO"));
-            demographics.setSurname(resultSet.getString("SNAME"));
-            demographics.setSurnameAlias(resultSet.getString("SNAME_ALIAS"));
-            demographics.setForename(resultSet.getString("FNAME"));
+            patient.setNhsno(resultSet.getString("NHS_NO"));
+            patient.setNhsNumberType(NhsNumberType.getNhsNumberType(resultSet.getLong("NHS_NO_TYPE")));
+            patient.setHospitalnumber(resultSet.getString("HOSP_NO"));
+            patient.setSurname(resultSet.getString("SNAME"));
+            patient.setSnameAlias(resultSet.getString("SNAME_ALIAS"));
+            patient.setForename(resultSet.getString("FNAME"));
 
             // Date needs to be decrypted to string, then parsed
             String dateOfBirthString = resultSet.getString("DOB");
@@ -334,7 +334,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
                 // If after trying those formats we don't have anything then log as error
                 if (dateOfBirth != null) {
-                    demographics.setDateOfBirth(dateOfBirth);
+                    patient.setDob(dateOfBirth);
                 } else {
                     LOGGER.error("Could not parse date of birth from any format for dob {}",
                             dateOfBirthString);
@@ -343,34 +343,34 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             // Addresses
-            demographics.setAddress1(resultSet.getString("ADD1"));
-            demographics.setAddress2(resultSet.getString("ADD2"));
-            demographics.setAddress3(resultSet.getString("ADD3"));
-            demographics.setAddress4(resultSet.getString("ADD4"));
-            demographics.setPostcode(resultSet.getString("POSTCODE"));
-            demographics.setPreviousPostcode(resultSet.getString("POSTCODE_OLD"));
+            patient.setAddress1(resultSet.getString("ADD1"));
+            patient.setAddress2(resultSet.getString("ADD2"));
+            patient.setAddress3(resultSet.getString("ADD3"));
+            patient.setAddress4(resultSet.getString("ADD4"));
+            patient.setPostcode(resultSet.getString("POSTCODE"));
+            patient.setPostcodeOld(resultSet.getString("POSTCODE_OLD"));
 
             // Set sex
-            demographics.setSex(getSex(resultSet.getLong("SEX")));
+            patient.setSexModel(getSex(resultSet.getLong("SEX")));
 
             // Try and get ethnicity
             String ethnicityCode = resultSet.getString("ETHNIC_GP");
             if (StringUtils.isNotBlank(ethnicityCode)) {
-                demographics.setEthnicity(utilityDao.getEthnicityByCode(ethnicityCode));
+                patient.setEthnicity(utilityDao.getEthnicityByCode(ethnicityCode));
             }
 
-            demographics.setConsent(resultSet.getBoolean("CONSENT"));
+            patient.setConsent(resultSet.getBoolean("CONSENT"));
 
             // Set the centre if we have an ID
             long renalUnitId = resultSet.getLong("RENAL_UNIT");
             if (renalUnitId > 0) {
-                demographics.setRenalUnit(utilityDao.getCentre(renalUnitId));
+                patient.setRenalUnit(utilityDao.getCentre(renalUnitId));
             }
 
             // Set status
             long statusId = resultSet.getLong("STATUS");
             if (statusId > 0) {
-                demographics.setStatus(getStatus(statusId));
+                patient.setStatusModel(getStatus(statusId));
             }
 
             Long consultantId = resultSet.getLong("CONS_NEPH");
@@ -379,7 +379,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 try {
                     Clinician clinician = utilityDao.getClinician(consultantId);
                     if (clinician != null) {
-                        demographics.setClinician(clinician);
+                        patient.setClinician(clinician);
                     }
                 } catch (Exception e) {
                     LOGGER.error("Unable to access consultant using consultantId {}", consultantId);
@@ -392,38 +392,38 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");
             if (!resultSet.wasNull()) {
                 Centre centre = utilityDao.getCentre(renalUnitAuthorisedId);
-                demographics.setRenalUnitAuthorised(centre);
+                patient.setRenalUnitAuthorised(centre);
             }
 
             // set generic fields
             String diseaseGroupId = resultSet.getString("RDG"); //RDG,
             if (diseaseGroupId != null) {
-                demographics.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
+                patient.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
             }
-            demographics.setEmailAddress(resultSet.getString("emailAddress")); //emailAddress,
-            demographics.setPhone1(resultSet.getString("phone1")); //phone1,
-            demographics.setPhone2(resultSet.getString("phone2")); //phone2,
-            demographics.setMobile(resultSet.getString("mobile")); //mobile,
+            patient.setEmailAddress(resultSet.getString("emailAddress")); //emailAddress,
+            patient.setTelephone1(resultSet.getString("phone1")); //phone1,
+            patient.setTelephone2(resultSet.getString("phone2")); //phone2,
+            patient.setMobile(resultSet.getString("mobile")); //mobile,
             Integer rrtModalityId = getIntegerWithNullCheck("RRT_modality", resultSet); //RRT_modality,
             if (rrtModalityId != null) {
-                demographics.setRrtModality(getEnumValue(Demographics.RRTModality.class, rrtModalityId));
+                patient.setRrtModalityEunm(getEnumValue(Patient.RRTModality.class, rrtModalityId));
             }
 
             String genericDiagnosisId = resultSet.getString("genericDiagnosis");
             if (StringUtils.isNotBlank(genericDiagnosisId) && StringUtils.isNotBlank(diseaseGroupId)) {
-                demographics.setGenericDiagnosis(genericDiagnosisDao.get(genericDiagnosisId, diseaseGroupId));
+                patient.setGenericDiagnosisModel(genericDiagnosisDao.get(genericDiagnosisId, diseaseGroupId));
             }
 
-            demographics.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));
-            demographics.setOtherClinicianAndContactInfo(resultSet.getString("otherClinicianAndContactInfo"));
-            demographics.setComments(resultSet.getString("comments")); //comments,
-            demographics.setRepublicOfIrelandId(resultSet.getString("republicOfIrelandId"));
-            demographics.setIsleOfManId(resultSet.getString("isleOfManId"));
-            demographics.setChannelIslandsId(resultSet.getString("channelIslandsId"));
-            demographics.setIndiaId(resultSet.getString("indiaId"));
-            demographics.setGeneric(resultSet.getBoolean("generic"));
+            patient.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));
+            patient.setOtherClinicianAndContactInfo(resultSet.getString("otherClinicianAndContactInfo"));
+            patient.setComments(resultSet.getString("comments")); //comments,
+            patient.setRepublicOfIrelandId(resultSet.getString("republicOfIrelandId"));
+            patient.setIsleOfManId(resultSet.getString("isleOfManId"));
+            patient.setChannelIslandsId(resultSet.getString("channelIslandsId"));
+            patient.setIndiaId(resultSet.getString("indiaId"));
+            patient.setGeneric(resultSet.getBoolean("generic"));
 
-            return demographics;
+            return patient;
         }
     }
 

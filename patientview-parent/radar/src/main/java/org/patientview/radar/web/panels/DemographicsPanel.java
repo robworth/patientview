@@ -5,7 +5,7 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.user.User;
@@ -94,11 +94,11 @@ public class DemographicsPanel extends Panel {
         User user = RadarSecuredSession.get().getUser();
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
-        final CompoundPropertyModel<Demographics> model = new CompoundPropertyModel<Demographics>(
-                new LoadableDetachableModel<Demographics>() {
+        final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(
+                new LoadableDetachableModel<Patient>() {
                     @Override
-                    public Demographics load() {
-                        Demographics demographicsModelObject = null;
+                    public Patient load() {
+                        Patient patientModelObject = null;
                         if (radarNumberModel.getObject() != null) {
                             Long radarNumber;
                             try {
@@ -107,69 +107,69 @@ public class DemographicsPanel extends Panel {
                                 Object obj = radarNumberModel.getObject();
                                 radarNumber = Long.parseLong((String) obj);
                             }
-                            demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                            patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                         }
 
-                        if (demographicsModelObject == null) {
-                            demographicsModelObject = new Demographics();
+                        if (patientModelObject == null) {
+                            patientModelObject = new Patient();
 
                             if (pageParameters != null) {
                                 // if page parameter exists then adding a demographics
                                 // set the id type and val
                                 String idType = pageParameters.get("idType").toString();
 
-                                demographicsModelObject.setNhsNumber(pageParameters.get("idVal").toString());
+                                patientModelObject.setNhsno(pageParameters.get("idVal").toString());
 
                                 if (idType.equals(NhsNumberType.CHI_NUMBER.toString())) {
-                                    demographicsModelObject.setNhsNumberType(NhsNumberType.CHI_NUMBER);
+                                    patientModelObject.setNhsNumberType(NhsNumberType.CHI_NUMBER);
                                 } else if (idType.equals(NhsNumberType.NHS_NUMBER.toString())) {
-                                    demographicsModelObject.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+                                    patientModelObject.setNhsNumberType(NhsNumberType.NHS_NUMBER);
                                 }
 
                                 String diseaseGroupId = pageParameters.get("diseaseGroupId").toString();
 
                                 if (diseaseGroupId != null) {
-                                    demographicsModelObject.setDiseaseGroup(
+                                    patientModelObject.setDiseaseGroup(
                                             diseaseGroupManager.getById(diseaseGroupId));
                                 }
 
 
                                 StringValue idValue = pageParameters.get("renalUnitId");
                                 if (!idValue.isEmpty()) {
-                                    demographicsModelObject.setRenalUnit(
+                                    patientModelObject.setRenalUnit(
                                             utilityManager.getCentre(idValue.toLongObject()));
                                 }
                             }
                         }
 
-                        return demographicsModelObject;
+                        return patientModelObject;
                     }
                 });
 
         // Set up form
-        final Form<Demographics> form = new Form<Demographics>("form", model) {
+        final Form<Patient> form = new Form<Patient>("form", model) {
             @Override
             protected void onSubmit() {
-                Demographics demographics = getModelObject();
+                Patient patient = getModelObject();
                 // shouldnt need to do this but for some reason the id comes back with null!
                 if (radarNumberModel.getObject() != null) {
-                    demographics.setId(radarNumberModel.getObject());
+                    patient.setId(radarNumberModel.getObject());
                 }
-                demographicsManager.saveDemographics(demographics);
+                demographicsManager.saveDemographics(patient);
                 try {
-                    userManager.registerPatient(demographics);
+                    userManager.registerPatient(patient);
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());
                     error(message);
                 }
-                radarNumberModel.setObject(demographics.getId());
+                radarNumberModel.setObject(patient.getId());
 
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
-                Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
+                Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getId());
                 if (diagnosis == null) {
                     Diagnosis diagnosisNew = new Diagnosis();
-                    diagnosisNew.setRadarNumber(demographics.getId());
+                    diagnosisNew.setRadarNumber(patient.getId());
                     DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis")).getModelObject();
                     diagnosisNew.setDiagnosisCode(diagnosisCode);
                     diagnosisManager.saveDiagnosis(diagnosisNew);
@@ -219,7 +219,7 @@ public class DemographicsPanel extends Panel {
 
         DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
         if (radarNumberModel.getObject() == null) {
-            model.getObject().setDateRegistered(new Date());
+            model.getObject().setDateReg(new Date());
         }
         form.add(dateRegistered);
 
@@ -275,7 +275,7 @@ public class DemographicsPanel extends Panel {
         Label nameLabel = new Label("nameLabel", "Name") {
             @Override
             public boolean isVisible() {
-                Demographics demographicsModelObject = null;
+                Patient patientModelObject = null;
                 if (radarNumberModel.getObject() != null) {
                     Long radarNumber;
                     try {
@@ -284,14 +284,14 @@ public class DemographicsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                 }
 
-                if (demographicsModelObject == null) {
-                    demographicsModelObject = new Demographics();
+                if (patientModelObject == null) {
+                    patientModelObject = new Patient();
                 }
 
-                return StringUtils.isNotBlank(demographicsModelObject.getForename());
+                return StringUtils.isNotBlank(patientModelObject.getForename());
             }
         };
         nameLabel.setOutputMarkupId(true);
@@ -302,7 +302,7 @@ public class DemographicsPanel extends Panel {
                 radarNumberModel, demographicsManager)) {
             @Override
             public boolean isVisible() {
-                Demographics demographicsModelObject = null;
+                Patient patientModelObject = null;
                 if (radarNumberModel.getObject() != null) {
                     Long radarNumber;
                     try {
@@ -311,14 +311,14 @@ public class DemographicsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                 }
 
-                if (demographicsModelObject == null) {
-                    demographicsModelObject = new Demographics();
+                if (patientModelObject == null) {
+                    patientModelObject = new Patient();
                 }
 
-                return StringUtils.isNotBlank(demographicsModelObject.getForename());
+                return StringUtils.isNotBlank(patientModelObject.getForename());
             }
         };
         forenameForHeader.setOutputMarkupId(true);
@@ -331,7 +331,7 @@ public class DemographicsPanel extends Panel {
                 radarNumberModel, demographicsManager)) {
             @Override
             public boolean isVisible() {
-                Demographics demographicsModelObject = null;
+                Patient patientModelObject = null;
                 if (radarNumberModel.getObject() != null) {
                     Long radarNumber;
                     try {
@@ -340,14 +340,14 @@ public class DemographicsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                 }
 
-                if (demographicsModelObject == null) {
-                    demographicsModelObject = new Demographics();
+                if (patientModelObject == null) {
+                    patientModelObject = new Patient();
                 }
 
-                return StringUtils.isNotBlank(demographicsModelObject.getSurname());
+                return StringUtils.isNotBlank(patientModelObject.getSurname());
             }
         };
         surnameForHeader.setOutputMarkupId(true);
@@ -358,7 +358,7 @@ public class DemographicsPanel extends Panel {
         Label dobLabel = new Label("dobLabel", "DoB") {
             @Override
             public boolean isVisible() {
-                Demographics demographicsModelObject = null;
+                Patient patientModelObject = null;
                 if (radarNumberModel.getObject() != null) {
                     Long radarNumber;
                     try {
@@ -367,14 +367,14 @@ public class DemographicsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                 }
 
-                if (demographicsModelObject == null) {
-                    demographicsModelObject = new Demographics();
+                if (patientModelObject == null) {
+                    patientModelObject = new Patient();
                 }
 
-                return demographicsModelObject.getDateOfBirth() != null;
+                return patientModelObject.getDob() != null;
             }
         };
         dobLabel.setOutputMarkupId(true);
@@ -386,7 +386,7 @@ public class DemographicsPanel extends Panel {
                 RadarModelFactory.getDobModel(radarNumberModel, demographicsManager), RadarApplication.DATE_PATTERN) {
             @Override
             public boolean isVisible() {
-                Demographics demographicsModelObject = null;
+                Patient patientModelObject = null;
                 if (radarNumberModel.getObject() != null) {
                     Long radarNumber;
                     try {
@@ -395,14 +395,14 @@ public class DemographicsPanel extends Panel {
                         Object obj = radarNumberModel.getObject();
                         radarNumber = Long.parseLong((String) obj);
                     }
-                    demographicsModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
                 }
 
-                if (demographicsModelObject == null) {
-                    demographicsModelObject = new Demographics();
+                if (patientModelObject == null) {
+                    patientModelObject = new Patient();
                 }
 
-                return demographicsModelObject.getDateOfBirth() != null;
+                return patientModelObject.getDob() != null;
             }
         };
         dateOfBirthForHeader.setOutputMarkupId(true);
@@ -465,10 +465,10 @@ public class DemographicsPanel extends Panel {
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
-                    Demographics demographics = model.getObject();
-                    if (demographics != null) {
-                        centreNumber.setObject(demographics.getRenalUnit() != null ?
-                                demographics.getRenalUnit().getUnitCode() :
+                    Patient patient = model.getObject();
+                    if (patient != null) {
+                        centreNumber.setObject(patient.getRenalUnit() != null ?
+                                patient.getRenalUnit().getUnitCode() :
                                 null);
                     }
 

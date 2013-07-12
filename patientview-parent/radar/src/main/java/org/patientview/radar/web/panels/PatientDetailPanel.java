@@ -1,7 +1,7 @@
 package org.patientview.radar.web.panels;
 
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.datetime.PatternDateConverter;
@@ -16,10 +16,10 @@ import org.apache.wicket.model.PropertyModel;
 import java.util.Date;
 
 public class PatientDetailPanel extends Panel {
-    public PatientDetailPanel(String id, final Demographics demographics, String title) {
+    public PatientDetailPanel(String id, final Patient patient, String title) {
         super(id);
 
-        WebMarkupContainer details = new WebMarkupContainer("details", new CompoundPropertyModel<Object>(demographics));
+        WebMarkupContainer details = new WebMarkupContainer("details", new CompoundPropertyModel<Object>(patient));
         details.setOutputMarkupId(true);
         details.setOutputMarkupPlaceholderTag(true);
         add(details);
@@ -38,7 +38,7 @@ public class PatientDetailPanel extends Panel {
         details.add(radarNumberField);
 
         // disease group
-        Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(demographics.getDiseaseGroup(),
+        Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patient.getDiseaseGroup(),
                 "name"));
         details.add(diseaseGroup);
 
@@ -46,7 +46,7 @@ public class PatientDetailPanel extends Panel {
         Label nameLabel = new Label("nameLabel", "Patient Name") {
             @Override
             public boolean isVisible() {
-                return StringUtils.isNotBlank(demographics.getForename());
+                return StringUtils.isNotBlank(patient.getForename());
             }
         };
         nameLabel.setOutputMarkupId(true);
@@ -56,7 +56,7 @@ public class PatientDetailPanel extends Panel {
         TextField<Long> forename = new TextField<Long>("forename") {
             @Override
             public boolean isVisible() {
-                return StringUtils.isNotBlank(demographics.getForename());
+                return StringUtils.isNotBlank(patient.getForename());
             }
         };
         forename.setOutputMarkupId(true);
@@ -67,7 +67,7 @@ public class PatientDetailPanel extends Panel {
         TextField<Long> surname = new TextField<Long>("surname") {
             @Override
             public boolean isVisible() {
-                return StringUtils.isNotBlank(demographics.getSurname());
+                return StringUtils.isNotBlank(patient.getSurname());
             }
         };
         surname.setOutputMarkupId(true);
@@ -82,7 +82,7 @@ public class PatientDetailPanel extends Panel {
         Label dobLabel = new Label("dobLabel", "Patient DOB") {
             @Override
             public boolean isVisible() {
-                return demographics.getDateOfBirth() != null;
+                return patient.getDob() != null;
             }
         };
         dobLabel.setOutputMarkupId(true);
@@ -90,11 +90,11 @@ public class PatientDetailPanel extends Panel {
         details.add(dobLabel);
 
         DateTextField dateOfBirthTextField = new DateTextField("dob",
-                new PropertyModel<Date>(demographics, "dateOfBirth"), new PatternDateConverter(
+                new PropertyModel<Date>(patient, "dateOfBirth"), new PatternDateConverter(
                 RadarApplication.DATE_PATTERN, true)) {
             @Override
             public boolean isVisible() {
-                return demographics.getDateOfBirth() != null;
+                return patient.getDob() != null;
             }
         };
         dateOfBirthTextField.setOutputMarkupId(true);

@@ -201,6 +201,11 @@
             <artifactId>hibernate-jpamodelgen</artifactId>
             <version>1.2.0.Final</version>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,8 +1,8 @@
 package org.patientview.radar.service.alport.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.alport.MedicineDao;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.alport.Medicine;
 import org.patientview.radar.service.alport.MedicineManager;
 
@@ -24,17 +24,17 @@ public class MedicineManagerImpl implements MedicineManager {
         return medicineDao.get(id);
     }
 
-    public List<Medicine> getMedicines(Demographics demographics) {
-        if (demographics.getNhsNumber() != null) {
-            return medicineDao.getMedicinesByNhsNo(demographics.getNhsNumber());
+    public List<Medicine> getMedicines(Patient patient) {
+        if (patient.getNhsno() != null) {
+            return medicineDao.getMedicinesByNhsNo(patient.getNhsno());
         }
 
         return null;
     }
 
-    public List<Medicine> getMedicines(Demographics demographics, DiseaseGroup diseaseGroup) {
-        if (demographics.getNhsNumber() != null) {
-            return medicineDao.getMedicinesByNhsNoAndDiseaseGroup(demographics.getNhsNumber(), diseaseGroup);
+    public List<Medicine> getMedicines(Patient patient, DiseaseGroup diseaseGroup) {
+        if (patient.getNhsno() != null) {
+            return medicineDao.getMedicinesByNhsNoAndDiseaseGroup(patient.getNhsno(), diseaseGroup);
         }
 
         return null;

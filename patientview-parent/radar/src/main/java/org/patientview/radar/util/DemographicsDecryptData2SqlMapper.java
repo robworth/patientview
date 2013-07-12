@@ -1,7 +1,7 @@
 package org.patientview.radar.util;
 
-import org.patientview.radar.model.Demographics;
 import org.apache.commons.lang.StringUtils;
+import org.patientview.model.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,65 +44,65 @@ public class DemographicsDecryptData2SqlMapper {
 
         jdbcTemplate = new JdbcTemplate((DataSource) webApplicationContext.getBean("dataSource"));
 
-        List<Demographics> demographicsList = jdbcTemplate.query("SELECT * FROM TBL_DEMOGRAPHICS",
+        List<Patient> patientList = jdbcTemplate.query("SELECT * FROM TBL_DEMOGRAPHICS",
                 new EncryptedDemographicsRowMapper());
 
         StringBuilder outputText = new StringBuilder();
-        for (Demographics demographics : demographicsList) {
+        for (Patient patient : patientList) {
             String updateStatement = "UPDATE TBL_DEMOGRAPHICS SET ";
 
-            if (demographics.getNhsNumber() != null) {
-                updateStatement += " NHS_NO = '" + demographics.getNhsNumber() + "', ";
+            if (patient.getNhsno() != null) {
+                updateStatement += " NHS_NO = '" + patient.getNhsno() + "', ";
             }
 
-            if (demographics.getHospitalNumber() != null) {
-                updateStatement += " HOSP_NO = \"" + demographics.getHospitalNumber() + "\", ";
+            if (patient.getHospitalnumber() != null) {
+                updateStatement += " HOSP_NO = \"" + patient.getHospitalnumber() + "\", ";
             }
 
-            if (demographics.getSurname() != null) {
-                updateStatement += " SNAME = \"" + demographics.getSurname() + "\", ";
+            if (patient.getSurname() != null) {
+                updateStatement += " SNAME = \"" + patient.getSurname() + "\", ";
             }
 
-            if (demographics.getForename() != null) {
-                updateStatement += " FNAME = \"" + demographics.getForename() + "\", ";
+            if (patient.getForename() != null) {
+                updateStatement += " FNAME = \"" + patient.getForename() + "\", ";
             }
 
-            if (demographics.getSurnameAlias() != null) {
-                updateStatement += " SNAME_ALIAS = \"" + demographics.getSurnameAlias() + "\", ";
+            if (patient.getSnameAlias() != null) {
+                updateStatement += " SNAME_ALIAS = \"" + patient.getSnameAlias() + "\", ";
             }
 
-            if (demographics.getDateOfBirth() != null) {
+            if (patient.getDob() != null) {
                 // just guess what a sane date format is
                 updateStatement += " DOB = \""
-                        + new SimpleDateFormat(DATE_FORMAT_2).format(demographics.getDateOfBirth()) + "\", ";
+                        + new SimpleDateFormat(DATE_FORMAT_2).format(patient.getDob()) + "\", ";
             }
 
-            if (demographics.getAddress1() != null) {
-                updateStatement += " ADD1 = \"" + demographics.getAddress1() + "\", ";
+            if (patient.getAddress1() != null) {
+                updateStatement += " ADD1 = \"" + patient.getAddress1() + "\", ";
             }
 
-            if (demographics.getAddress2() != null) {
-                updateStatement += " ADD2 = \"" + demographics.getAddress2() + "\", ";
+            if (patient.getAddress2() != null) {
+                updateStatement += " ADD2 = \"" + patient.getAddress2() + "\", ";
             }
 
-            if (demographics.getAddress3() != null) {
-                updateStatement += " ADD3 = \"" + demographics.getAddress3() + "\", ";
+            if (patient.getAddress3() != null) {
+                updateStatement += " ADD3 = \"" + patient.getAddress3() + "\", ";
             }
 
-            if (demographics.getAddress4() != null) {
-                updateStatement += " ADD4 = \"" + demographics.getAddress4() + "\", ";
+            if (patient.getAddress4() != null) {
+                updateStatement += " ADD4 = \"" + patient.getAddress4() + "\", ";
             }
 
-            if (demographics.getPostcode() != null) {
-                updateStatement += " POSTCODE = \"" + demographics.getPostcode() + "\", ";
+            if (patient.getPostcode() != null) {
+                updateStatement += " POSTCODE = \"" + patient.getPostcode() + "\", ";
             }
 
-            if (demographics.getPreviousPostcode() != null) {
-                updateStatement += " POSTCODE_OLD = \"" + demographics.getPreviousPostcode() + "\", ";
+            if (patient.getPostcodeOld() != null) {
+                updateStatement += " POSTCODE_OLD = \"" + patient.getPostcodeOld() + "\", ";
             }
 
-            updateStatement += " RADAR_NO = " + demographics.getId();
-            updateStatement += " WHERE RADAR_NO = " + demographics.getId();
+            updateStatement += " RADAR_NO = " + patient.getId();
+            updateStatement += " WHERE RADAR_NO = " + patient.getId();
             updateStatement += " ;";
 
             outputText.append(updateStatement);
@@ -116,25 +116,25 @@ public class DemographicsDecryptData2SqlMapper {
         bufferedWriter.close();
     }
 
-    private class EncryptedDemographicsRowMapper implements RowMapper<Demographics> {
-        public Demographics mapRow(ResultSet resultSet, int i) throws SQLException {
-            Demographics demographics = new Demographics();
-            demographics.setId(resultSet.getLong("RADAR_NO"));
+    private class EncryptedDemographicsRowMapper implements RowMapper<Patient> {
+        public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
+            Patient patient = new Patient();
+            patient.setId(resultSet.getLong("RADAR_NO"));
 
             try {
-                demographics.setNhsNumber(getDecryptedString(demographics.getId() + "", "NHS_NO",
+                patient.setNhsno(getDecryptedString(patient.getId() + "", "NHS_NO",
                         resultSet.getBytes("NHS_NO")));
-                demographics.setHospitalNumber(getDecryptedString(demographics.getId() + "", "HOSP_NO",
+                patient.setHospitalnumber(getDecryptedString(patient.getId() + "", "HOSP_NO",
                         resultSet.getBytes("HOSP_NO")));
-                demographics.setSurname(getDecryptedString(demographics.getId() + "", "SNAME",
+                patient.setSurname(getDecryptedString(patient.getId() + "", "SNAME",
                         resultSet.getBytes("SNAME")));
-                demographics.setSurnameAlias(getDecryptedString(demographics.getId() + "", "SNAME_ALIAS",
+                patient.setSnameAlias(getDecryptedString(patient.getId() + "", "SNAME_ALIAS",
                         resultSet.getBytes("SNAME_ALIAS")));
-                demographics.setForename(getDecryptedString(demographics.getId() + "", "FNAME",
+                patient.setForename(getDecryptedString(patient.getId() + "", "FNAME",
                         resultSet.getBytes("FNAME")));
 
                 // Date needs to be decrypted to string, then parsed
-                String dateOfBirthString = getDecryptedString(demographics.getId() + "", "DOB",
+                String dateOfBirthString = getDecryptedString(patient.getId() + "", "DOB",
                         resultSet.getBytes("DOB"));
 
                 if (StringUtils.isNotBlank(dateOfBirthString)) {
@@ -150,7 +150,7 @@ public class DemographicsDecryptData2SqlMapper {
 
                     // If after trying those formats we don't have anything then log as error
                     if (dateOfBirth != null) {
-                        demographics.setDateOfBirth(dateOfBirth);
+                        patient.setDob(dateOfBirth);
                     } else {
                         LOGGER.error("Could not parse date of birth from any format for dob {}",
                                 dateOfBirthString);
@@ -158,25 +158,25 @@ public class DemographicsDecryptData2SqlMapper {
                 }
 
                 // Addresses, all encrypted too
-                demographics.setAddress1(getDecryptedString(demographics.getId() + "", "ADD1",
+                patient.setAddress1(getDecryptedString(patient.getId() + "", "ADD1",
                         resultSet.getBytes("ADD1")));
-                demographics.setAddress2(getDecryptedString(demographics.getId() + "", "ADD2",
+                patient.setAddress2(getDecryptedString(patient.getId() + "", "ADD2",
                         resultSet.getBytes("ADD2")));
-                demographics.setAddress3(getDecryptedString(demographics.getId() + "", "ADD3",
+                patient.setAddress3(getDecryptedString(patient.getId() + "", "ADD3",
                         resultSet.getBytes("ADD3")));
-                demographics.setAddress4(getDecryptedString(demographics.getId() + "", "ADD4",
+                patient.setAddress4(getDecryptedString(patient.getId() + "", "ADD4",
                         resultSet.getBytes("ADD4")));
-                demographics.setPostcode(getDecryptedString(demographics.getId() + "", "POSTCODE",
+                patient.setPostcode(getDecryptedString(patient.getId() + "", "POSTCODE",
                         resultSet.getBytes("POSTCODE")));
-                demographics.setPreviousPostcode(getDecryptedString(demographics.getId() + "", "POSTCODE_OLD",
+                patient.setPostcodeOld(getDecryptedString(patient.getId() + "", "POSTCODE_OLD",
                         resultSet.getBytes("POSTCODE_OLD")));
 
             } catch (Exception e) {
-                LOGGER.error("Could not decrypt demographics information for demographics {}", demographics.getId());
+                LOGGER.error("Could not decrypt demographics information for demographics {}", patient.getId());
                 e.printStackTrace();
             }
 
-            return demographics;
+            return patient;
         }
     }
 

@@ -1,26 +1,26 @@
 package org.patientview.radar.service;
 
 import org.patientview.model.Centre;
+import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.filter.DemographicsFilter;
 
 import java.util.List;
 
 public interface DemographicsManager {
 
-    void saveDemographics(Demographics demographics);
+    void saveDemographics(Patient patient);
 
-    Demographics getDemographicsByRadarNumber(long radarNumber);
+    Patient getDemographicsByRadarNumber(long radarNumber);
 
-    List<Demographics> getDemographicsByRenalUnit(Centre centre);
+    List<Patient> getDemographicsByRenalUnit(Centre centre);
 
-    List<Demographics> getDemographics();
+    List<Patient> getDemographics();
 
-    List<Demographics> getDemographics(DemographicsFilter filter);
+    List<Patient> getDemographics(DemographicsFilter filter);
 
-    List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage);
+    List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage);
 
     Sex getSex(long id);
 

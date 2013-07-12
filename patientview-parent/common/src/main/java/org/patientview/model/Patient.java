@@ -117,7 +117,7 @@ public class Patient extends BaseModel {
     private String rrNo;
 
     @Column
-    private Date dateGeg;
+    private Date dateReg;
 
     @Column
     private String nhsNoType;
@@ -201,6 +201,8 @@ public class Patient extends BaseModel {
     private RRTModality rrtModalityEunm;
 
     private Status statusModel;
+
+    private Date dob;
 
     public enum RRTModality {
         HD(1),
@@ -687,12 +689,12 @@ public class Patient extends BaseModel {
         this.rrNo = rrNo;
     }
 
-    public Date getDateGeg() {
-        return dateGeg;
+    public Date getDateReg() {
+        return dateReg;
     }
 
-    public void setDateGeg(Date dateGeg) {
-        this.dateGeg = dateGeg;
+    public void setDateReg(Date dateReg) {
+        this.dateReg = dateReg;
     }
 
     public String getNhsNoType() {
@@ -789,6 +791,14 @@ public class Patient extends BaseModel {
 
     public void setRrtModalityEunm(RRTModality rrtModalityEunm) {
         this.rrtModalityEunm = rrtModalityEunm;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        dob = dob;
     }
 }
 

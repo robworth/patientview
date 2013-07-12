@@ -1,6 +1,6 @@
 package org.patientview.radar.web.panels.generic;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.generic.MedicalResult;
 import org.patientview.radar.service.generic.MedicalResultManager;
 import org.patientview.radar.web.RadarApplication;
@@ -46,7 +46,7 @@ public class MedicalResultsPanel extends Panel {
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
-    public MedicalResultsPanel(String id, final Demographics demographics) {
+    public MedicalResultsPanel(String id, final Patient patient) {
         super(id);
 
         setOutputMarkupId(true);
@@ -54,16 +54,16 @@ public class MedicalResultsPanel extends Panel {
 
         MedicalResult medicalResult = null;
 
-        if (demographics.hasValidId()) {
-            medicalResult = medicalResultManager.getMedicalResult(demographics.getId(),
-                    demographics.getDiseaseGroup().getId());
+        if (patient.hasValidId()) {
+            medicalResult = medicalResultManager.getMedicalResult(patient.getId(),
+                    patient.getDiseaseGroup().getId());
         }
 
         if (medicalResult == null) {
             medicalResult = new MedicalResult();
-            medicalResult.setRadarNo(demographics.getId());
-            medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
-            medicalResult.setNhsNo(demographics.getNhsNumber());
+            medicalResult.setRadarNo(patient.getId());
+            medicalResult.setDiseaseGroup(patient.getDiseaseGroup());
+            medicalResult.setNhsNo(patient.getNhsno());
         }
 
         // general feedback for messages that are not to do with a certain component in the form
@@ -200,8 +200,8 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (medicalResult.isToBeValidated() && !hasError()) {
-                    medicalResult.setRadarNo(demographics.getId());
-                    medicalResult.setNhsNo(demographics.getNhsNumber());
+                    medicalResult.setRadarNo(patient.getId());
+                    medicalResult.setNhsNo(patient.getNhsno());
                     medicalResultManager.save(medicalResult);
                 }
             }
@@ -213,7 +213,7 @@ public class MedicalResultsPanel extends Panel {
         formFeedback.setFilter(filter);
         form.add(formFeedback);
 
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Medical Results");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Medical Results");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);

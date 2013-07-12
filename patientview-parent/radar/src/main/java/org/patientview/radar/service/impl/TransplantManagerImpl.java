@@ -1,8 +1,8 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.dao.TransplantDao;
 import org.patientview.radar.dao.impl.TransplantDaoImpl;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Transplant;
 import org.patientview.radar.model.exception.InvalidModelException;
 import org.patientview.radar.service.DemographicsManager;
@@ -122,9 +122,9 @@ public class TransplantManagerImpl implements TransplantManager {
                         getFailureDate() : null);
 
         // cannot be before date of birth
-        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(transplant.getRadarNumber());
-        if (demographics != null) {
-            Date dob = demographics.getDateOfBirth();
+        Patient patient = demographicsManager.getDemographicsByRadarNumber(transplant.getRadarNumber());
+        if (patient != null) {
+            Date dob = patient.getDob();
             if (dob != null) {
                 for (Date date : datesToCheck) {
                     if (date != null) {
