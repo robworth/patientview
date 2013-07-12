@@ -28,5 +28,5 @@
 </div>
 
 <p>
-    You might have typed the web adress wrong or this page has moved or deleted. <a href="/"> Click here to return to the homepage</a> or press the back button in your browser to return to the previous page.
+    You might have typed the web address wrong or this page has moved or deleted. <a href="/"> Click here to return to the homepage</a> or press the back button in your browser to return to the previous page.
 </p>

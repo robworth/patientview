@@ -33,6 +33,8 @@ import java.util.List;
 
 /**
  *  Access the spring security user details
+ *
+ *  This manager also contains unsecured UserManager methods.
  */
 @Transactional(propagation = Propagation.REQUIRED)
 public interface SecurityUserManager {
@@ -66,4 +68,12 @@ public interface SecurityUserManager {
     List<SpecialtyUserRole> getSpecialtyUserRoles(User user);
 
     boolean userHasReadAccessToUnit(String unitCode);
+
+    void incrementFailedLogins(String username);
+
+    int getFailedLogins(String username);
+
+    void lockUserAccount(String username);
+
+    void resetFailedLoginsForUser(String username);
 }

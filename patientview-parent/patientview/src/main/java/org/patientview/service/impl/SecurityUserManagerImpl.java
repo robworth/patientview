@@ -274,4 +274,45 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
         }
         return isUnitUser;
     }
+
+    @Override
+    public void incrementFailedLogins(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            user.setFailedlogons(user.getFailedlogons() + 1);
+            userDao.save(user);
+        }
+    }
+
+    @Override
+    public int getFailedLogins(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            return user.getFailedlogons();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void lockUserAccount(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            user.setAccountlocked(true);
+            userDao.save(user);
+        }
+    }
+
+    @Override
+    public void resetFailedLoginsForUser(String username) {
+        User user = userDao.get(username);
+
+        if (user != null) {
+            user.setFailedlogons(0);
+            userDao.save(user);
+        }
+    }
 }
