@@ -1,0 +1,7 @@
+NUM_FILES = 0;
+for UNIT in `cat /root/scripts/allunits.txt`
+do
+    echo "Files in $UNIT";	
+    NUM_FILES=$NUM_FILES+$(ls -l /home/$UNIT/incoming/ | wc -l);
+done
+echo "Total number of files: $NUM_FILES";
