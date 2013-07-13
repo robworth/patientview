@@ -44,53 +44,53 @@ public class DemographicsDecryptData2SqlMapper {
 
         jdbcTemplate = new JdbcTemplate((DataSource) webApplicationContext.getBean("dataSource"));
 
-        List<Patient> patientList = jdbcTemplate.query("SELECT * FROM TBL_DEMOGRAPHICS",
+        List<Patient> patientList = jdbcTemplate.query("SELECT * FROM patient",
                 new EncryptedDemographicsRowMapper());
 
         StringBuilder outputText = new StringBuilder();
         for (Patient patient : patientList) {
-            String updateStatement = "UPDATE TBL_DEMOGRAPHICS SET ";
+            String updateStatement = "UPDATE patient SET ";
 
             if (patient.getNhsno() != null) {
-                updateStatement += " NHS_NO = '" + patient.getNhsno() + "', ";
+                updateStatement += " nhsno = '" + patient.getNhsno() + "', ";
             }
 
             if (patient.getHospitalnumber() != null) {
-                updateStatement += " HOSP_NO = \"" + patient.getHospitalnumber() + "\", ";
+                updateStatement += " hospitalnumber = \"" + patient.getHospitalnumber() + "\", ";
             }
 
             if (patient.getSurname() != null) {
-                updateStatement += " SNAME = \"" + patient.getSurname() + "\", ";
+                updateStatement += " surname = \"" + patient.getSurname() + "\", ";
             }
 
             if (patient.getForename() != null) {
-                updateStatement += " FNAME = \"" + patient.getForename() + "\", ";
+                updateStatement += " forename = \"" + patient.getForename() + "\", ";
             }
 
-            if (patient.getSnameAlias() != null) {
-                updateStatement += " SNAME_ALIAS = \"" + patient.getSnameAlias() + "\", ";
+            if (patient.getSurnameAlias() != null) {
+                updateStatement += " surnameAlias = \"" + patient.getSurnameAlias() + "\", ";
             }
 
             if (patient.getDob() != null) {
                 // just guess what a sane date format is
-                updateStatement += " DOB = \""
+                updateStatement += " dateofbirth = \""
                         + new SimpleDateFormat(DATE_FORMAT_2).format(patient.getDob()) + "\", ";
             }
 
             if (patient.getAddress1() != null) {
-                updateStatement += " ADD1 = \"" + patient.getAddress1() + "\", ";
+                updateStatement += " address1 = \"" + patient.getAddress1() + "\", ";
             }
 
             if (patient.getAddress2() != null) {
-                updateStatement += " ADD2 = \"" + patient.getAddress2() + "\", ";
+                updateStatement += " address2 = \"" + patient.getAddress2() + "\", ";
             }
 
             if (patient.getAddress3() != null) {
-                updateStatement += " ADD3 = \"" + patient.getAddress3() + "\", ";
+                updateStatement += " address3 = \"" + patient.getAddress3() + "\", ";
             }
 
             if (patient.getAddress4() != null) {
-                updateStatement += " ADD4 = \"" + patient.getAddress4() + "\", ";
+                updateStatement += " address4 = \"" + patient.getAddress4() + "\", ";
             }
 
             if (patient.getPostcode() != null) {
@@ -98,11 +98,11 @@ public class DemographicsDecryptData2SqlMapper {
             }
 
             if (patient.getPostcodeOld() != null) {
-                updateStatement += " POSTCODE_OLD = \"" + patient.getPostcodeOld() + "\", ";
+                updateStatement += " postcodeOld = \"" + patient.getPostcodeOld() + "\", ";
             }
 
-            updateStatement += " RADAR_NO = " + patient.getId();
-            updateStatement += " WHERE RADAR_NO = " + patient.getId();
+            updateStatement += " radarNo = " + patient.getId();
+            updateStatement += " WHERE radarNo = " + patient.getId();
             updateStatement += " ;";
 
             outputText.append(updateStatement);
@@ -119,23 +119,23 @@ public class DemographicsDecryptData2SqlMapper {
     private class EncryptedDemographicsRowMapper implements RowMapper<Patient> {
         public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
             Patient patient = new Patient();
-            patient.setId(resultSet.getLong("RADAR_NO"));
+            patient.setId(resultSet.getLong("radarNo"));
 
             try {
-                patient.setNhsno(getDecryptedString(patient.getId() + "", "NHS_NO",
-                        resultSet.getBytes("NHS_NO")));
-                patient.setHospitalnumber(getDecryptedString(patient.getId() + "", "HOSP_NO",
-                        resultSet.getBytes("HOSP_NO")));
-                patient.setSurname(getDecryptedString(patient.getId() + "", "SNAME",
-                        resultSet.getBytes("SNAME")));
-                patient.setSnameAlias(getDecryptedString(patient.getId() + "", "SNAME_ALIAS",
-                        resultSet.getBytes("SNAME_ALIAS")));
-                patient.setForename(getDecryptedString(patient.getId() + "", "FNAME",
-                        resultSet.getBytes("FNAME")));
+                patient.setNhsno(getDecryptedString(patient.getId() + "", "nhsno",
+                        resultSet.getBytes("nhsno")));
+                patient.setHospitalnumber(getDecryptedString(patient.getId() + "", "hospitalnumber",
+                        resultSet.getBytes("hospitalnumber")));
+                patient.setSurname(getDecryptedString(patient.getId() + "", "surname",
+                        resultSet.getBytes("surname")));
+                patient.setSurnameAlias(getDecryptedString(patient.getId() + "", "surnameAlias",
+                        resultSet.getBytes("surnameAlias")));
+                patient.setForename(getDecryptedString(patient.getId() + "", "forename",
+                        resultSet.getBytes("forename")));
 
                 // Date needs to be decrypted to string, then parsed
-                String dateOfBirthString = getDecryptedString(patient.getId() + "", "DOB",
-                        resultSet.getBytes("DOB"));
+                String dateOfBirthString = getDecryptedString(patient.getId() + "", "dateofbirth",
+                        resultSet.getBytes("dateofbirth"));
 
                 if (StringUtils.isNotBlank(dateOfBirthString)) {
                     Date dateOfBirth = getDate(dateOfBirthString, DATE_FORMAT);
@@ -158,18 +158,18 @@ public class DemographicsDecryptData2SqlMapper {
                 }
 
                 // Addresses, all encrypted too
-                patient.setAddress1(getDecryptedString(patient.getId() + "", "ADD1",
-                        resultSet.getBytes("ADD1")));
-                patient.setAddress2(getDecryptedString(patient.getId() + "", "ADD2",
-                        resultSet.getBytes("ADD2")));
-                patient.setAddress3(getDecryptedString(patient.getId() + "", "ADD3",
-                        resultSet.getBytes("ADD3")));
-                patient.setAddress4(getDecryptedString(patient.getId() + "", "ADD4",
-                        resultSet.getBytes("ADD4")));
+                patient.setAddress1(getDecryptedString(patient.getId() + "", "address1",
+                        resultSet.getBytes("address1")));
+                patient.setAddress2(getDecryptedString(patient.getId() + "", "address2",
+                        resultSet.getBytes("address2")));
+                patient.setAddress3(getDecryptedString(patient.getId() + "", "address3",
+                        resultSet.getBytes("address3")));
+                patient.setAddress4(getDecryptedString(patient.getId() + "", "address4",
+                        resultSet.getBytes("address4")));
                 patient.setPostcode(getDecryptedString(patient.getId() + "", "POSTCODE",
                         resultSet.getBytes("POSTCODE")));
-                patient.setPostcodeOld(getDecryptedString(patient.getId() + "", "POSTCODE_OLD",
-                        resultSet.getBytes("POSTCODE_OLD")));
+                patient.setPostcodeOld(getDecryptedString(patient.getId() + "", "postcodeOld",
+                        resultSet.getBytes("postcodeOld")));
 
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt demographics information for demographics {}", patient.getId());

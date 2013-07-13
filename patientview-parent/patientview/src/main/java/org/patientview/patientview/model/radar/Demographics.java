@@ -28,10 +28,10 @@ import org.patientview.model.BaseModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity(name = "tbl_demographics")
+@Entity(name = "patient")
 public class Demographics extends BaseModel {
 
-    @Column(name = "radar_no")
+    @Column(name = "radarNo")
     private long radarNo;
 
     public Demographics() {

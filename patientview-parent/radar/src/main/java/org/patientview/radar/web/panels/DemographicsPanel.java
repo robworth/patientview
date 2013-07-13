@@ -179,7 +179,7 @@ public class DemographicsPanel extends Panel {
         };
 
         // More info
-        Label nhsNumber = new Label("nhsNumber");
+        Label nhsNumber = new Label("nhsno");
         WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
             @Override
             public boolean isVisible() {
@@ -213,11 +213,11 @@ public class DemographicsPanel extends Panel {
             }
         });
 
-        TextField<Long> radarNumberField = new TextField<Long>("radarNumber", radarNumberModel);
+        TextField<Long> radarNumberField = new TextField<Long>("radarNo", radarNumberModel);
         radarNumberField.setEnabled(false);
         form.add(radarNumberField);
 
-        DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
+        DateTextField dateRegistered = DateTextField.forDatePattern("dateReg", RadarApplication.DATE_PATTERN);
         if (radarNumberModel.getObject() == null) {
             model.getObject().setDateReg(new Date());
         }
@@ -257,7 +257,7 @@ public class DemographicsPanel extends Panel {
          */
         RadarRequiredTextField surname = new RadarRequiredTextField("surname", form, componentsToUpdateList);
         RadarRequiredTextField forename = new RadarRequiredTextField("forename", form, componentsToUpdateList);
-        RadarRequiredDateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form,
+        RadarRequiredDateTextField dateOfBirth = new RadarRequiredDateTextField("dob", form,
                 componentsToUpdateList);
 
         dateOfBirth.setRequired(true);
@@ -413,8 +413,8 @@ public class DemographicsPanel extends Panel {
 
         // Sex
         RadarRequiredDropdownChoice sex =
-                new RadarRequiredDropdownChoice("sex", demographicsManager.getSexes(), new ChoiceRenderer<Sex>("type",
-                        "id"), form, componentsToUpdateList);
+                new RadarRequiredDropdownChoice("sexModel", demographicsManager.getSexes(),
+                        new ChoiceRenderer<Sex>("type", "id"), form, componentsToUpdateList);
 
         // Ethnicity
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
@@ -433,14 +433,14 @@ public class DemographicsPanel extends Panel {
 
         // Archive fields
         TextField surnameAlias = new TextField("surnameAlias");
-        TextField previousPostcode = new TextField("previousPostcode");
+        TextField previousPostcode = new TextField("postcodeOld");
         form.add(surnameAlias, previousPostcode);
 
         // More info
         RadarRequiredTextField hospitalNumber =
-                new RadarRequiredTextField("hospitalNumber", form, componentsToUpdateList);
-        TextField renalRegistryNumber = new TextField("renalRegistryNumber");
-        TextField ukTransplantNumber = new TextField("ukTransplantNumber");
+                new RadarRequiredTextField("hospitalnumber", form, componentsToUpdateList);
+        TextField renalRegistryNumber = new TextField("rrNo");
+        TextField ukTransplantNumber = new TextField("uktNo");
         form.add(hospitalNumber, renalRegistryNumber, ukTransplantNumber);
 
         // Status, consultants and centres drop down boxes

@@ -7,7 +7,7 @@ SET p.radarNO = d.RADAR_NO,
     p.dateReg = d.DATE_REG,
     p.nhsNoType = d.NHS_NO_TYPE,
     p.uktNo = d.UKT_NO,
-    p.snameAlias = d.SNAME_ALIAS,
+    p.surnameAlias = d.SNAME_ALIAS,
     p.AGE = d.AGE,
     p.ethnicGp = d.ETHNIC_GP,
     p.postcodeOld = d.POSTCODE_OLD,
@@ -25,12 +25,13 @@ SET p.radarNO = d.RADAR_NO,
     p.isleOfManId = d.isleOfManId,
     p.channelIslandsId = d.channelIslandsId,
     p.indiaId = d.indiaId,
-    p.generic = d.generic;
+    p.generic = d.generic,
+    p.unitcode = d.RDG;
 
 /**
      Inserts data in tbl_demograpics to patient
  */
-INSERT INTO patient (radarNO, rrNo, dateReg, nhsNoType, uktNo, snameAlias, AGE, ethnicGp, postcodeOld, CONSENT, dateBapnReg, consNeph, STATUS, emailAddress, rrtModality, genericDiagnosis, dateOfGenericDiagnosis, otherClinicianAndContactInfo, comments, republicOfIrelandId, isleOfManId, channelIslandsId, indiaId, generic, NHSNO, HOSPITALNUMBER, SURNAME, FORENAME, DATEOFBIRTH, ADDRESS1, ADDRESS2, ADDRESS3, ADDRESS4, POSTCODE, TELEPHONE1, TELEPHONE2, MOBILE, unitcode)
+INSERT INTO patient (radarNO, rrNo, dateReg, nhsNoType, uktNo, surnameAlias, AGE, ethnicGp, postcodeOld, CONSENT, dateBapnReg, consNeph, STATUS, emailAddress, rrtModality, genericDiagnosis, dateOfGenericDiagnosis, otherClinicianAndContactInfo, comments, republicOfIrelandId, isleOfManId, channelIslandsId, indiaId, generic, NHSNO, HOSPITALNUMBER, SURNAME, FORENAME, DATEOFBIRTH, ADDRESS1, ADDRESS2, ADDRESS3, ADDRESS4, POSTCODE, TELEPHONE1, TELEPHONE2, MOBILE, unitcode)
 SELECT                d.RADAR_NO, d.RR_NO, d.DATE_REG, d.NHS_NO_TYPE, d.UKT_NO, d.SNAME_ALIAS, d.AGE, d.ETHNIC_GP, d.POSTCODE_OLD, d.CONSENT, d.DATE_BAPN_REG, d.CONS_NEPH, d.STATUS, d.emailAddress, d.RRT_modality, d.genericDiagnosis, d.dateOfGenericDiagnosis, d.otherClinicianAndContactInfo, d.comments, d.republicOfIrelandId, d.isleOfManId, d.channelIslandsId, d.indiaId, d.generic, d.NHS_NO, d.HOSP_NO, d.SNAME, d.FNAME, d.DOB, d.ADD1, d.ADD2, d.ADD3, d.ADD4, d.POSTCODE, d.PHONE1, d.PHONE2, d.MOBILE, d.RDG
 FROM tbl_demographics d
 WHERE d.nhs_no in (SELECT DISTINCT d.nhs_no FROM tbl_demographics d, patient p WHERE p.nhsno != d.nhs_no);

@@ -165,10 +165,10 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
-        List<PatientCountItem> patientCountList = jdbcTemplate.query("SELECT COUNT(*) as \"count\", renal_unit " +
-                "FROM tbl_demographics demographics INNER JOIN tbl_diagnosis diagnosis ON demographics.radar_no = " +
-                "diagnosis.radar_no WHERE diag = ? " +
-                "GROUP BY renal_unit;", new Object[]{diagnosisCode.getId()},
+        List<PatientCountItem> patientCountList = jdbcTemplate.query("SELECT COUNT(*) as \"count\", unitcode " +
+                "FROM patient demographics INNER JOIN tbl_diagnosis diagnosis ON demographics.radarNo = " +
+                "diagnosis.RADAR_NO WHERE diag = ? " +
+                "GROUP BY unitcode;", new Object[]{diagnosisCode.getId()},
                 new PatientCountByUnitRowMapper());
 
         Map<Long, Integer> patientCountMap = new HashMap<Long, Integer>();
@@ -182,9 +182,9 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     public int getPatientCountByUnit(Centre centre) {
         try {
             return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
-                    "FROM tbl_demographics " +
-                    "WHERE renal_unit = ? " +
-                    "GROUP BY renal_unit;", new Object[]{centre.getId()});
+                    "FROM patient " +
+                    "WHERE unitcode = ? " +
+                    "GROUP BY unitcode;", new Object[]{centre.getId()});
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }
@@ -257,7 +257,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     private class PatientCountByUnitRowMapper implements RowMapper<PatientCountItem> {
         public PatientCountItem mapRow(ResultSet resultSet, int i) throws SQLException {
 
-            return new PatientCountItem(resultSet.getLong("renal_unit"), resultSet.getInt("count"));
+            return new PatientCountItem(resultSet.getLong("unitcode"), resultSet.getInt("count"));
         }
     }
 

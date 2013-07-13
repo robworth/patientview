@@ -71,7 +71,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         createDemographics("Test", "User", "NHS123");
         createDemographics("Test2", "User2", "NHS789");
         DemographicsFilter demographicsFilter = new DemographicsFilter();
-        demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHS_NO.toString(),
+        demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
                 "NHS123");
         List<Patient> demographics = demographicDao.getDemographics(demographicsFilter, -1, -1);
         assertNotNull("List was null", demographics);

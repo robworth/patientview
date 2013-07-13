@@ -75,7 +75,7 @@ public class PatientDetailPanel extends Panel {
         details.add(surname);
 
         // date registered
-        DateTextField dateRegistered = DateTextField.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN);
+        DateTextField dateRegistered = DateTextField.forDatePattern("dateReg", RadarApplication.DATE_PATTERN);
         details.add(dateRegistered);
 
         // date of birth
@@ -90,7 +90,7 @@ public class PatientDetailPanel extends Panel {
         details.add(dobLabel);
 
         DateTextField dateOfBirthTextField = new DateTextField("dob",
-                new PropertyModel<Date>(patient, "dateOfBirth"), new PatternDateConverter(
+                new PropertyModel<Date>(patient, "dob"), new PatternDateConverter(
                 RadarApplication.DATE_PATTERN, true)) {
             @Override
             public boolean isVisible() {

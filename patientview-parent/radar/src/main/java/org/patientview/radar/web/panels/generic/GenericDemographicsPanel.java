@@ -81,8 +81,8 @@ public class GenericDemographicsPanel extends Panel {
 
         ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
-        if (patient.getDob() == null) {
-            patient.setDob(new Date());
+        if (patient.getDateReg() == null) {
+            patient.setDateReg(new Date());
         }
 
         // components to update on ajax refresh
@@ -125,15 +125,15 @@ public class GenericDemographicsPanel extends Panel {
         RadarRequiredTextField surname = new RadarRequiredTextField("surname", form, componentsToUpdateList);
         RadarRequiredTextField forename = new RadarRequiredTextField("forename", form, componentsToUpdateList);
         TextField alias = new TextField("surnameAlias");
-        RadarRequiredDateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth", form,
+        RadarRequiredDateTextField dateOfBirth = new RadarRequiredDateTextField("dob", form,
                 componentsToUpdateList);
 
         form.add(surname, forename, alias, dateOfBirth);
 
         // Sex
         RadarRequiredDropdownChoice sex =
-                new RadarRequiredDropdownChoice("sex", demographicsManager.getSexes(), new ChoiceRenderer<Sex>("type",
-                        "id"), form, componentsToUpdateList);
+                new RadarRequiredDropdownChoice("sexModel", demographicsManager.getSexes(),
+                        new ChoiceRenderer<Sex>("type", "id"), form, componentsToUpdateList);
 
         // Ethnicity
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
@@ -152,7 +152,7 @@ public class GenericDemographicsPanel extends Panel {
 
 
         // More info
-        Label nhsNumber = new Label("nhsNumber");
+        Label nhsNumber = new Label("nhsno");
 
         WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
             @Override
@@ -227,7 +227,7 @@ public class GenericDemographicsPanel extends Panel {
         addIdForm.add(addIdValue, addIdType, addIdSubmit);
         form.add(addIdForm);
 
-        TextField hospitalNumber = new TextField("hospitalNumber");
+        TextField hospitalNumber = new TextField("hospitalnumber");
         WebMarkupContainer hospitalNumberContainer = new WebMarkupContainer("hospitalNumberContainer") {
             @Override
             public boolean isVisible() {
@@ -242,7 +242,7 @@ public class GenericDemographicsPanel extends Panel {
 
         hospitalNumberContainer.add(hospitalNumber);
 
-        TextField renalRegistryNumber = new TextField("renalRegistryNumber");
+        TextField renalRegistryNumber = new TextField("rrNo");
         WebMarkupContainer renalRegistryNumberContainer = new WebMarkupContainer("renalRegistryNumberContainer") {
             @Override
             public boolean isVisible() {
@@ -256,7 +256,7 @@ public class GenericDemographicsPanel extends Panel {
         };
         renalRegistryNumberContainer.add(renalRegistryNumber);
 
-        TextField ukTransplantNumber = new TextField("ukTransplantNumber");
+        TextField ukTransplantNumber = new TextField("uktNo");
 
         WebMarkupContainer ukTransplantNumberContainer = new WebMarkupContainer("ukTransplantNumberContainer") {
             @Override
@@ -397,8 +397,8 @@ public class GenericDemographicsPanel extends Panel {
 
         // add generic fields
         TextField emailAddress = new TextField("emailAddress");
-        TextField phone1 = new TextField("phone1");
-        TextField phone2 = new TextField("phone2");
+        TextField phone1 = new TextField("telephone1");
+        TextField phone2 = new TextField("telephone2");
 
         RadarTextFieldWithValidation mobile = new RadarTextFieldWithValidation("mobile",
                 new PatternValidator(MetaPattern.DIGITS), form,

@@ -126,7 +126,7 @@ public class Patient extends BaseModel {
     private String uktNo;
 
     @Column
-    private String snameAlias;
+    private String surnameAlias;
 
     @Column
     private Integer age;
@@ -200,9 +200,11 @@ public class Patient extends BaseModel {
 
     private RRTModality rrtModalityEunm;
 
+    private Date dob;
+
     private Status statusModel;
 
-    private Date dob;
+
 
     public enum RRTModality {
         HD(1),
@@ -713,12 +715,12 @@ public class Patient extends BaseModel {
         this.uktNo = uktNo;
     }
 
-    public String getSnameAlias() {
-        return snameAlias;
+    public String getSurnameAlias() {
+        return surnameAlias;
     }
 
-    public void setSnameAlias(String snameAlias) {
-        this.snameAlias = snameAlias;
+    public void setSurnameAlias(String snameAlias) {
+        this.surnameAlias = snameAlias;
     }
 
     public String getEthnicGp() {
@@ -798,7 +800,7 @@ public class Patient extends BaseModel {
     }
 
     public void setDob(Date dob) {
-        dob = dob;
+        this.dob = dob;
     }
 }
 

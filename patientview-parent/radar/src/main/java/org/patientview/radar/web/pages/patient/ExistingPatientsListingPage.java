@@ -78,13 +78,13 @@ public class ExistingPatientsListingPage extends BasePage {
                 }
 
                 item.add(new Label("surname"), new Label("forename"));
-                item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN2));
+                item.add(DateLabel.forDatePattern("dob", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("id"));
                 item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(patient)));
 
                 item.add(new Label("nhsNumber", patient.getNhsno()));
-                item.add(new Label("hospitalNumber"));
-                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
+                item.add(new Label("hospitalnumber"));
+                item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
                 item.add(new Label("renalUnit.name"));
             }

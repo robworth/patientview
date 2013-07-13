@@ -83,7 +83,7 @@ public class AddPatientPage extends BasePage {
                 // just show the user one error at a time
 
                 DemographicsFilter demographicsFilter = new DemographicsFilter();
-                demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHS_NO.toString(),
+                demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
                         model.getPatientId());
 
                 // check nhs number is valid
