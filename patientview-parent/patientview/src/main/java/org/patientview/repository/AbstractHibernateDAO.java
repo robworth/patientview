@@ -23,6 +23,9 @@
 
 package org.patientview.repository;
 
+import org.patientview.model.BaseModel;
+import org.patientview.utils.XssUtils;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
