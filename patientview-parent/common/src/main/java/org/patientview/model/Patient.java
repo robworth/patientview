@@ -182,26 +182,37 @@ public class Patient extends BaseModel {
     @Column
     private Date dateOfGenericDiagnosis;
 
+    @Transient
     private Clinician clinician;
 
+    @Transient
     private Centre renalUnit;
 
+    @Transient
     private GenericDiagnosis genericDiagnosisModel;
 
+    @Transient
     private Sex sexModel;
 
+    @Transient
     private Centre renalUnitAuthorised;
 
+    @Transient
     private Ethnicity ethnicity;
 
+    @Transient
     private NhsNumberType nhsNumberType;
 
+    @Transient
     private DiseaseGroup diseaseGroup;
 
+    @Transient
     private RRTModality rrtModalityEunm;
 
+    @Transient
     private Date dob;
 
+    @Transient
     private Status statusModel;
 
 

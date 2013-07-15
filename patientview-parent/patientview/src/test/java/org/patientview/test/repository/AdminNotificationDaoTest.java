@@ -44,7 +44,9 @@ public class AdminNotificationDaoTest extends BaseDaoTest {
         List<AdminNotification> adminNotifications = adminNotificationDao.getAll();
 
         assertNotNull(adminNotifications);
-        assertTrue(adminNotifications.size() > 0);
+        System.out.println("adminNotifications.size" + adminNotifications.size());
+        System.out.println(adminNotifications.size() > 0);
+        assertTrue("Wrong size of AdminNotification", adminNotifications.size() == 0);
     }
 
     @Test
@@ -52,7 +54,7 @@ public class AdminNotificationDaoTest extends BaseDaoTest {
         List<String> emails = adminNotificationDao.getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        assertTrue(emails.size() > 0);
+        assertTrue(emails.size() == 0);
     }
 
 }
