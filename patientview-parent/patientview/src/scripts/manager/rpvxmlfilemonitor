@@ -1,0 +1,1 @@
+echo $(date +"%Y-%m-%d %H:%M:%S"),$(ls -l /home/manager/proton | wc -l),$(ls -l /usr/local/etc/rpvxml | wc -l) >> /home/manager/rpvxmlnofiles

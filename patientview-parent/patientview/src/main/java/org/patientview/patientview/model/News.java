@@ -28,6 +28,7 @@ import java.util.Calendar;
 
 import org.patientview.model.BaseModel;
 import org.patientview.patientview.utils.TimestampUtils;
+import org.patientview.utils.XssUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -158,6 +159,6 @@ public class News extends BaseModel {
     }
 
     public String getBodyForHtml() {
-        return getBody().replaceAll("\r\n", "<br />");
+        return XssUtils.encodeForHTML(getBody(), new String[] {"&#xd;&#xa;" });
     }
 }

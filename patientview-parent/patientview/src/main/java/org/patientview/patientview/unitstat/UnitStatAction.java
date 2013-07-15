@@ -95,6 +95,7 @@ public class UnitStatAction extends Action {
         statsHeadings.add(new StatsHeading(AddLog.PASSWORD_LOCKED));
         statsHeadings.add(new StatsHeading(AddLog.PASSWORD_UNLOCKED));
         statsHeadings.add(new StatsHeading(AddLog.PATIENT_DATA_REMOVE));
+        statsHeadings.add(new StatsHeading(AddLog.PATIENT_DELETE));
         return statsHeadings;
     }
 

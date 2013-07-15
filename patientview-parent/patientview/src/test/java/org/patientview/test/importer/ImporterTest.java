@@ -36,6 +36,7 @@ import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
 import org.patientview.service.CentreManager;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.ImportManager;
@@ -48,7 +49,9 @@ import org.patientview.service.TimeManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
+import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
+import org.patientview.test.helpers.impl.TestableResultsUpdater;
 import org.patientview.test.service.BaseServiceTest;
 import org.patientview.utils.LegacySpringUtils;
 import org.junit.Before;
@@ -110,6 +113,9 @@ public class ImporterTest extends BaseServiceTest {
     private ServiceHelpers serviceHelpers;
 
     @Inject
+    private SecurityHelpers securityHelpers;
+
+    @Inject
     private LogEntryManager logEntryManager;
 
     @Before
@@ -128,6 +134,10 @@ public class ImporterTest extends BaseServiceTest {
         mockSpecialty = serviceHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
 
         mockUnit.setSpecialty(mockSpecialty);
+
+        User adminUser = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User");
+        serviceHelpers.createSpecialtyUserRole(mockSpecialty, adminUser, "unitadmin");
+        securityHelpers.loginAsUser(adminUser.getUsername(), mockSpecialty);
 
         unitManager.save(mockUnit);
     }

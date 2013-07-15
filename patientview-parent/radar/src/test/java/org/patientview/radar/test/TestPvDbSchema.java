@@ -1,17 +1,15 @@
 package org.patientview.radar.test;
 
-import org.patientview.test.BaseTestPvDbSchema;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.patientview.common.test.BaseTestPvDbSchema;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-
-import static org.junit.Assert.assertTrue;
 
 public class TestPvDbSchema extends BaseTestPvDbSchema {
 
@@ -27,22 +25,26 @@ public class TestPvDbSchema extends BaseTestPvDbSchema {
     }
 
     private void populateData() throws Exception {
-        // Once we've got the tables created populate them with data - clean insert will delete all data first
-        DatabaseDataSourceConnection databaseDataSourceConnection = new DatabaseDataSourceConnection(dataSource);
 
-        // Set the database factory as in http://www.dbunit.org/faq.html#DefaultDataTypeFactory
-        DatabaseConfig config = databaseDataSourceConnection.getConfig();
+        // skip db stuff of
+        if (!isLocalTestEnvironment()) {
+            // Once we've got the tables created populate them with data - clean insert will delete all data first
+            DatabaseDataSourceConnection databaseDataSourceConnection = new DatabaseDataSourceConnection(dataSource);
 
-        config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
-        config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, "`?`");
+            // Set the database factory as in http://www.dbunit.org/faq.html#DefaultDataTypeFactory
+            DatabaseConfig config = databaseDataSourceConnection.getConfig();
 
-        // Construct dataset
-        XmlDataSet dataSet = new XmlDataSet(readFileFromClasspath("dataset.xml"));
+            config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
+            config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, "`?`");
 
-        // Insert, cleanly (remove everything first)
-        DatabaseOperation.CLEAN_INSERT.execute(databaseDataSourceConnection, dataSet);
+            // Construct dataset
+            XmlDataSet dataSet = new XmlDataSet(readFileFromClasspath("dataset.xml"));
 
-        // Have to close the database connection
-        databaseDataSourceConnection.close();
+            // Insert, cleanly (remove everything first)
+            DatabaseOperation.CLEAN_INSERT.execute(databaseDataSourceConnection, dataSet);
+
+            // Have to close the database connection
+            databaseDataSourceConnection.close();
+        }
     }
 }

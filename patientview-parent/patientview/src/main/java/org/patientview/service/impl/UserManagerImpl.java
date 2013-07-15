@@ -373,47 +373,6 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public void incrementFailedLogins(String username) {
-        User user = userDao.get(username);
-
-        if (user != null) {
-            user.setFailedlogons(user.getFailedlogons() + 1);
-            userDao.save(user);
-        }
-    }
-
-    @Override
-     public int getFailedLogins(String username) {
-         User user = userDao.get(username);
-
-         if (user != null) {
-             return user.getFailedlogons();
-         }
-
-         return 0;
-     }
-
-    @Override
-     public void lockUserAccount(String username) {
-        User user = userDao.get(username);
-
-        if (user != null) {
-            user.setAccountlocked(true);
-            userDao.save(user);
-        }
-     }
-
-    @Override
-    public void resetFailedLoginsForUser(String username) {
-        User user = userDao.get(username);
-
-        if (user != null) {
-            user.setFailedlogons(0);
-            userDao.save(user);
-        }
-    }
-
-    @Override
     public boolean userExistsInRadar(Long userId) {
         return radarDao.userExistsInRadar(userId);
     }
@@ -435,9 +394,4 @@ public class UserManagerImpl implements UserManager {
         radarDao.removeUserFromRadar(userId);
     }
 
-    @Override
-    public List<User> getUsers(User user, Specialty specialty, String userType, Unit unit) {
-
-        return userDao.get(user, specialty, userType, unit);
-    }
 }

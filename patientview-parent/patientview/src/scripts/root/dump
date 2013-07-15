@@ -1,0 +1,8 @@
+# Add the dbuser and dbpw
+
+echo "SET FOREIGN_KEY_CHECKS=0;" 1>$2
+echo "SET AUTOCOMMIT=0;" 1>>$2
+mysqldump -u -p -h127.0.0.1 -Q --add-drop-table --single-transaction $1 >> $2
+echo "SET AUTOCOMMIT=1;" 1>>$2
+echo "SET FOREIGN_KEY_CHECKS=1;" 1>>$2
+

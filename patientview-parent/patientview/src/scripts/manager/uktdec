@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# /home/manager/scripts/fd contains the key password
+
+if [ -e /home/ukt/incoming/UKTSTATUS.txt.pgp ]
+then
+      rm -f /home/manager/ukt/.import/uktstatus.gpg.txt
+      gpgwrap -v -p /home/manager/scripts/fd gpg --batch --decrypt -q /home/ukt/incoming/UKTSTATUS.txt.pgp > /home/manager/ukt/.import/uktstatus.gpg.txt
+      mv /home/ukt/incoming/UKTSTATUS.txt.pgp /home/manager/ukt/.import/UKTSTATUS.txt.gpg.`date +%Y-%m-%d-%k%M`
+fi

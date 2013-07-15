@@ -27,6 +27,7 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.security.model.SecurityUser;
+import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.security.core.Authentication;
@@ -41,24 +42,25 @@ import java.util.List;
 
 /**
  * Hook login/auth success to implement what was in the LockOutRealm - failed login lockouts
- * <p/>
- * todo move this sql to a proper dao managed by spring jdbc template
  */
 public class PatientViewAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Inject
     private UserManager userManager;
 
+    @Inject
+    private SecurityUserManager securityUserManager;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-        LegacySpringUtils.getUserManager().resetFailedLoginsForUser(securityUser.getUsername());
+        LegacySpringUtils.getSecurityUserManager().resetFailedLoginsForUser(securityUser.getUsername());
 
         // remove the account locked token from the session, we don't get any incorrect login error messages
         request.getSession().setAttribute(PatientViewAuthenticationFailureHandler.ACCOUNT_LOCKED_SESSION_TOKEN, null);
 
-        User user = userManager.get(securityUser.getUsername());
+        User user = securityUserManager.get(securityUser.getUsername());
 
         List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);
 
