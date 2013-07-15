@@ -532,6 +532,20 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return jdbcTemplate.queryForInt(sql, nhsno) > 0;
     }
 
+    public boolean userExistsInPatientView(String nhsno, String unitcode) {
+
+        if (nhsno == null || nhsno.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: nhsno");
+        }
+
+        if (unitcode == null || unitcode.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: unitcode");
+        }
+
+        String sql = "SELECT COUNT(*) FROM usermapping WHERE nhsno = ? AND unitcode = ?";
+        return jdbcTemplate.queryForInt(sql, nhsno, unitcode) > 0;
+    }
+
     public void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                       String rpvRole) throws Exception {
         createUserMappingInPatientView(username, nhsno, unitcode);

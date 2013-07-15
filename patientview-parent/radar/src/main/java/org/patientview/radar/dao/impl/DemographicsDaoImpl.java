@@ -7,6 +7,7 @@ import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UtilityDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
 import org.patientview.model.Patient;
@@ -39,6 +40,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
+    private UserDao userDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -115,7 +117,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getForename(),
                     new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()),
                     patient.getAge(),
-                    patient.getSexModel() != null ? patient.getSexModel().getId() : null,
+                    patient.getSexModel() != null ? patient.getSexModel().getType() : null,
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
                     patient.getAddress1(),
                     patient.getAddress2(),
@@ -126,17 +128,17 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.isConsent(),
                     patient.getDateReg(),
                     patient.getClinician() != null ? patient.getClinician().getId() : null,
-                    patient.getRenalUnit() != null ? patient.getRenalUnit().getUnitCode() : null,
+                    patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null,
 //                    patient.getRenalUnitAuthorised() != null ?
 //                            patient.getRenalUnitAuthorised().getId() : null,
-                    patient.getStatus() != null ? patient.getStatusModel().getId() : null,
+                    patient.getStatusModel() != null ? patient.getStatusModel().getId() : null,
 //                    patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null,
                     patient.getEmailAddress(),
                     patient.getTelephone1(),
                     patient.getTelephone2(),
                     patient.getMobile(),
-                    patient.getRrtModality() != null ? patient.getRrtModalityEunm().getId() : null,
-                    patient.getGenericDiagnosis() != null ? patient.getGenericDiagnosisModel().getId() : null,
+                    patient.getRrtModalityEunm() != null ? patient.getRrtModalityEunm().getId() : null,
+                    patient.getGenericDiagnosisModel() != null ? patient.getGenericDiagnosisModel().getId() : null,
                     patient.getDateOfGenericDiagnosis(),
                     patient.getOtherClinicianAndContactInfo(),
                     patient.getComments(),
@@ -162,7 +164,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             new SimpleDateFormat(DATE_FORMAT).format(
                                     patient.getDob()) : null);
                     put("AGE", patient.getAge());
-                    put("SEX", patient.getSexModel() != null ? patient.getSexModel().getId() : null);
+                    put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
                     put("ethnicGp",
                             patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null);
                     put("address1", patient.getAddress1());
@@ -178,15 +180,15 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("unitcode", patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null);
 //                    put("RENAL_UNIT_2", patient.getRenalUnitAuthorised() != null ?
 //                            patient.getRenalUnitAuthorised().getId() : null);
-                    put("STATUS", patient.getStatus() != null ? patient.getStatusModel().getId() : null);
+                    put("STATUS", patient.getStatusModel() != null ? patient.getStatusModel().getId() : null);
 //                    put("RDG", patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null);
                     put("emailAddress", patient.getEmailAddress());
                     put("telephone1", patient.getTelephone1());
                     put("telephone2", patient.getTelephone2());
                     put("mobile", patient.getMobile());
-                    put("rrtModality", patient.getRrtModality() != null ? patient.getRrtModalityEunm().getId()
+                    put("rrtModality", patient.getRrtModalityEunm() != null ? patient.getRrtModalityEunm().getId()
                             : null);
-                    put("genericDiagnosis", patient.getGenericDiagnosis() != null ?
+                    put("genericDiagnosis", patient.getGenericDiagnosisModel() != null ?
                             patient.getGenericDiagnosisModel().getId() : null);
                     put("dateOfGenericDiagnosis", patient.getDateOfGenericDiagnosis());
                     put("otherClinicianAndContactInfo", patient.getOtherClinicianAndContactInfo());
@@ -199,6 +201,31 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 }
             });
             patient.setId(id.longValue());
+
+            jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
+
+
+
+            try {
+                // renal_unit
+                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
+                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                            patient.getNhsno(), patient.getRenalUnit().getUnitCode());
+                } else if (patient.getRenalUnitAuthorised() != null
+                        && !userDao.userExistsInPatientView(patient.getNhsno()
+                        , patient.getRenalUnitAuthorised().getUnitCode())) {
+
+                    // renal_unit_2
+                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                            patient.getNhsno(), patient.getRenalUnitAuthorised().getUnitCode());
+                }
+
+                // unitcode
+                userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                            patient.getNhsno(), patient.getDiseaseGroup().getId());
+            } catch (Exception e) {
+                LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
+            }
         }
     }
 
@@ -485,5 +512,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     public void setGenericDiagnosisDao(GenericDiagnosisDaoImpl genericDiagnosisDao) {
         this.genericDiagnosisDao = genericDiagnosisDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

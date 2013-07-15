@@ -444,7 +444,7 @@ public class DemographicsPanel extends Panel {
         form.add(hospitalNumber, renalRegistryNumber, ukTransplantNumber);
 
         // Status, consultants and centres drop down boxes
-        form.add(new DropDownChoice<Status>("status", demographicsManager.getStatuses(),
+        form.add(new DropDownChoice<Status>("statusModel", demographicsManager.getStatuses(),
                 new ChoiceRenderer<Status>("abbreviation", "id")));
 
         // Consultant and renal unit

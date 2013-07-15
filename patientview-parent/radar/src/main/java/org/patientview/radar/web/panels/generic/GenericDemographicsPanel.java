@@ -405,7 +405,7 @@ public class GenericDemographicsPanel extends Panel {
                 componentsToUpdateList);
 
         RadarRequiredDropdownChoice genericDiagnosis =
-                new RadarRequiredDropdownChoice("genericDiagnosis", genericDiagnosisManager.getByDiseaseGroup(
+                new RadarRequiredDropdownChoice("genericDiagnosisModel", genericDiagnosisManager.getByDiseaseGroup(
                         patient.getDiseaseGroup()), new ChoiceRenderer("term", "id"), form,
                         componentsToUpdateList);
 
@@ -419,7 +419,7 @@ public class GenericDemographicsPanel extends Panel {
                 otherClinicianAndContactInfo, comments);
 
         RadioGroup<Patient.RRTModality> rrtModalityRadioGroup = new RadioGroup<Patient.RRTModality>(
-                "rrtModality");
+                "rrtModalityEunm");
         rrtModalityRadioGroup.add(new Radio("hd", new Model(Patient.RRTModality.HD)));
         rrtModalityRadioGroup.add(new Radio("pd", new Model(Patient.RRTModality.PD)));
         rrtModalityRadioGroup.add(new Radio("tx", new Model(Patient.RRTModality.Tx)));
