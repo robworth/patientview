@@ -13,9 +13,9 @@ public class CentreDropDown extends DropDownChoice<Centre> {
     @SpringBean
     private UtilityManager utilityManager;
 
-    public CentreDropDown(String id) {
+    public CentreDropDown(String id, String nhsNo) {
         super(id);
-        setChoices(utilityManager.getCentres());
+        setChoices(utilityManager.getCentres(nhsNo));
         setChoiceRenderer(new ChoiceRenderer<Centre>("abbreviation", "id"));
     }
 

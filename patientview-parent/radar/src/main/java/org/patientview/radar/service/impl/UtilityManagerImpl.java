@@ -60,6 +60,10 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getCentres();
     }
 
+    public List<Centre> getCentres(String nhsNo) {
+        return utilityDao.getCentres(nhsNo);
+    }
+
     public Consultant getConsultant(long id) {
         return utilityDao.getConsultant(id);
     }

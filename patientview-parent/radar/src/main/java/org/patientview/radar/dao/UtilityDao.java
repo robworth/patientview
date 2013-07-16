@@ -50,4 +50,6 @@ public interface UtilityDao {
 
     Centre getCentre(String unitCode);
 
+    List<Centre> getCentres(String nhsNo);
+
 }

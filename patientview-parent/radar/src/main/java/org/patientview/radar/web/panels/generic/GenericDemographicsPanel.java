@@ -365,7 +365,7 @@ public class GenericDemographicsPanel extends Panel {
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
         if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit = new CentreDropDown("renalUnit");
+            renalUnit = new CentreDropDown("renalUnit", patient.getNhsno());
 
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override

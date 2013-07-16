@@ -48,6 +48,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 new CentreRowMapper());
     }
 
+    public List<Centre> getCentres(String nhsNo) {
+        return jdbcTemplate.query("SELECT DISTINCT u.* " +
+                " FROM usermapping um, unit u " +
+                "WHERE um.unitcode = u.unitcode " +
+                "  AND u.sourceType = ?  " +
+                "  AND um.nhsno = ?  " +
+                "  AND um.username NOT LIKE '%-GP%'", new Object[]{"renalunit", nhsNo},
+                new CentreRowMapper());
+    }
+
     public Consultant getConsultant(long id) {
         return jdbcTemplate.queryForObject("SELECT * FROM tbl_Consultants WHERE cID = ?", new Object[]{id},
                 new ConsultantRowMapper());
@@ -165,10 +175,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
-        List<PatientCountItem> patientCountList = jdbcTemplate.query("SELECT COUNT(*) as \"count\", unitcode " +
-                "FROM patient demographics INNER JOIN tbl_diagnosis diagnosis ON demographics.radarNo = " +
-                "diagnosis.RADAR_NO WHERE diag = ? " +
-                "GROUP BY unitcode;", new Object[]{diagnosisCode.getId()},
+        List<PatientCountItem> patientCountList = jdbcTemplate.query(
+                "SELECT COUNT(*) as \"count\", u.id as \"unitcode\" " +
+                "FROM patient p " +
+                "INNER JOIN tbl_diagnosis diagnosis ON p.radarNo = diagnosis.RADAR_NO " +
+                "INNER JOIN usermapping um on p.nhsno = um.nhsno " +
+                "INNER JOIN unit u ON um.unitcode = u.unitcode " +
+                "WHERE diag = ? " +
+                "   AND u.sourceType = ? " +
+                "   AND um.username NOT LIKE '%-GP%' " +
+                "GROUP BY u.id;", new Object[]{diagnosisCode.getId(), "renalunit"},
                 new PatientCountByUnitRowMapper());
 
         Map<Long, Integer> patientCountMap = new HashMap<Long, Integer>();

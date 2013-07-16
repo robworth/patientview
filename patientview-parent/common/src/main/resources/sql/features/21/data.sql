@@ -51,30 +51,6 @@ SET p.sex =
   );
 
 /**
-    Insert data into usermapping with non null value in RENAL_UNIT_2 field of tbl_demograpics
- */
-
-INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
-SELECT CONCAT(d.fname, d.sname) AS username,
-  ( SELECT u.unitcode
-      FROM unit u
-     WHERE u.id = d.renal_unit_2 ) AS unitcode,
-  d.nhs_no AS nhsno,
-  ( SELECT DISTINCT um.specialty_id
-      FROM usermapping um
-     WHERE um.nhsno = d.nhs_no
-       AND um.username NOT LIKE '%-GP%'
-  ) AS specialty_id
-FROM tbl_demographics d
-WHERE d.renal_unit_2 IS NOT NULL
-  AND NOT EXISTS (
-                      SELECT d.*
-                        FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.renal_unit = u.id, usermapping ump
-                        WHERE d.nhs_no = ump.nhsno
-                          AND u.unitcode = ump.unitcode
-                    );
-
-/**
     Insert into usermapping with tbl_demographics nhs_no and RDG fields
  */
 INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)

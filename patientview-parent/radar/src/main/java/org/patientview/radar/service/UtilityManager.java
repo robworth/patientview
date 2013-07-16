@@ -56,4 +56,6 @@ public interface UtilityManager {
     JFreeChart getPatientCountPerUnitChart();
 
     List<Clinician> getCliniciansByCentre(Centre centre);
+
+    List<Centre> getCentres(String nhsNo);
 }

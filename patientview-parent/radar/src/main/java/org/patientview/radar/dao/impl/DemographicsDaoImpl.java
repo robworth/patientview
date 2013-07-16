@@ -204,25 +204,17 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
 
-
-
             try {
                 // renal_unit
                 if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
                     userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
                             patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-                } else if (patient.getRenalUnitAuthorised() != null
-                        && !userDao.userExistsInPatientView(patient.getNhsno()
-                        , patient.getRenalUnitAuthorised().getUnitCode())) {
-
-                    // renal_unit_2
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getRenalUnitAuthorised().getUnitCode());
                 }
-
                 // unitcode
-                userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
+                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
                             patient.getNhsno(), patient.getDiseaseGroup().getId());
+                }
             } catch (Exception e) {
                 LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
             }

@@ -460,7 +460,7 @@ public class DemographicsPanel extends Panel {
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
         if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit = new CentreDropDown("renalUnit");
+            renalUnit = new CentreDropDown("renalUnit", model.getObject().getNhsno());
 
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override
@@ -486,8 +486,9 @@ public class DemographicsPanel extends Panel {
         form.add(renalUnit);
 
         CheckBox consent = new CheckBox("consent");
-        DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
-        form.add(consent, renalUnitAuthorised);
+//        DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
+//        form.add(consent, renalUnitAuthorised);
+        form.add(consent);
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
 
