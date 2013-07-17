@@ -52,4 +52,6 @@ public interface UtilityDao {
 
     List<Centre> getCentres(String nhsNo);
 
+    String getUserName(String nhsNo);
+
 }

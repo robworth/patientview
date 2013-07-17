@@ -81,6 +81,7 @@
         <property name="utilityDao" ref="utilityDao"/>
         <property name="siteUrl" value="${config.site.url}"/>
         <property name="patientViewSiteUrl" value="${config.patientview.site.url}"/>
+        <property name="patientViewSiteResultsUrl" value="${config.patientview.site.resutls.url}"/>
     </bean>
 
     <bean id="emailManager" class="org.patientview.radar.service.impl.EmailManagerImpl">

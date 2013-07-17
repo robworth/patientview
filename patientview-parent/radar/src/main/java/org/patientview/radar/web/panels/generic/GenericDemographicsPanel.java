@@ -45,6 +45,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +92,23 @@ public class GenericDemographicsPanel extends Panel {
         // add form
         final IModel<Patient> model = new Model(patient);
 
+        // no exist data in patient table, then use the user name to populate.
+        if (patient.getSurname() == null || patient.getForename() == null) {
+
+            String name = utilityManager.getUserName(patient.getNhsno());
+            if (name != null && !"".equals(name)) {
+                // split the user name with a space
+                String[] names = name.split(" ");
+                if (names != null && names.length >= 2) {
+                    patient.setForename(name.substring(0,
+                            name.indexOf(names[names.length - 1])));
+                    patient.setSurname(names[names.length - 1]);
+
+                } else {
+                    patient.setForename(name);
+                }
+            }
+        }
 
         Form<Patient> form = new Form<Patient>("form", new CompoundPropertyModel(model)) {
             @Override

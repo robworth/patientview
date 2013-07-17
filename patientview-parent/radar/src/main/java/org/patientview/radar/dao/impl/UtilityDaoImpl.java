@@ -333,6 +333,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
     }
 
+    public String getUserName(String nhsNo) {
+        return jdbcTemplate
+                .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
+                        "WHERE u.username = um.username " +
+                        "AND um.nhsno = ? " +
+                        "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+    }
+
     private class ClinicianRowMapper implements RowMapper<Clinician> {
         public Clinician mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a relative object and set all the fields

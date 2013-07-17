@@ -36,6 +36,8 @@ public class UtilityManagerImpl implements UtilityManager {
 
     private String patientViewSiteUrl;
 
+    private String patientViewSiteResultsUrl;
+
     public String getSiteUrl() {
         return siteUrl;
     }
@@ -46,6 +48,14 @@ public class UtilityManagerImpl implements UtilityManager {
 
     public void setPatientViewSiteUrl(String patientViewSiteUrl) {
         this.patientViewSiteUrl = patientViewSiteUrl;
+    }
+
+    public String getPatientViewSiteResultsUrl() {
+        return patientViewSiteResultsUrl;
+    }
+
+    public void setPatientViewSiteResultsUrl(String patientViewSiteResultsUrl) {
+        this.patientViewSiteResultsUrl = patientViewSiteResultsUrl;
     }
 
     public void setSiteUrl(String siteUrl) {
@@ -212,6 +222,10 @@ public class UtilityManagerImpl implements UtilityManager {
         // OPTIONAL CUSTOMISATION COMPLETED.
 
         return chart;
+    }
+
+    public String getUserName(String nhsNo) {
+        return utilityDao.getUserName(nhsNo);
     }
 
     public List<Clinician> getCliniciansByCentre(Centre centre) {

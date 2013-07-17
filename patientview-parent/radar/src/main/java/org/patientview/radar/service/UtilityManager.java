@@ -19,6 +19,8 @@ public interface UtilityManager {
 
     String getPatientViewSiteUrl();
 
+    String getPatientViewSiteResultsUrl();
+
     Centre getCentre(long id);
 
     List<Centre> getCentres();
@@ -58,4 +60,6 @@ public interface UtilityManager {
     List<Clinician> getCliniciansByCentre(Centre centre);
 
     List<Centre> getCentres(String nhsNo);
+
+    String getUserName(String nhsNo);
 }

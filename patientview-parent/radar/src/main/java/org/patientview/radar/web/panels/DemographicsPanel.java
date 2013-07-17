@@ -139,6 +139,21 @@ public class DemographicsPanel extends Panel {
                                     patientModelObject.setRenalUnit(
                                             utilityManager.getCentre(idValue.toLongObject()));
                                 }
+
+                                // no exist data in patient table, then use the user name to populate.
+                                String name = utilityManager.getUserName(patientModelObject.getNhsno());
+                                if (name != null && !"".equals(name)) {
+                                    // split the user name with a space
+                                    String[] names = name.split(" ");
+                                    if (names != null && names.length >= 2) {
+                                        patientModelObject.setForename(name.substring(0,
+                                                name.indexOf(names[names.length - 1])));
+                                        patientModelObject.setSurname(names[names.length - 1]);
+
+                                    } else {
+                                        patientModelObject.setForename(name);
+                                    }
+                                }
                             }
                         }
 
