@@ -90,9 +90,9 @@ public class AddPatientPage extends BasePage {
                 if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     error(NHS_NUMBER_INVALID_MSG);
 
-                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
-                    // check that this nhsno does not already exist in the radar system
-                    error("A patient with this NHS or CHI number already exists");
+//                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
+//                    // check that this nhsno does not already exist in the radar system
+//                    error("A patient with this NHS or CHI number already exists");
 
                 } else if (!userManager.userExistsInPatientView(model.getPatientId())) {
                     // If nhsno is not already in patient view inform user they need to add the patient using the
