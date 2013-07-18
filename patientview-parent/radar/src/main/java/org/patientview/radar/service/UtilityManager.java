@@ -62,4 +62,6 @@ public interface UtilityManager {
     List<Centre> getCentres(String nhsNo);
 
     String getUserName(String nhsNo);
+
+    void generateUserWithUsermapping();
 }

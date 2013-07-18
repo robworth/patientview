@@ -62,6 +62,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_EMAIL_FIELD_NAME = "email";
     private static final String USER_NAME_FIELD_NAME = "name";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
+    private static final String USER_IS_CLINICIAN_FIELD_NAME = "isClinician";
 
     // admin user fields
     private static final String ADMIN_USER_ID_FIELD_NAME = "uID";
@@ -100,7 +101,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME);
+                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
+                        USER_IS_CLINICIAN_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
@@ -419,6 +421,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, name);
         userMap.put(USER_EMAIL_FIELD_NAME, email);
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, true);
 
         userInsert.executeAndReturnKey(userMap);
 
