@@ -45,7 +45,7 @@
                 %>
                 <li class="pull-right "><div class="navText">logged in as: <b><%= LegacySpringUtils.getSecurityUserManager().getLoggedInUsername()%></b></div>
                 <logic:present role="superadmin,unitadmin,unitstaff">
-                <li><html:link forward="controlPasswordChangeInput">Change password</html:link></li>
+                <li><html:link forward="controlAccountUpdateInput">Account</html:link></li>
                 </logic:present>
                 <li><html:link action="logout">Logout</html:link></li>
                 <jsp:include page="../include/specialty_switcher.jsp"/>
