@@ -153,7 +153,7 @@
                 <msg key="emailAddressAgain.match" name="validwhen"/>
                 <var>
                     <var-name>test</var-name>
-                    <var-value>(*this* == emailAddressAgain)</var-value>
+                    <var-value>(*this* == emailAddress)</var-value>
                 </var>
             </field>
         </form>
@@ -169,7 +169,7 @@
                 <msg key="emailAddressAgain.match" name="validwhen"/>
                 <var>
                     <var-name>test</var-name>
-                    <var-value>(*this* == emailAddressAgain)</var-value>
+                    <var-value>(*this* == emailAddress)</var-value>
                 </var>
             </field>
         </form>
