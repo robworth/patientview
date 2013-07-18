@@ -26,4 +26,6 @@ public interface DemographicsDao {
 
     List<Status> getStatuses();
 
+    Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode);
+
 }

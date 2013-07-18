@@ -71,13 +71,19 @@ public class AlportPatientPage extends BasePage {
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
     public AlportPatientPage(AddPatientModel patientModel) {
-        // set the nhs id or chi id based on model
-        patient = new Patient();
-        patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-        patient.setRenalUnit(patientModel.getCentre());
 
-        patient.setNhsno(patientModel.getPatientId());
-        patient.setNhsNumberType(patientModel.getNhsNumberType());
+        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
+                patientModel.getDiseaseGroup().getId());
+
+        // set the nhs id or chi id based on model
+        if (patient == null) {
+            patient = new Patient();
+            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+            patient.setRenalUnit(patientModel.getCentre());
+
+            patient.setNhsno(patientModel.getPatientId());
+            patient.setNhsNumberType(patientModel.getNhsNumberType());
+        }
 
         init(patient);
     }

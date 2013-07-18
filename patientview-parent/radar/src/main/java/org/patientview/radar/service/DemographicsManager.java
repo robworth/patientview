@@ -33,4 +33,6 @@ public interface DemographicsManager {
     boolean isNhsNumberValid(String nhsNumber);
 
     boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber);
+
+    Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode);
 }

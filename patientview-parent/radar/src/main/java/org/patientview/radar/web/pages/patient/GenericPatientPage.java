@@ -46,12 +46,17 @@ public class GenericPatientPage extends BasePage {
         // this constructor is used when adding a new patient
         super();
 
+        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
+                patientModel.getDiseaseGroup().getId());
+
+        if (patient == null) {
+            patient = new Patient();
+            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+            patient.setRenalUnit(patientModel.getCentre());
+            patient.setNhsno(patientModel.getPatientId());
+            patient.setNhsNumberType(patientModel.getNhsNumberType());
+        }
         // set the nhs id or chi id based on model
-        patient = new Patient();
-        patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-        patient.setRenalUnit(patientModel.getCentre());
-        patient.setNhsno(patientModel.getPatientId());
-        patient.setNhsNumberType(patientModel.getNhsNumberType());
 
         init(patient);
     }
@@ -152,17 +157,17 @@ public class GenericPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-//            if (patient.hasValidId()) {
-            GenericPatientPage.this.currentTab = tab;
-            // Add the links container to update hover class
-            target.add(linksContainer);
-            target.add(genericDemographicsPanel, medicalResultsPanel);
+            if (patient.hasValidId()) {
+                GenericPatientPage.this.currentTab = tab;
+                // Add the links container to update hover class
+                target.add(linksContainer);
+                target.add(genericDemographicsPanel, medicalResultsPanel);
 
-            Component pageNumber = getPage().get("pageNumber");
-            IModel pageNumberModel = pageNumber.getDefaultModel();
-            pageNumberModel.setObject(GenericPatientPage.this.currentTab.getPageNumber());
-            target.add(pageNumber);
-//            }
+                Component pageNumber = getPage().get("pageNumber");
+                IModel pageNumberModel = pageNumber.getDefaultModel();
+                pageNumberModel.setObject(GenericPatientPage.this.currentTab.getPageNumber());
+                target.add(pageNumber);
+            }
         }
 
         @Override

@@ -65,12 +65,18 @@ public class HNF1BPatientPage extends BasePage {
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
     public HNF1BPatientPage(AddPatientModel patientModel) {
+
+        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
+                patientModel.getDiseaseGroup().getId());
+
         // set the nhs id or chi id based on model
-        patient = new Patient();
-        patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-        patient.setRenalUnit(patientModel.getCentre());
-        patient.setNhsno(patientModel.getPatientId());
-        patient.setNhsNumberType(patientModel.getNhsNumberType());
+        if (patient == null) {
+            patient = new Patient();
+            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+            patient.setRenalUnit(patientModel.getCentre());
+            patient.setNhsno(patientModel.getPatientId());
+            patient.setNhsNumberType(patientModel.getNhsNumberType());
+        }
 
         init(patient);
     }

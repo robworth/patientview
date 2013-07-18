@@ -23,6 +23,10 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getDemographicsByRadarNumber(radarNumber);
     }
 
+    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
+        return demographicsDao.getDemographicsByNhsNoAndUnitCode(nhsNo, unitCode);
+    }
+
     public List<Patient> getDemographicsByRenalUnit(Centre centre) {
         return demographicsDao.getDemographicsByRenalUnit(centre);
     }

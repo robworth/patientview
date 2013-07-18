@@ -231,6 +231,16 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         }
     }
 
+    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM patient WHERE nhsno = ? AND unitcode = ? ",
+                    new Object[]{nhsNo, unitCode}, new DemographicsRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No demographic record found for radar number {}", nhsNo);
+            return null;
+        }
+    }
+
     public List<Patient> getDemographicsByRenalUnit(Centre centre) {
         return jdbcTemplate.query("SELECT pa.* " +
                 "FROM " +

@@ -108,6 +108,10 @@ public class DemographicsPanel extends Panel {
                                 radarNumber = Long.parseLong((String) obj);
                             }
                             patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                        } else {
+                            patientModelObject = demographicsManager.getDemographicsByNhsNoAndUnitCode(
+                                    pageParameters.get("idVal").toString(),
+                                    pageParameters.get("diseaseGroupId").toString());
                         }
 
                         if (patientModelObject == null) {
