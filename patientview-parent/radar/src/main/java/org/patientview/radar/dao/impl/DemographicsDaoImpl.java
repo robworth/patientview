@@ -464,6 +464,11 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             patient.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));
+            if (patient.getDateOfGenericDiagnosis() == null) {
+                patient.setDiagnosisDateSelect(true);
+            } else {
+                patient.setDiagnosisDateSelect(false);
+            }
             patient.setOtherClinicianAndContactInfo(resultSet.getString("otherClinicianAndContactInfo"));
             patient.setComments(resultSet.getString("comments")); //comments,
             patient.setRepublicOfIrelandId(resultSet.getString("republicOfIrelandId"));

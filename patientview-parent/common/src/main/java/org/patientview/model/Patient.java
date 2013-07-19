@@ -215,7 +215,8 @@ public class Patient extends BaseModel {
     @Transient
     private Status statusModel;
 
-
+    @Transient
+    private Boolean diagnosisDateSelect;
 
     public enum RRTModality {
         HD(1),
@@ -812,6 +813,14 @@ public class Patient extends BaseModel {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public Boolean getDiagnosisDateSelect() {
+        return diagnosisDateSelect;
+    }
+
+    public void setDiagnosisDateSelect(Boolean diagnosisDateSelect) {
+        this.diagnosisDateSelect = diagnosisDateSelect;
     }
 }
 

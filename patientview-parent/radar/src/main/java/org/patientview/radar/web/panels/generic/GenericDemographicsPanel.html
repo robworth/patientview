@@ -202,7 +202,8 @@
         <tr>
             <td valign="top">Date of Diagnosis <strong><span wicket:id="dateOfGenericDiagnosisFeedbackIndicator"></span></strong></td>
             <td>
-                <input wicket:id="dateOfGenericDiagnosis" type="text"/>
+                <span wicket:id="dateOfGenericDiagnosisContainer"><input wicket:id="dateOfGenericDiagnosis" type="text"/></span>
+                &nbsp;Unknown<input type="checkbox" wicket:id="diagnosisDateSelect"/>
                 <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyy. To select a different month or year in the
                 date picker, click the current month or year at the top.<br/><br/></span> </a><br />
 
@@ -220,7 +221,7 @@
             <td><textarea wicket:id="otherClinicianAndContactInfo" rows="7" cols="8"></textarea></td>
         </tr>
         <tr>
-            <td>Confirm that you have a signed consent form for RaDaR</td>
+            <td style="width: 40%">Confirm that you have a signed consent form for RaDaR</td>
             <td>
                 <input type="checkbox" wicket:id="consent"/> <a wicket:id="consentFormsLink" href="#"
                                                                 target="_blank">Consent Forms</a>

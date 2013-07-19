@@ -1,5 +1,6 @@
 package org.patientview.radar.web.panels.generic;
 
+import org.apache.wicket.MarkupContainer;
 import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
@@ -115,9 +116,14 @@ public class GenericDemographicsPanel extends Panel {
             protected void onSubmit() {
                 Patient patient = getModel().getObject();
 
+                if (patient.getDiagnosisDateSelect()) {
+                    patient.setDateOfGenericDiagnosis(null);
+                }
                 // make sure diagnosis date is after dob
-                if (patient.getDateOfGenericDiagnosis().compareTo(patient.getDob()) < 0) {
-                    get("dateOfGenericDiagnosis").error("Your diagnosis date cannot be before your date of birth");
+                if (patient.getDateOfGenericDiagnosis() != null
+                        && patient.getDateOfGenericDiagnosis().compareTo(patient.getDob()) < 0) {
+                    get("dateOfGenericDiagnosisContainer:dateOfGenericDiagnosis")
+                            .error("Your diagnosis date cannot be before your date of birth");
                 }
 
                 patient.setGeneric(true);
@@ -427,13 +433,41 @@ public class GenericDemographicsPanel extends Panel {
                         patient.getDiseaseGroup()), new ChoiceRenderer("term", "id"), form,
                         componentsToUpdateList);
 
+        final IModel<Boolean> diagnosisDateVisibility = new Model<Boolean>(false);
+        diagnosisDateVisibility.setObject(form.getModelObject().getDateOfGenericDiagnosis() == null);
+        CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect");
+        diagnosisDateSelect.add(new AjaxFormComponentUpdatingBehavior("onClick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                diagnosisDateVisibility.setObject(model.getObject().getDiagnosisDateSelect());
+                target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
+            }
+        });
+
         RadarRequiredDateTextField dateOfGenericDiagnosis = new RadarRequiredDateTextField("dateOfGenericDiagnosis",
                 form, componentsToUpdateList);
+
+        form.add(diagnosisDateSelect);
+
+        MarkupContainer dateOfGenericDiagnosisContainer = new WebMarkupContainer("dateOfGenericDiagnosisContainer") {
+            @Override
+            public boolean isVisible() {
+                if (diagnosisDateVisibility.getObject()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        };
+        dateOfGenericDiagnosisContainer.add(dateOfGenericDiagnosis);
+        componentsToUpdateList.add(dateOfGenericDiagnosisContainer);
+        dateOfGenericDiagnosisContainer.setOutputMarkupId(true);
+        dateOfGenericDiagnosisContainer.setOutputMarkupPlaceholderTag(true);
 
         TextArea otherClinicianAndContactInfo = new TextArea("otherClinicianAndContactInfo");
         TextArea comments = new TextArea("comments");
 
-        form.add(emailAddress, phone1, phone2, mobile, genericDiagnosis, dateOfGenericDiagnosis,
+        form.add(emailAddress, phone1, phone2, mobile, genericDiagnosis, dateOfGenericDiagnosisContainer,
                 otherClinicianAndContactInfo, comments);
 
         RadioGroup<Patient.RRTModality> rrtModalityRadioGroup = new RadioGroup<Patient.RRTModality>(
