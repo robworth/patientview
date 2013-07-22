@@ -103,6 +103,21 @@ public class ResultParser {
         collectAllergies(doc);
     }
 
+    public void parseResults(File resultsFile) throws Exception {
+        Document doc = getDocument(resultsFile);
+        for (int i = 0; i < topLevelElements.length; i++) {
+            collectTopLevelData(topLevelElements[i], doc);
+        }
+        collectTestResults(doc);
+        collectDateRanges(doc);
+        collectLetters(doc);
+        collectOtherDiagnosis(doc);
+        collectMedicines(doc);
+        collectDiagnostics(doc);
+        collectProcedures(doc);
+        collectAllergies(doc);
+    }
+
     private void collectDateRanges(Document doc) {
         NodeList testNodeList = doc.getElementsByTagName("test");
         for (int i = 0; i < testNodeList.getLength(); i++) {
@@ -454,6 +469,18 @@ public class ResultParser {
         } catch (Exception e) {
             e.printStackTrace();
             //EmailUtils.sendEmail(context, e.toString());
+        }
+        return doc;
+    }
+
+    private Document getDocument(File file) {
+        Document doc = null;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(file);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return doc;
     }

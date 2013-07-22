@@ -23,12 +23,13 @@
 
 package org.patientview.patientview;
 
-import org.patientview.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 
@@ -47,7 +48,26 @@ import java.util.List;
 
 public final class XmlImportUtils {
 
+    @Value("${noreply.email}")
+    private String noReplyEmail;
+
+    private static String noReplyEmailAddress;
+
+    @Value("${warning.email}")
+    private String warningEmail;
+
+    private static String warningEmailAddress;
+
+    @Value("${support.email}")
+    private String supportEmail;
+
+    private static String supportEmailAddress;
+
+
     private XmlImportUtils() {
+        noReplyEmailAddress = noReplyEmail;
+        warningEmailAddress = warningEmail;
+        supportEmailAddress = supportEmail;
     }
 
     private static final int MAX_NUM_ERRORS_TO_LIST = 20;
@@ -72,6 +92,26 @@ public final class XmlImportUtils {
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
 
+    public static void sendEmptyFileEmailToUnitAdmin(File file) {
+
+        String fileName = file.getName();
+
+        String unitcode = fileName.substring(0, fileName.indexOf("_"));
+
+        Unit unit = UnitUtils.retrieveUnit(unitcode);
+
+        String emailBody = createEmailBodyForEmptyXML(fileName);
+
+        String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
+
+        List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                XmlImportNotification.FAILED_IMPORT);
+
+        EmailUtils.sendEmail(noReplyEmailAddress, new String[]{toAddress},
+                ccAddresses.toArray(new String[ccAddresses.size()]),
+                "[PatientView] File import failed: " + fileName, emailBody);
+    }
+
     public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
                                                ServletContext context) {
         String xmlFileName = xmlFile.getName();
@@ -90,6 +130,28 @@ public final class XmlImportUtils {
 
         for (String toAddress : toAddresses) {
             EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+                    ccAddresses.toArray(new String[ccAddresses.size()]),
+                    "[PatientView] File import failed: " + xmlFileName, emailBody);
+        }
+    }
+
+    public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions) {
+        String xmlFileName = xmlFile.getName();
+        String xsdFileName = xsdFile.getName();
+
+        String unitcode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
+        Unit unit = UnitUtils.retrieveUnit(unitcode);
+        String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
+
+        String[] toAddresses = new String[]{warningEmailAddress, rpvAdminEmailAddress};
+
+        List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                XmlImportNotification.FAILED_IMPORT);
+
+        String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName);
+
+        for (String toAddress : toAddresses) {
+            EmailUtils.sendEmail(noReplyEmailAddress, new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
@@ -151,6 +213,46 @@ public final class XmlImportUtils {
         return emailBody;
     }
 
+    private static String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
+                                                                String xsdFileName) {
+        String newLine = System.getProperty("line.separator");
+
+        String emailBody = "";
+        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
+        emailBody += newLine;
+        emailBody += newLine + "The file <" + xmlFileName + "> has failed to import.";
+        emailBody += newLine;
+        emailBody += newLine + "It did not match the schema file named: ";
+        emailBody += newLine;
+        emailBody += newLine + xsdFileName;
+        emailBody += newLine;
+        emailBody += newLine + "Before contacting the email address below please ensure that:";
+        emailBody += newLine + " - The file is not empty.";
+        emailBody += newLine + " - The file is well formed XML.";
+        emailBody += newLine + " - The file matches the RPV XML schema.";
+        emailBody += newLine + " - There are no missing values.";
+        emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
+        emailBody += newLine;
+        emailBody += newLine
+                + "Please carefully read the stack trace below, there is often a good hint in there as to why your "
+                + "file failed:";
+        emailBody += newLine;
+        emailBody += newLine + "Validation errors:";
+        emailBody += newLine;
+
+        for (SAXParseException exception : exceptions) {
+            emailBody += newLine + exception.getLocalizedMessage();
+            emailBody += newLine;
+        }
+
+        emailBody += newLine;
+        emailBody += newLine;
+        emailBody += newLine + "For further help, please contact " + supportEmailAddress;
+        emailBody += newLine;
+
+        return emailBody;
+    }
+
     public static void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile, ServletContext context) {
         try {
             String stacktrace = extractErrorsFromException(e);
@@ -167,6 +269,29 @@ public final class XmlImportUtils {
             String emailBody = createEmailBody(context, stacktrace, fileName);
 
             EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+                    ccAddresses.toArray(new String[ccAddresses.size()]),
+                    "[PatientView] File import failed: " + fileName, emailBody);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public static void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) {
+        try {
+            String stacktrace = extractErrorsFromException(e);
+
+            String fileName = xmlFile.getName();
+            String unitcode = fileName.substring(0, fileName.indexOf("_"));
+
+            Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
+            String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
+
+            List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                    XmlImportNotification.FAILED_IMPORT);
+
+            String emailBody = createEmailBody(stacktrace, fileName);
+
+            EmailUtils.sendEmail(noReplyEmailAddress, new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
         } catch (Exception e1) {
@@ -203,6 +328,39 @@ public final class XmlImportUtils {
         emailBody += newLine + " - There are no missing values.";
         emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
         emailBody += newLine + "For further help, please contact " + context.getInitParameter("support.email");
+        emailBody += newLine;
+        return emailBody;
+    }
+
+    private static String createEmailBody(String errors, String fileName) {
+        String newLine = System.getProperty("line.separator");
+
+        String emailBody = "";
+        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
+        emailBody += newLine;
+        emailBody += newLine + "The file <" + fileName + "> has failed to import.";
+        emailBody += newLine;
+        emailBody += newLine
+                + "This means that the file has been received by RPV but there is something wrong with the file that "
+                + "prevents it being imported properly.";
+        emailBody += newLine;
+        emailBody += newLine
+                + "You will most likely need to correct the data in your local system before the file is resent to "
+                + "PatientView.";
+        emailBody += newLine;
+        emailBody += newLine + errors;
+        emailBody += newLine;
+        emailBody += newLine
+                + "Otherwise, it might be that there is an XML tag missing or an empty result value or something "
+                + "similar.";
+        emailBody += newLine;
+        emailBody += newLine + "Before contacting the email address below please ensure that:";
+        emailBody += newLine + " - The file is not empty.";
+        emailBody += newLine + " - The file is well formed XML.";
+        emailBody += newLine + " - The file matches the RPV XML schema.";
+        emailBody += newLine + " - There are no missing values.";
+        emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
+        emailBody += newLine + "For further help, please contact " + supportEmailAddress;
         emailBody += newLine;
         return emailBody;
     }

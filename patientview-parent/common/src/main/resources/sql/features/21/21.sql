@@ -4,7 +4,7 @@
 ALTER TABLE patient ADD COLUMN  `radarNo` int(11) NULL;
 ALTER TABLE patient ADD COLUMN  `rrNo` varchar(10) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `dateReg` datetime DEFAULT NULL;
-ALTER TABLE patient ADD COLUMN   `nhsNoType` int(11) NOT NULL;
+ALTER TABLE patient ADD COLUMN   `nhsNoType` int(11) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `uktNo` bigint(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `surnameAlias` varchar(50) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `AGE` int(11) DEFAULT NULL;

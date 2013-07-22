@@ -20,24 +20,23 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
+package org.patientview.batch;
 
-import org.patientview.patientview.model.Unit;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContext;
-import java.io.File;
+import java.util.List;
 
 /**
- *
+ * XmlImportWriter writer
  */
-public interface ImportManager {
+@Component
+@Lazy
+public class XmlImportWriter implements ItemWriter<Object> {
 
-    void update(ServletContext context, File xmlFile);
-
-    void update(ServletContext context, File xmlFile, File xsdFile);
-
-    void update(File xmlFile);
-
-    Unit retrieveUnit(String unitcode);
-
+    @Override
+    public void write(List<? extends Object> items) throws Exception {
+        // It's not need to do something here.
+    }
 }

@@ -36,4 +36,8 @@ public final class XmlParserUtils {
     public static void updateXmlData(ServletContext context, File xmlFile) {
         LegacySpringUtils.getImportManager().update(context, xmlFile);
     }
+
+    public static void updateXmlData(File xmlFile) {
+        LegacySpringUtils.getImportManager().update(xmlFile);
+    }
 }

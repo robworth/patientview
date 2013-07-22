@@ -20,24 +20,21 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
+package org.patientview.quartz;
 
-import org.patientview.patientview.model.Unit;
-
-import javax.servlet.ServletContext;
-import java.io.File;
+import org.patientview.job.XmlImportJob;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- *
+ * Quartz XmlImportJobQuartzScheduler Job
  */
-public interface ImportManager {
+public class XmlImportJobQuartzScheduler extends BaseQuartzScheduler {
 
-    void update(ServletContext context, File xmlFile);
+    @Autowired
+    private XmlImportJob xmlImportJob;
 
-    void update(ServletContext context, File xmlFile, File xsdFile);
-
-    void update(File xmlFile);
-
-    Unit retrieveUnit(String unitcode);
-
+   @Override
+    protected void setJob() {
+        super.setBatchJob(xmlImportJob);
+    }
 }

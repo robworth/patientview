@@ -80,4 +80,16 @@ public final class EmailUtils {
 
         return toAddress;
     }
+
+    public static String getUnitOrSystemAdminEmailAddress(Unit unit) {
+        String toAddress = "";
+
+        if (unit == null || StringUtils.isBlank(unit.getRenaladminemail())) {
+            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress();
+        } else {
+            toAddress = unit.getRenaladminemail();
+        }
+
+        return toAddress;
+    }
 }

@@ -27,6 +27,7 @@ import org.patientview.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AdminNotificationDao;
 import org.patientview.service.AdminNotificationManager;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -39,6 +40,9 @@ public class AdminNotificationManagerImpl implements AdminNotificationManager {
     @Inject
     private AdminNotificationDao adminNotificationDao;
 
+    @Value("${support.email}")
+    private String supportEmail;
+
     @Override
     public List<String> getEmailAddresses(XmlImportNotification xmlImportNotification) {
         return adminNotificationDao.getEmailAddresses(xmlImportNotification);
@@ -50,6 +54,17 @@ public class AdminNotificationManagerImpl implements AdminNotificationManager {
 
         if (StringUtils.isBlank(supportEmailAddress)) {
             return context.getInitParameter("support.email");
+        } else {
+            return supportEmailAddress;
+        }
+    }
+
+    @Override
+    public String getSupportEmailAddress() {
+        String supportEmailAddress = adminNotificationDao.getSupportEmail();
+
+        if (StringUtils.isBlank(supportEmailAddress)) {
+            return supportEmail;
         } else {
             return supportEmailAddress;
         }

@@ -37,4 +37,6 @@ public interface AdminNotificationManager {
 
     String getSupportEmailAddress(ServletContext context);
 
+    String getSupportEmailAddress();
+
 }
