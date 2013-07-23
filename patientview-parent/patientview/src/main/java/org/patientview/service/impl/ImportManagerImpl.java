@@ -73,13 +73,7 @@ public class ImportManagerImpl implements ImportManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateUsingNewTransaction(ServletContext context, File xmlFile) {
-        update(context, xmlFile);
-    }
-
-    @Override
-    public void update(ServletContext context, File xmlFile) {
+    public void update(ServletContext context, File xmlFile) throws Exception {
         File xsdFile;
         try {
             xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
@@ -92,7 +86,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     @Override
-    public void update(ServletContext context, File xmlFile, File xsdFile) {
+    public void update(ServletContext context, File xmlFile, File xsdFile) throws Exception {
         /**
          * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
          * hasn't worked. Send a mail to RPV admin, and skip validate and process
@@ -105,12 +99,9 @@ public class ImportManagerImpl implements ImportManager {
         } else {
             validateAndProcess(context, xmlFile, xsdFile);
         }
-
-        // always move the file, so it is not processed multiple times
-        renameDirectory(context, xmlFile);
     }
 
-    private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) {
+    private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
@@ -137,38 +128,25 @@ public class ImportManagerImpl implements ImportManager {
         process(context, xmlFile);
     }
 
-    private void process(ServletContext context, File xmlFile) {
-        try {
-            ResultParser parser = new ResultParser();
-            parser.parseResults(context, xmlFile);
+    private void process(ServletContext context, File xmlFile) throws Exception {
+        ResultParser parser = new ResultParser();
+        parser.parseResults(context, xmlFile);
 
-            if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
-                    || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
-                    || "Suspend".equalsIgnoreCase(parser.getFlag())) {
-                removePatientFromSystem(parser);
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getCentreCode(), xmlFile.getName());
-            } else {
-                updatePatientData(parser);
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getCentreCode(), xmlFile.getName());
-            }
-            //xmlFile.delete();
-        } catch (Exception e) {
-
-            // these exceptions can occur because of corrupt/invalid data in xml file
-            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
-
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
-
-            XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
+        if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
+                || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
+                || "Suspend".equalsIgnoreCase(parser.getFlag())) {
+            removePatientFromSystem(parser);
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
+                    parser.getPatient().getCentreCode(), xmlFile.getName());
+        } else {
+            updatePatientData(parser);
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
+                    parser.getPatient().getCentreCode(), xmlFile.getName());
         }
     }
 
-    protected void renameDirectory(ServletContext context, File xmlFile) {
+    @Override
+    public void renameDirectory(ServletContext context, File xmlFile) {
         String directory = context.getInitParameter("xml.patient.data.load.directory");
         xmlFile.renameTo(new File(directory, xmlFile.getName()));
     }

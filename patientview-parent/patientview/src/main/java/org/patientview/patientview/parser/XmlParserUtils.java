@@ -23,17 +23,40 @@
 
 package org.patientview.patientview.parser;
 
+import org.patientview.patientview.XmlImportUtils;
+import org.patientview.patientview.logging.AddLog;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 
 public final class XmlParserUtils {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlParserUtils.class);
+
     private XmlParserUtils() {
     }
 
     public static void updateXmlData(ServletContext context, File xmlFile) {
-        LegacySpringUtils.getImportManager().updateUsingNewTransaction(context, xmlFile);
+
+        try {
+            LegacySpringUtils.getImportManager().update(context, xmlFile);
+        } catch (Exception e) {
+
+            // these exceptions can occur because of corrupt/invalid data in xml file
+            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
+
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
+
+            XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
+        }
+
+        // always move the file, so it is not processed multiple times
+        LegacySpringUtils.getImportManager().renameDirectory(context, xmlFile);
     }
 }

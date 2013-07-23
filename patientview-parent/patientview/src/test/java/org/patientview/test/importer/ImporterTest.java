@@ -23,6 +23,8 @@
 
 package org.patientview.test.importer;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
@@ -36,7 +38,6 @@ import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
 import org.patientview.service.CentreManager;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.ImportManager;
@@ -49,13 +50,9 @@ import org.patientview.service.TimeManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
-import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.helpers.impl.TestableResultsUpdater;
 import org.patientview.test.service.BaseServiceTest;
 import org.patientview.utils.LegacySpringUtils;
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
 
@@ -65,7 +62,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * The importer is kicked off from ParserMonitorServlet.
@@ -113,9 +111,6 @@ public class ImporterTest extends BaseServiceTest {
     private ServiceHelpers serviceHelpers;
 
     @Inject
-    private SecurityHelpers securityHelpers;
-
-    @Inject
     private LogEntryManager logEntryManager;
 
     @Before
@@ -134,10 +129,6 @@ public class ImporterTest extends BaseServiceTest {
         mockSpecialty = serviceHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
 
         mockUnit.setSpecialty(mockSpecialty);
-
-        User adminUser = serviceHelpers.createUser("Username", "username@test.com", "pass", "Test User");
-        serviceHelpers.createSpecialtyUserRole(mockSpecialty, adminUser, "unitadmin");
-        securityHelpers.loginAsUser(adminUser.getUsername(), mockSpecialty);
 
         unitManager.save(mockUnit);
     }
@@ -161,7 +152,7 @@ public class ImporterTest extends BaseServiceTest {
      *              - deleteMedicines
      *              - insertMedicines
      */
-    public void testXmlParserUsingRenalFile() throws IOException {
+    public void testXmlParserUsingRenalFile() throws Exception {
 
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
@@ -174,7 +165,7 @@ public class ImporterTest extends BaseServiceTest {
                 xsdFileResource.getFile());
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                        AddLog.PATIENT_DATA_FOLLOWUP);
+                AddLog.PATIENT_DATA_FOLLOWUP);
 
         List<Centre> centres = centreManager.getAll();
 
@@ -200,7 +191,7 @@ public class ImporterTest extends BaseServiceTest {
     }
 
     @Test
-    public void testTestResultIsNotDuplicatedIfDoubleRun() throws IOException {
+    public void testTestResultIsNotDuplicatedIfDoubleRun() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:DUMMY_000002_9999999995.gpg.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -235,7 +226,7 @@ public class ImporterTest extends BaseServiceTest {
      * @throws IOException
      */
     @Test
-    public void testXmlParserUsingEmptyIBDFile() throws IOException {
+    public void testXmlParserUsingEmptyIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_empty_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -285,7 +276,7 @@ public class ImporterTest extends BaseServiceTest {
      * @throws IOException
      */
     @Test
-    public void testXmlParserCheckFutureTestResultDateInIBDFile() throws IOException {
+    public void testXmlParserCheckFutureTestResultDateInIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -299,7 +290,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                        AddLog.PATIENT_DATA_FAIL);
+                AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -310,7 +301,7 @@ public class ImporterTest extends BaseServiceTest {
      * @throws IOException
      */
     @Test
-    public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws IOException {
+    public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -333,14 +324,14 @@ public class ImporterTest extends BaseServiceTest {
      * @throws IOException
      */
     @Test
-    public void testXmlParserCheckTestResultWithValidDates() throws IOException {
+    public void testXmlParserCheckTestResultWithValidDates() throws Exception {
 
         /**
          *  Fix the current date to always be the same.
          *
          *  Note: this only overrides the behaviour of the timeManager reference used by LegacySpringUtils
          *  If you need to change application wide, add a new implementation to the text-context.xml
-          */
+         */
         LegacySpringUtils.setTimeManager(new TimeManager() {
             @Override
             public Date getCurrentDate() {
@@ -372,7 +363,7 @@ public class ImporterTest extends BaseServiceTest {
      * @throws IOException
      */
     @Test
-    public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws IOException {
+    public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -395,7 +386,7 @@ public class ImporterTest extends BaseServiceTest {
      * @throws IOException
      */
     @Test
-    public void testXmlParserUsingIBDFile() throws IOException {
+    public void testXmlParserUsingIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -407,7 +398,7 @@ public class ImporterTest extends BaseServiceTest {
                 xsdFileResource.getFile());
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                                AddLog.PATIENT_DATA_FOLLOWUP);
+                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 
@@ -420,7 +411,7 @@ public class ImporterTest extends BaseServiceTest {
      * If you run the import twice for the same file we still have the same data set
      */
     @Test
-    public void testXmlParserUsingIBDFileMultipleRuns() throws IOException {
+    public void testXmlParserUsingIBDFileMultipleRuns() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
         Resource xsdFileResource = springApplicationContextBean.getApplicationContext()
@@ -435,7 +426,7 @@ public class ImporterTest extends BaseServiceTest {
                 xsdFileResource.getFile());
 
         checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                                AddLog.PATIENT_DATA_FOLLOWUP);
+                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 

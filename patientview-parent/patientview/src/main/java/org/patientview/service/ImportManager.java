@@ -30,15 +30,9 @@ import java.io.File;
  */
 public interface ImportManager {
 
-    /**
-     * Wrap in a new transaction do an error (RuntimeException) during update will not try to rollback the
-     * whole thread, just the single update.
-     * @param context servletContext
-     * @param xmlFile the file to import
-     */
-    void updateUsingNewTransaction(ServletContext context, File xmlFile);
+    void update(ServletContext context, File xmlFile) throws Exception;
 
-    void update(ServletContext context, File xmlFile);
+    void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
 
-    void update(ServletContext context, File xmlFile, File xsdFile);
+    void renameDirectory(ServletContext context, File xmlFile);
 }
