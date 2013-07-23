@@ -30,6 +30,7 @@ import org.patientview.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 
@@ -46,33 +47,25 @@ import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 
+@Component(value = "xmlImportUtils")
 public final class XmlImportUtils {
 
     @Value("${noreply.email}")
     private String noReplyEmail;
 
-    private static String noReplyEmailAddress;
-
     @Value("${warning.email}")
     private String warningEmail;
-
-    private static String warningEmailAddress;
 
     @Value("${support.email}")
     private String supportEmail;
 
-    private static String supportEmailAddress;
-
-
     private XmlImportUtils() {
-        noReplyEmailAddress = noReplyEmail;
-        warningEmailAddress = warningEmail;
-        supportEmailAddress = supportEmail;
+
     }
 
     private static final int MAX_NUM_ERRORS_TO_LIST = 20;
 
-    public static void sendEmptyFileEmailToUnitAdmin(File file, ServletContext context) {
+    public void sendEmptyFileEmailToUnitAdmin(File file, ServletContext context) {
 
         String fileName = file.getName();
 
@@ -92,7 +85,7 @@ public final class XmlImportUtils {
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
 
-    public static void sendEmptyFileEmailToUnitAdmin(File file) {
+    public void sendEmptyFileEmailToUnitAdmin(File file) {
 
         String fileName = file.getName();
 
@@ -107,12 +100,12 @@ public final class XmlImportUtils {
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        EmailUtils.sendEmail(noReplyEmailAddress, new String[]{toAddress},
+        EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
                 ccAddresses.toArray(new String[ccAddresses.size()]),
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
 
-    public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
+    public void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
                                                ServletContext context) {
         String xmlFileName = xmlFile.getName();
         String xsdFileName = xsdFile.getName();
@@ -135,7 +128,7 @@ public final class XmlImportUtils {
         }
     }
 
-    public static void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions) {
+    public void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions) {
         String xmlFileName = xmlFile.getName();
         String xsdFileName = xsdFile.getName();
 
@@ -143,7 +136,7 @@ public final class XmlImportUtils {
         Unit unit = UnitUtils.retrieveUnit(unitcode);
         String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
-        String[] toAddresses = new String[]{warningEmailAddress, rpvAdminEmailAddress};
+        String[] toAddresses = new String[]{warningEmail, rpvAdminEmailAddress};
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
@@ -151,13 +144,13 @@ public final class XmlImportUtils {
         String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName);
 
         for (String toAddress : toAddresses) {
-            EmailUtils.sendEmail(noReplyEmailAddress, new String[]{toAddress},
+            EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
     }
 
-    private static String createEmailBodyForEmptyXML(String xmlFileName) {
+    private String createEmailBodyForEmptyXML(String xmlFileName) {
         String newLine = System.getProperty("line.separator");
 
         String emailBody = "";
@@ -173,7 +166,7 @@ public final class XmlImportUtils {
         return emailBody;
     }
 
-    private static String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
+    private String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
                                                                 String xsdFileName, ServletContext context) {
         String newLine = System.getProperty("line.separator");
 
@@ -213,7 +206,7 @@ public final class XmlImportUtils {
         return emailBody;
     }
 
-    private static String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
+    private String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
                                                                 String xsdFileName) {
         String newLine = System.getProperty("line.separator");
 
@@ -247,13 +240,13 @@ public final class XmlImportUtils {
 
         emailBody += newLine;
         emailBody += newLine;
-        emailBody += newLine + "For further help, please contact " + supportEmailAddress;
+        emailBody += newLine + "For further help, please contact " + supportEmail;
         emailBody += newLine;
 
         return emailBody;
     }
 
-    public static void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile, ServletContext context) {
+    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile, ServletContext context) {
         try {
             String stacktrace = extractErrorsFromException(e);
 
@@ -276,7 +269,7 @@ public final class XmlImportUtils {
         }
     }
 
-    public static void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) {
+    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) {
         try {
             String stacktrace = extractErrorsFromException(e);
 
@@ -291,7 +284,7 @@ public final class XmlImportUtils {
 
             String emailBody = createEmailBody(stacktrace, fileName);
 
-            EmailUtils.sendEmail(noReplyEmailAddress, new String[]{toAddress},
+            EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
         } catch (Exception e1) {
@@ -299,7 +292,7 @@ public final class XmlImportUtils {
         }
     }
 
-    private static String createEmailBody(ServletContext context, String errors, String fileName) {
+    private String createEmailBody(ServletContext context, String errors, String fileName) {
         String newLine = System.getProperty("line.separator");
 
         String emailBody = "";
@@ -332,7 +325,7 @@ public final class XmlImportUtils {
         return emailBody;
     }
 
-    private static String createEmailBody(String errors, String fileName) {
+    private String createEmailBody(String errors, String fileName) {
         String newLine = System.getProperty("line.separator");
 
         String emailBody = "";
@@ -360,12 +353,12 @@ public final class XmlImportUtils {
         emailBody += newLine + " - The file matches the RPV XML schema.";
         emailBody += newLine + " - There are no missing values.";
         emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine + "For further help, please contact " + supportEmailAddress;
+        emailBody += newLine + "For further help, please contact " + supportEmail;
         emailBody += newLine;
         return emailBody;
     }
 
-    public static String extractErrorsFromException(Exception e) {
+    public String extractErrorsFromException(Exception e) {
         String errors = "";
         String newLine = System.getProperty("line.separator");
 
@@ -432,7 +425,7 @@ public final class XmlImportUtils {
         return errors;
     }
 
-    private static String getNodeAsString(Node node) {
+    private String getNodeAsString(Node node) {
         String nodeAsString = "";
         try {
             // Set up the output transformer
@@ -457,7 +450,7 @@ public final class XmlImportUtils {
         return nodeAsString;
     }
 
-    public static String extractFromXMLFileNameNhsno(String filename) {
+    public String extractFromXMLFileNameNhsno(String filename) {
         try {
             int firstUnderscore = filename.indexOf("_");
             int secondUnderscore = filename.indexOf("_", firstUnderscore + 1);
@@ -469,7 +462,7 @@ public final class XmlImportUtils {
         }
     }
 
-    public static String extractFromXMLFileNameUnitcode(String filename) {
+    public String extractFromXMLFileNameUnitcode(String filename) {
         try {
             return filename.substring(0, filename.indexOf("_")).toUpperCase();
         } catch (Exception e) {

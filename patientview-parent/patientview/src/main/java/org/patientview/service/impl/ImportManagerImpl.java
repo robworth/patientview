@@ -75,6 +75,9 @@ import java.util.List;
 public class ImportManagerImpl implements ImportManager {
 
     @Inject
+    private XmlImportUtils xmlImportUtils;
+
+    @Inject
     private UnitDao unitDao;
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
 
@@ -115,9 +118,9 @@ public class ImportManagerImpl implements ImportManager {
          */
         if (xmlFile.length() == 0) {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-            XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
+                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
         } else {
             validateAndProcess(context, xmlFile, xsdFile);
         }
@@ -145,9 +148,9 @@ public class ImportManagerImpl implements ImportManager {
          */
         if (xmlFile.length() == 0) {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-            XmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
+                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
         } else {
             validateAndProcess(xmlFile, xsdFile);
         }
@@ -171,11 +174,11 @@ public class ImportManagerImpl implements ImportManager {
             if (exceptions.size() > 0) {
                 // log
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
-                        XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                        XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+                        xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                        xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
 
                 // send email, then continue importing
-                XmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions, context);
+                xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions, context);
             }
         }
 
@@ -198,11 +201,11 @@ public class ImportManagerImpl implements ImportManager {
             if (exceptions.size() > 0) {
                 // log
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
-                        XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                        XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+                        xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                        xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
 
                 // send email, then continue importing
-                XmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
+                xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
             }
         }
 
@@ -233,11 +236,11 @@ public class ImportManagerImpl implements ImportManager {
             LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
 
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
+                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
 
-            XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile, context);
         }
     }
 
@@ -264,11 +267,11 @@ public class ImportManagerImpl implements ImportManager {
             LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
 
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    XmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    XmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + XmlImportUtils.extractErrorsFromException(e));
+                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
 
-            XmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
         }
     }
 

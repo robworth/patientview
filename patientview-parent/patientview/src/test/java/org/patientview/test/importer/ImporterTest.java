@@ -118,6 +118,9 @@ public class ImporterTest extends BaseServiceTest {
     @Inject
     private LogEntryManager logEntryManager;
 
+    @Inject
+    private XmlImportUtils xmlImportUtils;
+
     @Before
     public void setupSystem() {
         Unit mockUnit = new Unit();
@@ -173,7 +176,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                         AddLog.PATIENT_DATA_FOLLOWUP);
 
         List<Centre> centres = centreManager.getAll();
@@ -223,7 +226,7 @@ public class ImporterTest extends BaseServiceTest {
 
         assertEquals("Incorrect number of results after double run import", 1, results.size());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
 
@@ -248,7 +251,7 @@ public class ImporterTest extends BaseServiceTest {
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -298,7 +301,7 @@ public class ImporterTest extends BaseServiceTest {
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                         AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -323,7 +326,7 @@ public class ImporterTest extends BaseServiceTest {
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -360,7 +363,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
 
@@ -385,7 +388,7 @@ public class ImporterTest extends BaseServiceTest {
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -406,7 +409,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                                 AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
@@ -434,7 +437,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.update(mockHttpSession.getServletContext(), xmlFileResource.getFile(),
                 xsdFileResource.getFile());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                                 AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
