@@ -405,8 +405,8 @@ public class ResultParser {
                             && (medicineDetailNode.getNodeName().equals("drugdose"))) {
                         medicine.setDose(medicineDetailNode.getFirstChild().getNodeValue());
                     }
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    LOGGER.error("failed to collect medicines: {}", e.getMessage());
                 }
             }
             if (medicine.getStartdate() != null && medicine.getName() != null) {

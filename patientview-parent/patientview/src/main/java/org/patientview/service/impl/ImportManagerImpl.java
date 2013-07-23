@@ -73,6 +73,12 @@ public class ImportManagerImpl implements ImportManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void updateUsingNewTransaction(ServletContext context, File xmlFile) {
+        update(context, xmlFile);
+    }
+
+    @Override
     public void update(ServletContext context, File xmlFile) {
         File xsdFile;
         try {
