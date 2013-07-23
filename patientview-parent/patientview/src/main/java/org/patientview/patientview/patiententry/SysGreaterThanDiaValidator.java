@@ -53,10 +53,9 @@ public final class SysGreaterThanDiaValidator {
                 bean,
                 sProperty2);
         if (!GenericValidator.isBlankOrNull(value)) {
-            int intValue = Integer.decode(value);
-            int intValue2 = Integer.decode(value2);
-
             try {
+                int intValue = Integer.decode(value);
+                int intValue2 = Integer.decode(value2);
                 if (intValue2 <= intValue) {
                     errors.add(field.getKey(), Resources.getActionMessage(request, va, field));
                     return false;
