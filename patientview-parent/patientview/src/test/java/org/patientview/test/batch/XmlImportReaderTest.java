@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- *
+ *  Use the 'test/resources/rm301_1244_9876543210.xml' to do this test,
+ *  copy this file to directory that config in .properties.
  */
 public class XmlImportReaderTest extends BaseServiceTest {
 
