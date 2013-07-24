@@ -30,7 +30,9 @@ import java.io.File;
  */
 public interface ImportManager {
 
-    void update(ServletContext context, File xmlFile);
+    void update(ServletContext context, File xmlFile) throws Exception;
 
-    void update(ServletContext context, File xmlFile, File xsdFile);
+    void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
+
+    void renameDirectory(ServletContext context, File xmlFile);
 }
