@@ -1,19 +1,16 @@
 package org.patientview.radar.web.panels.navigation;
 
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.pages.ProfessionalsPage;
 import org.patientview.radar.web.pages.RecruitmentPage;
-import org.patientview.radar.web.pages.content.ConsentFormsPage;
-import org.patientview.radar.web.pages.content.MpgnPage;
-import org.patientview.radar.web.pages.content.SrnsPage;
 import org.patientview.radar.web.pages.patient.AddPatientPage;
 import org.patientview.radar.web.pages.patient.ExistingPatientsListingPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 // TODO: this could be split into patient, professional and no one logged in
 public class DefaultNavigationPanel extends BaseNavigationPanel {
@@ -44,14 +41,15 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
         add(existingPatientsContainer);
 
         // Container for clinicians links
-        MarkupContainer cliniciansContainer = new WebMarkupContainer("cliniciansContainer");
-        cliniciansContainer.setVisible(isProfessionalOrSuperUserLoggedIn());
-        cliniciansContainer.add(
-                new BookmarkablePageLink<MpgnPage>("mpgnPageLink", MpgnPage.class),
-                new BookmarkablePageLink<SrnsPage>("srnsPageLink", SrnsPage.class),
-                new BookmarkablePageLink<ConsentFormsPage>("consentFormsPageLink", ConsentFormsPage.class)
-        );
-        add(cliniciansContainer);
+        // todo Removed this dropdown from navigation but kep the code per Rob's request
+//        MarkupContainer cliniciansContainer = new WebMarkupContainer("cliniciansContainer");
+//        cliniciansContainer.setVisible(isProfessionalOrSuperUserLoggedIn());
+//        cliniciansContainer.add(
+//                new BookmarkablePageLink<MpgnPage>("mpgnPageLink", MpgnPage.class),
+//                new BookmarkablePageLink<SrnsPage>("srnsPageLink", SrnsPage.class),
+//                new BookmarkablePageLink<ConsentFormsPage>("consentFormsPageLink", ConsentFormsPage.class)
+//        );
+//        add(cliniciansContainer);
 
         BookmarkablePageLink professionalsPageLink = new BookmarkablePageLink<ProfessionalsPage>(
                 "professionalsPageLink", ProfessionalsPage.class);
