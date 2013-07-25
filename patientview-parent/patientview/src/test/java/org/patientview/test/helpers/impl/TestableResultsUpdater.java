@@ -36,7 +36,7 @@ import java.io.File;
 public class TestableResultsUpdater extends ImportManagerImpl {
 
     @Override
-    protected void renameDirectory(ServletContext context, File xmlFile) {
+    public void renameDirectory(ServletContext context, File xmlFile) {
         // do nothing - it's a test
     }
 }

@@ -217,6 +217,7 @@
       <form-property name="email" type="java.lang.String"/>
       <form-property name="type" type="java.lang.String"/>
       <form-property name="renaladminemail" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
     </form-bean>
     <form-bean name="patientResultForm" type="org.apache.struts.validator.DynaValidatorActionForm">
       <form-property name="day" type="java.lang.String"/>

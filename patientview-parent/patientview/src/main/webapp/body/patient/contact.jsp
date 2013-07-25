@@ -75,6 +75,7 @@
                     <div class="controls"><html:text property="email" /></div>
                 </div>
                 <html:hidden property="unit.renaladminemail" name="contact" />
+                <html:hidden property="usermapping.nhsno" name="contact" />
                 <html:hidden property="type" value="unit" />
                 <div class="form-actions">
                     <html:submit value="Send"  styleClass="btn" />

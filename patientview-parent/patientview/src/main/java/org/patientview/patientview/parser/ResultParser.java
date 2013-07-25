@@ -388,32 +388,36 @@ public class ResultParser {
 
     private void collectMedicines(Document doc) {
         NodeList medicineNodes = doc.getElementsByTagName("drug");
-        for (int i = 0; i < medicineNodes.getLength(); i++) {
-            Node medicineNode = medicineNodes.item(i);
-            Medicine medicine = new Medicine();
-            NodeList medicineDetailNodes = medicineNode.getChildNodes();
-            for (int j = 0; j < medicineDetailNodes.getLength(); j++) {
-                try {
-                    Node medicineDetailNode = medicineDetailNodes.item(j);
-                    if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
-                            && (medicineDetailNode.getNodeName().equals("drugstartdate"))) {
-                        medicine.setStartdate(medicineDetailNode.getFirstChild().getNodeValue());
-                    } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
-                            && (medicineDetailNode.getNodeName().equals("drugname"))) {
-                        medicine.setName(medicineDetailNode.getFirstChild().getNodeValue());
-                    } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
-                            && (medicineDetailNode.getNodeName().equals("drugdose"))) {
-                        medicine.setDose(medicineDetailNode.getFirstChild().getNodeValue());
+
+        if (medicineNodes != null) {
+            for (int i = 0; i < medicineNodes.getLength(); i++) {
+                Node medicineNode = medicineNodes.item(i);
+                Medicine medicine = new Medicine();
+                NodeList medicineDetailNodes = medicineNode.getChildNodes();
+                if (medicineDetailNodes != null) {
+                    for (int j = 0; j < medicineDetailNodes.getLength(); j++) {
+                        Node medicineDetailNode = medicineDetailNodes.item(j);
+                        Node medicineDetailNodeFirstChild = medicineDetailNode.getFirstChild();
+                        if (medicineDetailNodeFirstChild != null) {
+                            if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                                    && (medicineDetailNode.getNodeName().equals("drugstartdate"))) {
+                                medicine.setStartdate(medicineDetailNodeFirstChild.getNodeValue());
+                            } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                                    && (medicineDetailNode.getNodeName().equals("drugname"))) {
+                                medicine.setName(medicineDetailNodeFirstChild.getNodeValue());
+                            } else if ((medicineDetailNode.getNodeType() == Node.ELEMENT_NODE)
+                                    && (medicineDetailNode.getNodeName().equals("drugdose"))) {
+                                medicine.setDose(medicineDetailNodeFirstChild.getNodeValue());
+                            }
+                        }
                     }
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
                 }
-            }
-            if (medicine.getStartdate() != null && medicine.getName() != null) {
-                // TODO: add error email sent to unit admin here
-                medicine.setNhsno(getData("nhsno"));
-                medicine.setUnitcode(getData("centrecode"));
-                medicines.add(medicine);
+                if (medicine.getStartdate() != null && medicine.getName() != null) {
+                    // TODO: add error email sent to unit admin here
+                    medicine.setNhsno(getData("nhsno"));
+                    medicine.setUnitcode(getData("centrecode"));
+                    medicines.add(medicine);
+                }
             }
         }
     }

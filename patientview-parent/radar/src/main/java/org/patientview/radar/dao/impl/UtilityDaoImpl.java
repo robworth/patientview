@@ -321,9 +321,11 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         public Clinician mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a relative object and set all the fields
             Clinician clinician = new Clinician();
+
+            // In future we might need to split the fullname of the user for a clinician
+            String fullName = resultSet.getString("name");
             clinician.setId(resultSet.getLong("id"));
-            clinician.setSurname(resultSet.getString("username"));
-            clinician.setForename(resultSet.getString("name"));
+            clinician.setSurname(fullName);
 
              // Centre could be null, in which case we get a 0 returned by getLong
             String unitcode = resultSet.getString("unitcode");
