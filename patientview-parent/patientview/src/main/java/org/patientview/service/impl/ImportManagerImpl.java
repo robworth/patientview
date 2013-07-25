@@ -85,7 +85,7 @@ public class ImportManagerImpl implements ImportManager {
     private String xmlPatientDataLoadDirectory;
 
     @Override
-    public void update(ServletContext context, File xmlFile) {
+    public void update(ServletContext context, File xmlFile) throws Exception {
         File xsdFile;
         try {
             xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
@@ -111,7 +111,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     @Override
-    public void update(ServletContext context, File xmlFile, File xsdFile) {
+    public void update(ServletContext context, File xmlFile, File xsdFile) throws Exception {
         /**
          * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
          * hasn't worked. Send a mail to RPV admin, and skip validate and process
@@ -124,9 +124,6 @@ public class ImportManagerImpl implements ImportManager {
         } else {
             validateAndProcess(context, xmlFile, xsdFile);
         }
-
-        // always move the file, so it is not processed multiple times
-        renameDirectory(context, xmlFile);
     }
 
     @Override
@@ -159,7 +156,7 @@ public class ImportManagerImpl implements ImportManager {
         renameDirectory(xmlFile);
     }
 
-    private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) {
+    private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
@@ -275,7 +272,8 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    protected void renameDirectory(ServletContext context, File xmlFile) {
+    @Override
+    public void renameDirectory(ServletContext context, File xmlFile) {
         String directory = context.getInitParameter("xml.patient.data.load.directory");
         xmlFile.renameTo(new File(directory, xmlFile.getName()));
     }

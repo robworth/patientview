@@ -23,13 +23,14 @@
 
 package org.patientview.patientview;
 
-import org.patientview.model.Patient;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.user.UserUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -40,14 +41,16 @@ public class ContactFormAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        Patient patient = PatientUtils.retrievePatient(request);
-        if (patient != null) {
+        User user = UserUtils.retrieveUser(request);
+
+        if (user != null) {
             String message = request.getParameter("message");
             String type = request.getParameter("type");
             String email = request.getParameter("email");
             String subject = "Renal Patient View Enquiry";
+            String nhsno = request.getParameter("usermapping.nhsno");
 
-            message = createMessage(message, patient, email);
+            message = createMessage(message, user.getName(), email, nhsno);
 
             ServletContext context = request.getSession().getServletContext();
 
@@ -79,11 +82,11 @@ public class ContactFormAction extends Action {
     }
 
 
-    private String createMessage(String message, Patient patient, String email) {
+    private String createMessage(String message, String name, String email, String nhsno) {
         String completeMessage = "";
 
-        completeMessage += "Patient name - " + patient.getForename() + " " + patient.getSurname() + "\n";
-        completeMessage += "NHS no - " + patient.getNhsno() + "\n";
+        completeMessage += "Patient name - " + name + "\n";
+        completeMessage += "NHS no - " + nhsno + "\n";
         completeMessage += "Email - " + email + "\n";
         completeMessage += "\n";
         completeMessage += "Message:" + "\n";
