@@ -56,5 +56,23 @@ Creating an Intellij Idea Maven install/build all
 clean install -DskipTests
 ```
 
+How to prepare and deploy a new release 
+---------------------------------------
+
+Assuming the new release number is 1.2:
+
+- Create a new branch from develop for the release called "release-1-2" 
+```sh
+git clone https://github.com/robworth/patientview.git
+cd patientview
+git checkout -b develop origin/develop
+git checkout -b release-1-2
+mvn versions:set -DnewVersion=1.2-RELEASE
+git commit -a -m 'set release version to 1.2'
+git push
+```
+
+
+mvn versions:set -DnewVersion=1.0-RELEASE
 
 
