@@ -92,7 +92,8 @@ public final class LogonUtils {
     private static SplashPage activeSplashPage(User user) {
         SplashPage returnSplashPage = null;
 
-        if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equalsIgnoreCase("patient")) {
+        String specialtyRole = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
+        if (specialtyRole != null && specialtyRole.equalsIgnoreCase("patient")) {
             List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPagesForPatient(user);
             List<SplashPageUserSeen> splashPagesUserHasSeen = SplashPageUtils.retrieveSplashPagesPatientHasSeen(user);
 
