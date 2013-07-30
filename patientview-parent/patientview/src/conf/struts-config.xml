@@ -265,6 +265,10 @@
         <form-property name="antiSpamAnswer" type="java.lang.String"/>
       </form-bean>
 
+      <form-bean name="xmlFileViewForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+          <form-property name="xmlfile" type="java.lang.String"/>
+      </form-bean>
+
     <form-bean name="aboutmeImageUploadForm" type="org.patientview.patientview.aboutme.AboutmeImageUploadForm"/>
 
       <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
@@ -1166,9 +1170,16 @@
 
     <action path="/control/xmlFileView"
             type="org.patientview.patientview.XmlFileViewAction"
-            name="newsForm"
+            name="xmlFileViewForm"
             scope="request">
         <forward name="success" path="/control/xml_file_view.jsp"/>
+    </action>
+
+    <action path="/control/xmlFileSelect"
+            type="org.patientview.patientview.IndexAction"
+            name="xmlFileViewForm"
+            scope="request">
+        <forward name="success" path="/control/xml_file_select.jsp"/>
     </action>
 
     <!--
