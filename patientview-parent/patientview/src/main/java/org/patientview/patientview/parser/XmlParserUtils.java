@@ -23,12 +23,12 @@
 
 package org.patientview.patientview.parser;
 
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;

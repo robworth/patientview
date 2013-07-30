@@ -23,7 +23,7 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AdminNotificationDao;
 import org.patientview.service.AdminNotificationManager;
 import org.apache.commons.lang.StringUtils;

@@ -23,10 +23,10 @@
 
 package org.patientview.patientview;
 
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;
