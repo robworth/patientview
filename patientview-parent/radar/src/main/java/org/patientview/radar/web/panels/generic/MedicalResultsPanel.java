@@ -8,8 +8,6 @@ import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -195,11 +193,11 @@ public class MedicalResultsPanel extends Panel {
                         }
                     }
 
-                    if (medicalResult.getAntihypertensiveDrugs() != null
-                            && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
-                            && medicalResult.getAntihypertensiveDrugsDate() == null) {
-                        get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
+//                    if (medicalResult.getAntihypertensiveDrugs() != null
+//                            && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
+//                            && medicalResult.getAntihypertensiveDrugsDate() == null) {
+//                        get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+//                    }
 
                     if (medicalResult.getPcr() != null) {
                         if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 15000) {
@@ -257,14 +255,14 @@ public class MedicalResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation<Integer>("bpDiastolic", null, form, componentsToUpdateList));
         form.add(new RadarDateTextField("bpDate", form, componentsToUpdateList));
 
-        RadioGroup<MedicalResult.YesNo> antihypertensiveDrugs = new RadioGroup<MedicalResult.YesNo>(
-                "antihypertensiveDrugs");
-        antihypertensiveDrugs.add(new Radio("yes", new Model(MedicalResult.YesNo.YES)));
-        antihypertensiveDrugs.add(new Radio("no", new Model(MedicalResult.YesNo.NO)));
-        antihypertensiveDrugs.add(new Radio("unknown", new Model(MedicalResult.YesNo.UNKNOWN)));
-        form.add(antihypertensiveDrugs);
-
-        form.add(new RadarDateTextField("antihypertensiveDrugsDate", form, componentsToUpdateList));
+//        RadioGroup<MedicalResult.YesNo> antihypertensiveDrugs = new RadioGroup<MedicalResult.YesNo>(
+//                "antihypertensiveDrugs");
+//        antihypertensiveDrugs.add(new Radio("yes", new Model(MedicalResult.YesNo.YES)));
+//        antihypertensiveDrugs.add(new Radio("no", new Model(MedicalResult.YesNo.NO)));
+//        antihypertensiveDrugs.add(new Radio("unknown", new Model(MedicalResult.YesNo.UNKNOWN)));
+//        form.add(antihypertensiveDrugs);
+//
+//        form.add(new RadarDateTextField("antihypertensiveDrugsDate", form, componentsToUpdateList));
 
         form.add(new RadarTextFieldWithValidation<Integer>("pcr", null, form, componentsToUpdateList));
         form.add(new RadarDateTextField("pcrDate", form, componentsToUpdateList));
