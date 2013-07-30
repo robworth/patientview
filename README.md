@@ -64,15 +64,24 @@ Assuming the new release number is 1.2:
 - Create a new branch from develop for the release called "release-1-2" 
 ```sh
 git clone https://github.com/robworth/patientview.git
+```
+```sh
 cd patientview
+```
+```sh
 git checkout -b develop origin/develop
+```
+```sh
 git checkout -b release-1-2
+```
+```sh
 mvn versions:set -DnewVersion=1.2-RELEASE
+```
+```sh
 git commit -a -m 'set release version to 1.2'
+```
+```sh
 git push
 ```
-
-
-mvn versions:set -DnewVersion=1.0-RELEASE
 
 
