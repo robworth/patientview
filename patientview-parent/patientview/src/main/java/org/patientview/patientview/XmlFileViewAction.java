@@ -50,7 +50,7 @@ public class XmlFileViewAction extends Action {
 
         File xmlFile = new File(directory, xmlFilename);
 
-        if (xmlFile.exists()) {
+        if (xmlFile.exists() && xmlFile.isFile()) {
             String xmlContent = readFile(xmlFile.getCanonicalPath());
 
             if (xmlContent != null) {
