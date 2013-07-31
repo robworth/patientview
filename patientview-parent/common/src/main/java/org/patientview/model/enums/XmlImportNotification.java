@@ -21,7 +21,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.model.enums;
+package org.patientview.model.enums;
 
 import java.util.Arrays;
 import java.util.List;

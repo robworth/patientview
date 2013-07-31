@@ -1,7 +1,7 @@
 package org.patientview.radar.dao.alport;
 
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.alport.Medicine;
-import org.patientview.radar.model.generic.DiseaseGroup;
 
 import java.util.List;
 

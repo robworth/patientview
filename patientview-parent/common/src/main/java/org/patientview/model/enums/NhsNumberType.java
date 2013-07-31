@@ -1,4 +1,4 @@
-package org.patientview.radar.model.enums;
+package org.patientview.model.enums;
 
 import java.util.ArrayList;
 import java.util.Arrays;

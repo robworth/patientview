@@ -2,7 +2,10 @@
     <form wicket:id="form">
 
         <div id="mainBlock">
-
+            <div style="text-align: center; vertical-align: top;" wicket:id="rpvResultLinkContainer" >
+                <a wicket:id="rpvResultLink" href="#" target="_blank">
+                    See this patient's results on PatientView</a>
+            </div>
             <div style="text-align: right">
                 <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageTop"></span>
                 <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageTop"></span>
@@ -78,20 +81,7 @@
                                     <div class="feedback" wicket:id="bpDateFeedback"></div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    Antihypertensive Drugs
-                                </td>
-                                <td>
-                                    <div wicket:id="antihypertensiveDrugs">
-                                        <input wicket:id="yes" type="radio">Yes</input>
-                                        <input wicket:id="no" type="radio">No</input>
-                                        <input wicket:id="unknown" type="radio">Unknown</input>
-                                    </div>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label> <input wicket:id="antihypertensiveDrugsDate" type="text" size="10"/>
-                                    <span class="feedback" wicket:id="antihypertensiveDrugsDateFeedback"></span>
-                                </td>
-                            </tr>
+
                             <tr>
                                 <td>
                                     Urine Protein Creatinine Ratio mg/mmol

@@ -24,9 +24,9 @@
 package org.patientview.ibd.action.contact;
 
 import org.patientview.ibd.action.BaseAction;
+import org.patientview.model.Patient;
 import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.PatientUtils;
-import org.patientview.patientview.model.Patient;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

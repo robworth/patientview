@@ -1,8 +1,8 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.exception.UserEmailAlreadyExists;
 import org.patientview.radar.model.exception.InvalidSecurityQuestionAnswer;
 import org.patientview.radar.model.exception.RegistrationException;
@@ -99,35 +99,35 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    public void registerPatient(Demographics demographics) throws Exception {
+    public void registerPatient(Patient patient) throws Exception {
         // Check we have a valid radar number, email address and date of birth
-        if (demographics == null || demographics.getId() < 1) {
+        if (patient == null || patient.getId() < 1) {
             throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
         }
 
-        if (demographics.getDateOfBirth() == null) {
+        if (patient.getDob() == null) {
             throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
                     "demographics.getDateOfBirth()");
         }
 
-        if (demographics.getNhsNumber() == null) {
+        if (patient.getNhsno() == null) {
             throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
                     "demographics.getNhsNumber()");
         }
 
-        PatientUser patientUser = userDao.getExternallyCreatedPatientUser(demographics.getNhsNumber());
+        PatientUser patientUser = userDao.getExternallyCreatedPatientUser(patient.getNhsno());
 
         if (patientUser == null) {
             throw new IllegalStateException("Cannot register patient. No externally created user found for nhsno "
-                    + demographics.getNhsNumber());
+                    + patient.getNhsno());
         }
 
         // if this demographic is already an existing patient, just skip the registration
        if (userDao.getPatientUser(patientUser.getUserId()) == null) {
 
             // now fill in the radar patient stuff
-            patientUser.setRadarNumber(demographics.getId());
-            patientUser.setDateOfBirth(demographics.getDateOfBirth());
+            patientUser.setRadarNumber(patient.getId());
+            patientUser.setDateOfBirth(patient.getDob());
 
             // Update the user record created by patient view and create radar patient row and user mapping row
             userDao.savePatientUser(patientUser);

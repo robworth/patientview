@@ -23,9 +23,9 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.ibd.model.AdminNotification;
-import org.patientview.ibd.model.AdminNotification_;
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.patientview.model.AdminNotification;
+import org.patientview.model.AdminNotification_;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.AdminNotificationDao;
 import org.springframework.stereotype.Repository;

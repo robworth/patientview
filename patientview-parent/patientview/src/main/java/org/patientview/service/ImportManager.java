@@ -22,6 +22,8 @@
  */
 package org.patientview.service;
 
+import org.patientview.patientview.model.Unit;
+
 import javax.servlet.ServletContext;
 import java.io.File;
 
@@ -32,7 +34,12 @@ public interface ImportManager {
 
     void update(ServletContext context, File xmlFile) throws Exception;
 
+    void update(File xmlFile);
+
+    Unit retrieveUnit(String unitcode);
+
     void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
 
     void renameDirectory(ServletContext context, File xmlFile);
+
 }

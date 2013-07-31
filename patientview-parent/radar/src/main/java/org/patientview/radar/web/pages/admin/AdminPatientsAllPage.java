@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages.admin;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.enums.ExportType;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.service.DemographicsManager;
@@ -109,10 +109,10 @@ public class AdminPatientsAllPage extends AdminsBasePage {
         demographicsContainer.setOutputMarkupId(true);
         add(demographicsContainer);
 
-        final DataView<Demographics> demographicsList = new DataView<Demographics>("demographics",
+        final DataView<Patient> demographicsList = new DataView<Patient>("demographics",
                 demographicsDataProvider) {
             @Override
-            protected void populateItem(Item<Demographics> item) {
+            protected void populateItem(Item<Patient> item) {
                 builtDataViewRow(item);
             }
         };
@@ -151,51 +151,51 @@ public class AdminPatientsAllPage extends AdminsBasePage {
      *
      * @param item Item<Demographics>
      */
-    private void builtDataViewRow(Item<Demographics> item) {
-        Demographics demographics = item.getModelObject();
+    private void builtDataViewRow(Item<Patient> item) {
+        Patient patient = item.getModelObject();
         item.add(new BookmarkablePageLink<AdminPatientsAllPage>("edit", AdminPatientAllPage.class,
-                AdminPatientAllPage.getPageParameters(demographics)));
-        item.add(new Label("radarNo", demographics.getId().toString()));
-        item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(demographics.getDateRegistered()),
+                AdminPatientAllPage.getPageParameters(patient)));
+        item.add(new Label("radarNo", patient.getId().toString()));
+        item.add(DateLabel.forDatePattern("dateRegistered", new Model<Date>(patient.getDateReg()),
                 SearchDateField.DATABASE_DATE_PATTERN));
-        item.add(new Label("forename", demographics.getForename()));
-        item.add(new Label("surname", demographics.getSurname()));
+        item.add(new Label("forename", patient.getForename()));
+        item.add(new Label("surname", patient.getSurname()));
 
         // build address
         List<String> addressValues = new ArrayList<String>();
 
-        if (demographics.getAddress1() != null && demographics.getAddress1().length() > 0) {
-            addressValues.add(demographics.getAddress1());
+        if (patient.getAddress1() != null && patient.getAddress1().length() > 0) {
+            addressValues.add(patient.getAddress1());
         }
 
-        if (demographics.getAddress2() != null && demographics.getAddress2().length() > 0) {
-            addressValues.add(demographics.getAddress2());
+        if (patient.getAddress2() != null && patient.getAddress2().length() > 0) {
+            addressValues.add(patient.getAddress2());
         }
 
-        if (demographics.getAddress3() != null && demographics.getAddress3().length() > 0) {
-            addressValues.add(demographics.getAddress3());
+        if (patient.getAddress3() != null && patient.getAddress3().length() > 0) {
+            addressValues.add(patient.getAddress3());
         }
 
-        if (demographics.getAddress4() != null && demographics.getAddress4().length() > 0) {
-            addressValues.add(demographics.getAddress4());
+        if (patient.getAddress4() != null && patient.getAddress4().length() > 0) {
+            addressValues.add(patient.getAddress4());
         }
 
-        if (demographics.getPostcode() != null && demographics.getPostcode().length() > 0) {
-            addressValues.add(demographics.getPostcode());
+        if (patient.getPostcode() != null && patient.getPostcode().length() > 0) {
+            addressValues.add(patient.getPostcode());
         }
 
         item.add(new Label("address", StringUtils.join(addressValues, ", ")));
 
-        item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(demographics)));
+        item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(patient)));
 
         String consultantSurname = "", consultantForename = "", centreAbbrv = "";
 
-        if (demographics.getClinician() != null) {
-            consultantSurname = demographics.getClinician().getSurname();
-            consultantForename = demographics.getClinician().getForename();
+        if (patient.getClinician() != null) {
+            consultantSurname = patient.getClinician().getSurname();
+            consultantForename = patient.getClinician().getForename();
 
-            if (demographics.getClinician().getCentre() != null) {
-                centreAbbrv = demographics.getClinician().getCentre().getAbbreviation();
+            if (patient.getClinician().getCentre() != null) {
+                centreAbbrv = patient.getClinician().getCentre().getAbbreviation();
             }
         }
 

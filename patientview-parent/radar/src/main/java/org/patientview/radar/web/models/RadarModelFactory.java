@@ -164,11 +164,11 @@ public class RadarModelFactory {
             public Serializable getObject() {
                 try {
                     return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
-                            radarNumberModel.getObject()).getDateOfBirth() : null;
+                            radarNumberModel.getObject()).getDob() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
                     return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
-                            getDateOfBirth() : null;
+                            getDob() : null;
                 }
             }
 
@@ -182,11 +182,11 @@ public class RadarModelFactory {
             public String getObject() {
                 try {
                     return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
-                            radarNumberModel.getObject()).getHospitalNumber() : null;
+                            radarNumberModel.getObject()).getHospitalnumber() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
                     return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
-                            getHospitalNumber() : null;
+                            getHospitalnumber() : null;
                 }
             }
         };

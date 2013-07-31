@@ -24,6 +24,7 @@
 package org.patientview.patientview.model;
 
 
+import org.patientview.model.BaseModel;
 import org.patientview.utils.XssUtils;
 
 import javax.persistence.Column;

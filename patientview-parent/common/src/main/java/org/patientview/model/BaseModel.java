@@ -21,7 +21,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.model;
+package org.patientview.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -79,11 +79,24 @@ public class BaseModel implements Serializable, Comparable {
         }
     }
 
-    @Override
     public int compareTo(Object o) {
 
         BaseModel baseModel = (BaseModel) o;
 
         return this.id.compareTo(baseModel.getId());
+    }
+
+    public static String getLabelFromEnum(String enumString) {
+        String label = enumString;
+        label = label.replace("_", " ");
+        String[] parts = label.split(" ");
+        label = "";
+        for (String part : parts) {
+            String formatted = part.toLowerCase();
+            formatted = Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
+            label += formatted;
+            label += " ";
+        }
+        return label;
     }
 }

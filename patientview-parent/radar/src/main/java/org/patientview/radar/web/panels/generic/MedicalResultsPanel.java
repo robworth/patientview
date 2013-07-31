@@ -1,7 +1,23 @@
 package org.patientview.radar.web.panels.generic;
 
-import org.patientview.radar.model.Demographics;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.generic.MedicalResult;
+import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.MedicalResultManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -9,21 +25,6 @@ import org.patientview.radar.web.components.RadarComponentFactory;
 import org.patientview.radar.web.components.RadarDateTextField;
 import org.patientview.radar.web.components.RadarTextFieldWithValidation;
 import org.patientview.radar.web.panels.PatientDetailPanel;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,24 +47,33 @@ public class MedicalResultsPanel extends Panel {
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
-    public MedicalResultsPanel(String id, final Demographics demographics) {
-        super(id);
+    @SpringBean
+    private UtilityManager utilityManager;
 
+    public MedicalResultsPanel(String id, final Patient patient) {
+        super(id);
+        final boolean hasResult;
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
         MedicalResult medicalResult = null;
 
-        if (demographics.hasValidId()) {
-            medicalResult = medicalResultManager.getMedicalResult(demographics.getId(),
-                    demographics.getDiseaseGroup().getId());
+        if (patient.hasValidId()) {
+            medicalResult = medicalResultManager.getMedicalResult(patient.getId(),
+                    patient.getDiseaseGroup().getId());
+        }
+
+        if (patient.hasValidId() && medicalResult != null) {
+            hasResult = true;
+        } else {
+            hasResult = false;
         }
 
         if (medicalResult == null) {
             medicalResult = new MedicalResult();
-            medicalResult.setRadarNo(demographics.getId());
-            medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
-            medicalResult.setNhsNo(demographics.getNhsNumber());
+            medicalResult.setRadarNo(patient.getId());
+            medicalResult.setDiseaseGroup(patient.getDiseaseGroup());
+            medicalResult.setNhsNo(patient.getNhsno());
         }
 
         // general feedback for messages that are not to do with a certain component in the form
@@ -74,6 +84,17 @@ public class MedicalResultsPanel extends Panel {
         // components to update on ajax refresh
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
         IModel<MedicalResult> model = new Model<MedicalResult>(medicalResult);
+
+        ExternalLink rpvResultLink = new ExternalLink("rpvResultLink",
+                utilityManager.getPatientViewSiteResultsUrl());
+        WebMarkupContainer rpvResultLinkContainer = new WebMarkupContainer("rpvResultLinkContainer") {
+            @Override
+            public boolean isVisible() {
+                return hasResult;
+            }
+        };
+        rpvResultLinkContainer.add(rpvResultLink);
+
 
         // create form and components
 
@@ -172,11 +193,11 @@ public class MedicalResultsPanel extends Panel {
                         }
                     }
 
-                    if (medicalResult.getAntihypertensiveDrugs() != null
-                            && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
-                            && medicalResult.getAntihypertensiveDrugsDate() == null) {
-                        get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-                    }
+//                    if (medicalResult.getAntihypertensiveDrugs() != null
+//                            && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
+//                            && medicalResult.getAntihypertensiveDrugsDate() == null) {
+//                        get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
+//                    }
 
                     if (medicalResult.getPcr() != null) {
                         if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 15000) {
@@ -200,8 +221,8 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (medicalResult.isToBeValidated() && !hasError()) {
-                    medicalResult.setRadarNo(demographics.getId());
-                    medicalResult.setNhsNo(demographics.getNhsNumber());
+                    medicalResult.setRadarNo(patient.getId());
+                    medicalResult.setNhsNo(patient.getNhsno());
                     medicalResultManager.save(medicalResult);
                 }
             }
@@ -213,7 +234,7 @@ public class MedicalResultsPanel extends Panel {
         formFeedback.setFilter(filter);
         form.add(formFeedback);
 
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Medical Results");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Medical Results");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);
@@ -234,14 +255,14 @@ public class MedicalResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation<Integer>("bpDiastolic", null, form, componentsToUpdateList));
         form.add(new RadarDateTextField("bpDate", form, componentsToUpdateList));
 
-        RadioGroup<MedicalResult.YesNo> antihypertensiveDrugs = new RadioGroup<MedicalResult.YesNo>(
-                "antihypertensiveDrugs");
-        antihypertensiveDrugs.add(new Radio("yes", new Model(MedicalResult.YesNo.YES)));
-        antihypertensiveDrugs.add(new Radio("no", new Model(MedicalResult.YesNo.NO)));
-        antihypertensiveDrugs.add(new Radio("unknown", new Model(MedicalResult.YesNo.UNKNOWN)));
-        form.add(antihypertensiveDrugs);
-
-        form.add(new RadarDateTextField("antihypertensiveDrugsDate", form, componentsToUpdateList));
+//        RadioGroup<MedicalResult.YesNo> antihypertensiveDrugs = new RadioGroup<MedicalResult.YesNo>(
+//                "antihypertensiveDrugs");
+//        antihypertensiveDrugs.add(new Radio("yes", new Model(MedicalResult.YesNo.YES)));
+//        antihypertensiveDrugs.add(new Radio("no", new Model(MedicalResult.YesNo.NO)));
+//        antihypertensiveDrugs.add(new Radio("unknown", new Model(MedicalResult.YesNo.UNKNOWN)));
+//        form.add(antihypertensiveDrugs);
+//
+//        form.add(new RadarDateTextField("antihypertensiveDrugsDate", form, componentsToUpdateList));
 
         form.add(new RadarTextFieldWithValidation<Integer>("pcr", null, form, componentsToUpdateList));
         form.add(new RadarDateTextField("pcrDate", form, componentsToUpdateList));
@@ -324,6 +345,9 @@ public class MedicalResultsPanel extends Panel {
                 target.add(formFeedback);
             }
         });
+
+        form.add(rpvResultLinkContainer);
+
     }
 
 }

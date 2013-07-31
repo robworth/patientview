@@ -24,7 +24,7 @@
 package org.patientview.patientview;
 
 import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.Patient;
+import org.patientview.model.Patient;
 import org.patientview.patientview.model.User;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.ActionForm;

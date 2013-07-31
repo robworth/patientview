@@ -1,7 +1,7 @@
 package org.patientview.radar.web.panels;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.model.ClinicalPresentation;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Karotype;
@@ -129,8 +129,8 @@ public class DiagnosisPanel extends Panel {
                             radarNumber = Long.parseLong((String) obj);
                         }
 
-                        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                        Date dob = demographics.getDateOfBirth();
+                        Patient patient = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                        Date dob = patient.getDob();
                         if (dateOfDiagnosis != null && dob != null) {
                             int age = Years.yearsBetween(new DateTime(dob), new DateTime(dateOfDiagnosis)).getYears();
                             diagnosis.setAgeAtDiagnosis(age);

@@ -1,7 +1,7 @@
-package org.patientview.radar.model;
+package org.patientview.model;
 
 
-public class Country extends BaseModel{
+public class Country extends BaseModel {
     private String name;
 
     public String getName() {

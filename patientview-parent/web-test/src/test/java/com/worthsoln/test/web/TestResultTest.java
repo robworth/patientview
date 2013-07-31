@@ -346,8 +346,10 @@ public class TestResultTest {
         Calendar calendar = Calendar.getInstance();
         assertSelectOptionPresent("day", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         assertSelectOptionPresent("year", String.valueOf(calendar.get(Calendar.YEAR)));
-        assertSelectOptionPresent("hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
-        assertSelectOptionPresent("minute", StringUtils.leftPad(String.valueOf(calendar.get(Calendar.MINUTE)), 2));
+        assertSelectOptionPresent("hour", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)), 2, "0"));
+        assertSelectOptionPresent("minute", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.MINUTE)), 2, "0"));
 
         assertLinkPresentWithText("Systolic");
         assertFormElementPresent("patientResultValue1");
@@ -396,8 +398,10 @@ public class TestResultTest {
         Calendar calendar = Calendar.getInstance();
         assertSelectOptionPresent("day", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         assertSelectOptionPresent("year", String.valueOf(calendar.get(Calendar.YEAR)));
-        assertSelectOptionPresent("hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
-        assertSelectOptionPresent("minute", String.valueOf(calendar.get(Calendar.MINUTE)));
+        assertSelectOptionPresent("hour", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)), 2, "0"));
+        assertSelectOptionPresent("minute", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.MINUTE)), 2, "0"));
 
         assertFormElementPresent("patientResultValue1");
         assertButtonPresentWithText("Add");
@@ -435,8 +439,10 @@ public class TestResultTest {
         Calendar calendar = Calendar.getInstance();
         assertSelectOptionPresent("day", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         assertSelectOptionPresent("year", String.valueOf(calendar.get(Calendar.YEAR)));
-        assertSelectOptionPresent("hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
-        assertSelectOptionPresent("minute", String.valueOf(calendar.get(Calendar.MINUTE)));
+        assertSelectOptionPresent("hour", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)), 2, "0"));
+        assertSelectOptionPresent("minute", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.MINUTE)), 2, "0"));
 
         assertFormElementPresent("patientResultValue1");
         assertButtonPresentWithText("Add");
@@ -474,8 +480,10 @@ public class TestResultTest {
         Calendar calendar = Calendar.getInstance();
         assertSelectOptionPresent("day", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         assertSelectOptionPresent("year", String.valueOf(calendar.get(Calendar.YEAR)));
-        assertSelectOptionPresent("hour", String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
-        assertSelectOptionPresent("minute", String.valueOf(calendar.get(Calendar.MINUTE)));
+        assertSelectOptionPresent("hour", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)), 2, "0"));
+        assertSelectOptionPresent("minute", StringUtils.leftPad(
+                String.valueOf(calendar.get(Calendar.MINUTE)), 2, "0"));
 
         assertFormElementPresent("patientResultValue1");
         assertButtonPresentWithText("Add");
