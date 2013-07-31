@@ -21,38 +21,34 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.test.repository;
+package org.patientview.patientview;
 
-import org.patientview.model.AdminNotification;
-import org.patientview.model.enums.XmlImportNotification;
-import org.patientview.repository.AdminNotificationDao;
-import org.junit.Test;
+import org.springframework.util.ResourceUtils;
 
-import javax.inject.Inject;
-import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import java.io.File;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+/**
+ * Set the ESAPI.properties absolute path in system properties,
+ * so that ESAPI.jar can find the file without exception.
+ */
+public class ConfigEsapiResourceServlet extends HttpServlet {
 
-public class AdminNotificationDaoTest extends BaseDaoTest {
+    public void init() throws ServletException {
+        super.init();
+        try {
+            File file = ResourceUtils.getFile("classpath:ESAPI.properties");
+            if (file != null) {
+                String filePath = file.getAbsolutePath();
+                String resourceDir = filePath.substring(0, filePath.indexOf("ESAPI.properties"));
+                System.setProperty("org.owasp.esapi.resources", resourceDir);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
 
-    @Inject
-    private AdminNotificationDao adminNotificationDao;
+        }
 
-    @Test
-    public void testGetAllAdminNotifications() throws Exception {
-        List<AdminNotification> adminNotifications = adminNotificationDao.getAll();
 
-        assertNotNull(adminNotifications);
-        assertTrue("Wrong size of AdminNotification", adminNotifications.size() == 0);
     }
-
-    @Test
-    public void testGetEmails() throws Exception {
-        List<String> emails = adminNotificationDao.getEmailAddresses(
-                XmlImportNotification.FAILED_IMPORT);
-
-        assertTrue(emails.size() == 0);
-    }
-
 }

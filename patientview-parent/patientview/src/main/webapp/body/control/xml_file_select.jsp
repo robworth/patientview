@@ -1,4 +1,8 @@
-<!--
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
+<%--
   ~ PatientView
   ~
   ~ Copyright (c) Worth Solutions Limited 2004-2013
@@ -19,25 +23,30 @@
   ~ @author PatientView <info@patientview.org>
   ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.patientview</groupId>
-    <artifactId>patientview-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>PatientView Parent</name>
+  --%>
 
-    <modules>
-        <module>common</module>
-        <module>patientview</module>
-        <module>radar</module>
-        <module>monitoring</module>
-        <module>web-test</module>
-    </modules>
+<html:xhtml/>
+<div class="span9">
 
-    <!-- place for common configuration and dependencies -->
-</project>
+<div class="page-header">
+    <h1>XML File View</h1>
+</div>
+
+
+<html:form action="/control/xmlFileView">
+<table cellpadding="3" >
+    <tr>
+      <td><img src="images/space.gif" height="10" /> </td>
+    </tr>
+    <tr>
+      <td><b>XML File Name</b></td>
+    </tr>
+    <tr>
+      <td><html:text property="xmlfile" /></td>
+      <td><html:submit value="Search" styleClass="btn" /></td>
+    </tr>
+ </table>
+
+</html:form>
+</div>
+</div>

@@ -322,18 +322,18 @@ function initPwdChk(restart) {
 	var arrPassDivs = ["div_nAlphasOnly","div_nNumbersOnly","div_nRepChar","div_nConsecAlphaUC","div_nConsecAlphaLC","div_nConsecNumber","div_nSeqAlpha","div_nSeqNumber","div_nSeqSymbol"];
 	var arrFailPars = ["nLengthBonus","nAlphaUCBonus","nAlphaLCBonus","nNumberBonus","nSymbolBonus","nMidCharBonus","nRequirementsBonus"];
 	var arrFailDivs = ["div_nLength","div_nAlphaUC","div_nAlphaLC","div_nNumber","div_nSymbol","div_nMidChar","div_nRequirements"];
-	for (var i in arrZeros) { docId(arrZeros[i]).innerHTML = "0"; }
-	for (var i in arrPassPars) { docId(arrPassPars[i]).parentNode.className = "pass"; }
-	for (var i in arrPassDivs) { docId(arrPassDivs[i]).className = "pass"; }
-	for (var i in arrFailPars) { docId(arrFailPars[i]).parentNode.className = "fail"; }
-	for (var i in arrFailDivs) { docId(arrFailDivs[i]).className = "fail"; }
-	docId("passwordPwd").value = "";
-	docId("passwordTxt").value = "";
-	docId("scorebar").style.backgroundPosition = "0";
+	for (var i in arrZeros) { if(docId(arrZeros[i]) != null)docId(arrZeros[i]).innerHTML = "0"; }
+	for (var i in arrPassPars) { if(docId(arrZeros[i]) != null)docId(arrPassPars[i]).parentNode.className = "pass"; }
+	for (var i in arrPassDivs) { if(docId(arrZeros[i]) != null)docId(arrPassDivs[i]).className = "pass"; }
+	for (var i in arrFailPars) { if(docId(arrZeros[i]) != null)docId(arrFailPars[i]).parentNode.className = "fail"; }
+	for (var i in arrFailDivs) { if(docId(arrZeros[i]) != null)docId(arrFailDivs[i]).className = "fail"; }
+	if(docId("passwordPwd") != null)docId("passwordPwd").value = "";
+	if(docId("passwordTxt") != null)docId("passwordTxt").value = "";
+	if(docId("scorebar") != null)docId("scorebar").style.backgroundPosition = "0";
 	if (restart) {
-		docId("passwordPwd").className = "";
-		docId("passwordTxt").className = "hide";
-		docId("mask").checked = true;
+		if(docId("passwordPwd") != null)docId("passwordPwd").className = "";
+		if(docId("passwordTxt") != null)docId("passwordTxt").className = "hide";
+		if(docId("mask") != null)docId("mask").checked = true;
 	}
 }
 

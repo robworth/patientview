@@ -82,6 +82,12 @@
         <load-on-startup>2</load-on-startup>
     </servlet> -->
 
+    <servlet>
+        <servlet-name>esapiResource</servlet-name>
+        <servlet-class>org.patientview.patientview.ConfigEsapiResourceServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>

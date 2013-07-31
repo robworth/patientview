@@ -29,7 +29,7 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>Users for Unit <bean:write name="unit" property="name"/></h1>
+    <h1>Users for Unit <logic:notEmpty name="unit"><bean:write name="unit" property="name"/></logic:notEmpty></h1>
 </div>
 
 <logic:notEmpty name="unitUsers">
@@ -84,7 +84,9 @@
             <td>
               <html:form action="/control/unitUserEditInput">
                 <html:hidden name="unitUser" property="username" />
-                <html:hidden name="unit" property="unitcode" />
+                <logic:notEmpty name="unit">
+                    <html:hidden name="unit" property="unitcode" />
+                </logic:notEmpty>
                 <html:submit value="Edit" styleClass="btn" />
               </html:form>
             </td>

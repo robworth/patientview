@@ -1,4 +1,6 @@
-<!--
+<%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
+
+<%--
   ~ PatientView
   ~
   ~ Copyright (c) Worth Solutions Limited 2004-2013
@@ -19,25 +21,11 @@
   ~ @author PatientView <info@patientview.org>
   ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.patientview</groupId>
-    <artifactId>patientview-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>PatientView Parent</name>
+  --%>
 
-    <modules>
-        <module>common</module>
-        <module>patientview</module>
-        <module>radar</module>
-        <module>monitoring</module>
-        <module>web-test</module>
-    </modules>
+<tiles:insert definition="default.layout" flush="true" >
 
-    <!-- place for common configuration and dependencies -->
-</project>
+    <tiles:put name="header" value="/common/header_pwdmeter.jsp?cdToStyles=../" />
+    <tiles:put name="body" value="/body/patient/account.jsp" />
+
+</tiles:insert>
