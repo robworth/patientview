@@ -132,7 +132,6 @@
         </module>
         <module name="MethodLength"/>
         <module name="MethodName"/>
-        <module name="ParameterNumber"/>
 
 
         <!-- Checks for whitespace                               -->

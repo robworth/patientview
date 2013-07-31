@@ -27,7 +27,7 @@ package org.patientview.ibd.model;
 import org.patientview.ibd.Ibd;
 import org.patientview.ibd.model.enums.Diagnosis;
 import org.patientview.ibd.model.enums.DiseaseExtent;
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 
 import org.patientview.utils.XssUtils;
 

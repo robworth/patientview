@@ -1,8 +1,8 @@
 package org.patientview.radar.web.panels.alport;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.alport.Medicine;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.service.alport.MedicineManager;
 import org.patientview.radar.service.generic.DiseaseGroupManager;
 import org.patientview.radar.web.RadarApplication;
@@ -42,27 +42,27 @@ public class MedicinePanel extends Panel {
     private DiseaseGroupManager diseaseGroupManager;
 
     private DiseaseGroup diseaseGroup;
-    private Demographics demographics;
+    private Patient patient;
     private IModel<Medicine> editMedicineIModel;
 
     private WebMarkupContainer medicineListContainer;
     private Form<Medicine> editMedicineForm;
     private WebMarkupContainer editMedicineContainer;
 
-    public MedicinePanel(final String id, final Demographics demographics) {
+    public MedicinePanel(final String id, final Patient patient) {
         super(id);
 
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        this.demographics = demographics;
+        this.patient = patient;
 
         // all medicines added use the alport disease group at the mo
         diseaseGroup = new DiseaseGroup();
         diseaseGroup.setId(DiseaseGroup.ALPORT_DISEASEGROUP_ID);
 
         // add the patient detail bar to the tab
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Deafness");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Deafness");
         patientDetail.setOutputMarkupId(true);
         add(patientDetail);
 
@@ -89,7 +89,7 @@ public class MedicinePanel extends Panel {
         final IModel<List<Medicine>> medicinesModel = new AbstractReadOnlyModel<List<Medicine>>() {
             @Override
             public List<Medicine> getObject() {
-                return medicineManager.getMedicines(demographics, diseaseGroup);
+                return medicineManager.getMedicines(patient, diseaseGroup);
             }
         };
 
@@ -216,7 +216,7 @@ public class MedicinePanel extends Panel {
             Medicine medicine = getModelObject();
 
             if (!hasError()) {
-                medicine.setNhsNo(demographics.getNhsNumber());
+                medicine.setNhsNo(patient.getNhsno());
                 medicine.setDiseaseGroup(diseaseGroup);
                 medicineManager.save(medicine);
                 getModel().setObject(new Medicine());

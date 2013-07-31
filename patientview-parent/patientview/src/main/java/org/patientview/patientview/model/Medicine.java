@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Timestamp;
 
+import org.patientview.model.BaseModel;
 import org.patientview.patientview.utils.TimestampUtils;
 
 import javax.persistence.Column;

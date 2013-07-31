@@ -23,7 +23,7 @@
 
 package org.patientview.patientview;
 
-import org.patientview.patientview.model.Patient;
+import org.patientview.model.Patient;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;

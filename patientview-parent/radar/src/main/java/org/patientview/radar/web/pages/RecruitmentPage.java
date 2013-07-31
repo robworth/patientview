@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.DiagnosisManager;
@@ -23,15 +23,15 @@ public class RecruitmentPage extends BasePage{
     private DiagnosisManager diagnosisManager;
 
     public RecruitmentPage() {
-        DataView<Demographics> demographicsDataView = new DataView<Demographics>("recruitmenItem",
+        DataView<Patient> demographicsDataView = new DataView<Patient>("recruitmenItem",
                 new DemographicsDataProvider(demographicsManager)) {
             @Override
-            protected void populateItem(Item<Demographics> item) {
-                Demographics demographics = item.getModelObject();
+            protected void populateItem(Item<Patient> item) {
+                Patient patient = item.getModelObject();
                 item.add(new Label("renalUnit.name"));
                 item.add(new Label("id"));
-                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(demographics)));
-                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
+                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(patient)));
+                item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
             }
         };

@@ -27,6 +27,7 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.ibd.model.enums.DiseaseExtent;
+import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.Centre;
@@ -35,7 +36,6 @@ import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.enums.DiagnosticType;
 import org.patientview.patientview.model.enums.NodeError;
@@ -90,6 +90,21 @@ public class ResultParser {
 
     public void parseResults(ServletContext context, File resultsFile) throws Exception {
         Document doc = getDocument(context, resultsFile);
+        for (int i = 0; i < topLevelElements.length; i++) {
+            collectTopLevelData(topLevelElements[i], doc);
+        }
+        collectTestResults(doc);
+        collectDateRanges(doc);
+        collectLetters(doc);
+        collectOtherDiagnosis(doc);
+        collectMedicines(doc);
+        collectDiagnostics(doc);
+        collectProcedures(doc);
+        collectAllergies(doc);
+    }
+
+    public void parseResults(File resultsFile) throws Exception {
+        Document doc = getDocument(resultsFile);
         for (int i = 0; i < topLevelElements.length; i++) {
             collectTopLevelData(topLevelElements[i], doc);
         }
@@ -458,6 +473,18 @@ public class ResultParser {
         } catch (Exception e) {
             e.printStackTrace();
             //EmailUtils.sendEmail(context, e.toString());
+        }
+        return doc;
+    }
+
+    private Document getDocument(File file) {
+        Document doc = null;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(file);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return doc;
     }

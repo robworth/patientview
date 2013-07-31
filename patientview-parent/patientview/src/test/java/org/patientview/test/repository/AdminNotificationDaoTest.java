@@ -23,8 +23,8 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.ibd.model.AdminNotification;
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.patientview.model.AdminNotification;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AdminNotificationDao;
 import org.junit.Test;
 

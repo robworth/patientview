@@ -1,10 +1,10 @@
 package org.patientview.radar.test.dao;
 
+import org.patientview.model.Patient;
+import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.enums.NhsNumberType;
 
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
@@ -164,11 +164,11 @@ public class UserDaoTest extends BaseDaoTest {
     public void testGetPatientUsers() throws Exception {
 
         // need to have tbl_Patient_Users that join to tbl_Demographics for this to work
-        Demographics demographics = createDemographics("forename", "surname");
-        createPatientUser("surname01", demographics.getId());
+        Patient patient = createDemographics("forename", "surname");
+        createPatientUser("surname01", patient.getId());
 
-        Demographics demographics2 = createDemographics("forename2", "surname2");
-        createPatientUser("surname02", demographics2.getId());
+        Patient patient2 = createDemographics("forename2", "surname2");
+        createPatientUser("surname02", patient2.getId());
 
         List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), -1, -1);
         assertNotNull(patientUsers);
@@ -177,11 +177,11 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetPatientUsersPage1() throws Exception {
-        Demographics demographics = createDemographics("forename", "surname");
-        createPatientUser("surname01", demographics.getId());
+        Patient patient = createDemographics("forename", "surname");
+        createPatientUser("surname01", patient.getId());
 
-        Demographics demographics2 = createDemographics("forename2", "surname2");
-        createPatientUser("surname02", demographics2.getId());
+        Patient patient2 = createDemographics("forename2", "surname2");
+        createPatientUser("surname02", patient2.getId());
 
         List<PatientUser> patientUsers = userDao.getPatientUsers(new PatientUserFilter(), 1, 1);
         assertNotNull(patientUsers);
@@ -427,13 +427,13 @@ public class UserDaoTest extends BaseDaoTest {
         assertFalse(userDao.userExistsInPatientView("1234xyz"));
     }
 
-    private Demographics createDemographics(String forename, String surname) {
-        Demographics demographics = new Demographics();
-        demographics.setForename(forename);
-        demographics.setSurname(surname);
-        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-        demographicsDao.saveDemographics(demographics);
-        assertNotNull(demographics.getId());
-        return demographics;
+    private Patient createDemographics(String forename, String surname) {
+        Patient patient = new Patient();
+        patient.setForename(forename);
+        patient.setSurname(surname);
+        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        demographicsDao.saveDemographics(patient);
+        assertNotNull(patient.getId());
+        return patient;
     }
 }

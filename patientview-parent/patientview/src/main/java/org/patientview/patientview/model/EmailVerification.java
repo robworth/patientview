@@ -23,6 +23,8 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Calendar;

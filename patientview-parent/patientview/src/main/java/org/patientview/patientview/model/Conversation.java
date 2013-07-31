@@ -23,6 +23,7 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
 import org.patientview.patientview.model.enums.GroupEnum;
 
 import javax.persistence.Column;

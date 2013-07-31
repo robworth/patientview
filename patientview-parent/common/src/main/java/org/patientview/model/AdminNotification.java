@@ -21,18 +21,17 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.ibd.model;
+package org.patientview.model;
 
 
-import org.patientview.patientview.model.enums.XmlImportNotification;
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.enums.XmlImportNotification;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 
 @Entity
 @Table(name = "pv_admin_notification")

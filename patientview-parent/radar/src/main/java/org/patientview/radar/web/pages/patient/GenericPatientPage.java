@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages.patient;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -8,6 +8,8 @@ import org.patientview.radar.service.generic.MedicalResultManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
 import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
 import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
@@ -31,10 +33,12 @@ import org.apache.wicket.util.string.StringValue;
 public class GenericPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
     private MedicalResultsPanel medicalResultsPanel;
+    private GeneticsPanel geneticsPanel;
+    private MedicinePanel medicinePanel;
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
 
-    private Demographics demographics;
+    private Patient patient;
 
     @SpringBean
     private DemographicsManager demographicsManager;
@@ -46,14 +50,19 @@ public class GenericPatientPage extends BasePage {
         // this constructor is used when adding a new patient
         super();
 
-        // set the nhs id or chi id based on model
-        demographics = new Demographics();
-        demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
-        demographics.setRenalUnit(patientModel.getCentre());
-        demographics.setNhsNumber(patientModel.getPatientId());
-        demographics.setNhsNumberType(patientModel.getNhsNumberType());
+        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
+                patientModel.getDiseaseGroup().getId());
 
-        init(demographics);
+        if (patient == null) {
+            patient = new Patient();
+            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+            patient.setRenalUnit(patientModel.getCentre());
+            patient.setNhsno(patientModel.getPatientId());
+            patient.setNhsNumberType(patientModel.getNhsNumberType());
+        }
+        // set the nhs id or chi id based on model
+
+        init(patient);
     }
 
     public GenericPatientPage(PageParameters pageParameters) {
@@ -61,14 +70,14 @@ public class GenericPatientPage extends BasePage {
         // get the demographics based on radar id
         StringValue idValue = pageParameters.get("id");
         Long id = idValue.toLong();
-        demographics = demographicsManager.getDemographicsByRadarNumber(id);
+        patient = demographicsManager.getDemographicsByRadarNumber(id);
 
-        init(demographics);
+        init(patient);
     }
 
-    public void init(Demographics demographics) {
+    public void init(Patient patient) {
         // init all the panels
-        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
+        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.DEMOGRAPHICS);
@@ -77,7 +86,7 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
-        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
+        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICAL_RESULTS);
@@ -88,6 +97,24 @@ public class GenericPatientPage extends BasePage {
 
         add(genericDemographicsPanel, medicalResultsPanel);
 
+        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.GENETICS);
+            }
+        };
+        geneticsPanel.setOutputMarkupPlaceholderTag(true);
+        add(geneticsPanel);
+
+        medicinePanel = new MedicinePanel("medicinePanel", patient) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.MEDICINE);
+            }
+        };
+        medicinePanel.setOutputMarkupPlaceholderTag(true);
+        add(medicinePanel);
+
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
         linksContainer.setOutputMarkupId(true);
@@ -96,6 +123,8 @@ public class GenericPatientPage extends BasePage {
 
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
         linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
+        linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
+        linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         add(linksContainer);
 
@@ -110,9 +139,9 @@ public class GenericPatientPage extends BasePage {
         add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
     }
 
-    public static PageParameters getPageParameters(Demographics demographics) {
+    public static PageParameters getPageParameters(Patient patient) {
         PageParameters pageParameters = new PageParameters();
-        Long id = demographics.getId();
+        Long id = patient.getId();
         pageParameters.set("id", id);
         return pageParameters;
     }
@@ -120,7 +149,9 @@ public class GenericPatientPage extends BasePage {
     public enum Tab {
         // Used for storing the current tab
         DEMOGRAPHICS(RadarApplication.GENERIC_DEMOGRAPHICS_PAGE_NO),
-        MEDICAL_RESULTS(RadarApplication.MEDICAL_RESULTS_PAGE_NO);
+        MEDICAL_RESULTS(RadarApplication.MEDICAL_RESULTS_PAGE_NO),
+        GENETICS(RadarApplication.GENETICE_PAGE_NO),
+        MEDICINE(RadarApplication.MEDICINE_PAGE_NO);
         private int pageNumber;
 
         Tab(int pageNumber) {
@@ -152,11 +183,11 @@ public class GenericPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            if (demographics.hasValidId()) {
+            if (patient.hasValidId()) {
                 GenericPatientPage.this.currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
-                target.add(genericDemographicsPanel, medicalResultsPanel);
+                target.add(genericDemographicsPanel, medicalResultsPanel, geneticsPanel, medicinePanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();

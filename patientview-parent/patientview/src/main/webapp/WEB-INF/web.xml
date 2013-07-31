@@ -76,11 +76,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet>
+    <!--<servlet>
         <servlet-name>xmlParser</servlet-name>
         <servlet-class>org.patientview.patientview.ParserMonitorServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
-    </servlet>
+    </servlet> -->
 
     <servlet>
         <servlet-name>esapiResource</servlet-name>

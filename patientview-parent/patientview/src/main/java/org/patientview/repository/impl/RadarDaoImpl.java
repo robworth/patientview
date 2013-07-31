@@ -74,8 +74,8 @@ public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements 
     public Demographics getDemographicsByNhsNo(String nhsno) {
         Query query = getEntityManager().createQuery(
                 "SELECT radarNo "
-                        + "FROM tbl_demographics "
-                        + "WHERE NHS_NO = :nhsno");
+                        + "FROM patient "
+                        + "WHERE nhsno = :nhsno");
         query.setParameter("nhsno", nhsno);
 
         List<Long> rawDemograpicsList = query.getResultList();

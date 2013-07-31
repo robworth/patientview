@@ -1,7 +1,7 @@
-package org.patientview.radar.model;
+package org.patientview.model;
 
 
-public class Sex extends BaseModel{
+public class Sex extends BaseModel {
     private String type;
 
 

@@ -23,6 +23,7 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.persistence.Column;

@@ -24,7 +24,7 @@
 package org.patientview.ibd.model.symptoms;
 
 import org.patientview.ibd.model.enums.Feeling;
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

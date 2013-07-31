@@ -23,9 +23,9 @@
 
 package org.patientview.patientview.dataout;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.ParserThread;
 import org.patientview.patientview.model.Comment;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
@@ -124,7 +124,7 @@ public class DataOutThread implements Runnable, ParserThread {
             Element dateOfReport = addChildElement(doc, rootElement, "dateofreport", getTimeStampNow());
 
             Element centreDetails = addChildElement(doc, rootElement, "centredetails");
-            Element centreCode = addChildElement(doc, centreDetails, "centrecode", patient.getCentreCode());
+            Element centreCode = addChildElement(doc, centreDetails, "centrecode", patient.getUnitcode());
 
             Element patientTag = addChildElement(doc, rootElement, "patient");
             Element personalDetails = addChildElement(doc, patientTag, "personaldetails");

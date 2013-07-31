@@ -1,7 +1,8 @@
 package org.patientview.radar.model.generic;
 
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.enums.NhsNumberType;
+import org.patientview.model.Centre;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 
 import java.io.Serializable;
 

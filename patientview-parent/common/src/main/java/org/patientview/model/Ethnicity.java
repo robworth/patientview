@@ -1,4 +1,4 @@
-package org.patientview.radar.model;
+package org.patientview.model;
 
 public class Ethnicity extends BaseModel {
 

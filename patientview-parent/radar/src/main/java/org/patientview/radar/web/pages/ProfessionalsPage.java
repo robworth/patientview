@@ -61,8 +61,13 @@ public class ProfessionalsPage extends BasePage {
                 graph.setVisible(true);
                 target.add(graph);
                 target.add(countLabel);
+                generateUserWithUsermapping();
             }
         });
 
+    }
+
+    public void generateUserWithUsermapping() {
+        utilityManager.generateUserWithUsermapping();
     }
 }

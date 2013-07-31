@@ -1,4 +1,4 @@
-package org.patientview.radar.model.generic;
+package org.patientview.model.generic;
 
 import java.io.Serializable;
 
