@@ -224,6 +224,7 @@ public class ImportManagerImpl implements ImportManager {
             updatePatientData(parser);
             UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
             if (userLog == null) {
+                userLog = new UserLog();
                 userLog.setNhsno(parser.getPatient().getNhsno());
                 userLog.setUnitcode(parser.getPatient().getUnitcode());
             }
