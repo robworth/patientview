@@ -26,6 +26,7 @@ package org.patientview.patientview.logon;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
@@ -118,6 +119,14 @@ public class PatientAddAction extends Action {
             LegacySpringUtils.getUserManager().save(userMapping);
             LegacySpringUtils.getUserManager().save(userMappingPatientEnters);
             LegacySpringUtils.getUserManager().save(userMappingGp);
+
+            UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(nhsno);
+            if (userLog == null) {
+                userLog = new UserLog();
+                userLog.setNhsno(nhsno);
+                userLog.setUnitcode(unitcode);
+                LegacySpringUtils.getUserLogManager().save(userLog);
+            }
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
                     patientLogon.getUsername(),

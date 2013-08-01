@@ -114,8 +114,20 @@ MODIFY COLUMN `recipient_id` bigint(20);
 -- Update user table
 --
 ALTER TABLE USER ADD COLUMN isrecipient TINYINT(1) NOT NULL DEFAULT 0;
-ALTER TABLE USER ADD COLUMN isclinician TINYINT(1) NOT NULL DEFAULT 0;;
+ALTER TABLE USER ADD COLUMN isclinician TINYINT(1) NOT NULL DEFAULT 0;
 
+
+--
+-- add pv_user_log table
+--
+DROP TABLE IF EXISTS `pv_user_log`;
+CREATE TABLE `pv_user_log` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `nhsno` varchar(255) DEFAULT NULL,
+  `lastdatadate` datetime DEFAULT NULL,
+  `unitcode` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 
 SET AUTOCOMMIT=1;
