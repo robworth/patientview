@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 /**
  *
  */
-public class CreateEmailQueueReaderTest extends BaseServiceTest {
+public class CreateEmailQueueReaderTest extends BaseBatchTest {
 
     @Autowired
     private CreateEmailQueueReader createEmailQueueReader;

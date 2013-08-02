@@ -34,6 +34,7 @@ import org.springframework.batch.core.annotation.OnSkipInWrite;
 import org.slf4j.Logger;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -52,18 +53,28 @@ public abstract class BatchJob {
     @Autowired
     private JobManager jobManager;
 
+    @Value("${config.environment}")
+    private String configEnvironment;
+
     /**
      * Run the batch job
      */
     public void run() {
 
-        Map<String, JobParameter> map = new HashMap<String, JobParameter>();
-        map.put("key", new JobParameter(new Date()));
-        try {
-            JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
-        } catch (Exception e) {
-            LOGGER.debug(e.getStackTrace().toString());
-            onRunError(e);
+        if (configEnvironment != null) {
+            if (!configEnvironment.equalsIgnoreCase("localhost")
+                    && !configEnvironment.equalsIgnoreCase("test")
+                    && !configEnvironment.equalsIgnoreCase("localhost-test")) {
+
+                Map<String, JobParameter> map = new HashMap<String, JobParameter>();
+                map.put("key", new JobParameter(new Date()));
+                try {
+                    JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
+                } catch (Exception e) {
+                    LOGGER.debug(e.getStackTrace().toString());
+                    onRunError(e);
+                }
+            }
         }
     }
 
