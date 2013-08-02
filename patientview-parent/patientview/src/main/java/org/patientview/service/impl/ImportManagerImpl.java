@@ -226,8 +226,8 @@ public class ImportManagerImpl implements ImportManager {
             if (userLog == null) {
                 userLog = new UserLog();
                 userLog.setNhsno(parser.getPatient().getNhsno());
-                userLog.setUnitcode(parser.getPatient().getUnitcode());
             }
+            userLog.setUnitcode(parser.getPatient().getUnitcode());
             userLog.setLastdatadate(Calendar.getInstance());
             LegacySpringUtils.getUserLogManager().save(userLog);
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
@@ -252,8 +252,8 @@ public class ImportManagerImpl implements ImportManager {
                 if (userLog == null) {
                     userLog = new UserLog();
                     userLog.setNhsno(parser.getPatient().getNhsno());
-                    userLog.setUnitcode(parser.getPatient().getUnitcode());
                 }
+                userLog.setUnitcode(parser.getPatient().getUnitcode());
                 userLog.setLastdatadate(Calendar.getInstance());
                 LegacySpringUtils.getUserLogManager().save(userLog);
 

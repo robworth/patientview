@@ -129,6 +129,17 @@ CREATE TABLE `pv_user_log` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
+--
+-- Insert data into pv_user_log table with exist patient user,
+-- so that we won't miss data.
+--
+INSERT INTO pv_user_log(nhsno, unitcode, lastdatadate)
+SELECT DISTINCT um.nhsno, l.unitcode, l.date
+FROM usermapping um LEFT OUTER JOIN log l
+  ON um.nhsno = l.nhsno AND l.action = 'patient data load'
+WHERE um.unitcode = 'PATIENT'
+  AND um.nhsno != ''
+
 
 SET AUTOCOMMIT=1;
 SET FOREIGN_KEY_CHECKS=1;

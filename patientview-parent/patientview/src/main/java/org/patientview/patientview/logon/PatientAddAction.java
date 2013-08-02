@@ -124,7 +124,6 @@ public class PatientAddAction extends Action {
             if (userLog == null) {
                 userLog = new UserLog();
                 userLog.setNhsno(nhsno);
-                userLog.setUnitcode(unitcode);
                 LegacySpringUtils.getUserLogManager().save(userLog);
             }
 
