@@ -222,6 +222,8 @@ public class ImportManagerImpl implements ImportManager {
                     parser.getPatient().getUnitcode(), xmlFile.getName());
         } else {
             updatePatientData(parser);
+            // Insert or update record in pv_user_log table,
+            // with current import date which is used in patient login
             UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
             if (userLog == null) {
                 userLog = new UserLog();
@@ -248,6 +250,8 @@ public class ImportManagerImpl implements ImportManager {
                         parser.getPatient().getUnitcode(), xmlFile.getName());
             } else {
                 updatePatientData(parser);
+                // Insert or update record in pv_user_log table,
+                // with current import date which is used in patient login
                 UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
                 if (userLog == null) {
                     userLog = new UserLog();

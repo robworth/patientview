@@ -120,6 +120,8 @@ public class PatientAddAction extends Action {
             LegacySpringUtils.getUserManager().save(userMappingPatientEnters);
             LegacySpringUtils.getUserManager().save(userMappingGp);
 
+            // Add a record to pv_user_log table, when job import the patient data,
+            // job can update this new patient user' lastdatadate which is used in patient login.
             UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(nhsno);
             if (userLog == null) {
                 userLog = new UserLog();
