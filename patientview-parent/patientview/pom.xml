@@ -377,6 +377,12 @@
             <!-- will come with all needed Spring dependencies such as spring-core and spring-beans-->
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
         <!-- spring security stuff -->
         <dependency>
             <groupId>org.springframework.security</groupId>

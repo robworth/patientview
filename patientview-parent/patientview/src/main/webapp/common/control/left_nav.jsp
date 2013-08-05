@@ -57,6 +57,7 @@
             <li><html:link action="/control/logView">View Log</html:link></li>
             <li class="divider"></li>
             <li><html:link action="/control/joinReqestList">Join Requests</html:link></li>
+            <li><html:link action="/web/control/joinRequestList">Spring Join Requests</html:link></li>
             <logic:present role="superadmin">
                 <li class="divider"></li>
                 <li><html:link action="/control/xmlFileSelect">XML File View</html:link></li>
