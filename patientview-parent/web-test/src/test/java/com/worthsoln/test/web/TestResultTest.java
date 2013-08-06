@@ -83,7 +83,6 @@ public class TestResultTest {
         assertLinkPresentWithText("Urea");
         assertLinkPresentWithText("Creatinine");
         assertLinkPresentWithText("K");
-        assertLinkPresentWithText("BPdia");
         assertLinkPresentWithText("Ca");
         assertLinkPresentWithText("PO4");
         assertLinkPresentWithText("Hb");
@@ -105,11 +104,6 @@ public class TestResultTest {
         clickLinkWithText("K");
         gotoWindowByTitle("Potassium (Renal PatientView)");
         assertTextPresent("Potassium comes from diet");
-        gotoRootWindow();
-
-        clickLinkWithText("BPdia");
-        gotoWindowByTitle("Blood pressure (Renal PatientView)");
-        assertTextPresent("Blood pressure is measured as two numbers");
         gotoRootWindow();
 
         clickLinkWithText("Ca");
