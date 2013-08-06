@@ -49,6 +49,19 @@
 
     <build>
 
+        <resources>
+            <!-- resource files with filtering to output to target/classes -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <filters>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay patientview.properties, other property files -->
+            <filter>src/main/filters/${env}-web-test.properties</filter>
+        </filters>
+
         <plugins>
 
             <plugin>
