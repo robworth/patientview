@@ -269,7 +269,7 @@ public class UtilityManagerImpl implements UtilityManager {
         }
         if (!list.isEmpty()) {
             try {
-                FileUtils.writeLines(file, list);
+                FileUtils.writeLines(file, "UTF-8", list);
             } catch (IOException e) {
                 e.printStackTrace();
             }
