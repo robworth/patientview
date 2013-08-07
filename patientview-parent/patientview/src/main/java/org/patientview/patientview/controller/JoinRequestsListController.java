@@ -22,6 +22,7 @@
  */
 package org.patientview.patientview.controller;
 
+import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.JoinRequest;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Controller;
@@ -36,12 +37,14 @@ import java.util.List;
 @Controller
 public class JoinRequestsListController {
 
+    private static final String JOIN_REQUEST_LIST_PATH = "/control/join_request_list";
+
     @RequestMapping(value = "/control/joinRequestList")
     public String testUse(HttpServletRequest request) {
         List<JoinRequest> joinRequests = LegacySpringUtils.getJoinRequestManager().getUsersJoinRequests();
 
         request.setAttribute("joinRequests", joinRequests);
-        return "/control/join_request_list";
+        return LogonUtils.logonChecks(request, JOIN_REQUEST_LIST_PATH);
 
     }
 }

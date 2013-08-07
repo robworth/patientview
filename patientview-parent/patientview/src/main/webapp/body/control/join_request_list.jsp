@@ -31,6 +31,16 @@
     <h1>Join Requests</h1>
 </div>
 
+    <div class="span10" style="margin-bottom: 20px;">
+        <div class="row">
+            <html:submit value="Show incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
+            <html:submit value="Show complete" styleClass="btn" style="float:left;margin-left:5px;"/>
+            <html:submit value="Show all" styleClass="btn" style="float:left;margin-left:5px;"/>
+            <html:submit value="Update Join Requests" styleClass="btn btn-primary" style="float:left;margin-left:5px;"/>
+        </div>
+    </div>
+
+
 <table cellpadding="3" class="table table-bordered table-striped">
 
 
@@ -44,6 +54,8 @@
             <th class="tableheader">Unit Code</th>
             <th class="tableheader">Email</th>
             <th class="tableheader">Date of Request</th>
+            <th class="tableheader">Mark As Complete</th>
+            <th class="tableheader">Notes</th>
         </tr>
 
         <logic:iterate id="joinrequest" name="joinRequests" >
@@ -55,11 +67,31 @@
                 <td class="tablecell"><bean:write name="joinrequest" property="unitcode" /></td>
                 <td class="tablecell"><bean:write name="joinrequest" property="email" /></td>
                 <td class="tablecell"><bean:write name="joinrequest" property="dateOfRequestFormatted" /></td>
+                <td class="tablecell"><html:checkbox name="joinrequest" property="isComplete" /></td>
+                <td class="tablecell"><html:textarea name="joinrequest" property="notes" style="height: 30px;width: 100px"/></td>
             </tr>
         </logic:iterate>
 
+
     </logic:notEmpty>
 </table>
+
+    <div class="span10" style="margin-left: 10px;">
+        <div class="row" style="float: right;">
+            <a href="">Prev</a>&nbsp;
+            <a href="">Next</a>
+        </div>
+    </div>
+
+    <div class="span10">
+        <div class="row">
+            <html:submit value="Show incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
+            <html:submit value="Show complete" styleClass="btn" style="float:left;margin-left:5px;"/>
+            <html:submit value="Show all" styleClass="btn" style="float:left;margin-left:5px;"/>
+            <html:submit value="Update Join Requests" styleClass="btn btn-primary" style="float:left;margin-left:5px;"/>
+        </div>
+    </div>
+
 
 
 </div>
