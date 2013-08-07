@@ -20,8 +20,6 @@ import org.patientview.radar.web.panels.FollowUpPanel;
 import org.patientview.radar.web.panels.HospitalisationPanel;
 import org.patientview.radar.web.panels.PathologyPanel;
 import org.patientview.radar.web.panels.RelapsePanel;
-import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.alport.MedicinePanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -50,8 +48,6 @@ public class SrnsPatientPage extends BasePage {
     @SpringBean
     private ClinicalDataManager clinicalDataManager;
 
-    private static AddPatientModel addPatientModel;
-
     public enum CurrentTab {
         // Used for storing the current tab
         DEMOGRAPHICS(RadarApplication.DEMOGRAPHICS_PAGE_NO),
@@ -60,9 +56,7 @@ public class SrnsPatientPage extends BasePage {
         FOLLOW_UP(RadarApplication.CLINICAL_FOLLOW_UP_PAGE_NO),
         PATHOLOGY(RadarApplication.PATHOLOGY_PAGE_NO),
         RELAPSE(RadarApplication.RELAPSE_PAGE_NO),
-        HOSPITALISATION(RadarApplication.HOSPITALISATION_PAGE_NO),
-        GENETICS(RadarApplication.GENETICE_PAGE_NO),
-        MEDICINE(RadarApplication.MEDICINE_PAGE_NO);
+        HOSPITALISATION(RadarApplication.HOSPITALISATION_PAGE_NO);
 
         private int pageNumber;
 
@@ -84,8 +78,6 @@ public class SrnsPatientPage extends BasePage {
     private PathologyPanel pathologyPanel;
     private RelapsePanel relapsePanel;
     private HospitalisationPanel hospitalisationPanel;
-    private GeneticsPanel geneticsPanel;
-    private MedicinePanel medicinePanel;
 
     private MarkupContainer linksContainer;
 
@@ -94,23 +86,16 @@ public class SrnsPatientPage extends BasePage {
     public SrnsPatientPage(PageParameters parameters) {
         super();
 
-        Patient patient = new Patient();
         // Get radar number from parameters - we might not have one for new patients
         StringValue idValue = parameters.get(PARAM_ID);
         if (!idValue.isEmpty()) {
             radarNumberModel.setObject(idValue.toLongObject());
-            patient = demographicsManager.getDemographicsByRadarNumber(idValue.toLongObject());
         }
 
         // Construct panels for each of the tabs
         if (parameters != null) {
             if (parameters.get("idType").toString() != null) {
                 demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel, parameters);
-                patient.setDiseaseGroup(addPatientModel.getDiseaseGroup());
-                patient.setRenalUnit(addPatientModel.getCentre());
-
-                patient.setNhsno(addPatientModel.getPatientId());
-                patient.setNhsNumberType(addPatientModel.getNhsNumberType());
             } else {
                 demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
             }
@@ -125,23 +110,10 @@ public class SrnsPatientPage extends BasePage {
         pathologyPanel = new PathologyPanel("pathologyPanel", radarNumberModel);
         relapsePanel = new RelapsePanel("relapsePanel", radarNumberModel);
         hospitalisationPanel = new HospitalisationPanel("hospitalisationPanel", radarNumberModel);
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
-            @Override
-            public boolean isVisible() {
-                return currentTab.equals(currentTab.GENETICS);
-            }
-        };
-
-        medicinePanel = new MedicinePanel("medicinePanel", patient) {
-            @Override
-            public boolean isVisible() {
-                return currentTab.equals(currentTab.MEDICINE);
-            }
-        };
 
         // Add them all to the page
         add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
-                hospitalisationPanel, geneticsPanel, medicinePanel);
+                hospitalisationPanel);
 
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
@@ -156,8 +128,6 @@ public class SrnsPatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("pathologyLink", CurrentTab.PATHOLOGY));
         linksContainer.add(new TabAjaxLink("relapseLink", CurrentTab.RELAPSE));
         linksContainer.add(new TabAjaxLink("hospitalisationLink", CurrentTab.HOSPITALISATION));
-        linksContainer.add(new TabAjaxLink("geneticsLink", CurrentTab.GENETICS));
-        linksContainer.add(new TabAjaxLink("medicineLink", CurrentTab.MEDICINE));
         add(linksContainer);
 
         IModel pageNumberModel = RadarModelFactory.getPageNumberModel(RadarApplication.DEMOGRAPHICS_PAGE_NO,
@@ -202,7 +172,7 @@ public class SrnsPatientPage extends BasePage {
                 // Add the links container to update hover class
                 target.add(linksContainer);
                 target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
-                        relapsePanel, hospitalisationPanel, geneticsPanel, medicinePanel);
+                        relapsePanel, hospitalisationPanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
@@ -238,7 +208,7 @@ public class SrnsPatientPage extends BasePage {
         } else if (patientModel.getDiseaseGroup().getId().equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
             pageParameters.set("diagnosis", DiagnosisCode.MPGN_ID);
         }
-        addPatientModel = patientModel;
+
         pageParameters.set("renalUnitId", patientModel.getCentre().getId());
         pageParameters.set("diseaseGroupId", patientModel.getDiseaseGroup().getId());
         pageParameters.set("idType", patientModel.getNhsNumberType().toString());
