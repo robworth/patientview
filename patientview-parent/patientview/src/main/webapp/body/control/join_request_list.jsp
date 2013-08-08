@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%--
   ~ PatientView
@@ -31,17 +32,25 @@
     <h1>Join Requests</h1>
 </div>
 
-    <div class="span10" style="margin-bottom: 20px;">
+    <div class="span10">
         <div class="row">
-            <html:submit value="Show incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
-            <html:submit value="Show complete" styleClass="btn" style="float:left;margin-left:5px;"/>
-            <html:submit value="Show all" styleClass="btn" style="float:left;margin-left:5px;"/>
-            <html:submit value="Update Join Requests" styleClass="btn btn-primary" style="float:left;margin-left:5px;"/>
+            <form action="/web/control/joinRequestList" method="post" id="displayForm">
+                <input type="hidden" name="page" id="page" value=""/>
+                <html:submit value="Show incomplete" styleId="incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show complete" styleClass="btn" styleId="complete" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show all" styleClass="btn" styleId="all" style="float:left;margin-left:5px;"/>
+            </form>
+
+        </div>
+    </div>
+    <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
+        <div class="row" style="float: right;">
+            <a href="/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
+            <a href="/web/control/joinRequestList?page=next">Next</a>
         </div>
     </div>
 
-
-<table cellpadding="3" class="table table-bordered table-striped">
+<table cellpadding="3" class="table table-bordered table-striped ">
 
 
     <logic:notEmpty name="joinRequests">
@@ -54,41 +63,54 @@
             <th class="tableheader">Unit Code</th>
             <th class="tableheader">Email</th>
             <th class="tableheader">Date of Request</th>
-            <th class="tableheader">Mark As Complete</th>
+            <th class="tableheader">Completed</th>
             <th class="tableheader">Notes</th>
+            <th class="tableheader"></th>
         </tr>
 
-        <logic:iterate id="joinrequest" name="joinRequests" >
+        <c:forEach var="item" items="${joinRequests.pageList}">
             <tr>
-                <td class="tablecell"><bean:write name="joinrequest" property="firstName" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="lastName" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="dateOfBirthFormatted" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="nhsNo" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="unitcode" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="email" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="dateOfRequestFormatted" /></td>
-                <td class="tablecell"><html:checkbox name="joinrequest" property="isComplete" /></td>
-                <td class="tablecell"><html:textarea name="joinrequest" property="notes" style="height: 30px;width: 100px"/></td>
+                <td class="tablecell"><c:out value="${item.firstName}"/></td>
+                <td class="tablecell"><c:out value="${item.lastName}"/></td>
+                <td class="tablecell"><c:out value="${item.dateOfBirthFormatted}"/></td>
+                <td class="tablecell"><c:out value="${item.nhsNo}"/></td>
+                <td class="tablecell"><c:out value="${item.unitcode}"/></td>
+                <td class="tablecell"><c:out value="${item.email}"/></td>
+                <td class="tablecell"><c:out value="${item.dateOfRequestFormatted}"/></td>
+                <td class="tablecell">
+                    <logic:equal value="false" name="item" property="isComplete">
+                        <big><font color="red">&#10008;</font></big>
+                    </logic:equal>
+                    <logic:equal value="true" name="item" property="isComplete">
+                        <big><font color="green">&#10004;</font></big>
+                    </logic:equal>
+                </td>
+                <td class="tablecell"><bean:write name="item" property="notes"/></td>
+                <logic:present role="superadmin,unitadmin">
+                    <td>
+                        <form action="/web/control/joinRequestEditInput" method="post">
+                            <html:hidden name="item" property="id"/>
+                            <html:submit value="Edit" styleClass="btn" />
+                        </form>
+                    </td>
+                </logic:present>
             </tr>
-        </logic:iterate>
+        </c:forEach>
 
 
     </logic:notEmpty>
 </table>
 
-    <div class="span10" style="margin-left: 10px;">
-        <div class="row" style="float: right;">
-            <a href="">Prev</a>&nbsp;
-            <a href="">Next</a>
-        </div>
-    </div>
+
 
     <div class="span10">
         <div class="row">
-            <html:submit value="Show incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
-            <html:submit value="Show complete" styleClass="btn" style="float:left;margin-left:5px;"/>
-            <html:submit value="Show all" styleClass="btn" style="float:left;margin-left:5px;"/>
-            <html:submit value="Update Join Requests" styleClass="btn btn-primary" style="float:left;margin-left:5px;"/>
+            <form action="/web/control/joinRequestList" method="post" id="displayForm">
+                <input type="hidden" name="page" id="page" value=""/>
+                <html:submit value="Show incomplete" styleId="incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show complete" styleClass="btn" styleId="complete" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show all" styleClass="btn" styleId="all" style="float:left;margin-left:5px;"/>
+            </form>
         </div>
     </div>
 
@@ -96,4 +118,6 @@
 
 </div>
 </div>
+
+<script src="/js/joinrequest.js" type="text/javascript"></script>
 

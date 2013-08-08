@@ -33,4 +33,8 @@ public interface JoinRequestManager {
 
     List<JoinRequest> getUsersJoinRequests();
 
+    List<JoinRequest> getUsersJoinRequests(Boolean isComplete);
+
+    JoinRequest get(Long id);
+
 }

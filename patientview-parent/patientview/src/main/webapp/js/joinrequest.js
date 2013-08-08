@@ -20,31 +20,16 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.patientview.controller;
 
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.JoinRequest;
-import org.patientview.utils.LegacySpringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+$(document).ready(function(){
+    $("#incomplete").click(function(){
+        $("#page").val("incomplete");
+    });
+    $("#complete").click(function(){
+        $("#page").val("complete");
+    });
+    $("#all").click(function(){
+        $("#page").val("all")
+    });
+});
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-/**
- *
- */
-@Controller
-public class JoinRequestsListController {
-
-    private static final String JOIN_REQUEST_LIST_PATH = "/control/join_request_list";
-
-    @RequestMapping(value = "/control/joinRequestList")
-    public String testUse(HttpServletRequest request) {
-        List<JoinRequest> joinRequests = LegacySpringUtils.getJoinRequestManager().getUsersJoinRequests();
-
-        request.setAttribute("joinRequests", joinRequests);
-        return LogonUtils.logonChecks(request, JOIN_REQUEST_LIST_PATH);
-
-    }
-}
