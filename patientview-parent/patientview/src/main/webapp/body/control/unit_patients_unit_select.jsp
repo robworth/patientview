@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 <%--
   ~ PatientView
   ~
@@ -32,38 +32,41 @@
     <h1>Select Unit</h1>
 </div>
 
-
-<html:form action="/control/unitPatients">
+<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients" method="post">
 <table cellpadding="3" >
     <tr>
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
       <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
-      <td><html:select property="unitcode">
+      <td>
+          <select property="unitcode">
             <logic:present role="superadmin">
-              <html:option value="" >-- All Units --</html:option>
+              <option value="" >-- All Units --</option>
             </logic:present>
-            <html:options collection="units" property="unitcode" labelProperty="name"/>
-          </html:select></td>
+            <logic:iterate id="unit" name="units" >
+                <option value="${unit.unitcode}" >${unit.name}</option>
+            </logic:iterate>
+          </select>
+      </td>
     </tr>
     <tr>
       <td><b>NHS Number</b></td>
-      <td><html:text property="nhsno" /></td>
+      <td><input type="text" name="nhsno" value=""></td>
     </tr>
     <tr>
       <td><b>Name</b></td>
-      <td><html:text property="name" /></td>
+      <td><input type="text" name="name" value=""></td>
     </tr>
     <tr>
       <td><b>Show GPs</b></td>
-      <td><html:checkbox property="showgps" value="true" /></td>
+      <td><input type="checkbox" name="showgps" value="true"></td>
     </tr>
     <tr align="right">
       <td><html:submit value="Search" styleClass="btn" /></td>
     </tr>
  </table>
 
-</html:form>
+</form>
 </div>
 </div>

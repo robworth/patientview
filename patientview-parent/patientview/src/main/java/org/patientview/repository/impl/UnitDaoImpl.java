@@ -23,6 +23,7 @@
 
 package org.patientview.repository.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.Unit;
@@ -227,6 +228,10 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
+        String unitcodeCondition = " ";
+        if (StringUtils.isNotEmpty(unitcode)) {
+            unitcodeCondition = ("AND " + "   um.unitcode = :unitcode ");
+        }
         String sql = "SELECT "
                 + "  u.*  "
                 + "FROM "
@@ -240,15 +245,15 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   sur.specialty_id = :specialtyId "
                 + "AND "
-                + "   um.unitcode = :unitcode "
-                + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')"
+                + unitcodeCondition;
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
         query.setParameter("specialtyId", specialty.getId());
-        query.setParameter("unitcode", unitcode);
-
+        if (StringUtils.isNotEmpty(unitcode)) {
+          query.setParameter("unitcode", unitcode);
+        }
         List<User> users = query.getResultList();
 
         List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();

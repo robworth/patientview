@@ -1220,6 +1220,12 @@
         <forward name="success" path="/control/xml_file_select.jsp"/>
     </action>
 
+    <action path="/control/emailverification"
+              type="org.patientview.patientview.logging.EmailVerificationAction"
+              name="patientForm"
+              scope="request">
+        <forward name="success" path="/control/sendEmailVerification.jsp"/>
+    </action>
     <!--
         <action path="/control/sha"
           type="com.worthsoln.ShaAction" parameter="index">

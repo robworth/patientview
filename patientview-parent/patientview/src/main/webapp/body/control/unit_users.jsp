@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 
 <%--
   ~ PatientView
@@ -44,6 +45,7 @@
         <th class="tableheader">Password Locked</th>
         <th class="tableheader">Message Recipient</th>
         <th class="tableheader">Clinician</th>  
+        <th></th>
         <th></th>
         <th></th>
       </tr>
@@ -101,8 +103,18 @@
             </td>
         </logic:present>
 
+        <logic:present role="superadmin,unitadmin">
+             <td>
+                 <bean:define id="username" name="unitUser" property="username" />
+                 <bean:define id="email" name="unitUser" property="email" />
+                 <bean:define id="emailverfied" name="unitUser" property="emailverfied"/>
+                 <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/control/emailverification.do', this)">
+             </td>
+        </logic:present>
+
       </tr>
     </logic:iterate>
    </table>
  </logic:notEmpty>
 </div>
+<script src="/js/emailverification.js" type="text/javascript"></script>

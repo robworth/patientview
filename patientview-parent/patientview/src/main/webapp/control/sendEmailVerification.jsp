@@ -1,8 +1,6 @@
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ page import="org.patientview.utils.LegacySpringUtils" %>
-
+<%@ page contentType="application/json" %>
 <%--
   ~ PatientView
   ~
@@ -26,36 +24,7 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
-<html:xhtml/>
-<div class="span9">
-<div class="page-header">
-    <h1>Select Unit</h1>
-</div>
-
-
-<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers" method="post">
-<table cellpadding="3" >
-    <tr>
-      <td><img src="images/space.gif" height="10" /> </td>
-    </tr>
-    <tr>
-      <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
-      <td>
-          <select property="unitcode">
-              <logic:present role="superadmin">
-                  <option value="" >-- All Units --</option>
-              </logic:present>
-              <logic:iterate id="unit" name="units" >
-                  <option value="${unit.unitcode}" >${unit.name}</option>
-              </logic:iterate>
-          </select>
-      </td>
-    </tr>
-    <tr align="right">
-      <td><html:submit value="Select" styleClass="btn" /></td>
-    </tr>
- </table>
-
-</form>
-</div>
-</div>
+{
+    "errors": [],
+    "message": "Email Verification Request is sent"
+}
