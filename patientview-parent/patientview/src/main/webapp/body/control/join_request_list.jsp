@@ -29,24 +29,43 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>Join Requests</h1>
+    <h1>Join Requests
+        <c:if test="${inCompletedNumber != null}">
+            <span class="badge badge-important"><c:out value="${inCompletedNumber}"/></span>
+        </c:if>
+    </h1>
+
 </div>
 
     <div class="span10">
         <div class="row">
-            <form action="/web/control/joinRequestList" method="post" id="displayForm">
+            <form action="/web/control/joinRequestList" method="post" id="displayFormTop">
                 <input type="hidden" name="page" id="page" value=""/>
-                <html:submit value="Show incomplete" styleId="incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
-                <html:submit value="Show complete" styleClass="btn" styleId="complete" style="float:left;margin-left:5px;"/>
-                <html:submit value="Show all" styleClass="btn" styleId="all" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show incomplete" styleId="incompleteTop" styleClass="btn" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show complete" styleClass="btn" styleId="completeTop" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show all" styleClass="btn" styleId="allTop" style="float:left;margin-left:5px;"/>
             </form>
 
         </div>
     </div>
     <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
         <div class="row" style="float: right;">
-            <a href="/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
-            <a href="/web/control/joinRequestList?page=next">Next</a>
+        <c:choose>
+            <c:when test="${firstPage}">
+                Prev&nbsp;
+            </c:when>
+            <c:otherwise>
+                <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
+            </c:otherwise>
+        </c:choose>
+        <c:choose>
+            <c:when test="${lastPage}">
+                Next
+            </c:when>
+            <c:otherwise>
+                <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=next">Next</a>&nbsp;
+            </c:otherwise>
+        </c:choose>
         </div>
     </div>
 
@@ -56,16 +75,16 @@
     <logic:notEmpty name="joinRequests">
 
         <tr class="tableheader">
-            <th class="tableheader">First Name</th>
-            <th class="tableheader">Last Name</th>
-            <th class="tableheader">Date of Birth</th>
-            <th class="tableheader">NHS Number</th>
-            <th class="tableheader">Unit Code</th>
-            <th class="tableheader">Email</th>
-            <th class="tableheader">Date of Request</th>
-            <th class="tableheader">Completed</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('firstName')">First Name</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('lastName')">Last Name</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfBirthFormatted')">Date of Birth</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('nhsNo')">NHS Number</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('unitcode')">Unit Code</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('email')">Email</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfRequestFormatted')">Date of Request</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('isComplete')">Completed</th>
             <th class="tableheader">Notes</th>
-            <th class="tableheader"></th>
+            <th class="tableheader" ></th>
         </tr>
 
         <c:forEach var="item" items="${joinRequests.pageList}">
@@ -88,7 +107,7 @@
                 <td class="tablecell"><bean:write name="item" property="notes"/></td>
                 <logic:present role="superadmin,unitadmin">
                     <td>
-                        <form action="/web/control/joinRequestEditInput" method="post">
+                        <form action="/<c:out value="${specialty}"/>/web/control/joinRequestEditInput" method="post">
                             <html:hidden name="item" property="id"/>
                             <html:submit value="Edit" styleClass="btn" />
                         </form>
@@ -105,11 +124,11 @@
 
     <div class="span10">
         <div class="row">
-            <form action="/web/control/joinRequestList" method="post" id="displayForm">
+            <form action="/web/control/joinRequestList" method="post" id="displayFormBottom">
                 <input type="hidden" name="page" id="page" value=""/>
-                <html:submit value="Show incomplete" styleId="incomplete" styleClass="btn" style="float:left;margin-left:5px;"/>
-                <html:submit value="Show complete" styleClass="btn" styleId="complete" style="float:left;margin-left:5px;"/>
-                <html:submit value="Show all" styleClass="btn" styleId="all" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show incomplete" styleId="incompleteBottom" styleClass="btn" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show complete" styleClass="btn" styleId="completeBottom" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show all" styleClass="btn" styleId="allBottom" style="float:left;margin-left:5px;"/>
             </form>
         </div>
     </div>

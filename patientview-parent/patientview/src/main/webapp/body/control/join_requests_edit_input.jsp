@@ -32,7 +32,7 @@
     </div>
     <html:errors/>
     <div class="form-horizontal">
-        <form action="/web/control/joinRequestEdit" method="post">
+        <form action="/<bean:write name="specialty"/>/web/control/joinRequestEdit" method="post">
             <div class="control-group">
                 <label class="control-label">First Name</label>
                 <div class="controls"><bean:write name="joinRequest" property="firstName"/></div>

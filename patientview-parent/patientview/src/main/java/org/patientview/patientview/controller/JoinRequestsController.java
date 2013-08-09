@@ -22,12 +22,15 @@
  */
 package org.patientview.patientview.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.JoinRequest;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.beans.support.SortDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -38,13 +41,16 @@ import java.util.List;
 @Controller
 public class JoinRequestsController extends BaseController {
 
+    @Value("${join.request.page.size}")
+    private int pageSize;
+
     @RequestMapping(value = JOIN_REQUEST_LIST_URL)
      public String joinRequestList(HttpServletRequest request) {
         PagedListHolder pagedListHolder;
         String page = request.getParameter("page");
 
         if (page == null || "".equals(page)) {
-            pagedListHolder = getPageListData(null);
+            pagedListHolder = getPageListData(false);
         } else {
 
             pagedListHolder = (PagedListHolder) request.getSession().getAttribute("joinRequests");
@@ -67,11 +73,30 @@ public class JoinRequestsController extends BaseController {
                 pagedListHolder = getPageListData(false);
             } else if ("complete".equals(page)) {
                 pagedListHolder = getPageListData(true);
+            } else if ("sort".equals(page)) {
+                String property = (String) request.getParameter("property");
+                MutableSortDefinition newSort = new MutableSortDefinition(property, true, false);
+                SortDefinition sort =  pagedListHolder.getSort();
+                if (StringUtils.equals(sort.getProperty(), property)) {
+                    newSort.setAscending(!sort.isAscending());
+                }
+                pagedListHolder.setSort(newSort);
+                pagedListHolder.resort();
             }
         }
-        pagedListHolder.setPageSize(2);
+        pagedListHolder.setPageSize(pageSize);
         request.getSession().setAttribute("joinRequests", pagedListHolder);
-
+        request.setAttribute("specialty",
+                LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext());
+        if (pagedListHolder.isFirstPage()) {
+            request.setAttribute("firstPage", true);
+        } else if (pagedListHolder.isLastPage()) {
+            request.setAttribute("lastPage", true);
+        }
+        List<JoinRequest> joinRequestList = LegacySpringUtils.getJoinRequestManager().getUsersJoinRequests(false);
+        if (joinRequestList != null && joinRequestList.size() > 0) {
+            request.setAttribute("inCompletedNumber", joinRequestList.size());
+        }
         return forwardTo(request, JOIN_REQUEST_LIST_PAGE);
     }
 
@@ -82,14 +107,18 @@ public class JoinRequestsController extends BaseController {
         JoinRequest joinRequest = LegacySpringUtils.getJoinRequestManager().get(id);
 
         request.setAttribute("joinRequest", joinRequest);
+        request.setAttribute("specialty",
+                LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext());
+
         return forwardTo(request, JOIN_REQUEST_EDIT_INPUT_PAGE);
     }
 
     @RequestMapping(value = JOIN_REQUEST_EDIT_URL)
-    public String joinRequestEdit(@RequestParam("id") Long id, @RequestParam("isComplete") String complete,
-                                  @RequestParam("notes") String notes) {
+    public String joinRequestEdit(HttpServletRequest request) {
 
-        boolean isComplete = "true".equals(complete);
+        Long id = Long.parseLong(request.getParameter("id"));
+        boolean isComplete = "true".equals(request.getParameter("isComplete"));
+        String notes = request.getParameter("notes");
 
         JoinRequest joinRequest = LegacySpringUtils.getJoinRequestManager().get(id);
         joinRequest.setNotes(notes);

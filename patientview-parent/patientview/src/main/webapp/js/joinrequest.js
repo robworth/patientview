@@ -22,14 +22,30 @@
  */
 
 $(document).ready(function(){
-    $("#incomplete").click(function(){
-        $("#page").val("incomplete");
+
+    $("#incompleteTop").click(function(){
+        $("#displayFormTop input[id=page]").val("incomplete");
     });
-    $("#complete").click(function(){
-        $("#page").val("complete");
+    $("#completeTop").click(function(){
+        $("#displayFormTop input[id=page]").val("complete");
     });
-    $("#all").click(function(){
-        $("#page").val("all")
+    $("#allTop").click(function(){
+        $("#displayFormTop input[id=page]").val("all");
     });
+    $("#incompleteBottom").click(function(){
+        $("#displayFormBottom input[id=page]").val("incomplete");
+    });
+    $("#completeBottom").click(function(){
+        $("#displayFormBottom input[id=page]").val("complete");
+    });
+    $("#allBottom").click(function(){
+        $("#displayFormBottom input[id=page]").val("all");
+    });
+
 });
+
+function sort(property){
+    window.location.href="./joinRequestList?page=sort&property="+property;
+    }
+
 
