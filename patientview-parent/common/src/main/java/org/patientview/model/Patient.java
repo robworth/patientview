@@ -247,54 +247,6 @@ public class Patient extends BaseModel {
         this.unitcode = unitCode;
     }
 
-    public Patient(String nhsno, String surname, String forename, String dateofbirth, String sex, String address1,
-                   String address2, String address3, String address4, String postcode, String telephone1,
-                   String telephone2, String mobile, String unitCode, String diagnosis, String diagnosisDate,
-                   String treatment, String transplantstatus, String hospitalnumber, String gpname, String gpaddress1,
-                   String gpaddress2, String gpaddress3, String gppostcode, String gptelephone, String gpemail,
-                   String bmdexam, String bloodgroup) {
-        this.address1 = address1;
-        this.address2 = address2;
-        this.address3 = address3;
-        this.address4 = address4;
-        setUnitcode(unitCode);
-        this.dateofbirth = dateofbirth;
-        this.forename = forename;
-        this.nhsno = nhsno;
-        this.postcode = postcode;
-        this.sex = sex;
-        this.surname = surname;
-        this.telephone1 = telephone1;
-        this.telephone2 = telephone2;
-        this.mobile = mobile;
-        this.diagnosis = diagnosis;
-        if (diagnosisDate != null) {
-            try {
-                this.diagnosisDate = DATE_FORMAT.parse(diagnosisDate);
-            } catch (ParseException e) {
-                LOGGER.error("Could not parse diagnosisDate {} {}", diagnosisDate, e);
-            }
-        }
-        this.treatment = treatment;
-        this.transplantstatus = transplantstatus;
-        this.hospitalnumber = hospitalnumber;
-        this.gpname = gpname;
-        this.gpaddress1 = gpaddress1;
-        this.gpaddress2 = gpaddress2;
-        this.gpaddress3 = gpaddress3;
-        this.gppostcode = gppostcode;
-        this.gptelephone = gptelephone;
-        this.gpemail = gpemail;
-        if (bmdexam != null) {
-            try {
-                this.bmdexam = DATE_FORMAT.parse(bmdexam);
-            } catch (ParseException e) {
-                LOGGER.error("Could not parse bmdexam {} {}", bmdexam, e);
-            }
-        }
-        this.bloodgroup = bloodgroup;
-    }
-
     public String getAddress1() {
         return address1;
     }

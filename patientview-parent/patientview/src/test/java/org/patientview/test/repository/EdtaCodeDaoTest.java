@@ -157,13 +157,36 @@ public class EdtaCodeDaoTest extends BaseDaoTest {
     }
 
     private EdtaCode getTestObject(String no, String linkType) {
-        return new EdtaCode("Test edtaCode" + no, specialty, linkType, "Test description", "Test medicalLink01",
-                "Test medicalLink02", "Test medicalLink03", "Test medicalLink04", "Test medicalLink05",
-                "Test medicalLink06", "Test medicalLinkText01", "Test medicalLinkText02",
-                "Test medicalLinkText03", "Test medicalLinkText04", "Test medicalLinkText05",
-                "Test medicalLinkText06", "Test patientLink01", "Test patientLink02", "Test patientLink03",
-                "Test patientLink04", "Test patientLink05", "Test patientLink06", "Test patientLinkText01",
-                "Test patientLinkText02", "Test patientLinkText03", "Test patientLinkText04",
-                "Test patientLinkText05", "Test patientLinkText06");
+        EdtaCode edtaCode = new EdtaCode();
+        edtaCode.setEdtaCode("Test edtaCode" + no);
+        edtaCode.setSpecialty(specialty);
+        edtaCode.setLinkType(linkType);
+        edtaCode.setDescription("Test description");
+        edtaCode.setMedicalLink01("Test medicalLink01");
+        edtaCode.setMedicalLink02("Test medicalLink02");
+        edtaCode.setMedicalLink03("Test medicalLink03");
+        edtaCode.setMedicalLink04("Test medicalLink04");
+        edtaCode.setMedicalLink05("Test medicalLink05");
+        edtaCode.setMedicalLink06("Test medicalLink06");
+        edtaCode.setMedicalLinkText01("Test medicalLinkText01");
+        edtaCode.setMedicalLinkText02("Test medicalLinkText02");
+        edtaCode.setMedicalLinkText03("Test medicalLinkText03");
+        edtaCode.setMedicalLinkText04("Test medicalLinkText04");
+        edtaCode.setMedicalLinkText05("Test medicalLinkText05");
+        edtaCode.setMedicalLinkText06("Test medicalLinkText06");
+        edtaCode.setPatientLink01("Test patientLink01");
+        edtaCode.setPatientLink02("Test patientLink02");
+        edtaCode.setPatientLink03("Test patientLink03");
+        edtaCode.setPatientLink04("Test patientLink04");
+        edtaCode.setPatientLink05("Test patientLink05");
+        edtaCode.setPatientLink06("Test patientLink06");
+        edtaCode.setPatientLinkText01("Test patientLinkText01");
+        edtaCode.setPatientLinkText02("Test patientLinkText02");
+        edtaCode.setPatientLinkText03("Test patientLinkText03");
+        edtaCode.setPatientLinkText04("Test patientLinkText04");
+        edtaCode.setPatientLinkText05("Test patientLinkText05");
+        edtaCode.setPatientLinkText06("Test patientLinkText06");
+
+        return edtaCode;
     }
 }
