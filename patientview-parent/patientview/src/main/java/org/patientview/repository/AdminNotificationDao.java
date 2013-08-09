@@ -33,6 +33,8 @@ import java.util.List;
 @Transactional(propagation = Propagation.MANDATORY)
 public interface AdminNotificationDao {
 
+    void save(AdminNotification adminNotification);
+
     List<AdminNotification> getAll();
 
     List<String> getEmailAddresses(XmlImportNotification xmlImportNotification);
