@@ -23,8 +23,12 @@
 
 package org.patientview.patientview.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.beans.support.SortDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,21 +42,40 @@ public class UnitPatientsControlller extends BaseController {
 
         String unitcode = (String) request.getAttribute("unitcode");
         unitcode = (unitcode == null) ? "" : unitcode;
-        String nhsno = (String) request.getAttribute("nhsno");
-        nhsno = (nhsno == null) ? "" : nhsno;
-        String name = (String) request.getAttribute("name");
-        name = (name == null) ? "" : name;
-        boolean showgps = "true".equals((String) request.getAttribute("showgps"));
+        String page = request.getParameter("page");
+        PagedListHolder pagedListHolder =  (PagedListHolder) request.getSession().getAttribute("patients");
+
+        if (StringUtils.isEmpty(page) || pagedListHolder == null) {
+            String nhsno = (String) request.getAttribute("nhsno");
+            nhsno = (nhsno == null) ? "" : nhsno;
+            String name = (String) request.getAttribute("name");
+            name = (name == null) ? "" : name;
+            boolean showgps = "true".equals((String) request.getAttribute("showgps"));
+            List patients =
+                    LegacySpringUtils.getPatientManager().getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
+            pagedListHolder = new PagedListHolder(patients);
+            request.getSession().setAttribute("patients", pagedListHolder);
+        } else {
+            if ("prev".equals(page)) {
+                pagedListHolder.previousPage();
+            } else if ("next".equals(page)) {
+                pagedListHolder.nextPage();
+            } else if ("sort".equals(page)) {
+                String property = (String) request.getParameter("property");
+                MutableSortDefinition newSort = new MutableSortDefinition(property, true, false);
+                SortDefinition sort =  pagedListHolder.getSort();
+                if (StringUtils.equals(sort.getProperty(), property)) {
+                    newSort.setAscending(!sort.isAscending());
+                }
+                pagedListHolder.setSort(newSort);
+                pagedListHolder.resort();
+            }
+        }
 
         if (!"".equals(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
             request.setAttribute("unit", unit);
         }
-
-        List patients
-                = LegacySpringUtils.getPatientManager().getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
-
-        request.setAttribute("patients", patients);
 
         return forwardTo(request, UNIT_PATIENTS_LIST);
     }

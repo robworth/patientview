@@ -33,23 +33,32 @@
     <h1>Users for Unit <logic:notEmpty name="unit"><bean:write name="unit" property="name"/></logic:notEmpty></h1>
 </div>
 
+<% String context=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();%>
+
 <logic:notEmpty name="unitUsers">
+    <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
+        <div class="row" style="float: right;">
+            <a href="./unitUsers?page=prev">Prev</a>&nbsp;
+            <a href="./unitUsers?page=next">Next</a>
+        </div>
+    </div>
+
   <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
       <tr>
-        <th class="tableheader">Name</th>
-        <th class="tableheader">Username</th>
-        <th class="tableheader">Role</th>
-        <th class="tableheader">Email</th>
-        <th class="tableheader">Email Verified</th>
-        <th class="tableheader">Last Login</th>
-        <th class="tableheader">Password Locked</th>
-        <th class="tableheader">Message Recipient</th>
-        <th class="tableheader">Clinician</th>  
+        <th class="tableheader" onclick="sort('name')">Name</th>
+        <th class="tableheader" onclick="sort('username')">Username</th>
+        <th class="tableheader" onclick="sort('displayRole')">Role</th>
+        <th class="tableheader" onclick="sort('email')">Email</th>
+        <th class="tableheader" onclick="sort('emailverfied')">Email Verified</th>
+        <th class="tableheader" onclick="sort('lastlogonFormatted')">Last Login</th>
+        <th class="tableheader" onclick="sort('accountlocked')">Password Locked</th>
+        <th class="tableheader" onclick="sort('isrecipient')">Message Recipient</th>
+        <th class="tableheader" onclick="sort('isclinician')">Clinician</th>
         <th></th>
         <th></th>
         <th></th>
       </tr>
-    <logic:iterate id="unitUser" name="unitUsers">
+    <logic:iterate id="unitUser" name="unitUsers" property="pageList">
       <tr>
         <td class="tablecell"><bean:write name="unitUser" property="name"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="username"/></td>
@@ -108,7 +117,7 @@
                  <bean:define id="username" name="unitUser" property="username" />
                  <bean:define id="email" name="unitUser" property="email" />
                  <bean:define id="emailverfied" name="unitUser" property="emailverfied"/>
-                 <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/control/emailverification.do', this)">
+                 <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/control/emailverification.do', this)">
              </td>
         </logic:present>
 
@@ -118,3 +127,9 @@
  </logic:notEmpty>
 </div>
 <script src="/js/emailverification.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function sort(property){
+        window.location.href="./unitUsers?page=sort&property="+property;
+    }
+</script>
