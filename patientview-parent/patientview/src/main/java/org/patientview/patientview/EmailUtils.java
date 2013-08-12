@@ -40,12 +40,12 @@ public final class EmailUtils {
     }
 
     public static void sendEmail(ServletContext context, String subject, String emailText) {
-        String to = context.getInitParameter("admin.email.to");
+        String to = LegacySpringUtils.getContextProperties().getProperty("admin.email.to");
         sendEmail(context, to, subject, emailText);
     }
 
     public static void sendEmail(ServletContext context, String toAddress, String subject, String emailText) {
-        String from = context.getInitParameter("noreply.email");
+        String from = LegacySpringUtils.getContextProperties().getProperty("noreply.email");
         sendEmail(context, from, toAddress, subject, emailText);
     }
 

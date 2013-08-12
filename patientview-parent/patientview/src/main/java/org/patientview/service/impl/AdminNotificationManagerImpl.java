@@ -27,6 +27,7 @@ import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AdminNotificationDao;
 import org.patientview.service.AdminNotificationManager;
 import org.apache.commons.lang.StringUtils;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class AdminNotificationManagerImpl implements AdminNotificationManager {
         String supportEmailAddress = adminNotificationDao.getSupportEmail();
 
         if (StringUtils.isBlank(supportEmailAddress)) {
-            return context.getInitParameter("support.email");
+            return LegacySpringUtils.getContextProperties().getProperty("support.email");
         } else {
             return supportEmailAddress;
         }

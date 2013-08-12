@@ -70,7 +70,7 @@ public class UnitStatAction extends Action {
 
     private void addDownloadableFilenames(HttpServletRequest request, Collection<UnitMonthStats> statsInRecords) {
         ServletContext context = request.getSession().getServletContext();
-        String unitStatDirPath = context.getInitParameter("unitstatfiles.directory");
+        String unitStatDirPath = LegacySpringUtils.getContextProperties().getProperty("unitstatfiles.directory");
         for (UnitMonthStats unitMonthStat : statsInRecords) {
             String unitStatFilename = unitMonthStat.getUnitcode() + "-" + unitMonthStat.getYearmonth() + ".csv";
             File statFile = new File(unitStatDirPath, unitStatFilename);

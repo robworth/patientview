@@ -28,6 +28,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +48,7 @@ public class FindXmlFiles extends Action {
 
     public static void putXmlFilesInRequest(HttpServletRequest request) {
         ServletContext context = request.getSession().getServletContext();
-        String xmlDirPath = context.getInitParameter("xml.directory");
+        String xmlDirPath = LegacySpringUtils.getContextProperties().getProperty("xml.directory");
         File[] xmlFiles = findXmlFiles(xmlDirPath, new String[]{".xml"});
         request.setAttribute("xmlFiles", Arrays.asList(xmlFiles));
     }

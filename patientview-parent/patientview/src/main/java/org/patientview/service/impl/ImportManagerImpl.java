@@ -259,7 +259,7 @@ public class ImportManagerImpl implements ImportManager {
 
     @Override
     public void renameDirectory(ServletContext context, File xmlFile) {
-        String directory = context.getInitParameter("xml.patient.data.load.directory");
+        String directory = LegacySpringUtils.getContextProperties().getProperty("xml.patient.data.load.directory");
         xmlFile.renameTo(new File(directory, xmlFile.getName()));
     }
 
