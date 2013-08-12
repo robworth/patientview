@@ -7,7 +7,6 @@ import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.alport.MedicinePanel;
 import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
 import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
 import org.patientview.radar.web.panels.hnf1b.HNF1BMiscPanel;
@@ -36,8 +35,7 @@ public class HNF1BPatientPage extends BasePage {
         GENETICS(2),
         PROTEINURIA(3),
         HNF1BMisc(4),
-        MEDICAL_RESULTS(5),
-        MEDICINE(6);
+        MEDICAL_RESULTS(5);
 
         private int pageNumber;
 
@@ -63,7 +61,6 @@ public class HNF1BPatientPage extends BasePage {
     private GeneticsPanel geneticsPanel;
     private HNF1BMiscPanel hnf1BMiscPanel;
     private MedicalResultsPanel medicalResultsPanel;
-    private MedicinePanel medicinePanel;
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
@@ -123,15 +120,6 @@ public class HNF1BPatientPage extends BasePage {
             }
         };
 
-        medicinePanel = new MedicinePanel("medicinePanel", patient) {
-            @Override
-            public boolean isVisible() {
-                return currentTab.equals(Tab.MEDICINE);
-            }
-        };
-        medicinePanel.setOutputMarkupPlaceholderTag(true);
-        add(medicinePanel);
-
         medicalResultsPanel.setOutputMarkupPlaceholderTag(true);
 
         add(medicalResultsPanel);
@@ -146,7 +134,6 @@ public class HNF1BPatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
         linksContainer.add(new TabAjaxLink("hnf1BMiscLink", Tab.HNF1BMisc));
         linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
-        linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         IModel<Integer> pageNumberModel = new Model<Integer>();
         pageNumberModel.setObject(Tab.DEMOGRAPHICS.getPageNumber());
@@ -195,7 +182,7 @@ public class HNF1BPatientPage extends BasePage {
                 target.add(linksContainer);
 
                 // add each panel to the response
-                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel, medicinePanel);
+                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();
