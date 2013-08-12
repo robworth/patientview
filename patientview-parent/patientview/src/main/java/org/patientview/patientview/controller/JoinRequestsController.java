@@ -31,12 +31,13 @@ import org.springframework.beans.support.PagedListHolder;
 import org.springframework.beans.support.SortDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- *  Join Requests controller, mapping the list, edit requests.
+ *  Join Requests controller, mapping the list, input and edit request URIs.
  */
 @Controller
 public class JoinRequestsController extends BaseController {
@@ -44,10 +45,14 @@ public class JoinRequestsController extends BaseController {
     @Value("${join.request.page.size}")
     private int pageSize;
 
-    @RequestMapping(value = JOIN_REQUEST_LIST_URL)
-     public String joinRequestList(HttpServletRequest request) {
+    /**
+     * Deal with the URIs "/control/joinRequestList"
+     * get the join requests list(paging and sorting)
+     */
+    @RequestMapping(value = Routes.JOIN_REQUEST_LIST_URL)
+     public String joinRequestList(HttpServletRequest request,
+                                   @RequestParam(value = "page", required = false) String page) {
         PagedListHolder pagedListHolder;
-        String page = request.getParameter("page");
 
         if (page == null || "".equals(page)) {
             pagedListHolder = getPageListData(false);
@@ -86,48 +91,61 @@ public class JoinRequestsController extends BaseController {
         }
         pagedListHolder.setPageSize(pageSize);
         request.getSession().setAttribute("joinRequests", pagedListHolder);
-        request.setAttribute("specialty",
-                LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext());
+        request.setAttribute("specialty", getSpecialtyContext());
+
         if (pagedListHolder.isFirstPage()) {
             request.setAttribute("firstPage", true);
-        } else if (pagedListHolder.isLastPage()) {
+        }
+
+        if (pagedListHolder.isLastPage()) {
             request.setAttribute("lastPage", true);
         }
         List<JoinRequest> joinRequestList = LegacySpringUtils.getJoinRequestManager().getUsersJoinRequests(false);
         if (joinRequestList != null && joinRequestList.size() > 0) {
             request.setAttribute("inCompletedNumber", joinRequestList.size());
         }
-        return forwardTo(request, JOIN_REQUEST_LIST_PAGE);
+        return forwardTo(request, Routes.JOIN_REQUEST_LIST_PAGE);
     }
 
-    @RequestMapping(value = JOIN_REQUEST_EDIT_INPUT_URL)
-    public String joinRequestEditInput(HttpServletRequest request) {
-        Long id = Long.parseLong(request.getParameter("id"));
+    /**
+     * Deal with the URIs "/control/joinRequestEditInput"
+     * get the join request entity with specialty id
+     */
+    @RequestMapping(value = Routes.JOIN_REQUEST_EDIT_INPUT_URL)
+    public String joinRequestEditInput(HttpServletRequest request, @RequestParam(value = "id") Long id) {
 
         JoinRequest joinRequest = LegacySpringUtils.getJoinRequestManager().get(id);
 
         request.setAttribute("joinRequest", joinRequest);
-        request.setAttribute("specialty",
-                LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext());
+        request.setAttribute("specialty", getSpecialtyContext());
 
-        return forwardTo(request, JOIN_REQUEST_EDIT_INPUT_PAGE);
+        return forwardTo(request, Routes.JOIN_REQUEST_EDIT_INPUT_PAGE);
     }
 
-    @RequestMapping(value = JOIN_REQUEST_EDIT_URL)
-    public String joinRequestEdit(HttpServletRequest request) {
+    /**
+     * Deal with the URIs "/control/joinRequestEdit"
+     * update the join request entity
+     */
+    @RequestMapping(value = Routes.JOIN_REQUEST_EDIT_URL)
+    public String joinRequestEdit(HttpServletRequest request, @RequestParam(value = "id") Long id,
+                                  @RequestParam(value = "isComplete", required = false) String complete,
+                                  @RequestParam(value = "notes", required = false) String notes) {
 
-        Long id = Long.parseLong(request.getParameter("id"));
-        boolean isComplete = "true".equals(request.getParameter("isComplete"));
-        String notes = request.getParameter("notes");
+        boolean isComplete = "true".equals(complete);
 
         JoinRequest joinRequest = LegacySpringUtils.getJoinRequestManager().get(id);
         joinRequest.setNotes(notes);
         joinRequest.setComplete(isComplete);
         LegacySpringUtils.getJoinRequestManager().save(joinRequest);
 
-        return redirectTo(JOIN_REQUEST_LIST_URL);
+        return redirectTo(Routes.JOIN_REQUEST_LIST_URL);
     }
 
+    /**
+     * Get the join requests list
+     * @param isCompleted if null, get all data.
+     * @return join requests list
+     */
     private PagedListHolder getPageListData(Boolean isCompleted) {
         List<JoinRequest> joinRequests;
         if (isCompleted != null) {

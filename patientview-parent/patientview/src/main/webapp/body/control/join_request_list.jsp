@@ -27,12 +27,13 @@
   --%>
 
 <html:xhtml/>
-<div class="span9">
+<div class="span10">
 <div class="page-header">
+
     <h1>Join Requests
-        <c:if test="${inCompletedNumber != null}">
-            <span class="badge badge-important"><c:out value="${inCompletedNumber}"/></span>
-        </c:if>
+    <c:if test="${inCompletedNumber != null}">
+        <span class="badge badge-important numberNote"><c:out value="${inCompletedNumber}"/></span>
+    </c:if>
     </h1>
 
 </div>
@@ -48,26 +49,30 @@
 
         </div>
     </div>
-    <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
+
+    <div class="span10" style="margin-left: 0px;margin-bottom:5px;">
         <div class="row" style="float: right;">
-        <c:choose>
-            <c:when test="${firstPage}">
-                Prev&nbsp;
-            </c:when>
-            <c:otherwise>
-                <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
-            </c:otherwise>
-        </c:choose>
-        <c:choose>
-            <c:when test="${lastPage}">
-                Next
-            </c:when>
-            <c:otherwise>
-                <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=next">Next</a>&nbsp;
-            </c:otherwise>
-        </c:choose>
+
+            <c:choose>
+                <c:when test="${firstPage}">
+                    Prev&nbsp;
+                </c:when>
+                <c:otherwise>
+                    <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${lastPage}">
+                    Next
+                </c:when>
+                <c:otherwise>
+                    <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=next">Next</a>&nbsp;
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
+
 
 <table cellpadding="3" class="table table-bordered table-striped ">
 
@@ -84,7 +89,7 @@
             <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfRequestFormatted')">Date of Request</th>
             <th class="tableheader" style="cursor:pointer" onclick="sort('isComplete')">Completed</th>
             <th class="tableheader">Notes</th>
-            <th class="tableheader" ></th>
+            <th class="tableheader" style="width: 50px;"></th>
         </tr>
 
         <c:forEach var="item" items="${joinRequests.pageList}">
