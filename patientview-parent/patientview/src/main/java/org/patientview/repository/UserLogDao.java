@@ -23,22 +23,17 @@
 
 package org.patientview.repository;
 
-import org.patientview.model.AdminNotification;
-import org.patientview.model.enums.XmlImportNotification;
+import org.patientview.patientview.model.UserLog;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
+/**
+ *
+ */
 @Transactional(propagation = Propagation.MANDATORY)
-public interface AdminNotificationDao {
+public interface UserLogDao {
 
-    void save(AdminNotification adminNotification);
+    UserLog get(String nhsNo);
 
-    List<AdminNotification> getAll();
-
-    List<String> getEmailAddresses(XmlImportNotification xmlImportNotification);
-
-    String getSupportEmail();
-
+    void save(UserLog userLog);
 }

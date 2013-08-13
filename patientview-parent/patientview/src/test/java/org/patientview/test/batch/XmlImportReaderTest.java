@@ -79,10 +79,10 @@ public class XmlImportReaderTest extends BaseServiceTest {
                 "9876543210", specialty);
 
         File uktDir = new File(uktDirectory);
-        File[] uktFiles = uktDir.listFiles(new FilenameFilter(){
+        File[] uktFiles = uktDir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.endsWith("uktstatus.gpg.txt");
-    }
+            }
         });
         uktFilesSize = uktFiles.length;
 
