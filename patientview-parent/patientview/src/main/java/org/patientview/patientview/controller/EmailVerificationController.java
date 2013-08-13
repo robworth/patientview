@@ -21,28 +21,29 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.logging;
+package org.patientview.patientview.controller;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.user.EmailVerificationUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+@Controller
+public class EmailVerificationController extends BaseController {
 
-public class EmailVerificationAction extends Action {
+    @RequestMapping(value = Routes.EMAIL_VERIFICATION_URL)
+    @ResponseBody
+    public String sendVerification(
+                              @RequestParam(value = "username", required = true) String username,
+                              @RequestParam(value = "email", required = true) String email,
+                              HttpServletRequest request) {
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
-        String username = BeanUtils.getProperty(form, "username");
-        String email = BeanUtils.getProperty(form, "email");
         EmailVerificationUtils.createEmailVerification(username, email, request);
 
-        return mapping.findForward("success");
+        return "{\"message\":\"Email Verification Request is sent\"}";
     }
 
 

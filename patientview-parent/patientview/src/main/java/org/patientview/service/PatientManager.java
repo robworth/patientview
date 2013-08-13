@@ -25,6 +25,7 @@ package org.patientview.service;
 
 import org.patientview.model.Patient;
 import org.patientview.patientview.PatientDetails;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,9 @@ public interface PatientManager {
 
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps);
+
+    @Secured(value = { "ROLE_RENAL_SUPERADMIN" })
+    List getAllUnitPatientsWithTreatment(String nhsno, String name, boolean showgps);
 
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsAllWithTreatmentDao(String unitcode);

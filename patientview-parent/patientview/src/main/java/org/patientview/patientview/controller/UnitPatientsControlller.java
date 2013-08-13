@@ -25,34 +25,42 @@ package org.patientview.patientview.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.Unit;
+import org.patientview.service.PatientManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.beans.support.SortDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 @Controller
 public class UnitPatientsControlller extends BaseController {
 
-    @RequestMapping(value = "/control/unitPatients")
-    public String execute(HttpServletRequest request) {
+    @RequestMapping(value = Routes.UNIT_PATIENTS_LIST_URL)
+    public String getPatients(@RequestParam(value = "unitcode", required = false) String unitcode,
+                              @RequestParam(value = "page", required = false) String page,
+                              @RequestParam(value = "nhsno", required = false) String nhsno,
+                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "showgps", required = false) boolean showgps,
+                              @RequestParam(value = "property", required = false) String property,
+                              HttpServletRequest request) {
 
-        String unitcode = (String) request.getAttribute("unitcode");
         unitcode = (unitcode == null) ? "" : unitcode;
-        String page = request.getParameter("page");
         PagedListHolder pagedListHolder =  (PagedListHolder) request.getSession().getAttribute("patients");
 
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
-            String nhsno = (String) request.getAttribute("nhsno");
             nhsno = (nhsno == null) ? "" : nhsno;
-            String name = (String) request.getAttribute("name");
             name = (name == null) ? "" : name;
-            boolean showgps = "true".equals((String) request.getAttribute("showgps"));
-            List patients =
-                    LegacySpringUtils.getPatientManager().getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
+            List patients = null;
+            PatientManager patientManager = LegacySpringUtils.getPatientManager();
+            if (StringUtils.isEmpty(unitcode)) {
+                patients = patientManager.getAllUnitPatientsWithTreatment(nhsno, name, showgps);
+            } else {
+                patients = patientManager.getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
+            }
             pagedListHolder = new PagedListHolder(patients);
             request.getSession().setAttribute("patients", pagedListHolder);
         } else {
@@ -61,7 +69,6 @@ public class UnitPatientsControlller extends BaseController {
             } else if ("next".equals(page)) {
                 pagedListHolder.nextPage();
             } else if ("sort".equals(page)) {
-                String property = (String) request.getParameter("property");
                 MutableSortDefinition newSort = new MutableSortDefinition(property, true, false);
                 SortDefinition sort =  pagedListHolder.getSort();
                 if (StringUtils.equals(sort.getProperty(), property)) {
@@ -77,7 +84,7 @@ public class UnitPatientsControlller extends BaseController {
             request.setAttribute("unit", unit);
         }
 
-        return forwardTo(request, UNIT_PATIENTS_LIST);
+        return forwardTo(request, Routes.UNIT_PATIENTS_LIST_PAGE);
     }
 
 }

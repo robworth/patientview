@@ -28,10 +28,7 @@ import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.Feedback;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.service.FeedbackManager;
-import org.patientview.service.SecurityUserManager;
-import org.patientview.service.UnitManager;
-import org.patientview.service.UserManager;
+import org.patientview.service.*;
 import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
 import org.patientview.test.service.BaseServiceTest;
@@ -80,6 +77,9 @@ public class SecurityTest extends BaseServiceTest {
 
     @Inject
     private UnitManager unitManager;
+
+    @Inject
+    private PatientManager patientManager;
 
     // Test suite wide references
     private User user;
@@ -293,6 +293,51 @@ public class SecurityTest extends BaseServiceTest {
         assertNotNull(checkValidUser);
         assertEquals("Got the Invalid user ", checkValidUser.getUsername(), "validUser");
 
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    public void testGetAllUnitUsersWithUnitAdmin() {
+        User unitadmin = serviceHelpers.createUserWithMapping("testuser1", "paul@test.com", "p", "Testuser1", "UNITCODEA",
+                "nhs1", specialty2);
+        serviceHelpers.createSpecialtyUserRole(specialty2, unitadmin, "unitadmin");
+        loginAsUser(unitadmin.getUsername(), specialty2);
+        unitManager.getAllUnitUsers();
+
+    }
+
+    @Test
+    public void testGetAllUnitUsersWithSuperAdmin() {
+        User superadmin = serviceHelpers.createUser("superadminname", "superadminname@test.com", "p", "Testuser1");
+
+        Specialty specialty = serviceHelpers.createSpecialty("RENAL", "RENAL", "Test RENAL");
+
+        serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
+        loginAsUser(superadmin.getUsername(), specialty);
+
+        unitManager.getAllUnitUsers();
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    public void testGetAllUnitPatientsWithTreatmentWithUnitAdmin() {
+        User unitadmin = serviceHelpers.createUserWithMapping("testuser1", "paul@test.com", "p", "Testuser1", "UNITCODEA",
+                "nhs1", specialty2);
+        serviceHelpers.createSpecialtyUserRole(specialty2, unitadmin, "unitadmin");
+        loginAsUser(unitadmin.getUsername(), specialty2);
+
+        patientManager.getAllUnitPatientsWithTreatment("", "", true);
+
+    }
+
+    @Test
+    public void testGetAllUnitPatientsWithTreatmentWithSuperAdmin() {
+        User superadmin = serviceHelpers.createUser("superadminname", "superadminname@test.com", "p", "Testuser1");
+
+        Specialty specialty = serviceHelpers.createSpecialty("RENAL", "RENAL", "Test RENAL");
+
+        serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
+        loginAsUser(superadmin.getUsername(), specialty);
+
+        patientManager.getAllUnitPatientsWithTreatment("", "", true);
     }
 
     private void loginAsUser(String username, Specialty specialty) {

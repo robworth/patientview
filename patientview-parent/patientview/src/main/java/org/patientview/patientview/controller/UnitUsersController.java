@@ -32,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -39,18 +40,24 @@ import java.util.List;
 @Controller
 public class UnitUsersController extends BaseController {
 
-    @RequestMapping(value = { "/control/unitUsers" }, method = { RequestMethod.POST, RequestMethod.GET })
-    public String execute(HttpServletRequest request) {
-        String unitcode = (String) request.getAttribute("unitcode");
+    @RequestMapping(value = { Routes.UNIT_USERS_LIST_URL }, method = { RequestMethod.POST, RequestMethod.GET })
+    public String getUsers(@RequestParam(value = "unitcode", required = false) String unitcode,
+                           @RequestParam(value = "page", required = false) String page,
+                           @RequestParam(value = "property", required = false) String property,
+                           HttpServletRequest request) {
         if (StringUtils.isNotEmpty(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
             request.setAttribute("unit", unit);
         }
 
-        String page = request.getParameter("page");
         PagedListHolder pagedListHolder =  (PagedListHolder) request.getSession().getAttribute("unitUsers");
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
-            List unitUsers = LegacySpringUtils.getUnitManager().getUnitUsers(unitcode);
+            List unitUsers = null;
+            if (StringUtils.isEmpty(unitcode)) {
+                unitUsers = LegacySpringUtils.getUnitManager().getAllUnitUsers();
+            } else {
+                unitUsers = LegacySpringUtils.getUnitManager().getUnitUsers(unitcode);
+            }
             pagedListHolder = new PagedListHolder(unitUsers);
             request.getSession().setAttribute("unitUsers", pagedListHolder);
         } else {
@@ -59,7 +66,6 @@ public class UnitUsersController extends BaseController {
             } else if ("next".equals(page)) {
                 pagedListHolder.nextPage();
             } else if ("sort".equals(page)) {
-                String property = (String) request.getParameter("property");
                 MutableSortDefinition newSort = new MutableSortDefinition(property, true, false);
                 SortDefinition sort =  pagedListHolder.getSort();
                 if (StringUtils.equals(sort.getProperty(), property)) {
@@ -70,7 +76,7 @@ public class UnitUsersController extends BaseController {
             }
         }
 
-        return forwardTo(request, UNIT_USERS_LIST);
+        return forwardTo(request, Routes.UNIT_USERS_LIST_PAGE);
     }
 
 }

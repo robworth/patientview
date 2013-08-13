@@ -23,7 +23,6 @@
 
 package org.patientview.repository.impl;
 
-import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.Unit;
@@ -228,10 +227,6 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
-        String unitcodeCondition = " ";
-        if (StringUtils.isNotEmpty(unitcode)) {
-            unitcodeCondition = ("AND " + "   um.unitcode = :unitcode ");
-        }
         String sql = "SELECT "
                 + "  u.*  "
                 + "FROM "
@@ -245,15 +240,57 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   sur.specialty_id = :specialtyId "
                 + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')"
-                + unitcodeCondition;
+                + "   um.unitcode = :unitcode "
+                + "AND "
+                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
         query.setParameter("specialtyId", specialty.getId());
-        if (StringUtils.isNotEmpty(unitcode)) {
-          query.setParameter("unitcode", unitcode);
+        query.setParameter("unitcode", unitcode);
+
+        List<User> users = query.getResultList();
+
+        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
+
+        for (User user : users) {
+            UnitAdmin unitAdmin = new UnitAdmin();
+            unitAdmin.setUsername(user.getUsername());
+            unitAdmin.setName(user.getName());
+            unitAdmin.setEmail(user.getEmail());
+            unitAdmin.setEmailverfied(user.isEmailverified());
+            unitAdmin.setRole(user.getRole());
+            unitAdmin.setFirstlogon(user.isFirstlogon());
+            unitAdmin.setIsrecipient(user.isIsrecipient());
+            unitAdmin.setIsclinician(user.isIsclinician());
+            unitAdmin.setLastlogon(user.getLastlogon());
+            unitAdmin.setAccountlocked(user.isAccountlocked());
+            unitAdmins.add(unitAdmin);
         }
+
+        return unitAdmins;
+    }
+
+    @Override
+    public List<UnitAdmin> getAllUnitUsers(Specialty specialty) {
+        String sql = "SELECT "
+                + "  u.*  "
+                + "FROM "
+                + "   User u, "
+                + "   UserMapping um, "
+                + "   SpecialtyUserRole sur "
+                + "WHERE "
+                + "   u.username = um.username "
+                + "AND "
+                + "   u.id = sur.user_id "
+                + "AND "
+                + "   sur.specialty_id = :specialtyId "
+                + "AND "
+                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+
+        Query query = getEntityManager().createNativeQuery(sql, User.class);
+
+        query.setParameter("specialtyId", specialty.getId());
         List<User> users = query.getResultList();
 
         List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();

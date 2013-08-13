@@ -117,7 +117,7 @@
                  <bean:define id="username" name="unitUser" property="username" />
                  <bean:define id="email" name="unitUser" property="email" />
                  <bean:define id="emailverfied" name="unitUser" property="emailverfied"/>
-                 <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/control/emailverification.do', this)">
+                 <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
              </td>
         </logic:present>
 

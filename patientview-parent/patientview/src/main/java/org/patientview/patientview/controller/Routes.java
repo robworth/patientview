@@ -22,34 +22,23 @@
  */
 package org.patientview.patientview.controller;
 
-import org.patientview.patientview.logon.LogonUtils;
-
-import javax.servlet.http.HttpServletRequest;
-
 /**
  *  Base Controller,supplies the forward/redirect method.All spring controller should extend this.
  */
-public class BaseController {
+public final class Routes {
 
-    /**
-     * Return the forward page path.
-     *
-     * @param request HttpServletRequest
-     * @param url the page path e.x.(/control/joinRequestList)
-     * @return if user first logon, return the /control/password_change.jsp
-     *          else return to the speciality url.
-     */
-    protected String forwardTo(HttpServletRequest request, String url) {
-        return LogonUtils.logonChecks(request, url);
-    }
+    public static final String JOIN_REQUEST_LIST_URL = "/control/joinRequestList";
+    public static final String JOIN_REQUEST_EDIT_URL = "/control/joinRequestEdit";
+    public static final String JOIN_REQUEST_EDIT_INPUT_URL = "/control/joinRequestEditInput";
+    public static final String JOIN_REQUEST_LIST_PAGE = "/control/join_request_list";
+    public static final String JOIN_REQUEST_EDIT_INPUT_PAGE = "/control/join_requests_edit_input";
 
-    /**
-     * Return the speciality redirect uri.
-     *
-     * @param url spring uri
-     * @return redirect uri
-     */
-    protected String redirectTo(String url) {
-        return "redirect:/web" + url;
-    }
+    public static final String UNIT_PATIENTS_LIST_URL = "/control/unitPatients";
+    public static final String UNIT_USERS_LIST_URL = "/control/unitUsers";
+    public static final String UNIT_PATIENTS_LIST_PAGE = "/control/unit_patients";
+    public static final String UNIT_USERS_LIST_PAGE = "/control/unit_users";
+
+    public static final String EMAIL_VERIFICATION_URL = "/control/emailverification";
+
+    private Routes() { }
 }

@@ -30,9 +30,11 @@ function sendVerification(username, email, url, btn){
             username: username,
             email: email
         },
-        success: function( data ) {
-            btn.parentNode.innerHTML=data.message;
+        dataType: "json",
+        success: function( result ) {
+            btn.parentNode.innerHTML=result.message;
         }
+
     });
 
 }
