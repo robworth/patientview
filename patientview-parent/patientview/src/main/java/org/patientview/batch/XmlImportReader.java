@@ -114,11 +114,13 @@ public class XmlImportReader extends ListItemReader<Object> {
 
                 File uktExportDir = new File(uktExportDirectory);
                 File uktExportFile = new File(uktExportDir, "ukt_rpv_export.txt");
-                CSVPrinter csv = new CSVPrinter(new FileWriter(uktExportFile));
-                csv.setAlwaysQuote(true);
-                csv.writeln(getPatients());
-                csv.flush();
-                csv.close();
+                if (uktExportFile != null && uktExportFile.isFile()) {
+                    CSVPrinter csv = new CSVPrinter(new FileWriter(uktExportFile));
+                    csv.setAlwaysQuote(true);
+                    csv.writeln(getPatients());
+                    csv.flush();
+                    csv.close();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

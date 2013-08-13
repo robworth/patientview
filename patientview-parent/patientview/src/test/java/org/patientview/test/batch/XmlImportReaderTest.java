@@ -27,7 +27,12 @@ import static org.junit.Assert.assertNull;
 
 /**
  *  Use the 'test/resources/rm301_1244_9876543210.xml' and "test/resources/test.uktstatus.gpg.txt" to do this test,
- *  copy this file to directory that config in .properties.
+ *  The directory that mentioned in properties should be existed before run the test.
+ *  copy these files to directory that config in .properties
+ *
+ *  e.x. in properties: "home.rpv.documents.work.rpv.app=E:/file"
+ *  copy the test/resources/rm301_1244_9876543210.xml to E:/file
+ *  copy the test/resources/test.uktstatus.gpg.txt to E:/file/ukt_import
  */
 public class XmlImportReaderTest extends BaseServiceTest {
 
@@ -72,7 +77,8 @@ public class XmlImportReaderTest extends BaseServiceTest {
     @Test
     public void testRead() throws Exception {
 
-        int uktFilesSize, xmlFilesSize = 0;
+        int uktFilesSize = 0;
+        int xmlFilesSize = 0;
 
         Specialty specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         User user1 = serviceHelpers.createUserWithMapping("testuser1", "paul@test.com", "p", "Testuser1", "RM301",
@@ -84,10 +90,15 @@ public class XmlImportReaderTest extends BaseServiceTest {
                 return name.endsWith("uktstatus.gpg.txt");
             }
         });
-        uktFilesSize = uktFiles.length;
+
+        if (uktFiles != null) {
+            uktFilesSize = uktFiles.length;
+        }
 
         File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
-        xmlFilesSize = xmlFiles.length;
+        if (xmlFiles != null) {
+            xmlFilesSize = xmlFiles.length;
+        }
 
         xmlImportReader.refresh();
 
