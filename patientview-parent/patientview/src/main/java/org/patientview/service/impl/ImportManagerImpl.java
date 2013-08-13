@@ -29,13 +29,14 @@ import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
+import org.patientview.patientview.model.UserLog;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.Centre;
-import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
+import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -221,6 +222,16 @@ public class ImportManagerImpl implements ImportManager {
                     parser.getPatient().getUnitcode(), xmlFile.getName());
         } else {
             updatePatientData(parser);
+            // Insert or update record in pv_user_log table,
+            // with current import date which is used in patient login
+            UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
+            if (userLog == null) {
+                userLog = new UserLog();
+                userLog.setNhsno(parser.getPatient().getNhsno());
+            }
+            userLog.setUnitcode(parser.getPatient().getUnitcode());
+            userLog.setLastdatadate(Calendar.getInstance());
+            LegacySpringUtils.getUserLogManager().save(userLog);
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
                     parser.getPatient().getUnitcode(), xmlFile.getName());
         }
@@ -239,6 +250,17 @@ public class ImportManagerImpl implements ImportManager {
                         parser.getPatient().getUnitcode(), xmlFile.getName());
             } else {
                 updatePatientData(parser);
+                // Insert or update record in pv_user_log table,
+                // with current import date which is used in patient login
+                UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
+                if (userLog == null) {
+                    userLog = new UserLog();
+                    userLog.setNhsno(parser.getPatient().getNhsno());
+                }
+                userLog.setUnitcode(parser.getPatient().getUnitcode());
+                userLog.setLastdatadate(Calendar.getInstance());
+                LegacySpringUtils.getUserLogManager().save(userLog);
+
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
                         parser.getPatient().getUnitcode(), xmlFile.getName());
             }
@@ -253,7 +275,7 @@ public class ImportManagerImpl implements ImportManager {
                     xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
                     xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
 
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+            //xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
         }
     }
 

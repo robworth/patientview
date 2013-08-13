@@ -25,8 +25,7 @@ package org.patientview.patientview.logon;
 
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.LogEntry;
+import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.news.NewsUtils;
 import org.patientview.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
@@ -71,13 +70,13 @@ public class LoggedInAction extends Action {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 
+
                 if (nhsno != null && !nhsno.equals("")) {
-                    LogEntry log = LegacySpringUtils.getLogEntryManager().getLatestLogEntry(nhsno,
-                            AddLog.PATIENT_DATA_FOLLOWUP);
-                    if (log != null) {
-                        request.setAttribute("lastDataDate", format.format(log.getDate().getTime()));
+                    UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(nhsno);
+                    if (userLog != null) {
+                        request.setAttribute("lastDataDate", format.format(userLog.getLastdatadate().getTime()));
                         // Get the unit from the unitcode
-                        String unitcode = log.getUnitcode();
+                        String unitcode = userLog.getUnitcode();
                         if (unitcode != null) {
                             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
                             if (null == unit) {

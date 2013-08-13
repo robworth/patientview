@@ -28,6 +28,12 @@
             </properties>
         </profile>
         <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
             <id>dev</id>
             <properties>
                 <env>dev</env>
@@ -48,6 +54,19 @@
     </profiles>
 
     <build>
+
+        <resources>
+            <!-- resource files with filtering to output to target/classes -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <filters>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay patientview.properties, other property files -->
+            <filter>src/main/filters/${env}-web-test.properties</filter>
+        </filters>
 
         <plugins>
 

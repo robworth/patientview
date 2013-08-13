@@ -50,6 +50,7 @@ import org.patientview.service.TimeManager;
 import org.patientview.service.UKTransplantManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
+import org.patientview.service.UserLogManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
 
@@ -109,6 +110,8 @@ public final class LegacySpringUtils {
     private static UnitManager unitManager;
 
     private static UserManager userManager;
+
+    private static UserLogManager userLogManager;
 
     private static IbdManager ibdManager;
 
@@ -304,6 +307,14 @@ public final class LegacySpringUtils {
 
     public static UserManager getUserManager() {
         return userManager;
+    }
+
+    public static UserLogManager getUserLogManager() {
+        return userLogManager;
+    }
+
+    public static void setUserLogManager(UserLogManager userLogManager) {
+        LegacySpringUtils.userLogManager = userLogManager;
     }
 
     public static void setUserManager(UserManager userManager) {

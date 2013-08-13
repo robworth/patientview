@@ -21,24 +21,31 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository;
+package org.patientview.service.impl;
 
-import org.patientview.model.AdminNotification;
-import org.patientview.model.enums.XmlImportNotification;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.patientview.patientview.model.UserLog;
+import org.patientview.repository.UserLogDao;
+import org.patientview.service.UserLogManager;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.inject.Inject;
 
-@Transactional(propagation = Propagation.MANDATORY)
-public interface AdminNotificationDao {
+/**
+ *
+ */
+@Service(value = "userLogManager")
+public class UserLogManagerImpl implements UserLogManager {
 
-    void save(AdminNotification adminNotification);
+    @Inject
+    private UserLogDao userLogDao;
 
-    List<AdminNotification> getAll();
+    @Override
+    public UserLog getUserLog(String nhsNo) {
+        return userLogDao.get(nhsNo);
+    }
 
-    List<String> getEmailAddresses(XmlImportNotification xmlImportNotification);
-
-    String getSupportEmail();
-
+    @Override
+    public void save(UserLog userLog) {
+        userLogDao.save(userLog);
+    }
 }
