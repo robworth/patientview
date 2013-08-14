@@ -23,6 +23,7 @@
 package org.patientview.patientview.controller;
 
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,6 +51,10 @@ public class BaseController {
      * @return redirect uri
      */
     protected String redirectTo(String url) {
-        return "redirect:/web" + url;
+        return "redirect:/" + getSpecialtyContext() + "/web" + url;
+    }
+
+    protected String getSpecialtyContext() {
+        return LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
     }
 }

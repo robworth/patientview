@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%--
   ~ PatientView
@@ -26,42 +27,121 @@
   --%>
 
 <html:xhtml/>
-<div class="span9">
+<div class="span10">
 <div class="page-header">
-    <h1>Join Requests</h1>
+
+    <h1>Join Requests
+    <c:if test="${inCompletedNumber != null}">
+        <span class="badge badge-important numberNote"><c:out value="${inCompletedNumber}"/></span>
+    </c:if>
+    </h1>
+
 </div>
 
-<table cellpadding="3" class="table table-bordered table-striped">
+    <div class="span10">
+        <div class="row">
+            <form action="/web/control/joinRequestList" method="post" id="displayFormTop">
+                <input type="hidden" name="page" id="page" value=""/>
+                <html:submit value="Show incomplete" styleId="incompleteTop" styleClass="btn" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show complete" styleClass="btn" styleId="completeTop" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show all" styleClass="btn" styleId="allTop" style="float:left;margin-left:5px;"/>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="span10" style="margin-left: 0px;margin-bottom:5px;">
+        <div class="row" style="float: right;">
+
+            <c:choose>
+                <c:when test="${firstPage}">
+                    Prev&nbsp;
+                </c:when>
+                <c:otherwise>
+                    <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${lastPage}">
+                    Next
+                </c:when>
+                <c:otherwise>
+                    <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=next">Next</a>&nbsp;
+                </c:otherwise>
+            </c:choose>
+
+        </div>
+    </div>
+
+
+<table cellpadding="3" class="table table-bordered table-striped ">
 
 
     <logic:notEmpty name="joinRequests">
 
         <tr class="tableheader">
-            <th class="tableheader">First Name</th>
-            <th class="tableheader">Last Name</th>
-            <th class="tableheader">Date of Birth</th>
-            <th class="tableheader">NHS Number</th>
-            <th class="tableheader">Unit Code</th>
-            <th class="tableheader">Email</th>
-            <th class="tableheader">Date of Request</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('firstName')">First Name</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('lastName')">Last Name</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfBirthFormatted')">Date of Birth</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('nhsNo')">NHS Number</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('unitcode')">Unit Code</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('email')">Email</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfRequestFormatted')">Date of Request</th>
+            <th class="tableheader" style="cursor:pointer" onclick="sort('isComplete')">Completed</th>
+            <th class="tableheader">Notes</th>
+            <th class="tableheader" style="width: 50px;"></th>
         </tr>
 
-        <logic:iterate id="joinrequest" name="joinRequests" >
+        <c:forEach var="item" items="${joinRequests.pageList}">
             <tr>
-                <td class="tablecell"><bean:write name="joinrequest" property="firstName" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="lastName" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="dateOfBirthFormatted" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="nhsNo" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="unitcode" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="email" /></td>
-                <td class="tablecell"><bean:write name="joinrequest" property="dateOfRequestFormatted" /></td>
+                <td class="tablecell"><c:out value="${item.firstName}"/></td>
+                <td class="tablecell"><c:out value="${item.lastName}"/></td>
+                <td class="tablecell"><c:out value="${item.dateOfBirthFormatted}"/></td>
+                <td class="tablecell"><c:out value="${item.nhsNo}"/></td>
+                <td class="tablecell"><c:out value="${item.unitcode}"/></td>
+                <td class="tablecell"><c:out value="${item.email}"/></td>
+                <td class="tablecell"><c:out value="${item.dateOfRequestFormatted}"/></td>
+                <td class="tablecell">
+                    <logic:equal value="false" name="item" property="isComplete">
+                        <big><font color="red">&#10008;</font></big>
+                    </logic:equal>
+                    <logic:equal value="true" name="item" property="isComplete">
+                        <big><font color="green">&#10004;</font></big>
+                    </logic:equal>
+                </td>
+                <td class="tablecell"><bean:write name="item" property="notes"/></td>
+                <logic:present role="superadmin,unitadmin">
+                    <td>
+                        <form action="/<c:out value="${specialty}"/>/web/control/joinRequestEditInput" method="post">
+                            <html:hidden name="item" property="id"/>
+                            <html:submit value="Edit" styleClass="btn" />
+                        </form>
+                    </td>
+                </logic:present>
             </tr>
-        </logic:iterate>
+        </c:forEach>
+
 
     </logic:notEmpty>
 </table>
 
 
+
+    <div class="span10">
+        <div class="row">
+            <form action="/web/control/joinRequestList" method="post" id="displayFormBottom">
+                <input type="hidden" name="page" id="page" value=""/>
+                <html:submit value="Show incomplete" styleId="incompleteBottom" styleClass="btn" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show complete" styleClass="btn" styleId="completeBottom" style="float:left;margin-left:5px;"/>
+                <html:submit value="Show all" styleClass="btn" styleId="allBottom" style="float:left;margin-left:5px;"/>
+            </form>
+        </div>
+    </div>
+
+
+
 </div>
 </div>
+
+<script src="/js/joinrequest.js" type="text/javascript"></script>
 
