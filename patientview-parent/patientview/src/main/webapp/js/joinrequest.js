@@ -21,21 +21,31 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository;
+$(document).ready(function(){
 
-import org.patientview.patientview.model.JoinRequest;
+    $("#incompleteTop").click(function(){
+        $("#displayFormTop input[id=page]").val("incomplete");
+    });
+    $("#completeTop").click(function(){
+        $("#displayFormTop input[id=page]").val("complete");
+    });
+    $("#allTop").click(function(){
+        $("#displayFormTop input[id=page]").val("all");
+    });
+    $("#incompleteBottom").click(function(){
+        $("#displayFormBottom input[id=page]").val("incomplete");
+    });
+    $("#completeBottom").click(function(){
+        $("#displayFormBottom input[id=page]").val("complete");
+    });
+    $("#allBottom").click(function(){
+        $("#displayFormBottom input[id=page]").val("all");
+    });
 
-import java.util.List;
+});
 
-public interface JoinRequestDao {
+function sort(property){
+    window.location.href="./joinRequestList?page=sort&property="+property;
+    }
 
-    void save(JoinRequest joinRequest);
 
-    List<JoinRequest> getAll();
-
-    List<JoinRequest> getJoinRequestsForUnitCodes(List<String> unitcodes);
-
-    List<JoinRequest> getJoinRequestsForUnitCodes(List<String> unitcodes, Boolean isComplete);
-
-    JoinRequest get(Long id);
-}
