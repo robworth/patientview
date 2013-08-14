@@ -69,15 +69,6 @@ public class XmlImportReader extends ListItemReader<Object> {
     @Value("${uktexport.directory}")
     private String uktExportDirectory;
 
-    @Value("${xml.archive.directory}")
-    private String xmlArchiveDirectory;
-
-    @Value("${ukt.archive.directory}")
-    private String uktArchiveDirectory;
-
-    @Value("${uktexport.archive.directory}")
-    private String uktExportArchiveDirectory;
-
     private String[] fileEndings = {".xml", };
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -93,7 +84,6 @@ public class XmlImportReader extends ListItemReader<Object> {
     public void refresh() {
 
         try {
-
             if ((rumImport == null) || !"false".equals(rumImport)) {
                 File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
                 if (xmlFiles != null && xmlFiles.length > 0) {
@@ -162,6 +152,19 @@ public class XmlImportReader extends ListItemReader<Object> {
         }
         return patientArray;
     }
+
+    public void setXmlDirectory(String xmlDirectory) {
+        this.xmlDirectory = xmlDirectory;
+    }
+
+    public void setUktDirectory(String uktDirectory) {
+        this.uktDirectory = uktDirectory;
+    }
+
+    public void setUktExportDirectory(String uktExportDirectory) {
+        this.uktExportDirectory = uktExportDirectory;
+    }
+
 }
 
 class UktFileFilter implements FilenameFilter {

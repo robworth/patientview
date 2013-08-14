@@ -1,5 +1,6 @@
 package org.patientview.test.quartz;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.patientview.model.Centre;
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
+@Ignore
 public class XmlImportJobQuartzSchedulerTest {
 
     @Autowired

@@ -14,7 +14,7 @@ import org.patientview.service.ibd.IbdManager;
 import org.patientview.test.helpers.ServiceHelpers;
 import org.patientview.test.service.BaseServiceTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -36,10 +36,8 @@ import static org.junit.Assert.assertNull;
  */
 public class XmlImportReaderTest extends BaseServiceTest {
 
-    @Value("${xml.directory}")
     private String xmlDirectory;
 
-    @Value("${ukt.directory}")
     private String uktDirectory;
 
     private String[] fileEndings = {".xml", };
@@ -79,6 +77,9 @@ public class XmlImportReaderTest extends BaseServiceTest {
 
         int uktFilesSize = 0;
         int xmlFilesSize = 0;
+        String parentDir = ResourceUtils.getFile("classpath:schedule/test-uktstatus.gpg.txt").getParent();
+        setUktDirectory(parentDir);
+        setXmlDirectory(parentDir);
 
         Specialty specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         User user1 = serviceHelpers.createUserWithMapping("testuser1", "paul@test.com", "p", "Testuser1", "RM301",
@@ -100,6 +101,9 @@ public class XmlImportReaderTest extends BaseServiceTest {
             xmlFilesSize = xmlFiles.length;
         }
 
+        xmlImportReader.setXmlDirectory(parentDir);
+        xmlImportReader.setUktDirectory(parentDir);
+        xmlImportReader.setUktExportDirectory(parentDir);
         xmlImportReader.refresh();
 
         if (xmlFilesSize > 0) {
@@ -178,5 +182,13 @@ public class XmlImportReaderTest extends BaseServiceTest {
         }
 
 
+    }
+
+    public void setXmlDirectory(String xmlDirectory) {
+        this.xmlDirectory = xmlDirectory;
+    }
+
+    public void setUktDirectory(String uktDirectory) {
+        this.uktDirectory = uktDirectory;
     }
 }
