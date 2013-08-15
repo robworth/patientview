@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 
-<!--
+<%--
   ~ PatientView
   ~
   ~ Copyright (c) Worth Solutions Limited 2004-2013
@@ -21,24 +21,10 @@
   ~ @author PatientView <info@patientview.org>
   ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
-  -->
+  --%>
 
-<!DOCTYPE suppressions PUBLIC
-        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
-        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+<tiles:insert definition="control.layout" flush="true" >
 
-<suppressions>
-    <suppress checks="ParameterNumber"
-              files="PatientLogon.java"
-              lines="37"/>
-    <suppress checks="ParameterNumber"
-              files="PatientEnteredResult.java"
-              lines="52"/>
-    <suppress checks="ParameterNumber"
-              files="LogEntryDaoImpl.java"
-              lines="84,97"/>
-    <suppress checks="ParameterNumber"
-              files="LogEntryDao.java"
-              lines="48"/>
-</suppressions>
+    <tiles:put name="body" value="/body/control/join_requests_edit_input.jsp" />
 
+</tiles:insert>
