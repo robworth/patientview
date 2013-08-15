@@ -71,9 +71,9 @@
             </properties>
         </profile>
         <profile>
-            <id>production-rpv</id>
+            <id>production</id>
             <properties>
-                <env>production-rpv</env>
+                <env>production</env>
             </properties>
         </profile>
     </profiles>

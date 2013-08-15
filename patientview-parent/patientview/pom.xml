@@ -122,9 +122,9 @@
             </properties>
         </profile>
         <profile>
-            <id>production-rpv</id>
+            <id>production</id>
             <properties>
-                <env>production-rpv</env>
+                <env>production</env>
                 <tomcatmanagerurl>https://www.renalpatientview.org:9080/manager/html</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
