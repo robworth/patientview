@@ -97,6 +97,11 @@ public class UnitVoter implements AccessDecisionVoter {
             SecurityUser user = (SecurityUser) authentication.getPrincipal();
 
             UnitSecured securedAnnotation = methodInvocation.getMethod().getAnnotation(UnitSecured.class);
+			
+			// super admins bypass method security
+            if (securityUserManager.isRolePresent("superadmin")) {
+                result = ACCESS_GRANTED;
+            }
 
             if (securedAnnotation != null && securedAnnotation.value() != null) {
                 if (securedAnnotation.value().equals(SecurityConfig.UNIT_ACCESS)) {
