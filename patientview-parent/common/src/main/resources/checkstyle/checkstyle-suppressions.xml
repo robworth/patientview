@@ -32,28 +32,13 @@
               files="PatientLogon.java"
               lines="37"/>
     <suppress checks="ParameterNumber"
-              files="Centre.java"
-              lines="58"/>
-    <suppress checks="ParameterNumber"
-              files="EdtaCode.java"
-              lines="128"/>
-    <suppress checks="ParameterNumber"
-              files="Patient.java"
-              lines="118"/>
-    <suppress checks="ParameterNumber"
-              files="Unit.java"
-              lines="191"/>
-    <suppress checks="ParameterNumber"
               files="PatientEnteredResult.java"
               lines="52"/>
     <suppress checks="ParameterNumber"
               files="LogEntryDaoImpl.java"
-              lines="84,94"/>
+              lines="84,97"/>
     <suppress checks="ParameterNumber"
               files="LogEntryDao.java"
               lines="48"/>
-    <suppress checks="ParameterNumber"
-              files="LogEntryDaoImpl.java"
-              lines="97"/>
 </suppressions>
 

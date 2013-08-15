@@ -80,8 +80,8 @@ public final class XmlImportUtils {
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
-                ccAddresses.toArray(new String[ccAddresses.size()]),
+        EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
+                new String[]{toAddress}, ccAddresses.toArray(new String[ccAddresses.size()]),
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
 
@@ -114,7 +114,8 @@ public final class XmlImportUtils {
         Unit unit = UnitUtils.retrieveUnit(unitcode);
         String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
-        String[] toAddresses = new String[]{context.getInitParameter("warning.email"), rpvAdminEmailAddress};
+        String[] toAddresses = new String[]{LegacySpringUtils.getContextProperties().getProperty("warning.email"),
+                rpvAdminEmailAddress};
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
@@ -122,7 +123,8 @@ public final class XmlImportUtils {
         String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName, context);
 
         for (String toAddress : toAddresses) {
-            EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+            EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
+                    new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
@@ -200,7 +202,8 @@ public final class XmlImportUtils {
 
         emailBody += newLine;
         emailBody += newLine;
-        emailBody += newLine + "For further help, please contact " + context.getInitParameter("support.email");
+        emailBody += newLine + "For further help, please contact "
+                + LegacySpringUtils.getContextProperties().getProperty("support.email");
         emailBody += newLine;
 
         return emailBody;
@@ -261,7 +264,8 @@ public final class XmlImportUtils {
 
             String emailBody = createEmailBody(context, stacktrace, fileName);
 
-            EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+            EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
+                    new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
         } catch (Exception e1) {
@@ -320,7 +324,8 @@ public final class XmlImportUtils {
         emailBody += newLine + " - The file matches the RPV XML schema.";
         emailBody += newLine + " - There are no missing values.";
         emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine + "For further help, please contact " + context.getInitParameter("support.email");
+        emailBody += newLine + "For further help, please contact "
+                + LegacySpringUtils.getContextProperties().getProperty("support.email");
         emailBody += newLine;
         return emailBody;
     }
