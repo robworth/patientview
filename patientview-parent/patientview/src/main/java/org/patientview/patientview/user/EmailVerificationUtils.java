@@ -53,7 +53,8 @@ public final class EmailVerificationUtils {
                         new RandPass(RandPass.NUMBERS_AND_LETTERS_ALPHABET).getPass(VERIFICATION_CODE_LENGTH);
                 Calendar now = GregorianCalendar.getInstance();
                 ServletContext context = request.getSession().getServletContext();
-                int daysToAdd = Integer.decode(context.getInitParameter("email.verification.best.before.days"));
+                int daysToAdd = Integer.decode(
+                        LegacySpringUtils.getContextProperties().getProperty("email.verification.best.before.days"));
 
                 now.add(Calendar.DATE, daysToAdd);
                 EmailVerification emailVerification = new EmailVerification(username, email, verificationCode, now);
@@ -90,7 +91,7 @@ public final class EmailVerificationUtils {
         emailBody += newLine;
         emailBody += "Click this link to verify:" + newLine;
         emailBody += newLine;
-        emailBody += context.getInitParameter("config.site.url") + "emailverification.do?v="
+        emailBody += LegacySpringUtils.getContextProperties().getProperty("config.site.url") + "emailverification.do?v="
                 + emailVerification.getVerificationcode() + newLine;
         emailBody += newLine;
         emailBody += newLine;
@@ -102,7 +103,7 @@ public final class EmailVerificationUtils {
                         + "because it it probably some kind of scam or phishing attempt."
                         + newLine;
 
-        EmailUtils.sendEmail(context, context.getInitParameter("noreply.email"), emailVerification.getEmail(),
-                "[Renal PatientView] Verify email address", emailBody);
+        EmailUtils.sendEmail(context, LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
+                emailVerification.getEmail(), "[Renal PatientView] Verify email address", emailBody);
     }
 }
