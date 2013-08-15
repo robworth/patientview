@@ -1,0 +1,64 @@
+<wicket:panel>
+    <div id="topNavigation">
+        <a wicket:id="homePageLink" href="#">Home </a>
+        <a class="logoutLink" wicket:id="logoutLink">| Log-out</a>
+
+        <div id="rightNav">
+            <div class="AJXCSSMenuCeGKRNA"><!-- AJXFILE:menu/ajxmenu.css -->
+                <ul>
+
+                    <li class="" style="position: static; ">
+                        <a wicket:id="professionalsPageLink" title="Professionals Page" href="#">Professionals</a>
+                    </li>
+
+                    <li class="" style="position: static; ">
+                        <a wicket:id="patientsPageLink" title="Patients Page" href="#">| Patients</a>
+                    </li>
+
+                    <wicket:enclosure>
+                        <li class="" style="position: static; ">
+                            <a wicket:id="enterNewPatientPageLink" title="Enter new patients" href="#">| Enter New Patient
+                                |</a>
+                        </li>
+                    </wicket:enclosure>
+
+                    <li class="" style="position: static; " wicket:id="existingPatientsContainer">
+                        <a title="Existing Patients" class="ajxsub" href="#">Existing Patients</a>
+                        <ul style="display: none; ">
+                            <li class="sfirst" style="position: static; ">
+                                <a wicket:id="patientsListingPageLink" href="#" title="Modify Existing Patients">Modify
+                                    Patients</a>
+                            </li>
+                            <li class="" style="position: static; ">
+                                <a wicket:id="recruitmentPageLink" href="#" title="Recruitment">Recruitment</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!--<li class="" style="position: static; ">-->
+                        <!--<a wicket:id="diseaseIndexPageLink" title="Disease Information for patients" href="#">| Disease-->
+                            <!--Index</a>-->
+                    <!--</li>-->
+
+                    <!-- todo Removed this dropdown from navigation but kep the code per Rob's request -->
+                    <!--<li class="" style="position: static; " wicket:id="cliniciansContainer">-->
+                        <!--<a id="ctl00_lnkClinicianInfo" class="ajxsub" href="#">| Information for Clinicians</a>-->
+                        <!--<ul style="display: none; ">-->
+                            <!--<li class="sfirst" style="position: static; ">-->
+                                <!--<a wicket:id="mpgnPageLink" href="#" title="MPGN/DDD">MPGN/DDD</a>-->
+                            <!--</li>-->
+                            <!--<li class="" style="position: static; ">-->
+                                <!--<a wicket:id="srnsPageLink" href="#" title="SRNS">SRNS</a>-->
+                            <!--</li>-->
+                            <!--<li class="slast" style="position: static; ">-->
+                                <!--<a wicket:id="consentFormsPageLink" href="#" title="Consent Forms">Consent Forms</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                </ul>
+                <br>
+            </div>
+
+        </div>
+    </div>
+</wicket:panel>

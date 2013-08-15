@@ -1,0 +1,18 @@
+# manager crontab
+
+# Renal - Decrypts files as they come in...
+0,6,12,18,24,30,36,42,48,54 * * * * /home/manager/scripts/dec /home/manager/proton/*.gpg >> /home/manager/.logs/gpgdecode_log
+# Renal - Delete old files
+10 4 * * * find /home/manager/proton/dun -type f -ctime +20 -exec rm {} \;
+
+# IBD - Decrypts files as they come in...
+7,22,37,52 * * * * /home/manager/scripts/dec-ibd /home/manager/ibdfiles/*.gpg >> /home/manager/.logs/gpgdecode_log
+# IBD - Delete old files
+30 4 * * * find /home/manager/ibdfiles/dun -type f -ctime +20 -exec rm {} \;
+
+# UKT stuff
+2,8,23,38,52 * * * * /home/manager/scripts/uktenc
+3,24,35,49 * * * * /home/manager/scripts/uktdec
+
+# Monitor XML Import
+* * * * * /home/manager/scripts/rpvxmlfilemonitor

@@ -1,0 +1,258 @@
+<wicket:panel>
+<form wicket:id="form">
+
+<div id="mainBlock">
+
+<p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+<div wicket:id="patientDetail">
+
+</div>
+
+
+<table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+       class="style3">
+<tr>
+<td style="width:50%; vertical-align:top;">
+    <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+        <tr>
+            <td>Surname <strong><span wicket:id="surnameFeedbackIndicator"></span></strong></td>
+            <td>
+                <input type="text" wicket:id="surname"/>
+            </td>
+        </tr>
+        <tr>
+            <td>First Name <strong><span wicket:id="forenameFeedbackIndicator"></span></strong></td>
+            <td>
+                <input type="text" wicket:id="forename"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Alias Name</td>
+            <td>
+                <input type="text" wicket:id="surnameAlias"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Date of Birth <strong><span wicket:id="dateOfBirthFeedbackIndicator"></span></strong></td>
+            <td>
+                <input type="text" wicket:id="dateOfBirth" style="width:70px;"/>
+                <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyy. To select a different month or year in the
+                date picker, click the current month or year at the top.<br/><br/></span> </a>
+
+                <span class="feedback" wicket:id="dateOfBirthFeedback"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Sex <strong><span wicket:id="sexFeedbackIndicator"></span></strong></td>
+            <td>
+                <select wicket:id="sex"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Ethnic Group</td>
+            <td>
+                <select wicket:id="ethnicity"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top">Address</td>
+            <td>
+                <input type="text" wicket:id="address1" style="width:200px;"/>
+                <br/>
+                <input type="text" wicket:id="address2" style="width:200px;"/>
+                <br/>
+                <input type="text" wicket:id="address3" style="width:200px;"/>
+                <br/>
+                <input type="text" wicket:id="address4" style="width:200px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Postcode</td>
+            <td>
+                <input type="text" wicket:id="postcode" style="width:70px;"/>
+                <span class="feedback" wicket:id="postcodeFeedback"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Email address</td>
+            <td><input wicket:id="emailAddress" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Phone 1</td>
+            <td><input wicket:id="phone1" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Phone 2</td>
+            <td><input wicket:id="phone2" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Mobile</td>
+            <td>
+                <input wicket:id="mobile" type="text"/>
+                <span class="feedback" wicket:id="mobileFeedback"/>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <br/><br/>
+
+
+
+</td>
+<td style="vertical-align:top;">
+    <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageUp"></span>
+                <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageUp"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+            </td>
+        </tr>
+        <tr wicket:id="nhsNumberContainer">
+            <td><span>NHS Number</span></td>
+            <td>
+                <label wicket:id="nhsNumber"/>
+            </td>
+        </tr>
+        <tr wicket:id="chiNumberContainer">
+            <td><span>CHI No. (Scotland Only)</span></td>
+            <td>
+                <label wicket:id="chiNumber"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Add Id</td>
+            <td>
+                <form wicket:id="addIdForm">
+                    <input wicket:id="id"/>
+                    <select wicket:id="idType"></select>
+                    <input type="button" wicket:id="addIdSubmit" value="Add"/>
+                </form>
+            </td>
+        </tr>
+        <tr wicket:id="hospitalNumberContainer">
+            <td>Hospital Number</td>
+            <td>
+                <input type="text" wicket:id="hospitalNumber" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr wicket:id="renalRegistryNumberContainer">
+            <td><span>Renal Registry Number</span></td>
+            <td>
+                <input type="text" wicket:id="renalRegistryNumber" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr wicket:id="ukTransplantNumberContainer">
+            <td><span>UK Transplant Number</span></td>
+            <td>
+                <input type="text" wicket:id="ukTransplantNumber" style="width:80px;"/>
+            </td>
+        </tr>
+        <tr wicket:id="republicOfIrelandIdContainer">
+            <td>Republic of Ireland No.</td>
+            <td><input wicket:id="republicOfIrelandId" type="text"/></td>
+        </tr>
+        <tr wicket:id="isleOfManIdContainer">
+            <td>Isle of Man No.</td>
+            <td><input wicket:id="isleOfManId" type="text"/></td>
+        </tr>
+        <tr wicket:id="channelIslandsIdContainer">
+            <td>Channel Islands No.</td>
+            <td><input wicket:id="channelIslandsId" type="text"/></td>
+        </tr>
+        <tr wicket:id="indiaIdContainer">
+            <td>India No.</td>
+            <td><input wicket:id="indiaId" type="text"/></td>
+        </tr>
+
+        <tr>
+            <td><label>Renal Unit</label> </td>
+            <td>
+                <select wicket:id="renalUnit"/>
+            </td>
+        </tr>
+        <tr>
+            <td>RRT Modality
+            </td>
+            <td>
+                <div wicket:id="rrtModality">
+                    <label>HD</label> <input wicket:id="hd" type="radio" style="margin-left: 0; margin-right: 10px;"/>
+                    <label>PD</label> <input wicket:id="pd" type="radio" style="margin-left: 0; margin-right: 10px;"/>
+                    <label>Tx</label> <input wicket:id="tx" type="radio" style="margin-left: 0; margin-right: 10px;"/>
+                    <label>none</label> <input wicket:id="none" type="radio"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Renal Diagnosis <strong><span wicket:id="genericDiagnosisFeedbackIndicator"></span></strong></td>
+            <td>
+                <select wicket:id="genericDiagnosis"></select>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">Date of Diagnosis <strong><span wicket:id="dateOfGenericDiagnosisFeedbackIndicator"></span></strong></td>
+            <td>
+                <input wicket:id="dateOfGenericDiagnosis" type="text"/>
+                <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyy. To select a different month or year in the
+                date picker, click the current month or year at the top.<br/><br/></span> </a><br />
+
+                <span class="feedback" style="font-weight: bold;" wicket:id="dateOfGenericDiagnosisFeedback"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Clinician</td>
+            <td>
+                <select wicket:id="clinician"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Other relevant Clinician and contact info</td>
+            <td><textarea wicket:id="otherClinicianAndContactInfo" rows="7" cols="8"></textarea></td>
+        </tr>
+        <tr>
+            <td>Confirm that you have a signed consent form for RaDaR</td>
+            <td>
+                <input type="checkbox" wicket:id="consent"/> <a wicket:id="consentFormsLink" href="#"
+                                                                target="_blank">Consent Forms</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Comments</td>
+            <td><textarea wicket:id="comments" rows="7" cols="8"/></td>
+        </tr>
+
+        <tr id="ctl00_ContentPlaceHolder1_rowConsent2">
+            <td colspan="2">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessage"></span>
+                <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessage"></span>
+            </td>
+        </tr>
+
+    </table>
+</td>
+</tr>
+</table>
+
+</div>
+
+</form>
+</wicket:panel>

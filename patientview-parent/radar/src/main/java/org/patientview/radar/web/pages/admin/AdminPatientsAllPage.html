@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Patients (All)</h2>
+
+    <p>
+        Use the top boxes to filter the list. Use the left hand 'Clear' link to reset the filtered list.
+    </p>
+
+    <div>
+        <table cellspacing="0" cellpadding="0" class="dxgvTable" style="width: 100%">
+            <thead>
+                <tr>
+                    <th class="dxgvHeader firstCell" style="width: 34px;">#</th>
+                    <th class="dxgvHeader" style="width: 35px;">Edit</th>
+                    <th class="dxgvHeader" wicket:id="orderByRadarNo">RaDaR No</th>
+                    <th class="dxgvHeader" wicket:id="orderByDateRegistered">Date Reg</th>
+                    <th class="dxgvHeader" wicket:id="orderByForename">First Name</th>
+                    <th class="dxgvHeader" wicket:id="orderBySurname">Surname</th>
+                    <th class="dxgvHeader" wicket:id="orderByAddress">Address</th>
+                    <th class="dxgvHeader" wicket:id="orderByDiagnosis">Diagnosis</th>
+                    <th class="dxgvHeader" wicket:id="orderByConsultantSurname">Consultant</th>
+                    <th class="dxgvHeader" wicket:id="orderByConsultantForename">&nbsp;</th>
+                    <th class="dxgvHeader" wicket:id="orderByCentre">Centre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="dxgvFilterRow" id="filterRow">
+                    <td class="dxgv firstCell"><a wicket:id="clearButton">Clear</a></td>
+                    <td class="dxgv">&nbsp;</td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchRadarNo" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchDateRegistered" type="text" class="dxeEditArea" style="border-width: 0; width: 75%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">&nbsp;</td>
+                    <td class="dxgv">&nbsp;</td>
+                    <td class="dxgv">&nbsp;</td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchDiagnosis" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchConsultantSurname" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchConsultantForename" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                    <td class="dxgv">
+                        <div style="background-color: #FFF; overflow: hidden; padding: 1px; border: 1px solid #9F9F9F;">
+                            <input wicket:id="searchCentre" type="text" class="dxeEditArea" style="border-width: 0; width: 100%; margin: 1px 1px 2px 2px;" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody wicket:id="demographicsContainer">
+                <tr class="dxgvDataRow" wicket:id="demographics">
+                    <td class="dxgv firstCell">&nbsp;</td>
+                    <td class="dxgv"><a wicket:id="edit">Edit</a></td>
+                    <td class="dxgv"><span wicket:id="radarNo">radar no</span></td>
+                    <td class="dxgv"><span wicket:id="dateRegistered">date reg</span></td>
+                    <td class="dxgv"><span wicket:id="forename">forename</span></td>
+                    <td class="dxgv"><span wicket:id="surname">surname</span></td>
+                    <td class="dxgv"><span wicket:id="address">address</span></td>
+                    <td class="dxgv"><span wicket:id="diagnosis">diagnosis</span></td>
+                    <td class="dxgv"><span wicket:id="consultantForename">consultant forename</span></td>
+                    <td class="dxgv"><span wicket:id="consultantSurname">consultant surname</span></td>
+                    <td class="dxgv"><span wicket:id="centre">centre</span></td>
+                </tr>
+                <tr>
+                    <td class="dxgv firstCell" colspan="12">
+                        <span wicket:id="navigator" class="paging"></span>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            <button wicket:id="exportPdf" value="Export to pdf" class="button">Export to pdf</button>
+            &nbsp;
+            <button wicket:id="exportExcel" value="Export to excel" class="button">Export to excel</button>
+        </p>
+    </div>
+
+</wicket:extend>
+
+</body>
+</html>

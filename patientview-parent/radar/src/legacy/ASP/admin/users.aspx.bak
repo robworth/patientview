@@ -1,0 +1,71 @@
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="users.aspx.vb" Inherits="admin_users" Debug="true" %>
+
+<%@ Register assembly="DevExpress.Web.ASPxGridView.v9.1, Version=9.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxGridView" tagprefix="dxwgv" %>
+<%@ Register assembly="DevExpress.Web.ASPxEditors.v9.1, Version=9.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxEditors" tagprefix="dxe" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="../normal.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
+        <h2>
+            Admin - Users</h2>
+        <p>
+            <dxwgv:ASPxGridView ID="ASPxGridView1" runat="server" 
+                AutoGenerateColumns="False" DataSourceID="SqlDataSource1" Styles-Header-Font-Bold="true">
+<Styles>
+<Header Font-Bold="True"></Header>
+</Styles>
+                <Columns>
+                    <dxwgv:GridViewDataTextColumn FieldName="uID" ReadOnly="True" VisibleIndex="0">
+                        <EditFormSettings Visible="False" />
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataTextColumn Caption="Surname" FieldName="uSurname" 
+                        VisibleIndex="1">
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataTextColumn Caption="Forename" FieldName="uForename" 
+                        VisibleIndex="2">
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataTextColumn Caption="Title" FieldName="uTitle" 
+                        VisibleIndex="3">
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataTextColumn Caption="Role" FieldName="uRole" VisibleIndex="4">
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataTextColumn Caption="Email" FieldName="uEmail" 
+                        VisibleIndex="5">
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataTextColumn Caption="Centre" FieldName="cName" 
+                        VisibleIndex="6">
+                    </dxwgv:GridViewDataTextColumn>
+                    <dxwgv:GridViewDataDateColumn Caption="Date Reg" FieldName="uDateJoin" 
+                        VisibleIndex="7">
+                    </dxwgv:GridViewDataDateColumn>
+                    <dxwgv:GridViewDataColumn Caption="Username" VisibleIndex="8">
+                        <DataItemTemplate>
+                        <%#GetDecrypt(DataBinder.Eval(Container, "DataItem.uUserName"))%>
+                        </DataItemTemplate>
+                    </dxwgv:GridViewDataColumn>
+                    <dxwgv:GridViewDataColumn Caption="Password" VisibleIndex="9">
+                        <DataItemTemplate>
+                        <%#GetDecrypt(DataBinder.Eval(Container, "DataItem.uPass"))%>
+                        </DataItemTemplate>
+                    </dxwgv:GridViewDataColumn>
+                </Columns>
+            </dxwgv:ASPxGridView>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+                ConnectionString="<%$ ConnectionStrings:RadarConnectionString %>" 
+                
+                SelectCommand="SELECT tbl_Users.uID, tbl_Users.uSurname, tbl_Users.uForename, tbl_Users.uTitle, tbl_Users.uRole, tbl_Users.uEmail, tbl_Users.uDateJoin, tbl_Users.uPass, tbl_Users.uUserName, tbl_Centres.cName FROM tbl_Users INNER JOIN tbl_Centres ON tbl_Users.uCentre = tbl_Centres.cID ORDER BY tbl_Users.uSurname">
+            </asp:SqlDataSource>
+        </p>
+    
+    </div>
+    </form>
+</body>
+</html>

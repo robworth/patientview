@@ -1,0 +1,4 @@
+for UNIT in `cat /root/scripts/allunits.txt`
+do
+    ls /home/$UNIT/incoming/;
+done

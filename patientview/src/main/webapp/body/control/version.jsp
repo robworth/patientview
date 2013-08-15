@@ -1,1 +1,0 @@
-<%-- This file is added to by the release script on the server --%>

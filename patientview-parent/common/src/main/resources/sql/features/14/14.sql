@@ -1,0 +1,16 @@
+/**
+ * Changing some columns from varbinary to varchar
+ */
+
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `NHS_NO` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `HOSP_NO` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `SNAME` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `SNAME_ALIAS` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `FNAME` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `DOB` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `ADD1` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `ADD2` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `ADD3` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `ADD4` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `POSTCODE` VARCHAR(50);
+ALTER TABLE `tbl_demographics` MODIFY COLUMN `POSTCODE_OLD` VARCHAR(50);

@@ -1,0 +1,25 @@
+
+<style> p, td {
+    font-family: verdana;
+    color: #000000;
+    font-size: 12px;
+} </style>
+<p>Hello,</p>
+<br/>
+<p>A medical professional has submitted a request to join the Renal Radar (renalradar.org) website at your unit. Their details are below.</p>
+<br/>
+<p>Surname: ${user.surname}</p>
+<p>Forename: ${user.forename}</p>
+<p>Title: ${user.title}</p>
+#if (${user.gmc} != "")
+<p>GMC/NMC No.: ${user.gmc}</p>
+#end
+<p>Role: ${user.role}</p>
+<p>Email Address: ${user.email}</p>
+<p>Telephone number: ${user.phone}</p>
+<p>Centre: ${user.centre.name}</p>
+<br/>
+<p>Please verify this request then check they don't already have a login on Renal PatientView (renalpatientview.org).
+If not, add them to your unit on Renal PatientView as a Unit Admin.
+They will be able access renalradar.org with the same logon details that they use for Renal PatientView.</p>
+<p>For help with this please contact us at admin@renalpatientview.org</p>

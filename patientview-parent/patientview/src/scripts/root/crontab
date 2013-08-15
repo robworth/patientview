@@ -1,0 +1,15 @@
+# root crontab
+
+0 1 * * * rdate -s ntp.demon.co.uk
+0 2 * * * yum -y update
+* * * * * /root/scripts/moveencrpytedfiles
+* * * * * /root/scripts/moveencrpytedfiles-ibd
+* * * * * /root/scripts/startImportMonitor.sh
+12 5 1 * * /root/scripts/unitstats.sh
+32 5 1 * * /root/scripts/logunitstats.sh
+10 0 1 * * /root/scripts/userlog.sh
+# Delete old files
+10 4 * * * find /usr/local/etc/xmlpatientload -type f -ctime +20 -exec rm {} \;
+25 4 * * * find /usr/local/etc/xmlpatientload-ibd -type f -ctime +20 -exec rm {} \;
+# Monitor PatientView import process
+* * * * * echo $(date +"%Y-%m-%dT%H:%M:%S") $(ls -l /usr/local/etc/rpvxml | wc -l) >> /home/manager/rpvxmlnofiles

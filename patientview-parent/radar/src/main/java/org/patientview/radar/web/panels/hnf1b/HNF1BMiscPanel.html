@@ -1,0 +1,155 @@
+<wicket:panel>
+    <form wicket:id="form">
+        <div id="mainBlock">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+            </div>
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+            <div wicket:id="patientDetail">
+
+            </div>
+
+            <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+                   class="style3">
+                <tr>
+                    <td style="width:90%; vertical-align:top;">
+
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+
+                        <table cellpadding="5" style="width: 70%; border-collapse:collapse">
+                            <tr>
+                                <td valign="top">
+                                    <strong>Renal cysts?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="renalCysts">
+                                        <input type="radio" wicket:id="renalCystsNo" id="renalCystsNo"/><label
+                                            for="renalCystsNo">No</label>
+                                        <br/>
+                                        <input type="radio" wicket:id="renalCystsYes" id="renalCystsYes"/><label
+                                            for="renalCystsYes">Yes</label>
+                                        <br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Single kidney?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="singleKidney">
+                                        <input type="radio" wicket:id="singleKidneyNo" id="singleKidneyNo"/><label
+                                            for="singleKidneyNo">No</label>
+                                        <br/>
+                                        <input type="radio" wicket:id="singleKidneyYes" id="singleKidneyYes"/><label
+                                            for="singleKidneyYes">Yes</label>
+                                        <br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Other renal malformations?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="otherRenalMalformations">
+                                        <input type="radio" wicket:id="otherRenalMalformationsNo" id="otherRenalMalformationsNo"/><label
+                                            for="otherRenalMalformationsNo">No</label>
+                                        <br/>
+                                        <input type="radio" wicket:id="otherRenalMalformationsYes" id="otherRenalMalformationsYes"/><label
+                                            for="otherRenalMalformationsYes">Yes</label>
+                                        <br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>If yes, details</td>
+                                <td><textarea wicket:id="otherRenalMalformationsDetails" rows="7" cols="8"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Diabetes?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="diabetes">
+                                        <input type="radio" wicket:id="diabetesNo" id="diabetesNo"/><label
+                                            for="diabetesNo">No</label>
+                                        <br/>
+                                        <input type="radio" wicket:id="diabetesYes" id="diabetesYes"/><label
+                                            for="diabetesYes">Yes</label>
+                                        <br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>If yes, age at diagnosis, if known</td>
+                                <td><select wicket:id="ageAtDiabetesDiagnosis" type="text"/></td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Gout?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="gout">
+                                        <input type="radio" wicket:id="goutNo" id="goutNo"/><label
+                                            for="goutNo">No</label>
+                                        <br/>
+                                        <input type="radio" wicket:id="goutYes" id="goutYes"/><label
+                                            for="goutYes">Yes</label>
+                                        <br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>If yes, age at diagnosis, if known</td>
+                                <td><select wicket:id="ageAtGoutDiagnosis" type="text"/></td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Genital malformation?</strong>
+                                </td>
+                                <td>
+                                    <div wicket:id="genitalMalformation">
+                                        <input type="radio" wicket:id="genitalMalformationNo"
+                                               id="genitalMalformationNo"/><label
+                                            for="genitalMalformationNo">No</label>
+                                        <br/>
+                                        <input type="radio" wicket:id="genitalMalformationYes"
+                                               id="genitalMalformationYes"/><label
+                                            for="genitalMalformationYes">Yes</label>
+                                        <br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>If yes, details</td>
+                                <td><textarea wicket:id="genitalMalformationDetails" rows="7" cols="8"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <br/>
+                        <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="feedback" wicket:id="formFeedbackPanel"></div>
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+            </div>
+        </div>
+    </form>
+</wicket:panel>

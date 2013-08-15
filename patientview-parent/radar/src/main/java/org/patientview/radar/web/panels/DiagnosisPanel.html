@@ -1,0 +1,477 @@
+<wicket:panel>
+
+<form wicket:id="form">
+
+<div id="mainBlock">
+
+<table id="tblHeader" cellpadding="5" style="width: 100%;" class="style2">
+    <tbody>
+    <tr>
+        <td style="width:70%"><strong>Diagnosis</strong></td>
+        <td align="right" class="style2">RaDaR NO:&nbsp;
+        </td>
+        <td style="width:120px;" class="style2">
+            <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    <tr>
+        <td>Name
+            <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly">&nbsp;
+            <input wicket:id="surname" type="text" style="width:100px;" readonly="readonly">
+            <!-- this one is surname -->
+            &nbsp;DoB&nbsp;
+            <input wicket:id="dateOfBirth" type="text" style="width:100px;" readonly="readonly">
+        </td>
+        <td align="right" class="style2">Hospital No:
+        </td>
+        <td class="style2">
+            <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table cellspacing="0" cellpadding="0" class="style1" style="width: 100%; background-color:#EEF6ED;"
+       id="ctl00_ContentPlaceHolder1_mainForm">
+<tbody>
+<tr>
+<td valign="top" style="width:45%;">
+<table cellpadding="5" style="width: 95%" class="style1">
+    <tbody>
+    <tr>
+        <td class="style3"><label id="ctl00_ContentPlaceHolder1_lblDiagnosis"
+                                  for="ctl00_ContentPlaceHolder1_DropDownList7">Diagnosis</label>
+
+        </td>
+        <td>
+            <select rea wicket:id="diagnosisCode">
+                <option value="">Select</option>
+                <option value="1">SRNS</option>
+                <option value="2" selected="selected">MPGN/DDD</option>
+            </select>
+
+            &nbsp;
+            &nbsp;
+
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;">
+            <label id="ctl00_ContentPlaceHolder1_lblDiagText" for="ctl00_ContentPlaceHolder1_DIAG_TXTTextbox">Diagnosis
+                Text</label>
+        </td>
+        <td><textarea style="font-size:95%;width:90%;" tabindex="3" cols="20" rows="3"
+                      wicket:id="text"></textarea></td>
+    </tr>
+    <tr>
+        <td>Date of <span wicket:id="diagnosisOrBiopsy">original biopsy</span>
+            &nbsp;</td>
+        <td>
+            <input type="text" style="width:80px;" wicket:id="biopsyDate">
+            <span class="feedback" wicket:id="biopsyDateFeedback"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span id="ctl00_ContentPlaceHolder1_lblESRF">Date of ESRF</span>
+        </td>
+        <td>
+            <input type="text" style="width:80px;" wicket:id="esrfDate">
+            <span class="feedback" wicket:id="esrfDateFeedback"></span>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblAge" for="ctl00_ContentPlaceHolder1_AGE_AT_DIAGTextbox">Age at
+                Diagnosis</label>
+        </td>
+        <td><input readonly="readonly" type="text" style="width:50px;" wicket:id="ageAtDiagnosis">&nbsp;
+            <span style="font-style:italic;" id="ctl00_ContentPlaceHolder1_lblCalc">calc</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblPubertal" for="ctl00_ContentPlaceHolder1_CheckBox10">Prepubertal
+                at Diagnosis</label>
+        </td>
+        <td><input type="checkbox" tabindex="5" wicket:id="prepubertalAtDiagnosis"></td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblHeight" for="ctl00_ContentPlaceHolder1_TextBox11">Height at
+                diagnosis in cm</label>
+        </td>
+        <td><input type="text" style="width:50px;" tabindex="6" wicket:id="heightAtDiagnosis"/>
+            <span class="feedback" wicket:id="heightAtDiagnosisFeedback"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><span class="feedback" wicket:id="clinicalPresentationFeedback"></span></td>
+    </tr>
+    <tr>
+        <td>
+            <label>Clinical
+                Presentation A</label>
+        </td>
+        <td>
+            <select wicket:id="clinicalPresentationA"/>
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td class="style3">
+            <span id="ctl00_ContentPlaceHolder1_lblClinicalB">Clinical Presentation B</span>
+        </td>
+        <td class="style3">
+            <select wicket:id="clinicalPresentationB"/>
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &nbsp;</td>
+        <td>&nbsp;
+            &nbsp;</td>
+    </tr>
+
+
+    <tr>
+        <td>
+
+        </td>
+        <td>
+            &nbsp;&nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblDateOnset"
+                   for="ctl00_ContentPlaceHolder1_DATE_ONSET_RENALDISTextbox">Date of onset of symptoms</label>
+        </td>
+        <td>
+            <input type="text" style="width:80px;" wicket:id="onsetSymptomsDate">
+            <span class="feedback" wicket:id="onsetSymptomsDateFeedback"></span>
+            &nbsp;<a class="info" href="#">Help <span id="ctl00_ContentPlaceHolder1_onsetHelp">Date of onset of symptoms or date of presentation to Renal unit</span></a><span
+                style="color:Red;" id="ctl00_ContentPlaceHolder1_lblDateWarn"></span>
+        </td>
+    </tr>
+
+    <wicket:container wicket:id="steroidResistance" cellspacing="0" cellpadding="0" class="style1" style="width: 100%;
+    background-color:#EEF6ED;">
+        <tr id="ctl00_ContentPlaceHolder1_rowPSS">
+            <td>
+                <label id="ctl00_ContentPlaceHolder1_lblPSteroid" for="ctl00_ContentPlaceHolder1_radPrimarySteroid">
+                    Primary
+                    Steroid Resistance</label>
+            </td>
+            <td>
+                <input type="radio" wicket:id="primarySteroidResistance">&nbsp;&nbsp;<a href="#" class="info">Help
+                <span>no response (protein:creatinine ratio &lt; 200mg/mmol) to four weeks of oral prednisolone with or without pulsed methylprednisolone</span></a>
+                <span class="feedback" wicket:id="steroidResistanceFeedback"></span>
+            </td>
+        </tr>
+        <tr id="ctl00_ContentPlaceHolder1_rowSSR">
+            <td>
+                <label id="ctl00_ContentPlaceHolder1_lblSSR" for="ctl00_ContentPlaceHolder1_radSSR">Secondary Steroid
+                    Resistance</label>
+            </td>
+            <td>
+                <input type="radio" wicket:id="secondarySteroidResistance"
+                       id="ctl00_ContentPlaceHolder1_radSSR">&nbsp;&nbsp;<a href="#" class="info"
+                                                                            id="ctl00_ContentPlaceHolder1_hypSSR">Help
+                <span>following initial period of steroid sensitivity, during further relapse, no response (protein:creatinine ratio &lt; 200mg/mmol) to four weeks of oral prednisolon</span></a>
+            </td>
+        </tr>
+        <tr id="ctl00_ContentPlaceHolder1_rowPresSR">
+            <td>
+                <label id="ctl00_ContentPlaceHolder1_lblPresSR" for="ctl00_ContentPlaceHolder1_radPresSR">Presumed
+                    Steroid
+                    Resistance</label>
+            </td>
+            <td>
+                <input type="radio" wicket:id="presumedSteroidResistance"
+                       id="ctl00_ContentPlaceHolder1_radPresSR">&nbsp;&nbsp;<a href="#" class="info"
+                                                                               id="ctl00_ContentPlaceHolder1_hypPresSR">Help
+                <span>Where nephrotic syndrome is presumed steroid resistance due to clinical features as a whole but this has not been proven by course of steroids</span></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="ctl00_ContentPlaceHolder1_lblBPS" for="ctl00_ContentPlaceHolder1_radBPS">Biopsy Proven
+                    FSGS</label>
+            </td>
+            <td>
+                <input type="radio" wicket:id="biopsyProven"
+                       id="ctl00_ContentPlaceHolder1_radBPS">&nbsp;&nbsp;<a href="#" class="info"
+                                                                            id="ctl00_ContentPlaceHolder1_hypBPS">Help
+                <span>But currently steroid responsive</span></a>
+            </td>
+        </tr>
+    </wicket:container>
+
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+
+<fieldset style="padding:5px; border:1px solid green; margin-left:20px; width:85%">
+    <legend>
+        <span id="ctl00_ContentPlaceHolder1_lblAdditional">Additional Significant Diagnosis</span></legend>
+    <table class="style1" style="width:95%; margin-left:20px;">
+        <tbody>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">1&nbsp;&nbsp;<input type="text" style="width:300px;" wicket:id="significantDiagnosis1"></td>
+        </tr>
+        <tr>
+            <td colspan="2">2&nbsp;&nbsp;<input type="text" style="width:300px;" wicket:id="significantDiagnosis2"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</fieldset>
+
+<br><br>
+
+&nbsp;
+<span id="ctl00_ContentPlaceHolder1_lblUpdate"></span>
+&nbsp;
+<div style="color:Red;display:none;" class="inline" id="ctl00_ContentPlaceHolder1_ValidationSummary1">
+
+</div>
+</td>
+<td valign="top" style="width:55%;">
+<table cellpadding="5" style="width: 100%; background-color:#EEF6ED;">
+    <tbody>
+    <tr>
+        <td style="height:35px;text-align: right;" colspan="2">
+            <input class="saveBtn" wicket:id="save" type="button" value="Save"/>
+            <span style="font-weight: bold; text-align: right;" wicket:id="successMessage"></span>
+            <span style="font-weight: bold; text-align: right; color: red" wicket:id="errorMessage"></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:200px">
+            <label wicket:id="biopsyDiagnosisLabel">Biopsy Proven Diagnosis</label>
+        </td>
+        <td>
+            <select wicket:id="biopsyProvenDiagnosis">
+            </select>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table wicket:id="geneMutationContainer" cellpadding="5" style="width: 100%; background-color:#EEF6ED;">
+    <tbody>
+    <tr id="ctl00_ContentPlaceHolder1_rowGeneLabel">
+        <td colspan="2"><span wicket:id="geneMutationLabel">Gene Mutation</span></td>
+    </tr>
+
+    <tr id="ctl00_ContentPlaceHolder1_rowGeneMutateA">
+        <td style="padding-left:30px;" colspan="2">
+            <table wicket:id="mutationContainer" cellpadding="3" id="tblGeneMutate" class="style4">
+                <tbody>
+                <tr align="center" valign="baseline" style="font-weight:bold; color:Green; text-align:center">
+                    <td style="font-weight:normal; color:#000; text-align:left">
+                        &nbsp;</td>
+                    <td class="auto-style3" style="width:30px">
+                        <span title="Yes"> Y </span></td>
+                    <td class="auto-style3" style="width:30px">
+                        <span title="No"> N </span></td>
+                    <td class="auto-style3" style="width:30px">
+                        <span title="Sent"> S </span></td>
+                    <td class="auto-style3" style="width:30px">
+                        <span title="Not sent"> NS </span></td>
+                </tr>
+                <tr>
+                    <td>
+                        NPHS1 - NEPHRIN
+                    </td>
+                    <wicket:container wicket:id="nphs1Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        NPHS2 - PODOCIN
+                    </td>
+                    <wicket:container wicket:id="nphs2Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        NPHS3 - PLCE1
+                    </td>
+                    <wicket:container wicket:id="nphs3Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        WT1 - Wilm's Tumor
+                    </td>
+                    <wicket:container wicket:id="wt1Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        CD2AP
+                    </td>
+                    <wicket:container wicket:id="cd2apContainer"/>
+                </tr>
+                <tr>
+                    <td>
+                        TRPC6
+                    </td>
+                    <wicket:container wicket:id="trpc6Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        ACTN4 - ALPHA-ACTININ 4
+                    </td>
+                    <wicket:container wicket:id="actn4Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        LAMB2 - LAMININ-BETA-2
+                    </td>
+                    <wicket:container wicket:id="lamb2Container"/>
+                </tr>
+                <tr>
+                    <td>
+                        Other
+                    </td>
+                    <wicket:container wicket:id="otherContainer"/>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr wicket:id="otherGeneMutationContainer">
+        <td colspan="2" style="margin-left:20px;">
+            Details of other Gene Mutation
+            <br/>
+            <textarea style="font-size:95%;width:90%;" tabindex="3" cols="20" rows="3"
+                      wicket:id="otherGeneMutation"></textarea>
+        </td>
+    </tr>
+    <tr wicket:id="moreDetailsContainer">
+        <td colspan="2" style="margin-left:20px;">
+            More details
+            <br/>
+            <textarea style="font-size:95%;width:90%;" tabindex="3" cols="20" rows="3"
+                      wicket:id="moreDetails"></textarea>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table cellpadding="5" style="width: 100%; background-color:#EEF6ED;">
+    <tbody>
+
+    <tr wicket:id="karoTypeContainer">
+        <td>
+            Karyotype
+        </td>
+        <td>
+            <select wicket:id="karotype"/>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+        <span wicket:id="karoTypeOtherContainer">
+        Details of other Karyotype<br>
+        <textarea rows="5" cols="20" wicket:id="karoTypeOtherText" style="width:85%;">other ka</textarea>
+        </span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblParental" for="ctl00_ContentPlaceHolder1_DropDownList12">Parental
+                Consanguinity Y/N</label>
+        </td>
+        <td>
+            <select id="ctl00_ContentPlaceHolder1_DropDownList12" wicket:id="parentalConsanguinity">
+                <option value="" selected="selected">Select</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="9">Unkown</option>
+
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label id="ctl00_ContentPlaceHolder1_lblFamHist" for="ctl00_ContentPlaceHolder1_DropDownList13">Family
+                History
+                Y/N</label>
+        </td>
+        <td>
+            <select id="ctl00_ContentPlaceHolder1_DropDownList13" wicket:id="familyHistory">
+                <option value="99" selected="selected">Select</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="9">Unkown</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td>&nbsp;</td>
+        <td>
+            <span wicket:id="radarFamilyLabel" class="relRADAR">RaDaR No</span>
+        </td>
+    </tr>
+
+
+
+
+    <tr wicket:id="relative1Container">
+
+    </tr>
+
+    <tr wicket:id="relative2Container">
+    </tr>
+
+    <tr wicket:id="relative3Container">
+
+    </tr>
+
+    <tr wicket:id="relative4Container">
+
+    </tr>
+
+    <tr wicket:id="relative5Container">
+    </tr>
+
+    <tr wicket:id="relative6Container">
+
+    </tr>
+
+    </tbody>
+</table>
+</td>
+</tr>
+
+<tr>
+    <td colspan="2" style="text-align: right;">
+        <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageDown"></span>
+        <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageDown"></span>
+        <input type="button" wicket:id="saveDown" value="Save" class="saveBtn"/>
+    </td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+</form>
+
+</wicket:panel>

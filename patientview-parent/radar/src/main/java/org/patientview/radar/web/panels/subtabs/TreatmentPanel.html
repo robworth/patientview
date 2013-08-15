@@ -1,0 +1,374 @@
+<wicket:panel>
+
+<table cellspacing="10" cellpadding="0" style="width: 100%; background-color:#EEF6ED; border:0px solid red;"
+       id="ctl00_ContentPlaceHolder1_tblMain">
+<tbody>
+<tr>
+    <td style="vertical-align:top">
+        <fieldset style="width:650px;">
+            <legend>Immunosuppression including Monoclonals</legend>
+            <div>
+                <table wicket:id="immunosuppressionTreatmentsContainer" border="1" cellspacing="0" cellpadding="3"
+                       style="font-size:85%;width:600px;border-collapse:collapse;" rules="all">
+                    <tbody>
+                    <tr style="color:#3C982D;">
+                        <th scope="col">Start date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Name</th>
+                        <th style="width:120px;" scope="col">Total Dose g Cyclophosphamide only</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    <tr wicket:id="immunosuppressionTreatments">
+                        <td wicket:id="startDate"/>
+                        <td wicket:id="endDate"/>
+                        <td wicket:id="immunosuppression.description"/>
+                        <td style="width:120px;" >
+                            <span wicket:id="cyclophosphamideTotalDose"></span>
+                        </td>
+                        <td valign="top">
+                            <input type="submit" wicket:id="deleteLink"
+                                   onclick="return confirm('Are you sure you want to delete this record?');"
+                                   value="Delete"/>
+                            <input type="submit" wicket:id="editLink" value="Edit"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div wicket:id="editContainer">
+                <br>
+
+                <form wicket:id="editImmunosuppressionForm">
+                    <fieldset style="border-color:Red; padding:10px; width:95%;">
+                        <legend>Edit</legend>
+                        <br>
+                        <table style="margin-top:10px; font-size:85%; " class="style4">
+                            <tbody>
+                            <tr>
+                                <td class="col170">Start Date</td>
+                                <td class="col190">Name</td>
+                                <td class="col170">End Date</td>
+                                <td wicket:id="totalDoseLabel">Total dose of course in g</td>
+                                <td class="col45"></td>
+                                <td class="col250"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="feedback" wicket:id="startDateFeedback"></span></td>
+                                <td></td>
+                                <td><span class="feedback" wicket:id="endDateFeedback"></span></td>
+                                <td><span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="style7">
+                                    <input type="text" style="width:70px;" wicket:id="startDate"/>
+                                    <span wicket:id="startDateFeedbackIndicator"></span>
+                                </td>
+                                <td class="col190">
+                                    <select wicket:id="immunosuppression"/>
+                                    <span wicket:id="immunosuppressionFeedbackIndicator"></span>
+                                </td>
+                                <td class="col170">
+                                    <input type="text" style="width:70px;" wicket:id="endDate"/>
+                                    <span class="endDateFeedbackIndicator"></span>
+                                </td>
+                                <td>
+                                    <input wicket:id="cyclophosphamideTotalDose" type="text" style="width:70px;">
+                                    <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
+                                </td>
+                                <td class="col45" valign="bottom"></td>
+                                <td class="col250">
+                                    <input type="submit" value="Save" wicket:id="saveTop"/>
+                                    &nbsp;
+                                    <input type="submit" value="Cancel" wicket:id="cancelTop"/>
+                                </td>
+                                <td class="col250">
+                                    <input type="submit" value="Save" wicket:id="saveBottom"/>
+                                    &nbsp;
+                                    <input type="submit" value="Cancel" wicket:id="cancelBottom"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblMonoEditWarn"></span></td>
+                                <td class="style7">&nbsp;</td>
+                                <td class="style7">&nbsp;</td>
+                                <td class="style7">&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <span class="red" wicket:id="immunosupressionFeedback"></span>
+                </form>
+            </div>
+
+            <form wicket:id="addImmunosuppressionForm">
+                <table style="width: 600px; margin-top:10px; font-size:85%" class="style4">
+
+                    <tbody>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                        <td class="style11"></td>
+                        <td class="style7">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="style10">Start Date</td>
+                        <td class="style10">Name</td>
+                        <td class="style10">End Date</td>
+                        <td wicket:id="totalDoseLabel">Total dose of course in g</td>
+                        <td class="style10">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td><span class="feedback" wicket:id="startDateFeedback"></span></td>
+                        <td></td>
+                        <td><span class="feedback" wicket:id="endDateFeedback"></span></td>
+                        <td><span class="feedback" wicket:id="cyclophosphamideTotalDoseFeedback"></span></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="style7">
+                            <input type="text" style="width:70px;" wicket:id="startDate">
+                            <span wicket:id="startDateFeedbackIndicator"></span>
+                        </td>
+                        <td class="style7">
+                            <select wicket:id="immunosuppression"/>
+                            <span wicket:id="immunosuppressionFeedbackIndicator"></span>
+                        </td>
+                        <td class="style7">
+                            <input type="text" style="width:70px;" wicket:id="endDate"/>
+                            <span class="endDateFeedbackIndicator"></span>
+                        </td>
+                        <td>
+                            <input wicket:id="cyclophosphamideTotalDose" type="text" style="width:70px;">
+                            <span wicket:id="cyclophosphamideTotalDoseFeedbackIndicator"></span>
+                        </td>
+                        <td align="center" class="style11">
+                        </td>
+                        <td class="style7">
+                            <input type="submit" value="Add" wicket:id="submit"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><span style="color:Red;" id="ctl00_ContentPlaceHolder1_lblWarnImmuno"></span>
+                        </td>
+                        <td class="style7">&nbsp;</td>
+                        <td class="style11">&nbsp;</td>
+                        <td class="style7">&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span class="red" wicket:id="immunosupressionFeedback"></span>
+            </form>
+        </fieldset>
+        <br>
+    </td>
+</tr>
+<tr>
+    <td style="width:68%; vertical-align:top;">
+        <div id="pnlDrugs">
+            <form wicket:id="therapyForm">
+                <fieldset>
+                    <legend>Drugs</legend>
+                    <br>
+                    <input wicket:id="saveTop" type="button" class="saveBtn" value="Save">
+
+                    <div style="text-align: right">
+                        <span style="font-weight: bold;" wicket:id="successMessageTop"></span>
+                        <span style="font-weight: bold; color: red;" wicket:id="errorMessageTop"></span>
+                    </div>
+
+                    <br>
+                    Date of Treatment record
+                    <input wicket:id="treatmentRecordDate" type="text" style="width:70px;">
+                    <span wicket:id="treatmentRecordDateFeedbackIndicator"></span>
+                    <span class="feedback" wicket:id="treatmentRecordDateFeedback"></span>
+
+                    <table border="1px" cellpadding="5" id="tblDrugs" class="style13">
+                        <tbody>
+                        <tr>
+                            <td width="200px">
+                                &nbsp;</td>
+                            <td align="center" class="style17" id="ctl00_ContentPlaceHolder1_tdPrior">
+                                <span wicket:id="firstColumnLabel" style="font-weight:bold;">Prior to Referral</span>
+                            </td>
+
+                            <td wicket:id="currentContainer" align="center" width="150px" class="style16">
+                                <span style="font-weight:bold;" id="ctl00_ContentPlaceHolder1_lblCurrent">Current</span>
+                            </td>
+                        </tr>
+                        <tr wicket:id="nsaidContainerParent">
+                            <td>
+                                NSAID
+                            </td>
+                            <td align="center" class="style15" wicket:id="nsaidContainer"/>
+                            <td align="center" wicket:id="nsaidPriorContainer"/>
+                        </tr>
+
+                        <tr wicket:id="diureticContainerParent">
+                            <td>
+                                Diuretic
+                            </td>
+                            <td align="center" class="style15" wicket:id="diureticContainer"/>
+                            <td align="center" wicket:id="diureticPriorContainer"/>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Antihypertensive
+                            </td>
+                            <td align="center" class="style15" wicket:id="antihypertensiveContainer"/>
+                            <td align="center" wicket:id="antihypertensivePriorContainer"/>
+                        </tr>
+
+
+                        <tr wicket:id="aceInhibitorContainer">
+                            <td>
+                                ACE Inhibitor
+                            </td>
+                            <td align="center" class="style15" wicket:id="aceInhibitorRadioGroup"/>
+                            <td align="center" wicket:id="aceInhibitorPriorRadioGroup"/>
+                        </tr>
+
+
+                        <tr wicket:id="arb1AntagonistContainer">
+                            <td>
+                                ARB-1 Antagonist
+                            </td>
+                            <td align="center" class="style15" wicket:id="arb1AntagonistRadioGroup"/>
+                            <td align="center" wicket:id="arb1AntagonistPriorRadioGroup"/>
+                        </tr>
+
+
+                        <tr wicket:id="calciumChannelBlockerContainer">
+                            <td>
+                                Calcium Channel Blocker
+                            </td>
+                            <td align="center" class="style15" wicket:id="calciumChannelBlockerRadioGroup"/>
+                            <td align="center" wicket:id="calciumChannelBlockerPriorRadioGroup"/>
+                        </tr>
+
+
+                        <tr wicket:id="betaBlockerContainer">
+                            <td>
+                                β Blocker
+                            </td>
+                            <td align="center" class="style15" wicket:id="betaBlockerRadioGroup"/>
+                            <td align="center" wicket:id="betaBlockerPriorRadioGroup"/>
+                        </tr>
+
+
+                        <tr wicket:id="otherAntihypertensiveContainer">
+                            <td>
+                                Other Antihypertensive
+                            </td>
+                            <td align="center" class="style15" wicket:id="otherAntihypertensiveRadioGroup"/>
+                            <td align="center" wicket:id="otherAntihypertensivePriorRadioGroup"/>
+                        </tr>
+
+
+                        <tr id="ctl00_ContentPlaceHolder1_rowInsulin">
+                            <td>
+                                Insulin
+                            </td>
+                            <td align="center" class="style15" wicket:id="insulinContainer"/>
+                            <td align="center" wicket:id="insulinPriorContainer"/>
+                        </tr>
+
+                        <tr wicket:id="lipidLoweringAgentContainerParent">
+                            <td>
+                                Lipid lowering agent
+                            </td>
+                            <td align="center" class="style15" wicket:id="lipidLoweringAgentContainer"/>
+                            <td align="center" wicket:id="lipidLoweringAgentPriorContainer"/>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                EPO
+                            </td>
+                            <td align="center" class="style15" wicket:id="epoContainer"/>
+                            <td align="center" wicket:id="epoPriorContainer"/>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 1
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other1"></td>
+
+                            <td wicket:id="other1PriorContainer" align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other1Prior"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 2
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other2"></td>
+
+                            <td wicket:id="other2PriorContainer" align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other2Prior"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 3
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other3"></td>
+
+                            <td wicket:id="other3PriorContainer" align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other3Prior"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Other 4
+                            </td>
+                            <td align="center" class="style15" id="ctl00_ContentPlaceHolder1_tdOTHER_DRUG1">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other4"></td>
+
+                            <td wicket:id="other4PriorContainer" align="center">
+                                <input type="text" style="border-width:1px;border-style:solid;width:105px;"
+                                       wicket:id="other4Prior"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <input wicket:id="saveBottom" type="button" class="saveBtn" value="Save">
+
+                    <div style="text-align: right">
+                        <span style="font-weight: bold;" wicket:id="successMessageBottom"></span>
+                        <span style="font-weight: bold; color: red;" wicket:id="errorMessageBottom"></span>
+                    </div>
+
+                </fieldset>
+            </form>
+            &nbsp;</div>
+    </td>
+    <td style="vertical-align:top;">
+    </td>
+</tr>
+<tr>
+    <td>
+        <span wicket:id="plasmapheresisPanel"/>
+        <br><br>
+        <fieldset wicket:id="dialysisContainer"/>
+        <br><br>
+    </td>
+
+</tr>
+</tbody>
+</table>
+
+</wicket:panel>

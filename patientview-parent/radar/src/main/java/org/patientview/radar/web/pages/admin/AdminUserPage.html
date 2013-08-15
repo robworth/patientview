@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Users</h2>
+
+    <div>
+        <div wicket:id="feedback"></div>
+        
+        <form wicket:id="userForm">
+            <table cellspacing="0" cellpadding="5" rules="all" border="1" style="border-color:Black;border-width:1px;border-style:solid;font-size:90%;height:50px;width:500px;border-collapse:collapse;">
+                <tr>
+                    <td>uID</td>
+                    <td>
+                        <label wicket:id="idLabel">ID</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Surname</td>
+                    <td>
+                        <label wicket:id="surnameLabel">surname</label>
+                        <input type="text" wicket:id="surname"/>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>Forename</td>
+                    <td>
+                        <label wicket:id="forenameLabel">forename</label>
+                        <input type="text" wicket:id="forename"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>
+                        <label wicket:id="titleLabel">title</label>
+                        <input type="text" wicket:id="title"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td>
+                        <label wicket:id="roleLabel">role</label>
+                        <input type="text" wicket:id="role"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <label wicket:id="emailLabel">email</label>
+                        <input type="text" wicket:id="email"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>
+                        <label wicket:id="phoneLabel">phone</label>
+                        <input type="text" wicket:id="phone"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Centre</td>
+                    <td>
+                        <label wicket:id="centreLabel">centre</label>
+                        <input type="text" wicket:id="centre"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date Join</td>
+                    <td>
+                        <label wicket:id="dateRegisteredLabel">dateRegistered</label>
+                        <input type="text" wicket:id="dateRegistered"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td>
+                        <label wicket:id="usernameLabel">username</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div wicket:id="userOptions">
+                            <a wicket:id="edit">Edit</a>&nbsp;<a wicket:id="delete">Delete</a>
+                        </div>
+                        <div wicket:id="editOptions">
+                            <a wicket:id="update">Update</a>&nbsp;<a wicket:id="cancel">Cancel</a>    
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <br/>
+    <button wicket:id="back" type="submit" value="Back to the user list" class="button">Back to the user list</button>
+</wicket:extend>
+
+</body>
+</html>

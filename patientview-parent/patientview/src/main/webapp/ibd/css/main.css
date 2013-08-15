@@ -1,0 +1,218 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
+h1{
+	color: #0066cc;
+}
+
+.navbar-inner{
+	background: #0066cc;
+	box-shadow: none;
+	border-radius: 0;
+	color: #fff;
+}
+
+.navbar .brand{
+	background: url(../img/NHSlogo.gif) no-repeat 0 3px;
+	color: #fff;
+	height: 18px;
+	margin-top: 2px;
+	margin-left: 0;
+	padding-left: 85px;
+	text-transform: uppercase;\
+	width: 100px;
+}
+
+.navbar .container {
+	width: 940px;
+}
+
+.navbar-form input{
+	margin-top: 0;
+}
+
+.navbar .nav > li > a{
+	color: #fff;
+	font-size: 14px;
+	width: 100%;
+}
+
+.nav-pills{
+	border-bottom: 5px solid #ddd;
+}
+
+.nav-pills > li > a{
+	color: #333;
+	font-size: 13px;
+	font-weight: bold;
+	padding-right: 12px;
+	padding-left: 12px;
+}
+
+.nav-pills > li:first-child > a{
+	padding-left: 0;
+}
+
+.nav-pills > li:last-child > a{
+	padding-right: 0;
+}
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover{
+	background: none;
+	color: #0066cc;
+}
+
+.nav li > a:hover{
+	background: none;
+	color: #06C;
+}
+
+.carousel .item{
+	height: 292px;
+}
+
+.carousel-caption{
+	background-color: rgba(0,102,204,0.75);
+	left: 0;
+	font-size: 14px;
+	line-height: 16px;
+	height: 262px;
+	padding: 15px;
+	width: 270px;
+}
+
+.carousel-control{
+	background: none;
+	border: 0;
+}
+
+.carousel-control.right{
+	position: absolute;
+	bottom: 5px;
+	top: auto;
+	right: 5px;
+}
+
+.carousel-control.left{
+	position: absolute;
+	bottom: 5px;
+	left: auto;
+	top: auto;
+	right: 25px;
+}
+
+.readMoreBlueBox{
+	bottom: 15px;
+	color: #fff;
+	display: inline-block;
+	background-color: #003C77;
+	border: 1px solid #011830;
+	right: 15px;
+	padding: 5px;
+	position: absolute;
+}
+
+.readMoreBlueBox:hover{
+	color: #fff;
+}
+
+
+.largeCarouselTitle{
+	font-size: 40px;
+	line-height: 40px;
+	padding-bottom: 20px;
+}
+
+.seperatingBorders{
+	border: solid #333;
+	border-width: 4px 0;
+	font-size: 12px;
+}
+
+.seperatingBorders img.pull-right{
+	margin: 5px 0 5px 5px;
+}
+
+.mediumBlueTitle{
+	color: #0066cc;
+	font-size: 14px;
+}
+
+.titleSeperator{
+	border-bottom: 1px solid #333;
+	margin-bottom: 5px;
+	padding-bottom: 3px;
+}
+
+.readMoreParagraph{
+	color: #003c77;
+	font-weight: bold;
+
+}
+
+.endOfParagraphLink{
+	line-height: 40px;
+}
+
+.linkList{
+	list-style-type: none;
+	margin: 0;
+}
+
+.linkList li{
+	border: solid #ddd;
+	border-width: 0 0 1px 0;
+	font-size: 12px;
+	padding: 5px 0 3px 0;
+}
+
+.footer{
+	margin-top: 80px;
+	border-top: 5px solid #ddd;
+	padding-top: 10px;
+	margin-bottom: 40px;
+}
+
+.barSpeperatedNav{
+	list-style-type: none;
+	margin: 0;
+}
+
+.barSpeperatedNav li{
+	float: left;
+	margin-right: 5px;
+}
+
+.barSpeperatedNav li:not(:last-child):after{
+	content : " | ";
+}
+
+.barSpeperatedNav li a{
+	color: #003c77;
+	font-weight: bold;
+}
+
+.medicalDiagram{
+	text-align: center;
+	margin: 0 0 20px 0;
+}

@@ -1,0 +1,49 @@
+<wicket:panel>
+
+    <div id="subBlock">
+
+            <table cellpadding="4" id="tblHeader" style="width: 100%;">
+                <tbody>
+                <tr>
+                    <td align="left">
+            <span style="font-weight:bold;"
+                  id="ctl00_ContentPlaceHolder1_lblTitle">Laboratory Results - First Visit</span>
+                    </td>
+                    <td style="text-align:right; width:100px;">RaDaR No.</td>
+                    <td style="width:120px;">
+                        <input wicket:id="radarNumber" type="text" style="width:100px;" readonly="readonly" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">Name
+                        <input wicket:id="firstName" type="text" style="width:100px;" readonly="readonly"/>
+                        &nbsp;<input wicket:id="surname" type="text" style="width:120px;" readonly="readonly">
+                        &nbsp;DoB
+                        <input wicket:id="dob" type="text" style="width:80px;" readonly="readonly">
+
+                    </td>
+                    <td class="style5" style="text-align:right; ">Hospital No.</td>
+                    <td>
+                        <input wicket:id="hospitalNumber" type="text" style="width:100px;" readonly="readonly">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;">
+                    </td>
+                    <td class="style5" style="text-align:right; ">Diagnosis</td>
+                    <td>
+                        <input wicket:id="diagnosis" type="text" style="background-color:#FFFF99;width:100px;" readonly="readonly">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        <wicket:container wicket:id="formContainer"/>
+
+        &nbsp;<br>
+        <br>
+        <span id="ctl00_ContentPlaceHolder1_lblDebug"></span>
+
+    </div>
+
+</wicket:panel>

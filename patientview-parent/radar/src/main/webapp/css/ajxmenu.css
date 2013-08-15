@@ -1,0 +1,110 @@
+/*
+ Ajatix Advanced CSS Drop Down Menu
+ Copyright (C) 2009 Ajatix. All rights reserved.
+ http://www.ajatix.com
+*/
+.AJXCSSMenuCeGKRNA {
+    /*background: #EEF6ED;*/
+    border: 0;
+    height: 33px;
+    margin-left: auto;
+    position: relative;
+    /*right: 55px;*/
+    text-align: right;
+    top: -11px;
+    /*width: 760px;*/
+    z-index: 100;
+}
+.AJXCSSMenuCeGKRNA ul {
+	position: relative;
+	float: right;
+	margin: 0px;
+	padding: 0;
+	list-style-type: none;
+}
+.AJXCSSMenuCeGKRNA li {
+	float: left;
+	margin: 0;
+}
+.AJXCSSMenuCeGKRNA li:hover, .AJXCSSMenuCeGKRNA .ajxover {
+	position: relative;
+}
+.AJXCSSMenuCeGKRNA a {
+	display: block;
+	float: left;
+	height: 25px;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 10px 10px 0 0px; /*top was 10px*/
+	font-family:Verdana, Arial, Sans-Serif;
+	font-size:100%;
+	font-weight:bold;
+	text-decoration: none;
+	text-align: left;
+	color:#2D7336;
+}
+.AJXCSSMenuCeGKRNA li:hover a, .AJXCSSMenuCeGKRNA .ajxover a {
+	background:#EEF6ED;
+	color:#8AB573;
+}
+.AJXCSSMenuCeGKRNA a.ajxsub {
+	padding: 10px 20px 0 0px;
+	background: url(../images/bbdown.gif) no-repeat center right;
+}
+.AJXCSSMenuCeGKRNA li:hover a.ajxsub, .AJXCSSMenuCeGKRNA .ajxover a.ajxsub {
+	background: #EEF6ED url(../images/bbdown.gif) no-repeat center right;
+}
+.AJXCSSMenuCeGKRNA ul ul {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+	width: 220px;
+	height: auto;
+	border: none;
+	background: #EEF6ED;
+}
+.AJXCSSMenuCeGKRNA ul :hover ul, .AJXCSSMenuCeGKRNA ul .ajxover ul {
+	left: 0px;
+	top: 39px;
+}
+.AJXCSSMenuCeGKRNA li li {
+	width: 220px;
+	border: 0px solid #98b1c4;
+	border-width: 0 0px;
+	padding: 0;
+}
+.AJXCSSMenuCeGKRNA li li.sfirst {
+	border-top: 0px solid #8AB573;
+}
+.AJXCSSMenuCeGKRNA li li.slast {
+	border-bottom: 1px solid #8AB573;
+}
+.AJXCSSMenuCeGKRNA ul ul a, .AJXCSSMenuCeGKRNA ul :hover ul a, .AJXCSSMenuCeGKRNA ul .ajxover ul a {
+	float: none;
+	margin: 0;
+	width: 180px;
+	height: auto;
+	white-space: normal;
+	padding: 10px 10px 5px 10px;
+	font-family:Verdana, Arial, Sans-Serif;
+	font-size:100%;
+	font-weight:bold;
+	text-decoration: none;
+	text-align: left;
+	border: 0;
+	color: #2d7336;
+	background:#EEF6ED;
+}
+.AJXCSSMenuCeGKRNA ul ul :hover a, .AJXCSSMenuCeGKRNA ul ul .ajxover a {
+	background:none;
+	color:#8AB573;
+}
+.AJXCSSMenuCeGKRNA br {
+	clear: both;
+	height: 0;
+	font-size: 1px;
+	line-height: 0px;
+}
+/*
+{"background":"#FFFFFF","classes":[{"color":"","curovermo":true,"font":{"align":1,"bold":true,"italic":false,"mobold":true,"moitalic":false,"mounderline":false,"name":"Arial,Helvetica,sans-serif","size":11,"underline":false},"height":{"Value":21,"enabled":true},"imagealign":2,"imagerepeat":false,"imagevalign":1,"leftpadding":10,"mocolor":"#98b1c4","moimage":"","moimagevalign":1,"mosubmenuimage":"bbdown.gif","name":"top","nimage":"","rightpadding":10,"slidingdoors":false,"submenuimage":"bbdown.gif","submenuleftpadding":10,"submenurightpadding":20,"textcolor":"#293d6b","textmocolor":"#293d6b","width":{"Value":100,"enabled":false},"wrap":false},{"color":"","curovermo":true,"font":{"align":0,"bold":true,"italic":false,"mobold":true,"moitalic":false,"mounderline":false,"name":"Arial,Helvetica,sans-serif","size":11,"underline":false},"height":{"Value":20,"enabled":true},"imagealign":2,"imagerepeat":false,"imagevalign":1,"leftpadding":10,"mocolor":"#98b1c4","moimage":"","moimagevalign":1,"mosubmenuimage":"bbright.gif","name":"submenu","nimage":"","rightpadding":10,"slidingdoors":false,"submenuimage":"bbright.gif","submenuleftpadding":10,"submenurightpadding":10,"textcolor":"#293d6b","textmocolor":"#293d6b","width":{"Value":200,"enabled":true},"wrap":true}],"hidedelay":600,"id":"AJXCSSMenuCeGKRNA","prjfile":false,"product":{"Name":"AJXCSSMenu","Version":"1.4.9.0"},"showdelay":160,"structure":[{"caption":"Patient Information","href":"..\/default5.aspx","title":"Patient Information"},{"caption":"Information for Clinicians","href":"","subitems":[{"caption":"MPGN\/DDD","href":"..\/clinician-mpgn.aspx","title":"MPGN\/DDD"},{"caption":"SRNS","href":"..\/clinician-srns.aspx","title":"SRNS"}]}],"submenulevel":{"background":{"bgimage":{"align":2,"repeat":1,"source":"","valign":1},"color":"#bdcedc"},"bordercolor":"#98b1c4","childoffsetx":-10,"childoffsety":0,"hasborder":true,"orientation":1},"toplevel":{"background":{"bgimage":{"align":2,"repeat":1,"source":"","valign":1},"color":"#bdcedc"},"bordercolor":"#98b1c4","childoffsetx":1,"childoffsety":0,"hasborder":true,"itemsalign":0,"menualign":2,"orientation":0,"toplevelwidth":320,"toplevelwidthtype":1},"zindex":100}
+*/

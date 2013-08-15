@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+
+    <h2>Admin - Issue</h2>
+
+    <div>
+        <br /><br />
+        <div wicket:id="feedback"></div>
+
+        <form wicket:id="issueForm">
+            <table cellspacing="0" cellpadding="5" rules="all" border="1" style="border-color:Black;border-width:1px;border-style:solid;font-size:90%;height:50px;width:500px;border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="dxgvHeader" style="width: 35px;">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv" colspan="2">
+                            <button wicket:id="cancelTop" value="Cancel" class="button">Cancel</button>
+                            <button wicket:id="saveTop" value="Save" class="button">Save</button>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Type</td>
+                        <td class="dxgv">
+                            <select wicket:id="type"></select>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Page</td>
+                        <td class="dxgv">
+                            <input type="text" wicket:id="page"/>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Date Logged</td>
+                        <td class="dxgv">
+                            <input wicket:id="dateLogged" type="text" style="background-color:#EEF6ED; font-style:italic;"/>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Date Resolved</td>
+                        <td class="dxgv">
+                            <input wicket:id="dateResolved" type="text" style="background-color:#EEF6ED; font-style:italic;"/>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Description</td>
+                        <td class="dxgv">
+                            <textarea rows="5" cols="15" wicket:id="description"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Comments</td>
+                        <td class="dxgv">
+                            <textarea rows="5" cols="15" wicket:id="comments"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Priority</td>
+                        <td class="dxgv">
+                            <select wicket:id="priority"></select>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Status</td>
+                        <td class="dxgv">
+                            <select wicket:id="status"></select>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv">Date Live</td>
+                        <td class="dxgv">
+                            <input wicket:id="updated" type="text" style="background-color:#EEF6ED; font-style:italic;"/>
+                        </td>
+                    </tr>
+                    <tr class="dxgvDataRow">
+                        <td class="dxgv" colspan="2">
+                            <button wicket:id="cancelBottom" value="Cancel" class="button">Cancel</button>
+                            <button wicket:id="saveBottom" value="Save" class="button">Save</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</wicket:extend>
+
+</body>
+</html>

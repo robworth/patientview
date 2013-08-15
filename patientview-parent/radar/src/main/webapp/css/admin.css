@@ -1,0 +1,1199 @@
+.dxgvControl,
+.dxgvDisabled {
+    border: Solid 1px #9F9F9F;
+    font: 11px Tahoma;
+    background-color: #F2F2F2;
+    color: Black;
+    cursor: default;
+}
+
+.dxgvDisabled { color: Gray; }
+
+.dxgvControl a
+{
+    color: #5555FF;
+}
+.dxgvDisabled a
+{
+    color: Gray;
+}
+.dxgvLoadingPanel
+{
+    border: solid 1px #9F9F9F;
+    background-color: #E3E3E1;
+    font: 9pt Tahoma;
+    color: #303030;
+}
+.dxgvLoadingPanel td
+{
+    white-space: nowrap;
+    text-align: center;
+    padding: 12px 12px 12px 12px;
+}
+.dxgvLoadingPanelStatusBar
+{
+    background-color: Transparent;
+    font: 9pt Tahoma;
+}
+.dxgvLoadingPanelStatusBar td
+{
+    white-space: nowrap;
+    text-align: center;
+    padding: 0px 2px 0px 2px;
+}
+.dxgvFilterPopupWindow
+{
+    color: Black;
+    font: 9pt Tahoma;
+    border: solid 1px #9f9f9f;
+}
+.dxgvFilterPopupItemsArea
+{
+    color: Black;
+    background-color: White;
+}
+.dxgvFilterPopupButtonPanel
+{
+    font: 9pt Tahoma;
+    background-color: #ededed;
+    border: 1px solid #dcdcdc;
+    border-left-width: 0px;
+    color: Black;
+}
+
+.dxgvFilterPopupItem td.dxgv,
+.dxgvFilterPopupActiveItem td.dxgv,
+.dxgvFilterPopupSelectedItem td.dxgv
+{
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    padding: 3px 2px 4px 3px;
+    cursor: default;
+    white-space: nowrap;
+}
+.dxgvFilterPopupActiveItem
+{
+    background: #cfcfcf;
+    color: Black;
+}
+.dxgvFilterPopupSelectedItem
+{
+    background: #8D8D8D;
+    color: White;
+}
+
+.dxgvTable {
+    background-color: White;
+    border: 1px solid #9f9f9f;
+    border-collapse: separate!important;
+    overflow: hidden;
+    font: 9pt Tahoma;
+    color: Black;
+}
+.dxgvInlineEditRow,
+.dxgvDataRow
+{
+}
+.dxgvInlineEditRow td.dxgv
+{
+    border-bottom: Solid 1px #D3D3D3;
+    border-right: Solid 1px #D3D3D3;
+}
+.dxgvDataRowAlt
+{
+    background-color: #EDEDEB;
+}
+.dxgvFilterRow
+{
+    background-color: #E7E7E7;
+}
+.dxgvEditForm
+{
+    background-color: #F0F0F0;
+}
+.dxgvEditForm td.dxgv
+{
+    border-bottom: Solid 1px #D3D3D3;
+    padding: 8px 10px 10px 10px;
+}
+.dxgvSelectedRow
+{
+    background-color: #A0A0A0;
+    color: White;
+}
+.dxgvFocusedRow
+{
+    background-color: #8D8D8D;
+    color: White;
+}
+.dxgvSelectedRow .dxgvCommandColumn a,
+.dxgvFocusedRow .dxgvCommandColumn a
+{
+    color: White;
+}
+.dxgvSelectedRow .dxgvCommandColumn a:hover,
+.dxgvFocusedRow .dxgvCommandColumn a:hover
+{
+    color: #F0F0F0;
+}
+.dxgvSelectedRow .dxgvCommandColumn a:visited,
+.dxgvFocusedRow .dxgvCommandColumn a:visited
+{
+    color: #F0F0F0;
+}
+
+.dxgvPreviewRow
+{
+    background-color: #F5F5F5;
+    color: #707070;
+}
+.dxgvDetailCell,
+.dxgvPreviewRow td.dxgv,
+.dxgvEmptyDataRow td.dxgv
+{
+    padding: 20px 2px 20px 4px;
+    border-bottom: Solid 1px #D3D3D3;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+.dxgvPreviewRow td.dxgv
+{
+    padding: 10px 10px 10px 15px;
+}
+.dxgvDetailCell
+{
+    padding: 16px 18px 16px 0px;
+}
+.dxgvDetailRow td.dxgvIndentCell
+{
+    padding-right: 0px;
+    border-bottom: Solid 1px #D3D3D3;
+}
+.dxgvEmptyDataRow
+{
+    color: Gray;
+}
+.dxgvEmptyDataRow td.dxgv
+{
+    border-bottom: Solid 1px #CFCFCF;
+    text-align: center;
+}
+
+.dxgvEditFormDisplayRow td.dxgv,
+.dxgvDataRow td.dxgv,
+.dxgvDataRowAlt td.dxgv,
+.dxgvSelectedRow td.dxgv,
+.dxgvFocusedRow td.dxgv
+{
+    border-color: #cfcfcf;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
+    overflow: hidden;
+    padding: 3px 6px 4px 6px;
+}
+.dxgvEditFormDisplayRow
+{
+}
+.dxgvEditFormDisplayRow td.dxgv
+{
+}
+
+.dxgvEditingErrorRow
+{
+    background-color: #FFC8C8;
+    color: #FF0000;
+}
+.dxgvEditingErrorRow td.dxgv
+{
+    white-space: pre-wrap;
+    border-bottom: Solid 1px #D3D3D3;
+    border-right: 0;
+    border-top: 0;
+    border-left: 0;
+    padding: 6px 10px 6px 10px;
+}
+
+.dxgvFilterRow td.dxgv {
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
+    padding: 2px 2px 2px 2px;
+}
+.dxgvGroupRow
+{
+    background-color: #EDEDED;
+}
+.dxgvFocusedGroupRow
+{
+    background-color: #8D8D8D;
+    color: White;
+}
+.dxgvGroupRow td.dxgv,
+.dxgvFocusedGroupRow td.dxgv
+{
+    border: none 0;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-bottom: Solid 1px #D3D3D3;
+    padding: 3px 6px 4px 6px;
+}
+.dxgvFocusedRow td.dxgvIndentCell,
+.dxgvFocusedGroupRow td.dxgvIndentCell,
+.dxgvSelectedRow td.dxgvIndentCell
+{
+    background-color: #EDEDED!important;
+    border-right: solid 1px #CFCFCF;
+    border-top: 0px;
+}
+.dxgvHeaderPanel {
+    background-color: #F9F9F9;
+    color: Black;
+    padding: 8px 6px 8px 6px;
+    border-bottom: Solid 1px #9F9F9F;
+}
+
+.dxgvHeader {
+    background-color: #dcdcdc;
+    border-left: 1px solid #9f9f9f;
+    border-bottom: 1px solid #9f9f9f;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 4px 6px 5px 6px;
+    position: relative;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.sortLink {
+    cursor: pointer;    
+}
+
+    .firstCell,
+    .dxgvFilterRow .dxgv.firstCell,
+    .dxgvDataRow .dxgv.firstCell {
+        border-left: none;
+    }
+
+    .sortAsc { background: #dcdcdc url('../images/sort-asc.gif') no-repeat scroll right center; }
+
+    .sortDesc { background: #dcdcdc url('../images/sort-desc.gif') no-repeat scroll right center; }
+
+.dxgvHeader, .dxgvHeader table {
+    color: Black;
+    font: 9pt Tahoma;
+    font-weight: bold;
+}
+.dxgvHeader td {
+    white-space: nowrap;
+}
+.dxgvHeader a {
+    color: #0d45b7;
+}
+.dxgvCustomization,
+.dxgvPopupEditForm
+{
+    width: 100%;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+.dxgvGroupPanel
+{
+    white-space: nowrap;
+    font-size: 9pt;
+
+    background-color: #EDEDED;
+    color: #8D8D8D;
+    border-bottom: Solid 1px #9F9F9F;
+    padding: 7px 4px 8px 6px;
+}
+.dxgvFooter
+{
+    background-color: #D7D7D7;
+    white-space: nowrap;
+}
+.dxgvFooter td.dxgv
+{
+    padding: 5px 6px 6px 6px;
+    border-bottom: Solid 1px #BCBCBC;
+    border-right: 0;
+}
+.dxgvGroupFooter
+{
+    background-color: #E0E0E0;
+}
+.dxgvGroupFooter td.dxgv
+{
+    white-space: nowrap;
+}
+.dxgvGroupFooter td.dxgv
+{
+    padding: 5px 4px 6px 6px;
+    border-bottom: Solid 1px #CFCFCF;
+    border-right: 0;
+}
+.dxgvDataRow td.dxgvIndentCell,
+.dxgvGroupRow td.dxgvIndentCell,
+.dxgvGroupFooter td.dxgvIndentCell
+{
+    background-color: #EDEDED;
+    border-right: Solid 1px #CFCFCF;
+    border-top: 0px;
+}
+
+.dxgvTitlePanel,
+.dxgvTable caption
+{
+    font-size: 15px;
+    font-weight: normal;
+    padding: 3px 3px 5px 3px;
+    text-align: center;
+    background-color: #ACACAC;
+    color: White;
+    border-bottom: Solid 1px #9F9F9F;
+}
+.dxgvLoadingDiv
+{
+    background-color:Gray;
+    opacity: 0.01;
+    filter: alpha(opacity=1);
+}
+.dxgvStatusBar
+{
+    border-top: Solid 1px #9F9F9F;
+}
+.dxgvStatusBar tr.dxgv
+{
+    height: 20px;
+}
+.dxgvCommandColumn
+{
+    padding: 2px 2px 2px 2px;
+}
+.dxgvCommandColumn a
+{
+    margin: 0px 3px 0px 0px;
+    color:  #0d45b7;
+}
+.dxgvCommandColumn a:hover
+{
+    color:  #5494ea;
+}
+.dxgvCommandColumn a:visited
+{
+    color:  #ab59a6;
+}
+
+.dxgvCommandColumnItem
+{
+}
+.dxgvEditFormTable
+{
+    padding: 2px 6px 6px 4px;
+    font: 11px Tahoma;
+    color: Black;
+}
+.dxgvEditFormTable a
+{
+    color: #0d45b7;
+
+}
+.dxgvEditFormTable a:hover
+{
+    color: #5494ea;
+
+}
+.dxgvEditFormTable a:visited
+{
+    color: #ab59a6;
+}
+
+.dxgvEditFormCaption
+{
+    padding: 4px 4px 4px 10px;
+}
+
+.dxgvInlineEditCell
+{
+    padding: 1px 1px 1px 1px;
+}
+
+.dxgvEditFormCell
+{
+    padding: 4px 4px 4px 4px;
+    border: 0;
+}
+.dxgvControl .dxpControl td.dxpCtrl, .dxgvDisabled .dxpControl
+{
+    padding-top: 4px;
+}
+
+.dxgvPagerTopPanel
+{
+}
+.dxgvPagerBottomPanel
+{
+}
+.dxgvDetailButton
+{
+}
+
+.dxgvFilterBar
+{
+    border-top: solid 1px #9F9F9F;
+    background: #d4d4d4;
+}
+.dxgvFilterBar a
+{
+    color: #394ea2;
+    text-decoration: underline;
+}
+.dxgvFilterBarCheckBoxCell
+{
+    padding: 0 3px;
+    padding-right: 7px;
+}
+.dxgvFilterBarImageCell
+{
+    padding: 0 3px;
+    padding-right: 1px;
+    cursor: pointer;
+}
+.dxgvFilterBarExpressionCell
+{
+    font-size: 9pt;
+    padding: 5px 5px 8px 0;
+    white-space: nowrap;
+}
+.dxgvFilterBarClearButtonCell
+{
+    font-size: 9pt;
+    padding: 5px 6px 8px;
+}
+.dxgvFilterBuilderMainArea
+{
+    background: white;
+    padding: 6px 2px;
+}
+.dxgvFilterBuilderButtonArea
+{
+    background: #ededed;
+    border-top: solid 1px #cfcfcf;
+    padding: 6px;
+}
+
+.dxgvDataRowHover
+{
+    background: #cfcfcf;
+    color: Black;
+}
+
+.dxeLoadingDiv
+{
+    background: White;
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+    cursor: wait;
+}
+.dxeLoadingPanel
+{
+    font: 9pt Tahoma;
+    color: #303030;
+}
+.dxeLoadingPanel td.dx
+{
+    white-space: nowrap;
+    text-align: center;
+    padding: 12px 12px 12px 12px;
+}
+
+.dxeReadOnly
+{
+
+}
+.dxeBase
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+}
+/* -- ErrorFrame -- */
+.dxeErrorCell, .dxeErrorCell td
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+    color: Red;
+}
+.dxeErrorCell
+{
+    padding-left: 4px;
+    padding-right:5px;
+}
+.dxeErrorFrameWithoutError {
+    border: 1px solid Red;
+}
+.dxeErrorFrameWithoutError .dxeControlsCell {
+    padding: 2px;
+}
+
+.dxeEditArea
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+    border: 1px solid #A0A0A0;
+}
+/* -- Buttons -- */
+.dxeButtonEditButton, .dxeCalendarButton,
+.dxeSpinIncButton, .dxeSpinDecButton,
+.dxeSpinLargeIncButton, .dxeSpinLargeDecButton
+{
+    vertical-align: middle;
+    border: solid 1px #7f7f7f;
+    cursor: pointer;
+}
+.dxeButtonEditButton, .dxeCalendarButton, .dxeButtonEditButton td.dx, .dxeCalendarButton td.dx,
+.dxeSpinIncButton, .dxeSpinDecButton, .dxeSpinLargeIncButton, .dxeSpinLargeDecButton,
+.dxeSpinIncButton td.dx, .dxeSpinDecButton td.dx, .dxeSpinLargeIncButton td.dx, .dxeSpinLargeDecButton td.dx
+{
+    font-family: Tahoma;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.dxeButtonEditButton table.dxbebt,
+.dxeSpinIncButton table.dxbebt, .dxeSpinDecButton table.dxbebt,
+.dxeSpinLargeIncButton table.dxbebt, .dxeSpinLargeDecButton table.dxbebt
+{
+    width: 10px;
+}
+
+.dxeCalendarButton td.dx
+{
+    font-size: 9pt;
+    text-align: center;
+    white-space: nowrap;
+}
+.dxeCalendarButton table.dxbebt
+{
+    width: 100%;
+}
+
+/* -- Pressed -- */
+.dxeCalendarButtonPressed, .dxeButtonEditButtonPressed,
+.dxeSpinIncButtonPressed, .dxeSpinDecButtonPressed, .dxeSpinLargeIncButtonPressed,
+.dxeSpinLargeDecButtonPressed
+{
+    background-image: none;
+    background-color: #D5D5D5;
+    border: Solid 1px #7F7F7F;
+}
+
+.dxeButtonEdit
+{
+    background-color: white;
+    border: solid 1px #9F9F9F;
+    width: 170px;
+}
+.dxeButtonEdit .dxeEditArea {
+    background-color: white;
+}
+.dxeButtonEdit .dxeEditArea, .dxeButtonEdit td.dxic
+{
+    width: 100%;
+}
+.dxeButtonEdit td.dxic
+{
+    padding: 0px 2px 0px 1px;
+}
+.dxeButtonEdit .dxeIIC img {
+    padding-left: 3px;
+}
+.dxeTextBox, .dxeMemo
+{
+    background-color: white;
+    border: solid 1px #9f9f9f;
+}
+.dxeTextBox td.dxic
+{
+    padding: 1px 2px;
+    width: 100%;
+}
+.dxeTextBox .dxeEditArea
+{
+    background-color: white;
+}
+.dxeRadioButtonList
+{
+    border: Solid 1px #9F9F9F;
+}
+.dxeRadioButtonList, .dxeRadioButtonList table
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+}
+.dxeRadioButtonList td.dxe
+{
+    padding: 7px 5px 6px 11px;
+}
+.dxeRadioButtonList label
+{
+    margin-right: 6px;
+}
+
+/* -- Memo -- */
+.dxeMemo
+{
+
+}
+.dxeMemoEditArea
+{
+    background-color: white;
+    font-family: Tahoma;
+    font-size: 9pt;
+}
+.dxeMemo td
+{
+    padding: 0 0 0 3px;
+    width: 100%;
+}
+
+/* -- Hyperlink -- */
+.dxeHyperlink
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+    font-weight: normal;
+    color: #0d45b7;
+}
+a.dxeHyperlink:hover
+{
+    color: #5494ea;
+}
+a.dxeHyperlink:visited
+{
+    color: #ab59a6;
+}
+
+/* -- ListBox -- */
+.dxeListBox
+{
+    background-color: white;
+    border: solid 1px #A0A0A0;
+    font-family: Tahoma;
+    font-size: 9pt;
+    width: 70px;
+    height: 109px;
+}
+.dxeListBox div.dxlbd
+{
+    padding-top: 1px;
+    padding-bottom: 1px;
+    height: 107px;
+}
+.dxeListBoxItemRow
+{
+    cursor: default;
+}
+.dxeListBoxItem
+{
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    font-family: Tahoma;
+    font-size: 9pt;
+    padding: 3px 2px 4px 3px;
+    white-space: nowrap;
+    text-align: left;
+    color: Black;
+    font-weight: normal;
+}
+
+.dxeListBox td.dxeI, .dxeListBox td.dxeIM, .dxeListBox .dxeHIC,
+.dxeListBox td.dxeFTM, .dxeListBox td.dxeTM,
+.dxeListBox td.dxeC, .dxeListBox td.dxeCM, .dxeListBox td.dxeHCC, .dxeListBox td.dxeMI, .dxeListBox td.dxeMIM
+{
+    border-right-width: 0px!important;
+}
+.dxeListBox td.dxeCM, .dxeListBox td.dxeHCC
+{
+    width: 25px;
+}
+.dxeListBox td.dxeIM
+{
+    width: 0;
+}
+.dxeListBox td.dxeT
+{
+    width: 100%;
+    padding-left: 0px!important;
+}
+.dxeListBox td.dxeT, .dxeListBox td.dxeMI
+{
+    border-left-width: 0px!important;
+}
+.dxeListBox td.dxeFTM, .dxeListBox td.dxeTM, .dxeListBox td.dxeLTM,
+.dxeListBox .dxeHFC, .dxeListBox .dxeHC, .dxeListBox .dxeHLC
+{
+    overflow: hidden;
+}
+
+.dxeListBox td.dxeFTM, .dxeListBox td.dxeTM,
+.dxeListBox .dxeHFC, .dxeListBox .dxeHC
+{
+    padding-right: 6px!important;
+}
+.dxeListBox td.dxeLTM, .dxeListBox td.dxeTM,
+.dxeListBox .dxeHC,  .dxeListBox .dxeHLC
+{
+    padding-left: 6px!important;
+}
+/*Grid lines*/
+.dxeListBox td.dxeLTM, .dxeListBox td.dxeTM, .dxeListBox td.dxeMIM
+{
+    border-left: 1px solid #cfcfcf !important;
+}
+.dxeListBox td.dxeIM, .dxeListBox td.dxeFTM, .dxeListBox td.dxeTM, .dxeListBox td.dxeLTM,
+.dxeListBox td.dxeCM, .dxeListBox td.dxeMIM
+{
+    border-bottom: solid 1px #cfcfcf;
+}
+.dxeListBoxItemSelected     /* inherits dxeListBoxItem */
+{
+    color: White;
+    background-color: #A0A0A0;
+}
+.dxeListBoxItemHover        /* inherits dxeListBoxItem */
+{
+    background-color: #cfcfcf;
+    color: black;
+}
+
+/*Header*/
+.dxeListBox .dxeHD
+{
+    background-color: #dcdcdc;
+    border-bottom: solid 1px #A0A0A0;
+}
+.dxeListBox .dxeHC,  .dxeListBox .dxeHLC, .dxeListBox td.dxeHMIC
+{
+    border-left: solid 1px #A0A0A0;
+}
+.dxeListBox .dxeHIC, .dxeListBox .dxeHFC, .dxeListBox .dxeHCC
+{
+    border-left:1px solid #dcdcdc;
+}
+.dxeListBox .dxeHFC, .dxeListBox .dxeHC, .dxeListBox .dxeHMIC
+{
+    border-right-width:0;
+}
+.dxeListBox .dxeHLC
+{
+    border-right: solid 1px #dcdcdc;
+}
+
+/* -- Calendar -- */
+.dxeCalendar
+{
+    border: solid 1px #9f9f9f;
+    background-color: White;
+    color: Black;
+    font-weight: normal;
+    cursor: default;
+}
+.dxeCalendar td.dxMonthGrid
+{
+    padding: 8px 20px;
+}
+.dxeCalendar td.dxMonthGridWithWeekNumbers
+{
+    padding: 5px 20px 8px 8px;
+}
+.dxeCalendarDayHeader
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+    padding: 2px 4px 5px;
+    border-bottom: solid 1px #cfcfcf;
+}
+.dxeCalendarWeekNumber
+{
+    font-family: Tahoma;
+    font-size: 7pt;
+    text-align: right;
+    padding: 6px 8px 6px 4px;
+    color: #bfbfbf;
+}
+.dxeCalendarDay
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+    padding: 4px 6px;
+    text-align: center;
+}
+.dxeCalendarWeekend        /* inherits dxeCalendarDay */
+{
+    color: #c00000;
+}
+.dxeCalendarOtherMonth     /* inherits dxeCalendarDay */
+{
+    color: #888;
+}
+.dxeCalendarOutOfRange     /* inherits dxeCalendarDay */
+{
+    color: #d0d0d0;
+}
+.dxeCalendarSelected       /* inherits dxeCalendarDay */
+{
+    color: White;
+    background-color: #8d8d8d;
+}
+.dxeCalendarToday         /* inherits dxeCalendarDay */
+{
+    padding: 3px 3px 2px;
+    border: solid 1px #c00000;
+}
+.dxeCalendarHeader
+{
+    background-color: #dcdcdc;
+    border: solid 1px #c9c9c9;
+    border-width: 1px 0;
+    padding: 4px 7px;
+}
+.dxeCalendarHeader td.dxe
+{
+    font-family: Tahoma;
+    font-size: 9pt;
+    text-align: center;
+    cursor: pointer;
+}
+.dxeCalendarFooter
+{
+    background-color: #ededed;
+    padding: 8px 0px;
+    border-top: solid 1px #d6d6d6;
+}
+.dxeCalendarFastNav
+{
+    color: Black;
+    background: White;
+    border: solid 1px #9f9f9f;
+    border-bottom: 0px;
+    padding: 12px 8px;
+}
+.dxeCalendarFastNavMonthArea
+{
+    padding: 0px 9px;
+}
+.dxeCalendarFastNavYearArea
+{
+}
+.dxeCalendarFastNavFooter
+{
+    color: Black;
+    background-color: #ededed;
+    padding: 8px 0px;
+    border: solid 1px #9f9f9f;
+    border-top: solid 1px #d6d6d6;
+}
+.dxeCalendarFastNavMonth, .dxeCalendarFastNavYear
+{
+    font: normal 9pt Tahoma;
+    color: Black;
+    padding: 3px 5px;
+    text-align: center;
+    cursor: pointer;
+}
+.dxeCalendarFastNavMonth
+{
+    padding: 6px;
+}
+.dxeCalendarFastNavMonthSelected, .dxeCalendarFastNavYearSelected
+{
+    color: White;
+    background: #8d8d8d;
+}
+.dxeCalendarFastNavMonthHover, .dxeCalendarFastNavYearHover
+{
+    color: Black;
+    background: #e5e5e5;
+    padding: 2px 4px;
+    border: solid 1px #d6d6d6;
+}
+.dxeCalendarFastNavMonthHover
+{
+    padding: 5px;
+}
+/* Disabled */
+.dxeDisabled, .dxeDisabled td.dxe
+{
+    color: #acacac;
+    cursor: default;
+}
+a.dxeDisabled:hover
+{
+    color: #acacac;
+}
+.dxeButtonDisabled, .dxeButtonDisabled td.dxe
+{
+    border-color: #c3c3c3;
+    color: #808080;
+    cursor: default;
+}
+/* -- Button -- */
+
+.dxbButtonChecked
+{
+    color: #FFFFFF;
+    background-image: none;
+    background-color: #8D8D8D;
+}
+.dxbButtonPressed
+{
+    color: #000000;
+    background-image: none;
+    background-color: #D5D5D5;
+}
+.dxbButton div.dxb
+{
+    padding: 3px 8px 4px 8px;
+    border: 0px;
+}
+.dxbButton div.dxbf
+{
+    padding: 2px 7px 3px 7px;
+    border: dotted 1px black;
+}
+.dxbButton div.dxb table
+{
+    color: #000000;
+    font-size: 9pt;
+    font-family: Tahoma;
+}
+.dxbButton div.dxb td.dxb
+{
+    background-color: transparent!important;
+    background-image: url('')!important;
+    border-width: 0px!important;
+    padding: 0px!important;
+}
+/* Disabled */
+.dxbDisabled
+{
+    border-color: #c3c3c3;
+    color: #808080;
+    cursor: default;
+}
+.dxbDisabled td.dxb
+{
+    color: #808080;
+}
+/* -- FilterControl -- */
+.dxfcTable
+{
+    border-collapse: separate!important;
+}
+.dxfcTable td.dxfc
+{
+    padding: 0px 0px 0px 3px;
+    vertical-align: middle;
+    font: 9pt Tahoma;
+    color: Black;
+}
+a.dxfcPropertyName
+{
+    white-space: nowrap!important;
+    color: Blue!important;
+}
+a.dxfcGroupType
+{
+    white-space: nowrap!important;
+    padding: 0px 3px 0px 3px!important;
+    color: Red!important;
+}
+a.dxfcOperation
+{
+    white-space: nowrap!important;
+    color: Green!important;
+}
+a.dxfcValue
+{
+    white-space: nowrap!important;
+    color: Gray!important;
+}
+.dxfcImageButton
+{
+    cursor: pointer;
+}
+
+.dxfcLoadingDiv
+{
+    background: white;
+    opacity: 0.01;
+    filter: alpha(opacity=1);
+}
+.dxfcLoadingPanel
+{
+    font: 9pt Tahoma;
+    color: #303030;
+    border: solid 1px #9F9F9F;
+    background: white;
+}
+.dxfcLoadingPanel td.dx
+{
+    white-space: nowrap;
+    text-align: center;
+    padding: 12px 12px 12px 12px;
+}
+
+.dxeMaskHint
+{
+    background: #ffffe1;
+    border: solid 1px black;
+    padding: 2px 5px 3px;
+    color: Black;
+    font: 9pt Tahoma;
+}
+
+/* -- ProgressBar -- */
+.dxeProgressBar
+{
+    border: Solid 1px #696969;
+    background-color: #FFFFFF;
+}
+.dxeProgressBar, .dxeProgressBar td.dxe
+{
+    font-family: Tahoma, Verdana, Arial;
+    font-size: 9pt;
+    color: Black;
+}
+.dxeProgressBar .dxePBMainCell, .dxeProgressBar td.dxe
+{
+    padding: 0;
+}
+.dxeProgressBarIndicator
+{
+    background-color: #E0DFDF;
+}
+
+/* -- DropDownWindow -- */
+.dxeDropDownWindow
+{
+    background-color: white;
+    border: solid 1px #9F9F9F;
+}
+
+/*----------------- ColorTable -----------------*/
+.dxeColorIndicator
+{
+    border: solid 1px #9F9F9F;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+.dxeColorTable
+{
+    background-color: #ffffff;
+    border: solid 1px #9F9F9F;
+}
+.dxeColorTable td.dx
+{
+    padding: 4px 4px;
+}
+.dxeColorTableCell {
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-right: 3px;
+    cursor: pointer;
+}
+.dxeColorTableCellDiv {
+    border: solid 1px #808080;
+    width: 12px;
+    height: 12px;
+    font-size: 0px;
+}
+.dxeColorTableCellSelected {
+    padding-left: 2px!important;
+    padding-bottom: 2px!important;
+    padding-top: 2px!important;
+    padding-right: 2px!important;
+
+    background-color: #CBCBCB;
+    border: solid 1px #888888;
+}
+.dxeColorTableCellHover {
+    padding-left: 2px!important;
+    padding-bottom: 2px!important;
+    padding-top: 2px!important;
+    padding-right: 2px!important;
+
+    background-color: #F2F2F2;
+    border: solid 1px #888888;
+}
+
+.dxeFocused
+{
+    border: solid 1px #3d3d3d;
+}
+.dxeNullText .dxeEditArea,
+.dxeNullText .dxeMemoEditArea
+{
+    color: #818181;
+}
+
+/* Paging */
+
+.paging {
+    background-color: #f2f2f2;
+    display: block;
+    line-height: 18px;
+    overflow: hidden;
+    padding: 4px 2px 5px;
+}
+
+    .paging .first,
+    .paging .last {
+        display: none;
+    }
+
+    .paging span,
+    .paging .prev,
+    .paging .next,
+    .paging .summary {
+        display: block;
+        float: left;
+    }
+
+    .paging .goto span,
+    .paging .goto a {
+        padding: 0 3px;
+    }
+
+    .paging .goto a {
+        color: #394EA2;
+        display: block;
+        font-weight: normal;
+        text-decoration: underline;
+    }
+
+        .paging .goto em {
+            font-style: normal;
+            font-weight: bold;
+        }
+
+    .paging .summary { margin: 0 8px 0 4px; }
+
+        .paging .summary span { float: none; display: inline; }
+
+    .paging .prev,
+    .paging .next {
+        height: 17px;
+        text-indent: -9999em;
+        width: 16px;
+    }
+
+    .paging .prev { background: transparent url('../images/prev-disabled.png') no-repeat scroll 0 0; margin-right: 4px; }
+    .paging a.prev { background: transparent url('../images/prev.png') no-repeat scroll 0 0; }
+
+    .paging .next { background: transparent url('../images/next-disabled.png') no-repeat scroll 0 0; margin-left: 4px; }
+    .paging a.next { background: transparent url('../images/next.png') no-repeat scroll 0 0; }

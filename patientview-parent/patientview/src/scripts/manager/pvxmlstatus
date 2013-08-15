@@ -1,0 +1,6 @@
+echo "proton";
+ls -l /home/manager/proton | wc -l
+echo;
+echo "rpvxml"
+ls -l /usr/local/etc/rpvxml | wc -l
+

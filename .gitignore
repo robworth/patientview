@@ -6,5 +6,10 @@ out/
 *.iml
 *.ipr
 *.iws
-src/main/webapp/WEB-INF/
-!src/main/webapp/WEB-INF/web.xml
+*.DS_Store
+patientview-parent/patientview/src/main/webapp/WEB-INF/
+!patientview-parent/patientview/src/main/webapp/WEB-INF/web.xml
+patientview-parent/patientview/src/main/webapp/META-INF/
+patientview-parent/monitoring/src/main/filters
+patientview-parent/patientview/src/main/filters
+patientview-parent/radar/src/main/filters

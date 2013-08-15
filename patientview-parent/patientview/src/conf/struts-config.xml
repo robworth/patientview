@@ -1,0 +1,1202 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<!DOCTYPE struts-config PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+    "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+<struts-config>
+
+  <!-- ========== Form Bean Definitions =================================== -->
+  <form-beans>
+
+      <form-bean name="ibdPatientDetailsForm"
+                 type="org.apache.struts.action.DynaActionForm">
+          <form-property name="patientId" type="java.lang.Long"/>
+          <form-property name="otherConditions" type="java.lang.String"/>
+          <form-property name="email" type="java.lang.String"/>
+      </form-bean>
+
+    <form-bean name="edtaCodeForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="edtaCode" type="java.lang.String"/>
+      <form-property name="linkType" type="java.lang.String"/>
+      <form-property name="description" type="java.lang.String"/>
+      <form-property name="medicalLink01" type="java.lang.String"/>
+      <form-property name="medicalLink02" type="java.lang.String"/>
+      <form-property name="medicalLink03" type="java.lang.String"/>
+      <form-property name="medicalLink04" type="java.lang.String"/>
+      <form-property name="medicalLink05" type="java.lang.String"/>
+      <form-property name="medicalLink06" type="java.lang.String"/>
+      <form-property name="medicalLinkText01" type="java.lang.String"/>
+      <form-property name="medicalLinkText02" type="java.lang.String"/>
+      <form-property name="medicalLinkText03" type="java.lang.String"/>
+      <form-property name="medicalLinkText04" type="java.lang.String"/>
+      <form-property name="medicalLinkText05" type="java.lang.String"/>
+      <form-property name="medicalLinkText06" type="java.lang.String"/>
+      <form-property name="patientLink01" type="java.lang.String"/>
+      <form-property name="patientLink02" type="java.lang.String"/>
+      <form-property name="patientLink03" type="java.lang.String"/>
+      <form-property name="patientLink04" type="java.lang.String"/>
+      <form-property name="patientLink05" type="java.lang.String"/>
+      <form-property name="patientLink06" type="java.lang.String"/>
+      <form-property name="patientLinkText01" type="java.lang.String"/>
+      <form-property name="patientLinkText02" type="java.lang.String"/>
+      <form-property name="patientLinkText03" type="java.lang.String"/>
+      <form-property name="patientLinkText04" type="java.lang.String"/>
+      <form-property name="patientLinkText05" type="java.lang.String"/>
+      <form-property name="patientLinkText06" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="resultHeadingForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="headingcode" type="java.lang.String"/>
+      <form-property name="heading" type="java.lang.String"/>
+      <form-property name="rollover" type="java.lang.String"/>
+      <form-property name="link" type="java.lang.String"/>
+      <form-property name="panel" type="java.lang.String"/>
+      <form-property name="panelorder" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="patientForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="username" type="java.lang.String"/>
+      <form-property name="password" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="email" type="java.lang.String"/>
+      <form-property name="emailverified" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="role" type="java.lang.String"/>
+      <form-property name="firstlogon" type="java.lang.String"/>
+      <form-property name="overrideDuplicateNhsno" type="java.lang.String"/>
+      <form-property name="dummypatient" type="java.lang.String"/>
+      <form-property name="lastlogon" type="java.lang.String"/>
+      <form-property name="failedlogons" type="java.lang.String"/>
+      <form-property name="accountlocked" type="java.lang.String"/>
+      <form-property name="showgps" type="java.lang.String"/>
+      <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
+      <form-property name="isrecipient" type="java.lang.String"/>
+      <form-property name="isclinician" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="shortname" type="java.lang.String"/>
+      <form-property name="unituser" type="java.lang.String"/>
+      <form-property name="address1" type="java.lang.String"/>
+      <form-property name="address2" type="java.lang.String"/>
+      <form-property name="address3" type="java.lang.String"/>
+      <form-property name="postcode" type="java.lang.String"/>
+      <form-property name="uniturl" type="java.lang.String"/>
+      <form-property name="trusturl" type="java.lang.String"/>
+      <form-property name="renaladminname" type="java.lang.String"/>
+      <form-property name="renaladminphone" type="java.lang.String"/>
+      <form-property name="renaladminemail" type="java.lang.String"/>
+      <form-property name="unitenquiriesphone" type="java.lang.String"/>
+      <form-property name="unitenquiriesemail" type="java.lang.String"/>
+      <form-property name="appointmentphone" type="java.lang.String"/>
+      <form-property name="appointmentemail" type="java.lang.String"/>
+      <form-property name="outofhours" type="java.lang.String"/>
+      <form-property name="peritonealdialysisphone" type="java.lang.String"/>
+      <form-property name="peritonealdialysisemail" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname1" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone1" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation1" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl1" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname2" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone2" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation2" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl2" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname3" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone3" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation3" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl3" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname4" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone4" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation4" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl4" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname5" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone5" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation5" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl5" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname6" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone6" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation6" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl6" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname7" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone7" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation7" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl7" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname8" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone8" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation8" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl8" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname9" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone9" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation9" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl9" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname10" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone10" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation10" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl10" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname11" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone11" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation11" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl11" type="java.lang.String"/>
+      <form-property name="haemodialysisunitname12" type="java.lang.String"/>
+      <form-property name="haemodialysisunitphone12" type="java.lang.String"/>
+      <form-property name="haemodialysisunitlocation12" type="java.lang.String"/>
+      <form-property name="haemodialysisuniturl12" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="gpgForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="src" type="java.lang.String"/>
+      <form-property name="dest" type="java.lang.String"/>
+      <form-property name="passphrase" type="java.lang.String"/>
+      <form-property name="gpgHome" type="java.lang.String"/>
+      <form-property name="gpgRuntime" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="splashPageForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="headline" type="java.lang.String"/>
+      <form-property name="bodytext" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="datestart" type="java.lang.String"/>
+      <form-property name="datestop" type="java.lang.String"/>
+      <form-property name="live" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="xmlForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="src" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="passwordForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="oldpassword" type="java.lang.String"/>
+      <form-property name="passwordPwd" type="java.lang.String"/>
+      <form-property name="newpasswordagain" type="java.lang.String"/>
+      <form-property name="emailAddress" type="java.lang.String"/>
+      <form-property name="emailAddressAgain" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="logForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="user" type="java.lang.String"/>
+      <form-property name="username" type="java.lang.String"/>
+      <form-property name="actor" type="java.lang.String"/>
+      <form-property name="action" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="startdate" type="java.lang.String"/>
+      <form-property name="enddate" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="newsForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="admin" type="java.lang.String"/>
+      <form-property name="patient" type="java.lang.String"/>
+      <form-property name="everyone" type="java.lang.String"/>
+      <form-property name="headline" type="java.lang.String"/>
+      <form-property name="body" type="java.lang.String"/>
+      <form-property name="submission" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="contactForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="message" type="java.lang.String"/>
+      <form-property name="email" type="java.lang.String"/>
+      <form-property name="type" type="java.lang.String"/>
+      <form-property name="renaladminemail" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="patientResultForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="day" type="java.lang.String"/>
+      <form-property name="month" type="java.lang.String"/>
+      <form-property name="year" type="java.lang.String"/>
+      <form-property name="hour" type="java.lang.String"/>
+      <form-property name="minute" type="java.lang.String"/>
+      <form-property name="patientResultName" type="java.lang.String"/>
+      <form-property name="patientResultCode1" type="java.lang.String"/>
+      <form-property name="patientResultValue1" type="java.lang.String"/>
+      <form-property name="patientResultCode2" type="java.lang.String"/>
+      <form-property name="patientResultValue2" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="patientResultDeleteForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="patientResultKey" type="java.lang.String"/>
+      <form-property name="patientResultName" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="aboutmeForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="aboutme" type="java.lang.String"/>
+      <form-property name="talkabout" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="letterForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+    </form-bean>
+    <form-bean name="feedbackForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+      <form-property name="id" type="java.lang.String"/>
+      <form-property name="username" type="java.lang.String"/>
+      <form-property name="nhsno" type="java.lang.String"/>
+      <form-property name="unitcode" type="java.lang.String"/>
+      <form-property name="comment" type="java.lang.String"/>
+      <form-property name="commentedited" type="java.lang.String"/>
+      <form-property name="anonymous" type="java.lang.String"/>
+      <form-property name="makepublic" type="java.lang.String"/>
+    </form-bean>
+
+      <form-bean name="joinForm" type="org.apache.struts.validator.DynaValidatorActionForm">
+        <form-property name="firstName" type="java.lang.String"/>
+        <form-property name="lastName" type="java.lang.String"/>
+        <form-property name="dateOfBirth" type="java.lang.String"/>
+        <form-property name="nhsNo" type="java.lang.String"/>
+        <form-property name="unitcode" type="java.lang.String"/>
+        <form-property name="email" type="java.lang.String"/>
+        <form-property name="antiSpamAnswer" type="java.lang.String"/>
+      </form-bean>
+
+    <form-bean name="aboutmeImageUploadForm" type="org.patientview.patientview.aboutme.AboutmeImageUploadForm"/>
+
+      <form-bean name="sendMessageForm" type="org.apache.struts.action.DynaActionForm">
+          <form-property name="content" type="java.lang.String"/>
+          <form-property name="subject" type="java.lang.String"/>
+          <form-property name="recipientId" type="java.lang.String"/>
+          <form-property name="conversationId" type="java.lang.Long"/>
+          <form-property name="unitCode" type="java.lang.String"/>
+      </form-bean>
+  </form-beans>
+
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+    <forward name="control"                    path="/control/index.jsp"/>
+    <forward name="patientPasswordChangeInput" path="/patient/password_change.jsp"/>
+    <forward name="controlPasswordChangeInput" path="/control/password_change.jsp"/>
+    <forward name="patientEntryBloodPressure"  path="/patient/patient_entry_bp.jsp"/>
+    <forward name="patientEntryGlucose"        path="/patient/patient_entry_glucose.jsp"/>
+    <forward name="patientEntryWeight"         path="/patient/patient_entry_weight.jsp"/>
+    <forward name="patientEntryResultComment"  path="/patient/patient_entry_result_comment.jsp"/>
+  </global-forwards>
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings>
+    <action path="/index"
+            type="org.patientview.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/index.jsp"/>
+    </action>
+    <action path="/login"
+            type="org.patientview.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/login.jsp" redirect="true"/>
+    </action>
+    <action path="/login-error"
+            type="org.patientview.patientview.logon.LogonErrorAction">
+      <forward name="success" path="/login-error.jsp"/>
+    </action>
+    <action path="/logged_in"
+            type="org.patientview.patientview.logon.LoggedInAction" parameter="index">
+      <forward name="patient" path="/login-success.jsp"/>
+      <forward name="admin" path="/control/index.jsp"/>
+    </action>
+    <action path="/back_to_admin"
+              type="org.patientview.patientview.logon.BackToAdminAction" parameter="index">
+          <forward name="patient" path="/login-success.jsp"/>
+          <forward name="admin" path="/control/index.jsp"/>
+    </action>
+    <action path="/logout"
+            type="org.patientview.patientview.logon.LogoutAction" parameter="index">
+      <forward name="success" path="/index.jsp"/>
+    </action>
+    <action path="/forgotten-password"
+      type="org.patientview.patientview.ForgottenPasswordAction" parameter="index">
+      <forward name="input" path="/forgotten-password.jsp"/>
+      <forward name="success" path="/forgotten-password-confirmation.jsp"/>
+    </action>
+
+      <action path="/launchpad"
+              type="org.patientview.patientview.launchpad.LaunchpadAction">
+          <forward name="success" path="/launchpad.jsp" redirect="false"/>
+      </action>
+
+      <action path="/launchpad-select"
+              type="org.patientview.patientview.launchpad.LaunchpadSelectAction">
+          <forward name="error" path="/logout.do" redirect="true"/>
+          <forward name="success" path="/logged_in.do" redirect="true"/>
+      </action>
+
+    <action path="/emailverification"
+            type="org.patientview.patientview.user.EmailVerificationAction" parameter="index">
+      <forward name="failure" path="/email_verification_failure.jsp"/>
+      <forward name="success" path="/email_verification_success.jsp"/>
+    </action>
+
+    <action path="/patient/patient_details"
+            name="ibdPatientDetailsForm"
+            type="org.patientview.patientview.PatientDetailsAction"
+            scope="request"
+            parameter="patient_details">
+      <forward name="success" path="/patient/patient_details.jsp"/>
+    </action>
+
+      <action path="/patient/patient_details_update"
+              name="ibdPatientDetailsForm"
+              type="org.patientview.patientview.PatientDetailsUpdateAction"
+              input="input"
+              scope="request"
+              validate="true"
+              parameter="patient_details">
+          <forward name="input" path="/patient/patient_details.jsp"/>
+          <forward name="success" path="/patient/patient_details.do?success=true"/>
+      </action>
+
+    <action path="/patient/index"
+            type="org.patientview.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/patient/index.jsp"/>
+    </action>
+
+    <action path="/patient/patient_view"
+            type="org.patientview.patientview.PatientDetailsAction" parameter="patient_view">
+      <forward name="success" path="/patient/patient_view.jsp"/>
+    </action>
+
+    <action path="/patient/medical_view"
+            type="org.patientview.patientview.PatientDetailsAction" parameter="medical_view">
+      <forward name="success" path="/patient/medical_view.jsp"/>
+    </action>
+
+    <action path="/patient/aboutme"
+            type="org.patientview.patientview.aboutme.AboutmeDisplay" parameter="aboutme">
+      <forward name="success" path="/patient/aboutme_display.jsp"/>
+      <forward name="editaboutme" path="/patient/aboutme_edit.jsp"/>
+    </action>
+
+    <action path="/patient/patient_entry"
+            type="org.patientview.patientview.IndexAction" parameter="patient_entry">
+      <forward name="success" path="/patient/patient_entry.jsp"/>
+    </action>
+
+      <action path="/patient/diagnostics"
+              type="org.patientview.patientview.diagnostics.DiagnosticsAction"
+              parameter="diagnostics">
+          <forward name="success" path="/patient/diagnostics.jsp"/>
+      </action>
+
+    <action path="/patient/results"
+            type="org.patientview.patientview.TestResultsAction" parameter="results">
+      <forward name="success" path="/patient/results.jsp"/>
+    </action>
+
+    <action path="/patient/medicines"
+            type="org.patientview.patientview.medicine.MedicineDisplayAction" parameter="medicines">
+      <forward name="success" path="/patient/medicines.jsp"/>
+    </action>
+
+    <action path="/patient/letters"
+            type="org.patientview.patientview.letter.LetterDisplayAction" parameter="letters">
+      <forward name="success" path="/patient/letters.jsp"/>
+    </action>
+
+    <action path="/patient/letterDetail"
+            type="org.patientview.patientview.letter.LetterDetailAction" parameter="letters">
+      <forward name="success" path="/patient/letter_detail.jsp"/>
+      <forward name="nopermission" path="/patient/letter_denied.jsp"/>
+    </action>
+
+    <action path="/patient/contact"
+            type="org.patientview.patientview.ContactAction" parameter="contact" name="feedbackForm">
+      <forward name="success" path="/patient/contact.jsp"/>
+    </action>
+
+      <action path="/patient/education"
+              type="org.patientview.patientview.education.EducationDisplayAction" parameter="education">
+          <forward name="success" path="/patient/education.jsp"/>
+      </action>
+
+    <action path="/patient/patientAddsBloodPressure" type="org.patientview.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_bp.jsp"/>
+      <forward name="success" path="/patient/patient_entry_bp.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsBloodPressures" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_bp.jsp"/>
+      <forward name="success" path="/patient/patient_entry_bp.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesBloodPressure" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_bp.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsGlucose" type="org.patientview.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_glucose.jsp"/>
+      <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsGlucoses" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_glucose.jsp"/>
+      <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesGlucose" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsWeight" type="org.patientview.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_weight.jsp"/>
+      <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsWeights" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_weight.jsp"/>
+      <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesWeight" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+    </action>
+
+    <action path="/patient/patientAddsResultComment" type="org.patientview.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_result_comment.jsp"/>
+      <forward name="success" path="/patient/patient_entry_result_comment.jsp"/>
+    </action>
+
+    <action path="/patient/patientSubmitsResultComments" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
+            name="patientResultForm"
+            input="input">
+      <forward name="input" path="/patient/patient_entry_result_comment.jsp"/>
+      <forward name="success" path="/patient/patient_entry_result_comment.jsp"/>
+    </action>
+
+    <action path="/patient/patientEnteredCommentDisplay" type="org.patientview.patientview.comment.CommentViewAction" parameter="patient_entry">
+      <forward name="success" path="/patient/patient_comment_display.jsp"/>
+      <forward name="nopermission" path="/patient/patient_comment_denied.jsp"/>
+    </action>
+
+    <action path="/patient/patientEnteredCommentDisplayAll" type="org.patientview.patientview.comment.CommentViewAllAction" parameter="patient_entry">
+      <forward name="success" path="/patient/patient_comment_display.jsp"/>
+      <forward name="nopermission" path="/patient/patient_comment_denied.jsp"/>
+    </action>
+
+    <action path="/patient/patientDeletesResultComment" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+            name="patientResultDeleteForm" >
+      <forward name="success" path="/patient/patient_entry_result_comment.jsp"/>
+    </action>
+
+    <action path="/patient/contactForm" type="org.patientview.patientview.ContactFormAction" parameter="contact"
+            name="contactForm"
+            input="input">
+      <forward name="input" path="/patient/contact.jsp"/>
+      <forward name="success" path="/patient/contact.jsp"/>
+    </action>
+
+    <action path="/patient/aboutmeEdit"
+            name="aboutmeForm"
+            type="org.patientview.patientview.aboutme.AboutmeEdit"
+            scope="request">
+      <forward name="success" path="/patient/aboutme_edit.jsp"/>
+    </action>
+
+    <action path="/patient/aboutmeUpdate"
+            name="aboutmeForm"
+            input="input"
+            type="org.patientview.patientview.aboutme.AboutmeUpdate"
+            scope="request">
+      <forward name="input" path="/patient/aboutme_edit.jsp"/>
+      <forward name="success" path="/patient/aboutme_display.jsp"/>
+    </action>
+
+    <action path="/patient/aboutmeImageUpload"
+            type="org.patientview.patientview.aboutme.AboutmeImageUploadAction"
+            name="aboutmeImageUploadForm"
+            scope="request"
+            validate="true"
+            input="input">
+      <forward name="input" path="/patient/aboutme_image_upload_error.jsp"/>
+      <forward name="success" path="/patient/aboutme_display.jsp"/>
+    </action>
+
+    <action path="/patient/feedbackForm" type="org.patientview.patientview.feedback.FeedbackFormAction" parameter="contact"
+            name="feedbackForm"
+            input="input">
+      <forward name="input" path="/patient/contact.jsp"/>
+      <forward name="success" path="/patient/contact.jsp"/>
+    </action>
+
+    <action path="/patient/feedbackViewForUnit" type="org.patientview.patientview.feedback.FeedbackViewAction" parameter="contact"
+            name="feedbackForm"
+            >
+      <forward name="success" path="/patient/feedback_for_unit.jsp"/>
+    </action>
+
+    <action path="/joinSubmit"
+            type="org.patientview.patientview.join.JoinRequestSubmitAction"
+            name="joinForm"
+            scope="request">
+        <forward name="input" path="/join.jsp"/>
+      <forward name="success" path="/join-request-confirmation.jsp"/>
+    </action>
+
+      <action path="/join"
+              type="org.patientview.patientview.join.JoinRequestInputAction"
+              name="joinForm"
+              scope="request">
+        <forward name="success" path="/join.jsp"/>
+      </action>
+
+      <action path="/patient/conversations"
+              type="org.patientview.patientview.messaging.ConversationsAction"
+              scope="request"
+              parameter="conversations">
+          <forward name="success" path="/patient/messaging/messages.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/patient/conversation"
+              type="org.patientview.patientview.messaging.ConversationAction"
+              scope="request"
+              parameter="conversation"
+              name="sendMessageForm">
+          <forward name="success" path="/patient/messaging/message.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/control/conversations"
+              type="org.patientview.patientview.messaging.ConversationsAction"
+              scope="request"
+              parameter="conversations">
+          <forward name="success" path="/control/messaging/messages.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/control/conversation"
+              type="org.patientview.patientview.messaging.ConversationAction"
+              scope="request"
+              parameter="conversation"
+              name="sendMessageForm">
+          <forward name="success" path="/control/messaging/message.jsp"/>
+          <forward name="error" path="/error.jsp"/>
+      </action>
+
+      <action path="/send-message" type="org.patientview.patientview.messaging.SendMessageAction" parameter="conversation"
+              name="sendMessageForm"
+              scope="request"
+              input="input">
+          <forward name="input" path="/body/messaging/send-message-ajax.jsp"/>
+          <forward name="success" path="/body/messaging/send-message-ajax.jsp"/>
+      </action>
+
+      <action path="/unit-recipients" type="org.patientview.patientview.messaging.RecipientByUnitAction" parameter="conversation">
+          <forward name="success" path="/body/messaging/unit-recipients-ajax.jsp"/>
+      </action>
+
+    <action path="/demo"
+            type="org.patientview.patientview.IndexAction" parameter="contact">
+      <forward name="success" path="/demo.jsp"/>
+    </action>
+
+    <action path="/faq"
+            type="org.patientview.patientview.IndexAction" parameter="faq">
+      <forward name="success" path="/faq.jsp"/>
+    </action>
+
+    <action path="/help"
+            type="org.patientview.patientview.IndexAction" parameter="help">
+      <forward name="success" path="/help.jsp"/>
+    </action>
+
+    <action path="/disclaimer"
+            type="org.patientview.patientview.IndexAction">
+      <forward name="success" path="/disclaimer.jsp"/>
+    </action>
+
+    <action path="/infoLinks"
+            type="org.patientview.patientview.edtacode.InfoLinkDisplayAction">
+      <forward name="success" path="/info_links.jsp"/>
+    </action>
+
+    <action path="/control/index"
+            type="org.patientview.patientview.IndexAction"
+            name="edtaCodeForm"
+            scope="request">
+      <forward name="success" path="/control/index.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeDisplay"
+            type="org.patientview.patientview.edtacode.EdtaCodeDisplayAction"
+            parameter="edtaCode">
+      <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
+    <action path="/control/treatmentCodeDisplay"
+            type="org.patientview.patientview.edtacode.EdtaCodeDisplayAction"
+            parameter="treatment">
+      <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeEdit"
+            type="org.patientview.patientview.edtacode.EdtaCodeEditAction"
+            name="edtaCodeForm"
+            scope="request">
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/staticLinkEdit"
+            type="org.patientview.patientview.StaticLinkEditAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_edit.jsp"/>
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeUpdate"
+            type="org.patientview.patientview.edtacode.EdtaCodeUpdateAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_edit.jsp"/>
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeAddInput"
+            type="org.patientview.patientview.edtacode.EdtaCodeAddInputAction"
+            name="edtaCodeForm"
+            scope="request">
+      <forward name="success" path="/control/edta_code_add_input.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeAdd"
+            type="org.patientview.patientview.edtacode.EdtaCodeAddAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_add_input.jsp"/>
+      <forward name="success" path="/control/edta_code_edit.jsp"/>
+    </action>
+
+    <action path="/control/edtaCodeDelete"
+            type="org.patientview.patientview.edtacode.EdtaCodeDeleteAction"
+            name="edtaCodeForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/edta_code_edit.jsp"/>
+      <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
+      <action path="/control/letterDelete"
+              type="org.patientview.patientview.letter.LetterDeleteAction" parameter="letters"
+              name="letterForm">
+          <forward name="success" path="/patient/letters.jsp"/>
+      </action>
+
+      <action path="/control/resultHeadingDisplay"
+            type="org.patientview.patientview.resultheading.ResultHeadingDisplayAction"
+            parameter="resultHeading">
+      <forward name="success" path="/control/result_headings.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingEdit"
+            type="org.patientview.patientview.resultheading.ResultHeadingEditAction"
+            name="resultHeadingForm"
+            scope="request">
+      <forward name="success" path="/control/result_heading_edit.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingUpdate"
+            type="org.patientview.patientview.resultheading.ResultHeadingUpdateAction"
+            name="resultHeadingForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/result_heading_edit.jsp"/>
+      <forward name="success" path="/control/result_heading_edit.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingAddInput"
+            type="org.patientview.patientview.resultheading.ResultHeadingAddInputAction"
+            name="resultHeadingForm"
+            scope="request">
+      <forward name="success" path="/control/result_heading_add_input.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingAdd"
+            type="org.patientview.patientview.resultheading.ResultHeadingAddAction"
+            name="resultHeadingForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/result_heading_add_input.jsp"/>
+      <forward name="success" path="/control/result_heading_edit.jsp"/>
+    </action>
+
+    <action path="/control/resultHeadingDelete"
+            type="org.patientview.patientview.resultheading.ResultHeadingDeleteAction"
+            name="resultHeadingForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/result_heading_edit.jsp"/>
+      <forward name="success" path="/control/result_headings.jsp"/>
+    </action>
+
+    <action path="/control/patientView"
+            type="org.patientview.patientview.PatientDetailsAdminViewAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/patient/patient_details.jsp"/>
+    </action>
+
+    <action path="/control/patientAddInput"
+            type="org.patientview.patientview.logon.LogonAddInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/patient_add_input.jsp"/>
+    </action>
+
+    <action path="/control/patientAdd"
+            type="org.patientview.patientview.logon.PatientAddAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_add_input.jsp"/>
+      <forward name="samenhsno" path="/control/patient_add_samenhsno.jsp"/>
+      <forward name="success" path="/control/patient_add_confirm.jsp"/>
+    </action>
+
+    <action path="/control/patientAddToUnit"
+            type="org.patientview.patientview.logon.PatientAddToUnitAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_add_samenhsno.jsp"/>
+      <forward name="success" path="/control/patient_add_to_unit_confirm.jsp"/>
+    </action>
+
+    <action path="/control/userDelete"
+            type="org.patientview.patientview.user.UserDeleteAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_edit_input.jsp"/>
+      <forward name="success" path="/control/user_delete_confirm.jsp"/>
+    </action>
+
+    <action path="/control/gpAdd"
+            forward="/control/gp_add_confirm.jsp"/>
+
+    <action path="/control/patientEditInput"
+            type="org.patientview.patientview.logon.PatientEditInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/patient_edit_input.jsp"/>
+    </action>
+
+    <action path="/control/patientEditX"
+            type="org.patientview.patientview.logon.PatientEditAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/patient_edit_input.jsp"/>
+      <forward name="success" path="/control/unit_patients.jsp"/>
+    </action>
+
+    <action path="/control/unitUserEditInput"
+            type="org.patientview.patientview.logon.UnitUserEditInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/unituser_edit_input.jsp"/>
+    </action>
+
+    <action path="/control/unitUserEdit"
+            type="org.patientview.patientview.logon.UnitUserEditAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unituser_edit_input.jsp"/>
+      <forward name="success" path="/control/unit_users.jsp"/>
+    </action>
+
+    <action path="/control/unitAdminAddInput"
+            type="org.patientview.patientview.logon.LogonAddInputAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/unit_admin_add_input.jsp"/>
+    </action>
+
+    <action path="/control/unitAdminAdd"
+            type="org.patientview.patientview.logon.UnitAdminAddAction"
+            name="patientForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unit_admin_add_input.jsp"/>
+      <forward name="existinguser" path="/control/unit_admin_add_same_username.jsp"/>
+      <forward name="success" path="/control/admin_add_confirm.jsp"/>
+    </action>
+
+    <action path="/control/unitAdminAddToUnit"
+            type="org.patientview.patientview.logon.UnitAdminAddToUnitAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/admin_add_confirm.jsp"/>
+    </action>
+
+    <action path="/control/resetPassword"
+            type="org.patientview.patientview.logon.PasswordResetAction"
+            name="patientForm"
+            scope="request">
+      <forward name="error" path="/control/password_reset_confirm.jsp"/>
+      <forward name="success" path="/control/password_reset_confirm.jsp"/>
+    </action>
+
+    <action path="/control/passwordUnlock"
+            type="org.patientview.patientview.logon.PasswordUnlockAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/password_unlock_confirm.jsp"/>
+    </action>
+
+    <action path="/control/unitAddInput"
+            type="org.patientview.patientview.IndexAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_add_input.jsp"/>
+    </action>
+
+    <action path="/control/unitAdd"
+            type="org.patientview.patientview.unit.UnitAddAction"
+            name="unitForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unit_add_input.jsp"/>
+      <forward name="success" path="/control/unit_add_input.jsp"/>
+    </action>
+
+    <action path="/control/unitDisplay"
+            type="org.patientview.patientview.unit.UnitsDisplayAction">
+      <forward name="success" path="/control/unit_list.jsp"/>
+    </action>
+
+    <action path="/control/unitEdit"
+            type="org.patientview.patientview.unit.UnitEditAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_edit.jsp"/>
+    </action>
+
+    <action path="/control/unitUpdate"
+            type="org.patientview.patientview.unit.UnitUpdateAction"
+            name="unitForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/unit_edit.jsp"/>
+      <forward name="success" path="/control/unit_edit.jsp"/>
+    </action>
+
+    <action path="/control/unitPatientsUnitSelect"
+            type="org.patientview.patientview.logon.LogonAddInputAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_patients_unit_select.jsp"/>
+    </action>
+
+    <action path="/control/unitPatients"
+            type="org.patientview.patientview.logon.UnitPatientsAction"
+            name="patientForm"
+            scope="request">
+      <forward name="success" path="/control/unit_patients.jsp"/>
+    </action>
+
+    <action path="/control/unitUsersUnitSelect"
+            type="org.patientview.patientview.logon.LogonAddInputAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_users_unit_select.jsp"/>
+    </action>
+
+    <action path="/control/unitUsers"
+            type="org.patientview.patientview.logon.UnitUsersAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/unit_users.jsp"/>
+    </action>
+
+    <action path="/control/unitStat"
+            type="org.patientview.patientview.unitstat.UnitStatAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/stats.jsp"/>
+    </action>
+
+    <action path="/control/feedbackUnitSelect"
+            type="org.patientview.patientview.logon.LogonAddInputAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_unit_select.jsp"/>
+    </action>
+
+    <action path="/control/feedbackView"
+            type="org.patientview.patientview.feedback.FeedbackViewAction"
+            name="unitForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_view.jsp"/>
+    </action>
+
+    <action path="/control/feedbackEditDisplay"
+            type="org.patientview.patientview.feedback.FeedbackEditDisplayAction"
+            name="feedbackForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_edit.jsp"/>
+    </action>
+
+    <action path="/control/feedbackEditUpdate"
+            type="org.patientview.patientview.feedback.FeedbackEditUpdateAction"
+            name="feedbackForm"
+            scope="request">
+      <forward name="success" path="/control/feedback_view.jsp"/>
+    </action>
+
+    <action path="/control/decrypt"
+            type="org.patientview.patientview.DecryptGpg"
+            name="gpgForm"
+            scope="request">
+      <forward name="success" path="/control/decrypt_success.jsp"/>
+    </action>
+
+    <action path="/control/parseXml"
+            type="org.patientview.patientview.ParseXml"
+            name="gpgForm"
+            scope="request">
+      <forward name="success" path="/control/parse_xml_files_list.jsp"/>
+    </action>
+
+    <action path="/control/parseXmlFilesInput"
+            type="org.patientview.patientview.FindXmlFiles"
+            name="gpgForm"
+            scope="request">
+      <forward name="success" path="/control/parse_xml_files_list.jsp"/>
+    </action>
+
+    <action path="/patient/passwordChange"
+            type="org.patientview.patientview.logon.PasswordChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/patient/password_change.jsp"/>
+      <forward name="success" path="/patient/password_change_confirm.jsp"/>
+    </action>
+
+    <action path="/control/passwordChange"
+            type="org.patientview.patientview.logon.PasswordChangeAction"
+            name="passwordForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/password_change.jsp"/>
+      <forward name="success" path="/control/password_change_confirm.jsp"/>
+    </action>
+
+    <action path="/control/logView"
+            type="org.patientview.patientview.logging.LogViewAction"
+            name="logForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/logViewForPatient"
+            name="logForm"
+            input="input"
+            type="org.patientview.patientview.logging.LogViewForPatientAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/viewsOfPatient"
+            name="logForm"
+            input="input"
+            type="org.patientview.patientview.logging.ViewsOfPatientAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/dataLoadsForPatient"
+            name="logForm"
+            input="input"
+            type="org.patientview.patientview.logging.DataLoadsForPatientAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/activityByUser"
+            name="logForm"
+            input="input"
+            type="org.patientview.patientview.logging.ActivityByUserAction"
+            scope="request">
+      <forward name="input" path="/control/log_view.jsp"/>
+      <forward name="success" path="/control/log_view.jsp"/>
+    </action>
+
+    <action path="/control/newsList"
+            type="org.patientview.patientview.news.NewsListAction"
+            name="newsForm"
+            scope="request">
+      <forward name="success" path="/control/news_list.jsp"/>
+    </action>
+
+    <action path="/control/newsAdd"
+            type="org.patientview.patientview.news.NewsAddInputAction"
+            name="newsForm"
+            scope="request"
+            validate="false">
+      <forward name="success" path="/control/news_add.jsp"/>
+    </action>
+
+    <action path="/control/newsPreview"
+            type="org.patientview.patientview.news.NewsPreviewAction"
+            name="newsForm"
+            input="preview"
+            scope="request">
+      <forward name="preview" path="/control/news_edit.jsp"/>
+      <forward name="add" path="/control/news_list.jsp"/>
+    </action>
+
+    <action path="/control/newsEdit"
+            type="org.patientview.patientview.news.NewsEditAction"
+            name="newsForm"
+            scope="request">
+      <forward name="success" path="/control/news_edit.jsp"/>
+    </action>
+
+    <action path="/control/newsDelete"
+            type="org.patientview.patientview.news.NewsDeleteAction"
+            name="newsForm"
+            input="input"
+            scope="request">
+      <forward name="input" path="/control/news_list.jsp"/>
+      <forward name="success" path="/control/news_list.jsp"/>
+    </action>
+
+      <!-- note this is for admins -->
+      <action path="/control/newsView"
+              type="org.patientview.patientview.news.NewsListAction"
+              name="newsForm"
+              scope="request">
+          <forward name="success" path="/control/index.jsp"/>
+      </action>
+      <!-- note this is for patients -->
+    <action path="/newsView"
+            type="org.patientview.patientview.news.NewsViewAction"
+            name="newsForm"
+            scope="request">
+      <forward name="success" path="/news_view.jsp"/>
+    </action>
+
+    <action path="/control/splashPageAddInput"
+           type="org.patientview.patientview.splashpage.SplashPageAddInputAction"
+           name="splashPageForm"
+            scope="request"
+            validate="false">
+      <forward name="success" path="/control/splash_page_add.jsp"/>
+    </action>
+
+    <action path="/control/splashPageList"
+            type="org.patientview.patientview.splashpage.SplashPageListAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_list.jsp"/>
+    </action>
+
+    <action path="/control/splashPageEdit"
+            type="org.patientview.patientview.splashpage.SplashPageEditAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_edit.jsp"/>
+    </action>
+
+    <action path="/control/splashPageUpdate"
+            type="org.patientview.patientview.splashpage.SplashPageUpdateAction"
+            name="splashPageForm"
+            input="input"
+            scope="request">
+      <forward name="success" path="/control/splash_page_list.jsp"/>
+      <forward name="input" path="/control/splash_page_edit.jsp"/>
+    </action>
+
+    <action path="/control/splashPageDelete"
+            type="org.patientview.patientview.splashpage.SplashPageDeleteAction"
+            name="splashPageForm"
+            scope="request">
+      <forward name="success" path="/control/splash_page_list.jsp"/>
+    </action>
+
+      <action path="/control/joinReqestList"
+              type="org.patientview.patientview.join.JoinRequestListForUnitAction"
+             >
+          <forward name="success" path="/control/join_request_list.jsp"/>
+      </action>
+
+      <action path="/control/version"
+            type="org.patientview.patientview.IndexAction" parameter="index">
+      <forward name="success" path="/control/version.jsp"/>
+    </action>
+
+    <action path="/control/xmlFileView"
+            type="org.patientview.patientview.XmlFileViewAction"
+            name="newsForm"
+            scope="request">
+        <forward name="success" path="/control/xml_file_view.jsp"/>
+    </action>
+
+    <!--
+        <action path="/control/sha"
+          type="com.worthsoln.ShaAction" parameter="index">
+          <forward name="success" path="/control/version.jsp"/>
+        </action>
+    -->
+  </action-mappings>
+
+  <!-- ========== Controller Definitions =========================== -->
+  <controller
+      inputForward="true"/>
+
+  <!-- ========== Message Resources Definitions =========================== -->
+  <message-resources
+      parameter="org.apache.struts.webapp.example.ApplicationResources"/>
+  <message-resources
+      parameter="Messages"
+      null="false"/>
+
+  <!-- ========== Plug Ins Configuration ================================== -->
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property property="pathnames"
+                  value="/WEB-INF/struts/validator-rules.xml,/WEB-INF/validation.xml"/>
+  </plug-in>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin">
+    <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
+  </plug-in>
+</struts-config>

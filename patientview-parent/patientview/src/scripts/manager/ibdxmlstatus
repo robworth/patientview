@@ -1,0 +1,5 @@
+echo "ibdfiles";
+ls -l /home/manager/ibdfiles | wc -l
+echo "ibdxml";
+ls -l /usr/local/etc/ibdxml | wc -l
+

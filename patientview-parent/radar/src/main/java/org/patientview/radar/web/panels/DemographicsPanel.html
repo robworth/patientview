@@ -1,0 +1,259 @@
+<wicket:panel>
+
+<form wicket:id="form">
+
+<div id="mainBlock">
+
+<p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+<div style="text-align: right">
+    <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+</div>
+
+<table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
+    <tr>
+        <td style="height:30px;">
+            <span style="font-weight:bold;">Demographics</span>
+            <span wicket:id="addNewPatientLabel">Add a New Patient</span></td>
+        <td style="text-align:right; padding-right:10px; width: 120px"><b>RaDaR Number</b></td>
+        <td style="width:200px;">
+            <input wicket:id="radarNumber" type="text" readonly="readonly"
+                   style="background-color:#EEF6ED;font-style:italic;"/></td>
+    </tr>
+    <tr>
+        <td style="height:30px;">
+            <label class="lblPad"
+                   style="width:150px;">&nbsp;Diagnosis</label>
+            <select wicket:id="diagnosis">
+                <option value="">Select</option>
+                <option value="2">MPGN/DDD</option>
+                <option value="1">SRNS</option>
+            </select>
+            <span wicket:id="diagnosisFeedbackIndicator"></span>
+            <br/><br/>
+            &nbsp;<span wicket:id="nameLabel">Name</span>
+            <input wicket:id="forenameForHeader" type="text" style="width:100px;background-color:#EEF6ED;font-style:italic;" readonly="readonly">&nbsp;
+            <input wicket:id="surnameForHeader" type="text" style="width:100px;background-color:#EEF6ED;font-style:italic;" readonly="readonly">
+            <span wicket:id="dobLabel">DoB</span>
+            <input wicket:id="dateOfBirthForHeader" type="text" style="width:100px;background-color:#EEF6ED;font-style:italic;" readonly="readonly">
+        </td>
+        <td style="text-align:right; padding-right:10px;">Date Registered</td>
+        <td><input wicket:id="dateRegistered" type="text" readonly="readonly"
+                   style="background-color:#EEF6ED;font-style:italic;"/>
+        </td>
+    </tr>
+</table>
+
+<table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+       class="style3">
+    <tr>
+        <td style="width:50%; vertical-align:top;">
+
+            <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+                <tr>
+                    <td>
+                        <input name="ctl00$ContentPlaceHolder1$txtDateToday" type="text" value="20-12-2011"
+                               id="ctl00_ContentPlaceHolder1_txtDateToday"
+                               style="color:#EEF6ED;background-color:#EEF6ED;border-color:#EEF6ED;"/>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Surname</td>
+                    <td>
+                        <input type="text" wicket:id="surname"/>
+                        <span wicket:id="surnameFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td>
+                        <input type="text" wicket:id="forename"/>
+                        <span wicket:id="forenameFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td>
+                        <input type="text" wicket:id="dateOfBirth" style="width:70px;"/>
+                        <span wicket:id="dateOfBirthFeedbackIndicator"></span>
+                        <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyy. To select a different month or year in the
+                date picker, click the current month or year at the top.<br/><br/></span> </a>
+
+                        <span class="feedback" wicket:id="dateOfBirthFeedback"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sex</td>
+                    <td>
+                        <select wicket:id="sex"/>
+                        <span wicket:id="sexFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ethnic Group</td>
+                    <td>
+                        <select wicket:id="ethnicity"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top">Address</td>
+                    <td>
+                        <input type="text" wicket:id="address1" style="width:200px;"/>
+                        <br/>
+                        <input type="text" wicket:id="address2" style="width:200px;"/>
+                        <br/>
+                        <input type="text" wicket:id="address3" style="width:200px;"/>
+                        <br/>
+                        <input type="text" wicket:id="address4" style="width:200px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Postcode</td>
+                    <td>
+                        <input type="text" wicket:id="postcode" style="width:70px;"/>
+                        <span class="feedback" wicket:id="postcodeFeedback"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            <fieldset style="border:1px solid green; margin-left:10px; width:360px">
+                <legend><strong>Archive</strong></legend>
+                <table style="width:95%; margin-left:5px;">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Surname Alias</td>
+                        <td>
+                            <input type="text" wicket:id="surnameAlias"/>&nbsp;<a href="#"
+                                                                                  class="info"><em>Help</em><span>Has the patient been known by another surname? If so, enter here.</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Previous Postcode</td>
+                        <td>
+                            <input type="text" wicket:id="previousPostcode"/>&nbsp;<a href="#"
+                                                                                      class="info"><em>Help</em><span>This is important if the patient has moved into your care from a different hospital</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <br/><br/>
+
+
+            <div id="ctl00_ContentPlaceHolder1_ValidationSummary1" style="color:Red;display:none;">
+
+            </div>
+            <br/><br/>
+
+
+        </td>
+        <td style="vertical-align:top;">
+            <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+                <tr>
+                    <td colspan="2">
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hospital Number</td>
+                    <td>
+                        <input type="text" wicket:id="hospitalNumber" style="width:80px;"/>
+                        <span wicket:id="hospitalNumberFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr wicket:id="nhsNumberContainer">
+                    <td><span>NHS Number</span></td>
+                    <td>
+                        <label wicket:id="nhsNumber" style="width:80px;"/>
+                    </td>
+                </tr>
+                <tr wicket:id="chiNumberContainer">
+                    <td><span>CHI No. (Scotland Only)</span></td>
+                    <td>
+                        <label wicket:id="chiNumber"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span id="ctl00_ContentPlaceHolder1_lblRRNumber">Renal Registry Number</span></td>
+                    <td>
+                        <input type="text" wicket:id="renalRegistryNumber" style="width:80px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span id="ctl00_ContentPlaceHolder1_lblUKT">UK Transplant Number</span></td>
+                    <td>
+                        <input type="text" wicket:id="ukTransplantNumber" style="width:80px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        <select wicket:id="status"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Renal Unit</td>
+                    <td>
+                        <select wicket:id="renalUnit"/>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clinician</td>
+                    <td>
+                        <select wicket:id="clinician"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Confirm that you have a signed consent form for RaDaR</td>
+                    <td>
+                        <input type="checkbox" wicket:id="consent"/> <a wicket:id="consentFormsLink" href="#"
+                                                                        target="_blank">Consent Forms</a>
+                    </td>
+                </tr>
+                <tr id="ctl00_ContentPlaceHolder1_rowConsent">
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+
+                <tr id="ctl00_ContentPlaceHolder1_rowPatientInfo">
+                    <td colspan="2"><span
+                            id="ctl00_ContentPlaceHolder1_lblVisibility">Allow visibility for another Renal Unit</span></td>
+                </tr>
+
+                <tr id="ctl00_ContentPlaceHolder1_rowInfo2">
+                    <td colspan="2">
+                        <select wicket:id="renalUnitAuthorised"/>
+                    </td>
+                </tr>
+
+                <tr id="ctl00_ContentPlaceHolder1_rowConsent2">
+                    <td colspan="2">
+                        &nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <input type="button" wicket:id="saveBottom" value="Add this Patient" class="saveBtn"/>
+        </td>
+
+    </tr>
+</table>
+<div style="text-align: right">
+    <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+    <span style="font-weight: bold; color:red" wicket:id="errorMessage"></span>
+</div>
+
+</div>
+
+</form>
+
+</wicket:panel>

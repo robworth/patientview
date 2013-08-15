@@ -1,0 +1,140 @@
+<wicket:panel>
+    <form wicket:id="form">
+
+        <div id="mainBlock">
+
+            <div style="text-align: right">
+                <span style="font-weight:bold; text-align: right; padding-right: 8px;" wicket:id="successMessageTop"></span>
+                <span style="font-weight: bold; color:red; text-align: right; padding-right: 8px;" wicket:id="errorMessageTop"></span>
+            </div>
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+            <div wicket:id="patientDetail">
+
+            </div>
+
+            <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+                   class="style3">
+                <tr>
+                    <td style="width:90%; vertical-align:top;">
+
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+
+                        <input type="button" wicket:id="clearForm" value="Clear form for new results" class="saveBtn"/>
+
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+                            <tr>
+                                <td>
+                                    Blood Urea
+                                </td>
+                                <td>
+                                    <input wicket:id="bloodUrea" type="text" maxlength="5" size="5"/>
+                                    <span class="feedback" wicket:id="bloodUreaFeedback"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label>
+                                    <input wicket:id="bloodUreaDate" type="text" size="10"/> <span class="feedback" wicket:id="bloodUreaDateFeedback"></span>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Serum Creatinine
+                                </td>
+                                <td>
+                                    <input wicket:id="serumCreatanine" type="text" maxlength="5" size="5"/>
+                                    <span class="feedback" wicket:id="serumCreatanineFeedback"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label>
+                                    <input wicket:id="creatanineDate" type="text" size="10"/> <span class="feedback"
+                                                                                                    wicket:id="creatanineDateFeedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Weight in Kg
+                                </td>
+                                <td>
+                                    <input wicket:id="weight" type="text" maxlength="6" size="5"/>
+                                    <span class="feedback" wicket:id="weightFeedback"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label>
+                                    <input wicket:id="weightDate" type="text" size="10"/> <span class="feedback"
+                                                                                                wicket:id="weightDateFeedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Height in cm
+                                </td>
+                                <td>
+                                    <input wicket:id="height" type="text" maxlength="5" size="5"/>
+                                    <span class="feedback" wicket:id="heightFeedback"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label>
+                                    <input wicket:id="heightDate" type="text" size="10"/> <span class="feedback"
+                                                                                                wicket:id="heightDateFeedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    BP Systolic / Diastolic
+                                </td>
+                                <td>
+                                    <input wicket:id="bpSystolic" type="text" maxlength="5" size="5" style="text-align:right"/> <span class="feedback" wicket:id="bpSystolicFeedback"></span> / <input wicket:id="bpDiastolic" type="text" maxlength="5" size="5"/> <span class="feedback" wicket:id="bpDiastolicFeedback"></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label> <input wicket:id="bpDate" type="text" size="10"/>
+                                    <div class="feedback" wicket:id="bpDateFeedback"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Antihypertensive Drugs
+                                </td>
+                                <td>
+                                    <div wicket:id="antihypertensiveDrugs">
+                                        <input wicket:id="yes" type="radio">Yes</input>
+                                        <input wicket:id="no" type="radio">No</input>
+                                        <input wicket:id="unknown" type="radio">Unknown</input>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label> <input wicket:id="antihypertensiveDrugsDate" type="text" size="10"/>
+                                    <span class="feedback" wicket:id="antihypertensiveDrugsDateFeedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Urine Protein Creatinine Ratio mg/mmol
+                                </td>
+                                <td>
+                                    <input wicket:id="pcr" type="text" maxlength="5" size="5"/>
+                                    <span class="feedback" wicket:id="pcrFeedback"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label>
+                                    <input wicket:id="pcrDate" type="text" size="10"/> <span class="feedback"
+                                                                                             wicket:id="pcrDateFeedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Urine Albumin Creatinine Ratio mg/mmol
+                                </td>
+                                <td>
+                                    <input wicket:id="acr" type="text" maxlength="5" size="5"/>
+                                    <span class="feedback" wicket:id="acrFeedback"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Date</label>
+                                    <input wicket:id="acrDate" type="text" size="10"/> <span class="feedback"
+                                                                                             wicket:id="acrDateFeedback"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <br/><br/>
+                        <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
+
+                    </td>
+                    <td style="vertical-align:top;">
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="text-align: right">
+                <div class="feedback" wicket:id="formFeedbackPanel"></div>
+                <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+            </div>
+
+        </div>
+
+    </form>
+</wicket:panel>

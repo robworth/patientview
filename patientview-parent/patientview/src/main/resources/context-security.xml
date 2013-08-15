@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<beans:beans
+        xmlns="http://www.springframework.org/schema/security"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:sec="http://www.springframework.org/schema/security"
+        xsi:schemaLocation="
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <!-- allow all web assets through -->
+    <http pattern="/**/*.css" security="none"/>
+    <http pattern="/**/*.js" security="none"/>
+    <http pattern="/images/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
+    <http pattern="/templates/default/images/**" security="none"/>
+    <http pattern="/favicon.ico" security="none"/>
+    <http pattern="/apple-touch-icon-precomposed.png" security="none"/>
+    <http pattern="/apple-touch-icon.png" security="none"/>
+
+    <http access-decision-manager-ref="accessDecisionManager">
+        <!-- these pages can be viewed without logging in, but need to run with the filter chain (so we can view login details etc-->
+        <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/index.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/newsView.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/disclaimer.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/help.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/index.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/infoLinks.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/demo.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/password-advice.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/forgotten-password.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/forgotten-password.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/forgotten-password" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/emailverification.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- TEMP FOR STORY 32 RPV -->
+        <intercept-url pattern="/messages.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/message.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- secure pages -->
+        <!-- generic URLs that require a login -->
+        <intercept-url pattern="/logged_in.do" access="ROLE_ANY_USER"/>
+        <intercept-url pattern="/launchpad.do" access="ROLE_ANY_USER"/>
+        <intercept-url pattern="/launchpad-select.do" access="ROLE_ANY_USER"/>
+
+        <!-- Renal specialty config -->
+        <intercept-url pattern="/renal/control/**" access="ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/renal/**" access="ROLE_ANY_USER"/>
+
+        <!-- IBD specialty config -->
+        <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO"/>
+        <intercept-url pattern="/ibd/control/**" access="ROLE_IBD_UNITSTAFF"/>
+        <intercept-url pattern="/ibd/patient/**" access="ROLE_IBD_DEMO"/>
+        <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO"/>
+        <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO"/>
+
+        <!-- messages -->
+        <intercept-url pattern="/control/messaging/message_confirm.jsp" access="ROLE_RENAL_UNITADMIN"/>
+        <intercept-url pattern="/patient/conversation**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/control/conversation**" access="ROLE_RENAL_UNITSTAFF"/>
+        <intercept-url pattern="/send-message**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/unit-recipients**" access="ROLE_RENAL_UNITADMIN"/>
+
+        <!-- URLs that don't require any security -->
+        <intercept-url pattern="/join.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/join" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/joinSubmit" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/joinSubmit.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- Everything else is inaccessible, no one will ever have this role... -->
+        <intercept-url pattern="/**" access="ROLE_NOT_ALLOWED"/>
+
+        <form-login
+                login-page="/login.jsp"
+                login-processing-url="/j_security_check"
+                password-parameter="j_password"
+                username-parameter="j_username"
+                default-target-url="/logged_in.do"
+                authentication-success-handler-ref="patientViewAuthenticationSuccessHandler"
+                authentication-failure-handler-ref="patientViewAuthenticationFailedHandler"
+        />
+
+        <logout logout-url="/logout.do" logout-success-url="/index.do"/>
+
+    </http>
+
+    <beans:bean id="encoder" class="org.patientview.security.impl.PatientViewPasswordEncoder"/>
+
+    <beans:bean id="patientViewAuthenticationSuccessHandler" class="org.patientview.security.PatientViewAuthenticationSuccessHandler"/>
+
+    <beans:bean id="patientViewAuthenticationFailedHandler" class="org.patientview.security.PatientViewAuthenticationFailureHandler">
+        <beans:property name="defaultFailureUrl" value="/login-error.do"/>
+        <beans:property name="allowedfailedlogons" value="${security.allowedfailedlogons}"/>
+    </beans:bean>
+
+    <beans:bean id="userDetailsService" class="org.patientview.security.impl.PatientViewUserDetailsService"/>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="encoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+    <global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager"/>
+    <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+        <beans:property name="decisionVoters">
+            <beans:list>
+                <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+                <beans:ref bean="roleVoter"/>
+                <beans:bean class="org.patientview.security.impl.UnitVoter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+        <beans:constructor-arg ref="roleHierarchy"/>
+    </beans:bean>
+
+    <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+        <beans:property name="hierarchy">
+            <beans:value>
+                ROLE_RENAL_SUPERADMIN > ROLE_RENAL_UNITADMIN
+                ROLE_RENAL_UNITADMIN > ROLE_RENAL_UNITSTAFF
+                ROLE_RENAL_UNITSTAFF > ROLE_RENAL_PATIENT
+                ROLE_RENAL_PATIENT > ROLE_ANONYMOUS
+                ROLE_ANONYMOUS > ROLE_ANY_USER
+                ROLE_ANY_USER > ROLE_RENAL_DEMO
+                ROLE_RENAL_DEMO > IS_AUTHENTICATED_ANONYMOUSLY
+
+                ROLE_IBD_SUPERADMIN > ROLE_IBD_UNITADMIN
+                ROLE_IBD_UNITADMIN > ROLE_IBD_UNITSTAFF
+                ROLE_IBD_UNITSTAFF > ROLE_IBD_PATIENT
+                ROLE_IBD_PATIENT > ROLE_ANONYMOUS
+                ROLE_ANONYMOUS > ROLE_ANY_USER
+                ROLE_ANY_USER > ROLE_IBD_DEMO
+                ROLE_IBD_DEMO > IS_AUTHENTICATED_ANONYMOUSLY
+            </beans:value>
+        </beans:property>
+    </beans:bean>
+
+</beans:beans>

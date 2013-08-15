@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta id="ctl00_IE8CompatibilityMeta" http-equiv="X-UA-Compatible" content="IE=7"/>
+
+    <wicket:head>
+        <style type="text/css">
+
+            input, select, textarea {
+                border: 1px solid gray;
+                padding-left: 3px;
+            }
+
+            select, input, textarea {
+                font-size: 95%;
+                color: #2D2E2E
+            }
+
+            .frmView {
+                margin-top: 0;
+            }
+
+            .style2 {
+                /*background-color: #B6DF9F;*/
+                table-layout: fixed;
+            }
+
+            .style3 {
+                border-collapse: collapse;
+                border-style: none;
+                border-color: inherit;
+                border-width: 0;
+                background-color: #EEF6ED;
+            }
+
+            #ctl00_ContentPlaceHolder1_CONSENTCheckBox {
+                border: 0;
+            }
+
+            .lblPad {
+                padding-right: 30px;
+            }
+
+            .relRADAR {
+                padding-left: 180px;
+                font-size: 80%;
+            }
+
+                /* this because of the update panel for the tabs
+                #tabsC {
+                margin-top:-35px;
+                }
+                */
+        </style>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
+
+        <!--[if IE]>
+        <style type="text/css">
+            #mainBlock {
+                margin-top: 0;
+            }
+
+            #tabsC {
+                margin-top: 0;
+            }
+        </style>
+        <![endif]-->
+
+    </wicket:head>
+</head>
+<body id="ctl00_body">
+<wicket:extend>
+
+    <div id="tabsC">
+        <ul wicket:id="linksContainer">
+            <li><a wicket:id="demographicsLink" title="Demographics"><span wicket:id="span">Demographics</span></a></li>
+            <li><a wicket:id="diagnosisLink" title="Diagnosis"><span wicket:id="span">Diagnosis</span></a></li>
+            <li><a wicket:id="firstVisitLink" title="Laboratory Results"><span wicket:id="span">First Visit</span></a>
+            </li>
+            <li><a wicket:id="followUpLink" title="Follow Up"><span wicket:id="span">Follow Up</span></a></li>
+            <li><a wicket:id="pathologyLink" title="Pathology"><span wicket:id="span">Pathology</span></a></li>
+            <li><a wicket:id="relapseLink" title="Relapse"><span wicket:id="span">Relapse</span></a></li>
+            <li><a wicket:id="hospitalisationLink" title="Hospitalisation"><span wicket:id="span">Hospitalisation</span></a>
+            </li>
+            <li></li>
+        </ul>
+    </div>
+
+    <div wicket:id="demographicsPanel"/>
+    <div wicket:id="diagnosisPanel"/>
+    <div wicket:id="firstVisitPanel"/>
+    <div wicket:id="followUpPanel"/>
+    <div wicket:id="pathologyPanel"/>
+    <div wicket:id="relapsePanel"/>
+    <div wicket:id="hospitalisationPanel"/>
+
+    <p wicket:id="pageNumber"></p>
+
+</wicket:extend>
+</body>
+</html>

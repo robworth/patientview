@@ -1,0 +1,785 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <base href="http://dev.solidstategroup.com/radar/"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
+    <title wicket:id="title">RADAR - National Renal Rare Disease Registry</title>
+
+    <!-- javascript -->
+    <script src="js/ajxmenu-formatted.js" type="text/javascript"></script>
+    <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="js/radar.js" type="text/javascript"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/normal.css"/>
+    <link rel="stylesheet" type="text/css" href="css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ajxmenu.css"/>
+    <link rel="stylesheet" type="text/css" href="css/admin.css"/>
+    <link rel="stylesheet" type="text/css" href="css/tabs_lab.css"/>
+
+
+        <style type="text/css" id="com-solidstategroup-radar-web-pages-PatientPage-0">
+/*<![CDATA[*/
+
+
+            input, select, textarea {
+                border: 1px solid gray;
+                padding-left: 3px;
+            }
+
+            select, input, textarea {
+                font-size: 95%;
+                color: #2D2E2E
+            }
+
+            .frmView {
+                margin-top: 0;
+            }
+
+            .style2 {
+                /*background-color: #B6DF9F;*/
+                table-layout: fixed;
+            }
+
+            .style3 {
+                border-collapse: collapse;
+                border-style: none;
+                border-color: inherit;
+                border-width: 0;
+                background-color: #EEF6ED;
+            }
+
+            #ctl00_ContentPlaceHolder1_CONSENTCheckBox {
+                border: 0;
+            }
+
+            .lblPad {
+                padding-right: 30px;
+            }
+
+            .relRADAR {
+                padding-left: 180px;
+                font-size: 80%;
+            }
+
+                /* this because of the update panel for the tabs
+                #tabsC {
+                margin-top:-35px;
+                }
+                */
+
+/*]]>*/
+</style>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
+
+        <!--[if IE]>
+        <style type="text/css" id="com-solidstategroup-radar-web-pages-PatientPage-1">
+/*<![CDATA[*/
+
+            #mainBlock {
+                margin-top: 0;
+            }
+
+            #tabsC {
+                margin-top: 0;
+            }
+
+/*]]>*/
+</style>
+        <![endif]-->
+
+    <script type="text/javascript" src="wicket/resource/org.apache.wicket.markup.html.WicketEventReference/wicket-event-ver-1336379226000.js"></script>
+<script type="text/javascript" src="wicket/resource/org.apache.wicket.ajax.WicketAjaxReference/wicket-ajax-ver-1336379226000.js"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="patient/edit?3&amp;id=296";
+/*]]>*/
+</script>
+<script type="text/javascript" src="wicket/resource/org.apache.wicket.extensions.yui.YuiLib/yuiloader/yuiloader-ver-1336379224000.js"></script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "domready", function(event) { /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+wicketCalendarInits = [];
+wicketCalendarInitFinished = false;
+wicketCalendarI18n = {};
+wicketCalendarAdd = function(initFn) {
+	if (wicketCalendarInitFinished) {
+		// when a DatePicker is added via ajax, the loader is already finished, so
+		// we call the init function directly.
+		initFn();
+	} else {
+		// when page is rendered, all calendar components will be initialized after
+		// the required js libraries have been loaded.
+		wicketCalendarInits.push(initFn);
+	}
+};
+
+var wicketYuiLoader = new YAHOO.util.YUILoader({
+	base: "../wicket/resource/org.apache.wicket.extensions.yui.YuiLib/",
+	filter: "RAW",
+	allowRollup: false,
+	require: ["wicket-date"],
+	onSuccess: function() {
+		wicketCalendarInitFinished = true;
+		while (wicketCalendarInits.length > 0) {
+			wicketCalendarInits.pop()();
+		}
+	}
+});
+wicketYuiLoader.addModule({
+	name: "wicket-date",
+	type: "js",
+	requires: ["calendar"],
+	fullpath: "../wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/wicket-date-ver-1336379224000.js"
+});
+wicketYuiLoader.insert();
+;});
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "domready", function(event) { wicketCalendarI18n["en_US"]={MONTHS_SHORT:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],MONTHS_LONG:["January","February","March","April","May","June","July","August","September","October","November","December"],WEEKDAYS_MEDIUM:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],WEEKDAYS_LONG:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],START_WEEKDAY:0,WEEKDAYS_1CHAR:["S","M","T","W","T","F","S"],WEEKDAYS_SHORT:["Su","Mo","Tu","We","Th","Fr","Sa"]};;});
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "domready", function(event) { /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+wicketCalendarAdd(function() {
+	Wicket.DateTime.init2("dateOfBirthb", "dateOfBirthb", {close:true,selected:"01/02/1991",pagedate:"01/1991",navigator:true}, "dd-MM-yyyy",
+			true, true, true, false, wicketCalendarI18n["en_US"], true);
+
+});
+;});
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+jQuery(function() {
+    jQuery("#topNavigation a").not('.logoutLink').click(function() {
+        if (editPatientPage.formIsDirty) {
+            return confirm("Are you sure you want to exit the page without saving the form?");
+
+        }
+    });
+});
+/*]]>*/
+</script>
+</head>
+<body>
+
+<div id="outerWrapper">
+    <div id="header">
+        <img alt="Renal RaDaR" src="../images/logos/RADAR_logo_small.jpg" title="Renal RaDaR" style="float:right"/>
+    </div>
+
+    <wicket:container wicket:id="navigationPanel"><wicket:panel>
+    <div id="topNavigation">
+        <a wicket:id="homePageLink" href="../">Home </a>
+
+
+        <a class="logoutLink" wicket:id="logoutLink" id="logoutLinkc" href="#" onclick="var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-navigationPanel-logoutLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;logoutLinkc&#039;) != null;}.bind(this));return !wcall;">| Log-out</a>
+
+        <div id="rightNav">
+            <div class="AJXCSSMenuCeGKRNA"><!-- AJXFILE:menu/ajxmenu.css -->
+                <ul>
+
+                    <li class="" style="position: static; ">
+                        <a wicket:id="professionalsPageLink" title="Professionals Page" href="../professionals">Professionals</a>
+                    </li>
+
+                    <li class="" style="position: static; ">
+
+                    </li>
+
+                    <wicket:enclosure child="enterNewPatientPageLink">
+                        <li class="" style="position: static; ">
+                            <a wicket:id="enterNewPatientPageLink" title="Enter new patients" href="edit">| Enter New Patient
+                                |</a>
+                        </li>
+                    </wicket:enclosure>
+
+                    <li class="" style="position: static;" wicket:id="existingPatientsContainer">
+                        <a title="Existing Patients" class="ajxsub" href="#">Existing Patients</a>
+                        <ul style="display: none; ">
+                            <li class="sfirst" style="position: static; ">
+                                <a wicket:id="patientsListingPageLink" href="../patients" title="Modify Existing Patients">Modify
+                                    Patients</a>
+                            </li>
+                            <li class="" style="position: static; ">
+                                <a wicket:id="recruitmentPageLink" href="../recruitment" title="Recruitment">Recruitment</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!--<li class="" style="position: static; ">-->
+                        <!--<a wicket:id="diseaseIndexPageLink" title="Disease Information for patients" href="../diseaseindex">| Disease-->
+                            <!--Index</a>-->
+                    <!--</li>-->
+
+                    <!-- todo Removed this dropdown from navigation but kep the code per Rob's request -->
+                    <!--<li class="" style="position: static;" wicket:id="cliniciansContainer">-->
+                        <!--<a id="ctl00_lnkClinicianInfo" class="ajxsub" href="#">| Information for Clinicians</a>-->
+                        <!--<ul style="display: none; ">-->
+                            <!--<li class="sfirst" style="position: static; ">-->
+                                <!--<a wicket:id="mpgnPageLink" href="../mpgn" title="MPGN/DDD">MPGN/DDD</a>-->
+                            <!--</li>-->
+                            <!--<li class="" style="position: static; ">-->
+                                <!--<a wicket:id="srnsPageLink" href="../srns" title="SRNS">SRNS</a>-->
+                            <!--</li>-->
+                            <!--<li class="slast" style="position: static; ">-->
+                                <!--<a wicket:id="consentFormsPageLink" href="http://www.rarerenal.org/join/criteria-and-consent/" title="Consent Forms">Consent Forms</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                </ul>
+                <br>
+            </div>
+
+        </div>
+    </div>
+</wicket:panel></wicket:container>
+
+    <div id="contentWrapper">
+        <div id="content">
+            <wicket:child><wicket:extend>
+
+    <div id="tabsC">
+        <ul wicket:id="linksContainer" id="linksContainerd">
+            <li><a wicket:id="demographicsLink" title="Demographics" id="demographicsLinke" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-demographicsLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;demographicsLinke&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="hovered">Demographics</span></a></li>
+            <li><a wicket:id="diagnosisLink" title="Diagnosis" id="diagnosisLinkf" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-diagnosisLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;diagnosisLinkf&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="">Diagnosis</span></a></li>
+            <li><a wicket:id="firstVisitLink" title="Laboratory Results" id="firstVisitLink10" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-firstVisitLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;firstVisitLink10&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="">First Visit</span></a>
+            </li>
+            <li><a wicket:id="followUpLink" title="Follow Up" id="followUpLink11" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-followUpLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;followUpLink11&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="">Follow Up</span></a></li>
+            <li><a wicket:id="pathologyLink" title="Pathology" id="pathologyLink12" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-pathologyLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;pathologyLink12&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="">Pathology</span></a></li>
+            <li><a wicket:id="relapseLink" title="Relapse" id="relapseLink13" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-relapseLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;relapseLink13&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="">Relapse</span></a></li>
+            <li><a wicket:id="hospitalisationLink" title="Hospitalisation" id="hospitalisationLink14" href="#" onclick="if (editPatientPage.formIsDirty) {
+    var exit = confirm(&quot;Are you sure you want to leave the tab without saving the form?&quot;)
+    if (!exit) {
+        return;
+    } else {
+        editPatientPage.formIsDirty = false;
+    }
+}var wcall=wicketAjaxGet(&#039;edit?3-2.IBehaviorListener.0-linksContainer-hospitalisationLink&amp;id=296&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;hospitalisationLink14&#039;) != null;}.bind(this));return !wcall;"><span wicket:id="span" class="">Hospitalisation</span></a>
+            </li>
+            <li></li>
+        </ul>
+    </div>
+
+    <div wicket:id="demographicsPanel" id="demographicsPanel15"><wicket:panel>
+
+<form wicket:id="form" id="form16" method="post" action="edit?3-2.IFormSubmitListener-demographicsPanel-form&amp;id=296"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="form16_hf_0" id="form16_hf_0" /></div>
+
+<div id="mainBlock">
+
+<p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+<table id="tblHeader" cellpadding="0" style="width:100%; border-collapse:collapse;" class="style2">
+    <tr>
+        <td style="height:30px;">
+            <span style="font-weight:bold;">Title</span>
+        </td>
+        <td style="text-align:right; padding-right:10px;"></td>
+        <td style="width:150px;"></td>
+    </tr>
+    <tr>
+        <td style="height:30px;"></td>
+        <td style="text-align:right; padding-right:10px;"></td>
+        <td></td>
+    </tr>
+</table>
+<table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+       class="style3">
+<tr>
+    <td style="width:50%; vertical-align:top;">
+        <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+            <tr>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td>
+                    <input type="text" wicket:id="surname" value="" name="surname" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="surnameFeedbackIndicator18" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>First name</td>
+                <td>
+                    <input type="text" wicket:id="forename" value="" name="forename" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator19" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Previous name</td>
+                <td>
+                    <input type="text" wicket:id="previousname" value="" name="previousname" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator20" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Date of Birth</td>
+                <td>
+                    <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
+<span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+                    <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
+                    <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyy. To select a different month or year in the
+                date picker, click the current month or year at the top.<br/><br/></span> </a>
+
+                    <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>
+
+</wicket:panel></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Sex</td>
+                <td>
+                    <select wicket:id="sex" name="sex" onchange="editPatientPage.formIsDirty=true;">
+                        <option selected="selected" value="">Choose One</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                        <option value="9">Not specified</option>
+                    </select>
+                    <span id="sexFeedbackIndicator1c" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Ethnic Group</td>
+                <td>
+                    <select wicket:id="ethnicity" name="ethnicity" onchange="editPatientPage.formIsDirty=true;">
+                        <option selected="selected" value="">Choose One</option>
+                        <option value="1">White</option>
+                        <option value="2">Black Caribbean</option>
+                        <option value="3">Black African</option>
+                        <option value="4">Indian</option>
+                        <option value="5">Pakistani</option>
+                        <option value="6">Indian sub-continent (NMO)</option>
+                        <option value="7">Other Asian (NMO)</option>
+                        <option value="8">Other Ethnic NEC</option>
+                        <option value="9">Chinese</option>
+                        <option value="10">Black / other / non-mixed origin</option>
+                        <option value="11">Other ethnic / mixed origin</option>
+                        <option value="12">Bangladeshi</option>
+                        <option value="13">Black - other / mixed</option>
+                        <option value="14">Black - other African country</option>
+                        <option value="15">Black - other Asian</option>
+                        <option value="17">Black Black - other</option>
+                        <option value="18">Black British</option>
+                        <option value="19">Black Caribbean</option>
+                        <option value="20">Black East African Asian</option>
+                        <option value="21">Black Indian sub-continent</option>
+                        <option value="22">Black North African</option>
+                        <option value="23">Brit. ethnic minor. spec. (NMO)</option>
+                        <option value="24">Brit. ethnic minor. unsp. (NMO)</option>
+                        <option value="25">Caribbean Island (NMO)</option>
+                        <option value="26">East African Asian (NMO)</option>
+                        <option value="27">Greek Cypriot (NMO)</option>
+                        <option value="28">Irish (NMO)</option>
+                        <option value="29">North African Arab (NMO)</option>
+                        <option value="30">Other African countries (NMO)</option>
+                        <option value="31">Other Black - Black/Asian orig</option>
+                        <option value="32">Other Black - Black/White orig</option>
+                        <option value="33">Other Ethnic / Asian/White orig</option>
+                        <option value="34">Other Ethnic / Black/White orig</option>
+                        <option value="35">Other Ethnic / mixed white orig</option>
+                        <option value="36">Other Ethnic / other mixed orig</option>
+                        <option value="37">Other Ethnic non-mixed (NMO)</option>
+                        <option value="38">Other European (NMO)</option>
+                        <option value="39">Turkish Cypriot (NMO)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <fieldset style="border:1px solid green; margin: 0 10px;">
+                        <legend><strong>Indentifying number &amp; type</strong></legend>
+                        <table style="width:95%; margin-left:5px;">
+                            <tr>
+                                <td>Identifying number</td>
+                                <td>
+                                    <input type="text" wicket:id="previousidentifyingnumber" value="" name="identifyingnumber" onchange="editPatientPage.formIsDirty=true;"/>
+                                    <span id="forenameFeedbackIndicator21" style="display:none"></span>
+                                    <a href="#" class="info">
+                                        <em>Help</em>
+                                        <span>E.g. NHS number - used in combination with below<br/><br/></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Identifying type</td>
+                                <td>
+                                    <select wicket:id="identifyingtype" name="identifyingtype" onchange="editPatientPage.formIsDirty=true;">
+                                        <option selected="selected" value="">Choose One</option>
+                                        <option value="1">NHS</option>
+                                        <option value="2">CHI</option>
+                                        <option value="3">UKBT</option>
+                                        <option value="4">Renal Reg</option>
+                                        <option value="5">UK Transplant</option>
+                                    </select>
+                                    <span id="forenameFeedbackIndicator22" style="display:none"></span>
+                                    <a href="#" class="info">
+                                        <em>Help</em>
+                                        <span>E.g. NHS No or CHI No - used in combination with above<br/><br/></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:right;">
+                                    <input type="button" wicket:id="save" value="Add" class="saveBtn"/>
+                                    <hr/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table border="1" cellspacing="0" cellpadding="3" style="font-size:85%;border-collapse:collapse;width:100%;">
+                                        <tbody>
+                                            <tr style="color:#3C982D;">
+                                                <th>Identifying number</th>
+                                                <th>Identifying type</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <td>1234567890</td>
+                                                <td>NHS</td>
+                                                <td style="text-align:right;">
+                                                    <input type="submit" wicket:id="deleteLink" value="Delete" id="deleteLink12b">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2384798729</td>
+                                                <td>CHI</td>
+                                                <td style="text-align:right;">
+                                                    <input type="submit" wicket:id="deleteLink" value="Delete" id="deleteLink12b">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
+        <div id="ctl00_ContentPlaceHolder1_ValidationSummary1" style="color:Red;display:none;">
+
+        </div>
+        <br/><br/>
+
+    </td>
+    <td style="vertical-align:top;">
+        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
+            <tr>
+                <td style="vertical-align:top">Address</td>
+                <td>
+                    <input type="text" wicket:id="address1" value="" name="address1" onchange="editPatientPage.formIsDirty=true;"/>
+                    <br/>
+                    <input type="text" wicket:id="address2" value="" name="address2" onchange="editPatientPage.formIsDirty=true;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>
+                    <input type="text" wicket:id="city" value="" name="city" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator23" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>County</td>
+                <td>
+                    <input type="text" wicket:id="county" value="" name="county" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator24" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Postcode</td>
+                <td>
+                    <input type="text" wicket:id="postcode" style="width:70px;" value="" name="postcode" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span class="feedback" wicket:id="postcodeFeedback" id="postcodeFeedback1d"><wicket:panel>
+</wicket:panel></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone 1</td>
+                <td>
+                    <input type="text" wicket:id="phone1" value="" name="phone1" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator25" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone 2</td>
+                <td>
+                    <input type="text" wicket:id="phone2" value="" name="phone2" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator26" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Mobile</td>
+                <td>
+                    <input type="text" wicket:id="mobile" value="" name="mobile" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator27" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" wicket:id="email" value="" name="email" onchange="editPatientPage.formIsDirty=true;"/>
+                    <span id="forenameFeedbackIndicator28" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Current RRT status</td>
+                <td>
+                    <select wicket:id="rrtstatus" name="rrtstatus" onchange="editPatientPage.formIsDirty=true;">
+                        <option selected="selected" value="">Choose One</option>
+                        <option value="1">HD</option>
+                        <option value="2">PD</option>
+                        <option value="3">Transplant</option>
+                        <option value="9">General nephrology</option>
+                    </select>
+                    <span id="sexFeedbackIndicator1c" style="display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Renal diagnosis</td>
+                <td>
+                    <select wicket:id="renaldiagnosis" name="renaldiagnosis" onchange="editPatientPage.formIsDirty=true;">
+                        <option selected="selected" value="">Choose One</option>
+                        <option value="1">SRNS</option>
+                        <option value="2">MPGN/DDD</option>
+                    </select>
+                    <span id="renaldiagnosisFeedbackIndicator1c" style="display:none"></span>
+                </td>
+            </tr>
+
+        </table>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <fieldset style="border:1px solid green; margin: 0 10px;">
+            <legend><strong>Test results</strong></legend>
+            <table style="width:95%; margin-left:5px;">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Urea mmol/l</td>
+                    <td>
+                        <input type="text" wicket:id="" value="" name="" onchange="editPatientPage.formIsDirty=true;"/>
+                    </td>
+                    <td>Weight kg</td>
+                    <td>
+                        <input type="text" wicket:id="" value="" name="" onchange="editPatientPage.formIsDirty=true;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date urea taken</td>
+                    <td>
+                        <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+                        <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
+                        <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
+
+                        <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>
+
+    </wicket:panel></span>
+                    </td>
+                    <td>Date weight recorded</td>
+                    <td>
+                        <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+                        <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
+                        <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
+
+                        <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>
+
+    </wicket:panel></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Creatinine umol/l</td>
+                    <td>
+                        <input type="text" wicket:id="" value="" name="" onchange="editPatientPage.formIsDirty=true;"/>
+                    </td>
+                    <td>Height cm</td>
+                    <td>
+                        <input type="text" wicket:id="" value="" name="" onchange="editPatientPage.formIsDirty=true;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date creatinine taken</td>
+                    <td>
+                        <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+                        <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
+                        <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
+
+                        <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>
+
+    </wicket:panel></span>
+                    </td>
+                    <td>Date height recorded</td>
+                    <td>
+                        <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+                        <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
+                        <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
+
+                        <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>
+
+    </wicket:panel></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>BP systolic mm Hg</td>
+                    <td>
+                        <input type="text" wicket:id="" value="" name="" onchange="editPatientPage.formIsDirty=true;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>BP diastolic mm Hg</td>
+                    <td>
+                        <input type="text" wicket:id="" value="" name="" onchange="editPatientPage.formIsDirty=true;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date BP recorded</td>
+                    <td>
+                        <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
+    <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
+                        <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
+                        <a href="#" class="info"><em>Help</em><span>(or nearest if not known)<br/><br/></span> </a>
+
+                        <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>
+
+    </wicket:panel></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+            </table>
+        </fieldset>
+        <br/>
+    </td>
+</tr>
+</table>
+<span id="successMessage22" style="display:none"></span>
+<span id="errorMessage23" style="display:none"></span>
+
+</div>
+
+</form>
+
+</wicket:panel></div>
+    <div id="diagnosisPanel24" style="display:none"></div>
+    <div id="firstVisitPanel25" style="display:none"></div>
+    <div id="followUpPanel26" style="display:none"></div>
+    <div id="pathologyPanel27" style="display:none"></div>
+    <div id="relapsePanel28" style="display:none"></div>
+    <div id="hospitalisationPanel29" style="display:none"></div>
+
+    <p wicket:id="pageNumber" id="pageNumber2a">GENERIC PAGE</p>
+
+</wicket:extend></wicket:child>
+        </div>
+        <div id="clearFooter"></div>
+
+    </div>
+</div>
+<div id="footer">
+    <script language="javacript" type="text/javascript">
+/*<![CDATA[*/
+
+        document.write('&copy; The Renal Association 2009-'+(new Date()).getFullYear());
+
+/*]]>*/
+</script>
+
+
+    <noscript>&copy; The Renal Association</noscript>
+</div>
+</body>
+</html>

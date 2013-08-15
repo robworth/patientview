@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<wicket:extend>
+<h2> View Patient Details</h2>
+
+<p>
+    <span id="ctl00_ContentPlaceHolder1_lblSort">Click green column headings to sort records</span>
+</p>
+
+<div>
+<table class="tableSorter patientsLisitingTable" cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
+       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;">
+<thead>
+<tr style="background-color:#EEF6ED;">
+    <th scope="col">View / Edit</th>
+    <th scope="col"><a href="javascript:void(0)">Surname</a></th>
+    <th scope="col">First Name</th>
+    <th align="center" scope="col">DOB</th>
+    <th scope="col"><a href="javascript:void(0)">RaDaRNo.</a></th>
+    <th scope="col"><a href="javascript:void(0)">Diagnosis</a>
+    </th>
+    <th scope="col">NHS Number</th>
+    <th scope="col">Hospital No</th>
+    <th align="center" scope="col"><a href="javascript:void(0)">DateReg</a></th>
+    <th scope="col"><a href="javascript:void(0)">Status</a></th>
+    <th scope="col"><a href="javascript:void(0)">Centre</a></th>
+</tr>
+</thead>
+
+<tbody>
+<tr wicket:id="patients">
+    <td align="center"><a wicket:id="edit">Edit</a></td>
+    <td wicket:id="surname"/>
+    <td wicket:id="forename"/>
+    <td wicket:id="dateOfBirth"/>
+
+    <td align="center" wicket:id="id"/>
+    <td align="center" wicket:id="diagnosis"/>
+    <td wicket:id="nhsNumber"/>
+    <td wicket:id="hospitalNumber"/>
+    <td wicket:id="dateRegistered"/>
+    <td wicket:id="status.abbreviation"/>
+    <td wicket:id="renalUnit.name"/>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>
+
+</p>
+
+<p></p>
+
+<p>
+</p>
+</wicket:extend>
+</body>
+</html>
