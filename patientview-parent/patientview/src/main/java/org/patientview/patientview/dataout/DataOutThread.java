@@ -244,7 +244,7 @@ public class DataOutThread implements Runnable, ParserThread {
             throws ParserConfigurationException, TransformerException {
         String directory1stPart = directory;
         String directory2ndPart = unit.getUnituser();
-        String directory3rdPart = servletContext.getInitParameter(prebit + ".directory.thirdpart");
+        String directory3rdPart = LegacySpringUtils.getContextProperties().getProperty(prebit + ".directory.thirdpart");
 
         String filePath = directory1stPart + "/" + directory2ndPart + "/" + directory3rdPart;
 

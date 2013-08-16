@@ -85,7 +85,7 @@ public class FeedbackFormAction extends Action {
 
     private void emailUnitAdminFeedbackNotification(HttpServletRequest request, Feedback feedback) {
         ServletContext context = request.getSession().getServletContext();
-        String fromAddress = context.getInitParameter("noreply.email");
+        String fromAddress = LegacySpringUtils.getContextProperties().getProperty("noreply.email");
         Unit unit = UnitUtils.retrieveUnit(feedback.getUnitcode());
         String toAddress = unit.getRenaladminemail();
         String subject = "[Renal PatientView] New feedback for your unit - " + unit.getShortname();
