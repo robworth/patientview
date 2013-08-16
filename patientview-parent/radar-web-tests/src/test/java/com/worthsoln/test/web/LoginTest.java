@@ -17,45 +17,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-context.xml")
-public class LoginTest {
-
-    @Value("${base.url}")
-    private String baseUrl;
-
-    @Value("${patient.username}")
-    private String patient_username;
-
-    @Value("${patient.password}")
-    private String patient_password;
-
-    @Value("${patient.dateOfBirth}")
-    private String dateOfBirth;
-
-    @Value("${professional.username}")
-    private String professional_username;
-
-    @Value("${professional.password}")
-    private String professional_password;
-
-    @Before
-    public void prepare() {
-        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
-        setBaseUrl(baseUrl);
-
-    }
-
-    private void prepareAndBeginAt(String url) {
-        beginAt(url);    // start
-
-        WebClient webClient = ((HtmlUnitTestingEngineImpl)getTestingEngine()).getWebClient();
-        webClient.setJavaScriptEnabled(true);
-        webClient.setCssEnabled(false);
-        webClient.setAjaxController(new NicelyResynchronizingAjaxController());
-        webClient.setTimeout(35000);
-        webClient.setThrowExceptionOnScriptError(false);
-        webClient.waitForBackgroundJavaScript(30000);
-    }
+public class LoginTest extends BaseTest{
 
     @Test
     public void testPatientsIndexLoginSuccess() {
@@ -71,8 +33,10 @@ public class LoginTest {
         setTextField("password", patient_password);
         setTextField("dateOfBirth", dateOfBirth);
         submit();
-        System.out.println(getPageSource());
+
         assertLinkPresentWithText("| Log-out");     // we should now be logged in
+
+        logout();
     }
 
     @Test
@@ -104,8 +68,10 @@ public class LoginTest {
         setTextField("email", professional_username);
         setTextField("password", professional_password);
         submit();
-        System.out.println(getPageSource());
+//        System.out.println(getPageSource());
         assertLinkPresentWithText("| Log-out");     // we should now be logged in
+
+        logout();
     }
 
     @Test
@@ -120,8 +86,59 @@ public class LoginTest {
         setTextField("password", "12");
         submit();
 
+//        System.out.println(getPageSource());
+        assertTextPresent("Login failed");
+        assertLinkNotPresentWithText("Logout");  // still in login page
+    }
+
+
+    @Test
+    public void testAdminIndexLoginSuccess() {
+        prepareAndBeginAt("/admins");
+
+        assertTextPresent("Log In");
+        assertTitleEquals("RaDaR - National Renal Rare Disease Registry");
+
+        assertFormElementPresent("email");
+        assertFormElementPresent("password");
+        setTextField("email", superadmin_username);
+        setTextField("password", superadmin_password);
+        submit();
+
+        assertLinkPresentWithText("| Log-out");     // we should now be logged in
+        assertTextPresent("Logged In");
+        assertLinkPresentWithText("Users");
+        assertLinkPresentWithText("Consultants");
+        assertLinkPresentWithText("Patients (All)");
+        assertLinkPresentWithText("Patients (User)");
+        assertLinkPresentWithText("Issues");
+
+        logout();
+
+    }
+
+
+    @Test
+    public void testAdminIndexLoginFailure() {
+        prepareAndBeginAt("/admins");
+
+        assertTextPresent("Log In");
+        assertTitleEquals("RaDaR - National Renal Rare Disease Registry");
+
+        assertFormElementPresent("email");
+        assertFormElementPresent("password");
+        setTextField("email", "12");
+        setTextField("password", "12");
+        submit();
         System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
+    }
+
+    public void logout(){
+        clickLinkWithText("| Log-out");
+        assertLinkPresentWithText("Patients");
+        assertLinkPresentWithText("Professionals");
+        assertLinkPresentWithText("Home");
     }
 }

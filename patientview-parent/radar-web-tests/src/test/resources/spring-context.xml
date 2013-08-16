@@ -7,7 +7,11 @@
 
     <!--Properties Placeholder-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:web-test.properties"/>
+        <property name="locations">
+        <list>
+            <value>classpath:web-test.properties</value>
+        </list>
+        </property>
     </bean>
 
 </beans>
