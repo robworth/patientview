@@ -22,24 +22,24 @@
  */
 package org.patientview.security.impl;
 
+import org.aopalliance.intercept.MethodInvocation;
 import org.patientview.security.SecurityConfig;
 import org.patientview.security.UnitSecured;
 import org.patientview.security.model.SecurityUser;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.aopalliance.intercept.MethodInvocation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
 import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  *  Implement finer grained authorisation per unit
@@ -97,6 +97,11 @@ public class UnitVoter implements AccessDecisionVoter {
             SecurityUser user = (SecurityUser) authentication.getPrincipal();
 
             UnitSecured securedAnnotation = methodInvocation.getMethod().getAnnotation(UnitSecured.class);
+
+            // super admins bypass method security
+            if (securityUserManager.isRolePresent("superadmin")) {
+                result = ACCESS_GRANTED;
+            }
 
             if (securedAnnotation != null && securedAnnotation.value() != null) {
                 if (securedAnnotation.value().equals(SecurityConfig.UNIT_ACCESS)) {
