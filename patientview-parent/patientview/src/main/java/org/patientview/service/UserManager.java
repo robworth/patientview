@@ -29,7 +29,6 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.security.UnitSecured;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +46,6 @@ public interface UserManager {
 
     User get(Long id);
 
-    @UnitSecured(value = "UNIT_ACCESS")
     User get(String username);
 
     String getLoggedInUserRole();
