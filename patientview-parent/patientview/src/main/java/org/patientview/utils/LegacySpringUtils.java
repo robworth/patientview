@@ -51,6 +51,7 @@ import org.patientview.service.UKTransplantManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.patientview.service.UserLogManager;
+import org.patientview.service.CheckupsManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
 
@@ -124,6 +125,8 @@ public final class LegacySpringUtils {
     private static AdminNotificationManager adminNotificationManager;
 
     private static Properties contextProperties;
+
+    private static CheckupsManager checkupsManager;
 
     private LegacySpringUtils() {
 
@@ -365,9 +368,19 @@ public final class LegacySpringUtils {
         return adminNotificationManager;
     }
 
+    public static void setCheckupsManager(CheckupsManager checkupsManager) {
+        LegacySpringUtils.checkupsManager = checkupsManager;
+    }
+
+    public static CheckupsManager getCheckupsManager() {
+        return checkupsManager;
+    }
+
     public static void setAdminNotificationManager(AdminNotificationManager adminNotificationManager) {
         LegacySpringUtils.adminNotificationManager = adminNotificationManager;
     }
+
+
 
     public static Properties getContextProperties() {
         return contextProperties;
