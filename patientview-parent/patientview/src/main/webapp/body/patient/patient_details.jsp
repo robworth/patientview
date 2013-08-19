@@ -260,7 +260,36 @@
 
 </logic:present>
 
+<logic:present specialty="diabetes">
 
+    <tr valign="top">
+        <th class="tablecellbold">Diabetes Type</th>
+
+        <td class="tablecell">
+            Type 1
+        </td>
+    </tr>
+
+    <tr valign="top">
+        <th class="tablecellbold">Year Diagnosed</th>
+
+        <td class="tablecell">
+            1998
+        </td>
+    </tr>
+
+    <tr valign="top">
+        <th class="tablecellbold">Other Conditions</th>
+
+        <td class="tablecell">
+            <logic:iterate id="otherDiagnosis" name="patientDetail" property="otherDiagnoses">
+                <bean:write name="otherDiagnosis" property="diagnosis"/>
+                <br/>
+            </logic:iterate>
+        </td>
+    </tr>
+
+</logic:present>
 
 <logic:present specialty="ibd">
 
