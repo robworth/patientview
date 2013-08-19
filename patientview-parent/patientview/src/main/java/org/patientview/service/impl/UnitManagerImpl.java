@@ -177,6 +177,10 @@ public class UnitManagerImpl implements UnitManager {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
+    public List<UnitAdmin> getAllUnitUsers() {
+        return unitDao.getAllUnitUsers(securityUserManager.getLoggedInSpecialty());
+    }
+
     @Override
     public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
         return unitDao.getUnitPatientUsers(unitcode, securityUserManager.getLoggedInSpecialty());
