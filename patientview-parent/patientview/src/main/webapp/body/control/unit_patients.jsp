@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 <%--
   ~ PatientView
   ~
@@ -40,24 +40,33 @@
         <p>No matching patients found.</p>
     </logic:empty>
 
-
+    <% String context=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
+       request.setAttribute("context", context);
+    %>
     <logic:notEmpty name="patients">
+        <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
+            <div class="row" style="float: right;">
+                <a href="./unitPatients?page=prev">Prev</a>&nbsp;
+                <a href="./unitPatients?page=next">Next</a>
+            </div>
+        </div>
+
         <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
-                <th class="tableheader">Name<br />(edit)</th>
-                <th class="tableheader">NHS Number<br />(view patient)</th>
-                <th class="tableheader">DoB</th>
-                <th class="tableheader">Unit Code</th>
-                <th class="tableheader">Treatment</th>
-                <th class="tableheader">Email</th>
-                <th class="tableheader">Email Verified</th>
-                <th class="tableheader">Last Logon</th>
-                <th class="tableheader">Password</th>
-                <th colspan="4">&nbsp;</th>
+                <th class="tableheader" onclick="sort('name')">Name<br />(edit)</th>
+                <th class="tableheader" onclick="sort('nhsno')">NHS Number<br />(view patient)</th>
+                <th class="tableheader" onclick="sort('dateofbirthFormatted')">DoB</th>
+                <th class="tableheader" onclick="sort('unitcode')">Unit Code</th>
+                <th class="tableheader" onclick="sort('treatment')">Treatment</th>
+                <th class="tableheader" onclick="sort('email')">Email</th>
+                <th class="tableheader" onclick="sort('emailverfied')">Email Verified</th>
+                <th class="tableheader" onclick="sort('lastlogonFormatted')">Last Logon</th>
+                <th class="tableheader" onclick="sort('accountlocked')">Password</th>
+                <th colspan="5">&nbsp;</th>
             </tr>
             </thead>
-            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon">
+            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon" property="pageList">
 
                 <%
                     Map <String, String> patientKeyParams = new HashMap <String, String>();
@@ -158,9 +167,25 @@
                         </td>
                     </logic:present>
 
+                    <logic:present role="superadmin,unitadmin">
+                        <td>
+                            <bean:define id="username" name="patient" property="username" />
+                            <bean:define id="email" name="patient" property="email" />
+                            <bean:define id="emailverfied" name="patient" property="emailverfied"/>
+                            <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+                        </td>
+                    </logic:present>
+
                 </tr>
             </logic:iterate>
         </table>
     </logic:notEmpty>
 </div>
 </div>
+<script src="/js/emailverification.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function sort(property){
+        window.location.href="./unitPatients?page=sort&property="+property;
+    }
+</script>
