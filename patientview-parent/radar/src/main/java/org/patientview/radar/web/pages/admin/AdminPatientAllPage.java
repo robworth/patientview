@@ -1,6 +1,6 @@
 package org.patientview.radar.web.pages.admin;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.service.DemographicsManager;
@@ -33,12 +33,12 @@ public class AdminPatientAllPage extends AdminsBasePage {
     public AdminPatientAllPage(PageParameters parameters) {
         super();
 
-        final Demographics demographics;
+        final Patient patient;
 
         StringValue idValue = parameters.get(PARAM_ID);
-        demographics = demographicsManager.getDemographicsByRadarNumber(idValue.toLongObject());
+        patient = demographicsManager.getDemographicsByRadarNumber(idValue.toLongObject());
 
-        Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(demographics.getId());
+        Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getId());
 
         CompoundPropertyModel<Diagnosis> diagnosisModel =
                 new CompoundPropertyModel<Diagnosis>(diagnosis);
@@ -59,9 +59,9 @@ public class AdminPatientAllPage extends AdminsBasePage {
         };
         add(userForm);
 
-        userForm.add(new Label("radarNo", demographics.getId().toString()));
-        userForm.add(new Label("forename", demographics.getForename()));
-        userForm.add(new Label("surname", demographics.getSurname()));
+        userForm.add(new Label("radarNo", patient.getId().toString()));
+        userForm.add(new Label("forename", patient.getForename()));
+        userForm.add(new Label("surname", patient.getSurname()));
 
         // get centres and sort by name
         List<DiagnosisCode> diagnosisCodes = diagnosisManager.getDiagnosisCodes();
@@ -105,7 +105,7 @@ public class AdminPatientAllPage extends AdminsBasePage {
         });
     }
 
-    public static PageParameters getPageParameters(Demographics demographics) {
-        return new PageParameters().set(PARAM_ID, demographics.getId());
+    public static PageParameters getPageParameters(Patient patient) {
+        return new PageParameters().set(PARAM_ID, patient.getId());
     }
 }

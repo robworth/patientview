@@ -34,4 +34,8 @@ public interface JoinRequestDao {
     List<JoinRequest> getAll();
 
     List<JoinRequest> getJoinRequestsForUnitCodes(List<String> unitcodes);
+
+    List<JoinRequest> getJoinRequestsForUnitCodes(List<String> unitcodes, Boolean isComplete);
+
+    JoinRequest get(Long id);
 }

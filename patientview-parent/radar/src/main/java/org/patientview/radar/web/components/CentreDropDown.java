@@ -1,6 +1,6 @@
 package org.patientview.radar.web.components;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
 import org.patientview.radar.service.UtilityManager;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -13,9 +13,9 @@ public class CentreDropDown extends DropDownChoice<Centre> {
     @SpringBean
     private UtilityManager utilityManager;
 
-    public CentreDropDown(String id) {
+    public CentreDropDown(String id, String nhsNo) {
         super(id);
-        setChoices(utilityManager.getCentres());
+        setChoices(utilityManager.getCentres(nhsNo));
         setChoiceRenderer(new ChoiceRenderer<Centre>("abbreviation", "id"));
     }
 

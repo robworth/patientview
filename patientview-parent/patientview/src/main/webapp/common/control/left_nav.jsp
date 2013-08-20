@@ -1,6 +1,8 @@
 <%@ page import="org.patientview.patientview.model.User" %>
+<%@ page import="org.patientview.patientview.model.JoinRequest" %>
 <%@ page import="org.patientview.patientview.user.UserUtils" %>
 <%@ page import="org.patientview.utils.LegacySpringUtils" %>
+<%@ page import="java.util.List" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%--
@@ -56,7 +58,25 @@
             <li><html:link action="/control/patientAddInput">Add Patient</html:link></li>
             <li><html:link action="/control/logView">View Log</html:link></li>
             <li class="divider"></li>
-            <li><html:link action="/control/joinReqestList">Join Requests</html:link></li>
+            <li <%= request.getAttribute("specialty") != null ? "class=\"active\"" : "" %>>
+                <%
+                    List<JoinRequest> list = LegacySpringUtils.getJoinRequestManager().getUsersJoinRequests(false);
+                    int inComplete = list != null ? list.size() : 0;
+                %>
+                <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/joinRequestList">Join Requests
+                <%
+                    if (inComplete > 0) {
+                %>
+                    <span class="badge badge-important"><%=inComplete%></span>
+                <%
+                    }
+                %>
+                </a>
+            </li>
+            <logic:present role="superadmin">
+                <li class="divider"></li>
+                <li><html:link action="/control/xmlFileSelect">XML File View</html:link></li>
+            </logic:present>
             <logic:present specialty="renal">
                 <li class="divider"></li>
                 <li><html:link action="/control/feedbackUnitSelect">Feedback</html:link></li>

@@ -1,8 +1,8 @@
 package org.patientview.radar.test.dao.generic;
 
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.MedicalResultDao;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.generic.MedicalResult;
 import org.patientview.radar.test.dao.BaseDaoTest;
 import org.junit.Assert;

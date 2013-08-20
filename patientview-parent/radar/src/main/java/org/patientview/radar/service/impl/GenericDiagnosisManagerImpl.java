@@ -1,8 +1,8 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.model.generic.DiseaseGroup;
-import org.patientview.radar.model.generic.GenericDiagnosis;
 import org.patientview.radar.service.generic.GenericDiagnosisManager;
 
 import java.util.List;

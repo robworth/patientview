@@ -127,7 +127,7 @@ public class MessageDaoImpl extends AbstractHibernateDAO<Message> implements Mes
 
         buildWhereClause(criteria, wherePredicates);
 
-        criteria.orderBy(builder.asc(root.get(Message_.date)));
+        //criteria.orderBy(builder.asc(root.get(Message_.date)));
 
         return getEntityManager().createQuery(criteria).getSingleResult();
     }

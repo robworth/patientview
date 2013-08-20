@@ -71,4 +71,6 @@ public interface UserDao {
     void saveUserMapping(User user) throws Exception;
 
     void deleteUserMapping(User user) throws Exception;
+
+    boolean userExistsInPatientView(String nhsno, String unitcode);
 }

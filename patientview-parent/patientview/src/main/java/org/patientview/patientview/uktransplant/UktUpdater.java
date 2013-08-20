@@ -23,13 +23,14 @@
 
 package org.patientview.patientview.uktransplant;
 
-import java.io.File;
-import java.io.FileReader;
-import javax.servlet.ServletContext;
 import com.Ostermiller.util.CSVParser;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.UktStatus;
 import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.FileReader;
 
 public class UktUpdater {
 
@@ -55,7 +56,7 @@ public class UktUpdater {
 
                 LegacySpringUtils.getUkTransplantManager().save(status);
             }
-
+            uktParser.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

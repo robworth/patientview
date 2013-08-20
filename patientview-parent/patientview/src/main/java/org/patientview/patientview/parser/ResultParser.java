@@ -27,6 +27,7 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.ibd.model.enums.DiseaseExtent;
+import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.Centre;
@@ -35,7 +36,6 @@ import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.enums.DiagnosticType;
 import org.patientview.patientview.model.enums.NodeError;
@@ -90,6 +90,21 @@ public class ResultParser {
 
     public void parseResults(ServletContext context, File resultsFile) throws Exception {
         Document doc = getDocument(context, resultsFile);
+        for (int i = 0; i < topLevelElements.length; i++) {
+            collectTopLevelData(topLevelElements[i], doc);
+        }
+        collectTestResults(doc);
+        collectDateRanges(doc);
+        collectLetters(doc);
+        collectOtherDiagnosis(doc);
+        collectMedicines(doc);
+        collectDiagnostics(doc);
+        collectProcedures(doc);
+        collectAllergies(doc);
+    }
+
+    public void parseResults(File resultsFile) throws Exception {
+        Document doc = getDocument(resultsFile);
         for (int i = 0; i < topLevelElements.length; i++) {
             collectTopLevelData(topLevelElements[i], doc);
         }
@@ -462,23 +477,66 @@ public class ResultParser {
         return doc;
     }
 
+    private Document getDocument(File file) {
+        Document doc = null;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
+
     public String getData(String dataId) {
         return (String) xmlData.get(dataId);
     }
 
     public Patient getPatient() {
-        Patient patient = new Patient((String) xmlData.get("nhsno"), (String) xmlData.get("surname"),
-                (String) xmlData.get("forename"), (String) xmlData.get("dateofbirth"), (String) xmlData.get("sex"),
-                (String) xmlData.get("address1"), (String) xmlData.get("address2"), (String) xmlData.get("address3"),
-                (String) xmlData.get("address4"), (String) xmlData.get("postcode"), (String) xmlData.get("telephone1"),
-                (String) xmlData.get("telephone2"), (String) xmlData.get("mobile"), (String) xmlData.get("centrecode"),
-                (String) xmlData.get("diagnosisedta"), (String) xmlData.get("diagnosisdate"),
-                (String) xmlData.get("rrtstatus"), (String) xmlData.get("tpstatus"),
-                (String) xmlData.get("hospitalnumber"), (String) xmlData.get("gpname"),
-                (String) xmlData.get("gpaddress1"), (String) xmlData.get("gpaddress2"),
-                (String) xmlData.get("gpaddress3"), (String) xmlData.get("gppostcode"),
-                (String) xmlData.get("gptelephone"), (String) xmlData.get("gpemail"),
-                (String) xmlData.get("bmdexam"), (String) xmlData.get("bloodgroup"));
+        Patient patient = new Patient();
+        patient.setNhsno((String) xmlData.get("nhsno"));
+        patient.setSurname((String) xmlData.get("surname"));
+        patient.setForename((String) xmlData.get("forename"));
+        patient.setDateofbirth((String) xmlData.get("dateofbirth"));
+        patient.setSex((String) xmlData.get("sex"));
+        patient.setAddress1((String) xmlData.get("address1"));
+        patient.setAddress2((String) xmlData.get("address2"));
+        patient.setAddress3((String) xmlData.get("address3"));
+        patient.setAddress4((String) xmlData.get("address4"));
+        patient.setPostcode((String) xmlData.get("postcode"));
+        patient.setTelephone1((String) xmlData.get("telephone1"));
+        patient.setTelephone2((String) xmlData.get("telephone2"));
+        patient.setMobile((String) xmlData.get("mobile"));
+        patient.setUnitcode((String) xmlData.get("centrecode"));
+        patient.setDiagnosis((String) xmlData.get("diagnosisedta"));
+        String diagnosisdate = (String) xmlData.get("diagnosisdate");
+        if (diagnosisdate != null) {
+            try {
+                patient.setDiagnosisDate(IMPORT_DATE_FORMAT.parse(diagnosisdate));
+            } catch (ParseException e) {
+                LOGGER.error("Could not parse diagnosisDate {} {}", diagnosisdate, e);
+            }
+        }
+        patient.setTreatment((String) xmlData.get("rrtstatus"));
+        patient.setTransplantstatus((String) xmlData.get("tpstatus"));
+        patient.setHospitalnumber((String) xmlData.get("hospitalnumber"));
+        patient.setGpname((String) xmlData.get("gpname"));
+        patient.setGpaddress1((String) xmlData.get("gpaddress1"));
+        patient.setGpaddress2((String) xmlData.get("gpaddress2"));
+        patient.setGpaddress3((String) xmlData.get("gpaddress3"));
+        patient.setGppostcode((String) xmlData.get("gppostcode"));
+        patient.setGptelephone((String) xmlData.get("gptelephone"));
+        patient.setGpemail((String) xmlData.get("gpemail"));
+        String bmdexam = (String) xmlData.get("bmdexam");
+        if (bmdexam != null) {
+            try {
+                patient.setBmdexam(IMPORT_DATE_FORMAT.parse(bmdexam));
+            } catch (ParseException e) {
+                LOGGER.error("Could not parse bmdexam {} {}", bmdexam, e);
+            }
+        }
+        patient.setBloodgroup((String) xmlData.get("bloodgroup"));
 
         return patient;
     }
@@ -531,11 +589,18 @@ public class ResultParser {
     }
 
     public Centre getCentre() {
-        return new Centre((String) xmlData.get("centrecode"), (String) xmlData.get("centrename"),
-                (String) xmlData.get("centreaddress1"), (String) xmlData.get("centreaddress2"),
-                (String) xmlData.get("centreaddress3"), (String) xmlData.get("centreaddress4"),
-                (String) xmlData.get("centrepostcode"), (String) xmlData.get("centretelephone"),
-                (String) xmlData.get("centreemail"));
+        Centre centre = new Centre();
+        centre.setCentreCode((String) xmlData.get("centrecode"));
+        centre.setCentreName((String) xmlData.get("centrename"));
+        centre.setCentreAddress1((String) xmlData.get("centreaddress1"));
+        centre.setCentreAddress2((String) xmlData.get("centreaddress2"));
+        centre.setCentreAddress3((String) xmlData.get("centreaddress3"));
+        centre.setCentreAddress4((String) xmlData.get("centreaddress4"));
+        centre.setCentrePostCode((String) xmlData.get("centrepostcode"));
+        centre.setCentreTelephone((String) xmlData.get("centretelephone"));
+        centre.setCentreEmail((String) xmlData.get("centreemail"));
+
+        return centre;
     }
 
     public String getFlag() {

@@ -290,4 +290,13 @@
         </property>
     </bean>
 
+    <bean id="setUserLogManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setUserLogManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="userLogManager"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

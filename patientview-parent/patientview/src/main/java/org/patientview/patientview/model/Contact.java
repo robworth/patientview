@@ -23,6 +23,8 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.Patient;
+
 public class Contact {
 
     private Patient patient;

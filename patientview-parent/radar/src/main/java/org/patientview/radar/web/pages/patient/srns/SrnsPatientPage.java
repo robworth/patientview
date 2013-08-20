@@ -1,9 +1,9 @@
 package org.patientview.radar.web.pages.patient.srns;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.ClinicalDataManager;
 import org.patientview.radar.service.DemographicsManager;
@@ -167,7 +167,7 @@ public class SrnsPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            if (radarNumberModel.getObject() != null) {
+//            if (radarNumberModel.getObject() != null) {
                 currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
@@ -187,7 +187,7 @@ public class SrnsPatientPage extends BasePage {
                 }
 
                 target.add(pageNumber);
-            }
+//            }
 
         }
 
@@ -197,8 +197,8 @@ public class SrnsPatientPage extends BasePage {
         }
     }
 
-    public static PageParameters getParameters(Demographics demographics) {
-        return new PageParameters().set(PARAM_ID, demographics.getId());
+    public static PageParameters getParameters(Patient patient) {
+        return new PageParameters().set(PARAM_ID, patient.getId());
     }
 
     public static PageParameters getParameters(AddPatientModel patientModel) {

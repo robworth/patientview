@@ -1,8 +1,8 @@
 package org.patientview.radar.web.pages.patient;
 
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.generic.DiseaseGroup;
+import org.patientview.model.Centre;
+import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -50,41 +50,41 @@ public class ExistingPatientsListingPage extends BasePage {
         DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager, centre);
 
         // List existing patients
-        add(new DataView<Demographics>("patients", demographicsDataProvider) {
+        add(new DataView<Patient>("patients", demographicsDataProvider) {
             @Override
-            protected void populateItem(Item<Demographics> item) {
+            protected void populateItem(Item<Patient> item) {
                 // Populate fields
-                Demographics demographics = item.getModelObject();
+                Patient patient = item.getModelObject();
 
                 // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
                 // TODO: need to implement a patient base page with the constructors needed and then have an enum map
                 // TODO: that maps disease ids to the page they need to go to so we dont need all these ifs
-                if (demographics.getDiseaseGroup() != null && demographics.getDiseaseGroup().getId().equals(
-                        DiseaseGroup.SRNS_DISEASE_GROUP_ID) || demographics.getDiseaseGroup().getId().
+                if (patient.getDiseaseGroup() != null && patient.getDiseaseGroup().getId().equals(
+                        DiseaseGroup.SRNS_DISEASE_GROUP_ID) || patient.getDiseaseGroup().getId().
                         equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
                     item.add(new BookmarkablePageLink<SrnsPatientPage>("edit", SrnsPatientPage.class,
-                            SrnsPatientPage.getParameters(demographics)));
-                } else if (demographics.getDiseaseGroup() != null && demographics.getDiseaseGroup().getId().equals(
+                            SrnsPatientPage.getParameters(patient)));
+                } else if (patient.getDiseaseGroup() != null && patient.getDiseaseGroup().getId().equals(
                         DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
                     item.add(new BookmarkablePageLink<AlportPatientPage>("edit", AlportPatientPage.class,
-                            AlportPatientPage.getPageParameters(demographics)));
-                } else if (demographics.getDiseaseGroup() != null && demographics.getDiseaseGroup().getId().equals(
+                            AlportPatientPage.getPageParameters(patient)));
+                } else if (patient.getDiseaseGroup() != null && patient.getDiseaseGroup().getId().equals(
                         DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
                     item.add(new BookmarkablePageLink<AlportPatientPage>("edit", HNF1BPatientPage.class,
-                            HNF1BPatientPage.getPageParameters(demographics)));
+                            HNF1BPatientPage.getPageParameters(patient)));
                 } else {
                     item.add(new BookmarkablePageLink<GenericPatientPage>("edit", GenericPatientPage.class,
-                            GenericPatientPage.getPageParameters(demographics)));
+                            GenericPatientPage.getPageParameters(patient)));
                 }
 
                 item.add(new Label("surname"), new Label("forename"));
-                item.add(DateLabel.forDatePattern("dateOfBirth", RadarApplication.DATE_PATTERN2));
+                item.add(DateLabel.forDatePattern("dob", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("id"));
-                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(demographics)));
+                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(patient)));
 
-                item.add(new Label("nhsNumber", demographics.getNhsNumber()));
-                item.add(new Label("hospitalNumber"));
-                item.add(DateLabel.forDatePattern("dateRegistered", RadarApplication.DATE_PATTERN2));
+                item.add(new Label("nhsNumber", patient.getNhsno()));
+                item.add(new Label("hospitalnumber"));
+                item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
                 item.add(new Label("renalUnit.name"));
             }

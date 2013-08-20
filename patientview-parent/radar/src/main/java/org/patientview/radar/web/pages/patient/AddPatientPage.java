@@ -1,11 +1,11 @@
 package org.patientview.radar.web.pages.patient;
 
+import org.patientview.model.Sex;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.enums.NhsNumberType;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -83,16 +83,16 @@ public class AddPatientPage extends BasePage {
                 // just show the user one error at a time
 
                 DemographicsFilter demographicsFilter = new DemographicsFilter();
-                demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHS_NO.toString(),
+                demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
                         model.getPatientId());
 
                 // check nhs number is valid
                 if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     error(NHS_NUMBER_INVALID_MSG);
 
-                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
-                    // check that this nhsno does not already exist in the radar system
-                    error("A patient with this NHS or CHI number already exists");
+//                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
+//                    // check that this nhsno does not already exist in the radar system
+//                    error("A patient with this NHS or CHI number already exists");
 
                 } else if (!userManager.userExistsInPatientView(model.getPatientId())) {
                     // If nhsno is not already in patient view inform user they need to add the patient using the

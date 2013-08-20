@@ -1,6 +1,6 @@
 package org.patientview.radar.model.user;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
 
 public class ProfessionalUser extends User {
 

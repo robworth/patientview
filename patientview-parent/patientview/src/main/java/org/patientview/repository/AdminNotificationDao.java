@@ -23,8 +23,8 @@
 
 package org.patientview.repository;
 
-import org.patientview.ibd.model.AdminNotification;
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.patientview.model.AdminNotification;
+import org.patientview.model.enums.XmlImportNotification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +32,8 @@ import java.util.List;
 
 @Transactional(propagation = Propagation.MANDATORY)
 public interface AdminNotificationDao {
+
+    void save(AdminNotification adminNotification);
 
     List<AdminNotification> getAll();
 

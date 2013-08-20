@@ -1,8 +1,8 @@
 package org.patientview.radar.service.alport;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.alport.Medicine;
-import org.patientview.radar.model.generic.DiseaseGroup;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface MedicineManager {
 
     Medicine get(Long id);
 
-    List<Medicine> getMedicines(Demographics demographics);
+    List<Medicine> getMedicines(Patient patient);
 
-    List<Medicine> getMedicines(Demographics demographics, DiseaseGroup diseaseGroup);
+    List<Medicine> getMedicines(Patient patient, DiseaseGroup diseaseGroup);
 }

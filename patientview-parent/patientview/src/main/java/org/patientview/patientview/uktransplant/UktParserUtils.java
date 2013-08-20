@@ -23,8 +23,8 @@
 
 package org.patientview.patientview.uktransplant;
 
-import java.io.File;
 import javax.servlet.ServletContext;
+import java.io.File;
 
 public final class UktParserUtils {
 
@@ -34,5 +34,10 @@ public final class UktParserUtils {
     public static void updateData(ServletContext context, File uktFile) {
         UktUpdater updater = new UktUpdater();
         updater.update(context, uktFile);
+    }
+
+    public static void updateData(File uktFile) {
+        UktUpdater updater = new UktUpdater();
+        updater.update(null, uktFile);
     }
 }

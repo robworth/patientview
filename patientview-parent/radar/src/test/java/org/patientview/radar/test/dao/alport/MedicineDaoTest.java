@@ -1,9 +1,9 @@
 package org.patientview.radar.test.dao.alport;
 
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.alport.MedicineDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.model.alport.Medicine;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.test.dao.BaseDaoTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
