@@ -137,7 +137,7 @@ dfdf
             </footcheckup>
             <footcheckup>
                 <datestamp>2012-04-16</datestamp>
-                <location>clinc</location>
+                <location>clinic</location>
                 <foot side="left">
                     <dppulse>54</dppulse>
                     <ptpulse>65</ptpulse>
@@ -170,7 +170,7 @@ dfdf
             </eyecheckup>
             <eyecheckup>
                 <datestamp>2012-04-16</datestamp>
-                <location>clinc</location>
+                <location>clinic</location>
                 <eye side="left">
                     <rgrade>54</rgrade>
                     <mgrade>65</mgrade>
