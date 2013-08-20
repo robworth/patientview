@@ -21,40 +21,21 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository;
+package org.patientview.service;
 
-import org.patientview.model.Patient;
-import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.patientview.model.Checkups;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  *
  */
-@Transactional(propagation = Propagation.MANDATORY)
-public interface PatientDao {
+@Transactional(propagation = Propagation.REQUIRED)
+public interface CheckupsManager {
 
-    Patient get(Long id);
+    Checkups get(String userName);
 
-    Patient get(String nhsno, String unitcode);
+    void save(Checkups checkups);
 
-    void save(Patient patient);
-
-    void delete(String nhsno, String unitcode);
-
-    List<Patient> get(String centreCode);
-
-    // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
-                                         Specialty specialty);
-
-    List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps, Specialty specialty);
-
-    // Note: generics not used as the result is half user, half patient
-    List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty);
-
-    List<Patient> getUktPatients();
+    void delete(Long id);
 }

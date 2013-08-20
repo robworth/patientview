@@ -1,3 +1,6 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%--
   ~ PatientView
   ~
@@ -27,77 +30,84 @@
             <h1>Checkups</h1>
         </div>
     </div>
+    <logic:empty name="checkups">
+        <div class="alert">No Checkups uploaded</div>
+    </logic:empty>
 
-    <div class="span12">
-        <h3>Eye Screening</h3>
-        <p></p>
-    </div>
+    <logic:notEmpty name="checkups">
+        <logic:present name="checkups">
+            <div class="span12">
+                <h3>Eye Screening</h3>
+                <p></p>
+            </div>
 
-    <div class="span12">
-        <table width="650" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
-            <tr>
-                <th class="tablecellbold" colspan="3">Date of last retinal screening: 02/04/2013</th>
-                <th class="tablecellbold" colspan="3">Place of last retinal screening: clinic</th>
-            </tr>
-            <tr>
-                <td class="tablecell" colspan="3">Right Eye</td>
-                <td class="tablecell" colspan="3">Left Eye</td>
-            </tr>
-            <tr>
-                <td class="tablecell" colspan="1">R Grade</td>
-                <td class="tablecell" colspan="1">M Grade</td>
-                <td class="tablecell" colspan="1">VA</td>
-                <td class="tablecell" colspan="1">R Grade</td>
-                <td class="tablecell" colspan="1">M Grade</td>
-                <td class="tablecell" colspan="1">VA</td>
-            </tr>
-            <tr>
-                <td class="tablecell" colspan="1">23</td>
-                <td class="tablecell" colspan="1">43</td>
-                <td class="tablecell" colspan="1">3</td>
-                <td class="tablecell" colspan="1">34</td>
-                <td class="tablecell" colspan="1">54</td>
-                <td class="tablecell" colspan="1">3</td>
-            </tr>
-        </table>
-    </div>
+            <div class="span12">
+                <table width="650" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
+                    <tr>
+                        <th class="tablecellbold" colspan="3">Date of last retinal screening: <bean:write name="checkups" property="lastRetinalDateFormatted"/></th>
+                        <th class="tablecellbold" colspan="3">Place of last retinal screening: <bean:write name="checkups" property="lastRetinalPlace"/></th>
+                    </tr>
+                    <tr>
+                        <td class="tablecell" colspan="3">Right Eye</td>
+                        <td class="tablecell" colspan="3">Left Eye</td>
+                    </tr>
+                    <tr>
+                        <td class="tablecell" colspan="1">R Grade</td>
+                        <td class="tablecell" colspan="1">M Grade</td>
+                        <td class="tablecell" colspan="1">VA</td>
+                        <td class="tablecell" colspan="1">R Grade</td>
+                        <td class="tablecell" colspan="1">M Grade</td>
+                        <td class="tablecell" colspan="1">VA</td>
+                    </tr>
+                    <tr>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightRGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightMGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightVA"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftRGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftMGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftVA"/></td>
+                    </tr>
+                </table>
+            </div>
 
 
-    <div class="span12">
-        <h3>Feet</h3>
-        <p></p>
-    </div>
+            <div class="span12">
+                <h3>Feet</h3>
+                <p></p>
+            </div>
 
-    <div class="span12">
-        <table width="650" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
-            <tr>
-                <th class="tablecellbold" colspan="4">Date foot check: 02/04/2013</th>
-                <th class="tablecellbold" colspan="4">Place of foot check: clinic</th>
-            </tr>
-            <tr>
-                <td class="tablecell" colspan="4">Right Foot</td>
-                <td class="tablecell" colspan="4">Left Foot</td>
-            </tr>
-            <tr>
-                <td class="tablecell" colspan="1">DP Pulse</td>
-                <td class="tablecell" colspan="1">PT Pulse</td>
-                <td class="tablecell" colspan="1">10g Monofilament</td>
-                <td class="tablecell" colspan="1">Risk score</td>
-                <td class="tablecell" colspan="1">DP Pulse</td>
-                <td class="tablecell" colspan="1">PT Pulse</td>
-                <td class="tablecell" colspan="1">10g Monofilament</td>
-                <td class="tablecell" colspan="1">Risk score</td>
-            </tr>
-            <tr>
-                <td class="tablecell" colspan="1">23</td>
-                <td class="tablecell" colspan="1">43</td>
-                <td class="tablecell" colspan="1">3</td>
-                <td class="tablecell" colspan="1">98</td>
-                <td class="tablecell" colspan="1">34</td>
-                <td class="tablecell" colspan="1">54</td>
-                <td class="tablecell" colspan="1">3</td>
-                <td class="tablecell" colspan="1">57</td>
-            </tr>
-        </table>
-    </div>
+            <div class="span12">
+                <table width="650" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
+                    <tr>
+                        <th class="tablecellbold" colspan="4">Date foot check: <bean:write name="checkups" property="footCheckDateFormatted"/></th>
+                        <th class="tablecellbold" colspan="4">Place of foot check: <bean:write name="checkups" property="footCheckPlace"/></th>
+                    </tr>
+                    <tr>
+                        <td class="tablecell" colspan="4">Right Foot</td>
+                        <td class="tablecell" colspan="4">Left Foot</td>
+                    </tr>
+                    <tr>
+                        <td class="tablecell" colspan="1">DP Pulse</td>
+                        <td class="tablecell" colspan="1">PT Pulse</td>
+                        <td class="tablecell" colspan="1">10g Monofilament</td>
+                        <td class="tablecell" colspan="1">Risk score</td>
+                        <td class="tablecell" colspan="1">DP Pulse</td>
+                        <td class="tablecell" colspan="1">PT Pulse</td>
+                        <td class="tablecell" colspan="1">10g Monofilament</td>
+                        <td class="tablecell" colspan="1">Risk score</td>
+                    </tr>
+                    <tr>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightDpPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightPtPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightMonofilament"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightRiskScore"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftDpPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftPtPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftMonofilament"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftRiskScore"/></td>
+                    </tr>
+                </table>
+            </div>
+        </logic:present>
+    </logic:notEmpty>
 </div>

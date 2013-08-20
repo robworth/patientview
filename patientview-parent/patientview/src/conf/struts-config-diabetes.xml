@@ -83,7 +83,7 @@
 
         <action path="/patient/checkups"
                 name="carePlanForm"
-                type="org.patientview.patientview.IndexAction"
+                type="org.patientview.patientview.checkups.CheckupsAction"
                 scope="request"
                 parameter="checkups">
             <forward name="success" path="/diabetes/checkups/checkups.jsp"/>

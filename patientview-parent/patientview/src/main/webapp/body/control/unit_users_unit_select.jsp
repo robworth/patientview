@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 
 <%--
   ~ PatientView
@@ -32,22 +33,29 @@
 </div>
 
 
-<html:form action="/control/unitUsers">
+<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers" method="post">
 <table cellpadding="3" >
     <tr>
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
       <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
-      <td><html:select property="unitcode">
-             <html:options collection="units" property="unitcode" labelProperty="name"/>
-          </html:select></td>
+      <td>
+          <select name="unitcode">
+              <logic:present role="superadmin">
+                  <option value="" >-- All Units --</option>
+              </logic:present>
+              <logic:iterate id="unit" name="units" >
+                  <option value="${unit.unitcode}" >${unit.name}</option>
+              </logic:iterate>
+          </select>
+      </td>
     </tr>
     <tr align="right">
       <td><html:submit value="Select" styleClass="btn" /></td>
     </tr>
  </table>
 
-</html:form>
+</form>
 </div>
 </div>

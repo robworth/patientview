@@ -645,6 +645,12 @@
         </dependency>
 
         <dependency>
+            <artifactId>jackson-mapper-lgpl</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <version>1.9.5</version>
+        </dependency>
+
+        <dependency>
             <groupId>quartz</groupId>
             <artifactId>quartz</artifactId>
             <version>1.5.2</version>

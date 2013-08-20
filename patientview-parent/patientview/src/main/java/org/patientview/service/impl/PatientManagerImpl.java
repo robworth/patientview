@@ -120,6 +120,12 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     @Override
+    public List getAllUnitPatientsWithTreatment(String nhsno, String name, boolean showgps) {
+        return patientDao.getAllUnitPatientsWithTreatmentDao(nhsno, name, showgps,
+                securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
     public List getUnitPatientsAllWithTreatmentDao(String unitcode) {
         return patientDao.getUnitPatientsAllWithTreatmentDao(unitcode, securityUserManager.getLoggedInSpecialty());
     }
