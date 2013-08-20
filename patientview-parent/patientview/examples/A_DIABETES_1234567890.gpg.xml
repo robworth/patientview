@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<patientview>
+    <sequence>00794</sequence>
+    <dateofreport>2012-03-21T09:51:44</dateofreport>
+    <flag>Follow-up-report</flag>
+    <centredetails>
+        <centrecode>A</centrecode>
+    </centredetails>
+    <gpdetails>
+        <gpname>Dr GP</gpname>
+        <gpaddress1>12 GP Street</gpaddress1>
+        <gpaddress2>slidjfln</gpaddress2>
+        <gpaddress3>sdf</gpaddress3>
+        <gppostcode>GP1 7GP</gppostcode>
+        <gptelephone>02 9384 5595</gptelephone>
+    </gpdetails>
+    <patient>
+        <personaldetails>
+            <surname>Andrew</surname>
+            <forename>Andy</forename>
+            <dateofbirth>1961-09-08</dateofbirth>
+            <sex>Male</sex>
+            <nhsno>1234567890</nhsno>
+            <ethnicorig>White</ethnicorig>
+            <hospitalnumber>1111111</hospitalnumber>
+            <address1>1 Silly St</address1>
+            <address2>Yorkshire</address2>
+            <postcode>F56 6HJL</postcode>
+            <telephone1>020 9999 8888</telephone1>
+            <telephone2>07886888888</telephone2>
+            <mobile>0789999999</mobile>
+        </personaldetails>
+        <clinicaldetails>
+            <rrtstatus>HD</rrtstatus>
+        </clinicaldetails>
+        <testdetails>
+            <test>
+                <testname>Hb</testname>
+                <testcode>hb</testcode>
+                <units>gm/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-01-31T14:00:00</datestamp>
+                    <value>12.10</value>
+                </result>
+                <result>
+                    <datestamp>2012-01-26</datestamp>
+                    <value>11.90</value>
+                </result>
+            </test>
+
+            <test>
+                <testname>WBC</testname>
+                <testcode>wbc</testcode>
+                <units>x10^9/l</units>
+                <daterange start="2012-01-26" stop="2012-03-21"/>
+                <result>
+                    <datestamp>2012-03-20T14:00:00</datestamp>
+                    <value>6.00</value>
+                </result>
+                <result>
+                    <datestamp>2012-03-13</datestamp>
+                    <value>4.10</value>
+                </result>
+                <result>
+                    <datestamp>2010-01-07T18:12:00</datestamp>
+                    <value>48</value>
+                </result>
+            </test>
+
+        </testdetails>
+        <drugdetails>
+            <drug>
+                <drugstartdate>2012-03-15</drugstartdate>
+                <drugname>Darbepoetin alfa</drugname>
+                <drugdose>20 micro g PreFillSyringe Iv Weekly on dialysis.</drugdose>
+            </drug>
+        </drugdetails>
+
+        <letterdetails>
+            <letter>
+                <letterdate>2012-01-24T11:24:06</letterdate>
+                <lettertype>Sample Letter</lettertype>
+                <lettercontent>
+                    <![CDATA[
+Sample letter
+
+sdfdf
+
+dfdf
+
+dfdf
+
+]]></lettercontent>
+            </letter>
+        </letterdetails>
+
+        <footcheckups>
+            <footcheckup>
+                <datestamp>2010-01-07</datestamp>
+                <location>GP Surgery</location>
+                <foot side="left">
+                    <dppulse>23</dppulse>
+                    <ptpulse>43</ptpulse>
+                    <tengmonofilament>3</tengmonofilament>
+                    <riskscore>67</riskscore>
+                </foot>
+                <foot side="right">
+                    <dppulse>34</dppulse>
+                    <ptpulse>54</ptpulse>
+                    <tengmonofilament>6</tengmonofilament>
+                    <riskscore>89</riskscore>
+                </foot>
+            </footcheckup>
+            <footcheckup>
+                <datestamp>2012-04-16</datestamp>
+                <location>clinc</location>
+                <foot side="left">
+                    <dppulse>54</dppulse>
+                    <ptpulse>65</ptpulse>
+                    <tengmonofilament>7</tengmonofilament>
+                    <riskscore>54</riskscore>
+                </foot>
+                <foot side="right">
+                    <dppulse>54</dppulse>
+                    <ptpulse>56</ptpulse>
+                    <tengmonofilament>7</tengmonofilament>
+                    <riskscore>76</riskscore>
+                </foot>
+            </footcheckup>
+        </footcheckups>
+
+        <eyecheckups>
+            <eyecheckup>
+                <datestamp>2010-01-07</datestamp>
+                <location>GP Surgery</location>
+                <eye side="left">
+                    <rgrade>23</rgrade>
+                    <mgrade>43</mgrade>
+                    <va>3</va>
+                </eye>
+                <eye side="right">
+                    <rgrade>34</rgrade>
+                    <mgrade>54</mgrade>
+                    <va>6</va>
+                </eye>
+            </eyecheckup>
+            <eyecheckup>
+                <datestamp>2012-04-16</datestamp>
+                <location>clinc</location>
+                <eye side="left">
+                    <rgrade>54</rgrade>
+                    <mgrade>65</mgrade>
+                    <va>7</va>
+                </eye>
+                <eye side="right">
+                    <rgrade>54</rgrade>
+                    <mgrade>56</mgrade>
+                    <va>7</va>
+                </eye>
+            </eyecheckup>
+        </eyecheckups>
+
+    </patient>
+</patientview>
