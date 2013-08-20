@@ -26,19 +26,22 @@ package org.patientview.service.impl;
 import org.patientview.model.Patient;
 import org.patientview.patientview.PatientDetails;
 import org.patientview.patientview.logging.AddLog;
+import org.patientview.patientview.model.MyDiabetes;
+import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
 import org.patientview.repository.PatientDao;
-import org.patientview.service.DiagnosisManager;
-import org.patientview.service.EdtaCodeManager;
-import org.patientview.service.LetterManager;
-import org.patientview.service.MedicineManager;
+import org.patientview.service.MyDiabetesManager;
 import org.patientview.service.PatientManager;
 import org.patientview.service.SecurityUserManager;
-import org.patientview.service.TestResultManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
+import org.patientview.service.EdtaCodeManager;
+import org.patientview.service.TestResultManager;
+import org.patientview.service.DiagnosisManager;
+import org.patientview.service.LetterManager;
+import org.patientview.service.MedicineManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +78,9 @@ public class PatientManagerImpl implements PatientManager {
 
     @Inject
     private MedicineManager medicineManager;
+
+    @Inject
+    private MyDiabetesManager myDiabetesManager;
 
     @Override
     public Patient get(Long id) {
@@ -155,6 +161,11 @@ public class PatientManagerImpl implements PatientManager {
                 patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
                 patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
                         patient.getUnitcode()));
+                Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
+                if (specialty.getContext().equalsIgnoreCase("diabetes")) {
+                    MyDiabetes myDiabetes = myDiabetesManager.get(userMapping.getNhsno(), userMapping.getUnitcode());
+                    patientDetail.setMyDiabetes(myDiabetes);
+                }
 
                 // TODO: dont really know bout this UktUtils ?
                 patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
