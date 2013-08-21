@@ -35,6 +35,7 @@ import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class CheckupsAction extends BaseAction {
 
@@ -43,9 +44,11 @@ public class CheckupsAction extends BaseAction {
 
         User user = UserUtils.retrieveUser(request);
 
-        Checkups checkups = LegacySpringUtils.getCheckupsManager().get(user.getUsername());
+        List<Checkups> checkups = LegacySpringUtils.getCheckupsManager().get(user.getUsername());
 
-        request.setAttribute("checkups", checkups);
+        if (checkups != null && !checkups.isEmpty()) {
+            request.setAttribute("checkups", checkups.get(0));
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

@@ -35,7 +35,7 @@ import java.util.Date;
 @Table(name = "dia_checkups")
 public class Checkups extends BaseModel {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nhsno;
 
     @Column(nullable = true)
@@ -91,6 +91,9 @@ public class Checkups extends BaseModel {
 
     @Column(nullable = true)
     private String leftRiskScore;
+
+    @Column(nullable = false)
+    private String unitcode;
 
     public Checkups() {
     }
@@ -261,6 +264,11 @@ public class Checkups extends BaseModel {
         return "";
     }
 
+    public String getUnitcode() {
+        return unitcode;
+    }
 
-
+    public void setUnitcode(String unitcode) {
+        this.unitcode = unitcode;
+    }
 }

@@ -37,6 +37,7 @@ import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.Checkups;
 import org.patientview.patientview.model.enums.DiagnosticType;
 import org.patientview.patientview.model.enums.NodeError;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 public class ResultParser {
 
@@ -72,6 +74,7 @@ public class ResultParser {
     private ArrayList<Diagnosis> otherDiagnoses = new ArrayList<Diagnosis>();
     private ArrayList<Medicine> medicines = new ArrayList<Medicine>();
     private ArrayList<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+    private ArrayList<Checkups> checkupses = new ArrayList<Checkups>();
     private ArrayList<Procedure> procedures = new ArrayList<Procedure>();
     private ArrayList<Allergy> allergies = new ArrayList<Allergy>();
     private Map xmlData = new HashMap();
@@ -116,6 +119,8 @@ public class ResultParser {
         collectDiagnostics(doc);
         collectProcedures(doc);
         collectAllergies(doc);
+        collectFootCheckups(doc);
+        collectEyeCheckups(doc);
     }
 
     private void collectDateRanges(Document doc) {
@@ -353,6 +358,174 @@ public class ResultParser {
 
             if (diagnostic.getDiagnosticType() != null) {
                 diagnostics.add(diagnostic);
+            }
+        }
+    }
+
+    private void collectFootCheckups(Document doc) {
+        NodeList footCheckupNodes = doc.getElementsByTagName("footcheckup");
+
+        for (int i = 0; i < footCheckupNodes.getLength(); i++) {
+            Node footCheckupNode = footCheckupNodes.item(i);
+            Checkups checkups = new Checkups();
+            checkups.setNhsno(getData("nhsno"));
+            checkups.setUnitcode(getData("centrecode"));
+
+            try {
+                NodeList footCheckupNodeDetails = footCheckupNode.getChildNodes();
+                for (int j = 0; j < footCheckupNodeDetails.getLength(); j++) {
+                    Node footDetail = footCheckupNodeDetails.item(j);
+                    if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (footDetail.getNodeName().equals("datestamp"))) {
+
+                        try {
+                            checkups.setFootCheckDate(
+                                    IMPORT_DATE_FORMAT.parse(footDetail.getFirstChild().getNodeValue()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            LOGGER.error("Could not parse foot datestamp {} {}",
+                                    footDetail.getFirstChild().getNodeValue(), e);
+                        }
+                    } else if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (footDetail.getNodeName().equals("location"))) {
+                        checkups.setFootCheckPlace(footDetail.getFirstChild().getNodeValue());
+                    } else if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (footDetail.getNodeName().equals("foot"))) {
+
+                        NamedNodeMap namedNodeMap = footDetail.getAttributes();
+                        Node sideNode = namedNodeMap.getNamedItem("side");
+                        NodeList sides = footDetail.getChildNodes();
+
+                        for (int k = 0; k < sides.getLength(); k++) {
+                            Node sideDetails = sides.item(k);
+                            if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "left".equals(sideNode.getNodeValue())) {
+                                // left side foot
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("dppulse"))) {
+                                    checkups.setLeftDpPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("ptpulse"))) {
+                                    checkups.setLeftPtPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("tengmonofilament"))) {
+                                    checkups.setLeftMonofilament(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("riskscore"))) {
+                                    checkups.setLeftRiskScore(sideDetails.getFirstChild().getNodeValue());
+                                }
+
+                            } else if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "right".equals(sideNode.getNodeValue())) {
+                                // right side foot
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("dppulse"))) {
+                                    checkups.setRightDpPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("ptpulse"))) {
+                                    checkups.setRightPtPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("tengmonofilament"))) {
+                                    checkups.setRightMonofilament(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("riskscore"))) {
+                                    checkups.setRightRiskScore(sideDetails.getFirstChild().getNodeValue());
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (checkups.getFootCheckPlace() != null) {
+                checkupses.add(checkups);
+            }
+        }
+    }
+
+    private void collectEyeCheckups(Document doc) {
+        NodeList eyeCheckupNodes = doc.getElementsByTagName("eyecheckup");
+        int index = -1;
+
+        for (int i = 0; i < eyeCheckupNodes.getLength(); i++) {
+            Node eyeCheckupNode = eyeCheckupNodes.item(i);
+
+            try {
+                NodeList eyeCheckupNodeDetails = eyeCheckupNode.getChildNodes();
+                for (int j = 0; j < eyeCheckupNodeDetails.getLength(); j++) {
+                    Node eyeDetail = eyeCheckupNodeDetails.item(j);
+                    if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (eyeDetail.getNodeName().equals("datestamp"))) {
+                        Date date = new Date();
+                        try {
+                            date = IMPORT_DATE_FORMAT.parse(eyeDetail.getFirstChild().getNodeValue());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            LOGGER.error("Could not parse eye datestamp {} {}",
+                                    eyeDetail.getFirstChild().getNodeValue(), e);
+                        }
+
+                        // check whether checkups is exist
+                        for (Checkups checkups : checkupses) {
+                            if (checkups != null && checkups.getFootCheckDate() != null
+                                    && checkups.getFootCheckDate().equals(date)) {
+                                index = checkupses.indexOf(checkups);
+                            }
+                        }
+                        if (index == -1) {
+                            LOGGER.error("Could not parse eye {}",
+                                    eyeDetail.getFirstChild().getNodeValue());
+                            return;
+                        }
+                        checkupses.get(index).setLastRetinalDate(date);
+
+                    } else if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (eyeDetail.getNodeName().equals("location"))) {
+                        checkupses.get(index).setLastRetinalPlace(eyeDetail.getFirstChild().getNodeValue());
+                    } else if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (eyeDetail.getNodeName().equals("eye"))) {
+
+                        NamedNodeMap namedNodeMap = eyeDetail.getAttributes();
+                        Node sideNode = namedNodeMap.getNamedItem("side");
+                        NodeList sides = eyeDetail.getChildNodes();
+
+                        for (int k = 0; k < sides.getLength(); k++) {
+                            Node sideDetails = sides.item(k);
+                            if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "left".equals(sideNode.getNodeValue())) {
+                                // left side eye
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("rgrade"))) {
+                                    checkupses.get(index).setLeftRGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("mgrade"))) {
+                                    checkupses.get(index).setLeftMGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("va"))) {
+                                    checkupses.get(index).setLeftVA(sideDetails.getFirstChild().getNodeValue());
+                                }
+
+                            } else if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "right".equals(sideNode.getNodeValue())) {
+                                // right side eye
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("rgrade"))) {
+                                    checkupses.get(index).setRightRGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("mgrade"))) {
+                                    checkupses.get(index).setRightMGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("va"))) {
+                                    checkupses.get(index).setRightVA(sideDetails.getFirstChild().getNodeValue());
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -629,6 +802,10 @@ public class ResultParser {
 
     public ArrayList<Diagnostic> getDiagnostics() {
         return diagnostics;
+    }
+
+    public ArrayList<Checkups> getCheckupses() {
+        return checkupses;
     }
 
     public ArrayList<Procedure> getProcedures() {

@@ -15,7 +15,7 @@ CREATE TABLE `dia_checkups` (
   `leftRGrade` varchar(255) DEFAULT NULL,
   `leftRiskScore` varchar(255) DEFAULT NULL,
   `leftVA` varchar(255) DEFAULT NULL,
-  `nhsno` varchar(255) NOT NULL,
+  `nhsno` varchar(255) NOT NULL DEFAULT '',
   `rightDpPulse` varchar(255) DEFAULT NULL,
   `rightMGrade` varchar(255) DEFAULT NULL,
   `rightMonofilament` varchar(255) DEFAULT NULL,
@@ -23,6 +23,6 @@ CREATE TABLE `dia_checkups` (
   `rightRGrade` varchar(255) DEFAULT NULL,
   `rightRiskScore` varchar(255) DEFAULT NULL,
   `rightVA` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nhsno` (`nhsno`)
+  `unitcode` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

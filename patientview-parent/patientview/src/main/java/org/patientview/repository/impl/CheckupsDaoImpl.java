@@ -35,23 +35,34 @@ import java.util.List;
 public class CheckupsDaoImpl extends AbstractHibernateDAO<Checkups> implements CheckupsDao {
 
     @Override
-    public Checkups get(String userName) {
+    public List<Checkups> get(String userName) {
         if (null != userName && !"".equals(userName)) {
             String sql = "SELECT DISTINCT dia_checkups.* FROM dia_checkups, usermapping "
                     + "WHERE dia_checkups.nhsno = usermapping.nhsno "
-                    + "AND usermapping.username = :username ";
+                    + "AND usermapping.username = :username ORDER BY dia_checkups.lastRetinalDate DESC";
 
             Query query = getEntityManager().createNativeQuery(sql, Checkups.class);
 
             query.setParameter("username", userName);
 
-            List<Checkups> checkupses = query.getResultList();
-            if (!checkupses.isEmpty()) {
-                return checkupses.get(0);
-            } else {
-                return null;
-            }
+            return query.getResultList();
+
         }
         return null;
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        if (nhsno == null || nhsno.length() == 0) {
+            throw new IllegalArgumentException("nhsno and unitcode are required parameter to delete checkups");
+        }
+
+        Query query = getEntityManager().createQuery(
+                "DELETE FROM Checkups WHERE nhsno = :nhsno AND unitcode = :unitcode");
+
+        query.setParameter("nhsno", nhsno);
+        query.setParameter("unitcode", unitcode);
+
+        query.executeUpdate();
     }
 }

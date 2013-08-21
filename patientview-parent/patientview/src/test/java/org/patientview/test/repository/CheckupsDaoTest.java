@@ -32,6 +32,8 @@ import org.patientview.test.helpers.RepositoryHelpers;
 
 import javax.inject.Inject;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class CheckupsDaoTest extends BaseDaoTest {
@@ -61,17 +63,18 @@ public class CheckupsDaoTest extends BaseDaoTest {
 
         assertTrue("Invalid id for new checkups", checkups.getId() > 0);
 
-        Checkups checkEntity = checkupsDao.get("testUser");
+        List<Checkups> checkupses = checkupsDao.get("testUser");
 
-        assertNotNull("Checkups not saved", checkEntity);
-        assertEquals("Foot check place not persisted", checkups.getFootCheckPlace(), checkEntity.getFootCheckPlace());
-        assertEquals("Last retinal place not persisted", checkups.getLastRetinalPlace(), checkEntity.getLastRetinalPlace());
-        assertEquals("Left DP Pulse not persisted", checkups.getLeftDpPulse(), checkEntity.getLeftDpPulse());
-        assertEquals("Right DP Pulse not persisted", checkups.getRightDpPulse(), checkEntity.getRightDpPulse());
+        assertNotNull("Checkups not saved", checkupses);
+        assertEquals("Wrong size of checkups", 1, checkupses.size());
+        assertEquals("Foot check place not persisted", checkups.getFootCheckPlace(), checkupses.get(0).getFootCheckPlace());
+        assertEquals("Last retinal place not persisted", checkups.getLastRetinalPlace(), checkupses.get(0).getLastRetinalPlace());
+        assertEquals("Left DP Pulse not persisted", checkups.getLeftDpPulse(), checkupses.get(0).getLeftDpPulse());
+        assertEquals("Right DP Pulse not persisted", checkups.getRightDpPulse(), checkupses.get(0).getRightDpPulse());
 
         checkupsDao.delete(checkups.getId());
-        Checkups checkDelete = checkupsDao.get("testUser");
-        assertNull("Checkups not deleted", checkDelete);
+        List<Checkups> checkDelete = checkupsDao.get("testUser");
+        assertEquals("Checkups not deleted", 0, checkDelete.size());
 
     }
 
@@ -92,14 +95,15 @@ public class CheckupsDaoTest extends BaseDaoTest {
 
         assertTrue("Invalid id for new checkups", checkups.getId() > 0);
 
-        Checkups checkEntity = checkupsDao.get("testUser");
+        List<Checkups> checkupses = checkupsDao.get("testUser");
 
-        assertNotNull("Checkups not saved", checkEntity);
-        assertEquals("Right DP Pulse not persisted", "255", checkEntity.getRightDpPulse());
+        assertNotNull("Checkups not saved", checkupses);
+        assertEquals("Wrong size of checkups", 1, checkupses.size());
+        assertEquals("Right DP Pulse not persisted", "255", checkupses.get(0).getRightDpPulse());
 
         checkupsDao.delete(checkups.getId());
-        Checkups checkDelete = checkupsDao.get("testUser");
-        assertNull("Checkups not deleted", checkDelete);
+        List<Checkups> checkDelete = checkupsDao.get("testUser");
+        assertEquals("Checkups not deleted", 0, checkDelete.size());
 
     }
 

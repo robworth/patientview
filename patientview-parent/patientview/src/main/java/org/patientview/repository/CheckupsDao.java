@@ -27,12 +27,18 @@ import org.patientview.patientview.model.Checkups;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional(propagation = Propagation.MANDATORY)
 public interface CheckupsDao {
 
-    Checkups get(String userName);
+    List<Checkups> get(String userName);
 
     void save(Checkups checkups);
 
     void delete(Long id);
+
+    void delete(String nhsno, String unitcode);
+
+    List<Checkups> getAll();
 }

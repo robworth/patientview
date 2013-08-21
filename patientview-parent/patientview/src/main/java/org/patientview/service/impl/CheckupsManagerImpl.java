@@ -29,6 +29,7 @@ import org.patientview.service.CheckupsManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  *
@@ -41,7 +42,7 @@ public class CheckupsManagerImpl implements CheckupsManager {
 
 
     @Override
-    public Checkups get(String userName) {
+    public List<Checkups> get(String userName) {
         return checkupsDao.get(userName);
     }
 
@@ -54,4 +55,10 @@ public class CheckupsManagerImpl implements CheckupsManager {
     public void delete(Long id) {
         checkupsDao.delete(id);
     }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        checkupsDao.delete(nhsno, unitcode);
+    }
+
 }
