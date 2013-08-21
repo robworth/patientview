@@ -23,6 +23,8 @@ CREATE TABLE `dia_checkups` (
   `rightRGrade` varchar(255) DEFAULT NULL,
   `rightRiskScore` varchar(255) DEFAULT NULL,
   `rightVA` varchar(255) DEFAULT NULL,
-  `unitcode` varchar(255) NOT NULL,
+  `unitcode` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE dia_checkups ADD CONSTRAINT u_date_nhsno_unitcode UNIQUE (footCheckDate,nhsno,unitcode);
