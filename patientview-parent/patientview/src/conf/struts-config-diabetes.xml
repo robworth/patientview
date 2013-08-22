@@ -62,7 +62,7 @@
     </form-beans>
 
     <action-mappings>
-
+               <!--
         <action path="/careplan-diabetes"
                 name="carePlanForm"
                 type="org.patientview.ibd.action.careplan.CarePlanEditAction"
@@ -80,7 +80,7 @@
             <forward name="input" path="/diabetes/careplan/careplan-edit.jsp"/>
             <forward name="success" path="/careplan.do"/>
         </action>
-
+                     -->
         <action path="/patient/checkups"
                 name="carePlanForm"
                 type="org.patientview.patientview.checkups.CheckupsAction"

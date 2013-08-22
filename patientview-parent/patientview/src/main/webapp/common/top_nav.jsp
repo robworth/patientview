@@ -47,7 +47,7 @@
     </logic:present>
 
     <logic:present specialty="diabetes">
-        <li <%=("diabetes_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/careplan-diabetes">Care Plan</html:link></li>
+        <li <%=("diabetes_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/diabetes/web/careplan-diabetes">Care Plan</a></li>
     </logic:present>
 
     <logic:present specialty="ibd">
