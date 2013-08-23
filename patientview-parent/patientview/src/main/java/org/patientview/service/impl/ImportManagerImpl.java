@@ -37,6 +37,7 @@ import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.Diagnosis;
+import org.patientview.patientview.model.Checkups;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -315,6 +316,8 @@ public class ImportManagerImpl implements ImportManager {
         insertProcedures(parser.getProcedures());
         deleteAllergies(parser.getData("nhsno"), parser.getData("centrecode"));
         insertAllergies(parser.getAllergies());
+        deleteCheckups(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertCheckups(parser.getCheckupses());
     }
 
     private void deleteDiagnostics(String nhsno, String unitcode) {
@@ -461,5 +464,16 @@ public class ImportManagerImpl implements ImportManager {
         }
 
         return exceptions;
+    }
+
+    private void deleteCheckups(String nhsno, String unitcode) {
+        LegacySpringUtils.getCheckupsManager().delete(nhsno, unitcode);
+    }
+
+    private void insertCheckups(Collection<Checkups> checkupses) {
+        for (Iterator iterator = checkupses.iterator(); iterator.hasNext();) {
+            Checkups checkups = (Checkups) iterator.next();
+            LegacySpringUtils.getCheckupsManager().save(checkups);
+        }
     }
 }
