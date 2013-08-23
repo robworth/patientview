@@ -1,21 +1,26 @@
 package org.patientview.test.batch;
 
+import org.junit.Test;
 import org.patientview.batch.CheckSendEmailStatusReader;
-import org.patientview.patientview.model.*;
+import org.patientview.patientview.model.Conversation;
+import org.patientview.patientview.model.EmailQueue;
+import org.patientview.patientview.model.Job;
+import org.patientview.patientview.model.Message;
+import org.patientview.patientview.model.Specialty;
+import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.service.BaseServiceTest;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
@@ -71,7 +76,7 @@ public class CheckSendEmailStatusReaderTest extends BaseBatchTest {
         List<Object> checkJobList = checkSendEmailStatusReader.getList();
 
         assertNotNull(checkJobList);
-        assertEquals("Wrong number of job list1size", 2, checkJobList.size());
+        assertEquals("Wrong number of job list size", 2, checkJobList.size());
         assertEquals("Job 1 not update the status to Failed", SendEmailEnum.FAILED, ((Job)checkJobList.get(0)).getStatus());
         assertEquals("Job 2 not update the status to SUCCEEDED", SendEmailEnum.SUCCEEDED, ((Job)checkJobList.get(1)).getStatus());
 

@@ -23,20 +23,11 @@
 
 package org.patientview.test.batch;
 
-import org.junit.runner.RunWith;
-import org.patientview.common.test.BaseTestPvDbSchema;
-import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.service.BaseServiceTest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
 
 /**
- *  All jobs tests should extend.
- *
+ * All jobs tests should extend.
  */
 
 public abstract class BaseBatchTest extends BaseServiceTest {
@@ -46,18 +37,16 @@ public abstract class BaseBatchTest extends BaseServiceTest {
 
     /**
      * // If profile is localhost or test or localhost-test return false;
+     *
      * @return whether can run the testcase
      */
     protected boolean canRun() {
-        if (configEnvironment != null) {
-            if (!configEnvironment.equalsIgnoreCase("localhost")
-                    && !configEnvironment.equalsIgnoreCase("test")
-                    && !configEnvironment.equalsIgnoreCase("localhost-test")) {
-
-                return true;
-
-            }
+        if (configEnvironment != null && !configEnvironment.equalsIgnoreCase("localhost")
+                && !configEnvironment.equalsIgnoreCase("test")
+                && !configEnvironment.equalsIgnoreCase("localhost-test")) {
+            return true;
         }
+
         return false;
     }
 }

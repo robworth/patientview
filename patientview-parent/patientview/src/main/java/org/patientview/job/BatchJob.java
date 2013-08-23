@@ -61,19 +61,17 @@ public abstract class BatchJob {
      */
     public void run() {
 
-        if (configEnvironment != null) {
-            if (!configEnvironment.equalsIgnoreCase("localhost")
-                    && !configEnvironment.equalsIgnoreCase("test")
-                    && !configEnvironment.equalsIgnoreCase("localhost-test")) {
+        if (configEnvironment != null && !configEnvironment.equalsIgnoreCase("localhost")
+                && !configEnvironment.equalsIgnoreCase("test")
+                && !configEnvironment.equalsIgnoreCase("localhost-test")) {
 
-                Map<String, JobParameter> map = new HashMap<String, JobParameter>();
-                map.put("key", new JobParameter(new Date()));
-                try {
-                    JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
-                } catch (Exception e) {
-                    LOGGER.debug(e.getStackTrace().toString());
-                    onRunError(e);
-                }
+            Map<String, JobParameter> map = new HashMap<String, JobParameter>();
+            map.put("key", new JobParameter(new Date()));
+            try {
+                JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
+            } catch (Exception e) {
+                LOGGER.error("Exception: ", e);
+                onRunError(e);
             }
         }
     }
@@ -125,6 +123,7 @@ public abstract class BatchJob {
 
     /**
      * Get the runnable org.springframework.batch.core.Job instance
+     *
      * @return Job
      */
     protected abstract org.springframework.batch.core.Job getBatchJob();
@@ -139,12 +138,12 @@ public abstract class BatchJob {
 
     /**
      * Do something after job
+     *
      * @param result
      */
     protected abstract void afterBatchJob(JobExecution result);
 
     /**
-     *
      * @param e
      */
     protected abstract void onRunError(Exception e);
