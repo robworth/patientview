@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 /**
  *
  */
-public class CreateEmailQueueWriterTest extends BaseServiceTest {
+public class CreateEmailQueueWriterTest extends BaseBatchTest {
 
     @Autowired
     private CreateEmailQueueWriter createEmailQueueWriter;
@@ -39,6 +39,10 @@ public class CreateEmailQueueWriterTest extends BaseServiceTest {
 
     @Test
     public void testWrite() throws Exception {
+
+        if (!canRun()) {
+            return;
+        }
 
         List<Object> emailQueues = new ArrayList<Object>();
         Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");

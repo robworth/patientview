@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
+public class CheckSendEmailStatusReaderTest extends BaseBatchTest {
 
     @Autowired
     private CheckSendEmailStatusReader checkSendEmailStatusReader;
@@ -37,6 +37,10 @@ public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
 
     @Test
     public void testRead() throws Exception {
+
+        if (!canRun()) {
+            return;
+        }
         User user1 = serviceHelpers.createUser("test 4", "tester1@test.com", "test1", "Test 1");
         User user2 = serviceHelpers.createUser("test 5", "tester2@test.com", "test2", "Test 2");
         User user3 = serviceHelpers.createUser("test 6", "tester3@test.com", "test3", "Test 3");
@@ -67,7 +71,7 @@ public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
         List<Object> checkJobList = checkSendEmailStatusReader.getList();
 
         assertNotNull(checkJobList);
-        assertEquals("Wrong number of job list size", 2, checkJobList.size());
+        assertEquals("Wrong number of job list1size", 2, checkJobList.size());
         assertEquals("Job 1 not update the status to Failed", SendEmailEnum.FAILED, ((Job)checkJobList.get(0)).getStatus());
         assertEquals("Job 2 not update the status to SUCCEEDED", SendEmailEnum.SUCCEEDED, ((Job)checkJobList.get(1)).getStatus());
 
