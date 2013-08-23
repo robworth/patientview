@@ -477,7 +477,7 @@ section article.conversation .dull, section article.message .dull, .dull{
     top:-15px;
 }
 
-.span12 {
+.join-request-span12 {
     width: 1040px;
     margin-left: -20px;
 }

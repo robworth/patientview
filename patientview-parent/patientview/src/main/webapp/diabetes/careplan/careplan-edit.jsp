@@ -1,3 +1,5 @@
+<%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
+
 <%--
   ~ PatientView
   ~
@@ -21,4 +23,8 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
-<div class="row join-request-span12">
+<tiles:insert definition="patient.layout" flush="true" >
+
+    <tiles:put name="body" value="/diabetes/careplan/body/careplan-edit-body.jsp" />
+
+</tiles:insert>
