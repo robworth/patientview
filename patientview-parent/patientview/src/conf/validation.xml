@@ -408,6 +408,23 @@
             </field>
         </form>
 
+        <form name="/control/groupAdd">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/groupUpdate">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
+
     </formset>
 
 </form-validation>

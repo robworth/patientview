@@ -1220,6 +1220,43 @@
         <forward name="success" path="/control/xml_file_select.jsp"/>
     </action>
 
+    <action path="/control/groupDisplay"
+            type="org.patientview.patientview.group.GroupsDisplayAction">
+        <forward name="success" path="/control/group_list.jsp"/>
+    </action>
+
+    <action path="/control/groupAddInput"
+            type="org.patientview.patientview.IndexAction"
+            name="unitForm"
+            scope="request">
+        <forward name="success" path="/control/group_add_input.jsp"/>
+    </action>
+
+    <action path="/control/groupAdd"
+            type="org.patientview.patientview.group.GroupAddAction"
+            name="unitForm"
+            input="input"
+            scope="request">
+        <forward name="input" path="/control/group_add_input.jsp"/>
+        <forward name="success" path="/control/group_add_input.jsp"/>
+    </action>
+
+    <action path="/control/groupEdit"
+            type="org.patientview.patientview.group.GroupEditAction"
+            name="unitForm"
+            scope="request">
+        <forward name="success" path="/control/group_edit.jsp"/>
+    </action>
+
+    <action path="/control/groupUpdate"
+            type="org.patientview.patientview.group.GroupUpdateAction"
+            name="unitForm"
+            input="input"
+            scope="request">
+        <forward name="input" path="/control/group_edit.jsp"/>
+        <forward name="success" path="/control/group_edit.jsp"/>
+    </action>
+
     <!--
         <action path="/control/sha"
           type="com.worthsoln.ShaAction" parameter="index">
