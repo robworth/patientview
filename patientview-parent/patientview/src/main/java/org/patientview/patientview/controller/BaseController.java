@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BaseController {
 
+
     /**
      * Return the forward page path.
      *
@@ -57,4 +58,5 @@ public class BaseController {
     protected String getSpecialtyContext() {
         return LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
     }
+
 }
