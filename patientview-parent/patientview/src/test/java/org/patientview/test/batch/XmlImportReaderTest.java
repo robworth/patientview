@@ -34,7 +34,7 @@ import static org.junit.Assert.assertNull;
  *  copy the test/resources/rm301_1244_9876543210.xml to E:/file
  *  copy the test/resources/test.uktstatus.gpg.txt to E:/file/ukt_import
  */
-public class XmlImportReaderTest extends BaseServiceTest {
+public class XmlImportReaderTest extends BaseBatchTest {
 
     private String xmlDirectory;
 
