@@ -47,7 +47,7 @@ public class LoggedInAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        if (request.getRequestURI() != null && "/back_to_admin.do".equals(request.getRequestURI())) {
+        if ("/back_to_admin.do".equals(request.getRequestURI())) {
             request.getSession().setAttribute("userBeingViewedUsername", null);
         }
 
