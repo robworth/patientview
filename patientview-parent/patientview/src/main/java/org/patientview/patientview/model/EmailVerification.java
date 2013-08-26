@@ -44,14 +44,19 @@ public class EmailVerification extends BaseModel {
     @Column(nullable = false)
     private Calendar expirydatestamp;
 
+    @Column(nullable = false)
+    private Calendar lastverificationdate;
+
     public EmailVerification() {
     }
 
-    public EmailVerification(String username, String email, String verificationcode, Calendar expirydatestamp) {
+    public EmailVerification(String username, String email, String verificationcode, Calendar expirydatestamp,
+                             Calendar lastverificationdate) {
         this.username = username;
         this.email = email;
         this.verificationcode = verificationcode;
         this.expirydatestamp = expirydatestamp;
+        this.lastverificationdate = lastverificationdate;
     }
 
     public String getVerificationcode() {
@@ -84,5 +89,13 @@ public class EmailVerification extends BaseModel {
 
     public void setExpirydatestamp(Calendar expirydatestamp) {
         this.expirydatestamp = expirydatestamp;
+    }
+
+    public Calendar getLastverificationdate() {
+        return lastverificationdate;
+    }
+
+    public void setLastverificationdate(Calendar lastverificationdate) {
+        this.lastverificationdate = lastverificationdate;
     }
 }

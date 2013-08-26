@@ -6,6 +6,7 @@ import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.patientview.radar.service.DemographicsManager;
 
 import java.util.List;
@@ -124,6 +125,10 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
+    }
+
+    public DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode) {
+        return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
     }
 
 }
