@@ -209,7 +209,8 @@ public final class XmlParserUtils {
 
             String emailBody = createEmailBody(context, stacktrace, fileName);
 
-            EmailUtils.sendEmail(context.getInitParameter("noreply.email"), new String[]{toAddress},
+            EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
+                    new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
         } catch (Exception e1) {
@@ -245,7 +246,8 @@ public final class XmlParserUtils {
         emailBody += newLine + " - The file matches the RPV XML schema.";
         emailBody += newLine + " - There are no missing values.";
         emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine + "For further help, please contact " + context.getInitParameter("support.email");
+        emailBody += newLine + "For further help, please contact "
+                + LegacySpringUtils.getContextProperties().getProperty("support.email");
         emailBody += newLine;
         return emailBody;
     }

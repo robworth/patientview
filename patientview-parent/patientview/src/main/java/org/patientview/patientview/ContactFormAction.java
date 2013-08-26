@@ -66,7 +66,7 @@ public class ContactFormAction extends Action {
                 }
             } else if ("admin".equals(type)) {
                 // Send  to admin
-                String superadminEmail = context.getInitParameter("admin.email.to");
+                String superadminEmail = LegacySpringUtils.getContextProperties().getProperty("admin.email.to");
 
                 if (email != null && email.length() > 0) {
                     EmailUtils.sendEmail(context, email, superadminEmail, subject, message);

@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class SendEmailReaderTest extends BaseServiceTest {
+public class SendEmailReaderTest extends BaseBatchTest {
 
     @Autowired
     private SendEmailReader sendEmailReader;
@@ -36,6 +36,10 @@ public class SendEmailReaderTest extends BaseServiceTest {
 
     @Test
     public void testRead() throws Exception {
+
+        if (!canRun()) {
+            return;
+        }
         User user1 = serviceHelpers.createUser("test 4", "tester1@test.com", "test1", "Test 1");
         User user2 = serviceHelpers.createUser("test 5", "tester2@test.com", "test2", "Test 2");
         User user3 = serviceHelpers.createUser("test 6", "tester3@test.com", "test3", "Test 3");
