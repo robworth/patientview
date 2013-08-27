@@ -35,42 +35,46 @@
         if (LegacySpringUtils.getSecurityUserManager().isLoggedInToSpecialty()) {
     %>
 
-    <logic:present specialty="renal">
+    <logic:present specialty="renal,diabetes">
         <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/patient/patient_details">My Details</html:link></li>
     </logic:present>
     <logic:present specialty="ibd">
         <li <%= ("patient_details".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : ""%>><html:link action="/ibd-patient_details">My Details</html:link></li>
     </logic:present>
 
-    <logic:present specialty="renal">
+    <logic:present specialty="renal,diabetes">
         <li <%= ("patient_view".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_view">Patient Info</html:link></li>
+    </logic:present>
+
+    <logic:present specialty="diabetes">
+        <li <%=("diabetes_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><a href="/diabetes/web/careplan-diabetes">Care Plan</a></li>
     </logic:present>
 
     <logic:present specialty="ibd">
         <li <%=("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/myibd">My IBD</html:link></li>
 
         <%
-        String symptomsUrl = null;
+            String symptomsUrl = null;
 
-        Diagnosis loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getLoggedInUserDiagnosis();
+            Diagnosis loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getLoggedInUserDiagnosis();
 
-        // check, we could be viewing as a superadmin at a patient's account
-        if (loggedInUserDiagnosis == null) {
-            loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(UserUtils.retrieveUser(request));
-        }
+            // check, we could be viewing as a superadmin at a patient's account
+            if (loggedInUserDiagnosis == null) {
+                loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(UserUtils.retrieveUser(request));
+            }
 
-        if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
-                Diagnosis.ULCERATIVE_COLITIS == loggedInUserDiagnosis) {
-            symptomsUrl = "/colitis-edit";
-        } else if (Diagnosis.CROHNS == loggedInUserDiagnosis) {
-            symptomsUrl = "/crohns-edit";
-        }
+            if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
+                    Diagnosis.ULCERATIVE_COLITIS == loggedInUserDiagnosis) {
+                symptomsUrl = "/colitis-edit";
+            } else if (Diagnosis.CROHNS == loggedInUserDiagnosis) {
+                symptomsUrl = "/crohns-edit";
+            }
 
-        if (symptomsUrl != null && symptomsUrl.length() > 0) {
+            if (symptomsUrl != null && symptomsUrl.length() > 0) {
         %>
             <li <%=("ibd_entersymptoms".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="<%=symptomsUrl%>">Enter Symptoms</html:link></li>
         <%
-        }
+            }
         %>
         <li <%=("ibd_medications".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/medications">Medicines</html:link></li>
         <li <%=("ibd_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/careplan">Care Plan</html:link></li>
@@ -81,12 +85,18 @@
     <logic:present specialty="renal">
         <li <%= ("aboutme".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/aboutme">About Me</html:link></li>
         <li <%=("patient_entry".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/patient_entry">Enter My Own Results</html:link></li>
+    </logic:present>
+    <logic:present specialty="renal,diabetes">
         <li <%=("medicines".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/medicines">Medicines</html:link></li>
     </logic:present>
 
     <li <%=("results".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/results">Results</html:link></li>
 
     <li <%=("letters".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/letters" >Letters</html:link></li>
+
+    <logic:present specialty="diabetes">
+        <li <%=("checkups".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/checkups">Checkups</html:link></li>
+    </logic:present>
 
     <logic:present feature="messaging">
         <%
