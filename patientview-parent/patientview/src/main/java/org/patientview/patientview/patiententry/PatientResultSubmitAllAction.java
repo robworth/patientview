@@ -50,6 +50,10 @@ public class PatientResultSubmitAllAction extends Action {
         Map<Long, PatientEnteredResult> patientResults =
                 (Map<Long, PatientEnteredResult>) session.getAttribute(patientResultName);
 
+        if (patientResults == null) {
+            return mapping.findForward("input");
+        }
+
         String nhsno = PatientUtils.retrieveNhsNo(request);
 
         for (PatientEnteredResult patientResult : patientResults.values()) {
