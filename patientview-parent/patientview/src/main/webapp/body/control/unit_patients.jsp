@@ -63,6 +63,9 @@
                 <th class="tableheader" onclick="sort('emailverfied')">Email Verified</th>
                 <th class="tableheader" onclick="sort('lastlogonFormatted')">Last Logon</th>
                 <th class="tableheader" onclick="sort('accountlocked')">Password</th>
+                <th class="tableheader" onclick="sort('lastverificationdate')">Last Email Verification Date</th>
+                <th class="tableheader" onclick="sort('rrtModality')">Modality</th>
+                <th class="tableheader" onclick="sort('lastdatadate')">last data received date</th>
                 <th colspan="5">&nbsp;</th>
             </tr>
             </thead>
@@ -121,6 +124,9 @@
                             <big><font color="green">&#10004;</font></big>
                         </logic:equal>
                     </td>
+                    <td class="tablecell"><bean:write name="patient" property="lastverificationdateFormatted"/></td>
+                    <td class="tablecell"><bean:write name="patient" property="modality"/></td>
+                    <td class="tablecell"><bean:write name="patient" property="lastdatadateFormatted"/></td>
 
                     <logic:present role="superadmin,unitadmin">
                         <td>
