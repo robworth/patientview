@@ -61,8 +61,6 @@ public class EmailVerificationDaoTest extends BaseDaoTest {
                 checkEmailVerification.getExpirydatestamp());
         assertEquals("Last Verification Date not stored", emailVerification.getLastverificationdate(),
                 checkEmailVerification.getLastverificationdate());
-
-        System.out.println("----------------------------------");
     }
 
     @Test
