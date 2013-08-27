@@ -8,7 +8,7 @@ CREATE TABLE `pv_user_log` (
   `lastdatadate` datetime DEFAULT NULL,
   `unitcode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+);
 
 --
 -- Insert data into pv_user_log table with exist patient user,
