@@ -28,10 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -43,81 +43,90 @@ public class LookingLocalHomeController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LookingLocalHomeController.class);
     /**
      * Deal with the URIs "/lookinglocal/home"
-     * get the join requests list(paging and sorting)
      */
     @RequestMapping(value = Routes.LOOKING_LOCAL_HOME)
     @ResponseBody
-     public void getHomeXml(HttpServletResponse response) {
+    public void getHomeXml(HttpServletResponse response) {
 
         try {
-            Document doc = getDocument();
-            if (doc == null) {
-                return;
-            }
-
-            // add page to screen
-            Element pageElement = doc.createElement("page");
-            pageElement.setAttribute("title", "PatientView (PV) – view your results");
-            pageElement.setAttribute("transform", "default");
-            getScreenElement().appendChild(pageElement);
-
-            // add form to screen
-            Element formElement = doc.createElement("form");
-            formElement.setAttribute("action", "XXX.do");
-            formElement.setAttribute("method", "post");
-            formElement.setAttribute("name", "blank");
-            pageElement.appendChild(formElement);
-
-            // Hello World! static element
-            Element details = doc.createElement("static");
-            details.setAttribute("value", "Please key in your details:");
-            formElement.appendChild(details);
-
-            Element username = doc.createElement("textField");
-            username.setAttribute("hint", "Enter your username");
-            username.setAttribute("label", "Username:");
-            username.setAttribute("name", "username");
-            username.setAttribute("size", "10");
-            username.setAttribute("value", "");
-            formElement.appendChild(username);
-
-            Element password = doc.createElement("numbersField");
-            password.setAttribute("hint", "Enter your Password");
-            password.setAttribute("label", "Password:");
-            password.setAttribute("name", "password");
-            password.setAttribute("size", "10");
-            password.setAttribute("value", "");
-            formElement.appendChild(password);
-
-            // Hello World! static element
-            Element forget = doc.createElement("static");
-            forget.setAttribute("value", "If you have forgotten your password, "
-                    + "please contact your unit administrator.");
-            formElement.appendChild(forget);
-
-            // sign-in button
-            Element signIn = doc.createElement("submit");
-            signIn.setAttribute("name", "left");
-            signIn.setAttribute("title", "Sign in");
-            formElement.appendChild(signIn);
-
-            // form action
-            Element formAction = doc.createElement("hiddenField");
-            formAction.setAttribute("name", "formAction");
-            formAction.setAttribute("value", "XXX.do");
-            formElement.appendChild(formAction);
-
-            // form method
-            Element formMethod = doc.createElement("hiddenField");
-            formMethod.setAttribute("name", "formMethod");
-            formMethod.setAttribute("value", "post");
-            formElement.appendChild(formMethod);
-
-            outputXml(doc, response);
+            LookingLocalUtils.getHomeXml(response);
         } catch (Exception e) {
-            LOGGER.error("Could not create response output stream{}" + e);
+            LOGGER.error("Could not create home screen response output stream{}" + e);
         }
-
     }
 
+    /**
+     * Deal with the URIs "/lookinglocal/main"
+     */
+    @RequestMapping(value = Routes.LOOKING_LOCAL_MAIN)
+    @ResponseBody
+    public void getMainScreenXml(HttpServletResponse response) {
+
+        try {
+            LookingLocalUtils.getMainXml(response);
+        } catch (Exception e) {
+            LOGGER.error("Could not create main screen response output stream{}" + e);
+        }
+    }
+
+    /**
+     * Deal with the URIs "/lookinglocal/details"
+     */
+    @RequestMapping(value = Routes.LOOKING_LOCAL_DETAILS)
+    @ResponseBody
+    public void getDetailsScreenXml(HttpServletRequest request, HttpServletResponse response,
+                                    @RequestParam(value = "selection", required = false) String selection) {
+
+        try {
+            if (selection != null) {
+                switch (Integer.parseInt(selection)) {
+                    case LookingLocalUtils.OPTION_1 : LookingLocalUtils.getMyDetailsXml(request, response);
+                        break;
+                    case LookingLocalUtils.OPTION_2 : LookingLocalUtils.getMedicalResultsXml(request, response);
+                        break;
+                    case LookingLocalUtils.OPTION_3 : LookingLocalUtils.getDrugsXml(request, response);
+                        break;
+                    case LookingLocalUtils.OPTION_4 : LookingLocalUtils.getLettersXml(request, response);
+                        break;
+                    default:break;
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Could not create details response output stream{}" + e);
+        }
+    }
+
+    /**
+     * Deal with the URIs "/lookinglocal/resultsDisplay"
+     */
+    @RequestMapping(value = Routes.LOOKING_LOCAL_RESULTS_DISPLAY)
+    @ResponseBody
+    public void getMedicalResultsXml(HttpServletRequest request, HttpServletResponse response,
+                                    @RequestParam(value = "selection", required = false) String selection) {
+
+        try {
+            if (selection != null) {
+                LookingLocalUtils.getResultsDetailsXml(request, response, selection);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Could not create medical result details response output stream{}" + e);
+        }
+    }
+
+    /**
+     * Deal with the URIs "/lookinglocal/letterDisplay"
+     */
+    @RequestMapping(value = Routes.LOOKING_LOCAL_LETTER_DISPLAY)
+    @ResponseBody
+    public void getLetterXml(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(value = "selection", required = false) String selection) {
+
+        try {
+            if (selection != null) {
+                LookingLocalUtils.getLetterDetailsXml(request, response, selection);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Could not create letter details response output stream{}" + e);
+        }
+    }
 }
