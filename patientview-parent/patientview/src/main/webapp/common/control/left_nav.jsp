@@ -42,6 +42,7 @@
             <li><html:link action="/control/staticLinkEdit">Static Links</html:link></li>
             <li><html:link action="/control/resultHeadingDisplay">Result Headings</html:link></li>
             <li class="divider"></li>
+            <li><html:link action="/control/groupDisplay">Renal Groups</html:link></li>
         </logic:present>
         <logic:present role="superadmin,unitadmin">
             <li><html:link action="/control/unitDisplay">
