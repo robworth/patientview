@@ -45,8 +45,8 @@ public class GroupsDisplayAction extends Action {
         User user = LegacySpringUtils.getUserManager().getLoggedInUser();
 
         if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
-            List<Unit> items = LegacySpringUtils.getUnitManager().getAll(null, new String[]{"radargroup"});
-            request.getSession().setAttribute("units", items);
+            List<Unit> units = LegacySpringUtils.getUnitManager().getAll(null, new String[]{"radargroup"});
+            request.getSession().setAttribute("units", units);
         }
 
 
