@@ -28,3 +28,8 @@ CREATE TABLE `dia_checkups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE dia_checkups ADD CONSTRAINT u_date_nhsno_unitcode UNIQUE (footCheckDate,nhsno,unitcode);
+
+/**
+    Add a column in emailverification table.
+ */
+ALTER TABLE emailverification ADD COLUMN   `lastverificationdate` datetime DEFAULT NULL;
