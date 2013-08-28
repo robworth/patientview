@@ -27,7 +27,6 @@ import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -71,7 +70,7 @@ public final class XmlImportUtils {
 
         String unitcode = fileName.substring(0, fileName.indexOf("_"));
 
-        Unit unit = UnitUtils.retrieveUnit(unitcode);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
 
         String emailBody = createEmailBodyForEmptyXML(fileName);
 
@@ -91,7 +90,7 @@ public final class XmlImportUtils {
 
         String unitcode = fileName.substring(0, fileName.indexOf("_"));
 
-        Unit unit = UnitUtils.retrieveUnit(unitcode);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
 
         String emailBody = createEmailBodyForEmptyXML(fileName);
 
@@ -111,7 +110,7 @@ public final class XmlImportUtils {
         String xsdFileName = xsdFile.getName();
 
         String unitcode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
-        Unit unit = UnitUtils.retrieveUnit(unitcode);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
         String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
         String[] toAddresses = new String[]{LegacySpringUtils.getContextProperties().getProperty("warning.email"),
@@ -135,7 +134,7 @@ public final class XmlImportUtils {
         String xsdFileName = xsdFile.getName();
 
         String unitcode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
-        Unit unit = UnitUtils.retrieveUnit(unitcode);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
         String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         String[] toAddresses = new String[]{warningEmail, rpvAdminEmailAddress};
@@ -256,7 +255,7 @@ public final class XmlImportUtils {
             String fileName = xmlFile.getName();
             String unitcode = fileName.substring(0, fileName.indexOf("_"));
 
-            Unit unit = UnitUtils.retrieveUnit(unitcode);
+            Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
             String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
             List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(

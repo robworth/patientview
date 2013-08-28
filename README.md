@@ -97,7 +97,8 @@ git push
 ```sh
 git checkout develop
 git merge --no-ff release-1-2
-git commit -a -m 'merge release version to 1.2 to develop'
+mvn versions:set -DnewVersion=1.3-SNAPSHOT
+git commit -a -m 'merge release version to 1.2 to develop, and bump to next snapshot version'
 git push
 ```
 

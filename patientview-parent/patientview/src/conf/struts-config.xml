@@ -313,7 +313,7 @@
       <forward name="admin" path="/control/index.jsp"/>
     </action>
     <action path="/back_to_admin"
-              type="org.patientview.patientview.logon.BackToAdminAction" parameter="index">
+              type="org.patientview.patientview.logon.LoggedInAction" parameter="index">
           <forward name="patient" path="/login-success.jsp"/>
           <forward name="admin" path="/control/index.jsp"/>
     </action>
