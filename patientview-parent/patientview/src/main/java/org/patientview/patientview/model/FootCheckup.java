@@ -168,7 +168,7 @@ public class FootCheckup extends BaseModel {
 
     public String getFootCheckDateFormatted() {
         if (footCheckDate != null) {
-            return TimestampUtils.DAY_FORMAT_SLASH.format(footCheckDate);
+            return TimestampUtils.DAY_FORMAT_SLASH.format(footCheckDate.getTime());
         }
         return "";
     }

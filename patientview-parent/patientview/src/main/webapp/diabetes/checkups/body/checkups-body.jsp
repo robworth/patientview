@@ -30,12 +30,16 @@
             <h1>Checkups</h1>
         </div>
     </div>
-    <logic:empty name="checkups">
-        <div class="alert">No Checkups uploaded</div>
-    </logic:empty>
+    <%
+        if (request.getAttribute("eyeCheckup") == null && request.getAttribute("footCheckup") == null) {
+    %>
+            <div class="alert">No Checkups uploaded</div>
+    <%
+        }
+    %>
 
-    <logic:notEmpty name="checkups">
-        <logic:present name="checkups">
+    <logic:notEmpty name="eyeCheckup">
+        <logic:present name="eyeCheckup">
             <div class="span12">
                 <h3>Eye Screening</h3>
                 <p></p>
@@ -44,8 +48,8 @@
             <div class="span12">
                 <table width="650" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
                     <tr>
-                        <th class="tablecellbold" colspan="3">Date of last retinal screening: <bean:write name="checkups" property="lastRetinalDateFormatted"/></th>
-                        <th class="tablecellbold" colspan="3">Place of last retinal screening: <bean:write name="checkups" property="lastRetinalPlace"/></th>
+                        <th class="tablecellbold" colspan="3">Date of last retinal screening: <bean:write name="eyeCheckup" property="lastRetinalDateFormatted"/></th>
+                        <th class="tablecellbold" colspan="3">Place of last retinal screening: <bean:write name="eyeCheckup" property="lastRetinalPlace"/></th>
                     </tr>
                     <tr>
                         <td class="tablecell" colspan="3">Right Eye</td>
@@ -60,17 +64,20 @@
                         <td class="tablecell" colspan="1">VA</td>
                     </tr>
                     <tr>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightRGrade"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightMGrade"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightVA"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftRGrade"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftMGrade"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftVA"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="eyeCheckup" property="rightRGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="eyeCheckup" property="rightMGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="eyeCheckup" property="rightVA"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="eyeCheckup" property="leftRGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="eyeCheckup" property="leftMGrade"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="eyeCheckup" property="leftVA"/></td>
                     </tr>
                 </table>
             </div>
+        </logic:present>
+    </logic:notEmpty>
 
-
+    <logic:notEmpty name="footCheckup">
+        <logic:present name="footCheckup">
             <div class="span12">
                 <h3>Feet</h3>
                 <p></p>
@@ -79,8 +86,8 @@
             <div class="span12">
                 <table width="650" border="0" cellspacing="1" cellpadding="3" class="table table-bordered table-striped">
                     <tr>
-                        <th class="tablecellbold" colspan="4">Date foot check: <bean:write name="checkups" property="footCheckDateFormatted"/></th>
-                        <th class="tablecellbold" colspan="4">Place of foot check: <bean:write name="checkups" property="footCheckPlace"/></th>
+                        <th class="tablecellbold" colspan="4">Date foot check: <bean:write name="footCheckup" property="footCheckDateFormatted"/></th>
+                        <th class="tablecellbold" colspan="4">Place of foot check: <bean:write name="footCheckup" property="footCheckPlace"/></th>
                     </tr>
                     <tr>
                         <td class="tablecell" colspan="4">Right Foot</td>
@@ -97,14 +104,14 @@
                         <td class="tablecell" colspan="1">Risk score</td>
                     </tr>
                     <tr>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightDpPulse"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightPtPulse"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightMonofilament"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="rightRiskScore"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftDpPulse"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftPtPulse"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftMonofilament"/></td>
-                        <td class="tablecell" colspan="1"><bean:write name="checkups" property="leftRiskScore"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="rightDpPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="rightPtPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="rightMonofilament"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="rightRiskScore"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="leftDpPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="leftPtPulse"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="leftMonofilament"/></td>
+                        <td class="tablecell" colspan="1"><bean:write name="footCheckup" property="leftRiskScore"/></td>
                     </tr>
                 </table>
             </div>

@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import java.util.List;
 
-@Repository(value = "checkupsDao")
+@Repository(value = "eyeCheckupDao")
 public class EyeCheckupDaoImpl extends AbstractHibernateDAO<EyeCheckup> implements EyeCheckupDao {
 
     @Override

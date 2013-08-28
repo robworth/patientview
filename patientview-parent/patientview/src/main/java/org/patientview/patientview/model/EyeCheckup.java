@@ -146,7 +146,7 @@ public class EyeCheckup extends BaseModel {
 
     public String getLastRetinalDateFormatted() {
         if (lastRetinalDate != null) {
-            return TimestampUtils.DAY_FORMAT_SLASH.format(lastRetinalDate);
+            return TimestampUtils.DAY_FORMAT_SLASH.format(lastRetinalDate.getTime());
         }
         return "";
     }

@@ -38,27 +38,27 @@ import java.util.List;
 public class FootCheckupManagerImpl implements FootCheckupManager {
 
     @Inject
-    private FootCheckupDao checkupsDao;
+    private FootCheckupDao footCheckupDao;
 
 
     @Override
     public List<FootCheckup> get(String userName) {
-        return checkupsDao.get(userName);
+        return footCheckupDao.get(userName);
     }
 
     @Override
     public void save(FootCheckup checkups) {
-        checkupsDao.save(checkups);
+        footCheckupDao.save(checkups);
     }
 
     @Override
     public void delete(Long id) {
-        checkupsDao.delete(id);
+        footCheckupDao.delete(id);
     }
 
     @Override
     public void delete(String nhsno, String unitcode) {
-        checkupsDao.delete(nhsno, unitcode);
+        footCheckupDao.delete(nhsno, unitcode);
     }
 
 }

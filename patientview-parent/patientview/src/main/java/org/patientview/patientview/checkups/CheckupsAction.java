@@ -28,6 +28,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.patientview.model.FootCheckup;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
@@ -44,10 +45,15 @@ public class CheckupsAction extends BaseAction {
 
         User user = UserUtils.retrieveUser(request);
 
-        List<FootCheckup> checkups = LegacySpringUtils.getFootCheckupManager().get(user.getUsername());
+        List<FootCheckup> footCheckups = LegacySpringUtils.getFootCheckupManager().get(user.getUsername());
+        List<EyeCheckup> eyeCheckups = LegacySpringUtils.getEyeCheckupManager().get(user.getUsername());
 
-        if (checkups != null && !checkups.isEmpty()) {
-            request.setAttribute("checkups", checkups.get(0));
+        if (footCheckups != null && !footCheckups.isEmpty()) {
+            request.setAttribute("footCheckup", footCheckups.get(0));
+        }
+
+        if (eyeCheckups != null && !eyeCheckups.isEmpty()) {
+            request.setAttribute("eyeCheckup", eyeCheckups.get(0));
         }
 
         return LogonUtils.logonChecks(mapping, request);

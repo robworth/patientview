@@ -38,27 +38,27 @@ import java.util.List;
 public class EyeCheckupManagerImpl implements EyeCheckupManager {
 
     @Inject
-    private EyeCheckupDao checkupsDao;
+    private EyeCheckupDao eyeCheckupDao;
 
 
     @Override
     public List<EyeCheckup> get(String userName) {
-        return checkupsDao.get(userName);
+        return eyeCheckupDao.get(userName);
     }
 
     @Override
     public void save(EyeCheckup checkups) {
-        checkupsDao.save(checkups);
+        eyeCheckupDao.save(checkups);
     }
 
     @Override
     public void delete(Long id) {
-        checkupsDao.delete(id);
+        eyeCheckupDao.delete(id);
     }
 
     @Override
     public void delete(String nhsno, String unitcode) {
-        checkupsDao.delete(nhsno, unitcode);
+        eyeCheckupDao.delete(nhsno, unitcode);
     }
 
 }

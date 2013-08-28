@@ -481,7 +481,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void deleteEyeCheckup(String nhsno, String unitcode) {
-        LegacySpringUtils.getFootCheckupManager().delete(nhsno, unitcode);
+        LegacySpringUtils.getEyeCheckupManager().delete(nhsno, unitcode);
     }
 
     private void insertEyeCheckup(Collection<EyeCheckup> checkupses) {
