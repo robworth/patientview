@@ -1,8 +1,10 @@
 package org.patientview.radar.web.pages.patient;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -22,6 +24,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Date;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class ExistingPatientsListingPage extends BasePage {
@@ -87,6 +91,24 @@ public class ExistingPatientsListingPage extends BasePage {
                 item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation"));
                 item.add(new Label("renalUnit.name"));
+
+                item.add(new Label("rrtModalityEunm"));
+                DemographicsUserDetail demographicsUserDetail =
+                        demographicsManager.getDemographicsUserDetail(patient.getNhsno(), patient.getUnitcode());
+
+                item.add(new Label("lastverificationdate",
+                        formatDate(demographicsUserDetail.getLastverificationdate())));
+                item.add(new Label("email", demographicsUserDetail.getEmail()));
+
+                item.add(new Label("lastlogon", formatDate(demographicsUserDetail.getLastlogon())));
+                item.add(new Label("accountlocked", "" + demographicsUserDetail.isAccountlocked()));
+
+                item.add(new Label("lastdatadate", formatDate(demographicsUserDetail.getLastdatadate())));
+
+            }
+
+            private String formatDate(Date date){
+                return date == null? "" : DateFormatUtils.format(date, RadarApplication.DATE_PATTERN2);
             }
         });
     }

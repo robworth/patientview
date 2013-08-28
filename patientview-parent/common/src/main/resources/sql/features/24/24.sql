@@ -26,3 +26,9 @@ CREATE TABLE `dia_checkups` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nhsno` (`nhsno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/**
+    Add a column in emailverification table.
+ */
+ALTER TABLE emailverification ADD COLUMN   `lastverificationdate` datetime DEFAULT NULL;
+

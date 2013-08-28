@@ -24,6 +24,7 @@
 package org.patientview.patientview.logon;
 
 import org.patientview.ibd.Ibd;
+import org.patientview.model.Patient;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 
@@ -49,6 +50,9 @@ public abstract class Logon {
     private boolean accountlocked;
     private boolean isrecipient;
     private boolean isclinician;
+    private Date lastverificationdate;
+    private int rrtModality;
+    private Date lastdatadate;
 
     public Logon() {
     }
@@ -156,6 +160,14 @@ public abstract class Logon {
         return "";
     }
 
+    public String getLastverificationdateFormatted() {
+        if (lastverificationdate != null) {
+            return Ibd.DATE_FORMAT.format(lastverificationdate);
+        }
+
+        return "";
+    }
+
     public void setLastlogon(Date lastlogon) {
         this.lastlogon = lastlogon;
     }
@@ -190,5 +202,47 @@ public abstract class Logon {
 
     public void setIsclinician(boolean isclinician) {
         this.isclinician = isclinician;
+    }
+
+    public Date getLastverificationdate() {
+        return lastverificationdate;
+    }
+
+    public void setLastverificationdate(Date lastverificationdate) {
+        this.lastverificationdate = lastverificationdate;
+    }
+
+    public int getRrtModality() {
+        return rrtModality;
+    }
+
+    public void setRrtModality(int rrtModality) {
+        this.rrtModality = rrtModality;
+    }
+
+    public String getModality() {
+        Patient.RRTModality[] modalities = Patient.RRTModality.values();
+        for (Patient.RRTModality  modality : modalities) {
+            if (modality.getId() == rrtModality) {
+                 return modality.name();
+            }
+        }
+        return "";
+    }
+
+    public Date getLastdatadate() {
+        return lastdatadate;
+    }
+
+    public void setLastdatadate(Date lastdatadate) {
+        this.lastdatadate = lastdatadate;
+    }
+
+    public String getLastdatadateFormatted() {
+        if (lastdatadate != null) {
+            return Ibd.DATE_FORMAT.format(lastdatadate);
+        }
+
+        return "";
     }
 }
