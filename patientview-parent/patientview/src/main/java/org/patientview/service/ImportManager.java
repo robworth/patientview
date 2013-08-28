@@ -36,6 +36,10 @@ public interface ImportManager {
 
     void update(File xmlFile);
 
+    /**
+     * This method is here because importer task should running without login user's authority,
+     * so copy it from UnitManger to here.
+     */
     Unit retrieveUnit(String unitcode);
 
     void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
