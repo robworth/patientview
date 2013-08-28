@@ -57,7 +57,8 @@ public final class EmailVerificationUtils {
                         LegacySpringUtils.getContextProperties().getProperty("email.verification.best.before.days"));
 
                 now.add(Calendar.DATE, daysToAdd);
-                EmailVerification emailVerification = new EmailVerification(username, email, verificationCode, now);
+                EmailVerification emailVerification = new EmailVerification(username, email, verificationCode, now,
+                        GregorianCalendar.getInstance());
 
                 LegacySpringUtils.getEmailVerificationManager().save(emailVerification);
 

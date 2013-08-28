@@ -79,15 +79,17 @@ public class LoggedInAction extends Action {
                 if (nhsno != null && !nhsno.equals("")) {
                     UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(nhsno);
                     if (userLog != null) {
-                        request.setAttribute("lastDataDate", format.format(userLog.getLastdatadate().getTime()));
-                        // Get the unit from the unitcode
-                        String unitcode = userLog.getUnitcode();
-                        if (unitcode != null) {
-                            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-                            if (null == unit) {
-                                request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
-                            } else {
-                                request.setAttribute("lastDataFrom", unit.getName());
+                        if (userLog.getLastdatadate() != null && userLog.getUnitcode() != null) {
+                            request.setAttribute("lastDataDate", format.format(userLog.getLastdatadate().getTime()));
+                            // Get the unit from the unitcode
+                            String unitcode = userLog.getUnitcode();
+                            if (unitcode != null) {
+                                Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+                                if (null == unit) {
+                                    request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
+                                } else {
+                                    request.setAttribute("lastDataFrom", unit.getName());
+                                }
                             }
                         }
                     }
