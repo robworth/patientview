@@ -29,41 +29,17 @@ import org.patientview.patientview.utils.TimestampUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
+import java.util.Calendar;
 
 @Entity
-@Table(name = "dia_checkups")
-public class Checkups extends BaseModel {
+@Table(name = "dia_footcheckup")
+public class FootCheckup extends BaseModel {
 
     @Column(nullable = false)
     private String nhsno;
 
     @Column(nullable = true)
-    private Date lastRetinalDate;
-
-    @Column(nullable = true)
-    private String lastRetinalPlace;
-
-    @Column(nullable = true)
-    private String rightRGrade;
-
-    @Column(nullable = true)
-    private String rightMGrade;
-
-    @Column(nullable = true)
-    private String rightVA;
-
-    @Column(nullable = true)
-    private String leftRGrade;
-
-    @Column(nullable = true)
-    private String leftMGrade;
-
-    @Column(nullable = true)
-    private String leftVA;
-
-    @Column(nullable = true)
-    private Date footCheckDate;
+    private Calendar footCheckDate;
 
     @Column(nullable = true)
     private String footCheckPlace;
@@ -95,79 +71,19 @@ public class Checkups extends BaseModel {
     @Column(nullable = false)
     private String unitcode;
 
-    public Checkups() {
+    public FootCheckup() {
     }
 
-    public Date getLastRetinalDate() {
-        return lastRetinalDate;
-    }
-
-    public void setLastRetinalDate(Date lastRetinalDate) {
-        this.lastRetinalDate = lastRetinalDate;
-    }
-
-    public String getLastRetinalPlace() {
-        return lastRetinalPlace;
-    }
-
-    public void setLastRetinalPlace(String lastRetinalPlace) {
-        this.lastRetinalPlace = lastRetinalPlace;
-    }
-
-    public String getRightRGrade() {
-        return rightRGrade;
-    }
-
-    public void setRightRGrade(String rightRGrade) {
-        this.rightRGrade = rightRGrade;
-    }
-
-    public String getRightMGrade() {
-        return rightMGrade;
-    }
-
-    public void setRightMGrade(String rightMGrade) {
-        this.rightMGrade = rightMGrade;
-    }
-
-    public String getRightVA() {
-        return rightVA;
-    }
-
-    public void setRightVA(String rightVA) {
-        this.rightVA = rightVA;
-    }
-
-    public String getLeftRGrade() {
-        return leftRGrade;
-    }
-
-    public void setLeftRGrade(String leftRGrade) {
-        this.leftRGrade = leftRGrade;
-    }
-
-    public String getLeftMGrade() {
-        return leftMGrade;
-    }
-
-    public void setLeftMGrade(String leftMGrade) {
-        this.leftMGrade = leftMGrade;
-    }
-
-    public String getLeftVA() {
-        return leftVA;
-    }
-
-    public void setLeftVA(String leftVA) {
-        this.leftVA = leftVA;
-    }
-
-    public Date getFootCheckDate() {
+    public Calendar getFootCheckDate() {
         return footCheckDate;
     }
 
-    public void setFootCheckDate(Date footCheckDate) {
+    public void setFootCheckDate(Calendar footCheckDate) {
         this.footCheckDate = footCheckDate;
+    }
+
+    public void setFootCheckDate(String footCheckDate) {
+        this.footCheckDate = TimestampUtils.createTimestamp(footCheckDate);
     }
 
     public String getFootCheckPlace() {
@@ -248,13 +164,6 @@ public class Checkups extends BaseModel {
 
     public void setNhsno(String nhsno) {
         this.nhsno = nhsno;
-    }
-
-    public String getLastRetinalDateFormatted() {
-        if (lastRetinalDate != null) {
-            return TimestampUtils.DAY_FORMAT_SLASH.format(lastRetinalDate);
-        }
-        return "";
     }
 
     public String getFootCheckDateFormatted() {

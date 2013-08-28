@@ -21,36 +21,44 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.checkups;
+package org.patientview.service.impl;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.FootCheckup;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
+import org.patientview.repository.FootCheckupDao;
+import org.patientview.service.FootCheckupManager;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.inject.Inject;
 import java.util.List;
 
-public class CheckupsAction extends BaseAction {
+/**
+ *
+ */
+@Service(value = "footCheckupManager")
+public class FootCheckupManagerImpl implements FootCheckupManager {
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+    @Inject
+    private FootCheckupDao checkupsDao;
 
-        User user = UserUtils.retrieveUser(request);
 
-        List<FootCheckup> checkups = LegacySpringUtils.getFootCheckupManager().get(user.getUsername());
+    @Override
+    public List<FootCheckup> get(String userName) {
+        return checkupsDao.get(userName);
+    }
 
-        if (checkups != null && !checkups.isEmpty()) {
-            request.setAttribute("checkups", checkups.get(0));
-        }
+    @Override
+    public void save(FootCheckup checkups) {
+        checkupsDao.save(checkups);
+    }
 
-        return LogonUtils.logonChecks(mapping, request);
+    @Override
+    public void delete(Long id) {
+        checkupsDao.delete(id);
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        checkupsDao.delete(nhsno, unitcode);
     }
 
 }

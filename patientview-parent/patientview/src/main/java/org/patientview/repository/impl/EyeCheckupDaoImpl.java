@@ -23,25 +23,25 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.FootCheckup;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.FootCheckupDao;
+import org.patientview.repository.EyeCheckupDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
 
 @Repository(value = "checkupsDao")
-public class CheckupsDaoImpl extends AbstractHibernateDAO<FootCheckup> implements FootCheckupDao {
+public class EyeCheckupDaoImpl extends AbstractHibernateDAO<EyeCheckup> implements EyeCheckupDao {
 
     @Override
-    public List<FootCheckup> get(String userName) {
+    public List<EyeCheckup> get(String userName) {
         if (null != userName && !"".equals(userName)) {
-            String sql = "SELECT DISTINCT dia_footcheckup.* FROM dia_footcheckup, usermapping "
-                    + "WHERE dia_footcheckup.nhsno = usermapping.nhsno "
-                    + "AND usermapping.username = :username ORDER BY dia_footcheckup.footCheckDate DESC";
+            String sql = "SELECT DISTINCT dia_eyecheckup.* FROM dia_eyecheckup, usermapping "
+                    + "WHERE dia_eyecheckup.nhsno = usermapping.nhsno "
+                    + "AND usermapping.username = :username ORDER BY dia_eyecheckup.lastRetinalDate DESC";
 
-            Query query = getEntityManager().createNativeQuery(sql, FootCheckup.class);
+            Query query = getEntityManager().createNativeQuery(sql, EyeCheckup.class);
 
             query.setParameter("username", userName);
 
@@ -58,7 +58,7 @@ public class CheckupsDaoImpl extends AbstractHibernateDAO<FootCheckup> implement
         }
 
         Query query = getEntityManager().createQuery(
-                "DELETE FROM FootCheckup WHERE nhsno = :nhsno AND unitcode = :unitcode");
+                "DELETE FROM EyeCheckup WHERE nhsno = :nhsno AND unitcode = :unitcode");
 
         query.setParameter("nhsno", nhsno);
         query.setParameter("unitcode", unitcode);

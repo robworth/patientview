@@ -37,7 +37,8 @@ import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Checkups;
+import org.patientview.patientview.model.FootCheckup;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.patientview.model.enums.DiagnosticType;
 import org.patientview.patientview.model.enums.NodeError;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -62,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
 
 public class ResultParser {
 
@@ -74,7 +74,8 @@ public class ResultParser {
     private ArrayList<Diagnosis> otherDiagnoses = new ArrayList<Diagnosis>();
     private ArrayList<Medicine> medicines = new ArrayList<Medicine>();
     private ArrayList<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
-    private ArrayList<Checkups> checkupses = new ArrayList<Checkups>();
+    private ArrayList<FootCheckup> footCheckupses = new ArrayList<FootCheckup>();
+    private ArrayList<EyeCheckup> eyeCheckupses = new ArrayList<EyeCheckup>();
     private ArrayList<Procedure> procedures = new ArrayList<Procedure>();
     private ArrayList<Allergy> allergies = new ArrayList<Allergy>();
     private Map xmlData = new HashMap();
@@ -367,7 +368,7 @@ public class ResultParser {
 
         for (int i = 0; i < footCheckupNodes.getLength(); i++) {
             Node footCheckupNode = footCheckupNodes.item(i);
-            Checkups checkups = new Checkups();
+            FootCheckup checkups = new FootCheckup();
             checkups.setNhsno(getData("nhsno"));
             checkups.setUnitcode(getData("centrecode"));
 
@@ -378,14 +379,7 @@ public class ResultParser {
                     if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
                             && (footDetail.getNodeName().equals("datestamp"))) {
 
-                        try {
-                            checkups.setFootCheckDate(
-                                    IMPORT_DATE_FORMAT.parse(footDetail.getFirstChild().getNodeValue()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            LOGGER.error("Could not parse foot datestamp {} {}",
-                                    footDetail.getFirstChild().getNodeValue(), e);
-                        }
+                        checkups.setFootCheckDate(footDetail.getFirstChild().getNodeValue());
                     } else if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
                             && (footDetail.getNodeName().equals("location"))) {
                         checkups.setFootCheckPlace(footDetail.getFirstChild().getNodeValue());
@@ -440,7 +434,7 @@ public class ResultParser {
             }
 
             if (checkups.getFootCheckPlace() != null) {
-                checkupses.add(checkups);
+                footCheckupses.add(checkups);
             }
         }
     }
@@ -451,6 +445,9 @@ public class ResultParser {
 
         for (int i = 0; i < eyeCheckupNodes.getLength(); i++) {
             Node eyeCheckupNode = eyeCheckupNodes.item(i);
+            EyeCheckup checkups = new EyeCheckup();
+            checkups.setNhsno(getData("nhsno"));
+            checkups.setUnitcode(getData("centrecode"));
 
             try {
                 NodeList eyeCheckupNodeDetails = eyeCheckupNode.getChildNodes();
@@ -458,32 +455,11 @@ public class ResultParser {
                     Node eyeDetail = eyeCheckupNodeDetails.item(j);
                     if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
                             && (eyeDetail.getNodeName().equals("datestamp"))) {
-                        Date date = new Date();
-                        try {
-                            date = IMPORT_DATE_FORMAT.parse(eyeDetail.getFirstChild().getNodeValue());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            LOGGER.error("Could not parse eye datestamp {} {}",
-                                    eyeDetail.getFirstChild().getNodeValue(), e);
-                        }
 
-                        // check whether checkups is exist
-                        for (Checkups checkups : checkupses) {
-                            if (checkups != null && checkups.getFootCheckDate() != null
-                                    && checkups.getFootCheckDate().equals(date)) {
-                                index = checkupses.indexOf(checkups);
-                            }
-                        }
-                        if (index == -1) {
-                            LOGGER.error("Could not parse eye {}",
-                                    eyeDetail.getFirstChild().getNodeValue());
-                            return;
-                        }
-                        checkupses.get(index).setLastRetinalDate(date);
-
+                        checkups.setLastRetinalDate(eyeDetail.getFirstChild().getNodeValue());
                     } else if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
                             && (eyeDetail.getNodeName().equals("location"))) {
-                        checkupses.get(index).setLastRetinalPlace(eyeDetail.getFirstChild().getNodeValue());
+                        checkups.setLastRetinalPlace(eyeDetail.getFirstChild().getNodeValue());
                     } else if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
                             && (eyeDetail.getNodeName().equals("eye"))) {
 
@@ -498,13 +474,13 @@ public class ResultParser {
                                 // left side eye
                                 if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
                                         && (sideDetails.getNodeName().equals("rgrade"))) {
-                                    checkupses.get(index).setLeftRGrade(sideDetails.getFirstChild().getNodeValue());
+                                    checkups.setLeftRGrade(sideDetails.getFirstChild().getNodeValue());
                                 } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
                                         && (sideDetails.getNodeName().equals("mgrade"))) {
-                                    checkupses.get(index).setLeftMGrade(sideDetails.getFirstChild().getNodeValue());
+                                    checkups.setLeftMGrade(sideDetails.getFirstChild().getNodeValue());
                                 } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
                                         && (sideDetails.getNodeName().equals("va"))) {
-                                    checkupses.get(index).setLeftVA(sideDetails.getFirstChild().getNodeValue());
+                                    checkups.setLeftVA(sideDetails.getFirstChild().getNodeValue());
                                 }
 
                             } else if (sideNode != null && sideNode.getNodeValue() != null
@@ -512,13 +488,13 @@ public class ResultParser {
                                 // right side eye
                                 if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
                                         && (sideDetails.getNodeName().equals("rgrade"))) {
-                                    checkupses.get(index).setRightRGrade(sideDetails.getFirstChild().getNodeValue());
+                                    checkups.setRightRGrade(sideDetails.getFirstChild().getNodeValue());
                                 } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
                                         && (sideDetails.getNodeName().equals("mgrade"))) {
-                                    checkupses.get(index).setRightMGrade(sideDetails.getFirstChild().getNodeValue());
+                                    checkups.setRightMGrade(sideDetails.getFirstChild().getNodeValue());
                                 } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
                                         && (sideDetails.getNodeName().equals("va"))) {
-                                    checkupses.get(index).setRightVA(sideDetails.getFirstChild().getNodeValue());
+                                    checkups.setRightVA(sideDetails.getFirstChild().getNodeValue());
                                 }
                             }
                         }
@@ -526,6 +502,10 @@ public class ResultParser {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            if (checkups.getLastRetinalDate() != null) {
+                eyeCheckupses.add(checkups);
             }
         }
     }
@@ -804,15 +784,19 @@ public class ResultParser {
         return diagnostics;
     }
 
-    public ArrayList<Checkups> getCheckupses() {
-        return checkupses;
-    }
-
     public ArrayList<Procedure> getProcedures() {
         return procedures;
     }
 
     public ArrayList<Allergy> getAllergies() {
         return allergies;
+    }
+
+    public ArrayList<EyeCheckup> getEyeCheckupses() {
+        return eyeCheckupses;
+    }
+
+    public ArrayList<FootCheckup> getFootCheckupses() {
+        return footCheckupses;
     }
 }

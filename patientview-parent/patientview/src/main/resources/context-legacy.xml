@@ -299,11 +299,20 @@
         </property>
     </bean>
 
-    <bean id="setCheckupsManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setCheckupsManager"/>
+    <bean id="setFootCheckupManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setFootCheckupManager"/>
         <property name="arguments">
             <list>
-                <ref bean="checkupsManager"/>
+                <ref bean="footCheckupManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="setEyeCheckupManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setEyeCheckupManager"/>
+        <property name="arguments">
+            <list>
+                <ref bean="eyeCheckupManager"/>
             </list>
         </property>
     </bean>

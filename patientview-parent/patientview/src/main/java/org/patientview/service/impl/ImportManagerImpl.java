@@ -37,7 +37,8 @@ import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.Diagnosis;
-import org.patientview.patientview.model.Checkups;
+import org.patientview.patientview.model.FootCheckup;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -316,8 +317,10 @@ public class ImportManagerImpl implements ImportManager {
         insertProcedures(parser.getProcedures());
         deleteAllergies(parser.getData("nhsno"), parser.getData("centrecode"));
         insertAllergies(parser.getAllergies());
-        deleteCheckups(parser.getData("nhsno"), parser.getData("centrecode"));
-        insertCheckups(parser.getCheckupses());
+        deleteFootCheckup(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertFootCheckup(parser.getFootCheckupses());
+        deleteEyeCheckup(parser.getData("nhsno"), parser.getData("centrecode"));
+        insertEyeCheckup(parser.getEyeCheckupses());
     }
 
     private void deleteDiagnostics(String nhsno, String unitcode) {
@@ -466,14 +469,25 @@ public class ImportManagerImpl implements ImportManager {
         return exceptions;
     }
 
-    private void deleteCheckups(String nhsno, String unitcode) {
-        LegacySpringUtils.getCheckupsManager().delete(nhsno, unitcode);
+    private void deleteFootCheckup(String nhsno, String unitcode) {
+        LegacySpringUtils.getFootCheckupManager().delete(nhsno, unitcode);
     }
 
-    private void insertCheckups(Collection<Checkups> checkupses) {
+    private void insertFootCheckup(Collection<FootCheckup> checkupses) {
         for (Iterator iterator = checkupses.iterator(); iterator.hasNext();) {
-            Checkups checkups = (Checkups) iterator.next();
-            LegacySpringUtils.getCheckupsManager().save(checkups);
+            FootCheckup checkups = (FootCheckup) iterator.next();
+            LegacySpringUtils.getFootCheckupManager().save(checkups);
+        }
+    }
+
+    private void deleteEyeCheckup(String nhsno, String unitcode) {
+        LegacySpringUtils.getFootCheckupManager().delete(nhsno, unitcode);
+    }
+
+    private void insertEyeCheckup(Collection<EyeCheckup> checkupses) {
+        for (Iterator iterator = checkupses.iterator(); iterator.hasNext();) {
+            EyeCheckup checkups = (EyeCheckup) iterator.next();
+            LegacySpringUtils.getEyeCheckupManager().save(checkups);
         }
     }
 }
