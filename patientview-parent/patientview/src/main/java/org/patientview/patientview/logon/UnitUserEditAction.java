@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.beans.support.PagedListHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,8 +64,8 @@ public class UnitUserEditAction extends Action {
         }
 
         List unitUsers = LegacySpringUtils.getUnitManager().getUnitUsers(unitcode);
-
-        request.setAttribute("unitUsers", unitUsers);
+        PagedListHolder pagedListHolder = new PagedListHolder(unitUsers);
+        request.getSession().setAttribute("unitUsers", pagedListHolder);
 
         return LogonUtils.logonChecks(mapping, request);
     }
