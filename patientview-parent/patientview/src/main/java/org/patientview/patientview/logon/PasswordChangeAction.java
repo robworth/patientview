@@ -103,7 +103,7 @@ public class PasswordChangeAction extends Action {
                 EmailVerificationUtils.createEmailVerification(user.getUsername(), user.getEmail(), request);
                 request.setAttribute("verificationMailSent", true);
             }
-
+            request.setAttribute("passwordMsg", "Password Was Updated Successfully.");
             return mapping.findForward("success");
         }
     }

@@ -58,6 +58,9 @@
 
     <div class="form-actions">
         <html:submit value="Update email" styleClass="btn btn-primary"/>
+        <logic:present name="emailMsg">
+            <div style="float: right; color: green; font-weight:bold;"><bean:write name="emailMsg" /></div>
+        </logic:present>
     </div>
 
 </html:form>
@@ -106,6 +109,9 @@
 
 <div class="form-actions">
     <html:submit value="Change password" styleClass="btn btn-primary"/>
+    <logic:present name="passwordMsg">
+        <div style="float: right; color: green; font-weight:bold;"><bean:write name="passwordMsg" /></div>
+    </logic:present>
 </div>
 
 <h2>Password Strength Scores</h2>
