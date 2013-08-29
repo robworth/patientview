@@ -56,10 +56,15 @@ public class GroupAddAction extends Action {
         }
 
         Unit unit = new Unit();
-        unit.setSourceType("radargroup");
-        UnitUtils.buildUnit(unit, form);
-        LegacySpringUtils.getUnitManager().save(unit);
-        request.setAttribute("unit", unit);
+        try {
+            unit.setSourceType("radargroup");
+            UnitUtils.buildUnit(unit, form);
+            LegacySpringUtils.getUnitManager().save(unit);
+            request.setAttribute("unit", unit);
+            request.setAttribute("succeedMsg", "Add Group Successfully.");
+        } catch (Exception e) {
+            request.setAttribute("failureMsg", "Add Group Failed.");
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }
