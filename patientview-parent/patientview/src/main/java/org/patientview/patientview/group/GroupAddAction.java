@@ -46,6 +46,7 @@ public class GroupAddAction extends Action {
 
         Unit checkExistUnit = LegacySpringUtils.getImportManager().retrieveUnit(
                 BeanUtils.getProperty(form, "unitcode"));
+
         if (checkExistUnit != null) {
             ActionMessages errors = new ActionMessages();
             errors.add("unitcode", new ActionMessage("data.exist", new String[] {"Code"}));
@@ -53,6 +54,7 @@ public class GroupAddAction extends Action {
 
             return mapping.findForward("input");
         }
+
         Unit unit = new Unit();
         unit.setSourceType("radargroup");
         UnitUtils.buildUnit(unit, form);
