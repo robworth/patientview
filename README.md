@@ -56,6 +56,16 @@ Creating an Intellij Idea Maven install/build all
 clean install -DskipTests
 ```
 
+Processing pull requests 
+------------------------------------------------------------
+If you plan to implement an improvement; fork the repository, create a feature/XXX branch off develop branch on your local environment, and after your work is done create a pull request to develop branch.
+
+Your feature branch will be tested on a seperate server, code will be reviewed, and if everything looks good, will be merged to develop branch for some further testing.
+
+Develop branch is meant to be bug-free, and be ready for a live build at a short notice.
+
+
+
 How to prepare and deploy a new release candidate to staging 
 ------------------------------------------------------------
 
