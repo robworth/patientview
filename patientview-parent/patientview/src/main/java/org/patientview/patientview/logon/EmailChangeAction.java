@@ -89,7 +89,7 @@ public class EmailChangeAction extends Action {
                 EmailVerificationUtils.createEmailVerification(user.getUsername(), user.getEmail(), request);
                 request.setAttribute("verificationMailSent", true);
             }
-
+            request.setAttribute("emailMsg", "Email Was Updated Successfully.");
             return mapping.findForward("success");
         }
     }
