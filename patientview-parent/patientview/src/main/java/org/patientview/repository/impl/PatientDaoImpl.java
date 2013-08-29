@@ -154,7 +154,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
         params.add(specialty.getId());
 
-        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentExtendMapper());
     }
 
     @Override
@@ -200,7 +200,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
         params.add(specialty.getId());
 
-        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentExtendMapper());
     }
 
     @Override
@@ -292,6 +292,16 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
             patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
+
+            return patientLogonWithTreatment;
+        }
+    }
+
+    private class PatientLogonWithTreatmentExtendMapper extends PatientLogonWithTreatmentMapper {
+        @Override
+        public PatientLogonWithTreatment mapRow(ResultSet resultSet, int i) throws SQLException {
+            PatientLogonWithTreatment patientLogonWithTreatment = super.mapRow(resultSet, i);
+
             patientLogonWithTreatment.setLastverificationdate(resultSet.getDate("lastverificationdate"));
             patientLogonWithTreatment.setRrtModality(resultSet.getInt("rrtModality"));
             patientLogonWithTreatment.setLastdatadate(resultSet.getDate("lastdatadate"));

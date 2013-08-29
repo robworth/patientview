@@ -45,15 +45,17 @@ public class BaseTestPvDbSchema {
 
     @PostConstruct
     public void init() {
+        LOGGER.error("++===============================init");
         isLocalTestEnvironment = configEnvironment != null && configEnvironment.equals("localhost-test");
     }
 
     @Before
     public void testDbCreate() throws Exception {
 
+        LOGGER.error("++===++++++++========================="+isLocalTestEnvironment);
         if (!isLocalTestEnvironment) {
             boolean isTestEnvironment = configEnvironment != null && configEnvironment.equals("test");
-
+            LOGGER.error("++===--------========================="+isTestEnvironment);
             if (!isTestEnvironment) {
                 throw new IllegalStateException("Cannot run tests using "
                         + configEnvironment
@@ -70,6 +72,8 @@ public class BaseTestPvDbSchema {
             Resource txtResource = applicationContext.getResource("classpath:current-db-feature-num.txt");
 
             Assert.assertTrue("null resource", txtResource != null && txtResource.exists());
+
+            LOGGER.error("++===++++++++========================="+IOUtils.toString(txtResource.getInputStream()));
 
             int featureNum = Integer.parseInt(IOUtils.toString(txtResource.getInputStream()));
 

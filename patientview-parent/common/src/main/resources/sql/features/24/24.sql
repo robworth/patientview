@@ -1,4 +1,4 @@
 /**
     Add a column in emailverification table.
  */
-ALTER TABLE emailverification ADD COLUMN   `lastverificationdate` datetime DEFAULT NULL;
+ ALTER TABLE emailverification ADD COLUMN `lastverificationdate` DATETIME NULL;

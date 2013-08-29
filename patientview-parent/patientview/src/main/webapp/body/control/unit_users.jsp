@@ -38,8 +38,13 @@
 <logic:notEmpty name="unitUsers">
     <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
         <div class="row" style="float: right;">
-            <a href="./unitUsers?page=prev">Prev</a>&nbsp;
-            <a href="./unitUsers?page=next">Next</a>
+            <logic:equal value="false" name="patients" property="firstPage">
+                <a href="./unitUsers?page=prev">Prev</a>&nbsp;
+            </logic:equal>
+            &nbsp;
+            <logic:equal value="false" name="patients" property="lastPage">
+                <a href="./unitUsers?page=next">Next</a>
+            </logic:equal>
         </div>
     </div>
 
@@ -117,7 +122,7 @@
                  <bean:define id="username" name="unitUser" property="username" />
                  <bean:define id="email" name="unitUser" property="email" />
                  <bean:define id="emailverfied" name="unitUser" property="emailverfied"/>
-                 <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+                 <input type="button" value="Send Verification Email" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
              </td>
         </logic:present>
 
