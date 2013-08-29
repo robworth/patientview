@@ -30,6 +30,7 @@ import org.patientview.patientview.model.Unit_;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -162,7 +163,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
-        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+//        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
 
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
@@ -240,9 +241,15 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   sur.specialty_id = :specialtyId "
                 + "AND "
-                + "   um.unitcode = :unitcode "
-                + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+                + "   um.unitcode = :unitcode ";
+
+        if ("radaradmin".equals(LegacySpringUtils.getUserManager().getLoggedInUserRole())) {
+            sql += "AND "
+                    + "   (sur.role = 'radaradmin')";
+        } else {
+            sql += "AND "
+                    + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+        }
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
@@ -286,7 +293,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   sur.specialty_id = :specialtyId "
                 + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff' OR sur.role = 'radaradmin')";
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 

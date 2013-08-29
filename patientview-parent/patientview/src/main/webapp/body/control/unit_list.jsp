@@ -48,7 +48,7 @@
           <td class="tablecell"><bean:write name="unit" property="unitcode"/></td>
           <td class="tablecell"><bean:write name="unit" property="name"/></td>
 
-          <logic:present role="superadmin,unitadmin">
+          <logic:present role="superadmin,unitadmin,radaradmin">
             <td>
                 <html:form action="/control/unitEdit">
                   <html:hidden name="unit" property="unitcode"/>
