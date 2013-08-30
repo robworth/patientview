@@ -1,5 +1,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib prefix="bean" uri="http://struts.apache.org/tags-nested" %>
 
 <%--
   ~ PatientView
@@ -31,7 +32,12 @@
 </div>
 
 <html:errors />
-
+<logic:present name="succeedMsg">
+    <div style="color: green; font-weight:bold;"><bean:write name="succeedMsg" /></div>
+</logic:present>
+<logic:present name="failureMsg">
+    <div style="color: red; font-weight:bold;"><bean:write name="failureMsg" /></div>
+</logic:present>
 <html:form action="/control/groupUpdate">
 
   <table cellpadding="3" >
