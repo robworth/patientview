@@ -89,7 +89,7 @@ public class XmlImportReader extends ListItemReader<Object> {
                 if (xmlFiles != null && xmlFiles.length > 0) {
                     updateXmlFiles(xmlFiles);
                     Date now = new Date(System.currentTimeMillis());
-                    System.out.println("XmlParserThread " + dateFormat.format(now));
+                    LOGGER.debug("XmlParserThread " + dateFormat.format(now));
                 }
             }
 
@@ -99,7 +99,7 @@ public class XmlImportReader extends ListItemReader<Object> {
                 if (uktFiles != null && uktFiles.length > 0) {
                     updateUktFiles(uktFiles);
                     Date now = new Date(System.currentTimeMillis());
-                    System.out.println("UktParserThread " + dateFormat.format(now));
+                    LOGGER.debug("UktParserThread " + dateFormat.format(now));
                 }
 
                 File uktExportDir = new File(uktExportDirectory);
