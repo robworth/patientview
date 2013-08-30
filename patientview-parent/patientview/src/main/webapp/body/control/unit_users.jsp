@@ -91,7 +91,7 @@
               <logic:equal name="unitUser" property="isclinician" value="true">Yes</logic:equal>
           </td>
 
-          <logic:present role="superadmin,unitadmin">
+          <logic:present role="superadmin,unitadmin,radaradmin">
             <td>
               <html:form action="/control/unitUserEditInput">
                 <html:hidden name="unitUser" property="username" />
@@ -103,7 +103,7 @@
             </td>
         </logic:present>
 
-        <logic:present role="superadmin,unitadmin">
+        <logic:present role="superadmin,unitadmin,radaradmin">
             <td>
               <html:form action="/control/activityByUser">
                 <html:hidden name="unitUser" property="username" />
@@ -112,7 +112,7 @@
             </td>
         </logic:present>
 
-        <logic:present role="superadmin,unitadmin">
+        <logic:present role="superadmin,unitadmin,radaradmin">
              <td>
                  <bean:define id="username" name="unitUser" property="username" />
                  <bean:define id="email" name="unitUser" property="email" />
