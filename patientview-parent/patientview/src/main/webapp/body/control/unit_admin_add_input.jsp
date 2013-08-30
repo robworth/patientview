@@ -61,8 +61,13 @@
              <logic:present role="superadmin">
                <html:option value="superadmin">Super Admin</html:option>
              </logic:present>
-             <html:option value="unitadmin">Unit Admin</html:option>
-             <html:option value="unitstaff">Unit Staff</html:option>
+             <logic:present role="superadmin,unitadmin">
+                 <html:option value="unitadmin">Unit Admin</html:option>
+                 <html:option value="unitstaff">Unit Staff</html:option>
+             </logic:present>
+             <logic:present role="superadmin,radaradmin">
+                 <html:option value="radaradmin">Radar Group Admin</html:option>
+             </logic:present>
           </html:select></td>
     </tr>
     <tr>

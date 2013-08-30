@@ -28,7 +28,7 @@
   --%>
 
 <html:xhtml/>
-<div class="span9">
+
     <a class="pull-right" href="http://www.renal.org/rixg/adminhelp.html" target="_blank">Help</a>
     <logic:present name="unit">
         <div class="page-header"><h1>Patients for Unit <bean:write name="unit" property="name"/></h1></div>
@@ -81,7 +81,7 @@
 
                 <tr>
                     <td class="tablecell">
-                        <logic:present role="superadmin,unitadmin">
+                        <logic:present role="superadmin,unitadmin,radaradmin">
                             <html:link action="/control/patientEditInput" name="patientKeyParams">
                                 <bean:write name="patient" property="name"/>
                             </html:link>
@@ -128,7 +128,7 @@
                     <td class="tablecell"><bean:write name="patient" property="modality"/></td>
                     <td class="tablecell"><bean:write name="patient" property="lastdatadateFormatted"/></td>
 
-                    <logic:present role="superadmin,unitadmin">
+                    <logic:present role="superadmin,unitadmin,radaradmin">
                         <td>
                             <html:form action="/control/logViewForPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -137,7 +137,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin">
+                    <logic:present role="superadmin,unitadmin,radaradmin">
                         <td>
                             <html:form action="/control/viewsOfPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -146,7 +146,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin">
+                    <logic:present role="superadmin,unitadmin,radaradmin">
                         <td>
                             <html:form action="/control/dataLoadsForPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -155,7 +155,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin">
+                    <logic:present role="superadmin,unitadmin,radaradmin">
                         <td>
                             <html:form action="/control/activityByUser">
                                 <html:hidden name="patient" property="username" />
@@ -173,7 +173,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin">
+                    <logic:present role="superadmin,unitadmin,radaradmin">
                         <td>
                             <bean:define id="username" name="patient" property="username" />
                             <bean:define id="email" name="patient" property="email" />
