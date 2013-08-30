@@ -84,7 +84,7 @@ public class JoinRequestManagerImpl implements JoinRequestManager {
 
         if ("superadmin".equals(userType)) {
 
-            joinRequests = joinRequestDao.getAll();
+            joinRequests = joinRequestDao.getAll(isComplete);
         } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
 
             List<String> unitCodes = unitManager.getUsersUnitCodes(user);
