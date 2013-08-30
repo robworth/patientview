@@ -66,7 +66,7 @@ public class XmlParserThread implements Runnable, ParserThread {
                 updateXmlFiles(xmlFiles);
                 Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
-                System.out.println("XmlParserThread " + dateFormat.format(now));
+                LOGGER.debug("XmlParserThread " + dateFormat.format(now));
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
