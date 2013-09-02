@@ -32,20 +32,30 @@ import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GroupUpdateAction extends Action {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupUpdateAction.class);
+
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        Unit unit = LegacySpringUtils.getUnitManager().get(BeanUtils.getProperty(form, "unitcode"));
-        UnitUtils.buildUnit(unit, form);
-        LegacySpringUtils.getUnitManager().save(unit);
-        request.setAttribute("unit", unit);
+        try {
+            Unit unit = LegacySpringUtils.getUnitManager().get(BeanUtils.getProperty(form, "unitcode"));
+            UnitUtils.buildUnit(unit, form);
+            LegacySpringUtils.getUnitManager().save(unit);
+            request.setAttribute("unit", unit);
+            request.setAttribute("succeedMsg", "Updated the group successfully.");
+        } catch (Exception e) {
+            LOGGER.error("Could not update group: ", e);
+            request.setAttribute("failureMsg", "Could not update the group.");
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

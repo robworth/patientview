@@ -72,4 +72,18 @@ public class JoinRequestDaoImpl extends AbstractHibernateDAO<JoinRequest> implem
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
+
+    @Override
+    public List<JoinRequest> getAll(Boolean isCompleted) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<JoinRequest> criteria = builder.createQuery(JoinRequest.class);
+        Root<JoinRequest> from = criteria.from(JoinRequest.class);
+
+        criteria.where(builder.equal(from.get(JoinRequest_.isComplete), isCompleted));
+
+        criteria.orderBy(builder.desc(from.get(JoinRequest_.dateOfRequest)));
+
+        return getEntityManager().createQuery(criteria).getResultList();
+    }
+
 }
