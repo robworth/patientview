@@ -20,30 +20,45 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
 
-import org.patientview.patientview.model.Unit;
+package org.patientview.service.impl;
 
-import javax.servlet.ServletContext;
-import java.io.File;
+import org.patientview.patientview.model.EyeCheckup;
+import org.patientview.repository.EyeCheckupDao;
+import org.patientview.service.EyeCheckupManager;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  *
  */
-public interface ImportManager {
+@Service(value = "eyeCheckupManager")
+public class EyeCheckupManagerImpl implements EyeCheckupManager {
 
-    void update(ServletContext context, File xmlFile) throws Exception;
+    @Inject
+    private EyeCheckupDao eyeCheckupDao;
 
-    void update(File xmlFile);
 
-    /**
-     * This method is here because importer task should running without login user's authority,
-     * so copy it from UnitManger to here.
-     */
-    Unit retrieveUnit(String unitcode);
+    @Override
+    public List<EyeCheckup> get(String userName) {
+        return eyeCheckupDao.get(userName);
+    }
 
-    void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
+    @Override
+    public void save(EyeCheckup checkups) {
+        eyeCheckupDao.save(checkups);
+    }
 
-    void renameDirectory(ServletContext context, File xmlFile);
+    @Override
+    public void delete(Long id) {
+        eyeCheckupDao.delete(id);
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        eyeCheckupDao.delete(nhsno, unitcode);
+    }
 
 }

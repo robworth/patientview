@@ -20,30 +20,25 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
 
-import org.patientview.patientview.model.Unit;
+package org.patientview.repository;
 
-import javax.servlet.ServletContext;
-import java.io.File;
+import org.patientview.patientview.model.EyeCheckup;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- */
-public interface ImportManager {
+import java.util.List;
 
-    void update(ServletContext context, File xmlFile) throws Exception;
+@Transactional(propagation = Propagation.MANDATORY)
+public interface EyeCheckupDao {
 
-    void update(File xmlFile);
+    List<EyeCheckup> get(String userName);
 
-    /**
-     * This method is here because importer task should running without login user's authority,
-     * so copy it from UnitManger to here.
-     */
-    Unit retrieveUnit(String unitcode);
+    void save(EyeCheckup checkups);
 
-    void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
+    void delete(Long id);
 
-    void renameDirectory(ServletContext context, File xmlFile);
+    void delete(String nhsno, String unitcode);
 
+    List<EyeCheckup> getAll();
 }

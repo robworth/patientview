@@ -21,37 +21,24 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service.impl;
+package org.patientview.repository;
 
-import org.patientview.patientview.model.Checkups;
-import org.patientview.repository.CheckupsDao;
-import org.patientview.service.CheckupsManager;
-import org.springframework.stereotype.Service;
+import org.patientview.patientview.model.FootCheckup;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
+import java.util.List;
 
-/**
- *
- */
-@Service(value = "checkupsManager")
-public class CheckupsManagerImpl implements CheckupsManager {
+@Transactional(propagation = Propagation.MANDATORY)
+public interface FootCheckupDao {
 
-    @Inject
-    private CheckupsDao checkupsDao;
+    List<FootCheckup> get(String userName);
 
+    void save(FootCheckup checkups);
 
-    @Override
-    public Checkups get(String userName) {
-        return checkupsDao.get(userName);
-    }
+    void delete(Long id);
 
-    @Override
-    public void save(Checkups checkups) {
-        checkupsDao.save(checkups);
-    }
+    void delete(String nhsno, String unitcode);
 
-    @Override
-    public void delete(Long id) {
-        checkupsDao.delete(id);
-    }
+    List<FootCheckup> getAll();
 }

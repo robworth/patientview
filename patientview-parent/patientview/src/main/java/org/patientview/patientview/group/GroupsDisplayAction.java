@@ -21,40 +21,34 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.checkups;
+package org.patientview.patientview.group;
 
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.ibd.action.BaseAction;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.EyeCheckup;
-import org.patientview.patientview.model.FootCheckup;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class CheckupsAction extends BaseAction {
+public class GroupsDisplayAction extends Action {
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+    public ActionForward execute(
+            ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
 
-        List<FootCheckup> footCheckups = LegacySpringUtils.getFootCheckupManager().get(user.getUsername());
-        List<EyeCheckup> eyeCheckups = LegacySpringUtils.getEyeCheckupManager().get(user.getUsername());
-
-        if (footCheckups != null && !footCheckups.isEmpty()) {
-            request.setAttribute("footCheckup", footCheckups.get(0));
+        if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
+            List<Unit> units = LegacySpringUtils.getUnitManager().getAll(null, new String[]{"radargroup"});
+            request.getSession().setAttribute("units", units);
         }
 
-        if (eyeCheckups != null && !eyeCheckups.isEmpty()) {
-            request.setAttribute("eyeCheckup", eyeCheckups.get(0));
-        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

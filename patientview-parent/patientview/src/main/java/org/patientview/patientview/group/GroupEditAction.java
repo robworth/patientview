@@ -20,30 +20,33 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
 
+package org.patientview.patientview.group;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.Unit;
+import org.patientview.utils.LegacySpringUtils;
 
-import javax.servlet.ServletContext;
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- */
-public interface ImportManager {
+public class GroupEditAction extends Action {
 
-    void update(ServletContext context, File xmlFile) throws Exception;
+    public ActionForward execute(
+        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String unitcode = BeanUtils.getProperty(form, "unitcode");
 
-    void update(File xmlFile);
+        Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
 
-    /**
-     * This method is here because importer task should running without login user's authority,
-     * so copy it from UnitManger to here.
-     */
-    Unit retrieveUnit(String unitcode);
+        request.getSession().setAttribute("unit", unit);
 
-    void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
-
-    void renameDirectory(ServletContext context, File xmlFile);
+        return LogonUtils.logonChecks(mapping, request);
+    }
 
 }

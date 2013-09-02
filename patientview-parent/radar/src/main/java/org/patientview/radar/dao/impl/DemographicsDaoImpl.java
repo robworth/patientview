@@ -13,6 +13,7 @@ import org.patientview.radar.dao.generic.GenericDiagnosisDao;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.apache.commons.lang.StringUtils;
+import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,10 +25,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -523,5 +524,39 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    public DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode) {
+        String sql = "SELECT "
+                + "user.email, user.emailverified, user.accountlocked, "
+                + "emailverification.lastverificationdate, user.lastlogon, pv_user_log.lastdatadate "
+                + "FROM "
+                + "( SELECT DISTINCT username, nhsno FROM usermapping "
+                + "  WHERE nhsno = ? AND username NOT LIKE '%_GP' ) AS un "
+                + "LEFT JOIN pv_user_log ON un.nhsno = pv_user_log.nhsno, "
+                + "user LEFT JOIN emailverification ON user.username = emailverification.username "
+                + "WHERE "
+                + "user.username = un.username ";
+        List<Object> params = new ArrayList<Object>();
+        params.add(nhsno);
+        try {
+            return jdbcTemplate.queryForObject(sql, params.toArray(), new DemographicsUserDetailMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No DemographicsUserDetail found for nhsno:"+nhsno);
+            return new DemographicsUserDetail();
+        }
+    }
+
+    private class DemographicsUserDetailMapper implements RowMapper<DemographicsUserDetail> {
+
+        public DemographicsUserDetail mapRow(ResultSet resultSet, int i) throws SQLException {
+            DemographicsUserDetail patient = new DemographicsUserDetail();
+            patient.setLastverificationdate(resultSet.getDate("lastverificationdate"));
+            patient.setEmail(resultSet.getString("email"));
+            patient.setLastlogon(resultSet.getDate("lastlogon"));
+            patient.setAccountlocked(resultSet.getBoolean("accountlocked"));
+            patient.setLastdatadate(resultSet.getDate("lastdatadate"));
+            return patient;
+        }
     }
 }

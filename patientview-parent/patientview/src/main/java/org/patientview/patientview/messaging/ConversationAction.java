@@ -50,6 +50,9 @@ public class ConversationAction extends BaseAction {
         User user = UserUtils.retrieveUser(request);
         User loggedInUser = getUserManager().getLoggedInUser();
 
+        if (user == null) {
+            return mapping.findForward(ERROR);
+        }
         // add the conversation and messages to the page
         Conversation conversation = getMessageManager().getConversationForUser(getConversationId(request),
                 user.getId());

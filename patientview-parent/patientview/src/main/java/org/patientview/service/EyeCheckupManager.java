@@ -21,18 +21,26 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository;
+package org.patientview.service;
 
-import org.patientview.patientview.model.Checkups;
+import org.patientview.patientview.model.EyeCheckup;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(propagation = Propagation.MANDATORY)
-public interface CheckupsDao {
+import java.util.List;
 
-    Checkups get(String userName);
+/**
+ *
+ */
+@Transactional(propagation = Propagation.REQUIRED)
+public interface EyeCheckupManager {
 
-    void save(Checkups checkups);
+    List<EyeCheckup> get(String userName);
+
+    void save(EyeCheckup checkups);
 
     void delete(Long id);
+
+    void delete(String nhsno, String unitcode);
+
 }

@@ -55,7 +55,7 @@ public class XmlImportReader extends ListItemReader<Object> {
     private EmailQueueManager emailQueueManager;
 
     @Value("${run.import.export.threads}")
-    private String rumImport;
+    private String runImport;
 
     @Value("${run.ukt.threads}")
     private String runUkt;
@@ -84,7 +84,7 @@ public class XmlImportReader extends ListItemReader<Object> {
     public void refresh() {
 
         try {
-            if ((rumImport == null) || !"false".equals(rumImport)) {
+            if ((runImport == null) || !"false".equals(runImport)) {
                 File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
                 if (xmlFiles != null && xmlFiles.length > 0) {
                     updateXmlFiles(xmlFiles);

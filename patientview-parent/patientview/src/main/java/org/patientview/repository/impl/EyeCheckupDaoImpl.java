@@ -23,35 +23,46 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Checkups;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.CheckupsDao;
+import org.patientview.repository.EyeCheckupDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
 
-@Repository(value = "checkupsDao")
-public class CheckupsDaoImpl extends AbstractHibernateDAO<Checkups> implements CheckupsDao {
+@Repository(value = "eyeCheckupDao")
+public class EyeCheckupDaoImpl extends AbstractHibernateDAO<EyeCheckup> implements EyeCheckupDao {
 
     @Override
-    public Checkups get(String userName) {
+    public List<EyeCheckup> get(String userName) {
         if (null != userName && !"".equals(userName)) {
-            String sql = "SELECT DISTINCT dia_checkups.* FROM dia_checkups, usermapping "
-                    + "WHERE dia_checkups.nhsno = usermapping.nhsno "
-                    + "AND usermapping.username = :username ";
+            String sql = "SELECT DISTINCT dia_eyecheckup.* FROM dia_eyecheckup, usermapping "
+                    + "WHERE dia_eyecheckup.nhsno = usermapping.nhsno "
+                    + "AND usermapping.username = :username ORDER BY dia_eyecheckup.lastRetinalDate DESC";
 
-            Query query = getEntityManager().createNativeQuery(sql, Checkups.class);
+            Query query = getEntityManager().createNativeQuery(sql, EyeCheckup.class);
 
             query.setParameter("username", userName);
 
-            List<Checkups> checkupses = query.getResultList();
-            if (!checkupses.isEmpty()) {
-                return checkupses.get(0);
-            } else {
-                return null;
-            }
+            return query.getResultList();
+
         }
         return null;
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        if (nhsno == null || nhsno.length() == 0) {
+            throw new IllegalArgumentException("nhsno and unitcode are required parameter to delete checkups");
+        }
+
+        Query query = getEntityManager().createQuery(
+                "DELETE FROM EyeCheckup WHERE nhsno = :nhsno AND unitcode = :unitcode");
+
+        query.setParameter("nhsno", nhsno);
+        query.setParameter("unitcode", unitcode);
+
+        query.executeUpdate();
     }
 }

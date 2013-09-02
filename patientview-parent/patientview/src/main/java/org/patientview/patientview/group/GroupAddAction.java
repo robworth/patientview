@@ -21,40 +21,45 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.checkups;
+package org.patientview.patientview.group;
 
-import org.apache.struts.action.ActionForm;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.ibd.action.BaseAction;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionForm;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.EyeCheckup;
-import org.patientview.patientview.model.FootCheckup;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
-public class CheckupsAction extends BaseAction {
+public class GroupAddAction extends Action {
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+    public ActionForward execute(
+        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
 
-        User user = UserUtils.retrieveUser(request);
+        Unit checkExistUnit = LegacySpringUtils.getImportManager().retrieveUnit(
+                BeanUtils.getProperty(form, "unitcode"));
 
-        List<FootCheckup> footCheckups = LegacySpringUtils.getFootCheckupManager().get(user.getUsername());
-        List<EyeCheckup> eyeCheckups = LegacySpringUtils.getEyeCheckupManager().get(user.getUsername());
+        if (checkExistUnit != null) {
+            ActionMessages errors = new ActionMessages();
+            errors.add("unitcode", new ActionMessage("data.exist", new String[] {"Code"}));
+            saveErrors(request, errors);
 
-        if (footCheckups != null && !footCheckups.isEmpty()) {
-            request.setAttribute("footCheckup", footCheckups.get(0));
+            return mapping.findForward("input");
         }
 
-        if (eyeCheckups != null && !eyeCheckups.isEmpty()) {
-            request.setAttribute("eyeCheckup", eyeCheckups.get(0));
-        }
+        Unit unit = new Unit();
+        unit.setSourceType("radargroup");
+        UnitUtils.buildUnit(unit, form);
+        LegacySpringUtils.getUnitManager().save(unit);
+        request.setAttribute("unit", unit);
 
         return LogonUtils.logonChecks(mapping, request);
     }

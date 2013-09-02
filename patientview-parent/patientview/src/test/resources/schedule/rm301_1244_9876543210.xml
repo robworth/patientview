@@ -160,6 +160,72 @@
                 <allergydescription>allergydescription</allergydescription>
             </allergy>
         </allergydetails>
+        <footcheckups>
+            <footcheckup>
+                <datestamp>2010-01-07</datestamp>
+                <location>GP Surgery</location>
+                <foot side="left">
+                    <dppulse>23</dppulse>
+                    <ptpulse>43</ptpulse>
+                    <tengmonofilament>3</tengmonofilament>
+                    <riskscore>67</riskscore>
+                </foot>
+                <foot side="right">
+                    <dppulse>34</dppulse>
+                    <ptpulse>54</ptpulse>
+                    <tengmonofilament>6</tengmonofilament>
+                    <riskscore>89</riskscore>
+                </foot>
+            </footcheckup>
+            <footcheckup>
+                <datestamp>2012-04-16</datestamp>
+                <location>clinic</location>
+                <foot side="left">
+                    <dppulse>53</dppulse>
+                    <ptpulse>65</ptpulse>
+                    <tengmonofilament>7</tengmonofilament>
+                    <riskscore>57</riskscore>
+                </foot>
+                <foot side="right">
+                    <dppulse>52</dppulse>
+                    <ptpulse>56</ptpulse>
+                    <tengmonofilament>8</tengmonofilament>
+                    <riskscore>76</riskscore>
+                </foot>
+            </footcheckup>
+        </footcheckups>
+
+        <eyecheckups>
+            <eyecheckup>
+                <datestamp>2010-01-07</datestamp>
+                <location>GP Surgery</location>
+                <eye side="left">
+                    <rgrade>24</rgrade>
+                    <mgrade>44</mgrade>
+                    <va>2</va>
+                </eye>
+                <eye side="right">
+                    <rgrade>35</rgrade>
+                    <mgrade>58</mgrade>
+                    <va>1</va>
+                </eye>
+            </eyecheckup>
+            <eyecheckup>
+                <datestamp>2012-04-16</datestamp>
+                <location>clinic</location>
+                <eye side="left">
+                    <rgrade>59</rgrade>
+                    <mgrade>61</mgrade>
+                    <va>5</va>
+                </eye>
+                <eye side="right">
+                    <rgrade>55</rgrade>
+                    <mgrade>50</mgrade>
+                    <va>9</va>
+                </eye>
+            </eyecheckup>
+        </eyecheckups>
+
     </patient>
 </patientview>
 
