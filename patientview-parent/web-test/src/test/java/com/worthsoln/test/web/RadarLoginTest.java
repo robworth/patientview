@@ -15,6 +15,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
  * Use the professional login page to test login Radar.
+ * there should be a radar-login-web-test.properties file in filter folder.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-context.xml")
