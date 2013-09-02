@@ -266,7 +266,9 @@
         <th class="tablecellbold">Diabetes Type</th>
 
         <td class="tablecell">
-            Type 1
+            <logic:present property="myDiabetes" name="patientDetail">
+            <bean:write name="patientDetail" property="myDiabetes.diabetesType"/>
+            </logic:present>
         </td>
     </tr>
 
@@ -274,7 +276,9 @@
         <th class="tablecellbold">Year Diagnosed</th>
 
         <td class="tablecell">
-            1998
+            <logic:present property="myDiabetes" name="patientDetail">
+            <bean:write name="patientDetail" property="myDiabetes.yearDiagnosed"/>
+            </logic:present>
         </td>
     </tr>
 

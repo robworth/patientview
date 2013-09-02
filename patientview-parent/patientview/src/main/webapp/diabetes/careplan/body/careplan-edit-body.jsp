@@ -1,6 +1,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~ PatientView
   ~
@@ -30,8 +33,25 @@
     <h1>Care Plan</h1>
 </div>
 
-<html:form action="/careplan-update" styleClass="row">
-<html:errors/>
+<form:form action="/diabetes/web/careplan-update" class="row" modelAttribute="carePlan">
+<form:hidden path="id"/>
+<form:hidden path="nhsno"/>
+<c:if test="${messages!=null && messages}">
+    <div class="alert alert-error">
+        <p>To continue you must meet the following criteria</p>
+        <ul>
+            <form:errors path="whatCanBeDone" element="li"/>
+            <form:errors path="goals" element="li"/>
+            <form:errors path="goalToAchieve" element="li"/>
+            <form:errors path="importanceId" element="li"/>
+            <form:errors path="howToAchieveGoal" element="li"/>
+            <form:errors path="barriers" element="li"/>
+            <form:errors path="confidenceId" element="li"/>
+            <form:errors path="reviewDate" element="li"/>
+            <form:errors path="nhsno" element="li"/>
+        </ul>
+    </div>
+</c:if>
 
 <fieldset class="span12">
 <div class="row">
@@ -67,16 +87,14 @@
         <label class="control-label">
             Diabetes overall
 
-            <logic:present name="overallMyConditionLink">
-                <a href="<bean:write name="overallMyConditionLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="diabetesOverallLink">
+                <a href="${diabetesOverallLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="overallMyConditionScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="overallMyConditionScore" />"
-                   step="1"/>
+            <form:input path="diabetesOverallScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -84,16 +102,14 @@
         <label class="control-label">
             Mood
 
-            <logic:present name="tirednessFatigueLink">
-                <a href="<bean:write name="tirednessFatigueLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="moodLink">
+                <a href="${moodLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="tirednessFatigueScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="tirednessFatigueScore" />"
-                   step="1"/>
+            <form:input path="moodScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -101,16 +117,14 @@
         <label class="control-label">
             Diabetes Control
 
-            <logic:present name="managingPainLink">
-                <a href="<bean:write name="managingPainLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="diabetesControlLink">
+                <a href="${diabetesControlLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="managingPainScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="managingPainScore" />"
-                   step="1"/>
+            <form:input path="diabetesControlScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -118,16 +132,14 @@
         <label class="control-label">
             Hypoglycaemia
 
-            <logic:present name="stressAndWorryLink">
-                <a href="<bean:write name="stressAndWorryLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="hypoglycaemiaLink">
+                <a href="${hypoglycaemiaLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="stressAndWorryScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="stressAndWorryScore" />"
-                   step="1"/>
+            <form:input path="hypoglycaemiaScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -135,17 +147,14 @@
         <label class="control-label">
             Weight
 
-            <logic:present name="supportFromFamilyAndFriendsLink">
-                <a href="<bean:write name="supportFromFamilyAndFriendsLink"/>" target="_blank"><i
-                        class="icon-info-sign"></i></a>
+            <logic:present name="weightLink">
+                <a href="${weightLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="supportFromFamilyAndFriendsScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="supportFromFamilyAndFriendsScore" />"
-                   step="1"/>
+            <form:input path="weightScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -153,17 +162,14 @@
         <label class="control-label">
             Blood Pressure
 
-            <logic:present name="managingMySocialLifeHobbiesLink">
-                <a href="<bean:write name="managingMySocialLifeHobbiesLink"/>" target="_blank"><i
-                        class="icon-info-sign"></i></a>
+            <logic:present name="bloodPressureLink">
+                <a href="${bloodPressureLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="managingMySocialLifeHobbiesScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="managingMySocialLifeHobbiesScore" />"
-                   step="1"/>
+            <form:input path="bloodPressureScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -171,17 +177,14 @@
         <label class="control-label">
             Cholesterol
 
-            <logic:present name="managingWorkStudiesLink">
-                <a href="<bean:write name="managingWorkStudiesLink"/>" target="_blank"><i
-                        class="icon-info-sign"></i></a>
+            <logic:present name="cholesterolLink">
+                <a href="${cholesterolLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="managingWorkStudiesScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="managingWorkStudiesScore" />"
-                   step="1"/>
+            <form:input path="cholesterolScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -189,17 +192,14 @@
         <label class="control-label">
             Smoking / Alcohol
 
-            <logic:present name="takingMyMedicinesRegularlyLink">
-                <a href="<bean:write name="takingMyMedicinesRegularlyLink"/>" target="_blank"><i
-                        class="icon-info-sign"></i></a>
+            <logic:present name="smokingAlcoholLink">
+                <a href="${smokingAlcoholLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="takingMyMedicinesRegularlyScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="takingMyMedicinesRegularlyScore" />"
-                   step="1"/>
+            <form:input path="smokingAlcoholScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -214,16 +214,14 @@
         <label class="control-label">
             Eating / Exercise / Sport
 
-            <logic:present name="managingFlareUpsLink">
-                <a href="<bean:write name="managingFlareUpsLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="eatingExerciseSportLink">
+                <a href="${eatingExerciseSportLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="managingFlareUpsScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="managingFlareUpsScore" />"
-                   step="1"/>
+            <form:input path="eatingExerciseSportScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -231,16 +229,14 @@
         <label class="control-label">
             Driving / Work / Study
 
-            <logic:present name="stoppingSmokingLink">
-                <a href="<bean:write name="stoppingSmokingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="drivingWorkStudyLink">
+                <a href="${drivingWorkStudyLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="stoppingSmokingScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="stoppingSmokingScore" />"
-                   step="1"/>
+            <form:input path="drivingWorkStudyScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -248,16 +244,14 @@
         <label class="control-label">
             Pregnancy / Sex / Relationships
 
-            <logic:present name="sleepingLink">
-                <a href="<bean:write name="sleepingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="pregnancySexRelationshipsLink">
+                <a href="${pregnancySexRelationshipsLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="sleepingScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="sleepingScore" />"
-                   step="1"/>
+            <form:input path="pregnancySexRelationshipsScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -265,17 +259,14 @@
         <label class="control-label">
             Eyes
 
-            <logic:present name="sexualRelationshipsLink">
-                <a href="<bean:write name="sexualRelationshipsLink"/>" target="_blank"><i
-                        class="icon-info-sign"></i></a>
+            <logic:present name="eyesLink">
+                <a href="${eyesLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="sexualRelationshipsScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="sexualRelationshipsScore" />"
-                   step="1"/>
+            <form:input path="eyesScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -283,16 +274,14 @@
         <label class="control-label">
             Kidneys
 
-            <logic:present name="fertilityPregnancyLink">
-                <a href="<bean:write name="fertilityPregnancyLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="kidneysLink">
+                <a href="${kidneysLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="fertilityPregnancyScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="fertilityPregnancyScore" />"
-                   step="1"/>
+            <form:input path="kidneysScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -300,17 +289,14 @@
         <label class="control-label">
             Feet
 
-            <logic:present name="learningAboutMyConditionLink">
-                <a href="<bean:write name="learningAboutMyConditionLink"/>" target="_blank"><i
-                        class="icon-info-sign"></i></a>
+            <logic:present name="feetLink">
+                <a href="${feetLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="learningAboutMyConditionScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="learningAboutMyConditionScore" />"
-                   step="1"/>
+            <form:input path="feetScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -318,16 +304,14 @@
         <label class="control-label">
             Heart Attacks / Strokes
 
-            <logic:present name="eatingAHealthyDietLink">
-                <a href="<bean:write name="eatingAHealthyDietLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="heartAttacksStrokesLink">
+                <a href="${heartAttacksStrokesLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="eatingAHealthyDietScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="eatingAHealthyDietScore" />"
-                   step="1"/>
+            <form:input path="heartAttacksStrokesScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -335,16 +319,14 @@
         <label class="control-label">
             Taking medication regularly
 
-            <logic:present name="travellingLink">
-                <a href="<bean:write name="travellingLink"/>" target="_blank"><i class="icon-info-sign"></i></a>
+            <logic:present name="takingMedicationRegularlyLink">
+                <a href="${takingMedicationRegularlyLink}" target="_blank"><i class="icon-info-sign"></i></a>
             </logic:present>
         </label>
 
         <div class="controls sliderContainer">
             <i class="smile happy">&#9786;</i>
-            <input name="travellingScore" type="range" min="0" max="10"
-                   value="<bean:write name="carePlanForm" property="travellingScore" />"
-                   step="1"/>
+            <form:input path="takingMedicationRegularlyScore" type="range" min="0" max="10" step="1"/>
             <i class="smile sad">&#9785;</i>
         </div>
     </div>
@@ -356,7 +338,7 @@
         <label>
             Use the box below to add further topic areas that you would like to explore.
         </label>
-        <html:textarea property="otherAreasToDiscuss" rows="5" styleClass="span6"/>
+        <form:textarea path="otherAreasToDiscuss" rows="5" class="span6"/>
         <ul>
             <li>
                 If you would like, you could create a personal care plan. To learn more about care plans and for further
@@ -377,22 +359,22 @@
         <p>
             My goals for changing/improving my diabetes are:
             <br/>
-            <html:textarea property="goals" rows="5" styleClass="span6"/>
+            <form:textarea path="goals" rows="5" class="span6"/>
         </p>
 
         <p>
             Think about these goals, what one goal would you like to achieve?
             <br/>
-            <html:textarea property="goalToAchieve" rows="5" styleClass="span6"/>
+            <form:textarea path="goalToAchieve" rows="5" class="span6"/>
         </p>
 
         <p>
             How important is achieving this goal to you?
             <br/>
             <logic:present name="importanceList" scope="session">
-                <html:select property="importanceId">
-                    <html:options collection="importanceList" property="id" labelProperty="name"/>
-                </html:select>
+                <form:select path="importanceId" itemValue="${importanceId}">
+                    <form:options items="${importanceList}" itemLabel="name" itemValue="id"/>
+                </form:select>
             </logic:present>
         </p>
     </div>
@@ -412,28 +394,28 @@
         <br/>
         (How, what, when, where, how often)
         <br/>
-        <html:textarea property="howToAchieveGoal" rows="5" styleClass="span6"/>
+        <form:textarea path="howToAchieveGoal" rows="5" class="span6"/>
     </p>
 
     <p>
         What are the barriers that could get in the way?
         <br/>
-        <html:textarea property="barriers" rows="5" styleClass="span6"/>
+        <form:textarea path="barriers" rows="5" class="span6"/>
     </p>
 
     <p>
         What can I do about this?
         <br/>
-        <html:textarea property="whatCanBeDone" rows="5" styleClass="span6"/>
+        <form:textarea path="whatCanBeDone" rows="5" class="span6"/>
     </p>
 
     <p>
         How confident do I feel?
         <br/>
         <logic:present name="confidenceList" scope="session">
-            <html:select property="confidenceId">
-                <html:options collection="confidenceList" property="id" labelProperty="name"/>
-            </html:select>
+            <form:select path="confidenceId">
+                <form:options items="${confidenceList}" itemLabel="name" itemValue="id"/>
+            </form:select>
         </logic:present>
     </p>
 
@@ -441,9 +423,8 @@
         Date set to review my Care Plan
         <br/>
 
-    <div class="input-append date datePicker" data-date="<bean:write name="carePlanForm" property="reviewDate"/>">
-        <input name="reviewDate" class="span2" size="16" type="text"
-               value="<bean:write name="carePlanForm" property="reviewDate"/>" readonly>
+    <div class="input-append date datePicker" data-date="<fmt:formatDate value='${carePlan.reviewDate}' pattern='dd-MM-yyyy'/>">
+        <input id="reviewDate" name="reviewDate" class="span2" size="16" type="text" readonly="true" value="<fmt:formatDate value='${carePlan.reviewDate}' pattern='dd-MM-yyyy'/>"/>
         <span class="add-on"><i class="icon-th"></i></span>
     </div>
     </p>
@@ -451,8 +432,9 @@
 
 <div class="form-actions">
     <html:submit value="Save" styleClass="btn btn-primary"/>
+
 </div>
 </fieldset>
-</html:form>
+</form:form>
 </div>
 </div>
