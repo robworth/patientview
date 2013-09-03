@@ -47,7 +47,7 @@
     <mvc:annotation-driven validator="validator" />
     <mvc:default-servlet-handler/>
 
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+    <bean id="validator" class="org.patientview.patientview.controller.LocalValidatorFactoryBean">
         <property name="validationMessageSource" ref="validationMessageSource"/>
     </bean>
 
