@@ -88,8 +88,6 @@ public class XmlImportReader extends ListItemReader<Object> {
                 File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
                 if (xmlFiles != null && xmlFiles.length > 0) {
                     updateXmlFiles(xmlFiles);
-                    Date now = new Date(System.currentTimeMillis());
-                    LOGGER.debug("XmlParserThread " + dateFormat.format(now));
                 }
             }
 
@@ -98,8 +96,7 @@ public class XmlImportReader extends ListItemReader<Object> {
                 File[] uktFiles = uktDir.listFiles(new UktFileFilter());
                 if (uktFiles != null && uktFiles.length > 0) {
                     updateUktFiles(uktFiles);
-                    Date now = new Date(System.currentTimeMillis());
-                    LOGGER.debug("UktParserThread " + dateFormat.format(now));
+
                 }
 
                 File uktExportDir = new File(uktExportDirectory);
@@ -113,16 +110,14 @@ public class XmlImportReader extends ListItemReader<Object> {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(),e);
         }
     }
 
     private void updateXmlFiles(File[] xmlFiles) {
-
         if (xmlFiles != null && xmlFiles.length > 0) {
-
-            LOGGER.info("Starting XmlParserThread for {} files", xmlFiles.length);
-
+            LOGGER.debug("Starting XmlParserThread for {} files", xmlFiles.length);
             for (int i = 0; i < xmlFiles.length; i++) {
                 LOGGER.debug("Starting XmlParserThread for {} file", xmlFiles[i].getAbsolutePath());
                 XmlParserUtils.updateXmlData(xmlFiles[i]);
@@ -133,7 +128,9 @@ public class XmlImportReader extends ListItemReader<Object> {
     }
 
     private void updateUktFiles(File[] uktFiles) {
+        LOGGER.debug("Starting UktParserThread for {} files", uktFiles.length);
         for (int i = 0; i < uktFiles.length; i++) {
+            LOGGER.debug("Starting UktParserThread for {} file", uktFiles[i].getAbsolutePath());
             UktParserUtils.updateData(uktFiles[i]);
             uktFiles[i].delete();
         }
