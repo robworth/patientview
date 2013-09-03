@@ -34,14 +34,18 @@ import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GroupAddAction extends Action {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupAddAction.class);
+
     public ActionForward execute(
-        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
         Unit checkExistUnit = LegacySpringUtils.getImportManager().retrieveUnit(
@@ -49,17 +53,25 @@ public class GroupAddAction extends Action {
 
         if (checkExistUnit != null) {
             ActionMessages errors = new ActionMessages();
-            errors.add("unitcode", new ActionMessage("data.exist", new String[] {"Code"}));
+            errors.add("unitcode", new ActionMessage("data.exist", new String[]{"Code"}));
             saveErrors(request, errors);
 
             return mapping.findForward("input");
         }
 
         Unit unit = new Unit();
-        unit.setSourceType("radargroup");
-        UnitUtils.buildUnit(unit, form);
-        LegacySpringUtils.getUnitManager().save(unit);
-        request.setAttribute("unit", unit);
+        try {
+            unit.setSourceType("radargroup");
+            UnitUtils.buildUnit(unit, form);
+
+            LegacySpringUtils.getUnitManager().save(unit);
+
+            request.setAttribute("unit", unit);
+            request.setAttribute("succeedMsg", "Added the group successfully.");
+        } catch (Exception e) {
+            LOGGER.error("Could not add group: ", e);
+            request.setAttribute("failureMsg", "Could not add the group.");
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

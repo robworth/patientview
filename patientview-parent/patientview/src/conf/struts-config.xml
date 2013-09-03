@@ -674,7 +674,8 @@
             type="org.patientview.patientview.StaticLinkEditAction"
             name="edtaCodeForm"
             input="input"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="input" path="/control/edta_code_edit.jsp"/>
       <forward name="success" path="/control/edta_code_edit.jsp"/>
     </action>
@@ -776,7 +777,8 @@
     <action path="/control/patientAddInput"
             type="org.patientview.patientview.logon.LogonAddInputAction"
             name="patientForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/patient_add_input.jsp"/>
     </action>
 
@@ -846,8 +848,16 @@
     <action path="/control/unitAdminAddInput"
             type="org.patientview.patientview.logon.LogonAddInputAction"
             name="patientForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/unit_admin_add_input.jsp"/>
+    </action>
+
+    <action path="/control/addRadarUser"
+              type="org.patientview.patientview.logon.RadarUserUnitAction"
+              name="patientForm"
+              scope="request">
+          <forward name="success" path="/control/unit_admin_add_input.jsp"/>
     </action>
 
     <action path="/control/unitAdminAdd"
@@ -922,7 +932,8 @@
     <action path="/control/unitPatientsUnitSelect"
             type="org.patientview.patientview.logon.LogonAddInputAction"
             name="unitForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/unit_patients_unit_select.jsp"/>
     </action>
 
@@ -936,9 +947,17 @@
     <action path="/control/unitUsersUnitSelect"
             type="org.patientview.patientview.logon.LogonAddInputAction"
             name="unitForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/unit_users_unit_select.jsp"/>
     </action>
+
+      <action path="/control/radarUsersSelect"
+              type="org.patientview.patientview.logon.RadarUserUnitAction"
+              name="unitForm"
+              scope="request">
+          <forward name="success" path="/control/unit_users_unit_select.jsp"/>
+      </action>
 
     <action path="/control/unitUsers"
             type="org.patientview.patientview.logon.UnitUsersAction"
@@ -957,7 +976,8 @@
     <action path="/control/feedbackUnitSelect"
             type="org.patientview.patientview.logon.LogonAddInputAction"
             name="unitForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/feedback_unit_select.jsp"/>
     </action>
 
@@ -1061,7 +1081,8 @@
             type="org.patientview.patientview.logging.LogViewAction"
             name="logForm"
             input="input"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="input" path="/control/log_view.jsp"/>
       <forward name="success" path="/control/log_view.jsp"/>
     </action>
@@ -1105,7 +1126,8 @@
     <action path="/control/newsList"
             type="org.patientview.patientview.news.NewsListAction"
             name="newsForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/news_list.jsp"/>
     </action>
 
@@ -1146,7 +1168,8 @@
       <action path="/control/newsView"
               type="org.patientview.patientview.news.NewsListAction"
               name="newsForm"
-              scope="request">
+              scope="request"
+              validate="false">
           <forward name="success" path="/control/index.jsp"/>
       </action>
       <!-- note this is for patients -->
@@ -1168,7 +1191,8 @@
     <action path="/control/splashPageList"
             type="org.patientview.patientview.splashpage.SplashPageListAction"
             name="splashPageForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/splash_page_list.jsp"/>
     </action>
 
@@ -1216,7 +1240,8 @@
     <action path="/control/xmlFileSelect"
             type="org.patientview.patientview.IndexAction"
             name="xmlFileViewForm"
-            scope="request">
+            scope="request"
+            validate="false">
         <forward name="success" path="/control/xml_file_select.jsp"/>
     </action>
 
