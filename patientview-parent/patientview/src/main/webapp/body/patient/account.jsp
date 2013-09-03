@@ -29,6 +29,12 @@
 <html:xhtml/>
 
 <html:errors/>
+<logic:present name="emailMsg">
+    <div class="alert alert-success"><bean:write name="emailMsg" /></div>
+</logic:present>
+<logic:present name="passwordMsg">
+    <div class="alert alert-success"><bean:write name="passwordMsg" /></div>
+</logic:present>
 
 <div>
     <h2>Update Email</h2>
