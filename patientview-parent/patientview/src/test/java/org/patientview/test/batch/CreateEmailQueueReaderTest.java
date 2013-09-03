@@ -76,7 +76,7 @@ public class CreateEmailQueueReaderTest extends BaseBatchTest {
         serviceHelpers.createSpecialtyUserRole(specialty, user3, "patient");
         serviceHelpers.createSpecialtyUserRole(specialty, user4, "patient");
 
-        securityHelpers.loginAsUser("adminuser");
+        securityHelpers.loginAsUser(adminUser.getUsername());
 
         Unit unitRm301 = new Unit();
         unitRm301.setUnitcode("UNITA");
