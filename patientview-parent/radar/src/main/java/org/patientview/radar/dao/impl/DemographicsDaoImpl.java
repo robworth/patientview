@@ -243,6 +243,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     }
 
     public List<Patient> getDemographicsByRenalUnit(Centre centre) {
+        String unitCode = centre.getUnitCode();
         return jdbcTemplate.query("SELECT pa.* " +
                 "FROM " +
                 "     (" +
@@ -252,7 +253,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 "          AND usermapping.username NOT LIKE '%-GP%' " +
                 "     ) AS pa " +
                 "WHERE pa.unitcode = ? OR pa.ucode = ?  ",
-                new Object[]{centre.getId(), centre.getId()}, new DemographicsRowMapper());
+                new Object[]{unitCode, unitCode, unitCode}, new DemographicsRowMapper());
     }
 
     public List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
