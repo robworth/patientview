@@ -82,11 +82,11 @@
         <tr class="tableheader">
             <th class="tableheader"><a href="#" onclick="sort('firstName')">First Name</a></th>
             <th class="tableheader"><a href="#" onclick="sort('lastName')">Last Name</a></th>
-            <th class="tableheader"><a href="#" onclick="sort('dateOfBirthFormatted')">Date of Birth</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('dateOfBirth')">Date of Birth</a></th>
             <th class="tableheader"><a href="#" onclick="sort('nhsNo')">NHS Number</a></th>
             <th class="tableheader"><a href="#" onclick="sort('unitcode')">Unit Code</a></th>
             <th class="tableheader"><a href="#" onclick="sort('email')">Email</a></th>
-            <th class="tableheader"><a href="#" onclick="sort('dateOfRequestFormatted')">Date of Request</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('dateOfRequest')">Date of Request</a></th>
             <th class="tableheader"><a href="#" onclick="sort('isComplete')">Completed</a></th>
             <th class="tableheader">Notes</th>
             <th class="tableheader" style="width: 50px;"></th>
