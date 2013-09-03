@@ -23,16 +23,18 @@
 
 package org.patientview.patientview.logon;
 
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.ActionMessage;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.user.EmailVerificationUtils;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +105,12 @@ public class PasswordChangeAction extends Action {
                 EmailVerificationUtils.createEmailVerification(user.getUsername(), user.getEmail(), request);
                 request.setAttribute("verificationMailSent", true);
             }
-            request.setAttribute("passwordMsg", "Password was updated successfully.");
+
+            // show success message
+            ActionMessages errors = new ActionMessages();
+            errors.add("emailAddressAgain", new ActionMessage("success.message", new String[]{"Password"}));
+            saveErrors(request, errors);
+
             return mapping.findForward("success");
         }
     }
