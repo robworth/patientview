@@ -53,7 +53,6 @@ public class BaseTestPvDbSchema {
 
         if (!isLocalTestEnvironment) {
             boolean isTestEnvironment = configEnvironment != null && configEnvironment.equals("test");
-
             if (!isTestEnvironment) {
                 throw new IllegalStateException("Cannot run tests using "
                         + configEnvironment
