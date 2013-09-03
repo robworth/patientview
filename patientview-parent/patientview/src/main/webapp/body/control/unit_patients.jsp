@@ -46,8 +46,13 @@
     <logic:notEmpty name="patients">
         <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
             <div class="row" style="float: right;">
-                <a href="./unitPatients?page=prev">Prev</a>&nbsp;
-                <a href="./unitPatients?page=next">Next</a>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <a href="./unitPatients?page=prev">Prev</a>
+                </logic:equal>
+                &nbsp;
+                <logic:equal value="false" name="patients" property="lastPage">
+                    <a href="./unitPatients?page=next">Next</a>
+                </logic:equal>
             </div>
         </div>
 
@@ -65,7 +70,7 @@
                 <th class="tableheader" onclick="sort('accountlocked')">Password</th>
                 <th class="tableheader" onclick="sort('lastverificationdate')">Last Email Verification Date</th>
                 <th class="tableheader" onclick="sort('rrtModality')">Modality</th>
-                <th class="tableheader" onclick="sort('lastdatadate')">last data received date</th>
+                <th class="tableheader" onclick="sort('lastdatadate')">Last Data Received Date</th>
                 <th colspan="5">&nbsp;</th>
             </tr>
             </thead>
@@ -178,7 +183,7 @@
                             <bean:define id="username" name="patient" property="username" />
                             <bean:define id="email" name="patient" property="email" />
                             <bean:define id="emailverfied" name="patient" property="emailverfied"/>
-                            <input type="button" value="Email Verification" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+                            <input type="button" value="Send Verification Email" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
                         </td>
                     </logic:present>
 
