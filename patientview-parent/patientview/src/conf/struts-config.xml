@@ -473,7 +473,8 @@
 
     <action path="/patient/patientSubmitsWeights" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
             name="patientResultForm"
-            input="input">
+            input="input"
+            validate="false">
       <forward name="input" path="/patient/patient_entry_weight.jsp"/>
       <forward name="success" path="/patient/patient_entry_weight.jsp"/>
     </action>
@@ -561,7 +562,8 @@
     <action path="/joinSubmit"
             type="org.patientview.patientview.join.JoinRequestSubmitAction"
             name="joinForm"
-            scope="request">
+            scope="request"
+            validate="false">
         <forward name="input" path="/join.jsp"/>
       <forward name="success" path="/join-request-confirmation.jsp"/>
     </action>
@@ -569,7 +571,8 @@
       <action path="/join"
               type="org.patientview.patientview.join.JoinRequestInputAction"
               name="joinForm"
-              scope="request">
+              scope="request"
+              validate="false">
         <forward name="success" path="/join.jsp"/>
       </action>
 
@@ -816,7 +819,8 @@
     <action path="/control/patientEditInput"
             type="org.patientview.patientview.logon.PatientEditInputAction"
             name="patientForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/patient_edit_input.jsp"/>
     </action>
 
@@ -916,7 +920,8 @@
     <action path="/control/unitEdit"
             type="org.patientview.patientview.unit.UnitEditAction"
             name="unitForm"
-            scope="request">
+            scope="request"
+            validate="false">
       <forward name="success" path="/control/unit_edit.jsp"/>
     </action>
 
@@ -1233,7 +1238,8 @@
     <action path="/control/xmlFileView"
             type="org.patientview.patientview.XmlFileViewAction"
             name="xmlFileViewForm"
-            scope="request">
+            scope="request"
+            validate="false">
         <forward name="success" path="/control/xml_file_view.jsp"/>
     </action>
 
