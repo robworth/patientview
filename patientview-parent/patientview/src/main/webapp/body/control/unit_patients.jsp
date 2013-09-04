@@ -28,11 +28,12 @@
   --%>
 
 <html:xhtml/>
+<div class="span9">
 
     <a class="pull-right" href="http://www.renal.org/rixg/adminhelp.html" target="_blank">Help</a>
-    <logic:present name="unit">
-        <div class="page-header"><h1>Patients for Unit <bean:write name="unit" property="name"/></h1></div>
-    </logic:present>
+    <div class="page-header">
+        <h1>Patients for Unit <logic:notEmpty name="unit"><bean:write name="unit" property="name"/></logic:notEmpty></h1>
+    </div>
 
 
 
@@ -57,7 +58,6 @@
         </div>
 
         <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
-            <thead>
             <tr>
                 <th class="tableheader" onclick="sort('name')">Name<br />(edit)</th>
                 <th class="tableheader" onclick="sort('nhsno')">NHS Number<br />(view patient)</th>
@@ -73,7 +73,6 @@
                 <th class="tableheader" onclick="sort('lastdatadate')">Last Data Received Date</th>
                 <th colspan="5">&nbsp;</th>
             </tr>
-            </thead>
             <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon" property="pageList">
 
                 <%
@@ -191,7 +190,7 @@
             </logic:iterate>
         </table>
     </logic:notEmpty>
-</div>
+
 </div>
 <script src="/js/emailverification.js" type="text/javascript"></script>
 
