@@ -3,7 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 <%@ page import="org.patientview.utils.LegacySpringUtils" %>
-
 <%--
   ~ PatientView
   ~
@@ -38,11 +37,11 @@
 <logic:notEmpty name="unitUsers">
     <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
         <div class="row" style="float: right;">
-            <logic:equal value="false" name="patients" property="firstPage">
+            <logic:equal value="false" name="unitUsers" property="firstPage">
                 <a href="./unitUsers?page=prev">Prev</a>&nbsp;
             </logic:equal>
             &nbsp;
-            <logic:equal value="false" name="patients" property="lastPage">
+            <logic:equal value="false" name="unitUsers" property="lastPage">
                 <a href="./unitUsers?page=next">Next</a>
             </logic:equal>
         </div>
@@ -63,7 +62,7 @@
         <th></th>
         <th></th>
       </tr>
-    <logic:iterate id="unitUser" name="unitUsers" property="pageList">
+    <logic:iterate id="unitUser" name="unitUsers" type="org.patientview.patientview.logon.UnitAdmin" property="pageList">
       <tr>
         <td class="tablecell"><bean:write name="unitUser" property="name"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="username"/></td>
