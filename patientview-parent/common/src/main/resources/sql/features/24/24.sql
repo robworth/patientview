@@ -46,4 +46,4 @@ ALTER TABLE dia_eyecheckup ADD CONSTRAINT u_eye_date_nhsno_unitcode UNIQUE (last
 /**
     Add a column in emailverification table.
  */
-ALTER TABLE emailverification ADD COLUMN   `lastverificationdate` datetime DEFAULT NULL;
+ ALTER TABLE emailverification ADD COLUMN `lastverificationdate` DATETIME NULL;

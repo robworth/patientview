@@ -23,6 +23,7 @@
 
 package org.patientview.patientview.logon;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.ibd.Ibd;
 
 import java.util.Date;
@@ -40,7 +41,7 @@ public class PatientLogonWithTreatment extends PatientLogon {
     }
 
     public void setTreatment(String treatment) {
-        this.treatment = treatment;
+        this.treatment = StringUtils.defaultIfBlank(treatment, "");
     }
 
     public Date getDateofbirth() {
