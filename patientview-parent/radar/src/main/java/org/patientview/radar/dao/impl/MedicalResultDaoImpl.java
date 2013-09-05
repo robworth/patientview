@@ -175,11 +175,6 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
             } else if (code.equals("BPdia")) {
                 item.setObjectValue(medicalResult.getBpDiastolic());
                 item.setDate(medicalResult.getBpDate());
-            } else if (code.equals("antihypertensive")) {
-                if (medicalResult.getAntihypertensiveDrugs() != null) {
-                    item.setObjectValue(medicalResult.getAntihypertensiveDrugs().getId());
-                    item.setDate(medicalResult.getAntihypertensiveDrugsDate());
-                }
             } else if (code.equals("PCR")) {
                 item.setObjectValue(medicalResult.getPcr());
                 item.setDate(medicalResult.getPcrDate());
@@ -240,12 +235,6 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
                     medicalResult.setBpDiastolic(bpDia);
                 }
                 medicalResult.setBpDate(date);
-            } else if (item.getTestcode().equals("antihypertensive")) {
-                if (item.getValue() != null) {
-                    MedicalResult.YesNo yesNo = MedicalResult.YesNo.getById(item.getValue());
-                    medicalResult.setAntihypertensiveDrugs(yesNo);
-                }
-                medicalResult.setAntihypertensiveDrugsDate(date);
             } else if (item.getTestcode().equals("PCR")) {
                 if (item.getValue() != null) {
                     medicalResult.setPcr(Integer.parseInt(item.getValue()));
