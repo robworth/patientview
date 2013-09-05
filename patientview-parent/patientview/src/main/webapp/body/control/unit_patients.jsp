@@ -28,11 +28,12 @@
   --%>
 
 <html:xhtml/>
+<div class="span9">
 
     <a class="pull-right" href="http://www.renal.org/rixg/adminhelp.html" target="_blank">Help</a>
-    <logic:present name="unit">
-        <div class="page-header"><h1>Patients for Unit <bean:write name="unit" property="name"/></h1></div>
-    </logic:present>
+    <div class="page-header">
+        <h1>Patients for Unit <logic:notEmpty name="unit"><bean:write name="unit" property="name"/></logic:notEmpty></h1>
+    </div>
 
 
 
@@ -57,23 +58,21 @@
         </div>
 
         <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
-            <thead>
             <tr>
-                <th class="tableheader" onclick="sort('name')">Name<br />(edit)</th>
-                <th class="tableheader" onclick="sort('nhsno')">NHS Number<br />(view patient)</th>
-                <th class="tableheader" onclick="sort('dateofbirthFormatted')">DoB</th>
-                <th class="tableheader" onclick="sort('unitcode')">Unit Code</th>
-                <th class="tableheader" onclick="sort('treatment')">Treatment</th>
-                <th class="tableheader" onclick="sort('email')">Email</th>
-                <th class="tableheader" onclick="sort('emailverfied')">Email Verified</th>
-                <th class="tableheader" onclick="sort('lastlogonFormatted')">Last Logon</th>
-                <th class="tableheader" onclick="sort('accountlocked')">Password</th>
-                <th class="tableheader" onclick="sort('lastverificationdate')">Last Email Verification Date</th>
-                <th class="tableheader" onclick="sort('rrtModality')">Modality</th>
-                <th class="tableheader" onclick="sort('lastdatadate')">Last Data Received Date</th>
+                <th class="tableheader" onclick="sort('name')"><a href="#">Name<br />(edit)</a></th>
+                <th class="tableheader" onclick="sort('nhsno')"><a href="#">NHS Number<br />(view patient)</a></th>
+                <th class="tableheader" onclick="sort('dateofbirthFormatted')"><a href="#">DoB</a></th>
+                <th class="tableheader" onclick="sort('unitcode')"><a href="#">Unit Code</a></th>
+                <th class="tableheader" onclick="sort('treatment')"><a href="#">Treatment</a></th>
+                <th class="tableheader" onclick="sort('email')"><a href="#">Email</a></th>
+                <th class="tableheader" onclick="sort('emailverfied')"><a href="#">Email Verified</a></th>
+                <th class="tableheader" onclick="sort('lastlogonFormatted')"><a href="#">Last Logon</a></th>
+                <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password</a></th>
+                <th class="tableheader" onclick="sort('lastverificationdate')"><a href="#">Last Email Verification Date</a></th>
+                <th class="tableheader" onclick="sort('rrtModality')"><a href="#">Modality</a></th>
+                <th class="tableheader" onclick="sort('lastdatadate')"><a href="#">Last Data Received Date</a></th>
                 <th colspan="5">&nbsp;</th>
             </tr>
-            </thead>
             <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon" property="pageList">
 
                 <%
@@ -191,7 +190,7 @@
             </logic:iterate>
         </table>
     </logic:notEmpty>
-</div>
+
 </div>
 <script src="/js/emailverification.js" type="text/javascript"></script>
 
