@@ -62,14 +62,14 @@
         </logic:present>
         <logic:present role="superadmin,radaradmin" >
             <li><html:link action="/control/unitAdminAddInput">Add RaDaR User</html:link></li>
-            <li><html:link action="/control/unitUsersUnitSelect">Patients In RaDaR Group</html:link></li>
+            <li><html:link action="/control/unitUsersUnitSelect">Users In RaDaR Group</html:link></li>
             <li class="divider"></li>
         </logic:present>
         <logic:notPresent role="radaradmin" >
             <li><html:link action="/control/unitPatientsUnitSelect">Patients In Unit</html:link></li>
         </logic:notPresent>
         <logic:present role="radaradmin" >
-            <li><html:link action="/control/unitPatientsUnitSelect">Patients In Radar Unit</html:link></li>
+            <li><html:link action="/control/unitPatientsUnitSelect">Patients In RaDaR Group</html:link></li>
         </logic:present>
 
         <logic:present role="superadmin,unitadmin,radaradmin">
