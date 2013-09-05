@@ -44,6 +44,12 @@ public class EdtaCodeDisplayAction extends Action {
         request.setAttribute("edtaCodes", edtaCodes);
         request.setAttribute("codeType", new LinkType(mapping.getParameter()));
 
+        if ("radarGroupLinks".equals(linkTypeMappingParameter)) {
+            request.setAttribute("header", "Radar Groups");
+        } else {
+            request.setAttribute("header", "EDTA Code");
+        }
+
         return LogonUtils.logonChecks(mapping, request);
     }
 }

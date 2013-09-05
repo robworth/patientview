@@ -660,6 +660,12 @@
       <forward name="success" path="/control/edta_codes.jsp"/>
     </action>
 
+    <action path="/control/radarGroupDisplay"
+            type="org.patientview.patientview.edtacode.EdtaCodeDisplayAction"
+            parameter="radarGroupLinks">
+        <forward name="success" path="/control/edta_codes.jsp"/>
+    </action>
+
     <action path="/control/treatmentCodeDisplay"
             type="org.patientview.patientview.edtacode.EdtaCodeDisplayAction"
             parameter="treatment">
