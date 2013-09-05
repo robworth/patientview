@@ -55,14 +55,14 @@ public class XmlImportJob extends BatchJob {
     protected void afterBatchJob(JobExecution result) {
         if (result.getStatus() != BatchStatus.COMPLETED) {
             if (result.getFailureExceptions() != null && !result.getFailureExceptions().isEmpty()) {
-                LOGGER.debug(result.getFailureExceptions().get(0).getMessage());
+                LOGGER.error(result.getFailureExceptions().get(0).getMessage());
             }
         }
     }
 
     @Override
     protected void onRunError(Exception e) {
-        LOGGER.debug(e.getMessage());
+        LOGGER.error("Exception on run:", e);
     }
 
     @Override

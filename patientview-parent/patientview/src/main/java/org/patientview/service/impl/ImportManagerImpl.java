@@ -275,7 +275,7 @@ public class ImportManagerImpl implements ImportManager {
                     xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
                     xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
 
-            //xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
         }
     }
 

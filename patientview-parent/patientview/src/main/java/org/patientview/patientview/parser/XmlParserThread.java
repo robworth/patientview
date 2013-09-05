@@ -25,7 +25,6 @@ package org.patientview.patientview.parser;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletContext;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.patientview.ParserThread;
@@ -65,20 +64,17 @@ public class XmlParserThread implements Runnable, ParserThread {
                 File[] xmlFiles = FindXmlFiles.findXmlFiles(directory, fileEndings);
                 updateXmlFiles(xmlFiles);
                 Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
-                Date now = new Date(System.currentTimeMillis());
-                System.out.println("XmlParserThread " + dateFormat.format(now));
+                LOGGER.debug("Thread(XmlParserThread) is running.");
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 
     private void updateXmlFiles(File[] xmlFiles) {
-
         if (xmlFiles != null && xmlFiles.length > 0) {
-
             LOGGER.info("Starting XmlParserThread for {} files", xmlFiles.length);
-
             for (int i = 0; i < xmlFiles.length; i++) {
                 LOGGER.debug("Starting XmlParserThread for {} file", xmlFiles[i].getAbsolutePath());
                 XmlParserUtils.updateXmlData(servletContext, xmlFiles[i]);

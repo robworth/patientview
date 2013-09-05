@@ -80,7 +80,7 @@
         </batch:listeners>
     </batch:job>
 
-    <!--Define sendEmailJob details-->
+    <!--Define xmlImportJob details-->
     <batch:job id="xmlImportBatchJob" restartable="false">
         <batch:step id="xmlImportStep">
             <batch:tasklet transaction-manager="batchTransactionManager">

@@ -140,7 +140,7 @@ public class UnitManagerImpl implements UnitManager {
     public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
-        if (user != null && !LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
+        if (user != null && !"superadmin".equals(LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user))) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 
@@ -175,6 +175,10 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode) {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
+    }
+
+    public List<UnitAdmin> getAllUnitUsers() {
+        return unitDao.getAllUnitUsers(securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

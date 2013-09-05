@@ -5,6 +5,7 @@ import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.model.user.DemographicsUserDetail;
 
 import java.util.List;
 
@@ -27,5 +28,7 @@ public interface DemographicsDao {
     List<Status> getStatuses();
 
     Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode);
+
+    DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
 
 }

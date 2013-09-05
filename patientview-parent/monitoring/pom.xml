@@ -30,13 +30,13 @@
     <parent>
         <groupId>org.patientview</groupId>
         <artifactId>patientview-parent</artifactId>
-        <version>1.0-RELEASE</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <groupId>org.patientview</groupId>
     <artifactId>monitoring</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-RELEASE</version>
+    <version>1.1-SNAPSHOT</version>
 
     <name>PatientView Monitoring</name>
     <url>https://www.renalpatientview.org</url>
@@ -127,7 +127,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -160,27 +160,27 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.2.2.RELEASE</version>
+            <version>3.2.4.RELEASE</version>
         </dependency>
 
         <!-- date time utils -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>1.6.2</version>
+            <version>2.2</version>
         </dependency>
 
         <!-- mailing - (a bit bizarre) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>3.2.2.RELEASE</version>
+            <version>3.2.4.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4</version>
+            <version>1.4.7</version>
         </dependency>
 
     </dependencies>

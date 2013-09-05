@@ -30,6 +30,7 @@ import org.patientview.patientview.model.Unit_;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -162,7 +163,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
-        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+//        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
 
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
@@ -240,15 +241,63 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   sur.specialty_id = :specialtyId "
                 + "AND "
-                + "   um.unitcode = :unitcode "
+                + "   um.unitcode = :unitcode ";
+
+        if ("radaradmin".equals(LegacySpringUtils.getUserManager().getLoggedInUserRole())) {
+            sql += "AND "
+                    + "   (sur.role = 'radaradmin')";
+        } else {
+            sql += "AND "
+                    + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+        }
+
+        Query query = getEntityManager().createNativeQuery(sql, User.class);
+
+        query.setParameter("specialtyId", specialty == null ? "" : specialty.getId());
+        query.setParameter("unitcode", unitcode);
+
+        List<User> users = query.getResultList();
+
+        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
+
+        for (User user : users) {
+            UnitAdmin unitAdmin = new UnitAdmin();
+            unitAdmin.setUsername(user.getUsername());
+            unitAdmin.setName(user.getName());
+            unitAdmin.setEmail(user.getEmail());
+            unitAdmin.setEmailverfied(user.isEmailverified());
+            unitAdmin.setRole(user.getRole());
+            unitAdmin.setFirstlogon(user.isFirstlogon());
+            unitAdmin.setIsrecipient(user.isIsrecipient());
+            unitAdmin.setIsclinician(user.isIsclinician());
+            unitAdmin.setLastlogon(user.getLastlogon());
+            unitAdmin.setAccountlocked(user.isAccountlocked());
+            unitAdmins.add(unitAdmin);
+        }
+
+        return unitAdmins;
+    }
+
+    @Override
+    public List<UnitAdmin> getAllUnitUsers(Specialty specialty) {
+        String sql = "SELECT "
+                + "  u.*  "
+                + "FROM "
+                + "   User u, "
+                + "   UserMapping um, "
+                + "   SpecialtyUserRole sur "
+                + "WHERE "
+                + "   u.username = um.username "
                 + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+                + "   u.id = sur.user_id "
+                + "AND "
+                + "   sur.specialty_id = :specialtyId "
+                + "AND "
+                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff' OR sur.role = 'radaradmin')";
 
         Query query = getEntityManager().createNativeQuery(sql, User.class);
 
         query.setParameter("specialtyId", specialty.getId());
-        query.setParameter("unitcode", unitcode);
-
         List<User> users = query.getResultList();
 
         List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();

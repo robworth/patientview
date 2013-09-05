@@ -18,7 +18,7 @@ import java.util.List;
 /**
  *
  */
-public class SendEmailWriterTest extends BaseServiceTest {
+public class SendEmailWriterTest extends BaseBatchTest {
 
     @Autowired
     private SendEmailWriter sendEmailWriter;
