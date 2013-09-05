@@ -48,6 +48,8 @@ public class EdtaCodeUpdateAction extends Action {
 
         request.setAttribute("edtaCode", edtaCode);
 
+        request.setAttribute("successMeg", "Links were updated successfully.");
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
