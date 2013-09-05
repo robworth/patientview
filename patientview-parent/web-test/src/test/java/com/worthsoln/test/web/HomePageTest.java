@@ -24,7 +24,6 @@ public class HomePageTest {
     public void prepare() {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(baseUrl);
-        System.out.println("baseUrl : " + baseUrl);
     }
 
     @Test
