@@ -243,7 +243,8 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   um.unitcode = :unitcode ";
 
-        if ("radaradmin".equals(LegacySpringUtils.getUserManager().getLoggedInUserRole())) {
+        String userRole = LegacySpringUtils.getUserManager().getLoggedInUserRole();
+        if ("radaradmin".equals(userRole) || "superadmin".equals(userRole)) {
             sql += "AND "
                     + "   (sur.role = 'radaradmin')";
         } else {
