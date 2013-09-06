@@ -62,11 +62,13 @@ public class MyDetailsTest {
         clickLinkWithText("My Details");
         assertTextPresent("My Details");
 
-        assertLinkPresentWithText("Explain this");
-        clickLinkWithText("Explain this");
-        gotoWindowByTitle("Renal PatientView - Transplant status");
-        assertTextPresent("TRANSPLANT STATUS from UK Transplant");
-
+        // Explain this link should be checked when patient details exists.
+        if (!getPageSource().contains("Patient details not uploaded")) {
+            assertLinkPresentWithText("Explain this");
+            clickLinkWithText("Explain this");
+            gotoWindowByTitle("Renal PatientView - Transplant status");
+            assertTextPresent("TRANSPLANT STATUS from UK Transplant");
+        }
     }
 
     @Test
