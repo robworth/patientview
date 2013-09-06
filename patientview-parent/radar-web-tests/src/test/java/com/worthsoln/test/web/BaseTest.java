@@ -43,6 +43,9 @@ public abstract class BaseTest {
     @Value("${superadmin.password}")
     protected String superadmin_password;
 
+    @Value("${error.message}")
+    protected String error_message;
+
 
 
     @Before
@@ -56,12 +59,7 @@ public abstract class BaseTest {
         beginAt(url);    // start
 
         WebClient webClient = ((HtmlUnitTestingEngineImpl)getTestingEngine()).getWebClient();
-//        webClient.setJavaScriptEnabled(true);
-//        webClient.setCssEnabled(false);
         webClient.setAjaxController(new NicelyResynchronizingAjaxController());
-//        webClient.setTimeout(35000);
-//        webClient.setThrowExceptionOnScriptError(false);
-//        webClient.waitForBackgroundJavaScript(35000);
     }
 
 

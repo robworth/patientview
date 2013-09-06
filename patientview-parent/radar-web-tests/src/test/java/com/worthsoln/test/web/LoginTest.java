@@ -52,7 +52,6 @@ public class LoginTest extends BaseTest{
         setTextField("password", "12");
         setTextField("dateOfBirth", "01-01-1990");
         submit();
-        System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
     }
@@ -68,7 +67,6 @@ public class LoginTest extends BaseTest{
         setTextField("email", professional_username);
         setTextField("password", professional_password);
         submit();
-//        System.out.println(getPageSource());
         assertLinkPresentWithText("| Log-out");     // we should now be logged in
 
         logout();
@@ -86,7 +84,6 @@ public class LoginTest extends BaseTest{
         setTextField("password", "12");
         submit();
 
-//        System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
     }
@@ -130,7 +127,6 @@ public class LoginTest extends BaseTest{
         setTextField("email", "12");
         setTextField("password", "12");
         submit();
-        System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
     }

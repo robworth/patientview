@@ -69,13 +69,13 @@ public class ProfessionalMainScreenTest extends BaseTest{
         assertTextFieldEquals("dob", "01-08-1985");
 
         clickLinkWithText("Medical Results");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Genetics");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Deafness");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Medicines");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 
@@ -90,17 +90,17 @@ public class ProfessionalMainScreenTest extends BaseTest{
         assertSelectedOptionsEqual("diagnosis", new String[]{"SRNS"});
 
         clickLinkWithText("Diagnosis");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("First Visit");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Follow Up");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Pathology");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Relapse");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Hospitalisation");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 
@@ -110,15 +110,15 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
         clickLinkWithText("Edit",1);
         assertTextPresent("Disease Group: HNF1b Mutations");
-        assertTextFieldEquals("forename", "patien5");
+        assertTextFieldEquals("forename", "patient5");
         assertTextFieldEquals("dob", "01-08-1985");
 
         clickLinkWithText("Genetics");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("HNF1B Misc");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Medical Results");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 
@@ -128,15 +128,15 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
         clickLinkWithText("Edit",0);
         assertTextPresent("Disease Group: STEC-associated HUS");
-        assertTextFieldEquals("forename", "patien6");
+        assertTextFieldEquals("forename", "patient6");
         assertTextFieldEquals("dob", "01-08-1985");
 
         clickLinkWithText("Medical Results");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Genetics");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Medicines");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 }

@@ -61,22 +61,22 @@ public class PatientMainScreenTest extends BaseTest{
 
     @Test
     public void testHNF1BPatientScreen() {
-        testPatientMainScreen("patien5","pppppp","01-08-1985");
+        testPatientMainScreen("patient5","pppppp","01-08-1985");
 
         assertTextPresent("Demographics");
         assertFormElementPresent("forenameForHeader");
-        assertTextFieldEquals("forenameForHeader", "patien5");
+        assertTextFieldEquals("forenameForHeader", "patient5");
         assertSelectedOptionsEqual("renalUnit", new String[]{"HNF1B"});
 
         testTabs();
     }
     @Test
     public void testOthersPatientScreen() {
-        testPatientMainScreen("patien6","pppppp","01-08-1985");
+        testPatientMainScreen("patient6","pppppp","01-08-1985");
 
         assertTextPresent("Demographics");
         assertFormElementPresent("forenameForHeader");
-        assertTextFieldEquals("forenameForHeader", "patien6");
+        assertTextFieldEquals("forenameForHeader", "patient6");
         assertSelectedOptionsEqual("renalUnit", new String[]{"STECHUS"});
 
         testTabs();
@@ -85,17 +85,17 @@ public class PatientMainScreenTest extends BaseTest{
     public void testTabs() {
 
         clickLinkWithText("Diagnosis");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("First Visit");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Follow Up");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Pathology");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Relapse");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Hospitalisation");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
     }
 
 
