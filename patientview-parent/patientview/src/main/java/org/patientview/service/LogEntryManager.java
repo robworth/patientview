@@ -46,7 +46,7 @@ public interface LogEntryManager {
     List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action);
 
     List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                Calendar startdate, Calendar enddate);
+                                Calendar startdate, Calendar enddate, Boolean orderByAsc);
 
     List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate);
 }

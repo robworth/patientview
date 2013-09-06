@@ -40,5 +40,14 @@
     <suppress checks="ParameterNumber"
               files="LogEntryDao.java"
               lines="48"/>
+    <suppress checks="ParameterNumber"
+              files="LogViewAction.java"
+              lines="115"/>
+    <suppress checks="ParameterNumber"
+              files="LogEntryManager.java"
+              lines="48"/>
+    <suppress checks="ParameterNumber"
+              files="LogEntryManagerImpl.java"
+              lines="83"/>
 </suppressions>
 

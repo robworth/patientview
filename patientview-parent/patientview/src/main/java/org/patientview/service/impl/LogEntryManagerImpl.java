@@ -81,8 +81,8 @@ public class LogEntryManagerImpl implements LogEntryManager {
 
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                       Calendar startdate, Calendar enddate) {
-        return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
+                                       Calendar startdate, Calendar enddate, Boolean orderByAsc) {
+        return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate, orderByAsc,
                 securityUserManager.getLoggedInSpecialty());
     }
 
