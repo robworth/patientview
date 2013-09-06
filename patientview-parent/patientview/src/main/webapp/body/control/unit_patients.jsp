@@ -61,12 +61,12 @@
             <tr>
                 <th class="tableheader" onclick="sort('name')"><a href="#">Name<br />(edit)</a></th>
                 <th class="tableheader" onclick="sort('nhsno')"><a href="#">NHS Number<br />(view patient)</a></th>
-                <th class="tableheader" onclick="sort('dateofbirthFormatted')"><a href="#">DoB</a></th>
+                <th class="tableheader" onclick="sort('dateofbirth')"><a href="#">DoB</a></th>
                 <th class="tableheader" onclick="sort('unitcode')"><a href="#">Unit Code</a></th>
                 <th class="tableheader" onclick="sort('treatment')"><a href="#">Treatment</a></th>
                 <th class="tableheader" onclick="sort('email')"><a href="#">Email</a></th>
                 <th class="tableheader" onclick="sort('emailverfied')"><a href="#">Email Verified</a></th>
-                <th class="tableheader" onclick="sort('lastlogonFormatted')"><a href="#">Last Logon</a></th>
+                <th class="tableheader" onclick="sort('lastlogon')"><a href="#">Last Logon</a></th>
                 <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password</a></th>
                 <th class="tableheader" onclick="sort('lastverificationdate')"><a href="#">Last Email Verification Date</a></th>
                 <th class="tableheader" onclick="sort('rrtModality')"><a href="#">Modality</a></th>
