@@ -481,3 +481,9 @@ section article.conversation .dull, section article.message .dull, .dull{
     width: 1040px;
     margin-left: -20px;
 }
+
+.modal-body-message {
+    max-height: 405px;
+    padding: 15px;
+    overflow-y: auto;
+}

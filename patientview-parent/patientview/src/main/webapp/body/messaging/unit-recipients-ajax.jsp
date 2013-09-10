@@ -79,7 +79,12 @@
             <option value="allPatients">All <bean:write name="unit_name"/> Patients</option>
         </logic:present>
         <logic:iterate name="unitPatientRecipients" id="recipient" indexId="index">
-            <option value="<bean:write name="recipient" property="id" />"><bean:write name="recipient" property="name" /></option>
+            <option value="<bean:write name="recipient" property="id" />">
+                <bean:write name="recipient" property="name" />
+                <logic:notEqual value="" name="recipient" property="dateofbirthFormatted">
+                    (<bean:write name="recipient" property="dateofbirthFormatted" />)
+                </logic:notEqual>
+            </option>
         </logic:iterate>
     </optgroup>
 </logic:notEmpty>

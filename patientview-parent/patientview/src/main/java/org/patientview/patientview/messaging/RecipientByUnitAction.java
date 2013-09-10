@@ -49,6 +49,7 @@ public class RecipientByUnitAction extends BaseAction {
                 || getSecurityUserManager().isRolePresent("unitadmin")) {
 
             String unitCode = getUnitCode(request);
+            String name = getName(request);
 
             if (StringUtils.hasText(unitCode)) {
                 Unit unit = getUnitManager().get(unitCode);
@@ -59,7 +60,7 @@ public class RecipientByUnitAction extends BaseAction {
                     request.setAttribute(Messaging.UNIT_STAFF_RECIPIENTS_PARAM,
                             getMessageManager().getUnitStaffRecipients(unit, user));
                     request.setAttribute(Messaging.UNIT_PATIENT_RECIPIENTS_PARAM,
-                            getMessageManager().getUnitPatientRecipients(unit, user));
+                            getMessageManager().getUnitPatientRecipients(unit, name, user));
                     request.setAttribute(Messaging.UNIT_NAME_PARAM, unit.getName());
                 }
             }
@@ -71,6 +72,14 @@ public class RecipientByUnitAction extends BaseAction {
     private String getUnitCode(HttpServletRequest request) {
         try {
             return request.getParameter(Messaging.UNIT_CODE_PARAM);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private String getName(HttpServletRequest request) {
+        try {
+            return request.getParameter(Messaging.NAME_PARAM);
         } catch (Exception e) {
             return null;
         }
