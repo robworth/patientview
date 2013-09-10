@@ -36,45 +36,53 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
- * Use the professional login page to test login Radar.
- * there should be a radar-login-web-test.properties file in filter folder.
+ *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-context.xml")
-public class RadarLoginTest {
+public abstract class BaseTest {
 
-    @Value("${radar.base.url}")
-    private String baseUrl;
+    @Value("${base.url}")
+    protected String baseUrl;
 
-    @Value("${radar.user.username}")
-    private String username;
+    @Value("${patient.username}")
+    protected String patient_username;
 
-    @Value("${radar.user.password}")
-    private String password;
+    @Value("${patient.password}")
+    protected String patient_password;
+
+    @Value("${patient.dateOfBirth}")
+    protected String dateOfBirth;
+
+    @Value("${professional.username}")
+    protected String professional_username;
+
+    @Value("${professional.password}")
+    protected String professional_password;
+
+    @Value("${superadmin.username}")
+    protected String superadmin_username;
+
+    @Value("${superadmin.password}")
+    protected String superadmin_password;
+
+    @Value("${error.message}")
+    protected String error_message;
+
+
 
     @Before
     public void prepare() {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
         setBaseUrl(baseUrl);
+
     }
 
-    @Test
-    public void testIndexLoginSuccess() {
-        beginAt("/");
+    protected void prepareAndBeginAt(String url) {
+        beginAt(url);    // start
+
         WebClient webClient = ((HtmlUnitTestingEngineImpl)getTestingEngine()).getWebClient();
         webClient.setAjaxController(new NicelyResynchronizingAjaxController());
-
-        assertTitleEquals("RaDaR - National Renal Rare Disease Registry");
-        clickLinkWithText("Professionals");                 // click the Professionals link
-
-        assertFormElementPresent("email");
-        assertFormElementPresent("password");
-        setTextField("email", username);
-        setTextField("password", password);
-        clickButtonWithText("Enter");                       // submit
-
-        assertLinkPresentWithText("| Log-out");
-        assertLinkPresentWithText("| Enter New Patient |");
-
     }
+
+
 }

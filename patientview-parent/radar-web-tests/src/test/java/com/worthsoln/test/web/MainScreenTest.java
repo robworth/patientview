@@ -36,45 +36,55 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 /**
- * Use the professional login page to test login Radar.
- * there should be a radar-login-web-test.properties file in filter folder.
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-context.xml")
-public class RadarLoginTest {
-
-    @Value("${radar.base.url}")
-    private String baseUrl;
-
-    @Value("${radar.user.username}")
-    private String username;
-
-    @Value("${radar.user.password}")
-    private String password;
-
-    @Before
-    public void prepare() {
-        setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT);
-        setBaseUrl(baseUrl);
-    }
+public class MainScreenTest extends BaseTest{
 
     @Test
-    public void testIndexLoginSuccess() {
-        beginAt("/");
-        WebClient webClient = ((HtmlUnitTestingEngineImpl)getTestingEngine()).getWebClient();
-        webClient.setAjaxController(new NicelyResynchronizingAjaxController());
-
+    public void testProfessionalsMainScreen() {
+        prepareAndBeginAt("/");
         assertTitleEquals("RaDaR - National Renal Rare Disease Registry");
-        clickLinkWithText("Professionals");                 // click the Professionals link
+        clickLinkWithText("Professionals");
 
         assertFormElementPresent("email");
         assertFormElementPresent("password");
-        setTextField("email", username);
-        setTextField("password", password);
-        clickButtonWithText("Enter");                       // submit
+        setTextField("email", professional_username);
+        setTextField("password", professional_password);
+        submit();
 
-        assertLinkPresentWithText("| Log-out");
-        assertLinkPresentWithText("| Enter New Patient |");
+        assertLinkPresentWithText("| Log-out");     // we should now be logged in
+        assertLinkPresentWithText("| Enter New Patient");
+        assertLinkNotPresentWithText("Modify Patients");
+    }
+
+    @Test
+    public void testProfessionalsAddPatient() {
+        testProfessionalsMainScreen();
+        clickLinkWithText("| Enter New Patient");
+        assertTextPresent("New Patient");
+
+        assertFormElementPresent("patientId");
+        setTextField("patientId", "6810341560");
+
+        assertFormElementPresent("nhsNumberType");
+        selectOption("nhsNumberType", "NHS");
+
+        assertFormElementPresent("diseaseGroup");
+        selectOptionByValue("diseaseGroup", "ARPKD");
+
+        clickButtonWithText("Add Patient");
+        assertTextPresent("Demographics");
+        assertTextPresent("Disease Group: ARPKD - autosomal recessive polycystic kidney disease");
+    }
+
+    @Test
+    public void testProfessionalsViewPatient() {
+        testProfessionalsMainScreen();
+
+        clickLinkWithText("Existing Patients");
+        getTestingEngine().clickLink("patientsListingPageLink");
+        assertTextPresent("View Patient Details");
 
     }
 }

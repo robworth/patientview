@@ -99,9 +99,7 @@
             <td>
               <html:form action="/control/unitUserEditInput">
                 <html:hidden name="unitUser" property="username" />
-                <logic:notEmpty name="unit">
-                    <html:hidden name="unit" property="unitcode" />
-                </logic:notEmpty>
+                <html:hidden name="unitUser" property="unitcode" />
                 <html:submit value="Edit" styleClass="btn" />
               </html:form>
             </td>
