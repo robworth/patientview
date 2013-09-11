@@ -1288,6 +1288,23 @@
         <forward name="success" path="/control/group_edit.jsp"/>
     </action>
 
+    <action path="/contactMyUnit"
+            type="org.patientview.patientview.join.JoinRequestInputAction"
+            name="joinForm"
+            scope="request"
+            validate="false">
+        <forward name="success" path="/contactunit.jsp"/>
+    </action>
+
+    <action path="/contactUnitSubmit"
+            type="org.patientview.patientview.ContactMyUnitSubmitAction"
+            name="joinForm"
+            scope="request"
+            validate="false">
+        <forward name="input" path="/contactunit.jsp"/>
+        <forward name="success" path="/contact-unit-confirmation.jsp"/>
+    </action>
+
     <!--
         <action path="/control/sha"
           type="com.worthsoln.ShaAction" parameter="index">
