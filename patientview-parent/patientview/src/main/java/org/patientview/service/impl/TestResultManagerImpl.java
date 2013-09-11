@@ -23,10 +23,10 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
+import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.repository.TestResultDao;
@@ -68,6 +68,16 @@ public class TestResultManagerImpl implements TestResultManager {
     @Override
     public List<TestResult> get(String nhsno, String unitcode) {
         return testResultDao.get(nhsno, unitcode);
+    }
+
+    @Override
+    public  List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize) {
+        return testResultDao.getAll(nhsno, unitcode, testcode, page, pagesize);
+    }
+
+    @Override
+    public  Long getCount(String nhsno, String unitcode, String testcode) {
+        return testResultDao.getCount(nhsno, unitcode, testcode);
     }
 
     @Override

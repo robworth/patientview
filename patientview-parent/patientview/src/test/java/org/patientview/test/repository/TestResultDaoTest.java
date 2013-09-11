@@ -117,4 +117,65 @@ public class TestResultDaoTest extends BaseDaoTest {
         return tomorrow.getTime();
     }
 
+
+    @Test
+    public void testGetAll() throws Exception {
+
+        for(int i=0;i<10;i++){
+            TestResult testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            testResultDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+
+        /**
+         * get
+         */
+        List<TestResult> savedTestResults = testResultDao.getAll(null, "unit1".toUpperCase(), "testcode", 1, 4);
+        assertTrue("Can't get testResults: ", savedTestResults.size() == 4);
+
+        savedTestResults = testResultDao.getAll("1", "unit1".toUpperCase(), "testcode", 1, 4);
+        assertTrue("Can't get testResults", savedTestResults.size() == 1);
+
+        savedTestResults = testResultDao.getAll("1", "unit1".toUpperCase(), null, 1, 4);
+        assertTrue("Can't get testResults", savedTestResults.size() == 1);
+
+        savedTestResults = testResultDao.getAll("1", "unit2".toUpperCase(), null, 1, 4);
+        assertTrue("Can't get testResults", savedTestResults.size() == 0);
+
+        savedTestResults = testResultDao.getAll(null, "unit1".toUpperCase(), "testcode", 2, 20);
+        assertTrue("Can't get testResults", savedTestResults.size() == 0);
+    }
+
+    @Test
+    public void testGetCount() throws Exception {
+
+        for(int i=0;i<10;i++){
+            TestResult testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            testResultDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+
+        /**
+         * get
+         */
+        Long count = testResultDao.getCount(null, "unit1".toUpperCase(), "testcode");
+        assertTrue("Can't get testResults: ", count == 10);
+
+        count = testResultDao.getCount("1", "unit1".toUpperCase(), "testcode");
+        assertTrue("Can't get testResults", count == 1);
+
+        count = testResultDao.getCount("1", "unit1".toUpperCase(), null);
+        assertTrue("Can't get testResults", count == 1);
+
+        count = testResultDao.getCount("1", "unit2".toUpperCase(), null);
+        assertTrue("Can't get testResults", count == 0);
+
+        count = testResultDao.getCount(null, null, "testcode");
+        assertTrue("Can't get testResults", count == 0);
+    }
+
 }

@@ -51,6 +51,10 @@ public interface TestResultDao {
 
     List<TestResult> get(String nhsno, String unitcode);
 
+    List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize);
+
+    Long getCount(String nhsno, String unitcode, String testcode);
+
     String getLatestWeightFromResults(String nhsno, List<String> unitcodes);
 
     void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);

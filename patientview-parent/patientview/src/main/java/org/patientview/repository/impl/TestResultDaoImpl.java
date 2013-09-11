@@ -23,6 +23,7 @@
 
 package org.patientview.repository.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
@@ -80,6 +81,56 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
         return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
     }
+
+    @Override
+    public List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize) {
+        List<Object> params = new ArrayList<Object>();
+        params.add(unitcode);
+
+        String sql = "SELECT * FROM testresult ";
+        sql += " WHERE unitcode = ? ";
+
+        if (StringUtils.isNotEmpty(testcode)) {
+            sql += " AND testcode = ?";
+            params.add(testcode);
+        }
+
+        if (StringUtils.isNotEmpty(nhsno)) {
+            sql += " AND nhsno = ?";
+            params.add(nhsno);
+        }
+
+        sql += " ORDER BY testcode, datestamp";
+        if (page != 0 && pagesize != 0) {
+            sql += " LIMIT  ?, ?";
+
+            params.add((page - 1) * pagesize);
+            params.add(pagesize);
+        }
+
+        return jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
+    }
+
+    @Override
+    public Long getCount(String nhsno, String unitcode, String testcode) {
+        List<Object> params = new ArrayList<Object>();
+        params.add(unitcode);
+
+        String sql = "SELECT count(id) FROM testresult WHERE unitcode = ? ";
+
+        if (StringUtils.isNotEmpty(testcode)) {
+            sql += " AND testcode = ?";
+            params.add(testcode);
+        }
+
+        if (StringUtils.isNotEmpty(nhsno)) {
+            sql += " AND nhsno = ?";
+            params.add(nhsno);
+        }
+
+        return jdbcTemplate.queryForObject(sql, params.toArray(), Long.class);
+    }
+
 
     @Override
     public List<TestResult> get(String nhsno, String unitcode) {

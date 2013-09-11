@@ -21,30 +21,26 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service;
+package org.patientview.patientview.controller;
 
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.User;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.patientview.patientview.model.Letter;
+import org.patientview.utils.LegacySpringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-/**
- *
- */
-@Transactional(propagation = Propagation.REQUIRED)
-public interface MedicineManager {
+@Controller
+public class LetterController extends BaseController {
 
-    Medicine get(Long id);
+    @RequestMapping(value = Routes.API_LETTER_URL)
+    @ResponseBody
+    public  List<Letter> getLetters(@RequestParam(value = "username", required = true) String username) {
+        List<Letter> letters = LegacySpringUtils.getLetterManager().get(username);
+        return letters;
+    }
 
-    List<Medicine> getUserMedicines(User user);
-
-    List<Medicine> getUserMedicines(String nhsno);
-
-    void save(Medicine medicine);
-
-    List<Medicine> getAll();
-
-    void delete(String nhsno, String unitcode);
 }

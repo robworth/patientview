@@ -66,6 +66,16 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>dataFilter</filter-name>
+        <filter-class>org.patientview.specialty.DataFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>dataFilter</filter-name>
+        <url-pattern>/data/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>action</servlet-name>
         <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -97,6 +107,10 @@
         <url-pattern>/web/*</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>springDispatcher</servlet-name>
+        <url-pattern>/data/*</url-pattern>
+    </servlet-mapping>
 
     <!--<servlet>
         <servlet-name>xmlParser</servlet-name>

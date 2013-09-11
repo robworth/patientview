@@ -23,10 +23,10 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
+import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.TestResult;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +44,10 @@ public interface TestResultManager {
     void save(TestResult testResult);
 
     List<TestResult> get(String nhsno, String unitcode);
+
+    List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize);
+
+    Long getCount(String nhsno, String unitcode, String testcode);
 
     String getLatestWeightFromResults(User user);
 

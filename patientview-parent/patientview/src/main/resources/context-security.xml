@@ -43,6 +43,11 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/apple-touch-icon-precomposed.png" security="none"/>
     <http pattern="/apple-touch-icon.png" security="none"/>
 
+    <http pattern="/data/**/*.json" auto-config="true" authentication-manager-ref="authenticationManager" create-session="stateless">
+        <http-basic />
+        <intercept-url pattern="/data/**/*.json" access="ROLE_RENAL_UNITADMIN"/>
+    </http>
+
     <http access-decision-manager-ref="accessDecisionManager">
         <!-- these pages can be viewed without logging in, but need to run with the filter chain (so we can view login details etc-->
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -75,6 +80,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO"/>
         <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO"/>
         <intercept-url pattern="/renal/**" access="ROLE_ANY_USER"/>
+
         <intercept-url pattern="/web/**" access="ROLE_RENAL_UNITADMIN"/>
 
         <!-- IBD specialty config -->
@@ -114,6 +120,9 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     </http>
 
+
+
+
     <beans:bean id="encoder" class="org.patientview.security.impl.PatientViewPasswordEncoder"/>
 
     <beans:bean id="patientViewAuthenticationSuccessHandler" class="org.patientview.security.PatientViewAuthenticationSuccessHandler"/>
@@ -125,7 +134,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <beans:bean id="userDetailsService" class="org.patientview.security.impl.PatientViewUserDetailsService"/>
 
-    <authentication-manager>
+    <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userDetailsService">
             <password-encoder ref="encoder"/>
         </authentication-provider>

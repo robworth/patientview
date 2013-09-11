@@ -65,6 +65,12 @@ public class MedicineManagerImpl implements MedicineManager {
     }
 
     @Override
+    public List<Medicine> getUserMedicines(String nhsno) {
+        List<Medicine> medicines = medicineDao.getMedicines(nhsno);
+        return medicines;
+    }
+
+    @Override
     public void save(Medicine medicine) {
         medicineDao.save(medicine);
     }
