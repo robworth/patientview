@@ -38,6 +38,7 @@
         <module>monitoring</module>
         <module>web-test</module>
         <module>radar-web-tests</module>
+        <module>patientview-api</module>
     </modules>
 
     <!-- place for common configuration and dependencies -->
