@@ -21,8 +21,11 @@ API Specification
 
 #####Returns#####
 - PagedResultsWrapper<TestResult>
+
 #####Example#####
-<code>{
+
+```
+{
 "results": [
                 {
                 "id": 543910896,
@@ -43,7 +46,10 @@ API Specification
 "pageNumber": 1,
 "totalResults": 1
 }
-</code>
+```
+
+---------------------------------------
+
 ###2. Letters###
 #####URL#####
 - GET /data/letters.json?{params}
@@ -53,8 +59,11 @@ API Specification
 
 #####Returns#####
 - PagedResultsWrapper<Letter>
+
 #####Example#####
-<code>{
+
+```
+{
     "results": [
         {
             "id": 40254236,
@@ -70,7 +79,10 @@ API Specification
     "pageSize": 20,
     "pageNumber": 1,
     "totalResults": 2
-}</code>
+}
+```
+
+---------------------------------------
 
 ###3.Medicines###
 #####URL#####
@@ -81,8 +93,11 @@ API Specification
 
 #####Returns#####
 - PagedResultsWrapper<MedicineWithShortName>
+
 #####Example#####
-<code>{
+
+```
+{
     "results": [
         {
             "id": 98560704,
@@ -98,8 +113,10 @@ API Specification
     "pageSize": 20,
     "pageNumber": 1,
     "totalResults": 1
-}</code>
+}
+```
 
+---------------------------------------
 
 ###4. Authorisation###
 All requests need to have the following: - ROLE_API_USER
