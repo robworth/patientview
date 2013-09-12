@@ -89,6 +89,11 @@
             <forward name="success" path="/diabetes/checkups/checkups.jsp"/>
         </action>
 
+        <action path="/diabetes-help"
+                type="org.patientview.patientview.IndexAction" parameter="help">
+            <forward name="success" path="/diabetes/help.jsp"/>
+        </action>
+
     </action-mappings>
 
 </struts-config>
