@@ -1,3 +1,25 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
 package com.worthsoln.test.web;
 
 import org.junit.Test;
@@ -61,22 +83,22 @@ public class PatientMainScreenTest extends BaseTest{
 
     @Test
     public void testHNF1BPatientScreen() {
-        testPatientMainScreen("patien5","pppppp","01-08-1985");
+        testPatientMainScreen("patient5","pppppp","01-08-1985");
 
         assertTextPresent("Demographics");
         assertFormElementPresent("forenameForHeader");
-        assertTextFieldEquals("forenameForHeader", "patien5");
+        assertTextFieldEquals("forenameForHeader", "patient5");
         assertSelectedOptionsEqual("renalUnit", new String[]{"HNF1B"});
 
         testTabs();
     }
     @Test
     public void testOthersPatientScreen() {
-        testPatientMainScreen("patien6","pppppp","01-08-1985");
+        testPatientMainScreen("patient6","pppppp","01-08-1985");
 
         assertTextPresent("Demographics");
         assertFormElementPresent("forenameForHeader");
-        assertTextFieldEquals("forenameForHeader", "patien6");
+        assertTextFieldEquals("forenameForHeader", "patient6");
         assertSelectedOptionsEqual("renalUnit", new String[]{"STECHUS"});
 
         testTabs();
@@ -85,17 +107,17 @@ public class PatientMainScreenTest extends BaseTest{
     public void testTabs() {
 
         clickLinkWithText("Diagnosis");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("First Visit");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Follow Up");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Pathology");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Relapse");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Hospitalisation");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
     }
 
 

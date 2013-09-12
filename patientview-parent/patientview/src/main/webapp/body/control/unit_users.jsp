@@ -3,7 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 <%@ page import="org.patientview.utils.LegacySpringUtils" %>
-
 <%--
   ~ PatientView
   ~
@@ -38,11 +37,11 @@
 <logic:notEmpty name="unitUsers">
     <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
         <div class="row" style="float: right;">
-            <logic:equal value="false" name="patients" property="firstPage">
+            <logic:equal value="false" name="unitUsers" property="firstPage">
                 <a href="./unitUsers?page=prev">Prev</a>&nbsp;
             </logic:equal>
             &nbsp;
-            <logic:equal value="false" name="patients" property="lastPage">
+            <logic:equal value="false" name="unitUsers" property="lastPage">
                 <a href="./unitUsers?page=next">Next</a>
             </logic:equal>
         </div>
@@ -50,20 +49,20 @@
 
   <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
       <tr>
-        <th class="tableheader" onclick="sort('name')">Name</th>
-        <th class="tableheader" onclick="sort('username')">Username</th>
-        <th class="tableheader" onclick="sort('displayRole')">Role</th>
-        <th class="tableheader" onclick="sort('email')">Email</th>
-        <th class="tableheader" onclick="sort('emailverfied')">Email Verified</th>
-        <th class="tableheader" onclick="sort('lastlogonFormatted')">Last Login</th>
-        <th class="tableheader" onclick="sort('accountlocked')">Password Locked</th>
-        <th class="tableheader" onclick="sort('isrecipient')">Message Recipient</th>
-        <th class="tableheader" onclick="sort('isclinician')">Clinician</th>
+          <th class="tableheader" onclick="sort('name')"><a href="#">Name</a></th>
+          <th class="tableheader" onclick="sort('username')"><a href="#">Username</a></th>
+          <th class="tableheader" onclick="sort('displayRole')"><a href="#">Role</a></th>
+          <th class="tableheader" onclick="sort('email')"><a href="#">Email</a></th>
+          <th class="tableheader" onclick="sort('emailverfied')"><a href="#">Email Verified</a></th>
+          <th class="tableheader" onclick="sort('lastlogon')"><a href="#">Last Login</a></th>
+          <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password Locked</a></th>
+          <th class="tableheader" onclick="sort('isrecipient')"><a href="#">Message Recipient</a></th>
+          <th class="tableheader" onclick="sort('isclinician')"><a href="#">Clinician</a></th>
         <th></th>
         <th></th>
         <th></th>
       </tr>
-    <logic:iterate id="unitUser" name="unitUsers" property="pageList">
+    <logic:iterate id="unitUser" name="unitUsers" type="org.patientview.patientview.logon.UnitAdmin" property="pageList">
       <tr>
         <td class="tablecell"><bean:write name="unitUser" property="name"/></td>
         <td class="tablecell"><bean:write name="unitUser" property="username"/></td>
@@ -100,9 +99,7 @@
             <td>
               <html:form action="/control/unitUserEditInput">
                 <html:hidden name="unitUser" property="username" />
-                <logic:notEmpty name="unit">
-                    <html:hidden name="unit" property="unitcode" />
-                </logic:notEmpty>
+                <html:hidden name="unitUser" property="unitcode" />
                 <html:submit value="Edit" styleClass="btn" />
               </html:form>
             </td>

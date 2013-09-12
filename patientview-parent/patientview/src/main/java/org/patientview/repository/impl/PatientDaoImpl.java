@@ -291,7 +291,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setLastlogon(resultSet.getDate("lastlogon"));
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
-            patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
+            patientLogonWithTreatment.setDateofbirth(resultSet.getString("dateofbirth"));
 
             return patientLogonWithTreatment;
         }

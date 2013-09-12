@@ -31,14 +31,21 @@ import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +57,16 @@ import java.util.List;
  */
 @Repository(value = "unitDao")
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void init() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Override
     public Unit get(String unitCode, Specialty specialty) {
@@ -229,7 +246,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
         String sql = "SELECT "
-                + "  u.*  "
+                + "  u.*, um.unitcode  "
                 + "FROM "
                 + "   User u, "
                 + "   UserMapping um, "
@@ -239,11 +256,12 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   u.id = sur.user_id "
                 + "AND "
-                + "   sur.specialty_id = :specialtyId "
+                + "   sur.specialty_id = ? "
                 + "AND "
-                + "   um.unitcode = :unitcode ";
+                + "   um.unitcode = ? ";
 
-        if ("radaradmin".equals(LegacySpringUtils.getUserManager().getLoggedInUserRole())) {
+        String userRole = LegacySpringUtils.getUserManager().getLoggedInUserRole();
+        if ("radaradmin".equals(userRole) || "superadmin".equals(userRole)) {
             sql += "AND "
                     + "   (sur.role = 'radaradmin')";
         } else {
@@ -251,37 +269,36 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                     + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
         }
 
-        Query query = getEntityManager().createNativeQuery(sql, User.class);
+        List<Object> params = new ArrayList<Object>();
+        params.add(specialty == null ? "" : specialty.getId());
+        params.add(unitcode);
 
-        query.setParameter("specialtyId", specialty == null ? "" : specialty.getId());
-        query.setParameter("unitcode", unitcode);
+        return jdbcTemplate.query(sql, params.toArray(), new UnitAdminMapper());
+    }
 
-        List<User> users = query.getResultList();
-
-        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
-
-        for (User user : users) {
+    private class UnitAdminMapper implements RowMapper<UnitAdmin> {
+        @Override
+        public UnitAdmin mapRow(ResultSet resultSet, int i) throws SQLException {
             UnitAdmin unitAdmin = new UnitAdmin();
-            unitAdmin.setUsername(user.getUsername());
-            unitAdmin.setName(user.getName());
-            unitAdmin.setEmail(user.getEmail());
-            unitAdmin.setEmailverfied(user.isEmailverified());
-            unitAdmin.setRole(user.getRole());
-            unitAdmin.setFirstlogon(user.isFirstlogon());
-            unitAdmin.setIsrecipient(user.isIsrecipient());
-            unitAdmin.setIsclinician(user.isIsclinician());
-            unitAdmin.setLastlogon(user.getLastlogon());
-            unitAdmin.setAccountlocked(user.isAccountlocked());
-            unitAdmins.add(unitAdmin);
+            unitAdmin.setUsername(resultSet.getString("username"));
+            unitAdmin.setName(resultSet.getString("name"));
+            unitAdmin.setEmail(resultSet.getString("email"));
+            unitAdmin.setEmailverfied(resultSet.getBoolean("emailverified"));
+            unitAdmin.setRole(resultSet.getString("role"));
+            unitAdmin.setFirstlogon(resultSet.getBoolean("firstlogon"));
+            unitAdmin.setIsrecipient(resultSet.getBoolean("isrecipient"));
+            unitAdmin.setIsclinician(resultSet.getBoolean("isclinician"));
+            unitAdmin.setLastlogon(resultSet.getDate("lastlogon"));
+            unitAdmin.setAccountlocked(resultSet.getBoolean("accountlocked"));
+            unitAdmin.setUnitcode(resultSet.getString("unitcode"));
+            return unitAdmin;
         }
-
-        return unitAdmins;
     }
 
     @Override
     public List<UnitAdmin> getAllUnitUsers(Specialty specialty) {
         String sql = "SELECT "
-                + "  u.*  "
+                + "  u.*, um.unitcode  "
                 + "FROM "
                 + "   User u, "
                 + "   UserMapping um, "
@@ -291,33 +308,16 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   u.id = sur.user_id "
                 + "AND "
-                + "   sur.specialty_id = :specialtyId "
+                + "   sur.specialty_id = ? "
                 + "AND "
                 + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff' OR sur.role = 'radaradmin')";
 
-        Query query = getEntityManager().createNativeQuery(sql, User.class);
 
-        query.setParameter("specialtyId", specialty.getId());
-        List<User> users = query.getResultList();
+        List<Object> params = new ArrayList<Object>();
+        params.add(specialty == null ? "" : specialty.getId());
 
-        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
+        return jdbcTemplate.query(sql, params.toArray(), new UnitAdminMapper());
 
-        for (User user : users) {
-            UnitAdmin unitAdmin = new UnitAdmin();
-            unitAdmin.setUsername(user.getUsername());
-            unitAdmin.setName(user.getName());
-            unitAdmin.setEmail(user.getEmail());
-            unitAdmin.setEmailverfied(user.isEmailverified());
-            unitAdmin.setRole(user.getRole());
-            unitAdmin.setFirstlogon(user.isFirstlogon());
-            unitAdmin.setIsrecipient(user.isIsrecipient());
-            unitAdmin.setIsclinician(user.isIsclinician());
-            unitAdmin.setLastlogon(user.getLastlogon());
-            unitAdmin.setAccountlocked(user.isAccountlocked());
-            unitAdmins.add(unitAdmin);
-        }
-
-        return unitAdmins;
     }
 
     @Override

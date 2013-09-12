@@ -28,8 +28,6 @@ public class MedicalResultDaoTest extends BaseDaoTest {
         medicalResult.setNhsNo("123456789");
         medicalResult.setRadarNo(1L);
         medicalResult.setSerumCreatanine(10.25);
-        medicalResult.setAntihypertensiveDrugs(MedicalResult.YesNo.YES);
-        medicalResult.setAntihypertensiveDrugsDate(date);
         medicalResult.setBloodUrea(12.25);
         medicalResult.setBloodUreaDate(date);
         medicalResult.setSerumCreatanine(15.5);

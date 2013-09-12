@@ -1,3 +1,25 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
 package com.worthsoln.test.web;
 
 import org.junit.Test;
@@ -69,13 +91,13 @@ public class ProfessionalMainScreenTest extends BaseTest{
         assertTextFieldEquals("dob", "01-08-1985");
 
         clickLinkWithText("Medical Results");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Genetics");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Deafness");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Medicines");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 
@@ -90,17 +112,17 @@ public class ProfessionalMainScreenTest extends BaseTest{
         assertSelectedOptionsEqual("diagnosis", new String[]{"SRNS"});
 
         clickLinkWithText("Diagnosis");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("First Visit");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Follow Up");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Pathology");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Relapse");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Hospitalisation");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 
@@ -110,15 +132,15 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
         clickLinkWithText("Edit",1);
         assertTextPresent("Disease Group: HNF1b Mutations");
-        assertTextFieldEquals("forename", "patien5");
+        assertTextFieldEquals("forename", "patient5");
         assertTextFieldEquals("dob", "01-08-1985");
 
         clickLinkWithText("Genetics");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("HNF1B Misc");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Medical Results");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 
@@ -128,15 +150,15 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
         clickLinkWithText("Edit",0);
         assertTextPresent("Disease Group: STEC-associated HUS");
-        assertTextFieldEquals("forename", "patien6");
+        assertTextFieldEquals("forename", "patient6");
         assertTextFieldEquals("dob", "01-08-1985");
 
         clickLinkWithText("Medical Results");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Genetics");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
         clickLinkWithText("Medicines");
-        assertTextNotPresent("Whoops!");
+        assertTextNotPresent(error_message);
 
     }
 }

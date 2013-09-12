@@ -1,3 +1,25 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
 package com.worthsoln.test.web;
 
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
@@ -52,7 +74,6 @@ public class LoginTest extends BaseTest{
         setTextField("password", "12");
         setTextField("dateOfBirth", "01-01-1990");
         submit();
-        System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
     }
@@ -68,7 +89,6 @@ public class LoginTest extends BaseTest{
         setTextField("email", professional_username);
         setTextField("password", professional_password);
         submit();
-//        System.out.println(getPageSource());
         assertLinkPresentWithText("| Log-out");     // we should now be logged in
 
         logout();
@@ -86,7 +106,6 @@ public class LoginTest extends BaseTest{
         setTextField("password", "12");
         submit();
 
-//        System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
     }
@@ -130,7 +149,6 @@ public class LoginTest extends BaseTest{
         setTextField("email", "12");
         setTextField("password", "12");
         submit();
-        System.out.println(getPageSource());
         assertTextPresent("Login failed");
         assertLinkNotPresentWithText("Logout");  // still in login page
     }

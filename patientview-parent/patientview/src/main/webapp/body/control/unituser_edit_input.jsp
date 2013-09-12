@@ -50,6 +50,7 @@
                 <div class="controls"><html:select property="role" name="unitUser">
                     <html:option value="unitstaff">Unit Staff</html:option>
                     <html:option value="unitadmin">Unit Admin</html:option>
+                    <html:option value="radaradmin">Radar Group Admin</html:option>
                 </html:select>
                 </div>
             </div>

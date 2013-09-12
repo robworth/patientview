@@ -22,8 +22,6 @@ public class MedicalResult implements Serializable {
     private Integer bpSystolic; // BPsys
     private Integer bpDiastolic; // BPdia
     private Date bpDate;
-    private YesNo antihypertensiveDrugs; //  antihypertensive
-    private Date antihypertensiveDrugsDate; //  antihypertensive
     private Integer pcr;
     private Date pcrDate;
     private Integer acr;
@@ -177,22 +175,6 @@ public class MedicalResult implements Serializable {
         this.bpDate = bpDate;
     }
 
-    public YesNo getAntihypertensiveDrugs() {
-        return antihypertensiveDrugs;
-    }
-
-    public void setAntihypertensiveDrugs(YesNo antihypertensiveDrugs) {
-        this.antihypertensiveDrugs = antihypertensiveDrugs;
-    }
-
-    public Date getAntihypertensiveDrugsDate() {
-        return antihypertensiveDrugsDate;
-    }
-
-    public void setAntihypertensiveDrugsDate(Date antihypertensiveDrugsDate) {
-        this.antihypertensiveDrugsDate = antihypertensiveDrugsDate;
-    }
-
     public Integer getPcr() {
         return pcr;
     }
@@ -261,8 +243,6 @@ public class MedicalResult implements Serializable {
         this.bpSystolic = null;
         this.bpDiastolic = null;
         this.bpDate = null;
-        this.antihypertensiveDrugs = null;
-        this.antihypertensiveDrugsDate = null;
         this.pcr = null;
         this.pcrDate = null;
         this.acr = null;
