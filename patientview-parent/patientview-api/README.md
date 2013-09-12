@@ -8,21 +8,21 @@ Data is supplied by PatientView server via json.,
 API Specification
 ===============
 
-1.Test Results
-URL
+###1.Test Results###
+#####URL#####
 - GET /data/testresult.json?{params}
 
-Params
+#####Params#####
 - unitcode, string, required
 - page, integer, optional, default 1
 - pageSize, integer, optional, default 20, max 100
 - nhsno, String, optional
 - testcode, String, optional
 
-Returns
+#####Returns#####
 - PagedResultsWrapper<TestResult>
-Example
-{
+#####Example#####
+<code>{
 "results": [
                 {
                 "id": 543910896,
@@ -43,61 +43,63 @@ Example
 "pageNumber": 1,
 "totalResults": 1
 }
-
-2. Letters
-URL
+</code>
+###2. Letters###
+#####URL#####
 - GET /data/letters.json?{params}
 
-Params
-- username, String, required
-
-Returns
-- List<Letter>
-Example
-[
-    {
-    "id": 40254192,
-    "nhsno": "6810341560",
-    "unitcode": "RENALA",
-    "date": 1370534400000,
-    "type": "<script>alert('FAIL');</script>",
-    "content": "<script>alert('FAIL');</script>\n5\n6",
-    "formattedContent": "&lt;script&gt;alert&#x28;&#x27;FAIL&#x27;&#x29;&#x3b;&lt;&#x2f;script&gt;<br/>5<br/>6",
-    "formattedDate": "07/06/13"
-    }
-]
-
-3.Medicines
-URL
-- GET /data/medicines.json?{params}
-
-Params
+#####Params#####
 - nhsno, String, required
 
-Returns
-- List<MedicineWithShortName>
-Example
-[
-    {
-    "id": 98560683,
-    "nhsno": "1710872306",
-    "unitcode": "SNC01",
-    "startdate": 1332864010000,
-    "name": "Hydroxychloroquine",
-    "dose": "400 mg",
-    "shortname": "UNKNOWN UNIT:SNC01",
-    "formattedStartDate": "28/03/12"
-    }
-]
+#####Returns#####
+- PagedResultsWrapper<Letter>
+#####Example#####
+<code>{
+    "results": [
+        {
+            "id": 40254236,
+            "nhsno": "9876543210",
+            "unitcode": "RM301",
+            "date": 1326816000000,
+            "type": "Clinic Letter",
+            "content": "Another letter",
+            "formattedContent": "Another letter",
+            "formattedDate": "18/01/12"
+        }
+    ],
+    "pageSize": 20,
+    "pageNumber": 1,
+    "totalResults": 2
+}</code>
 
-4.Sign off
-URL
-- GET /data/signoff.json
+###3.Medicines###
+#####URL#####
+- GET /data/medicines.json?{params}
 
-Return
-- String
-Example
-success
+#####Params#####
+- nhsno, String, required
 
-5. Authorisation
+#####Returns#####
+- PagedResultsWrapper<MedicineWithShortName>
+#####Example#####
+<code>{
+    "results": [
+        {
+            "id": 98560704,
+            "nhsno": "123456789",
+            "unitcode": "RENALA",
+            "startdate": 1378137600000,
+            "name": "testname",
+            "dose": "testdose",
+            "shortname": "Renal A",
+            "formattedStartDate": "03/09/13"
+        }
+    ],
+    "pageSize": 20,
+    "pageNumber": 1,
+    "totalResults": 1
+}</code>
+
+
+###4. Authorisation###
 All requests need to have the following: - ROLE_API_USER
