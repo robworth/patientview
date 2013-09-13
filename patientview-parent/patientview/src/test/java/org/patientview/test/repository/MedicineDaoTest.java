@@ -23,14 +23,19 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.medicine.MedicineWithShortName;
+import org.patientview.patientview.model.*;
 import org.patientview.repository.MedicineDao;
 import org.junit.Test;
+import org.patientview.repository.UnitDao;
+import org.patientview.test.helpers.RepositoryHelpers;
 
 import javax.inject.Inject;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,6 +45,12 @@ public class MedicineDaoTest extends BaseDaoTest {
 
     @Inject
     private MedicineDao medicineDao;
+
+    @Inject
+    private UnitDao unitDao;
+
+    @Inject
+    private  RepositoryHelpers repositoryHelpers;
 
     @Test
     public void testAddGetMedicine() throws Exception {
@@ -95,6 +106,47 @@ public class MedicineDaoTest extends BaseDaoTest {
         medicine.setDose("testdose");
 
         return medicine;
+    }
+
+    @Test
+    public void testGet() throws Exception {
+
+        Set<String> nhsnos = new HashSet<String>();
+        for(int i=0;i<10;i++){
+            Medicine testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            nhsnos.add(i+"");
+            medicineDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+        List<MedicineWithShortName> savedTestResults = medicineDao.get(nhsnos, 1, 4);
+        assertTrue("Can't get testResults: ", savedTestResults.size() == 4);
+
+        Set<String> nhsnos_2 = new HashSet<String>();
+        nhsnos_2.add(1+"");
+        savedTestResults = medicineDao.get(nhsnos_2, 1, 4);
+        assertTrue("Can't get testResults", savedTestResults.size() == 1);
+
+        savedTestResults = medicineDao.get(nhsnos, 2, 20);
+        assertTrue("Can't get testResults", savedTestResults.size() == 0);
+    }
+
+    @Test
+    public void testGetCount() throws Exception {
+
+        Set<String> nhsnos = new HashSet<String>();
+        for(int i=0;i<10;i++){
+            Medicine testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            nhsnos.add(i+"");
+            medicineDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+        Long count = medicineDao.getCount(nhsnos);
+        assertTrue("Can't get testResults: ", count == 10);
+
     }
 
 }

@@ -40,5 +40,11 @@ public final class Routes {
 
     public static final String EMAIL_VERIFICATION_URL = "/control/emailverification";
 
+    public static final String API_TESULT_URL = "/testresult.json";
+    public static final String API_LETTER_URL = "/letters.json";
+    public static final String API_MEDICINE_URL = "/medicines.json";
+
+
+
     private Routes() { }
 }

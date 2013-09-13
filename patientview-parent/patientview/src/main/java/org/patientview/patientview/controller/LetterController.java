@@ -21,35 +21,32 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository;
+package org.patientview.patientview.controller;
 
 import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.Specialty;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.patientview.utils.LegacySpringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-@Transactional(propagation = Propagation.MANDATORY)
-public interface LetterDao {
+@Controller
+public class LetterController extends BaseController {
 
-    Letter get(Long id);
+    @RequestMapping(value = Routes.API_LETTER_URL)
+    @ResponseBody
+    public  PagedResultsWrapper<Letter> getLetters(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "specialty", required = false) String specialty) {
 
-    void save(Letter letter);
+        Set<String> nhsno = getUserNhsnos();
 
-    List<Letter> get(String username, Specialty specialty);
+        PagedResultsWrapper<Letter> letters = LegacySpringUtils.getLetterManager().get(nhsno, page, pageSize);
 
-    List<Letter> get(Set<String> nhsnose, int page, int pagesize);
+        return letters;
+    }
 
-    Long getCount(Set<String> nhsnos);
-
-    List<Letter> getAll();
-
-    void delete(String nhsno, String unitcode, Date date);
-
-    void delete(String nhsno, String unitcode);
-
-    void delete(Long id);
 }

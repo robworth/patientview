@@ -23,9 +23,7 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.model.*;
 import org.patientview.repository.LetterDao;
 import org.patientview.repository.UserMappingDao;
 import org.patientview.test.helpers.RepositoryHelpers;
@@ -35,7 +33,9 @@ import org.junit.Test;
 import javax.inject.Inject;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -194,5 +194,48 @@ public class LetterDaoTest extends BaseDaoTest {
         letter.setUnitcode("testunit");
 
         return letter;
+    }
+
+
+    @Test
+    public void testGet() throws Exception {
+
+        Set<String> nhsnos = new HashSet<String>();
+        for(int i=0;i<10;i++){
+            Letter testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            nhsnos.add(i+"");
+            letterDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+
+        List<Letter> savedTestResults = letterDao.get(nhsnos, 1, 4);
+        assertTrue("Can't get testResults: ", savedTestResults.size() == 4);
+
+        Set<String> nhsnos_2 = new HashSet<String>();
+        nhsnos_2.add(1+"");
+        savedTestResults = letterDao.get(nhsnos_2, 1, 4);
+        assertTrue("Can't get testResults", savedTestResults.size() == 1);
+
+        savedTestResults = letterDao.get(nhsnos, 2, 20);
+        assertTrue("Can't get testResults", savedTestResults.size() == 0);
+    }
+
+    @Test
+    public void testGetCount() throws Exception {
+        Set<String> nhsnos = new HashSet<String>();
+        for(int i=0;i<10;i++){
+            Letter testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            nhsnos.add(i+"");
+            letterDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+
+        Long count = letterDao.getCount(nhsnos);
+        assertTrue("Can't get testResults: ", count == 10);
+
     }
 }

@@ -23,9 +23,15 @@
 package org.patientview.patientview.controller;
 
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *  Base Controller,supplies the forward/redirect method.All spring controller should extend this.
@@ -56,5 +62,17 @@ public class BaseController {
 
     protected String getSpecialtyContext() {
         return LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
+    }
+
+    public Set<String> getUserNhsnos() {
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
+        List<UserMapping> userMappingList = userManager.getUserMappings(user.getUsername());
+
+        Set<String> nhsnos = new HashSet<String>();
+        for (UserMapping userMapping : userMappingList) {
+            nhsnos.add(userMapping.getNhsno());
+        }
+        return nhsnos;
     }
 }

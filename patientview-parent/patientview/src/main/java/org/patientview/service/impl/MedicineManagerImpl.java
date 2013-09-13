@@ -23,9 +23,11 @@
 
 package org.patientview.service.impl;
 
+import org.patientview.patientview.controller.PagedResultsWrapper;
+import org.patientview.patientview.medicine.MedicineWithShortName;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.model.User;
 import org.patientview.repository.MedicineDao;
 import org.patientview.service.MedicineManager;
 import org.patientview.service.UserManager;
@@ -33,6 +35,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -62,6 +65,25 @@ public class MedicineManagerImpl implements MedicineManager {
         }
 
         return medicines;
+    }
+
+    @Override
+    public List<Medicine> getUserMedicines(String nhsno) {
+        List<Medicine> medicines = medicineDao.getMedicines(nhsno);
+        return medicines;
+    }
+
+    @Override
+    public PagedResultsWrapper<MedicineWithShortName> get(Set<String> nhsnos, int page, int pagesize) {
+        List<MedicineWithShortName> results = medicineDao.get(nhsnos, page, pagesize);
+        Long count = medicineDao.getCount(nhsnos);
+
+        PagedResultsWrapper<MedicineWithShortName> result = new  PagedResultsWrapper<MedicineWithShortName>();
+        result.setPageNumber(page);
+        result.setPageSize(pagesize);
+        result.setResults(results);
+        result.setTotalResults(count);
+        return result;
     }
 
     @Override

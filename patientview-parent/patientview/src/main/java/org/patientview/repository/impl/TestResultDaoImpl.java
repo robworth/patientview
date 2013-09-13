@@ -23,6 +23,7 @@
 
 package org.patientview.repository.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
@@ -43,6 +44,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -80,6 +82,45 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
         return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
     }
+
+    @Override
+    public List<TestResult> getAll(Set<String> nhsnos, int page, int pagesize) {
+        List<Object> params = new ArrayList<Object>();
+        String sql = "SELECT * FROM testresult ";
+
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
+        }
+
+        sql += " ORDER BY testcode, datestamp";
+        if (page != 0 && pagesize != 0) {
+            sql += " LIMIT  ?, ?";
+
+            params.add((page - 1) * pagesize);
+            params.add(pagesize);
+        }
+
+        return jdbcTemplate.query(sql, params.toArray(), new TestResultMapper());
+    }
+
+    @Override
+    public Long getCount(Set<String> nhsnos) {
+        List<Object> params = new ArrayList<Object>();
+        String sql = "SELECT count(id) FROM testresult ";
+
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
+        }
+
+        return jdbcTemplate.queryForObject(sql, params.toArray(), Long.class);
+    }
+
 
     @Override
     public List<TestResult> get(String nhsno, String unitcode) {

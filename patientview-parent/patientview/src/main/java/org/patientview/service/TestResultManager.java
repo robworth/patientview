@@ -23,15 +23,17 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.controller.PagedResultsWrapper;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
+import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.TestResult;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -44,6 +46,8 @@ public interface TestResultManager {
     void save(TestResult testResult);
 
     List<TestResult> get(String nhsno, String unitcode);
+
+    PagedResultsWrapper<TestResult> get(Set<String> nhsnos, int page, int pagesize);
 
     String getLatestWeightFromResults(User user);
 

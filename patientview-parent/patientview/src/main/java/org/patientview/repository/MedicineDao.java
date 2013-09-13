@@ -23,11 +23,13 @@
 
 package org.patientview.repository;
 
+import org.patientview.patientview.medicine.MedicineWithShortName;
 import org.patientview.patientview.model.Medicine;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional(propagation = Propagation.MANDATORY)
 public interface MedicineDao {
@@ -35,6 +37,10 @@ public interface MedicineDao {
     Medicine get(Long id);
 
     List<Medicine> getMedicines(String nhsno);
+
+    List<MedicineWithShortName> get(Set<String> nhsnos, int page, int pagesize);
+
+    Long getCount(Set<String> nhsnos);
 
     void save(Medicine medicine);
 

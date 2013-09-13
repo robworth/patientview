@@ -21,35 +21,35 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service;
+package org.patientview.patientview.controller;
 
-import org.patientview.patientview.controller.PagedResultsWrapper;
 import org.patientview.patientview.medicine.MedicineWithShortName;
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.User;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.patientview.utils.LegacySpringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 import java.util.Set;
 
-/**
- *
- */
-@Transactional(propagation = Propagation.REQUIRED)
-public interface MedicineManager {
 
-    Medicine get(Long id);
+@Controller
+public class MedicineController extends BaseController {
 
-    List<Medicine> getUserMedicines(User user);
+    @RequestMapping(value = Routes.API_MEDICINE_URL)
+    @ResponseBody
+    public PagedResultsWrapper<MedicineWithShortName> getMedicines(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "specialty", required = false) String specialty)
+            throws Exception {
 
-    List<Medicine> getUserMedicines(String nhsno);
+        Set<String> nhsnos = getUserNhsnos();
+        PagedResultsWrapper<MedicineWithShortName> medicines =
+                LegacySpringUtils.getMedicineManager().get(nhsnos, page, pageSize);
 
-    PagedResultsWrapper<MedicineWithShortName> get(Set<String> nhsnos, int page, int pagesize);
+        return medicines;
+    }
 
-    void save(Medicine medicine);
 
-    List<Medicine> getAll();
-
-    void delete(String nhsno, String unitcode);
 }

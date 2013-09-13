@@ -26,12 +26,11 @@ package org.patientview.test.repository;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.repository.TestResultDao;
 import org.junit.Test;
+import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 
@@ -115,6 +114,63 @@ public class TestResultDaoTest extends BaseDaoTest {
         tomorrow.add(Calendar.DATE, 1);
 
         return tomorrow.getTime();
+    }
+
+
+    @Test
+    public void testGetAll() throws Exception {
+
+        Set<String> nhsnos = new HashSet<String>();
+        for(int i=0;i<10;i++){
+            TestResult testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            nhsnos.add(i+"");
+            testResultDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+
+        /**
+         * get
+         */
+
+        List<TestResult> savedTestResults = testResultDao.getAll(nhsnos, 1, 4);
+        assertTrue("Can't get testResults: ", savedTestResults.size() == 4);
+
+
+        Set<String> nhsnos_2 = new HashSet<String>();
+        nhsnos_2.add(1+"");
+        savedTestResults = testResultDao.getAll(nhsnos_2, 1, 4);
+        assertTrue("Can't get testResults", savedTestResults.size() == 1);
+
+        savedTestResults = testResultDao.getAll(nhsnos, 2, 20);
+        assertTrue("Can't get testResults", savedTestResults.size() == 0);
+    }
+
+    @Test
+    public void testGetCount() throws Exception {
+        Set<String> nhsnos = new HashSet<String>();
+        for(int i=0;i<10;i++){
+            TestResult testResult = getTestObject();
+            testResult.setNhsno(i+"");
+            nhsnos.add(i+"");
+            testResultDao.save(testResult);
+            assertTrue("Can't save testResult", testResult.getId() > 0);
+        }
+
+
+        /**
+         * get
+         */
+        Long count = testResultDao.getCount(nhsnos);
+        assertTrue("Can't get testResults: ", count == 10);
+
+        Set<String> nhsnos_2 = new HashSet<String>();
+        nhsnos_2.add(1+"");
+        count = testResultDao.getCount(nhsnos_2);
+        assertTrue("Can't get testResults", count == 1);
+
+
     }
 
 }
