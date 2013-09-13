@@ -13,11 +13,9 @@ API Specification
 - GET /data/testresult.json?{params}
 
 #####Params#####
-- unitcode, string, required
+- specialty, string, required
 - page, integer, optional, default 1
 - pageSize, integer, optional, default 20, max 100
-- nhsno, String, optional
-- testcode, String, optional
 
 #####Returns#####
 - PagedResultsWrapper<TestResult>
@@ -55,7 +53,9 @@ API Specification
 - GET /data/letters.json?{params}
 
 #####Params#####
-- nhsno, String, required
+- specialty, string, required
+- page, integer, optional, default 1
+- pageSize, integer, optional, default 20, max 100
 
 #####Returns#####
 - PagedResultsWrapper<Letter>
@@ -89,7 +89,9 @@ API Specification
 - GET /data/medicines.json?{params}
 
 #####Params#####
-- nhsno, String, required
+- specialty, string, required
+- page, integer, optional, default 1
+- pageSize, integer, optional, default 20, max 100
 
 #####Returns#####
 - PagedResultsWrapper<MedicineWithShortName>
@@ -119,4 +121,4 @@ API Specification
 ---------------------------------------
 
 ###4. Authorisation###
-All requests need to have the following: - ROLE_API_USER
+All requests need to have the following: ROLE_RENAL_PATIENT or ROLE_IBD_PATIENT

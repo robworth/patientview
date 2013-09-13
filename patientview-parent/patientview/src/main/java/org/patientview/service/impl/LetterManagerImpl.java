@@ -23,6 +23,7 @@
 
 package org.patientview.service.impl;
 
+import org.patientview.patientview.controller.PagedResultsWrapper;
 import org.patientview.patientview.model.Letter;
 import org.patientview.repository.LetterDao;
 import org.patientview.service.LetterManager;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -58,6 +60,19 @@ public class LetterManagerImpl implements LetterManager {
     @Override
     public List<Letter> get(String username) {
         return letterDao.get(username, securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
+    public PagedResultsWrapper<Letter> get(Set<String> nhsnos, int page, int pagesize) {
+        List<Letter> results = letterDao.get(nhsnos, page, pagesize);
+        Long count = letterDao.getCount(nhsnos);
+
+        PagedResultsWrapper<Letter> result = new  PagedResultsWrapper<Letter>();
+        result.setPageNumber(page);
+        result.setPageSize(pagesize);
+        result.setResults(results);
+        result.setTotalResults(count);
+        return result;
     }
 
     @Override

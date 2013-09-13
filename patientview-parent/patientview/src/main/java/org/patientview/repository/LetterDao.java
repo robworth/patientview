@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Transactional(propagation = Propagation.MANDATORY)
 public interface LetterDao {
@@ -39,6 +40,10 @@ public interface LetterDao {
     void save(Letter letter);
 
     List<Letter> get(String username, Specialty specialty);
+
+    List<Letter> get(Set<String> nhsnose, int page, int pagesize);
+
+    Long getCount(Set<String> nhsnos);
 
     List<Letter> getAll();
 

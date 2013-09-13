@@ -44,6 +44,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -83,21 +84,15 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     }
 
     @Override
-    public List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize) {
+    public List<TestResult> getAll(Set<String> nhsnos, int page, int pagesize) {
         List<Object> params = new ArrayList<Object>();
-        params.add(unitcode);
-
         String sql = "SELECT * FROM testresult ";
-        sql += " WHERE unitcode = ? ";
 
-        if (StringUtils.isNotEmpty(testcode)) {
-            sql += " AND testcode = ?";
-            params.add(testcode);
-        }
-
-        if (StringUtils.isNotEmpty(nhsno)) {
-            sql += " AND nhsno = ?";
-            params.add(nhsno);
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
         }
 
         sql += " ORDER BY testcode, datestamp";
@@ -112,20 +107,15 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     }
 
     @Override
-    public Long getCount(String nhsno, String unitcode, String testcode) {
+    public Long getCount(Set<String> nhsnos) {
         List<Object> params = new ArrayList<Object>();
-        params.add(unitcode);
+        String sql = "SELECT count(id) FROM testresult ";
 
-        String sql = "SELECT count(id) FROM testresult WHERE unitcode = ? ";
-
-        if (StringUtils.isNotEmpty(testcode)) {
-            sql += " AND testcode = ?";
-            params.add(testcode);
-        }
-
-        if (StringUtils.isNotEmpty(nhsno)) {
-            sql += " AND nhsno = ?";
-            params.add(nhsno);
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
         }
 
         return jdbcTemplate.queryForObject(sql, params.toArray(), Long.class);

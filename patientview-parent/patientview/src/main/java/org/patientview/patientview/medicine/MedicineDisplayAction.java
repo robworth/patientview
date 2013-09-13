@@ -47,7 +47,6 @@ public class MedicineDisplayAction extends Action {
             throws Exception {
         User user = UserUtils.retrieveUser(request);
         List medicines = getMedicinesForPatient(user, request);
-        sortNullDatesOnMedicines(medicines);
 
         request.setAttribute("medicines", medicines);
         request.setAttribute("user", user);
@@ -73,16 +72,5 @@ public class MedicineDisplayAction extends Action {
         return medicinesWithShortName;
     }
 
-    private List sortNullDatesOnMedicines(List medicines) {
-        for (Object obj : medicines) {
-            Medicine medicine = (Medicine) obj;
-
-            // todo this probably won't work anymore
-            Medicine tempMed = LegacySpringUtils.getMedicineManager().get(medicine.getId());
-            medicine.setStartdate(tempMed.getStartdate());
-        }
-
-        return medicines;
-    }
 
 }

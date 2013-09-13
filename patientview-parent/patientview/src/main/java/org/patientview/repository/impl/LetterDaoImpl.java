@@ -23,25 +23,45 @@
 
 package org.patientview.repository.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.LetterDao;
 import org.patientview.repository.UserMappingDao;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.Query;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
 
 @Repository(value = "letterDao")
 public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements LetterDao {
 
     @Inject
     private UserMappingDao userMappingDao;
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void init() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
 
     @Override
     public List<Letter> get(String username, Specialty specialty) {
@@ -62,6 +82,64 @@ public class LetterDaoImpl extends AbstractHibernateDAO<Letter> implements Lette
 
         return Collections.emptyList();
     }
+
+    @Override
+    public List<Letter> get(Set<String> nhsnos, int page, int pagesize) {
+        List<Object> params = new ArrayList<Object>();
+        String sql = "SELECT * FROM letter ";
+
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
+        }
+
+        sql += " ORDER BY date";
+        if (page != 0 && pagesize != 0) {
+            sql += " LIMIT  ?, ?";
+
+            params.add((page - 1) * pagesize);
+            params.add(pagesize);
+        }
+
+        return jdbcTemplate.query(sql, params.toArray(), new LetterMapper());
+    }
+
+    @Override
+    public Long getCount(Set<String> nhsnos) {
+        List<Object> params = new ArrayList<Object>();
+
+        String sql = "SELECT count(id) FROM letter ";
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
+        }
+
+        return jdbcTemplate.queryForObject(sql, params.toArray(), Long.class);
+    }
+
+    private class LetterMapper implements RowMapper<Letter> {
+
+        @Override
+        public Letter mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            Letter row = new Letter();
+            row.setId(resultSet.getLong("id"));
+            row.setNhsno(resultSet.getString("nhsno"));
+            row.setUnitcode(resultSet.getString("unitcode"));
+            Calendar calendar =  Calendar.getInstance();
+            calendar.setTime(resultSet.getDate("date"));
+            row.setDate(calendar);
+            row.setType(resultSet.getString("type"));
+            row.setContent(resultSet.getString("content"));
+            return row;
+        }
+    }
+
+
 
     @Override
     public void delete(String nhsno, String unitcode, Date date) {

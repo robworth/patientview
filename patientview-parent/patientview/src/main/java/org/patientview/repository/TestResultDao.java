@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -51,9 +52,9 @@ public interface TestResultDao {
 
     List<TestResult> get(String nhsno, String unitcode);
 
-    List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize);
+    List<TestResult> getAll(Set<String> nhsnos, int page, int pagesize);
 
-    Long getCount(String nhsno, String unitcode, String testcode);
+    Long getCount(Set<String> nhsnos);
 
     String getLatestWeightFromResults(String nhsno, List<String> unitcodes);
 

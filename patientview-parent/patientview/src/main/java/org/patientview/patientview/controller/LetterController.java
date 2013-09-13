@@ -27,19 +27,25 @@ import org.patientview.patientview.model.Letter;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.Set;
 
 @Controller
 public class LetterController extends BaseController {
 
     @RequestMapping(value = Routes.API_LETTER_URL)
     @ResponseBody
-    public  List<Letter> getLetters(@RequestParam(value = "username", required = true) String username) {
-        List<Letter> letters = LegacySpringUtils.getLetterManager().get(username);
+    public  PagedResultsWrapper<Letter> getLetters(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "specialty", required = false) String specialty) {
+
+        Set<String> nhsno = getUserNhsnos();
+
+        PagedResultsWrapper<Letter> letters = LegacySpringUtils.getLetterManager().get(nhsno, page, pageSize);
+
         return letters;
     }
 

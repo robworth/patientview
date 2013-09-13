@@ -43,9 +43,9 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <http pattern="/apple-touch-icon-precomposed.png" security="none"/>
     <http pattern="/apple-touch-icon.png" security="none"/>
 
-    <http pattern="/data/**/*.json" auto-config="true" authentication-manager-ref="authenticationManager" create-session="stateless">
+    <http pattern="/data/**/*.json" auto-config="true" authentication-manager-ref="authenticationManager" create-session="stateless" use-expressions="true">
         <http-basic />
-        <intercept-url pattern="/data/**/*.json" access="ROLE_RENAL_UNITADMIN"/>
+        <intercept-url pattern="/data/**/*.json" access="hasAnyRole('ROLE_RENAL_PATIENT', 'ROLE_IBD_PATIENT')"/>
     </http>
 
     <http access-decision-manager-ref="accessDecisionManager">

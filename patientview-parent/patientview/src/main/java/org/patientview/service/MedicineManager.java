@@ -23,12 +23,15 @@
 
 package org.patientview.service;
 
+import org.patientview.patientview.controller.PagedResultsWrapper;
+import org.patientview.patientview.medicine.MedicineWithShortName;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -41,6 +44,8 @@ public interface MedicineManager {
     List<Medicine> getUserMedicines(User user);
 
     List<Medicine> getUserMedicines(String nhsno);
+
+    PagedResultsWrapper<MedicineWithShortName> get(Set<String> nhsnos, int page, int pagesize);
 
     void save(Medicine medicine);
 

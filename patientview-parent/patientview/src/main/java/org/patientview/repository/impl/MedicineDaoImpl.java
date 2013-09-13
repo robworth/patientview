@@ -23,23 +23,45 @@
 
 package org.patientview.repository.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.patientview.patientview.medicine.MedicineWithShortName;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.Medicine_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.MedicineDao;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
  */
 @Repository(value = "medicineDao")
 public class MedicineDaoImpl extends AbstractHibernateDAO<Medicine> implements MedicineDao {
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void init() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Override
     public List<Medicine> getMedicines(String nhsno) {
@@ -51,6 +73,67 @@ public class MedicineDaoImpl extends AbstractHibernateDAO<Medicine> implements M
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
+
+    @Override
+    public List<MedicineWithShortName> get(Set<String> nhsnos, int page, int pagesize) {
+        List<Object> params = new ArrayList<Object>();
+
+        String sql = "SELECT m.nhsno, m.unitcode, m.startdate, m.name, m.dose, m.id, u.shortname "
+                + "FROM medicine m LEFT JOIN unit u ON u.unitcode = m.unitcode ";
+
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" m.nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
+        }
+
+        if (page != 0 && pagesize != 0) {
+            sql += " LIMIT  ?, ?";
+
+            params.add((page - 1) * pagesize);
+            params.add(pagesize);
+        }
+
+        return jdbcTemplate.query(sql, params.toArray(), new MedicineMapper());
+    }
+
+    @Override
+    public Long getCount(Set<String> nhsnos) {
+        List<Object> params = new ArrayList<Object>();
+
+        String sql = "SELECT count(m.id) "
+                + "FROM medicine m LEFT JOIN unit u ON u.unitcode = m.unitcode ";
+        if (!nhsnos.isEmpty()) {
+            sql += " WHERE ( ";
+            sql += StringUtils.repeat(" m.nhsno = ? ", "or", nhsnos.size());
+            sql += " )";
+            params.addAll(nhsnos);
+        }
+
+        return jdbcTemplate.queryForObject(sql, params.toArray(), Long.class);
+    }
+
+    private class MedicineMapper implements RowMapper<MedicineWithShortName> {
+
+        @Override
+        public MedicineWithShortName mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            MedicineWithShortName row = new MedicineWithShortName();
+            row.setId(resultSet.getLong("id"));
+            row.setNhsno(resultSet.getString("nhsno"));
+            row.setUnitcode(resultSet.getString("unitcode"));
+            Calendar calendar =  Calendar.getInstance();
+            calendar.setTime(resultSet.getDate("startdate"));
+            row.setStartdate(calendar);
+            row.setName(resultSet.getString("name"));
+            row.setDose(resultSet.getString("dose"));
+            row.setShortname(resultSet.getString("shortname"));
+            return row;
+        }
+    }
+
+
 
     @Override
     public void delete(String nhsno, String unitcode) {

@@ -23,12 +23,14 @@
 
 package org.patientview.service;
 
+import org.patientview.patientview.controller.PagedResultsWrapper;
 import org.patientview.patientview.model.Letter;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -41,6 +43,8 @@ public interface LetterManager {
     void save(Letter letter);
 
     List<Letter> get(String username);
+
+    PagedResultsWrapper<Letter> get(Set<String> username, int page, int pagesize);
 
     List<Letter> getAll();
 

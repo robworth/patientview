@@ -24,58 +24,32 @@
 package org.patientview.patientview.controller;
 
 import org.patientview.patientview.medicine.MedicineWithShortName;
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
-//import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MedicineController extends BaseController {
 
     @RequestMapping(value = Routes.API_MEDICINE_URL)
     @ResponseBody
-    public List<MedicineWithShortName> getMedicines(@RequestParam(value = "nhsno", required = true) String nhsno)
+    public PagedResultsWrapper<MedicineWithShortName> getMedicines(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "specialty", required = false) String specialty)
             throws Exception {
-        List<MedicineWithShortName> medicines = getMedicinesForPatient(nhsno);
-        sortNullDatesOnMedicines(medicines);
+
+        Set<String> nhsnos = getUserNhsnos();
+        PagedResultsWrapper<MedicineWithShortName> medicines =
+                LegacySpringUtils.getMedicineManager().get(nhsnos, page, pageSize);
 
         return medicines;
     }
 
-    private List<MedicineWithShortName> getMedicinesForPatient(String nhsno) throws Exception {
-        List<MedicineWithShortName> medicinesWithShortName = new ArrayList<MedicineWithShortName>();
-        List<Medicine> medicines = LegacySpringUtils.getMedicineManager().getUserMedicines(nhsno);
-        if (medicines == null) {
-            return medicinesWithShortName;
-        }
-        for (Medicine med : medicines) {
-            Unit unit = UnitUtils.retrieveUnit(med.getUnitcode());
-            if (unit != null) {
-                medicinesWithShortName.add(new MedicineWithShortName(med, unit.getShortname()));
-            } else {
-                medicinesWithShortName.add(new MedicineWithShortName(med, "UNKNOWN UNIT:" + med.getUnitcode()));
-            }
-        }
 
-        return medicinesWithShortName;
-    }
-
-    private List<MedicineWithShortName> sortNullDatesOnMedicines(List<MedicineWithShortName> medicines) {
-        for (Medicine medicine : medicines) {
-            // todo this probably won't work anymore
-            Medicine tempMed = LegacySpringUtils.getMedicineManager().get(medicine.getId());
-            medicine.setStartdate(tempMed.getStartdate());
-        }
-
-        return medicines;
-    }
 }

@@ -23,6 +23,8 @@
 
 package org.patientview.specialty;
 
+import org.apache.commons.lang.math.NumberUtils;
+import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +56,18 @@ public class DataFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String uri = request.getRequestURI();
-        filterConfig.getServletContext().getRequestDispatcher(uri).forward(servletRequest,
-                servletResponse);
+        String specialtyId = request.getParameter("specialty");
+        if (NumberUtils.isDigits(specialtyId)) {
+            try {
+                LegacySpringUtils.getSecurityUserManager().setLoggedInSpecialty(Long.valueOf(specialtyId));
+                String uri = request.getRequestURI();
+                filterConfig.getServletContext().getRequestDispatcher(uri).forward(servletRequest,
+                        servletResponse);
+            } catch (Exception e) {
+                LOGGER.debug(e.getMessage(), e);
+            }
+        }
+
         return;
 
     }

@@ -23,6 +23,7 @@
 
 package org.patientview.service.impl;
 
+import org.patientview.patientview.controller.PagedResultsWrapper;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.User;
@@ -39,6 +40,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -71,13 +73,16 @@ public class TestResultManagerImpl implements TestResultManager {
     }
 
     @Override
-    public  List<TestResult> getAll(String nhsno, String unitcode, String testcode, int page, int pagesize) {
-        return testResultDao.getAll(nhsno, unitcode, testcode, page, pagesize);
-    }
+    public PagedResultsWrapper<TestResult> get(Set<String> nhsnos,  int page, int pagesize) {
+        List<TestResult> results = testResultDao.getAll(nhsnos, page, pagesize);
+        Long count = testResultDao.getCount(nhsnos);
 
-    @Override
-    public  Long getCount(String nhsno, String unitcode, String testcode) {
-        return testResultDao.getCount(nhsno, unitcode, testcode);
+        PagedResultsWrapper<TestResult> result = new  PagedResultsWrapper<TestResult>();
+        result.setPageNumber(page);
+        result.setPageSize(pagesize);
+        result.setResults(results);
+        result.setTotalResults(count);
+        return result;
     }
 
     @Override

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.Set;
 
 @Controller
 public class TestResultController extends BaseController {
@@ -40,20 +40,12 @@ public class TestResultController extends BaseController {
     public PagedResultsWrapper<TestResult> getTestResults(
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") int pageSize,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(value = "unitcode", required = true) String unitcode,
-            @RequestParam(value = "nhsno", required = false) String nhsno,
-            @RequestParam(value = "testcode", required = false) String testcode) {
+            @RequestParam(value = "specialty", required = false) String specialty) {
 
-        List<TestResult> results =
-                LegacySpringUtils.getTestResultManager().getAll(nhsno, unitcode, testcode, page, pageSize);
+        Set<String> nhsnos = getUserNhsnos();
+        PagedResultsWrapper<TestResult> result =
+                LegacySpringUtils.getTestResultManager().get(nhsnos, page, pageSize);
 
-        Long count = LegacySpringUtils.getTestResultManager().getCount(nhsno, unitcode, testcode);
-
-        PagedResultsWrapper<TestResult> result = new  PagedResultsWrapper<TestResult>();
-        result.setPageNumber(page);
-        result.setPageSize(pageSize);
-        result.setResults(results);
-        result.setTotalResults(count);
         return result;
     }
 
