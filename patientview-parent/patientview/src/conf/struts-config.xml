@@ -164,6 +164,7 @@
             <form-property name="haemodialysisunitphone12" type="java.lang.String"/>
             <form-property name="haemodialysisunitlocation12" type="java.lang.String"/>
             <form-property name="haemodialysisuniturl12" type="java.lang.String"/>
+            <form-property name="sourceType" type="java.lang.String"/>
         </form-bean>
         <form-bean name="gpgForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="src" type="java.lang.String"/>
@@ -903,6 +904,14 @@
             <forward name="success" path="/control/unit_add_input.jsp"/>
         </action>
 
+        <action path="/control/radarGroupAddInput"
+                type="org.patientview.patientview.IndexAction"
+                name="unitForm"
+                scope="request">
+            <forward name="success" path="/control/radar_group_add_input.jsp"/>
+        </action>
+
+
         <action path="/control/unitAdd"
                 type="org.patientview.patientview.unit.UnitAddAction"
                 name="unitForm"
@@ -912,8 +921,24 @@
             <forward name="success" path="/control/unit_add_input.jsp"/>
         </action>
 
+        <action path="/control/radarGroupAdd"
+                type="org.patientview.patientview.unit.UnitAddAction"
+                name="unitForm"
+                input="input"
+                scope="request">
+            <forward name="input" path="/control/radar_group_add_input.jsp"/>
+            <forward name="success" path="/control/radar_group_add_input.jsp"/>
+        </action>
+
+
         <action path="/control/unitDisplay"
                 type="org.patientview.patientview.unit.UnitsDisplayAction">
+            <forward name="success" path="/control/unit_list.jsp"/>
+        </action>
+
+
+        <action path="/control/radarGroupDisplay"
+                type="org.patientview.patientview.logon.RadarGroupUsersAction">
             <forward name="success" path="/control/unit_list.jsp"/>
         </action>
 
@@ -932,6 +957,23 @@
                 scope="request">
             <forward name="input" path="/control/unit_edit.jsp"/>
             <forward name="success" path="/control/unit_edit.jsp"/>
+        </action>
+
+        <action path="/control/radarGroupEdit"
+                type="org.patientview.patientview.unit.UnitEditAction"
+                name="unitForm"
+                scope="request"
+                validate="false">
+            <forward name="success" path="/control/radar_group_edit.jsp"/>
+        </action>
+
+        <action path="/control/radarGroupUpdate"
+                type="org.patientview.patientview.unit.UnitUpdateAction"
+                name="unitForm"
+                input="input"
+                scope="request">
+            <forward name="input" path="/control/radar_group_edit.jsp"/>
+            <forward name="success" path="/control/radar_group_edit.jsp"/>
         </action>
 
         <action path="/control/unitPatientsUnitSelect"

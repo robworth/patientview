@@ -54,9 +54,9 @@
                 <li class="divider"></li>
             </logic:present>
 
-            <logic:present role="radaradmin" >
-                <li><html:link action="/control/unitDisplay">
-                    <logic:present specialty="renal">Radar Units</logic:present>
+            <logic:present role="superadmin" >
+                <li><html:link action="/control/radarGroupDisplay">
+                    <logic:present specialty="renal">RaDaR Groups</logic:present>
                 </html:link></li>
                 <li class="divider"></li>
             </logic:present>

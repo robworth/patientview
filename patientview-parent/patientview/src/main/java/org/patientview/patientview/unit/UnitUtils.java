@@ -73,6 +73,7 @@ public final class UnitUtils {
     public static void buildUnit(Unit unit, Object form) throws Exception {
 
         // set defaults for sourceType and country, note this runs for updates as well as creates
+        unit.setSourceType(BeanUtils.getProperty(form, "sourceType"));
         if (unit.getSourceType() == null || unit.getSourceType().length() == 0) {
             unit.setSourceType("renalunit");
         }
