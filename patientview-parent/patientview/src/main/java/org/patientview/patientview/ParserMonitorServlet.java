@@ -26,20 +26,23 @@ package org.patientview.patientview;
 import org.patientview.patientview.parser.XmlParserThread;
 import org.patientview.patientview.uktransplant.UktExportThread;
 import org.patientview.patientview.uktransplant.UktParserThread;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import java.util.Properties;
 
 public class ParserMonitorServlet extends HttpServlet {
 
     public void init() throws ServletException {
         super.init();
-        String runThreads = getServletContext().getInitParameter("run.import.export.threads");
+        Properties properties = LegacySpringUtils.getContextProperties();
+        String runThreads = properties.getProperty("run.import.export.threads");
         if ((runThreads == null) || !"false".equals(runThreads)) {
             startParseThread("xml", new XmlParserThread(new String[]{".xml", }));
             //  startParseThread("dataout", new DataOutThread());
         }
-        String runUktThreads = getServletContext().getInitParameter("run.ukt.threads");
+        String runUktThreads = properties.getProperty("run.ukt.threads");
         if ((runUktThreads == null) || !"false".equals(runUktThreads)) {
             startParseThread("ukt", new UktParserThread());
             startParseThread("uktexport", new UktExportThread());
@@ -47,9 +50,10 @@ public class ParserMonitorServlet extends HttpServlet {
     }
 
     private void startParseThread(String prebit, ParserThread parserThread) {
-        String directory = getServletContext().getInitParameter(prebit + ".directory");
-        String archiveDirectory = getServletContext().getInitParameter(prebit + ".archive.directory");
-        String minutesBetweenWaitString = getServletContext().getInitParameter(prebit + ".minutes.to.wait");
+        Properties properties = LegacySpringUtils.getContextProperties();
+        String directory = properties.getProperty(prebit + ".directory");
+        String archiveDirectory = properties.getProperty(prebit + ".archive.directory");
+        String minutesBetweenWaitString = properties.getProperty(prebit + ".minutes.to.wait");
         int minutesBetweenWait = Integer.parseInt(minutesBetweenWaitString);
         parserThread.setPrebit(prebit);
         parserThread.setArchiveDirectory(archiveDirectory);
