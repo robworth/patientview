@@ -436,6 +436,7 @@ public class GenericDemographicsPanel extends Panel {
         final IModel<Boolean> diagnosisDateVisibility = new Model<Boolean>(false);
         diagnosisDateVisibility.setObject(form.getModelObject().getDateOfGenericDiagnosis() == null);
         CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect");
+        model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect()==null);
         diagnosisDateSelect.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
