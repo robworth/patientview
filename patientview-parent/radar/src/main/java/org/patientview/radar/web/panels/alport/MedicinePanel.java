@@ -62,7 +62,7 @@ public class MedicinePanel extends Panel {
         diseaseGroup.setId(DiseaseGroup.ALPORT_DISEASEGROUP_ID);
 
         // add the patient detail bar to the tab
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Deafness");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Medications");
         patientDetail.setOutputMarkupId(true);
         add(patientDetail);
 
