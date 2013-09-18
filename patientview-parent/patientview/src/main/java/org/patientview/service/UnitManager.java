@@ -58,6 +58,8 @@ public interface UnitManager {
 
     List<Unit> getAdminsUnits();
 
+    List<Unit> getAdminsUnits(boolean isRadarGroup);
+
     List<Unit> getUnitsWithUser();
 
     List<Unit> getLoggedInUsersUnits();

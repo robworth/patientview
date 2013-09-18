@@ -1,8 +1,5 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
-
 <%--
   ~ PatientView
   ~
@@ -28,55 +25,58 @@
 
 <html:xhtml/>
 <div class="span9">
-
 <div class="page-header">
-    <h1>GP</h1>
+    <h1>RaDaR Group Add</h1>
 </div>
 
+<html:errors />
 
-On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfully enrolled a new GP with the following details:
-<br /><br />
+<html:form action="/control/radarGroupAdd">
 
-<table cellpadding="3" >
+  <table cellpadding="3" >
+
     <tr>
-      <td><b>User Name</b></td>
-      <td><logic:notEmpty name="gp">
-            <bean:write name="gp" property="username" />
-          </logic:notEmpty>
-      </td>
+      <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b>Password</b></td>
-      <td class="password">
-        <logic:notEmpty name="gp">
-          <bean:write name="gp" property="password" />
-        </logic:notEmpty>
-    </td>
+      <td><b>Code</b></td>
+      <td><html:text property="unitcode" /></td>
     </tr>
+
     <tr>
       <td><b>Name</b></td>
-      <td>
-          <logic:notEmpty name="gp">
-              <bean:write name="gp" property="name" />
-          </logic:notEmpty>
-      </td>
+      <td><html:text property="name" /></td>
     </tr>
+
     <tr>
-      <td><b>NHS Number</b></td>
-      <td>
-          <logic:notEmpty name="gp">
-              <bean:write name="userMappingGp" property="nhsno" />
-          </logic:notEmpty>
-      </td>
+      <td><b>Short Name</b></td>
+      <td><html:text property="shortname" maxlength="15"/></td>
     </tr>
+
+    <html:hidden property="sourceType" value="radargroup"/>
+
     <tr>
-      <td><b>Email Address</b></td>
-      <td>
-          <logic:notEmpty name="gp">
-            <bean:write name="gp" property="email" />
-          </logic:notEmpty>
-      </td>
+      <td><b>Admin Name</b></td>
+      <td><html:text property="renaladminname" /></td>
     </tr>
- </table>
-<br/>
+
+    <tr>
+      <td><b>Admin Phone</b></td>
+      <td><html:text property="renaladminphone" /></td>
+    </tr>
+
+    <tr>
+      <td><b>Admin Email</b></td>
+      <td><html:text property="renaladminemail" /></td>
+    </tr>
+
+    <tr>
+      <td><html:submit value="Add" styleClass="formButton"/></td>
+    </tr>
+
+  </table>
+
+</html:form>
+</div>
+
 </div>

@@ -173,6 +173,11 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<Unit> getAdminsUnits(Specialty specialty) {
+        return getAdminsUnits(specialty, false);
+    }
+
+    @Override
+    public List<Unit> getAdminsUnits(Specialty specialty, boolean isRadarGroup) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -180,7 +185,11 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
-//        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+        if (isRadarGroup) {
+            wherePredicates.add(builder.equal(from.get(Unit_.sourceType), "radargroup"));
+        } else {
+            wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+        }
 
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
@@ -261,12 +270,15 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "   um.unitcode = ? ";
 
         String userRole = LegacySpringUtils.getUserManager().getLoggedInUserRole();
-        if ("radaradmin".equals(userRole) || "superadmin".equals(userRole)) {
-            sql += "AND "
-                    + "   (sur.role = 'radaradmin')";
-        } else {
-            sql += "AND "
-                    + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+        if ("radaradmin".equals(userRole)) {
+            sql += " AND "
+                    + " (sur.role = 'radaradmin') ";
+        } else if ("unitadmin".equals(userRole)) {
+            sql += " AND "
+                    + " (sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
+        } else if ("superadmin".equals(userRole)) {
+            sql += " AND "
+                    + " (sur.role = 'radaradmin' OR sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
         }
 
         List<Object> params = new ArrayList<Object>();

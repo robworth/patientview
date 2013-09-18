@@ -25,6 +25,7 @@ package org.patientview.patientview.logon;
 
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.user.NhsnoUnitcode;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
@@ -77,6 +78,8 @@ public class PatientEditAction extends Action {
         if (!duplicateUsers.isEmpty() && !overrideDuplicateNhsno.equals("on")) {
             request.setAttribute(LogonUtils.NHSNO_ALREADY_EXISTS, nhsno);
             mappingToFind = "input";
+            NhsnoUnitcode nhsnoThing = new NhsnoUnitcode(nhsno, unitcode);
+            request.setAttribute("nhsnot", nhsnoThing);
         } else {
 
             PatientLogon patient =

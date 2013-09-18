@@ -34,7 +34,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsDaoImpl.class);
 
-    private static final String DATE_FORMAT = "dd.MM.y";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT_1 = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
     private SimpleJdbcInsert demographicsInsert;
@@ -374,7 +375,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 Date dateOfBirth = null;
 
                 // It seems that the encrypted strings in the DB have different date formats, nice.
-                for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2, DATE_FORMAT_3}) {
+                for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
                     try {
                         dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
                     } catch (ParseException e) {
