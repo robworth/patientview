@@ -107,12 +107,14 @@ public class BaseTestPvDbSchema {
         ResultSet resultSet = statement.executeQuery("SHOW TABLES");
 
         Statement dropStatement = connection.createStatement();
+        dropStatement.execute("SET FOREIGN_KEY_CHECKS = 0;");
 
         while (resultSet.next()) {
             String tableName =  resultSet.getString(1);
             dropStatement.execute("DROP table " + tableName);
         }
 
+        dropStatement.execute("SET FOREIGN_KEY_CHECKS = 1;");
         statement.close();
         dropStatement.close();
     }
