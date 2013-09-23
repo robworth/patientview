@@ -32,6 +32,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.springframework.beans.support.PagedListHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,7 +102,8 @@ public class PatientEditAction extends Action {
             }
 
             List patients = LegacySpringUtils.getPatientManager().getUnitPatientsAllWithTreatmentDao(unitcode);
-            request.setAttribute("patients", patients);
+            PagedListHolder pagedListHolder = new PagedListHolder(patients);
+            request.getSession().setAttribute("patients", pagedListHolder);
             mappingToFind = "success";
         }
 
