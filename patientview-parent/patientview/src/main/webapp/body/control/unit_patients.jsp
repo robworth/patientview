@@ -48,11 +48,11 @@
         <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
             <div class="row" style="float: right;">
                 <logic:equal value="false" name="patients" property="firstPage">
-                    <a href="./unitPatients?page=prev">Prev</a>
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=prev">Prev</a>
                 </logic:equal>
                 &nbsp;
                 <logic:equal value="false" name="patients" property="lastPage">
-                    <a href="./unitPatients?page=next">Next</a>
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=next">Next</a>
                 </logic:equal>
             </div>
         </div>
