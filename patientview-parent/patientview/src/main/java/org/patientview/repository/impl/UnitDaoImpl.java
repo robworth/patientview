@@ -255,7 +255,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
         String sql = "SELECT "
-                + "  u.*, um.unitcode  "
+                + "  u.*, um.unitcode, sur.role as surrole "
                 + "FROM "
                 + "   User u, "
                 + "   UserMapping um, "
@@ -296,7 +296,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             unitAdmin.setName(resultSet.getString("name"));
             unitAdmin.setEmail(resultSet.getString("email"));
             unitAdmin.setEmailverfied(resultSet.getBoolean("emailverified"));
-            unitAdmin.setRole(resultSet.getString("role"));
+            unitAdmin.setRole(resultSet.getString("surrole"));
             unitAdmin.setFirstlogon(resultSet.getBoolean("firstlogon"));
             unitAdmin.setIsrecipient(resultSet.getBoolean("isrecipient"));
             unitAdmin.setIsclinician(resultSet.getBoolean("isclinician"));
@@ -310,7 +310,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     @Override
     public List<UnitAdmin> getAllUnitUsers(Specialty specialty) {
         String sql = "SELECT "
-                + "  u.*, um.unitcode  "
+                + "  u.*, um.unitcode, sur.role as surrole  "
                 + "FROM "
                 + "   User u, "
                 + "   UserMapping um, "
