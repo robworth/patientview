@@ -295,7 +295,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
             unitAdmin.setUsername(resultSet.getString("username"));
             unitAdmin.setName(resultSet.getString("name"));
             unitAdmin.setEmail(resultSet.getString("email"));
-            unitAdmin.setEmailverfied(resultSet.getBoolean("emailverified"));
+            unitAdmin.setEmailverified(resultSet.getBoolean("emailverified"));
             unitAdmin.setRole(resultSet.getString("surrole"));
             unitAdmin.setFirstlogon(resultSet.getBoolean("firstlogon"));
             unitAdmin.setIsrecipient(resultSet.getBoolean("isrecipient"));
@@ -308,7 +308,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     }
 
     @Override
-    public List<UnitAdmin> getAllUnitUsers(Specialty specialty) {
+    public List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup, Specialty specialty) {
         String sql = "SELECT "
                 + "  u.*, um.unitcode, sur.role as surrole  "
                 + "FROM "
@@ -321,9 +321,13 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "   u.id = sur.user_id "
                 + "AND "
                 + "   sur.specialty_id = ? "
-                + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff' OR sur.role = 'radaradmin')";
+                + "AND ";
 
+        if (isRadarGroup == Boolean.TRUE) {
+            sql += "   (sur.role = 'radaradmin')";
+        } else {
+            sql += "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+        }
 
         List<Object> params = new ArrayList<Object>();
         params.add(specialty == null ? "" : specialty.getId());

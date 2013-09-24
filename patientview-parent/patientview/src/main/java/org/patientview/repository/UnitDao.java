@@ -63,7 +63,7 @@ public interface UnitDao {
 
     List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
 
-    List<UnitAdmin> getAllUnitUsers(Specialty specialty);
+    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup, Specialty specialty);
 
     List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
 }

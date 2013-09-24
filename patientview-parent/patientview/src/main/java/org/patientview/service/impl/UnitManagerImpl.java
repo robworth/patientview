@@ -181,8 +181,8 @@ public class UnitManagerImpl implements UnitManager {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
-    public List<UnitAdmin> getAllUnitUsers() {
-        return unitDao.getAllUnitUsers(securityUserManager.getLoggedInSpecialty());
+    public List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup) {
+        return unitDao.getAllUnitUsers(isRadarGroup, securityUserManager.getLoggedInSpecialty());
     }
 
     @Override
