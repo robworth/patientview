@@ -167,7 +167,7 @@ public class UserManagerImpl implements UserManager {
         user.setAccountlocked(unitAdmin.isAccountlocked());
         user.setDummypatient(unitAdmin.isDummypatient());
         user.setEmail(unitAdmin.getEmail());
-        user.setEmailverified(unitAdmin.isEmailverfied());
+        user.setEmailverified(unitAdmin.isEmailverified());
         user.setFailedlogons(unitAdmin.getFailedlogons());
         user.setFirstlogon(unitAdmin.isFirstlogon());
         user.setLastlogon(unitAdmin.getLastlogon());
@@ -210,7 +210,7 @@ public class UserManagerImpl implements UserManager {
         user.setAccountlocked(patientLogon.isAccountlocked());
         user.setDummypatient(patientLogon.isDummypatient());
         user.setEmail(patientLogon.getEmail());
-        user.setEmailverified(patientLogon.isEmailverfied());
+        user.setEmailverified(patientLogon.isEmailverified());
         user.setFailedlogons(patientLogon.getFailedlogons());
         user.setFirstlogon(patientLogon.isFirstlogon());
         user.setLastlogon(patientLogon.getLastlogon());

@@ -77,6 +77,9 @@ public interface UnitManager {
     List<UnitAdmin> getUnitUsers(String unitcode);
 
     @Secured(value =  "ROLE_RENAL_SUPERADMIN")
+    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup);
+
+    @Secured(value =  "ROLE_RENAL_SUPERADMIN")
     List<UnitAdmin> getAllUnitUsers();
 
     List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
