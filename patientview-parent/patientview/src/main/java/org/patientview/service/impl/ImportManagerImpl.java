@@ -99,16 +99,29 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     @Override
-    public void update(File xmlFile) {
-        File xsdFile;
+    public void update(File xmlFile) throws Exception {
+
         try {
-            xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
-                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ImportManagerImpl.update()");
+            /**
+             * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
+             * hasn't worked. Send a mail to RPV admin, and skip validate and process
+             */
+            if (xmlFile.length() == 0) {
+                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                        xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                        xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+                xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
+            } else {
+                File xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
+                        .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
+                validateAndProcess(xmlFile, xsdFile);
+            }
+
+        } finally {
+            // always move the file, so it is not processed multiple times
+            renameDirectory(xmlFile);
         }
 
-        update(xmlFile, xsdFile);
     }
 
     @Override
@@ -130,32 +143,11 @@ public class ImportManagerImpl implements ImportManager {
     @Override
     public Unit retrieveUnit(String unitcode) {
         unitcode = unitcode.toUpperCase();
-        Unit unit = null;
-        try {
-            unit = unitDao.get(unitcode, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Unit unit = unitDao.get(unitcode, null);
         return unit;
     }
 
-    public void update(File xmlFile, File xsdFile) {
-        /**
-         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin, and skip validate and process
-         */
-        if (xmlFile.length() == 0) {
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
-        } else {
-            validateAndProcess(xmlFile, xsdFile);
-        }
 
-        // always move the file, so it is not processed multiple times
-        renameDirectory(xmlFile);
-    }
 
     private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
@@ -184,7 +176,7 @@ public class ImportManagerImpl implements ImportManager {
         process(context, xmlFile);
     }
 
-    private void validateAndProcess(File xmlFile, File xsdFile) {
+    private void validateAndProcess(File xmlFile, File xsdFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
@@ -204,6 +196,7 @@ public class ImportManagerImpl implements ImportManager {
 
                 // send email, then continue importing
                 xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
+                return;
             }
         }
 
@@ -237,7 +230,7 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void process(File xmlFile) {
+    private void process(File xmlFile) throws Exception {
         try {
             ResultParser parser = new ResultParser();
             parser.parseResults(xmlFile);
@@ -276,6 +269,7 @@ public class ImportManagerImpl implements ImportManager {
                     xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
 
             xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+            throw e;
         }
     }
 
@@ -454,10 +448,10 @@ public class ImportManagerImpl implements ImportManager {
 
             StreamSource xmlFile = new StreamSource(xml);
             validator.validate(xmlFile);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
 
         return exceptions;

@@ -25,6 +25,7 @@ package org.patientview.service;
 
 import org.patientview.patientview.model.Message;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 
 public interface EmailManager {
@@ -35,6 +36,8 @@ public interface EmailManager {
                    String emailText);
 
     void sendEmail(String from, String[] to, String[] bcc, String subject, String body);
+
+    void sendEmailWithCC(String from, String[] to, String[] bcc, String subject, String body) throws MessagingException;
 
     void sendEmail(String from, String[] to, String subject, String body) throws Exception;
 }

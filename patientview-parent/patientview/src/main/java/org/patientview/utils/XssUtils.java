@@ -27,6 +27,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
 import org.owasp.esapi.ESAPI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -38,6 +40,8 @@ import java.util.Map;
  */
 @Component(value = "xssUtils")
 public final class XssUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XssUtils.class);
 
     public <T> void cleanObjectForXss(T object) {
         Method[] methods = object.getClass().getMethods();
@@ -71,7 +75,8 @@ public final class XssUtils {
                                 method.invoke(object, cleanString);
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            LOGGER.error(e.getMessage());
+                            LOGGER.debug(e.getMessage(), e);
                         }
                     }
                 }

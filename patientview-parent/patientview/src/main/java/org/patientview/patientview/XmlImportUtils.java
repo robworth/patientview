@@ -84,7 +84,7 @@ public final class XmlImportUtils {
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
 
-    public void sendEmptyFileEmailToUnitAdmin(File file) {
+    public void sendEmptyFileEmailToUnitAdmin(File file) throws Exception {
 
         String fileName = file.getName();
 
@@ -99,7 +99,7 @@ public final class XmlImportUtils {
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
+        EmailUtils.sendEmailWithCC(noReplyEmail, new String[]{toAddress},
                 ccAddresses.toArray(new String[ccAddresses.size()]),
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
@@ -129,7 +129,8 @@ public final class XmlImportUtils {
         }
     }
 
-    public void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions) {
+    public void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions)
+            throws Exception {
         String xmlFileName = xmlFile.getName();
         String xsdFileName = xsdFile.getName();
 
@@ -145,7 +146,7 @@ public final class XmlImportUtils {
         String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName);
 
         for (String toAddress : toAddresses) {
-            EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
+            EmailUtils.sendEmailWithCC(noReplyEmail, new String[]{toAddress},
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + xmlFileName, emailBody);
         }
@@ -248,51 +249,24 @@ public final class XmlImportUtils {
         return emailBody;
     }
 
-    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile, ServletContext context) {
-        try {
-            String stacktrace = extractErrorsFromException(e);
+    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) throws Exception {
+        String stacktrace = extractErrorsFromException(e);
 
-            String fileName = xmlFile.getName();
-            String unitcode = fileName.substring(0, fileName.indexOf("_"));
+        String fileName = xmlFile.getName();
+        String unitcode = fileName.substring(0, fileName.indexOf("_"));
 
-            Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
-            String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
+        String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
-            List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
-                    XmlImportNotification.FAILED_IMPORT);
+        List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                XmlImportNotification.FAILED_IMPORT);
 
-            String emailBody = createEmailBody(context, stacktrace, fileName);
+        String emailBody = createEmailBody(stacktrace, fileName);
 
-            EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
-                    new String[]{toAddress},
-                    ccAddresses.toArray(new String[ccAddresses.size()]),
-                    "[PatientView] File import failed: " + fileName, emailBody);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-    }
+        EmailUtils.sendEmailWithCC(noReplyEmail, new String[]{toAddress},
+                ccAddresses.toArray(new String[ccAddresses.size()]),
+                "[PatientView] File import failed: " + fileName, emailBody);
 
-    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) {
-        try {
-            String stacktrace = extractErrorsFromException(e);
-
-            String fileName = xmlFile.getName();
-            String unitcode = fileName.substring(0, fileName.indexOf("_"));
-
-            Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
-            String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
-
-            List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
-                    XmlImportNotification.FAILED_IMPORT);
-
-            String emailBody = createEmailBody(stacktrace, fileName);
-
-            EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
-                    ccAddresses.toArray(new String[ccAddresses.size()]),
-                    "[PatientView] File import failed: " + fileName, emailBody);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
     }
 
     private String createEmailBody(ServletContext context, String errors, String fileName) {

@@ -78,7 +78,7 @@ public final class XmlParserUtils {
         LegacySpringUtils.getImportManager().renameDirectory(context, xmlFile);
     }
 
-    public static void updateXmlData(File xmlFile) {
+    public static void updateXmlData(File xmlFile) throws Exception {
         LegacySpringUtils.getImportManager().update(xmlFile);
     }
 

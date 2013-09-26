@@ -27,6 +27,7 @@ import org.patientview.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.lang.StringUtils;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 
 public final class EmailUtils {
@@ -62,6 +63,11 @@ public final class EmailUtils {
     public static void sendEmail(String fromAddress, String[] toAddresses, String[] ccAddresses,
                                  String subject, String emailText) {
         LegacySpringUtils.getEmailManager().sendEmail(fromAddress, toAddresses, ccAddresses, subject, emailText);
+    }
+
+    public static void sendEmailWithCC(String fromAddress, String[] toAddresses, String[] ccAddresses,
+                                 String subject, String emailText) throws MessagingException {
+        LegacySpringUtils.getEmailManager().sendEmailWithCC(fromAddress, toAddresses, ccAddresses, subject, emailText);
     }
 
     public static void sendEmail(String fromAddress, String[] toAddresses, String subject, String emailText)

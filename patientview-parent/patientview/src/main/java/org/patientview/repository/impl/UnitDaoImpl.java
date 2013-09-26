@@ -37,7 +37,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -83,10 +82,13 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         }
 
         buildWhereClause(criteria, wherePredicates);
-        try {
-            return getEntityManager().createQuery(criteria).getSingleResult();
-        } catch (NoResultException e) {
+
+        List<Unit> list = getEntityManager().createQuery(criteria).getResultList();
+
+        if (list == null || list.isEmpty() || list.size() > 1) {
             return null;
+        } else {
+            return list.get(0);
         }
     }
 

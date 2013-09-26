@@ -39,6 +39,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -111,10 +112,11 @@ public class XmlImportReader extends ListItemReader<Object> {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             LOGGER.debug(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void updateXmlFiles(File[] xmlFiles) {
+    private void updateXmlFiles(File[] xmlFiles) throws Exception {
         if (xmlFiles != null && xmlFiles.length > 0) {
             LOGGER.debug("Starting XmlParserThread for {} files", xmlFiles.length);
             for (int i = 0; i < xmlFiles.length; i++) {
@@ -126,7 +128,7 @@ public class XmlImportReader extends ListItemReader<Object> {
         LOGGER.info("Finished XmlParserThread");
     }
 
-    private void updateUktFiles(File[] uktFiles) {
+    private void updateUktFiles(File[] uktFiles) throws IOException {
         LOGGER.debug("Starting UktParserThread for {} files", uktFiles.length);
         for (int i = 0; i < uktFiles.length; i++) {
             LOGGER.debug("Starting UktParserThread for {} file", uktFiles[i].getAbsolutePath());

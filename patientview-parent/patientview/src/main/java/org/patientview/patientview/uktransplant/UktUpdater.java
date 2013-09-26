@@ -27,39 +27,45 @@ import com.Ostermiller.util.CSVParser;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.UktStatus;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class UktUpdater {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UktUpdater.class);
+
     public void update(ServletContext context, File uktFile) {
         try {
-            deleteUktRecords();
-            updateUktData(uktFile);
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.UKT_DATA_REPLACE, "", "", "", uktFile.getName());
+            update(uktFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 
-    private void updateUktData(File uktFile) {
-        try {
-            CSVParser uktParser = new CSVParser(new FileReader(uktFile));
+    public void update(File uktFile) throws IOException {
+        deleteUktRecords();
+        updateUktData(uktFile);
+        AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.UKT_DATA_REPLACE, "", "", "", uktFile.getName());
+    }
 
-            uktParser.changeDelimiter('|');
-            String[][] uktValues = uktParser.getAllValues();
-            for (int i = 0; i < uktValues.length; i++) {
-                UktStatus status = new UktStatus(uktValues[i][0].trim(),
-                        uktValues[i][1].trim(), uktValues[i][2].trim());
+    private void updateUktData(File uktFile) throws IOException {
+        CSVParser uktParser = new CSVParser(new FileReader(uktFile));
 
-                LegacySpringUtils.getUkTransplantManager().save(status);
-            }
-            uktParser.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        uktParser.changeDelimiter('|');
+        String[][] uktValues = uktParser.getAllValues();
+        for (int i = 0; i < uktValues.length; i++) {
+            UktStatus status = new UktStatus(uktValues[i][0].trim(),
+                    uktValues[i][1].trim(), uktValues[i][2].trim());
+
+            LegacySpringUtils.getUkTransplantManager().save(status);
         }
+        uktParser.close();
     }
 
     private void deleteUktRecords() {
