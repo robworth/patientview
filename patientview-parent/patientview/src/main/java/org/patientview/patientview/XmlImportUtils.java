@@ -28,6 +28,8 @@ import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
@@ -48,6 +50,8 @@ import java.util.List;
 
 @Component(value = "xmlImportUtils")
 public final class XmlImportUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportUtils.class);
 
     @Value("${noreply.email}")
     private String noReplyEmail;
@@ -422,7 +426,8 @@ public final class XmlImportUtils {
 
             nodeAsString += xmlString;
         } catch (TransformerException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
         return nodeAsString;

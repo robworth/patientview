@@ -27,6 +27,8 @@ import com.Ostermiller.util.CSVPrinter;
 import org.patientview.model.Patient;
 import org.patientview.patientview.ParserThread;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -37,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 
 public class UktExportThread implements Runnable, ParserThread {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UktExportThread.class);
 
     private String prebit;
     private String directory;
@@ -75,14 +79,16 @@ public class UktExportThread implements Runnable, ParserThread {
                     csv.flush();
                     csv.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
+                    LOGGER.debug(e.getMessage(), e);
                 }
                 Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("UktExportThread " + dateFormat.format(now));
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 

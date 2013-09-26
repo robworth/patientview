@@ -188,7 +188,8 @@ public final class XmlParserUtils {
 
             nodeAsString += xmlString;
         } catch (TransformerException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
         return nodeAsString;
@@ -214,7 +215,8 @@ public final class XmlParserUtils {
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
         } catch (Exception e1) {
-            e1.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 
