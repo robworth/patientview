@@ -68,13 +68,7 @@ public class XmlImportJobQuartzScheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportJobQuartzScheduler.class);
 
     public void execute() {
-        System.out.println("XmlImportJobQuartzScheduler is starting.");
-        try {
-            Thread.sleep(NUMBER_OF_COLUMNS * FOUR * NUMBER_OF_COLUMNS
-                    *  NUMBER_OF_COLUMNS * FOUR * NUMBER_OF_COLUMNS);
-        } catch (InterruptedException ire) {
-            System.out.println("sssss");
-        }
+
         try {
             updateXmlFiles();
 
@@ -101,7 +95,7 @@ public class XmlImportJobQuartzScheduler {
             throw new RuntimeException(e);
         }
 
-        System.out.println("XmlImportJobQuartzScheduler is ending.");
+
     }
 
     private void updateXmlFiles() {
