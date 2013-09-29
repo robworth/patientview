@@ -34,7 +34,7 @@ public interface ImportManager {
 
     void update(ServletContext context, File xmlFile) throws Exception;
 
-    void update(File xmlFile) throws Exception;
+    void update(File xmlFile);
 
     /**
      * This method is here because importer task should running without login user's authority,

@@ -23,16 +23,17 @@
 package org.patientview.batch;
 
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+//import org.springframework.context.annotation.Lazy;
+//import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * XmlImportWriter writer
  */
-@Component
-@Lazy
+//@Component
+//@Lazy
+//no more use batch
 public class XmlImportWriter implements ItemWriter<Object> {
 
     @Override

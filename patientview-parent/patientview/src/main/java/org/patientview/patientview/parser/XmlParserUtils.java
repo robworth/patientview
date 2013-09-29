@@ -79,7 +79,8 @@ public final class XmlParserUtils {
     }
 
     public static void updateXmlData(File xmlFile) throws Exception {
-        LegacySpringUtils.getImportManager().update(xmlFile);
+        //no more use batch
+        //LegacySpringUtils.getImportManager().update(xmlFile);
     }
 
     public static String extractFromXMLFileNameNhsno(String filename) {

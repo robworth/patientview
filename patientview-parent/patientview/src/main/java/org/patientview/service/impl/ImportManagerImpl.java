@@ -99,7 +99,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     @Override
-    public void update(File xmlFile) throws Exception {
+    public void update(File xmlFile) {
 
         try {
             /**
@@ -112,10 +112,20 @@ public class ImportManagerImpl implements ImportManager {
                         xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
                 xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
             } else {
-                File xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
-                        .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
-                validateAndProcess(xmlFile, xsdFile);
+                if (validate(xmlFile)) {
+                    process(null, xmlFile);
+                }
             }
+        } catch (Exception e) {
+            // these exceptions can occur because of corrupt/invalid data in xml file
+            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
+
+            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
+
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
 
         } finally {
             // always move the file, so it is not processed multiple times
@@ -176,12 +186,14 @@ public class ImportManagerImpl implements ImportManager {
         process(context, xmlFile);
     }
 
-    private void validateAndProcess(File xmlFile, File xsdFile) throws Exception {
+    private boolean validate(File xmlFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
 
         if (whenWeDecideToValidateFiles) {
+            File xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
+                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
             /**
              * Check the XML file against XSD schema
              */
@@ -196,12 +208,10 @@ public class ImportManagerImpl implements ImportManager {
 
                 // send email, then continue importing
                 xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
-                return;
+                return false;
             }
         }
-
-        // always process regardless of validation state
-        process(xmlFile);
+        return true;
     }
 
     private void process(ServletContext context, File xmlFile) throws Exception {
@@ -230,48 +240,7 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void process(File xmlFile) throws Exception {
-        try {
-            ResultParser parser = new ResultParser();
-            parser.parseResults(xmlFile);
 
-            if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
-                    || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
-                    || "Suspend".equalsIgnoreCase(parser.getFlag())) {
-                removePatientFromSystem(parser);
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getUnitcode(), xmlFile.getName());
-            } else {
-                updatePatientData(parser);
-                // Insert or update record in pv_user_log table,
-                // with current import date which is used in patient login
-                UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
-                if (userLog == null) {
-                    userLog = new UserLog();
-                    userLog.setNhsno(parser.getPatient().getNhsno());
-                }
-                userLog.setUnitcode(parser.getPatient().getUnitcode());
-                userLog.setLastdatadate(Calendar.getInstance());
-                LegacySpringUtils.getUserLogManager().save(userLog);
-
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getUnitcode(), xmlFile.getName());
-            }
-            //xmlFile.delete();
-        } catch (Exception e) {
-
-            // these exceptions can occur because of corrupt/invalid data in xml file
-            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
-
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
-
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-            throw e;
-        }
-    }
 
     @Override
     public void renameDirectory(ServletContext context, File xmlFile) {

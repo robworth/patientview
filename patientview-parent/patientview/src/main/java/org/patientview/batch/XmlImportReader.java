@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -48,7 +48,8 @@ import java.util.List;
  *
  * Read the speciality path files and insert them to DB, then remove the files to another path.
  */
-@Component
+//no more use batch
+//@Component
 public class XmlImportReader extends ListItemReader<Object> {
 
     @Autowired

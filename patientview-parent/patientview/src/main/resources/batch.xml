@@ -80,7 +80,8 @@
         </batch:listeners>
     </batch:job>
 
-    <!--Define xmlImportJob details-->
+    <!--Define xmlImportJob details
+    //no more use batch
     <batch:job id="xmlImportBatchJob" restartable="false">
         <batch:step id="xmlImportStep">
             <batch:tasklet transaction-manager="batchTransactionManager">
@@ -96,6 +97,6 @@
             <batch:listener ref="xmlImportJob"/>
         </batch:listeners>
     </batch:job>
-
+     -->
 
 </beans>

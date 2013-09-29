@@ -26,14 +26,15 @@ import org.patientview.batch.XmlImportReader;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
  * Read the file in specialty path and save to DB.
  */
-@Component
+//@Component
+//no more use batch
 public class XmlImportJob extends BatchJob {
 
     @Resource(name = "xmlImportBatchJob")

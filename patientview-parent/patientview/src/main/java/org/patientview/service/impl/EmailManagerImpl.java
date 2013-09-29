@@ -39,7 +39,6 @@ import org.springframework.util.StringUtils;
 import javax.inject.Inject;
 import javax.mail.Address;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
@@ -115,15 +114,6 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     public void sendEmail(String from, String[] to, String[] bcc, String subject, String body) {
-        try {
-            sendEmailWithCC(from, to, bcc, subject, body);
-        } catch (MessagingException e) {
-            LOGGER.error("Could send email: {}", e);
-        }
-    }
-
-    public void sendEmailWithCC(String from, String[] to, String[] bcc, String subject, String body)
-            throws MessagingException {
 
         if (!StringUtils.hasLength(from)) {
             throw new IllegalArgumentException("Cannot send mail missing 'from'");
@@ -144,21 +134,24 @@ public class EmailManagerImpl implements EmailManager {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper;
 
-        messageHelper = new MimeMessageHelper(message, true);
-        messageHelper.setTo(to);
-        if (bcc != null && bcc.length > 0) {
-            Address[] bccAddresses = new Address[bcc.length];
-            for (int i = 0; i < bcc.length; i++) {
-                bccAddresses[i] = new InternetAddress(bcc[i]);
+        try {
+            messageHelper = new MimeMessageHelper(message, true);
+            messageHelper.setTo(to);
+            if (bcc != null && bcc.length > 0) {
+                Address[] bccAddresses = new Address[bcc.length];
+                for (int i = 0; i < bcc.length; i++) {
+                    bccAddresses[i] = new InternetAddress(bcc[i]);
+                }
+                message.addRecipients(Message.RecipientType.BCC, bccAddresses);
             }
-            message.addRecipients(Message.RecipientType.BCC, bccAddresses);
+            messageHelper.setFrom(from);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(body, false); // Note: the second param indicates to send plaintext
+
+            javaMailSender.send(messageHelper.getMimeMessage());
+        } catch (Exception e) {
+            LOGGER.error("Could send email: {}", e);
         }
-        messageHelper.setFrom(from);
-        messageHelper.setSubject(subject);
-        messageHelper.setText(body, false); // Note: the second param indicates to send plaintext
-
-        javaMailSender.send(messageHelper.getMimeMessage());
-
     }
 
     @Override
