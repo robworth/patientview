@@ -272,40 +272,6 @@ public final class XmlImportUtils {
 
     }
 
-    private String createEmailBody(ServletContext context, String errors, String fileName) {
-        String newLine = System.getProperty("line.separator");
-
-        String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
-        emailBody += newLine;
-        emailBody += newLine + "The file <" + fileName + "> has failed to import.";
-        emailBody += newLine;
-        emailBody += newLine
-                + "This means that the file has been received by RPV but there is something wrong with the file that "
-                + "prevents it being imported properly.";
-        emailBody += newLine;
-        emailBody += newLine
-                + "You will most likely need to correct the data in your local system before the file is resent to "
-                + "PatientView.";
-        emailBody += newLine;
-        emailBody += newLine + errors;
-        emailBody += newLine;
-        emailBody += newLine
-                + "Otherwise, it might be that there is an XML tag missing or an empty result value or something "
-                + "similar.";
-        emailBody += newLine;
-        emailBody += newLine + "Before contacting the email address below please ensure that:";
-        emailBody += newLine + " - The file is not empty.";
-        emailBody += newLine + " - The file is well formed XML.";
-        emailBody += newLine + " - The file matches the RPV XML schema.";
-        emailBody += newLine + " - There are no missing values.";
-        emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine + "For further help, please contact "
-                + LegacySpringUtils.getContextProperties().getProperty("support.email");
-        emailBody += newLine;
-        return emailBody;
-    }
-
     private String createEmailBody(String errors, String fileName) {
         String newLine = System.getProperty("line.separator");
 

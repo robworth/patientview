@@ -78,11 +78,6 @@ public final class XmlParserUtils {
         LegacySpringUtils.getImportManager().renameDirectory(context, xmlFile);
     }
 
-    public static void updateXmlData(File xmlFile) throws Exception {
-        //no more use batch
-        //LegacySpringUtils.getImportManager().update(xmlFile);
-    }
-
     public static String extractFromXMLFileNameNhsno(String filename) {
         try {
             int firstUnderscore = filename.indexOf("_");

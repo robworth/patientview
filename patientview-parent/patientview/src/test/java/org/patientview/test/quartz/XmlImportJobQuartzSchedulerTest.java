@@ -1,9 +1,7 @@
 package org.patientview.test.quartz;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.patientview.batch.XmlImportReader;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
@@ -14,7 +12,6 @@ import org.patientview.quartz.XmlImportJobQuartzScheduler;
 import org.patientview.repository.PatientDao;
 import org.patientview.service.*;
 import org.patientview.service.ibd.IbdManager;
-import org.patientview.test.helpers.ServiceHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
