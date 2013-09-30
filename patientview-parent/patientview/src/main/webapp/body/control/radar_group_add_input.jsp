@@ -1,8 +1,5 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ page import="org.patientview.utils.LegacySpringUtils" %>
-
 <%--
   ~ PatientView
   ~
@@ -29,34 +26,57 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>${isRadarGroup?'Select RaDaR Group':'Select Unit'}</h1>
+    <h1>RaDaR Group Add</h1>
 </div>
 
+<html:errors />
 
-<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers" method="post">
-    <input type="hidden" name="isRadarGroup" value="${isRadarGroup}">
-<table cellpadding="3" >
+<html:form action="/control/radarGroupAdd">
+
+  <table cellpadding="3" >
+
     <tr>
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b><logic:present specialty="renal">${isRadarGroup? 'RaDaR Group':'Renal Unit'}</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
-      <td>
-          <select name="unitcode">
-              <logic:present role="superadmin">
-                  <option value="" >-- ${isRadarGroup? 'All RaDaR groups' : 'All units'} --</option>
-              </logic:present>
-              <logic:iterate id="unit" name="units" >
-                  <option value="${unit.unitcode}" >${unit.name}</option>
-              </logic:iterate>
-          </select>
-      </td>
+      <td><b>Code</b></td>
+      <td><html:text property="unitcode" /></td>
     </tr>
-    <tr align="right">
-      <td><html:submit value="Select" styleClass="btn" /></td>
-    </tr>
- </table>
 
-</form>
+    <tr>
+      <td><b>Name</b></td>
+      <td><html:text property="name" /></td>
+    </tr>
+
+    <tr>
+      <td><b>Short Name</b></td>
+      <td><html:text property="shortname" maxlength="15"/></td>
+    </tr>
+
+    <html:hidden property="sourceType" value="radargroup"/>
+
+    <tr>
+      <td><b>Admin Name</b></td>
+      <td><html:text property="renaladminname" /></td>
+    </tr>
+
+    <tr>
+      <td><b>Admin Phone</b></td>
+      <td><html:text property="renaladminphone" /></td>
+    </tr>
+
+    <tr>
+      <td><b>Admin Email</b></td>
+      <td><html:text property="renaladminemail" /></td>
+    </tr>
+
+    <tr>
+      <td><html:submit value="Add" styleClass="formButton"/></td>
+    </tr>
+
+  </table>
+
+</html:form>
 </div>
+
 </div>

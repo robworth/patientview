@@ -58,6 +58,8 @@ public interface UnitManager {
 
     List<Unit> getAdminsUnits();
 
+    List<Unit> getAdminsUnits(boolean isRadarGroup);
+
     List<Unit> getUnitsWithUser();
 
     List<Unit> getLoggedInUsersUnits();
@@ -73,6 +75,9 @@ public interface UnitManager {
     List<UnitStat> getUnitStatsForUnit(String unitCode);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
+
+    @Secured(value =  "ROLE_RENAL_SUPERADMIN")
+    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup);
 
     @Secured(value =  "ROLE_RENAL_SUPERADMIN")
     List<UnitAdmin> getAllUnitUsers();

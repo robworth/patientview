@@ -140,7 +140,7 @@ public class Patient extends BaseModel {
     private String postcodeOld;
 
     @Column
-    private boolean consent;
+    private Boolean consent;
 
     @Column
     private Date dateBapnReg;
@@ -176,7 +176,7 @@ public class Patient extends BaseModel {
     private String indiaId;
 
     @Column
-    private boolean generic;
+    private Boolean generic;
 
     @Column
     private String genericDiagnosis;
@@ -501,11 +501,11 @@ public class Patient extends BaseModel {
         this.age = age;
     }
 
-    public boolean isConsent() {
+    public Boolean isConsent() {
         return consent;
     }
 
-    public void setConsent(boolean consent) {
+    public void setConsent(Boolean consent) {
         this.consent = consent;
     }
 
@@ -573,11 +573,11 @@ public class Patient extends BaseModel {
         this.indiaId = indiaId;
     }
 
-    public boolean isGeneric() {
+    public Boolean isGeneric() {
         return generic;
     }
 
-    public void setGeneric(boolean generic) {
+    public void setGeneric(Boolean generic) {
         this.generic = generic;
     }
 

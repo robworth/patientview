@@ -433,9 +433,16 @@ public class GenericDemographicsPanel extends Panel {
                         patient.getDiseaseGroup()), new ChoiceRenderer("term", "id"), form,
                         componentsToUpdateList);
 
-        final IModel<Boolean> diagnosisDateVisibility = new Model<Boolean>(false);
-        diagnosisDateVisibility.setObject(form.getModelObject().getDateOfGenericDiagnosis() == null);
+        final IModel<Boolean> diagnosisDateVisibility =
+                new Model<Boolean>(form.getModelObject().getDateOfGenericDiagnosis() == null);
+
         CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect");
+        model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect()==Boolean.TRUE);
+        if (form.getModelObject().getId() == null) {
+            diagnosisDateVisibility.setObject(false);
+        } else {
+            model.getObject().setDiagnosisDateSelect(form.getModelObject().getDateOfGenericDiagnosis() == null);
+        }
         diagnosisDateSelect.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {

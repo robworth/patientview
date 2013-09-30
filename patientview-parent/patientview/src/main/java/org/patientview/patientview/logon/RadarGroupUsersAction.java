@@ -23,23 +23,30 @@
 
 package org.patientview.patientview.logon;
 
-public class UnitAdmin extends Logon implements Cloneable {
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.utils.LegacySpringUtils;
 
-    public UnitAdmin() {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+public class RadarGroupUsersAction extends Action {
+
+    public ActionForward execute(
+        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        if (LegacySpringUtils.getUserManager().getLoggedInUserRole().equals("superadmin")) {
+            List items = LegacySpringUtils.getUnitManager().getAdminsUnits(true);
+            request.getSession().setAttribute("units", items);
+        } else {
+            UnitUtils.putRelevantUnitsInRequest(request);
+        }
+        request.setAttribute("isRadarGroup", true);
+        return LogonUtils.logonChecks(mapping, request);
     }
 
-    public UnitAdmin(String username, String password, String name, String email, boolean emailverified, String role,
-                     boolean firstlogon) {
-        setUsername(username);
-        setPassword(password);
-        setName(name);
-        setEmail(email);
-        setEmailverified(emailverified);
-        setRole(role);
-        setFirstlogon(firstlogon);
-    }
-
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
