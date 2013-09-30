@@ -627,6 +627,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, user.getName());
         userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, user.isClinician());
 
         if (user.hasValidUserId()) {
             namedParameterJdbcTemplate.update(buildUpdateQuery(USER_TABLE_NAME, ID_FIELD_NAME, userMap), userMap);
