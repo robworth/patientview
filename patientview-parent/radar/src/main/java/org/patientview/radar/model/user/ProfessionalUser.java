@@ -11,14 +11,33 @@ public class ProfessionalUser extends User {
             , securityQuestion = "", securityQuestionAnsw = "";
     private Centre centre = new Centre();
 
+    private String securityRole;
+
+    /**
+     * Maintain the 'wrong' implementation of hard wiring users to have super user status based on id.
+     * Allow the security role to be set as ROLE_SUPER_USER for other users with the role.
+     *
+     * Keep the default of User.ROLE_PROFESSIONAL in case the mapping fails.
+     * @return
+     */
     @Override
     public String getSecurityRole() {
-        for(long id : SUPER_USER_IDS) {
+
+        for (long id : SUPER_USER_IDS) {
             if (getId().equals(id)) {
                 return User.ROLE_SUPER_USER;
             }
         }
-        return User.ROLE_PROFESSIONAL;
+
+        if (securityRole != null) {
+            return securityRole;
+        } else {
+            return User.ROLE_PROFESSIONAL;
+        }
+    }
+
+    public void setSecurityRole(String securityRole) {
+        this.securityRole = securityRole;
     }
 
     @Override
