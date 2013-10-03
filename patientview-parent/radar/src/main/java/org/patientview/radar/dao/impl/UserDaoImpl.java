@@ -268,6 +268,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
          *  This one is an odd one.
          *
          *  Super admins are just professional users with a different role in the mapping table.
+         *
+         *  There was some crazy getSecurityRole() method in ProfessionalUser that restricted super user roles to
+         *  certain ids.  The SuperUserRowMapper changes this behaviour
          */
 
         try {
@@ -275,7 +278,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                     + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
                     PROFESSIONAL_USER_ID_FIELD_NAME,
                     true),
-                    new Object[]{username, User.ROLE_SUPER_USER}, new ProfessionalUserRowMapper());
+                    new Object[]{username, User.ROLE_SUPER_USER}, new SuperUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not professional user with " + USER_USERNAME_FIELD_NAME + " {}", username);
         }
@@ -803,6 +806,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             professionalUser.setRole(resultSet.getString(PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME));
             professionalUser.setPhone(resultSet.getString(PROFESSIONAL_USER_PHONE_FIELD_NAME));
             professionalUser.setDateRegistered(resultSet.getDate(PROFESSIONAL_USER_DATE_JOINED_FIELD_NAME));
+            professionalUser.setSecurityRole(User.ROLE_PROFESSIONAL);
 
             // Set the centre
             Long centreId = resultSet.getLong(PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME);
@@ -810,6 +814,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 professionalUser.setCentre(utilityDao.getCentre(centreId));
             }
 
+            return professionalUser;
+        }
+    }
+
+    private class SuperUserRowMapper extends ProfessionalUserRowMapper {
+        @Override
+        public ProfessionalUser mapRow(ResultSet resultSet, int i) throws SQLException {
+            ProfessionalUser professionalUser = super.mapRow(resultSet, i);
+            professionalUser.setSecurityRole(User.ROLE_SUPER_USER);
             return professionalUser;
         }
     }

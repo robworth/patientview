@@ -28,7 +28,6 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.patientview.model.User;
-import org.patientview.security.UnitSecured;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +44,14 @@ public interface UnitManager {
 
     Unit get(Long id);
 
-    @UnitSecured(value = "UNIT_ACCESS")
+    /**
+     * It is planned to have this method secured so that only users with mapping to this unit
+     * can access the unit, using: @UnitSecured(value = "UNIT_ACCESS")
+     *
+     * It should be possible to turn this on now, but there may well still be a couple of bugs in there.
+     * @param unitCode
+     * @return
+     */
     Unit get(String unitCode);
 
     void save(Unit unit);
