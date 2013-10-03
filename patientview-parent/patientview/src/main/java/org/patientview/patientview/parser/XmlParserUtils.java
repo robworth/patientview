@@ -78,10 +78,6 @@ public final class XmlParserUtils {
         LegacySpringUtils.getImportManager().renameDirectory(context, xmlFile);
     }
 
-    public static void updateXmlData(File xmlFile) {
-        LegacySpringUtils.getImportManager().update(xmlFile);
-    }
-
     public static String extractFromXMLFileNameNhsno(String filename) {
         try {
             int firstUnderscore = filename.indexOf("_");
@@ -188,7 +184,8 @@ public final class XmlParserUtils {
 
             nodeAsString += xmlString;
         } catch (TransformerException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
         return nodeAsString;
@@ -214,7 +211,8 @@ public final class XmlParserUtils {
                     ccAddresses.toArray(new String[ccAddresses.size()]),
                     "[PatientView] File import failed: " + fileName, emailBody);
         } catch (Exception e1) {
-            e1.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 

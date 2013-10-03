@@ -27,6 +27,9 @@
         <property name="targetMethod">
             <value>execute</value>
         </property>
+        <property name="concurrent">
+            <value>false</value>
+        </property>
     </bean>
 
     <!--Define SendEmailJob's method configuration-->
@@ -36,6 +39,9 @@
         </property>
         <property name="targetMethod">
             <value>execute</value>
+        </property>
+        <property name="concurrent">
+            <value>false</value>
         </property>
     </bean>
 
@@ -47,6 +53,9 @@
         <property name="targetMethod">
             <value>execute</value>
         </property>
+        <property name="concurrent">
+            <value>false</value>
+        </property>
     </bean>
 
     <!--Define SendEmailJob's method configuration-->
@@ -56,6 +65,9 @@
         </property>
         <property name="targetMethod">
             <value>execute</value>
+        </property>
+        <property name="concurrent">
+            <value>false</value>
         </property>
     </bean>
 
