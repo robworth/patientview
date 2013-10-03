@@ -24,6 +24,8 @@
 package org.patientview.patientview.uktransplant;
 
 import org.patientview.patientview.ParserThread;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -32,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UktParserThread implements Runnable, ParserThread {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(UktParserThread.class);
     private String prebit;
     private String directory;
     private String archiveDirectory;
@@ -65,7 +67,8 @@ public class UktParserThread implements Runnable, ParserThread {
                 System.out.println("UktParserThread " + dateFormat.format(now));
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 

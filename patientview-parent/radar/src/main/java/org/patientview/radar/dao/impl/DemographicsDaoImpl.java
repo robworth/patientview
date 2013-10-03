@@ -434,7 +434,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     }
                 } catch (Exception e) {
                     LOGGER.error("Unable to access consultant using consultantId {}", consultantId);
-                    e.printStackTrace();
+                    LOGGER.debug(e.getMessage(), e);
                 }
 
 

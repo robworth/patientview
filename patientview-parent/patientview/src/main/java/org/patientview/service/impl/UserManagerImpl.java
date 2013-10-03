@@ -289,7 +289,8 @@ public class UserManagerImpl implements UserManager {
             try {
                 delete(user, unitcode);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
             }
         }
     }

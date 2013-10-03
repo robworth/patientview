@@ -68,6 +68,7 @@ public class AbstractHibernateDAO<T extends BaseModel> {
             // apply any baseModel standards
             entityManager.merge(entity);
         }
+        entityManager.flush();
     }
 
     public void delete(final T entity) {

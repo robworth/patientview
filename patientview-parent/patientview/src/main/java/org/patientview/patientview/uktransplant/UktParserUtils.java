@@ -25,6 +25,7 @@ package org.patientview.patientview.uktransplant;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.IOException;
 
 public final class UktParserUtils {
 
@@ -36,8 +37,8 @@ public final class UktParserUtils {
         updater.update(context, uktFile);
     }
 
-    public static void updateData(File uktFile) {
+    public static void updateData(File uktFile) throws IOException {
         UktUpdater updater = new UktUpdater();
-        updater.update(null, uktFile);
+        updater.update(uktFile);
     }
 }
