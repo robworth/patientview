@@ -29,14 +29,14 @@ import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.UserLog;
-import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.Centre;
+import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
-import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Diagnosis;
+import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -61,7 +61,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -84,19 +83,6 @@ public class ImportManagerImpl implements ImportManager {
 
     @Value("${xml.patient.data.load.directory}")
     private String xmlPatientDataLoadDirectory;
-
-    @Override
-    public void update(ServletContext context, File xmlFile) throws Exception {
-        File xsdFile;
-        try {
-            xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
-                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ImportManagerImpl.update()");
-        }
-
-        update(context, xmlFile, xsdFile);
-    }
 
     @Override
     public void update(File xmlFile) {
@@ -129,35 +115,16 @@ public class ImportManagerImpl implements ImportManager {
 
         } finally {
             // always move the file, so it is not processed multiple times
-            renameDirectory(xmlFile);
+            archiveFileAfterProcessing(xmlFile);
         }
 
-    }
-
-    @Override
-    public void update(ServletContext context, File xmlFile, File xsdFile) throws Exception {
-        /**
-         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin, and skip validate and process
-         */
-        if (xmlFile.length() == 0) {
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
-        } else {
-            validateAndProcess(context, xmlFile, xsdFile);
-        }
     }
 
     @Override
     public Unit retrieveUnit(String unitcode) {
         unitcode = unitcode.toUpperCase();
-        Unit unit = unitDao.get(unitcode, null);
-        return unit;
+        return unitDao.get(unitcode, null);
     }
-
-
 
     private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
@@ -240,17 +207,14 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-
-
-    @Override
-    public void renameDirectory(ServletContext context, File xmlFile) {
-        String directory = LegacySpringUtils.getContextProperties().getProperty("xml.patient.data.load.directory");
-        xmlFile.renameTo(new File(directory, xmlFile.getName()));
-    }
-
-    protected void renameDirectory(File xmlFile) {
+    public void archiveFileAfterProcessing(File xmlFile) {
         String directory = xmlPatientDataLoadDirectory;
-        xmlFile.renameTo(new File(directory, xmlFile.getName()));
+        if (!xmlFile.renameTo(new File(directory, xmlFile.getName()))) {
+            LOGGER.error("Unable to archive file after import, deleting instead: {}", xmlFile.getName());
+            if (!xmlFile.delete()) {
+                LOGGER.error("Unable to delete file after failed archive: {}", xmlFile.getName());
+            }
+        }
     }
 
     private void removePatientFromSystem(ResultParser parser) {

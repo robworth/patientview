@@ -79,7 +79,4 @@
             <batch:listener ref="checkSendEmailStatusJob"/>
         </batch:listeners>
     </batch:job>
-
-
-
 </beans>
