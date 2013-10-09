@@ -5,14 +5,15 @@ import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.junit.Test;
+import org.patientview.radar.model.user.PatientUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -29,6 +30,9 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiagnosisDao diagnosisDao;
+
+    @Autowired
+    private UserDao userDao;
 
     private DiseaseGroup diseaseGroup;
 
@@ -165,19 +169,25 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     private Patient createDemographics(String forename, String surname, Centre centre, String nhsno) {
+        boolean isExisted;
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
-        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-        if (nhsno != null) {
-            patient.setNhsno(nhsno);
-        } else {
-            patient.setNhsno(getTestNhsNo());
+        if (nhsno == null) {
+            nhsno = getTestNhsNo();
         }
+
+        patient.setNhsno(nhsno);
         patient.setRenalUnit(centre);
         patient.setDiseaseGroup(diseaseGroup);
+        patient.setEmailAddress("test@hotmail.com");
         demographicDao.saveDemographics(patient);
         assertNotNull(patient.getId());
+
+        PatientUser patientUser = userDao.getExternallyCreatedPatientUser(nhsno);
+        assertNotNull("User is not saved", patientUser);
+        assertEquals("Saved user was null on getting from DAO",
+                patient.getForename() + patient.getSurname(), patientUser.getUsername());
         return patient;
     }
 

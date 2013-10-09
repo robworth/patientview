@@ -82,7 +82,6 @@ public class AlportPatientPage extends BasePage {
             patient.setRenalUnit(patientModel.getCentre());
 
             patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
         }
 
         init(patient);

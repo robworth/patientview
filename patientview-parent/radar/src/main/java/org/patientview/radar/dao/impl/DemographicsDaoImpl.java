@@ -1,10 +1,11 @@
 package org.patientview.radar.dao.impl;
 
+import com.Ostermiller.util.RandPass;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.UserDao;
@@ -38,6 +39,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private static final String DATE_FORMAT_1 = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
+    private static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
     private SimpleJdbcInsert demographicsInsert;
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
@@ -53,7 +55,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         demographicsInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
                 .usingGeneratedKeyColumns("id")
                 .usingColumns(
-                        "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
+                        "rrNo", "dateReg", "nhsno", "hospitalnumber", "uktNo", "surname",
                         "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
                         "address2", "address3", "address4", "POSTCODE",
                         "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
@@ -70,7 +72,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "rrNo = ?, " +
                             "dateReg = ?, " +
                             "nhsno = ?, " +
-                            "nhsNoType = ?, " +
                             "hospitalnumber = ?, " +
                             "uktNo = ?, " +
                             "surname = ?, " +
@@ -111,7 +112,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getRrNo(),
                     patient.getDateReg(),
                     patient.getNhsno(),
-                    patient.getNhsNumberType().getId(),
                     patient.getHospitalnumber(),
                     patient.getUktNo(),
                     patient.getSurname(),
@@ -156,7 +156,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("rrNo", patient.getRrNo());
                     put("dateReg", patient.getDateReg());
                     put("nhsno", patient.getNhsno());
-                    put("nhsNoType", patient.getNhsNumberType().getId());
                     put("hospitalnumber", patient.getHospitalnumber());
                     put("uktNo", patient.getUktNo());
                     put("surname", patient.getSurname());
@@ -207,20 +206,48 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
 
             try {
-                // renal_unit
-                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-                }
-                // unitcode
-                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getDiseaseGroup().getId());
-                }
+                // insert data into user table
+                createPVUser(patient);
             } catch (Exception e) {
                 LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
             }
         }
+    }
+
+    private void createPVUser(Patient patient) {
+        String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        password = DigestUtils.sha256Hex(password);
+        String gppassword = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        gppassword = DigestUtils.sha256Hex(gppassword);
+
+        try {
+            userDao.createPVUser(patient.getForename() + patient.getSurname(),
+                    password,
+                    patient.getForename() + patient.getSurname(),
+                    patient.getEmailAddress());
+            // patient enters usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                    patient.getNhsno(), PATIENT_ENTERS_UNITCODE);
+            // renal_unit usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
+            // unitcode usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                    patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+            // GP user
+            userDao.createPVUser(patient.getForename() + patient.getSurname() + "-GP",
+                    gppassword,
+                    patient.getForename() + patient.getSurname() + "-GP",
+                    patient.getEmailAddress());
+            // GP usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname() + "-GP",
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode()); // TODO unitcode
+
+        } catch (Exception e) {
+            LOGGER.error("Unable to create user and usermapping using {}", patient.getNhsno());
+        }
+
     }
 
     public Patient getDemographicsByRadarNumber(long radarNumber) {
@@ -363,7 +390,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setUktNo(resultSet.getString("uktNo"));
 
             patient.setNhsno(resultSet.getString("nhsno"));
-            patient.setNhsNumberType(NhsNumberType.getNhsNumberType(resultSet.getLong("nhsNoType")));
             patient.setHospitalnumber(resultSet.getString("hospitalnumber"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setSurnameAlias(resultSet.getString("surnameAlias"));

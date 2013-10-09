@@ -1,7 +1,6 @@
 package org.patientview.radar.web.pages.patient;
 
 import org.patientview.model.Sex;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
@@ -90,17 +89,18 @@ public class AddPatientPage extends BasePage {
                 if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     error(NHS_NUMBER_INVALID_MSG);
 
-//                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
-//                    // check that this nhsno does not already exist in the radar system
-//                    error("A patient with this NHS or CHI number already exists");
+                } else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
+                    // check that this nhsno does not already exist in the radar system
+                    error("A patient with this NHS or CHI number already exists");
 
-                } else if (!userManager.userExistsInPatientView(model.getPatientId())) {
-                    // If nhsno is not already in patient view inform user they need to add the patient using the
-                    // patient view application.
-                    pvMessageContainer.setVisible(true);
-                    error("All patients must have a PatientView user. That NHS number is not currently in " +
-                            "PatientView hence you will need to to go to PatientView to add it.");
                 }
+//                else if (!userManager.userExistsInPatientView(model.getPatientId())) {
+//                    // If nhsno is not already in patient view inform user they need to add the patient using the
+//                    // patient view application.
+//                    pvMessageContainer.setVisible(true);
+//                    error("All patients must have a PatientView user. That NHS number is not currently in " +
+//                            "PatientView hence you will need to to go to PatientView to add it.");
+//                }
 
                 // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
                 // TODO: need to implement a patient base page with the constructors needed and then have an enum map
@@ -125,20 +125,6 @@ public class AddPatientPage extends BasePage {
 
         // create components
         RadarRequiredTextField id = new RadarRequiredTextField("patientId", form, componentsToUpdateList);
-
-        RadarRequiredDropdownChoice idType =
-                new RadarRequiredDropdownChoice("nhsNumberType", NhsNumberType.getNhsNumberTypesAsList(),
-                        new ChoiceRenderer() {
-                            @Override
-                            public Object getDisplayValue(Object object) {
-                                return ((NhsNumberType) object).getName();
-                            }
-
-                            @Override
-                            public String getIdValue(Object object, int index) {
-                                return ((NhsNumberType) object).getId() + "";
-                            }
-                        }, form, componentsToUpdateList);
 
         RadarRequiredDropdownChoice diseaseGroup =
                 new RadarRequiredDropdownChoice("diseaseGroup", diseaseGroupDao.getAll(),
@@ -183,7 +169,7 @@ public class AddPatientPage extends BasePage {
                         "radar-registry-background-information/radar-recruitment-guide/"));
 
         // add the components
-        form.add(id, idType, diseaseGroup, submit, feedbackPanel, pvMessageContainer, guidanceContainer);
+        form.add(id, diseaseGroup, submit, feedbackPanel, pvMessageContainer, guidanceContainer);
 
         add(form, pageNumber);
     }

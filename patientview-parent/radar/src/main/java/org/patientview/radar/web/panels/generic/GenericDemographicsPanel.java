@@ -5,7 +5,6 @@ import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -181,21 +180,10 @@ public class GenericDemographicsPanel extends Panel {
         WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
             @Override
             public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
+                return true;
             }
         };
         nhsNumberContainer.add(nhsNumber);
-
-        Label chiNumber = new Label("chiNumber");
-
-        WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
-            }
-        };
-
-        chiNumberContainer.add(chiNumber);
 
         // add new ids section
         final List<Component> addIdComponentsToUpdate = new ArrayList<Component>();
@@ -372,7 +360,7 @@ public class GenericDemographicsPanel extends Panel {
         }
 
         form.add(hospitalNumberContainer, nhsNumberContainer, renalRegistryNumberContainer,
-                ukTransplantNumberContainer, chiNumberContainer);
+                ukTransplantNumberContainer);
         form.add(republicOfIrelandIdContainer, isleOfManIdContainer, channelIslandsIdContainer, indiaIdContainer);
 
 

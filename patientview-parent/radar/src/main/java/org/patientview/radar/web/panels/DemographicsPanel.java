@@ -4,7 +4,6 @@ import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
@@ -124,12 +123,6 @@ public class DemographicsPanel extends Panel {
 
                                 patientModelObject.setNhsno(pageParameters.get("idVal").toString());
 
-                                if (idType.equals(NhsNumberType.CHI_NUMBER.toString())) {
-                                    patientModelObject.setNhsNumberType(NhsNumberType.CHI_NUMBER);
-                                } else if (idType.equals(NhsNumberType.NHS_NUMBER.toString())) {
-                                    patientModelObject.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-                                }
-
                                 String diseaseGroupId = pageParameters.get("diseaseGroupId").toString();
 
                                 if (diseaseGroupId != null) {
@@ -202,21 +195,12 @@ public class DemographicsPanel extends Panel {
         WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
             @Override
             public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
+                return true;
             }
         };
         nhsNumberContainer.add(nhsNumber);
 
-        Label chiNumber = new Label("chiNumber");
-        WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
-            }
-        };
-        chiNumberContainer.add(chiNumber);
-
-        form.add(nhsNumberContainer, chiNumberContainer);
+        form.add(nhsNumberContainer);
 
         form.setOutputMarkupId(true);
         form.setOutputMarkupPlaceholderTag(true);

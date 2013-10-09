@@ -3,7 +3,6 @@ package org.patientview.radar.test.dao;
 import org.junit.Before;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
@@ -451,7 +450,6 @@ public class UserDaoTest extends BaseDaoTest {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
-        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
         patient.setUnitcode("unitcodeA");
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
