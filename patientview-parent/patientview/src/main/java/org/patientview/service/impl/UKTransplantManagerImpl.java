@@ -23,12 +23,20 @@
 
 package org.patientview.service.impl;
 
+import com.Ostermiller.util.CSVParser;
+import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.UktStatus;
 import org.patientview.repository.UktStatusDao;
 import org.patientview.service.UKTransplantManager;
+import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  *
@@ -39,9 +47,43 @@ public class UKTransplantManagerImpl implements UKTransplantManager {
     @Inject
     private UktStatusDao uktStatusDao;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UKTransplantManagerImpl.class);
+
     @Override
     public UktStatus getUktStatus(String nhsno) {
         return uktStatusDao.get(nhsno);
+    }
+
+    @Override
+    public void importUktStatusData(File file) throws IOException {
+
+        // delete all existing data - this shows that it doesn't make sense to run the import job for multiple files
+        deleteAll();
+
+        // import data from file
+        updateUktData(file);
+
+        // delete the file
+        if (!file.delete()) {
+            LOGGER.error("Failed to delete uktfile: {}", file.getName());
+        }
+
+        // log a success
+        AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.UKT_DATA_REPLACE, "", "", "", file.getName());
+    }
+
+    private void updateUktData(File uktFile) throws IOException {
+        CSVParser uktParser = new CSVParser(new FileReader(uktFile));
+
+        uktParser.changeDelimiter('|');
+        String[][] uktValues = uktParser.getAllValues();
+        for (int i = 0; i < uktValues.length; i++) {
+            UktStatus status = new UktStatus(uktValues[i][0].trim(),
+                    uktValues[i][1].trim(), uktValues[i][2].trim());
+
+            LegacySpringUtils.getUkTransplantManager().save(status);
+        }
+        uktParser.close();
     }
 
     @Override

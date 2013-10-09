@@ -27,6 +27,9 @@ import org.patientview.patientview.model.UktStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  *
  */
@@ -34,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UKTransplantManager {
 
     UktStatus getUktStatus(String nhsno);
+
+    void importUktStatusData(File file) throws IOException;
 
     void save(UktStatus uktStatus);
 
