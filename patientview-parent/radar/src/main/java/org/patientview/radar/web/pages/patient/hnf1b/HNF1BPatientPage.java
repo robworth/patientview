@@ -6,7 +6,7 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.NonAlportGeneticsPanel;
 import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
 import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
 import org.patientview.radar.web.panels.hnf1b.HNF1BMiscPanel;
@@ -58,7 +58,7 @@ public class HNF1BPatientPage extends BasePage {
 
     // The panels we are using
     private GenericDemographicsPanel genericDemographicsPanel;
-    private GeneticsPanel geneticsPanel;
+    private NonAlportGeneticsPanel geneticsPanel;
     private HNF1BMiscPanel hnf1BMiscPanel;
     private MedicalResultsPanel medicalResultsPanel;
 
@@ -97,7 +97,7 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(genericDemographicsPanel);
 
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);
