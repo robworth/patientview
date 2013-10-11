@@ -49,7 +49,8 @@ public class PatientAddAction extends Action {
         String username = BeanUtils.getProperty(form, "username");
         String password = LogonUtils.generateNewPassword();
         String gppassword = LogonUtils.generateNewPassword();
-        String name = BeanUtils.getProperty(form, "name");
+        String firstName = BeanUtils.getProperty(form, "firstName");
+        String lastName = BeanUtils.getProperty(form, "lastName");
         String email = BeanUtils.getProperty(form, "email");
         String nhsno = BeanUtils.getProperty(form, "nhsno").trim();
         String unitcode = BeanUtils.getProperty(form, "unitcode");
@@ -57,15 +58,14 @@ public class PatientAddAction extends Action {
         String overrideInvalidNhsno = BeanUtils.getProperty(form, "overrideInvalidNhsno");
         boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
 
-        PatientLogon patientLogon =
-                new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false);
+        PatientLogon patientLogon = new PatientLogon(username, password, firstName, lastName,
+                email, false, true, dummypatient, null, 0, false);
 
         UserMapping userMapping = new UserMapping(username, unitcode, nhsno);
         UserMapping userMappingPatientEnters = new UserMapping(username, UnitUtils.PATIENT_ENTERS_UNITCODE, nhsno);
 
-        PatientLogon gpPatientLogon =
-                new PatientLogon(username + "-GP", gppassword, name + "-GP", null, false, true, dummypatient,
-                        null, 0, false);
+        PatientLogon gpPatientLogon = new PatientLogon(username + "-GP", gppassword, firstName,
+                lastName + "-GP", null, false, true, dummypatient, null, 0, false);
 
         UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
 

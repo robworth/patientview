@@ -52,7 +52,8 @@ public class UserDeleteAction extends Action {
         patient.setUsername(username);
         patient.setNhsno(nhsno);
         User user = LegacySpringUtils.getUserManager().get(username);
-        patient.setName(user.getName());
+        patient.setFirstName(user.getFirstName());
+        patient.setLastName(user.getLastName());
 
         LegacySpringUtils.getUserManager().delete(username, unitcode);
 

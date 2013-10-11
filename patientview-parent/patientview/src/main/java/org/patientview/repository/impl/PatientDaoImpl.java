@@ -111,7 +111,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
         String sql = "SELECT "
-                + "user.username,  user.password, user.name, user.email, user.emailverified, user.accountlocked, "
+                + "user.username,  user.password, user.firstName, user.lastName, user.email, "
+                + "user.emailverified, user.accountlocked, "
                 + "usermapping.nhsno, usermapping.unitcode, emailverification.lastverificationdate, "
                 + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth, patient.rrtModality,  "
                 + "pv_user_log.lastdatadate "
@@ -132,14 +133,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
 
         if (name != null && name.length() > 0) {
-            sql += "AND user.name LIKE ? ";
+            sql += "AND CONCAT(user.firstName, user.lastName) LIKE ? ";
         }
 
         if (!showgps) {
-            sql += "AND user.name NOT LIKE '%-GP' ";
+            sql += "AND user.username NOT LIKE '%-GP' ";
         }
 
-        sql += "AND specialtyuserrole.specialty_id = ? ORDER BY user.name ASC ";
+        sql += "AND specialtyuserrole.specialty_id = ? ORDER BY user.firstName, user.lastName ASC ";
 
         List<Object> params = new ArrayList<Object>();
 
@@ -161,7 +162,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     public List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
         String sql = "SELECT "
-                + "user.username,  user.password, user.name, user.email, user.emailverified, user.accountlocked, "
+                + "user.username,  user.password, user.firstName, user.lastName, "
+                + "user.email, user.emailverified, user.accountlocked, "
                 + "usermapping.nhsno, usermapping.unitcode, emailverification.lastverificationdate,"
                 + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth, patient.rrtModality, "
                 + "pv_user_log.lastdatadate "
@@ -180,14 +182,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
 
         if (name != null && name.length() > 0) {
-            sql += "AND user.name LIKE ? ";
+            sql += "AND CONCAT(user.firstName, user.lastName) LIKE ? ";
         }
 
         if (!showgps) {
-            sql += "AND user.name NOT LIKE '%-GP' ";
+            sql += "AND user.username NOT LIKE '%-GP' ";
         }
 
-        sql += "AND specialtyuserrole.specialty_id = ? ORDER BY user.name ASC ";
+        sql += "AND specialtyuserrole.specialty_id = ? ORDER BY user.firstName, user.lastName ASC ";
 
         List<Object> params = new ArrayList<Object>();
 
@@ -208,7 +210,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         String sql = "SELECT "
                 + "   user.username,  "
                 + "   user.password, "
-                + "   user.name, "
+                + "   user.firstName, "
+                + "   user.lastName, "
                 + "   user.email, "
                 + "   user.emailverified, "
                 + "   user.lastlogon, "
@@ -233,11 +236,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "AND "
                 + "   specialtyuserrole.role = 'patient' "
                 + "AND "
-                + "   user.name NOT LIKE '%-GP' "
+                + "   user.username NOT LIKE '%-GP' "
                 + "AND "
                 + "   specialtyuserrole.specialty_id = ? "
                 + "ORDER BY "
-                + "   user.name ASC";
+                + "   user.firstName, user.lastName ASC";
 
         List<Object> params = new ArrayList<Object>();
 
@@ -282,7 +285,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
             patientLogonWithTreatment.setUsername(resultSet.getString("username"));
             patientLogonWithTreatment.setPassword(resultSet.getString("password"));
-            patientLogonWithTreatment.setName(resultSet.getString("name"));
+            patientLogonWithTreatment.setFirstName(resultSet.getString("firstName"));
+            patientLogonWithTreatment.setLastName(resultSet.getString("lastName"));
             patientLogonWithTreatment.setEmail(resultSet.getString("email"));
             patientLogonWithTreatment.setEmailverified(resultSet.getBoolean("emailverified"));
             patientLogonWithTreatment.setAccountlocked(resultSet.getBoolean("accountlocked"));

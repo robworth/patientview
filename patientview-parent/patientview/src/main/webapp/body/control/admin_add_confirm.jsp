@@ -49,8 +49,12 @@ On <dt:format
       </tr>
     </logic:notEqual>
     <tr>
-        <td><b>Name</b></td>
-        <td><bean:write name="adminuser" property="name"/></td>
+        <td><b>First Name</b></td>
+        <td><bean:write name="adminuser" property="firstName"/></td>
+    </tr>
+    <tr>
+        <td><b>Last Name</b></td>
+        <td><bean:write name="adminuser" property="lastName"/></td>
     </tr>
     <tr>
         <td><b>Email Address</b></td>

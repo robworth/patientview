@@ -60,7 +60,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_USERNAME_FIELD_NAME = "username";
     private static final String USER_PASSWORD_FIELD_NAME = "password";
     private static final String USER_EMAIL_FIELD_NAME = "email";
-    private static final String USER_NAME_FIELD_NAME = "name";
+//    private static final String USER_NAME_FIELD_NAME = "name";
+    private static final String USER_FIRST_NAME_FIELD_NAME = "firstName";
+    private static final String USER_LAST_NAME_FIELD_NAME = "lastName";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
     private static final String USER_IS_CLINICIAN_FIELD_NAME = "isClinician";
 
@@ -101,8 +103,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
-                        USER_IS_CLINICIAN_FIELD_NAME);
+                        USER_EMAIL_FIELD_NAME, USER_FIRST_NAME_FIELD_NAME, USER_LAST_NAME_FIELD_NAME,
+                        USER_DUMMY_PATIENT_FIELD_NAME, USER_IS_CLINICIAN_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
@@ -416,12 +418,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     // simulate how patient view creates a user
-    public void createRawUser(String username, String password, String name, String email, String unitcode,
-                              String nhsno) {
+    public void createRawUser(String username, String password, String firstName, String lastName, String email,
+                              String unitcode, String nhsno) {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, username);
         userMap.put(USER_PASSWORD_FIELD_NAME, password);
-        userMap.put(USER_NAME_FIELD_NAME, name);
+        userMap.put(USER_FIRST_NAME_FIELD_NAME, firstName);
+        userMap.put(USER_LAST_NAME_FIELD_NAME, lastName);
         userMap.put(USER_EMAIL_FIELD_NAME, email);
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, true);
@@ -444,7 +447,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try {
 
             String sql = "SELECT DISTINCT u.* FROM USER u, usermapping m WHERE u.username = m.username AND nhsno = ? " +
-                    "AND u.name NOT LIKE '%-GP%'";
+                    "AND u.username NOT LIKE '%-GP%'";
 
 
             return jdbcTemplate.queryForObject(sql,
@@ -614,7 +617,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         user.setUsername(resultSet.getString(USER_USERNAME_FIELD_NAME));
         user.setPassword(resultSet.getString(USER_PASSWORD_FIELD_NAME));
         user.setEmail(resultSet.getString(USER_EMAIL_FIELD_NAME));
-        user.setName(resultSet.getString(USER_NAME_FIELD_NAME));
+        user.setFirstName(resultSet.getString(USER_FIRST_NAME_FIELD_NAME));
+        user.setLastName(resultSet.getString(USER_LAST_NAME_FIELD_NAME));
         return user;
     }
 
@@ -627,7 +631,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(ID_FIELD_NAME, user.getUserId());
         userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
         userMap.put(USER_PASSWORD_FIELD_NAME, user.getPassword());
-        userMap.put(USER_NAME_FIELD_NAME, user.getName());
+        userMap.put(USER_FIRST_NAME_FIELD_NAME, user.getFirstName());
+        userMap.put(USER_LAST_NAME_FIELD_NAME, user.getLastName());
         userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, user.isClinician());

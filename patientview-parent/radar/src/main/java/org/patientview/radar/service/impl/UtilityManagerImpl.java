@@ -257,8 +257,8 @@ public class UtilityManagerImpl implements UtilityManager {
         for (Consultant consultant : consultants) {
             String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
             password = DigestUtils.sha256Hex(password);
-            userDao.createRawUser(consultant.getFullName(), password, consultant.getFullName(), null,
-                    consultant.getCentre().getUnitCode(), null);
+            userDao.createRawUser(consultant.getFullName(), password, consultant.getForename(),
+                    consultant.getSurname(), null, consultant.getCentre().getUnitCode(), null);
         }
 
         writeConsultantToFile(consultants);
