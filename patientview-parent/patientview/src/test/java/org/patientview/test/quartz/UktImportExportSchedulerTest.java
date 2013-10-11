@@ -4,8 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.patientview.model.*;
 import org.patientview.quartz.UktImportExportScheduler;
-import org.patientview.repository.PatientDao;
-import org.patientview.repository.UktStatusDao;
 import org.patientview.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,7 +14,6 @@ import org.springframework.util.ResourceUtils;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -36,11 +33,8 @@ public class UktImportExportSchedulerTest {
     @Inject
     private UKTransplantManager ukTransplantManager;
 
-    @Inject
-    private UktStatusDao uktStatusDao;
-
     @Test
-    public void testRead() throws Exception {
+    public void testExecute() throws Exception {
 
         int uktFilesSize = 0;
 
@@ -64,7 +58,7 @@ public class UktImportExportSchedulerTest {
         uktImportExportScheduler.setUktDirectory(parentDir);
         uktImportExportScheduler.execute();
 
-        List<UktStatus> uktStatus = uktStatusDao.getByNhsNo("9876543210");
+        UktStatus uktStatus = ukTransplantManager.getUktStatus("9876543210");
 
         if (uktFilesSize > 0) {
             assertNotNull("UktStatus not be saved", uktStatus);

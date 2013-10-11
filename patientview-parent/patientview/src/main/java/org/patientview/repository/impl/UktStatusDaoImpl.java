@@ -27,21 +27,14 @@ import org.patientview.patientview.model.UktStatus;
 import org.patientview.patientview.model.UktStatus_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UktStatusDao;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,16 +43,6 @@ import java.util.List;
  */
 @Repository(value = "uktStatusDao")
 public class UktStatusDaoImpl extends AbstractHibernateDAO<UktStatus> implements UktStatusDao {
-
-    private JdbcTemplate jdbcTemplate;
-
-    @Inject
-    private DataSource dataSource;
-
-    @PostConstruct
-    public void init() {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 
     @Override
     public UktStatus get(String nhsno) {
@@ -83,24 +66,5 @@ public class UktStatusDaoImpl extends AbstractHibernateDAO<UktStatus> implements
     public void deleteAll() {
         Query query = getEntityManager().createNativeQuery("DELETE FROM uktstatus");
         query.executeUpdate();
-    }
-
-    @Override
-    public List<UktStatus> getByNhsNo(String nhsNo) {
-        String sql = "SELECT * From uktstatus where nhsno = ? ";
-
-        List<Object> params = new ArrayList<Object>();
-        params.add(nhsNo);
-        return jdbcTemplate.query(sql, params.toArray(), new UktStatusMapper());
-    }
-
-    private class UktStatusMapper implements RowMapper<UktStatus> {
-        @Override
-        public UktStatus mapRow(ResultSet resultSet, int i) throws SQLException {
-            UktStatus uktStatus = new UktStatus();
-            uktStatus.setNhsno(resultSet.getString("nhsno"));
-
-            return uktStatus;
-        }
     }
 }

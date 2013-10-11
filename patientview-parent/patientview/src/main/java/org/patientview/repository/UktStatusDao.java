@@ -27,8 +27,6 @@ import org.patientview.patientview.model.UktStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  *
  */
@@ -40,6 +38,4 @@ public interface UktStatusDao {
     void save(UktStatus uktStatus);
 
     void deleteAll();
-
-    List<UktStatus> getByNhsNo(String nhsNo);
 }
