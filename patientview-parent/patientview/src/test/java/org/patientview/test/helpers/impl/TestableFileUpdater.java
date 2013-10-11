@@ -21,25 +21,22 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository;
+package org.patientview.test.helpers.impl;
 
-import org.patientview.patientview.model.UktStatus;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.Ignore;
+import org.patientview.service.impl.ImportManagerImpl;
+import org.patientview.service.impl.UKTransplantManagerImpl;
 
-import java.util.List;
+import java.io.File;
 
 /**
  *
  */
-@Transactional(propagation = Propagation.MANDATORY)
-public interface UktStatusDao {
+@Ignore
+public class TestableFileUpdater extends UKTransplantManagerImpl {
 
-    UktStatus get(String nhsno);
-
-    void save(UktStatus uktStatus);
-
-    void deleteAll();
-
-    List<UktStatus> getByNhsNo(String nhsNo);
+    @Override
+    public void deleteFile(File xmlFile) {
+        // do nothing - it's a test
+    }
 }
