@@ -69,7 +69,8 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
         User user = new User();
         user.setEmail(email);
-        user.setName(name);
+        user.setFirstName(name);
+        user.setLastName("");
         user.setPassword(password);
         user.setUsername(username);
         userDao.save(user);

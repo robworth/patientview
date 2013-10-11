@@ -64,7 +64,8 @@ public class RadarDaoTest extends BaseDaoTest {
         // first create a user
         User user = new User();
         user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
+        user.setFirstName("Firstname");
+        user.setLastName("Lastname");
         user.setPassword("password");
         user.setUsername("test");
 
@@ -93,7 +94,8 @@ public class RadarDaoTest extends BaseDaoTest {
         // first create a user
         User user = new User();
         user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
+        user.setFirstName("Firstname");
+        user.setLastName("Lastname");
         user.setPassword("password");
         user.setUsername("test");
 
