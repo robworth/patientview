@@ -24,6 +24,8 @@ package org.patientview.quartz;
 
 import com.Ostermiller.util.CSVPrinter;
 import org.patientview.model.Patient;
+import org.patientview.patientview.exception.ExportUktDataException;
+import org.patientview.patientview.exception.ImportUktDataException;
 import org.patientview.service.UKTransplantManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
@@ -57,12 +59,23 @@ public class UktImportExportScheduler {
 
     public void execute() {
         if ((runUkt != null) && runUkt.equalsIgnoreCase("true")) {
-            importUktData();
-            exportUktData();
+            try {
+                importUktData();
+                exportUktData();
+            } catch (ImportUktDataException e) {
+                LOGGER.error("Failed to importUktData: {}", e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
+            } catch (ExportUktDataException e) {
+                LOGGER.error("Failed to exportUktData: {}", e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
+            } catch (Exception e) {
+                LOGGER.error("Failed to import/export UktData: {}", e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
+            }
         }
     }
 
-    private void importUktData() {
+    private void importUktData() throws ImportUktDataException {
         int numFilesImported = 0;
         try {
             File uktDir = new File(uktDirectory);
@@ -75,14 +88,13 @@ public class UktImportExportScheduler {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to importUktData: {}", e.getMessage());
-            LOGGER.debug(e.getMessage(), e);
+            throw new ImportUktDataException();
         }
 
         LOGGER.info("Completed importUktData, imported {} files", numFilesImported);
     }
 
-    private void exportUktData() {
+    private void exportUktData() throws ExportUktDataException {
         try {
             File uktExportDir = new File(uktExportDirectory);
             File uktExportFile = new File(uktExportDir, "ukt_rpv_export.txt");
@@ -94,8 +106,7 @@ public class UktImportExportScheduler {
                 csv.close();
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to exportUktData: {}", e.getMessage());
-            LOGGER.debug(e.getMessage(), e);
+            throw new ExportUktDataException();
         }
 
         LOGGER.info("Completed exportUktData()");

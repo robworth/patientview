@@ -20,23 +20,11 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+package org.patientview.patientview.exception;
 
-package org.patientview.test.helpers.impl;
+public class ImportUktDataException extends PatientViewJobException {
 
-import org.patientview.service.impl.ImportManagerImpl;
-import org.junit.Ignore;
-
-import javax.servlet.ServletContext;
-import java.io.File;
-
-/**
- *
- */
-@Ignore
-public class TestableResultsUpdater extends ImportManagerImpl {
-
-    @Override
-    public void archiveFileAfterProcessing(File xmlFile) {
-        // do nothing - it's a test
+    public ImportUktDataException() {
+        super();
     }
 }

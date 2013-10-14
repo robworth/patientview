@@ -22,12 +22,15 @@
  */
 package org.patientview.service.impl;
 
+import org.patientview.patientview.exception.EmptyImportFileException;
+import org.patientview.patientview.exception.ImportFileValidationException;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
+import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnosis;
@@ -61,6 +64,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -85,39 +89,20 @@ public class ImportManagerImpl implements ImportManager {
     private String xmlPatientDataLoadDirectory;
 
     @Override
-    public void update(File xmlFile) {
+    public void update(File xmlFile) throws EmptyImportFileException, ImportFileValidationException,
+            IOException, XmlImportException {
 
-        try {
-            /**
-             * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-             * hasn't worked. Send a mail to RPV admin, and skip validate and process
-             */
-            if (xmlFile.length() == 0) {
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                        xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                        xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-                xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
-            } else {
-                if (validate(xmlFile)) {
-                    process(null, xmlFile);
-                }
+        /**
+         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
+         * hasn't worked. Send a mail to RPV admin, and skip validate and process
+         */
+        if (xmlFile.length() == 0) {
+            throw new EmptyImportFileException(xmlFile);
+        } else {
+            if (validate(xmlFile)) {
+                process(null, xmlFile);
             }
-        } catch (Exception e) {
-            // these exceptions can occur because of corrupt/invalid data in xml file
-            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
-
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
-
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-
-        } finally {
-            // always move the file, so it is not processed multiple times
-            archiveFileAfterProcessing(xmlFile);
         }
-
     }
 
     @Override
@@ -153,7 +138,7 @@ public class ImportManagerImpl implements ImportManager {
         process(context, xmlFile);
     }
 
-    private boolean validate(File xmlFile) throws Exception {
+    private boolean validate(File xmlFile) throws ImportFileValidationException, IOException {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
@@ -168,20 +153,13 @@ public class ImportManagerImpl implements ImportManager {
 
             // if there are any exceptions, log them and send an email
             if (exceptions.size() > 0) {
-                // log
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
-                        xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                        xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-
-                // send email, then continue importing
-                xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
-                return false;
+                throw new ImportFileValidationException(xmlFile, xsdFile, exceptions);
             }
         }
         return true;
     }
 
-    private void process(ServletContext context, File xmlFile) throws Exception {
+    private void process(ServletContext context, File xmlFile) throws XmlImportException {
         ResultParser parser = new ResultParser();
         parser.parseResults(context, xmlFile);
         if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())

@@ -23,6 +23,7 @@
 
 package org.patientview.utils;
 
+import org.patientview.patientview.XmlImportUtils;
 import org.patientview.service.AboutmeManager;
 import org.patientview.service.AdminNotificationManager;
 import org.patientview.service.CentreManager;
@@ -124,6 +125,10 @@ public final class LegacySpringUtils {
     private static AdminNotificationManager adminNotificationManager;
 
     private static Properties contextProperties;
+
+
+
+    private static XmlImportUtils xmlImportUtils;
 
     private LegacySpringUtils() {
 
@@ -375,5 +380,13 @@ public final class LegacySpringUtils {
 
     public static void setContextProperties(Properties contextProperties) {
         LegacySpringUtils.contextProperties = contextProperties;
+    }
+
+    public static void setXmlImportUtils(XmlImportUtils xmlImportUtils) {
+        LegacySpringUtils.xmlImportUtils = xmlImportUtils;
+    }
+
+    public static XmlImportUtils getXmlImportUtils() {
+        return xmlImportUtils;
     }
 }

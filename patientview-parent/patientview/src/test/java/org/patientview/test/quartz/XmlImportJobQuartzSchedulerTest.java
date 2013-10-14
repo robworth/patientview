@@ -7,12 +7,17 @@ import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.FindXmlFiles;
+import org.patientview.patientview.XmlImportUtils;
+import org.patientview.patientview.exception.XmlImportException;
+import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.*;
 import org.patientview.quartz.XmlImportJobQuartzScheduler;
 import org.patientview.repository.PatientDao;
 import org.patientview.service.*;
 import org.patientview.service.ibd.IbdManager;
+import org.patientview.service.impl.SpringApplicationContextBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +43,6 @@ public class XmlImportJobQuartzSchedulerTest {
 
     private String xmlDirectory;
 
-    private String uktDirectory;
-
     private String[] fileEndings = {".xml", };
 
     @Inject
@@ -64,31 +67,28 @@ public class XmlImportJobQuartzSchedulerTest {
     private DiagnosticManager diagnosticManager;
 
     @Inject
-    private UKTransplantManager ukTransplantManager;
+    private ImportManager importManager;
+
+    @Inject
+    private UnitManager unitManager;
+
+    @Inject
+    private LogEntryManager logEntryManager;
+
+    @Inject
+    private XmlImportUtils xmlImportUtils;
+
+    @Inject
+    private SpringApplicationContextBean springApplicationContextBean;
 
     @Test
     public void testRead() throws Exception {
 
-        int uktFilesSize = 0;
         int xmlFilesSize = 0;
 
-        String parentDir = ResourceUtils.getFile("classpath:schedule/test-uktstatus.gpg.txt").getParent();
+        String parentDir = ResourceUtils.getFile("classpath:schedule/rm301_1244_9876543210.xml").getParent();
 
-        setUktDirectory(parentDir);
         setXmlDirectory(parentDir);
-
-        File uktDir = new File(uktDirectory);
-        File[] uktFiles = uktDir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith("uktstatus.gpg.txt");
-            }
-        });
-
-        if (uktFiles != null) {
-            uktFilesSize = uktFiles.length;
-        }
-
-        assertTrue("Can not read UKT files", uktFilesSize != 0);
 
         File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
         if (xmlFiles != null) {
@@ -98,8 +98,6 @@ public class XmlImportJobQuartzSchedulerTest {
         assertTrue("Can not read XML files", xmlFilesSize != 0);
 
         xmlImportJobQuartzScheduler.setXmlDirectory(parentDir);
-        xmlImportJobQuartzScheduler.setUktDirectory(parentDir);
-        xmlImportJobQuartzScheduler.setUktExportDirectory(parentDir);
         xmlImportJobQuartzScheduler.execute();
 
         List<Centre> centres = centreManager.getAll();
@@ -136,21 +134,115 @@ public class XmlImportJobQuartzSchedulerTest {
 
         assertEquals("Incorrect number of medicines", 0, medicines.size());
 
-        UktStatus uktStatus = ukTransplantManager.getUktStatus("9876543210");
+    }
 
-        if (uktFilesSize > 0) {
-            assertNotNull("UktStatus not be saved", uktStatus);
-        } else {
-            assertNull("Wrong entity exists.", uktStatus);
-        }
+    /**
+     * Test if importer handles test results outside date ranges specified
+     *
+     * Whole file needs to be rejected, and an email needs to be sent to RPV admin email
+     *
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws Exception {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:schedule/rm301_resultWithOutsideDaterange_9876543210/" +
+                        "rm301_resultWithOutsideDaterange_9876543210.xml");
+
+        xmlImportJobQuartzScheduler.setXmlDirectory(xmlFileResource.getFile().getParent());
+        xmlImportJobQuartzScheduler.execute();
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles empty test file. This probably means that the encryption did not work.
+     *
+     * An email should be sent to RPV admin email address and an entry should be created in log table
+     *
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testXmlParserUsingEmptyIBDFile() throws Exception {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:schedule/rm301_empty_9876543210/rm301_empty_9876543210.xml");
+
+        xmlImportJobQuartzScheduler.setXmlDirectory(xmlFileResource.getFile().getParent());
+        xmlImportJobQuartzScheduler.execute();
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results with future date
+     *
+     * The whole file should be rejected, an email should be sent to RPV admin email, and a "patient data fail"
+     *      entry should be added to the log table
+     *
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testXmlParserCheckFutureTestResultDateInIBDFile() throws Exception {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:schedule/rm301_resultWithFutureDate_9876543210/" +
+                        "rm301_resultWithFutureDate_9876543210.xml");
+
+        xmlImportJobQuartzScheduler.setXmlDirectory(xmlFileResource.getFile().getParent());
+        xmlImportJobQuartzScheduler.execute();
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Test if importer handles test results with empty values
+     *
+     * Whole file needs to be rejected, n email should be sent to RPV admin and the error should be logged.
+     *
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws Exception {
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:schedule/rm301_resultWithEmptyValue_9876543210/" +
+                        "rm301_resultWithEmptyValue_9876543210.xml");
+
+        xmlImportJobQuartzScheduler.setXmlDirectory(xmlFileResource.getFile().getParent());
+        xmlImportJobQuartzScheduler.execute();
+
+        checkNoDataHasBeenImportedFromIBDImportFile();
+
+        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+                AddLog.PATIENT_DATA_FAIL);
+    }
+
+    /**
+     * Check if log entry was created
+     *
+     * @param nhsNo  nhsNo of patient
+     * @param action log type
+     */
+    private void checkLogEntry(String nhsNo, String action) {
+        assertNotNull("Log entry was not created", logEntryManager.getLatestLogEntry(nhsNo, action));
+    }
+
+    /**
+     * Check if no data was imported
+     */
+    private void checkNoDataHasBeenImportedFromIBDImportFile() {
+        List<Centre> centres = centreManager.getAll();
+        assertEquals("Centres were imported although data file was supposed to be empty", 0, centres.size());
     }
 
     public void setXmlDirectory(String xmlDirectory) {
         this.xmlDirectory = xmlDirectory;
     }
-
-    public void setUktDirectory(String uktDirectory) {
-        this.uktDirectory = uktDirectory;
-    }
-
 }

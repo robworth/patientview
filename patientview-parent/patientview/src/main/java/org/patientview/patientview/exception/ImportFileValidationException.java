@@ -20,23 +20,33 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+package org.patientview.patientview.exception;
 
-package org.patientview.test.helpers.impl;
 
-import org.patientview.service.impl.ImportManagerImpl;
-import org.junit.Ignore;
+import org.patientview.patientview.XmlImportUtils;
+import org.patientview.patientview.logging.AddLog;
+import org.xml.sax.SAXParseException;
 
-import javax.servlet.ServletContext;
+import javax.inject.Inject;
 import java.io.File;
+import java.util.List;
 
-/**
- *
- */
-@Ignore
-public class TestableResultsUpdater extends ImportManagerImpl {
+public class ImportFileValidationException extends PatientViewJobException {
 
-    @Override
-    public void archiveFileAfterProcessing(File xmlFile) {
-        // do nothing - it's a test
+    @Inject
+    private XmlImportUtils xmlImportUtils;
+
+    public ImportFileValidationException() {
+        super();
+    }
+
+    public ImportFileValidationException(File xmlFile, File xsdFile, List<SAXParseException> exceptions) {
+        super();
+        AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_CORRUPT, "",
+                xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+
+        // send email, then continue importing
+        xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
     }
 }

@@ -20,36 +20,26 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
+package org.patientview.patientview.exception;
 
-import org.patientview.patientview.exception.EmptyImportFileException;
-import org.patientview.patientview.exception.ImportFileValidationException;
-import org.patientview.patientview.exception.XmlImportException;
-import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.logging.AddLog;
+import org.patientview.utils.LegacySpringUtils;
 
 import java.io.File;
-import java.io.IOException;
 
-/**
- *  Importer for results, patient data etc
- */
-public interface ImportManager {
 
-    /**
-     * Import data into the system via XML file.
-     * Can be called from the web application to import a single file, or to be called as part of the
-     * scheduled importer job.  Each has the same behaviour.
-     * @param xmlFile the file to import
-     */
-    void update(File xmlFile) throws EmptyImportFileException, ImportFileValidationException,
-            IOException, XmlImportException;
+public class EmptyImportFileException extends PatientViewJobException {
 
-    /**
-     * This method is here because importer task should running without login user's authority,
-     * so copy it from UnitManger to here.
-     */
-    Unit retrieveUnit(String unitcode);
+    public EmptyImportFileException() {
+        super();
+    }
 
-    void archiveFileAfterProcessing(File xmlFile);
-
+    public EmptyImportFileException(File xmlFile) {
+        super();
+        AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                LegacySpringUtils.getXmlImportUtils().extractFromXMLFileNameNhsno(xmlFile.getName()),
+                LegacySpringUtils.getXmlImportUtils().extractFromXMLFileNameUnitcode(
+                        xmlFile.getName()), xmlFile.getName());
+        LegacySpringUtils.getXmlImportUtils().sendEmptyFileEmailToUnitAdmin(xmlFile);
+    }
 }
