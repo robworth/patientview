@@ -23,8 +23,9 @@
 
 package org.patientview.test.helpers.impl;
 
-import org.patientview.service.impl.ImportManagerImpl;
 import org.junit.Ignore;
+import org.patientview.service.impl.ImportManagerImpl;
+import org.patientview.service.impl.UKTransplantManagerImpl;
 
 import java.io.File;
 
@@ -32,10 +33,10 @@ import java.io.File;
  *
  */
 @Ignore
-public class TestableResultsUpdater extends ImportManagerImpl {
+public class TestableFileUpdater extends UKTransplantManagerImpl {
 
     @Override
-    public void archiveFileAfterProcessing(File xmlFile) {
+    public void deleteFile(File xmlFile) {
         // do nothing - it's a test
     }
 }
