@@ -59,7 +59,6 @@
         <prop key="dataout.archive.directory">${dataout.archive.directory}</prop>
         <prop key="dataout.directory">${dataout.directory}</prop>
         <prop key="dataout.directory.thirdpart">${dataout.directory.thirdpart}</prop>
-        <prop key="dataout.minutes.to.wait">${dataout.minutes.to.wait}</prop>
         <prop key="unitstatfiles.directory">${unitstatfiles.directory}</prop>
         <prop key="aboutme.image.directory">${aboutme.image.directory}</prop>
         <prop key="default.results.per.page">${default.results.per.page}</prop>
