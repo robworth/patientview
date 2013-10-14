@@ -56,7 +56,6 @@
         <prop key="ukt.directory">${ukt.directory}</prop>
         <prop key="uktexport.archive.directory">${uktexport.archive.directory}</prop>
         <prop key="uktexport.directory">${uktexport.directory}</prop>
-        <prop key="dataout.archive.directory">${dataout.archive.directory}</prop>
         <prop key="dataout.directory">${dataout.directory}</prop>
         <prop key="dataout.directory.thirdpart">${dataout.directory.thirdpart}</prop>
         <prop key="unitstatfiles.directory">${unitstatfiles.directory}</prop>
