@@ -24,7 +24,6 @@
 package org.patientview.patientview.dataout;
 
 import org.patientview.model.Patient;
-import org.patientview.patientview.ParserThread;
 import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
@@ -53,7 +52,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class DataOutThread implements Runnable, ParserThread {
+public class DataOutThread implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataOutThread.class);
 

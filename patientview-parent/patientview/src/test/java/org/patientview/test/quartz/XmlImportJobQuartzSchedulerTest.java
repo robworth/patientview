@@ -98,8 +98,6 @@ public class XmlImportJobQuartzSchedulerTest {
         assertTrue("Can not read XML files", xmlFilesSize != 0);
 
         xmlImportJobQuartzScheduler.setXmlDirectory(parentDir);
-        xmlImportJobQuartzScheduler.setUktDirectory(parentDir);
-        xmlImportJobQuartzScheduler.setUktExportDirectory(parentDir);
         xmlImportJobQuartzScheduler.execute();
 
         List<Centre> centres = centreManager.getAll();

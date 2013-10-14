@@ -184,6 +184,9 @@ public class Patient extends BaseModel {
     @Column
     private Date dateOfGenericDiagnosis;
 
+    @Column
+    private String tickConsentUser;
+
     @Transient
     private Clinician clinician;
 
@@ -779,6 +782,14 @@ public class Patient extends BaseModel {
 
     public void setDiagnosisDateSelect(Boolean diagnosisDateSelect) {
         this.diagnosisDateSelect = diagnosisDateSelect;
+    }
+
+    public String getTickConsentUser() {
+        return tickConsentUser;
+    }
+
+    public void setTickConsentUser(String tickConsentUser) {
+        this.tickConsentUser = tickConsentUser;
     }
 }
 

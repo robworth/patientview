@@ -91,7 +91,7 @@ public class DemographicsPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        User user = RadarSecuredSession.get().getUser();
+        final User user = RadarSecuredSession.get().getUser();
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(
@@ -174,6 +174,7 @@ public class DemographicsPanel extends Panel {
                 if (radarNumberModel.getObject() != null) {
                     patient.setId(radarNumberModel.getObject());
                 }
+                patient.setTickConsentUser(user.getUsername());
                 demographicsManager.saveDemographics(patient);
                 try {
                     userManager.registerPatient(patient);
@@ -505,11 +506,23 @@ public class DemographicsPanel extends Panel {
         form.add(renalUnit);
 
         CheckBox consent = new CheckBox("consent");
+        consent.setRequired(true);
 //        DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
 //        form.add(consent, renalUnitAuthorised);
         form.add(consent);
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+        Label tickConsentUser = new Label("tickConsentUser",
+                model.getObject() != null ? model.getObject()  .getTickConsentUser() : "") {
+            @Override
+            public boolean isVisible() {
+                return true;
+            }
+        };
+        tickConsentUser.setOutputMarkupId(true);
+        tickConsentUser.setOutputMarkupPlaceholderTag(true);
+        form.add(tickConsentUser);
 
         final Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
                 componentsToUpdateList);
