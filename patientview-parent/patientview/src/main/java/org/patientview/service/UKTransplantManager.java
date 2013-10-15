@@ -43,4 +43,6 @@ public interface UKTransplantManager {
     void save(UktStatus uktStatus);
 
     void deleteAll();
+
+    void exportPatientData() throws Exception;
 }

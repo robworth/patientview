@@ -59,7 +59,20 @@ public class UktImportExportScheduler {
         if ((runUkt != null) && runUkt.equalsIgnoreCase("true")) {
             importUktData();
             exportUktData();
+            exportPatientData();
         }
+    }
+
+    private void exportPatientData() {
+
+        try {
+            ukTransplantManager.exportPatientData();
+        } catch (Exception e) {
+            LOGGER.error("Failed to exportPatientData: {}", e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+        }
+
+        LOGGER.info("Completed exportPatientData()");
     }
 
     private void importUktData() {
@@ -92,6 +105,8 @@ public class UktImportExportScheduler {
                 csv.writeln(getPatients());
                 csv.flush();
                 csv.close();
+            } else {
+                LOGGER.error("Failed to exportUktData: uktExportFile is not a file");
             }
         } catch (Exception e) {
             LOGGER.error("Failed to exportUktData: {}", e.getMessage());
