@@ -37,8 +37,16 @@ ALTER TABLE rdr_hnf1b_misc DROP COLUMN ageAtGoutDiagnosis;
  */
 ALTER TABLE patient  ADD COLUMN temp DATETIME NULL;
 UPDATE patient
-SET temp = CASE WHEN dateofbirth REGEXP '[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%d.%m.%y')
+SET temp = CASE
+     /** dd.MM.y */
+     WHEN dateofbirth REGEXP '[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%d.%m.%y')
+     /** yyyy-MM-dd */
      WHEN dateofbirth REGEXP '[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%Y-%m-%d')
+     /** dd-MM-y */
+     WHEN dateofbirth REGEXP '[0-9]{2}\\-[0-9]{2}\\-[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%d-%m-%y')
+     /** dd/MM/y */
+     WHEN dateofbirth REGEXP '[0-9]{2}\\/[0-9]{2}\\/[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%d/%m/%y')
      ELSE NULL END;
+
 ALTER TABLE patient DROP COLUMN dateofbirth;
 ALTER TABLE patient CHANGE temp dateofbirth DATETIME NULL ;
