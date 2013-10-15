@@ -191,7 +191,7 @@ public class UKTransplantManagerImpl implements UKTransplantManager {
         Element nhsno = addChildElement(doc, personalDetails, "nhsno", patient.getNhsno());
         Element surname = addChildElement(doc, personalDetails, "surname", patient.getSurname());
         Element forename = addChildElement(doc, personalDetails, "forename", patient.getForename());
-        Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", patient.getDateofbirth());
+        Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", patient.getDateOfBirthStr());
 
         Element testDetails = addChildElement(doc, rootElement, "testDetails");
 

@@ -31,3 +31,14 @@ dateAtGoutDiagnosis = DATE_SUB(NOW(), INTERVAL ageAtGoutDiagnosis YEAR);
 
 ALTER TABLE rdr_hnf1b_misc DROP COLUMN ageAtDiabetesDiagnosis;
 ALTER TABLE rdr_hnf1b_misc DROP COLUMN ageAtGoutDiagnosis;
+
+ /**
+    patient table.
+ */
+ALTER TABLE patient  ADD COLUMN temp DATETIME NULL;
+UPDATE patient
+SET temp = CASE WHEN dateofbirth REGEXP '[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%d.%m.%y')
+     WHEN dateofbirth REGEXP '[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}' THEN STR_TO_DATE(dateofbirth, '%Y-%m-%d')
+     ELSE NULL END;
+ALTER TABLE patient DROP COLUMN dateofbirth;
+ALTER TABLE patient CHANGE temp dateofbirth DATETIME NULL ;
