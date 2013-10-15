@@ -268,7 +268,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patient.setNhsno(resultSet.getString("nhsno"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setForename(resultSet.getString("forename"));
-            patient.setDateofbirth(resultSet.getString("dateofbirth"));
+            patient.setDateofbirth(resultSet.getDate("dateofbirth"));
             patient.setPostcode(resultSet.getString("postcode"));
 
             return patient;
@@ -291,7 +291,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setLastlogon(resultSet.getDate("lastlogon"));
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
-            patientLogonWithTreatment.setDateofbirth(resultSet.getString("dateofbirth"));
+            patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
 
             return patientLogonWithTreatment;
         }

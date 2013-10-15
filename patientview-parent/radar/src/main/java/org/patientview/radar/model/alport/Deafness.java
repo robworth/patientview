@@ -3,6 +3,7 @@ package org.patientview.radar.model.alport;
 import org.patientview.radar.model.BaseModel;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Deafness extends BaseModel {
@@ -45,8 +46,8 @@ public class Deafness extends BaseModel {
 
     private Long radarNo;
     private EvidenceOfDeafness evidenceOfDeafness;
-    private int ageProblemFirstNoticed;
-    private int ageStartedUsingHearingAid;
+    private Date dateProblemFirstNoticed;
+    private Date dateStartedUsingHearingAid;
 
     public Long getRadarNo() {
         return radarNo;
@@ -64,43 +65,19 @@ public class Deafness extends BaseModel {
         this.evidenceOfDeafness = evidenceOfDeafness;
     }
 
-    public int getAgeProblemFirstNoticed() {
-        return ageProblemFirstNoticed;
+    public Date getDateProblemFirstNoticed() {
+        return dateProblemFirstNoticed;
     }
 
-    public void setAgeProblemFirstNoticed(int ageProblemFirstNoticed) {
-        this.ageProblemFirstNoticed = ageProblemFirstNoticed;
+    public void setDateProblemFirstNoticed(Date dateProblemFirstNoticed) {
+        this.dateProblemFirstNoticed = dateProblemFirstNoticed;
     }
 
-    public String getAgeProblemFirstNoticedAsString() {
-        return Integer.toString(ageProblemFirstNoticed);
+    public Date getDateStartedUsingHearingAid() {
+        return dateStartedUsingHearingAid;
     }
 
-    public void setAgeProblemFirstNoticedAsString(String ageProblemFirstNoticed) {
-        try {
-            this.ageProblemFirstNoticed = Integer.parseInt(ageProblemFirstNoticed);
-        } catch (Exception e) {
-            // not sure obviously not a number
-        }
-    }
-
-    public int getAgeStartedUsingHearingAid() {
-        return ageStartedUsingHearingAid;
-    }
-
-    public void setAgeStartedUsingHearingAid(int ageStartedUsingHearingAid) {
-        this.ageStartedUsingHearingAid = ageStartedUsingHearingAid;
-    }
-
-    public String getAgeStartedUsingHearingAidAsString() {
-        return Integer.toString(ageStartedUsingHearingAid);
-    }
-
-    public void setAgeStartedUsingHearingAidAsString(String ageStartedUsingHearingAid) {
-        try {
-            this.ageStartedUsingHearingAid = Integer.parseInt(ageStartedUsingHearingAid);
-        } catch (Exception e) {
-            // not sure obviously not a number
-        }
+    public void setDateStartedUsingHearingAid(Date dateStartedUsingHearingAid) {
+        this.dateStartedUsingHearingAid = dateStartedUsingHearingAid;
     }
 }

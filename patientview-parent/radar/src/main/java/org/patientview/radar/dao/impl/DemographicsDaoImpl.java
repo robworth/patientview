@@ -23,8 +23,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -117,7 +115,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getSurname(),
                     patient.getSurnameAlias(),
                     patient.getForename(),
-                    new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()),
+                    patient.getDateofbirth(),
                     patient.getAge(),
                     patient.getSexModel() != null ? patient.getSexModel().getType() : null,
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
@@ -162,9 +160,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("surname", patient.getSurname());
                     put("surnameAlias", patient.getSurnameAlias());
                     put("forename", patient.getForename());
-                    put("dateofbirth", patient.getDob() != null ?
-                            new SimpleDateFormat(DATE_FORMAT).format(
-                                    patient.getDob()) : null);
+                    put("dateofbirth", patient.getDateofbirth());
                     put("AGE", patient.getAge());
                     put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
                     put("ethnicGp",
@@ -369,29 +365,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setSurnameAlias(resultSet.getString("surnameAlias"));
             patient.setForename(resultSet.getString("forename"));
 
-            // Date needs to be decrypted to string, then parsed
-            String dateOfBirthString = resultSet.getString("dateofbirth");
-            if (StringUtils.isNotBlank(dateOfBirthString)) {
-                Date dateOfBirth = null;
-
-                // It seems that the encrypted strings in the DB have different date formats, nice.
-                for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
-                    try {
-                        dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
-                    } catch (ParseException e) {
-                        LOGGER.debug("Could not parse date of birth {}", dateOfBirthString);
-                    }
-                }
-
-                // If after trying those formats we don't have anything then log as error
-                if (dateOfBirth != null) {
-                    patient.setDob(dateOfBirth);
-                } else {
-                    LOGGER.error("Could not parse date of birth from any format for dob {}",
-                            dateOfBirthString);
-                    String a = "";
-                }
-            }
+            Date dateOfBirth = resultSet.getDate("dateofbirth");
+            patient.setDateofbirth(dateOfBirth);
+            patient.setDob(dateOfBirth);
 
             // Addresses
             patient.setAddress1(resultSet.getString("address1"));

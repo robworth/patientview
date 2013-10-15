@@ -19575,8 +19575,8 @@ AFAFHDAH]]></value>
         <column>id</column>
         <column>radar_no</column>
         <column>evidenceOfDeafness</column>
-        <column>ageProblemFirstNoticed</column>
-        <column>ageStartedUsingHearingAid</column>
+        <column>dateStartedUsingHearingAid</column>
+        <column>dateProblemFirstNoticed</column>
     </table>
 
     <table name="medicine">
