@@ -77,13 +77,10 @@ public class XmlImportJobQuartzSchedulerTest {
 
         assertTrue("Can not read XML files", xmlFilesSize != 0);
 
-        List<Centre> centres = centreManager.getAll();
-        System.out.println("Centres size=" + centres.size());
-
         xmlImportJobQuartzScheduler.setXmlDirectory(parentDir);
         xmlImportJobQuartzScheduler.execute();
 
-        centres = centreManager.getAll();
+        List<Centre> centres = centreManager.getAll();
 
         assertEquals("Incorrect number of centres", 1, centres.size());
         assertEquals("Incorrect centre", "RM301", centres.get(0).getCentreCode());

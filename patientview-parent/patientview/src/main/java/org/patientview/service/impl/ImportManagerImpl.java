@@ -93,20 +93,16 @@ public class ImportManagerImpl implements ImportManager {
              * hasn't worked. Send a mail to RPV admin, and skip validate and process
              */
             if (xmlFile.length() == 0) {
-                System.out.println("ImportFile=0");
                 AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
                         xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
                         xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
                 xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
             } else {
-                System.out.println("ImportFile=validate");
                 if (validate(xmlFile)) {
-                    System.out.println("ImportFile=process");
                     process(null, xmlFile);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             // these exceptions can occur because of corrupt/invalid data in xml file
             LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
 
@@ -194,7 +190,6 @@ public class ImportManagerImpl implements ImportManager {
             removePatientFromSystem(parser);
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
                     parser.getPatient().getUnitcode(), xmlFile.getName());
-            System.out.println("ImportFile=Remove");
         } else {
             updatePatientData(parser);
             // Insert or update record in pv_user_log table,
@@ -229,11 +224,8 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void updatePatientData(ResultParser parser) {
-        System.out.println("ImportFile=updatePatientData");
         updatePatientDetails(parser.getPatient());
-        System.out.println("ImportFile=updateCentreDetails");
         updateCentreDetails(parser.getCentre());
-        System.out.println("ImportFile=deleteDateRanges");
         deleteDateRanges(parser.getDateRanges());
         insertResults(parser.getTestResults());
         deleteLetters(parser.getLetters());
@@ -303,7 +295,6 @@ public class ImportManagerImpl implements ImportManager {
     private void updateCentreDetails(Centre centre) {
         LegacySpringUtils.getCentreManager().delete(centre.getCentreCode());
         LegacySpringUtils.getCentreManager().save(centre);
-        System.out.println("Centre details=" + centre.getId());
     }
 
     private void deleteDateRanges(Collection dateRanges) {
