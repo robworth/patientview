@@ -62,6 +62,7 @@ public class XmlImportJobQuartzScheduler {
             if (xmlFiles != null && xmlFiles.length > 0) {
                 LOGGER.debug("Starting updateXmlFiles for {} files", xmlFiles.length);
                 for (File xmlFile : xmlFiles) {
+                    System.out.println("ImportFile=" + xmlFile.getAbsolutePath() + xmlFile.getName());
                     LOGGER.debug("Starting updateXmlFiles for {} file", xmlFile.getAbsolutePath());
                     LegacySpringUtils.getImportManager().update(xmlFile);
                     numFilesProcessed++;
