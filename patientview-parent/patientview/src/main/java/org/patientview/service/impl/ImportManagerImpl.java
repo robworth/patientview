@@ -295,6 +295,7 @@ public class ImportManagerImpl implements ImportManager {
     private void updateCentreDetails(Centre centre) {
         LegacySpringUtils.getCentreManager().delete(centre.getCentreCode());
         LegacySpringUtils.getCentreManager().save(centre);
+        System.out.println("Centre details=" + centre.getId());
     }
 
     private void deleteDateRanges(Collection dateRanges) {

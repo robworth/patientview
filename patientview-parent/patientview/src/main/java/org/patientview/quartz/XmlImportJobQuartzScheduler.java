@@ -51,6 +51,7 @@ public class XmlImportJobQuartzScheduler {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             LOGGER.debug(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 
