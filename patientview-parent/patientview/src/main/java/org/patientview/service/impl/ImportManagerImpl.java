@@ -103,6 +103,7 @@ public class ImportManagerImpl implements ImportManager {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             // these exceptions can occur because of corrupt/invalid data in xml file
             LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
 
