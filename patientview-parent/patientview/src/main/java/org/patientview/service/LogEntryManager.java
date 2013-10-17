@@ -33,7 +33,7 @@ import java.util.List;
 /**
  *
  */
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface LogEntryManager {
 
     void save(LogEntry logEntry);

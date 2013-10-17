@@ -1,5 +1,6 @@
 package org.patientview.test.quartz;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.ibd.model.Allergy;
@@ -20,7 +21,6 @@ import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,8 +37,6 @@ public class XmlImportJobQuartzSchedulerTest {
     private XmlImportJobQuartzScheduler xmlImportJobQuartzScheduler;
 
     private String xmlDirectory;
-
-    private String uktDirectory;
 
     private String[] fileEndings = {".xml", };
 
@@ -63,32 +61,14 @@ public class XmlImportJobQuartzSchedulerTest {
     @Inject
     private DiagnosticManager diagnosticManager;
 
-    @Inject
-    private UKTransplantManager ukTransplantManager;
-
     @Test
     public void testRead() throws Exception {
 
-        int uktFilesSize = 0;
         int xmlFilesSize = 0;
 
-        String parentDir = ResourceUtils.getFile("classpath:schedule/test-uktstatus.gpg.txt").getParent();
+        String parentDir = ResourceUtils.getFile("classpath:schedule/rm301_1244_9876543210.xml").getParent();
 
-        setUktDirectory(parentDir);
         setXmlDirectory(parentDir);
-
-        File uktDir = new File(uktDirectory);
-        File[] uktFiles = uktDir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith("uktstatus.gpg.txt");
-            }
-        });
-
-        if (uktFiles != null) {
-            uktFilesSize = uktFiles.length;
-        }
-
-        assertTrue("Can not read UKT files", uktFilesSize != 0);
 
         File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
         if (xmlFiles != null) {
@@ -98,8 +78,6 @@ public class XmlImportJobQuartzSchedulerTest {
         assertTrue("Can not read XML files", xmlFilesSize != 0);
 
         xmlImportJobQuartzScheduler.setXmlDirectory(parentDir);
-        xmlImportJobQuartzScheduler.setUktDirectory(parentDir);
-        xmlImportJobQuartzScheduler.setUktExportDirectory(parentDir);
         xmlImportJobQuartzScheduler.execute();
 
         List<Centre> centres = centreManager.getAll();
@@ -136,21 +114,10 @@ public class XmlImportJobQuartzSchedulerTest {
 
         assertEquals("Incorrect number of medicines", 0, medicines.size());
 
-        UktStatus uktStatus = ukTransplantManager.getUktStatus("9876543210");
-
-        if (uktFilesSize > 0) {
-            assertNotNull("UktStatus not be saved", uktStatus);
-        } else {
-            assertNull("Wrong entity exists.", uktStatus);
-        }
     }
 
     public void setXmlDirectory(String xmlDirectory) {
         this.xmlDirectory = xmlDirectory;
-    }
-
-    public void setUktDirectory(String uktDirectory) {
-        this.uktDirectory = uktDirectory;
     }
 
 }
