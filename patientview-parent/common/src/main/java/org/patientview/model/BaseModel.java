@@ -27,25 +27,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 
 /**
  * Common attributes across all model objects
  */
 @MappedSuperclass
-public class BaseModel implements Serializable, Comparable {
-
-    protected BaseModel() {
-    }
+public class BaseModel extends AbstractModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)   // let hibernate pick the strategy based on underlying db
     private Long id;
-
-
-    public boolean hasValidId() {
-        return id != null && id > 0;
-    }
 
     public Long getId() {
         return id;
@@ -55,48 +46,4 @@ public class BaseModel implements Serializable, Comparable {
         this.id = id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(this.getClass().isAssignableFrom(o.getClass()))) {
-            return false;
-        }
-
-        BaseModel baseModel = (BaseModel) o;
-
-        return id != null && id.equals(baseModel.id);
-    }
-
-    @Override
-    public int hashCode() {
-        if (id != null) {
-            return id.hashCode();
-        } else {
-            return -1;
-        }
-    }
-
-    public int compareTo(Object o) {
-
-        BaseModel baseModel = (BaseModel) o;
-
-        return this.id.compareTo(baseModel.getId());
-    }
-
-    public static String getLabelFromEnum(String enumString) {
-        String label = enumString;
-        label = label.replace("_", " ");
-        String[] parts = label.split(" ");
-        label = "";
-        for (String part : parts) {
-            String formatted = part.toLowerCase();
-            formatted = Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
-            label += formatted;
-            label += " ";
-        }
-        return label;
-    }
 }

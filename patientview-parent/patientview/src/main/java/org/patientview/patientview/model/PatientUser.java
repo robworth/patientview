@@ -23,19 +23,31 @@
 
 package org.patientview.patientview.model;
 
-import org.patientview.model.BaseModel;
+import org.patientview.model.AbstractModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity(name = "tbl_patient_users")
-public class PatientUser extends BaseModel {
-
+public class PatientUser extends AbstractModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)   // let hibernate pick the strategy based on underlying db
     @Column(name = "pID")
     private Integer patientUserId;
 
     @Column(name = "radar_no")
     private long radarNo;
+
+    public Long getId() {
+        return patientUserId.longValue();
+    }
+
+    public void setId(Long id) {
+        this.patientUserId = id.intValue();
+    }
 
     public Integer getPatientUserId() {
         return patientUserId;

@@ -23,15 +23,20 @@
 
 package org.patientview.patientview.model.radar;
 
-import org.patientview.model.BaseModel;
+import org.patientview.model.AbstractModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity(name = "rdr_user_mapping")
-public class RadarUserMapping extends BaseModel {
+public class RadarUserMapping extends AbstractModel {
 
-    @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)   // let hibernate pick the strategy based on underlying db
+    @Column(name = "userId")
     private Long userId;
 
     @Column(name = "radarUserId")
@@ -39,6 +44,14 @@ public class RadarUserMapping extends BaseModel {
 
     @Column
     private String role;
+
+    public Long getId() {
+        return userId;
+    }
+
+    public void setId(Long id) {
+        this.userId = id;
+    }
 
     public Long getUserId() {
         return userId;

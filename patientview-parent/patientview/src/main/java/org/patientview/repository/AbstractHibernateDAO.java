@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.model.BaseModel;
+import org.patientview.model.AbstractModel;
 import org.patientview.utils.XssUtils;
 
 import javax.inject.Inject;
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  *  Abstract DAO class class with support for the common generic operations
  */
-public class AbstractHibernateDAO<T extends BaseModel> {
+public class AbstractHibernateDAO<T extends AbstractModel> {
 
     private Class<T> clazz
             = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
