@@ -37,4 +37,6 @@
 
     <bean id="importManager" class="org.patientview.test.helpers.impl.TestableResultsUpdater"/>
 
+    <bean id="ukTransplantManager" class="org.patientview.test.helpers.impl.TestableFileUpdater"/>
+
 </beans>

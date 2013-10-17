@@ -59,7 +59,20 @@ public class UktImportExportScheduler {
         if ((runUkt != null) && runUkt.equalsIgnoreCase("true")) {
             importUktData();
             exportUktData();
+            exportPatientData();
         }
+    }
+
+    private void exportPatientData() {
+
+        try {
+            ukTransplantManager.exportPatientData();
+        } catch (Exception e) {
+            LOGGER.error("Failed to exportPatientData: {}", e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+        }
+
+        LOGGER.info("Completed exportPatientData()");
     }
 
     private void importUktData() {
@@ -92,6 +105,8 @@ public class UktImportExportScheduler {
                 csv.writeln(getPatients());
                 csv.flush();
                 csv.close();
+            } else {
+                LOGGER.error("Failed to exportUktData: uktExportFile is not a file");
             }
         } catch (Exception e) {
             LOGGER.error("Failed to exportUktData: {}", e.getMessage());
@@ -112,12 +127,22 @@ public class UktImportExportScheduler {
         for (int i = 0; i < patientList.size(); i++) {
             Patient patient = (Patient) patientList.get(i);
             patientArray[i][0] = (patient.getNhsno() == null) ? "" : patient.getNhsno();
-            patientArray[i][1] = (patient.getSurname() == null) ? "" : patient.getSurname().replaceAll("\"", "");
-            patientArray[i][2] = (patient.getForename() == null) ? "" : patient.getForename().replaceAll("\"", "");
+            patientArray[i][1] = cleanName(patient.getSurname());
+            patientArray[i][2] = cleanName(patient.getForename());
             patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateofbirth();
             patientArray[i][FOUR] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
         }
         return patientArray;
+    }
+
+    private String cleanName(String name) {
+        if (name == null) {
+            name = "";
+        } else {
+            name = name.replaceAll("\"", "");
+            name = name.replaceAll("&quot;", "");
+        }
+        return name;
     }
 
     private class UktFileFilter implements FilenameFilter {
