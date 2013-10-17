@@ -8,7 +8,6 @@ import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.patientview.XmlImportUtils;
-import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.*;
 import org.patientview.quartz.XmlImportJobQuartzScheduler;
@@ -25,7 +24,6 @@ import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -65,12 +63,6 @@ public class XmlImportJobQuartzSchedulerTest {
 
     @Inject
     private DiagnosticManager diagnosticManager;
-
-    @Inject
-    private ImportManager importManager;
-
-    @Inject
-    private UnitManager unitManager;
 
     @Inject
     private LogEntryManager logEntryManager;
@@ -153,9 +145,6 @@ public class XmlImportJobQuartzSchedulerTest {
         xmlImportJobQuartzScheduler.execute();
 
         checkNoDataHasBeenImportedFromIBDImportFile();
-
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -174,9 +163,6 @@ public class XmlImportJobQuartzSchedulerTest {
         xmlImportJobQuartzScheduler.execute();
 
         checkNoDataHasBeenImportedFromIBDImportFile();
-
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -197,9 +183,6 @@ public class XmlImportJobQuartzSchedulerTest {
         xmlImportJobQuartzScheduler.execute();
 
         checkNoDataHasBeenImportedFromIBDImportFile();
-
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -219,19 +202,6 @@ public class XmlImportJobQuartzSchedulerTest {
         xmlImportJobQuartzScheduler.execute();
 
         checkNoDataHasBeenImportedFromIBDImportFile();
-
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
-    }
-
-    /**
-     * Check if log entry was created
-     *
-     * @param nhsNo  nhsNo of patient
-     * @param action log type
-     */
-    private void checkLogEntry(String nhsNo, String action) {
-        assertNotNull("Log entry was not created", logEntryManager.getLatestLogEntry(nhsNo, action));
     }
 
     /**
