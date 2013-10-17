@@ -8,7 +8,6 @@ import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.patientview.XmlImportUtils;
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.*;
 import org.patientview.quartz.XmlImportJobQuartzScheduler;
 import org.patientview.repository.PatientDao;
@@ -63,12 +62,6 @@ public class XmlImportJobQuartzSchedulerTest {
 
     @Inject
     private DiagnosticManager diagnosticManager;
-
-    @Inject
-    private LogEntryManager logEntryManager;
-
-    @Inject
-    private XmlImportUtils xmlImportUtils;
 
     @Inject
     private SpringApplicationContextBean springApplicationContextBean;
