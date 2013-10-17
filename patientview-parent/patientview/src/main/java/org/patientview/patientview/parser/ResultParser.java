@@ -88,7 +88,7 @@ public class ResultParser {
 
     private static final int HOURS_IN_DAY = 24;
 
-    public void parseResults(ServletContext context, File resultsFile) throws Exception {
+    public void parseResults(ServletContext context, File resultsFile) throws XmlImportException {
         Document doc = getDocument(context, resultsFile);
         for (int i = 0; i < topLevelElements.length; i++) {
             collectTopLevelData(topLevelElements[i], doc);
@@ -144,7 +144,7 @@ public class ResultParser {
         }
     }
 
-    private void collectTestResults(Document doc) throws Exception {
+    private void collectTestResults(Document doc) throws XmlImportException {
         NodeList testNodeList = doc.getElementsByTagName("test");
         XmlImportException xmlImportException = new XmlImportException();
 

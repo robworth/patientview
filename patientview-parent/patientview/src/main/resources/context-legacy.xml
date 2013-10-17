@@ -308,4 +308,13 @@
         </property>
     </bean>
 
+    <bean id="setXmlImportUtils" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setXmlImportUtils"/>
+        <property name="arguments">
+            <list>
+                <ref bean="xmlImportUtils"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

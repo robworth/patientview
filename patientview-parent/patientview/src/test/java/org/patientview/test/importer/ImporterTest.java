@@ -30,6 +30,7 @@ import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.XmlImportUtils;
+import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
@@ -227,7 +228,7 @@ public class ImporterTest extends BaseServiceTest {
      *
      * @throws IOException
      */
-    @Test
+    @Test (expected = NullPointerException.class)
     public void testXmlParserUsingEmptyIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_empty_9876543210.xml");
@@ -271,7 +272,7 @@ public class ImporterTest extends BaseServiceTest {
      *
      * @throws IOException
      */
-    @Test
+    @Test (expected = XmlImportException.class)
     public void testXmlParserCheckFutureTestResultDateInIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
@@ -291,7 +292,7 @@ public class ImporterTest extends BaseServiceTest {
      *
      * @throws IOException
      */
-    @Test
+    @Test (expected = XmlImportException.class)
     public void testXmlParserCheckTestResultOutsideDataRangeInIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
@@ -343,7 +344,7 @@ public class ImporterTest extends BaseServiceTest {
      *
      * @throws IOException
      */
-    @Test
+    @Test (expected = XmlImportException.class)
     public void testXmlParserCheckTestResultWithEmptyValueInIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");

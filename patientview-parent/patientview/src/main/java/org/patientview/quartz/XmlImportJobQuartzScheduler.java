@@ -22,12 +22,17 @@
  */
 package org.patientview.quartz;
 
+import org.patientview.patientview.exception.EmptyImportFileException;
+import org.patientview.patientview.exception.ImportFileValidationException;
 import org.patientview.patientview.FindXmlFiles;
+import org.patientview.patientview.XmlImportUtils;
+import org.patientview.patientview.logging.AddLog;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.inject.Inject;
 import java.io.File;
 
 /**
@@ -42,6 +47,9 @@ public class XmlImportJobQuartzScheduler {
     private String xmlDirectory;
 
     private String[] fileEndings = {".xml", };
+
+    @Inject
+    private XmlImportUtils xmlImportUtils;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportJobQuartzScheduler.class);
 
@@ -62,8 +70,28 @@ public class XmlImportJobQuartzScheduler {
                 LOGGER.debug("Starting updateXmlFiles for {} files", xmlFiles.length);
                 for (File xmlFile : xmlFiles) {
                     LOGGER.debug("Starting updateXmlFiles for {} file", xmlFile.getAbsolutePath());
-                    LegacySpringUtils.getImportManager().update(xmlFile);
-                    numFilesProcessed++;
+
+                    try {
+                        LegacySpringUtils.getImportManager().update(xmlFile);
+                        numFilesProcessed++;
+                    } catch (EmptyImportFileException e) {
+                        LOGGER.error("Importer failed : {} is empty.", xmlFile.getName());
+                    } catch (ImportFileValidationException e) {
+                        LOGGER.error("Importer failed : {} is not valid - {}", xmlFile.getName(), e.getMessage());
+                    } catch (Exception e) {
+                        // these exceptions can occur because of corrupt/invalid data in xml file
+                        LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
+
+                        AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                                xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                                xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                                xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
+
+                        xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+                    } finally {
+                        // always move the file, so it is not processed multiple times
+                        LegacySpringUtils.getImportManager().archiveFileAfterProcessing(xmlFile);
+                    }
                 }
             }
             LOGGER.info("Patient data importer finished for {} files", numFilesProcessed);
