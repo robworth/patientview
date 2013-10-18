@@ -24,6 +24,7 @@ package com.worthsoln.test.web;
 
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -119,7 +120,7 @@ public class MyDetailsTest {
 
     }
 
-    @Test
+    @Ignore
     public void testMessages() {
         login();
         assertLinkPresentWithText("Messages");
