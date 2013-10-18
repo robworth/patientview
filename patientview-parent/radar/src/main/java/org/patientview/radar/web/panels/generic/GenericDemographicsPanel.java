@@ -6,6 +6,8 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -428,10 +430,16 @@ public class GenericDemographicsPanel extends Panel {
                 new PatternValidator(MetaPattern.DIGITS), form,
                 componentsToUpdateList);
 
-        RadarRequiredDropdownChoice genericDiagnosis =
-                new RadarRequiredDropdownChoice("genericDiagnosisModel", genericDiagnosisManager.getByDiseaseGroup(
-                        patient.getDiseaseGroup()), new ChoiceRenderer("term", "id"), form,
-                        componentsToUpdateList);
+        DiseaseGroup diseaseGroup = patient.getDiseaseGroup();
+        List<GenericDiagnosis> genericDiagnosisModel = null;
+        if (diseaseGroup !=null) {
+            genericDiagnosisModel = genericDiagnosisManager.getByDiseaseGroup(diseaseGroup);
+        } else {
+            genericDiagnosisModel = new ArrayList<GenericDiagnosis>();
+        }
+
+        RadarRequiredDropdownChoice genericDiagnosis = new RadarRequiredDropdownChoice("genericDiagnosisModel",
+                genericDiagnosisModel, new ChoiceRenderer("term", "id"), form, componentsToUpdateList);
 
         final IModel<Boolean> diagnosisDateVisibility =
                 new Model<Boolean>(form.getModelObject().getDateOfGenericDiagnosis() == null);
