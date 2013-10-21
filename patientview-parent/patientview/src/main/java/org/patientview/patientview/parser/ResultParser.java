@@ -156,8 +156,6 @@ public class ResultParser {
 
     private void collectTestResults(Document doc) {
 
-        List<CorruptNode> corruptNodes = new ArrayList<CorruptNode>();
-
         NodeList testNodeList = doc.getElementsByTagName("test");
 
         for (int i = 0; i < testNodeList.getLength(); i++) {

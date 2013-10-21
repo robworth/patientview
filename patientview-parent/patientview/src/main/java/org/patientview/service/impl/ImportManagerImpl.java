@@ -96,7 +96,6 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void handleCorruptNodes(File xmlFile, ResultParser resultParser) {
-        LOGGER.info("Corrupt data has been found in {} so sending email", resultParser.getFilename());
         createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
         xmlImportUtils.sendCorruptDataEmail(resultParser);
     }

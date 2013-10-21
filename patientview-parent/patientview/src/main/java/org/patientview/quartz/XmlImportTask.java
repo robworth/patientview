@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.File;
 
@@ -54,6 +55,12 @@ public class XmlImportTask {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportTask.class);
 
+    @PostConstruct
+    public void init() {
+        LOGGER.info("Processing from directory {}.", xmlDirectory);
+        LOGGER.info("Data loading from directory {}.", xmlDirectory);
+    }
+
     public void execute() {
         LOGGER.info("Started file processing");
 
@@ -72,7 +79,7 @@ public class XmlImportTask {
                         importManager.process(xmlFile);
                         succeeded++;
                     } catch (ProcessException pe) {
-                        LOGGER.error("File failed to import {}.", pe.getMessage());
+                        LOGGER.error("{} file failed to import. Reason: {}.", xmlFile.getName(),  pe.getMessage());
                         if (LOGGER.isDebugEnabled()) {
                             pe.printStackTrace();
                         }
