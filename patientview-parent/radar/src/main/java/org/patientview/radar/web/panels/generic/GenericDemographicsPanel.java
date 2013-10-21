@@ -432,7 +432,7 @@ public class GenericDemographicsPanel extends Panel {
 
         DiseaseGroup diseaseGroup = patient.getDiseaseGroup();
         List<GenericDiagnosis> genericDiagnosisModel = null;
-        if (diseaseGroup !=null) {
+        if (diseaseGroup != null) {
             genericDiagnosisModel = genericDiagnosisManager.getByDiseaseGroup(diseaseGroup);
         } else {
             genericDiagnosisModel = new ArrayList<GenericDiagnosis>();
