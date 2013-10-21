@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 @Service(value = "userManager")
@@ -176,6 +177,11 @@ public class UserManagerImpl implements UserManager {
         user.setUsername(unitAdmin.getUsername());
         user.setIsrecipient(unitAdmin.isIsrecipient());
         user.setIsclinician(unitAdmin.isIsclinician());
+        if (isNewUser) {
+            user.setCreated(new Date());
+        } else {
+            user.setUpdated(new Date());
+        }
 
         save(user);
 
@@ -202,10 +208,12 @@ public class UserManagerImpl implements UserManager {
 
         // check for an existing user
         User user = get(patientLogon.getUsername());
+        boolean isNewUser = false;
 
         if (user == null) {
             // create a user to save based on the unitAdmin
             user = new User();
+            isNewUser = true;
         }
         user.setAccountlocked(patientLogon.isAccountlocked());
         user.setDummypatient(patientLogon.isDummypatient());
@@ -217,6 +225,11 @@ public class UserManagerImpl implements UserManager {
         user.setName(patientLogon.getName());
         user.setPassword(patientLogon.getPassword());
         user.setUsername(patientLogon.getUsername());
+        if (isNewUser) {
+            user.setCreated(new Date());
+        } else {
+            user.setUpdated(new Date());
+        }
 
         save(user);
 

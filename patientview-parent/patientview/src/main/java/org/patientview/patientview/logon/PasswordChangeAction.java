@@ -37,6 +37,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 public class PasswordChangeAction extends Action {
 
@@ -91,6 +92,7 @@ public class PasswordChangeAction extends Action {
             // change if it was made.
             user.setPassword(LogonUtils.hashPassword(BeanUtils.getProperty(form, "passwordPwd")));
             user.setFirstlogon(false);
+            user.setUpdated(new Date());
             LegacySpringUtils.getUserManager().save(user);
 
             // db logging

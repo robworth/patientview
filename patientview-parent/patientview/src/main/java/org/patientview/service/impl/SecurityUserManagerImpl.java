@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Service(value = "securityUserManager")
@@ -281,6 +282,7 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
 
         if (user != null) {
             user.setFailedlogons(user.getFailedlogons() + 1);
+            user.setUpdated(new Date());
             userDao.save(user);
         }
     }
@@ -302,6 +304,7 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
 
         if (user != null) {
             user.setAccountlocked(true);
+            user.setUpdated(new Date());
             userDao.save(user);
         }
     }
@@ -312,6 +315,7 @@ public class SecurityUserManagerImpl implements SecurityUserManager {
 
         if (user != null) {
             user.setFailedlogons(0);
+            user.setUpdated(new Date());
             userDao.save(user);
         }
     }

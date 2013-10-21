@@ -70,6 +70,12 @@ public class User extends BaseModel {
     @Column(nullable = true)
     private boolean isclinician;
 
+    @Column(nullable = true)
+    private Date created;
+
+    @Column(nullable = true)
+    private Date updated;
+
     public User() {
     }
 
@@ -177,5 +183,21 @@ public class User extends BaseModel {
 
     public void setIsclinician(boolean isclinician) {
         this.isclinician = isclinician;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 }

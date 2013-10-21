@@ -36,6 +36,7 @@ import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 public class PasswordUnlockAction extends Action {
@@ -50,6 +51,7 @@ public class PasswordUnlockAction extends Action {
         if (user != null) {
             user.setFailedlogons(0);
             user.setAccountlocked(false);
+            user.setUpdated(new Date());
             LegacySpringUtils.getUserManager().save(user);
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_UNLOCKED,
