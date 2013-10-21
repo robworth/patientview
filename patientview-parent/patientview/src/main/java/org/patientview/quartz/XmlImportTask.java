@@ -22,18 +22,24 @@
  */
 package org.patientview.quartz;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.patientview.patientview.FindXmlFiles;
-import org.patientview.utils.LegacySpringUtils;
+import org.patientview.quartz.exception.ProcessException;
+import org.patientview.service.ImportManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.inject.Inject;
 import java.io.File;
 
 /**
- * Quartz XmlImportJobQuartzScheduler Job
+ * Quartz XmlImportTask Job
  */
-public class XmlImportJobQuartzScheduler {
+public class XmlImportTask {
+
+    @Inject
+    private ImportManager importManager;
 
     @Value("${run.xml.import}")
     private String runXMLImport;
@@ -41,33 +47,66 @@ public class XmlImportJobQuartzScheduler {
     @Value("${xml.directory}")
     private String xmlDirectory;
 
+    @Value("${xml.patient.data.load.directory}")
+    private String xmlPatientDataLoadDirectory;
+
     private String[] fileEndings = {".xml", };
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportJobQuartzScheduler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportTask.class);
 
     public void execute() {
-        try {
-            updateXmlFiles();
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            LOGGER.debug(e.getMessage(), e);
+        LOGGER.info("Started file processing");
+
+        int processed = 0;
+        int failed = 0;
+        int succeeded = 0;
+
+        if (runImport()) {
+
+            File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
+
+            if (!ArrayUtils.isEmpty(xmlFiles)) {
+
+                for (File xmlFile : xmlFiles) {
+                    try {
+                        importManager.process(xmlFile);
+                        succeeded++;
+                    } catch (ProcessException pe) {
+                        LOGGER.error("File failed to import {}.", pe.getMessage());
+                        if (LOGGER.isDebugEnabled()) {
+                            pe.printStackTrace();
+                        }
+                        failed++;
+                    }  finally {
+                        processed++;
+                        archiveFile(xmlFile);
+                    }
+
+                }
+            }
+        }
+
+        LOGGER.info("Total files processed {}. Total files succeeded {}. Total files failed {}", processed, succeeded,
+                failed);
+    }
+
+    public void archiveFile(File xmlFile) {
+
+        String directory = xmlPatientDataLoadDirectory;
+
+        if (!xmlFile.renameTo(new File(directory, xmlFile.getName()))) {
+            LOGGER.error("Unable to archive file after import, deleting instead: {}", xmlFile.getName());
+
+            if (!xmlFile.delete()) {
+                LOGGER.error("Unable to delete file after failed archive: {}", xmlFile.getName());
+            }
+
         }
     }
 
-    private void updateXmlFiles() {
-        int numFilesProcessed = 0;
-        if ((runXMLImport == null) || !"false".equals(runXMLImport)) {
-            File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
-            if (xmlFiles != null && xmlFiles.length > 0) {
-                LOGGER.debug("Starting updateXmlFiles for {} files", xmlFiles.length);
-                for (File xmlFile : xmlFiles) {
-                    LOGGER.debug("Starting updateXmlFiles for {} file", xmlFile.getAbsolutePath());
-                    LegacySpringUtils.getImportManager().update(xmlFile);
-                    numFilesProcessed++;
-                }
-            }
-            LOGGER.info("Patient data importer finished for {} files", numFilesProcessed);
-        }
+
+    public boolean runImport() {
+        return ((runXMLImport != null) && !"false".equals(runXMLImport));
     }
 
     public String getRunXMLImport() {

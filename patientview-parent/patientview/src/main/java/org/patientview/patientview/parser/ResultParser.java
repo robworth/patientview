@@ -29,7 +29,6 @@ import org.patientview.ibd.model.Procedure;
 import org.patientview.ibd.model.enums.DiseaseExtent;
 import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
-import org.patientview.patientview.exception.XmlImportException;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Diagnosis;
@@ -40,6 +39,7 @@ import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.enums.DiagnosticType;
 import org.patientview.patientview.model.enums.NodeError;
 import org.patientview.patientview.utils.TimestampUtils;
+import org.patientview.quartz.exception.ResultParserException;
 import org.patientview.utils.LegacySpringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -50,31 +50,37 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ResultParser {
 
-    public static final SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultParser.class);
+    private static final SimpleDateFormat IMPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final int HOURS_IN_DAY = 24;
 
-    private ArrayList<TestResult> testResults = new ArrayList<TestResult>();
-    private ArrayList<TestResultDateRange> dateRanges = new ArrayList<TestResultDateRange>();
-    private ArrayList<Letter> letters = new ArrayList<Letter>();
-    private ArrayList<Diagnosis> otherDiagnoses = new ArrayList<Diagnosis>();
-    private ArrayList<Medicine> medicines = new ArrayList<Medicine>();
-    private ArrayList<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
-    private ArrayList<Procedure> procedures = new ArrayList<Procedure>();
-    private ArrayList<Allergy> allergies = new ArrayList<Allergy>();
+    private String filename;
+
+    private List<TestResult> testResults = new ArrayList<TestResult>();
+    private List<TestResultDateRange> dateRanges = new ArrayList<TestResultDateRange>();
+    private List<Letter> letters = new ArrayList<Letter>();
+    private List<Diagnosis> otherDiagnoses = new ArrayList<Diagnosis>();
+    private List<Medicine> medicines = new ArrayList<Medicine>();
+    private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+    private List<Procedure> procedures = new ArrayList<Procedure>();
+    private List<Allergy> allergies = new ArrayList<Allergy>();
+    private List<CorruptNode> corruptNodes = new ArrayList<CorruptNode>();
+
     private Map xmlData = new HashMap();
+    private Document document;
     private String[] topLevelElements = new String[]{"flag", "centrecode", "centrename", "centreaddress1",
             "centreaddress2", "centreaddress3", "centreaddress4", "centrepostcode", "centretelephone", "centreemail",
             "gpname", "gpaddress1", "gpaddress2", "gpaddress3", "gppostcode", "gptelephone", "gpemail", "diagnosisedta",
@@ -84,38 +90,42 @@ public class ResultParser {
             "bodypartsaffected", "familyhistory", "smokinghistory", "surgicalhistory", "vaccinationrecord", "bmdexam",
             "namedconsultant", "ibdnurse", "bloodgroup", "diagnosis", "colonoscopysurveillance"};
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResultParser.class);
 
-    private static final int HOURS_IN_DAY = 24;
 
-    public void parseResults(ServletContext context, File resultsFile) throws Exception {
-        Document doc = getDocument(context, resultsFile);
-        for (int i = 0; i < topLevelElements.length; i++) {
-            collectTopLevelData(topLevelElements[i], doc);
+    public ResultParser(File xmlFile) throws ResultParserException {
+        filename = xmlFile.getName();
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            document = db.parse(xmlFile);
+        } catch (SAXException se) {
+            throw new ResultParserException("There has been a parse exception from the XML file", se);
+        } catch (ParserConfigurationException pe) {
+            throw new ResultParserException("There has been a configuration exception with the parser", pe);
+        } catch (IOException io) {
+            throw new ResultParserException("There has been an IO exception", io);
         }
-        collectTestResults(doc);
-        collectDateRanges(doc);
-        collectLetters(doc);
-        collectOtherDiagnosis(doc);
-        collectMedicines(doc);
-        collectDiagnostics(doc);
-        collectProcedures(doc);
-        collectAllergies(doc);
     }
 
-    public void parseResults(File resultsFile) throws Exception {
-        Document doc = getDocument(resultsFile);
+    public boolean parse() {
+
         for (int i = 0; i < topLevelElements.length; i++) {
-            collectTopLevelData(topLevelElements[i], doc);
+            collectTopLevelData(topLevelElements[i], document);
         }
-        collectTestResults(doc);
-        collectDateRanges(doc);
-        collectLetters(doc);
-        collectOtherDiagnosis(doc);
-        collectMedicines(doc);
-        collectDiagnostics(doc);
-        collectProcedures(doc);
-        collectAllergies(doc);
+
+        collectTestResults(document);
+        if (corruptNodes.size() == 0) {
+            collectDateRanges(document);
+            collectLetters(document);
+            collectOtherDiagnosis(document);
+            collectMedicines(document);
+            collectDiagnostics(document);
+            collectProcedures(document);
+            collectAllergies(document);
+            return true;
+        }  else  {
+            return false;
+        }
     }
 
     private void collectDateRanges(Document doc) {
@@ -144,16 +154,16 @@ public class ResultParser {
         }
     }
 
-    private void collectTestResults(Document doc) throws Exception {
+    private void collectTestResults(Document doc) {
+
+        List<CorruptNode> corruptNodes = new ArrayList<CorruptNode>();
+
         NodeList testNodeList = doc.getElementsByTagName("test");
-        XmlImportException xmlImportException = new XmlImportException();
 
         for (int i = 0; i < testNodeList.getLength(); i++) {
             Node testNode = testNodeList.item(i);
             NodeList testResultNodes = testNode.getChildNodes();
             String testCode = "";
-//            String testName;
-//            String testUnits;
             String dateRangeStartString;
             String dateRangeStopString;
             Calendar dateRangeStart = null;
@@ -164,19 +174,7 @@ public class ResultParser {
                         && (testResultNode.getNodeName().equals("testcode"))) {
                     testCode = testResultNode.getFirstChild().getNodeValue();
                 } else
-/* We're not storing the test name at the moment
-                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("testname"))) {
-                    testName = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
-                } else
-*/
 
-/* We're not storing units at the moment
-                if ((testResultNode.getNodeType() == Node.ELEMENT_NODE) &&
-                        (testResultNode.getNodeName().equals("units")) && testResultNode.getFirstChild() != null) {
-                    testUnits = testResultNode.getFirstChild().getNodeValue(); // this is not stored for now
-                } else
-*/
                     if (testResultNode.getNodeName().equals("daterange")) {
                         NamedNodeMap namedNodeMap = testResultNode.getAttributes();
 
@@ -212,14 +210,12 @@ public class ResultParser {
                                     if (testResultDate.isAfter(
                                             LegacySpringUtils.getTimeManager().getCurrentDate().getTime())) {
                                         // add this test to corrupt tests list
-                                        xmlImportException.getNodeList().add(
-                                                new CorruptNode(testNode, NodeError.FUTURE_RESULT));
+                                        corruptNodes.add(new CorruptNode(testNode, NodeError.FUTURE_RESULT));
                                     } else if (dateRangeStart != null && dateRangeStop != null && !(new Interval(
                                             new DateTime(dateRangeStart), new DateTime(dateRangeStop)).contains(
                                             new DateTime(testResultDate)))) {
                                         // add this test to corrupt tests list
-                                        xmlImportException.getNodeList().add(
-                                                new CorruptNode(testNode, NodeError.WRONG_DATE_RANGE));
+                                        corruptNodes.add(new CorruptNode(testNode, NodeError.WRONG_DATE_RANGE));
                                     }
                                 }
                             } else if ((resultDataNode.getNodeType() == Node.ELEMENT_NODE)
@@ -229,8 +225,7 @@ public class ResultParser {
                                     && (resultDataNode.getNodeName().equals("value"))) {
                                 if (resultDataNode.getFirstChild() == null) {
                                     // we should not import this xml. continue execution and throw the corrupt nodes
-                                    xmlImportException.getNodeList().add(
-                                            new CorruptNode(testNode, NodeError.MISSING_VALUE));
+                                    corruptNodes.add(new CorruptNode(testNode, NodeError.MISSING_VALUE));
                                 } else {
                                     testResult.setValue(resultDataNode.getFirstChild().getNodeValue().trim());
                                 }
@@ -241,10 +236,6 @@ public class ResultParser {
             }
         }
 
-        // if any nodes have failed, don't import this file
-        if (xmlImportException.getNodeList().size() > 0) {
-            throw xmlImportException;
-        }
     }
 
     private void collectLetters(Document doc) {
@@ -467,31 +458,6 @@ public class ResultParser {
         }
     }
 
-    private Document getDocument(ServletContext context, File file) {
-        Document doc = null;
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            doc = db.parse(file);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            LOGGER.debug(e.getMessage(), e);
-        }
-        return doc;
-    }
-
-    private Document getDocument(File file) {
-        Document doc = null;
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            doc = db.parse(file);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            LOGGER.debug(e.getMessage(), e);
-        }
-        return doc;
-    }
 
     public String getData(String dataId) {
         return (String) xmlData.get(dataId);
@@ -611,35 +577,43 @@ public class ResultParser {
         return (String) xmlData.get("flag");
     }
 
-    public ArrayList<TestResult> getTestResults() {
+    public List<TestResult> getTestResults() {
         return testResults;
     }
 
-    public ArrayList<TestResultDateRange> getDateRanges() {
+    public List<TestResultDateRange> getDateRanges() {
         return dateRanges;
     }
 
-    public ArrayList<Letter> getLetters() {
+    public List<Letter> getLetters() {
         return letters;
     }
 
-    public ArrayList<Diagnosis> getOtherDiagnoses() {
+    public List<Diagnosis> getOtherDiagnoses() {
         return otherDiagnoses;
     }
 
-    public ArrayList<Medicine> getMedicines() {
+    public List<Medicine> getMedicines() {
         return medicines;
     }
 
-    public ArrayList<Diagnostic> getDiagnostics() {
+    public List<Diagnostic> getDiagnostics() {
         return diagnostics;
     }
 
-    public ArrayList<Procedure> getProcedures() {
+    public List<Procedure> getProcedures() {
         return procedures;
     }
 
-    public ArrayList<Allergy> getAllergies() {
+    public List<Allergy> getAllergies() {
         return allergies;
+    }
+
+    public List<CorruptNode> getCorruptNodes() {
+        return corruptNodes;
+    }
+
+    public String getFilename() {
+        return filename;
     }
 }

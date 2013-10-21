@@ -1,6 +1,5 @@
 package org.patientview.test.quartz;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.ibd.model.Allergy;
@@ -9,7 +8,7 @@ import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.patientview.model.*;
-import org.patientview.quartz.XmlImportJobQuartzScheduler;
+import org.patientview.quartz.XmlImportTask;
 import org.patientview.repository.PatientDao;
 import org.patientview.service.*;
 import org.patientview.service.ibd.IbdManager;
@@ -31,10 +30,10 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
 @Transactional
-public class XmlImportJobQuartzSchedulerTest {
+public class XmlImportTaskTest {
 
     @Autowired
-    private XmlImportJobQuartzScheduler xmlImportJobQuartzScheduler;
+    private XmlImportTask xmlImport;
 
     private String xmlDirectory;
 
@@ -77,8 +76,8 @@ public class XmlImportJobQuartzSchedulerTest {
 
         assertTrue("Can not read XML files", xmlFilesSize != 0);
 
-        xmlImportJobQuartzScheduler.setXmlDirectory(parentDir);
-        xmlImportJobQuartzScheduler.execute();
+        xmlImport.setXmlDirectory(parentDir);
+        xmlImport.execute();
 
         List<Centre> centres = centreManager.getAll();
 
