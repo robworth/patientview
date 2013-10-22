@@ -45,14 +45,24 @@
        request.setAttribute("context", context);
     %>
     <logic:notEmpty name="patients">
-        <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
-            <div class="row" style="float: right;">
+        <div class="span10" style="margin-left: 20px;margin-bottom:15px;">
+            <div class="row" style="float: left; font-weight:bold; font-size: 15px; color: blue;">
                 <logic:equal value="false" name="patients" property="firstPage">
-                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=prev">Prev</a>
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=first">&lt;&lt;&nbsp;First</a>
                 </logic:equal>
-                &nbsp;
+                <logic:equal value="false" name="patients" property="firstPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=prev">&lt;&nbsp;Previous</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <logic:equal value="false" name="patients" property="lastPage">
+                        |&nbsp;
+                    </logic:equal>
+                </logic:equal>
                 <logic:equal value="false" name="patients" property="lastPage">
-                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=next">Next</a>
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=next">Next&nbsp;&gt;</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="lastPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=last">Last&nbsp;&gt;&gt;</a>
                 </logic:equal>
             </div>
         </div>
@@ -189,6 +199,27 @@
                 </tr>
             </logic:iterate>
         </table>
+        <div class="span10" style="margin-left: 20px;margin-top:-3px;">
+            <div class="row" style="float: left; font-weight:bold; font-size: 15px; color: blue;">
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=first">&lt;&lt;&nbsp;First</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=prev">&lt;&nbsp;Previous</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <logic:equal value="false" name="patients" property="lastPage">
+                        |&nbsp;
+                    </logic:equal>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="lastPage">
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=next">Next&nbsp;&gt;</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="lastPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=last">Last&nbsp;&gt;&gt;</a>
+                </logic:equal>
+            </div>
+        </div>
     </logic:notEmpty>
 
 </div>
