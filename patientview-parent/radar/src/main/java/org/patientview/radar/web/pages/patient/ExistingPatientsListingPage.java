@@ -63,9 +63,9 @@ public class ExistingPatientsListingPage extends BasePage {
                 // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
                 // TODO: need to implement a patient base page with the constructors needed and then have an enum map
                 // TODO: that maps disease ids to the page they need to go to so we dont need all these ifs
-                if (patient.getDiseaseGroup() != null && patient.getDiseaseGroup().getId().equals(
+                if (patient.getDiseaseGroup() != null && (patient.getDiseaseGroup().getId().equals(
                         DiseaseGroup.SRNS_DISEASE_GROUP_ID) || patient.getDiseaseGroup().getId().
-                        equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
+                        equals(DiseaseGroup.MPGN_DISEASEGROUP_ID))) {
                     item.add(new BookmarkablePageLink<SrnsPatientPage>("edit", SrnsPatientPage.class,
                             SrnsPatientPage.getParameters(patient)));
                 } else if (patient.getDiseaseGroup() != null && patient.getDiseaseGroup().getId().equals(

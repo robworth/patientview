@@ -29,14 +29,14 @@ import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.UserLog;
-import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.Centre;
+import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
-import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Diagnosis;
+import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -61,7 +61,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -86,75 +85,45 @@ public class ImportManagerImpl implements ImportManager {
     private String xmlPatientDataLoadDirectory;
 
     @Override
-    public void update(ServletContext context, File xmlFile) throws Exception {
-        File xsdFile;
-        try {
-            xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
-                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ImportManagerImpl.update()");
-        }
-
-        update(context, xmlFile, xsdFile);
-    }
-
-    @Override
     public void update(File xmlFile) {
-        File xsdFile;
+
         try {
-            xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
-                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot find pv_schema_2.0.xsd to perform ImportManagerImpl.update()");
-        }
+            /**
+             * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
+             * hasn't worked. Send a mail to RPV admin, and skip validate and process
+             */
+            if (xmlFile.length() == 0) {
+                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
+                        xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
+                        xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
+                xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
+            } else {
+                if (validate(xmlFile)) {
+                    process(null, xmlFile);
+                }
+            }
+        } catch (Exception e) {
+            // these exceptions can occur because of corrupt/invalid data in xml file
+            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
 
-        update(xmlFile, xsdFile);
-    }
-
-    @Override
-    public void update(ServletContext context, File xmlFile, File xsdFile) throws Exception {
-        /**
-         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin, and skip validate and process
-         */
-        if (xmlFile.length() == 0) {
             AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
                     xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile, context);
-        } else {
-            validateAndProcess(context, xmlFile, xsdFile);
+                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
+                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
+
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+
+        } finally {
+            // always move the file, so it is not processed multiple times
+            archiveFileAfterProcessing(xmlFile);
         }
+
     }
 
     @Override
     public Unit retrieveUnit(String unitcode) {
         unitcode = unitcode.toUpperCase();
-        Unit unit = null;
-        try {
-            unit = unitDao.get(unitcode, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return unit;
-    }
-
-    public void update(File xmlFile, File xsdFile) {
-        /**
-         * Check if the file is empty or not. If a file is completely empty, this probably means that the encryption
-         * hasn't worked. Send a mail to RPV admin, and skip validate and process
-         */
-        if (xmlFile.length() == 0) {
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()), xmlFile.getName());
-            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile);
-        } else {
-            validateAndProcess(xmlFile, xsdFile);
-        }
-
-        // always move the file, so it is not processed multiple times
-        renameDirectory(xmlFile);
+        return unitDao.get(unitcode, null);
     }
 
     private void validateAndProcess(ServletContext context, File xmlFile, File xsdFile) throws Exception {
@@ -184,12 +153,14 @@ public class ImportManagerImpl implements ImportManager {
         process(context, xmlFile);
     }
 
-    private void validateAndProcess(File xmlFile, File xsdFile) {
+    private boolean validate(File xmlFile) throws Exception {
         // Turn this off without removing the code and it getting lost in ether.
         // The units sending the data are not honouring the xsd, so no point validating yet.
         final boolean whenWeDecideToValidateFiles = false;
 
         if (whenWeDecideToValidateFiles) {
+            File xsdFile = LegacySpringUtils.getSpringApplicationContextBean().getApplicationContext()
+                    .getResource("classpath:importer/pv_schema_2.0.xsd").getFile();
             /**
              * Check the XML file against XSD schema
              */
@@ -204,11 +175,10 @@ public class ImportManagerImpl implements ImportManager {
 
                 // send email, then continue importing
                 xmlImportUtils.sendXMLValidationErrors(xmlFile, xsdFile, exceptions);
+                return false;
             }
         }
-
-        // always process regardless of validation state
-        process(xmlFile);
+        return true;
     }
 
     private void process(ServletContext context, File xmlFile) throws Exception {
@@ -237,57 +207,14 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void process(File xmlFile) {
-        try {
-            ResultParser parser = new ResultParser();
-            parser.parseResults(xmlFile);
-
-            if ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
-                    || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
-                    || "Suspend".equalsIgnoreCase(parser.getFlag())) {
-                removePatientFromSystem(parser);
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_REMOVE, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getUnitcode(), xmlFile.getName());
-            } else {
-                updatePatientData(parser);
-                // Insert or update record in pv_user_log table,
-                // with current import date which is used in patient login
-                UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(parser.getPatient().getNhsno());
-                if (userLog == null) {
-                    userLog = new UserLog();
-                    userLog.setNhsno(parser.getPatient().getNhsno());
-                }
-                userLog.setUnitcode(parser.getPatient().getUnitcode());
-                userLog.setLastdatadate(Calendar.getInstance());
-                LegacySpringUtils.getUserLogManager().save(userLog);
-
-                AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FOLLOWUP, "", parser.getPatient().getNhsno(),
-                        parser.getPatient().getUnitcode(), xmlFile.getName());
-            }
-            //xmlFile.delete();
-        } catch (Exception e) {
-
-            // these exceptions can occur because of corrupt/invalid data in xml file
-            LOGGER.error("Importer failed to import file {} {}", xmlFile, e.getMessage());
-
-            AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.PATIENT_DATA_FAIL, "",
-                    xmlImportUtils.extractFromXMLFileNameNhsno(xmlFile.getName()),
-                    xmlImportUtils.extractFromXMLFileNameUnitcode(xmlFile.getName()),
-                    xmlFile.getName() + " : " + xmlImportUtils.extractErrorsFromException(e));
-
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-        }
-    }
-
-    @Override
-    public void renameDirectory(ServletContext context, File xmlFile) {
-        String directory = LegacySpringUtils.getContextProperties().getProperty("xml.patient.data.load.directory");
-        xmlFile.renameTo(new File(directory, xmlFile.getName()));
-    }
-
-    protected void renameDirectory(File xmlFile) {
+    public void archiveFileAfterProcessing(File xmlFile) {
         String directory = xmlPatientDataLoadDirectory;
-        xmlFile.renameTo(new File(directory, xmlFile.getName()));
+        if (!xmlFile.renameTo(new File(directory, xmlFile.getName()))) {
+            LOGGER.error("Unable to archive file after import, deleting instead: {}", xmlFile.getName());
+            if (!xmlFile.delete()) {
+                LOGGER.error("Unable to delete file after failed archive: {}", xmlFile.getName());
+            }
+        }
     }
 
     private void removePatientFromSystem(ResultParser parser) {
@@ -454,10 +381,10 @@ public class ImportManagerImpl implements ImportManager {
 
             StreamSource xmlFile = new StreamSource(xml);
             validator.validate(xmlFile);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
 
         return exceptions;

@@ -42,7 +42,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 
 /**
- *  Implement finer grained authorisation per unit
+ * Implement finer grained authorisation per unit
  */
 @Transactional(propagation = Propagation.REQUIRED)
 public class UnitVoter implements AccessDecisionVoter {
@@ -100,7 +100,7 @@ public class UnitVoter implements AccessDecisionVoter {
 
             // super admins bypass method security
             if (securityUserManager.isRolePresent("superadmin")) {
-                result = ACCESS_GRANTED;
+                return ACCESS_GRANTED;
             }
 
             if (securedAnnotation != null && securedAnnotation.value() != null) {
