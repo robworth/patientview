@@ -44,6 +44,12 @@ messages.init = function() {
         }
     });
 
+    $("#search").keydown(function(e) {
+        if (e.keyCode == 13) {
+            messages.getRecipientsByUnit($('.js-message-form'));
+        }
+    });
+
     // set up the modal view
     if (messageModal.length > 0) {
         messageModal.modal({
@@ -74,6 +80,7 @@ messages.getRecipientsByUnit = function(form) {
         recipientIdEl = $form.find('.js-message-recipient-id'),
         loadingEl = $form.find('.js-message-unit-loading'),
         errorsEl = $form.find('.js-message-unit-recipient-errors');
+        searchNameEl = $("#search");
 
     errorsEl.html('').hide();
     recipientContainer.hide();
@@ -83,7 +90,7 @@ messages.getRecipientsByUnit = function(form) {
         loadingEl.show();
 
         $.ajax({
-            url: '/unit-recipients.do?unitCode=' + unitCodeEl.val(),
+            url: '/unit-recipients.do?unitCode=' + unitCodeEl.val() + '&name=' + searchNameEl.val(),
             success: function(html) {
                 recipientIdEl.html(html);
 
@@ -91,6 +98,7 @@ messages.getRecipientsByUnit = function(form) {
                     errorsEl.html('No recipients found in unit').show();
                 } else {
                     recipientContainer.show();
+                    searchNameEl.show();
                 }
 
                 loadingEl.hide();

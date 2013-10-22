@@ -81,5 +81,7 @@ public interface MessageManager {
 
     List<User> getUnitPatientRecipients(Unit unit, User requestingUser);
 
+    List<User> getUnitPatientRecipients(Unit unit, String name, User requestingUser);
+
     List<Unit> getMessagingEnabledUnitsForLoggedInUser();
 }

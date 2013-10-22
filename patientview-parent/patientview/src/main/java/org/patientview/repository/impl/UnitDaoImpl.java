@@ -341,9 +341,10 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     @Override
     public List<User> getUnitPatientUsers(String unitcode, Specialty specialty) {
         String sql = "SELECT "
-                + "   u.* "
+                + "   u.*,"
+                + " patient.dateofbirth "
                 + "FROM "
-                + "   usermapping um, "
+                + "   usermapping um LEFT OUTER JOIN patient on um.nhsno = patient.nhsno, "
                 + "   USER u, "
                 + "   specialtyuserrole sur "
                 + "WHERE"
@@ -351,17 +352,63 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND"
                 + "   u.id = sur.user_id "
                 + "AND"
-                + "   sur.specialty_id = :specialtyId "
+                + "   sur.specialty_id = ? "
                 + "AND"
-                + "   um.unitcode = :unitcode "
+                + "   um.unitcode = ? "
                 + "AND"
                 + "   sur.role = 'patient' ";
 
-        Query query = getEntityManager().createNativeQuery(sql, User.class);
 
-        query.setParameter("specialtyId", specialty.getId());
-        query.setParameter("unitcode", unitcode);
 
-        return query.getResultList();
+        List<Object> params = new ArrayList<Object>();
+        params.add(specialty.getId());
+        params.add(unitcode);
+
+        return jdbcTemplate.query(sql, params.toArray(), new UserMapper());
+    }
+
+    @Override
+    public List<User> getUnitPatientUsers(String unitcode, String name, Specialty specialty) {
+        String sql = "SELECT "
+                + "   u.*,"
+                + " patient.dateofbirth "
+                + "FROM "
+                + "   usermapping um LEFT OUTER JOIN patient on um.nhsno = patient.nhsno, "
+                + "   USER u, "
+                + "   specialtyuserrole sur "
+                + "WHERE"
+                + "   um.username = u.username "
+                + "AND"
+                + "   u.id = sur.user_id "
+                + "AND"
+                + "   sur.specialty_id = ? "
+                + "AND"
+                + "   um.unitcode = ? "
+                + "AND"
+                + "   sur.role = 'patient' ";
+
+        List<Object> params = new ArrayList<Object>();
+        params.add(specialty.getId());
+        params.add(unitcode);
+
+        if (name != null && !"".equals(name)) {
+            sql += " AND u.name LIKE '%" + name + "%' ";
+        }
+
+        return jdbcTemplate.query(sql, params.toArray(), new UserMapper());
+    }
+
+    private class UserMapper implements RowMapper<User> {
+
+        @Override
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            User user = new User();
+            user.setId(resultSet.getLong("id"));
+            user.setUsername(resultSet.getString("username"));
+            user.setName(resultSet.getString("name"));
+            user.setDateofbirth(resultSet.getString("dateofbirth"));
+            return user;
+        }
     }
 }

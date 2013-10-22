@@ -456,6 +456,29 @@ public class MessageManagerImpl implements MessageManager {
     }
 
     @Override
+    public List<User> getUnitPatientRecipients(Unit unit, String name, User requestingUser) {
+        List<User> unitPatientRecipients = new ArrayList<User>();
+
+        if (unit != null) {
+            if (!unit.getUnitcode().equalsIgnoreCase("patient")) {
+                List<User> unitPatients = unitManager.getUnitPatientUsers(unit.getUnitcode(), name,
+                        unit.getSpecialty());
+
+                for (User unitPatient : unitPatients) {
+                    if (canIncludePatient(unitPatient)) {
+                        unitPatientRecipients.add(unitPatient);
+                    }
+                }
+            }
+        }
+
+        // sort by name
+        Collections.sort(unitPatientRecipients, new UserComparator());
+
+        return unitPatientRecipients;
+    }
+
+    @Override
     public List<Unit> getMessagingEnabledUnitsForLoggedInUser() {
         List<Unit> loggedInUsersUnits = unitManager.getLoggedInUsersUnits();
 
