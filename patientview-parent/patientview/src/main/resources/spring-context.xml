@@ -52,17 +52,12 @@
         <prop key="xml.archive.directory">${xml.archive.directory}</prop>
         <prop key="xml.directory">${xml.directory}</prop>
         <prop key="xml.patient.data.load.directory">${xml.patient.data.load.directory}</prop>
-        <prop key="xml.minutes.to.wait">${xml.minutes.to.wait}</prop>
         <prop key="ukt.archive.directory">${ukt.archive.directory}</prop>
         <prop key="ukt.directory">${ukt.directory}</prop>
-        <prop key="ukt.minutes.to.wait">${ukt.minutes.to.wait}</prop>
         <prop key="uktexport.archive.directory">${uktexport.archive.directory}</prop>
         <prop key="uktexport.directory">${uktexport.directory}</prop>
-        <prop key="uktexport.minutes.to.wait">${uktexport.minutes.to.wait}</prop>
-        <prop key="dataout.archive.directory">${dataout.archive.directory}</prop>
         <prop key="dataout.directory">${dataout.directory}</prop>
         <prop key="dataout.directory.thirdpart">${dataout.directory.thirdpart}</prop>
-        <prop key="dataout.minutes.to.wait">${dataout.minutes.to.wait}</prop>
         <prop key="unitstatfiles.directory">${unitstatfiles.directory}</prop>
         <prop key="aboutme.image.directory">${aboutme.image.directory}</prop>
         <prop key="default.results.per.page">${default.results.per.page}</prop>

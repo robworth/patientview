@@ -66,18 +66,6 @@ var patientsListingPage = {
             headers: {
                 0: {
                     sorter: false
-                },
-                2:{
-                    sorter: false
-                },
-                3:{
-                    sorter: false
-                },
-                6:{
-                    sorter: false
-                },
-                7:{
-                    sorter: false
                 }
             },
             cancelSelection: false,

@@ -80,7 +80,7 @@ public class EmailVerificationManagerImpl implements EmailVerificationManager {
                         AddLog.addLog(emailVerification.getUsername(),
                                 AddLog.EMAIL_VERIFY, emailVerification.getUsername(),
                                 userManager.getUsersRealNhsNoBestGuess(emailVerification.getUsername()),
-                                userManager.getUsersRealNhsNoBestGuess(emailVerification.getUsername()),
+                                userManager.getUsersRealUnitcodeBestGuess(emailVerification.getUsername()),
                                 emailVerification.getEmail());
                         // success
                         return true;

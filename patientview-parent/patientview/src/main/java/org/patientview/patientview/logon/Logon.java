@@ -40,7 +40,7 @@ public abstract class Logon {
     private String role;
     private String name;
     private String email;
-    private boolean emailverfied;
+    private boolean emailverified;
     private String nhsno;
     private String unitcode;
     private boolean firstlogon;
@@ -120,12 +120,12 @@ public abstract class Logon {
         this.email = email;
     }
 
-    public boolean isEmailverfied() {
-        return emailverfied;
+    public boolean isEmailverified() {
+        return emailverified;
     }
 
-    public void setEmailverfied(boolean emailverfied) {
-        this.emailverfied = emailverfied;
+    public void setEmailverified(boolean emailverified) {
+        this.emailverified = emailverified;
     }
 
     public boolean isFirstlogon() {

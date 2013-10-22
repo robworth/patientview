@@ -45,14 +45,24 @@
        request.setAttribute("context", context);
     %>
     <logic:notEmpty name="patients">
-        <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
-            <div class="row" style="float: right;">
+        <div class="span10" style="margin-left: 20px;margin-bottom:15px;">
+            <div class="row" style="float: left; font-weight:bold; font-size: 15px; color: blue;">
                 <logic:equal value="false" name="patients" property="firstPage">
-                    <a href="./unitPatients?page=prev">Prev</a>
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=first">&lt;&lt;&nbsp;First</a>
                 </logic:equal>
-                &nbsp;
+                <logic:equal value="false" name="patients" property="firstPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=prev">&lt;&nbsp;Previous</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <logic:equal value="false" name="patients" property="lastPage">
+                        |&nbsp;
+                    </logic:equal>
+                </logic:equal>
                 <logic:equal value="false" name="patients" property="lastPage">
-                    <a href="./unitPatients?page=next">Next</a>
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=next">Next&nbsp;&gt;</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="lastPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=last">Last&nbsp;&gt;&gt;</a>
                 </logic:equal>
             </div>
         </div>
@@ -61,12 +71,12 @@
             <tr>
                 <th class="tableheader" onclick="sort('name')"><a href="#">Name<br />(edit)</a></th>
                 <th class="tableheader" onclick="sort('nhsno')"><a href="#">NHS Number<br />(view patient)</a></th>
-                <th class="tableheader" onclick="sort('dateofbirthFormatted')"><a href="#">DoB</a></th>
+                <th class="tableheader" onclick="sort('dateofbirth')"><a href="#">DoB</a></th>
                 <th class="tableheader" onclick="sort('unitcode')"><a href="#">Unit Code</a></th>
                 <th class="tableheader" onclick="sort('treatment')"><a href="#">Treatment</a></th>
                 <th class="tableheader" onclick="sort('email')"><a href="#">Email</a></th>
-                <th class="tableheader" onclick="sort('emailverfied')"><a href="#">Email Verified</a></th>
-                <th class="tableheader" onclick="sort('lastlogonFormatted')"><a href="#">Last Logon</a></th>
+                <th class="tableheader" onclick="sort('emailverified')"><a href="#">Email Verified</a></th>
+                <th class="tableheader" onclick="sort('lastlogon')"><a href="#">Last Logon</a></th>
                 <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password</a></th>
                 <th class="tableheader" onclick="sort('lastverificationdate')"><a href="#">Last Email Verification Date</a></th>
                 <th class="tableheader" onclick="sort('rrtModality')"><a href="#">Modality</a></th>
@@ -112,10 +122,10 @@
                     </td>
                     <td class="tablecell"><bean:write name="patient" property="email"/></td>
                     <td class="tablecell">
-                        <logic:equal value="false" name="patient" property="emailverfied">
+                        <logic:equal value="false" name="patient" property="emailverified">
                             <big><font color="red">&#10008;</font></big>
                         </logic:equal>
-                        <logic:equal value="true" name="patient" property="emailverfied">
+                        <logic:equal value="true" name="patient" property="emailverified">
                             <big><font color="green">&#10004;</font></big>
                         </logic:equal>
                     </td>
@@ -181,14 +191,35 @@
                         <td>
                             <bean:define id="username" name="patient" property="username" />
                             <bean:define id="email" name="patient" property="email" />
-                            <bean:define id="emailverfied" name="patient" property="emailverfied"/>
-                            <input type="button" value="Send Verification Email" class="btn formbutton" ${emailverfied?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+                            <bean:define id="emailverified" name="patient" property="emailverified"/>
+                            <input type="button" value="Send Verification Email" class="btn formbutton" ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
                         </td>
                     </logic:present>
 
                 </tr>
             </logic:iterate>
         </table>
+        <div class="span10" style="margin-left: 20px;margin-top:-3px;">
+            <div class="row" style="float: left; font-weight:bold; font-size: 15px; color: blue;">
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=first">&lt;&lt;&nbsp;First</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=prev">&lt;&nbsp;Previous</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="firstPage">
+                    <logic:equal value="false" name="patients" property="lastPage">
+                        |&nbsp;
+                    </logic:equal>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="lastPage">
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=next">Next&nbsp;&gt;</a>
+                </logic:equal>
+                <logic:equal value="false" name="patients" property="lastPage">
+                    |&nbsp;<a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients?page=last">Last&nbsp;&gt;&gt;</a>
+                </logic:equal>
+            </div>
+        </div>
     </logic:notEmpty>
 
 </div>

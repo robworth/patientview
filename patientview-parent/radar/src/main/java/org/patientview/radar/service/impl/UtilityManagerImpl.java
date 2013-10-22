@@ -24,6 +24,8 @@ import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
 import org.patientview.radar.service.UtilityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Font;
 import java.awt.Color;
@@ -36,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 
 public class UtilityManagerImpl implements UtilityManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilityManagerImpl.class);
 
     private UtilityDao utilityDao;
 
@@ -271,7 +275,9 @@ public class UtilityManagerImpl implements UtilityManager {
             try {
                 FileUtils.writeLines(file, "UTF-8", list);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
+
             }
         }
     }
