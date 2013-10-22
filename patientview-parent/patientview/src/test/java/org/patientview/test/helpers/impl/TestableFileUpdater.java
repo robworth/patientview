@@ -20,23 +20,23 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.batch;
 
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+package org.patientview.test.helpers.impl;
 
-import java.util.List;
+import org.junit.Ignore;
+import org.patientview.service.impl.ImportManagerImpl;
+import org.patientview.service.impl.UKTransplantManagerImpl;
+
+import java.io.File;
 
 /**
- * XmlImportWriter writer
+ *
  */
-@Component
-@Lazy
-public class XmlImportWriter implements ItemWriter<Object> {
+@Ignore
+public class TestableFileUpdater extends UKTransplantManagerImpl {
 
     @Override
-    public void write(List<? extends Object> items) throws Exception {
-        // It's not need to do something here.
+    public void deleteFile(File xmlFile) {
+        // do nothing - it's a test
     }
 }

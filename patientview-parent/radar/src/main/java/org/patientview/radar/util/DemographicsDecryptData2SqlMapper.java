@@ -173,7 +173,7 @@ public class DemographicsDecryptData2SqlMapper {
 
             } catch (Exception e) {
                 LOGGER.error("Could not decrypt demographics information for demographics {}", patient.getId());
-                e.printStackTrace();
+                LOGGER.debug(e.getMessage(), e);
             }
 
             return patient;

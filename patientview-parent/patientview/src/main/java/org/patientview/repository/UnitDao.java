@@ -54,6 +54,8 @@ public interface UnitDao {
 
     List<Unit> getAdminsUnits(Specialty specialty);
 
+    List<Unit> getAdminsUnits(Specialty specialty, boolean isRadarGroup);
+
     List<Unit> get(List<String> usersUnitCodes, Specialty specialty);
 
     List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
@@ -61,7 +63,7 @@ public interface UnitDao {
 
     List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
 
-    List<UnitAdmin> getAllUnitUsers(Specialty specialty);
+    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup, Specialty specialty);
 
     List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
 

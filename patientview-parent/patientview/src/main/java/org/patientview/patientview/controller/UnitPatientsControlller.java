@@ -64,10 +64,14 @@ public class UnitPatientsControlller extends BaseController {
             pagedListHolder = new PagedListHolder(patients);
             request.getSession().setAttribute("patients", pagedListHolder);
         } else {
-            if ("prev".equals(page)) {
+            if ("first".equals(page)) {
+                pagedListHolder.setPage(0);
+            } else if ("prev".equals(page)) {
                 pagedListHolder.previousPage();
             } else if ("next".equals(page)) {
                 pagedListHolder.nextPage();
+            } else if ("last".equals(page)) {
+                pagedListHolder.setPage(pagedListHolder.getPageCount() - 1);
             } else if ("sort".equals(page)) {
                 MutableSortDefinition newSort = new MutableSortDefinition(property, true, false);
                 SortDefinition sort =  pagedListHolder.getSort();

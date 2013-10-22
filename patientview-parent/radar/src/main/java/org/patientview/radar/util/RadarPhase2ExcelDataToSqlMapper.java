@@ -5,12 +5,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.List;
  * 3. mapping between prd codes and working groups
  */
 public class RadarPhase2ExcelDataToSqlMapper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadarPhase2ExcelDataToSqlMapper.class);
     private static final String BASE_PATH = "/radarphase2dataimport/";
     public static final int FIRST_DATA_ROW = 2;
     public static final int LAST_DATA_ROW = 287;
@@ -191,14 +192,11 @@ public class RadarPhase2ExcelDataToSqlMapper {
             bufferedWriter.write(outputText.toString());
             //Close the output stream
             bufferedWriter.close();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+
         }
 
     }

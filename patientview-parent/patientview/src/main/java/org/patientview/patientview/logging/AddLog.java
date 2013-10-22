@@ -62,10 +62,8 @@ public final class AddLog {
         extrainfo = (extrainfo == null) ? "" : extrainfo;
 
         LogEntry entry = new LogEntry(nhsno, user, action, actor, unitcode, extrainfo);
-        try {
-            LegacySpringUtils.getLogEntryManager().save(entry);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        LegacySpringUtils.getLogEntryManager().save(entry);
+
     }
 }

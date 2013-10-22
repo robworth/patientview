@@ -97,7 +97,7 @@ public class JoinRequestSubmitAction extends BaseAction {
         /**
          * from
          */
-        String fromAddress = request.getSession().getServletContext().getInitParameter("noreply.email");
+        String fromAddress = LegacySpringUtils.getContextProperties().getProperty("noreply.email");
 
         /**
          * to

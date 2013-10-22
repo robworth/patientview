@@ -24,6 +24,8 @@ public abstract class User extends BaseModel implements UserDetails {
     private Long userId;
     private String username, password, email;
 
+    private boolean isClinician;
+
     // todo this date should probably be in the PatientUser
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
     private String name;
@@ -104,5 +106,13 @@ public abstract class User extends BaseModel implements UserDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isClinician() {
+        return isClinician;
+    }
+
+    public void setClinician(boolean clinician) {
+        isClinician = clinician;
     }
 }

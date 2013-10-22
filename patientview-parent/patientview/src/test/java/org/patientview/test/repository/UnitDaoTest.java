@@ -35,6 +35,7 @@ import org.patientview.repository.UnitStatDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.junit.Before;
 import org.junit.Test;
+import org.patientview.test.helpers.SecurityHelpers;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -56,6 +57,9 @@ public class UnitDaoTest extends BaseDaoTest {
 
     @Inject
     private RepositoryHelpers repositoryHelpers;
+
+    @Inject
+    private SecurityHelpers securityHelpers;
 
     private Specialty specialty;
 
@@ -288,6 +292,7 @@ public class UnitDaoTest extends BaseDaoTest {
                 specialty);
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
 
+
         unit = new Unit();
         unit.setSpecialty(specialty);
         // required fields
@@ -300,6 +305,8 @@ public class UnitDaoTest extends BaseDaoTest {
         user = repositoryHelpers.createUserWithMapping("dave", "dave@test.com", "d", "Dave", "UNITCODEB", "nhs3",
                 specialty);
         repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
+
+        securityHelpers.loginAsUser("paulc", specialty);
 
         List<UnitAdmin> users = unitDao.getUnitUsers("UNITCODEA", specialty);
         assertEquals("Wrong number of users in unit A", 2, users.size());

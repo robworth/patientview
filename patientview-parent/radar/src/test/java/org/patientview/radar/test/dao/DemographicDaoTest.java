@@ -1,10 +1,12 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
 import org.patientview.radar.model.Diagnosis;
@@ -27,6 +29,21 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiagnosisDao diagnosisDao;
+
+    private DiseaseGroup diseaseGroup;
+
+    private Centre centre;
+
+    @Before
+    public void setUp() {
+        diseaseGroup = new DiseaseGroup();
+        diseaseGroup.setId("2");
+        diseaseGroup.setName("testGroup");
+        diseaseGroup.setShortName("shortName");
+
+        centre = new Centre();
+        centre.setUnitCode("testCodeA");
+    }
 
     @Test
     public void testSaveDemographics() {
@@ -94,9 +111,11 @@ public class DemographicDaoTest extends BaseDaoTest {
         // Construct centres
         Centre centre = new Centre();
         centre.setId(2L);
+        centre.setUnitCode("2134567890");
 
         Centre centre2 = new Centre();
         centre2.setId(3L);
+        centre2.setUnitCode("3214567890");
 
         createDemographics("Test", "User", centre, null);
         createDemographics("Test2", "User2", centre, null);
@@ -150,18 +169,24 @@ public class DemographicDaoTest extends BaseDaoTest {
         patient.setForename(forename);
         patient.setSurname(surname);
         patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-        patient.setNhsno(nhsno);
+        if (nhsno != null) {
+            patient.setNhsno(nhsno);
+        } else {
+            patient.setNhsno(getTestNhsNo());
+        }
         patient.setRenalUnit(centre);
+        patient.setDiseaseGroup(diseaseGroup);
         demographicDao.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;
     }
 
     private Patient createDemographics(String forename, String surname) {
-        return createDemographics(forename, surname, null, null);
+        return createDemographics(forename, surname, centre, null);
     }
 
     private Patient createDemographics(String forename, String surname, String nhsno) {
-        return createDemographics(forename, surname, null, nhsno);
+        return createDemographics(forename, surname, centre, nhsno);
     }
+
 }

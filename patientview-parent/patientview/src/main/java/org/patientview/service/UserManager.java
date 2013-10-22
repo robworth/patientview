@@ -29,7 +29,6 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.security.UnitSecured;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +46,14 @@ public interface UserManager {
 
     User get(Long id);
 
-    @UnitSecured(value = "UNIT_ACCESS")
+    /**
+     * It is planned to have this method secured so that only users with mappings to one of the requested users
+     * units, using: @UnitSecured(value = "UNIT_ACCESS")
+     *
+     * It should be possible to turn this on now, but there may well still be a couple of bugs in there.
+     * @param username
+     * @return
+     */
     User get(String username);
 
     String getLoggedInUserRole();
