@@ -185,7 +185,7 @@ public class Patient extends BaseModel {
     private Date dateOfGenericDiagnosis;
 
     @Column
-    private String tickConsentUser;
+    private Long radarConsentConfirmedByUserId;
 
     @Transient
     private Clinician clinician;
@@ -784,12 +784,12 @@ public class Patient extends BaseModel {
         this.diagnosisDateSelect = diagnosisDateSelect;
     }
 
-    public String getTickConsentUser() {
-        return tickConsentUser;
+    public Long getRadarConsentConfirmedByUserId() {
+        return radarConsentConfirmedByUserId;
     }
 
-    public void setTickConsentUser(String tickConsentUser) {
-        this.tickConsentUser = tickConsentUser;
+    public void setRadarConsentConfirmedByUserId(Long radarConsentConfirmedByUserId) {
+        this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
     }
 }
 

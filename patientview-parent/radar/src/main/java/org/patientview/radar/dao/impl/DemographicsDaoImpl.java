@@ -55,8 +55,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 .usingColumns(
                         "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
                         "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
-                        "address2", "address3", "address4", "POSTCODE",
-                        "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode","tickConsentUser",
+                        "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
+                        "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
                         "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
                         "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
                         "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
@@ -106,7 +106,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "isleOfManId = ?, " +
                             "channelIslandsId = ?, " +
                             "indiaId = ?, " +
-                            "tickConsentUser = ?, " +
+                            "radarConsentConfirmedByUserId = ?, " +
                             "generic = ? " +
                             " WHERE radarNo = ?",
                     patient.getRrNo(),
@@ -149,7 +149,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getIsleOfManId(),
                     patient.getChannelIslandsId(),
                     patient.getIndiaId(),
-                    patient.getTickConsentUser(),
+                    patient.getRadarConsentConfirmedByUserId(),
                     patient.isGeneric(),
                     patient.getId());
         } else {
@@ -202,7 +202,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("channelIslandsId", patient.getChannelIslandsId());
                     put("indiaId", patient.getIndiaId());
                     put("generic", patient.isGeneric());
-                    put("tickConsentUser", patient.getTickConsentUser());
+                    put("radarConsentConfirmedByUserId", patient.getRadarConsentConfirmedByUserId());
                 }
             });
             patient.setId(id.longValue());
@@ -255,8 +255,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 "         FROM patient LEFT OUTER JOIN usermapping ON patient.nhsno = usermapping.nhsno   " +
                 "        WHERE usermapping.unitcode = ? " +
                 "          AND usermapping.username NOT LIKE '%-GP%' " +
-                "     ) AS pa " +
-                "WHERE pa.unitcode = ? OR pa.ucode = ?  ",
+                "     ) AS pa, unit " +
+                "WHERE (pa.unitcode = ? AND unit.unitcode = pa.unitcode AND unit.sourceType = 'radargroup') " +
+                "OR (pa.ucode = ?  AND unit.unitcode = pa.ucode AND unit.sourceType = 'radargroup')",
                 new Object[]{unitCode, unitCode, unitCode}, new DemographicsRowMapper());
     }
 
@@ -482,7 +483,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setChannelIslandsId(resultSet.getString("channelIslandsId"));
             patient.setIndiaId(resultSet.getString("indiaId"));
             patient.setGeneric(resultSet.getBoolean("generic"));
-            patient.setTickConsentUser(resultSet.getString("tickConsentUser"));
+            patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
 
             return patient;
         }

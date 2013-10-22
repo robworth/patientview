@@ -174,7 +174,7 @@ public class DemographicsPanel extends Panel {
                 if (radarNumberModel.getObject() != null) {
                     patient.setId(radarNumberModel.getObject());
                 }
-                patient.setTickConsentUser(user.getUsername());
+                patient.setRadarConsentConfirmedByUserId(user.getUserId());
                 demographicsManager.saveDemographics(patient);
                 try {
                     userManager.registerPatient(patient);
@@ -513,8 +513,9 @@ public class DemographicsPanel extends Panel {
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
 
-        Label tickConsentUser = new Label("tickConsentUser",
-                model.getObject() != null ? model.getObject()  .getTickConsentUser() : "") {
+        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                model.getObject() != null ? utilityManager.getUserName(
+                        model.getObject().getRadarConsentConfirmedByUserId()) : "") {
             @Override
             public boolean isVisible() {
                 return true;
