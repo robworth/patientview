@@ -69,6 +69,7 @@ public class EmailChangeAction extends Action {
         } else {
             // update the user's email with that supplied
             user.setEmail(emailAddress);
+            user.setEmailverified(false);
         }
 
         if (errorFound) {

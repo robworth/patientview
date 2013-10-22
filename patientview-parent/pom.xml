@@ -36,8 +36,6 @@
         <module>patientview</module>
         <module>radar</module>
         <module>monitoring</module>
-        <module>web-test</module>
-        <module>radar-web-tests</module>
     </modules>
 
     <!-- place for common configuration and dependencies -->

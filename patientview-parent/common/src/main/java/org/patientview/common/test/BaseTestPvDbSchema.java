@@ -43,6 +43,8 @@ public class BaseTestPvDbSchema {
 
     private boolean isLocalTestEnvironment;
 
+    private static boolean isTableCreated = false;
+
     @PostConstruct
     public void init() {
         isLocalTestEnvironment = configEnvironment != null && configEnvironment.equals("localhost-test");
@@ -85,11 +87,18 @@ public class BaseTestPvDbSchema {
                 try {
                     connection = dataSource.getConnection();
 
-                    // empty db
-                    emptyDatabase(connection);
+                    if (!isTableCreated) {
+                        // empty db
+                        emptyDatabase(connection);
 
-                    // create tables
-                    createTables(connection, sqlFileNames);
+                        // create tables
+                        createTables(connection, sqlFileNames);
+
+                        isTableCreated = true;
+                    } else {
+                        clearData(connection);
+                    }
+
                 } finally {
                     if (connection != null) {
                         connection.close();
@@ -107,12 +116,34 @@ public class BaseTestPvDbSchema {
         ResultSet resultSet = statement.executeQuery("SHOW TABLES");
 
         Statement dropStatement = connection.createStatement();
+        dropStatement.execute("SET FOREIGN_KEY_CHECKS = 0;");
 
         while (resultSet.next()) {
             String tableName =  resultSet.getString(1);
             dropStatement.execute("DROP table " + tableName);
         }
 
+        dropStatement.execute("SET FOREIGN_KEY_CHECKS = 1;");
+        statement.close();
+        dropStatement.close();
+    }
+
+    protected void clearData(Connection connection) throws Exception {
+        LOGGER.info("Clear data");
+
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery("SHOW TABLES");
+
+        Statement dropStatement = connection.createStatement();
+        dropStatement.execute("SET FOREIGN_KEY_CHECKS = 0;");
+
+        while (resultSet.next()) {
+            String tableName =  resultSet.getString(1);
+            dropStatement.execute("TRUNCATE table " + tableName);
+        }
+
+        dropStatement.execute("SET FOREIGN_KEY_CHECKS = 1;");
         statement.close();
         dropStatement.close();
     }

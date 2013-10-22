@@ -6,6 +6,7 @@ import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,9 +24,11 @@ public class DiseaseGroupDaoImpl extends BaseDaoImpl implements DiseaseGroupDao 
     }
 
     public DiseaseGroup getById(String id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM unit WHERE sourceType='radargroup' AND unitcode = ?",
+        List<DiseaseGroup> list =
+                jdbcTemplate.query("SELECT * FROM unit WHERE sourceType='radargroup' AND unitcode = ?",
                 new Object[]{id}, new DiseaseGroupRowMapper());
-    }
+        return CollectionUtils.isEmpty(list)?null:list.get(0);
+   }
 
     private class DiseaseGroupRowMapper implements RowMapper<DiseaseGroup> {
         public DiseaseGroup mapRow(ResultSet resultSet, int i) throws SQLException {
