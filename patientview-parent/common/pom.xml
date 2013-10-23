@@ -42,7 +42,105 @@
         <spring.version>3.2.4.RELEASE</spring.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>localhost-test</id>
+            <properties>
+                <env>localhost-test</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/patientview</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>localhost</id>
+            <properties>
+                <env>localhost</env>
+                <tomcatmanagerurl>http://locahost:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <!-- localhost is designed to build and run with war:inplace -->
+                <profile.build.output-webapp-dir>${project.basedir}/src/main/webapp</profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+                <tomcatmanagerurl>http://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <env>staging</env>
+                <tomcatmanagerurl>http://patientview.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging-ibd</id>
+            <properties>
+                <env>staging</env>
+                <tomcatmanagerurl>http://ibd.staging.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>production-ibd</id>
+            <properties>
+                <env>production-ibd</env>
+                <tomcatmanagerurl>https://ibd.solidstategroup.com:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <env>production</env>
+                <tomcatmanagerurl>https://www.renalpatientview.org:9080/manager/html</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+    </profiles>
+
+
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+
+        <filters>
+            <!--Uses e.g. filters/<env>-filters.properties to overlay cms.properties, other property files -->
+            <filter>src/main/filters/${env}-filters.properties</filter>
+        </filters>
+
+
         <plugins>
 
             <plugin>
@@ -197,6 +295,29 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>1.6.2</version>
+        </dependency>
+
+        <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.esapi</groupId>
+            <artifactId>esapi</artifactId>
+            <version>2.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jaxen</groupId>
+                    <artifactId>jaxen</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xom</groupId>
+                    <artifactId>xom</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

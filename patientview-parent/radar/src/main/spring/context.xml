@@ -7,14 +7,21 @@
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <!--Imports-->
+    <import resource="context-repository.xml"/>
     <import resource="context-dao.xml"/>
     <import resource="context-security.xml"/>
     <import resource="context-service.xml"/>
     <import resource="context-smtp.xml"/>
 
+
     <!--Properties Placeholder-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:radar.properties"/>
+        <property name="locations">
+            <list>
+                <value>classpath:radar.properties</value>
+                <value>classpath:common.properties</value>
+            </list>
+        </property>
     </bean>
 
     <bean id="radarApplication" class="org.patientview.radar.web.RadarApplication">
