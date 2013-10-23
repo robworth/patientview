@@ -252,9 +252,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 "         FROM patient LEFT OUTER JOIN usermapping ON patient.nhsno = usermapping.nhsno   " +
                 "        WHERE usermapping.unitcode = ? " +
                 "          AND usermapping.username NOT LIKE '%-GP%' " +
-                "     ) AS pa, unit " +
-                "WHERE (pa.unitcode = ? AND unit.unitcode = pa.unitcode AND unit.sourceType = 'radargroup') " +
-                "OR (pa.ucode = ?  AND unit.unitcode = pa.ucode AND unit.sourceType = 'radargroup')",
+                "     ) AS pa " +
+                "WHERE pa.unitcode = ? OR pa.ucode = ?  ",
                 new Object[]{unitCode, unitCode, unitCode}, new DemographicsRowMapper());
     }
 
