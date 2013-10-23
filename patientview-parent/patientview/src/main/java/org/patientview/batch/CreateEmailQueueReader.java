@@ -76,13 +76,17 @@ public class CreateEmailQueueReader extends ListItemReader<Object> {
                     if (StringUtils.hasText(user.getEmail())
                             && !job.getCreator().getId().equals(user.getId())
                             && emailQueueManager.get(job.getId(), job.getMessage().getId(), user.getId()) == null) {
-                        queue = new EmailQueue();
-                        queue.setJob(job);
-                        queue.setMessage(job.getMessage());
-                        queue.setRecipient(user);
-                        queue.setStatus(SendEmailEnum.SENDING);
+                        if (user.getCreated() != null && !user.getCreated().equals(job.getCreated())
+                                && job.getCreated().after(user.getCreated())) {
 
-                        emailQueues.add(queue);
+                            queue = new EmailQueue();
+                            queue.setJob(job);
+                            queue.setMessage(job.getMessage());
+                            queue.setRecipient(user);
+                            queue.setStatus(SendEmailEnum.SENDING);
+
+                            emailQueues.add(queue);
+                        }
                     }
                 }
 

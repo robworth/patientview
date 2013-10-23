@@ -157,8 +157,11 @@ public class MessageManagerImpl implements MessageManager {
                         for (Unit unit : units) {
                             Unit messageUnit = messages.get(0).getUnit();
                             if (unit != null && messageUnit != null && unit.getId().equals(messageUnit.getId())) {
-                                conversationList.add(conversation);
-                                break;
+                                if (user.getCreated() != null && !user.getCreated().equals(conversation.getStarted())
+                                        && conversation.getStarted().after(user.getCreated())) {
+                                    conversationList.add(conversation);
+                                    break;
+                                }
                             }
                         }
                     }

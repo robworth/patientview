@@ -37,6 +37,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 public class EmailChangeAction extends Action {
 
@@ -70,6 +71,7 @@ public class EmailChangeAction extends Action {
             // update the user's email with that supplied
             user.setEmail(emailAddress);
             user.setEmailverified(false);
+            user.setUpdated(new Date());
         }
 
         if (errorFound) {

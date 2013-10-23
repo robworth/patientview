@@ -35,6 +35,7 @@ import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 public class PasswordResetAction extends Action {
 
@@ -52,6 +53,7 @@ public class PasswordResetAction extends Action {
             user.setFirstlogon(true);
             user.setFailedlogons(0);
             user.setAccountlocked(false);
+            user.setUpdated(new Date());
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_RESET,
                     user.getUsername(), "", UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
