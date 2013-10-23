@@ -320,7 +320,8 @@ public class ResultParser {
                         procedure.setDate(procedureDetailNode.getFirstChild().getNodeValue());
                     }
                 } catch (NullPointerException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
+                    LOGGER.debug(e.getMessage(), e);
                 }
             }
             procedures.add(procedure);
@@ -353,7 +354,8 @@ public class ResultParser {
                                 diagnosticDetailNode.getFirstChild().getNodeValue()));
                     }
                 } catch (NullPointerException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
+                    LOGGER.debug(e.getMessage(), e);
                 }
             }
 
@@ -547,7 +549,8 @@ public class ResultParser {
                         allergy.setRecordedDate(allergyDetailNode.getFirstChild().getNodeValue());
                     }
                 } catch (NullPointerException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
+                    LOGGER.debug(e.getMessage(), e);
                 }
             }
             allergies.add(allergy);
@@ -624,8 +627,8 @@ public class ResultParser {
             DocumentBuilder db = dbf.newDocumentBuilder();
             doc = db.parse(file);
         } catch (Exception e) {
-            e.printStackTrace();
-            //EmailUtils.sendEmail(context, e.toString());
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
         return doc;
     }
@@ -637,7 +640,8 @@ public class ResultParser {
             DocumentBuilder db = dbf.newDocumentBuilder();
             doc = db.parse(file);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
         return doc;
     }

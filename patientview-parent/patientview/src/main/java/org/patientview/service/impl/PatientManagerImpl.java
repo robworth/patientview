@@ -148,9 +148,14 @@ public class PatientManagerImpl implements PatientManager {
         List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
 
         for (UserMapping userMapping : userMappings) {
-            Patient patient = get(userMapping.getNhsno(), userMapping.getUnitcode());
+            String unitcode = userMapping.getUnitcode();
+            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
+                continue;
+            }
 
-            Unit unit = unitManager.get(userMapping.getUnitcode());
+            Patient patient = get(userMapping.getNhsno(), unitcode);
+
+            Unit unit = unitManager.get(unitcode);
 
             if (patient != null && unit != null) {
                 PatientDetails patientDetail = new PatientDetails();

@@ -62,6 +62,7 @@ public class JoinRequestDaoTest extends BaseDaoTest {
         joinRequest.setEmail("jack@london.com");
         joinRequest.setNhsNo("9434765919");
         joinRequest.setUnitcode("SNC01");
+        joinRequest.setDateOfRequest(new Date());
 
         return joinRequest;
     }
@@ -79,6 +80,7 @@ public class JoinRequestDaoTest extends BaseDaoTest {
         joinRequest.setUnitcode("SNC01");
         joinRequest.setComplete(true);
         joinRequest.setNotes("test notes");
+        joinRequest.setDateOfRequest(new Date());
 
         joinRequestDao.save(joinRequest);
         joinRequestDao.save(joinRequest2);
@@ -112,6 +114,7 @@ public class JoinRequestDaoTest extends BaseDaoTest {
         joinRequest.setUnitcode("SNC01");
         joinRequest.setComplete(true);
         joinRequest.setNotes("test notes");
+        joinRequest.setDateOfRequest(new Date());
 
         joinRequestDao.save(joinRequest);
         joinRequestDao.save(joinRequest2);

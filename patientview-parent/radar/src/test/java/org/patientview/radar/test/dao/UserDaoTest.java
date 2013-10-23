@@ -1,11 +1,15 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 
+import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;
@@ -39,6 +43,21 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Autowired
     private UtilityDao utilityDao;
+
+    private DiseaseGroup diseaseGroup;
+
+    private Centre centre;
+
+    @Before
+    public void setUp() {
+        diseaseGroup = new DiseaseGroup();
+        diseaseGroup.setId("1");
+        diseaseGroup.setName("testGroup");
+        diseaseGroup.setShortName("shortName");
+
+        centre = new Centre();
+        centre.setUnitCode("testCodeA");
+    }
 
     @Test
     public void testAddGetUser() throws Exception {
@@ -337,6 +356,7 @@ public class UserDaoTest extends BaseDaoTest {
         patientUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
         patientUser.setDateOfBirth(new Date());
         patientUser.setDateRegistered(new Date());
+        patientUser.setClinician(true);
 
         userDao.savePatientUser(patientUser);
 
@@ -432,8 +452,13 @@ public class UserDaoTest extends BaseDaoTest {
         patient.setForename(forename);
         patient.setSurname(surname);
         patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        patient.setUnitcode("unitcodeA");
+        patient.setNhsno(getTestNhsNo());
+        patient.setDiseaseGroup(diseaseGroup);
+        patient.setRenalUnit(centre);
         demographicsDao.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;
     }
+
 }

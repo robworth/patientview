@@ -7,8 +7,13 @@ ALTER TABLE `unit`
 
 RENAME TABLE `tenancy` TO `specialty`;
 
+ALTER TABLE `tenancyuserrole` DROP KEY `FK7A1749E1AEFDD122`;
+ALTER TABLE `tenancyuserrole` DROP FOREIGN KEY `FK7A1749E1AEFDD122`;
+
 ALTER TABLE `tenancyuserrole`
   CHANGE `tenancy_id` `specialty_id` BIGINT(20) NULL;
+
+ALTER TABLE `tenancyuserrole` ADD CONSTRAINT `FK7A1749E1AEFDD122` FOREIGN KEY (specialty_id) References specialty (id);
 
 RENAME TABLE `tenancyuserrole` TO `specialtyuserrole`;
 
