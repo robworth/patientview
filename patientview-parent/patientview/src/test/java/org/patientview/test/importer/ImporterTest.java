@@ -38,7 +38,7 @@ import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.parser.XmlParserUtils;
+import org.patientview.patientview.model.User;
 import org.patientview.service.CentreManager;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.ImportManager;
@@ -51,11 +51,11 @@ import org.patientview.service.TimeManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
+import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
 import org.patientview.test.service.BaseServiceTest;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.core.io.Resource;
-import org.springframework.mock.web.MockHttpSession;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -67,7 +67,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * The importer is kicked off from ParserMonitorServlet.
+ * The importer is kicked off from Quartz.
  *
  * There are 3 threads - XmlParserThread, UktParserThread & UktExportThread.
  *
@@ -117,6 +117,9 @@ public class ImporterTest extends BaseServiceTest {
     @Inject
     private XmlImportUtils xmlImportUtils;
 
+    @Inject
+    private SecurityHelpers securityHelpers;
+
     @Before
     public void setupSystem() {
         Unit mockUnit = new Unit();
@@ -131,8 +134,14 @@ public class ImporterTest extends BaseServiceTest {
         mockSpecialty.setDescription("Renal Patient View");
 
         mockSpecialty = serviceHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
-
         mockUnit.setSpecialty(mockSpecialty);
+
+        User mockUser = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA",
+                "nhstest1", mockSpecialty);
+
+        serviceHelpers.createSpecialtyUserRole(mockSpecialty, mockUser, "patient");
+
+        securityHelpers.loginAsUser("testname1");
 
         unitManager.save(mockUnit);
     }
@@ -161,9 +170,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                         AddLog.PATIENT_DATA_FOLLOWUP);
@@ -196,16 +203,14 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:DUMMY_000002_9999999995.gpg.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         List<TestResult> results = testResultManager.get("9999999995", "DUMMY");
 
         assertEquals("Incorrect number of results after first import", 1, results.size());
 
         // double run
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         results = testResultManager.get("9999999995", "DUMMY");
 
@@ -226,8 +231,7 @@ public class ImporterTest extends BaseServiceTest {
     public void testXmlParserUsingEmptyIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_empty_9876543210.xml");
-        MockHttpSession mockHttpSession = new MockHttpSession();
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -272,9 +276,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -294,9 +296,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -330,9 +330,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithValidDates_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
@@ -350,9 +348,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -370,9 +366,7 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                                 AddLog.PATIENT_DATA_FOLLOWUP);
@@ -392,11 +386,9 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
         // run twice
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
+        importManager.update(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
                                 AddLog.PATIENT_DATA_FOLLOWUP);

@@ -6,11 +6,13 @@ import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.common.test.BaseTestPvDbSchema;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+@Ignore
 public class TestPvDbSchema extends BaseTestPvDbSchema {
 
     @Inject
@@ -46,5 +48,13 @@ public class TestPvDbSchema extends BaseTestPvDbSchema {
             // Have to close the database connection
             databaseDataSourceConnection.close();
         }
+    }
+
+    protected String getTestNhsNo() {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i=0; i<=9; i++) {
+            stringBuffer.append((int)(Math.random() * 10));
+        }
+        return stringBuffer.toString();
     }
 }

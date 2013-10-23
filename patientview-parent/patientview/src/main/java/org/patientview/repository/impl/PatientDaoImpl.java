@@ -112,11 +112,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                                                 Specialty specialty) {
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, user.emailverified, user.accountlocked, "
-                + "usermapping.nhsno, usermapping.unitcode, "
-                + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
-                + "FROM user, specialtyuserrole, usermapping "
-                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = "
-                + "patient.unitcode "
+                + "usermapping.nhsno, usermapping.unitcode, emailverification.lastverificationdate, "
+                + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth, patient.rrtModality,  "
+                + "pv_user_log.lastdatadate "
+                + "FROM user "
+                + "LEFT JOIN emailverification ON USER.username = emailverification.username, "
+                + "specialtyuserrole, usermapping "
+                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno "
+                + "LEFT JOIN pv_user_log ON usermapping.nhsno = pv_user_log.nhsno "
                 + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
@@ -151,7 +154,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
         params.add(specialty.getId());
 
-        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentExtendMapper());
     }
 
     @Override
@@ -159,11 +162,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                                                 Specialty specialty) {
         String sql = "SELECT "
                 + "user.username,  user.password, user.name, user.email, user.emailverified, user.accountlocked, "
-                + "usermapping.nhsno, usermapping.unitcode, "
-                + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth "
-                + "FROM user, specialtyuserrole, usermapping "
-                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno AND usermapping.unitcode = "
-                + "patient.unitcode "
+                + "usermapping.nhsno, usermapping.unitcode, emailverification.lastverificationdate,"
+                + "user.firstlogon, user.lastlogon, patient.treatment, patient.dateofbirth, patient.rrtModality, "
+                + "pv_user_log.lastdatadate "
+                + "FROM user "
+                + "LEFT JOIN emailverification ON USER.username = emailverification.username, "
+                + "specialtyuserrole, usermapping "
+                + "LEFT JOIN patient ON usermapping.nhsno = patient.nhsno "
+                + "LEFT JOIN pv_user_log ON usermapping.nhsno = pv_user_log.nhsno "
                 + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
@@ -194,7 +200,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         }
         params.add(specialty.getId());
 
-        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentMapper());
+        return jdbcTemplate.query(sql, params.toArray(), new PatientLogonWithTreatmentExtendMapper());
     }
 
     @Override
@@ -278,15 +284,27 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setPassword(resultSet.getString("password"));
             patientLogonWithTreatment.setName(resultSet.getString("name"));
             patientLogonWithTreatment.setEmail(resultSet.getString("email"));
-            patientLogonWithTreatment.setEmailverfied(resultSet.getBoolean("emailverified"));
+            patientLogonWithTreatment.setEmailverified(resultSet.getBoolean("emailverified"));
             patientLogonWithTreatment.setAccountlocked(resultSet.getBoolean("accountlocked"));
             patientLogonWithTreatment.setNhsno(resultSet.getString("nhsno"));
             patientLogonWithTreatment.setFirstlogon(resultSet.getBoolean("firstlogon"));
             patientLogonWithTreatment.setLastlogon(resultSet.getDate("lastlogon"));
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
-            patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
+            patientLogonWithTreatment.setDateofbirth(resultSet.getString("dateofbirth"));
 
+            return patientLogonWithTreatment;
+        }
+    }
+
+    private class PatientLogonWithTreatmentExtendMapper extends PatientLogonWithTreatmentMapper {
+        @Override
+        public PatientLogonWithTreatment mapRow(ResultSet resultSet, int i) throws SQLException {
+            PatientLogonWithTreatment patientLogonWithTreatment = super.mapRow(resultSet, i);
+
+            patientLogonWithTreatment.setLastverificationdate(resultSet.getDate("lastverificationdate"));
+            patientLogonWithTreatment.setRrtModality(resultSet.getInt("rrtModality"));
+            patientLogonWithTreatment.setLastdatadate(resultSet.getDate("lastdatadate"));
             return patientLogonWithTreatment;
         }
     }

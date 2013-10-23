@@ -221,6 +221,22 @@
                 <msg key="name.required" name="required"/>
             </field>
         </form>
+        <form name="/control/radarGroupAdd">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/radarGroupUpdate">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
         <form name="/control/patientAdd">
             <field property="username" depends="required">
                 <msg key="username.required" name="required"/>
@@ -405,6 +421,23 @@
             </field>
             <field property="bodytext" depends="required">
                 <msg key="splashpage.bodytext.required" name="required"/>
+            </field>
+        </form>
+
+        <form name="/control/groupAdd">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
+            </field>
+        </form>
+        <form name="/control/groupUpdate">
+            <field property="unitcode" depends="required">
+                <msg key="code.required" name="required"/>
+            </field>
+            <field property="name" depends="required">
+                <msg key="name.required" name="required"/>
             </field>
         </form>
 

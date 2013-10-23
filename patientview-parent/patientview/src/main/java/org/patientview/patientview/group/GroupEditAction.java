@@ -21,23 +21,32 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.uktransplant;
+package org.patientview.patientview.group;
 
-import javax.servlet.ServletContext;
-import java.io.File;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Unit;
+import org.patientview.utils.LegacySpringUtils;
 
-public final class UktParserUtils {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-    private UktParserUtils() {
+public class GroupEditAction extends Action {
+
+    public ActionForward execute(
+        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String unitcode = BeanUtils.getProperty(form, "unitcode");
+
+        Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+
+        request.getSession().setAttribute("unit", unit);
+
+        return LogonUtils.logonChecks(mapping, request);
     }
 
-    public static void updateData(ServletContext context, File uktFile) {
-        UktUpdater updater = new UktUpdater();
-        updater.update(context, uktFile);
-    }
-
-    public static void updateData(File uktFile) {
-        UktUpdater updater = new UktUpdater();
-        updater.update(null, uktFile);
-    }
 }

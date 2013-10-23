@@ -69,6 +69,7 @@ public class EmailChangeAction extends Action {
         } else {
             // update the user's email with that supplied
             user.setEmail(emailAddress);
+            user.setEmailverified(false);
         }
 
         if (errorFound) {
@@ -80,7 +81,8 @@ public class EmailChangeAction extends Action {
             LegacySpringUtils.getUserManager().save(user);
 
             // db logging
-            AddLog.addLog(user.getUsername(), AddLog.EMAIL_CHANGED, user.getUsername(), "",
+            AddLog.addLog(user.getUsername(), AddLog.EMAIL_CHANGED, user.getUsername(),
+                    UserUtils.retrieveUsersRealNhsnoBestGuess(user.getUsername()),
                     UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
             // email verification - only required if the user has supplied an email address
@@ -89,7 +91,7 @@ public class EmailChangeAction extends Action {
                 EmailVerificationUtils.createEmailVerification(user.getUsername(), user.getEmail(), request);
                 request.setAttribute("verificationMailSent", true);
             }
-
+            request.setAttribute("emailMsg", "Email was updated successfully.");
             return mapping.findForward("success");
         }
     }

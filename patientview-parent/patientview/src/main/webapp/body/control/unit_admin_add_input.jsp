@@ -31,62 +31,64 @@
         <h1>Unit Admins</h1>
     </div>
 
-<html:errors />
+    <html:errors />
 
-<logic:present name="userAlreadyExists" >
-  <p><font color="red">The username <b><bean:write name="userAlreadyExists" /></b> you have entered is already being used by another user. Please pick another.</font></p>
-</logic:present>
+    <logic:present name="userAlreadyExists" >
+        <p><font color="red">The username <b><bean:write name="userAlreadyExists" /></b> you have entered is already being used by another user. Please pick another.</font></p>
+    </logic:present>
 
-<html:form action="/control/unitAdminAdd">
-<table cellpadding="3" >
-    <tr>
-      <td><img src="images/space.gif" height="10" /> </td>
-    </tr>
-    <tr>
-      <td><b>User Name</b></td>
-      <td><html:text property="username" /></td>
-    </tr>
-    <tr>
-      <td><b>Name</b></td>
-      <td><html:text property="name" /></td>
-    </tr>
-    <tr>
-      <td><b>Email Address</b></td>
-      <td><html:text property="email" /></td>
-    </tr>
-    <tr>
-      <td><b>Role</b></td>
-      <td><html:select property="role" onchange="if(document.patientForm.role.value == 'superadmin') {document.patientForm.unitcode.value = '';}">
-             <html:option value="">-- Please select an admin type --</html:option>
-             <logic:present role="superadmin">
-               <html:option value="superadmin">Super Admin</html:option>
-             </logic:present>
-             <html:option value="unitadmin">Unit Admin</html:option>
-             <html:option value="unitstaff">Unit Staff</html:option>
-          </html:select></td>
-    </tr>
-    <tr>
-      <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
-      <td><html:select property="unitcode">
-             <logic:present role="superadmin">
-               <html:option value="">None</html:option>
-             </logic:present>
-             <html:options collection="units" property="unitcode" labelProperty="name"/>
-          </html:select></td>
-    </tr>
-    <tr>
-        <td><b>Message Recipient</b></td>
-        <td><html:checkbox property="isrecipient" value="true"/></td>
-    </tr>
-    <tr>
-        <td><b>Clinician</b></td>
-        <td><html:checkbox property="isclinician" value="true"/></td>
-    </tr>
-    <tr align="right">
-      <td><html:submit value="Add" styleClass="btn" /></td>
-    </tr>
- </table>
+    <html:form action="/control/unitAdminAdd">
+        <table cellpadding="3" >
+            <tr>
+                <td><img src="images/space.gif" height="10" /> </td>
+            </tr>
+            <tr>
+                <td><b>User Name</b></td>
+                <td><html:text property="username" /></td>
+            </tr>
+            <tr>
+                <td><b>Name</b></td>
+                <td><html:text property="name" /></td>
+            </tr>
+            <tr>
+                <td><b>Email Address</b></td>
+                <td><html:text property="email" /></td>
+            </tr>
+            <tr>
+                <td><b>Role</b></td>
+                <td><html:select property="role" onchange="if(document.patientForm.role.value == 'superadmin') {document.patientForm.unitcode.value = '';}">
+                    <html:option value="">-- Please select an admin type --</html:option>
+                    <logic:present role="superadmin">
+                        <html:option value="superadmin">Super Admin</html:option>
+                    </logic:present>
+                    <logic:present role="superadmin,unitadmin">
+                        <html:option value="unitadmin">Unit Admin</html:option>
+                        <html:option value="unitstaff">Unit Staff</html:option>
+                    </logic:present>
+                </html:select></td>
+            </tr>
+            <tr>
+                <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
+                <td><html:select property="unitcode">
+                    <logic:present role="superadmin">
+                        <html:option value="">None</html:option>
+                    </logic:present>
+                    <html:options collection="units" property="unitcode" labelProperty="name"/>
+                </html:select></td>
+            </tr>
+            <tr>
+                <td><b>Message Recipient</b></td>
+                <td><html:checkbox property="isrecipient" value="true"/></td>
+            </tr>
+            <tr>
+                <td><b>Clinician</b></td>
+                <td><html:checkbox property="isclinician" value="true"/></td>
+            </tr>
+            <tr align="right">
+                <td><html:submit value="Add" styleClass="btn" /></td>
+            </tr>
+        </table>
 
-</html:form>
+    </html:form>
 </div>
 </div>

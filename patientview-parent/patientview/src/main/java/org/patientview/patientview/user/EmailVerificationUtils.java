@@ -27,6 +27,8 @@ import com.Ostermiller.util.RandPass;
 import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.model.EmailVerification;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,8 @@ import java.util.GregorianCalendar;
  * TODO: move the functionallity out of here into the EmailVerificationManager
  */
 public final class EmailVerificationUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailVerificationUtils.class);
 
     private static final int VERIFICATION_CODE_LENGTH = 50;
 
@@ -57,13 +61,15 @@ public final class EmailVerificationUtils {
                         LegacySpringUtils.getContextProperties().getProperty("email.verification.best.before.days"));
 
                 now.add(Calendar.DATE, daysToAdd);
-                EmailVerification emailVerification = new EmailVerification(username, email, verificationCode, now);
+                EmailVerification emailVerification = new EmailVerification(username, email, verificationCode, now,
+                        GregorianCalendar.getInstance());
 
                 LegacySpringUtils.getEmailVerificationManager().save(emailVerification);
 
                 sendEmailVerificationEmail(emailVerification, context);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
             }
         }
     }

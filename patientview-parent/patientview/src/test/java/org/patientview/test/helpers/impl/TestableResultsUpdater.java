@@ -26,7 +26,6 @@ package org.patientview.test.helpers.impl;
 import org.patientview.service.impl.ImportManagerImpl;
 import org.junit.Ignore;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 
 /**
@@ -36,7 +35,7 @@ import java.io.File;
 public class TestableResultsUpdater extends ImportManagerImpl {
 
     @Override
-    public void renameDirectory(ServletContext context, File xmlFile) {
+    public void archiveFileAfterProcessing(File xmlFile) {
         // do nothing - it's a test
     }
 }

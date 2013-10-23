@@ -94,7 +94,8 @@ public class PasswordChangeAction extends Action {
             LegacySpringUtils.getUserManager().save(user);
 
             // db logging
-            AddLog.addLog(user.getUsername(), AddLog.PASSWORD_CHANGE, user.getUsername(), "",
+            AddLog.addLog(user.getUsername(), AddLog.PASSWORD_CHANGE, user.getUsername(),
+                    UserUtils.retrieveUsersRealNhsnoBestGuess(user.getUsername()),
                     UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
             // email verification - only required if the user has supplied an email address
@@ -103,7 +104,7 @@ public class PasswordChangeAction extends Action {
                 EmailVerificationUtils.createEmailVerification(user.getUsername(), user.getEmail(), request);
                 request.setAttribute("verificationMailSent", true);
             }
-
+            request.setAttribute("passwordMsg", "Password was updated successfully.");
             return mapping.findForward("success");
         }
     }

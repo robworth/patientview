@@ -79,23 +79,4 @@
             <batch:listener ref="checkSendEmailStatusJob"/>
         </batch:listeners>
     </batch:job>
-
-    <!--Define sendEmailJob details-->
-    <batch:job id="xmlImportBatchJob" restartable="false">
-        <batch:step id="xmlImportStep">
-            <batch:tasklet transaction-manager="batchTransactionManager">
-                <batch:chunk reader="xmlImportReader" writer="xmlImportWriter"
-                             commit-interval="1" skip-policy="alwaysSkipItemSkipPolicy">
-                </batch:chunk>
-                <batch:listeners>
-                    <batch:listener ref="xmlImportJob"/>
-                </batch:listeners>
-            </batch:tasklet>
-        </batch:step>
-        <batch:listeners>
-            <batch:listener ref="xmlImportJob"/>
-        </batch:listeners>
-    </batch:job>
-
-
 </beans>

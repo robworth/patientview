@@ -24,6 +24,7 @@
 package org.patientview.patientview.logon;
 
 import org.patientview.ibd.Ibd;
+import org.patientview.model.Patient;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 
@@ -39,7 +40,7 @@ public abstract class Logon {
     private String role;
     private String name;
     private String email;
-    private boolean emailverfied;
+    private boolean emailverified;
     private String nhsno;
     private String unitcode;
     private boolean firstlogon;
@@ -49,6 +50,9 @@ public abstract class Logon {
     private boolean accountlocked;
     private boolean isrecipient;
     private boolean isclinician;
+    private Date lastverificationdate;
+    private int rrtModality;
+    private Date lastdatadate;
 
     public Logon() {
     }
@@ -116,12 +120,12 @@ public abstract class Logon {
         this.email = email;
     }
 
-    public boolean isEmailverfied() {
-        return emailverfied;
+    public boolean isEmailverified() {
+        return emailverified;
     }
 
-    public void setEmailverfied(boolean emailverfied) {
-        this.emailverfied = emailverfied;
+    public void setEmailverified(boolean emailverified) {
+        this.emailverified = emailverified;
     }
 
     public boolean isFirstlogon() {
@@ -151,6 +155,14 @@ public abstract class Logon {
     public String getLastlogonFormatted() {
         if (lastlogon != null) {
             return Ibd.DATE_FORMAT.format(lastlogon);
+        }
+
+        return "";
+    }
+
+    public String getLastverificationdateFormatted() {
+        if (lastverificationdate != null) {
+            return Ibd.DATE_FORMAT.format(lastverificationdate);
         }
 
         return "";
@@ -190,5 +202,47 @@ public abstract class Logon {
 
     public void setIsclinician(boolean isclinician) {
         this.isclinician = isclinician;
+    }
+
+    public Date getLastverificationdate() {
+        return lastverificationdate;
+    }
+
+    public void setLastverificationdate(Date lastverificationdate) {
+        this.lastverificationdate = lastverificationdate;
+    }
+
+    public int getRrtModality() {
+        return rrtModality;
+    }
+
+    public void setRrtModality(int rrtModality) {
+        this.rrtModality = rrtModality;
+    }
+
+    public String getModality() {
+        Patient.RRTModality[] modalities = Patient.RRTModality.values();
+        for (Patient.RRTModality  modality : modalities) {
+            if (modality.getId() == rrtModality) {
+                 return modality.name();
+            }
+        }
+        return "";
+    }
+
+    public Date getLastdatadate() {
+        return lastdatadate;
+    }
+
+    public void setLastdatadate(Date lastdatadate) {
+        this.lastdatadate = lastdatadate;
+    }
+
+    public String getLastdatadateFormatted() {
+        if (lastdatadate != null) {
+            return Ibd.DATE_FORMAT.format(lastdatadate);
+        }
+
+        return "";
     }
 }

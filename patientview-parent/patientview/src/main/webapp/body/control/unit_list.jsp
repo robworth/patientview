@@ -48,12 +48,21 @@
           <td class="tablecell"><bean:write name="unit" property="unitcode"/></td>
           <td class="tablecell"><bean:write name="unit" property="name"/></td>
 
-          <logic:present role="superadmin,unitadmin">
+          <logic:present role="superadmin,unitadmin,radaradmin">
             <td>
-                <html:form action="/control/unitEdit">
-                  <html:hidden name="unit" property="unitcode"/>
-                  <html:submit value="Edit" styleClass="btn"/>
-                </html:form>
+                <logic:equal property="sourceType" name="unit" value="radargroup">
+                    <html:form action="/control/radarGroupEdit">
+                        <html:hidden name="unit" property="unitcode"/>
+                        <html:submit value="Edit" styleClass="btn"/>
+                    </html:form>
+                </logic:equal>
+                <logic:notEqual property="sourceType" name="unit" value="radargroup">
+                    <html:form action="/control/unitEdit">
+                        <html:hidden name="unit" property="unitcode"/>
+                        <html:submit value="Edit" styleClass="btn"/>
+                    </html:form>
+                </logic:notEqual>
+
             </td>
             <td>
             <html:form action="/control/unitStat">
@@ -69,10 +78,17 @@
 </table>
 
   <logic:present role="superadmin">
+      <logic:notEmpty name="isRadarGroup">
+          <html:form action="/control/radarGroupAddInput">
+              <html:submit value="Add new" styleClass="btn"/>
+          </html:form>
+      </logic:notEmpty>
 
-      <html:form action="/control/unitAddInput">
-        <html:submit value="Add new" styleClass="btn"/>
-      </html:form>
+      <logic:empty name="isRadarGroup">
+          <html:form action="/control/unitAddInput">
+            <html:submit value="Add new" styleClass="btn"/>
+          </html:form>
+      </logic:empty>
   </logic:present>
 </div>
 </div>

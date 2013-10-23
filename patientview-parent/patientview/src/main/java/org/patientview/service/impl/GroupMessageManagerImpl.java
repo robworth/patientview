@@ -23,6 +23,7 @@
 
 package org.patientview.service.impl;
 
+import org.patientview.patientview.exception.MessagingException;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.GroupMessage;
 import org.patientview.patientview.model.User;
@@ -43,14 +44,22 @@ public class GroupMessageManagerImpl implements GroupMessageManager {
     private GroupMessageDao groupMessageDao;
 
     @Override
-    public void markGroupMessageAsReadForConversation(User recipient, Conversation conversation) {
+    public void markGroupMessageAsReadForConversation(User recipient, Conversation conversation)
+            throws MessagingException {
 
-        if (groupMessageDao.get(recipient.getId(), conversation.getId()) == null) {
-            GroupMessage groupMessage = new GroupMessage();
-            groupMessage.setConversation(conversation);
-            groupMessage.setRecipient(recipient);
+        // There was a bug where this block was causing duplicates.  Possibly due to concurrency problems caused by
+        // two quick reads of conversations. A unique constraint has been added to the db.
+        // Just catch an exceptions such as non-unique errors for now...
+        try {
+            if (groupMessageDao.get(recipient.getId(), conversation.getId()) == null) {
+                GroupMessage groupMessage = new GroupMessage();
+                groupMessage.setConversation(conversation);
+                groupMessage.setRecipient(recipient);
 
-            groupMessageDao.save(groupMessage);
+                groupMessageDao.save(groupMessage);
+            }
+        } catch (Exception e) {
+            throw new MessagingException(e.getMessage());
         }
     }
 
