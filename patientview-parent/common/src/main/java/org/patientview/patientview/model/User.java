@@ -24,7 +24,6 @@
 package org.patientview.patientview.model;
 
 import org.patientview.model.BaseModel;
-import org.patientview.utils.LegacySpringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,6 +69,8 @@ public class User extends BaseModel {
     @Column(nullable = true)
     private boolean isclinician;
 
+    private String role;
+
     public User() {
     }
 
@@ -80,7 +81,11 @@ public class User extends BaseModel {
     @Transient
     // get the user's role in the currently selected specialty
     public String getRole() {
-        return LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(this);
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {

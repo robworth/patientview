@@ -27,7 +27,7 @@ import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.Conversation_;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.messaging.ConversationDao;
+import org.patientview.repository.ConversationDao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

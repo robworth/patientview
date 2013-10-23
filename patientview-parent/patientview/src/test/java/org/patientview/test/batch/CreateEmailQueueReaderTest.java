@@ -12,7 +12,7 @@ import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
-import org.patientview.repository.messaging.MessageDao;
+import org.patientview.repository.MessageDao;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.service.UnitManager;

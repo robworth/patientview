@@ -26,7 +26,7 @@ package org.patientview.repository.impl.messaging;
 import org.patientview.patientview.model.Message;
 import org.patientview.patientview.model.Message_;
 import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.messaging.MessageDao;
+import org.patientview.repository.MessageDao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

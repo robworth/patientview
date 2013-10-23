@@ -33,8 +33,8 @@ import org.patientview.repository.SpecialtyDao;
 import org.patientview.repository.SpecialtyUserRoleDao;
 import org.patientview.repository.UserDao;
 import org.patientview.repository.UserMappingDao;
-import org.patientview.repository.messaging.ConversationDao;
-import org.patientview.repository.messaging.MessageDao;
+import org.patientview.repository.ConversationDao;
+import org.patientview.repository.MessageDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.springframework.stereotype.Repository;
 

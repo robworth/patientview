@@ -26,7 +26,7 @@ package org.patientview.test.repository.messaging;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.Message;
 import org.patientview.patientview.model.User;
-import org.patientview.repository.messaging.MessageDao;
+import org.patientview.repository.MessageDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.patientview.test.repository.BaseDaoTest;
 import org.joda.time.DateTime;

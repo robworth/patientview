@@ -77,16 +77,19 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public User getLoggedInUser() {
+        // todo set role
         return userDao.get(securityUserManager.getLoggedInUsername());
     }
 
     @Override
     public User get(Long id) {
+        // todo set role
         return userDao.get(id);
     }
 
     @Override
     public User get(String username) {
+        // todo set role
         return userDao.get(username);
     }
 

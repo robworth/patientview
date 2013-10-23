@@ -26,7 +26,7 @@ package org.patientview.test.repository.messaging;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.enums.GroupEnum;
-import org.patientview.repository.messaging.ConversationDao;
+import org.patientview.repository.ConversationDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

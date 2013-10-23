@@ -21,32 +21,25 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.repository.messaging;
+package org.patientview.repository;
 
-import org.patientview.patientview.model.Conversation;
-import org.patientview.patientview.model.enums.GroupEnum;
+import org.patientview.patientview.model.Message;
 
 import java.util.List;
 
-public interface ConversationDao {
+public interface MessageDao {
 
-    /**
-     * Get specific conversation by ID
-     * @param id Long
-     * @return Conversation
-     */
-    Conversation get(Long id);
+    Message get(Long id);
 
-    /**
-     * Get all conversations a user is part of
-     * @param participantId Long
-     * @return List<Conversation>
-     */
-    List<Conversation> getConversations(Long participantId);
+    List<Message> getMessages(Long conversationId);
 
-    List<Conversation> getConversations(Long participantId, GroupEnum groupEnum);
+    List<Message> getUnreadMessages(Long recipientId, Long conversationId);
 
-    void save(Conversation conversation);
+    Long getNumberOfUnreadMessages(Long recipientId, Long conversationId);
 
-    void delete(Conversation conversation);
+    Message getLatestMessage(Long conversationId);
+
+    void save(Message message);
+
+    void delete(Message message);
 }

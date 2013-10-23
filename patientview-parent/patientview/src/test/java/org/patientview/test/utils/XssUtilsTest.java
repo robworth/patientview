@@ -28,8 +28,8 @@ import org.junit.Test;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.Message;
 import org.patientview.patientview.model.User;
-import org.patientview.repository.messaging.ConversationDao;
-import org.patientview.repository.messaging.MessageDao;
+import org.patientview.repository.ConversationDao;
+import org.patientview.repository.MessageDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.patientview.test.service.BaseServiceTest;
 
