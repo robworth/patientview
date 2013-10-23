@@ -309,4 +309,45 @@ public class UnitDaoTest extends BaseDaoTest {
         users = unitDao.getUnitUsers("UNITCODEB", specialty);
         assertEquals("Wrong number of users in unit B", 1, users.size());
     }
+
+    @Test
+    public void testGetAllUnitUsers() {
+        // create 2 unit, one with 2 users, one with 1 user
+        // with usermappings and check the users can be pulled back
+        Unit unit = new Unit();
+        unit.setSpecialty(specialty);
+        // required fields
+        unit.setUnitcode("UNITCODEA");
+        unit.setName("unit 1");
+        unit.setShortname("unit 1");
+
+        unitDao.save(unit);
+
+        User user = repositoryHelpers.createUserWithMapping("paulc", "paul@test.com", "p", "Paul", "UNITCODEA",
+                "nhs1", specialty);
+        repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitadmin");
+        user = repositoryHelpers.createUserWithMapping("deniz", "deniz@test.com", "d", "Deniz", "UNITCODEA", "nhs2",
+                specialty);
+        repositoryHelpers.createSpecialtyUserRole(specialty, user, "radaradmin");
+
+
+        unit = new Unit();
+        unit.setSpecialty(specialty);
+        // required fields
+        unit.setUnitcode("UNITCODEB");
+        unit.setName("unit 2");
+        unit.setShortname("unit 2");
+
+        unitDao.save(unit);
+
+        user = repositoryHelpers.createUserWithMapping("dave", "dave@test.com", "d", "Dave", "UNITCODEB", "nhs3",
+                specialty);
+        repositoryHelpers.createSpecialtyUserRole(specialty, user, "unitstaff");
+
+        securityHelpers.loginAsUser("paulc", specialty);
+
+        List<UnitAdmin> users = unitDao.getAllUnitUsers(specialty);
+        assertEquals("Wrong number of users in unit A", 2, users.size());
+
+    }
 }

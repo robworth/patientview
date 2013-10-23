@@ -320,7 +320,7 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
         loginAsUser(superadmin.getUsername(), specialty);
 
-        unitManager.getAllUnitUsers(null);
+        unitManager.getAllUnitUsers();
     }
 
     @Test(expected = AccessDeniedException.class)

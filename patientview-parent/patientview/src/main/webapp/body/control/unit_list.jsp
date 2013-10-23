@@ -48,7 +48,7 @@
           <td class="tablecell"><bean:write name="unit" property="unitcode"/></td>
           <td class="tablecell"><bean:write name="unit" property="name"/></td>
 
-          <logic:present role="superadmin,unitadmin,radaradmin">
+          <logic:present role="superadmin,unitadmin">
             <td>
                 <logic:equal property="sourceType" name="unit" value="radargroup">
                     <html:form action="/control/radarGroupEdit">

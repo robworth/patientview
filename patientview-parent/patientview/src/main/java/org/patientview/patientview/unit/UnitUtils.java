@@ -23,16 +23,20 @@
 
 package org.patientview.patientview.unit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.user.UserUtils;
+import org.patientview.service.UnitManager;
+import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.List;
 
 public final class UnitUtils {
@@ -42,6 +46,34 @@ public final class UnitUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(UnitUtils.class);
 
     private UnitUtils() {
+    }
+
+    public static void setUserUnits(HttpServletRequest request) {
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        UnitManager unitManager = LegacySpringUtils.getUnitManager();
+        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
+        List items = null;
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            items = unitManager.getAll(null, new String[]{"radargroup", "renalunit"});
+        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
+            items = unitManager.getLoggedInUsersUnits();
+        }
+
+        request.setAttribute("units", items);
+    }
+
+    public static void setUserRenalUnits(HttpServletRequest request) {
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        UnitManager unitManager = LegacySpringUtils.getUnitManager();
+        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
+        List items = unitManager.getAll(null, new String[]{"renalunit"});
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            request.setAttribute("units", items);
+        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
+            List userUnits = unitManager.getLoggedInUsersUnits();
+            Collection units = CollectionUtils.intersection(userUnits, items);
+            request.setAttribute("units", units);
+        }
     }
 
     public static void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {

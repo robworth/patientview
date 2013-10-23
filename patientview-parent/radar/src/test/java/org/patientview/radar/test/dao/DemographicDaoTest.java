@@ -9,6 +9,7 @@ import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
@@ -31,6 +32,9 @@ public class DemographicDaoTest extends BaseDaoTest {
     private DiagnosisDao diagnosisDao;
 
     private DiseaseGroup diseaseGroup;
+
+    @Autowired
+    private UtilityDao utilityDao;
 
     private Centre centre;
 
@@ -109,13 +113,9 @@ public class DemographicDaoTest extends BaseDaoTest {
     @Test
     public void testGetDemographicsByCentre() throws Exception {
         // Construct centres
-        Centre centre = new Centre();
-        centre.setId(2L);
-        centre.setUnitCode("2134567890");
+        Centre centre = utilityDao.getCentre(1);
 
-        Centre centre2 = new Centre();
-        centre2.setId(3L);
-        centre2.setUnitCode("3214567890");
+        Centre centre2 = utilityDao.getCentre(2);
 
         createDemographics("Test", "User", centre, null);
         createDemographics("Test2", "User2", centre, null);
