@@ -110,12 +110,12 @@ public class DemographicDaoTest extends BaseDaoTest {
     public void testGetDemographicsByCentre() throws Exception {
         // Construct centres
         Centre centre = new Centre();
-        centre.setId(2L);
-        centre.setUnitCode("2134567890");
+        centre.setId(1L);
+        centre.setUnitCode("1");
 
         Centre centre2 = new Centre();
-        centre2.setId(3L);
-        centre2.setUnitCode("3214567890");
+        centre2.setId(2L);
+        centre2.setUnitCode("2");
 
         createDemographics("Test", "User", centre, null);
         createDemographics("Test2", "User2", centre, null);

@@ -81,7 +81,7 @@ public class GenericDemographicsPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
+        final ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
         if (patient.getDateReg() == null) {
             patient.setDateReg(new Date());
@@ -127,6 +127,7 @@ public class GenericDemographicsPanel extends Panel {
                 }
 
                 patient.setGeneric(true);
+                patient.setRadarConsentConfirmedByUserId(user.getUserId());
                 demographicsManager.saveDemographics(patient);
                 try {
                     userManager.registerPatient(patient);
@@ -415,9 +416,21 @@ public class GenericDemographicsPanel extends Panel {
         form.add(renalUnit);
 
         CheckBox consent = new CheckBox("consent");
+        consent.setRequired(true);
         form.add(consent);
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                utilityManager.getUserName(patient.getRadarConsentConfirmedByUserId())) {
+            @Override
+            public boolean isVisible() {
+                return true;
+            }
+        };
+        tickConsentUser.setOutputMarkupId(true);
+        tickConsentUser.setOutputMarkupPlaceholderTag(true);
+        form.add(tickConsentUser);
 
         // add generic fields
         TextField emailAddress = new TextField("emailAddress");
