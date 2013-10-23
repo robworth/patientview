@@ -25,18 +25,18 @@ package org.patientview.service.ibd.impl;
 
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.CarePlan;
+import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.MyIbdSeverityLevel;
+import org.patientview.ibd.model.Nutrition;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.ibd.model.enums.Diagnosis;
 import org.patientview.ibd.model.enums.Severity;
-import org.patientview.ibd.model.symptoms.ColitisSymptoms;
-import org.patientview.ibd.model.symptoms.CrohnsSymptoms;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.Nutrition;
 import org.patientview.ibd.model.medication.Medication;
 import org.patientview.ibd.model.medication.MedicationDose;
 import org.patientview.ibd.model.medication.MedicationType;
 import org.patientview.ibd.model.medication.MyMedication;
+import org.patientview.ibd.model.symptoms.ColitisSymptoms;
+import org.patientview.ibd.model.symptoms.CrohnsSymptoms;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.repository.ibd.AllergyDao;
@@ -44,12 +44,12 @@ import org.patientview.repository.ibd.CarePlanDao;
 import org.patientview.repository.ibd.ColitisSymptomsDao;
 import org.patientview.repository.ibd.CrohnsSymptomsDao;
 import org.patientview.repository.ibd.MedicationDao;
+import org.patientview.repository.ibd.MedicationDoseDao;
 import org.patientview.repository.ibd.MedicationTypeDao;
 import org.patientview.repository.ibd.MyIbdDao;
 import org.patientview.repository.ibd.MyIbdSeverityLevelDao;
 import org.patientview.repository.ibd.MyMedicationDao;
 import org.patientview.repository.ibd.NutritionDao;
-import org.patientview.repository.ibd.MedicationDoseDao;
 import org.patientview.repository.ibd.ProcedureDao;
 import org.patientview.service.TestResultManager;
 import org.patientview.service.UserManager;
@@ -407,7 +407,7 @@ public class IbdManagerImpl implements IbdManager {
 
     @Override
     public Allergy getAllergy(String nhsno) {
-        return allergyDao.getAllergy(nhsno);
+        return allergyDao.getAllergy(nhsno );
     }
 
     @Override
