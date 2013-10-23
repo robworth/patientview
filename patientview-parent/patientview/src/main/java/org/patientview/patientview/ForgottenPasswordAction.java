@@ -35,6 +35,7 @@ import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 public class ForgottenPasswordAction extends Action {
 
@@ -73,6 +74,7 @@ public class ForgottenPasswordAction extends Action {
                         String fromAddress = LegacySpringUtils.getContextProperties().getProperty("noreply.email");
                         EmailUtils.sendEmail(request.getSession().getServletContext(), fromAddress, user.getEmail(),
                                 "[Renal PatientView] Your password has been reset", message);
+                        user.setUpdated(new Date());
                         LegacySpringUtils.getUserManager().save(user);
 
                         AddLog.addLog("system", AddLog.PASSWORD_RESET_FORGOTTEN, username, "",

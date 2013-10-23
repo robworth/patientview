@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
@@ -63,6 +64,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_NAME_FIELD_NAME = "name";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
     private static final String USER_IS_CLINICIAN_FIELD_NAME = "isClinician";
+    private static final String USER_CREATED_FIELD_NAME = "created";
+    private static final String USER_UPDATED_FIELD_NAME = "updated";
+
 
     // admin user fields
     private static final String ADMIN_USER_ID_FIELD_NAME = "uID";
@@ -102,7 +106,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
                         USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
-                        USER_IS_CLINICIAN_FIELD_NAME);
+                        USER_IS_CLINICIAN_FIELD_NAME, USER_CREATED_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
@@ -633,8 +637,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, user.isClinician());
 
         if (user.hasValidUserId()) {
+            userMap.put(USER_UPDATED_FIELD_NAME, new Date());
             namedParameterJdbcTemplate.update(buildUpdateQuery(USER_TABLE_NAME, ID_FIELD_NAME, userMap), userMap);
         } else {
+            userMap.put(USER_CREATED_FIELD_NAME, new Date());
             Number id = userInsert.executeAndReturnKey(userMap);
             user.setUserId(id.longValue());
         }

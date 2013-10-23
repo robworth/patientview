@@ -35,6 +35,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  *
@@ -60,6 +61,7 @@ public class PatientDetailsUpdateAction extends BaseAction {
             // update the user's email
             User user = LegacySpringUtils.getUserManager().getLoggedInUser();
             user.setEmail(email);
+            user.setUpdated(new Date());
             LegacySpringUtils.getUserManager().save(user);
         }
 
