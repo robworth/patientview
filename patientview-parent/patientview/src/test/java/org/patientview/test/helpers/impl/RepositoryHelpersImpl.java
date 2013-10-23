@@ -39,6 +39,7 @@ import org.patientview.test.helpers.RepositoryHelpers;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 /**
  *
@@ -72,6 +73,7 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
         user.setName(name);
         user.setPassword(password);
         user.setUsername(username);
+        user.setCreated(new Date());
         userDao.save(user);
 
         return user;
