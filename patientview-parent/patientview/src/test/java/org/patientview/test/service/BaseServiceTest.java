@@ -41,7 +41,7 @@ import javax.inject.Inject;
  *  hence the need to manually roll back the database in between each test.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context-dao.xml"})
 @Transactional
 public abstract class BaseServiceTest extends BaseTestPvDbSchema {
 
