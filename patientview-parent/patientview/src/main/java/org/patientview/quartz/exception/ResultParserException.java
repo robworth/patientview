@@ -25,11 +25,11 @@ package org.patientview.quartz.exception;
 
 public class ResultParserException extends Exception {
 
-    public ResultParserException(){
+    public ResultParserException() {
         super();
     }
 
-    public ResultParserException(String message, Throwable throwable){
+    public ResultParserException(String message, Throwable throwable) {
         super(message, throwable);
     }
 

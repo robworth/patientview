@@ -21,12 +21,10 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service.impl;
+package org.patientview.service;
 
 import org.patientview.patientview.model.LogEntry;
 import org.patientview.repository.LogEntryDao;
-import org.patientview.service.LogEntryManager;
-import org.patientview.service.SecurityUserManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -82,8 +80,9 @@ public class LogEntryManagerImpl implements LogEntryManager {
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
                                        Calendar startdate, Calendar enddate) {
-        return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
-                securityUserManager.getLoggedInSpecialty());
+         // todo
+       // return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
+        //        securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

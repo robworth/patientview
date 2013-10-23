@@ -29,7 +29,15 @@ import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.*;
+import org.patientview.patientview.model.Centre;
+import org.patientview.patientview.model.Diagnostic;
+import org.patientview.patientview.model.Letter;
+import org.patientview.patientview.model.LogEntry;
+import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.UserLog;
+import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -84,7 +92,7 @@ public class ImportManagerImpl implements ImportManager {
         return unitDao.get(unitCode, null);
     }
 
-    private void handleParserError(File xmlFile, ResultParserException e ){
+    private void handleParserError(File xmlFile, ResultParserException e) {
         createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
         xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
     }
@@ -297,7 +305,7 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void createLogEntry(File xmlFile, String action){
+    private void createLogEntry(File xmlFile, String action) {
         LogEntry logEntry = new LogEntry();
         logEntry.setActor(AddLog.ACTOR_SYSTEM);
         logEntry.setDate(Calendar.getInstance());

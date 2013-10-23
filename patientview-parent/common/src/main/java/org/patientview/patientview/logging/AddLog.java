@@ -24,9 +24,14 @@
 package org.patientview.patientview.logging;
 
 import org.patientview.patientview.model.LogEntry;
-import org.patientview.utils.LegacySpringUtils;
+import org.patientview.service.LogEntryManager;
+
+import javax.inject.Inject;
 
 public final class AddLog {
+
+    @Inject
+    private LogEntryManager logEntryManager;
 
     private AddLog() {
     }
@@ -52,7 +57,7 @@ public final class AddLog {
     public static final String PATIENT_COUNT = "patient count";
     public static final String EMAIL_VERIFY = "email verified";
 
-    public static void addLog(String actor, String action, String user, String nhsno, String unitcode,
+    public void addLog(String actor, String action, String user, String nhsno, String unitcode,
                               String extrainfo) {
         actor = (actor == null) ? "" : actor;
         action = (action == null) ? "" : action;
@@ -63,7 +68,7 @@ public final class AddLog {
 
         LogEntry entry = new LogEntry(nhsno, user, action, actor, unitcode, extrainfo);
 
-        LegacySpringUtils.getLogEntryManager().save(entry);
+        logEntryManager.save(entry);
 
     }
 }

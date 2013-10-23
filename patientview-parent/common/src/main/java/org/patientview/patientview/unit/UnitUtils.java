@@ -23,15 +23,13 @@
 
 package org.patientview.patientview.unit;
 
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.patientview.patientview.model.Unit;
+import org.patientview.service.UnitManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -41,24 +39,27 @@ public final class UnitUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UnitUtils.class);
 
+    @Inject
+    private UnitManager unitManager;
+
     private UnitUtils() {
     }
 
-    public static void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {
+    public void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {
         putRelevantUnitsInRequestMinusSomeUnits(request, new String[]{PATIENT_ENTERS_UNITCODE}, new String[]{});
     }
 
-    public static void putRelevantUnitsInRequestMinusSomeUnits(HttpServletRequest request, String[] notTheseUnitCodes,
+    public void putRelevantUnitsInRequestMinusSomeUnits(HttpServletRequest request, String[] notTheseUnitCodes,
                                                                String[] plusTheseUnitCodes) throws Exception {
-        List items = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits(notTheseUnitCodes, plusTheseUnitCodes);
+        List items = unitManager.getLoggedInUsersUnits(notTheseUnitCodes, plusTheseUnitCodes);
         request.getSession().setAttribute("units", items);
     }
 
-    public static Unit retrieveUnit(String unitcode) {
+    public Unit retrieveUnit(String unitcode) {
         unitcode = unitcode.toUpperCase();
         Unit unit = null;
         try {
-            unit = LegacySpringUtils.getUnitManager().get(unitcode);
+            unit = unitManager.get(unitcode);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             LOGGER.debug(e.getMessage(), e);
@@ -67,11 +68,13 @@ public final class UnitUtils {
     }
 
     public static String retrieveUnitcode(HttpServletRequest request) {
-        User user = UserUtils.retrieveUser(request);
+        //TODO
+        //User user = UserUtils.retrieveUser(request);
 
-        UserMapping userMapping = UserUtils.retrieveUserMappingsPatientEntered(user);
+        //UserMapping userMapping = UserUtils.retrieveUserMappingsPatientEntered(user);
 
-        return userMapping.getUnitcode();
+        //return userMapping.getUnitcode();
+        return null;
     }
 
     // update the unit by setting it's properties

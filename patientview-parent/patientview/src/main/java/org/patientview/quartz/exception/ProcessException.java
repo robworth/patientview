@@ -24,7 +24,7 @@ package org.patientview.quartz.exception;
 
 public class ProcessException extends Exception {
 
-    public ProcessException(){
+    public ProcessException() {
         super();
     }
 
@@ -32,7 +32,7 @@ public class ProcessException extends Exception {
         super(message);
     }
 
-    public ProcessException(String message, Throwable throwable){
+    public ProcessException(String message, Throwable throwable) {
         super(message, throwable);
     }
 

@@ -30,7 +30,7 @@ import org.patientview.patientview.model.Unit_;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
-import org.patientview.utils.LegacySpringUtils;
+import org.patientview.service.UserManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -61,6 +61,9 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Inject
     private DataSource dataSource;
+
+    @Inject
+    private UserManager userManager;
 
     @PostConstruct
     public void init() {
@@ -271,7 +274,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   um.unitcode = ? ";
 
-        String userRole = LegacySpringUtils.getUserManager().getLoggedInUserRole();
+        String userRole = userManager.getLoggedInUserRole();
         if ("radaradmin".equals(userRole)) {
             sql += " AND "
                     + " (sur.role = 'radaradmin') ";

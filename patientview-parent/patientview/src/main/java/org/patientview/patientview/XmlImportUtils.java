@@ -27,8 +27,6 @@ import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.utils.LegacySpringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXParseException;
@@ -99,7 +97,8 @@ public final class XmlImportUtils {
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        String emailBody = EmailUtils.createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName, context);
+        String emailBody = EmailUtils.createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName,
+                context);
 
         for (String toAddress : toAddresses) {
             EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),

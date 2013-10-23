@@ -197,7 +197,7 @@
                 </configuration>
             </plugin>
 
-            <!-- http://maven.apache.org/plugins/maven-remote-resources-plugin/usage.html -->
+            <!-- http://maven.apache.org/plugins/maven-remote-resources-plugin/usage.html -
             <plugin>
                 <artifactId>maven-remote-resources-plugin</artifactId>
                 <version>1.4</version>
@@ -214,7 +214,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>      -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

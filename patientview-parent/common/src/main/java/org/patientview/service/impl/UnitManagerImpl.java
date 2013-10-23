@@ -25,19 +25,18 @@ package org.patientview.service.impl;
 
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.model.PatientCount;
+import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UnitStat;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
 import org.patientview.repository.PatientCountDao;
 import org.patientview.repository.UnitDao;
 import org.patientview.repository.UnitStatDao;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
-import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -64,6 +63,7 @@ public class UnitManagerImpl implements UnitManager {
 
     @Inject
     private UserManager userManager;
+
 
     @Override
     public Unit get(Long id) {
@@ -144,7 +144,7 @@ public class UnitManagerImpl implements UnitManager {
     public List<String> getUsersUnitCodes(User user) {
         List<String> unitCodes = new ArrayList<String>();
 
-        if (user != null && !"superadmin".equals(LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user))) {
+        if (user != null && !"superadmin".equals(userManager.getCurrentSpecialtyRole(user))) {
 
             List<UserMapping> userMappings = userManager.getUserMappings(user.getUsername());
 

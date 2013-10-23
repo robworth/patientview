@@ -20,12 +20,35 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.quartz.exception;
 
-public class EmailGenerationException extends Exception {
+package org.patientview.patientview.logon;
 
-    public EmailGenerationException(String message, Throwable throwable){
-        super(message, throwable);
+public class PatientLogon extends Logon implements Cloneable {
+
+    public PatientLogon() {
     }
 
+    public PatientLogon(String username) {
+        setUsername(username);
+    }
+
+/*    public PatientLogon(String username, String password, String name, String email, boolean emailverified,
+                        boolean firstlogon, boolean dummypatient, Date lastlogon, int failedlogons,
+                        boolean accountlocked) {
+        setUsername(username);
+        setPassword(password);
+        setName(name);
+        setEmail(email);
+        setEmailverified(emailverified);
+        setRole("patient");
+        setFirstlogon(firstlogon);
+        setDummypatient(dummypatient);
+        setLastlogon(lastlogon);
+        setFailedlogons(failedlogons);
+        setAccountlocked(accountlocked);
+    }      */
+
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

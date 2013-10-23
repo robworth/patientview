@@ -25,8 +25,6 @@ package org.patientview.patientview.logon;
 
 import org.patientview.ibd.Ibd;
 import org.patientview.model.Patient;
-import org.patientview.service.UserManager;
-import org.patientview.utils.LegacySpringUtils;
 
 import java.util.Date;
 
@@ -84,9 +82,11 @@ public abstract class Logon {
     public String getRole() {
 
         if (role == null) {
+            return null;
+           //todo
             // attempt to work this out cos it's no longer in this db table
-            UserManager userManager = LegacySpringUtils.getUserManager();
-            role = userManager.getCurrentSpecialtyRole(userManager.get(this.getUsername()));
+            //UserManager userManager = LegacySpringUtils.getUserManager();
+           // role = userManager.getCurrentSpecialtyRole(userManager.get(this.getUsername()));
         }
 
         return role;
@@ -137,7 +137,9 @@ public abstract class Logon {
     }
 
     public String getDisplayRole() {
-        return LogonUtils.displayRole(getRole());
+        //TODO
+        // return LogonUtils.displayRole(getRole());
+        return null;
     }
 
     public boolean isDummypatient() {
