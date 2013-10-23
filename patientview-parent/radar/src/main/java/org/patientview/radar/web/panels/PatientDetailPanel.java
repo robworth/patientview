@@ -2,6 +2,7 @@ package org.patientview.radar.web.panels;
 
 
 import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.datetime.PatternDateConverter;
@@ -38,8 +39,9 @@ public class PatientDetailPanel extends Panel {
         details.add(radarNumberField);
 
         // disease group
-        Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patient.getDiseaseGroup(),
-                "name"));
+        DiseaseGroup patientDiseaseGroup = patient.getDiseaseGroup();
+        patientDiseaseGroup = patientDiseaseGroup == null ? new DiseaseGroup() : patientDiseaseGroup;
+        Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patientDiseaseGroup, "name"));
         details.add(diseaseGroup);
 
         // forename
