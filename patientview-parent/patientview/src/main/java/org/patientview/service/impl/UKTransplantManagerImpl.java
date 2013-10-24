@@ -25,7 +25,6 @@ package org.patientview.service.impl;
 
 import com.Ostermiller.util.CSVParser;
 import org.patientview.model.Patient;
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.UktStatus;
@@ -34,6 +33,7 @@ import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.repository.UktStatusDao;
 import org.patientview.repository.UnitDao;
+import org.patientview.service.LogEntryManager;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UKTransplantManager;
 import org.patientview.utils.LegacySpringUtils;
@@ -54,11 +54,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,6 +78,9 @@ public class UKTransplantManagerImpl implements UKTransplantManager {
 
     @Inject
     private SecurityUserManager securityUserManager;
+
+    @Inject
+    private LogEntryManager logEntryManager;
 
     @Value("${dataout.directory}")
     private String dataOutDirectory;
@@ -106,7 +108,8 @@ public class UKTransplantManagerImpl implements UKTransplantManager {
         deleteFile(file);
 
         // log a success
-       AddLog.addLog(AddLog.ACTOR_SYSTEM, AddLog.UKT_DATA_REPLACE, "", "", "", file.getName());
+        logEntryManager.addLog(logEntryManager.ACTOR_SYSTEM, logEntryManager.UKT_DATA_REPLACE, "", "", "",
+                file.getName());
     }
 
     public void deleteFile(File file) {

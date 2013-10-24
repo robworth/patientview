@@ -23,15 +23,13 @@
 
 package org.patientview.patientview;
 
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -75,8 +73,10 @@ public class ForgottenPasswordAction extends Action {
                                 "[Renal PatientView] Your password has been reset", message);
                         LegacySpringUtils.getUserManager().save(user);
 
-                        AddLog.addLog("system", AddLog.PASSWORD_RESET_FORGOTTEN, username, "",
-                                UserUtils.retrieveUsersRealUnitcodeBestGuess(username), user.getEmail());
+                        LegacySpringUtils.getLogEntryManager().addLog("system", LegacySpringUtils.getLogEntryManager()
+                                .PASSWORD_RESET_FORGOTTEN, username, "",
+                                LegacySpringUtils.getUserManager().getUsersRealUnitcodeBestGuess(username),
+                                user.getEmail());
                     } else {
                         request.setAttribute("noMatch", true);
                         forwardMapping = "input";

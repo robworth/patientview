@@ -25,7 +25,6 @@ package org.patientview.service.impl;
 
 import org.patientview.model.Patient;
 import org.patientview.patientview.PatientDetails;
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
@@ -33,13 +32,13 @@ import org.patientview.repository.PatientDao;
 import org.patientview.service.DiagnosisManager;
 import org.patientview.service.EdtaCodeManager;
 import org.patientview.service.LetterManager;
+import org.patientview.service.LogEntryManager;
 import org.patientview.service.MedicineManager;
 import org.patientview.service.PatientManager;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.TestResultManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
-import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -75,6 +74,10 @@ public class PatientManagerImpl implements PatientManager {
 
     @Inject
     private MedicineManager medicineManager;
+
+    @Inject
+    private LogEntryManager logEntryManager;
+
 
     @Override
     public Patient get(Long id) {
@@ -166,8 +169,8 @@ public class PatientManagerImpl implements PatientManager {
 
                 patientDetails.add(patientDetail);
 
-                AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
-                        AddLog.PATIENT_VIEW, "", patient.getNhsno(),
+                logEntryManager.addLog(securityUserManager.getLoggedInUsername(),
+                        logEntryManager.PATIENT_VIEW, "", patient.getNhsno(),
                         patient.getUnitcode(), "");
             }
         }

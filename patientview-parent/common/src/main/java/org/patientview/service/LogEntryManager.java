@@ -36,6 +36,28 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public interface LogEntryManager {
 
+    //TODO move to enum
+    String PASSWORD_RESET_FORGOTTEN = "password reset forgotten";
+    String PASSWORD_RESET = "password reset";
+    String PASSWORD_CHANGE = "password change";
+    String PASSWORD_LOCKED = "password locked";
+    String PASSWORD_UNLOCKED = "password unlocked";
+    String EMAIL_CHANGED = "email changed";
+    String ACTOR_SYSTEM = "system";
+    String PATIENT_DATA = "patient data";
+    String PATIENT_DATA_FOLLOWUP = "patient data load";
+    String PATIENT_DATA_FAIL = "patient data fail";
+    String PATIENT_DATA_REMOVE = "patient data remove";
+    String PATIENT_DATA_CORRUPT = "patient data corrupt";
+    String LOGGED_ON = "logon";
+    String PATIENT_ADD = "patient add";
+    String PATIENT_DELETE = "patient delete";
+    String PATIENT_VIEW = "patient view";
+    String ADMIN_ADD = "admin add";
+    String UKT_DATA_REPLACE = "ukt data";
+    String PATIENT_COUNT = "patient count";
+    String EMAIL_VERIFY = "email verified";
+
     void save(LogEntry logEntry);
 
     LogEntry getLatestLogEntry(String nhsno, String action);
@@ -49,4 +71,7 @@ public interface LogEntryManager {
                                 Calendar startdate, Calendar enddate);
 
     List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate);
+
+    void addLog(String actor, String action, String user, String nhsno, String unitcode,
+                String extrainfo);
 }

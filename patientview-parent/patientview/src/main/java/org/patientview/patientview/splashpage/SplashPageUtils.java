@@ -25,6 +25,7 @@ package org.patientview.patientview.splashpage;
 
 import org.patientview.patientview.model.SplashPage;
 import org.patientview.patientview.model.SplashPageUserSeen;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
@@ -64,10 +65,17 @@ public final class SplashPageUtils {
 
         final boolean isSuperAdmin = LegacySpringUtils.getSecurityUserManager().isRolePresent("superadmin");
 
+        String[] unwantedUnits;
         if (isSuperAdmin && !allUnitsSplashPageAlreadyExists) {
-            UnitUtils.putRelevantUnitsInRequestMinusSomeUnits(request, unitsWithSplashPages, new String[]{"ALL"});
+            unwantedUnits = new String[]{"ALL"};
         } else {
-            UnitUtils.putRelevantUnitsInRequestMinusSomeUnits(request, unitsWithSplashPages, new String[]{});
+            unwantedUnits = new String[]{};
         }
+
+        List<Unit> usersUnits
+                = LegacySpringUtils.getUnitManager().
+                getLoggedInUsersUnits(unitsWithSplashPages, unwantedUnits);
+
+        request.getSession().setAttribute("units", usersUnits);
     }
 }

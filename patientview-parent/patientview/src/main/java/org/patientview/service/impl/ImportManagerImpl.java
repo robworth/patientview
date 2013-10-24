@@ -28,8 +28,8 @@ import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Centre;
+import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.LogEntry;
@@ -37,15 +37,14 @@ import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.UserLog;
-import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.parser.ResultParser;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.quartz.exception.ResultParserException;
 import org.patientview.repository.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
+import org.patientview.service.PatientManager;
 import org.patientview.service.UserLogManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
@@ -85,6 +84,9 @@ public class ImportManagerImpl implements ImportManager {
     @Inject
     private LogEntryManager logEntryManager;
 
+    @Inject
+    private PatientManager patientManager;
+
 
     @Override
     public Unit retrieveUnit(String unitCode) {
@@ -93,18 +95,18 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void handleParserError(File xmlFile, ResultParserException e) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
+        createLogEntry(xmlFile, logEntryManager.PATIENT_DATA_FAIL);
         xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
     }
 
     private void handleEmptyFile(File xmlFile) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
+        createLogEntry(xmlFile, logEntryManager.PATIENT_DATA_FAIL);
         xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
 
     }
 
     private void handleCorruptNodes(File xmlFile, ResultParser resultParser) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
+        createLogEntry(xmlFile, logEntryManager.PATIENT_DATA_FAIL);
         xmlImportUtils.sendCorruptDataEmail(resultParser);
     }
 
@@ -160,13 +162,13 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void removePatientFromSystem(ResultParser parser) {
-        UserUtils.removePatientFromSystem(parser.getData("nhsno"), parser.getData("centrecode"));
+        patientManager.removePatientFromSystem(parser.getData("nhsno"), parser.getData("centrecode"));
     }
 
     private String processPatientData(ResultParser resultParser) {
         if (hasPatientLeft(resultParser)) {
             removePatientFromSystem(resultParser);
-            return AddLog.PATIENT_DATA_REMOVE;
+            return logEntryManager.PATIENT_DATA_REMOVE;
         }  else {
             updatePatientDetails(resultParser.getPatient());
             updateCentreDetails(resultParser.getCentre());
@@ -190,7 +192,7 @@ public class ImportManagerImpl implements ImportManager {
             // Insert or update record in pv_user_log table,
             // with current import date which is used in patient login
             createUserLog(resultParser);
-            return AddLog.PATIENT_DATA_FOLLOWUP;
+            return logEntryManager.PATIENT_DATA_FOLLOWUP;
         }
     }
 
@@ -307,7 +309,7 @@ public class ImportManagerImpl implements ImportManager {
 
     private void createLogEntry(File xmlFile, String action) {
         LogEntry logEntry = new LogEntry();
-        logEntry.setActor(AddLog.ACTOR_SYSTEM);
+        logEntry.setActor(logEntryManager.ACTOR_SYSTEM);
         logEntry.setDate(Calendar.getInstance());
         logEntry.setNhsno(xmlImportUtils.getNhsNumber(xmlFile.getName()));
         logEntry.setUnitcode(xmlImportUtils.getUnitCode(xmlFile.getName()));

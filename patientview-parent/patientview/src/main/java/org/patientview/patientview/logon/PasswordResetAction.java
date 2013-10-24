@@ -23,15 +23,15 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.User;
+import org.patientview.service.LogEntryManager;
+import org.patientview.service.UserManager;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,8 @@ public class PasswordResetAction extends Action {
                                  HttpServletResponse response) throws Exception {
 
         String username = BeanUtils.getProperty(form, "username");
-        User user = LegacySpringUtils.getUserManager().get(username);
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        User user = userManager.get(username);
 
         String mappingToFind = "";
 
@@ -53,8 +54,11 @@ public class PasswordResetAction extends Action {
             user.setFailedlogons(0);
             user.setAccountlocked(false);
 
-            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_RESET,
-                    user.getUsername(), "", UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
+            LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
+
+            logEntryManager.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                    logEntryManager.PASSWORD_RESET, user.getUsername(), "",
+                    userManager.getUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
             LegacySpringUtils.getUserManager().save(user);
 

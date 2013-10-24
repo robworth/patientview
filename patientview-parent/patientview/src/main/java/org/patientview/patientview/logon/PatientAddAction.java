@@ -23,19 +23,19 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.logging.AddLog;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
+import org.patientview.service.LogEntryManager;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,26 +46,51 @@ public class PatientAddAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
+        PatientLogon patientLogon = new PatientLogon();
+        PatientLogon gpPatientLogon = new PatientLogon();
+
         String username = BeanUtils.getProperty(form, "username");
-        String password = LogonUtils.generateNewPassword();
-        String gppassword = LogonUtils.generateNewPassword();
+        patientLogon.setUsername(username);
+        gpPatientLogon.setUsername(username);
+
         String name = BeanUtils.getProperty(form, "name");
+        patientLogon.setName(name);
+        gpPatientLogon.setName(name + "-GP");
+
         String email = BeanUtils.getProperty(form, "email");
+        patientLogon.setEmail(email);
+        patientLogon.setEmailverified(false);
+        gpPatientLogon.setEmail(null);
+
         String nhsno = BeanUtils.getProperty(form, "nhsno").trim();
+        patientLogon.setNhsno(nhsno);
+        gpPatientLogon.setNhsno(nhsno);
+
         String unitcode = BeanUtils.getProperty(form, "unitcode");
+        patientLogon.setUnitcode(unitcode);
+        patientLogon.setUnitcode(unitcode);
+
         String overrideDuplicateNhsno = BeanUtils.getProperty(form, "overrideDuplicateNhsno");
         String overrideInvalidNhsno = BeanUtils.getProperty(form, "overrideInvalidNhsno");
-        boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
 
-        PatientLogon patientLogon =
-                new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false);
+        String user = BeanUtils.getProperty(form, "username");
+        patientLogon.setUsername(user);
+        gpPatientLogon.setUsername(user + "GP");
+
+
+        patientLogon.setPassword(LogonUtils.generateNewPassword());
+        gpPatientLogon.setPassword(LogonUtils.generateNewPassword());
+
+        patientLogon.setFirstlogon(true);
+        gpPatientLogon.setFirstlogon(true);
+
+
+        boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
+        patientLogon.setDummypatient(dummypatient);
+        gpPatientLogon.setDummypatient(dummypatient);
 
         UserMapping userMapping = new UserMapping(username, unitcode, nhsno);
         UserMapping userMappingPatientEnters = new UserMapping(username, UnitUtils.PATIENT_ENTERS_UNITCODE, nhsno);
-
-        PatientLogon gpPatientLogon =
-                new PatientLogon(username + "-GP", gppassword, name + "-GP", null, false, true, dummypatient,
-                        null, 0, false);
 
         UserMapping userMappingGp = new UserMapping(username + "-GP", unitcode, nhsno);
 
@@ -129,8 +154,10 @@ public class PatientAddAction extends Action {
                 LegacySpringUtils.getUserLogManager().save(userLog);
             }
 
-            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
-                    patientLogon.getUsername(),
+            LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
+
+            logEntryManager.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                    logEntryManager.PATIENT_ADD, patientLogon.getUsername(),
                     userMapping.getNhsno(), userMapping.getUnitcode(), "");
             mappingToFind = "success";
         }

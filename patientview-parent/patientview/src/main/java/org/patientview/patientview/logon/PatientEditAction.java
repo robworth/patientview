@@ -83,9 +83,17 @@ public class PatientEditAction extends Action {
             request.setAttribute("nhsnot", nhsnoThing);
         } else {
 
-            PatientLogon patient =
-                    new PatientLogon(username, password, name, email, emailverified, firstlogon, dummypatient,
-                            lastlogon, failedlogons, accountlocked);
+            PatientLogon patient = new PatientLogon();
+            patient.setUsername(username);
+            patient.setPassword(password);
+            patient.setName(name);
+            patient.setEmail(email);
+            patient.setEmailverified(emailverified);
+            patient.setFirstlogon(firstlogon);
+            patient.setDummypatient(dummypatient);
+            patient.setLastlogon(lastlogon);
+            patient.setFailedlogons(failedlogons);
+            patient.setAccountlocked(accountlocked);
             LegacySpringUtils.getUserManager().saveUserFromPatient(patient);
 
             List<UserMapping> userMappings = findUsersSiblings(username, unitcode);

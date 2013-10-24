@@ -23,14 +23,14 @@
 
 package org.patientview.ibd.action.nutrition;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.ibd.model.Nutrition;
-import org.patientview.patientview.user.UserUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +43,8 @@ public class NutritionAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        List<Nutrition> nutritionList = getIbdManager().getAllNutritions(UserUtils.retrieveUser(request));
+        List<Nutrition> nutritionList = getIbdManager().getAllNutritions(LegacySpringUtils.getUserManager()
+                .retrieveUser(request));
 
         if (nutritionList != null) {
             request.setAttribute(Ibd.NUTRITION_LIST, nutritionList);

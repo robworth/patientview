@@ -21,14 +21,21 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.test.helpers.impl;
+package org.patientview.test.repository;
 
-import org.patientview.test.helpers.ServiceHelpers;
-import org.springframework.stereotype.Repository;
+import org.junit.runner.RunWith;
+import org.patientview.test.BaseTestPvDbSchema;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
+ *  All repository tests should extend.
  *
+ *  Sets up everything required for hibernate, persistence.
  */
-@Repository(value = "serviceHelpers")
-public class ServiceHelpersImpl extends RepositoryHelpersImpl implements ServiceHelpers {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:test-context-dao.xml"})
+@Transactional
+public abstract class BaseDaoTest extends BaseTestPvDbSchema {
 }

@@ -23,7 +23,7 @@
 
 package org.patientview.security.impl;
 
-import org.patientview.patientview.logon.LogonUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -33,11 +33,15 @@ public class PatientViewPasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence charSequence) {
-        return LogonUtils.hashPassword(charSequence.toString());
+        return hashPassword(charSequence.toString());
     }
 
     @Override
     public boolean matches(CharSequence charSequence, String s) {
         return encode(charSequence).equals(s);
+    }
+
+    public static String hashPassword(String password) {
+        return DigestUtils.sha256Hex(password);
     }
 }

@@ -23,14 +23,14 @@
 
 package org.patientview.ibd.action.mydetails;
 
-import org.patientview.ibd.Ibd;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.patientview.PatientDetailsAction;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.service.ibd.IbdManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.ibd.Ibd;
+import org.patientview.ibd.model.MyIbd;
+import org.patientview.patientview.PatientDetailsAction;
+import org.patientview.service.ibd.IbdManager;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -51,7 +51,7 @@ public class MyDetailsAction extends PatientDetailsAction {
      */
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-        MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+        MyIbd myIbd = getIbdManager().getMyIbd(LegacySpringUtils.getUserManager().retrieveUser(request));
 
         if (myIbd != null && myIbd.getDiagnosis() != null) {
             request.getSession().setAttribute(Ibd.MY_IBD_DIAGNOSIS_PARAM, myIbd.getDiagnosis().getName());

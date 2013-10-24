@@ -23,16 +23,16 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.EmailVerificationUtils;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.user.EmailVerificationUtils;
+import org.patientview.service.LogEntryManager;
+import org.patientview.service.UserManager;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,11 +78,14 @@ public class EmailChangeAction extends Action {
 
             // ok so it worked, save the email
             // change if it was made.
-            LegacySpringUtils.getUserManager().save(user);
+            UserManager userManager = LegacySpringUtils.getUserManager();
+            userManager.save(user);
+
+            LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
 
             // db logging
-            AddLog.addLog(user.getUsername(), AddLog.EMAIL_CHANGED, user.getUsername(), "",
-                    UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
+            logEntryManager.addLog(user.getUsername(), logEntryManager.EMAIL_CHANGED, user.getUsername(), "",
+                    userManager.getUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
             // email verification - only required if the user has supplied an email address
             // (regardless of if it is the same as the one used to create by the admin)

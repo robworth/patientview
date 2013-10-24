@@ -25,7 +25,6 @@ package org.patientview.patientview.comment;
 
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +47,9 @@ public final class CommentUtils {
                 permissionToReadComment = true;
             } else {
 
-                List<UserMapping> userMappingsForUser = UserUtils.retrieveUserMappings(user);
+
+                List<UserMapping> userMappingsForUser = LegacySpringUtils.getUserManager().getUserMappings(
+                        user.getUsername());
                 List<UserMapping> userMappingsForComment
                         = LegacySpringUtils.getUserManager().getUserMappingsForNhsNo(nhsno);
 

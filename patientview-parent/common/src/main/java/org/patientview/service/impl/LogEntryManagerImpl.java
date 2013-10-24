@@ -21,10 +21,12 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service;
+package org.patientview.service.impl;
 
 import org.patientview.patientview.model.LogEntry;
 import org.patientview.repository.LogEntryDao;
+import org.patientview.service.LogEntryManager;
+import org.patientview.service.SecurityUserManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -36,6 +38,9 @@ import java.util.List;
  */
 @Service(value = "logEntryManager")
 public class LogEntryManagerImpl implements LogEntryManager {
+
+
+
 
     @Inject
     private LogEntryDao logEntryDao;
@@ -81,12 +86,30 @@ public class LogEntryManagerImpl implements LogEntryManager {
     public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
                                        Calendar startdate, Calendar enddate) {
          // todo
-       // return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
+        //return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
         //        securityUserManager.getLoggedInSpecialty());
+        return null;
     }
 
     @Override
     public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate) {
         return logEntryDao.getWithUnitCode(unitcode, startdate, enddate, securityUserManager.getLoggedInSpecialty());
+    }
+
+
+
+    public void addLog(String actor, String action, String user, String nhsno, String unitcode,
+                       String extrainfo) {
+        actor = (actor == null) ? "" : actor;
+        action = (action == null) ? "" : action;
+        user = (user == null) ? "" : user;
+        nhsno = (nhsno == null) ? "" : nhsno;
+        unitcode = (unitcode == null) ? "" : unitcode;
+        extrainfo = (extrainfo == null) ? "" : extrainfo;
+
+        LogEntry entry = new LogEntry(nhsno, user, action, actor, unitcode, extrainfo);
+
+        this.save(entry);
+
     }
 }

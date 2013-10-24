@@ -23,7 +23,7 @@
 
 package org.patientview.security;
 
-import org.patientview.utils.LegacySpringUtils;
+import org.patientview.service.SecurityUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.LockedException;
@@ -31,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +47,9 @@ public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAut
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientViewAuthenticationFailureHandler.class);
 
     private int allowedfailedlogons;
+
+    @Inject
+    protected SecurityUserManager securityUserManager;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -71,10 +75,10 @@ public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAut
             } else {
 
                 // assume a failed login that contributes to an account lockout
-                LegacySpringUtils.getSecurityUserManager().incrementFailedLogins(username);
+                securityUserManager.incrementFailedLogins(username);
 
-                if (LegacySpringUtils.getSecurityUserManager().getFailedLogins(username) >= allowedfailedlogons) {
-                    LegacySpringUtils.getSecurityUserManager().lockUserAccount(username);
+                if (securityUserManager.getFailedLogins(username) >= allowedfailedlogons) {
+                    securityUserManager.lockUserAccount(username);
                     addAccountLockedTokenToSession(request);
                     LOGGER.info("User locked out, username: {}", username);
                 }

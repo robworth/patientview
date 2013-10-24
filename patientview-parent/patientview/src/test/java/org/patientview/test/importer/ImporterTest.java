@@ -30,7 +30,6 @@ import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.XmlImportUtils;
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
@@ -173,7 +172,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.process(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                        AddLog.PATIENT_DATA_FOLLOWUP);
+                LogEntryManager.PATIENT_DATA_FOLLOWUP);
 
         List<Centre> centres = centreManager.getAll();
 
@@ -217,7 +216,7 @@ public class ImporterTest extends BaseServiceTest {
         assertEquals("Incorrect number of results after double run import", 1, results.size());
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FOLLOWUP);
+                LogEntryManager.PATIENT_DATA_FOLLOWUP);
     }
 
     /**
@@ -236,7 +235,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
+                LogEntryManager.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -281,7 +280,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                        AddLog.PATIENT_DATA_FAIL);
+                LogEntryManager.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -301,7 +300,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
+                LogEntryManager.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -333,7 +332,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.process(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FOLLOWUP);
+                LogEntryManager.PATIENT_DATA_FOLLOWUP);
     }
 
     /**
@@ -353,7 +352,7 @@ public class ImporterTest extends BaseServiceTest {
         checkNoDataHasBeenImportedFromIBDImportFile();
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
+                LogEntryManager.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -369,7 +368,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.process(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                                AddLog.PATIENT_DATA_FOLLOWUP);
+                LogEntryManager.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 
@@ -391,7 +390,7 @@ public class ImporterTest extends BaseServiceTest {
         importManager.process(xmlFileResource.getFile());
 
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
-                                AddLog.PATIENT_DATA_FOLLOWUP);
+                LogEntryManager.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 

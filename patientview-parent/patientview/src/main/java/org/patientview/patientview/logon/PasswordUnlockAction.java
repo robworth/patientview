@@ -23,16 +23,16 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.service.LogEntryManager;
+import org.patientview.service.UserManager;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,14 +47,18 @@ public class PasswordUnlockAction extends Action {
 
         String mappingToFind = "";
 
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
+
         if (user != null) {
             user.setFailedlogons(0);
             user.setAccountlocked(false);
-            LegacySpringUtils.getUserManager().save(user);
+            userManager.save(user);
 
-            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PASSWORD_UNLOCKED,
-                    user.getUsername(), "",
-                    UserUtils.retrieveUsersRealUnitcodeBestGuess(username), "");
+
+            logEntryManager.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                    logEntryManager.PASSWORD_UNLOCKED, user.getUsername(), "",
+                    userManager.getUsersRealUnitcodeBestGuess(username), "");
 
             mappingToFind = "success";
         }

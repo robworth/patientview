@@ -29,7 +29,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
@@ -41,7 +40,8 @@ public class ContactFormAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
 
-        User user = UserUtils.retrieveUser(request);
+
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         if (user != null) {
             String message = request.getParameter("message");

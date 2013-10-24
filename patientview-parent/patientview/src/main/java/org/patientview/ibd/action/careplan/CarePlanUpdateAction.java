@@ -23,18 +23,18 @@
 
 package org.patientview.ibd.action.careplan;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.ibd.Ibd;
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.ibd.model.CarePlan;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.ibd.Ibd;
+import org.patientview.ibd.action.BaseAction;
+import org.patientview.ibd.model.CarePlan;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +52,7 @@ public class CarePlanUpdateAction extends BaseAction {
             return mapping.findForward(INPUT);
         }
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         CarePlan carePlan = getIbdManager().getCarePlan(user);
 

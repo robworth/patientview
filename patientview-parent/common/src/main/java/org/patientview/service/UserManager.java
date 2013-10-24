@@ -33,6 +33,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -75,6 +76,8 @@ public interface UserManager {
     List<User> getAllUsers();
 
     void save(UserMapping userMapping);
+
+    User retrieveUser(HttpServletRequest request);
 
     void deleteUserMappings(String username, String unitcode);
 

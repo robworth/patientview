@@ -23,17 +23,16 @@
 
 package org.patientview.ibd.action.careplan;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.ibd.model.CarePlan;
 import org.patientview.patientview.model.EdtaCode;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,7 +66,7 @@ public class CarePlanEditAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        CarePlan carePlan = getIbdManager().getCarePlan(UserUtils.retrieveUser(request));
+        CarePlan carePlan = getIbdManager().getCarePlan(LegacySpringUtils.getUserManager().retrieveUser(request));
 
         if (carePlan == null) {
             carePlan = new CarePlan();

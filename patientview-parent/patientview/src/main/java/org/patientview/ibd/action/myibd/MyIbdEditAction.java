@@ -23,15 +23,15 @@
 
 package org.patientview.ibd.action.myibd;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.ibd.Ibd;
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.ibd.Ibd;
+import org.patientview.ibd.action.BaseAction;
+import org.patientview.ibd.model.MyIbd;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +43,7 @@ public class MyIbdEditAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+        MyIbd myIbd = getIbdManager().getMyIbd(LegacySpringUtils.getUserManager().retrieveUser(request));
 
         if (myIbd == null) {
             myIbd = new MyIbd();

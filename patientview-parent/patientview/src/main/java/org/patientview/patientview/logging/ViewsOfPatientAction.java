@@ -23,19 +23,20 @@
 
 package org.patientview.patientview.logging;
 
-import java.util.Calendar;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
+import java.util.List;
 
 public class ViewsOfPatientAction extends Action {
 
@@ -46,9 +47,13 @@ public class ViewsOfPatientAction extends Action {
         String nhsno = BeanUtils.getProperty(form, "nhsno");
         List log = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, startdate, enddate, "patient view");
         request.setAttribute("log", log);
-        UnitUtils.putRelevantUnitsInRequest(request);
+
+        List<Unit> usersUnits = LegacySpringUtils.getUnitManager().
+                getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
+        request.getSession().setAttribute("units", usersUnits);
+
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
-        BeanUtils.setProperty(form, "action", AddLog.PATIENT_VIEW);
+        BeanUtils.setProperty(form, "action", LegacySpringUtils.getLogEntryManager().PATIENT_VIEW);
         return LogonUtils.logonChecks(mapping, request);
     }
 }

@@ -23,14 +23,14 @@
 
 package org.patientview.ibd.action.symptoms;
 
-import org.patientview.ibd.Ibd;
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.patientview.ibd.Ibd;
+import org.patientview.ibd.action.BaseAction;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,8 @@ public class GraphDataAction extends BaseAction {
                                  HttpServletResponse response) throws Exception {
         DynaActionForm dynaForm = (DynaActionForm) form;
 
-        User user = UserUtils.retrieveUser(request);
+
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         // can only return data if we have a graph type
         Integer graphType = (Integer) dynaForm.get(Ibd.GRAPH_TYPE_PARAM);

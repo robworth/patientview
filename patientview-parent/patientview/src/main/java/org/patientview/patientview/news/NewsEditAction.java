@@ -23,17 +23,19 @@
 
 package org.patientview.patientview.news;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.patientview.model.News;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.News;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class NewsEditAction extends Action {
 
@@ -43,7 +45,10 @@ public class NewsEditAction extends Action {
         Long idLong = Long.decode(id);
         News newsItem = LegacySpringUtils.getNewsManager().get(idLong);
         request.setAttribute("news", newsItem);
-        UnitUtils.putRelevantUnitsInRequest(request);
+        List<Unit> usersUnits = LegacySpringUtils.getUnitManager().
+                getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
+
+        request.getSession().setAttribute("units", usersUnits);
 
         return mapping.findForward("success");
     }

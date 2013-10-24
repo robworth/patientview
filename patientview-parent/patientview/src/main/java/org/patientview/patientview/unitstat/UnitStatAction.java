@@ -23,17 +23,17 @@
 
 package org.patientview.patientview.unitstat;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UnitStat;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.UnitStat;
+import org.patientview.service.LogEntryManager;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -81,21 +81,24 @@ public class UnitStatAction extends Action {
     }
 
     private List statsHeadings() {
+
+        LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
+
         List<StatsHeading> statsHeadings = new ArrayList<StatsHeading>();
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_COUNT));
-        statsHeadings.add(new StatsHeading(AddLog.LOGGED_ON));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_COUNT));
+        statsHeadings.add(new StatsHeading(logEntryManager.LOGGED_ON));
         statsHeadings.add(new StatsHeading("unique logon"));
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_VIEW));
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_ADD));
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_DATA_FOLLOWUP));
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_DATA_FAIL));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_VIEW));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_ADD));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_DATA_FOLLOWUP));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_DATA_FAIL));
         statsHeadings.add(new StatsHeading("unique data load"));
-        statsHeadings.add(new StatsHeading(AddLog.PASSWORD_CHANGE));
-        statsHeadings.add(new StatsHeading(AddLog.PASSWORD_RESET));
-        statsHeadings.add(new StatsHeading(AddLog.PASSWORD_LOCKED));
-        statsHeadings.add(new StatsHeading(AddLog.PASSWORD_UNLOCKED));
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_DATA_REMOVE));
-        statsHeadings.add(new StatsHeading(AddLog.PATIENT_DELETE));
+        statsHeadings.add(new StatsHeading(logEntryManager.PASSWORD_CHANGE));
+        statsHeadings.add(new StatsHeading(logEntryManager.PASSWORD_RESET));
+        statsHeadings.add(new StatsHeading(logEntryManager.PASSWORD_LOCKED));
+        statsHeadings.add(new StatsHeading(logEntryManager.PASSWORD_UNLOCKED));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_DATA_REMOVE));
+        statsHeadings.add(new StatsHeading(logEntryManager.PATIENT_DELETE));
         return statsHeadings;
     }
 

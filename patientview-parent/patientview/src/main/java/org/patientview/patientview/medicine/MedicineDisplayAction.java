@@ -23,17 +23,15 @@
 
 package org.patientview.patientview.medicine;
 
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +43,7 @@ public class MedicineDisplayAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
         List medicines = getMedicinesForPatient(user, request);
         sortNullDatesOnMedicines(medicines);
 
@@ -61,7 +59,7 @@ public class MedicineDisplayAction extends Action {
             List<Medicine> medicines = LegacySpringUtils.getMedicineManager().getUserMedicines(user);
 
             for (Medicine med : medicines) {
-                Unit unit = UnitUtils.retrieveUnit(med.getUnitcode());
+                Unit unit = LegacySpringUtils.getUnitManager().get(med.getUnitcode());
                 if (unit != null) {
                     medicinesWithShortName.add(new MedicineWithShortName(med, unit.getShortname()));
                 } else {

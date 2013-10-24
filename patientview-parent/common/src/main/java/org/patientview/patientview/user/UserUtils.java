@@ -23,12 +23,10 @@
 
 package org.patientview.patientview.user;
 
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.utils.LegacySpringUtils;
+import org.patientview.service.SecurityUserManager;
+import org.patientview.service.UserManager;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import javax.inject.Inject;
 
 public final class UserUtils {
 
@@ -37,43 +35,16 @@ public final class UserUtils {
     private static final int CHECKSUM_DIGIT_POSITION = 9;
     private static final int CHECKSUM_MODULUS = 11;
 
+    @Inject
+    private UserManager userManager;
+
+    @Inject
+    private SecurityUserManager securityUserManager;
+
     private UserUtils() {
 
     }
 
-    public static User retrieveUser(HttpServletRequest request) {
-        String username = null;
-
-        if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
-            username = (String) request.getSession().getAttribute("userBeingViewedUsername");
-        }
-
-        if (username == null || "".equals(username)) {
-            username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
-        }
-
-        return LegacySpringUtils.getUserManager().get(username);
-    }
-
-    public static List<UserMapping> retrieveUserMappings(User user) {
-        return LegacySpringUtils.getUserManager().getUserMappings(user.getUsername());
-    }
-
-    public static String retrieveUsersRealUnitcodeBestGuess(String username) {
-        return LegacySpringUtils.getUserManager().getUsersRealUnitcodeBestGuess(username);
-    }
-
-    public static String retrieveUsersRealNhsnoBestGuess(String username) {
-        return LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(username);
-    }
-
-    public static UserMapping retrieveUserMappingsPatientEntered(User user) {
-        return LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
-    }
-
-    public static void removePatientFromSystem(String nhsno, String unitcode) {
-        LegacySpringUtils.getPatientManager().removePatientFromSystem(nhsno, unitcode);
-    }
 
     public static boolean isNhsNumberValid(String nhsNumber) {
         return isNhsNumberValid(nhsNumber, false);

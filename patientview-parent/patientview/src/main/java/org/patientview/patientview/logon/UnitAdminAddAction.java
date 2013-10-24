@@ -23,17 +23,17 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.user.EmailVerificationUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.patientview.user.EmailVerificationUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,7 +70,11 @@ public class UnitAdminAddAction extends Action {
             if (userMapping != null) {
                 request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);
                 unitAdmin.setUsername("");
-                UnitUtils.putRelevantUnitsInRequest(request);
+                List<Unit> usersUnits
+                        = LegacySpringUtils.getUnitManager().
+                        getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
+
+                request.getSession().setAttribute("units", usersUnits);
                 mappingToFind = "input";
             } else {
                 UserMapping userMappingNew = new UserMapping(username, unitcode, "");
@@ -88,9 +92,9 @@ public class UnitAdminAddAction extends Action {
                 LegacySpringUtils.getUserManager().createProfessionalUserInRadar(user, unitcode);
             }
 
-            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD,
-                    unitAdmin.getUsername(), "",
-                    unitcode, "");
+            LegacySpringUtils.getLogEntryManager().addLog(LegacySpringUtils.getSecurityUserManager()
+                    .getLoggedInUsername(), LegacySpringUtils.getLogEntryManager().ADMIN_ADD, unitAdmin.getUsername(),
+                    "", unitcode, "");
             EmailVerificationUtils.createEmailVerification(hashedUnitAdmin.getUsername(), hashedUnitAdmin.getEmail(),
                     request);
             mappingToFind = "success";

@@ -23,15 +23,15 @@
 
 package org.patientview.ibd.action.symptoms.colitis;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.ibd.Ibd;
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.ibd.Ibd;
+import org.patientview.ibd.action.BaseAction;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +44,7 @@ public class ColitisEditAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         DynaActionForm dynaForm = (DynaActionForm) form;
 
@@ -80,7 +80,7 @@ public class ColitisEditAction extends BaseAction {
         request.getSession().setAttribute(FURTHER_COMPLICATION_LIST_PROPERTY, getColitisComplicationList());
 
         // add any managed links in for this page
-        addMyIbdLinks(getIbdManager().getMyIbd(UserUtils.retrieveUser(request)), request);
+        addMyIbdLinks(getIbdManager().getMyIbd(LegacySpringUtils.getUserManager().retrieveUser(request)), request);
 
         return mapping.findForward(SUCCESS);
     }

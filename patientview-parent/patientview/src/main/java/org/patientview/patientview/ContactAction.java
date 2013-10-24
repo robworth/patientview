@@ -23,20 +23,20 @@
 
 package org.patientview.patientview;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.model.Patient;
-import org.patientview.patientview.model.Contact;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.model.Patient;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Contact;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,8 +51,8 @@ public class ContactAction extends Action {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        User user = UserUtils.retrieveUser(request);
-        List<UserMapping> userMappings = UserUtils.retrieveUserMappings(user);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
+        List<UserMapping> userMappings = LegacySpringUtils.getUserManager().getUserMappings(user.getUsername());
 
         List<Contact> contacts = new ArrayList<Contact>();
 
@@ -60,7 +60,7 @@ public class ContactAction extends Action {
             if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
                 Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode());
 
-                Unit unit = UnitUtils.retrieveUnit(userMapping.getUnitcode());
+                Unit unit = LegacySpringUtils.getUnitManager().get(userMapping.getUnitcode());
                 Contact contact = new Contact(patient, unit, userMapping);
 
                 contacts.add(contact);

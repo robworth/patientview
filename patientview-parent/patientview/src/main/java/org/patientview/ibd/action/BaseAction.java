@@ -23,6 +23,7 @@
 
 package org.patientview.ibd.action;
 
+import org.apache.struts.action.DynaActionForm;
 import org.patientview.ibd.Ibd;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.MyIbdSeverityLevel;
@@ -52,16 +53,14 @@ import org.patientview.ibd.model.symptoms.SymptomsGraphData;
 import org.patientview.patientview.model.EdtaCode;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.service.MessageManager;
 import org.patientview.service.GroupMessageManager;
+import org.patientview.service.MessageManager;
 import org.patientview.service.PatientManager;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.struts.action.DynaActionForm;
 import org.springframework.web.struts.ActionSupport;
 
 import javax.servlet.http.HttpServletRequest;
@@ -265,7 +264,7 @@ public class BaseAction extends ActionSupport {
     }
 
     protected String getNhsNoForUser(HttpServletRequest request) {
-        return getNhsNoForUser(UserUtils.retrieveUser(request));
+        return getNhsNoForUser(LegacySpringUtils.getUserManager().retrieveUser(request));
     }
 
     protected String getNhsNoForUser(User user) {
@@ -297,7 +296,7 @@ public class BaseAction extends ActionSupport {
             MyIbdSeverityLevel myIbdModerateLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MODERATE);
             MyIbdSeverityLevel myIbdMildLevel = getIbdManager().getMyIbdSeverityLevel(nhsNo, Severity.MILD);
 
-            MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+            MyIbd myIbd = getIbdManager().getMyIbd(LegacySpringUtils.getUserManager().retrieveUser(request));
             Diagnosis diagnosis = myIbd.getDiagnosis();
 
             if (lastSymptom.getScore() >= myIbdSevereLevel.getLevel(diagnosis)) {
@@ -344,7 +343,7 @@ public class BaseAction extends ActionSupport {
             symptomsGraphData.setError(Ibd.NO_GRAPH_TYPE_SPECIFIED);
         }
 
-        MyIbd myIbd = getIbdManager().getMyIbd(UserUtils.retrieveUser(request));
+        MyIbd myIbd = getIbdManager().getMyIbd(LegacySpringUtils.getUserManager().retrieveUser(request));
         Diagnosis diagnosis = myIbd.getDiagnosis();
 
         // need to check if they have any custom level settings

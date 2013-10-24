@@ -23,15 +23,14 @@
 
 package org.patientview.patientview.letter;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +49,7 @@ public class LetterDisplayAction extends Action {
     static void setUpLettersDisplay(ActionMapping mapping, HttpServletRequest request) {
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
         List letters = LegacySpringUtils.getLetterManager().get(user.getUsername());
         request.setAttribute("letters", letters);
         request.setAttribute("user", user);

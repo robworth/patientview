@@ -296,9 +296,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <configLocation>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle.xml</configLocation>
-                    <headerLocation>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle.license</headerLocation>
-                    <suppressionsFile>${project.build.directory}/maven-shared-archive-resources/checkstyle/checkstyle-suppressions.xml</suppressionsFile>
+                    <configLocation>${project.build.directory}/../../common/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                    <headerLocation>${project.build.directory}/../../common/src/main/resources/checkstyle/checkstyle.license</headerLocation>
+                    <suppressionsFile>${project.build.directory}/../../common/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsFile>
                     <failsOnError>true</failsOnError>
                     <consoleOutput>true</consoleOutput>
                 </configuration>

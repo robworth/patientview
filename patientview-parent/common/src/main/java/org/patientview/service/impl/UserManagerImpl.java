@@ -25,18 +25,17 @@ package org.patientview.service.impl;
 
 import org.patientview.patientview.logon.PatientLogon;
 import org.patientview.patientview.logon.UnitAdmin;
+import org.patientview.patientview.model.PatientUser;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.radar.Demographics;
-import org.patientview.patientview.model.PatientUser;
 import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.model.radar.Demographics;
 import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.user.UserUtils;
+import org.patientview.repository.PatientUserDao;
 import org.patientview.repository.RadarDao;
 import org.patientview.repository.SpecialtyUserRoleDao;
-import org.patientview.repository.PatientUserDao;
 import org.patientview.repository.UnitDao;
 import org.patientview.repository.UserDao;
 import org.patientview.repository.UserMappingDao;
@@ -47,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service(value = "userManager")
@@ -267,9 +267,9 @@ public class UserManagerImpl implements UserManager {
             }
 
             // patients get all their records deleted
-            if ("patient".equals(getCurrentSpecialtyRole(user))) {
-                UserUtils.removePatientFromSystem(user.getUsername(), unitcode);
-            }
+            //if ("patient".equals(getCurrentSpecialtyRole(user))) {
+            //    UserUtils.removePatientFromSystem(user.getUsername(), unitcode);
+            //}
 
             // remove the user from radar as well
             radarDao.removeUserFromRadar(user.getId());
@@ -312,6 +312,21 @@ public class UserManagerImpl implements UserManager {
 
         userMappingDao.save(userMapping);
     }
+
+    public User retrieveUser(HttpServletRequest request) {
+        String username = null;
+
+        if (!securityUserManager.isRolePresent("patient")) {
+            username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+        }
+
+        if (username == null || "".equals(username)) {
+            username = securityUserManager.getLoggedInUsername();
+        }
+
+        return this.get(username);
+    }
+
 
     @Override
     public void deleteUserMappings(String username, String unitcode) {

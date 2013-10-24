@@ -27,6 +27,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 
@@ -43,7 +44,11 @@ public class RadarGroupUsersAction extends Action {
             List items = LegacySpringUtils.getUnitManager().getAdminsUnits(true);
             request.getSession().setAttribute("units", items);
         } else {
-            UnitUtils.putRelevantUnitsInRequest(request);
+            List<Unit> usersUnits
+                    = LegacySpringUtils.getUnitManager().
+                    getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
+
+            request.getSession().setAttribute("units", usersUnits);
         }
         request.setAttribute("isRadarGroup", true);
         return LogonUtils.logonChecks(mapping, request);

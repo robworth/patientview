@@ -46,20 +46,11 @@
     <bean id="unitManager" class="org.patientview.service.impl.UnitManagerImpl"/>
 
 
-    <bean id="setUserManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setUserManager"/>
-        <property name="arguments">
-            <list>
-                <ref bean="userManager"/>
-            </list>
-        </property>
-    </bean>
-
     <!--Properties Placeholder-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:patientview.properties</value>
+                <value>classpath:test.properties</value>
             </list>
         </property>
     </bean>

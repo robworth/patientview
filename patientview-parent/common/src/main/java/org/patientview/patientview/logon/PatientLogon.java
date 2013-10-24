@@ -32,21 +32,6 @@ public class PatientLogon extends Logon implements Cloneable {
         setUsername(username);
     }
 
-/*    public PatientLogon(String username, String password, String name, String email, boolean emailverified,
-                        boolean firstlogon, boolean dummypatient, Date lastlogon, int failedlogons,
-                        boolean accountlocked) {
-        setUsername(username);
-        setPassword(password);
-        setName(name);
-        setEmail(email);
-        setEmailverified(emailverified);
-        setRole("patient");
-        setFirstlogon(firstlogon);
-        setDummypatient(dummypatient);
-        setLastlogon(lastlogon);
-        setFailedlogons(failedlogons);
-        setAccountlocked(accountlocked);
-    }      */
 
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

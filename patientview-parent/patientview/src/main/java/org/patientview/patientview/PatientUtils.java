@@ -26,8 +26,6 @@ package org.patientview.patientview;
 import org.patientview.model.Patient;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,15 +36,18 @@ public final class PatientUtils {
     }
 
     public static String retrieveNhsNo(HttpServletRequest request) {
-        User user = UserUtils.retrieveUser(request);
-        UserMapping userMapping = UserUtils.retrieveUserMappingsPatientEntered(user);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
+        UserMapping userMapping = LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
         return userMapping.getNhsno();
     }
 
     public static Patient retrievePatient(HttpServletRequest request) {
         String nhsno = PatientUtils.retrieveNhsNo(request);
-        String unitcode = UnitUtils.retrieveUnitcode(request);
-        return retrievePatient(nhsno, unitcode);
+
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
+        UserMapping userMapping = LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
+
+        return retrievePatient(nhsno, userMapping.getUnitcode());
     }
 
     public static Patient retrievePatient(String nhsno, String unitcode) {

@@ -23,16 +23,16 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.user.EmailVerificationUtils;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.user.EmailVerificationUtils;
+import org.patientview.service.LogEntryManager;
+import org.patientview.service.UserManager;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,6 +87,8 @@ public class PasswordChangeAction extends Action {
             return mapping.findForward("input");
         } else {
 
+            UserManager userManager =  LegacySpringUtils.getUserManager();
+
             // ok so it worked, update the password, set the user not see this screen again, and save the email
             // change if it was made.
             user.setPassword(LogonUtils.hashPassword(BeanUtils.getProperty(form, "passwordPwd")));
@@ -94,8 +96,9 @@ public class PasswordChangeAction extends Action {
             LegacySpringUtils.getUserManager().save(user);
 
             // db logging
-            AddLog.addLog(user.getUsername(), AddLog.PASSWORD_CHANGE, user.getUsername(), "",
-                    UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
+            LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
+            logEntryManager.addLog(user.getUsername(), logEntryManager.PASSWORD_CHANGE, user.getUsername(), "",
+                    userManager.getUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
             // email verification - only required if the user has supplied an email address
             // (regardless of if it is the same as the one used to create by the admin)

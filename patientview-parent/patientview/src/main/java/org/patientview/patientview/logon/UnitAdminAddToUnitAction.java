@@ -23,15 +23,15 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.service.LogEntryManager;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,12 +42,13 @@ public class UnitAdminAddToUnitAction extends Action {
                                  HttpServletResponse response) throws Exception {
         String username = BeanUtils.getProperty(form, "username");
         String unitcode = BeanUtils.getProperty(form, "unitcode");
+        LogEntryManager logEntryManager = LegacySpringUtils.getLogEntryManager();
 
         UserMapping userMapping = new UserMapping(username, unitcode, "");
         LegacySpringUtils.getUserManager().save(userMapping);
 
-        AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.ADMIN_ADD, username, "",
-                unitcode, "");
+        logEntryManager.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                logEntryManager.ADMIN_ADD, username, "", unitcode, "");
         String mappingToFind = "success";
 
         User user = LegacySpringUtils.getUserManager().get(username);

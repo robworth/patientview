@@ -23,15 +23,14 @@
 
 package org.patientview.patientview.logging;
 
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.utils.TimestampUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.utils.TimestampUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +40,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class LogViewAction extends Action {
+
+    public static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -55,7 +56,10 @@ public class LogViewAction extends Action {
         List log = getLogEntries(nhsno, user, actor, action, unitcode, startdate, enddate);
         request.setAttribute("log", log);
 
-        UnitUtils.putRelevantUnitsInRequest(request);
+
+        List items = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits(new String[]{PATIENT_ENTERS_UNITCODE},
+                new String[]{});
+        request.getSession().setAttribute("units", items);
 
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
 

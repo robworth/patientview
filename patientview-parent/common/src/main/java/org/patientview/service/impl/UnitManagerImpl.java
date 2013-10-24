@@ -23,7 +23,6 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.patientview.model.PatientCount;
 import org.patientview.patientview.model.Specialty;
@@ -34,6 +33,7 @@ import org.patientview.patientview.model.UserMapping;
 import org.patientview.repository.PatientCountDao;
 import org.patientview.repository.UnitDao;
 import org.patientview.repository.UnitStatDao;
+import org.patientview.service.LogEntryManager;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
@@ -165,7 +165,7 @@ public class UnitManagerImpl implements UnitManager {
         for (PatientCount patientCount : patientCounts) {
             String yearmonth = patientCount.getYearmonth();
             int count = patientCount.getCount();
-            patientCountStats.add(new UnitStat(unitCode, yearmonth, AddLog.PATIENT_COUNT, count));
+            patientCountStats.add(new UnitStat(unitCode, yearmonth, LogEntryManager.PATIENT_COUNT, count));
         }
 
         return patientCountStats;

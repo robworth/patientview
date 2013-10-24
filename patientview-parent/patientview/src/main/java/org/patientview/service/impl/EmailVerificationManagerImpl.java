@@ -23,11 +23,11 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.EmailVerification;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.EmailVerificationDao;
 import org.patientview.service.EmailVerificationManager;
+import org.patientview.service.LogEntryManager;
 import org.patientview.service.UserManager;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +45,9 @@ public class EmailVerificationManagerImpl implements EmailVerificationManager {
 
     @Inject
     private UserManager userManager;
+
+    @Inject
+    private LogEntryManager logEntryManager;
 
     @Override
     public List<EmailVerification> get(String verificationCode) {
@@ -77,8 +80,8 @@ public class EmailVerificationManagerImpl implements EmailVerificationManager {
                         userManager.save(user);
                         emailVerificationDao.delete(emailVerification);
 
-                        AddLog.addLog(emailVerification.getUsername(),
-                                AddLog.EMAIL_VERIFY, emailVerification.getUsername(),
+                        logEntryManager.addLog(emailVerification.getUsername(),
+                                logEntryManager.EMAIL_VERIFY, emailVerification.getUsername(),
                                 userManager.getUsersRealNhsNoBestGuess(emailVerification.getUsername()),
                                 userManager.getUsersRealUnitcodeBestGuess(emailVerification.getUsername()),
                                 emailVerification.getEmail());

@@ -23,20 +23,21 @@
 
 package org.patientview.patientview.logging;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class DataLoadsForPatientAction extends Action {
 
@@ -47,7 +48,12 @@ public class DataLoadsForPatientAction extends Action {
         String nhsno = BeanUtils.getProperty(form, "nhsno");
         List log = getLogEntries(nhsno, startdate, enddate);
         request.setAttribute("log", log);
-        UnitUtils.putRelevantUnitsInRequest(request);
+
+        List<Unit> usersUnits = LegacySpringUtils.getUnitManager().
+                getLoggedInUsersUnits(new String[]{UnitUtils.PATIENT_ENTERS_UNITCODE}, new String[]{});
+
+        request.getSession().setAttribute("units", usersUnits);
+
         LoggingUtils.defaultDatesInForm(form, startdate, enddate);
         return LogonUtils.logonChecks(mapping, request);
     }
@@ -55,8 +61,8 @@ public class DataLoadsForPatientAction extends Action {
     private List getLogEntries(String nhsno, Calendar startdate, Calendar enddate) throws Exception {
         List logEntries = new ArrayList();
         if (nhsno != null && !nhsno.equals("")) {
-            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, "", "", AddLog.PATIENT_DATA, "",
-                    startdate, enddate);
+            logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, "", "",
+                    LegacySpringUtils.getLogEntryManager().PATIENT_DATA, "", startdate, enddate);
         }
         return logEntries;
     }

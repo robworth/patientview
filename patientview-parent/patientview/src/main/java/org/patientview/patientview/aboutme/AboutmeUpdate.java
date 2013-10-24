@@ -23,17 +23,16 @@
 
 package org.patientview.patientview.aboutme;
 
-import org.patientview.patientview.model.Aboutme;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Aboutme;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +44,7 @@ public class AboutmeUpdate extends Action {
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         String id = BeanUtils.getProperty(form, "id");
         String aboutme = BeanUtils.getProperty(form, "aboutme");
@@ -55,7 +54,7 @@ public class AboutmeUpdate extends Action {
         Aboutme aboutMe = null;
 
         if (id == null || "".equals(id)) {
-            UserMapping userMapping = UserUtils.retrieveUserMappingsPatientEntered(user);
+            UserMapping userMapping = LegacySpringUtils.getUserManager().getUserMappingPatientEntered(user);
             nhsno = userMapping.getNhsno();
 
             aboutMe = new Aboutme(nhsno, aboutme, talkabout);

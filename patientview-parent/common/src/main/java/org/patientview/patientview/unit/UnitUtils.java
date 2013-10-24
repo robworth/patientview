@@ -25,13 +25,15 @@ package org.patientview.patientview.unit;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
 import org.patientview.service.UnitManager;
+import org.patientview.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public final class UnitUtils {
 
@@ -42,18 +44,12 @@ public final class UnitUtils {
     @Inject
     private UnitManager unitManager;
 
+    @Inject
+    private UserManager userManager;
+
     private UnitUtils() {
     }
 
-    public void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {
-        putRelevantUnitsInRequestMinusSomeUnits(request, new String[]{PATIENT_ENTERS_UNITCODE}, new String[]{});
-    }
-
-    public void putRelevantUnitsInRequestMinusSomeUnits(HttpServletRequest request, String[] notTheseUnitCodes,
-                                                               String[] plusTheseUnitCodes) throws Exception {
-        List items = unitManager.getLoggedInUsersUnits(notTheseUnitCodes, plusTheseUnitCodes);
-        request.getSession().setAttribute("units", items);
-    }
 
     public Unit retrieveUnit(String unitcode) {
         unitcode = unitcode.toUpperCase();
@@ -67,14 +63,13 @@ public final class UnitUtils {
         return unit;
     }
 
-    public static String retrieveUnitcode(HttpServletRequest request) {
-        //TODO
-        //User user = UserUtils.retrieveUser(request);
+    public String retrieveUnitcode(HttpServletRequest request) {
 
-        //UserMapping userMapping = UserUtils.retrieveUserMappingsPatientEntered(user);
+        User user = userManager.retrieveUser(request);
 
-        //return userMapping.getUnitcode();
-        return null;
+        UserMapping userMapping = userManager.getUserMappingPatientEntered(user);
+
+        return userMapping.getUnitcode();
     }
 
     // update the unit by setting it's properties

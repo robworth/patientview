@@ -23,14 +23,14 @@
 
 package org.patientview.patientview.messaging;
 
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.patientview.ibd.action.BaseAction;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class RecipientByUnitAction extends BaseAction {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         // only do this if its a superadmin
         if (getSecurityUserManager().isRolePresent("superadmin")

@@ -78,28 +78,28 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action,
                                        Specialty specialty) {
-        return null;
-        //return getLogEntries(nhsno, null, null, null, action, startdate, enddate, specialty);
+       // return null;
+        return getLogEntries(nhsno, null, null, null, action, startdate, enddate, specialty);
     }
 
     // TODO
     @Override
     public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate, Specialty specialty) {
-          return null;
-          //   return getLogEntries(null, null, null, unitcode, null, startdate, enddate, specialty);
+         // return null;
+             return getLogEntries(null, null, null, unitcode, null, startdate, enddate, specialty);
      }
 
-    //   @Override
- //   public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
- //                                      Calendar startdate, Calendar enddate, Specialty specialty) {
- //       return getLogEntries(nhsno, user, actor, unitcode, action, startdate, enddate, specialty);
-  //  }
+    @Override
+    public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
+                                       Calendar startdate, Calendar enddate, Specialty specialty) {
+        return getLogEntries(nhsno, user, actor, unitcode, action, startdate, enddate, specialty);
+    }
 
 
     /**
      * @param action all entries containing this action text is returned, ie. it's used as a pattern
      */
-/*    private List<LogEntry> getLogEntries(String nhsno, String user, String actor, String unitcode, String action,
+    private List<LogEntry> getLogEntries(String nhsno, String user, String actor, String unitcode, String action,
                                          Calendar startdate, Calendar enddate, Specialty specialty) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<LogEntry> criteria = builder.createQuery(LogEntry.class);
@@ -145,5 +145,5 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         criteria.orderBy(builder.asc(logEntryRoot.get(LogEntry_.id)));
 
         return getEntityManager().createQuery(criteria).getResultList();
-    }             */
+    }
 }

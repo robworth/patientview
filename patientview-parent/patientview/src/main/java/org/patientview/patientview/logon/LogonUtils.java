@@ -24,16 +24,14 @@
 package org.patientview.patientview.logon;
 
 import com.Ostermiller.util.RandPass;
-import org.patientview.patientview.logging.AddLog;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.model.SplashPage;
 import org.patientview.patientview.model.SplashPageUserSeen;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.splashpage.SplashPageUtils;
-import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -151,9 +149,10 @@ public final class LogonUtils {
         HttpSession session = request.getSession();
         String logonRecorded = (String) session.getAttribute("logonRecorded");
         if (logonRecorded == null && username != null) {
-            String unitCode = UserUtils.retrieveUsersRealUnitcodeBestGuess(username);
-            String nhsno = UserUtils.retrieveUsersRealNhsnoBestGuess(username);
-            AddLog.addLog(username, AddLog.LOGGED_ON, username, nhsno, unitCode, "");
+            String unitCode = LegacySpringUtils.getUserManager().getUsersRealUnitcodeBestGuess(username);
+            String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(username);
+            LegacySpringUtils.getLogEntryManager().addLog(username, LegacySpringUtils.getLogEntryManager().LOGGED_ON,
+                    username, nhsno, unitCode, "");
             session.setAttribute("logonRecorded", "true");
         }
     }

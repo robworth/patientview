@@ -23,14 +23,14 @@
 
 package org.patientview.patientview.aboutme;
 
-import org.patientview.patientview.model.Aboutme;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
-import org.patientview.patientview.logon.LogonUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Aboutme;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +41,7 @@ public class AboutmeEdit extends Action {
             ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         Aboutme aboutme = AboutmeUtils.fetchAboutmeForPatient(user);
 

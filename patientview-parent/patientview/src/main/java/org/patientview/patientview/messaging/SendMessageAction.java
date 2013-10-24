@@ -23,16 +23,16 @@
 
 package org.patientview.patientview.messaging;
 
-import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.Message;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.patientview.ibd.action.BaseAction;
+import org.patientview.patientview.model.Message;
+import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +50,7 @@ public class SendMessageAction extends BaseAction {
                                  HttpServletResponse response) throws Exception {
         DynaActionForm dynaForm = (DynaActionForm) form;
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         if (validateMessage(dynaForm)) {
             try {

@@ -23,14 +23,14 @@
 
 package org.patientview.ibd.action.mymedications;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.ibd.model.medication.MyMedication;
-import org.patientview.patientview.user.UserUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,13 +43,15 @@ public class MyMedicationsAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        List<MyMedication> currentMedications = getIbdManager().getCurrentMedications(UserUtils.retrieveUser(request));
+        List<MyMedication> currentMedications = getIbdManager().getCurrentMedications(LegacySpringUtils.getUserManager()
+                .retrieveUser(request));
 
         if (currentMedications != null && !currentMedications.isEmpty()) {
             request.setAttribute(Ibd.CURRENT_MEDICATIONS_PARAM, currentMedications);
         }
 
-        List<MyMedication> stoppedMedications = getIbdManager().getStoppedMedications(UserUtils.retrieveUser(request));
+        List<MyMedication> stoppedMedications = getIbdManager().getStoppedMedications(LegacySpringUtils.getUserManager()
+                .retrieveUser(request));
 
         if (stoppedMedications != null && !stoppedMedications.isEmpty()) {
             request.setAttribute(Ibd.STOPPED_MEDICATIONS_PARAM, stoppedMedications);

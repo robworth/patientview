@@ -23,15 +23,15 @@
 
 package org.patientview.patientview.messaging;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.patientview.model.MessageRecipient;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.user.UserUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +47,7 @@ public class ConversationsAction extends BaseAction {
         // set current nav
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
-        User user = UserUtils.retrieveUser(request);
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
         List<Unit> units = getMessageManager().getMessagingEnabledUnitsForLoggedInUser();
 

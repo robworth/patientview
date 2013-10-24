@@ -23,15 +23,15 @@
 
 package org.patientview.patientview.messaging;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.enums.GroupEnum;
-import org.patientview.patientview.user.UserUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +47,8 @@ public class ConversationAction extends BaseAction {
          * If an admin is logged in as patient, the user below would be the patient.
          * Whereas {@link LegacySpringUtils.getUserManager().getLoggedInUser} would return the admin.
          */
-        User user = UserUtils.retrieveUser(request);
+
+        User user = LegacySpringUtils.getUserManager().retrieveUser(request);
         User loggedInUser = getUserManager().getLoggedInUser();
 
         if (user == null) {
