@@ -56,4 +56,6 @@ public interface UtilityDao {
 
     String getUserName(Long id);
 
+    Centre getRenalUnitCentre(String nhsNo);
+
 }
