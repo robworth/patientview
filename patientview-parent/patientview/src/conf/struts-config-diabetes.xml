@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+~ PatientView
+~
+~ Copyright (c) Worth Solutions Limited 2004-2013
+~
+~ This file is part of PatientView.
+~
+~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+~ or (at your option) any later version.
+~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+~ GNU General Public License for more details.
+~ You should have received a copy of the GNU General Public License along with PatientView in a file
+~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+~
+~ @package PatientView
+~ @link http://www.patientview.org
+~ @author PatientView <info@patientview.org>
+~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+-->
+
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+        "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+<struts-config>
+
+    <form-beans>
+
+        <form-bean name="carePlanForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="overallMyConditionScore" type="java.lang.Integer"/>
+            <form-property name="tirednessFatigueScore" type="java.lang.Integer"/>
+            <form-property name="managingPainScore" type="java.lang.Integer"/>
+            <form-property name="stressAndWorryScore" type="java.lang.Integer"/>
+            <form-property name="supportFromFamilyAndFriendsScore" type="java.lang.Integer"/>
+            <form-property name="managingMySocialLifeHobbiesScore" type="java.lang.Integer"/>
+            <form-property name="managingWorkStudiesScore" type="java.lang.Integer"/>
+            <form-property name="takingMyMedicinesRegularlyScore" type="java.lang.Integer"/>
+            <form-property name="managingFlareUpsScore" type="java.lang.Integer"/>
+            <form-property name="stoppingSmokingScore" type="java.lang.Integer"/>
+            <form-property name="sleepingScore" type="java.lang.Integer"/>
+            <form-property name="sexualRelationshipsScore" type="java.lang.Integer"/>
+            <form-property name="fertilityPregnancyScore" type="java.lang.Integer"/>
+            <form-property name="learningAboutMyConditionScore" type="java.lang.Integer"/>
+            <form-property name="eatingAHealthyDietScore" type="java.lang.Integer"/>
+            <form-property name="travellingScore" type="java.lang.Integer"/>
+            <form-property name="otherAreasToDiscuss" type="java.lang.String"/>
+            <form-property name="goals" type="java.lang.String"/>
+            <form-property name="goalToAchieve" type="java.lang.String"/>
+            <form-property name="importanceId" type="java.lang.Long"/>
+            <form-property name="howToAchieveGoal" type="java.lang.String"/>
+            <form-property name="barriers" type="java.lang.String"/>
+            <form-property name="whatCanBeDone" type="java.lang.String"/>
+            <form-property name="confidenceId" type="java.lang.Long"/>
+            <form-property name="reviewDate" type="java.lang.String"/>
+        </form-bean>
+
+    </form-beans>
+
+    <action-mappings>
+               <!--
+        <action path="/careplan-diabetes"
+                name="carePlanForm"
+                type="org.patientview.ibd.action.careplan.CarePlanEditAction"
+                scope="request"
+                parameter="diabetes_careplan">
+            <forward name="success" path="/diabetes/careplan/careplan-edit.jsp"/>
+        </action>
+
+        <action path="/careplan-update-diabetes" name="carePlanForm"
+                type="org.patientview.ibd.action.careplan.CarePlanUpdateAction"
+                input="input"
+                scope="request"
+                validate="true"
+                parameter="diabetes_careplan">
+            <forward name="input" path="/diabetes/careplan/careplan-edit.jsp"/>
+            <forward name="success" path="/careplan.do"/>
+        </action>
+                     -->
+        <action path="/patient/checkups"
+                name="carePlanForm"
+                type="org.patientview.patientview.checkups.CheckupsAction"
+                scope="request"
+                parameter="checkups">
+            <forward name="success" path="/diabetes/checkups/checkups.jsp"/>
+        </action>
+
+        <action path="/diabetes-help"
+                type="org.patientview.patientview.IndexAction" parameter="help">
+            <forward name="success" path="/diabetes/help.jsp"/>
+        </action>
+
+    </action-mappings>
+
+</struts-config>

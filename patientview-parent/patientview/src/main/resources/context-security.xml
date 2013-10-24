@@ -84,6 +84,13 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/ibd/posts/**" access="ROLE_IBD_DEMO"/>
         <intercept-url pattern="/ibd/**" access="ROLE_IBD_DEMO"/>
 
+        <!-- DIABETES specialty config -->
+        <intercept-url pattern="/diabetes/logged_in.do" access="ROLE_DIABETES_DEMO"/>
+        <intercept-url pattern="/diabetes/control/**" access="ROLE_DIABETES_UNITSTAFF"/>
+        <intercept-url pattern="/diabetes/patient/**" access="ROLE_DIABETES_DEMO"/>
+        <intercept-url pattern="/diabetes/posts/**" access="ROLE_DIABETES_DEMO"/>
+        <intercept-url pattern="/diabetes/**" access="ROLE_DIABETES_DEMO"/>
+
         <!-- messages -->
         <intercept-url pattern="/control/messaging/message_confirm.jsp" access="ROLE_RENAL_UNITADMIN"/>
         <intercept-url pattern="/patient/conversation**" access="ROLE_RENAL_DEMO"/>
@@ -166,6 +173,15 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
                 ROLE_ANONYMOUS > ROLE_ANY_USER
                 ROLE_ANY_USER > ROLE_IBD_DEMO
                 ROLE_IBD_DEMO > IS_AUTHENTICATED_ANONYMOUSLY
+
+                ROLE_DIABETES_SUPERADMIN > ROLE_DIABETES_UNITADMIN
+                ROLE_DIABETES_UNITADMIN > ROLE_DIABETES_UNITSTAFF
+                ROLE_DIABETES_UNITSTAFF > ROLE_DIABETES_PATIENT
+                ROLE_DIABETES_PATIENT > ROLE_ANONYMOUS
+                ROLE_ANONYMOUS > ROLE_ANY_USER
+                ROLE_ANY_USER > ROLE_DIABETES_DEMO
+                ROLE_DIABETES_DEMO > IS_AUTHENTICATED_ANONYMOUSLY
+
             </beans:value>
         </beans:property>
     </beans:bean>
