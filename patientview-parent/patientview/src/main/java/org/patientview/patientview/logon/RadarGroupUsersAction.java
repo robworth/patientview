@@ -41,7 +41,7 @@ public class RadarGroupUsersAction extends Action {
             throws Exception {
         if (LegacySpringUtils.getUserManager().getLoggedInUserRole().equals("superadmin")) {
             List items = LegacySpringUtils.getUnitManager().getAdminsUnits(true);
-            request.getSession().setAttribute("units", items);
+            request.setAttribute("units", items);
         } else {
             UnitUtils.putRelevantUnitsInRequest(request);
         }
