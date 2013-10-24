@@ -57,6 +57,7 @@ public class FootCheckupDaoTest extends BaseDaoTest {
         //checkups.setLastRetinalPlace("Test retinal place");
         checkups.setLeftDpPulse("23");
         checkups.setRightDpPulse("55");
+        checkups.setUnitcode("testUnitcode");
         checkups.setNhsno("1234567890");
 
         checkupsDao.save(checkups);
@@ -85,6 +86,7 @@ public class FootCheckupDaoTest extends BaseDaoTest {
         //checkups.setLastRetinalPlace("Test retinal place");
         checkups.setLeftDpPulse("23");
         checkups.setRightDpPulse("55");
+        checkups.setUnitcode("testUnitcode");
         checkups.setNhsno("1234567890");
 
         checkupsDao.save(checkups);
