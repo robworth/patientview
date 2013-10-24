@@ -48,6 +48,13 @@ public final class UnitUtils {
     private UnitUtils() {
     }
 
+    /**
+     * this method will search units depend on login user's role and sourceType of unit('radargroup', 'renalunit').
+     * superadmin will get all 'radargroup' and 'renalunit' units, unitadmin will get all units which he belongs to,
+     * other role user won't get any unit, like radaradmin.
+     * searching result will be as a attribute in request.
+     * @param request
+     */
     public static void setUserUnits(HttpServletRequest request) {
         UserManager userManager = LegacySpringUtils.getUserManager();
         UnitManager unitManager = LegacySpringUtils.getUnitManager();
@@ -62,6 +69,13 @@ public final class UnitUtils {
         request.setAttribute("units", items);
     }
 
+    /**
+     * this method will search units depend on login user's role and 'renalunit' unit
+     * superadmin will get all 'renalunit' units, unitadmin will get all 'renalunit' units which he belongs to,
+     * other role user won't get any unit, like radaradmin.
+     * searching result will be as a attribute in request.
+     * @param request
+     */
     public static void setUserRenalUnits(HttpServletRequest request) {
         UserManager userManager = LegacySpringUtils.getUserManager();
         UnitManager unitManager = LegacySpringUtils.getUnitManager();

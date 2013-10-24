@@ -320,6 +320,7 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
         loginAsUser(superadmin.getUsername(), specialty);
 
+        //reinstatement. I don't know why without assert statement, I guess test no exception thrown. see testGetAllUnitUsersWithUnitAdmin method.
         unitManager.getAllUnitUsers();
     }
 
