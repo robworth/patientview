@@ -9,6 +9,7 @@ import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
@@ -30,6 +31,9 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiagnosisDao diagnosisDao;
+
+    @Autowired
+    private UserDao userDao;
 
     private DiseaseGroup diseaseGroup;
 
@@ -113,12 +117,16 @@ public class DemographicDaoTest extends BaseDaoTest {
     @Test
     public void testGetDemographicsByCentre() throws Exception {
         // Construct centres
-        Centre centre = utilityDao.getCentre(1);
-
+        Centre centre = utilityDao.getCentre(5);
         Centre centre2 = utilityDao.getCentre(2);
 
-        createDemographics("Test", "User", centre, null);
-        createDemographics("Test2", "User2", centre, null);
+        String nhsNo1 = getTestNhsNo();
+        userDao.createUserMappingInPatientView("TestUser", nhsNo1, "5");
+        String nhsNo2 = getTestNhsNo();
+        userDao.createUserMappingInPatientView("Test2User2", nhsNo2, "5");
+
+        createDemographics("Test", "User", centre, nhsNo1);
+        createDemographics("Test2", "User2", centre, nhsNo2);
         createDemographics("Test3", "User3", centre2, null);
 
         // Call DAO
@@ -126,7 +134,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         assertNotNull("List was null", demographics);
         assertEquals("Wrong size", 2, demographics.size());
         for (Patient de : demographics) {
-            assertTrue("Wrong centre", de.getRenalUnit().getId().equals(2L));
+            assertTrue("Wrong centre", de.getRenalUnit().getUnitCode().equals("5"));
         }
     }
 

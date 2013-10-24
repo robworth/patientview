@@ -56,7 +56,7 @@
           <th class="tableheader" onclick="sort('email')"><a href="#">Email</a></th>
           <th class="tableheader" onclick="sort('emailverified')"><a href="#">Email Verified</a></th>
           <th class="tableheader" onclick="sort('lastlogon')"><a href="#">Last Login</a></th>
-          <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password Locked</a></th>
+          <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password</a></th>
           <th class="tableheader" onclick="sort('isrecipient')"><a href="#">Message Recipient</a></th>
           <th class="tableheader" onclick="sort('isclinician')"><a href="#">Clinician</a></th>
 

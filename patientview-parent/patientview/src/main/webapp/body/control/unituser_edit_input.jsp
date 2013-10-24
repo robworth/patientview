@@ -117,7 +117,7 @@
 
                     <span style="float:left;margin-left:5px;">
                     <input type="button" value="Send Verification Email" class="btn formbutton"
-                    ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+                        ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
                     </span>
                 </logic:present>
 

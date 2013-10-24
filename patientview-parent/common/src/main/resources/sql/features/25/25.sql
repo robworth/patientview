@@ -1,3 +1,8 @@
+/**
+    Add a user id column in patient table.
+ */
+ ALTER TABLE patient ADD COLUMN `radarConsentConfirmedByUserId` int(11) DEFAULT NULL;
+
 
  DELETE
   pv_groupmessage AS p
@@ -16,3 +21,4 @@ FROM
       a.recipient_id)) AS b
 WHERE p.id = b.id ;
 ALTER TABLE pv_groupmessage ADD UNIQUE uniquegroupmessage (conversation_id, recipient_id);
+
