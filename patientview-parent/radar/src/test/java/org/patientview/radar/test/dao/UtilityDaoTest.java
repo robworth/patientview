@@ -9,6 +9,7 @@ import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.*;
 import org.patientview.radar.model.filter.ConsultantFilter;
@@ -30,6 +31,9 @@ public class UtilityDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiagnosisDao diagnosisDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private DemographicsDao demographicDao;
@@ -223,6 +227,18 @@ public class UtilityDaoTest extends BaseDaoTest {
 
         int count = utilityDao.getPatientCountByUnit(centre);
         assertEquals(4, count);
+    }
+
+    @Test
+    public void testGetRenalUnitCentre() throws Exception {
+        userDao.createUserMappingInPatientView("testuser", "9876543210", "5");
+        userDao.createUserMappingInPatientView("testuser", "9876543210", "PATIENT");
+        userDao.createUserMappingInPatientView("testuser-GP", "9876543210", "6");
+
+        Centre centre1 = utilityDao.getRenalUnitCentre("9876543210");
+
+        assertNotNull("Could not get the unit", centre1);
+        assertEquals("Get the wrong unit", "5", centre1.getUnitCode());
     }
 
     private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup) {

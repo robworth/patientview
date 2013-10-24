@@ -416,9 +416,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setConsent(resultSet.getBoolean("CONSENT"));
 
             // Set the centre if we have an ID
-            String unitCode = resultSet.getString("unitcode");
-            if (unitCode != null) {
-                patient.setRenalUnit(utilityDao.getCentre(unitCode));
+            String nhsno = resultSet.getString("nhsno");
+            if (nhsno != null) {
+                patient.setRenalUnit(utilityDao.getRenalUnitCentre(nhsno));
             }
 
             // Set status

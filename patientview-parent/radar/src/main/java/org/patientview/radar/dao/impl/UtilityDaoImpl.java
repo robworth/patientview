@@ -333,6 +333,20 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
     }
 
+    public Centre getRenalUnitCentre(String nhsNo) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM usermapping um LEFT OUTER JOIN unit u ON um.unitcode = u.unitcode " +
+                            "WHERE um.nhsno = ? " +
+                            "  AND um.username NOT LIKE '%-GP%' " +
+                            "  AND um.unitcode != 'PATIENT' " +
+                            "  AND u.sourceType = 'renalunit' ", new Object[]{nhsNo}, new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get unit with nhsno {}", nhsNo);
+            return null;
+        }
+    }
+
     public String getUserName(String nhsNo) {
         return jdbcTemplate
                 .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +

@@ -23,6 +23,7 @@ import org.patientview.radar.web.components.RadarRequiredDateTextField;
 import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
 import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.components.RadarRequiredCheckBox;
 import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -415,8 +416,7 @@ public class GenericDemographicsPanel extends Panel {
 
         form.add(renalUnit);
 
-        CheckBox consent = new CheckBox("consent");
-        consent.setRequired(true);
+        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
