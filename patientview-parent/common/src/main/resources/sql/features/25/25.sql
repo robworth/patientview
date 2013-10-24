@@ -12,6 +12,11 @@ CREATE TABLE `dia_mydiabetes` (
   UNIQUE KEY `patient` (`nhsno`,`unitcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/**
+    Add a user id column in patient table.
+ */
+ ALTER TABLE patient ADD COLUMN `radarConsentConfirmedByUserId` int(11) DEFAULT NULL;
+ 
 
  DELETE
   pv_groupmessage AS p

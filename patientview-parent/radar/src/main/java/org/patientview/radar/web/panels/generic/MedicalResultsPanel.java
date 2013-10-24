@@ -58,7 +58,7 @@ public class MedicalResultsPanel extends Panel {
 
         MedicalResult medicalResult = null;
 
-        if (patient.hasValidId() && patient.getDiseaseGroup() != null) {
+        if (patient.hasValidId()) {
             medicalResult = medicalResultManager.getMedicalResult(patient.getId(),
                     patient.getDiseaseGroup().getId());
         }
