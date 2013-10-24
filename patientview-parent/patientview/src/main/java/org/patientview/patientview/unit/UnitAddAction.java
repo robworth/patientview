@@ -33,6 +33,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
+import java.util.List;
 
 public class UnitAddAction extends Action {
 
@@ -42,8 +43,22 @@ public class UnitAddAction extends Action {
 
         Unit unit = new Unit();
         UnitUtils.buildUnit(unit, form);
+        //a new unitcode doesn't exist,
+        // so any user doesn't have SecurityConfig.UNIT_ACCESS permission to check this code
+        // Unit existedUnit = LegacySpringUtils.getUnitManager().get(unit.getUnitcode());
+        boolean duplicate = LegacySpringUtils.getUnitManager().checkDuplicateUnitCode(unit.getUnitcode());
+        if (duplicate) {
+            request.setAttribute("UnitExisted", true);
+            return mapping.findForward("input");
+        }
         LegacySpringUtils.getUnitManager().save(unit);
-        request.setAttribute("unit", unit);
+
+        boolean isRadarGroup = false;
+        if ("radargroup".equals(unit.getSourceType())) {
+            isRadarGroup = true;
+        }
+        List items = LegacySpringUtils.getUnitManager().getAdminsUnits(isRadarGroup);
+        request.setAttribute("units", items);
 
         return LogonUtils.logonChecks(mapping, request);
     }
