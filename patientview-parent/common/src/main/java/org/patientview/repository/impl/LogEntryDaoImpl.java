@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.LogEntry;
 import org.patientview.model.patientview.LogEntry_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.LogEntryDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.LogEntryDao;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 

@@ -27,8 +27,8 @@ import org.patientview.model.patientview.Panel;
 import org.patientview.model.patientview.ResultHeading;
 import org.patientview.model.patientview.ResultHeading_;
 import org.patientview.model.patientview.Specialty;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.ResultHeadingDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.ResultHeadingDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

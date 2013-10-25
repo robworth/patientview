@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.Aboutme;
 import org.patientview.model.patientview.Aboutme_;
-import org.patientview.repository.AboutmeDao;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AboutmeDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

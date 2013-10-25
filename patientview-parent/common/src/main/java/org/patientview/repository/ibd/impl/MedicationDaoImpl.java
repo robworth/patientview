@@ -24,7 +24,7 @@
 package org.patientview.repository.ibd.impl;
 
 import org.patientview.model.ibd.medication.Medication;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.ibd.MedicationDao;
 import org.springframework.stereotype.Repository;
 

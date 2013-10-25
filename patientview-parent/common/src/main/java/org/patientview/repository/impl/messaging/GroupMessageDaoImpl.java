@@ -24,7 +24,7 @@ package org.patientview.repository.impl.messaging;
 
 import org.patientview.model.patientview.GroupMessage;
 import org.patientview.model.patientview.GroupMessage_;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.messaging.GroupMessageDao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;

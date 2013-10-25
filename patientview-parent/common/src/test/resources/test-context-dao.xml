@@ -46,7 +46,7 @@
     <bean id="userManager" class="org.patientview.service.impl.UserManagerImpl"/>
     <bean id="securityUserManager" class="org.patientview.service.impl.SecurityUserManagerImpl"/>
     <bean id="unitManager" class="org.patientview.service.impl.UnitManagerImpl"/>
-
+    <bean id="logEntryManager" class="org.patientview.service.impl.LogEntryManagerImpl"/>
 
     <!--Properties Placeholder-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.patientview.LogEntry;
-import org.patientview.repository.LogEntryDao;
+import org.patientview.repository.radar.LogEntryDao;
 import org.patientview.service.LogEntryManager;
 import org.patientview.service.SecurityUserManager;
 import org.springframework.stereotype.Service;

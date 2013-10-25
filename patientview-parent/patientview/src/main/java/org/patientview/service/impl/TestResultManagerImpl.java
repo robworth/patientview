@@ -29,7 +29,7 @@ import org.patientview.model.patientview.TestResultWithUnitShortname;
 import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.repository.TestResultDao;
+import org.patientview.repository.radar.TestResultDao;
 import org.patientview.service.TestResultManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;

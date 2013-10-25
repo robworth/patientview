@@ -25,7 +25,7 @@ package org.patientview.service.impl;
 
 import org.patientview.model.patientview.News;
 import org.patientview.model.patientview.User;
-import org.patientview.repository.NewsDao;
+import org.patientview.repository.radar.NewsDao;
 import org.patientview.service.NewsManager;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;

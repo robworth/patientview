@@ -26,8 +26,8 @@ package org.patientview.repository.impl;
 import org.patientview.model.patientview.SplashPageUserSeen;
 import org.patientview.model.patientview.SplashPageUserSeen_;
 import org.patientview.model.patientview.User;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.SplashPageUserSeenDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.SplashPageUserSeenDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;

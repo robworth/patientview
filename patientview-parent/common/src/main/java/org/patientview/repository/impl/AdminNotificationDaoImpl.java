@@ -26,8 +26,8 @@ package org.patientview.repository.impl;
 import org.patientview.model.AdminNotification;
 import org.patientview.model.AdminNotification_;
 import org.patientview.model.enums.XmlImportNotification;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.AdminNotificationDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.AdminNotificationDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;

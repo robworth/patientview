@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.patientview.Centre;
-import org.patientview.repository.CentreDao;
+import org.patientview.repository.radar.CentreDao;
 import org.patientview.service.CentreManager;
 import org.springframework.stereotype.Service;
 

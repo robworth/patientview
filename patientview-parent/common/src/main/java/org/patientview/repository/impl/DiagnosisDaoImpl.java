@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.Diagnosis;
 import org.patientview.model.patientview.Diagnosis_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.DiagnosisDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.DiagnosisDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;

@@ -26,8 +26,8 @@ package org.patientview.repository.impl;
 import org.patientview.model.patientview.SpecialtyUserRole;
 import org.patientview.model.patientview.SpecialtyUserRole_;
 import org.patientview.model.patientview.User;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.SpecialtyUserRoleDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.SpecialtyUserRoleDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;

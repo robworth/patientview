@@ -28,8 +28,8 @@ import org.patientview.model.patientview.Specialty;
 import org.patientview.model.patientview.User;
 import org.patientview.service.PatientManager;
 import org.patientview.service.UserManager;
-import org.patientview.test.helpers.SecurityHelpers;
-import org.patientview.test.helpers.ServiceHelpers;
+import org.patientview.test.patientview.helpers.SecurityHelpers;
+import org.patientview.test.patientview.helpers.ServiceHelpers;
 import org.junit.Before;
 import org.junit.Test;
 

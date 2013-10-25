@@ -25,7 +25,7 @@ package org.patientview.repository.impl.job;
 import org.patientview.model.patientview.EmailQueue;
 import org.patientview.model.patientview.EmailQueue_;
 import org.patientview.model.patientview.enums.SendEmailEnum;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.job.EmailQueueDao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;

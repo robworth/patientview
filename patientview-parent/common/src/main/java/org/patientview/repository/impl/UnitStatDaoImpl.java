@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.UnitStat;
 import org.patientview.model.patientview.UnitStat_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.UnitStatDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.UnitStatDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;

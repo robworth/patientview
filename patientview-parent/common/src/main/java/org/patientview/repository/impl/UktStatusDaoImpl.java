@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.UktStatus;
 import org.patientview.model.patientview.UktStatus_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.UktStatusDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.UktStatusDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

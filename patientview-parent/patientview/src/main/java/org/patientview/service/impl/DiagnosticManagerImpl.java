@@ -27,7 +27,7 @@ import org.patientview.model.patientview.Diagnostic;
 import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.UserMapping;
 import org.patientview.model.patientview.enums.DiagnosticType;
-import org.patientview.repository.DiagnosticDao;
+import org.patientview.repository.radar.DiagnosticDao;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.UserManager;
 import org.springframework.stereotype.Service;

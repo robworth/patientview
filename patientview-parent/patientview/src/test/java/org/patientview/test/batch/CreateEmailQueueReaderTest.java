@@ -12,12 +12,12 @@ import org.patientview.model.patientview.Unit;
 import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.enums.GroupEnum;
 import org.patientview.model.patientview.enums.SendEmailEnum;
-import org.patientview.repository.MessageDao;
+import org.patientview.repository.radar.MessageDao;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.service.UnitManager;
-import org.patientview.test.helpers.SecurityHelpers;
-import org.patientview.test.helpers.ServiceHelpers;
+import org.patientview.test.patientview.helpers.SecurityHelpers;
+import org.patientview.test.patientview.helpers.ServiceHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;

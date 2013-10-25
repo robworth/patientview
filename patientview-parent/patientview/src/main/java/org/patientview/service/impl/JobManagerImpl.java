@@ -28,7 +28,7 @@ import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.Unit;
 import org.patientview.model.patientview.Specialty;
 import org.patientview.model.patientview.enums.SendEmailEnum;
-import org.patientview.repository.UserDao;
+import org.patientview.repository.radar.UserDao;
 import org.patientview.repository.job.JobDao;
 import org.patientview.service.JobManager;
 import org.patientview.service.UserManager;

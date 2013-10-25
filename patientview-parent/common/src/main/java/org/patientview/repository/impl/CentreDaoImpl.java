@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.Centre;
 import org.patientview.model.patientview.Centre_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.CentreDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.CentreDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;

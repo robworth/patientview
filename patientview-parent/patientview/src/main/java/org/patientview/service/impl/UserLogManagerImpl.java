@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.patientview.UserLog;
-import org.patientview.repository.UserLogDao;
+import org.patientview.repository.radar.UserLogDao;
 import org.patientview.service.UserLogManager;
 import org.springframework.stereotype.Service;
 

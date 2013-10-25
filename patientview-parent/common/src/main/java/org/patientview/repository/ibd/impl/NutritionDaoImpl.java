@@ -25,7 +25,7 @@ package org.patientview.repository.ibd.impl;
 
 import org.patientview.model.ibd.Nutrition;
 import org.patientview.model.ibd.Nutrition_;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.ibd.NutritionDao;
 import org.springframework.stereotype.Repository;
 

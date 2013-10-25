@@ -41,7 +41,7 @@ import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.quartz.exception.ResultParserException;
-import org.patientview.repository.UnitDao;
+import org.patientview.repository.radar.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
 import org.patientview.service.PatientManager;

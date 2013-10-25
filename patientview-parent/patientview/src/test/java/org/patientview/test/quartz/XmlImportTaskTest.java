@@ -13,7 +13,7 @@ import org.patientview.model.patientview.Medicine;
 import org.patientview.model.patientview.TestResult;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.quartz.XmlImportTask;
-import org.patientview.repository.PatientDao;
+import org.patientview.repository.radar.PatientDao;
 import org.patientview.service.*;
 import org.patientview.service.ibd.IbdManager;
 import org.springframework.beans.factory.annotation.Autowired;

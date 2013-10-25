@@ -25,7 +25,7 @@ package org.patientview.service.impl;
 
 import org.patientview.model.patientview.Panel;
 import org.patientview.model.patientview.ResultHeading;
-import org.patientview.repository.ResultHeadingDao;
+import org.patientview.repository.radar.ResultHeadingDao;
 import org.patientview.service.ResultHeadingManager;
 import org.patientview.service.SecurityUserManager;
 import org.springframework.stereotype.Service;

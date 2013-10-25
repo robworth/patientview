@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.patientview.Comment;
-import org.patientview.repository.CommentDao;
+import org.patientview.repository.radar.CommentDao;
 import org.patientview.service.CommentManager;
 import org.springframework.stereotype.Service;
 

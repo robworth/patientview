@@ -28,7 +28,7 @@ import org.patientview.patientview.PatientDetails;
 import org.patientview.model.patientview.Unit;
 import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
-import org.patientview.repository.PatientDao;
+import org.patientview.repository.radar.PatientDao;
 import org.patientview.service.DiagnosisManager;
 import org.patientview.service.EdtaCodeManager;
 import org.patientview.service.LetterManager;

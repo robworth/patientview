@@ -27,8 +27,8 @@ import org.patientview.model.patientview.Specialty;
 import org.patientview.model.patientview.Unit;
 import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.User_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.UserDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.UserDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

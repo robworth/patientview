@@ -26,7 +26,7 @@ package org.patientview.service.impl;
 import org.patientview.model.patientview.UserMapping;
 import org.patientview.model.patientview.Aboutme;
 import org.patientview.model.patientview.User;
-import org.patientview.repository.AboutmeDao;
+import org.patientview.repository.radar.AboutmeDao;
 import org.patientview.service.AboutmeManager;
 import org.patientview.service.UserManager;
 import org.springframework.stereotype.Service;

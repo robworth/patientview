@@ -25,7 +25,7 @@ package org.patientview.service.impl;
 
 import org.patientview.model.patientview.JoinRequest;
 import org.patientview.model.patientview.User;
-import org.patientview.repository.JoinRequestDao;
+import org.patientview.repository.radar.JoinRequestDao;
 import org.patientview.service.JoinRequestManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;

@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.EmailVerification;
 import org.patientview.model.patientview.EmailVerification_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.EmailVerificationDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.EmailVerificationDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;

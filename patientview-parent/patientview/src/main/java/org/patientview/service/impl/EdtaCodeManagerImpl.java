@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.patientview.EdtaCode;
-import org.patientview.repository.EdtaCodeDao;
+import org.patientview.repository.radar.EdtaCodeDao;
 import org.patientview.service.EdtaCodeManager;
 import org.patientview.service.SecurityUserManager;
 import org.springframework.stereotype.Service;

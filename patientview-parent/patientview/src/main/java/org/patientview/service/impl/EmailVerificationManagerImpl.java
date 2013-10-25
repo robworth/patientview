@@ -25,7 +25,7 @@ package org.patientview.service.impl;
 
 import org.patientview.model.patientview.EmailVerification;
 import org.patientview.model.patientview.User;
-import org.patientview.repository.EmailVerificationDao;
+import org.patientview.repository.radar.EmailVerificationDao;
 import org.patientview.service.EmailVerificationManager;
 import org.patientview.service.LogEntryManager;
 import org.patientview.service.UserManager;

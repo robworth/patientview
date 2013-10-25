@@ -33,10 +33,10 @@
     <!-- check for annotations -->
     <context:component-scan base-package="org.patientview.test"/>
 
-    <bean id="emailManager" class="org.patientview.test.helpers.impl.TestableEmailManagerImpl"/>
+    <bean id="emailManager" class="org.patientview.test.patientview.helpers.impl.TestableEmailManagerImpl"/>
 
-    <bean id="importManager" class="org.patientview.test.helpers.impl.TestableResultsUpdater"/>
+    <bean id="importManager" class="org.patientview.test.patientview.helpers.impl.TestableResultsUpdater"/>
 
-    <bean id="ukTransplantManager" class="org.patientview.test.helpers.impl.TestableFileUpdater"/>
+    <bean id="ukTransplantManager" class="org.patientview.test.patientview.helpers.impl.TestableFileUpdater"/>
 
 </beans>

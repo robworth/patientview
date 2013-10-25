@@ -28,7 +28,7 @@ import org.patientview.model.ibd.MyIbdSeverityLevel;
 import org.patientview.model.ibd.MyIbdSeverityLevel_;
 import org.patientview.model.ibd.enums.Diagnosis;
 import org.patientview.model.ibd.enums.Severity;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.ibd.MyIbdDao;
 import org.patientview.repository.ibd.MyIbdSeverityLevelDao;
 import org.springframework.stereotype.Repository;

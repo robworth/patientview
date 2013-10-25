@@ -26,8 +26,8 @@ package org.patientview.repository.impl;
 import org.patientview.model.patientview.News;
 import org.patientview.model.patientview.News_;
 import org.patientview.model.patientview.Specialty;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.NewsDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.NewsDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;

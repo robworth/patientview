@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.patientview.Letter;
-import org.patientview.repository.LetterDao;
+import org.patientview.repository.radar.LetterDao;
 import org.patientview.service.LetterManager;
 import org.patientview.service.SecurityUserManager;
 import org.springframework.stereotype.Service;

@@ -26,8 +26,8 @@ package org.patientview.repository.impl;
 import org.patientview.model.patientview.EdtaCode;
 import org.patientview.model.patientview.EdtaCode_;
 import org.patientview.model.patientview.Specialty;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.EdtaCodeDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.EdtaCodeDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

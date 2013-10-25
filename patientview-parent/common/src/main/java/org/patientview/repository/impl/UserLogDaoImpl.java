@@ -25,8 +25,8 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.UserLog;
 import org.patientview.model.patientview.UserLog_;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.UserLogDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.UserLogDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

@@ -25,9 +25,9 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.patientview.Letter;
 import org.patientview.model.patientview.Specialty;
-import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.LetterDao;
-import org.patientview.repository.UserMappingDao;
+import org.patientview.repository.radar.AbstractHibernateDAO;
+import org.patientview.repository.radar.LetterDao;
+import org.patientview.repository.radar.UserMappingDao;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;

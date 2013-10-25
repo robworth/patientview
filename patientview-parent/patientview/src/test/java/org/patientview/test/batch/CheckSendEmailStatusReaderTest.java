@@ -12,7 +12,7 @@ import org.patientview.model.patientview.enums.GroupEnum;
 import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
-import org.patientview.test.helpers.ServiceHelpers;
+import org.patientview.test.patientview.helpers.ServiceHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;

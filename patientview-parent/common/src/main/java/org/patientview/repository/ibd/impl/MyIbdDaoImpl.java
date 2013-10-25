@@ -25,7 +25,7 @@ package org.patientview.repository.ibd.impl;
 
 import org.patientview.model.ibd.MyIbd;
 import org.patientview.model.ibd.MyIbd_;
-import org.patientview.repository.AbstractHibernateDAO;
+import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.ibd.MyIbdDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
