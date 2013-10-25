@@ -241,6 +241,23 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertEquals("Get the wrong unit", "5", centre1.getUnitCode());
     }
 
+    @Test
+    public void testGetRenalUnit() throws Exception {
+        userDao.createUserMappingInPatientView("testuser2", "1234567890", "5");
+        userDao.createUserMappingInPatientView("testuser", "1234567890", "5");
+        userDao.createUserMappingInPatientView("testuser", "1234567890", "PATIENT");
+        userDao.createUserMappingInPatientView("testuser-GP", "1234567890", "1");
+
+        Centre centre1 = utilityDao.getRenalUnitCentre("1234567890");
+
+        assertNotNull("Could not get the unit", centre1);
+        assertEquals("Get the wrong unit", "5", centre1.getUnitCode());
+
+        Centre centre2 = utilityDao.getRenalUnitCentre("9876543210");
+
+        assertNull("Get Wrong unit", centre2);
+    }
+
     private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup) {
         Patient patient = new Patient();
         patient.setForename(forename);
