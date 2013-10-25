@@ -16,8 +16,8 @@ import org.patientview.repository.radar.MessageDao;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.service.UnitManager;
-import org.patientview.test.patientview.helpers.SecurityHelpers;
-import org.patientview.test.patientview.helpers.ServiceHelpers;
+import org.patientview.test.repository.patientview.helpers.SecurityHelpers;
+import org.patientview.test.repository.patientview.helpers.ServiceHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;

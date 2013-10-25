@@ -19,7 +19,6 @@
         <property name="locations">
             <list>
                 <value>classpath:radar.properties</value>
-                <value>classpath:common.properties</value>
             </list>
         </property>
     </bean>

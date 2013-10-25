@@ -10,7 +10,7 @@ import org.patientview.model.patientview.enums.GroupEnum;
 import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.service.JobManager;
 import org.patientview.service.UnitManager;
-import org.patientview.test.patientview.helpers.ServiceHelpers;
+import org.patientview.test.repository.patientview.helpers.ServiceHelpers;
 import org.junit.Test;
 
 import javax.inject.Inject;

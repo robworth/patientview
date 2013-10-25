@@ -35,13 +35,13 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <!-- check for annotations in test helper and utilities -->
-    <context:component-scan base-package="org.patientview.test, org.patientview.utils"/>
-
+    <context:component-scan base-package="org.patientview.repository, org.patientview.repository.impl, org.patientview.test, org.patientview.utils, org.patientview.service"/>
 
 
     <!--Imports-->
     <import resource="context-repository.xml"/>
     <import resource="context-security.xml"/>
+    <import resource="test-context-dao-radar.xml"/>
 
     <bean id="userManager" class="org.patientview.service.impl.UserManagerImpl"/>
     <bean id="securityUserManager" class="org.patientview.service.impl.SecurityUserManagerImpl"/>

@@ -5,7 +5,7 @@ import org.patientview.model.patientview.GroupMessage;
 import org.patientview.model.patientview.User;
 import org.patientview.repository.messaging.GroupMessageDao;
 import org.patientview.service.GroupMessageManager;
-import org.patientview.test.patientview.helpers.ServiceHelpers;
+import org.patientview.test.repository.patientview.helpers.ServiceHelpers;
 import org.junit.Test;
 
 import javax.inject.Inject;

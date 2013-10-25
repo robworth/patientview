@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository(value = "demographicsDao")
+@Repository(value = "radarDao")
 public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements RadarDao {
 
     private JdbcTemplate jdbcTemplate;

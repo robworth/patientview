@@ -25,7 +25,7 @@ package org.patientview.test.service;
 
 import org.junit.runner.RunWith;
 import org.patientview.common.test.BaseTestPvDbSchema;
-import org.patientview.test.patientview.helpers.SecurityHelpers;
+import org.patientview.test.repository.patientview.helpers.SecurityHelpers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;

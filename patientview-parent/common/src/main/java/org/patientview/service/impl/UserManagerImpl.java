@@ -23,8 +23,6 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.logon.PatientLogon;
-import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.model.patientview.PatientUser;
 import org.patientview.model.patientview.Specialty;
 import org.patientview.model.patientview.SpecialtyUserRole;
@@ -32,6 +30,8 @@ import org.patientview.model.patientview.Unit;
 import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.UserMapping;
 import org.patientview.model.patientview.radar.Demographics;
+import org.patientview.patientview.logon.PatientLogon;
+import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.repository.radar.PatientUserDao;
 import org.patientview.repository.radar.RadarDao;
@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -67,6 +68,7 @@ public class UserManagerImpl implements UserManager {
     private SpecialtyUserRoleDao specialtyUserRoleDao;
 
     @Inject
+    @Named(value = "radarDao")
     private RadarDao radarDao;
 
     @Inject

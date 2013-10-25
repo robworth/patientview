@@ -34,7 +34,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- check for annotations -->
-    <context:component-scan base-package="org.patientview.repository, org.patientview.model" />
+
 
     <!-- boiler plate jpa stuff -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

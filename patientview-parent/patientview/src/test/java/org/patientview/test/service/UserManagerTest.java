@@ -31,8 +31,8 @@ import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.UserMapping;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
-import org.patientview.test.patientview.helpers.SecurityHelpers;
-import org.patientview.test.patientview.helpers.ServiceHelpers;
+import org.patientview.test.repository.patientview.helpers.SecurityHelpers;
+import org.patientview.test.repository.patientview.helpers.ServiceHelpers;
 import org.junit.Before;
 import org.junit.Test;
 

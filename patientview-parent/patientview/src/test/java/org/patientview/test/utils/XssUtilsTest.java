@@ -30,7 +30,7 @@ import org.patientview.model.patientview.Message;
 import org.patientview.model.patientview.User;
 import org.patientview.repository.radar.ConversationDao;
 import org.patientview.repository.radar.MessageDao;
-import org.patientview.test.patientview.helpers.RepositoryHelpers;
+import org.patientview.test.repository.patientview.helpers.RepositoryHelpers;
 import org.patientview.test.service.BaseServiceTest;
 
 import javax.inject.Inject;
