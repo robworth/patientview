@@ -25,10 +25,10 @@ package org.patientview.test.repository;
 
 import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.PatientCount;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.PatientCount;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.PatientCountDao;
 import org.patientview.repository.PatientDao;
 import org.patientview.test.helpers.RepositoryHelpers;

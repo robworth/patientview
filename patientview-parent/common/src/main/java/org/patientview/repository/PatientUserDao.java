@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.PatientUser;
+import org.patientview.model.patientview.PatientUser;
 
 public interface PatientUserDao {
 

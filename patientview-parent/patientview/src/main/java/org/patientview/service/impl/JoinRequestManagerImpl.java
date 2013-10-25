@@ -23,8 +23,8 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.JoinRequest;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.JoinRequest;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.JoinRequestDao;
 import org.patientview.service.JoinRequestManager;
 import org.patientview.service.UnitManager;

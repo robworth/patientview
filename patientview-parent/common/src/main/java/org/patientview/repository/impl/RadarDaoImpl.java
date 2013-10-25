@@ -23,12 +23,12 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.radar.Demographics;
-import org.patientview.patientview.model.radar.Radar;
-import org.patientview.patientview.model.radar.RadarUserMapping;
-import org.patientview.patientview.model.radar.RadarUserMappingRowMapper;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.radar.Demographics;
+import org.patientview.model.patientview.radar.Radar;
+import org.patientview.model.patientview.radar.RadarUserMapping;
+import org.patientview.model.patientview.radar.RadarUserMappingRowMapper;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.RadarDao;
 import org.springframework.jdbc.core.JdbcTemplate;

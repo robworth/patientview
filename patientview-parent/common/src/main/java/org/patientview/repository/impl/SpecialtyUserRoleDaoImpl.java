@@ -23,9 +23,9 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.SpecialtyUserRole_;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.SpecialtyUserRole_;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.SpecialtyUserRoleDao;
 import org.springframework.stereotype.Repository;

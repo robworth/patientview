@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.patientview.Letter;
+import org.patientview.model.patientview.Specialty;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.LetterDao;
 import org.patientview.repository.UserMappingDao;

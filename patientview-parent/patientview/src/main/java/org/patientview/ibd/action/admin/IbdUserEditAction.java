@@ -23,12 +23,12 @@
 
 package org.patientview.ibd.action.admin;
 
-import org.patientview.ibd.Ibd;
+import org.patientview.model.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.MyIbdSeverityLevel;
-import org.patientview.ibd.model.enums.Diagnosis;
-import org.patientview.ibd.model.enums.Severity;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.MyIbdSeverityLevel;
+import org.patientview.model.ibd.enums.Diagnosis;
+import org.patientview.model.ibd.enums.Severity;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.Procedure;
-import org.patientview.ibd.model.Procedure_;
+import org.patientview.model.ibd.Procedure;
+import org.patientview.model.ibd.Procedure_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.ProcedureDao;
 import org.springframework.stereotype.Repository;

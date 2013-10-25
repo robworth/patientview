@@ -26,7 +26,7 @@ package org.patientview.patientview.unit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.patientview.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

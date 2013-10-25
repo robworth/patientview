@@ -29,12 +29,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Comment;
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.ResultHeading;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Comment;
+import org.patientview.model.patientview.Panel;
+import org.patientview.model.patientview.ResultHeading;
+import org.patientview.model.patientview.TestResultWithUnitShortname;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 

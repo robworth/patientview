@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Aboutme;
+import org.patientview.model.patientview.Aboutme;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

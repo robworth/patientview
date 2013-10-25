@@ -24,7 +24,7 @@
 package org.patientview.test.repository;
 
 import org.junit.Test;
-import org.patientview.patientview.model.UserLog;
+import org.patientview.model.patientview.UserLog;
 import org.patientview.repository.UserLogDao;
 
 import javax.inject.Inject;

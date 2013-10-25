@@ -23,7 +23,7 @@
 
 package org.patientview.batch;
 
-import org.patientview.patientview.model.EmailQueue;
+import org.patientview.model.patientview.EmailQueue;
 import org.patientview.service.EmailQueueManager;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;

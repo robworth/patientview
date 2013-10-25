@@ -25,10 +25,10 @@ package org.patientview.service.impl;
 
 import com.Ostermiller.util.CSVParser;
 import org.patientview.model.Patient;
-import org.patientview.patientview.model.Comment;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.UktStatus;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.patientview.Comment;
+import org.patientview.model.patientview.TestResult;
+import org.patientview.model.patientview.UktStatus;
+import org.patientview.model.patientview.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.repository.UktStatusDao;

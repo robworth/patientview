@@ -26,7 +26,7 @@ package org.patientview.patientview.letter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.patientview.patientview.model.Letter;
+import org.patientview.model.patientview.Letter;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

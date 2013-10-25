@@ -24,7 +24,7 @@
         </property>
     </bean>
 
-    <bean id="radarApplication" class="org.patientview.radar.web.RadarApplication">
+    <bean id="radarApplication" class="org.patientview.repository.radar.web.RadarApplication">
         <property name="ajaxDebug" value="${ajax.debug}"/>
     </bean>
 

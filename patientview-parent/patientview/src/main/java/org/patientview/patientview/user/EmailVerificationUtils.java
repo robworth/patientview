@@ -25,7 +25,7 @@ package org.patientview.patientview.user;
 
 import com.Ostermiller.util.RandPass;
 import org.patientview.patientview.EmailUtils;
-import org.patientview.patientview.model.EmailVerification;
+import org.patientview.model.patientview.EmailVerification;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

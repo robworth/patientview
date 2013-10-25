@@ -22,21 +22,21 @@
  */
 package org.patientview.service.impl;
 
-import org.patientview.ibd.model.Allergy;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.Procedure;
+import org.patientview.model.ibd.Allergy;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
-import org.patientview.patientview.model.Centre;
-import org.patientview.patientview.model.Diagnosis;
-import org.patientview.patientview.model.Diagnostic;
-import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.LogEntry;
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UserLog;
+import org.patientview.model.patientview.Centre;
+import org.patientview.model.patientview.Diagnosis;
+import org.patientview.model.patientview.Diagnostic;
+import org.patientview.model.patientview.Letter;
+import org.patientview.model.patientview.LogEntry;
+import org.patientview.model.patientview.Medicine;
+import org.patientview.model.patientview.TestResult;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ProcessException;

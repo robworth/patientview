@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.medicine;
 
-import org.patientview.patientview.model.Medicine;
+import org.patientview.model.patientview.Medicine;
 
 public class MedicineWithShortName extends Medicine {
 

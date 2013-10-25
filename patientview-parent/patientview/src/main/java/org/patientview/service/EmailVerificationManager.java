@@ -23,7 +23,7 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.EmailVerification;
+import org.patientview.model.patientview.EmailVerification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -28,8 +28,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.model.News;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.patientview.News;
+import org.patientview.model.patientview.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 

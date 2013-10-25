@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.Allergy;
+import org.patientview.model.ibd.Allergy;
 import org.patientview.repository.ibd.AllergyDao;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

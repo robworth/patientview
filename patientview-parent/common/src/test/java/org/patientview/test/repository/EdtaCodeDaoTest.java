@@ -23,8 +23,8 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.EdtaCode;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.patientview.EdtaCode;
+import org.patientview.model.patientview.Specialty;
 import org.patientview.repository.EdtaCodeDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.junit.Before;

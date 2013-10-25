@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.feedback;
 
-import org.patientview.patientview.model.Feedback;
+import org.patientview.model.patientview.Feedback;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;

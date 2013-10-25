@@ -24,9 +24,9 @@
 package org.patientview.ibd.action.mymedications;
 
 import org.patientview.actionutils.ActionUtils;
-import org.patientview.ibd.Ibd;
+import org.patientview.model.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
-import org.patientview.ibd.model.medication.MyMedication;
+import org.patientview.model.ibd.medication.MyMedication;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

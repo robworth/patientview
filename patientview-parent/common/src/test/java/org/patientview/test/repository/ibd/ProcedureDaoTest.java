@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.Procedure;
+import org.patientview.model.ibd.Procedure;
 import org.patientview.repository.ibd.ProcedureDao;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

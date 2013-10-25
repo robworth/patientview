@@ -23,11 +23,11 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.MyIbdSeverityLevel;
-import org.patientview.ibd.model.MyIbdSeverityLevel_;
-import org.patientview.ibd.model.enums.Diagnosis;
-import org.patientview.ibd.model.enums.Severity;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.MyIbdSeverityLevel;
+import org.patientview.model.ibd.MyIbdSeverityLevel_;
+import org.patientview.model.ibd.enums.Diagnosis;
+import org.patientview.model.ibd.enums.Severity;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.MyIbdDao;
 import org.patientview.repository.ibd.MyIbdSeverityLevelDao;

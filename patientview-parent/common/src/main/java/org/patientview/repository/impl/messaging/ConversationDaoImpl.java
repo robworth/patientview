@@ -23,9 +23,9 @@
 
 package org.patientview.repository.impl.messaging;
 
-import org.patientview.patientview.model.Conversation;
-import org.patientview.patientview.model.Conversation_;
-import org.patientview.patientview.model.enums.GroupEnum;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.Conversation_;
+import org.patientview.model.patientview.enums.GroupEnum;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ConversationDao;
 import org.springframework.stereotype.Repository;

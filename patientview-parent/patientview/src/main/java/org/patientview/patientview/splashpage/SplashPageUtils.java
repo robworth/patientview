@@ -23,10 +23,10 @@
 
 package org.patientview.patientview.splashpage;
 
-import org.patientview.patientview.model.SplashPage;
-import org.patientview.patientview.model.SplashPageUserSeen;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.SplashPage;
+import org.patientview.model.patientview.SplashPageUserSeen;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 

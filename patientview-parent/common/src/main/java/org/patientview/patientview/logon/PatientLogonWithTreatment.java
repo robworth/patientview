@@ -24,7 +24,7 @@
 package org.patientview.patientview.logon;
 
 import org.apache.commons.lang.StringUtils;
-import org.patientview.ibd.Ibd;
+import org.patientview.model.ibd.Ibd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

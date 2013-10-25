@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.Nutrition;
+import org.patientview.model.ibd.Nutrition;
 
 import java.util.List;
 

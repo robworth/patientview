@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.UktStatus;
+import org.patientview.model.patientview.UktStatus;
 import org.patientview.repository.UktStatusDao;
 import org.junit.Test;
 

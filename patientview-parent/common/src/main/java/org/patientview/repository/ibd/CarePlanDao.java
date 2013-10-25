@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.CarePlan;
+import org.patientview.model.ibd.CarePlan;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

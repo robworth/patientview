@@ -24,10 +24,10 @@
 package org.patientview.test.repository;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UnitStat;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.UnitStat;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.UnitDao;
 import org.patientview.repository.UnitStatDao;
 import org.patientview.test.helpers.RepositoryHelpers;

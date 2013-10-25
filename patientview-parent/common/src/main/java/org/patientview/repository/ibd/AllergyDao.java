@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.Allergy;
+import org.patientview.model.ibd.Allergy;
 
 public interface AllergyDao {
 

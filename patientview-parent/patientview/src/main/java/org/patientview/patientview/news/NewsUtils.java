@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.news;
 
-import org.patientview.patientview.model.News;
+import org.patientview.model.patientview.News;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;

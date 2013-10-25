@@ -1,8 +1,12 @@
 package org.patientview.test.repository.job;
 
-import org.patientview.patientview.model.*;
-import org.patientview.patientview.model.enums.GroupEnum;
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.Job;
+import org.patientview.model.patientview.Message;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.enums.GroupEnum;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.repository.job.JobDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.patientview.test.repository.BaseDaoTest;

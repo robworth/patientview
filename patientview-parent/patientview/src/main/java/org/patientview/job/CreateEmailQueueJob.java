@@ -23,8 +23,8 @@
 package org.patientview.job;
 
 import org.patientview.batch.CreateEmailQueueReader;
-import org.patientview.patientview.model.EmailQueue;
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.EmailQueue;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -46,7 +46,7 @@ public class CreateEmailQueueJob extends BatchJob {
     @Resource(name = "createEmailQueueReader")
     private CreateEmailQueueReader reader;
 
-    private List<org.patientview.patientview.model.Job> jobs;
+    private List<org.patientview.model.patientview.Job> jobs;
 
     @Override
     protected Job getBatchJob() {
@@ -58,7 +58,7 @@ public class CreateEmailQueueJob extends BatchJob {
 
         if (holder instanceof EmailQueue) {
             EmailQueue emailQueue = (EmailQueue) holder;
-            org.patientview.patientview.model.Job job = emailQueue.getJob();
+            org.patientview.model.patientview.Job job = emailQueue.getJob();
             int jobIndex = jobs.indexOf(job);
             if (jobIndex != -1) {
                 job.addReport(
@@ -86,7 +86,7 @@ public class CreateEmailQueueJob extends BatchJob {
     protected void onRunError(Exception e) {
         LOGGER.debug(e.getMessage());
         if (jobs != null) {
-            for (org.patientview.patientview.model.Job job : jobs) {
+            for (org.patientview.model.patientview.Job job : jobs) {
                 job.addReport(e.getMessage());
                 job.convertReports();
                 job.setFinished(new Date());
@@ -106,9 +106,9 @@ public class CreateEmailQueueJob extends BatchJob {
      * Update the jobs' status to FAILED
      * @param jobs
      */
-    protected void updateJobStatusFailded(List<org.patientview.patientview.model.Job> jobs) {
+    protected void updateJobStatusFailded(List<org.patientview.model.patientview.Job> jobs) {
         LOGGER.debug("==update failed status==");
-        for (org.patientview.patientview.model.Job job : jobs) {
+        for (org.patientview.model.patientview.Job job : jobs) {
             job.convertReports();
             job.setFinished(new Date());
             job.setStatus(SendEmailEnum.FAILED);
@@ -116,9 +116,9 @@ public class CreateEmailQueueJob extends BatchJob {
         }
     }
 
-    private void updateJobStatusSucceeded(List<org.patientview.patientview.model.Job> jobs) {
+    private void updateJobStatusSucceeded(List<org.patientview.model.patientview.Job> jobs) {
         LOGGER.debug("==update sent status==");
-        for (org.patientview.patientview.model.Job job : jobs) {
+        for (org.patientview.model.patientview.Job job : jobs) {
             job.convertReports();
             job.setFinished(new Date());
             if (!SendEmailEnum.FAILED.equals(job.getStatus())) {

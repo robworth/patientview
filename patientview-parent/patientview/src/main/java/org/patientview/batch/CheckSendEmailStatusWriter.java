@@ -23,7 +23,7 @@
 
 package org.patientview.batch;
 
-import org.patientview.patientview.model.Job;
+import org.patientview.model.patientview.Job;
 import org.patientview.service.JobManager;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;

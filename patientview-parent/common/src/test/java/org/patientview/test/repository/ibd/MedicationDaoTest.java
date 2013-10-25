@@ -23,8 +23,8 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.medication.Medication;
-import org.patientview.ibd.model.medication.MedicationDose;
+import org.patientview.model.ibd.medication.Medication;
+import org.patientview.model.ibd.medication.MedicationDose;
 import org.patientview.repository.ibd.MedicationDao;
 import org.patientview.repository.ibd.MedicationDoseDao;
 import org.patientview.test.repository.BaseDaoTest;

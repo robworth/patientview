@@ -23,8 +23,8 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.SplashPage;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.SplashPage;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

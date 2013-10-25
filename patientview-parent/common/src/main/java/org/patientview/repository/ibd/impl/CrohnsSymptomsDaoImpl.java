@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.symptoms.CrohnsSymptoms;
-import org.patientview.ibd.model.symptoms.CrohnsSymptoms_;
+import org.patientview.model.ibd.symptoms.CrohnsSymptoms;
+import org.patientview.model.ibd.symptoms.CrohnsSymptoms_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.CrohnsSymptomsDao;
 import org.springframework.stereotype.Repository;

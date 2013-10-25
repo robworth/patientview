@@ -23,9 +23,9 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.ResultHeading;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.patientview.Panel;
+import org.patientview.model.patientview.ResultHeading;
+import org.patientview.model.patientview.Specialty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

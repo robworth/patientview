@@ -28,9 +28,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.Diagnostic;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.enums.DiagnosticType;
+import org.patientview.model.patientview.Diagnostic;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.enums.DiagnosticType;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;

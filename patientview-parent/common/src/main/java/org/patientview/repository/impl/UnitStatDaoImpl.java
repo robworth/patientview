@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.UnitStat;
-import org.patientview.patientview.model.UnitStat_;
+import org.patientview.model.patientview.UnitStat;
+import org.patientview.model.patientview.UnitStat_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitStatDao;
 import org.springframework.stereotype.Repository;

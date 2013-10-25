@@ -25,21 +25,21 @@ package org.patientview.patientview.parser;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.patientview.ibd.model.Allergy;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.Procedure;
-import org.patientview.ibd.model.enums.DiseaseExtent;
+import org.patientview.model.ibd.Allergy;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.Procedure;
+import org.patientview.model.ibd.enums.DiseaseExtent;
 import org.patientview.model.Patient;
 import org.patientview.patientview.TestResultDateRange;
-import org.patientview.patientview.model.Centre;
-import org.patientview.patientview.model.CorruptNode;
-import org.patientview.patientview.model.Diagnosis;
-import org.patientview.patientview.model.Diagnostic;
-import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.enums.DiagnosticType;
-import org.patientview.patientview.model.enums.NodeError;
+import org.patientview.model.patientview.Centre;
+import org.patientview.model.patientview.CorruptNode;
+import org.patientview.model.patientview.Diagnosis;
+import org.patientview.model.patientview.Diagnostic;
+import org.patientview.model.patientview.Letter;
+import org.patientview.model.patientview.Medicine;
+import org.patientview.model.patientview.TestResult;
+import org.patientview.model.patientview.enums.DiagnosticType;
+import org.patientview.model.patientview.enums.NodeError;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ResultParserException;
 import org.patientview.utils.LegacySpringUtils;
@@ -518,7 +518,7 @@ public class ResultParser {
         MyIbd myIbd = new MyIbd();
         myIbd.setNhsno((String) xmlData.get("nhsno"));
         myIbd.setUnitcode((String) xmlData.get("centrecode"));
-        myIbd.setDiagnosis(org.patientview.ibd.model.enums.Diagnosis.getDiagnosisByXmlName(
+        myIbd.setDiagnosis(org.patientview.model.ibd.enums.Diagnosis.getDiagnosisByXmlName(
                 (String) xmlData.get("diagnosis")));
 
         Object diagnosisDate = xmlData.get("diagnosisdate");

@@ -23,7 +23,7 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.UserLog;
+import org.patientview.model.patientview.UserLog;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

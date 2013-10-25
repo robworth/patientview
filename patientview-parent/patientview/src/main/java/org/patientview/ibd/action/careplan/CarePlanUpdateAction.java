@@ -30,10 +30,10 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.patientview.actionutils.ActionUtils;
-import org.patientview.ibd.Ibd;
+import org.patientview.model.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
-import org.patientview.ibd.model.CarePlan;
-import org.patientview.patientview.model.User;
+import org.patientview.model.ibd.CarePlan;
+import org.patientview.model.patientview.User;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;

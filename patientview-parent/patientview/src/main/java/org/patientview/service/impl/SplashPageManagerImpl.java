@@ -23,9 +23,9 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.SplashPage;
-import org.patientview.patientview.model.SplashPageUserSeen;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.SplashPage;
+import org.patientview.model.patientview.SplashPageUserSeen;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.SplashPageDao;
 import org.patientview.repository.SplashPageUserSeenDao;
 import org.patientview.service.SecurityUserManager;

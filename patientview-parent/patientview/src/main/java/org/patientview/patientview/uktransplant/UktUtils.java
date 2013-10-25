@@ -24,7 +24,7 @@
 package org.patientview.patientview.uktransplant;
 
 import javax.servlet.http.HttpServletRequest;
-import org.patientview.patientview.model.UktStatus;
+import org.patientview.model.patientview.UktStatus;
 import org.patientview.utils.LegacySpringUtils;
 
 public final class UktUtils {

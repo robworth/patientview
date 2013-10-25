@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.EmailVerification;
+import org.patientview.model.patientview.EmailVerification;
 import org.patientview.repository.EmailVerificationDao;
 import org.junit.Test;
 

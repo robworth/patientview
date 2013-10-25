@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.JoinRequest;
+import org.patientview.model.patientview.JoinRequest;
 
 import java.util.List;
 

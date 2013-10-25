@@ -23,9 +23,9 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.model.Aboutme;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.UserMapping;
+import org.patientview.model.patientview.Aboutme;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.AboutmeDao;
 import org.patientview.service.AboutmeManager;
 import org.patientview.service.UserManager;

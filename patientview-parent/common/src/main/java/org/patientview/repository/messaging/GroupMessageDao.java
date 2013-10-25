@@ -22,7 +22,7 @@
  */
 package org.patientview.repository.messaging;
 
-import org.patientview.patientview.model.GroupMessage;
+import org.patientview.model.patientview.GroupMessage;
 
 public interface GroupMessageDao {
 

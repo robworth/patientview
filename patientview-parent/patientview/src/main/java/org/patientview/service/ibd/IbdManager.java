@@ -23,21 +23,21 @@
 
 package org.patientview.service.ibd;
 
-import org.patientview.ibd.model.Allergy;
-import org.patientview.ibd.model.CarePlan;
-import org.patientview.ibd.model.MyIbdSeverityLevel;
-import org.patientview.ibd.model.Procedure;
-import org.patientview.ibd.model.enums.Diagnosis;
-import org.patientview.ibd.model.enums.Severity;
-import org.patientview.ibd.model.symptoms.ColitisSymptoms;
-import org.patientview.ibd.model.symptoms.CrohnsSymptoms;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.Nutrition;
-import org.patientview.ibd.model.medication.Medication;
-import org.patientview.ibd.model.medication.MedicationDose;
-import org.patientview.ibd.model.medication.MedicationType;
-import org.patientview.ibd.model.medication.MyMedication;
-import org.patientview.patientview.model.User;
+import org.patientview.model.ibd.Allergy;
+import org.patientview.model.ibd.CarePlan;
+import org.patientview.model.ibd.MyIbdSeverityLevel;
+import org.patientview.model.ibd.Procedure;
+import org.patientview.model.ibd.enums.Diagnosis;
+import org.patientview.model.ibd.enums.Severity;
+import org.patientview.model.ibd.symptoms.ColitisSymptoms;
+import org.patientview.model.ibd.symptoms.CrohnsSymptoms;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.Nutrition;
+import org.patientview.model.ibd.medication.Medication;
+import org.patientview.model.ibd.medication.MedicationDose;
+import org.patientview.model.ibd.medication.MedicationType;
+import org.patientview.model.ibd.medication.MyMedication;
+import org.patientview.model.patientview.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

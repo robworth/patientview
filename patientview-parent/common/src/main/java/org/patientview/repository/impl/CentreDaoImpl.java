@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Centre;
-import org.patientview.patientview.model.Centre_;
+import org.patientview.model.patientview.Centre;
+import org.patientview.model.patientview.Centre_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.CentreDao;
 import org.springframework.stereotype.Repository;

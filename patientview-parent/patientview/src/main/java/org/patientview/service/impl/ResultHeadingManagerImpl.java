@@ -23,8 +23,8 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.ResultHeading;
+import org.patientview.model.patientview.Panel;
+import org.patientview.model.patientview.ResultHeading;
 import org.patientview.repository.ResultHeadingDao;
 import org.patientview.service.ResultHeadingManager;
 import org.patientview.service.SecurityUserManager;

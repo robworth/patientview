@@ -28,9 +28,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Medicine;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;

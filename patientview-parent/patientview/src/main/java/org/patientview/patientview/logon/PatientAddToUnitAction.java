@@ -28,8 +28,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.service.LogEntryManager;
 import org.patientview.utils.LegacySpringUtils;
 

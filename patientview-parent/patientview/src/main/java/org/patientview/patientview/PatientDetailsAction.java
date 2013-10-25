@@ -31,7 +31,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.edtacode.EdtaCodeUtils;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.User;
 import org.patientview.patientview.news.NewsUtils;
 import org.patientview.utils.LegacySpringUtils;
 

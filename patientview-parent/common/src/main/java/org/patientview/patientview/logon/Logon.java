@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.ibd.Ibd;
+import org.patientview.model.ibd.Ibd;
 import org.patientview.model.Patient;
 
 import java.util.Date;

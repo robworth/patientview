@@ -23,7 +23,7 @@
 
 package org.patientview.patientview;
 
-import org.patientview.patientview.model.Panel;
+import org.patientview.model.patientview.Panel;
 
 import java.util.List;
 

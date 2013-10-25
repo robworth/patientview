@@ -23,8 +23,8 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.user.NhsnoUnitcode;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;

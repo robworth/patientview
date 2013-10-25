@@ -30,8 +30,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UnitStat;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.UnitStat;
 import org.patientview.service.LogEntryManager;
 import org.patientview.utils.LegacySpringUtils;
 

@@ -23,11 +23,11 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Job;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.Job;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 
 import java.util.List;
 

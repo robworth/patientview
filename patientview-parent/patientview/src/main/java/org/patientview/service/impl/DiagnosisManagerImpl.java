@@ -23,7 +23,7 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Diagnosis;
+import org.patientview.model.patientview.Diagnosis;
 import org.patientview.repository.DiagnosisDao;
 import org.patientview.service.DiagnosisManager;
 import org.springframework.stereotype.Service;

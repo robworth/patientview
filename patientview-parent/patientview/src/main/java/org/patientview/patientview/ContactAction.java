@@ -31,10 +31,10 @@ import org.apache.struts.action.DynaActionForm;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.model.Patient;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Contact;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Contact;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 

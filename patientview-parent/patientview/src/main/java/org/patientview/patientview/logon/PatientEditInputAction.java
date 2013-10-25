@@ -24,7 +24,7 @@
 package org.patientview.patientview.logon;
 
 import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.User;
 import org.patientview.patientview.user.NhsnoUnitcode;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;

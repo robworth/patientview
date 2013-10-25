@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.JoinRequest;
-import org.patientview.patientview.model.JoinRequest_;
+import org.patientview.model.patientview.JoinRequest;
+import org.patientview.model.patientview.JoinRequest_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.JoinRequestDao;
 import org.springframework.stereotype.Repository;

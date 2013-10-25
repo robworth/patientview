@@ -23,8 +23,8 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Medicine;
+import org.patientview.model.patientview.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

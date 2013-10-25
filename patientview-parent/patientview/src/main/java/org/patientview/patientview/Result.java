@@ -23,7 +23,7 @@
 
 package org.patientview.patientview;
 
-import org.patientview.patientview.model.TestResultWithUnitShortname;
+import org.patientview.model.patientview.TestResultWithUnitShortname;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

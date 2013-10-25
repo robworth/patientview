@@ -23,7 +23,7 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Comment;
+import org.patientview.model.patientview.Comment;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

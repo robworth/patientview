@@ -23,9 +23,9 @@
 
 package org.patientview.ibd.util;
 
-import org.patientview.ibd.model.medication.Medication;
-import org.patientview.ibd.model.medication.MedicationDose;
-import org.patientview.ibd.model.medication.MedicationType;
+import org.patientview.model.ibd.medication.Medication;
+import org.patientview.model.ibd.medication.MedicationDose;
+import org.patientview.model.ibd.medication.MedicationType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

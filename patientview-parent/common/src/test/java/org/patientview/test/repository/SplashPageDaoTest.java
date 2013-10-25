@@ -23,10 +23,10 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.SplashPage;
-import org.patientview.patientview.model.SplashPageUserSeen;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.SplashPage;
+import org.patientview.model.patientview.SplashPageUserSeen;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.SplashPageDao;
 import org.patientview.repository.SplashPageUserSeenDao;
 import org.patientview.test.helpers.RepositoryHelpers;

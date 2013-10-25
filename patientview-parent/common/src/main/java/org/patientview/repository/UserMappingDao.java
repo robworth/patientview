@@ -23,9 +23,9 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.UserMapping;
+import org.patientview.model.patientview.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

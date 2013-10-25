@@ -25,8 +25,8 @@ package org.patientview.test.repository;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.patientview.patientview.model.LogEntry;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.patientview.LogEntry;
+import org.patientview.model.patientview.Specialty;
 import org.patientview.service.LogEntryManager;
 import org.patientview.test.helpers.RepositoryHelpers;
 

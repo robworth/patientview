@@ -23,7 +23,7 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.EmailQueue;
+import org.patientview.model.patientview.EmailQueue;
 
 import java.util.List;
 

@@ -23,7 +23,7 @@
 
 package org.patientview.taglib;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.patientview.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.taglib.TagUtils;

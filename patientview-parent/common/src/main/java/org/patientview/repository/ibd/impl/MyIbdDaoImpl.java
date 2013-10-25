@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.MyIbd_;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.MyIbd_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.MyIbdDao;
 import org.slf4j.Logger;

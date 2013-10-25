@@ -1,0 +1,134 @@
+package org.patientview.repository.radar.service.impl;
+
+import org.patientview.model.Centre;
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
+import org.patientview.repository.radar.dao.DemographicsDao;
+import org.patientview.model.radar.filter.DemographicsFilter;
+import org.patientview.model.radar.user.DemographicsUserDetail;
+import org.patientview.repository.radar.service.DemographicsManager;
+
+import java.util.List;
+
+public class DemographicsManagerImpl implements DemographicsManager {
+
+    private DemographicsDao demographicsDao;
+
+    public void saveDemographics(Patient patient) {
+        // Save or update the demographics object
+        demographicsDao.saveDemographics(patient);
+    }
+
+    public Patient getDemographicsByRadarNumber(long radarNumber) {
+        return demographicsDao.getDemographicsByRadarNumber(radarNumber);
+    }
+
+    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
+        return demographicsDao.getDemographicsByNhsNoAndUnitCode(nhsNo, unitCode);
+    }
+
+    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
+        return demographicsDao.getDemographicsByRenalUnit(centre);
+    }
+
+    public List<Patient> getDemographics() {
+        return getDemographics(new DemographicsFilter(), -1, -1);
+    }
+
+    public List<Patient> getDemographics(DemographicsFilter filter) {
+        return getDemographics(filter, -1, -1);
+    }
+
+    public List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
+        return demographicsDao.getDemographics(filter, page, numberPerPage);
+    }
+
+    public Sex getSex(long id) {
+        return demographicsDao.getSex(id);
+    }
+
+    public List<Sex> getSexes() {
+        return demographicsDao.getSexes();
+    }
+
+    public Status getStatus(long id) {
+        return demographicsDao.getStatus(id);
+    }
+
+    public List<Status> getStatuses() {
+        return demographicsDao.getStatuses();
+    }
+
+    public DemographicsDao getDemographicsDao() {
+        return demographicsDao;
+    }
+
+    public boolean isNhsNumberValid(String nhsNumber) {
+        return isNhsNumberValid(nhsNumber, false);
+    }
+
+    public boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
+        return isNhsNumberValid(nhsNumber, true);
+    }
+
+    private boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
+
+        // Remove all whitespace and non-visible characters such as tab, new line etc
+        nhsNumber = nhsNumber.replaceAll("\\s", "");
+
+        // Only permit 10 characters
+        if (nhsNumber.length() != 10) {
+            return false;
+        }
+
+        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
+        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
+
+        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
+            return true;
+        }
+
+        return isNhsChecksumValid(nhsNumber);
+    }
+
+    private boolean isNhsChecksumValid(String nhsNumber) {
+        /**
+         * Generate the checksum using modulus 11 algorithm
+         */
+        int checksum = 0;
+
+        try {
+            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
+            for (int i = 0; i <= 8; i++) {
+                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
+                checksum += value;
+            }
+
+            //(modulus 11)
+            checksum = 11 - checksum % 11;
+
+            if (checksum == 11) {
+                checksum = 0;
+            }
+
+            // Does checksum match the 10th digit?
+            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false; // nhsNumber contains letters
+        }
+    }
+
+    public void setDemographicsDao(DemographicsDao demographicsDao) {
+        this.demographicsDao = demographicsDao;
+    }
+
+    public DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode) {
+        return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
+    }
+
+}

@@ -22,7 +22,7 @@
  */
 package org.patientview.repository.job;
 
-import org.patientview.patientview.model.EmailQueue;
+import org.patientview.model.patientview.EmailQueue;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

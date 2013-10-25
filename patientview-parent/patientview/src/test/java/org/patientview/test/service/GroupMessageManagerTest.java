@@ -1,6 +1,8 @@
 package org.patientview.test.service;
 
-import org.patientview.patientview.model.*;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.GroupMessage;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.messaging.GroupMessageDao;
 import org.patientview.service.GroupMessageManager;
 import org.patientview.test.helpers.ServiceHelpers;

@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Message;
+import org.patientview.model.patientview.Message;
 
 import java.util.List;
 

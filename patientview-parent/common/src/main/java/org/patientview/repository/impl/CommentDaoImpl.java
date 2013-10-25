@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Comment;
-import org.patientview.patientview.model.Comment_;
+import org.patientview.model.patientview.Comment;
+import org.patientview.model.patientview.Comment_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.CommentDao;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package org.patientview.test.quartz;
 
-import org.patientview.patientview.model.EmailQueue;
+import org.patientview.model.patientview.EmailQueue;
 import org.patientview.quartz.SendEmailJobQuartzScheduler;
 import org.patientview.service.EmailQueueManager;
 import org.junit.Test;

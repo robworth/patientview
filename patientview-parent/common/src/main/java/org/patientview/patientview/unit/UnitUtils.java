@@ -24,9 +24,9 @@
 package org.patientview.patientview.unit;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.slf4j.Logger;

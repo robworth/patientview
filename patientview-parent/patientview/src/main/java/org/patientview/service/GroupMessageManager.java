@@ -23,9 +23,9 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.GroupMessage;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Conversation;
+import org.patientview.model.patientview.GroupMessage;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.Conversation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

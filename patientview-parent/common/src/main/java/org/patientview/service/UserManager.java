@@ -25,10 +25,10 @@ package org.patientview.service;
 
 import org.patientview.patientview.logon.PatientLogon;
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

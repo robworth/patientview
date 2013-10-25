@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.symptoms.ColitisSymptoms;
-import org.patientview.ibd.model.symptoms.ColitisSymptoms_;
+import org.patientview.model.ibd.symptoms.ColitisSymptoms;
+import org.patientview.model.ibd.symptoms.ColitisSymptoms_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.ColitisSymptomsDao;
 import org.springframework.stereotype.Repository;

@@ -23,8 +23,8 @@
 package org.patientview.job;
 
 import org.patientview.batch.SendEmailReader;
-import org.patientview.patientview.model.EmailQueue;
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.EmailQueue;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.springframework.batch.core.BatchStatus;

@@ -23,7 +23,7 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.EdtaCode;
+import org.patientview.model.patientview.EdtaCode;
 import org.patientview.repository.EdtaCodeDao;
 import org.patientview.service.EdtaCodeManager;
 import org.patientview.service.SecurityUserManager;

@@ -23,7 +23,7 @@
 package org.patientview.patientview.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.patientview.patientview.model.JoinRequest;
+import org.patientview.model.patientview.JoinRequest;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.MutableSortDefinition;

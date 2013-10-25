@@ -23,8 +23,8 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.News;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.News;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.NewsDao;
 import org.patientview.service.NewsManager;
 import org.patientview.service.SecurityUserManager;

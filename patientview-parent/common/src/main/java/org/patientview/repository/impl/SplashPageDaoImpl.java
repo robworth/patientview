@@ -23,9 +23,9 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.SplashPage;
-import org.patientview.patientview.model.SplashPage_;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.SplashPage;
+import org.patientview.model.patientview.SplashPage_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.SplashPageDao;
 import org.springframework.stereotype.Repository;

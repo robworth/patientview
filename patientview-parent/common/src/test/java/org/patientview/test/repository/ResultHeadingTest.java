@@ -23,9 +23,9 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.ResultHeading;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.patientview.Panel;
+import org.patientview.model.patientview.ResultHeading;
+import org.patientview.model.patientview.Specialty;
 import org.patientview.repository.ResultHeadingDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 import org.junit.Before;

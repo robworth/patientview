@@ -26,7 +26,7 @@ package org.patientview.patientview.edtacode;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import org.patientview.patientview.model.EdtaCode;
+import org.patientview.model.patientview.EdtaCode;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 

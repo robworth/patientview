@@ -23,9 +23,9 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.radar.Demographics;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.radar.Demographics;
 
 public interface RadarDao {
 

@@ -23,11 +23,11 @@
 
 package org.patientview.test.helpers;
 
-import org.patientview.patientview.model.Conversation;
-import org.patientview.patientview.model.Message;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.Message;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

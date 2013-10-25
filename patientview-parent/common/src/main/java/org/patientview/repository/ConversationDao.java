@@ -23,8 +23,8 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.Conversation;
-import org.patientview.patientview.model.enums.GroupEnum;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.enums.GroupEnum;
 
 import java.util.List;
 

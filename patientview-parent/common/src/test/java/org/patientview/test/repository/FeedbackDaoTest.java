@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Feedback;
+import org.patientview.model.patientview.Feedback;
 import org.patientview.repository.FeedbackDao;
 import org.junit.Test;
 

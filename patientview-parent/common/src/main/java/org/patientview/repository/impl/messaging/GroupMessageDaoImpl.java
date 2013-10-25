@@ -22,8 +22,8 @@
  */
 package org.patientview.repository.impl.messaging;
 
-import org.patientview.patientview.model.GroupMessage;
-import org.patientview.patientview.model.GroupMessage_;
+import org.patientview.model.patientview.GroupMessage;
+import org.patientview.model.patientview.GroupMessage_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.messaging.GroupMessageDao;
 import org.springframework.stereotype.Repository;

@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.MyIbdSeverityLevel;
-import org.patientview.ibd.model.enums.Severity;
+import org.patientview.model.ibd.MyIbdSeverityLevel;
+import org.patientview.model.ibd.enums.Severity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

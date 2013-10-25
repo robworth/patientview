@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.symptoms.CrohnsSymptoms;
+import org.patientview.model.ibd.symptoms.CrohnsSymptoms;
 
 import java.util.Date;
 import java.util.List;

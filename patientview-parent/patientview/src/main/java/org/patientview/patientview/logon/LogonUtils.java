@@ -27,9 +27,9 @@ import com.Ostermiller.util.RandPass;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.model.SplashPage;
-import org.patientview.patientview.model.SplashPageUserSeen;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.SplashPage;
+import org.patientview.model.patientview.SplashPageUserSeen;
+import org.patientview.model.patientview.User;
 import org.patientview.patientview.splashpage.SplashPageUtils;
 import org.patientview.utils.LegacySpringUtils;
 

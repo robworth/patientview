@@ -23,11 +23,11 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Panel;
+import org.patientview.model.patientview.TestResult;
+import org.patientview.model.patientview.TestResultWithUnitShortname;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.repository.TestResultDao;
 import org.patientview.service.TestResultManager;

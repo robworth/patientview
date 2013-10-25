@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Feedback;
-import org.patientview.patientview.model.Feedback_;
+import org.patientview.model.patientview.Feedback;
+import org.patientview.model.patientview.Feedback_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.FeedbackDao;
 import org.springframework.stereotype.Repository;

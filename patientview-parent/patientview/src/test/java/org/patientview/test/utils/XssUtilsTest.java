@@ -25,9 +25,9 @@ package org.patientview.test.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.patientview.patientview.model.Conversation;
-import org.patientview.patientview.model.Message;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.Message;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.ConversationDao;
 import org.patientview.repository.MessageDao;
 import org.patientview.test.helpers.RepositoryHelpers;

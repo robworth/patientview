@@ -22,10 +22,9 @@
  */
 package org.patientview.repository.impl.job;
 
-import org.patientview.patientview.model.EmailQueue;
-import org.patientview.patientview.model.EmailQueue_;
-
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.EmailQueue;
+import org.patientview.model.patientview.EmailQueue_;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.job.EmailQueueDao;
 import org.springframework.stereotype.Repository;

@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.Procedure;
+import org.patientview.model.ibd.Procedure;
 
 public interface ProcedureDao {
 

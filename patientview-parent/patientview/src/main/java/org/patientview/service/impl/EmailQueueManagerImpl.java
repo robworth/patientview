@@ -23,7 +23,7 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.EmailQueue;
+import org.patientview.model.patientview.EmailQueue;
 import org.patientview.repository.job.EmailQueueDao;
 import org.patientview.service.EmailQueueManager;
 import org.springframework.stereotype.Service;

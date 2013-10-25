@@ -23,9 +23,9 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.CarePlan;
-import org.patientview.ibd.model.enums.Confidence;
-import org.patientview.ibd.model.enums.Importance;
+import org.patientview.model.ibd.CarePlan;
+import org.patientview.model.ibd.enums.Confidence;
+import org.patientview.model.ibd.enums.Importance;
 import org.patientview.repository.ibd.CarePlanDao;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

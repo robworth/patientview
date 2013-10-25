@@ -25,8 +25,8 @@ package org.patientview.service.impl;
 
 import org.patientview.model.Patient;
 import org.patientview.patientview.PatientDetails;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
 import org.patientview.repository.PatientDao;
 import org.patientview.service.DiagnosisManager;

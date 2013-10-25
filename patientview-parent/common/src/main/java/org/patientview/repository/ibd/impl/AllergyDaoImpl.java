@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.Allergy;
-import org.patientview.ibd.model.Allergy_;
+import org.patientview.model.ibd.Allergy;
+import org.patientview.model.ibd.Allergy_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.AllergyDao;
 import org.springframework.stereotype.Repository;

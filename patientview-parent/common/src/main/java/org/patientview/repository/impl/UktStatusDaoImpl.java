@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.UktStatus;
-import org.patientview.patientview.model.UktStatus_;
+import org.patientview.model.patientview.UktStatus;
+import org.patientview.model.patientview.UktStatus_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UktStatusDao;
 import org.springframework.stereotype.Repository;

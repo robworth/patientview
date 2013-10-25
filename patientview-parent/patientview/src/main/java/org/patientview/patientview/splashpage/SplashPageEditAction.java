@@ -24,7 +24,7 @@
 package org.patientview.patientview.splashpage;
 
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.SplashPage;
+import org.patientview.model.patientview.SplashPage;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;

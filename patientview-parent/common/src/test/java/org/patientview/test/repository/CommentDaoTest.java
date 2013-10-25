@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Comment;
+import org.patientview.model.patientview.Comment;
 import org.patientview.repository.CommentDao;
 import org.junit.Test;
 

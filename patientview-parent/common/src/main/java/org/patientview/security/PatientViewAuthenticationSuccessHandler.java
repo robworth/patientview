@@ -23,9 +23,9 @@
 
 package org.patientview.security;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.User;
 import org.patientview.security.model.SecurityUser;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UserManager;

@@ -23,7 +23,7 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Message;
+import org.patientview.model.patientview.Message;
 
 import javax.servlet.ServletContext;
 

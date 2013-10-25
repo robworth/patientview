@@ -23,10 +23,10 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.model.UserMapping_;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
+import org.patientview.model.patientview.UserMapping_;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UserMappingDao;

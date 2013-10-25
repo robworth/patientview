@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.Nutrition;
-import org.patientview.ibd.model.Nutrition_;
+import org.patientview.model.ibd.Nutrition;
+import org.patientview.model.ibd.Nutrition_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.NutritionDao;
 import org.springframework.stereotype.Repository;

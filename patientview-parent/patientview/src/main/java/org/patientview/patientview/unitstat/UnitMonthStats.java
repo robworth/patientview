@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.unitstat;
 
-import org.patientview.patientview.model.UnitStat;
+import org.patientview.model.patientview.UnitStat;
 
 import java.util.HashMap;
 import java.util.Map;

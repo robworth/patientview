@@ -24,35 +24,35 @@
 package org.patientview.ibd.action;
 
 import org.apache.struts.action.DynaActionForm;
-import org.patientview.ibd.Ibd;
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.MyIbdSeverityLevel;
-import org.patientview.ibd.model.enums.BodyPartAffected;
-import org.patientview.ibd.model.enums.Complication;
-import org.patientview.ibd.model.enums.Confidence;
-import org.patientview.ibd.model.enums.Diagnosis;
-import org.patientview.ibd.model.enums.DiseaseExtent;
-import org.patientview.ibd.model.enums.FamilyHistory;
-import org.patientview.ibd.model.enums.Feeling;
-import org.patientview.ibd.model.enums.Importance;
-import org.patientview.ibd.model.enums.Severity;
-import org.patientview.ibd.model.enums.Smoking;
-import org.patientview.ibd.model.enums.Surgery;
-import org.patientview.ibd.model.enums.VaccinationRecord;
-import org.patientview.ibd.model.enums.colitis.NumberOfStoolsDaytime;
-import org.patientview.ibd.model.enums.colitis.NumberOfStoolsNighttime;
-import org.patientview.ibd.model.enums.colitis.PresentBlood;
-import org.patientview.ibd.model.enums.colitis.ToiletTiming;
-import org.patientview.ibd.model.enums.crohns.AbdominalPain;
-import org.patientview.ibd.model.enums.crohns.MassInTummy;
-import org.patientview.ibd.model.medication.MedicationType;
-import org.patientview.ibd.model.medication.enums.MedicationFrequency;
-import org.patientview.ibd.model.symptoms.BaseSymptoms;
-import org.patientview.ibd.model.symptoms.SymptomsData;
-import org.patientview.ibd.model.symptoms.SymptomsGraphData;
-import org.patientview.patientview.model.EdtaCode;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserMapping;
+import org.patientview.model.ibd.Ibd;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.MyIbdSeverityLevel;
+import org.patientview.model.ibd.enums.BodyPartAffected;
+import org.patientview.model.ibd.enums.Complication;
+import org.patientview.model.ibd.enums.Confidence;
+import org.patientview.model.ibd.enums.Diagnosis;
+import org.patientview.model.ibd.enums.DiseaseExtent;
+import org.patientview.model.ibd.enums.FamilyHistory;
+import org.patientview.model.ibd.enums.Feeling;
+import org.patientview.model.ibd.enums.Importance;
+import org.patientview.model.ibd.enums.Severity;
+import org.patientview.model.ibd.enums.Smoking;
+import org.patientview.model.ibd.enums.Surgery;
+import org.patientview.model.ibd.enums.VaccinationRecord;
+import org.patientview.model.ibd.enums.colitis.NumberOfStoolsDaytime;
+import org.patientview.model.ibd.enums.colitis.NumberOfStoolsNighttime;
+import org.patientview.model.ibd.enums.colitis.PresentBlood;
+import org.patientview.model.ibd.enums.colitis.ToiletTiming;
+import org.patientview.model.ibd.enums.crohns.AbdominalPain;
+import org.patientview.model.ibd.enums.crohns.MassInTummy;
+import org.patientview.model.ibd.medication.MedicationType;
+import org.patientview.model.ibd.medication.enums.MedicationFrequency;
+import org.patientview.model.ibd.symptoms.BaseSymptoms;
+import org.patientview.model.ibd.symptoms.SymptomsData;
+import org.patientview.model.ibd.symptoms.SymptomsGraphData;
+import org.patientview.model.patientview.EdtaCode;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.UserMapping;
 import org.patientview.service.GroupMessageManager;
 import org.patientview.service.MessageManager;
 import org.patientview.service.PatientManager;
@@ -216,12 +216,12 @@ public class BaseAction extends ActionSupport {
         return PresentBlood.getAsList();
     }
 
-    protected List<org.patientview.ibd.model.enums.colitis.Complication> getColitisComplicationList() {
-        return org.patientview.ibd.model.enums.colitis.Complication.getAsList();
+    protected List<org.patientview.model.ibd.enums.colitis.Complication> getColitisComplicationList() {
+        return org.patientview.model.ibd.enums.colitis.Complication.getAsList();
     }
 
-    protected List<org.patientview.ibd.model.enums.crohns.Complication> getCrohnsComplicationList() {
-        return org.patientview.ibd.model.enums.crohns.Complication.getAsList();
+    protected List<org.patientview.model.ibd.enums.crohns.Complication> getCrohnsComplicationList() {
+        return org.patientview.model.ibd.enums.crohns.Complication.getAsList();
     }
 
     protected List<MassInTummy> getMassInTummy() {

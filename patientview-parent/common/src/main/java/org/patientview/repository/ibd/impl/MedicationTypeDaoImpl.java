@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.medication.MedicationType;
+import org.patientview.model.ibd.medication.MedicationType;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.MedicationTypeDao;
 import org.springframework.stereotype.Repository;

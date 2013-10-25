@@ -23,7 +23,7 @@
 
 package org.patientview.repository.ibd;
 
-import org.patientview.ibd.model.symptoms.ColitisSymptoms;
+import org.patientview.model.ibd.symptoms.ColitisSymptoms;
 
 import java.util.Date;
 import java.util.List;

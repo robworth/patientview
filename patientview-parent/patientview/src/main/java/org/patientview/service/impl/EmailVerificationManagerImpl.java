@@ -23,8 +23,8 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.EmailVerification;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.EmailVerification;
+import org.patientview.model.patientview.User;
 import org.patientview.repository.EmailVerificationDao;
 import org.patientview.service.EmailVerificationManager;
 import org.patientview.service.LogEntryManager;

@@ -27,9 +27,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
-import org.patientview.ibd.Ibd;
+import org.patientview.model.ibd.Ibd;
 import org.patientview.ibd.action.BaseAction;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.User;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;

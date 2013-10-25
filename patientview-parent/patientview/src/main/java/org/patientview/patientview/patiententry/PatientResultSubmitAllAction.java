@@ -24,8 +24,8 @@
 package org.patientview.patientview.patiententry;
 
 import org.patientview.patientview.PatientUtils;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Comment;
+import org.patientview.model.patientview.TestResult;
+import org.patientview.model.patientview.Comment;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;

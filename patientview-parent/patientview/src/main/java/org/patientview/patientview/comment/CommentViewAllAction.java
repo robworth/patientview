@@ -26,7 +26,7 @@ package org.patientview.patientview.comment;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.patientview.patientview.model.Comment;
+import org.patientview.model.patientview.Comment;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.exception;
 
-import org.patientview.patientview.model.CorruptNode;
+import org.patientview.model.patientview.CorruptNode;
 
 import java.util.ArrayList;
 import java.util.List;

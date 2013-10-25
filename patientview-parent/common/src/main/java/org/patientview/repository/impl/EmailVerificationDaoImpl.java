@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.EmailVerification;
-import org.patientview.patientview.model.EmailVerification_;
+import org.patientview.model.patientview.EmailVerification;
+import org.patientview.model.patientview.EmailVerification_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.EmailVerificationDao;
 import org.springframework.stereotype.Repository;

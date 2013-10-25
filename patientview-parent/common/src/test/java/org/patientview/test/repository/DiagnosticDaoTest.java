@@ -23,8 +23,8 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Diagnostic;
-import org.patientview.patientview.model.enums.DiagnosticType;
+import org.patientview.model.patientview.Diagnostic;
+import org.patientview.model.patientview.enums.DiagnosticType;
 import org.patientview.repository.DiagnosticDao;
 import org.junit.Test;
 

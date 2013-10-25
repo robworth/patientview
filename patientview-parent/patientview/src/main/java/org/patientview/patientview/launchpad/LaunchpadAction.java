@@ -23,8 +23,8 @@
 
 package org.patientview.patientview.launchpad;
 
-import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.User;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

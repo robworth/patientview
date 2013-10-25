@@ -23,7 +23,7 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Feedback;
+import org.patientview.model.patientview.Feedback;
 import org.patientview.repository.FeedbackDao;
 import org.patientview.service.FeedbackManager;
 import org.springframework.stereotype.Service;

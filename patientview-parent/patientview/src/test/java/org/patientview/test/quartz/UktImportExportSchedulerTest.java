@@ -2,7 +2,7 @@ package org.patientview.test.quartz;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.patientview.patientview.model.*;
+import org.patientview.model.patientview.UktStatus;
 import org.patientview.quartz.UktImportExportScheduler;
 import org.patientview.service.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -23,8 +23,12 @@
 
 package org.patientview.test.service;
 
-import org.patientview.patientview.model.*;
-import org.patientview.patientview.model.enums.GroupEnum;
+import org.patientview.model.patientview.Conversation;
+import org.patientview.model.patientview.Message;
+import org.patientview.model.patientview.Specialty;
+import org.patientview.model.patientview.Unit;
+import org.patientview.model.patientview.User;
+import org.patientview.model.patientview.enums.GroupEnum;
 import org.patientview.repository.UserDao;
 import org.patientview.service.MessageManager;
 import org.patientview.service.UnitManager;

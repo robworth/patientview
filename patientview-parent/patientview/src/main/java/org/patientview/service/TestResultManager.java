@@ -23,10 +23,10 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Panel;
+import org.patientview.model.patientview.TestResult;
+import org.patientview.model.patientview.TestResultWithUnitShortname;
+import org.patientview.model.patientview.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

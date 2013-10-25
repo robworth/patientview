@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.PatientCount;
-import org.patientview.patientview.model.PatientCount_;
+import org.patientview.model.patientview.PatientCount;
+import org.patientview.model.patientview.PatientCount_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.PatientCountDao;
 import org.springframework.stereotype.Repository;

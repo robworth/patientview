@@ -22,8 +22,8 @@
  */
 package org.patientview.repository.job;
 
-import org.patientview.patientview.model.Job;
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.Job;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

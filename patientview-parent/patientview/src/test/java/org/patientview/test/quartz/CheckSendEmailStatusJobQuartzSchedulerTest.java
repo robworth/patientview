@@ -1,7 +1,7 @@
 package org.patientview.test.quartz;
 
-import org.patientview.patientview.model.Job;
-import org.patientview.patientview.model.enums.SendEmailEnum;
+import org.patientview.model.patientview.Job;
+import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.quartz.CheckSendEmailStatusJobQuartzScheduler;
 import org.patientview.service.JobManager;
 import org.junit.Test;

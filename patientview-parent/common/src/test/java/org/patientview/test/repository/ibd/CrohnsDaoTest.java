@@ -23,11 +23,11 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.symptoms.CrohnsSymptoms;
-import org.patientview.ibd.model.enums.Feeling;
-import org.patientview.ibd.model.enums.crohns.AbdominalPain;
-import org.patientview.ibd.model.enums.crohns.Complication;
-import org.patientview.ibd.model.enums.crohns.MassInTummy;
+import org.patientview.model.ibd.symptoms.CrohnsSymptoms;
+import org.patientview.model.ibd.enums.Feeling;
+import org.patientview.model.ibd.enums.crohns.AbdominalPain;
+import org.patientview.model.ibd.enums.crohns.Complication;
+import org.patientview.model.ibd.enums.crohns.MassInTummy;
 import org.patientview.repository.ibd.CrohnsSymptomsDao;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

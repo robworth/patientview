@@ -24,7 +24,7 @@
 package org.patientview.service.impl;
 
 import org.patientview.patientview.messaging.Messaging;
-import org.patientview.patientview.model.SpecialtyUserRole;
+import org.patientview.model.patientview.SpecialtyUserRole;
 import org.patientview.service.EmailManager;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
@@ -59,7 +59,7 @@ public class EmailManagerImpl implements EmailManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailManagerImpl.class);
 
     @Override
-    public void sendUserMessage(ServletContext context, org.patientview.patientview.model.Message message) {
+    public void sendUserMessage(ServletContext context, org.patientview.model.patientview.Message message) {
         String subject = "You have been sent a message from " + message.getSender().getName()
                 + " on Renal PatientView";
 

@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Medicine;
+import org.patientview.model.patientview.Medicine;
 import org.patientview.repository.MedicineDao;
 import org.junit.Test;
 

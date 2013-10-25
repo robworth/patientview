@@ -23,8 +23,8 @@
 
 package org.patientview.patientview.aboutme;
 
-import org.patientview.patientview.model.Aboutme;
-import org.patientview.patientview.model.User;
+import org.patientview.model.patientview.Aboutme;
+import org.patientview.model.patientview.User;
 import org.patientview.utils.LegacySpringUtils;
 
 public final class AboutmeUtils {

@@ -23,11 +23,11 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.MyIbd;
-import org.patientview.ibd.model.MyIbdSeverityLevel;
-import org.patientview.ibd.model.enums.Diagnosis;
-import org.patientview.ibd.model.enums.DiseaseExtent;
-import org.patientview.ibd.model.enums.Severity;
+import org.patientview.model.ibd.MyIbd;
+import org.patientview.model.ibd.MyIbdSeverityLevel;
+import org.patientview.model.ibd.enums.Diagnosis;
+import org.patientview.model.ibd.enums.DiseaseExtent;
+import org.patientview.model.ibd.enums.Severity;
 import org.patientview.repository.ibd.MyIbdDao;
 import org.patientview.repository.ibd.MyIbdSeverityLevelDao;
 import org.patientview.test.repository.BaseDaoTest;

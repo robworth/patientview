@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.Nutrition;
+import org.patientview.model.ibd.Nutrition;
 import org.patientview.repository.ibd.NutritionDao;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

@@ -23,12 +23,12 @@
 
 package org.patientview.test.repository.ibd;
 
-import org.patientview.ibd.model.enums.colitis.NumberOfStoolsNighttime;
-import org.patientview.ibd.model.symptoms.ColitisSymptoms;
-import org.patientview.ibd.model.enums.Feeling;
-import org.patientview.ibd.model.enums.colitis.NumberOfStoolsDaytime;
-import org.patientview.ibd.model.enums.colitis.PresentBlood;
-import org.patientview.ibd.model.enums.colitis.ToiletTiming;
+import org.patientview.model.ibd.enums.colitis.NumberOfStoolsNighttime;
+import org.patientview.model.ibd.symptoms.ColitisSymptoms;
+import org.patientview.model.ibd.enums.Feeling;
+import org.patientview.model.ibd.enums.colitis.NumberOfStoolsDaytime;
+import org.patientview.model.ibd.enums.colitis.PresentBlood;
+import org.patientview.model.ibd.enums.colitis.ToiletTiming;
 import org.patientview.repository.ibd.ColitisSymptomsDao;
 import org.patientview.test.repository.BaseDaoTest;
 import org.junit.Test;

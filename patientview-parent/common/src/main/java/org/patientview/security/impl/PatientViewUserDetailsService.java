@@ -23,7 +23,8 @@
 
 package org.patientview.security.impl;
 
-import org.patientview.patientview.model.SpecialtyUserRole;
+import org.patientview.model.patientview.SpecialtyUserRole;
+import org.patientview.model.patientview.User;
 import org.patientview.security.model.SecurityUser;
 import org.patientview.service.SecurityUserManager;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ public class PatientViewUserDetailsService implements UserDetailsService {
 
         LOGGER.debug("Attempting to load user for name {}", s);
         SecurityUser securityUser = null;
-        org.patientview.patientview.model.User user = securityUserManager.get(s);
+        User user = securityUserManager.get(s);
 
         if (user != null) {
 

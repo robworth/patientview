@@ -23,8 +23,8 @@
 
 package org.patientview.repository.ibd.impl;
 
-import org.patientview.ibd.model.CarePlan;
-import org.patientview.ibd.model.CarePlan_;
+import org.patientview.model.ibd.CarePlan;
+import org.patientview.model.ibd.CarePlan_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ibd.CarePlanDao;
 import org.springframework.stereotype.Repository;

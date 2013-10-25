@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Diagnosis;
-import org.patientview.patientview.model.Diagnosis_;
+import org.patientview.model.patientview.Diagnosis;
+import org.patientview.model.patientview.Diagnosis_;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.DiagnosisDao;
 import org.springframework.stereotype.Repository;
