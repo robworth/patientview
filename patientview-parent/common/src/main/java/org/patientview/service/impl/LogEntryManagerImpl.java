@@ -41,7 +41,6 @@ public class LogEntryManagerImpl implements LogEntryManager {
 
 
 
-
     @Inject
     private LogEntryDao logEntryDao;
 
@@ -49,6 +48,10 @@ public class LogEntryManagerImpl implements LogEntryManager {
     private SecurityUserManager securityUserManager;
 
     private static final int MAX_TEXT_FIELD_SIZE = 65000;
+
+    public LogEntry get(Long id) {
+        return logEntryDao.get(id);
+    }
 
     @Override
     public void save(LogEntry logEntry) {
@@ -73,30 +76,49 @@ public class LogEntryManagerImpl implements LogEntryManager {
     }
 
     @Override
-    public List<LogEntry> get(String username, Calendar startdate, Calendar enddate) {
-        return logEntryDao.get(username, startdate, enddate, securityUserManager.getLoggedInSpecialty());
+    public List<LogEntry> get(String username, Calendar startDate, Calendar endDate) {
+        LogEntry logEntry = new LogEntry();
+        logEntry.setUser(username);
+        logEntry.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        return logEntryDao.get(logEntry, startDate, endDate);
     }
 
     @Override
-    public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action) {
-        return logEntryDao.getWithNhsNo(nhsno, startdate, enddate, action, securityUserManager.getLoggedInSpecialty());
+    public List<LogEntry> getWithNhsNo(String nhsno, Calendar startDate, Calendar endDate, String action) {
+        LogEntry logEntry = new LogEntry();
+        logEntry.setNhsno(nhsno);
+        logEntry.setAction(action);
+        logEntry.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        return logEntryDao.get(logEntry, startDate, endDate);
     }
 
     @Override
     public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                       Calendar startdate, Calendar enddate) {
-         // todo
-        //return logEntryDao.getWithNhsNo(nhsno, user, actor, action, unitcode, startdate, enddate,
-        //        securityUserManager.getLoggedInSpecialty());
-        return null;
+                                       Calendar startDate, Calendar endDate) {
+        LogEntry logEntry = new LogEntry();
+        logEntry.setNhsno(nhsno);
+        logEntry.setUser(user);
+        logEntry.setActor(actor);
+        logEntry.setUnitcode(unitcode);
+        logEntry.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        logEntry.setAction(action);
+        return logEntryDao.get(logEntry, startDate, endDate);
+
     }
 
     @Override
     public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate) {
-        return logEntryDao.getWithUnitCode(unitcode, startdate, enddate, securityUserManager.getLoggedInSpecialty());
+        LogEntry logEntry = new LogEntry();
+        logEntry.setUnitcode(unitcode);
+        logEntry.setSpecialty(securityUserManager.getLoggedInSpecialty());
+        return logEntryDao.get(logEntry, startdate, enddate);
     }
 
 
+    @Override
+    public List<LogEntry> get(LogEntry logEntry, Calendar startDate, Calendar endDate) {
+        return logEntryDao.get(logEntry, startDate, endDate);
+    }
 
     public void addLog(String actor, String action, String user, String nhsno, String unitcode,
                        String extrainfo) {

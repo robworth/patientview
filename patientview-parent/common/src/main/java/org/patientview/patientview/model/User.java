@@ -84,6 +84,7 @@ public class User extends BaseModel {
         return role;
     }
 
+    @Transient
     public void setRole(String role) {
         this.role = role;
     }

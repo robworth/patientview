@@ -25,10 +25,10 @@ package org.patientview.repository.impl;
 
 import org.patientview.patientview.model.LogEntry;
 import org.patientview.patientview.model.LogEntry_;
-import org.patientview.patientview.model.Specialty;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.LogEntryDao;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -69,71 +69,43 @@ public class LogEntryDaoImpl extends AbstractHibernateDAO<LogEntry> implements L
         }
     }
 
-    @Override
-    public List<LogEntry> get(String username, Calendar startdate, Calendar enddate, Specialty specialty) {
-         return null;
-        //return getLogEntries(null, null, username, null, null, startdate, enddate, specialty);
-    }
-
-    @Override
-    public List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action,
-                                       Specialty specialty) {
-       // return null;
-        return getLogEntries(nhsno, null, null, null, action, startdate, enddate, specialty);
-    }
-
-    // TODO
-    @Override
-    public List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate, Specialty specialty) {
-         // return null;
-             return getLogEntries(null, null, null, unitcode, null, startdate, enddate, specialty);
-     }
-
-    @Override
-    public List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                       Calendar startdate, Calendar enddate, Specialty specialty) {
-        return getLogEntries(nhsno, user, actor, unitcode, action, startdate, enddate, specialty);
-    }
 
 
-    /**
-     * @param action all entries containing this action text is returned, ie. it's used as a pattern
-     */
-    private List<LogEntry> getLogEntries(String nhsno, String user, String actor, String unitcode, String action,
-                                         Calendar startdate, Calendar enddate, Specialty specialty) {
+    public List<LogEntry> get(LogEntry logEntry, Calendar startDate, Calendar endDate) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<LogEntry> criteria = builder.createQuery(LogEntry.class);
         Root<LogEntry> logEntryRoot = criteria.from(LogEntry.class);
 
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        if (nhsno != null && nhsno.length() > 0) {
-            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.nhsno), nhsno));
+        if (StringUtils.hasText(logEntry.getNhsno())) {
+            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.nhsno), logEntry.getNhsno()));
         }
 
-        if (user != null && user.length() > 0) {
-            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.user), user));
+        if (StringUtils.hasText(logEntry.getUser())) {
+            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.user), logEntry.getUser()));
         }
 
-        if (actor != null && actor.length() > 0) {
-            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.actor), actor));
+        if (StringUtils.hasText(logEntry.getActor())) {
+            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.actor), logEntry.getActor()));
         }
 
-        if (unitcode != null && unitcode.length() > 0) {
-            unitcode = unitcode.toUpperCase(); // this is stored in uppercase
-            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.unitcode), unitcode));
+        if (StringUtils.hasText(logEntry.getUnitcode())) {
+            // this is stored in uppercase
+            wherePredicates.add(builder.equal(logEntryRoot.get(LogEntry_.unitcode), logEntry.getUnitcode()
+                    .toUpperCase()));
         }
 
-        if (action != null && action.length() > 0) {
-            wherePredicates.add(builder.like(logEntryRoot.get(LogEntry_.action), '%' + action + '%'));
+        if (StringUtils.hasText(logEntry.getAction())) {
+            wherePredicates.add(builder.like(logEntryRoot.get(LogEntry_.action), '%' + logEntry.getAction() + '%'));
         }
 
-        if (startdate != null && enddate != null) {
-            wherePredicates.add(builder.between(logEntryRoot.get(LogEntry_.date), startdate, enddate));
+        if (startDate != null && endDate != null) {
+            wherePredicates.add(builder.between(logEntryRoot.get(LogEntry_.date), startDate, endDate));
         }
 
         // pull back results that have the current specialty or none
-        Predicate specialtyPred = builder.equal(logEntryRoot.get(LogEntry_.specialty), specialty);
+        Predicate specialtyPred = builder.equal(logEntryRoot.get(LogEntry_.specialty), logEntry.getSpecialty());
         Predicate specialtyNone = builder.isNull(logEntryRoot.get(LogEntry_.specialty));
 
         Predicate specialtyOrNone = builder.or(specialtyPred, specialtyNone);

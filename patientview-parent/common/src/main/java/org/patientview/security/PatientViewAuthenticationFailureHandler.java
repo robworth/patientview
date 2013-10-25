@@ -49,7 +49,7 @@ public class PatientViewAuthenticationFailureHandler extends ExceptionMappingAut
     private int allowedfailedlogons;
 
     @Inject
-    protected SecurityUserManager securityUserManager;
+    private SecurityUserManager securityUserManager;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,

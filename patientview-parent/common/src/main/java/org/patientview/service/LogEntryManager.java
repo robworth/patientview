@@ -58,6 +58,8 @@ public interface LogEntryManager {
     String PATIENT_COUNT = "patient count";
     String EMAIL_VERIFY = "email verified";
 
+    LogEntry get(Long id);
+
     void save(LogEntry logEntry);
 
     LogEntry getLatestLogEntry(String nhsno, String action);
@@ -74,4 +76,6 @@ public interface LogEntryManager {
 
     void addLog(String actor, String action, String user, String nhsno, String unitcode,
                 String extrainfo);
+
+    List<LogEntry> get(LogEntry logEntry, Calendar startDate, Calendar endDate);
 }
