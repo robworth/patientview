@@ -15,6 +15,7 @@ import org.patientview.radar.model.filter.ConsultantFilter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -247,6 +248,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         patient.setRenalUnit(centre);
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
+        patient.setDob(new Date());
         demographicDao.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;

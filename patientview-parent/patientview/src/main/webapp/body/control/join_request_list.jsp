@@ -30,7 +30,7 @@
 <div class="span10">
 <div class="page-header">
 
-    <h1>Join Requests
+    <h1>To Do List
     <c:if test="${inCompletedNumber != null}">
         <span class="badge badge-important numberNote"><c:out value="${inCompletedNumber}"/></span>
     </c:if>
@@ -87,6 +87,7 @@
             <th class="tableheader"><a href="#" onclick="sort('unitcode')">Unit Code</a></th>
             <th class="tableheader"><a href="#" onclick="sort('email')">Email</a></th>
             <th class="tableheader"><a href="#" onclick="sort('dateOfRequest')">Date of Request</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('taskTitle')">Task</a></th>
             <th class="tableheader"><a href="#" onclick="sort('isComplete')">Completed</a></th>
             <th class="tableheader">Notes</th>
             <th class="tableheader" style="width: 50px;"></th>
@@ -101,6 +102,7 @@
                 <td class="tablecell"><c:out value="${item.unitcode}"/></td>
                 <td class="tablecell"><c:out value="${item.email}"/></td>
                 <td class="tablecell"><c:out value="${item.dateOfRequestFormatted}"/></td>
+                <td class="tablecell"><c:out value="${item.taskTitle}"/></td>
                 <td class="tablecell">
                     <logic:equal value="false" name="item" property="isComplete">
                         <big><font color="red">&#10008;</font></big>

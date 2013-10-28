@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.patientview.radar.model.user.PatientUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -122,9 +123,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         centre2.setUnitCode("2");
 
         String nhsNo1 = getTestNhsNo();
-        userDao.createUserMappingInPatientView("TestUser", nhsNo1, "5");
         String nhsNo2 = getTestNhsNo();
-        userDao.createUserMappingInPatientView("Test2User2", nhsNo2, "5");
 
         createDemographics("Test", "User", centre, nhsNo1);
         createDemographics("Test2", "User2", centre, nhsNo2);
@@ -186,6 +185,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         patient.setRenalUnit(centre);
         patient.setDiseaseGroup(diseaseGroup);
         patient.setEmailAddress("test@hotmail.com");
+        patient.setDob(new Date());
         demographicDao.saveDemographics(patient);
         assertNotNull(patient.getId());
 
@@ -193,6 +193,15 @@ public class DemographicDaoTest extends BaseDaoTest {
         assertNotNull("User is not saved", patientUser);
         assertEquals("Saved user was null on getting from DAO",
                 patient.getForename() + patient.getSurname(), patientUser.getUsername());
+
+        List<String> taskTitles = demographicDao.getTasks(nhsno);
+        assertNotNull("Tasks were not saved", taskTitles);
+        assertEquals("Tasks were not saved correct", 2, taskTitles.size());
+        assertEquals("Add patient task were not saved",
+                "Add patient to XML feed to PatientView", taskTitles.get(0));
+        assertEquals("Contact patient task were not saved",
+                "Contact patient with PatientView password", taskTitles.get(1));
+
         return patient;
     }
 

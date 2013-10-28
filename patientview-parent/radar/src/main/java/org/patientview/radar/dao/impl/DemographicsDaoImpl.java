@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -40,7 +41,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
     private static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
+    private static final String ADD_PATIENT_TASK = "Add patient to XML feed to PatientView";
+    private static final String CONTACT_PATIENT_TASK = "Contact patient with PatientView password";
     private SimpleJdbcInsert demographicsInsert;
+    private SimpleJdbcInsert joinRequestInsert;
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
@@ -62,6 +66,12 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                         "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
                         "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
                         "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
+
+        joinRequestInsert = new SimpleJdbcInsert(dataSource).withTableName("pv_patientjoin_request")
+                .usingGeneratedKeyColumns("id")
+                .usingColumns(
+                        "firstname", "lastname", "dateofbirth", "email", "unitcode", "nhsno",
+                        "dateOfRequest", "isComplete", "taskTitle");
     }
 
     public void saveDemographics(final Patient patient) {
@@ -211,10 +221,30 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             try {
                 // insert data into user table
                 createPVUser(patient);
+                // insert two data into pv_patientjoin_request table
+                createTask(patient, ADD_PATIENT_TASK);
+                createTask(patient, CONTACT_PATIENT_TASK);
             } catch (Exception e) {
                 LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
             }
         }
+    }
+
+    private void createTask(Patient patient, String taskTile) {
+        Map<String, Object> joinRequestMap = new HashMap<String, Object>();
+        joinRequestMap.put("firstname", patient.getForename());
+        joinRequestMap.put("lastname", patient.getSurname());
+        joinRequestMap.put("dateofbirth", new SimpleDateFormat(DATE_FORMAT).format(
+                patient.getDob()));
+        joinRequestMap.put("email", patient.getEmailAddress() != null ? patient.getEmailAddress() : "");
+        joinRequestMap.put("unitcode", patient.getRenalUnit().getUnitCode());
+        joinRequestMap.put("nhsno", patient.getNhsno());
+        joinRequestMap.put("dateOfRequest", new Date());
+        joinRequestMap.put("isComplete", false);
+        joinRequestMap.put("taskTitle", taskTile);
+
+        joinRequestInsert.executeAndReturnKey(joinRequestMap);
+
     }
 
     private void createPVUser(Patient patient) {
@@ -577,6 +607,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             LOGGER.debug("No DemographicsUserDetail found for nhsno:"+nhsno);
             return new DemographicsUserDetail();
         }
+    }
+
+    public List<String> getTasks(String nhsNo) {
+        return jdbcTemplate.queryForList("SELECT j.taskTitle FROM patient p, pv_patientjoin_request j " +
+                "WHERE p.nhsno = j.nhsno " +
+                "AND p.nhsno = ? " +
+                "ORDER BY j.taskTitle " , new Object[]{nhsNo}, String.class);
     }
 
     private class DemographicsUserDetailMapper implements RowMapper<DemographicsUserDetail> {

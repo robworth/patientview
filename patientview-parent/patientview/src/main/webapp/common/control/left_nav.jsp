@@ -81,7 +81,7 @@
                         List<JoinRequest> list = LegacySpringUtils.getJoinRequestManager().getUsersJoinRequests(false);
                         int inComplete = list != null ? list.size() : 0;
                     %>
-                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/joinRequestList">Join Requests
+                    <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/joinRequestList">To Do List
                         <%
                             if (inComplete > 0) {
                         %>

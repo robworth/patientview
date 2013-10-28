@@ -454,6 +454,7 @@ public class UserDaoTest extends BaseDaoTest {
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
         patient.setRenalUnit(centre);
+        patient.setDob(new Date());
         demographicsDao.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;
