@@ -92,7 +92,7 @@ public class ImportManagerImpl implements ImportManager {
         return unitDao.get(unitCode, null);
     }
 
-    private void handleParserError(File xmlFile, ResultParserException e ){
+    private void handleParserError(File xmlFile, ResultParserException e) {
         createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
         xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
     }
@@ -305,7 +305,7 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void createLogEntry(File xmlFile, String action){
+    private void createLogEntry(File xmlFile, String action) {
         LogEntry logEntry = new LogEntry();
         logEntry.setActor(AddLog.ACTOR_SYSTEM);
         logEntry.setDate(Calendar.getInstance());
