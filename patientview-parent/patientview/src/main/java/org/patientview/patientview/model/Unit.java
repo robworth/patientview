@@ -29,6 +29,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 @Entity
 public class Unit extends BaseModel {
@@ -178,6 +179,9 @@ public class Unit extends BaseModel {
     private String haemodialysisuniturl12;
     @Column
     private String sourceType;
+
+    @Column
+    private Date lastImportDate;
 
     // Note: this is VARCHAR(100) at the moment, but could probably be an enum
     @Column
@@ -760,5 +764,13 @@ public class Unit extends BaseModel {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Date getLastImportDate() {
+        return lastImportDate;
+    }
+
+    public void setLastImportDate(Date lastImportDate) {
+        this.lastImportDate = lastImportDate;
     }
 }

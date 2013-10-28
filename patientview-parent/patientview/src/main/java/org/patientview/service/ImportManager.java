@@ -47,4 +47,6 @@ public interface ImportManager {
 
     void archiveFileAfterProcessing(File xmlFile);
 
+    void save(Unit unit);
+
 }

@@ -66,6 +66,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
 
 /**
  *
@@ -217,6 +218,11 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
+    @Override
+    public void save(Unit unit) {
+        unitDao.save(unit);
+    }
+
     private void removePatientFromSystem(ResultParser parser) {
         String nhsno = parser.getData("nhsno");
         String unitcode = parser.getData("centrecode");
@@ -242,6 +248,15 @@ public class ImportManagerImpl implements ImportManager {
         insertProcedures(parser.getProcedures());
         deleteAllergies(parser.getData("nhsno"), parser.getData("centrecode"));
         insertAllergies(parser.getAllergies());
+        updateUnit(parser.getCentre());
+    }
+
+    private void updateUnit(Centre centre) {
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(centre.getCentreCode());
+        if (unit != null) {
+            unit.setLastImportDate(new Date());
+            LegacySpringUtils.getImportManager().save(unit);
+        }
     }
 
     private void deleteDiagnostics(String nhsno, String unitcode) {
