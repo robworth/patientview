@@ -37,6 +37,7 @@ import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service(value = "securityUserManager")
+@Lazy
 public class SecurityUserManagerImpl implements SecurityUserManager {
 
     @Inject

@@ -31,6 +31,7 @@ import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.radar.UnitDao;
 import org.patientview.service.UserManager;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -55,6 +56,7 @@ import java.util.List;
  *  The unitcode is unique so we should not get NonUniqueResultException
  */
 @Repository(value = "unitDao")
+@Lazy
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     private JdbcTemplate jdbcTemplate;
@@ -283,7 +285,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                     + " (sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
         } else if ("superadmin".equals(userRole)) {
             sql += " AND "
-                    + " (sur.role = 'radaradmin' OR sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
+                    + " (s]ur.role = 'radaradmin' OR sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
         }
 
         List<Object> params = new ArrayList<Object>();

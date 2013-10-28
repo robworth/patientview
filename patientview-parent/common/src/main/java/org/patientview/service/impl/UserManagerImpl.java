@@ -43,14 +43,15 @@ import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service(value = "userManager")
+@Lazy
 public class UserManagerImpl implements UserManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
@@ -68,7 +69,6 @@ public class UserManagerImpl implements UserManager {
     private SpecialtyUserRoleDao specialtyUserRoleDao;
 
     @Inject
-    @Named(value = "radarDao")
     private RadarDao radarDao;
 
     @Inject
@@ -76,6 +76,7 @@ public class UserManagerImpl implements UserManager {
 
     @Inject
     private UnitDao unitDao;
+    //private UnitDao unitDao;
 
     @Override
     public User getLoggedInUser() {
@@ -402,10 +403,10 @@ public class UserManagerImpl implements UserManager {
     public void createProfessionalUserInRadar(User user, String unitcode) {
         // check to see if this user has an account already in radar and if they dont create one
         Unit unit = unitDao.get(unitcode, null);
-
+            // TODO
         if (unit != null) {
-            radarDao.createProfessionalUserInRadar(user, unit);
-        } else {
+            radarDao.createProfessionalUserInRadar(user, null);
+       } else {
             LOGGER.error("Could not create admin user in radar " + user.getId());
         }
     }

@@ -1,26 +1,26 @@
 package org.patientview.test.repository.radar;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
-import org.patientview.repository.radar.dao.DemographicsDao;
-import org.patientview.repository.radar.dao.UserDao;
-import org.patientview.repository.radar.dao.UtilityDao;
-
 import org.patientview.model.radar.filter.PatientUserFilter;
 import org.patientview.model.radar.filter.ProfessionalUserFilter;
 import org.patientview.model.radar.user.AdminUser;
 import org.patientview.model.radar.user.PatientUser;
 import org.patientview.model.radar.user.ProfessionalUser;
 import org.patientview.model.radar.user.User;
+import org.patientview.repository.radar.dao.DemographicsDao;
+import org.patientview.repository.radar.dao.UserDao;
+import org.patientview.repository.radar.dao.UtilityDao;
 import org.patientview.repository.radar.util.RadarUtility;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Date;
 import java.util.List;
 
@@ -34,13 +34,14 @@ public class UserDaoTest extends BaseDaoTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoTest.class);
 
-    @Autowired
+    @Inject
+    @Named(value = "radarUserDao")
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private DemographicsDao demographicsDao;
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
 
     private DiseaseGroup diseaseGroup;

@@ -44,10 +44,11 @@ public class RadarDaoTest extends BaseDaoTest {
     private RepositoryHelpers repositoryHelpers;
 
     @Inject
-    @Named(value = "radarUserDao")
+    @Named(value = "userDao")
     private UserDao userDao;
 
     @Inject
+    @Named(value = "unitDao")
     private UnitDao unitDao;
 
     @Inject

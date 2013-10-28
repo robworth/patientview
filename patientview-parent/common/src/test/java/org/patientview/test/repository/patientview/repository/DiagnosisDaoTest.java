@@ -23,12 +23,12 @@
 
 package org.patientview.test.repository.patientview.repository;
 
+import org.junit.Test;
 import org.patientview.model.patientview.Diagnosis;
 import org.patientview.repository.radar.DiagnosisDao;
-import org.junit.Test;
 
 import javax.inject.Inject;
-
+import javax.inject.Named;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +38,7 @@ import static org.junit.Assert.assertTrue;
 public class DiagnosisDaoTest extends BaseDaoTest {
 
     @Inject
+    @Named(value = "diagnosisDao")
     private DiagnosisDao diagnosisDao;
 
     @Test

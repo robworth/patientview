@@ -23,12 +23,12 @@
 
 package org.patientview.test.repository.patientview.repository;
 
+import org.junit.Test;
 import org.patientview.model.patientview.Medicine;
 import org.patientview.repository.radar.MedicineDao;
-import org.junit.Test;
 
 import javax.inject.Inject;
-
+import javax.inject.Named;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,6 +39,7 @@ import static org.junit.Assert.assertTrue;
 public class MedicineDaoTest extends BaseDaoTest {
 
     @Inject
+    @Named(value = "medicineDao")
     private MedicineDao medicineDao;
 
     @Test

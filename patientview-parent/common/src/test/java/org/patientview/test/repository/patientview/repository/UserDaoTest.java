@@ -49,7 +49,7 @@ import static org.junit.Assert.assertTrue;
 public class UserDaoTest extends BaseDaoTest {
 
     @Inject
-    @Named(value = "radarUserDao")
+    @Named(value = "userDao")
     private UserDao userDao;
 
     @Inject

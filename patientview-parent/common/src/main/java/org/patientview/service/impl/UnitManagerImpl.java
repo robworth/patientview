@@ -37,6 +37,7 @@ import org.patientview.service.LogEntryManager;
 import org.patientview.service.SecurityUserManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -47,6 +48,7 @@ import java.util.List;
  *
  */
 @Service(value = "unitManager")
+@Lazy
 public class UnitManagerImpl implements UnitManager {
 
     @Inject

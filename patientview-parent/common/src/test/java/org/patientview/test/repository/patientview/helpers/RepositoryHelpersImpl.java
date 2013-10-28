@@ -38,7 +38,6 @@ import org.patientview.repository.radar.UserMappingDao;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  *
@@ -50,7 +49,6 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
     private SpecialtyDao specialtyDao;
 
     @Inject
-    @Named(value = "radarUserDao")
     private UserDao userDao;
 
     @Inject
