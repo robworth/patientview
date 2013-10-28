@@ -23,6 +23,8 @@
 
 package org.patientview.patientview.parser;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
@@ -41,8 +43,6 @@ import org.patientview.patientview.model.enums.NodeError;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ResultParserException;
 import org.patientview.utils.LegacySpringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.CDATASection;
@@ -59,7 +59,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ResultParser {
 

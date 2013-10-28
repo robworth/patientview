@@ -23,11 +23,10 @@
 
 package org.patientview.patientview;
 
-import org.patientview.patientview.exception.XmlImportException;
+import org.apache.commons.lang.StringUtils;
 import org.patientview.patientview.model.CorruptNode;
 import org.patientview.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -49,7 +48,7 @@ public final class EmailUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtils.class);
 
-    private static String NEW_LINE = System.getProperty("line.separator");
+    private static final String NEW_LINE = System.getProperty("line.separator");
     private static final int MAX_NUM_ERRORS_TO_LIST = 20;
 
     private EmailUtils() {
@@ -201,21 +200,16 @@ public final class EmailUtils {
     public static String extractErrorsFromException(Exception e) {
 
         StringBuilder errors = new StringBuilder();
+        errors.append(NEW_LINE).append(
+                "Please carefully read the stack trace below, there is often a good hint in there as to why ")
+                .append("your file failed:");
+        errors.append(NEW_LINE);
+        errors.append(NEW_LINE).append("Stack Trace:");
+        errors.append(NEW_LINE);
 
-        if (e instanceof XmlImportException) {
-
-        } else {
-            errors.append(NEW_LINE).append(
-                    "Please carefully read the stack trace below, there is often a good hint in there as to why ")
-                    .append("your file failed:");
-            errors.append(NEW_LINE);
-            errors.append(NEW_LINE).append("Stack Trace:");
-            errors.append(NEW_LINE);
-
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            errors.append(sw.toString());
-        }
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        errors.append(sw.toString());
 
         return errors.toString();
     }
@@ -282,7 +276,7 @@ public final class EmailUtils {
         StringBuilder emailBody = new StringBuilder();
         emailBody.append("[This is an automated email from Renal PatientView - do not reply to this email]");
         emailBody.append(NEW_LINE);
-        emailBody.append(NEW_LINE).append("The file <").append( xmlFileName).append("> has failed to import.");
+        emailBody.append(NEW_LINE).append("The file <").append(xmlFileName).append("> has failed to import.");
         emailBody.append(NEW_LINE);
         emailBody.append(NEW_LINE).append("It did not match the schema file named: ");
         emailBody.append(NEW_LINE);

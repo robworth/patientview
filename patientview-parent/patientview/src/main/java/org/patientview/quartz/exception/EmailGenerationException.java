@@ -24,7 +24,7 @@ package org.patientview.quartz.exception;
 
 public class EmailGenerationException extends Exception {
 
-    public EmailGenerationException(String message, Throwable throwable){
+    public EmailGenerationException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
