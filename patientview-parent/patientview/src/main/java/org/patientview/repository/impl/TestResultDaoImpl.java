@@ -62,10 +62,17 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units) {
+        return getTestResultForPatient(username, panel, units, false);
+    }
+
+    @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units,
+                                                                     boolean isRadarGroup) {
 
         String sql = " SELECT DISTINCT testresult.*, unit.shortname "
                 + " FROM testresult "
                 + " LEFT JOIN unit ON unit.unitcode = testresult.unitcode "
+                + (isRadarGroup ? "unit.sourceType = 'radargroup'" : "")
                 + " JOIN user, usermapping, result_heading "
                 + " WHERE user.username = ? "
                 + " AND user.username = usermapping.username "

@@ -47,10 +47,23 @@ public class PatientDetailsAction extends Action {
         NewsUtils.putAppropriateNewsForViewingInRequest(request);
 
         // allow the logged in user to be overridden when viewing the site as a patient using an admin account
-        User user = UserUtils.retrieveUser(request);
+        User user = null;
+        String param = mapping.getParameter();
+        boolean isRadarGroup = false;
+        if ("demographics".equals(param)) {
+            isRadarGroup = true;
+            user = UserUtils.retrieveUser(request);
+        } else  if ("controlDemographics".equals(param)) {
+            isRadarGroup = true;
+            String username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+            user = LegacySpringUtils.getUserManager().get(username);
+        } else {
+            user = UserUtils.retrieveUser(request);
+        }
 
-        List<PatientDetails> patientDetails = LegacySpringUtils.getPatientManager().getPatientDetails(
-                user.getUsername());
+
+        List<PatientDetails> patientDetails =
+                LegacySpringUtils.getPatientManager().getPatientDetails(user.getUsername(), isRadarGroup);
 
         request.setAttribute("patientDetails", patientDetails);
 
