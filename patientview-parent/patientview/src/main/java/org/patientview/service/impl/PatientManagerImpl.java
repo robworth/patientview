@@ -137,6 +137,11 @@ public class PatientManagerImpl implements PatientManager {
 
     @Override
     public List<PatientDetails> getPatientDetails(String username) {
+        return getPatientDetails(username, false);
+    }
+
+    @Override
+    public List<PatientDetails> getPatientDetails(String username, boolean isRadarGroup) {
         List<UserMapping> userMappings = userManager.getUserMappings(username);
 
         List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
@@ -147,11 +152,18 @@ public class PatientManagerImpl implements PatientManager {
                 continue;
             }
 
+            Unit unit = unitManager.get(unitcode);
+            if (unit == null) {
+                continue;
+            }
+
+            if (isRadarGroup && !"radargroup".equalsIgnoreCase(unit.getSourceType())) {
+                continue;
+            }
+
             Patient patient = get(userMapping.getNhsno(), unitcode);
 
-            Unit unit = unitManager.get(unitcode);
-
-            if (patient != null && unit != null) {
+            if (patient != null) {
                 PatientDetails patientDetail = new PatientDetails();
 
                 patientDetail.setPatient(patient);
@@ -173,5 +185,35 @@ public class PatientManagerImpl implements PatientManager {
         }
 
         return patientDetails;
+    }
+
+    @Override
+    public Patient getPatient(String username) {
+        List<UserMapping> userMappings = userManager.getUserMappings(username);
+
+
+        for (UserMapping userMapping : userMappings) {
+            String unitcode = userMapping.getUnitcode();
+            //check user's permission
+            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
+                continue;
+            }
+            Unit unit = unitManager.get(unitcode);
+            if (!"radargroup".equalsIgnoreCase(unit.getSourceType())) {
+                continue;
+            }
+
+            Patient patient = get(userMapping.getNhsno(), unitcode);
+            if (patient == null) {
+                continue;
+            }
+
+            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                    AddLog.PATIENT_VIEW, "", patient.getNhsno(),
+                    patient.getUnitcode(), "");
+            return patient;
+        }
+
+        return null;
     }
 }

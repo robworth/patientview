@@ -83,13 +83,14 @@
                 <th class="tableheader" onclick="sort('lastdatadate')"><a href="#">Last Data Received Date</a></th>
                 <th colspan="5">&nbsp;</th>
             </tr>
-            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon" property="pageList">
+            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogonWithTreatment" property="pageList">
 
                 <%
                     Map <String, String> patientKeyParams = new HashMap <String, String>();
                     patientKeyParams.put("nhsno", patient.getNhsno() );
                     patientKeyParams.put("unitcode", patient.getUnitcode());
                     patientKeyParams.put("username", patient.getUsername());
+                    patientKeyParams.put("patientId", patient.getPatientId().toString());
                     request.setAttribute("patientKeyParams", patientKeyParams);
                 %>
 
@@ -106,7 +107,7 @@
                         </logic:present>
                     </td>
                     <td class="tablecell">
-                        <html:link action="/control/patientView" paramId="username" paramName="patient" paramProperty="username" >
+                        <html:link action="/control/patientView" name="patientKeyParams">
                             <bean:write name="patient" property="nhsno"/>
                         </html:link>
                     </td>

@@ -23,40 +23,13 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.model.Genetics;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-
-/**
- *
- */
 @Transactional(propagation = Propagation.MANDATORY)
-public interface TestResultDao {
+public interface GeneticsDao {
 
-    /**
-     * Get the test results for the patient for the units they belong to.
-     * The unit list is per Specialty.
-     *
-     * @param units not mandatory
-     */
-    List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units);
+    Genetics get(Long radarNo);
 
-    List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units,
-                                                              boolean isRadarGroup);
-
-    void save(TestResult testResult);
-
-    List<TestResult> get(String nhsno, String unitcode);
-
-    String getLatestWeightFromResults(String nhsno, List<String> unitcodes);
-
-    void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
-
-    void deleteTestResults(String nhsno, String unitcode);
 }

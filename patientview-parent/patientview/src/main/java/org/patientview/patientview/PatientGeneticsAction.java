@@ -23,44 +23,41 @@
 
 package org.patientview.patientview;
 
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.edtacode.EdtaCodeUtils;
+import org.patientview.model.Patient;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Genetics;
 import org.patientview.patientview.model.User;
+import org.patientview.patientview.news.NewsUtils;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
-public class PatientDetailsAdminViewAction extends Action {
+public class PatientGeneticsAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-        String username = ActionUtils.retrieveStringPropertyValue("username", form, request);
-        String nhsno = ActionUtils.retrieveStringPropertyValue("nhsno", form, request);
-        String unitcode = ActionUtils.retrieveStringPropertyValue("unitcode", form, request);
-        String patientId = ActionUtils.retrieveStringPropertyValue("patientId", form, request);
-
-        request.getSession().setAttribute("userBeingViewedUsername", username);
-        request.getSession().setAttribute("userBeingViewedNhsno", nhsno);
-        request.getSession().setAttribute("userBeingViewedUnitcode", unitcode);
-        request.getSession().setAttribute("userBeingViewedPatientId", Long.parseLong(patientId));
+        NewsUtils.putAppropriateNewsForViewingInRequest(request);
 
         // allow the logged in user to be overridden when viewing the site as a patient using an admin account
         User user = UserUtils.retrieveUser(request);
 
-        List<PatientDetails> patientDetails = LegacySpringUtils.getPatientManager().getPatientDetails(
-                user.getUsername());
+        Patient patient = LegacySpringUtils.getPatientManager().getPatient(user.getUsername());
+        Genetics genetics = null;
+        if (patient != null) {
+            genetics = LegacySpringUtils.getGeneticsManager().get(patient.getId());
+        }
+        if (genetics == null) {
+            genetics = new Genetics();
+        }
 
-        request.setAttribute("patientDetails", patientDetails);
-
-        EdtaCodeUtils.addEdtaCodeToRequest("static", "staticLinks", request);
+        request.setAttribute("genetics", genetics);
 
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 

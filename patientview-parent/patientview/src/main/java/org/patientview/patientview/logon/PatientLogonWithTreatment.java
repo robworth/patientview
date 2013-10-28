@@ -36,6 +36,7 @@ public class PatientLogonWithTreatment extends PatientLogon {
 
     private String treatment;
     private Date dateofbirth;
+    private Long patientId;
     private static final String DATE_FORMAT = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "yyyy-MM-dd";
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientLogonWithTreatment.class);
@@ -74,5 +75,13 @@ public class PatientLogonWithTreatment extends PatientLogon {
         }
 
         return "";
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 }

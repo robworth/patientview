@@ -34,6 +34,7 @@ import org.patientview.service.EmailManager;
 import org.patientview.service.EmailVerificationManager;
 import org.patientview.service.FeatureManager;
 import org.patientview.service.FeedbackManager;
+import org.patientview.service.GeneticsManager;
 import org.patientview.service.ImportManager;
 import org.patientview.service.JoinRequestManager;
 import org.patientview.service.LetterManager;
@@ -124,6 +125,8 @@ public final class LegacySpringUtils {
     private static AdminNotificationManager adminNotificationManager;
 
     private static Properties contextProperties;
+
+    private static GeneticsManager geneticsManager;
 
     private LegacySpringUtils() {
 
@@ -375,5 +378,13 @@ public final class LegacySpringUtils {
 
     public static void setContextProperties(Properties contextProperties) {
         LegacySpringUtils.contextProperties = contextProperties;
+    }
+
+    public static GeneticsManager getGeneticsManager() {
+        return geneticsManager;
+    }
+
+    public static void setGeneticsManager(GeneticsManager geneticsManager) {
+        LegacySpringUtils.geneticsManager = geneticsManager;
     }
 }

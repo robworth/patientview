@@ -21,35 +21,27 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service;
+package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.User;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.patientview.patientview.model.Genetics;
+import org.patientview.repository.GeneticsDao;
+import org.patientview.service.GeneticsManager;
+import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import javax.inject.Inject;
 
 /**
  *
  */
-@Transactional(propagation = Propagation.REQUIRED)
-public interface TestResultManager {
+@Service(value = "geneticsManager")
+public class GeneticsManagerImpl implements GeneticsManager {
 
-    List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel);
+    @Inject
+    private GeneticsDao geneticsDao;
 
-    List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel, boolean isRadarGroup);
+    @Override
+    public Genetics get(Long radarId) {
+        return geneticsDao.get(radarId);
+    }
 
-    void save(TestResult testResult);
-
-    List<TestResult> get(String nhsno, String unitcode);
-
-    String getLatestWeightFromResults(User user);
-
-    void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
-
-    void deleteTestResults(String nhsno, String unitcode);
 }

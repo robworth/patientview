@@ -23,46 +23,16 @@
 
 package org.patientview.service;
 
-import org.patientview.model.Patient;
-import org.patientview.patientview.PatientDetails;
-import org.springframework.security.access.annotation.Secured;
+import org.patientview.patientview.model.Genetics;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  *
  */
 @Transactional(propagation = Propagation.REQUIRED)
-public interface PatientManager {
+public interface GeneticsManager {
 
-    Patient get(Long id);
+    Genetics get(Long radarId);
 
-    Patient get(String nhsno, String unitcode);
-
-    Patient getPatient(String username);
-
-    void save(Patient patient);
-
-    void delete(String nhsno, String unitcode);
-
-    void removePatientFromSystem(String nhsno, String unitcode);
-
-    List<Patient> get(String unitCode);
-
-    // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps);
-
-    @Secured(value = { "ROLE_RENAL_SUPERADMIN" })
-    List getAllUnitPatientsWithTreatment(String nhsno, String name, boolean showgps);
-
-    // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsAllWithTreatmentDao(String unitcode);
-
-    List<Patient> getUktPatients();
-
-    List<PatientDetails> getPatientDetails(String username);
-
-    List<PatientDetails> getPatientDetails(String username, boolean isRadarGroup);
 }
