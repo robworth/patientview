@@ -170,9 +170,9 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                         AddLog.PATIENT_DATA_FOLLOWUP);
 
         List<Centre> centres = centreManager.getAll();
@@ -203,20 +203,20 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:DUMMY_000002_9999999995.gpg.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         List<TestResult> results = testResultManager.get("9999999995", "DUMMY");
 
         assertEquals("Incorrect number of results after first import", 1, results.size());
 
         // double run
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         results = testResultManager.get("9999999995", "DUMMY");
 
         assertEquals("Incorrect number of results after double run import", 1, results.size());
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
 
@@ -231,11 +231,11 @@ public class ImporterTest extends BaseServiceTest {
     public void testXmlParserUsingEmptyIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_empty_9876543210.xml");
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -276,11 +276,11 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                         AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -296,11 +296,11 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -330,9 +330,9 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithValidDates_9876543210.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
 
@@ -348,11 +348,11 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -366,9 +366,9 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
 
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                                 AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
@@ -387,10 +387,10 @@ public class ImporterTest extends BaseServiceTest {
                 .getResource("classpath:rm301_1244_9876543210.xml");
 
         // run twice
-        importManager.update(xmlFileResource.getFile());
-        importManager.update(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
-        checkLogEntry(xmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                                 AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();

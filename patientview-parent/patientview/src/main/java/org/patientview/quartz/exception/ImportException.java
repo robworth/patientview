@@ -1,3 +1,5 @@
+package org.patientview.quartz.exception;
+
 /*
  * PatientView
  *
@@ -20,31 +22,11 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-package org.patientview.service;
 
-import org.patientview.patientview.model.Unit;
-import org.patientview.quartz.exception.ProcessException;
+public class ImportException extends Exception {
 
-import java.io.File;
-
-/**
- *  Importer for results, patient data etc
- */
-public interface ImportManager {
-
-    /**
-     * Import data into the system via XML file.
-     * Can be called from the web application to import a single file, or to be called as part of the
-     * scheduled importer job.  Each has the same behaviour.
-     * @param xmlFile the file to import
-     */
-    void process(File xmlFile) throws ProcessException;
-
-    /**
-     * This method is here because importer task should running without login user's authority,
-     * so copy it from UnitManger to here.
-     */
-    Unit retrieveUnit(String unitcode);
-
+    public ImportException(String message) {
+        super(message);
+    }
 
 }
