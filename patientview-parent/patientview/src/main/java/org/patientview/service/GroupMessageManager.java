@@ -23,6 +23,7 @@
 
 package org.patientview.service;
 
+import org.patientview.patientview.exception.MessagingException;
 import org.patientview.patientview.model.GroupMessage;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.Conversation;
@@ -32,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public interface GroupMessageManager {
 
-    void markGroupMessageAsReadForConversation(User recipient, Conversation conversation);
+    void markGroupMessageAsReadForConversation(User recipient, Conversation conversation) throws MessagingException;
 
     GroupMessage get(Long recipientId, Conversation conversation);
 }

@@ -199,7 +199,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Clinician</td>
+                    <td>Responsible Consultant</td>
                     <td>
                         <select wicket:id="clinician"/>
                     </td>
@@ -209,6 +209,13 @@
                     <td>
                         <input type="checkbox" wicket:id="consent"/> <a wicket:id="consentFormsLink" href="#"
                                                                         target="_blank">Consent Forms</a>
+                        <span wicket:id="consentFeedbackIndicator"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Consent confirmed by</td>
+                    <td>
+                        <label wicket:id="radarConsentConfirmedByUserId"></label>
                     </td>
                 </tr>
                 <tr id="ctl00_ContentPlaceHolder1_rowConsent">
