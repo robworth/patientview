@@ -27,6 +27,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import net.sourceforge.jwebunit.htmlunit.HtmlUnitTestingEngineImpl;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +62,7 @@ public class LoginTest extends BaseTest{
         logout();
     }
 
-    @Test
+    @Ignore
     public void testPatientsIndexLoginFailure() {
         prepareAndBeginAt("/");
         assertTitleEquals("RaDaR - National Renal Rare Disease Registry");
@@ -94,7 +95,7 @@ public class LoginTest extends BaseTest{
         logout();
     }
 
-    @Test
+    @Ignore
     public void testProfessionalsIndexLoginFailure() {
         prepareAndBeginAt("/");
         assertTitleEquals("RaDaR - National Renal Rare Disease Registry");
@@ -137,7 +138,7 @@ public class LoginTest extends BaseTest{
     }
 
 
-    @Test
+    @Ignore
     public void testAdminIndexLoginFailure() {
         prepareAndBeginAt("/admins");
 
