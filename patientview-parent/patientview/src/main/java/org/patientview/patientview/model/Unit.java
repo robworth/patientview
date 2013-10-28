@@ -181,7 +181,7 @@ public class Unit extends BaseModel {
     private String sourceType;
 
     @Column
-    private Date lastReceived;
+    private Date lastImportDate;
 
     // Note: this is VARCHAR(100) at the moment, but could probably be an enum
     @Column
@@ -766,11 +766,11 @@ public class Unit extends BaseModel {
         this.country = country;
     }
 
-    public Date getLastReceived() {
-        return lastReceived;
+    public Date getLastImportDate() {
+        return lastImportDate;
     }
 
-    public void setLastReceived(Date lastReceived) {
-        this.lastReceived = lastReceived;
+    public void setLastImportDate(Date lastImportDate) {
+        this.lastImportDate = lastImportDate;
     }
 }
