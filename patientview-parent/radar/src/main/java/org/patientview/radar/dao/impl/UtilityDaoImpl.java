@@ -333,12 +333,42 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
     }
 
+    public Centre getRenalUnitCentre(String nhsNo) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM usermapping um LEFT OUTER JOIN unit u ON um.unitcode = u.unitcode " +
+                            "WHERE um.nhsno = ? " +
+                            "  AND um.username NOT LIKE '%-GP%' " +
+                            "  AND um.unitcode != 'PATIENT' " +
+                            "  AND u.sourceType = 'renalunit' ", new Object[]{nhsNo}, new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get unit with nhsno {}", nhsNo);
+            return null;
+        }
+    }
+
     public String getUserName(String nhsNo) {
         return jdbcTemplate
                 .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
                         "WHERE u.username = um.username " +
                         "AND um.nhsno = ? " +
                         "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+    }
+
+    public String getUserName(Long id) {
+        if (id == null) {
+            return "";
+        }
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT u.name FROM user u " +
+                            "WHERE u.id = ? " +
+                            "AND u.name NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get user with id {}", id);
+            return "";
+
+        }
     }
 
     private class ClinicianRowMapper implements RowMapper<Clinician> {

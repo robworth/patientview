@@ -26,6 +26,7 @@ import org.patientview.radar.web.components.RadarRequiredDateTextField;
 import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
 import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.components.RadarRequiredCheckBox;
 import org.patientview.radar.web.models.RadarModelFactory;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.commons.lang.StringUtils;
@@ -37,7 +38,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -91,7 +91,7 @@ public class DemographicsPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        User user = RadarSecuredSession.get().getUser();
+        final User user = RadarSecuredSession.get().getUser();
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(
@@ -174,6 +174,7 @@ public class DemographicsPanel extends Panel {
                 if (radarNumberModel.getObject() != null) {
                     patient.setId(radarNumberModel.getObject());
                 }
+                patient.setRadarConsentConfirmedByUserId(user.getUserId());
                 demographicsManager.saveDemographics(patient);
                 try {
                     userManager.registerPatient(patient);
@@ -504,12 +505,22 @@ public class DemographicsPanel extends Panel {
 
         form.add(renalUnit);
 
-        CheckBox consent = new CheckBox("consent");
-//        DropDownChoice<Centre> renalUnitAuthorised = new CentreDropDown("renalUnitAuthorised");
-//        form.add(consent, renalUnitAuthorised);
+        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                model.getObject() != null ? utilityManager.getUserName(
+                        model.getObject().getRadarConsentConfirmedByUserId()) : "") {
+            @Override
+            public boolean isVisible() {
+                return true;
+            }
+        };
+        tickConsentUser.setOutputMarkupId(true);
+        tickConsentUser.setOutputMarkupPlaceholderTag(true);
+        form.add(tickConsentUser);
 
         final Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
                 componentsToUpdateList);

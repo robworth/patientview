@@ -264,6 +264,10 @@ public class UtilityManagerImpl implements UtilityManager {
         writeConsultantToFile(consultants);
     }
 
+    public String getUserName(Long id) {
+        return utilityDao.getUserName(id);
+    }
+
     private void writeConsultantToFile(List<Consultant> consultants) {
         File file = new File(getFilePathAndName());
         List<String> list = new ArrayList<String>();

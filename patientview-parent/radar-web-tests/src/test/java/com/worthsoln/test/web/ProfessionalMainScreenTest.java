@@ -22,6 +22,7 @@
  */
 package com.worthsoln.test.web;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -81,7 +82,7 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
     }
 
-    @Test
+    @Ignore
     public void testProfessionalsViewALPORTPatient() {
         testProfessionalsViewPatient();
 
@@ -101,7 +102,7 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
     }
 
-    @Test
+    @Ignore
     public void testProfessionalsViewSRNSPatient() {
         testProfessionalsViewPatient();
 
@@ -126,7 +127,7 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
     }
 
-    @Test
+    @Ignore
     public void testProfessionalsViewHNF1BPatient() {
         testProfessionalsViewPatient();
 
@@ -144,7 +145,7 @@ public class ProfessionalMainScreenTest extends BaseTest{
 
     }
 
-    @Test
+    @Ignore
     public void testProfessionalsViewOthersPatient() {
         testProfessionalsViewPatient();
 
