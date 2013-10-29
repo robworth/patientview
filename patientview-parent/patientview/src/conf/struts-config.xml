@@ -918,6 +918,7 @@
                 type="org.patientview.patientview.unit.UnitAddAction"
                 name="unitForm"
                 input="input"
+                parameter="radargroup"
                 scope="request">
             <forward name="input" path="/control/radar_group_add_input.jsp"/>
             <forward name="success" path="/control/unit_list.jsp"/>
@@ -964,6 +965,7 @@
                 type="org.patientview.patientview.unit.UnitUpdateAction"
                 name="unitForm"
                 input="input"
+                parameter="radargroup"
                 scope="request">
             <forward name="input" path="/control/radar_group_edit.jsp"/>
             <forward name="success" path="/control/unit_list.jsp"/>
