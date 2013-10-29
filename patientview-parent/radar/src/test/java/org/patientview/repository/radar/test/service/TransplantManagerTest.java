@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context-service.xml"})
 public class TransplantManagerTest extends TestPvDbSchema {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");

@@ -14,7 +14,7 @@
     </bean>
 
     <bean id="medicineManager" class="org.patientview.repository.radar.service.alport.impl.MedicineManagerImpl">
-        <property name="medicineDao" ref="medicineDao"/>
+        <property name="medicineDao" ref="radarMedicineDao"/>
     </bean>
 
     <bean id="geneticsManager" class="org.patientview.repository.radar.service.alport.impl.GeneticsManagerImpl">
@@ -34,7 +34,7 @@
     </bean>
 
     <bean id="diagnosisManager" class="org.patientview.repository.radar.service.impl.DiagnosisManagerImpl">
-        <property name="diagnosisDao" ref="diagnosisDao"/>
+        <property name="diagnosisDao" ref="radarDiagnosisDao"/>
     </bean>
 
     <bean id="hospitalisationManager" class="org.patientview.repository.radar.service.impl.HospitalisationManagerImpl">
@@ -83,7 +83,7 @@
         <property name="patientViewSiteUrl" value="${config.patientview.site.url}"/>
         <property name="patientViewSiteResultsUrl" value="${config.patientview.site.results.url}"/>
         <property name="filePathAndName" value="${config.file.pathAndName}"/>
-        <property name="userDao" ref="userDao"/>
+        <property name="userDao" ref="radarUserDao"/>
     </bean>
 
     <bean id="emailManager" class="org.patientview.repository.radar.service.impl.EmailManagerImpl">
@@ -98,7 +98,7 @@
     <bean id="userManager" class="org.patientview.repository.radar.service.impl.UserManagerImpl">
         <property name="emailManager" ref="emailManager"/>
         <property name="demographicsDao" ref="demographicsDao"/>
-        <property name="userDao" ref="userDao"/>
+        <property name="userDao" ref="radarUserDao"/>
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
@@ -132,7 +132,7 @@
 
     <bean id="userUpgradeManager" class="org.patientview.repository.radar.util.impl.RadarRpvSingleUserTableExport">
         <property name="dataSource" ref="dataSource"/>
-        <property name="userDao" ref="userDao"/>
+        <property name="userDao" ref="radarUserDao"/>
         <property name="demographicsDao" ref="demographicsDao"/>
         <property name="utilityDao" ref="utilityDao"/>
     </bean>

@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
  * TripleDES implementation copied from
  * http://stackoverflow.com/questions/20227/how-do-i-use-3des-encryption-decryption-in-java
  */
-public class TripleDes {
+public final class TripleDes {
 
     private static final String CHARSET_NAME = "UTF-8";
     private static final String CIPHER_NAME = "DESede/CBC/PKCS5Padding";

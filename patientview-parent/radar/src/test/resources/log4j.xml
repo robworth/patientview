@@ -11,4 +11,9 @@
     <level value="error"/>
     <appender-ref ref="ConsoleAppender"/>
   </root>
+
+    <logger name="org.springframework">
+        <level value="debug"/>
+    </logger>
+
 </log4j:configuration>

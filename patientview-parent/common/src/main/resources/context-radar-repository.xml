@@ -2,9 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-    <bean id="medicineDao" class="org.patientview.repository.radar.dao.alport.impl.MedicineDaoImpl">
+
+    <bean id="radarMedicineDao" class="org.patientview.repository.radar.dao.alport.impl.MedicineDaoImpl">
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao" />
     </bean>
@@ -34,10 +35,10 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
-        <property name="userDao" ref="userDao"/>
+        <property name="userDao" ref="radarUserDao"/>
     </bean>
 
-    <bean id="diagnosisDao" class="org.patientview.repository.radar.dao.impl.DiagnosisDaoImpl">
+    <bean id="radarDiagnosisDao" class="org.patientview.repository.radar.dao.impl.DiagnosisDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
@@ -82,7 +83,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="userDao" class="org.patientview.repository.radar.dao.impl.UserDaoImpl">
+    <bean id="radarUserDao" class="org.patientview.repository.radar.dao.impl.UserDaoImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>

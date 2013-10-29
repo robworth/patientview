@@ -1,36 +1,38 @@
 package org.patientview.repository.radar.test.service;
 
 import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
-import org.patientview.repository.radar.dao.UserDao;
 import org.patientview.model.radar.user.PatientUser;
+import org.patientview.repository.radar.dao.UserDao;
 import org.patientview.repository.radar.service.DemographicsManager;
 import org.patientview.repository.radar.service.UserManager;
 import org.patientview.repository.radar.test.TestPvDbSchema;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context-service.xml"})
 public class UserManagerTest extends TestPvDbSchema {
 
-    @Autowired
+    @Inject
+    @Named(value = "radarUserDao")
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private UserManager userManager;
 
-    @Autowired
+    @Inject
     private DemographicsManager demographicsManager;
 
     private DiseaseGroup diseaseGroup;

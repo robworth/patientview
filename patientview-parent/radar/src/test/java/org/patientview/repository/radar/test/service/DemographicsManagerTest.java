@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context-service.xml"})
 public class DemographicsManagerTest {
     @Autowired
     private DemographicsManager demographicsManager;

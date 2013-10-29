@@ -1,5 +1,6 @@
 package org.patientview.test.service;
 
+import org.junit.Test;
 import org.patientview.model.patientview.Conversation;
 import org.patientview.model.patientview.Job;
 import org.patientview.model.patientview.Message;
@@ -11,12 +12,14 @@ import org.patientview.model.patientview.enums.SendEmailEnum;
 import org.patientview.service.JobManager;
 import org.patientview.service.UnitManager;
 import org.patientview.test.repository.patientview.helpers.ServiceHelpers;
-import org.junit.Test;
 
 import javax.inject.Inject;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *      These tests require an admin adminUser to be logged into a specialty

@@ -8,7 +8,11 @@ import java.util.Date;
 /**
  * Radar Utility - miscellaneous utility methods go here
  */
-public class RadarUtility {
+public final class RadarUtility {
+
+    private RadarUtility() {
+
+    }
 
     /**
      * @param event1Start cannot be null
@@ -22,21 +26,21 @@ public class RadarUtility {
                     return true;
                 }
             } else {
-                if (event1Start.compareTo(event2Start) >= 0 &&
-                        event1Start.compareTo(event2End) < 1) {
+                if (event1Start.compareTo(event2Start) >= 0
+                        && event1Start.compareTo(event2End) < 1) {
                     return true;
                 }
             }
         } else {
-            if (event2Start.compareTo(event1Start) >= 0 &&
-                    event2Start.compareTo(event1End) < 1) {
+            if (event2Start.compareTo(event1Start) >= 0
+                    && event2Start.compareTo(event1End) < 1) {
                 return true;
             }
             if (event2End != null) {
-                if (event1Start.compareTo(event2Start) >= 0 && event1Start.compareTo(event2End) < 1 ||
-                        event1End.compareTo(event2Start) >= 0 && event1End.compareTo(event2End) < 1 ||
-                        event2Start.compareTo(event1Start) >= 0 && event2Start.compareTo(event1End) < 1 ||
-                        event2End.compareTo(event1Start) >= 0 && event2End.compareTo(event1End) < 1) {
+                if (event1Start.compareTo(event2Start) >= 0 && event1Start.compareTo(event2End) < 1
+                        || event1End.compareTo(event2Start) >= 0 && event1End.compareTo(event2End) < 1
+                        || event2Start.compareTo(event1Start) >= 0 && event2Start.compareTo(event1End) < 1
+                        || event2End.compareTo(event1Start) >= 0 && event2End.compareTo(event1End) < 1) {
                     return true;
                 }
             }
@@ -66,6 +70,7 @@ public class RadarUtility {
     }
 
     public static String generateNewPassword() {
-        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        final int passwordLength = 8;
+        return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(passwordLength);
     }
 }

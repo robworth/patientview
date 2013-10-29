@@ -29,8 +29,11 @@ import org.patientview.model.patientview.User;
 import org.patientview.model.patientview.User_;
 import org.patientview.repository.radar.AbstractHibernateDAO;
 import org.patientview.repository.radar.UserDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -40,6 +43,13 @@ import java.util.List;
 
 @Repository(value = "userDao")
 public class UserDaoImpl extends AbstractHibernateDAO<User> implements UserDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+
+    @PostConstruct
+    public void init() {
+        LOGGER.info("User Dao Initialised");
+    }
 
     @Override
     public User get(String username) {

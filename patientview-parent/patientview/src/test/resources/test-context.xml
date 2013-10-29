@@ -24,19 +24,62 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <!-- check for annotations -->
-    <context:component-scan base-package="org.patientview.test"/>
+
+    <!--Imports-->
+    <import resource="context-repository.xml"/>
+    <import resource="context-legacy.xml"/>
+    <import resource="context-security.xml"/>
+    <import resource="context-service.xml"/>
+    <import resource="context-controller.xml"/>
+    <import resource="quartz.xml"/>
+    <import resource="batch.xml"/>
+
+    <!--Properties Placeholder-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:test.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <util:properties id="contextProperties" >
+        <prop key="config.site.url">http://localhost:8080/</prop>
+        <prop key="xml.archive.directory">${xml.archive.directory}</prop>
+        <prop key="xml.directory">/home/rpv/Documents/work/rpv/app/home/rpv/Documents/work/rpv/app</prop>
+        <prop key="xml.patient.data.load.directory">/home/rpv/Documents/work/rpv/app/xmlpatientdataloads</prop>
+        <prop key="ukt.archive.directory">/home/rpv/Documents/work/rpv/app/xmlarchive</prop>
+        <prop key="ukt.directory">/home/rpv/Documents/work/rpv/app/ukt_import</prop>
+        <prop key="uktexport.archive.directory">/home/rpv/Documents/work/rpv/app/uktarchive</prop>
+        <prop key="uktexport.directory">/home/rpv/Documents/work/rpv/app/uktarchive</prop>
+        <prop key="dataout.directory">/home/rpv/Documents/work/rpv/app/dataout</prop>
+        <prop key="dataout.directory.thirdpart">outgoing</prop>
+        <prop key="unitstatfiles.directory">/home/rpv/Documents/work/rpv/app/unitstatsfiles</prop>
+        <prop key="aboutme.image.directory">/home/rpv/Documents/work/rpv/app/aboutmeimages</prop>
+        <prop key="default.results.per.page">50</prop>
+        <prop key="admin.email.from"></prop>
+        <prop key="admin.email.to"></prop>
+        <prop key="support.email"></prop>
+        <prop key="noreply.email">no_reply@renalpatientview.org</prop>
+        <prop key="warning.email"></prop>
+        <prop key="email.verification.best.before.days">14</prop>
+        <prop key="jdbc.databasename">${jdbc.databasename}</prop>
+        <prop key="jdbc.driverClassName">${jdbc.driverClassName}</prop>
+        <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+    </util:properties>
+
 
     <bean id="emailManager" class="org.patientview.test.repository.patientview.helpers.impl.TestableEmailManagerImpl"/>
 
     <bean id="importManager" class="org.patientview.test.repository.patientview.helpers.impl.TestableResultsUpdater"/>
 
     <bean id="ukTransplantManager" class="org.patientview.test.repository.patientview.helpers.impl.TestableFileUpdater"/>
+
 
 </beans>

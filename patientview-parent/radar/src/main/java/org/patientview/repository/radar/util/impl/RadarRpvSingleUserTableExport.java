@@ -1,23 +1,24 @@
 package org.patientview.repository.radar.util.impl;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import org.patientview.repository.radar.dao.DemographicsDao;
-import org.patientview.repository.radar.dao.UserDao;
-import org.patientview.repository.radar.dao.UtilityDao;
 import org.patientview.model.radar.user.AdminUser;
 import org.patientview.model.radar.user.PatientUser;
 import org.patientview.model.radar.user.ProfessionalUser;
 import org.patientview.model.radar.user.User;
+import org.patientview.repository.radar.dao.DemographicsDao;
+import org.patientview.repository.radar.dao.UserDao;
+import org.patientview.repository.radar.dao.UtilityDao;
 import org.patientview.repository.radar.util.TripleDes;
 import org.patientview.repository.radar.util.UserUpgradeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,16 +56,17 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private static final String PROFESSIONAL_USER_CENTRE_ID_FIELD_NAME = "uCentre";
     private static final String PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME = "uRole";
 
-    @Autowired
+    @Inject
+    @Named(value = "radarUserDao")
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
 
-    @Autowired
+    @Inject
     private DemographicsDao demographicsDao;
 
-    @Autowired
+    @Inject
     private ComboPooledDataSource dataSource;
 
     protected JdbcTemplate jdbcTemplate;

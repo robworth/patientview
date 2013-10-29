@@ -141,6 +141,10 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
                 <directory>src/conf</directory>
                 <filtering>false</filtering>
                 <targetPath>${profile.build.output-webapp-dir}/WEB-INF</targetPath>

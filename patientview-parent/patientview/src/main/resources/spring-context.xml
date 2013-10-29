@@ -44,7 +44,6 @@
         <property name="locations">
             <list>
                 <value>classpath:patientview.properties</value>
-                <value>classpath:common.properties</value>
             </list>
         </property>
     </bean>

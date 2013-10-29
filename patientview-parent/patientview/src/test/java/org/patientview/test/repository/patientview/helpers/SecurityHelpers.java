@@ -21,30 +21,18 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.test.service;
+package org.patientview.test.repository.patientview.helpers;
 
-import org.junit.runner.RunWith;
-import org.patientview.test.BaseTestPvDbSchema;
-import org.patientview.test.repository.patientview.helpers.SecurityHelpers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
+import org.patientview.model.patientview.Specialty;
 
 /**
- *  All service tests should extend.
  *
- *  Sets up everything required for hibernate, persistence.
- *
- *  NOTE: these tests are not transaction driven, the transactions are create new in the service layer,
- *  hence the need to manually roll back the database in between each test.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:test-context.xml"})
-@Transactional
-public abstract class BaseServiceTest extends BaseTestPvDbSchema {
+public interface SecurityHelpers {
 
-    @Inject
-    protected SecurityHelpers securityHelpers;
+    void loginAsUser(String username, Specialty specialty);
+
+    void loginAsUser(String username);
+
+    void logout();
 }

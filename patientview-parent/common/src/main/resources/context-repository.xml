@@ -33,6 +33,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <import resource="context-radar-repository.xml"/>
     <!-- check for annotations -->
 
 

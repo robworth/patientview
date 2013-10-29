@@ -17,6 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -93,6 +94,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private SimpleJdbcInsert patientUsersInsert;
 
     private UtilityDao utilityDao;
+
+    @PostConstruct
+    public void init() {
+        LOGGER.info("Radar User Dao Initialised");
+    }
 
     @Override
     public void setDataSource(DataSource dataSource) {

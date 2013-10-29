@@ -1,9 +1,9 @@
 package org.patientview.repository.radar.test.service;
 
 import org.patientview.repository.radar.service.EmailManager;
-import org.patientview.repository.radar.test.TestPvDbSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.patientview.repository.radar.test.TestPvDbSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context-service.xml"})
 public class EmailManagerTest extends TestPvDbSchema {
 
     @Autowired
