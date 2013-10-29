@@ -39,6 +39,7 @@ import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.User;
+import org.patientview.quartz.exception.ProcessException;
 import org.patientview.service.CentreManager;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.ImportManager;
@@ -231,7 +232,12 @@ public class ImporterTest extends BaseServiceTest {
     public void testXmlParserUsingEmptyIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_empty_9876543210.xml");
-        importManager.process(xmlFileResource.getFile());
+
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -276,7 +282,11 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
 
-        importManager.process(xmlFileResource.getFile());
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -296,7 +306,11 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
 
-        importManager.process(xmlFileResource.getFile());
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
@@ -348,7 +362,11 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
 
-        importManager.process(xmlFileResource.getFile());
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
