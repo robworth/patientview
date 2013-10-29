@@ -53,12 +53,14 @@ public class UnitAddAction extends Action {
         }
         LegacySpringUtils.getUnitManager().save(unit);
 
-        boolean isRadarGroup = false;
-        if ("radargroup".equals(unit.getSourceType())) {
-            isRadarGroup = true;
-        }
+        boolean isRadarGroup = "radargroup".equalsIgnoreCase(mapping.getParameter());
+
         List items = LegacySpringUtils.getUnitManager().getAdminsUnits(isRadarGroup);
         request.setAttribute("units", items);
+
+        if (isRadarGroup) {
+            request.setAttribute("isRadarGroup", isRadarGroup);
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }
