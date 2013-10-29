@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context.xml"})
 @Transactional
 public class XmlImportTaskTest {
 
