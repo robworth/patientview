@@ -911,7 +911,7 @@
                 input="input"
                 scope="request">
             <forward name="input" path="/control/unit_add_input.jsp"/>
-            <forward name="success" path="/control/unit_add_input.jsp"/>
+            <forward name="success" path="/control/unit_list.jsp"/>
         </action>
 
         <action path="/control/radarGroupAdd"
@@ -920,7 +920,7 @@
                 input="input"
                 scope="request">
             <forward name="input" path="/control/radar_group_add_input.jsp"/>
-            <forward name="success" path="/control/radar_group_add_input.jsp"/>
+            <forward name="success" path="/control/unit_list.jsp"/>
         </action>
 
 
@@ -949,7 +949,7 @@
                 input="input"
                 scope="request">
             <forward name="input" path="/control/unit_edit.jsp"/>
-            <forward name="success" path="/control/unit_edit.jsp"/>
+            <forward name="success" path="/control/unit_list.jsp"/>
         </action>
 
         <action path="/control/radarGroupEdit"
@@ -966,7 +966,7 @@
                 input="input"
                 scope="request">
             <forward name="input" path="/control/radar_group_edit.jsp"/>
-            <forward name="success" path="/control/radar_group_edit.jsp"/>
+            <forward name="success" path="/control/unit_list.jsp"/>
         </action>
 
         <action path="/control/unitPatientsUnitSelect"

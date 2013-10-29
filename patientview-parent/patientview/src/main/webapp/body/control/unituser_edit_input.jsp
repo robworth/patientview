@@ -48,6 +48,26 @@
                 <div class="controls"><html:text name="unitUser" property="email"/></div>
             </div>
             <div class="control-group">
+                <label class="control-label">Email Address Verified</label>
+                <div class="controls">
+                    <logic:equal name="unitUser" property="emailverified" value="true"><big><font color="green">&#10004;</font></big></logic:equal>
+                    <logic:equal name="unitUser" property="emailverified" value="false"><big><font color="red">&#10008;</font></big></logic:equal>
+
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <% String context = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
+                    request.setAttribute("context", context);%>
+                    <logic:present role="superadmin,unitadmin">
+                        <bean:define id="username" name="unitUser" property="username" />
+                        <bean:define id="email" name="unitUser" property="email" />
+                        <bean:define id="emailverified" name="unitUser" property="emailverified"/>
+
+                        <input type="button" value="Send Verification Email" class="btn formbutton"
+                            ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+
+                    </logic:present>
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label">Role</label>
                 <div class="controls"><html:select property="role" name="unitUser">
                     <html:option value="unitstaff">Unit Staff</html:option>
@@ -108,18 +128,7 @@
                     </html:form>
                 </logic:present>
 
-                <% String context = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
-                    request.setAttribute("context", context);%>
-                <logic:present role="superadmin,unitadmin">
-                    <bean:define id="username" name="unitUser" property="username" />
-                    <bean:define id="email" name="unitUser" property="email" />
-                    <bean:define id="emailverified" name="unitUser" property="emailverified"/>
 
-                    <span style="float:left;margin-left:5px;">
-                    <input type="button" value="Send Verification Email" class="btn formbutton"
-                        ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
-                    </span>
-                </logic:present>
 
             </div>
         </div>

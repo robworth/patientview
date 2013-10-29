@@ -48,12 +48,6 @@
                 <env>production</env>
             </properties>
         </profile>
-        <profile>
-            <id>radar-login</id>
-            <properties>
-                <env>radar-login</env>
-            </properties>
-        </profile>
     </profiles>
 
     <build>

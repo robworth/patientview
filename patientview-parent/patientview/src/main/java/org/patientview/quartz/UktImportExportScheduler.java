@@ -99,21 +99,23 @@ public class UktImportExportScheduler {
         try {
             File uktExportDir = new File(uktExportDirectory);
             File uktExportFile = new File(uktExportDir, "ukt_rpv_export.txt");
-            if (uktExportFile.isFile()) {
-                CSVPrinter csv = new CSVPrinter(new FileWriter(uktExportFile));
-                csv.setAlwaysQuote(true);
-                csv.writeln(getPatients());
-                csv.flush();
-                csv.close();
-            } else {
-                LOGGER.error("Failed to exportUktData: uktExportFile is not a file");
+            if (!uktExportFile.isFile()) {
+                if (!uktExportFile.createNewFile()) {
+                    LOGGER.error("Failed to exportUktData: uktExportFile is not a file");
+                    return;
+                }
             }
+
+            CSVPrinter csv = new CSVPrinter(new FileWriter(uktExportFile));
+            csv.setAlwaysQuote(true);
+            csv.writeln(getPatients());
+            csv.flush();
+            csv.close();
+            LOGGER.info("Completed exportUktData()");
         } catch (Exception e) {
             LOGGER.error("Failed to exportUktData: {}", e.getMessage());
             LOGGER.debug(e.getMessage(), e);
         }
-
-        LOGGER.info("Completed exportUktData()");
     }
 
     // todo this should be moved out of here
