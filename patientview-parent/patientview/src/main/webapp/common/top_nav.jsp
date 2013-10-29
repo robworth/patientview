@@ -1,7 +1,6 @@
+<%@ page import="org.patientview.model.ibd.enums.Diagnosis" %>
+<%@ page import="org.patientview.model.patientview.User" %>
 <%@ page import="org.patientview.utils.LegacySpringUtils" %>
-<%@ page import="org.patientview.ibd.model.enums.Diagnosis" %>
-<%@ page import="org.patientview.patientview.user.UserUtils" %>
-<%@ page import="org.patientview.patientview.model.User" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -56,7 +55,7 @@
 
         // check, we could be viewing as a superadmin at a patient's account
         if (loggedInUserDiagnosis == null) {
-            loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(UserUtils.retrieveUser(request));
+            loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(LegacySpringUtils.getUserManager().retrieveUser(request));
         }
 
         if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
@@ -91,7 +90,7 @@
     <logic:present feature="messaging">
         <%
             // need to get the number of unread messages if they have any
-            User user = UserUtils.retrieveUser(request);
+            User user = LegacySpringUtils.getUserManager().retrieveUser(request);
 
             if (user != null) {
                 int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
