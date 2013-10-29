@@ -162,12 +162,16 @@ public class UserManagerImpl implements UserManager {
         if (isNewUser) {
             // create a user to save based on the unitAdmin
             user = new User();
+            user.setEmailverified(unitAdmin.isEmailverified());
+        } else {
+            if (!user.getEmail().equals(unitAdmin.getEmail())) {
+                user.setEmailverified(false);
+            }
         }
 
         user.setAccountlocked(unitAdmin.isAccountlocked());
         user.setDummypatient(unitAdmin.isDummypatient());
         user.setEmail(unitAdmin.getEmail());
-        user.setEmailverified(unitAdmin.isEmailverified());
         user.setFailedlogons(unitAdmin.getFailedlogons());
         user.setFirstlogon(unitAdmin.isFirstlogon());
         user.setLastlogon(unitAdmin.getLastlogon());
