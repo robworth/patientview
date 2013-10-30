@@ -75,7 +75,6 @@ public class HNF1BPatientPage extends BasePage {
             patient.setDiseaseGroup(patientModel.getDiseaseGroup());
             patient.setRenalUnit(patientModel.getCentre());
             patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
         }
 
         init(patient);

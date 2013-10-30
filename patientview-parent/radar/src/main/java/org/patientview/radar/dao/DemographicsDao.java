@@ -31,4 +31,6 @@ public interface DemographicsDao {
 
     DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
 
+    List<String> getTasks(String nhsNo);
+
 }

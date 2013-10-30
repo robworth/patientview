@@ -5,7 +5,6 @@ import org.patientview.model.Centre;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
@@ -16,6 +15,7 @@ import org.patientview.radar.model.filter.ConsultantFilter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -245,10 +245,10 @@ public class UtilityDaoTest extends BaseDaoTest {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
-        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
         patient.setRenalUnit(centre);
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
+        patient.setDob(new Date());
         demographicDao.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;

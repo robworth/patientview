@@ -58,7 +58,6 @@ public class GenericPatientPage extends BasePage {
             patient.setDiseaseGroup(patientModel.getDiseaseGroup());
             patient.setRenalUnit(patientModel.getCentre());
             patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
         }
         // set the nhs id or chi id based on model
 

@@ -348,11 +348,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public String getUserName(String nhsNo) {
-        return jdbcTemplate
-                .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
-                        "WHERE u.username = um.username " +
-                        "AND um.nhsno = ? " +
-                        "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+        try {
+            return jdbcTemplate.queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
+                            "WHERE u.username = um.username " +
+                            "AND um.nhsno = ? " +
+                            "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public String getUserName(Long id) {

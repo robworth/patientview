@@ -25,7 +25,6 @@ package org.patientview.model;
 
 import org.joda.time.DateTime;
 import org.joda.time.Years;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
 import org.slf4j.Logger;
@@ -204,9 +203,6 @@ public class Patient extends BaseModel {
 
     @Transient
     private Ethnicity ethnicity;
-
-    @Transient
-    private NhsNumberType nhsNumberType;
 
     @Transient
     private DiseaseGroup diseaseGroup;
@@ -726,14 +722,6 @@ public class Patient extends BaseModel {
 
     public void setConsNeph(String consNeph) {
         this.consNeph = consNeph;
-    }
-
-    public NhsNumberType getNhsNumberType() {
-        return nhsNumberType;
-    }
-
-    public void setNhsNumberType(NhsNumberType nhsNumberType) {
-        this.nhsNumberType = nhsNumberType;
     }
 
     public DiseaseGroup getDiseaseGroup() {

@@ -3,7 +3,6 @@ package org.patientview.radar.test.service;
 import org.junit.Before;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.user.PatientUser;
@@ -51,9 +50,6 @@ public class UserManagerTest extends TestPvDbSchema {
     @Test
     public void testPatientUserRegistration() throws Exception {
 
-        // create a user row as per patient view
-        userDao.createRawUser("testusername", "passwordhash", "my user", "test@test.com", "unitcode1", "NHS123");
-
         // create a demographic
         Date dob = new Date();
         Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", dob);
@@ -74,7 +70,6 @@ public class UserManagerTest extends TestPvDbSchema {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
-        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
         patient.setNhsno(nhsno);
         patient.setRenalUnit(centre);
         patient.setEmailAddress(email);

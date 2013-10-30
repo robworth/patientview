@@ -1,10 +1,11 @@
 package org.patientview.radar.dao.impl;
 
+import com.Ostermiller.util.RandPass;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.UserDao;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -38,7 +40,11 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private static final String DATE_FORMAT_1 = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
+    private static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
+    private static final String ADD_PATIENT_TASK = "Add patient to XML feed to PatientView";
+    private static final String CONTACT_PATIENT_TASK = "Contact patient with PatientView password";
     private SimpleJdbcInsert demographicsInsert;
+    private SimpleJdbcInsert joinRequestInsert;
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
@@ -53,13 +59,19 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         demographicsInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
                 .usingGeneratedKeyColumns("id")
                 .usingColumns(
-                        "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
+                        "rrNo", "dateReg", "nhsno", "hospitalnumber", "uktNo", "surname",
                         "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
                         "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
                         "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
                         "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
                         "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
                         "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
+
+        joinRequestInsert = new SimpleJdbcInsert(dataSource).withTableName("pv_patientjoin_request")
+                .usingGeneratedKeyColumns("id")
+                .usingColumns(
+                        "firstname", "lastname", "dateofbirth", "email", "unitcode", "nhsno",
+                        "dateOfRequest", "isComplete", "taskTitle");
     }
 
     public void saveDemographics(final Patient patient) {
@@ -70,7 +82,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "rrNo = ?, " +
                             "dateReg = ?, " +
                             "nhsno = ?, " +
-                            "nhsNoType = ?, " +
                             "hospitalnumber = ?, " +
                             "uktNo = ?, " +
                             "surname = ?, " +
@@ -112,7 +123,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getRrNo(),
                     patient.getDateReg(),
                     patient.getNhsno(),
-                    patient.getNhsNumberType().getId(),
                     patient.getHospitalnumber(),
                     patient.getUktNo(),
                     patient.getSurname(),
@@ -158,7 +168,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("rrNo", patient.getRrNo());
                     put("dateReg", patient.getDateReg());
                     put("nhsno", patient.getNhsno());
-                    put("nhsNoType", patient.getNhsNumberType().getId());
                     put("hospitalnumber", patient.getHospitalnumber());
                     put("uktNo", patient.getUktNo());
                     put("surname", patient.getSurname());
@@ -210,20 +219,68 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
 
             try {
-                // renal_unit
-                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-                }
-                // unitcode
-                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getDiseaseGroup().getId());
-                }
+                // insert data into user table
+                createPVUser(patient);
+                // insert two data into pv_patientjoin_request table
+                createTask(patient, ADD_PATIENT_TASK);
+                createTask(patient, CONTACT_PATIENT_TASK);
             } catch (Exception e) {
                 LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
             }
         }
+    }
+
+    private void createTask(Patient patient, String taskTile) {
+        Map<String, Object> joinRequestMap = new HashMap<String, Object>();
+        joinRequestMap.put("firstname", patient.getForename());
+        joinRequestMap.put("lastname", patient.getSurname());
+        joinRequestMap.put("dateofbirth", new SimpleDateFormat(DATE_FORMAT).format(
+                patient.getDob()));
+        joinRequestMap.put("email", patient.getEmailAddress() != null ? patient.getEmailAddress() : "");
+        joinRequestMap.put("unitcode", patient.getRenalUnit().getUnitCode());
+        joinRequestMap.put("nhsno", patient.getNhsno());
+        joinRequestMap.put("dateOfRequest", new Date());
+        joinRequestMap.put("isComplete", false);
+        joinRequestMap.put("taskTitle", taskTile);
+
+        joinRequestInsert.executeAndReturnKey(joinRequestMap);
+
+    }
+
+    private void createPVUser(Patient patient) {
+        String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        password = DigestUtils.sha256Hex(password);
+        String gppassword = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
+        gppassword = DigestUtils.sha256Hex(gppassword);
+
+        try {
+            userDao.createPVUser(patient.getForename() + patient.getSurname(),
+                    password,
+                    patient.getForename() + patient.getSurname(),
+                    patient.getEmailAddress());
+            // patient enters usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                    patient.getNhsno(), PATIENT_ENTERS_UNITCODE);
+            // renal_unit usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
+            // unitcode usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                    patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+            // GP user
+            userDao.createPVUser(patient.getForename() + patient.getSurname() + "-GP",
+                    gppassword,
+                    patient.getForename() + patient.getSurname() + "-GP",
+                    patient.getEmailAddress());
+            // GP usermapping
+            userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname() + "-GP",
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode()); // TODO unitcode
+
+        } catch (Exception e) {
+            LOGGER.error("Unable to create user and usermapping using {}", patient.getNhsno());
+        }
+
     }
 
     public Patient getDemographicsByRadarNumber(long radarNumber) {
@@ -366,7 +423,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setUktNo(resultSet.getString("uktNo"));
 
             patient.setNhsno(resultSet.getString("nhsno"));
-            patient.setNhsNumberType(NhsNumberType.getNhsNumberType(resultSet.getLong("nhsNoType")));
             patient.setHospitalnumber(resultSet.getString("hospitalnumber"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setSurnameAlias(resultSet.getString("surnameAlias"));
@@ -551,6 +607,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             LOGGER.debug("No DemographicsUserDetail found for nhsno:"+nhsno);
             return new DemographicsUserDetail();
         }
+    }
+
+    public List<String> getTasks(String nhsNo) {
+        return jdbcTemplate.queryForList("SELECT j.taskTitle FROM patient p, pv_patientjoin_request j " +
+                "WHERE p.nhsno = j.nhsno " +
+                "AND p.nhsno = ? " +
+                "ORDER BY j.taskTitle " , new Object[]{nhsNo}, String.class);
     }
 
     private class DemographicsUserDetailMapper implements RowMapper<DemographicsUserDetail> {

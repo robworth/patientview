@@ -439,6 +439,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         pvUserMappingInsert.execute(userMap);
     }
 
+    public void createPVUser(String username, String password, String name, String email) throws Exception {
+
+        Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put(USER_USERNAME_FIELD_NAME, username);
+        userMap.put(USER_PASSWORD_FIELD_NAME, password);
+        userMap.put(USER_NAME_FIELD_NAME, name);
+        userMap.put(USER_EMAIL_FIELD_NAME, email);
+        userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, false);
+
+        Number id = userInsert.executeAndReturnKey(userMap);
+
+        createRoleInPatientView(id.longValue(), "patient");
+    }
+
     // users are created in Patient View without our radar mappings
     public PatientUser getExternallyCreatedPatientUser(String nhsno) {
         try {
