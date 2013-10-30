@@ -24,9 +24,12 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
+<div class="span9">
 <logic:present name="verificationMailSent">
 
-    <p class="header"><b>Verify your Email Address</b></p>
+    <div class="page-header">
+        <h1 class="header">Verify your Email Address</h1>
+    </div>
 
     <p>
         A verification email has been sent to your email address. You need to
@@ -35,11 +38,13 @@
     </p>
 </logic:present>
 
-<p class="header"><b>Password Changed</b></p>
+    <div class="page-header">
+        <h1 class="header">Password Changed</h1>
+    </div>
 
 <p>
     Your password has been changed. Please do not tell it to anyone and come
     back and change it if you think that anyone might have learned it.
 </p>
 
-
+</div>

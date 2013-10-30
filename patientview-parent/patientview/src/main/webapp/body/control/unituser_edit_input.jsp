@@ -56,7 +56,7 @@
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <% String context = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
                     request.setAttribute("context", context);%>
-                    <logic:present role="superadmin,unitadmin">
+                    <logic:present role="superadmin,unitadmin,radaradmin">
                         <bean:define id="username" name="unitUser" property="username" />
                         <bean:define id="email" name="unitUser" property="email" />
                         <bean:define id="emailverified" name="unitUser" property="emailverified"/>
@@ -72,6 +72,7 @@
                 <div class="controls"><html:select property="role" name="unitUser">
                     <html:option value="unitstaff">Unit Staff</html:option>
                     <html:option value="unitadmin">Unit Admin</html:option>
+                    <html:option value="radaradmin">Radar Group Admin</html:option>
                 </html:select>
                 </div>
             </div>
@@ -121,7 +122,7 @@
                     </html:form>
                 </logic:match>
 
-                <logic:present role="superadmin,unitadmin">
+                <logic:present role="superadmin,unitadmin,radaradmin">
                     <html:form action="/control/activityByUser" style="float:left;margin-left:5px;">
                         <html:hidden name="unitUser" property="username" />
                         <html:submit value="Activity" styleClass="btn" />

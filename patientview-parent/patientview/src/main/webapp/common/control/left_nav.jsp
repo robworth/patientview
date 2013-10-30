@@ -50,7 +50,7 @@
                 </html:link></li>
             </logic:present>
 
-            <logic:present role="superadmin,unitadmin" >
+            <logic:present role="superadmin,unitadmin" containSourceType="renalunit">
                 <li><html:link action="/control/unitDisplay">
                     <logic:present specialty="renal">Renal Units</logic:present>
                     <logic:present specialty="ibd">IBD Units</logic:present>
@@ -63,7 +63,7 @@
 
             <li><html:link action="/control/unitPatientsUnitSelect">Patients In Unit</html:link></li>
 
-            <logic:present role="superadmin,unitadmin">
+            <logic:present role="superadmin,unitadmin" containSourceType="renalunit">
                 <li><html:link action="/control/patientAddInput">Add Patient</html:link></li>
                 <li><html:link action="/control/logView">View Log</html:link></li>
                 <li class="divider"></li>

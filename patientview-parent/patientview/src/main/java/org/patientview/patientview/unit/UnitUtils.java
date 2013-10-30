@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,6 +65,8 @@ public final class UnitUtils {
             items = unitManager.getAll(null, new String[]{"radargroup", "renalunit"});
         } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
             items = unitManager.getLoggedInUsersUnits();
+        } else {
+            items = new ArrayList();
         }
 
         request.setAttribute("units", items);
