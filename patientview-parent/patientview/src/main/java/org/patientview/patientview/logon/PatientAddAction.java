@@ -30,6 +30,7 @@ import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
+import org.patientview.service.UnitManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
@@ -56,6 +57,13 @@ public class PatientAddAction extends Action {
         String overrideDuplicateNhsno = BeanUtils.getProperty(form, "overrideDuplicateNhsno");
         String overrideInvalidNhsno = BeanUtils.getProperty(form, "overrideInvalidNhsno");
         boolean dummypatient = "true".equals(BeanUtils.getProperty(form, "dummypatient"));
+
+        UnitManager unitManager = LegacySpringUtils.getUnitManager();
+        Unit unit = unitManager.get(unitcode);
+        if ("radargroup".equalsIgnoreCase(unit.getSourceType())) {
+            request.setAttribute("radarGroupPatient", unit.getName());
+            return mapping.findForward("input");
+        }
 
         PatientLogon patientLogon =
                 new PatientLogon(username, password, name, email, false, true, dummypatient, null, 0, false);

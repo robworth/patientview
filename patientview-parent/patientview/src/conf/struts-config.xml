@@ -779,7 +779,7 @@
         </action>
 
         <action path="/control/patientAddInput"
-                type="org.patientview.patientview.logon.LogonAddInputAction"
+                type="org.patientview.patientview.logon.PatientAddInputAction"
                 name="patientForm"
                 scope="request"
                 validate="false">
@@ -856,13 +856,6 @@
                 scope="request"
                 validate="false">
             <forward name="success" path="/control/unit_admin_add_input.jsp"/>
-        </action>
-
-        <action path="/control/radarAdminAddInput"
-                type="org.patientview.patientview.logon.RadarGroupUsersAction"
-                name="patientForm"
-                scope="request">
-            <forward name="success" path="/control/radar_admin_add_input.jsp"/>
         </action>
 
         <action path="/control/unitAdminAdd"
@@ -998,13 +991,6 @@
                 name="unitForm"
                 scope="request"
                 validate="false">
-            <forward name="success" path="/control/unit_users_unit_select.jsp"/>
-        </action>
-
-        <action path="/control/radarGroupUsersSelect"
-                type="org.patientview.patientview.logon.RadarGroupUsersAction"
-                name="unitForm"
-                scope="request">
             <forward name="success" path="/control/unit_users_unit_select.jsp"/>
         </action>
 
