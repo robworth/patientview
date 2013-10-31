@@ -71,7 +71,7 @@
         %>
       <tr>
         <td class="tablecell">
-            <logic:present role="superadmin,unitadmin,radaradmin">
+            <logic:present role="superadmin,unitadmin">
                 <html:link action="/control/unitUserEditInput" name="patientKeyParams">
                     <bean:write name="unitUser" property="name"/>
                 </html:link>

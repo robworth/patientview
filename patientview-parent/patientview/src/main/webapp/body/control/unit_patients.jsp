@@ -95,7 +95,7 @@
 
                 <tr>
                     <td class="tablecell">
-                        <logic:present role="superadmin,unitadmin,radaradmin">
+                        <logic:present role="superadmin,unitadmin">
                             <html:link action="/control/patientEditInput" name="patientKeyParams">
                                 <bean:write name="patient" property="name"/>
                             </html:link>
@@ -142,7 +142,7 @@
                     <td class="tablecell"><bean:write name="patient" property="modality"/></td>
                     <td class="tablecell"><bean:write name="patient" property="lastdatadateFormatted"/></td>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/logViewForPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -151,7 +151,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/viewsOfPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -160,7 +160,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/dataLoadsForPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -169,7 +169,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/activityByUser">
                                 <html:hidden name="patient" property="username" />
@@ -187,7 +187,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <bean:define id="username" name="patient" property="username" />
                             <bean:define id="email" name="patient" property="email" />

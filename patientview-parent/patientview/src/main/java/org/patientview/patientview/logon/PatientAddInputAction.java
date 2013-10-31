@@ -23,21 +23,23 @@
 
 package org.patientview.patientview.logon;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.unit.UnitUtils;
 
-public class LogonAddInputAction extends Action {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PatientAddInputAction extends Action {
 
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        UnitUtils.setUserUnits(request);
+        UnitUtils.setUserRenalUnits(request);
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
