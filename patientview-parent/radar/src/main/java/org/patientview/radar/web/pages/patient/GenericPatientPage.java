@@ -86,6 +86,15 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
+        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.GENETICS);
+            }
+        };
+        geneticsPanel.setOutputMarkupPlaceholderTag(true);
+        add(geneticsPanel);
+
         medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", patient) {
             @Override
             public boolean isVisible() {
@@ -96,15 +105,6 @@ public class GenericPatientPage extends BasePage {
         medicalResultsPanel.setOutputMarkupPlaceholderTag(true);
 
         add(genericDemographicsPanel, medicalResultsPanel);
-
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
-            @Override
-            public boolean isVisible() {
-                return currentTab.equals(Tab.GENETICS);
-            }
-        };
-        geneticsPanel.setOutputMarkupPlaceholderTag(true);
-        add(geneticsPanel);
 
         medicinePanel = new MedicinePanel("medicinePanel", patient) {
             @Override
@@ -122,8 +122,8 @@ public class GenericPatientPage extends BasePage {
         // Add the links to switch tab
 
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
-        linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
         linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
+        linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
         linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         add(linksContainer);
@@ -187,7 +187,7 @@ public class GenericPatientPage extends BasePage {
                 GenericPatientPage.this.currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
-                target.add(genericDemographicsPanel, medicalResultsPanel, geneticsPanel, medicinePanel);
+                target.add(genericDemographicsPanel, geneticsPanel, medicalResultsPanel, medicinePanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();
