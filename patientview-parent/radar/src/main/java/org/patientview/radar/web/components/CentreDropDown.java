@@ -16,12 +16,12 @@ public class CentreDropDown extends DropDownChoice<Centre> {
     public CentreDropDown(String id) {
         super(id);
         setChoices(utilityManager.getCentres());
-        setChoiceRenderer(new ChoiceRenderer<Centre>("abbreviation", "id"));
+        setChoiceRenderer(new ChoiceRenderer<Centre>("name", "id"));
     }
 
     public CentreDropDown(String id, List<Centre> centres) {
         super(id);
         setChoices(centres);
-        setChoiceRenderer(new ChoiceRenderer<Centre>("abbreviation", "id"));
+        setChoiceRenderer(new ChoiceRenderer<Centre>("name", "id"));
     }
 }
