@@ -79,6 +79,8 @@ public class RadarApplication extends AuthenticatedWebApplication {
     public static final int ADD_PATIENT_PAGE_N0 = 17;
     public static final int GENERIC_DEMOGRAPHICS_PAGE_NO = 18;
     public static final int MEDICAL_RESULTS_PAGE_NO = 19;
+    public static final int GENETICE_PAGE_NO = 20;
+    public static final int MEDICINE_PAGE_NO = 21;
     // some global settings
     public static final Double MIN_HEIGHT = 35.0;
     public static final Double MAX_HEIGHT = 220.0;

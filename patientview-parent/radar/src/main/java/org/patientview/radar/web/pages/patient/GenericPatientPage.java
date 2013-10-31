@@ -8,6 +8,8 @@ import org.patientview.radar.service.generic.MedicalResultManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
 import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
 import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
@@ -31,6 +33,8 @@ import org.apache.wicket.util.string.StringValue;
 public class GenericPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
     private MedicalResultsPanel medicalResultsPanel;
+    private GeneticsPanel geneticsPanel;
+    private MedicinePanel medicinePanel;
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
 
@@ -77,6 +81,15 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
+        geneticsPanel = new GeneticsPanel("geneticsPanel", demographics) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.GENETICS);
+            }
+        };
+        geneticsPanel.setOutputMarkupPlaceholderTag(true);
+        add(geneticsPanel);
+
         medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
             @Override
             public boolean isVisible() {
@@ -88,6 +101,15 @@ public class GenericPatientPage extends BasePage {
 
         add(genericDemographicsPanel, medicalResultsPanel);
 
+        medicinePanel = new MedicinePanel("medicinePanel", demographics) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.MEDICINE);
+            }
+        };
+        medicinePanel.setOutputMarkupPlaceholderTag(true);
+        add(medicinePanel);
+
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
         linksContainer.setOutputMarkupId(true);
@@ -95,7 +117,9 @@ public class GenericPatientPage extends BasePage {
         // Add the links to switch tab
 
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
+        linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
         linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
+        linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         add(linksContainer);
 
@@ -120,7 +144,9 @@ public class GenericPatientPage extends BasePage {
     public enum Tab {
         // Used for storing the current tab
         DEMOGRAPHICS(RadarApplication.GENERIC_DEMOGRAPHICS_PAGE_NO),
-        MEDICAL_RESULTS(RadarApplication.MEDICAL_RESULTS_PAGE_NO);
+        MEDICAL_RESULTS(RadarApplication.MEDICAL_RESULTS_PAGE_NO),
+        GENETICS(RadarApplication.GENETICE_PAGE_NO),
+        MEDICINE(RadarApplication.MEDICINE_PAGE_NO);
         private int pageNumber;
 
         Tab(int pageNumber) {
@@ -156,7 +182,7 @@ public class GenericPatientPage extends BasePage {
                 GenericPatientPage.this.currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
-                target.add(genericDemographicsPanel, medicalResultsPanel);
+                target.add(genericDemographicsPanel, geneticsPanel, medicalResultsPanel, medicinePanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();
