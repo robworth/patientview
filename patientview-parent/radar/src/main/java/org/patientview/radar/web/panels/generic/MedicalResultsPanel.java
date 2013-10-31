@@ -120,7 +120,7 @@ public class MedicalResultsPanel extends Panel {
 
                         // format needs to be NNN.NN or NN.NN
                         int weightStringLength = medicalResult.getWeight().toString().length();
-                        int indexOfDot = medicalResult.getWeight().toString().indexOf("");
+                        int indexOfDot = medicalResult.getWeight().toString().indexOf(".");
 
                         if ((weightStringLength != 4 && weightStringLength != 5 && weightStringLength != 6) ||
                                 (weightStringLength == 6 && indexOfDot != 3) ||
@@ -137,7 +137,7 @@ public class MedicalResultsPanel extends Panel {
 
                         // format needs to be NNN.N or NN.N
                         int heightStringLength = medicalResult.getHeight().toString().length();
-                        int indexOfDot = medicalResult.getHeight().toString().indexOf("");
+                        int indexOfDot = medicalResult.getHeight().toString().indexOf(".");
 
                         if ((heightStringLength != 4 && heightStringLength != 5) ||
                                 (heightStringLength == 5 && indexOfDot != 3) ||
