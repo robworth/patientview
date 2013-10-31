@@ -48,6 +48,26 @@ public class UserManagerTest extends TestPvDbSchema {
         centre.setUnitCode("testCodeA");
     }
 
+    /**
+     * Create the unit admin who will create the user:
+     *      - user, tbl_users, specialuserrole (unitadmin) etc
+     *      - usermapping (PV) of username, unitcode e.g. ALPORTS unit, nhsno, specialty (mock this)
+     *      - usermapping (RDR) of radarUserId (tbl_users.uID), role (ROLE_PROFESSIONAL)
+     *
+     * Create a patient using this unit admin (the first patient in the system so not linking madness)
+     *      - user, tbl_patient_users, specialuserrole (patient) etc
+     *      - usermapping (PV) of username, unitcode e.g. ALPORTS unit, nhsno, specialty (mock this)
+     *      - patient record
+     */
+    @Test
+    public void testRadarUnitAdminCanCreatePatientFromScratch() {
+
+    }
+
+    /**
+     * todo does this make sense still?
+     * @throws Exception
+     */
     @Test
     public void testPatientUserRegistration() throws Exception {
 
