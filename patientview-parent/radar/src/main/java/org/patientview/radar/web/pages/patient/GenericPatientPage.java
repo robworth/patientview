@@ -1,18 +1,5 @@
 package org.patientview.radar.web.pages.patient;
 
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.generic.MedicalResultManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.alport.MedicinePanel;
-import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
-import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
-import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -28,12 +15,25 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
+import org.patientview.radar.model.Demographics;
+import org.patientview.radar.model.generic.AddPatientModel;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.generic.MedicalResultManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.NonAlportGeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
+import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
+import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
+import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class GenericPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
     private MedicalResultsPanel medicalResultsPanel;
-    private GeneticsPanel geneticsPanel;
+    private NonAlportGeneticsPanel geneticsPanel;
     private MedicinePanel medicinePanel;
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
@@ -81,7 +81,7 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
-        geneticsPanel = new GeneticsPanel("geneticsPanel", demographics) {
+        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", demographics) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);
