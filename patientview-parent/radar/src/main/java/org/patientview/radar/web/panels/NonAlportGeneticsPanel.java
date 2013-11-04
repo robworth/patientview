@@ -70,6 +70,15 @@ public class NonAlportGeneticsPanel extends Panel {
             protected void onSubmit() {
                 Genetics genetics = getModelObject();
 
+                if (genetics.getLabWhereTestWasDone() != null && genetics.getLabWhereTestWasDone().length() > 150) {
+                    error("Laboratory where sent/done is limited to 150 characters.");
+                }
+
+                // requirement is to limit to 20 lines of text -> 130 chars per line ~ 2500 chars
+                if (genetics.getWhatResultsShowed() != null && genetics.getWhatResultsShowed().length() > 2500) {
+                    error("Laboratory where sent/done is limited to 2500 characters.");
+                }
+
                 if (genetics.getTestsDone() == null) {
                     error("Please select if a sample been sent for Genetic analysis");
                 }
