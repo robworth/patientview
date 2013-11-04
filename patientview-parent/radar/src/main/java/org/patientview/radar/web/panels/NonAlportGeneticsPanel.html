@@ -18,14 +18,14 @@
                 <tr>
                     <td style="width:90%; vertical-align:top;">
 
-                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+
 
                         <table cellpadding="5" style="width: 90%; border-collapse:collapse">
                             <tr>
-                                <td valign="top">
+                                <td valign="top" width="30%">
                                     <strong>Has a sample been sent for Genetic analysis?</strong>
                                 </td>
-                                <td>
+                                <td width=5%>
                                     <div wicket:id="testsDone">
                                         <label for="testsDoneYes">Yes</label><input type="radio" wicket:id="testsDoneYes" id="testsDoneYes"/>
                                         <br />
@@ -34,8 +34,8 @@
                                     </div>
                                 </td>
 
-                                <td width="35%">&nbsp;
-                                    <span wicket:id="dateSentLabel"><strong>Date Sent</strong>
+                                <td width="40%" valign="top">&nbsp;
+                                    <span wicket:id="dateSentLabel" class="dateSentContainer"><strong>Date Sent</strong>
                                         <input wicket:id="dateSent" type="text" id="dateSent"/>
                                     </span>
                                     <span wicket:id="dateSentFeedbackIndicator"></span>
@@ -51,7 +51,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td valign="top">
+                                <td valign="top" align="right">
                                     <strong>Laboratory where test sent/done</strong>
                                 </td>
                                 <td  style="width:60%;">
@@ -60,7 +60,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td valign="top">
+                                <td valign="top" align="right">
                                     <strong>Lab reference No</strong>
                                 </td>
                                 <td>
@@ -93,13 +93,15 @@
                         </table>
                         <br/><br/>
                         <br/><br/>
-                        <input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/>
-                    </td>
-                    <td style="vertical-align:top;">
-                        <table cellpadding="5" style="width: 100%; border-collapse:collapse;">
 
-                        </table>
                     </td>
+                    <td style="vertical-align:top; padding:5px 0">
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="2" align="right" style="padding: 5px 0"><input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/></td>
                 </tr>
             </table>
 
