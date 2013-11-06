@@ -30,9 +30,9 @@ ALTER TABLE patient ADD COLUMN   `unitcode` varchar(20) NOT NULL DEFAULT '';
 UPDATE patient p
 SET p.unitcode = p.centreCode;
 
-ALTER TABLE patient DROP INDEX nhsno;
-ALTER TABLE patient DROP COLUMN `centreCode`;
+ALTER TABLE patient DROP INDEX nhsno;  -- todo do we need to drop this ?
+ALTER TABLE patient DROP COLUMN `centreCode`; -- todo rename col instead
 
 ALTER TABLE patient ADD UNIQUE `nhsno` (`nhsno`,`unitcode`);
 ALTER TABLE patient ADD CONSTRAINT fk_unitcode Foreign Key (unitcode) References unit (unitcode);
-ALTER TABLE patient add CONSTRAINT fk_genericDiagnosis Foreign Key (genericDiagnosis) References rdr_prd_code (ERA_EDTA_PRD_code);
+ALTER TABLE patient add CONSTRAINT fk_genericDiagnosis Foreign Key (genericDiagnosis) References rdr_prd_code (ERA_EDTA_PRD_code);     -- todo this might break due to bad data
