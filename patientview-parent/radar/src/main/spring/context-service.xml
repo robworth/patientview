@@ -137,4 +137,8 @@
         <property name="utilityDao" ref="utilityDao"/>
     </bean>
 
+    <bean id="logEntryManager" class="org.patientview.radar.service.impl.LogEntryManagerImpl">
+        <property name="logEntryDao" ref="logEntryDao"/>
+    </bean>
+
 </beans>
