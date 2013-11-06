@@ -25,6 +25,16 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
 
     private DiseaseGroupDao diseaseGroupDao;
 
+    private static final String UREA = "urea";
+    private static final String CREATININE = "creatinine";
+    private static final String WEIGHT = "weight";
+    private static final String HEIGHT = "height";
+    private static final String BPSYS = "bpsys";
+    private static final String BPDIA = "bpdia";
+    private static final String ANTIHYPERTENSIVE = "antihypertensive";
+    private static final String PCR = "pcr";
+    private static final String ACR = "acr";
+
     @Override
     public void setDataSource(DataSource dataSource) {
         // Call super
@@ -148,8 +158,7 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
     private List<MedicalResultItem> mapMedicalResultToMedicalResultItems(MedicalResult medicalResult) {
         List<MedicalResultItem> medicalResultItems = new ArrayList<MedicalResultItem>();
 
-        String[] testCodes = {"urea", "creatinine", "weight", "height", "BPsys", "BPdia", "antihypertensive", "PCR",
-                "ACR"};
+        String[] testCodes = {UREA, CREATININE, WEIGHT, HEIGHT, BPSYS, BPDIA, ANTIHYPERTENSIVE, PCR, ACR};
 
         for (String code : testCodes) {
             MedicalResultItem item = new MedicalResultItem();
@@ -157,33 +166,33 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
             item.setDiseaseGroupId(medicalResult.getDiseaseGroup().getId());
             item.setTestcode(code);
 
-            if (code.equals("urea")) {
+            if (code.equalsIgnoreCase(UREA)) {
                 item.setObjectValue(medicalResult.getBloodUrea());
                 item.setDate(medicalResult.getBloodUreaDate());
-            } else if (code.equals("creatinine")) {
+            } else if (code.equalsIgnoreCase(CREATININE)) {
                 item.setObjectValue(medicalResult.getSerumCreatanine());
                 item.setDate(medicalResult.getCreatanineDate());
-            } else if (code.equals("weight")) {
+            } else if (code.equalsIgnoreCase(WEIGHT)) {
                 item.setObjectValue(medicalResult.getWeight());
                 item.setDate(medicalResult.getWeightDate());
-            } else if (code.equals("height")) {
+            } else if (code.equalsIgnoreCase(HEIGHT)) {
                 item.setObjectValue(medicalResult.getHeight());
                 item.setDate(medicalResult.getHeightDate());
-            } else if (code.equals("BPsys")) {
+            } else if (code.equalsIgnoreCase(BPSYS)) {
                 item.setObjectValue(medicalResult.getBpSystolic());
                 item.setDate(medicalResult.getBpDate());
-            } else if (code.equals("BPdia")) {
+            } else if (code.equalsIgnoreCase(BPDIA)) {
                 item.setObjectValue(medicalResult.getBpDiastolic());
                 item.setDate(medicalResult.getBpDate());
-            } else if (code.equals("antihypertensive")) {
+            } else if (code.equalsIgnoreCase(ANTIHYPERTENSIVE)) {
                 if (medicalResult.getAntihypertensiveDrugs() != null) {
                     item.setObjectValue(medicalResult.getAntihypertensiveDrugs().getId());
                     item.setDate(medicalResult.getAntihypertensiveDrugsDate());
                 }
-            } else if (code.equals("PCR")) {
+            } else if (code.equalsIgnoreCase(PCR)) {
                 item.setObjectValue(medicalResult.getPcr());
                 item.setDate(medicalResult.getPcrDate());
-            } else if (code.equals("ACR")) {
+            } else if (code.equalsIgnoreCase(ACR)) {
                 item.setObjectValue(medicalResult.getAcr());
                 item.setDate(medicalResult.getAcrDate());
             }
@@ -204,54 +213,54 @@ public class MedicalResultDaoImpl extends BaseDaoImpl implements MedicalResultDa
 
             Date date = item.getDate();
 
-            if (item.getTestcode().equals("urea")) {
+            if (item.getTestcode().equalsIgnoreCase(UREA)) {
                 if (item.getValue() != null) {
                     Double urea = Double.parseDouble(item.getValue());
                     medicalResult.setBloodUrea(urea);
                 }
                 medicalResult.setBloodUreaDate(date);
-            } else if (item.getTestcode().equals("creatinine")) {
+            } else if (item.getTestcode().equalsIgnoreCase(CREATININE)) {
                 if (item.getValue() != null) {
                     Double creatanine = Double.parseDouble(item.getValue());
                     medicalResult.setSerumCreatanine(creatanine);
                 }
                 medicalResult.setCreatanineDate(date);
-            } else if (item.getTestcode().equals("weight")) {
+            } else if (item.getTestcode().equalsIgnoreCase(WEIGHT)) {
                 if (item.getValue() != null) {
                     Double weight = Double.parseDouble(item.getValue());
                     medicalResult.setWeight(weight);
                 }
                 medicalResult.setWeightDate(date);
-            } else if (item.getTestcode().equals("height")) {
+            } else if (item.getTestcode().equalsIgnoreCase(HEIGHT)) {
                 if (item.getValue() != null) {
                     Double height = Double.parseDouble(item.getValue());
                     medicalResult.setHeight(height);
                 }
                 medicalResult.setHeightDate(date);
-            } else if (item.getTestcode().equals("BPsys")) {
+            } else if (item.getTestcode().equalsIgnoreCase(BPSYS)) {
                 if (item.getValue() != null) {
                     Integer bpSys = Integer.parseInt(item.getValue());
                     medicalResult.setBpSystolic(bpSys);
                 }
                 medicalResult.setBpDate(date);
-            } else if (item.getTestcode().equals("BPdia")) {
+            } else if (item.getTestcode().equalsIgnoreCase(BPDIA)) {
                 if (item.getValue() != null) {
                     Integer bpDia = Integer.parseInt(item.getValue());
                     medicalResult.setBpDiastolic(bpDia);
                 }
                 medicalResult.setBpDate(date);
-            } else if (item.getTestcode().equals("antihypertensive")) {
+            } else if (item.getTestcode().equalsIgnoreCase(ANTIHYPERTENSIVE)) {
                 if (item.getValue() != null) {
                     MedicalResult.YesNo yesNo = MedicalResult.YesNo.getById(item.getValue());
                     medicalResult.setAntihypertensiveDrugs(yesNo);
                 }
                 medicalResult.setAntihypertensiveDrugsDate(date);
-            } else if (item.getTestcode().equals("PCR")) {
+            } else if (item.getTestcode().equalsIgnoreCase(PCR)) {
                 if (item.getValue() != null) {
                     medicalResult.setPcr(Integer.parseInt(item.getValue()));
                 }
                 medicalResult.setPcrDate(date);
-            } else if (item.getTestcode().equals("ACR")) {
+            } else if (item.getTestcode().equalsIgnoreCase(ACR)) {
                 if (item.getValue() != null) {
                     medicalResult.setAcr(Integer.parseInt(item.getValue()));
                 }
