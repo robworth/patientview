@@ -25,14 +25,12 @@ ALTER TABLE patient ADD COLUMN   `indiaId` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `generic` tinyint(1) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `genericDiagnosis` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `dateOfGenericDiagnosis` datetime DEFAULT NULL;
-ALTER TABLE patient ADD COLUMN   `unitcode` varchar(20) NOT NULL DEFAULT '';
 
 UPDATE patient p
 SET p.unitcode = p.centreCode;
 
-ALTER TABLE patient DROP INDEX nhsno;  -- todo do we need to drop this ?
-ALTER TABLE patient DROP COLUMN `centreCode`; -- todo rename col instead
+ALTER TABLE patient CHANGE centreCode unitcode varchar(100) NOT NULL DEFAULT '';
 
 ALTER TABLE patient ADD UNIQUE `nhsno` (`nhsno`,`unitcode`);
 ALTER TABLE patient ADD CONSTRAINT fk_unitcode Foreign Key (unitcode) References unit (unitcode);
-ALTER TABLE patient add CONSTRAINT fk_genericDiagnosis Foreign Key (genericDiagnosis) References rdr_prd_code (ERA_EDTA_PRD_code);     -- todo this might break due to bad data
+
