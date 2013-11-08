@@ -28,6 +28,5 @@ ALTER TABLE patient ADD COLUMN   `dateOfGenericDiagnosis` datetime DEFAULT NULL;
 
 ALTER TABLE patient CHANGE centreCode unitcode varchar(100) NOT NULL DEFAULT '';
 
-ALTER TABLE patient ADD UNIQUE `nhsno` (`nhsno`,`unitcode`);
 ALTER TABLE patient ADD CONSTRAINT fk_unitcode Foreign Key (unitcode) References unit (unitcode);
 
