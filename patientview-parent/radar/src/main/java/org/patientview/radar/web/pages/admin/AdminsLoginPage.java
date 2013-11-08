@@ -2,6 +2,7 @@ package org.patientview.radar.web.pages.admin;
 
 import org.patientview.radar.model.user.AdminUser;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
 import org.patientview.radar.web.components.RadarRequiredTextField;
@@ -52,6 +53,7 @@ public class AdminsLoginPage extends BasePage {
                         session.setUser(adminUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
+                        AddLog.addLog(AddLog.LOGGED_ON, adminUser.getUsername(), "", "", "");
                         if (!continueToOriginalDestination()) {
                             setResponsePage(AdminsPage.class);
                         }

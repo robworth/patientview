@@ -2,6 +2,7 @@ package org.patientview.radar.web.pages.login;
 
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.RadarRequiredDateTextField;
 import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
@@ -52,6 +53,7 @@ public class PatientsLoginPage extends BasePage {
                         session.setUser(patientUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
+                        AddLog.addLog(AddLog.PATIENT_LOGON_VIEW, patientUser.getUsername(), "", "radargroup", "");
                         setResponsePage(SrnsPatientPageReadOnly.class, SrnsPatientPageReadOnly.getParameters(
                                 patientUser.getRadarNumber()));
 

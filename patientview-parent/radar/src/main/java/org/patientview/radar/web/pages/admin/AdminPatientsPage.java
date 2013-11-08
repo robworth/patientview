@@ -8,6 +8,7 @@ import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.EmailManager;
 import org.patientview.radar.service.ExportManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.components.SortLink;
 import org.patientview.radar.web.dataproviders.PatientUserDataProvider;
@@ -113,6 +114,8 @@ public class AdminPatientsPage extends AdminsBasePage {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 try {
                     userManager.deletePatientUser(patientUser);
+                    AddLog.addLog(AddLog.PATIENT_DELETE, patient.getForename() + patient.getSurname(),
+                            patient.getNhsno(), patient.getRenalUnit().getUnitCode(), "");
                     setResponsePage(AdminPatientsPage.class);
                 } catch (Exception e) {
                     error("Could not delete patient " + e);

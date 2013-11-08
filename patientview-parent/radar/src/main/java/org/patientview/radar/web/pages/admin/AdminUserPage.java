@@ -2,6 +2,7 @@ package org.patientview.radar.web.pages.admin;
 
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -63,7 +64,9 @@ public class AdminUserPage extends AdminsBasePage {
             protected void onSubmit() {
                 try {
                     userManager.saveProfessionalUser(getModelObject());
-
+                    ProfessionalUser professionalUser = getModelObject();
+                    AddLog.addLog(AddLog.ADMIN_ADD, professionalUser.getForename() + professionalUser.getSurname(), "",
+                            "radargroup", "");
                     if (newUser) {
                         setResponsePage(AdminUsersPage.class);
                     }

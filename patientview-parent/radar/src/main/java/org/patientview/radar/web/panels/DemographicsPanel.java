@@ -17,6 +17,7 @@ import org.patientview.radar.service.TherapyManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.DiseaseGroupManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.CentreDropDown;
@@ -178,6 +179,8 @@ public class DemographicsPanel extends Panel {
                 demographicsManager.saveDemographics(patient);
                 try {
                     userManager.registerPatient(patient);
+                    AddLog.addLog(AddLog.PATIENT_ADD, patient.getForename() + patient.getSurname(), patient.getNhsno(),
+                            patient.getRenalUnit().getUnitCode(), "");
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());
