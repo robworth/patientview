@@ -3,6 +3,7 @@ package org.patientview.radar.web.pages.login;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
 import org.patientview.radar.web.components.RadarRequiredTextField;
@@ -59,6 +60,7 @@ public class ProfessionalsLoginPage extends BasePage {
                 if (professionalUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                         session.setUser(professionalUser);
+                        AddLog.addLog(AddLog.LOGGED_ON, professionalUser.getUsername(), "", "", "");
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
                         if (!continueToOriginalDestination()) {

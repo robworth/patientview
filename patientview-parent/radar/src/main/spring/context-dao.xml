@@ -101,6 +101,10 @@
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
     </bean>
 
+    <bean id="logEntryDao" class="org.patientview.radar.dao.impl.LogEntryDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${jdbc.url}"/>

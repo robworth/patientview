@@ -126,6 +126,14 @@
         <property name="medicalResultDao" ref="medicalResultDao"/>
     </bean>
 
+    <bean id="logEntryManager" class="org.patientview.radar.service.impl.LogEntryManagerImpl">
+        <property name="logEntryDao" ref="logEntryDao"/>
+    </bean>
+
+    <bean id="addLog" class="org.patientview.radar.util.AddLog">
+        <property name="logEntryManager" ref="logEntryManager"/>
+    </bean>
+
     <bean id="csvDocumentDataBuilder" class="org.patientview.radar.service.impl.CsvDocumentDataBuilder"/>
     <bean id="excelDocumentDataBuilder" class="org.patientview.radar.service.impl.ExcelDocumentDataBuilder"/>
     <bean id="pdfDocumentDataBuilder" class="org.patientview.radar.service.impl.PdfDocumentDataBuilder"/>

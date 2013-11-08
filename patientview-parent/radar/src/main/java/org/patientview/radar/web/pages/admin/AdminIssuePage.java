@@ -5,6 +5,7 @@ import org.patientview.radar.model.enums.IssuePriority;
 import org.patientview.radar.model.enums.IssueStatus;
 import org.patientview.radar.model.enums.IssueType;
 import org.patientview.radar.service.IssueManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.RadarApplication;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -55,6 +56,7 @@ public class AdminIssuePage extends AdminsBasePage {
             protected void onSubmit() {
                 try {
                     issueManager.saveIssue(getModelObject());
+                    AddLog.addLog(AddLog.ADMIN_ISSUE_ADD, "", "", "", String.valueOf(getModelObject().getId()));
                     setResponsePage(AdminIssuesPage.class);
                 } catch (Exception e) {
                     error("Could not save issue: " + e.toString());

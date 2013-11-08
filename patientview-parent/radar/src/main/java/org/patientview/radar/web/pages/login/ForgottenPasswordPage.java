@@ -3,6 +3,7 @@ package org.patientview.radar.web.pages.login;
 import org.patientview.radar.model.exception.DecryptionException;
 import org.patientview.radar.model.exception.EmailAddressNotFoundException;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.pages.BasePage;
 import org.apache.wicket.Component;
@@ -39,6 +40,7 @@ public abstract class ForgottenPasswordPage extends BasePage {
             protected void onSubmit() {
                 try {
                     sendPassword(getModelObject());
+                    AddLog.addLog(AddLog.PASSWORD_RESET_FORGOTTEN, "", "", "", getModelObject().toString());
                 } catch (EmailAddressNotFoundException e) {
                     error(EMAIL_ADDRESS_NOT_RECOGNISED_MESSAGE);
                 } catch (DecryptionException e) {
