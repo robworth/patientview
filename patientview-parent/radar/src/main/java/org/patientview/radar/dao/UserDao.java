@@ -8,10 +8,11 @@ import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserDao {
 
-    public<T extends User> T getUser(String email);
+    public <T extends User> T getUser(String email);
 
     AdminUser getAdminUser(String email);
 
@@ -32,6 +33,8 @@ public interface UserDao {
     // Only use for testing purposes!
     void createRawUser(String username, String password, String name, String email, String unitcode,
                        String nhsno);
+
+    void createPVUser(String username, String password, String name, String email) throws Exception;
 
     PatientUser getExternallyCreatedPatientUser(String nhsno);
 
@@ -70,7 +73,11 @@ public interface UserDao {
 
     void saveUserMapping(User user) throws Exception;
 
+    Set<String> getUnitCodes(String username);
+
     void deleteUserMapping(User user) throws Exception;
 
     boolean userExistsInPatientView(String nhsno, String unitcode);
+
+
 }

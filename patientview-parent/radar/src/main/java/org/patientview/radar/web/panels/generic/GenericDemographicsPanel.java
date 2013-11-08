@@ -97,7 +97,13 @@ public class GenericDemographicsPanel extends Panel {
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
 
-            String name = utilityManager.getUserName(patient.getNhsno());
+            String name = null;
+
+            try {
+                name = utilityManager.getUserName(patient.getNhsno());
+            } catch (Exception e) {
+                LOGGER.info("Username not found");
+            }
             if (name != null && !"".equals(name)) {
                 // split the user name with a space
                 String[] names = name.split(" ");
@@ -130,6 +136,7 @@ public class GenericDemographicsPanel extends Panel {
                 patient.setGeneric(true);
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
                 demographicsManager.saveDemographics(patient);
+
                 try {
                     userManager.registerPatient(patient);
                 } catch (Exception e) {
@@ -183,7 +190,12 @@ public class GenericDemographicsPanel extends Panel {
         WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
             @Override
             public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
+                //TODO Sort this out whether it's required
+                if (model.getObject().getNhsNumberType() != null) {
+                    return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
+                } else {
+                    return false;
+                }
             }
         };
         nhsNumberContainer.add(nhsNumber);
@@ -193,7 +205,12 @@ public class GenericDemographicsPanel extends Panel {
         WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
             @Override
             public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
+                //TODO Sort this out whether it's required
+                if (model.getObject().getNhsNumberType() != null) {
+                    return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
+                } else {
+                    return false;
+                }
             }
         };
 

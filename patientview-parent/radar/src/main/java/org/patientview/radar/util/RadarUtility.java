@@ -68,4 +68,6 @@ public class RadarUtility {
     public static String generateNewPassword() {
         return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
     }
+
+
 }

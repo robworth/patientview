@@ -20,6 +20,14 @@ public interface UtilityDao {
 
     Consultant getConsultant(long id);
 
+    void deleteUnit(String unitCode);
+
+    void deletePatientViewUser(String username);
+
+    void deletePatientViewMapping(String username);
+
+    void createUnit(String unitCode);
+
     List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
     List<Consultant> getConsultantsByCentre(Centre centre);

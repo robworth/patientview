@@ -20,4 +20,8 @@
     <appender-ref ref="ConsoleAppender"/>
     <appender-ref ref="FileAppender"/>
   </root>
+
+    <logger name="org.patientview.radar.web.pages.patient">
+        <level value="DEBUG"/>
+    </logger>
 </log4j:configuration>
