@@ -2,7 +2,6 @@ package org.patientview.radar.web.pages.admin;
 
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.util.AddLog;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -27,9 +26,6 @@ public class AdminUserPage extends AdminsBasePage {
 
     @SpringBean
     private UserManager userManager;
-
-    @SpringBean
-    private UtilityManager utilityManager;
 
     private static final String PARAM_ID = "ID";
     private boolean editMode = false;
@@ -70,7 +66,7 @@ public class AdminUserPage extends AdminsBasePage {
                     userManager.saveProfessionalUser(getModelObject());
                     ProfessionalUser professionalUser = getModelObject();
                     AddLog.addLog(AddLog.ADMIN_ADD, professionalUser.getForename() + professionalUser.getSurname(), "",
-                            utilityManager.getCentre(professionalUser.getCentre().getId()).getUnitCode(), "");
+                            "radargroup", "");
                     if (newUser) {
                         setResponsePage(AdminUsersPage.class);
                     }

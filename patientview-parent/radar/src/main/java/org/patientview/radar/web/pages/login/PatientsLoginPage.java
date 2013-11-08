@@ -53,7 +53,7 @@ public class PatientsLoginPage extends BasePage {
                         session.setUser(patientUser);
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
-                        AddLog.addLog(AddLog.PATIENT_LOGON_VIEW, patientUser.getUsername(), "", "", "");
+                        AddLog.addLog(AddLog.PATIENT_LOGON_VIEW, patientUser.getUsername(), "", "radargroup", "");
                         setResponsePage(SrnsPatientPageReadOnly.class, SrnsPatientPageReadOnly.getParameters(
                                 patientUser.getRadarNumber()));
 

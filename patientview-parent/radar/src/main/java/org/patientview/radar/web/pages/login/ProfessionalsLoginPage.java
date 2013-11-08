@@ -60,7 +60,7 @@ public class ProfessionalsLoginPage extends BasePage {
                 if (professionalUser != null) {
                     if (session.signIn(user.getEmail(), passwordModel.getObject())) {
                         session.setUser(professionalUser);
-                        AddLog.addLog(AddLog.LOGGED_ON, professionalUser.getUsername(), "", "", "");
+                        AddLog.addLog(AddLog.LOGGED_ON, professionalUser.getUsername(), "", "radargroup", "");
                         // If we haven't been diverted here from a page request (i.e. we clicked login),
                         // redirect to logged in page
                         if (!continueToOriginalDestination()) {
