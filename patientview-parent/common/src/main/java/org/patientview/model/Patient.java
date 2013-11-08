@@ -791,5 +791,6 @@ public class Patient extends BaseModel {
     public void setRadarConsentConfirmedByUserId(Long radarConsentConfirmedByUserId) {
         this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
     }
+
 }
 

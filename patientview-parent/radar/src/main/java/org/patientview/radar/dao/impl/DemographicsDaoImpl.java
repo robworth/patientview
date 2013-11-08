@@ -1,23 +1,23 @@
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
+import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.model.Patient;
 import org.patientview.radar.model.filter.DemographicsFilter;
-import org.apache.commons.lang.StringUtils;
 import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
@@ -25,10 +25,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -42,7 +43,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
-    private UserDao userDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -209,22 +209,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
 
-            try {
-                // renal_unit
-                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-                }
-                // unitcode
-                if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-                    userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
-                            patient.getNhsno(), patient.getDiseaseGroup().getId());
-                }
-            } catch (Exception e) {
-                LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
-            }
         }
     }
+
 
     public Patient getDemographicsByRadarNumber(long radarNumber) {
         try {
@@ -234,6 +221,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             LOGGER.debug("No demographic record found for radar number {}", radarNumber);
             return null;
         }
+    }
+
+    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
@@ -246,18 +237,31 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         }
     }
 
-    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
-        String unitCode = centre.getUnitCode();
-        return jdbcTemplate.query("SELECT pa.* " +
-                "FROM " +
-                "     (" +
-                "       SELECT patient.*, usermapping.unitcode as ucode " +
-                "         FROM patient LEFT OUTER JOIN usermapping ON patient.nhsno = usermapping.nhsno   " +
-                "        WHERE usermapping.unitcode = ? " +
-                "          AND usermapping.username NOT LIKE '%-GP%' " +
-                "     ) AS pa " +
-                "WHERE pa.unitcode = ? OR pa.ucode = ?  ",
-                new Object[]{unitCode, unitCode, unitCode}, new DemographicsRowMapper());
+
+    public List<Patient> getDemographicsByUnitCode(Set<String> unitCodes) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("unitCodes", unitCodes);
+
+        return namedParameterJdbcTemplate.query("SELECT distinct(pa.*) "
+                + "FROM "
+                + "     ("
+                + "       SELECT patient.* "
+                + "         FROM patient LEFT OUTER JOIN usermapping ON patient.nhsno = usermapping.nhsno   "
+                + "        WHERE usermapping.unitcode IN (:unitCodes) "
+                + "          AND usermapping.username NOT LIKE '%-GP%' "
+                + "     ) AS pa "
+                , mapSqlParameterSource, new DemographicsRowMapper());
+    }
+
+    public Patient get(Long id) {
+
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM patient WHERE id = ?",
+                    new Object[]{id}, new DemographicsRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("No patient record found for radar number {}", id);
+            return null;
+        }
     }
 
     public List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
@@ -269,30 +273,30 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add("SELECT " +
-                "   patient.*, " +
-                "   tbl_Consultants.cFNAME, " +
-                "   tbl_Consultants.cSNAME, " +
-                "   unit.shortname, " +
-                "   tbl_DiagCode.dcAbbr " +
-                "FROM " +
-                "   tbl_DiagCode " +
-                "INNER JOIN " +
-                "   tbl_Diagnosis " +
-                "ON " +
-                "   tbl_DiagCode.dcID = tbl_Diagnosis.DIAG " +
-                "RIGHT OUTER JOIN " +
-                "   patient " +
-                "ON " +
-                "   tbl_Diagnosis.RADAR_NO = patient.radarNo " +
-                "LEFT OUTER JOIN " +
-                "   unit " +
-                "INNER JOIN " +
-                "   tbl_Consultants " +
-                "ON " +
-                "   unit.id = tbl_Consultants.cCentre " +
-                "ON " +
-                "   patient.consNeph = tbl_Consultants.cID");
+        sqlQueries.add("SELECT "
+                + "   patient.*, "
+                + "   tbl_Consultants.cFNAME, "
+                + "   tbl_Consultants.cSNAME, "
+                + "   unit.shortname, "
+                + "   tbl_DiagCode.dcAbbr "
+                + "FROM "
+                + "   tbl_DiagCode "
+                + "INNER JOIN "
+                + "   tbl_Diagnosis "
+                + "ON "
+                + "   tbl_DiagCode.dcID = tbl_Diagnosis.DIAG "
+                + "RIGHT OUTER JOIN "
+                + "   patient "
+                + "ON "
+                + "   tbl_Diagnosis.RADAR_NO = patient.radarNo "
+                + "LEFT OUTER JOIN "
+                + "   unit "
+                + "INNER JOIN "
+                + "   tbl_Consultants "
+                + "ON "
+                + "   unit.id = tbl_Consultants.cCentre "
+                + "ON "
+                + "   patient.consNeph = tbl_Consultants.cID");
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
@@ -482,7 +486,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setChannelIslandsId(resultSet.getString("channelIslandsId"));
             patient.setIndiaId(resultSet.getString("indiaId"));
             patient.setGeneric(resultSet.getBoolean("generic"));
-            patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
+//            patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
 
             return patient;
         }
@@ -528,10 +532,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         this.genericDiagnosisDao = genericDiagnosisDao;
     }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
     public DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode) {
         String sql = "SELECT "
                 + "user.email, user.emailverified, user.accountlocked, "
@@ -552,6 +552,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             return new DemographicsUserDetail();
         }
     }
+
 
     private class DemographicsUserDetailMapper implements RowMapper<DemographicsUserDetail> {
 

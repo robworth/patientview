@@ -51,7 +51,8 @@ public class ExistingPatientsListingPage extends BasePage {
             }
         }
 
-        DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager, centre);
+        DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager,
+                RadarSecuredSession.get().getUser());
 
         // List existing patients
         add(new DataView<Patient>("patients", demographicsDataProvider) {

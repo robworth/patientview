@@ -1,18 +1,5 @@
 package org.patientview.radar.web.pages.patient;
 
-import org.patientview.model.Patient;
-import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.generic.MedicalResultManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.alport.MedicinePanel;
-import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
-import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
-import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -26,8 +13,16 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
+import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
+import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
+import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class GenericPatientPage extends BasePage {
@@ -40,40 +35,16 @@ public class GenericPatientPage extends BasePage {
 
     private Patient patient;
 
-    @SpringBean
-    private DemographicsManager demographicsManager;
+    public GenericPatientPage(){
+        init(new Patient());
+    }
 
-    @SpringBean
-    private MedicalResultManager medicalResultManager;
-
-    public GenericPatientPage(AddPatientModel patientModel) {
+    public GenericPatientPage(Patient patient) {
         // this constructor is used when adding a new patient
-        super();
-
-        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
-                patientModel.getDiseaseGroup().getId());
-
-        if (patient == null) {
-            patient = new Patient();
-            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-            patient.setRenalUnit(patientModel.getCentre());
-            patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
-        }
+        init(patient);
         // set the nhs id or chi id based on model
-
-        init(patient);
     }
 
-    public GenericPatientPage(PageParameters pageParameters) {
-        // this constructor is used when a patient exists
-        // get the demographics based on radar id
-        StringValue idValue = pageParameters.get("id");
-        Long id = idValue.toLong();
-        patient = demographicsManager.getDemographicsByRadarNumber(id);
-
-        init(patient);
-    }
 
     public void init(Patient patient) {
         // init all the panels

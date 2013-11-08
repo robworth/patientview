@@ -1,6 +1,7 @@
 package org.patientview.radar.test.dao;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
@@ -14,10 +15,11 @@ import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -130,7 +132,9 @@ public class DemographicDaoTest extends BaseDaoTest {
         createDemographics("Test3", "User3", centre2, null);
 
         // Call DAO
-        List<Patient> demographics = demographicDao.getDemographicsByRenalUnit(centre);
+        Set<String> unitCodes = new HashSet<String>();
+        unitCodes.add(centre.getUnitCode());
+        List<Patient> demographics = demographicDao.getDemographicsByUnitCode(unitCodes);
         assertNotNull("List was null", demographics);
         assertEquals("Wrong size", 2, demographics.size());
         for (Patient de : demographics) {
