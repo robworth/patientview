@@ -35,7 +35,8 @@ public class LogEntryDaoTest extends BaseDaoTest {
         logEntryDao.save(logEntry);
         assertNotNull(logEntry.getId());
 
-        //LogEntry checkLogEntry = logEntryDao.get(logEntry.getId());
+        LogEntry checkLogEntry = logEntryDao.get(logEntry.getId());
+        assertEquals("LogEntry saving incorrect", "TestAction", checkLogEntry.getAction());
 
     }
 }

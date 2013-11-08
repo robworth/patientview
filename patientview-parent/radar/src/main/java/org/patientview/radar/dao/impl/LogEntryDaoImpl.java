@@ -27,7 +27,9 @@ package org.patientview.radar.dao.impl;
 import org.patientview.radar.dao.LogEntryDao;
 import org.patientview.radar.model.LogEntry;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,6 +38,7 @@ import java.util.Map;
 
 public class LogEntryDaoImpl extends BaseDaoImpl implements LogEntryDao {
 
+    private SimpleJdbcInsert logEntryInsert;
     private final static String DATE = "date";
     private final static String ACTOR = "actor";
     private final static String ACTION = "action";
@@ -44,6 +47,17 @@ public class LogEntryDaoImpl extends BaseDaoImpl implements LogEntryDao {
     private final static String UNITCODE = "unitcode";
     private final static String EXTRAINFO = "extrainfo";
     private final static String SPECIALTY_ID = "specialty_id";
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        // Call super
+        super.setDataSource(dataSource);
+
+        // Initialise a simple JDBC insert to be able to get the log id
+        logEntryInsert = new SimpleJdbcInsert(dataSource).withTableName("log")
+                .usingGeneratedKeyColumns("id").usingColumns("date", "actor", "action", "nhsno", "user",
+                        "unitcode", "extrainfo", "specialty_id");
+    }
 
 
     public void save(LogEntry logEntry) {
@@ -57,10 +71,8 @@ public class LogEntryDaoImpl extends BaseDaoImpl implements LogEntryDao {
         map.put(EXTRAINFO, logEntry.getExtrainfo());
         map.put(SPECIALTY_ID, logEntry.getSpecialty());
 
-        String sql = "insert into log(date,actor,action,nhsno,user,unitcode,extrainfo,specialty_id)" +
-                " values (:date, :actor, :action, :nhsno, :user, :unitcode, :extrainfo, :specialty_id)";
-
-        namedParameterJdbcTemplate.update(sql, map);
+        Number id = logEntryInsert.executeAndReturnKey(map);
+        logEntry.setId(id.longValue());
     }
 
     public LogEntry get(Long id) {
