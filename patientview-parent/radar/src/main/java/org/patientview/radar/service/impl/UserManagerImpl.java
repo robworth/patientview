@@ -154,13 +154,15 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private PatientUser createPatientViewUser(Patient patient) {
 
         PatientUser patientUser = userDao.getExternallyCreatedPatientUser(patient.getNhsno());
+
         String username = generateUsername(patient);
         String name = patient.getForename() + " " + patient.getSurname();
 
         // Not registered on the system so create a username for them and a mapping to the patients unit
-        if (patientUser != null) {
+        if (patientUser == null) {
             userDao.createRawUser(username, null, name, patient.getEmailAddress(), patient.getUnitcode(),
                     patient.getNhsno());
+            patientUser = userDao.getExternallyCreatedPatientUser(patient.getNhsno());
         }
 
         return patientUser;
