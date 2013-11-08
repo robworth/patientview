@@ -26,9 +26,6 @@ ALTER TABLE patient ADD COLUMN   `generic` tinyint(1) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `genericDiagnosis` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `dateOfGenericDiagnosis` datetime DEFAULT NULL;
 
-UPDATE patient p
-SET p.unitcode = p.centreCode;
-
 ALTER TABLE patient CHANGE centreCode unitcode varchar(100) NOT NULL DEFAULT '';
 
 ALTER TABLE patient ADD UNIQUE `nhsno` (`nhsno`,`unitcode`);
