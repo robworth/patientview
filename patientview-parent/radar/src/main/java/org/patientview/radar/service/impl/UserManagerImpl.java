@@ -138,12 +138,12 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         try {
             // renal_unit
             if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-                userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                userDao.createUserMappingInPatientView(patientUser.getUsername(),
                         patient.getNhsno(), patient.getRenalUnit().getUnitCode());
             }
             // unitcode
             if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-                userDao.createUserMappingInPatientView(patient.getForename() + patient.getSurname(),
+                userDao.createUserMappingInPatientView(patientUser.getUsername(),
                         patient.getNhsno(), patient.getDiseaseGroup().getId());
             }
         } catch (Exception e) {
@@ -152,9 +152,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
     private PatientUser createPatientViewUser(Patient patient) {
+
         PatientUser patientUser = userDao.getExternallyCreatedPatientUser(patient.getNhsno());
         String username = generateUsername(patient);
         String name = patient.getForename() + " " + patient.getSurname();
+
         // Not registered on the system so create a username for them and a mapping to the patients unit
         if (patientUser != null) {
             userDao.createRawUser(username, null, name, patient.getEmailAddress(), patient.getUnitcode(),

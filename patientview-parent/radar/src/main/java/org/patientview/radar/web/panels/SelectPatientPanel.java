@@ -22,8 +22,6 @@ import org.patientview.radar.web.pages.patient.GenericPatientPage;
 import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
 import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -33,8 +31,6 @@ import java.util.List;
  * Time: 15:40
  */
 public class SelectPatientPanel extends Panel {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SelectPatientPanel.class);
 
     @SpringBean
     private DemographicsManager demographicsManager;
@@ -112,7 +108,6 @@ public class SelectPatientPanel extends Panel {
         AjaxSubmitLink create = new AjaxSubmitLink("create") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                LOGGER.debug("Submitting the create button");
             }
 
             @Override
@@ -123,7 +118,6 @@ public class SelectPatientPanel extends Panel {
         Form<?> createForm = new Form<Patient>("patientCreationForm") {
             @Override
             protected void onSubmit() {
-                LOGGER.debug("Submitting the create button");
                 Patient patient = new Patient();
                 patient.setDiseaseGroup(patientModel.getDiseaseGroup());
                 setResponsePage(getDiseasePage(patient.getDiseaseGroup(), patient));

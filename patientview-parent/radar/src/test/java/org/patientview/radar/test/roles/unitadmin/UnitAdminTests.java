@@ -66,11 +66,6 @@ public class UnitAdminTests {
             /* -- Create Data for test */
             utilityDao.createUnit(testUnit);
 
-
-
-
-
-
             PatientUser userAdmin = roleHelper.createUnitAdmin(StringUtils.right(Long.toString(new Date().getTime()), 10), testUnit);
             // Add 10 patients to the unit
             for (int i = 0; i < 9; i++) {
