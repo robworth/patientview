@@ -105,12 +105,9 @@ public class AddPatientPage extends BasePage {
                 //   error("A patient with this NHS or CHI number already exists");
                // }
 
-                // TODO: this is terrible as we need to check disease groups to know where to send it - well done abul
-                // TODO: need to implement a patient base page with the constructors needed and then have an enum map
-                // TODO: that maps disease ids to the page they need to go to so we dont need all these ifs
                 if (!hasError()) {
 
-                    if (!userManager.userExistsInPatientView(model.getPatientId())) {
+                    if (userManager.userExistsInPatientView(model.getPatientId())) {
                         selectPatientPanel.setPatientModel(model);
                         patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
                         selectPatientPanel.setVisible(true);

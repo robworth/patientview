@@ -75,7 +75,7 @@ public class UnitAdminTests {
         PatientUser patientUser = null;
         try {
 
-            //Setup
+            // Setup
             utilityDao.createUnit(testRenalUnit);
             utilityDao.createUnit(testDiseaseUnit);
 
@@ -103,7 +103,7 @@ public class UnitAdminTests {
 
             // Assert
             List<String> unitCodes = userManager.getUnitCodes(patientUser);
-            Assert.assertTrue("There should be two units mapped to the user", unitCodes.size() == 2);
+            Assert.assertTrue("There should be two units mapped to the user", unitCodes.size() == 3);
 
         } finally {
             //Clean up

@@ -2,8 +2,9 @@ package org.patientview.radar.service.impl;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
-import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.JoinRequestDao;
 import org.patientview.radar.dao.UserDao;
+import org.patientview.radar.model.JoinRequest;
 import org.patientview.radar.model.exception.DaoException;
 import org.patientview.radar.model.exception.DecryptionException;
 import org.patientview.radar.model.exception.EmailAddressNotFoundException;
@@ -35,12 +36,14 @@ import java.util.List;
 public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
+    private static final String PATIENT_GROUP = "PATIENT";
+
 
     private EmailManager emailManager;
     private ProviderManager authenticationManager;
 
-    private DemographicsDao demographicsDao;
     private UserDao userDao;
+    private JoinRequestDao joinRequestDao;
 
     public AdminUser getAdminUser(String email) {
         return userDao.getAdminUser(email);
@@ -129,6 +132,12 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                     patient.getNhsno(), patient.getDiseaseGroup().getId());
         }
 
+        // Map to the Patient Group
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), PATIENT_GROUP)) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), PATIENT_GROUP);
+        }
+
         // now fill in the radar patient stuff
         patientUser.setRadarNumber(patient.getId());
         patientUser.setDateOfBirth(patient.getDob());
@@ -136,7 +145,25 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // Update the user record created by patient view and create radar patient row and user mapping row
         userDao.savePatientUser(patientUser);
 
+        createJoinRequest(patient);
+
         return patientUser;
+
+    }
+
+    private void createJoinRequest(Patient patient) {
+        // Now create a join request for the new user
+        JoinRequest joinRequest = new JoinRequest();
+        joinRequest.setNhsNo(patient.getNhsno());
+        joinRequest.setDateOfBirth(patient.getDob());
+        joinRequest.setEmail(patient.getEmailAddress());
+        joinRequest.setFirstName(patient.getForename());
+        joinRequest.setLastName(patient.getSurname());
+        joinRequest.setUnitcode(patient.getUnitcode());
+        joinRequest.setDateOfRequest(new Date());
+
+        joinRequestDao.saveJoinRequest(joinRequest);
+
 
     }
 
@@ -323,10 +350,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         this.emailManager = emailManager;
     }
 
-    public void setDemographicsDao(DemographicsDao demographicsDao) {
-        this.demographicsDao = demographicsDao;
-    }
-
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
@@ -341,14 +364,18 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         String username = patient.getForename().replaceAll("\\P{Alnum}", "") + "."
                 + patient.getSurname().replaceAll("\\P{Alnum}", "");
 
-        int i = 1;
-        while (userDao.usernameExistsInPatientView(username) && userDao.getPatientUserWithUsername(username) == null) {
-            username = username + ++i;
+        username = username.toLowerCase();
 
+        int i = 1;
+        while (userDao.usernameExistsInPatientView(username + i) &&
+                userDao.getPatientUserWithUsername(username + 1) == null) {
+            ++i;
         }
-        return username;
+        return username+i;
     }
 
-
-
+    public void setJoinRequestDao(JoinRequestDao joinRequestDao) {
+        this.joinRequestDao = joinRequestDao;
+    }
 }
+
