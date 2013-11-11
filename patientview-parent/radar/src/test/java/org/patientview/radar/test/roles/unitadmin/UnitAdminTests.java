@@ -5,7 +5,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.patientview.model.Centre;
 import org.patientview.model.Patient;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.DemographicsManager;
@@ -52,6 +55,67 @@ public class UnitAdminTests {
 
     }
 
+
+    /**
+     * Test: the creation of a patient from Radar and make sure the User table and the UserMappings table get
+     * correctly updated. For this user there will be no record existing in the patient table.
+     *
+     * The correct mapping should be
+     * 1) To the disease the patient has currently diagnosed with
+     * 2) The unit that the user selected in the Renal Unit
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testUserRegistrationWithMappings() throws Exception {
+
+        final String testDiseaseUnit = "RENALT";
+        final String testRenalUnit = "DISEASET";
+        Patient patient = new Patient();
+        PatientUser patientUser = null;
+        try {
+
+            //Setup
+            utilityDao.createUnit(testRenalUnit);
+            utilityDao.createUnit(testDiseaseUnit);
+
+            patient.setSurname("Test");
+            patient.setForename("Registration");
+            patient.setDateofbirth("01-01-1940");
+            patient.setDob(new Date());
+            patient.setEmailAddress("test@testtheregistrationbit.com");
+            patient.setUnitcode("");
+            patient.setNhsno("8768768765");
+            patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+            patient.setUnitcode(testDiseaseUnit);
+
+            Centre centre = new Centre();
+            centre.setUnitCode(testRenalUnit);
+            patient.setRenalUnit(centre);
+
+            DiseaseGroup diseaseGroup = new DiseaseGroup();
+            diseaseGroup.setId(testDiseaseUnit);
+            patient.setDiseaseGroup(diseaseGroup);
+
+            // Test
+            demographicsManager.saveDemographics(patient);
+            patientUser = userManager.registerPatient(patient);
+
+            // Assert
+            List<String> unitCodes = userManager.getUnitCodes(patientUser);
+            Assert.assertTrue("There should be two units mapped to the user", unitCodes.size() == 2);
+
+        } finally {
+            //Clean up
+            utilityDao.deletePatientViewMapping(patient.getNhsno());
+            utilityDao.deletePatientViewUser(patient.getNhsno());
+            utilityDao.deletePatient(patient.getNhsno());
+            utilityDao.deleteUnit(testRenalUnit);
+            utilityDao.deleteUnit(testDiseaseUnit);
+        }
+
+    }
+
     /**
      * Add a user mapping for Renal Unit A
      * Create patients into Renal Unit A
@@ -87,7 +151,7 @@ public class UnitAdminTests {
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         } finally {
-            //roleHelper.cleanTestData(patientUsers, testUnit);
+            roleHelper.cleanTestData(patients, testUnit);
         }
     }
 

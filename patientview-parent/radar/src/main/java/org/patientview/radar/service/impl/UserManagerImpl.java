@@ -99,7 +99,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    public void registerPatient(Patient patient) throws Exception {
+    public PatientUser registerPatient(Patient patient) throws Exception {
         // Check we have a valid radar number, email address and date of birth
         if (patient == null || patient.getId() < 1) {
             throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
@@ -115,54 +115,46 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                     "demographics.getNhsNumber()");
         }
 
-        // Register the patient with patient view table with mapping
-        // userDao.createRawUser(patient., "TestUser", "Test User", nhsNo + "@aptientview.com", patient.getUnitcode(),
-        // patient.getNhsno());
 
         PatientUser patientUser = createPatientViewUser(patient);
 
-
-        // if this demographic is already an existing patient, just skip the registration
-        if (userDao.getPatientUser(patientUser.getUserId()) == null) {
-
-            // now fill in the radar patient stuff
-            patientUser.setRadarNumber(patient.getId());
-            patientUser.setDateOfBirth(patient.getDob());
-
-            // Update the user record created by patient view and create radar patient row and user mapping row
-            userDao.savePatientUser(patientUser);
+        // Map the Renal Unit
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
+        }
+        // Map to the Disease Group
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), patient.getDiseaseGroup().getId());
         }
 
+        // now fill in the radar patient stuff
+        patientUser.setRadarNumber(patient.getId());
+        patientUser.setDateOfBirth(patient.getDob());
 
-        // however lets make sure the mappings exist.
-        try {
-            // renal_unit
-            if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-                userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                        patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-            }
-            // unitcode
-            if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-                userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                        patient.getNhsno(), patient.getDiseaseGroup().getId());
-            }
-        } catch (Exception e) {
-            LOGGER.error("Unable to create usermapping using {}", patient.getNhsno());
-        }
+        // Update the user record created by patient view and create radar patient row and user mapping row
+        userDao.savePatientUser(patientUser);
+
+        return patientUser;
+
     }
 
     private PatientUser createPatientViewUser(Patient patient) {
 
-        PatientUser patientUser = userDao.getExternallyCreatedPatientUser(patient.getNhsno());
+        PatientUser patientUser = userDao.getPatientViewUser(patient.getNhsno());
 
-        String username = generateUsername(patient);
-        String name = patient.getForename() + " " + patient.getSurname();
 
         // Not registered on the system so create a username for them and a mapping to the patients unit
         if (patientUser == null) {
-            userDao.createRawUser(username, null, name, patient.getEmailAddress(), patient.getUnitcode(),
-                    patient.getNhsno());
-            patientUser = userDao.getExternallyCreatedPatientUser(patient.getNhsno());
+
+            patientUser = new PatientUser();
+            patientUser.setUsername(generateUsername(patient));
+            patientUser.setName(patient.getForename() + " " + patient.getSurname());
+            patientUser.setPassword(generateRandomPassword());
+            patientUser.setEmail(patient.getEmailAddress());
+
+            patientUser = userDao.createPatientViewUser(patientUser);
         }
 
         return patientUser;
@@ -319,6 +311,14 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         throw new UsernameNotFoundException("User not found with email address " + email);
     }
 
+    public User getExternallyCreatedUser(String nshNo) {
+        return userDao.getPatientViewUser(nshNo);
+    }
+
+    public List<String> getUnitCodes(User user) {
+        return userDao.getUnitCodes(user);
+    }
+
     public void setEmailManager(EmailManager emailManager) {
         this.emailManager = emailManager;
     }
@@ -335,14 +335,14 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         this.authenticationManager = authenticationManager;
     }
 
-    private String generateUsername(Patient patient) {
+    public String generateUsername(Patient patient) {
 
-        String username = patient.getForename() + "." + patient.getSurname();
         //Strip non alpha numeric characters
-        username = username.replaceAll("\\P{Alnum}", "");
+        String username = patient.getForename().replaceAll("\\P{Alnum}", "") + "."
+                + patient.getSurname().replaceAll("\\P{Alnum}", "");
 
         int i = 1;
-        while (userDao.getPatientUserWithUsername(username) != null) {
+        while (userDao.usernameExistsInPatientView(username) && userDao.getPatientUserWithUsername(username) == null) {
             username = username + ++i;
 
         }
