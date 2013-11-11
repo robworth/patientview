@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
@@ -439,6 +440,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         pvUserMappingInsert.execute(userMap);
     }
 
+    public void createPVUser(String username, String password, String name, String email) throws Exception {
+
+        Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put(USER_USERNAME_FIELD_NAME, username);
+        userMap.put(USER_PASSWORD_FIELD_NAME, password);
+        userMap.put(USER_NAME_FIELD_NAME, name);
+        userMap.put(USER_EMAIL_FIELD_NAME, email);
+        userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, false);
+
+        Number id = userInsert.executeAndReturnKey(userMap);
+
+        createRoleInPatientView(id.longValue(), "patient");
+    }
+
     // users are created in Patient View without our radar mappings
     public PatientUser getExternallyCreatedPatientUser(String nhsno) {
         try {
@@ -692,6 +708,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);
     }
 
+
+    public Set<String> getUnitCodes(String username) {
+
+        return null;
+    }
+
     private UserMapping getUserMapping(String email) {
         try {
             return jdbcTemplate.queryForObject(buildSelectFromStatement(USER_TABLE_NAME, USER_MAPPING_TABLE_NAME) +
@@ -865,7 +887,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return userMapping;
         }
     }
-
 
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;

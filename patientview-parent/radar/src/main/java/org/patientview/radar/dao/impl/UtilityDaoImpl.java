@@ -38,6 +38,25 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 .usingColumns("cSNAME", "cFNAME", "cCentre");
     }
 
+    public void createUnit(String unitCode) {
+        jdbcTemplate.execute("INSERT INTO unit(unitcode, NAME, shortname, specialty_id) VALUES ('"
+                   + unitCode + "','"
+                   + unitCode + "','"
+                   + unitCode + "',0)");
+    }
+
+    public void deleteUnit(String unitCode) {
+        jdbcTemplate.execute("DELETE FROM unit WHERE unitcode = '" + unitCode + "'");
+    }
+
+    public void deletePatientViewUser(String username) {
+        jdbcTemplate.execute("DELETE FROM user WHERE username  = '" + username + "'");
+    }
+
+    public void deletePatientViewMapping(String username) {
+        jdbcTemplate.execute("DELETE FROM usermapping WHERE username = '" + username + "'");
+    }
+
     public Centre getCentre(long id) {
         return jdbcTemplate
                 .queryForObject("SELECT * FROM unit WHERE id = ?", new Object[]{id}, new CentreRowMapper());

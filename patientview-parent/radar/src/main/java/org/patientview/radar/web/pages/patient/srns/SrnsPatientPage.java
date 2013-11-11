@@ -1,26 +1,5 @@
 package org.patientview.radar.web.pages.patient.srns;
 
-import org.patientview.model.Patient;
-import org.patientview.model.generic.DiseaseGroup;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.models.PageNumberModel;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.DemographicsPanel;
-import org.patientview.radar.web.panels.DiagnosisPanel;
-import org.patientview.radar.web.panels.FirstVisitPanel;
-import org.patientview.radar.web.panels.FollowUpPanel;
-import org.patientview.radar.web.panels.HospitalisationPanel;
-import org.patientview.radar.web.panels.PathologyPanel;
-import org.patientview.radar.web.panels.RelapsePanel;
-import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -36,6 +15,25 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
+import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.generic.AddPatientModel;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.models.PageNumberModel;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.DemographicsPanel;
+import org.patientview.radar.web.panels.DiagnosisPanel;
+import org.patientview.radar.web.panels.FirstVisitPanel;
+import org.patientview.radar.web.panels.FollowUpPanel;
+import org.patientview.radar.web.panels.HospitalisationPanel;
+import org.patientview.radar.web.panels.PathologyPanel;
+import org.patientview.radar.web.panels.RelapsePanel;
+import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class SrnsPatientPage extends BasePage {
@@ -43,10 +41,6 @@ public class SrnsPatientPage extends BasePage {
     protected static final String PARAM_ID = "id";
     @SpringBean
     private DiagnosisManager diagnosisManager;
-    @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
-    private ClinicalDataManager clinicalDataManager;
 
     public enum CurrentTab {
         // Used for storing the current tab

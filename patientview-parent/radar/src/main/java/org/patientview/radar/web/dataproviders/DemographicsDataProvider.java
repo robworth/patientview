@@ -1,26 +1,25 @@
 package org.patientview.radar.web.dataproviders;
 
-import org.patientview.model.Centre;
-import org.patientview.model.Patient;
-import org.patientview.radar.model.filter.DemographicsFilter;
-import org.patientview.radar.service.DemographicsManager;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class DemographicsDataProvider implements IDataProvider<Patient>, SortableDataProvider {
 
-    private Centre centre;
+    private User user;
     private DemographicsManager demographicsManager;
     private DemographicsFilter demographicsFilter;
 
-    public DemographicsDataProvider(DemographicsManager demographicsManager, Centre centre) {
+    public DemographicsDataProvider(DemographicsManager demographicsManager, User user) {
         this(demographicsManager);
-
-        this.centre = centre;
+        this.user = user;
     }
 
     public DemographicsDataProvider(DemographicsManager demographicsManager) {
@@ -70,8 +69,8 @@ public class DemographicsDataProvider implements IDataProvider<Patient>, Sortabl
     }
 
     private List<Patient> getResults(int page, int resultsPerPage) {
-        if (centre != null) {
-            return demographicsManager.getDemographicsByRenalUnit(centre);
+        if (user != null) {
+            return demographicsManager.getDemographicsByUnitAdmin(user);
         } else {
             return demographicsManager.getDemographics(demographicsFilter, page, resultsPerPage);
         }
