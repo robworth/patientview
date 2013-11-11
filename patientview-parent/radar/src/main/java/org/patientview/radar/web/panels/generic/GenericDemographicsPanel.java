@@ -134,7 +134,7 @@ public class GenericDemographicsPanel extends Panel {
 
                 patient.setGeneric(true);
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
-                demographicsManager.saveDemographics(patient);
+                //demographicsManager.saveDemographics(patient);
 
                 try {
                     userManager.registerPatient(patient);

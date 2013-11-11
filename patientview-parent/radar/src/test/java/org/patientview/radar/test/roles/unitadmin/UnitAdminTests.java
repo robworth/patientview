@@ -98,7 +98,7 @@ public class UnitAdminTests {
             patient.setDiseaseGroup(diseaseGroup);
 
             // Test
-            demographicsManager.saveDemographics(patient);
+            //demographicsManager.saveDemographics(patient);
             patientUser = userManager.registerPatient(patient);
 
             // Assert

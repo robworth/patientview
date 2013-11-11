@@ -2,6 +2,7 @@ package org.patientview.radar.service.impl;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
+import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.JoinRequestDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.JoinRequest;
@@ -44,6 +45,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private UserDao userDao;
     private JoinRequestDao joinRequestDao;
+    private DemographicsDao demographicsDao;
+
 
     public AdminUser getAdminUser(String email) {
         return userDao.getAdminUser(email);
@@ -103,40 +106,17 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
     public PatientUser registerPatient(Patient patient) throws Exception {
-        // Check we have a valid radar number, email address and date of birth
-        if (patient == null || patient.getId() < 1) {
-            throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
+
+        boolean generateJoinRequest = false;
+        if (!patient.hasValidId()) {
+            generateJoinRequest = true;
         }
 
-        if (patient.getDob() == null) {
-            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
-                    "demographics.getDateOfBirth()");
-        }
+        demographicsDao.saveDemographics(patient);
 
-        if (patient.getNhsno() == null) {
-            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
-                    "demographics.getNhsNumber()");
-        }
-
+        validatePatient(patient);
 
         PatientUser patientUser = createPatientViewUser(patient);
-
-        // Map the Renal Unit
-        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-        }
-        // Map to the Disease Group
-        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                    patient.getNhsno(), patient.getDiseaseGroup().getId());
-        }
-
-        // Map to the Patient Group
-        if (!userDao.userExistsInPatientView(patient.getNhsno(), PATIENT_GROUP)) {
-            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                    patient.getNhsno(), PATIENT_GROUP);
-        }
 
         // now fill in the radar patient stuff
         patientUser.setRadarNumber(patient.getId());
@@ -145,7 +125,27 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // Update the user record created by patient view and create radar patient row and user mapping row
         userDao.savePatientUser(patientUser);
 
-        createJoinRequest(patient);
+        // Map the Renal Unit
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
+        }
+        // Map the Disease Group
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), patient.getDiseaseGroup().getId());
+        }
+
+        // Map the Patient Group
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), PATIENT_GROUP)) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), PATIENT_GROUP);
+        }
+
+
+        if (generateJoinRequest) {
+            createJoinRequest(patient);
+        }
 
         return patientUser;
 
@@ -164,6 +164,24 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         joinRequestDao.saveJoinRequest(joinRequest);
 
+    }
+
+    private void validatePatient(Patient patient) {
+
+        // Check we have a valid radar number, email address and date of birth
+        if (patient == null || patient.getId() < 1) {
+            throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
+        }
+
+        if (patient.getDob() == null) {
+            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+                    "demographics.getDateOfBirth()");
+        }
+
+        if (patient.getNhsno() == null) {
+            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+                    "demographics.getNhsNumber()");
+        }
 
     }
 
@@ -376,6 +394,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public void setJoinRequestDao(JoinRequestDao joinRequestDao) {
         this.joinRequestDao = joinRequestDao;
+    }
+
+    public void setDemographicsDao(DemographicsDao demographicsDao) {
+        this.demographicsDao = demographicsDao;
     }
 }
 
