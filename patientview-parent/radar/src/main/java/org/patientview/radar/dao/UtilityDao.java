@@ -66,4 +66,7 @@ public interface UtilityDao {
 
     Centre getRenalUnitCentre(String nhsNo);
 
+    void deletePatient(String nshNo);
+
+    void deletePatientForRadar(Long radarId);
 }

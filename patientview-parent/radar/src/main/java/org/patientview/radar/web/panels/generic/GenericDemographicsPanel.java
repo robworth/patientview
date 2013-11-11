@@ -1,31 +1,7 @@
 package org.patientview.radar.web.panels.generic;
 
-import org.apache.wicket.MarkupContainer;
-import org.patientview.model.Centre;
-import org.patientview.model.Ethnicity;
-import org.patientview.model.Patient;
-import org.patientview.model.Sex;
-import org.patientview.model.enums.NhsNumberType;
-import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.service.generic.GenericDiagnosisManager;
-import org.patientview.radar.util.RadarUtility;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
-import org.patientview.radar.web.components.ComponentHelper;
-import org.patientview.radar.web.components.ClinicianDropDown;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.components.RadarRequiredCheckBox;
-import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -47,7 +23,30 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
-
+import org.patientview.model.Centre;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.radar.model.user.ProfessionalUser;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
+import org.patientview.radar.service.generic.GenericDiagnosisManager;
+import org.patientview.radar.util.RadarUtility;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.CentreDropDown;
+import org.patientview.radar.web.components.ClinicianDropDown;
+import org.patientview.radar.web.components.ComponentHelper;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredCheckBox;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,7 +134,7 @@ public class GenericDemographicsPanel extends Panel {
 
                 patient.setGeneric(true);
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
-                demographicsManager.saveDemographics(patient);
+                //demographicsManager.saveDemographics(patient);
 
                 try {
                     userManager.registerPatient(patient);
@@ -424,7 +423,19 @@ public class GenericDemographicsPanel extends Panel {
                     target.add(clinician);
                 }
             });
-        } else {
+        } else if (user.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
+
+            //TODO Get rid of centres as an object short term fix for now
+            List<Centre> centres = new ArrayList<Centre>();
+            for (String unitCode : userManager.getUnitCodes(user)) {
+                Centre centre = new Centre();
+                centre.setUnitCode(unitCode);
+                centre.setName(unitCode);
+                centres.add(centre);
+            }
+            renalUnit = new CentreDropDown("renalUnit", centres);
+
+        }else {
             List<Centre> centres = new ArrayList<Centre>();
             centres.add(form.getModelObject().getRenalUnit());
 

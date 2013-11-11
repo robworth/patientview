@@ -49,12 +49,18 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         jdbcTemplate.execute("DELETE FROM unit WHERE unitcode = '" + unitCode + "'");
     }
 
-    public void deletePatientViewUser(String username) {
-        jdbcTemplate.execute("DELETE FROM user WHERE username  = '" + username + "'");
+    public void deletePatientViewUser(String nshNo) {
+
+        jdbcTemplate.execute("DELETE "
+        + " FROM    USER "
+        + " WHERE   username IN (SELECT  username "
+        + " FROM    usermapping "
+        + " WHERE   nhsno = '" + nshNo + "')");
+
     }
 
-    public void deletePatientViewMapping(String username) {
-        jdbcTemplate.execute("DELETE FROM usermapping WHERE username = '" + username + "'");
+    public void deletePatientViewMapping(String nhsNo) {
+        jdbcTemplate.execute("DELETE FROM usermapping WHERE nhsno = '" + nhsNo + "'");
     }
 
     public Centre getCentre(long id) {
@@ -91,15 +97,15 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add("SELECT " +
-                "   tbl_Consultants.*, " +
-                "   unit.name AS cName " +
-                "FROM " +
-                "   tbl_Consultants " +
-                "INNER JOIN " +
-                "   unit " +
-                "ON " +
-                "   tbl_Consultants.cCentre = unit.id");
+        sqlQueries.add("SELECT "
+                    + "   tbl_Consultants.*, "
+                    + "   unit.name AS cName "
+                    + "FROM "
+                    + "   tbl_Consultants "
+                    + "INNER JOIN "
+                    + "   unit "
+                    + "ON "
+                    + "   tbl_Consultants.cCentre = unit.id");
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
@@ -364,6 +370,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             LOGGER.debug("Could not get unit with nhsno {}", nhsNo);
             return null;
         }
+    }
+
+    public void deletePatient(String nshNo) {
+        jdbcTemplate.execute("DELETE FROM patient WHERE nhsno  = '" + nshNo + "'");
+    }
+
+    public void deletePatientForRadar(Long id) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("id", id);
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_patient_user WHERE id  = :id", parameters);
     }
 
     public String getUserName(String nhsNo) {
