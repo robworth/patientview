@@ -175,7 +175,7 @@ public class DemographicsPanel extends Panel {
                     patient.setId(radarNumberModel.getObject());
                 }
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
-                demographicsManager.saveDemographics(patient);
+               // demographicsManager.saveDemographics(patient);
                 try {
                     userManager.registerPatient(patient);
                 } catch (Exception e) {

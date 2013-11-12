@@ -31,6 +31,7 @@
 
     <bean id="demographicsManager" class="org.patientview.radar.service.impl.DemographicsManagerImpl">
         <property name="demographicsDao" ref="demographicsDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="diagnosisManager" class="org.patientview.radar.service.impl.DiagnosisManagerImpl">
@@ -101,8 +102,9 @@
 
     <bean id="userManager" class="org.patientview.radar.service.impl.UserManagerImpl">
         <property name="emailManager" ref="emailManager"/>
-        <property name="demographicsDao" ref="demographicsDao"/>
+        <property name="joinRequestDao" ref="joinRequestDao"/>
         <property name="userDao" ref="userDao"/>
+        <property name="demographicsDao" ref="demographicsDao"/>
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
