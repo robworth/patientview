@@ -30,13 +30,13 @@ public interface UserDao {
 
     PatientUser getPatientUserWithUsername(String username);
 
-    // Only use for testing purposes!
-    void createRawUser(String username, String password, String name, String email, String unitcode,
-                       String nhsno);
+    PatientUser createPatientViewUser(PatientUser patientUser);
+
+    List<String> getUnitCodes(User user);
 
     void createPVUser(String username, String password, String name, String email) throws Exception;
 
-    PatientUser getExternallyCreatedPatientUser(String nhsno);
+    PatientUser getPatientViewUser(String nhsno);
 
     List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
@@ -79,5 +79,6 @@ public interface UserDao {
 
     boolean userExistsInPatientView(String nhsno, String unitcode);
 
+    boolean usernameExistsInPatientView(String username);
 
 }

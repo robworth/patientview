@@ -49,6 +49,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="joinRequestDao" class="org.patientview.radar.dao.impl.JoinRequestDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="labDataDao" class="org.patientview.radar.dao.impl.LabDataDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>

@@ -72,7 +72,12 @@ public class UserManagerTest extends TestPvDbSchema {
     public void testPatientUserRegistration() throws Exception {
 
         // create a user row as per patient view
-        userDao.createRawUser("testusername", "passwordhash", "my user", "test@test.com", "unitcode1", "NHS123");
+        PatientUser patientUser = new PatientUser();
+        patientUser.setName("my user");
+        patientUser.setUsername("testusername");
+        patientUser.setEmail("test@test.com");
+        patientUser.setPassword("passwordhash");
+        userDao.createPatientViewUser(patientUser);
 
         // create a demographic
         Date dob = new Date();
@@ -81,7 +86,7 @@ public class UserManagerTest extends TestPvDbSchema {
         userManager.registerPatient(patient);
 
         // Try and register - will throw an exception as no matching radar number
-        PatientUser patientUser = userManager.getPatientUser(patient.getEmailAddress());
+        patientUser = userManager.getPatientUser(patient.getEmailAddress());
 
         assertNotNull("registered user is null", patientUser);
         assertNotNull("no password generated", patientUser.getPassword());
