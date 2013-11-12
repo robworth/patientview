@@ -63,6 +63,7 @@ public class UnitAdminTests {
      * The correct mapping should be
      * 1) To the disease the patient has currently diagnosed with
      * 2) The unit that the user selected in the Renal Unit
+     * 3) The user should be mapped to the Patient Unit Group
      *
      * @throws Exception
      */
@@ -98,15 +99,17 @@ public class UnitAdminTests {
             patient.setDiseaseGroup(diseaseGroup);
 
             // Test
-            //demographicsManager.saveDemographics(patient);
             patientUser = userManager.registerPatient(patient);
 
             // Assert
             List<String> unitCodes = userManager.getUnitCodes(patientUser);
             Assert.assertTrue("There should be two units mapped to the user", unitCodes.size() == 3);
+            Assert.assertTrue("The should be a " + testDiseaseUnit + " unit code mapped", containsUnitCode(unitCodes, testDiseaseUnit));
+            Assert.assertTrue("The should be a " + testRenalUnit + " unit code mapped", containsUnitCode(unitCodes, testRenalUnit));
+            Assert.assertTrue("The should be a PATIENT unit code mapped", containsUnitCode(unitCodes, "PATIENT"));
 
         } finally {
-            //Clean up
+            // Clean up
             utilityDao.deletePatientViewMapping(patient.getNhsno());
             utilityDao.deletePatientViewUser(patient.getNhsno());
             utilityDao.deletePatient(patient.getNhsno());
@@ -114,6 +117,16 @@ public class UnitAdminTests {
             utilityDao.deleteUnit(testDiseaseUnit);
         }
 
+    }
+
+    private boolean containsUnitCode(List<String> unitCodes, String unitCode) {
+
+        for (String s : unitCodes) {
+            if (s.equalsIgnoreCase(unitCode)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
