@@ -1,72 +1,45 @@
 /**
-    Update the patient with tbl_demograpics data, todo this only makes sense if you match on nhsno and unit code, [paul: should be zero records that require updating on the live server - check this]
- */
-UPDATE patient p INNER JOIN tbl_demographics d on p.nhsno = d.nhs_no
-SET p.radarNO = d.RADAR_NO,
-    p.rrNo = d.RR_NO,
-    p.dateReg = d.DATE_REG,
-    p.nhsNoType = d.NHS_NO_TYPE,
-    p.uktNo = d.UKT_NO,
-    p.surnameAlias = d.SNAME_ALIAS,
-    p.AGE = d.AGE,
-    p.ethnicGp = d.ETHNIC_GP,
-    p.postcodeOld = d.POSTCODE_OLD,
-    p.CONSENT = d.CONSENT,
-    p.dateBapnReg = d.DATE_BAPN_REG,
-    p.consNeph = d.CONS_NEPH,
-    p.STATUS = d.STATUS,
-    p.emailAddress = d.emailAddress,
-    p.rrtModality = d.RRT_modality,
-    p.genericDiagnosis = d.genericDiagnosis,
-    p.dateOfGenericDiagnosis = d.dateOfGenericDiagnosis,
-    p.otherClinicianAndContactInfo = d.otherClinicianAndContactInfo,
-    p.comments = d.comments,
-    p.republicOfIrelandId = d.republicOfIrelandId,
-    p.isleOfManId = d.isleOfManId,
-    p.channelIslandsId = d.channelIslandsId,
-    p.indiaId = d.indiaId,
-    p.generic = d.generic,
-    p.unitcode = d.RDG;
-
-/**
      Inserts data in tbl_demograpics to patient
      -- new records
  */
 INSERT INTO patient (radarNO, rrNo, dateReg, nhsNoType, uktNo, surnameAlias, AGE, ethnicGp, postcodeOld, CONSENT, dateBapnReg, consNeph, STATUS, emailAddress, rrtModality, genericDiagnosis, dateOfGenericDiagnosis, otherClinicianAndContactInfo, comments, republicOfIrelandId, isleOfManId, channelIslandsId, indiaId, generic, NHSNO, HOSPITALNUMBER, SURNAME, FORENAME, DATEOFBIRTH, ADDRESS1, ADDRESS2, ADDRESS3, ADDRESS4, POSTCODE, TELEPHONE1, TELEPHONE2, MOBILE, unitcode)
 SELECT                d.RADAR_NO, d.RR_NO, d.DATE_REG, d.NHS_NO_TYPE, d.UKT_NO, d.SNAME_ALIAS, d.AGE, d.ETHNIC_GP, d.POSTCODE_OLD, d.CONSENT, d.DATE_BAPN_REG, d.CONS_NEPH, d.STATUS, d.emailAddress, d.RRT_modality, d.genericDiagnosis, d.dateOfGenericDiagnosis, d.otherClinicianAndContactInfo, d.comments, d.republicOfIrelandId, d.isleOfManId, d.channelIslandsId, d.indiaId, d.generic, d.NHS_NO, d.HOSP_NO, d.SNAME, d.FNAME, d.DOB, d.ADD1, d.ADD2, d.ADD3, d.ADD4, d.POSTCODE, d.PHONE1, d.PHONE2, d.MOBILE, d.RDG
 FROM tbl_demographics d
-/*WHERE d.nhs_no in (SELECT DISTINCT d.nhs_no FROM tbl_demographics d, patient p WHERE p.nhsno != d.nhs_no);*/
-
-WHERE d.nhs_no not in (SELECT DISTINCT d.nhs_no FROM tbl_demographics d, patient p WHERE p.nhsno = d.nhs_no AND BLAH.unitcode = BLAH.unitcode); -- todo complete reworking the where clause to use 'not in' and match on unitcode as well as nhsno
+WHERE d.nhs_no NOT IN (SELECT DISTINCT d.nhs_no FROM tbl_demographics d, patient p WHERE p.nhsno = d.nhs_no AND d.RDG = p.unitcode);
 
 
 /**
-    Update the sex todo can drop the tbl_sex
+    Update the sex todo can drop the tbl_sex[Richard: I think it's better to drop tbl_sex table after the patient table merge is done(some panels related with it)]
  */
 
-UPDATE patient p
-SET p.sex =
-  (
-    SELECT s.sType
-    FROM tbl_sex s, tbl_demographics d
-    WHERE d.nhs_no = p.nhsno -- todo again join on unitcode
-    AND s.sID = d.sex
-  );
+UPDATE patient p INNER JOIN
+    (
+      SELECT s.sType,d.*
+        FROM tbl_sex s, tbl_demographics d
+        WHERE s.sID = d.sex
+    ) dData ON p.nhsno = dData.nhs_no AND p.unitcode = dData.RDG
+SET p.sex = dData.sType
 
 /**
     Create a user mapping for the disease group
     Insert into usermapping with tbl_demographics nhs_no and RDG fields
  */
 INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
-SELECT CONCAT(d.fname, d.sname) AS username,   -- todo join to the user table via the existing user mapping to get the username , exclude GPs
+SELECT user.username AS username,
   d.RDG AS unitcode,
   d.nhs_no AS nhsno,
   1 AS specialty_id
-FROM tbl_demographics d, unit u, patient p
-WHERE d.RDG = u.unitcode
-  AND P.unitcode = u.unitcode
-  AND p.nhsno = d.nhs_no
-  AND u.sourceType = 'radargroup';
+FROM tbl_demographics d, tbl_patient_users, rdr_user_mapping, user
+WHERE d.RADAR_NO = tbl_patient_users.RADAR_NO
+  AND tbl_patient_users.pID = rdr_user_mapping.radarUserId
+  AND rdr_user_mapping.userId = user.id
+  AND NOT EXISTS (
+                      SELECT d.*
+                        FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.RDG = u.id, usermapping ump
+                        WHERE d.nhs_no = ump.nhsno
+                          AND u.unitcode = ump.unitcode
+                          AND ump.username NOT LIKE '%-GP%'
+                    );
 
 /**
     Create a user mapping for the source data entering user's unit
@@ -74,21 +47,47 @@ WHERE d.RDG = u.unitcode
     Insert into usermapping with use renal_unit
  */
 INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
-SELECT CONCAT(d.fname, d.sname) AS username, -- todo join to the user table via the existing user mapping to get the username, exclude GPs
+SELECT user.username AS username,
   ( SELECT u.unitcode
       FROM unit u
      WHERE u.id = d.renal_unit ) AS unitcode,
   d.nhs_no AS nhsno,
   1 AS specialty_id
-FROM tbl_demographics d
-WHERE NOT EXISTS (
--- todo maybe test for GP users, test this works
+FROM tbl_demographics d, tbl_patient_users, rdr_user_mapping, user
+WHERE d.RADAR_NO = tbl_patient_users.RADAR_NO
+  AND tbl_patient_users.pID = rdr_user_mapping.radarUserId
+  AND rdr_user_mapping.userId = user.id
+  AND NOT EXISTS (
                       SELECT d.*
                         FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.renal_unit = u.id, usermapping ump
                         WHERE d.nhs_no = ump.nhsno
                           AND u.unitcode = ump.unitcode
+                          AND ump.username NOT LIKE '%-GP%'
                     );
 
---  todo add a user mapping for the renal_unit_2
 
--- todo clean up unused stuff
+/**
+    Create a user mapping for the source data entering user's unit(Allow visibility for another Renal Unit)
+    Only do this if it does not already exist
+    Insert into usermapping with use renal_unit_2
+ */
+INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
+SELECT user.username AS username,
+  ( SELECT u.unitcode
+      FROM unit u
+     WHERE u.id = d.renal_unit_2 ) AS unitcode,
+  d.nhs_no AS nhsno,
+  1 AS specialty_id
+FROM tbl_demographics d, tbl_patient_users, rdr_user_mapping, user
+WHERE d.RADAR_NO = tbl_patient_users.RADAR_NO
+  AND tbl_patient_users.pID = rdr_user_mapping.radarUserId
+  AND rdr_user_mapping.userId = user.id
+  AND d.renal_unit_2 IS NOT NULL
+  AND NOT EXISTS (
+                      SELECT d.*
+                        FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.renal_unit_2 = u.id, usermapping ump
+                        WHERE d.nhs_no = ump.nhsno
+                          AND u.unitcode = ump.unitcode
+                          AND ump.username NOT LIKE '%-GP%'
+                    );
+
