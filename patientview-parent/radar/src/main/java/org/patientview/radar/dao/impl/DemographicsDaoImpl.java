@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -238,19 +236,18 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     }
 
 
-    public List<Patient> getDemographicsByUnitCode(Set<String> unitCodes) {
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("unitCodes", unitCodes);
+    public List<Patient> getDemographicsByUnitCode(List<String> unitCodes) {
+        String unitCodeValues = buildValueList(unitCodes);
 
-        return namedParameterJdbcTemplate.query("SELECT pa.* "
-                + "FROM "
-                + "     ("
-                + "       SELECT patient.* "
-                + "         FROM patient LEFT OUTER JOIN usermapping ON patient.nhsno = usermapping.nhsno   "
-                + "        WHERE usermapping.unitcode IN (:unitCodes) "
-                + "          AND usermapping.username NOT LIKE '%-GP%' "
-                + "     ) AS pa "
-                , mapSqlParameterSource, new DemographicsRowMapper());
+        return jdbcTemplate.query("SELECT  p.* "
+                        + "        FROM    user u "
+                        + "        INNER JOIN patient p "
+                        + "        INNER JOIN usermapping m"
+                        + "        WHERE  m.nhsno = p.nhsno "
+                        + "        AND    u.username NOT LIKE '%-GP%' "
+                        + "        AND    u.username = m.username "
+                        + "        AND    m.unitcode IN (?)"
+                , new Object[]{unitCodeValues}, new DemographicsRowMapper());
     }
 
     public Patient get(Long id) {
