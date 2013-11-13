@@ -108,11 +108,13 @@ public class AddPatientPage extends BasePage {
                 if (!hasError()) {
 
                     if (userManager.userExistsInPatientView(model.getPatientId())) {
-                        selectPatientPanel.setPatientModel(model);
                         patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
-                        selectPatientPanel.setVisible(true);
-                        setResponsePage(this.getPage());
                     }
+
+                    selectPatientPanel.setPatientModel(model);
+                    selectPatientPanel.setVisible(true);
+                    setResponsePage(this.getPage());
+
                 }
             }
         };
