@@ -239,15 +239,18 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     public List<Patient> getDemographicsByUnitCode(List<String> unitCodes) {
         String unitCodeValues = buildValueList(unitCodes);
 
-        return jdbcTemplate.query("SELECT  p.* "
-                + "        FROM    user u "
-                + "        INNER JOIN patient p "
-                + "        INNER JOIN usermapping m "
-                + "        WHERE  m.nhsno = p.nhsno "
-                + "        AND    u.username NOT LIKE '%-GP%' "
-                + "        AND    u.username = m.username "
-                + "        AND    m.unitcode IN (:1)"
-                , new Object[]{unitCodeValues}, new DemographicsRowMapper());
+        if (StringUtils.isNotEmpty(unitCodeValues)) {
+            return jdbcTemplate.query("SELECT  DISTINCT p.* "
+                                    + "FROM    user u "
+                                    + "INNER JOIN patient p "
+                                    + "INNER JOIN usermapping m "
+                                    + "WHERE  m.nhsno = p.nhsno "
+                                    + "AND    u.username NOT LIKE '%-GP%' "
+                                    + "AND    u.username = m.username "
+                                    + "AND    m.unitcode IN (" + unitCodeValues + ")", new DemographicsRowMapper());
+        } else {
+            return null;
+        }
     }
 
     public Patient get(Long id) {

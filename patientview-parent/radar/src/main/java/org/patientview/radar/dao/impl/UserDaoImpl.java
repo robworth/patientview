@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
@@ -714,11 +713,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);
     }
 
-
-    public Set<String> getUnitCodes(String username) {
-
-        return null;
-    }
 
     private UserMapping getUserMapping(String email) {
         try {
