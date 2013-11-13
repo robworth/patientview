@@ -17,6 +17,7 @@ import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.UserManager;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.pages.patient.GenericPatientPage;
 import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
@@ -32,8 +33,12 @@ import java.util.List;
  */
 public class SelectPatientPanel extends Panel {
 
+
     @SpringBean
     private DemographicsManager demographicsManager;
+
+    @SpringBean
+    private UserManager userManager;
 
     private IModel<List<Patient>> model;
     private AddPatientModel patientModel;
@@ -41,91 +46,17 @@ public class SelectPatientPanel extends Panel {
     public SelectPatientPanel(String id,  IModel<List<Patient>> model) {
         super(id);
         this.model = model;
-        createPatientRadioChoice();
+        init();
     }
 
 
-    private void createPatientRadioChoice() {
-
-        IModel<Patient> selected = new Model<Patient>();
-        final RadioGroup group = new RadioGroup("group", selected);
+    private void init() {
 
         add(new FeedbackPanel("patientSelection"));
-
-        List<Patient> patients = null;
-
-        Form<?> form = new Form<Patient>("patientSelectionForm") {
-            @Override
-            protected void onSubmit() {
-
-                Patient patient = (Patient) group.getDefaultModelObject();
-                patient = demographicsManager.get(patient.getId());
-
-
-                DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
-                setResponsePage(getDiseasePage(diseaseGroup, patient));
-
-            }
-        };
-
-        add(form);
-
-
-        form.add(group);
-
-        // Construct a radio button and label for each company.
-        group.add(new ListView<Patient>("choice", model) {
-            protected void populateItem(ListItem<Patient> it) {
-
-                it.add(new Radio("radio", it.getModel()));
-                it.add(new Label("id", Long.toString(it.getModelObject().getId())));
-                it.add(new Label("nhsNo", it.getModelObject().getNhsno()));
-                it.add(new Label("forename", it.getModelObject().getForename()));
-                it.add(new Label("surname", it.getModelObject().getSurname()));
-                it.add(new Label("dateOfBirth", it.getModelObject().getDateofbirth()));
-                it.add(new Label("unitCode", it.getModelObject().getUnitcode()));
-            }
-        });
-
-
-        // submit link
-        AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-
-            }
-        };
-        form.add(submit);
-        form.add(group);
-
-
-        // submit link
-        AjaxSubmitLink create = new AjaxSubmitLink("create") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-            }
-
-        };
-        Form<?> createForm = new Form<Patient>("patientCreationForm") {
-            @Override
-            protected void onSubmit() {
-                Patient patient = new Patient();
-                patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-                setResponsePage(getDiseasePage(patient.getDiseaseGroup(), patient));
-
-            }
-        };
-        createForm.add(create);
-        add(createForm);
+        // Create the form that select patients to link with
+        add(createSelectionForm());
+        // Add the form that will create a patient from scratch
+        add(createCreateForm());
 
     }
 
@@ -147,6 +78,95 @@ public class SelectPatientPanel extends Panel {
             return new GenericPatientPage(patient);
         }
 
+    }
+
+    private Form createSelectionForm() {
+
+        // Form that displays the potential patient records to link with from the Patient table
+
+        IModel<Patient> selected = new Model<Patient>();
+        final RadioGroup group = new RadioGroup("group", selected);
+
+
+        Form<?> form = new Form<Patient>("patientSelectionForm") {
+            @Override
+            protected void onSubmit() {
+
+                Patient patient = (Patient) group.getDefaultModelObject();
+                patient = demographicsManager.get(patient.getId());
+
+
+                DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
+                setResponsePage(getDiseasePage(diseaseGroup, patient));
+
+            }
+        };
+
+        // submit link
+        AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+
+            }
+        };
+
+
+        // Construct a radio button and label for each company.
+        group.add(new ListView<Patient>("choice", model) {
+            protected void populateItem(ListItem<Patient> it) {
+
+                it.add(new Radio("radio", it.getModel()));
+                it.add(new Label("id", Long.toString(it.getModelObject().getId())));
+                it.add(new Label("nhsNo", it.getModelObject().getNhsno()));
+                it.add(new Label("forename", it.getModelObject().getForename()));
+                it.add(new Label("surname", it.getModelObject().getSurname()));
+                it.add(new Label("dateOfBirth", it.getModelObject().getDateofbirth()));
+                it.add(new Label("unitCode", it.getModelObject().getUnitcode()));
+            }
+        });
+
+        form.add(submit);
+        form.add(group);
+
+        return form;
+
+    }
+
+    private Form createCreateForm() {
+
+        // This is the form that submits to the new create patient form
+
+        AjaxSubmitLink create = new AjaxSubmitLink("create") {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+            }
+
+        };
+
+        Form<?> createForm = new Form<Patient>("patientCreationForm") {
+            @Override
+            protected void onSubmit() {
+                Patient patient = new Patient();
+                patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+                patient.setNhsno(patientModel.getPatientId());
+                patient.setNhsNumberType(patientModel.getNhsNumberType());
+
+                setResponsePage(getDiseasePage(patient.getDiseaseGroup(), patient));
+
+            }
+        };
+        createForm.add(create);
+
+        return createForm;
     }
 
     public void setPatientModel(AddPatientModel patientModel) {

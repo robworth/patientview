@@ -242,7 +242,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("unitCodes", unitCodes);
 
-        return namedParameterJdbcTemplate.query("SELECT distinct(pa.*) "
+        return namedParameterJdbcTemplate.query("SELECT pa.* "
                 + "FROM "
                 + "     ("
                 + "       SELECT patient.* "
@@ -360,7 +360,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             // Construct object and set radar number
             Patient patient = new Patient();
             Long radarId = resultSet.getLong("radarNo");
-            patient.setId(radarId);
+            patient.setRadarNo(radarId);
+            patient.setId(resultSet.getLong("id"));
             patient.setDateReg(resultSet.getDate("dateReg"));
 
             // Renal registry number
@@ -447,6 +448,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             }
 
+            patient.setUnitcode(resultSet.getString("unitCode"));
+
 //            Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");
 //            if (!resultSet.wasNull()) {
 //                Centre centre = utilityDao.getCentre(renalUnitAuthorisedId);
@@ -473,7 +476,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 patient.setGenericDiagnosisModel(genericDiagnosisDao.get(genericDiagnosisId, diseaseGroupId));
             }
 
-            patient.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));
+            try {
+                Date date = resultSet.getDate("dateOfGenericDiagnosis");
+                patient.setDateOfGenericDiagnosis(date);
+            } catch (SQLException e) {
+                LOGGER.error("Could not parse dateOfGenericDiagnosis {}",
+                e.getMessage());
+            }
+
             if (patient.getDateOfGenericDiagnosis() == null) {
                 patient.setDiagnosisDateSelect(true);
             } else {

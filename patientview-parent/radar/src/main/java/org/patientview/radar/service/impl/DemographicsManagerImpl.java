@@ -1,6 +1,5 @@
 package org.patientview.radar.service.impl;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
@@ -16,10 +15,9 @@ import java.util.Set;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
-    @SpringBean
+
     private DemographicsDao demographicsDao;
 
-    @SpringBean
     private UserDao userDao;
 
     public void saveDemographics(Patient patient) {
@@ -143,4 +141,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
     }
 
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 }
