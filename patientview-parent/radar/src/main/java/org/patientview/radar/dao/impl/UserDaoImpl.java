@@ -1,5 +1,6 @@
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
@@ -10,7 +11,6 @@ import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.model.user.UserMapping;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -453,7 +453,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     // users are created in Patient View without our radar mappings
-    public PatientUser getExternallyCreatedPatientUser(String nhsno) {
+    public PatientUser getPatientViewUser(String nhsno) {
         try {
 
             String sql = "SELECT DISTINCT u.* FROM USER u, usermapping m WHERE u.username = m.username AND nhsno = ? " +

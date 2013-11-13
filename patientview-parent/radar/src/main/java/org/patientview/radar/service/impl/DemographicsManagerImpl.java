@@ -1,6 +1,5 @@
 package org.patientview.radar.service.impl;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
@@ -12,14 +11,12 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 
 import java.util.List;
-import java.util.Set;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
-    @SpringBean
+
     private DemographicsDao demographicsDao;
 
-    @SpringBean
     private UserDao userDao;
 
     public void saveDemographics(Patient patient) {
@@ -64,7 +61,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
     }
 
     public List<Patient> getDemographicsByUnitAdmin(User user) {
-        Set<String> unitCodes = userDao.getUnitCodes(user.getUsername());
+        List<String> unitCodes = userDao.getUnitCodes(user);
         return demographicsDao.getDemographicsByUnitCode(unitCodes);
     }
 
@@ -143,4 +140,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
     }
 
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 }
