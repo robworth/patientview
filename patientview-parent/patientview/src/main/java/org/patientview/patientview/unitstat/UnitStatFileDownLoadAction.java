@@ -23,6 +23,7 @@
 
 package org.patientview.patientview.unitstat;
 
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -33,8 +34,8 @@ import org.patientview.utils.LegacySpringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.io.FileReader;
+import java.io.PrintWriter;
 
 
 public class UnitStatFileDownLoadAction extends Action {
@@ -45,15 +46,15 @@ public class UnitStatFileDownLoadAction extends Action {
         String unitStatDirPath = LegacySpringUtils.getContextProperties().getProperty("unitstatfiles.directory");
         String fileName = ActionUtils.retrieveStringPropertyValue("filename", form, request);
         String filePath = unitStatDirPath + "/" + fileName;
-        response.setContentType("csv");
+        response.setContentType("text/csv");
         response.setHeader("Location", fileName);
-        response.setHeader("Content-Disposition", "attachment; filename="
-                + fileName);
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
         PrintWriter printWriter = response.getWriter();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String tempString = null;
         while ((tempString = reader.readLine()) != null) {
-            printWriter.write(tempString);
+            printWriter.write(tempString + "\n");
         }
         reader.close();
         printWriter.flush();
