@@ -31,7 +31,8 @@ public class PathologyDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetPathology() {
+    public void testGetPathology() throws Exception {
+        createPathology();
         Pathology pathology = pathologyDao.getPathology(2L);
         assertNotNull("Pathology object was null", pathology);
         assertEquals("Wrong ID", new Long(2), pathology.getId());
@@ -44,7 +45,8 @@ public class PathologyDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetPathologyByRadarNumber() {
+    public void testGetPathologyByRadarNumber() throws Exception {
+        createPathology();
         List<Pathology> pathologyList = pathologyDao.getPathologyByRadarNumber(238L);
         assertNotNull("Pathology list was null", pathologyList);
         assertTrue("Pathology list was empty", !pathologyList.isEmpty());

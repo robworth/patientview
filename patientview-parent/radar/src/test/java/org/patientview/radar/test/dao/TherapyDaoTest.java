@@ -30,7 +30,8 @@ public class TherapyDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetTherapy() {
+    public void testGetTherapy() throws Exception {
+        createTherapy();
         Therapy therapy = therapyDao.getTherapy(6L);
         assertNotNull("Therapy object was null", therapy);
     }
@@ -42,7 +43,8 @@ public class TherapyDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetTherapyByRadarNumber() {
+    public void testGetTherapyByRadarNumber() throws Exception {
+        createTherapy();
         List<Therapy> therapy = therapyDao.getTherapyByRadarNumber(6L);
         assertNotNull("Therapy object was null", therapy);
     }

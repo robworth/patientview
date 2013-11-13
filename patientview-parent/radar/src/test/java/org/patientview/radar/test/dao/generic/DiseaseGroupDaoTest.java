@@ -1,6 +1,7 @@
 package org.patientview.radar.test.dao.generic;
 
 
+import org.junit.Before;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.test.dao.BaseDaoTest;
@@ -14,6 +15,11 @@ public class DiseaseGroupDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiseaseGroupDao diseaseGroupDao;
+
+    @Before
+    public void setUp() throws Exception {
+        createUnit();
+    }
 
     @Test
     public void testGetAll()throws Exception {
