@@ -410,34 +410,31 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                     PATIENT_USER_ID_FIELD_NAME, true),
                     new Object[]{username, User.ROLE_PATIENT}, new PatientUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Could not patient user with " + USER_USERNAME_FIELD_NAME + " {}", username);
+            LOGGER.debug("Could not patient find user with " + USER_USERNAME_FIELD_NAME + " {}", username);
         }
 
         return null;
     }
 
-    // simulate how patient view creates a user
-    public void createRawUser(String username, String password, String name, String email, String unitcode,
-                              String nhsno) {
+    public PatientUser createPatientViewUser(PatientUser patientUser) {
         Map<String, Object> userMap = new HashMap<String, Object>();
-        userMap.put(USER_USERNAME_FIELD_NAME, username);
-        userMap.put(USER_PASSWORD_FIELD_NAME, password);
-        userMap.put(USER_NAME_FIELD_NAME, name);
-        userMap.put(USER_EMAIL_FIELD_NAME, email);
+        userMap.put(USER_USERNAME_FIELD_NAME, patientUser.getUsername());
+        userMap.put(USER_PASSWORD_FIELD_NAME, patientUser.getPassword());
+        userMap.put(USER_NAME_FIELD_NAME, patientUser.getName());
+        userMap.put(USER_EMAIL_FIELD_NAME, patientUser.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, true);
 
-        userInsert.executeAndReturnKey(userMap);
+        Number id = userInsert.executeAndReturnKey(userMap);
+        patientUser.setId(id.longValue());
+        return patientUser;
 
-        // we only ever want one user mapping per user so just delete any existing and re add
-        userMap = new HashMap<String, Object>();
-        userMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
-        userMap.put(PV_USER_MAPPING_UNITCODE_FIELD_NAME, unitcode);
-        userMap.put(PV_USER_MAPPING_NHSNO_FIELD_NAME, nhsno);
-        userMap.put(PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME, 1);
+    }
 
-        // add mapping
-        pvUserMappingInsert.execute(userMap);
+    public List<String> getUnitCodes(User user) {
+
+        return jdbcTemplate.queryForList("SELECT DISTINCT unitcode FROM usermapping WHERE username = ?",
+                new Object[]{user.getUsername()}, String.class);
     }
 
     public void createPVUser(String username, String password, String name, String email) throws Exception {
@@ -528,8 +525,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             patientUser.setId(id.longValue());
         }
 
-        // save main user login into the shared rpv table
-        saveUser(patientUser);
     }
 
     public void deletePatientUser(PatientUser patientUser) throws Exception {
@@ -552,6 +547,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         String sql = "SELECT COUNT(*) FROM usermapping WHERE nhsno = ?";
         return jdbcTemplate.queryForInt(sql, nhsno) > 0;
+    }
+
+    public boolean usernameExistsInPatientView(String username) {
+
+
+        if (username == null || username.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: username");
+        }
+
+        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+        return jdbcTemplate.queryForInt(sql, username) > 0;
     }
 
     public boolean userExistsInPatientView(String nhsno, String unitcode) {

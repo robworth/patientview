@@ -23,12 +23,13 @@ import org.patientview.radar.model.Consultant;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
+import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.UtilityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Font;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
 import java.io.IOException;
@@ -257,8 +258,14 @@ public class UtilityManagerImpl implements UtilityManager {
         for (Consultant consultant : consultants) {
             String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
             password = DigestUtils.sha256Hex(password);
-            userDao.createRawUser(consultant.getFullName(), password, consultant.getFullName(), null,
-                    consultant.getCentre().getUnitCode(), null);
+
+            PatientUser patientUser = new PatientUser();
+            patientUser.setName(consultant.getFullName());
+            patientUser.setPassword(password);
+
+            /// TODO -- This is originally a test method being used in the code
+            //  TODO -- Mappings need to be added perhaps use the correct registration method
+            userDao.createPatientViewUser(patientUser);
         }
 
         writeConsultantToFile(consultants);

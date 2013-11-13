@@ -17,9 +17,8 @@ import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -132,7 +131,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         createDemographics("Test3", "User3", centre2, null);
 
         // Call DAO
-        Set<String> unitCodes = new HashSet<String>();
+        List<String> unitCodes = new ArrayList<String>();
         unitCodes.add(centre.getUnitCode());
         List<Patient> demographics = demographicDao.getDemographicsByUnitCode(unitCodes);
         assertNotNull("List was null", demographics);

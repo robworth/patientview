@@ -10,5 +10,7 @@ import java.util.List;
  * Time: 11:13
  */
 public interface PatientManager {
+
     List<Patient> getPatientByNhsNumber(String nhsNo);
+
 }

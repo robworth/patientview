@@ -1,5 +1,6 @@
 package org.patientview.radar.test.roles.unitadmin;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.user.PatientUser;
@@ -38,16 +39,22 @@ public class RoleHelper {
 
     public PatientUser createUserInPatientView(String nhsNo, String unitCode) throws Exception {
         // Creates a user in patient with a mapping!!
-        userDao.createRawUser(nhsNo, "TestUser", "Test User", nhsNo + "@aptientview.com", unitCode, nhsNo);
-        return userDao.getExternallyCreatedPatientUser(nhsNo);
+        PatientUser patientUser = new PatientUser();
+        patientUser.setEmail(nhsNo + "@patientview.com");
+        patientUser.setUsername("TestUser");
+        patientUser.setName("Test User");
+        patientUser.setPassword("HasPassword");
+
+        userDao.createPatientViewUser(patientUser);
+        return userDao.getPatientViewUser(nhsNo);
 
     }
 
-    public void cleanTestData(List<PatientUser> patientUsers, String unitCode) {
+    public void cleanTestData(List<Patient> patients, String unitCode) {
         // -- Clean up test (No Transaction Manager)
-        for (PatientUser patientUser : patientUsers) {
-            utilityDao.deletePatientViewMapping(patientUser.getUsername());
-            utilityDao.deletePatientViewUser(patientUser.getUsername());
+        for (Patient patient : patients) {
+            utilityDao.deletePatientViewMapping(patient.getNhsno());
+           // utilityDao.deletePatientViewUser(patientUser.getUsername());
         }
 
         utilityDao.deleteUnit(unitCode);

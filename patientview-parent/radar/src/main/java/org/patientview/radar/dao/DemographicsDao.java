@@ -7,7 +7,6 @@ import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
 
 import java.util.List;
-import java.util.Set;
 
 public interface DemographicsDao {
 
@@ -29,7 +28,7 @@ public interface DemographicsDao {
 
     DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
 
-    List<Patient> getDemographicsByUnitCode(Set<String> unitCodes);
+    List<Patient> getDemographicsByUnitCode(List<String> unitCodes);
 
     Patient get(Long id);
 }
