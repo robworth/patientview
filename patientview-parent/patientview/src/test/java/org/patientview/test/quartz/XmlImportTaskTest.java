@@ -7,10 +7,20 @@ import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.patientview.FindXmlFiles;
-import org.patientview.patientview.model.*;
+import org.patientview.patientview.model.Centre;
+import org.patientview.patientview.model.Diagnostic;
+import org.patientview.patientview.model.Letter;
+import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.model.TestResult;
 import org.patientview.quartz.XmlImportTask;
+import org.patientview.quartz.exception.ProcessException;
 import org.patientview.repository.PatientDao;
-import org.patientview.service.*;
+import org.patientview.service.CentreManager;
+import org.patientview.service.DiagnosticManager;
+import org.patientview.service.ImportManager;
+import org.patientview.service.LetterManager;
+import org.patientview.service.MedicineManager;
+import org.patientview.service.TestResultManager;
 import org.patientview.service.ibd.IbdManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,15 +30,18 @@ import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath:test-context.xml"})
+@ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath*:test-context.xml"})
 @Transactional
 public class XmlImportTaskTest {
 
@@ -59,6 +72,9 @@ public class XmlImportTaskTest {
 
     @Inject
     private DiagnosticManager diagnosticManager;
+
+    @Inject
+    private ImportManager importManager;
 
     @Test
     public void testRead() throws Exception {
@@ -112,6 +128,21 @@ public class XmlImportTaskTest {
         List<Medicine> medicines = medicineManager.getAll();
 
         assertEquals("Incorrect number of medicines", 0, medicines.size());
+
+    }
+
+    /**
+     * This test is to create a data exception on the patient record. The exception is the lack of a
+     * nhs no.
+     *
+     * @throws Exception
+     */
+    @Test (expected = ProcessException.class)
+    public void testLoadXmlFileContainingNoNhsNumber() throws ProcessException, IOException {
+
+        File  file = ResourceUtils.getFile("classpath:RENALB_nhsnomissing_TEST111111.gpg.xml");
+
+        importManager.process(file);
 
     }
 

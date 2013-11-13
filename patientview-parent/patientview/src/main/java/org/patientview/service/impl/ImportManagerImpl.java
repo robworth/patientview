@@ -93,20 +93,41 @@ public class ImportManagerImpl implements ImportManager {
         return unitDao.get(unitCode, null);
     }
 
+    private void handleProcessError(File xmlFile, Exception e) {
+        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, e.getMessage());
+        try {
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
+    }
+
     private void handleParserError(File xmlFile, ResultParserException e) {
         createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, EmailUtils.extractErrorsFromException(e));
-        xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+        try {
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
     }
 
     private void handleEmptyFile(File xmlFile) {
         createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, "Empty file");
-        xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
+        try {
+            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
     }
 
     private void handleCorruptNodes(File xmlFile, ResultParser resultParser) {
         createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL,
                 EmailUtils.createCorruptNodeEmailTest(resultParser.getCorruptNodes()));
-        xmlImportUtils.sendCorruptDataEmail(resultParser);
+        try {
+            xmlImportUtils.sendCorruptDataEmail(resultParser);
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
     }
 
 
@@ -130,7 +151,13 @@ public class ImportManagerImpl implements ImportManager {
 
         // If the file parse process otherwise email the corruptions
         if (resultParser.parse()) {
-            String action = processPatientData(resultParser);
+            String action = null;
+            try {
+                action = processPatientData(resultParser);
+            } catch (Exception e) {
+                handleProcessError(xmlFile, e);
+                throw new ProcessException("There has been an error processing the data", e);
+            }
             createLogEntry(xmlFile, action);
         } else {
             handleCorruptNodes(xmlFile, resultParser);
