@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
+import org.patientview.model.Patient;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
@@ -99,10 +100,10 @@ public class XmlImportTaskTest {
         assertEquals("Incorrect number of centres", 1, centres.size());
         assertEquals("Incorrect centre", "RM301", centres.get(0).getCentreCode());
 
-        //List<Patient> patients = patientDao.get("RM301");
+        List<Patient> patients = patientDao.get("RM301");
 
-        // assertEquals("Incorrect number of patients", 1, patients.size());
-        // assertEquals("Incorrect patient", "9876543210", patients.get(0).getNhsno());
+        assertEquals("Incorrect number of patients", 1, patients.size());
+        assertEquals("Incorrect patient", "9876543210", patients.get(0).getNhsno());
 
         List<Letter> letters = letterManager.getAll();
 
