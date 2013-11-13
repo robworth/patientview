@@ -259,9 +259,6 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         return jdbcTemplate.query(sql, new PatientMapper());
     }
 
-    
-
-
     private class PatientMapper implements RowMapper<Patient> {
 
         @Override

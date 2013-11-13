@@ -165,6 +165,7 @@
             <form-property name="haemodialysisunitlocation12" type="java.lang.String"/>
             <form-property name="haemodialysisuniturl12" type="java.lang.String"/>
             <form-property name="sourceType" type="java.lang.String"/>
+            <form-property name="filename" type="java.lang.String"/>
         </form-bean>
         <form-bean name="gpgForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="src" type="java.lang.String"/>
@@ -1006,6 +1007,12 @@
                 name="unitForm"
                 scope="request">
             <forward name="success" path="/control/stats.jsp"/>
+        </action>
+
+        <action path="/control/unitstatfiles/unitStatFileDownLoad"
+                type="org.patientview.patientview.unitstat.UnitStatFileDownLoadAction"
+                name="unitForm"
+                scope="request">
         </action>
 
         <action path="/control/feedbackUnitSelect"

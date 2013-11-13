@@ -97,15 +97,15 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add("SELECT " +
-                "   tbl_Consultants.*, " +
-                "   unit.name AS cName " +
-                "FROM " +
-                "   tbl_Consultants " +
-                "INNER JOIN " +
-                "   unit " +
-                "ON " +
-                "   tbl_Consultants.cCentre = unit.id");
+        sqlQueries.add("SELECT "
+                    + "   tbl_Consultants.*, "
+                    + "   unit.name AS cName "
+                    + "FROM "
+                    + "   tbl_Consultants "
+                    + "INNER JOIN "
+                    + "   unit "
+                    + "ON "
+                    + "   tbl_Consultants.cCentre = unit.id");
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
