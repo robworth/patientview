@@ -20,10 +20,7 @@ public class TestPvDbSchema extends BaseTestPvDbSchema {
 
     @Before
     public void testDbCreate() throws Exception {
-       // super.testDbCreate();
 
-        // populate database with xml
-      //  populateData();
     }
 
     private void populateData() throws Exception {

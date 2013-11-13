@@ -8,7 +8,6 @@ import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserDao {
 
@@ -72,8 +71,6 @@ public interface UserDao {
     void deleteRoleInPatientView(Long userId) throws Exception;
 
     void saveUserMapping(User user) throws Exception;
-
-    Set<String> getUnitCodes(String username);
 
     void deleteUserMapping(User user) throws Exception;
 
