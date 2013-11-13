@@ -26,6 +26,7 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
+import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
@@ -92,20 +93,41 @@ public class ImportManagerImpl implements ImportManager {
         return unitDao.get(unitCode, null);
     }
 
+    private void handleProcessError(File xmlFile, Exception e) {
+        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, e.getMessage());
+        try {
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
+    }
+
     private void handleParserError(File xmlFile, ResultParserException e) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
-        xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, EmailUtils.extractErrorsFromException(e));
+        try {
+            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
     }
 
     private void handleEmptyFile(File xmlFile) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
-        xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
-
+        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, "Empty file");
+        try {
+            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
     }
 
     private void handleCorruptNodes(File xmlFile, ResultParser resultParser) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL);
-        xmlImportUtils.sendCorruptDataEmail(resultParser);
+        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL,
+                EmailUtils.createCorruptNodeEmailTest(resultParser.getCorruptNodes()));
+        try {
+            xmlImportUtils.sendCorruptDataEmail(resultParser);
+        } catch (Exception me) {
+            LOGGER.error("Unable to send email {}", me.getMessage());
+        }
     }
 
 
@@ -129,14 +151,18 @@ public class ImportManagerImpl implements ImportManager {
 
         // If the file parse process otherwise email the corruptions
         if (resultParser.parse()) {
-            String action = processPatientData(resultParser);
+            String action = null;
+            try {
+                action = processPatientData(resultParser);
+            } catch (Exception e) {
+                handleProcessError(xmlFile, e);
+                throw new ProcessException("There has been an error processing the data", e);
+            }
             createLogEntry(xmlFile, action);
         } else {
             handleCorruptNodes(xmlFile, resultParser);
             throw new ProcessException("There are file corruptions");
         }
-
-
     }
 
     private void createUserLog(ResultParser parser) {
@@ -156,7 +182,6 @@ public class ImportManagerImpl implements ImportManager {
         return ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
                 || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
                 || "Suspend".equalsIgnoreCase(parser.getFlag()));
-
     }
 
     private void removePatientFromSystem(ResultParser parser) {
@@ -167,7 +192,7 @@ public class ImportManagerImpl implements ImportManager {
         if (hasPatientLeft(resultParser)) {
             removePatientFromSystem(resultParser);
             return AddLog.PATIENT_DATA_REMOVE;
-        }  else {
+        } else {
             updatePatientDetails(resultParser.getPatient());
             updateCentreDetails(resultParser.getCentre());
             deleteDateRanges(resultParser.getDateRanges());
@@ -306,6 +331,10 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void createLogEntry(File xmlFile, String action) {
+        createLogEntry(xmlFile, action, "");
+    }
+
+    private void createLogEntry(File xmlFile, String action, String extraInfoExplanation) {
         LogEntry logEntry = new LogEntry();
         logEntry.setActor(AddLog.ACTOR_SYSTEM);
         logEntry.setDate(Calendar.getInstance());
@@ -313,7 +342,11 @@ public class ImportManagerImpl implements ImportManager {
         logEntry.setUnitcode(xmlImportUtils.getUnitCode(xmlFile.getName()));
         logEntry.setUser("");
         logEntry.setAction(action);
+        if (null != extraInfoExplanation && !"".equals(extraInfoExplanation)) {
+            logEntry.setExtrainfo(xmlFile.getName() + " : " + extraInfoExplanation);
+        } else {
+            logEntry.setExtrainfo(xmlFile.getName());
+        }
         logEntryManager.save(logEntry);
     }
-
 }

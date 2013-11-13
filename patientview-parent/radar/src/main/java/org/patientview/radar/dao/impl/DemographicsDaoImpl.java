@@ -476,7 +476,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 patient.setGenericDiagnosisModel(genericDiagnosisDao.get(genericDiagnosisId, diseaseGroupId));
             }
 
-            patient.setDateOfGenericDiagnosis(resultSet.getDate("dateOfGenericDiagnosis"));
+            try {
+                Date date = resultSet.getDate("dateOfGenericDiagnosis");
+                patient.setDateOfGenericDiagnosis(date);
+            } catch (SQLException e) {
+                LOGGER.error("Could not parse dateOfGenericDiagnosis {}",
+                e.getMessage());
+            }
+
             if (patient.getDateOfGenericDiagnosis() == null) {
                 patient.setDiagnosisDateSelect(true);
             } else {
