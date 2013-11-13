@@ -38,7 +38,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
     private static final String PATIENT_GROUP = "PATIENT";
-
+    private static final String PATIENT_VIEW_GROUP = "patient";
 
     private EmailManager emailManager;
     private ProviderManager authenticationManager;
@@ -118,23 +118,26 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         PatientUser patientUser = createPatientViewUser(patient);
 
-            // now fill in the radar patient stuff
-            patientUser.setRadarNumber(patient.getId());
-            patientUser.setDateOfBirth(patient.getDob());
+        // now fill in the radar patient stuff
+        patientUser.setRadarNumber(patient.getId());
+        patientUser.setDateOfBirth(patient.getDob());
 
-            // Update the user record created by patient view and create radar patient row and user mapping row
-            userDao.savePatientUser(patientUser);
+        // Update the user record created by patient view and create radar patient row and user mapping row
+        userDao.savePatientUser(patientUser);
+
+        // Create the patient mapping in patient view so patient view knows the user is a patient
+        userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
 
         // Map the Renal Unit
-            if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-                userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                        patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-            }
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
+        }
         // Map the Disease Group
-            if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-                userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                        patient.getNhsno(), patient.getDiseaseGroup().getId());
-            }
+        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
+            userDao.createUserMappingInPatientView(patientUser.getUsername(),
+                    patient.getNhsno(), patient.getDiseaseGroup().getId());
+        }
 
         // Map the Patient Group
         if (!userDao.userExistsInPatientView(patient.getNhsno(), PATIENT_GROUP)) {
@@ -145,7 +148,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         if (generateJoinRequest) {
             createJoinRequest(patient);
-    }
+        }
 
         return patientUser;
 
@@ -389,7 +392,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                 userDao.getPatientUserWithUsername(username + 1) == null) {
             ++i;
         }
-        return username+i;
+        return username + i;
     }
 
     public void setJoinRequestDao(JoinRequestDao joinRequestDao) {
