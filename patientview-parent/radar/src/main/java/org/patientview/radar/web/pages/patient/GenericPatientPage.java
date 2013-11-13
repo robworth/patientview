@@ -13,8 +13,10 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
@@ -35,6 +37,9 @@ public class GenericPatientPage extends BasePage {
 
     private Patient patient;
 
+    @SpringBean
+    private DemographicsManager demographicsManager;
+
     public GenericPatientPage(){
         init(new Patient());
     }
@@ -43,6 +48,12 @@ public class GenericPatientPage extends BasePage {
         // this constructor is used when adding a new patient
         init(patient);
         // set the nhs id or chi id based on model
+    }
+
+    public GenericPatientPage(PageParameters pageParameters) {
+        // this constructor is used when a patient exists
+        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
+        init(patient);
     }
 
 
