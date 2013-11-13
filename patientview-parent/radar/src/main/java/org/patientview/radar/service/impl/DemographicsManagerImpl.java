@@ -11,7 +11,6 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 
 import java.util.List;
-import java.util.Set;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
@@ -62,7 +61,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
     }
 
     public List<Patient> getDemographicsByUnitAdmin(User user) {
-        Set<String> unitCodes = userDao.getUnitCodes(user.getUsername());
+        List<String> unitCodes = userDao.getUnitCodes(user);
         return demographicsDao.getDemographicsByUnitCode(unitCodes);
     }
 

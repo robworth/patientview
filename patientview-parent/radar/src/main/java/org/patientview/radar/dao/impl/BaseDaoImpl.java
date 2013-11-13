@@ -1,5 +1,6 @@
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +162,35 @@ public abstract class BaseDaoImpl {
         return "";
     }
 
+    /**
+     * Build a list of values for use in an IN clause in SQL
+     *
+     * @param values
+     * @return
+     */
+    public String buildValueList(Collection<String> values) {
+        StringBuilder result = new StringBuilder();
+        boolean firstValue = true;
+        if (CollectionUtils.isNotEmpty(values)) {
+
+            for (String s : values) {
+
+                if (firstValue) {
+                    firstValue = false;
+                } else {
+                    result.append(",");
+                }
+
+                result.append("'");
+                result.append(s);
+                result.append("'");
+
+            }
+        }
+
+        return result.toString();
+    }
+
     public String buildWhereQuery(Map<String, String> searchMap, boolean and, List<Object> paramList) {
         return buildWhereQuery(true, searchMap, and, paramList);
     }
@@ -237,3 +268,4 @@ public abstract class BaseDaoImpl {
         return newSearchMap;
     }
 }
+

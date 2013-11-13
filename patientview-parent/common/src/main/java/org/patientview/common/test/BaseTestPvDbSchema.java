@@ -108,6 +108,10 @@ public class BaseTestPvDbSchema {
         }
     }
 
+    protected  void emptyDatabase() throws Exception {
+        emptyDatabase(dataSource.getConnection());
+    }
+
     protected void emptyDatabase(Connection connection) throws Exception {
         LOGGER.info("Emptying database");
 
@@ -120,7 +124,7 @@ public class BaseTestPvDbSchema {
 
         while (resultSet.next()) {
             String tableName =  resultSet.getString(1);
-            dropStatement.execute("DROP table " + tableName);
+            dropStatement.execute("TRUNCATE table " + tableName);
         }
 
         dropStatement.execute("SET FOREIGN_KEY_CHECKS = 1;");

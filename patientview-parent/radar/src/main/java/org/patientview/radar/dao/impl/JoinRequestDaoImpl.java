@@ -44,23 +44,23 @@ public class JoinRequestDaoImpl extends BaseDaoImpl implements JoinRequestDao {
 
             };
         };
-            if (joinRequest.hasValidId()) {
-                joinRequestParameters.put("id", joinRequest.getId());
-                namedParameterJdbcTemplate.update("UPDATE pv_patientjoin_request "
-                        + "SET "
-                        + "firstname = :firstname, "
-                        + "lastname = :lastname, "
-                        + "dateOfBirth = :dateOfBirth, "
-                        + "email = :email, "
-                        + "unitcode = :unitcode, "
-                        + "nhsNo = :nhsNo, "
-                        + "dateOfRequest = :dateOfRequest "
-                        +  " WHERE labID = :labID; ", joinRequestParameters);
+        if (joinRequest.hasValidId()) {
+            joinRequestParameters.put("id", joinRequest.getId());
+            namedParameterJdbcTemplate.update("UPDATE pv_patientjoin_request "
+                    + "SET "
+                    + "firstname = :firstname, "
+                    + "lastname = :lastname, "
+                    + "dateOfBirth = :dateOfBirth, "
+                    + "email = :email, "
+                    + "unitcode = :unitcode, "
+                    + "nhsNo = :nhsNo, "
+                    + "dateOfRequest = :dateOfRequest "
+                    +  " WHERE labID = :labID; ", joinRequestParameters);
 
 
-            }    else {
-                Number id = patientJoinInsert.executeAndReturnKey(joinRequestParameters);
-                joinRequest.setId(id.longValue());
-            }
+        }    else {
+            Number id = patientJoinInsert.executeAndReturnKey(joinRequestParameters);
+            joinRequest.setId(id.longValue());
         }
     }
+}
