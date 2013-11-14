@@ -1,7 +1,6 @@
 package org.patientview.radar.test.roles.unitadmin;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -153,16 +152,6 @@ public class UnitAdminTests extends TestPvDbSchema {
         Assert.assertTrue("There should be the correct number of people returned for the mappings",
                 patientInUnit.size() == (renalPatientCount + diseasePatientCount) );
     }
-
-    @After
-    public void  tearDown() throws Exception {
-        System.out.println("Clearing down test data");
-        this.clearData();
-
-    }
-
-
-
 
     private boolean containsUnitCode(List<String> unitCodes, String unitCode) {
 
