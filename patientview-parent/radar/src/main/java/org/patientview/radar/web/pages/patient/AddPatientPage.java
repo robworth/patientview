@@ -100,10 +100,11 @@ public class AddPatientPage extends BasePage {
 
                 }
                 // TODO but this back in at some point
-                //else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
-                    // check that this nhsno does not already exist in the radar system
-                //   error("A patient with this NHS or CHI number already exists");
-               // }
+                //
+//                else if (demographicsManager.getDemographics(demographicsFilter).size() > 0) {
+//                   // check that this nhsno does not already exist in the radar system
+//                   error("A patient with this NHS or CHI number already exists");
+//               }
 
                 if (!hasError()) {
 
