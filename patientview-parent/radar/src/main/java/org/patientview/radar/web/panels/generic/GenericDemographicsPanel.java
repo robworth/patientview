@@ -134,7 +134,6 @@ public class GenericDemographicsPanel extends Panel {
 
                 patient.setGeneric(true);
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
-                //demographicsManager.saveDemographics(patient);
 
                 try {
                     userManager.registerPatient(patient);
@@ -435,7 +434,7 @@ public class GenericDemographicsPanel extends Panel {
             }
             renalUnit = new CentreDropDown("renalUnit", centres);
 
-        }else {
+        } else {
             List<Centre> centres = new ArrayList<Centre>();
             centres.add(form.getModelObject().getRenalUnit());
 

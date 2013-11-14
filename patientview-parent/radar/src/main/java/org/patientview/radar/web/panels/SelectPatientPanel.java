@@ -135,7 +135,7 @@ public class SelectPatientPanel extends Panel {
 
         return form;
 
-    }
+            }
 
     private Form createCreateForm() {
 

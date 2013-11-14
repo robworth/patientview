@@ -13,8 +13,10 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.panels.GeneticsPanel;
@@ -47,6 +49,8 @@ public class HNF1BPatientPage extends BasePage {
 
     protected static final String PARAM_ID = "id";
 
+    @SpringBean
+    private DemographicsManager demographicsManager;
 
     private Patient patient;
     private MarkupContainer linksContainer;
@@ -64,6 +68,12 @@ public class HNF1BPatientPage extends BasePage {
     }
 
     public HNF1BPatientPage(Patient patient) {
+        init(patient);
+    }
+
+    public HNF1BPatientPage(PageParameters pageParameters) {
+        // this constructor is used when a patient exists
+        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
         init(patient);
     }
 

@@ -148,6 +148,10 @@ public class BaseTestPvDbSchema {
         dropStatement.close();
     }
 
+    protected void clearData() throws Exception {
+        clearData(dataSource.getConnection());
+    }
+
     protected void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
         LOGGER.info("Starting create tables");
 

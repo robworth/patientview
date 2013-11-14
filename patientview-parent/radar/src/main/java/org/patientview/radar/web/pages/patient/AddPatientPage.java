@@ -108,11 +108,13 @@ public class AddPatientPage extends BasePage {
                 if (!hasError()) {
 
                     if (userManager.userExistsInPatientView(model.getPatientId())) {
-                        selectPatientPanel.setPatientModel(model);
                         patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
-                        selectPatientPanel.setVisible(true);
-                        setResponsePage(this.getPage());
                     }
+
+                    selectPatientPanel.setPatientModel(model);
+                    selectPatientPanel.setVisible(true);
+                    setResponsePage(this.getPage());
+
                 }
             }
         };
@@ -170,11 +172,11 @@ public class AddPatientPage extends BasePage {
 
         guidanceContainer.add(
                 new ExternalLink("consentFormsAndDiseaseGroupsCriteriaLink",
-                        "http://rarerenal.org/join/criteria-and-consent/"));
+                        "http://www.rarerenal.org/join/criteria-and-consent/"));
 
         guidanceContainer.add(
                 new ExternalLink("enrollingAPatientGuideLink", "http://rarerenal.org/radar-registry/" +
-                        "radar-recruitment-guide/"));
+                        "radar-registry-background-information/radar-recruitment-guide/"));
 
         // add the components
         form.add(id, idType, diseaseGroup, submit, feedbackPanel, guidanceContainer, selectPatientPanel);
