@@ -2,6 +2,7 @@ package org.patientview.common.test;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -148,7 +149,8 @@ public class BaseTestPvDbSchema {
         dropStatement.close();
     }
 
-    protected void clearData() throws Exception {
+    @After
+    public void clearData() throws Exception {
         clearData(dataSource.getConnection());
     }
 
