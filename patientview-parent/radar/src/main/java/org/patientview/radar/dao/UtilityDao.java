@@ -62,6 +62,8 @@ public interface UtilityDao {
 
     String getUserName(String nhsNo);
 
+    boolean isGroupAdmin(String username);
+
     String getUserName(Long id);
 
     Centre getRenalUnitCentre(String nhsNo);
