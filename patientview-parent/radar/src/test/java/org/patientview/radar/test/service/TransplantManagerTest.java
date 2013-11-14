@@ -1,25 +1,37 @@
 package org.patientview.radar.test.service;
 
+import org.junit.Before;
 import org.patientview.radar.model.Transplant;
 import org.patientview.radar.model.exception.InvalidModelException;
 import org.patientview.radar.service.TransplantManager;
+import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.test.TestPvDbSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context.xml"})
 public class TransplantManagerTest extends TestPvDbSchema {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     @Autowired
     private TransplantManager transplantManager;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() {
+        testDataHelper.createTransplant();
+        testDataHelper.createTransplantReject();
+    }
 
     @Test
     public void testSaveTransplantValidatoin() throws Exception{

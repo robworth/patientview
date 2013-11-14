@@ -1,11 +1,15 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.radar.dao.TreatmentDao;
 import org.patientview.radar.model.Treatment;
 import org.patientview.radar.model.TreatmentModality;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +20,14 @@ public class TreatmentDaoTest extends BaseDaoTest {
 
     @Autowired
     private TreatmentDao treatmentDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() {
+        testDataHelper.createRRTTreatment();
+    }
 
     @Test
     public void testSaveTreatment() throws Exception {
@@ -63,6 +75,7 @@ public class TreatmentDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetTreatmentModalities() throws Exception {
+        testDataHelper.createRRTModality();
         List<TreatmentModality> treatmentModalities = treatmentDao.getTreatmentModalities();
         assertNotNull("List was null", treatmentModalities);
         assertEquals("Wrong size", 15, treatmentModalities.size());

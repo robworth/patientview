@@ -1,5 +1,7 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.radar.dao.IssueDao;
 import org.patientview.radar.model.Issue;
 import org.patientview.radar.model.enums.IssuePriority;
@@ -7,10 +9,12 @@ import org.patientview.radar.model.enums.IssueStatus;
 import org.patientview.radar.model.enums.IssueType;
 import org.patientview.radar.model.filter.IssueFilter;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -21,10 +25,20 @@ public class IssueDaoTest extends BaseDaoTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IssueDaoTest.class);
 
+    @Inject
+    private TestDataHelper testDataHelper;
+
     @Autowired
     private IssueDao issueDao;
 
-        @Test
+
+
+    @Before
+    public void setUp() {
+        testDataHelper.createIssue();
+    }
+
+    @Test
     public void testGetIssue() {
         Issue issue = issueDao.getIssue(1L);
         assertNotNull(issue);

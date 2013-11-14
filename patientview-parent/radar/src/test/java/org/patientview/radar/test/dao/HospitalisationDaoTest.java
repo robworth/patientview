@@ -1,10 +1,13 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Ignore;
 import org.patientview.radar.dao.HospitalisationDao;
 import org.patientview.radar.model.Hospitalisation;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +18,9 @@ public class HospitalisationDaoTest extends BaseDaoTest {
 
     @Autowired
     private HospitalisationDao hospitalisationDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     @Test
     public void testSaveHospitilisation() throws Exception {
@@ -31,8 +37,8 @@ public class HospitalisationDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetHospitalisation() throws Exception {
-        createHospitalisation();
+    public void testGetHospitalisation() {
+        testDataHelper.createHospitalisation();
         Hospitalisation hospitalisation = hospitalisationDao.getHospitalisation(3L);
         assertNotNull("Hospitalisation was null", hospitalisation);
         assertEquals("Wrong ID", new Long(3), hospitalisation.getId());
@@ -45,8 +51,8 @@ public class HospitalisationDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetHospitalisationByRadarNumber() throws Exception {
-        createHospitalisation();
+    public void testGetHospitalisationByRadarNumber() {
+        testDataHelper.createHospitalisation();
         List<Hospitalisation> hospitalisations = hospitalisationDao.getHospitalisationsByRadarNumber(250L);
         assertNotNull("Hospitalisations list was null");
         assertEquals("Wrong size", 1, hospitalisations.size());

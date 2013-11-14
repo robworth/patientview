@@ -1,10 +1,13 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Ignore;
 import org.patientview.radar.dao.TherapyDao;
 import org.patientview.radar.model.sequenced.Therapy;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -14,6 +17,9 @@ public class TherapyDaoTest extends BaseDaoTest {
 
     @Autowired
     private TherapyDao therapyDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     @Test
     public void testSaveTherapy() throws Exception {
@@ -30,8 +36,8 @@ public class TherapyDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetTherapy() throws Exception {
-        createTherapy();
+    public void testGetTherapy() {
+        testDataHelper.createTherapy();
         Therapy therapy = therapyDao.getTherapy(6L);
         assertNotNull("Therapy object was null", therapy);
     }
@@ -43,8 +49,8 @@ public class TherapyDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetTherapyByRadarNumber() throws Exception {
-        createTherapy();
+    public void testGetTherapyByRadarNumber() {
+        testDataHelper.createTherapy();
         List<Therapy> therapy = therapyDao.getTherapyByRadarNumber(6L);
         assertNotNull("Therapy object was null", therapy);
     }

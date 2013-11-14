@@ -1,6 +1,7 @@
 package org.patientview.radar.test.dao;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.model.Centre;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
@@ -15,7 +16,6 @@ import org.patientview.radar.model.*;
 import org.patientview.radar.model.filter.ConsultantFilter;
 import org.junit.Test;
 import org.patientview.radar.test.TestDataHelper;
-import org.patientview.radar.test.roles.unitadmin.RoleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
@@ -41,19 +41,22 @@ public class UtilityDaoTest extends BaseDaoTest {
     @Autowired
     private DemographicsDao demographicDao;
 
+    @Inject
+    private TestDataHelper testDataHelper;
+
     private DiseaseGroup diseaseGroup;
 
     private Centre centre;
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         centre = new Centre();
         centre.setUnitCode("testCodeA");
-        createUnit();
-        createCountryData();
-        createConsultant();
-        createDiagCode();
+        testDataHelper.createUnit();
+        testDataHelper.createCountryData();
+        testDataHelper.createConsultant();
+        testDataHelper.createDiagCode();
     }
 
     @Test

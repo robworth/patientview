@@ -15,8 +15,10 @@ import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +46,9 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     private Centre centre;
 
+    @Inject
+    private TestDataHelper testDataHelper;
+
     @Before
     public void setUp() {
         diseaseGroup = new DiseaseGroup();
@@ -53,6 +58,10 @@ public class DemographicDaoTest extends BaseDaoTest {
 
         centre = new Centre();
         centre.setUnitCode("testCodeA");
+
+        testDataHelper.createDiagCode();
+        testDataHelper.createUnit();
+        testDataHelper.createConsultant();
     }
 
     @Test
@@ -150,6 +159,7 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetSexes() throws Exception {
+        testDataHelper.createSex();
         List<Sex> sexes = demographicDao.getSexes();
         assertNotNull("Sexes was null", sexes);
         assertEquals("Wrong size", 3, sexes.size());
@@ -157,12 +167,14 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetStatusUnknown() throws Exception {
+        testDataHelper.createSex();
         Status status = demographicDao.getStatus(23232L);
         assertNull("Status not null for unknown", status);
     }
 
     @Test
     public void testGetStatuses() throws Exception {
+        testDataHelper.createStatus();
         List<Status> statuses = demographicDao.getStatuses();
         assertNotNull("Statuses was null", statuses);
         assertEquals("Wrong size", 6, statuses.size());
