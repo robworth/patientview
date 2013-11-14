@@ -88,5 +88,6 @@ public interface UserManager {
 
     String generateUsername(Patient patient);
 
+    boolean hasPatientRadarMapping(String nhsNo);
 
 }
