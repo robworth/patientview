@@ -94,6 +94,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private UtilityDao utilityDao;
 
+
+
     @Override
     public void setDataSource(DataSource dataSource) {
         super.setDataSource(dataSource);
@@ -249,17 +251,26 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     public ProfessionalUser getProfessionalUserWithUsername(String username) {
+
+        ProfessionalUser professionalUser = null;
+
         try {
-            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
-                    + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
-                    PROFESSIONAL_USER_ID_FIELD_NAME,
-                    true),
-                    new Object[]{username, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
+            professionalUser = jdbcTemplate
+                    .queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
+                            + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
+                            PROFESSIONAL_USER_ID_FIELD_NAME,
+                            true),
+                            new Object[]{username, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not professional user with " + USER_USERNAME_FIELD_NAME + " {}", username);
         }
 
-        return null;
+        if (professionalUser != null) {
+            professionalUser.setGroupAdmin(utilityDao.isGroupAdmin(username));
+        }
+
+
+        return professionalUser;
     }
 
     public User getSuperUserWithUsername(String username) {
@@ -835,6 +846,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             if (centreId != null && centreId > 0) {
                 professionalUser.setCentre(utilityDao.getCentre(centreId));
             }
+
+
 
             return professionalUser;
         }

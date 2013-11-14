@@ -1,15 +1,15 @@
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -220,6 +220,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         return patientCountMap;
     }
 
+    // todo
     public int getPatientCountByUnit(Centre centre) {
         try {
             return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
@@ -388,6 +389,29 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                         "WHERE u.username = um.username " +
                         "AND um.nhsno = ? " +
                         "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+    }
+
+    // Does the username have any mappings to any renal units.
+    public boolean isGroupAdmin(String username) {
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT  DISTINCT 1 ");
+        query.append("FROM    unit unt ");
+        query.append(",       usermapping map ");
+        query.append("WHERE   map.unitcode = unt.unitcode  ");
+        query.append("AND     map.username = '");
+        query.append(username);
+        query.append("' ");
+        query.append("AND     unt.sourceType = 'renalunit' ");
+
+        try {
+            jdbcTemplate.queryForObject(query.toString(), Integer.class);
+        } catch (EmptyResultDataAccessException ee) {
+            return true;
+        }
+
+        return false;
+
     }
 
     public String getUserName(Long id) {
