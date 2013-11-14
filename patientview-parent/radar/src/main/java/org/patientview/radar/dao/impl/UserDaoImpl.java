@@ -584,6 +584,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return jdbcTemplate.queryForInt(sql, nhsno, unitcode) > 0;
     }
 
+    public boolean hasPatientRadarMappings(String nhsNo) {
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT COUNT(1) ");
+        query.append("FROM   usermapping mp ");
+        query.append(",      unit un ");
+        query.append("WHERE  un.unitcode = mp.unitcode ");
+        query.append("AND    mp.nhsno = '");
+        query.append(nhsNo);
+        query.append("' ");
+        query.append("AND    un.sourceType = 'radargroup' ");
+        return jdbcTemplate.queryForInt(query.toString()) > 0;
+
+    }
+
     public void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                       String rpvRole) throws Exception {
         createUserMappingInPatientView(username, nhsno, unitcode);

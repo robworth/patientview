@@ -395,6 +395,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return username + i;
     }
 
+    public boolean hasPatientRadarMapping(String nhsNo) {
+        return userDao.hasPatientRadarMappings(nhsNo);
+    }
+
     public void setJoinRequestDao(JoinRequestDao joinRequestDao) {
         this.joinRequestDao = joinRequestDao;
     }

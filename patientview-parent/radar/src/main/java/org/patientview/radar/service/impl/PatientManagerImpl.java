@@ -25,4 +25,5 @@ public class PatientManagerImpl implements PatientManager {
     public void setPatientDao(PatientDao patientDao) {
         this.patientDao = patientDao;
     }
+
 }
