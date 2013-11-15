@@ -55,6 +55,10 @@
         <property name="patientDao" ref="patientDao"/>
     </bean>
 
+    <bean id="patientLinkManager" class="org.patientview.radar.service.impl.PatientLinkManagerImpl">
+        <property name="patientLinkDao" ref="patientLinkDao"/>
+    </bean>
+
     <bean id="pathologyManager" class="org.patientview.radar.service.impl.PathologyManagerImpl">
         <property name="pathologyDao" ref="pathologyDao"/>
     </bean>

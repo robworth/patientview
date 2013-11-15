@@ -5,6 +5,7 @@ import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.DemographicsManager;
@@ -34,6 +35,9 @@ public class UserManagerTest extends TestPvDbSchema {
     private DemographicsManager demographicsManager;
 
     private DiseaseGroup diseaseGroup;
+
+    @Autowired
+    private PatientLinkDao patientLinkDao;
 
     private Centre centre;
 

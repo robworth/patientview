@@ -4,6 +4,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.JoinRequestDao;
+import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.JoinRequest;
 import org.patientview.radar.model.exception.DaoException;
@@ -46,6 +47,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private UserDao userDao;
     private JoinRequestDao joinRequestDao;
     private DemographicsDao demographicsDao;
+    private PatientLinkDao patientLinkDao;
 
 
     public AdminUser getAdminUser(String email) {
@@ -108,8 +110,13 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public PatientUser registerPatient(Patient patient) throws Exception {
 
         boolean generateJoinRequest = false;
+        String originalNhsNo = patient.getNhsno();
+        String originalUnitCode = patient.getRenalUnit().getUnitCode();
+
         if (!patient.hasValidId()) {
             generateJoinRequest = true;
+            // Invalidate the Id because we need the DAO to create a new record
+            patient.setId(0L);
         }
 
         demographicsDao.saveDemographics(patient);
