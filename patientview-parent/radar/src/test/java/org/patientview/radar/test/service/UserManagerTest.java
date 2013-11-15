@@ -9,19 +9,21 @@ import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.test.TestPvDbSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.inject.Inject;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context.xml"})
 public class UserManagerTest extends TestPvDbSchema {
 
     @Autowired
@@ -36,6 +38,9 @@ public class UserManagerTest extends TestPvDbSchema {
     private DiseaseGroup diseaseGroup;
 
     private Centre centre;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     @Before
     public void setUp() {
@@ -70,7 +75,7 @@ public class UserManagerTest extends TestPvDbSchema {
      */
     @Test
     public void testPatientUserRegistration() throws Exception {
-
+        testDataHelper.createSpecialty();
         // create a user row as per patient view
         PatientUser patientUser = new PatientUser();
         patientUser.setName("my user");

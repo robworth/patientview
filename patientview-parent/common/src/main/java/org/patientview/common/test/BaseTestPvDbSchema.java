@@ -151,7 +151,16 @@ public class BaseTestPvDbSchema {
 
     @After
     public void clearData() throws Exception {
-        clearData(dataSource.getConnection());
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            clearData(connection);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
     }
 
     protected void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
