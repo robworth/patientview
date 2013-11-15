@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -671,11 +672,12 @@ public class TestDataHelper {
         jdbcTemplate.execute(sb.toString());
     }
 
-    public void saveTransplant(final long id, final long radarNo) {
+    public void saveTransplant(final long id, final long radarNo, final Date date) {
         Map<String, Object> therapMap = new HashMap<String, Object>() {
             {
                 put("trID", id);
                 put("RADAR_NO", radarNo);
+                put("DATE_TRANSPLANT", date);
             }
         };
         simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("tbl_Transplant");
@@ -683,8 +685,13 @@ public class TestDataHelper {
     }
 
     public void createTransplant() {
-        saveTransplant(2l, 219l);
-        saveTransplant(4l, 219l);
+        try {
+            saveTransplant(2l, 219l, sdf.parse("2009-09-21 00:00:00"));
+            saveTransplant(4l, 219l, null);
+        } catch (Exception e) {
+            LOGGER.debug("error create test data to tbl_Transplant table : " + e.getMessage());
+        }
+
     }
 
     public void saveTransplantModality(final long id, final String desc) {

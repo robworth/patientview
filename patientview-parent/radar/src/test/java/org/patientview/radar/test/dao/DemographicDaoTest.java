@@ -18,6 +18,7 @@ import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
