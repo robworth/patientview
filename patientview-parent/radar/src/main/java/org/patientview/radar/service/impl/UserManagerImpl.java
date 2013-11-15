@@ -4,7 +4,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.JoinRequestDao;
-import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.JoinRequest;
 import org.patientview.radar.model.exception.DaoException;
@@ -20,6 +19,7 @@ import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.EmailManager;
+import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private UserDao userDao;
     private JoinRequestDao joinRequestDao;
     private DemographicsDao demographicsDao;
-    private PatientLinkDao patientLinkDao;
+    private PatientLinkManager patientLinkManager;
 
 
     public AdminUser getAdminUser(String email) {
@@ -110,20 +110,18 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public PatientUser registerPatient(Patient patient) throws Exception {
 
         boolean generateJoinRequest = false;
-        String originalNhsNo = patient.getNhsno();
-        String originalUnitCode = patient.getRenalUnit().getUnitCode();
 
         if (!patient.hasValidId()) {
             generateJoinRequest = true;
-            // Invalidate the Id because we need the DAO to create a new record
-            patient.setId(0L);
+            demographicsDao.saveDemographics(patient);
+        } else {
+            patientLinkManager.linkPatientRecord(patient);
         }
-
-        demographicsDao.saveDemographics(patient);
 
         validatePatient(patient);
 
-        PatientUser patientUser = createPatientViewUser(patient);
+        // Create the user record
+        PatientUser patientUser = createUser(patient);
 
         // now fill in the radar patient stuff
         patientUser.setRadarNumber(patient.getId());
@@ -161,6 +159,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     }
 
+
     private void createJoinRequest(Patient patient) {
         // Now create a join request for the new user
         JoinRequest joinRequest = new JoinRequest();
@@ -195,7 +194,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     }
 
-    private PatientUser createPatientViewUser(Patient patient) {
+    private PatientUser createUser(Patient patient) {
 
         PatientUser patientUser = userDao.getPatientViewUser(patient.getNhsno());
 
@@ -209,7 +208,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             patientUser.setPassword(generateRandomPassword());
             patientUser.setEmail(patient.getEmailAddress());
 
-            patientUser = userDao.createPatientViewUser(patientUser);
+            patientUser = (PatientUser) userDao.createUser(patientUser);
         }
 
         return patientUser;
@@ -412,6 +411,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
+    }
+
+    public void setPatientLinkManager(PatientLinkManager patientLinkManager) {
+        this.patientLinkManager = patientLinkManager;
     }
 }
 

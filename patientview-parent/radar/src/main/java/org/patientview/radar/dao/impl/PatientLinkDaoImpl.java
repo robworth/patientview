@@ -31,7 +31,7 @@ public class PatientLinkDaoImpl extends BaseDaoImpl implements PatientLinkDao {
 
         // Initialise a simple JDBC insert to be able to get the allocated ID
         linkInsert = new SimpleJdbcInsert(dataSource).withTableName("rdr_patient_linkage")
-                .usingGeneratedKeyColumns("id").usingColumns("source_nhsno", "source_unitcode", "dest_nshno",
+                .usingGeneratedKeyColumns("id").usingColumns("source_nhsno", "source_unitcode", "dest_nhsno",
                         "dest_unitcode");
     }
 
@@ -41,8 +41,8 @@ public class PatientLinkDaoImpl extends BaseDaoImpl implements PatientLinkDao {
             {
                 put("source_nhsno", patientLink.getSourceNhsNO());
                 put("source_unitcode", patientLink.getSourceUnit());
-                put("dest_nshno", patientLink.getDestinationNhsNo());
-                put("dest_unitcode", patientLink.destinationUnit);
+                put("dest_nhsno", patientLink.getDestinationNhsNo());
+                put("dest_unitcode", patientLink.getDestinationUnit());
 
             }
         };

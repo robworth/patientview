@@ -81,7 +81,7 @@ public class UserManagerTest extends TestPvDbSchema {
         patientUser.setUsername("testusername");
         patientUser.setEmail("test@test.com");
         patientUser.setPassword("passwordhash");
-        userDao.createPatientViewUser(patientUser);
+        userDao.createUser(patientUser);
 
         // create a demographic
         Date dob = new Date();

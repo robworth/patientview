@@ -88,7 +88,7 @@ public class RoleHelper {
         patientUser.setName("Test User");
         patientUser.setPassword("HasPassword");
 
-        return userDao.createPatientViewUser(patientUser);
+        return (PatientUser) userDao.createUser(patientUser);
 
     }
 

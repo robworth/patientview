@@ -1,5 +1,6 @@
 package org.patientview.radar.service;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.model.PatientLink;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface PatientLinkManager {
     PatientLink createLink(PatientLink patientLink);
 
     List<PatientLink> getPatientLink(String nhsNo, String unitCode);
+
+    Patient linkPatientRecord(Patient patient) throws Exception;
 
 }

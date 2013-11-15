@@ -10,10 +10,10 @@ package org.patientview.radar.model;
  */
 public class PatientLink extends BaseModel {
 
-    public String sourceNhsNO;
-    public String sourceUnit;
-    public String destinationNhsNo;
-    public String destinationUnit;
+    private String sourceNhsNO;
+    private String sourceUnit;
+    private String destinationNhsNo;
+    private String destinationUnit;
 
     public String getSourceNhsNO() {
         return sourceNhsNO;

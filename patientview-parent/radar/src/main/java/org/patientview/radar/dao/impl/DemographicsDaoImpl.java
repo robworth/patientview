@@ -156,7 +156,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("rrNo", patient.getRrNo());
                     put("dateReg", patient.getDateReg());
                     put("nhsno", patient.getNhsno());
-                    put("nhsNoType", patient.getNhsNumberType().getId());
+                    put("nhsNoType", patient.getNhsNumberType() != null ? patient.getNhsNumberType().getId() : null);
                     put("hospitalnumber", patient.getHospitalnumber());
                     put("uktNo", patient.getUktNo());
                     put("surname", patient.getSurname());
@@ -179,7 +179,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("dateBapnReg", null); // Todo: Fix
                     put("consNeph", patient.getClinician() != null ? patient.getClinician().getId()
                             : null);
-                    put("unitcode", patient.getDiseaseGroup() != null ? patient.getDiseaseGroup().getId() : null);
+                    put("unitcode", patient.getUnitcode());
 //                    put("RENAL_UNIT_2", patient.getRenalUnitAuthorised() != null ?
 //                            patient.getRenalUnitAuthorised().getId() : null);
                     put("STATUS", patient.getStatusModel() != null ? patient.getStatusModel().getId() : null);

@@ -426,18 +426,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
-    public PatientUser createPatientViewUser(PatientUser patientUser) {
+    public User createUser(User user) {
         Map<String, Object> userMap = new HashMap<String, Object>();
-        userMap.put(USER_USERNAME_FIELD_NAME, patientUser.getUsername());
-        userMap.put(USER_PASSWORD_FIELD_NAME, patientUser.getPassword());
-        userMap.put(USER_NAME_FIELD_NAME, patientUser.getName());
-        userMap.put(USER_EMAIL_FIELD_NAME, patientUser.getEmail());
+        userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
+        userMap.put(USER_PASSWORD_FIELD_NAME, user.getPassword());
+        userMap.put(USER_NAME_FIELD_NAME, user.getName());
+        userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, true);
 
         Number id = userInsert.executeAndReturnKey(userMap);
-        patientUser.setId(id.longValue());
-        return patientUser;
+        user.setId(id.longValue());
+        return user;
 
     }
 
