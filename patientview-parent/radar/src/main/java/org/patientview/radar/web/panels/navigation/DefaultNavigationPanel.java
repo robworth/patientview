@@ -3,6 +3,7 @@ package org.patientview.radar.web.panels.navigation;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.pages.ProfessionalsPage;
@@ -27,10 +28,11 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
         // Enter new patient - only visible when a professional is logged in
         BookmarkablePageLink enterNewPatientPageLink =
                 new BookmarkablePageLink<SrnsPatientPage>("enterNewPatientPageLink", AddPatientPage.class);
-        enterNewPatientPageLink.setVisible(isProfessionalOrSuperUserLoggedIn());
+        enterNewPatientPageLink.setVisible(isProfessionalOrSuperUserLoggedIn() && !isGroupAdmin());
         add(enterNewPatientPageLink);
 
         // Container for existing patients links, only visible when a professional is logged in
+        // If they are a group admin then they do not have a renal unit and should not add patients
         MarkupContainer existingPatientsContainer = new WebMarkupContainer("existingPatientsContainer");
         existingPatientsContainer.setVisible(isProfessionalOrSuperUserLoggedIn());
         existingPatientsContainer.add(
@@ -71,5 +73,13 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
     protected boolean isPatientUserLoggedIn() {
         RadarSecuredSession session = RadarSecuredSession.get();
         return session.isSignedIn() ? session.getRoles().hasRole(User.ROLE_PATIENT) : false;
+    }
+    protected boolean isGroupAdmin() {
+        RadarSecuredSession session = RadarSecuredSession.get();
+        User user = session.getUser();
+        if (user instanceof ProfessionalUser) {
+            return ((ProfessionalUser) user).isGroupAdmin();
+        }
+        return false;
     }
 }

@@ -59,6 +59,8 @@ public interface UserDao {
 
     boolean userExistsInPatientView(String nhsno);
 
+    boolean hasPatientRadarMappings(String nhsNo);
+
     void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                String rpvRole) throws Exception;
 
