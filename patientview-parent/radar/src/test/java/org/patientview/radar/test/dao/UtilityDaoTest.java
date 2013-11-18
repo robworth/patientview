@@ -235,7 +235,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         userDao.createUserMappingInPatientView("testuser", "9876543210", "PATIENT");
         userDao.createUserMappingInPatientView("testuser-GP", "9876543210", "6");
 
-        Centre centre1 = utilityDao.getRenalUnitCentre("9876543210");
+        Centre centre1 = utilityDao.getRenalUnitCentre("9876543210").get(0);
 
         assertNotNull("Could not get the unit", centre1);
         assertEquals("Get the wrong unit", "5", centre1.getUnitCode());

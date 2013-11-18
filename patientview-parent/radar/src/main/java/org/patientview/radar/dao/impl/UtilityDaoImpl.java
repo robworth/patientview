@@ -359,10 +359,10 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
     }
 
-    public Centre getRenalUnitCentre(String nhsNo) {
+    public List<Centre> getRenalUnitCentre(String nhsNo) {
         try {
             return jdbcTemplate
-                    .queryForObject("SELECT * FROM usermapping um LEFT OUTER JOIN unit u ON um.unitcode = u.unitcode " +
+                    .query("SELECT * FROM usermapping um LEFT OUTER JOIN unit u ON um.unitcode = u.unitcode " +
                             "WHERE um.nhsno = ? " +
                             "  AND um.username NOT LIKE '%-GP%' " +
                             "  AND um.unitcode != 'PATIENT' " +

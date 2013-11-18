@@ -66,7 +66,7 @@ public interface UtilityDao {
 
     String getUserName(Long id);
 
-    Centre getRenalUnitCentre(String nhsNo);
+    List<Centre> getRenalUnitCentre(String nhsNo);
 
     void deletePatient(String nshNo);
 

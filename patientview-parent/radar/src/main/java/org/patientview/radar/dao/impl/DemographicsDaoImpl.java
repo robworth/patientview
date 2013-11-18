@@ -423,7 +423,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             // Set the centre if we have an ID
             String nhsno = resultSet.getString("nhsno");
             if (nhsno != null) {
-                patient.setRenalUnit(utilityDao.getRenalUnitCentre(nhsno));
+                //TODO Fix this
+                patient.setRenalUnit(utilityDao.getRenalUnitCentre(nhsno).get(0));
             }
 
             // Set status
