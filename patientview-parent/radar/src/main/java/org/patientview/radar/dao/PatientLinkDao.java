@@ -1,6 +1,6 @@
 package org.patientview.radar.dao;
 
-import org.patientview.radar.model.PatientLink;
+import org.patientview.model.PatientLink;
 
 /**
  * User: james@solidstategroup.com

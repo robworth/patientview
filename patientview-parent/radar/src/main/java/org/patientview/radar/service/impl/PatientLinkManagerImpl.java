@@ -3,7 +3,7 @@ package org.patientview.radar.service.impl;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
-import org.patientview.radar.model.PatientLink;
+import org.patientview.model.PatientLink;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.util.RadarUtility;
 

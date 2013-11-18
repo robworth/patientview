@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.PatientLink;
+import org.patientview.model.PatientLink;
 import org.patientview.radar.test.TestPvDbSchema;
 import org.patientview.radar.test.roles.unitadmin.RoleHelper;
 import org.springframework.context.ApplicationContext;

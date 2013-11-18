@@ -1,7 +1,7 @@
 package org.patientview.radar.service;
 
 import org.patientview.model.Patient;
-import org.patientview.radar.model.PatientLink;
+import org.patientview.model.PatientLink;
 
 /**
  * User: james@solidstategroup.com

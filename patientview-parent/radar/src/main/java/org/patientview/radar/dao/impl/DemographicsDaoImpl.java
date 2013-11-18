@@ -5,10 +5,12 @@ import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Patient;
+import org.patientview.model.PatientLink;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
@@ -38,10 +40,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private static final String DATE_FORMAT_1 = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
+
     private SimpleJdbcInsert demographicsInsert;
+
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
+    private PatientLinkDao patientLinkDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -241,20 +246,36 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     public List<Patient> getDemographicsByUnitCode(List<String> unitCodes) {
         String unitCodeValues = buildValueList(unitCodes);
+        List<Patient> patients = null;
 
         if (StringUtils.isNotEmpty(unitCodeValues)) {
-            return jdbcTemplate.query("SELECT  DISTINCT p.* "
-                                    + "FROM    user u "
-                                    + "INNER JOIN patient p "
-                                    + "INNER JOIN usermapping m "
-                                    + "WHERE  m.nhsno = p.nhsno "
-                                    + "AND    u.username NOT LIKE '%-GP%' "
-                                    + "AND    u.username = m.username "
-                                    + "AND    m.unitcode IN (" + unitCodeValues + ")", new DemographicsRowMapper());
+             patients =  jdbcTemplate.query("SELECT  DISTINCT p.* "
+                     + "FROM    user u "
+                     + "INNER JOIN patient p "
+                     + "INNER JOIN usermapping m "
+                     + "WHERE  m.nhsno = p.nhsno "
+                     + "AND    u.username NOT LIKE '%-GP%' "
+                     + "AND    u.username = m.username "
+                     + "AND    m.unitcode IN (" + unitCodeValues + ")", new DemographicsRowMapper());
+
+            for (Patient patient : patients) {
+                PatientLink patientLink = patient.getPatientLink();
+                if (patientLink != null) {
+                    patients.add(this.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
+                            patientLink.getDestinationUnit()));
+                }
+
+            }
+
         } else {
             return null;
         }
+
+
+        return patients;
     }
+
+
 
     public Patient get(Long id) {
 
@@ -497,6 +518,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setGeneric(resultSet.getBoolean("generic"));
             patient.setEthnicGp(resultSet.getString("ethnicGp"));
 
+            patient.setPatientLink(patientLinkDao.getPatientLink(patient.getNhsno(), patient.getUnitcode()));
+
             return patient;
         }
     }
@@ -574,5 +597,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setLastdatadate(resultSet.getDate("lastdatadate"));
             return patient;
         }
+    }
+
+    public void setPatientLinkDao(PatientLinkDao patientLinkDao) {
+        this.patientLinkDao = patientLinkDao;
     }
 }

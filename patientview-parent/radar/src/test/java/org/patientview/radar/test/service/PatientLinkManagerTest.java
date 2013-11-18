@@ -6,11 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.model.Patient;
+import org.patientview.model.PatientLink;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.PatientLink;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.test.TestPvDbSchema;
 import org.patientview.radar.test.roles.unitadmin.RoleHelper;
@@ -18,8 +18,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: james@solidstategroup.com
@@ -170,6 +172,37 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
        // Assert.assertTrue("The link patient must inherit the radar ethnic group", radarPatient.getEthnicGp().equals(radarEthnicGroup));
        // Assert.assertTrue("The link patient must inherit a diagnosis date", radarPatient.getDiagnosisDate().equals(radarDiagnosisDate));
 
+
+    }
+
+    /**
+     * When we are listing by patient record by unitcode the patient record must display
+     *
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testLinkedRecordsAreReturnedWhenListingByUnitCode() throws Exception {
+
+        Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
+        demographicsDao.saveDemographics(sourcePatient);
+        patientLinkManager.linkPatientRecord(sourcePatient);
+        PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
+
+        List<String> units = new ArrayList();
+        units.add(testRenalUnit);
+
+        List<Patient> patients = demographicsDao.getDemographicsByUnitCode(units);
+
+        boolean isFound = false;
+        for (Patient patient : patients) {
+            if (patient.getUnitcode().equals(radarPatient.getUnitcode()) && patient.getNhsno().equals(radarPatient.getNhsno())) {
+                isFound = true;
+            }
+        }
+
+        Assert.assertTrue("There linked patient record must be returned", isFound);
 
     }
 
