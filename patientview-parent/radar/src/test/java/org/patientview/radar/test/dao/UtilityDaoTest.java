@@ -1,6 +1,7 @@
 package org.patientview.radar.test.dao;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.model.Centre;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
@@ -14,8 +15,10 @@ import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.*;
 import org.patientview.radar.model.filter.ConsultantFilter;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
@@ -38,14 +41,22 @@ public class UtilityDaoTest extends BaseDaoTest {
     @Autowired
     private DemographicsDao demographicDao;
 
+    @Inject
+    private TestDataHelper testDataHelper;
+
     private DiseaseGroup diseaseGroup;
 
     private Centre centre;
+
 
     @Before
     public void setUp() {
         centre = new Centre();
         centre.setUnitCode("testCodeA");
+        testDataHelper.createUnit();
+        testDataHelper.createCountryData();
+        testDataHelper.createConsultant();
+        testDataHelper.createDiagCode();
     }
 
     @Test
@@ -195,14 +206,22 @@ public class UtilityDaoTest extends BaseDaoTest {
         diseaseGroup.setName("testGroup");
         diseaseGroup.setShortName("shortName");
 
-        addDiagnosisForDemographic(createDemographics("Test", "User", centre, diseaseGroup)
-                , DiagnosisCode.SRNS_ID);
-        addDiagnosisForDemographic(createDemographics("Test2", "User2", centre, diseaseGroup)
-                , DiagnosisCode.MPGN_ID);
-        addDiagnosisForDemographic(createDemographics("Test3", "User3", centre, diseaseGroup)
-                , DiagnosisCode.SRNS_ID);
-        addDiagnosisForDemographic(createDemographics("Test4", "User4", centre, diseaseGroup)
-                , DiagnosisCode.MPGN_ID);
+        Patient patient = null;
+        patient = createDemographics("Test", "User", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.SRNS_ID);
+        userDao.createUserMappingInPatientView("Test User", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test2", "User2", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.MPGN_ID);
+        userDao.createUserMappingInPatientView("Test2 User2", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test3", "User3", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.SRNS_ID);
+        userDao.createUserMappingInPatientView("Test3 User3", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test4", "User4", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.MPGN_ID);
+        userDao.createUserMappingInPatientView("Test4 User4", patient.getNhsno(), patient.getDiseaseGroup().getId());
 
         DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
         Map<Long, Integer> patientCountMap = utilityDao.getPatientCountPerUnitByDiagnosisCode(diagnosisCode);

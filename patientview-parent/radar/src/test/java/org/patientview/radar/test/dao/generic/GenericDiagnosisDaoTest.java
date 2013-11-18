@@ -1,19 +1,33 @@
 package org.patientview.radar.test.dao.generic;
 
+import org.junit.Before;
+import org.junit.Ignore;
+import org.patientview.model.Centre;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
+import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.test.dao.BaseDaoTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class GenericDiagnosisDaoTest extends BaseDaoTest {
 
     @Autowired
     private GenericDiagnosisDao genericDiagnosisDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() throws Exception {
+        testDataHelper.createPrdCode();
+        testDataHelper.createDiagnosisMapping();
+    }
 
     @Test
     public void testGetAll() throws Exception {

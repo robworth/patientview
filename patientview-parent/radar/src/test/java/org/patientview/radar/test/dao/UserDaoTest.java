@@ -16,12 +16,14 @@ import org.patientview.radar.model.user.AdminUser;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
+import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.util.RadarUtility;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +50,9 @@ public class UserDaoTest extends BaseDaoTest {
 
     private Centre centre;
 
+    @Inject
+    private TestDataHelper testDataHelper;
+
     @Before
     public void setUp() {
         diseaseGroup = new DiseaseGroup();
@@ -57,6 +62,9 @@ public class UserDaoTest extends BaseDaoTest {
 
         centre = new Centre();
         centre.setUnitCode("testCodeA");
+
+        testDataHelper.createUnit();
+        testDataHelper.createSpecialty();
     }
 
     @Test

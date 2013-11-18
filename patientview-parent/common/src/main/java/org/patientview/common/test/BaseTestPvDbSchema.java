@@ -2,6 +2,7 @@ package org.patientview.common.test;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -148,8 +149,18 @@ public class BaseTestPvDbSchema {
         dropStatement.close();
     }
 
-    protected void clearData() throws Exception {
-        clearData(dataSource.getConnection());
+    @After
+    public void clearData() throws Exception {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            clearData(connection);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
     }
 
     protected void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
