@@ -62,7 +62,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
      *
      */
     @Test
-    public void testLinkingPatientRecord() {
+    public void testLinkingPatientRecord() throws Exception {
 
         Patient patient = new Patient();
 
