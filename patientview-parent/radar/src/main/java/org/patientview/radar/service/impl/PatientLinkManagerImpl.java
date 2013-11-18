@@ -36,7 +36,7 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
        try {
             PatientLink patientLink =  new PatientLink();
             patientLink.setSourceNhsNO(patient.getNhsno());
-            patientLink.setSourceUnit(patient.getUnitcode());
+            patientLink.setSourceUnit(patient.getRenalUnit().getUnitCode());
             patientLink.setDestinationNhsNo(patient.getNhsno());
             patientLink.setDestinationUnit(patient.getDiseaseGroup().getId());
 
