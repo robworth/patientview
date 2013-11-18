@@ -9,6 +9,7 @@ import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.PatientLink;
 import org.patientview.radar.test.TestPvDbSchema;
+import org.patientview.radar.test.roles.unitadmin.RoleHelper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -36,6 +37,9 @@ public class PatientLinkDaoTest extends TestPvDbSchema {
 
     @Inject
     private ApplicationContext applicationContext;
+
+    @Inject
+    private RoleHelper roleHelper;
 
     final String testDiseaseUnit = "RENALA";
     final String testRenalUnit = "Allports";
@@ -72,6 +76,22 @@ public class PatientLinkDaoTest extends TestPvDbSchema {
         Assert.assertTrue("The patient link as a valid id", patientLink.hasValidId());
 
     }
+
+
+    private PatientLink createLink(String nshNo, String sourceUnitCode, String destinationUnitCode) {
+        PatientLink patientLink = new PatientLink();
+
+        patientLink.setSourceNhsNO(nshNo);
+        patientLink.setSourceUnit(sourceUnitCode);
+
+        patientLink.setDestinationNhsNo("56");
+        patientLink.setDestinationUnit(destinationUnitCode);
+
+        patientLink = patientLinkDao.createLink(patientLink);
+
+        return patientLink;
+    }
+
 
     @After
     public void tearDown() throws Exception {

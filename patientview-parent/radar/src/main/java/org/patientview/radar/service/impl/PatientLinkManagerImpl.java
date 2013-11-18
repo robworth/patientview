@@ -5,8 +5,7 @@ import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.model.PatientLink;
 import org.patientview.radar.service.PatientLinkManager;
-
-import java.util.List;
+import org.patientview.radar.util.RadarUtility;
 
 /**
  * User: james@solidstategroup.com
@@ -23,7 +22,7 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
         return patientLinkDao.createLink(patientLink);
     }
 
-    public List<PatientLink> getPatientLink(String nhsNo, String unitCode) {
+    public PatientLink getPatientLink(String nhsNo, String unitCode) {
         return patientLinkDao.getPatientLink(nhsNo, unitCode);
     }
 
@@ -51,6 +50,15 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
         return patient;
     }
 
+    public Patient getMergePatient(Patient sourcePatient) throws Exception {
+        PatientLink patientLink = this.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
+                patientLink.getDestinationUnit());
+
+        return RadarUtility.mergePatientRecords(sourcePatient, radarPatient);
+    }
+
+
     // Create bare patient record for Radar
     public Patient createLinkRecord(Patient patient) {
         Patient newPatient = new Patient();
@@ -63,4 +71,5 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
     }
+
 }

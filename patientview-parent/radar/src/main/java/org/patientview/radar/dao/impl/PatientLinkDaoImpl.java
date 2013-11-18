@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,7 +53,7 @@ public class PatientLinkDaoImpl extends BaseDaoImpl implements PatientLinkDao {
 
     }
 
-    public List<PatientLink> getPatientLink(String nhsNo, String unitCode) {
+    public PatientLink getPatientLink(String nhsNo, String unitCode) {
 
         StringBuilder query = new StringBuilder();
         query.append("SELECT   * ");
@@ -62,7 +61,7 @@ public class PatientLinkDaoImpl extends BaseDaoImpl implements PatientLinkDao {
         query.append("WHERE    source_nhsno = ? ");
         query.append("AND      source_unitcode = ? ");
 
-        return jdbcTemplate.query(query.toString(), new Object[]{nhsNo, unitCode}, new PatientLinkDataRowMapper());
+        return jdbcTemplate.queryForObject(query.toString(), new Object[]{nhsNo, unitCode}, new PatientLinkDataRowMapper());
 
     }
 

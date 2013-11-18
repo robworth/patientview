@@ -1,6 +1,5 @@
 package org.patientview.radar.test.service;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,15 +8,18 @@ import org.junit.runner.RunWith;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.PatientLink;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.test.TestPvDbSchema;
+import org.patientview.radar.test.roles.unitadmin.RoleHelper;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * User: james@solidstategroup.com
@@ -39,6 +41,13 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
     @Inject
     private UtilityDao utilityDao;
+
+
+    @Inject
+    private RoleHelper roleHelper;
+
+    @Inject
+    private UserDao userDao;
 
     /**
      * A unit admin is created by the superadmin in PV.
@@ -80,11 +89,87 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         patientLinkManager.linkPatientRecord(patient);
 
-        List<PatientLink> patientLinks = patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
-        Assert.assertTrue("The list return should not be empty." , CollectionUtils.isNotEmpty(patientLinks));
-        Assert.assertTrue("The should only be one link recreated", patientLinks.size() == 1);
-        PatientLink patientLink = patientLinks.get(0);
+        PatientLink patientLink = patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
+        Assert.assertTrue("The list return should not be empty." , patientLink != null);
         Assert.assertTrue("The source and destination unit should be different", !patientLink.getSourceUnit().equalsIgnoreCase(patientLink.getDestinationUnit()));
+
+    }
+
+    /**
+     * Test to see where the masking of the vital fields works
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPatientRecordMerge() throws Exception {
+
+        Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
+        demographicsDao.saveDemographics(sourcePatient);
+        patientLinkManager.linkPatientRecord(sourcePatient);
+        PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
+
+        Assert.assertTrue("The link patient must not have a first name", StringUtils.isEmpty(radarPatient.getForename()) );
+        Assert.assertTrue("The link patient must not have a last name", StringUtils.isEmpty(radarPatient.getSurname()) );
+        Assert.assertTrue("The link patient must not have a DOB", radarPatient.getDob() == null );
+        Assert.assertTrue("The link patient must not have a address", StringUtils.isEmpty(radarPatient.getAddress1()));
+        Assert.assertTrue("The link patient must not have a postcode", StringUtils.isEmpty(radarPatient.getAddress1()));
+        Assert.assertTrue("The link patient must not have a sex", StringUtils.isEmpty(radarPatient.getSex()));
+        Assert.assertTrue("The link patient must not have a hospital number", StringUtils.isEmpty(radarPatient.getHospitalnumber()));
+        Assert.assertTrue("The link patient must not have a Renal Unit", radarPatient.getRenalUnit() == null);
+
+
+        radarPatient = patientLinkManager.getMergePatient(sourcePatient);
+
+        Assert.assertTrue("The link patient must inherit a first name", !StringUtils.isEmpty(radarPatient.getForename()) );
+        Assert.assertTrue("The link patient must inherit a last name", !StringUtils.isEmpty(radarPatient.getSurname()) );
+        Assert.assertTrue("The link patient must inherit a DOB", radarPatient.getDob() != null );
+        Assert.assertTrue("The link patient must inherit a address", !StringUtils.isEmpty(radarPatient.getAddress1()));
+        Assert.assertTrue("The link patient must inherit a postcode", !StringUtils.isEmpty(radarPatient.getAddress1()));
+        Assert.assertTrue("The link patient must inherit a sex", !StringUtils.isEmpty(radarPatient.getSex()));
+        Assert.assertTrue("The link patient must inherit a hospital number", !StringUtils.isEmpty(radarPatient.getHospitalnumber()));
+        Assert.assertTrue("The link patient must inherit a Renal Unit", radarPatient.getRenalUnit() != null);
+
+
+    }
+
+    /**
+     * Test to see if the data saved in the link record is now written back over the after it's been saved.
+     *
+     */
+    @Test
+    public void testMergeWithRadarSpecificFields() throws Exception {
+
+        String radarMobile = "7896786";
+        String radarComments = "These are some specific radar comments";
+        String radarEthnicGroup = "This is a specific radar ethnic group";
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.roll(Calendar.DAY_OF_YEAR, -100);
+
+        Date radarDiagnosisDate = calendar.getTime();
+
+        Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
+        demographicsDao.saveDemographics(sourcePatient);
+        patientLinkManager.linkPatientRecord(sourcePatient);
+        PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
+
+
+        radarPatient.setMobile(radarMobile);
+        radarPatient.setDiagnosisDate(radarDiagnosisDate);
+        radarPatient.setEthnicGp(radarEthnicGroup);
+        radarPatient.setComments(radarComments);
+
+        // Lets save the radar specific comments and then requery them through the merge
+        demographicsDao.saveDemographics(radarPatient);
+        radarPatient = patientLinkManager.getMergePatient(sourcePatient);
+
+        Assert.assertTrue("The link patient must inherit the radar mobile", radarPatient.getMobile().equals(radarMobile));
+        Assert.assertTrue("The link patient must inherit the radar comments", radarPatient.getComments().equals(radarComments) );
+       // Assert.assertTrue("The link patient must inherit the radar ethnic group", radarPatient.getEthnicGp().equals(radarEthnicGroup));
+       // Assert.assertTrue("The link patient must inherit a diagnosis date", radarPatient.getDiagnosisDate().equals(radarDiagnosisDate));
+
 
     }
 
