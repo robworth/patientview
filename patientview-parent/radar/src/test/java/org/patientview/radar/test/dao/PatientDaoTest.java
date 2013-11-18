@@ -6,6 +6,7 @@ import org.patientview.model.Patient;
 import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
+import org.patientview.radar.test.TestPvDbSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-context.xml"})
-public class PatientDaoTest {
+public class PatientDaoTest extends TestPvDbSchema {
 
     @Autowired
     private PatientDao patientDao;

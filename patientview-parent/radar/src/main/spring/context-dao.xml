@@ -61,6 +61,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="patientLinkDao" class="org.patientview.radar.dao.impl.PatientLinkDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="plasmapheresisDao" class="org.patientview.radar.dao.impl.PlasmapheresisDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
