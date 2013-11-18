@@ -1,5 +1,6 @@
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
@@ -424,7 +425,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             String nhsno = resultSet.getString("nhsno");
             if (nhsno != null) {
                 //TODO Fix this
-                patient.setRenalUnit(utilityDao.getRenalUnitCentre(nhsno).get(0));
+                if (CollectionUtils.isNotEmpty(utilityDao.getRenalUnitCentre(nhsno))) {
+                    patient.setRenalUnit(utilityDao.getRenalUnitCentre(nhsno).get(0));
+                }
             }
 
             // Set status

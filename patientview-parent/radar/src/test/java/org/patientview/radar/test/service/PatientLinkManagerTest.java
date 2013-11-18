@@ -80,9 +80,11 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         patientLinkManager.linkPatientRecord(patient);
 
-        List<PatientLink> patientLink = patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
-        Assert.assertTrue("The list return should not be empty." , CollectionUtils.isNotEmpty(patientLink));
-        Assert.assertTrue("The should only be one link recreated", patientLink.size() == 1);
+        List<PatientLink> patientLinks = patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
+        Assert.assertTrue("The list return should not be empty." , CollectionUtils.isNotEmpty(patientLinks));
+        Assert.assertTrue("The should only be one link recreated", patientLinks.size() == 1);
+        PatientLink patientLink = patientLinks.get(0);
+        Assert.assertTrue("The source and destination unit should be different", !patientLink.getSourceUnit().equalsIgnoreCase(patientLink.getDestinationUnit()));
 
     }
 
