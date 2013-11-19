@@ -38,9 +38,11 @@ public class PatientDetailPanel extends Panel {
         details.add(radarNumberField);
 
         // disease group
-        Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patient.getDiseaseGroup(),
-                "name"));
-        details.add(diseaseGroup);
+        if (patient.getDiseaseGroup() != null) {
+            Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patient.getDiseaseGroup(),
+                    "name"));
+            details.add(diseaseGroup);
+        }
 
         // forename
         Label nameLabel = new Label("nameLabel", "Patient Name") {

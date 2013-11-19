@@ -103,5 +103,36 @@ public class RoleHelper {
     }
 
 
+    public Patient createPatient(String nhsNo, String unitName, String diseaseName) throws Exception {
+        Patient patient = new Patient();
+        patient.setUnitcode(unitName);
+        patient.setForename("Unit");
+        patient.setSurname("Tester");
+        patient.setDateofbirth("21-01-2013");
+        patient.setDob(new Date());
+        patient.setHospitalnumber("90789");
+        patient.setAddress1("87 hgyt roda");
+        patient.setPostcode("hg656hg");
+        patient.setNhsno(nhsNo);
+        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        patient.setUnitcode(unitName);
+        patient.setEmailAddress("test@test.com");
+        patient.setSex("Male");
+
+
+        DiseaseGroup diseaseGroup = new DiseaseGroup();
+        diseaseGroup.setId(diseaseName);
+        patient.setDiseaseGroup(diseaseGroup);
+
+        Centre centre = new Centre();
+        centre.setUnitCode(unitName);
+        patient.setRenalUnit(centre);
+
+        //userManager.registerPatient(patient);
+
+        return patient;
+
+    }
+
 
 }
