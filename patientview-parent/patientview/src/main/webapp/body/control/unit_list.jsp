@@ -48,7 +48,7 @@
         <tr>
           <td class="tablecell"><bean:write name="unit" property="unitcode"/></td>
           <td class="tablecell"><bean:write name="unit" property="name"/></td>
-          <td class="tablecell"><bean:write name="unit" property="lastImportDate"/></td>
+          <td class="tablecell"><bean:write name="unit" property="formattedLastImportDate"/></td>
 
           <logic:present role="superadmin,unitadmin">
             <td>
