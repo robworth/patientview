@@ -104,8 +104,6 @@ public class Patient extends BaseModel {
     private Date bmdexam;
     @Column
     private String bloodgroup;
-    @Column
-    private boolean linked;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     // Note: this is used at the moment for IBD only.  The patient details view shows a separate "Other Conditions"
@@ -227,6 +225,9 @@ public class Patient extends BaseModel {
 
     @Transient
     private PatientLink patientLink;
+
+    @Transient
+    private boolean editableDemographics;
 
     public enum RRTModality {
         HD(1),
@@ -803,6 +804,14 @@ public class Patient extends BaseModel {
 
     public void setPatientLink(PatientLink patientLink) {
         this.patientLink = patientLink;
+    }
+
+    public boolean isEditableDemographics() {
+        return editableDemographics;
+    }
+
+    public void setEditableDemographics(boolean editableDemographics) {
+        this.editableDemographics = editableDemographics;
     }
 }
 
