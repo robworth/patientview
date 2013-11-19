@@ -12,6 +12,7 @@ import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.service.PatientLinkManager;
+import org.patientview.radar.service.UserManager;
 import org.patientview.radar.test.TestPvDbSchema;
 import org.patientview.radar.test.roles.unitadmin.RoleHelper;
 import org.springframework.test.context.ContextConfiguration;
@@ -51,6 +52,9 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
     @Inject
     private UserDao userDao;
 
+    @Inject
+    private UserManager userManager;
+    
     /**
      * A unit admin is created by the superadmin in PV.
      * <p/>
@@ -185,24 +189,24 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
     public void testLinkedRecordsAreReturnedWhenListingByUnitCode() throws Exception {
 
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
-        demographicsDao.saveDemographics(sourcePatient);
+        userManager.registerPatient(sourcePatient);
         patientLinkManager.linkPatientRecord(sourcePatient);
         PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
         Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 
-        List<String> units = new ArrayList();
+        List<String> units = new ArrayList<String>();
         units.add(testRenalUnit);
 
         List<Patient> patients = demographicsDao.getDemographicsByUnitCode(units);
 
-        boolean isFound = false;
+        boolean found = false;
         for (Patient patient : patients) {
             if (patient.getUnitcode().equals(radarPatient.getUnitcode()) && patient.getNhsno().equals(radarPatient.getNhsno())) {
-                isFound = true;
+                found = true;
             }
         }
 
-        Assert.assertTrue("There linked patient record must be returned", isFound);
+        Assert.assertTrue("There linked patient record must be returned", found);
 
     }
 

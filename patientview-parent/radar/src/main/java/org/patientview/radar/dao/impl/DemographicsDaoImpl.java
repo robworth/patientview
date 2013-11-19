@@ -258,14 +258,22 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                      + "AND    u.username = m.username "
                      + "AND    m.unitcode IN (" + unitCodeValues + ")", new DemographicsRowMapper());
 
-            for (Patient patient : patients) {
+
+            List<Patient> linkedPatients = new ArrayList<Patient>();
+
+            for (Patient patient : patients)  {
+
                 PatientLink patientLink = patient.getPatientLink();
+
                 if (patientLink != null) {
-                    patients.add(this.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
+                    linkedPatients.add(this.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
                             patientLink.getDestinationUnit()));
                 }
 
             }
+
+            patients.addAll(linkedPatients);
+
 
         } else {
             return null;
