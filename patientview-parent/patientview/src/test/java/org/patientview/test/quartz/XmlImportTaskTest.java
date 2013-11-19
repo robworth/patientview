@@ -11,10 +11,13 @@ import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.Unit;
 import org.patientview.quartz.XmlImportTask;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.repository.PatientDao;
+import org.patientview.repository.UnitDao;
 import org.patientview.service.CentreManager;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.ImportManager;
@@ -22,6 +25,7 @@ import org.patientview.service.LetterManager;
 import org.patientview.service.MedicineManager;
 import org.patientview.service.TestResultManager;
 import org.patientview.service.ibd.IbdManager;
+import org.patientview.test.helpers.ServiceHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,10 +35,13 @@ import org.springframework.util.ResourceUtils;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -75,6 +82,12 @@ public class XmlImportTaskTest {
 
     @Inject
     private ImportManager importManager;
+
+    @Inject
+    private ServiceHelpers serviceHelpers;
+
+    @Inject
+    private UnitDao unitDao;
 
     @Test
     public void testRead() throws Exception {
@@ -128,6 +141,47 @@ public class XmlImportTaskTest {
         List<Medicine> medicines = medicineManager.getAll();
 
         assertEquals("Incorrect number of medicines", 0, medicines.size());
+
+    }
+
+    @Test
+    public void testImport() throws Exception {
+
+        int xmlFilesSize = 0;
+
+        String parentDir
+                = ResourceUtils.getFile("classpath:schedule/" +
+                "TestUnitA_1244_9876543210/TestUnitA_1244_9876543210.xml").getParent();
+
+        setXmlDirectory(parentDir);
+
+        File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
+        if (xmlFiles != null) {
+            xmlFilesSize = xmlFiles.length;
+        }
+
+        assertTrue("Can not read XML files", xmlFilesSize != 0);
+
+        Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        Unit unit = new Unit();
+        unit.setUnitcode("TestUnitA");
+        unit.setName("Test Data For Unit");
+        unit.setShortname("Test Data");
+        unit.setSpecialty(specialty1);
+
+        unitDao.save(unit);
+        assertNull("Unit last import date is not null", unit.getLastImportDate());
+
+        xmlImport.setXmlDirectory(parentDir);
+        xmlImport.execute();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
+        Unit checkUnit = unitDao.get("TestUnitA", specialty1);
+        assertNotNull("Unit last import date is null", checkUnit.getLastImportDate());
+        assertEquals("Unit last import date updated not correct",
+                simpleDateFormat.format(date), simpleDateFormat.format(checkUnit.getLastImportDate()));
 
     }
 

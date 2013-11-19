@@ -60,6 +60,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -211,11 +212,21 @@ public class ImportManagerImpl implements ImportManager {
             insertProcedures(resultParser.getProcedures());
             deleteAllergies(resultParser.getData("nhsno"), resultParser.getData("centrecode"));
             insertAllergies(resultParser.getAllergies());
+            // todo improvement: we should build a set of all units updated, then mark them at the end of the job
+            markLastImportDateOnUnit(resultParser.getCentre());
 
             // Insert or update record in pv_user_log table,
             // with current import date which is used in patient login
             createUserLog(resultParser);
             return AddLog.PATIENT_DATA_FOLLOWUP;
+        }
+    }
+
+    private void markLastImportDateOnUnit(Centre centre) {
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(centre.getCentreCode());
+        if (unit != null) {
+            unit.setLastImportDate(new Date());
+            unitDao.save(unit);
         }
     }
 
