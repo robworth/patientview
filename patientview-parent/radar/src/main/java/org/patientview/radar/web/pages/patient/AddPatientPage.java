@@ -96,10 +96,12 @@ public class AddPatientPage extends BasePage {
 
                 // check nhs number is valid
                 if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
+                    selectPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
                 } else if (userManager.hasPatientRadarMapping(model.getPatientId())) {
                     // check that this nhsno has a mapping in the radar system
-                   error("A patient with this NHS or CHI number already exists");
+                    selectPatientPanel.setVisible(false);
+                    error("A patient with this NHS or CHI number already exists");
                 }
 
                 if (!hasError()) {

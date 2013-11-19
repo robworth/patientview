@@ -257,7 +257,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     /**
      * Resolve a two way link.
      *
-     * 1) If it's a source record the merge the link record on top of it
+     * 1) If it's a source record them merge the link record on top of it
      * 2) If it's a link record over write the standard demographic fields.
      *
      * @param patient
