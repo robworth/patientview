@@ -115,6 +115,7 @@ public class DemographicsPanel extends Panel {
                         }
 
                         if (patientModelObject == null) {
+
                             patientModelObject = new Patient();
 
                             if (pageParameters != null) {
@@ -449,6 +450,7 @@ public class DemographicsPanel extends Panel {
         RadarTextFieldWithValidation postcode = new RadarTextFieldWithValidation("postcode",
                 new PatternValidator("[a-zA-Z]{1,2}[0-9][0-9A-Za-z]{0,1} {0,1}[0-9][A-Za-z]{2}$"), form,
                 componentsToUpdateList);
+
         form.add(address1, address2, address3, address4, postcode);
 
         // Archive fields
@@ -461,6 +463,7 @@ public class DemographicsPanel extends Panel {
                 new RadarRequiredTextField("hospitalnumber", form, componentsToUpdateList);
         TextField renalRegistryNumber = new TextField("rrNo");
         TextField ukTransplantNumber = new TextField("uktNo");
+
         form.add(hospitalNumber, renalRegistryNumber, ukTransplantNumber);
 
         // Status, consultants and centres drop down boxes
@@ -476,6 +479,7 @@ public class DemographicsPanel extends Panel {
         form.add(clinician);
 
         DropDownChoice<Centre> renalUnit;
+
 
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit

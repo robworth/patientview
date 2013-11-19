@@ -70,6 +70,9 @@ public class GenericDemographicsPanel extends Panel {
     @SpringBean
     private UserManager userManager;
 
+
+    private List<Component> nonEditableComponents;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
 
     public GenericDemographicsPanel(String id, Patient patient) {
@@ -80,6 +83,8 @@ public class GenericDemographicsPanel extends Panel {
     private void init(Patient patient) {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        nonEditableComponents = new ArrayList<Component>();
 
         final ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
@@ -136,7 +141,11 @@ public class GenericDemographicsPanel extends Panel {
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
-                    userManager.registerPatient(patient);
+                    if (patient.isEditableDemographics()) {
+                        userManager.registerPatient(patient);
+                    } else {
+                        demographicsManager.saveDemographics(patient);
+                    }
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());
@@ -160,16 +169,22 @@ public class GenericDemographicsPanel extends Panel {
                 componentsToUpdateList);
 
         form.add(surname, forename, alias, dateOfBirth);
-
+        nonEditableComponents.add(surname);
+        nonEditableComponents.add(forename);
+        nonEditableComponents.add(dateOfBirth);
         // Sex
         RadarRequiredDropdownChoice sex =
                 new RadarRequiredDropdownChoice("sexModel", demographicsManager.getSexes(),
                         new ChoiceRenderer<Sex>("type", "id"), form, componentsToUpdateList);
 
+        nonEditableComponents.add(sex);
+
         // Ethnicity
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
+
+        nonEditableComponents.add(ethnicity);
 
         // Address fields
         TextField address1 = new TextField("address1");
@@ -181,7 +196,11 @@ public class GenericDemographicsPanel extends Panel {
                 componentsToUpdateList);
         form.add(address1, address2, address3, address4, postcode);
 
-
+        nonEditableComponents.add(address1);
+        nonEditableComponents.add(address2);
+        nonEditableComponents.add(address3);
+        nonEditableComponents.add(address4);
+        nonEditableComponents.add(postcode);
         // More info
         Label nhsNumber = new Label("nhsno");
 
@@ -282,6 +301,7 @@ public class GenericDemographicsPanel extends Panel {
         };
 
         hospitalNumberContainer.add(hospitalNumber);
+        nonEditableComponents.add(hospitalNumber);
 
         TextField renalRegistryNumber = new TextField("rrNo");
         WebMarkupContainer renalRegistryNumberContainer = new WebMarkupContainer("renalRegistryNumberContainer") {
@@ -442,6 +462,7 @@ public class GenericDemographicsPanel extends Panel {
         }
 
         form.add(renalUnit);
+        nonEditableComponents.add(renalUnit);
 
         RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
@@ -463,6 +484,8 @@ public class GenericDemographicsPanel extends Panel {
         TextField emailAddress = new TextField("emailAddress");
         TextField phone1 = new TextField("telephone1");
         TextField phone2 = new TextField("telephone2");
+
+        nonEditableComponents.add(phone1);
 
         RadarTextFieldWithValidation mobile = new RadarTextFieldWithValidation("mobile",
                 new PatternValidator(MetaPattern.DIGITS), form,
@@ -565,6 +588,12 @@ public class GenericDemographicsPanel extends Panel {
 
         form.add(ajaxSubmitLinkTop);
         form.add(ajaxSubmitLinkBottom);
+
+        if (!patient.isEditableDemographics()) {
+            for (Component component : nonEditableComponents) {
+                component.setEnabled(false);
+            }
+        }
     }
 
     private static class AddIdModel implements Serializable {
