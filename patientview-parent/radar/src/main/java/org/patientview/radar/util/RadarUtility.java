@@ -71,6 +71,26 @@ public class RadarUtility {
         return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
     }
 
+    // Make sure the link record displays data from the
+    public static Patient overRideLinkRecord(Patient source, Patient link) {
+
+
+        link.setForename(source.getForename());
+        link.setSurname(source.getSurname());
+        link.setDob(source.getDob());
+        link.setAddress1(source.getAddress1());
+        link.setAddress2(source.getAddress2());
+        link.setAddress3(source.getAddress3());
+        link.setAddress4(source.getAddress4());
+        link.setPostcode(source.getPostcode());
+        link.setSex(source.getSex());
+        link.setTelephone1(source.getTelephone1());
+        link.setHospitalnumber(source.getHospitalnumber());
+        link.setRenalUnit(source.getRenalUnit());
+
+        return link;
+
+    }
 
     // Merge the two records together, source record taking priority on certain fields.
     // Done by getting the source record and just adding any radar stuff in it if it's found
@@ -122,4 +142,18 @@ public class RadarUtility {
     }
 
 
+    public static void cleanLinkRecord(Patient patient) {
+        patient.setSurname(null);
+        patient.setForename(null);
+        patient.setDob(null);
+        patient.setAddress1(null);
+        patient.setAddress2(null);
+        patient.setAddress3(null);
+        patient.setAddress4(null);
+        patient.setPostcode(null);
+        patient.setSex(null);
+        patient.setTelephone1(null);
+        patient.setHospitalnumber(null);
+        patient.setRenalUnit(null);
+    }
 }

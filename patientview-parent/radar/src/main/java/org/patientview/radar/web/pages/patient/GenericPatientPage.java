@@ -37,6 +37,7 @@ public class GenericPatientPage extends BasePage {
 
     private Patient patient;
 
+
     @SpringBean
     private DemographicsManager demographicsManager;
 

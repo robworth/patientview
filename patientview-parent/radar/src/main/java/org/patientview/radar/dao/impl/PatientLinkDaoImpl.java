@@ -72,6 +72,25 @@ public class PatientLinkDaoImpl extends BaseDaoImpl implements PatientLinkDao {
 
     }
 
+    public PatientLink getSourcePatientLink(String nhsNo, String unitCode) {
+        PatientLink patientLink = null;
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT   * ");
+        query.append("FROM     rdr_patient_linkage ");
+        query.append("WHERE    dest_nhsno = ? ");
+        query.append("AND      dest_unitcode = ? ");
+
+        try {
+            patientLink = jdbcTemplate.queryForObject(query.toString(), new Object[]{nhsNo, unitCode},
+                    new PatientLinkDataRowMapper());
+            return patientLink;
+        } catch (Exception e) {
+            return  null;
+        }
+
+    }
+
     private class PatientLinkDataRowMapper implements RowMapper<PatientLink> {
         public PatientLink mapRow(ResultSet resultSet, int i) throws SQLException {
             PatientLink patientLink = new PatientLink();
