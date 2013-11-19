@@ -62,6 +62,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -194,7 +195,7 @@ public class ImportManagerImpl implements ImportManager {
             removePatientFromSystem(resultParser);
             return AddLog.PATIENT_DATA_REMOVE;
         } else {
-            updatePatientDetails(resultParser.getPatient());
+            updatePatientDetails(resultParser.getPatient(), resultParser.getDateRanges());
             updateCentreDetails(resultParser.getCentre());
             deleteDateRanges(resultParser.getDateRanges());
             insertResults(resultParser.getTestResults());
@@ -273,9 +274,47 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void updatePatientDetails(Patient patient) {
+    /**
+     *  Delete and re-add an updated patient record.
+     *  If we have test results that are later than any seen before,
+     *  update the patient mostRecentTestResultDateRangeStopDate.
+     *
+     *  Only update the mostRecentTestResultDateRangeStopDate if the new values is after the
+     *  existing value on the existing patient record
+     *
+     * @param patient new patient details
+     * @param dateRanges the date ranges for test results found in this import
+     */
+    private void updatePatientDetails(Patient patient, List<TestResultDateRange> dateRanges) {
+
+        Patient existingPatientRecord
+                = LegacySpringUtils.getPatientManager().get(patient.getNhsno(), patient.getUnitcode());
+        Date existingTestResultDateRangeStopDate = null;
+        if (existingPatientRecord != null && existingPatientRecord.hasValidId()) {
+            existingTestResultDateRangeStopDate = existingPatientRecord.getMostRecentTestResultDateRangeStopDate();
+        }
+
+        patient.setMostRecentTestResultDateRangeStopDate(
+                getMostRecentTestResultDateRangeStopDate(dateRanges, existingTestResultDateRangeStopDate));
+
         LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getUnitcode());
         LegacySpringUtils.getPatientManager().save(patient);
+    }
+
+    private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,
+                                                          Date mostRecentTestResultDateRangeStopDate) {
+        LOGGER.info("mostRecentTestResultDateRangeStopDate {} ", mostRecentTestResultDateRangeStopDate);
+        if (dateRanges != null && dateRanges.size() > 0) {
+            for (TestResultDateRange testResultDateRange : dateRanges) {
+                Date stopDate = TimestampUtils.createTimestampEndDay(testResultDateRange.getStopDate()).getTime();
+                // update the most recent if after
+                if (mostRecentTestResultDateRangeStopDate == null
+                        || stopDate.after(mostRecentTestResultDateRangeStopDate)) {
+                    mostRecentTestResultDateRangeStopDate = stopDate;
+                }
+            }
+        }
+        return mostRecentTestResultDateRangeStopDate;
     }
 
     private void updateCentreDetails(Centre centre) {
