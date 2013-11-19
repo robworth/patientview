@@ -3,10 +3,10 @@ package org.patientview.radar.service.impl;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
-import org.patientview.radar.model.PatientLink;
+import org.patientview.model.PatientLink;
 import org.patientview.radar.service.PatientLinkManager;
-
-import java.util.List;
+import org.patientview.radar.util.RadarUtility;
+import org.springframework.util.StringUtils;
 
 /**
  * User: james@solidstategroup.com
@@ -23,7 +23,7 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
         return patientLinkDao.createLink(patientLink);
     }
 
-    public List<PatientLink> getPatientLink(String nhsNo, String unitCode) {
+    public PatientLink getPatientLink(String nhsNo, String unitCode) {
         return patientLinkDao.getPatientLink(nhsNo, unitCode);
     }
 
@@ -36,7 +36,15 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
        try {
             PatientLink patientLink =  new PatientLink();
             patientLink.setSourceNhsNO(patient.getNhsno());
-            patientLink.setSourceUnit(patient.getUnitcode());
+
+            String unitCode = patient.getUnitcode();
+            if (StringUtils.isEmpty(unitCode)) {
+                if (patient.getRenalUnit() != null) {
+                    unitCode = patient.getRenalUnit().getUnitCode();
+                }
+            }
+
+            patientLink.setSourceUnit(unitCode);
             patientLink.setDestinationNhsNo(patient.getNhsno());
             patientLink.setDestinationUnit(patient.getDiseaseGroup().getId());
 
@@ -51,6 +59,15 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
         return patient;
     }
 
+    public Patient getMergePatient(Patient sourcePatient) throws Exception {
+        PatientLink patientLink = this.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
+                patientLink.getDestinationUnit());
+
+        return RadarUtility.mergePatientRecords(sourcePatient, radarPatient);
+    }
+
+
     // Create bare patient record for Radar
     public Patient createLinkRecord(Patient patient) {
         Patient newPatient = new Patient();
@@ -63,4 +80,5 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
     }
+
 }

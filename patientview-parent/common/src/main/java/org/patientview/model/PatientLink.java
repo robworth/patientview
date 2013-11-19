@@ -1,4 +1,4 @@
-package org.patientview.radar.model;
+package org.patientview.model;
 
 /**
  * This class links two patient records together. One that is editable and only displays in Radar, the other

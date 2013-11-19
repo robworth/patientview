@@ -34,6 +34,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
+        <property name="patientLinkDao" ref="patientLinkDao"/>
     </bean>
 
     <bean id="diagnosisDao" class="org.patientview.radar.dao.impl.DiagnosisDaoImpl">
