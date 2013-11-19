@@ -13,4 +13,6 @@ public interface PatientLinkDao {
 
     PatientLink getPatientLink(String nhsNo, String unitCode);
 
+    PatientLink getSourcePatientLink(String nhsNo, String unitCode);
+
 }

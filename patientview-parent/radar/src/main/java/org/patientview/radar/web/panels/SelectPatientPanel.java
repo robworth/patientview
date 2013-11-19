@@ -173,7 +173,7 @@ public class SelectPatientPanel extends Panel {
                 patient.setDiseaseGroup(patientModel.getDiseaseGroup());
                 patient.setNhsno(patientModel.getPatientId());
                 patient.setNhsNumberType(patientModel.getNhsNumberType());
-
+                patient.setEditableDemographics(true);
                 setResponsePage(getDiseasePage(patient.getDiseaseGroup(), patient));
 
             }
