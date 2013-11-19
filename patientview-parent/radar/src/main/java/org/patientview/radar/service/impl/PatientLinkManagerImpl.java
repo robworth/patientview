@@ -6,6 +6,7 @@ import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.model.PatientLink;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.util.RadarUtility;
+import org.springframework.util.StringUtils;
 
 /**
  * User: james@solidstategroup.com
@@ -35,7 +36,15 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
        try {
             PatientLink patientLink =  new PatientLink();
             patientLink.setSourceNhsNO(patient.getNhsno());
-            patientLink.setSourceUnit(patient.getRenalUnit().getUnitCode());
+
+            String unitCode = patient.getUnitcode();
+            if (StringUtils.isEmpty(unitCode)) {
+                if (patient.getRenalUnit() != null) {
+                    unitCode = patient.getRenalUnit().getUnitCode();
+                }
+            }
+
+            patientLink.setSourceUnit(unitCode);
             patientLink.setDestinationNhsNo(patient.getNhsno());
             patientLink.setDestinationUnit(patient.getDiseaseGroup().getId());
 
