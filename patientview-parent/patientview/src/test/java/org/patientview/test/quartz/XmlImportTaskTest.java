@@ -2,6 +2,7 @@ package org.patientview.test.quartz;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.patientview.common.test.BaseTestPvDbSchema;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
@@ -50,7 +51,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml", "classpath*:test-context.xml"})
 @Transactional
-public class XmlImportTaskTest {
+public class XmlImportTaskTest extends BaseTestPvDbSchema {
 
     @Autowired
     private XmlImportTask xmlImport;
