@@ -92,7 +92,7 @@ public class UserManagerTest extends TestPvDbSchema {
         Date dob = new Date();
         Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", dob);
 
-        userManager.registerPatient(patient);
+        userManager.savePatientUser(patient);
 
         // Try and register - will throw an exception as no matching radar number
         patientUser = userManager.getPatientUser(patient.getEmailAddress());

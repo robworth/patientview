@@ -179,7 +179,7 @@ public class DemographicsPanel extends Panel {
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
-                    userManager.registerPatient(patient);
+                    userManager.savePatientUser(patient);
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception {} ", re.getMessage());
                     error("Could not register patient" + re.getMessage());

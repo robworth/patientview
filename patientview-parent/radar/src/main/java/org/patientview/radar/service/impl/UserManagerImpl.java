@@ -113,55 +113,58 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    public PatientUser registerPatient(Patient patient) throws RegisterException, Exception {
+    private PatientUser registerPatientUser(Patient patient) throws UserCreationException, UserMappingException,
+            UserRoleException, PatientLinkException, JoinCreationException {
 
         PatientUser patientUser = null;
+        boolean generateJoinRequest = false;
+
+        // If the patient is new then we save the patient record otherwise we have to link it
+        if (!patient.hasValidId()) {
+            generateJoinRequest = true;
+            demographicsDao.saveDemographics(patient);
+        } else {
+            patientLinkManager.linkPatientRecord(patient);
+        }
+
+        // Create the user record
+        patientUser = createUser(patient);
+
+        // Create the patient mapping in patient view so patient view knows the user is a patient
+        userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
+
+        createPatientMappings(patient, patientUser);
+
+        if (generateJoinRequest) {
+            createJoinRequest(patient);
+        }
+
+        return patientUser;
+
+    }
+
+
+    public PatientUser savePatientUser(Patient patient) throws RegisterException, Exception {
+
         try {
 
+            // Check of the patient needs registering first otherwise just save the patient record
             if (patient.isEditableDemographics() || !userExistsInPatientView(patient.getNhsno())) {
-
-                boolean generateJoinRequest = false;
-
-                // If the patient is new then we save the patient record otherwise we have to link it
-                if (!patient.hasValidId()) {
-                    generateJoinRequest = true;
-                    demographicsDao.saveDemographics(patient);
-                } else {
-                    patientLinkManager.linkPatientRecord(patient);
-                }
-
-                // Create the user record
-                patientUser = createUser(patient);
-
-                // Create the patient mapping in patient view so patient view knows the user is a patient
-                userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
-
-                createPatientMappings(patient, patientUser);
-
-                if (generateJoinRequest) {
-                    createJoinRequest(patient);
-                }
-
-                return patientUser;
-
+                return registerPatientUser(patient);
             }  else {
                 demographicsDao.saveDemographics(patient);
                 return null;
             }
 
-
         }  catch (UserCreationException  uce) {
             throw new RegisterException("Could not create user", uce);
         }  catch (UserMappingException ume) {
-            cleanup(patientUser);
             throw new RegisterException("Could not create user mappings", ume);
         }  catch (UserRoleException ure) {
-            cleanup(patientUser);
             throw new RegisterException("Could not create role", ure);
         }  catch (JoinCreationException jce) {
             throw new RegisterException("User created but could not create join request", jce);
         }  catch (PatientLinkException ple) {
-            cleanup(patientUser);
             throw new RegisterException("Could not create role", ple);
         }
     }
@@ -215,16 +218,16 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         // Check we have a valid radar number, email address and date of birth
         if (patient == null || patient.getId() < 1) {
-            throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
+            throw new IllegalArgumentException("Invalid demographics supplied to savePatientUser");
         }
 
         if (patient.getDob() == null) {
-            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
                     "demographics.getDateOfBirth()");
         }
 
         if (patient.getNhsno() == null) {
-            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
                     "demographics.getNhsNumber()");
         }
 
@@ -449,24 +452,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             ++i;
         }
         return username + i;
-    }
-
-    private void cleanup(PatientUser patientUser) {
-
-        try {
-            // Deletes the user from radar
-            if (patientUser != null) {
-                userDao.deletePatientUser(patientUser);
-                userDao.deleteUser(patientUser);
-            }
-
-            // Deletes the user mapping from radar
-            userDao.deleteUserMapping(patientUser);
-
-        } catch (Exception  e) {
-            LOGGER.error("Error cleaning up");
-        }
-
     }
 
 
