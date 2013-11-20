@@ -1,11 +1,14 @@
 package org.patientview.radar.service.impl;
 
 import org.patientview.model.Patient;
+import org.patientview.model.PatientLink;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
-import org.patientview.model.PatientLink;
+import org.patientview.radar.exception.PatientLinkException;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.util.RadarUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 /**
@@ -14,6 +17,8 @@ import org.springframework.util.StringUtils;
  * Time: 17:04
  */
 public class PatientLinkManagerImpl implements PatientLinkManager {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(PatientLinkManagerImpl.class);
 
     private DemographicsDao demographicsDao;
 
@@ -32,7 +37,7 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
     }
 
     // create the new patient record and link entity
-    public Patient linkPatientRecord(Patient patient) throws Exception {
+    public Patient linkPatientRecord(Patient patient) throws PatientLinkException {
        try {
             PatientLink patientLink =  new PatientLink();
             patientLink.setSourceNhsNO(patient.getNhsno());
@@ -51,8 +56,8 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
             demographicsDao.saveDemographics(createLinkRecord(patient));
             patientLinkDao.createLink(patientLink);
        } catch (Exception e) {
-           e.printStackTrace();
-           throw e;
+           LOGGER.error("Error creating link record for patient", e);
+           throw new PatientLinkException("There has been an error creating the link record for the patient", e);
        }
 
 

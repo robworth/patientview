@@ -67,6 +67,11 @@ public class SelectPatientPanel extends Panel {
 
     private BasePage getDiseasePage(DiseaseGroup diseaseGroup, Patient patient){
         if (diseaseGroup != null) {
+
+            if (patient.getDiseaseGroup() == null) {
+                patient.setDiseaseGroup(diseaseGroup);
+            }
+
             if (diseaseGroup.getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
                     diseaseGroup.getId().
                             equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
@@ -74,7 +79,7 @@ public class SelectPatientPanel extends Panel {
             } else if (diseaseGroup.getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
                 return new AlportPatientPage(patient);
             } else if (diseaseGroup.getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
-                return new HNF1BPatientPage(patient);
+                return new HNF1BPatientPage(patient, patientModel);
             } else {
                 return new GenericPatientPage(patient);
             }
@@ -100,7 +105,7 @@ public class SelectPatientPanel extends Panel {
                 patient = demographicsManager.get(patient.getId());
 
                 try {
-                    if (patientLinkManager.linkPatientRecord(patient) != null) {
+                    if (patientLinkManager.getPatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
                         patient = patientLinkManager.getMergePatient(patient);
                     }
                 } catch (Exception e) {

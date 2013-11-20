@@ -15,6 +15,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
+import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
@@ -67,7 +68,7 @@ public class HNF1BPatientPage extends BasePage {
         init(new Patient());
     }
 
-    public HNF1BPatientPage(Patient patient) {
+    public HNF1BPatientPage(Patient patient, AddPatientModel addPatientModel) {
         init(patient);
     }
 
