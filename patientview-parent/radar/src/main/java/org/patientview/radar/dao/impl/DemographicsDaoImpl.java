@@ -11,6 +11,7 @@ import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
@@ -49,6 +50,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
     private PatientLinkDao patientLinkDao;
+    private UserDao userDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -282,7 +284,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             Patient linkPatient = getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
                     patientLink.getDestinationUnit());
 
-            return RadarUtility.mergePatientRecords(patient,linkPatient);
+            return RadarUtility.mergePatientRecords(patient, linkPatient);
         }
 
     }
@@ -570,8 +572,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 //            }
 //
             // set generic fields
-            String diseaseGroupId = resultSet.getString("unitcode"); //RDG,
-            if (diseaseGroupId != null) {
+
+            String diseaseGroupId = null;
+
+            List<String> radarMappings = userDao.getPatientRadarMappings(patient.getNhsno());
+
+            if (CollectionUtils.isNotEmpty(radarMappings)) {
+                diseaseGroupId = radarMappings.get(0);
                 patient.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
             }
             // todo fix the renal_unit_2 and RDG
@@ -684,6 +691,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setLastdatadate(resultSet.getDate("lastdatadate"));
             return patient;
         }
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     public void setPatientLinkDao(PatientLinkDao patientLinkDao) {

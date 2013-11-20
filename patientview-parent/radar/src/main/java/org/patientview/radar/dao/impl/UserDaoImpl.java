@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
+import org.patientview.radar.exception.UserCreationException;
+import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;
@@ -516,23 +518,29 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 new PatientUserRowMapper());
     }
 
-    public void savePatientUser(final PatientUser patientUser) throws Exception {
+    public void savePatientUser(final PatientUser patientUser) throws UserCreationException {
         // save details of the user into the radar tables
-        Map<String, Object> patientUserMap = new HashMap<String, Object>() {
-            {
-                put(PATIENT_USER_ID_FIELD_NAME, patientUser.getId());
-                put(PATIENT_USER_RADAR_NO_FIELD_NAME, patientUser.getRadarNumber());
-                put(PATIENT_USER_DOB_FIELD_NAME, patientUser.getDateOfBirth());
-                put(PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME, patientUser.getDateRegistered());
-            }
-        };
+        try {
+            Map<String, Object> patientUserMap = new HashMap<String, Object>() {
+                {
+                    put(PATIENT_USER_ID_FIELD_NAME, patientUser.getId());
+                    put(PATIENT_USER_RADAR_NO_FIELD_NAME, patientUser.getRadarNumber());
+                    put(PATIENT_USER_DOB_FIELD_NAME, patientUser.getDateOfBirth());
+                    put(PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME, patientUser.getDateRegistered());
+                }
+            };
 
-        if (patientUser.hasValidId()) {
-            String updateSql = buildUpdateQuery(PATIENT_USER_TABLE_NAME, PATIENT_USER_ID_FIELD_NAME, patientUserMap);
-            namedParameterJdbcTemplate.update(updateSql, patientUserMap);
-        } else {
-            Number id = patientUsersInsert.executeAndReturnKey(patientUserMap);
-            patientUser.setId(id.longValue());
+            if (patientUser.hasValidId()) {
+                String updateSql = buildUpdateQuery(PATIENT_USER_TABLE_NAME, PATIENT_USER_ID_FIELD_NAME,
+                        patientUserMap);
+                namedParameterJdbcTemplate.update(updateSql, patientUserMap);
+            } else {
+                Number id = patientUsersInsert.executeAndReturnKey(patientUserMap);
+                patientUser.setId(id.longValue());
+            }
+        } catch (Exception e) {
+            LOGGER.error("There has been an exception saving the user");
+            throw new UserCreationException("Error saving user", e);
         }
 
     }
@@ -584,10 +592,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return jdbcTemplate.queryForInt(sql, nhsno, unitcode) > 0;
     }
 
-    public boolean hasPatientRadarMappings(String nhsNo) {
+    /**
+     * TODO UserMapping object already exists but for Radar. Change this to return a object!
+     *
+     * @param nhsNo
+     * @return
+     */
+    public List<String> getPatientRadarMappings(String nhsNo) {
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT COUNT(1) ");
+        query.append("SELECT un.unitcode ");
         query.append("FROM   usermapping mp ");
         query.append(",      unit un ");
         query.append("WHERE  un.unitcode = mp.unitcode ");
@@ -595,7 +609,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         query.append(nhsNo);
         query.append("' ");
         query.append("AND    un.sourceType = 'radargroup' ");
-        return jdbcTemplate.queryForInt(query.toString()) > 0;
+
+        return jdbcTemplate.queryForList(query.toString(), String.class) ;
 
     }
 
@@ -606,6 +621,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     public void createUserMappingInPatientView(String username, String nhsno, String unitcode) throws Exception {
+
         // also need to create a usermapping so this user can also log into rpv to add users
         Map<String, Object> userMappingMap = new HashMap<String, Object>();
         userMappingMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
@@ -628,13 +644,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 userMappingMap);
     }
 
-    public void createRoleInPatientView(Long userId, String rpvRole) throws Exception {
-        Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
+    public void createRoleInPatientView(Long userId, String rpvRole) throws UserRoleException {
+        try {
+            Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
+            specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
+            specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
+            specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
 
-        pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
+            pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
+        } catch (Exception e) {
+            LOGGER.error("The has been an error creating the user specialty role", e);
+            new UserRoleException("Error creating the specialty user role", e);
+
+        }
     }
 
     public void deleteRoleInPatientView(Long userId) throws Exception {
@@ -696,7 +718,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Remove a user from radar - this will delete the record in the shared RPV table and the radar user mapping
      * @param user User
      */
-    private void deleteUser(User user) throws Exception {
+    public void deleteUser(User user) throws Exception {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(ID_FIELD_NAME, user.getUserId());
 
