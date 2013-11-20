@@ -106,10 +106,12 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
             }
         }
         if (!monthBeforeNow.equals("0")) {
-            sql += "AND datestamp BETWEEN date_sub"
+            sql += " ) AND datestamp BETWEEN date_sub"
                     + "(curdate(), INTERVAL " + monthBeforeNow + " MONTH ) AND curdate()";
+        } else {
+            sql += " ) ";
         }
-        sql += ") ORDER BY testresult.datestamp desc ";
+        sql += " ORDER BY testresult.datestamp desc ";
 
 
 
