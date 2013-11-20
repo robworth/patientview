@@ -103,8 +103,6 @@ public class AddPatientPage extends BasePage {
                 }
 
                 if (!hasError()) {
-
-
                     patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
                     selectPatientPanel.setPatientModel(model);
                     selectPatientPanel.setVisible(true);

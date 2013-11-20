@@ -303,7 +303,6 @@ public class ImportManagerImpl implements ImportManager {
 
     private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,
                                                           Date mostRecentTestResultDateRangeStopDate) {
-        LOGGER.info("mostRecentTestResultDateRangeStopDate {} ", mostRecentTestResultDateRangeStopDate);
         if (dateRanges != null && dateRanges.size() > 0) {
             for (TestResultDateRange testResultDateRange : dateRanges) {
                 Date stopDate = TimestampUtils.createTimestampEndDay(testResultDateRange.getStopDate()).getTime();
