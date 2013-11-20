@@ -564,15 +564,12 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             patient.setUnitcode(resultSet.getString("unitCode"));
+            // There should only ever be one centre
+            List<Centre> centres = utilityDao.getRenalUnitCentre(patient.getNhsno());
 
-//            Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");
-//            if (!resultSet.wasNull()) {
-//                Centre centre = utilityDao.getCentre(renalUnitAuthorisedId);
-//                patient.setRenalUnitAuthorised(centre);
-//            }
-//
-            // set generic fields
-
+            if (CollectionUtils.isNotEmpty(centres)) {
+                patient.setRenalUnit(centres.get(0));
+            }
             String diseaseGroupId = null;
 
             List<String> radarMappings = userDao.getPatientRadarMappings(patient.getNhsno());
