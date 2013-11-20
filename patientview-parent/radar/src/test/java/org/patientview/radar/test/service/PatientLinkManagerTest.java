@@ -189,7 +189,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
     public void testLinkedRecordsAreReturnedWhenListingByUnitCode() throws Exception {
 
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
-        userManager.registerPatient(sourcePatient);
+        userManager.savePatientUser(sourcePatient);
         patientLinkManager.linkPatientRecord(sourcePatient);
         PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
         Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
