@@ -3,6 +3,12 @@ package org.patientview.radar.util;
 import com.Ostermiller.util.RandPass;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.pages.patient.GenericPatientPage;
+import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
+import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -156,4 +162,30 @@ public class RadarUtility {
         patient.setHospitalnumber(null);
         patient.setRenalUnit(null);
     }
+
+
+    public static BasePage getDiseasePage(DiseaseGroup diseaseGroup, Patient patient){
+        if (diseaseGroup != null) {
+
+            if (patient.getDiseaseGroup() == null) {
+                patient.setDiseaseGroup(diseaseGroup);
+            }
+
+            if (diseaseGroup.getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
+                    diseaseGroup.getId().
+                            equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
+                return new SrnsPatientPage(null);
+            } else if (diseaseGroup.getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
+                return new AlportPatientPage(patient);
+            } else if (diseaseGroup.getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
+                return new HNF1BPatientPage(patient);
+            } else {
+                return new GenericPatientPage(patient);
+            }
+        }  else {
+            return new GenericPatientPage(patient);
+        }
+
+    }
+
 }
