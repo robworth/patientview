@@ -82,6 +82,41 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
     }
 
     @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(String username, List<String> resultCodes,
+                                                                     String monthBeforeNow) {
+        List<Object> params = new ArrayList<Object>();
+        params.add(username);
+        String sql = " SELECT DISTINCT testresult.*, unit.shortname "
+                + " FROM testresult "
+                + " LEFT JOIN unit ON unit.unitcode = testresult.unitcode "
+                + " JOIN user, usermapping, result_heading "
+                + " WHERE user.username = ? "
+                + " AND user.username = usermapping.username "
+                + " AND usermapping.nhsno = testresult.nhsno "
+                + " AND testresult.testcode = result_heading.headingcode "
+                + " AND result_heading.headingcode IN (";
+
+        for (int x = 0; x < resultCodes.size(); x++) {
+            sql += " ? ";
+
+            params.add(resultCodes.get(x));
+
+            if (x != resultCodes.size() - 1) {
+                sql += ",";
+            }
+        }
+        if (!monthBeforeNow.equals("0")) {
+            sql += "AND datestamp BETWEEN date_sub"
+                    + "(curdate(), INTERVAL " + monthBeforeNow + " MONTH ) AND curdate()";
+        }
+        sql += ") ORDER BY testresult.datestamp desc ";
+
+
+
+        return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
+    }
+
+    @Override
     public List<TestResult> get(String nhsno, String unitcode) {
 
         String sql = "SELECT testresult.* FROM testresult WHERE testresult.nhsno = ? AND testresult.unitcode = ? "

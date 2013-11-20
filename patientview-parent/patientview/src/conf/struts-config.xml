@@ -280,7 +280,16 @@
             <form-property name="conversationId" type="java.lang.Long"/>
             <form-property name="unitCode" type="java.lang.String"/>
         </form-bean>
+
+        <form-bean name="resultForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="resultType1" type="java.lang.String"/>
+            <form-property name="resultType2" type="java.lang.String"/>
+            <form-property name="period" type="java.lang.String"/>
+        </form-bean>
     </form-beans>
+
+
 
     <!-- ========== Global Forward Definitions ============================== -->
     <global-forwards>
@@ -395,6 +404,17 @@
                 type="org.patientview.patientview.diagnostics.DiagnosticsAction"
                 parameter="diagnostics">
             <forward name="success" path="/patient/diagnostics.jsp"/>
+        </action>
+
+        <action path="/patient/graphic_testresult"
+                type="org.patientview.patientview.ResultsAction"
+                name="resultForm">
+        </action>
+
+        <action path="/patient/testresults"
+                type="org.patientview.patientview.ResultsInitAction"
+                name="resultForm">
+            <forward name="success" path="/patient/test_results.jsp"/>
         </action>
 
         <action path="/patient/results"

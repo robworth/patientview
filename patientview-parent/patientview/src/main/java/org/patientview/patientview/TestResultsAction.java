@@ -60,7 +60,7 @@ public class TestResultsAction extends Action {
 
             Panel currentPanel = managePanels(request);
 
-            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
+                List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
 
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
 

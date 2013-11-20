@@ -47,6 +47,15 @@ public interface TestResultDao {
      */
     List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units);
 
+    /**
+     * Get the test results for the patient for the units they belong to.
+     * The unit list is per Specialty.
+     *
+     * @param units not mandatory
+     */
+    List<TestResultWithUnitShortname> getTestResultForPatient(String username, List<String> resultCodes,
+                                                              String monthBeforeNow);
+
     void save(TestResult testResult);
 
     List<TestResult> get(String nhsno, String unitcode);
