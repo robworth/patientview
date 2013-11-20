@@ -6,6 +6,7 @@ import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.Patient;
+import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.user.User;
@@ -179,6 +180,9 @@ public class DemographicsPanel extends Panel {
 
                 try {
                     userManager.registerPatient(patient);
+                } catch (RegisterException re) {
+                    LOGGER.error("Registration Exception {} ", re.getMessage());
+                    error("Could not register patient" + re.getMessage());
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());

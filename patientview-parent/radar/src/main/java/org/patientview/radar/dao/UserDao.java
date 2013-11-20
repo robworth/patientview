@@ -1,5 +1,6 @@
 package org.patientview.radar.dao;
 
+import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;
@@ -59,7 +60,7 @@ public interface UserDao {
 
     boolean userExistsInPatientView(String nhsno);
 
-    boolean hasPatientRadarMappings(String nhsNo);
+    List<String> getPatientRadarMappings(String nhsNo);
 
     void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                String rpvRole) throws Exception;
@@ -68,7 +69,7 @@ public interface UserDao {
 
     void deleteUserMappingInPatientView(String username) throws Exception;
 
-    void createRoleInPatientView(Long userId, String rpvRole) throws Exception;
+    void createRoleInPatientView(Long userId, String rpvRole) throws UserRoleException;
 
     void deleteRoleInPatientView(Long userId) throws Exception;
 
@@ -79,5 +80,7 @@ public interface UserDao {
     boolean userExistsInPatientView(String nhsno, String unitcode);
 
     boolean usernameExistsInPatientView(String username);
+
+    public void deleteUser(User user) throws Exception;
 
 }

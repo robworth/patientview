@@ -16,7 +16,7 @@ public class GenericDiagnosisManagerImpl implements GenericDiagnosisManager {
     }
 
     public List<GenericDiagnosis> getByDiseaseGroup(DiseaseGroup diseaseGroup) {
-        return genericDiagnosisDao.getByDiseaseGroup(diseaseGroup);
+            return genericDiagnosisDao.getByDiseaseGroup(diseaseGroup);
     }
 
     public GenericDiagnosis get(String prdCode, String workingGroup) {

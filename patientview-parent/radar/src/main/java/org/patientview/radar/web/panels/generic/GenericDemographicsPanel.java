@@ -28,6 +28,7 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
@@ -71,7 +72,7 @@ public class GenericDemographicsPanel extends Panel {
     private UserManager userManager;
 
 
-    private List<Component> nonEditableComponents;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
 
@@ -84,7 +85,7 @@ public class GenericDemographicsPanel extends Panel {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        nonEditableComponents = new ArrayList<Component>();
+        List<Component> nonEditableComponents = new ArrayList<Component>();
 
         final ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
@@ -141,11 +142,10 @@ public class GenericDemographicsPanel extends Panel {
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
-                    if (patient.isEditableDemographics()) {
-                        userManager.registerPatient(patient);
-                    } else {
-                        demographicsManager.saveDemographics(patient);
-                    }
+                     userManager.registerPatient(patient);
+                } catch (RegisterException re) {
+                    LOGGER.error("Registration Exception {} ", re.getMessage());
+                    error("Could not register patient" + re.getMessage());
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());

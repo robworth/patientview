@@ -2,6 +2,7 @@ package org.patientview.radar.service;
 
 import org.patientview.model.Patient;
 import org.patientview.model.PatientLink;
+import org.patientview.radar.exception.PatientLinkException;
 
 /**
  * User: james@solidstategroup.com
@@ -14,7 +15,7 @@ public interface PatientLinkManager {
 
     PatientLink getPatientLink(String nhsNo, String unitCode);
 
-    Patient linkPatientRecord(Patient patient) throws Exception;
+    Patient linkPatientRecord(Patient patient) throws PatientLinkException;
 
     Patient getMergePatient(Patient sourcePatient) throws Exception;
 }

@@ -35,6 +35,7 @@
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
         <property name="patientLinkDao" ref="patientLinkDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="diagnosisDao" class="org.patientview.radar.dao.impl.DiagnosisDaoImpl">
