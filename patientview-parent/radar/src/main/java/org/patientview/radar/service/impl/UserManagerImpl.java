@@ -37,6 +37,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -203,7 +204,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             joinRequest.setEmail(patient.getEmailAddress());
             joinRequest.setFirstName(patient.getForename());
             joinRequest.setLastName(patient.getSurname());
-            joinRequest.setUnitcode(patient.getUnitcode());
+            String unitCode = patient.getUnitcode();
+            if (StringUtils.hasText(unitCode) && patient.getRenalUnit() != null) {
+                unitCode = patient.getRenalUnit().getUnitCode();
+            }
+            joinRequest.setUnitcode(unitCode);
             joinRequest.setDateOfRequest(new Date());
 
             joinRequestDao.saveJoinRequest(joinRequest);
