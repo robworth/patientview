@@ -104,10 +104,8 @@ public class AddPatientPage extends BasePage {
 
                 if (!hasError()) {
 
-                    if (userManager.userExistsInPatientView(model.getPatientId())) {
-                        patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
-                    }
 
+                    patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
                     selectPatientPanel.setPatientModel(model);
                     selectPatientPanel.setVisible(true);
                     setResponsePage(this.getPage());
@@ -176,8 +174,9 @@ public class AddPatientPage extends BasePage {
                         "radar-registry-background-information/radar-recruitment-guide/"));
 
         // add the components
-        form.add(id, idType, diseaseGroup, submit, feedbackPanel, guidanceContainer, selectPatientPanel);
-        add(form, pageNumber);
+        form.add(id, idType, diseaseGroup, submit, feedbackPanel, guidanceContainer);
+
+        add(form, selectPatientPanel, pageNumber);
     }
 
     public void load() {

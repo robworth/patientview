@@ -17,6 +17,7 @@ import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.pages.patient.GenericPatientPage;
@@ -39,6 +40,9 @@ public class SelectPatientPanel extends Panel {
 
     @SpringBean
     private UserManager userManager;
+
+    @SpringBean
+    private PatientLinkManager patientLinkManager;
 
     private IModel<List<Patient>> model;
     private AddPatientModel patientModel;
@@ -80,7 +84,7 @@ public class SelectPatientPanel extends Panel {
 
     }
 
-    private Form createSelectionForm() {
+    private Form createSelectionForm()  {
 
         // Form that displays the potential patient records to link with from the Patient table
 
@@ -94,6 +98,16 @@ public class SelectPatientPanel extends Panel {
 
                 Patient patient = (Patient) group.getDefaultModelObject();
                 patient = demographicsManager.get(patient.getId());
+
+                try {
+                    if (patientLinkManager.linkPatientRecord(patient) != null) {
+                        patient = patientLinkManager.getMergePatient(patient);
+                    }
+                } catch (Exception e) {
+                    //TODO fix this
+                    e.printStackTrace();
+                }
+
 
 
                 DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
@@ -159,7 +173,7 @@ public class SelectPatientPanel extends Panel {
                 patient.setDiseaseGroup(patientModel.getDiseaseGroup());
                 patient.setNhsno(patientModel.getPatientId());
                 patient.setNhsNumberType(patientModel.getNhsNumberType());
-
+                patient.setEditableDemographics(true);
                 setResponsePage(getDiseasePage(patient.getDiseaseGroup(), patient));
 
             }

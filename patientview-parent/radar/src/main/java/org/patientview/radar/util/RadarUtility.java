@@ -2,6 +2,8 @@ package org.patientview.radar.util;
 
 import com.Ostermiller.util.RandPass;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.patientview.model.Patient;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -69,5 +71,89 @@ public class RadarUtility {
         return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
     }
 
+    // Make sure the link record displays data from the
+    public static Patient overRideLinkRecord(Patient source, Patient link) {
 
+
+        link.setForename(source.getForename());
+        link.setSurname(source.getSurname());
+        link.setDob(source.getDob());
+        link.setAddress1(source.getAddress1());
+        link.setAddress2(source.getAddress2());
+        link.setAddress3(source.getAddress3());
+        link.setAddress4(source.getAddress4());
+        link.setPostcode(source.getPostcode());
+        link.setSex(source.getSex());
+        link.setTelephone1(source.getTelephone1());
+        link.setHospitalnumber(source.getHospitalnumber());
+        link.setRenalUnit(source.getRenalUnit());
+
+        return link;
+
+    }
+
+    // Merge the two records together, source record taking priority on certain fields.
+    // Done by getting the source record and just adding any radar stuff in it if it's found
+    public static Patient mergePatientRecords(Patient source, Patient link) {
+
+        // Properties to mock the source object into the linked one
+        source.setId(link.getId());
+        source.setUnitcode(link.getUnitcode());
+        source.setNhsno(link.getNhsno());
+
+        // Properties overridden has radar data
+        if (StringUtils.hasText(link.getSurnameAlias())) {
+            source.setSurnameAlias(link.getSurnameAlias());
+        }
+
+        if (StringUtils.hasText(link.getEthnicGp())) {
+            source.setEthnicGp(link.getEthnicGp());
+        }
+
+        if (StringUtils.hasText(link.getTelephone2())){
+            source.setTelephone2(link.getTelephone2());
+        }
+
+        if (StringUtils.hasText(link.getMobile())) {
+            source.setMobile(link.getMobile());
+        }
+
+        if (link.getRrtModality() != null) {
+            source.setRrtModality(link.getRrtModality());
+        }
+
+        if (StringUtils.hasText(link.getDiagnosis())) {
+            source.setDiagnosis(link.getDiagnosis());
+        }
+
+        if (link.getDiagnosisDate() != null) {
+            source.setDiagnosisDate(link.getDiagnosisDate());
+        }
+
+        if (link.getOtherClinicianAndContactInfo() != null) {
+            source.setOtherClinicianAndContactInfo(link.getOtherClinicianAndContactInfo());
+        }
+
+        if (StringUtils.hasText(link.getComments())) {
+            source.setComments(link.getComments());
+        }
+
+        return source;
+    }
+
+
+    public static void cleanLinkRecord(Patient patient) {
+        patient.setSurname(null);
+        patient.setForename(null);
+        patient.setDob(null);
+        patient.setAddress1(null);
+        patient.setAddress2(null);
+        patient.setAddress3(null);
+        patient.setAddress4(null);
+        patient.setPostcode(null);
+        patient.setSex(null);
+        patient.setTelephone1(null);
+        patient.setHospitalnumber(null);
+        patient.setRenalUnit(null);
+    }
 }

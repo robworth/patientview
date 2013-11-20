@@ -265,7 +265,7 @@ public class UtilityManagerImpl implements UtilityManager {
 
             /// TODO -- This is originally a test method being used in the code
             //  TODO -- Mappings need to be added perhaps use the correct registration method
-            userDao.createPatientViewUser(patientUser);
+            userDao.createUser(patientUser);
         }
 
         writeConsultantToFile(consultants);

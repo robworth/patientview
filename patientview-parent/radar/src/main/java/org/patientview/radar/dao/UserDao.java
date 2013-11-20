@@ -29,7 +29,7 @@ public interface UserDao {
 
     PatientUser getPatientUserWithUsername(String username);
 
-    PatientUser createPatientViewUser(PatientUser patientUser);
+    User createUser(User user);
 
     List<String> getUnitCodes(User user);
 

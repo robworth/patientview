@@ -187,6 +187,9 @@ public class Patient extends BaseModel {
     @Column
     private Long radarConsentConfirmedByUserId;
 
+    @Column
+    private Date mostRecentTestResultDateRangeStopDate;
+
     @Transient
     private Clinician clinician;
 
@@ -222,6 +225,12 @@ public class Patient extends BaseModel {
 
     @Transient
     private Boolean diagnosisDateSelect;
+
+    @Transient
+    private PatientLink patientLink;
+
+    @Transient
+    private boolean editableDemographics;
 
     public enum RRTModality {
         HD(1),
@@ -792,5 +801,28 @@ public class Patient extends BaseModel {
         this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
     }
 
+    public PatientLink getPatientLink() {
+        return patientLink;
+    }
+
+    public void setPatientLink(PatientLink patientLink) {
+        this.patientLink = patientLink;
+    }
+
+    public boolean isEditableDemographics() {
+        return editableDemographics;
+    }
+
+    public void setEditableDemographics(boolean editableDemographics) {
+        this.editableDemographics = editableDemographics;
+    }
+
+    public Date getMostRecentTestResultDateRangeStopDate() {
+        return mostRecentTestResultDateRangeStopDate;
+    }
+
+    public void setMostRecentTestResultDateRangeStopDate(Date mostRecentTestResultDateRangeStopDate) {
+        this.mostRecentTestResultDateRangeStopDate = mostRecentTestResultDateRangeStopDate;
+    }
 }
 

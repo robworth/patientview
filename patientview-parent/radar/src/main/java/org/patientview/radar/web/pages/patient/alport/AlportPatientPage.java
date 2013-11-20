@@ -72,6 +72,7 @@ public class AlportPatientPage extends BasePage {
     public AlportPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
         patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
+
         init(patient);
     }
 
