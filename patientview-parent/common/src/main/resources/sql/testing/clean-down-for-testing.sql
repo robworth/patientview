@@ -15,6 +15,7 @@ delete from emailverification;
 delete from diagnostic;
 delete from comment;
 delete from aboutme;
+delete from news;
 
 delete from conversation;
 delete from message;
