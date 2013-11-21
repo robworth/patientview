@@ -68,7 +68,7 @@ import java.util.List;
  *
  */
 @Service(value = "importManager")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = ProcessException.class)
 public class ImportManagerImpl implements ImportManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
@@ -303,7 +303,6 @@ public class ImportManagerImpl implements ImportManager {
 
     private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,
                                                           Date mostRecentTestResultDateRangeStopDate) {
-        LOGGER.info("mostRecentTestResultDateRangeStopDate {} ", mostRecentTestResultDateRangeStopDate);
         if (dateRanges != null && dateRanges.size() > 0) {
             for (TestResultDateRange testResultDateRange : dateRanges) {
                 Date stopDate = TimestampUtils.createTimestampEndDay(testResultDateRange.getStopDate()).getTime();

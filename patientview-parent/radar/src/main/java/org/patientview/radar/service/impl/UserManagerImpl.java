@@ -5,6 +5,12 @@ import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.JoinRequestDao;
 import org.patientview.radar.dao.UserDao;
+import org.patientview.radar.exception.JoinCreationException;
+import org.patientview.radar.exception.PatientLinkException;
+import org.patientview.radar.exception.RegisterException;
+import org.patientview.radar.exception.UserCreationException;
+import org.patientview.radar.exception.UserMappingException;
+import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.JoinRequest;
 import org.patientview.radar.model.exception.DaoException;
 import org.patientview.radar.model.exception.DecryptionException;
@@ -107,10 +113,13 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    public PatientUser registerPatient(Patient patient) throws Exception {
+    private PatientUser registerPatientUser(Patient patient) throws UserCreationException, UserMappingException,
+            UserRoleException, PatientLinkException, JoinCreationException {
 
+        PatientUser patientUser = null;
         boolean generateJoinRequest = false;
 
+        // If the patient is new then we save the patient record otherwise we have to link it
         if (!patient.hasValidId()) {
             generateJoinRequest = true;
             demographicsDao.saveDemographics(patient);
@@ -118,38 +127,13 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             patientLinkManager.linkPatientRecord(patient);
         }
 
-        validatePatient(patient);
-
         // Create the user record
-        PatientUser patientUser = createUser(patient);
-
-        // now fill in the radar patient stuff
-        patientUser.setRadarNumber(patient.getId());
-        patientUser.setDateOfBirth(patient.getDob());
-
-        // Update the user record created by patient view and create radar patient row and user mapping row
-        userDao.savePatientUser(patientUser);
+        patientUser = createUser(patient);
 
         // Create the patient mapping in patient view so patient view knows the user is a patient
         userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
 
-        // Map the Renal Unit
-        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getRenalUnit().getUnitCode())) {
-            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                    patient.getNhsno(), patient.getRenalUnit().getUnitCode());
-        }
-        // Map the Disease Group
-        if (!userDao.userExistsInPatientView(patient.getNhsno(), patient.getDiseaseGroup().getId())) {
-            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                    patient.getNhsno(), patient.getDiseaseGroup().getId());
-        }
-
-        // Map the Patient Group
-        if (!userDao.userExistsInPatientView(patient.getNhsno(), PATIENT_GROUP)) {
-            userDao.createUserMappingInPatientView(patientUser.getUsername(),
-                    patient.getNhsno(), PATIENT_GROUP);
-        }
-
+        createPatientMappings(patient, patientUser);
 
         if (generateJoinRequest) {
             createJoinRequest(patient);
@@ -160,18 +144,73 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
 
-    private void createJoinRequest(Patient patient) {
-        // Now create a join request for the new user
-        JoinRequest joinRequest = new JoinRequest();
-        joinRequest.setNhsNo(patient.getNhsno());
-        joinRequest.setDateOfBirth(patient.getDob());
-        joinRequest.setEmail(patient.getEmailAddress());
-        joinRequest.setFirstName(patient.getForename());
-        joinRequest.setLastName(patient.getSurname());
-        joinRequest.setUnitcode(patient.getUnitcode());
-        joinRequest.setDateOfRequest(new Date());
+    public PatientUser savePatientUser(Patient patient) throws RegisterException, Exception {
 
-        joinRequestDao.saveJoinRequest(joinRequest);
+        try {
+
+            // Check of the patient needs registering first otherwise just save the patient record
+            if (patient.isEditableDemographics() || !userExistsInPatientView(patient.getNhsno())) {
+                return registerPatientUser(patient);
+            }  else {
+                demographicsDao.saveDemographics(patient);
+                return null;
+            }
+
+        }  catch (UserCreationException  uce) {
+            throw new RegisterException("Could not create user", uce);
+        }  catch (UserMappingException ume) {
+            throw new RegisterException("Could not create user mappings", ume);
+        }  catch (UserRoleException ure) {
+            throw new RegisterException("Could not create role", ure);
+        }  catch (JoinCreationException jce) {
+            throw new RegisterException("User created but could not create join request", jce);
+        }  catch (PatientLinkException ple) {
+            throw new RegisterException("Could not create role", ple);
+        }
+    }
+
+    public void createUserMappingInPatientView(String username, String nhsNo, String unitCode)
+            throws UserMappingException {
+        try {
+            if (!userDao.userExistsInPatientView(nhsNo, unitCode)) {
+                userDao.createUserMappingInPatientView(username, nhsNo, unitCode);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error mapping user {}, {}", username, e.getMessage());
+            throw new UserMappingException("Error creating mapping", e);
+        }
+
+    }
+
+
+    private void createPatientMappings(Patient patient, PatientUser patientUser) throws UserMappingException {
+        // Map the Renal Unit
+        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), getUnitCode(patient));
+        // Map the Disease Group
+        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), patient.getDiseaseGroup()
+                .getId());
+        // Map the Patient Group
+        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), PATIENT_GROUP);
+    }
+
+    private void createJoinRequest(Patient patient) throws JoinCreationException {
+
+        try {
+            // Now create a join request for the new user
+            JoinRequest joinRequest = new JoinRequest();
+            joinRequest.setNhsNo(patient.getNhsno());
+            joinRequest.setDateOfBirth(patient.getDob());
+            joinRequest.setEmail(patient.getEmailAddress());
+            joinRequest.setFirstName(patient.getForename());
+            joinRequest.setLastName(patient.getSurname());
+            joinRequest.setUnitcode(patient.getUnitcode());
+            joinRequest.setDateOfRequest(new Date());
+
+            joinRequestDao.saveJoinRequest(joinRequest);
+        } catch (Exception e) {
+            LOGGER.error("Error creating join request", e);
+            throw new JoinCreationException("Error creating join request", e);
+        }
 
     }
 
@@ -179,37 +218,51 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         // Check we have a valid radar number, email address and date of birth
         if (patient == null || patient.getId() < 1) {
-            throw new IllegalArgumentException("Invalid demographics supplied to registerPatient");
+            throw new IllegalArgumentException("Invalid demographics supplied to savePatientUser");
         }
 
         if (patient.getDob() == null) {
-            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
                     "demographics.getDateOfBirth()");
         }
 
         if (patient.getNhsno() == null) {
-            throw new IllegalArgumentException("Missing required parameter to registerPatient: " +
+            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
                     "demographics.getNhsNumber()");
         }
 
     }
 
-    private PatientUser createUser(Patient patient) {
+    private PatientUser createUser(Patient patient) throws UserCreationException {
 
-        PatientUser patientUser = userDao.getPatientViewUser(patient.getNhsno());
+        PatientUser patientUser = null;
 
+        try {
 
-        // Not registered on the system so create a username for them and a mapping to the patients unit
-        if (patientUser == null) {
+            patientUser = userDao.getPatientViewUser(patient.getNhsno());
 
-            patientUser = new PatientUser();
-            patientUser.setUsername(generateUsername(patient));
-            patientUser.setName(patient.getForename() + " " + patient.getSurname());
-            patientUser.setPassword(generateRandomPassword());
-            patientUser.setEmail(patient.getEmailAddress());
+            // Not registered on the system so create a username for them and a mapping to the patients unit
+            if (patientUser == null) {
 
-            patientUser = (PatientUser) userDao.createUser(patientUser);
+                patientUser = new PatientUser();
+
+                patientUser.setUsername(generateUsername(patient));
+                patientUser.setName(patient.getForename() + " " + patient.getSurname());
+                patientUser.setPassword(generateRandomPassword());
+                patientUser.setEmail(patient.getEmailAddress());
+
+                patientUser = (PatientUser) userDao.createUser(patientUser);
+
+                // now fill in the radar patient stuff
+                patientUser.setRadarNumber(patient.getId());
+                patientUser.setDateOfBirth(patient.getDob());
+                userDao.savePatientUser(patientUser);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error creating user");
+            throw new UserCreationException("Error creating user in database", e);
         }
+
 
         return patientUser;
     }
@@ -401,8 +454,20 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return username + i;
     }
 
-    public boolean hasPatientRadarMapping(String nhsNo) {
-        return userDao.hasPatientRadarMappings(nhsNo);
+
+    private String getUnitCode(Patient patient) {
+        String unitCode = null;
+        if (patient.getRenalUnit() != null) {
+            unitCode = patient.getRenalUnit().getUnitCode();
+        }  else {
+            unitCode = patient.getUnitcode();
+        }
+
+        return unitCode;
+    }
+
+    public List<String> getPatientRadarMappings(String nhsNo) {
+        return userDao.getPatientRadarMappings(nhsNo);
     }
 
     public void setJoinRequestDao(JoinRequestDao joinRequestDao) {

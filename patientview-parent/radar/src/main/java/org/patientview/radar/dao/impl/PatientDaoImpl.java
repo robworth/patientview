@@ -23,13 +23,13 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao {
         query.append(",       surname ");
         query.append(",       dateofbirth ");
         query.append(",       unitcode ");
+        query.append(",       mostRecentTestResultDateRangeStopDate ");
         query.append("FROM    patient ");
         query.append("WHERE   nhsNo = ? ");
+        query.append("ORDER BY   mostRecentTestResultDateRangeStopDate DESC ");
 
         return jdbcTemplate.query(query.toString(), new Object[]{nhsNo}, new PatientSearchMapper());
     }
-
-
 
     private class PatientSearchMapper implements RowMapper<Patient> {
 
@@ -41,6 +41,8 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao {
             patient.setForename(resultSet.getString("forename"));
             patient.setDateofbirth(resultSet.getString("dateofbirth"));
             patient.setUnitcode(resultSet.getString("unitcode"));
+            patient.setMostRecentTestResultDateRangeStopDate(
+                    resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
 
             return patient;
         }

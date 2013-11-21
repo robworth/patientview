@@ -1,5 +1,6 @@
 package org.patientview.radar.web.pages.patient;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -96,15 +97,15 @@ public class AddPatientPage extends BasePage {
 
                 // check nhs number is valid
                 if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
+                    selectPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
-                } else if (userManager.hasPatientRadarMapping(model.getPatientId())) {
+                } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
                     // check that this nhsno has a mapping in the radar system
-                   error("A patient with this NHS or CHI number already exists");
+                    selectPatientPanel.setVisible(false);
+                    error("A patient with this NHS or CHI number already exists");
                 }
 
                 if (!hasError()) {
-
-
                     patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
                     selectPatientPanel.setPatientModel(model);
                     selectPatientPanel.setVisible(true);

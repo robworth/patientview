@@ -11,6 +11,7 @@ import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
@@ -49,6 +50,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
     private PatientLinkDao patientLinkDao;
+    private UserDao userDao;
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -257,7 +259,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     /**
      * Resolve a two way link.
      *
-     * 1) If it's a source record the merge the link record on top of it
+     * 1) If it's a source record them merge the link record on top of it
      * 2) If it's a link record over write the standard demographic fields.
      *
      * @param patient
@@ -282,7 +284,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             Patient linkPatient = getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
                     patientLink.getDestinationUnit());
 
-            return RadarUtility.mergePatientRecords(patient,linkPatient);
+            return RadarUtility.mergePatientRecords(patient, linkPatient);
         }
 
     }
@@ -562,16 +564,18 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             }
 
             patient.setUnitcode(resultSet.getString("unitCode"));
+            // There should only ever be one centre
+            List<Centre> centres = utilityDao.getRenalUnitCentre(patient.getNhsno());
 
-//            Long renalUnitAuthorisedId = resultSet.getLong("RENAL_UNIT_2");
-//            if (!resultSet.wasNull()) {
-//                Centre centre = utilityDao.getCentre(renalUnitAuthorisedId);
-//                patient.setRenalUnitAuthorised(centre);
-//            }
-//
-            // set generic fields
-            String diseaseGroupId = resultSet.getString("unitcode"); //RDG,
-            if (diseaseGroupId != null) {
+            if (CollectionUtils.isNotEmpty(centres)) {
+                patient.setRenalUnit(centres.get(0));
+            }
+            String diseaseGroupId = null;
+
+            List<String> radarMappings = userDao.getPatientRadarMappings(patient.getNhsno());
+
+            if (CollectionUtils.isNotEmpty(radarMappings)) {
+                diseaseGroupId = radarMappings.get(0);
                 patient.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
             }
             // todo fix the renal_unit_2 and RDG
@@ -684,6 +688,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setLastdatadate(resultSet.getDate("lastdatadate"));
             return patient;
         }
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     public void setPatientLinkDao(PatientLinkDao patientLinkDao) {

@@ -44,7 +44,7 @@ public interface UserManager {
 
     void deletePatientUser(PatientUser patientUser) throws Exception;
 
-    PatientUser registerPatient(Patient patient) throws Exception;
+    PatientUser savePatientUser(Patient patient) throws Exception;
 
     void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
             RegistrationException, InvalidSecurityQuestionAnswer;
@@ -88,6 +88,6 @@ public interface UserManager {
 
     String generateUsername(Patient patient);
 
-    boolean hasPatientRadarMapping(String nhsNo);
+    List<String> getPatientRadarMappings(String nhsNo);
 
 }
