@@ -19,11 +19,7 @@ import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.service.UserManager;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.pages.patient.GenericPatientPage;
-import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
-import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
+import org.patientview.radar.util.RadarUtility;
 
 import java.util.List;
 
@@ -59,35 +55,9 @@ public class SelectPatientPanel extends Panel {
         add(new FeedbackPanel("patientSelection"));
         // Create the form that select patients to link with
         add(createSelectionForm());
-        // Add the form that will create a patient from scratch
-        add(createCreateForm());
 
     }
 
-
-    private BasePage getDiseasePage(DiseaseGroup diseaseGroup, Patient patient){
-        if (diseaseGroup != null) {
-
-            if (patient.getDiseaseGroup() == null) {
-                patient.setDiseaseGroup(diseaseGroup);
-            }
-
-            if (diseaseGroup.getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
-                    diseaseGroup.getId().
-                            equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
-                return new SrnsPatientPage(null);
-            } else if (diseaseGroup.getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
-                return new AlportPatientPage(patient);
-            } else if (diseaseGroup.getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
-                return new HNF1BPatientPage(patient, patientModel);
-            } else {
-                return new GenericPatientPage(patient);
-            }
-        }  else {
-            return new GenericPatientPage(patient);
-        }
-
-    }
 
     private Form createSelectionForm()  {
 
@@ -113,10 +83,8 @@ public class SelectPatientPanel extends Panel {
                     e.printStackTrace();
                 }
 
-
-
                 DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
-                setResponsePage(getDiseasePage(diseaseGroup, patient));
+                setResponsePage(RadarUtility.getDiseasePage(diseaseGroup, patient));
 
             }
         };
@@ -160,39 +128,8 @@ public class SelectPatientPanel extends Panel {
 
         return form;
 
-            }
-
-    private Form createCreateForm() {
-
-        // This is the form that submits to the new create patient form
-
-        AjaxSubmitLink create = new AjaxSubmitLink("create") {
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-            }
-
-        };
-
-        Form<?> createForm = new Form<Patient>("patientCreationForm") {
-            @Override
-            protected void onSubmit() {
-                Patient patient = new Patient();
-                patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-                patient.setNhsno(patientModel.getPatientId());
-                patient.setNhsNumberType(patientModel.getNhsNumberType());
-                patient.setEditableDemographics(true);
-                setResponsePage(getDiseasePage(patient.getDiseaseGroup(), patient));
-
-            }
-        };
-        createForm.add(create);
-
-        return createForm;
     }
+
 
     public void setPatientModel(AddPatientModel patientModel) {
         this.patientModel = patientModel;

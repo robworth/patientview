@@ -35,6 +35,7 @@ import org.patientview.radar.web.components.ComponentHelper;
 import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
 import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.CreatePatientPanel;
 import org.patientview.radar.web.panels.SelectPatientPanel;
 
 import java.util.ArrayList;
@@ -80,6 +81,8 @@ public class AddPatientPage extends BasePage {
         final SelectPatientPanel selectPatientPanel = new SelectPatientPanel("selectPatientPanel", patientListModel);
         selectPatientPanel.setVisible(false);
 
+        final CreatePatientPanel createPatientPanel = new CreatePatientPanel("createPatientPanel", addPatientModel);
+        createPatientPanel.setVisible(false);
 
         // create form
         Form<AddPatientModel> form = new Form<AddPatientModel>("form", addPatientModel) {
@@ -107,8 +110,16 @@ public class AddPatientPage extends BasePage {
 
                 if (!hasError()) {
                     patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
-                    selectPatientPanel.setPatientModel(model);
-                    selectPatientPanel.setVisible(true);
+
+                    // If there is results show them otherwise hide them
+                    if (CollectionUtils.isNotEmpty(patientListModel.getObject())) {
+                        selectPatientPanel.setPatientModel(model);
+                        selectPatientPanel.setVisible(true);
+                    } else {
+                        selectPatientPanel.setVisible(false);
+                    }
+                    createPatientPanel.setVisible(true);
+
                     setResponsePage(this.getPage());
 
                 }
@@ -177,7 +188,7 @@ public class AddPatientPage extends BasePage {
         // add the components
         form.add(id, idType, diseaseGroup, submit, feedbackPanel, guidanceContainer);
 
-        add(form, selectPatientPanel, pageNumber);
+        add(form, selectPatientPanel, createPatientPanel, pageNumber);
     }
 
     public void load() {
