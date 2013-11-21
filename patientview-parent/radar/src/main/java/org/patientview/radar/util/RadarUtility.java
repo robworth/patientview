@@ -177,8 +177,8 @@ public class RadarUtility {
                             equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
 
                 PageParameters pageParameters = new PageParameters();
-                pageParameters.add("PARAM_ID", patient.getId());
-                pageParameters.add("idVal", patient.getUnitcode());
+                pageParameters.add("id", patient.getId());
+                pageParameters.add("idVal", patient.getNhsno());
                 pageParameters.add("diseaseGroupId", diseaseGroup.getId());
                 pageParameters.add("idType", "NHS");
                 if (patient.getDiagnosis() != null) {
