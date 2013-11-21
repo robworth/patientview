@@ -205,8 +205,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
 
     private void createPatientMappings(Patient patient, PatientUser patientUser) throws UserMappingException {
-        // Create Radar Mapping
-      //  userDao.saveUserMapping(patientUser);
         // Map the Renal Unit
         createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), getUnitCode(patient));
         // Map the Disease Group
@@ -243,25 +241,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         } catch (Exception e) {
             LOGGER.error("Error creating join request", e);
             throw new JoinCreationException("Error creating join request", e);
-        }
-
-    }
-
-    private void validatePatient(Patient patient) {
-
-        // Check we have a valid radar number, email address and date of birth
-        if (patient == null || patient.getId() < 1) {
-            throw new IllegalArgumentException("Invalid demographics supplied to savePatientUser");
-        }
-
-        if (patient.getDob() == null) {
-            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
-                    "demographics.getDateOfBirth()");
-        }
-
-        if (patient.getNhsno() == null) {
-            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
-                    "demographics.getNhsNumber()");
         }
 
     }
