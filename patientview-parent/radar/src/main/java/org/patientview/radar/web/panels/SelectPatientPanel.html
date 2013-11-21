@@ -4,73 +4,74 @@
     <div id="tabsC">
     </div>
     <div wicket:id="patientSelection"></div>
-    <form wicket:id="patientSelectionForm">
+    <div>
+        <form wicket:id="patientSelectionForm">
 
 
-        <wicket:container wicket:id="group">
-            <table border="1" cellspacing="0" cellpadding="3"
-                   style="font-size:85%;width:100%;border-collapse:collapse;"
-                   id="ctl00_ContentPlaceHolder1_GridView2" rules="all">
-                <tr>
-                    <th>
-                        &nbsp;
-                    </th>
-                    <th>
-                        Id
-                    </th>
-                    <th>
-                        NHS Number
-                    </th>
-                    <th>
-                        Forename
-                    </th>
-                    <th>
-                        Surname
-                    </th>
-                    <th>
-                        Date of Birth
-                    </th>
-                    <th>
-                        Unit Code
-                    </th>
-                    <th>
-                        Results Last Received
-                    </th>
-                </tr>
-
-                <label wicket:id="choice">
+            <wicket:container wicket:id="group">
+                <table border="1" cellspacing="0" cellpadding="3"
+                       style="font-size:85%;width:100%;border-collapse:collapse;"
+                       id="ctl00_ContentPlaceHolder1_GridView2" rules="all">
                     <tr>
-                        <td>
-                            <input wicket:id="radio" type="radio" name="ticket"/>
-                        </td>
-                        <td>
-                             <wicket:container wicket:id="id"/>
-                        </td>
-                        <td>
-                            <wicket:container wicket:id="nhsNo"/>
-                        </td>
-                        <td>
-                            <wicket:container wicket:id="forename"/>
-                        </td>
-                        <td>
-                            <wicket:container wicket:id="surname"/>
-                        </td>
-                        <td>
-                            <wicket:container wicket:id="dateOfBirth"/>
-                        </td>
-                        <td>
-                            <wicket:container wicket:id="unitCode"/>
-                        </td>
-                        <td>
-                            <wicket:container wicket:id="dateResultsLastReceived"/>
-                        </td>
+                        <th>
+                            &nbsp;
+                        </th>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            NHS Number
+                        </th>
+                        <th>
+                            Forename
+                        </th>
+                        <th>
+                            Surname
+                        </th>
+                        <th>
+                            Date of Birth
+                        </th>
+                        <th>
+                            Unit Code
+                        </th>
+                        <th>
+                            Results Last Received
+                        </th>
                     </tr>
-                </label>
-            </table>
-        </wicket:container>
 
-        <input class="saveBtn" type="button" wicket:id="submit" value="Link Patient"/>
+                    <label wicket:id="choice">
+                        <tr>
+                            <td>
+                                <input wicket:id="radio" type="radio" name="ticket"/>
+                            </td>
+                            <td>
+                                 <wicket:container wicket:id="id"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="nhsNo"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="forename"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="surname"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="dateOfBirth"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="unitCode"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="dateResultsLastReceived"/>
+                            </td>
+                        </tr>
+                    </label>
+                </table>
+            </wicket:container>
 
-    </form>
+            <input class="saveBtn link-patient" type="button" wicket:id="submit" value="Link Patient"/>
 
+        </form>
+    </div>
 </wicket:panel>
