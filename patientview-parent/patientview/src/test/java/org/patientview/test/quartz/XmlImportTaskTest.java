@@ -1,5 +1,8 @@
 package org.patientview.test.quartz;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.common.test.BaseTestPvDbSchema;
@@ -35,6 +38,7 @@ import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -89,6 +93,8 @@ public class XmlImportTaskTest extends BaseTestPvDbSchema {
 
     @Inject
     private UnitDao unitDao;
+
+    private Specialty specialty;
 
     @Test
     public void testRead() throws Exception {
@@ -146,13 +152,78 @@ public class XmlImportTaskTest extends BaseTestPvDbSchema {
     }
 
     @Test
-    public void testImport() throws Exception {
+    public void testImportSetsUnitLastUpdated() throws Exception {
 
+        setup("schedule/TestUnitA_1244_9876543210/TestUnitA_1244_9876543210.xml");
+        xmlImport.execute();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
+        Unit checkUnit = unitDao.get("TestUnitA", specialty);
+        assertNotNull("Unit last import date is null", checkUnit.getLastImportDate());
+        assertEquals("Unit last import date updated not correct",
+                simpleDateFormat.format(date), simpleDateFormat.format(checkUnit.getLastImportDate()));
+
+    }
+
+    /**
+     * Import a new patient with test results and show the mostRecentTestResultDateRangeStopDate is taken from
+     * the last stop date in the xml file.
+     *
+     * Then run a second import with test results previous to the first import.  Show that this does not affect the
+     * mostRecentTestResultDateRangeStopDate set on the patient.
+     *
+     * Then run a third import with test results after the first import.  Show that this does update the
+     * mostRecentTestResultDateRangeStopDate.
+     * @throws Exception
+     */
+    @Test
+    public void testImportSetsPatientMostRecentTestResultDateRangeStopDate() throws Exception {
+
+        setup("schedule/testrun1/first-results-for-patient.xml");
+        xmlImport.execute();
+        Patient patient = patientDao.get("9876543210", "TestUnitA");
+        assertEquals("Date not set correctly on patient from first import",
+                getDateRangeDate("2012-08-17").toString(),
+                patient.getMostRecentTestResultDateRangeStopDate().toString());
+
+        xmlImport.setXmlDirectory(
+                ResourceUtils.getFile("classpath:schedule/testrun2/second-results-for-patient.xml").getParent());
+        xmlImport.execute();
+
+        patient = patientDao.get("9876543210", "TestUnitA");
+        assertEquals("Date should not have changed, stop date was before current value",
+                getDateRangeDate("2012-08-17").toString(),
+                patient.getMostRecentTestResultDateRangeStopDate().toString());
+
+        xmlImport.setXmlDirectory(
+                ResourceUtils.getFile("classpath:schedule/testrun3/third-results-for-patient.xml").getParent());
+        xmlImport.execute();
+
+        patient = patientDao.get("9876543210", "TestUnitA");
+        assertEquals("Date should have updated",
+                getDateRangeDate("2013-01-17").toString(),
+                patient.getMostRecentTestResultDateRangeStopDate().toString());
+    }
+
+    /**
+     * Get a date object that to the spec of that which ends up in the database.
+     * If Fri Aug 17 00:00:00 BST 2012 is used as a stop date it will end up as Fri Aug 17 23:59:59 BST 2012
+     * @param dateStr in the format of that found in the xml file
+     * @return the date
+     */
+    private Date getDateRangeDate(String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        DateTime dt = formatter.parseDateTime(dateStr);
+        return dt.plusDays(1).minusSeconds(1).toDate();
+    }
+
+    private void setup(String directoryAndFilename) throws FileNotFoundException {
         int xmlFilesSize = 0;
 
         String parentDir
-                = ResourceUtils.getFile("classpath:schedule/" +
-                "TestUnitA_1244_9876543210/TestUnitA_1244_9876543210.xml").getParent();
+                = ResourceUtils.getFile("classpath:" + directoryAndFilename).getParent();
 
         setXmlDirectory(parentDir);
 
@@ -163,27 +234,17 @@ public class XmlImportTaskTest extends BaseTestPvDbSchema {
 
         assertTrue("Can not read XML files", xmlFilesSize != 0);
 
-        Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
+        specialty = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");
         Unit unit = new Unit();
         unit.setUnitcode("TestUnitA");
         unit.setName("Test Data For Unit");
         unit.setShortname("Test Data");
-        unit.setSpecialty(specialty1);
+        unit.setSpecialty(specialty);
 
         unitDao.save(unit);
         assertNull("Unit last import date is not null", unit.getLastImportDate());
 
         xmlImport.setXmlDirectory(parentDir);
-        xmlImport.execute();
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-
-        Unit checkUnit = unitDao.get("TestUnitA", specialty1);
-        assertNotNull("Unit last import date is null", checkUnit.getLastImportDate());
-        assertEquals("Unit last import date updated not correct",
-                simpleDateFormat.format(date), simpleDateFormat.format(checkUnit.getLastImportDate()));
-
     }
 
     /**

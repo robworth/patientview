@@ -111,8 +111,6 @@ public class AddPatientPage extends BasePage {
                 }
 
                 if (!hasError()) {
-
-
                     patientListModel.setObject(patientManager.getPatientByNhsNumber(model.getPatientId()));
 
                     // If there is results show them otherwise hide them

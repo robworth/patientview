@@ -29,10 +29,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 public class Unit extends BaseModel {
+
+    @Transient
+    private static final SimpleDateFormat LAST_IMPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Column(nullable = false, unique = true)
     private String unitcode;
@@ -768,6 +773,15 @@ public class Unit extends BaseModel {
 
     public Date getLastImportDate() {
         return lastImportDate;
+    }
+
+    public String getFormattedLastImportDate() {
+        try {
+            return LAST_IMPORT_DATE_FORMAT.format(lastImportDate);
+        } catch (Exception e) {
+            // this is ok
+            return "";
+        }
     }
 
     public void setLastImportDate(Date lastImportDate) {

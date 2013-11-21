@@ -3,6 +3,11 @@
  */
  ALTER TABLE unit ADD COLUMN `lastImportDate` datetime DEFAULT NULL;
 
+/**
+    Add a date column in unit table to store the mostRecentTestResultDateRangeStopDate to be set by the importer.
+ */
+ ALTER TABLE patient ADD COLUMN `mostRecentTestResultDateRangeStopDate` datetime DEFAULT NULL;
+
  /**
     Create the link table for patient->patient
  */

@@ -187,6 +187,9 @@ public class Patient extends BaseModel {
     @Column
     private Long radarConsentConfirmedByUserId;
 
+    @Column
+    private Date mostRecentTestResultDateRangeStopDate;
+
     @Transient
     private Clinician clinician;
 
@@ -812,6 +815,14 @@ public class Patient extends BaseModel {
 
     public void setEditableDemographics(boolean editableDemographics) {
         this.editableDemographics = editableDemographics;
+    }
+
+    public Date getMostRecentTestResultDateRangeStopDate() {
+        return mostRecentTestResultDateRangeStopDate;
+    }
+
+    public void setMostRecentTestResultDateRangeStopDate(Date mostRecentTestResultDateRangeStopDate) {
+        this.mostRecentTestResultDateRangeStopDate = mostRecentTestResultDateRangeStopDate;
     }
 }
 

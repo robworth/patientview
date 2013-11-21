@@ -114,6 +114,12 @@ public class SelectPatientPanel extends Panel {
                 it.add(new Label("surname", it.getModelObject().getSurname()));
                 it.add(new Label("dateOfBirth", it.getModelObject().getDateofbirth()));
                 it.add(new Label("unitCode", it.getModelObject().getUnitcode()));
+                String dateResultsLastReceivedLabel = "";
+                if (it.getModelObject().getMostRecentTestResultDateRangeStopDate() != null) {
+                    dateResultsLastReceivedLabel
+                            = it.getModelObject().getMostRecentTestResultDateRangeStopDate().toString();
+                }
+                it.add(new Label("dateResultsLastReceived", dateResultsLastReceivedLabel));
             }
         });
 
