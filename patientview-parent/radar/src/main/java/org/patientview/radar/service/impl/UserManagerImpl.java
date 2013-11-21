@@ -132,7 +132,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser = createUser(patient);
 
         // Create the patient mapping in patient view so patient view knows the user is a patient
-        userDao.createRoleInPatientView(patientUser.getUserId(), PATIENT_VIEW_GROUP);
+        userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
 
         createPatientMappings(patient, patientUser);
 
