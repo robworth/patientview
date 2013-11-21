@@ -535,7 +535,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             // Set the centre if we have an ID
             String nhsno = resultSet.getString("nhsno");
             if (nhsno != null) {
-                //TODO Fix this
+                //TODO Fix this only needs to return 1 row
                 if (CollectionUtils.isNotEmpty(utilityDao.getRenalUnitCentre(nhsno))) {
                     patient.setRenalUnit(utilityDao.getRenalUnitCentre(nhsno).get(0));
                 }
@@ -578,7 +578,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 diseaseGroupId = radarMappings.get(0);
                 patient.setDiseaseGroup(diseaseGroupDao.getById(diseaseGroupId));
             }
-            // todo fix the renal_unit_2 and RDG
+
             patient.setEmailAddress(resultSet.getString("emailAddress")); //emailAddress,
             patient.setTelephone1(resultSet.getString("telephone1")); //phone1,
             patient.setTelephone2(resultSet.getString("telephone2")); //phone2,

@@ -220,13 +220,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         return patientCountMap;
     }
 
-    // todo
     public int getPatientCountByUnit(Centre centre) {
         try {
-            return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
-                    "FROM patient " +
-                    "WHERE unitcode = ? " +
-                    "GROUP BY unitcode;", new Object[]{centre.getId()});
+            return jdbcTemplate.queryForObject("SELECT COUNT(1) " +
+                                                "FROM    patient " +
+                                                "WHERE   nhsno IN (SELECT nhsNo " +
+                                                "                  FROM   usermapping " +
+                                                "                  WHERE  unitCode = ?);",
+                    new Object[]{centre.getId()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }

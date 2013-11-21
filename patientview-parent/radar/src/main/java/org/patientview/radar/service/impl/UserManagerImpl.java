@@ -132,7 +132,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser = createUser(patient);
 
         // Create the patient mapping in patient view so patient view knows the user is a patient
-        userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
+        userDao.createRoleInPatientView(patientUser.getUserId(), PATIENT_VIEW_GROUP);
 
         createPatientMappings(patient, patientUser);
 
@@ -185,6 +185,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
 
     private void createPatientMappings(Patient patient, PatientUser patientUser) throws UserMappingException {
+        // Create Radar Mapping
+      //  userDao.saveUserMapping(patientUser);
         // Map the Renal Unit
         createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), getUnitCode(patient));
         // Map the Disease Group
@@ -205,9 +207,15 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             joinRequest.setFirstName(patient.getForename());
             joinRequest.setLastName(patient.getSurname());
             String unitCode = patient.getUnitcode();
-            if (StringUtils.hasText(unitCode) && patient.getRenalUnit() != null) {
+
+            if (!StringUtils.hasText(unitCode) && patient.getRenalUnit() != null) {
                 unitCode = patient.getRenalUnit().getUnitCode();
             }
+
+            if (!StringUtils.hasText(unitCode) && patient.getDiseaseGroup() != null) {
+                unitCode = patient.getDiseaseGroup().getId();
+            }
+
             joinRequest.setUnitcode(unitCode);
             joinRequest.setDateOfRequest(new Date());
 
@@ -259,8 +267,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                 patientUser = (PatientUser) userDao.createUser(patientUser);
 
                 // now fill in the radar patient stuff
+                // and invalidate the id and this will create a record in tbl_patient_users
                 patientUser.setRadarNumber(patient.getId());
                 patientUser.setDateOfBirth(patient.getDob());
+                //patientUser.setId(0L);
                 userDao.savePatientUser(patientUser);
             }
         } catch (Exception e) {

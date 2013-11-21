@@ -1,5 +1,6 @@
 package org.patientview.radar.dao;
 
+import org.patientview.radar.exception.UserMappingException;
 import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
@@ -73,7 +74,7 @@ public interface UserDao {
 
     void deleteRoleInPatientView(Long userId) throws Exception;
 
-    void saveUserMapping(User user) throws Exception;
+    void saveUserMapping(User user) throws UserMappingException;
 
     void deleteUserMapping(User user) throws Exception;
 
