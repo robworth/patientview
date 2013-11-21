@@ -412,8 +412,7 @@
         </action>
 
         <action path="/patient/testresults"
-                type="org.patientview.patientview.ResultsInitAction"
-                name="resultForm">
+                type="org.patientview.patientview.ResultsInitAction">
             <forward name="success" path="/patient/test_results.jsp"/>
         </action>
 

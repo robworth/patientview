@@ -31,7 +31,6 @@
 <div class="page-header">
     <h1>Results</h1>
 </div>
-<html:form action="/patient/testresults">
 <div>
     <ul class="nav nav-tabs">
         <li class="active"><a href="#">Graphic</a></li>
@@ -67,13 +66,11 @@
     </div>
 </div>
 
-<input type="hidden" name="resultType1" value="<bean:write name='resultType1'/>" id="result_Type1"/>
-<input type="hidden" name="resultType2" value="<bean:write name='resultType2'/>" id="result_Type2"/>
+<input type="hidden" name="resultCode1" value="<bean:write name='resultType1'/>" id="result_Type1"/>
+<input type="hidden" name="resultCode2" value="<bean:write name='resultType2'/>" id="result_Type2"/>
 <input type="hidden" name="period" value="<bean:write name='period'/>" id="period"/>
 
 <div id="chart_div" style="height:500px;" ></div>
-
-</html:form>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="/js/testresults.js" type="text/javascript"></script>

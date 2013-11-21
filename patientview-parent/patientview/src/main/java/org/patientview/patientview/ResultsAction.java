@@ -35,6 +35,8 @@ import org.patientview.patientview.model.TestResultWithUnitShortname;
 import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +49,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ResultsAction extends Action {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsAction.class);
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
@@ -99,24 +103,6 @@ public class ResultsAction extends Action {
             return LogonUtils.logonChecks(mapping, request, "control");
         }
 
-//        String json =  " {"
-//                + "\"cols\":"
-//                + "[{\"id\":\"DateTime\",\"label\":\"DateTime\",\"type\":\"string\"},"
-//                + "{\"id\":\"test\",\"label\":\"Test\",\"type\":\"number\"}],"
-//                + "\"rows\":"
-//                + "[{\"c\":[{\"v\":\"1\"},{\"v\":\"54321\"}]},{\"c\":[{\"v\":\"2\"},"
-//                + "{\"v\":\"12345\"}]}]}";
-//
-//        try {
-//            PrintWriter printWriter = response.getWriter();
-//            printWriter.write(json);
-//            printWriter.flush();
-//            printWriter.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
         return null;
     }
 
@@ -125,29 +111,46 @@ public class ResultsAction extends Action {
         ResultHeading heading2 = LegacySpringUtils.getResultHeadingManager().get(resultType2);
 
         StringBuffer sb = new StringBuffer();
-        // cols
+        // cols header
         sb.append("{\"cols\":[");
-        // column 1: DateTime
+        // DateTime
         sb.append("{\"id\":\"DateTime\",\"label\":\"DateTime\",\"type\":\"string\"},");
-        // column 2: result type 1
+        // result type 1
         sb.append("{\"id\":\"").append(heading1.getHeading()).append("\",");
         sb.append("\"label\":\"").append(heading1.getHeading()).append("\",");
         sb.append("\"type\":\"number\"},");
-        // column 2: result type 2
+        // tooltip for result type 1
+        sb.append("{\"id\":\"\",");
+        sb.append("\"role\":\"tooltip\",");
+        sb.append("\"type\":\"string\",");
+        sb.append("\"p\":{\"role\":\"tooltip\",\"html\":\"true\"}},");
+        // result type 2
         sb.append("{\"id\":\"").append(heading2.getHeading()).append("\",");
         sb.append("\"label\":\"").append(heading2.getHeading()).append("\",");
-        sb.append("\"type\":\"number\"}],");
+        sb.append("\"type\":\"number\"},");
+        // tooltip result type 2
+        sb.append("{\"id\":\"\",");
+        sb.append("\"role\":\"tooltip\",");
+        sb.append("\"type\":\"string\",");
+        sb.append("\"p\":{\"role\":\"tooltip\",\"html\":\"true\"}}],");
 
-        // rows
+        // rows value
         sb.append("\"rows\":[");
 
         for (Iterator iterator = resultData.iterator(); iterator.hasNext();) {
             Result result = (Result) iterator.next();
             sb.append("{\"c\":[");
-            // column 1 :
+            // DateTime
             sb.append("{\"v\":\"").append(result.getFormattedTimeStamp()).append("\"},");
+            // result type 1
             sb.append("{\"v\":\"").append(result.getValue(resultType1)).append("\"},");
-            sb.append("{\"v\":\"").append(result.getValue(resultType2)).append("\"}");
+            // tooltip for result type 1
+            sb.append("{\"v\":\"").append(getHtmlTooltip(result, heading1, result.getValue(resultType1)));
+            sb.append("\"},");
+            // column 3: result type 2
+            sb.append("{\"v\":\"").append(result.getValue(resultType2)).append("\"},");
+            // tooltip for result type 2
+            sb.append("{\"v\":\"").append(getHtmlTooltip(result, heading2, result.getValue(resultType2))).append("\"}");
 
             if (iterator.hasNext()) {
                 sb.append("]},");
@@ -157,6 +160,22 @@ public class ResultsAction extends Action {
         }
         sb.append("]}");
         return sb.toString();
+    }
+
+    private String getHtmlTooltip(Result result, ResultHeading heading, String value) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("<div style='font-size: 15px;font-family:Arial;'>");
+        // result type and value
+        stringBuffer.append("<div style='padding:8px 5px;'>");
+        stringBuffer.append("<a href='").append(heading.getLink()).append("' target='_blank'>");
+        stringBuffer.append(heading.getHeading()).append(": </a>");
+        stringBuffer.append("<strong>").append(value).append("</strong></div>");
+
+        // datetime
+        stringBuffer.append("<div style='padding:0px 5px 8px;'><strong>");
+        stringBuffer.append(result.getFormattedTimeStamp()).append("</strong></div></div>");
+
+        return stringBuffer.toString();
     }
 
     private Collection<Result> turnResultsListIntoRecords(List<TestResultWithUnitShortname> resultsList) {

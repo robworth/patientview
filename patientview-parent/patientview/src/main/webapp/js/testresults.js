@@ -23,6 +23,7 @@
 
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart);
+var chart;
 
 function drawChart() {
     $.ajax({
@@ -33,12 +34,20 @@ function drawChart() {
             var data = new google.visualization.DataTable(resultData);
             var options = {
                 title: 'TestResults',
-                colors: ['red','blue']
+                colors: ['red','blue'],
+                tooltip: { isHtml: true, trigger: 'selection' }
             };
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart = new google.visualization.LineChart(document.getElementById('chart_div'));
             chart.draw(data, options);
+
+            // Add mouse over handlers.
+            google.visualization.events.addListener(chart, 'onmouseover', mouseOver);
         }
     });
+}
+
+function mouseOver(e) {
+    chart.setSelection([e]);
 }
 
 function changeChart(obj, resultCode, resultHeading) {
