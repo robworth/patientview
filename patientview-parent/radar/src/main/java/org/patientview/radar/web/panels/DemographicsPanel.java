@@ -205,19 +205,14 @@ public class DemographicsPanel extends Panel {
 
         // More info
         Label nhsNumber = new Label("nhsno");
-        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
-            }
-        };
+        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer");
         nhsNumberContainer.add(nhsNumber);
 
         Label chiNumber = new Label("chiNumber");
         WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
             @Override
             public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
+                return false;
             }
         };
         chiNumberContainer.add(chiNumber);
@@ -263,7 +258,7 @@ public class DemographicsPanel extends Panel {
                     }
                 };
 
-        if (pageParameters != null) {
+        if (pageParameters != null && pageParameters.get("diagnosis").toString() != null) {
             //if pageParameters not null then creating new demographics - set the diagnosis
             String diseaseGroup = pageParameters.get("diagnosis").toString();
             DiagnosisCode diagnosisCode = new DiagnosisCode();

@@ -28,7 +28,6 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -57,9 +56,6 @@ public class AddPatientPage extends BasePage {
 
     @SpringBean
     private UserManager userManager;
-
-    @SpringBean
-    private UtilityManager utilityManager;
 
     @SpringBean
     private PatientManager patientManager;
