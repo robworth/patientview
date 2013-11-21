@@ -385,11 +385,20 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public String getUserName(String nhsNo) {
-        return jdbcTemplate
+        String username = null;
+
+        try {
+            username = jdbcTemplate
                 .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
                         "WHERE u.username = um.username " +
                         "AND um.nhsno = ? " +
                         "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+        } catch (EmptyResultDataAccessException era) {
+            LOGGER.error("No usernaem result found for " + nhsNo);
+        }
+
+        return username;
+
     }
 
     // Does the username have any mappings to any renal units.

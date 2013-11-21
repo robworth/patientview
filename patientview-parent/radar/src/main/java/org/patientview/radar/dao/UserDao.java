@@ -1,5 +1,6 @@
 package org.patientview.radar.dao;
 
+import org.patientview.radar.exception.UserCreationException;
 import org.patientview.radar.exception.UserMappingException;
 import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
@@ -41,7 +42,7 @@ public interface UserDao {
 
     List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
-    void savePatientUser(PatientUser patientUser) throws Exception;
+    void savePatientUser(PatientUser patientUser) throws UserCreationException;
 
     void deletePatientUser(PatientUser patientUser) throws Exception;
 

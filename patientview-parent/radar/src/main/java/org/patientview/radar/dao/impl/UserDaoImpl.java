@@ -542,8 +542,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 patientUser.setId(id.longValue());
             }
         } catch (Exception e) {
-            LOGGER.error("There has been an exception saving the user");
-            throw new UserCreationException("Error saving user", e);
+            LOGGER.error("There has been an exception creating the radar user");
+            throw new UserCreationException("Error creating the radar user", e);
         }
 
     }
