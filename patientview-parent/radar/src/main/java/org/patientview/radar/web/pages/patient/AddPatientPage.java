@@ -46,6 +46,8 @@ import java.util.List;
  */
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class AddPatientPage extends BasePage {
+    private static final String NO_PATIENTS_FOUND = "No existing patient records for this NHS number. "
+                                                    + "Please press the \"create new patient\" button below";
     public static final String NHS_NUMBER_INVALID_MSG = "NHS or CHI number is not valid";
 
     @SpringBean
@@ -99,11 +101,13 @@ public class AddPatientPage extends BasePage {
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
+                    setResponsePage(this.getPage());
                 } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
                     // check that this nhsno has a mapping in the radar system
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error("A patient with this NHS or CHI number already exists");
+                    setResponsePage(this.getPage());
                 }
 
                 if (!hasError()) {
@@ -115,6 +119,7 @@ public class AddPatientPage extends BasePage {
                         selectPatientPanel.setVisible(true);
                     } else {
                         selectPatientPanel.setVisible(false);
+                        error(NO_PATIENTS_FOUND);
                     }
                     createPatientPanel.setVisible(true);
 
