@@ -1,35 +1,5 @@
 package org.patientview.radar.web.panels;
 
-import org.patientview.model.Centre;
-import org.patientview.model.Ethnicity;
-import org.patientview.model.Sex;
-import org.patientview.model.Status;
-import org.patientview.model.enums.NhsNumberType;
-import org.patientview.model.Patient;
-import org.patientview.radar.exception.RegisterException;
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.LabDataManager;
-import org.patientview.radar.service.TherapyManager;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.service.generic.DiseaseGroupManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
-import org.patientview.radar.web.components.ClinicianDropDown;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.components.RadarRequiredCheckBox;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -54,6 +24,37 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.patientview.model.Centre;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.radar.exception.RegisterException;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.ClinicalDataManager;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.LabDataManager;
+import org.patientview.radar.service.TherapyManager;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
+import org.patientview.radar.service.generic.DiseaseGroupManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.CentreDropDown;
+import org.patientview.radar.web.components.ClinicianDropDown;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredCheckBox;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,8 +89,6 @@ public class DemographicsPanel extends Panel {
     }
 
     public DemographicsPanel(String id, final IModel<Long> radarNumberModel, final PageParameters pageParameters) {
-
-
 
         super(id);
 
@@ -185,6 +184,14 @@ public class DemographicsPanel extends Panel {
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
+
+                    // Hack to get the disease group back
+                    if (pageParameters != null && (pageParameters.get("diseaseGroupId").toString()) != null) {
+                        DiseaseGroup diseaseGroup = new DiseaseGroup();
+                        diseaseGroup.setId(pageParameters.get("diseaseGroupId").toString());
+                        patient.setDiseaseGroup(diseaseGroup);
+                    }
+
                     userManager.savePatientUser(patient);
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception {} ", re.getMessage());
