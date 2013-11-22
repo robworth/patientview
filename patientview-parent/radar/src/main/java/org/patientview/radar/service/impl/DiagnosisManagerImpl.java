@@ -36,7 +36,7 @@ public class DiagnosisManagerImpl implements DiagnosisManager {
         } else {
             Diagnosis diagnosis = getDiagnosisByRadarNumber(patient.getId());
 
-            if (diagnosis != null && diagnosis.hasValidId()) {
+            if (diagnosis != null && diagnosis.hasValidId() && diagnosis.getDiagnosisCode() != null) {
                 return diagnosis.getDiagnosisCode().getAbbreviation();
             }
         }
