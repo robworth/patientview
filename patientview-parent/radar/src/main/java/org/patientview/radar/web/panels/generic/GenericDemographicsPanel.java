@@ -27,7 +27,6 @@ import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
-import org.patientview.model.enums.NhsNumberType;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
@@ -97,16 +96,17 @@ public class GenericDemographicsPanel extends Panel {
         // add form
         final IModel<Patient> model = new Model(patient);
 
+        //Error Message
+        String message = "Please complete all mandatory fields";
+        final Model<String> messageModel =
+                new Model<String>();
+
+
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
 
-            String name = null;
+            String name = utilityManager.getUserName(patient.getNhsno());
 
-            try {
-                name = utilityManager.getUserName(patient.getNhsno());
-            } catch (Exception e) {
-                LOGGER.info("Username not found");
-            }
             if (name != null && !"".equals(name)) {
                 // split the user name with a space
                 String[] names = name.split(" ");
@@ -140,10 +140,12 @@ public class GenericDemographicsPanel extends Panel {
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
+
                      userManager.savePatientUser(patient);
+
                 } catch (RegisterException re) {
-                    LOGGER.error("Registration Exception {} ", re.getMessage());
-                    error("Could not register patient" + re.getMessage());
+                    LOGGER.error("Registration Exception", re);
+                    messageModel.setObject("Failed to register patient: " + re.getMessage());
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());
@@ -202,34 +204,9 @@ public class GenericDemographicsPanel extends Panel {
         // More info
         Label nhsNumber = new Label("nhsno");
 
-        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                //TODO Sort this out whether it's required
-                if (model.getObject().getNhsNumberType() != null) {
-                    return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
-                } else {
-                    return false;
-                }
-            }
-        };
+        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer");
+
         nhsNumberContainer.add(nhsNumber);
-
-        Label chiNumber = new Label("chiNumber");
-
-        WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                //TODO Sort this out whether it's required
-                if (model.getObject().getNhsNumberType() != null) {
-                    return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
-                } else {
-                    return false;
-                }
-            }
-        };
-
-        chiNumberContainer.add(chiNumber);
 
         // add new ids section
         final List<Component> addIdComponentsToUpdate = new ArrayList<Component>();
@@ -407,7 +384,7 @@ public class GenericDemographicsPanel extends Panel {
         }
 
         form.add(hospitalNumberContainer, nhsNumberContainer, renalRegistryNumberContainer,
-                ukTransplantNumberContainer, chiNumberContainer);
+                ukTransplantNumberContainer);
         form.add(republicOfIrelandIdContainer, isleOfManIdContainer, channelIslandsIdContainer, indiaIdContainer);
 
 
@@ -442,7 +419,6 @@ public class GenericDemographicsPanel extends Panel {
             });
         } else if (user.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
 
-            //TODO Get rid of centres as an object short term fix for now
             List<Centre> centres = new ArrayList<Centre>();
             for (String unitCode : userManager.getUnitCodes(user)) {
                 Centre centre = new Centre();
@@ -553,10 +529,12 @@ public class GenericDemographicsPanel extends Panel {
         RadarComponentFactory.getSuccessMessageLabel("successMessageUp", form,
                 componentsToUpdateList);
 
-        RadarComponentFactory.getErrorMessageLabel("errorMessage", form,
-                "Please complete all mandatory fields", componentsToUpdateList);
-        RadarComponentFactory.getErrorMessageLabel("errorMessageUp", form,
-                "Please complete all mandatory fields", componentsToUpdateList);
+        RadarComponentFactory.getMessageLabel("errorMessage", form,
+                messageModel, componentsToUpdateList);
+        RadarComponentFactory.getMessageLabel("errorMessageUp", form,
+                messageModel, componentsToUpdateList);
+
+
 
         AjaxSubmitLink ajaxSubmitLinkTop = new AjaxSubmitLink("saveTop") {
             @Override
