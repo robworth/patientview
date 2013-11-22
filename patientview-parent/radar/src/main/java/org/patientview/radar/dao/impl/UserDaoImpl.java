@@ -5,6 +5,7 @@ import org.patientview.model.Centre;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.exception.UserCreationException;
+import org.patientview.radar.exception.UserMappingException;
 import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
@@ -404,9 +405,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     public PatientUser getPatientUser(String email) {
         try {
-            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME)
+            String query =  buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME)
                     + buildUserWhereEmailStatement(PATIENT_USER_TABLE_NAME, USER_EMAIL_FIELD_NAME,
-                    PATIENT_USER_ID_FIELD_NAME, true),
+                    PATIENT_USER_ID_FIELD_NAME, true);
+
+            return jdbcTemplate.queryForObject(query,
                     new Object[]{email, User.ROLE_PATIENT}, new PatientUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not patient user with " + USER_EMAIL_FIELD_NAME + " {}", email);
@@ -539,8 +542,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 patientUser.setId(id.longValue());
             }
         } catch (Exception e) {
-            LOGGER.error("There has been an exception saving the user");
-            throw new UserCreationException("Error saving user", e);
+            LOGGER.error("There has been an exception creating the radar user");
+            throw new UserCreationException("Error creating the radar user", e);
         }
 
     }
@@ -735,18 +738,24 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Radar has different roles to RPV and has its own user mapping table that has the role the user has been assigned
      * @param user User
      */
-    public void saveUserMapping(User user) throws Exception {
+    public void saveUserMapping(User user) throws UserMappingException {
+
         // we only ever want one user mapping per user so just delete any existing and re add
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getUserId());
         userMap.put(USER_MAPPING_ROLE_FIELD_NAME, user.getSecurityRole());
         userMap.put(USER_MAPPING_RADAR_USER_ID_FIELD_NAME, user.getId());
 
-        // delete any mappings already so we dont end up with two
-        deleteUserMapping(user);
+        try {
+            // delete any mappings already so we dont end up with two
+            deleteUserMapping(user);
 
-        // add mapping
-        userMappingInsert.execute(userMap);
+            // add mapping
+            userMappingInsert.execute(userMap);
+        } catch (Exception e) {
+            LOGGER.error("Error creating a user mapping in radar", e);
+            throw new UserMappingException("Could not create radar mapping", e);
+        }
     }
 
     /**

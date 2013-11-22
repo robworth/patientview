@@ -1,6 +1,7 @@
 package org.patientview.radar.test.dao;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
@@ -8,8 +9,6 @@ import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-
-import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;
@@ -18,10 +17,8 @@ import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.util.RadarUtility;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -37,21 +34,22 @@ public class UserDaoTest extends BaseDaoTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoTest.class);
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private DemographicsDao demographicsDao;
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     private DiseaseGroup diseaseGroup;
 
     private Centre centre;
 
-    @Inject
-    private TestDataHelper testDataHelper;
 
     @Before
     public void setUp() {

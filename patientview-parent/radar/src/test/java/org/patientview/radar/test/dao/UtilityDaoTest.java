@@ -1,7 +1,7 @@
 package org.patientview.radar.test.dao;
 
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Test;
 import org.patientview.model.Centre;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
@@ -12,13 +12,16 @@ import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.*;
+import org.patientview.radar.model.Consultant;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.junit.Test;
+import org.patientview.radar.service.UserManager;
 import org.patientview.radar.test.TestDataHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,20 +32,23 @@ import static org.junit.Assert.assertTrue;
 
 public class UtilityDaoTest extends BaseDaoTest {
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
 
-    @Autowired
+    @Inject
     private DiagnosisDao diagnosisDao;
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private DemographicsDao demographicDao;
 
     @Inject
     private TestDataHelper testDataHelper;
+
+    @Inject
+    private UserManager userManager;
 
     private DiseaseGroup diseaseGroup;
 
@@ -57,6 +63,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         testDataHelper.createCountryData();
         testDataHelper.createConsultant();
         testDataHelper.createDiagCode();
+        testDataHelper.createSpecialty();
     }
 
     @Test
@@ -246,6 +253,8 @@ public class UtilityDaoTest extends BaseDaoTest {
 
         int count = utilityDao.getPatientCountByUnit(centre);
         assertEquals(4, count);
+
+
     }
 
     @Test
@@ -260,7 +269,8 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertEquals("Get the wrong unit", "5", centre1.getUnitCode());
     }
 
-    private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup) {
+    private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup)
+            throws Exception {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
@@ -268,7 +278,9 @@ public class UtilityDaoTest extends BaseDaoTest {
         patient.setRenalUnit(centre);
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
-        demographicDao.saveDemographics(patient);
+        patient.setUnitcode(centre.getUnitCode());
+        patient.setDob(new Date());
+        userManager.savePatientUser(patient);
         assertNotNull(patient.getId());
         return patient;
     }

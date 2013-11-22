@@ -2,6 +2,7 @@ package org.patientview.radar.util;
 
 import com.Ostermiller.util.RandPass;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.web.pages.BasePage;
@@ -174,7 +175,17 @@ public class RadarUtility {
             if (diseaseGroup.getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
                     diseaseGroup.getId().
                             equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
-                return new SrnsPatientPage(null);
+
+                PageParameters pageParameters = new PageParameters();
+                pageParameters.add("id", patient.getId());
+                pageParameters.add("idVal", patient.getNhsno());
+                pageParameters.add("diseaseGroupId", diseaseGroup.getId());
+                pageParameters.add("idType", "NHS");
+                if (patient.getDiagnosis() != null) {
+                    pageParameters.add("diagnosis", patient.getDiagnosis());
+                }
+
+                return new SrnsPatientPage(pageParameters);
             } else if (diseaseGroup.getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
                 return new AlportPatientPage(patient);
             } else if (diseaseGroup.getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
