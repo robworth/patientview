@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.IValidator;
 import org.patientview.radar.web.models.RadarModelFactory;
 
@@ -51,7 +51,7 @@ public class RadarComponentFactory {
         };
     }
 
-    public static Label getMessageLabel(String id, final Form form, Model message,
+    public static Label getMessageLabel(String id, final Form form, PropertyModel message,
                                              final List<Component> componentsToUpdate) {
         return new Label(id, message) {
             {
@@ -90,7 +90,6 @@ public class RadarComponentFactory {
                                                                     List<Component> componentsToUpdate) {
         return new RadarPasswordTextFieldWithValidation(id, validator, required, container, componentsToUpdate);
     }
-
 
 
 }

@@ -170,7 +170,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         try {
 
             // Check of the patient needs registering first otherwise just save the patient record
-            if (patient.isEditableDemographics() || !userExistsInPatientView(patient.getNhsno())) {
+            if (patient.isEditableDemographics() && !userExistsInPatientView(patient.getNhsno())) {
                 return registerPatientUser(patient);
             }  else {
                 demographicsDao.saveDemographics(patient);
