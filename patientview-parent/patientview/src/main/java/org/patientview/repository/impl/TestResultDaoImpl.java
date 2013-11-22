@@ -32,6 +32,7 @@ import org.patientview.repository.TestResultDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -97,11 +98,14 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
                 + " AND result_heading.headingcode IN (";
 
         for (int x = 0; x < resultCodes.size(); x++) {
+            if (StringUtils.isEmpty(resultCodes.get(x))) {
+                continue;
+            }
             sql += " ? ";
 
             params.add(resultCodes.get(x));
 
-            if (x != resultCodes.size() - 1) {
+            if (x != resultCodes.size() - 1 && !StringUtils.isEmpty(resultCodes.get(x + 1))) {
                 sql += ",";
             }
         }

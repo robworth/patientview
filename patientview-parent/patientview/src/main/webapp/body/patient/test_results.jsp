@@ -40,16 +40,18 @@
 
 <div class="btn-toolbar">
     <div class="btn-group">
-        <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span id="heading1"><bean:write name="resultTypeHeading1"/></span><span id="d1" class="caret"></span></button>
+        <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span id="heading1"><bean:write name="resultTypeHeading1" property="heading"/></span><span id="d1" class="caret"></span></button>
         <ul class="dropdown dropdown-menu">
-    <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
-        <li><a id="btn_1" href="#" onclick='changeChart(this, "<bean:write name="heading" property="headingcode"/>","<bean:write name="heading" property="heading"/>")'><bean:write name="heading" property="heading"/> </a></li>
-    </logic:iterate>
+            <li><a id="btn_1_none" href="#" onclick='changeChart(this, "","")'>&nbsp;</a></li>
+            <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
+                <li><a id="btn_1" href="#" onclick='changeChart(this, "<bean:write name="heading" property="headingcode"/>","<bean:write name="heading" property="heading"/>")'><bean:write name="heading" property="heading"/> </a></li>
+            </logic:iterate>
         </ul>
     </div>
     <div class="btn-group" style="margin-left: -4px;">
-        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="heading2"><bean:write name="resultTypeHeading2"/></span><span id="d2" class="caret"></span></button>
+        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="heading2"><bean:write name="resultTypeHeading2" property="heading"/></span><span id="d2" class="caret"></span></button>
         <ul class="dropdown dropdown-menu">
+            <li><a id="btn_2_none" href="#" onclick='changeChart(this, "","")'>&nbsp;</a></li>
             <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
                 <li><a id="btn_2" href="#" onclick='changeChart(this, "<bean:write name="heading" property="headingcode"/>", "<bean:write name="heading" property="heading"/>")'><bean:write name="heading" property="heading"/> </a></li>
     </logic:iterate>
@@ -66,8 +68,8 @@
     </div>
 </div>
 
-<input type="hidden" name="resultCode1" value="<bean:write name='resultType1'/>" id="result_Type1"/>
-<input type="hidden" name="resultCode2" value="<bean:write name='resultType2'/>" id="result_Type2"/>
+<input type="hidden" name="resultCode1" value="<bean:write name='resultTypeHeading1' property="headingcode"/>" id="result_Type1"/>
+<input type="hidden" name="resultCode2" value="<bean:write name='resultTypeHeading2' property="headingcode"/>" id="result_Type2"/>
 <input type="hidden" name="period" value="<bean:write name='period'/>" id="period"/>
 
 <div id="chart_div" style="height:500px;" ></div>

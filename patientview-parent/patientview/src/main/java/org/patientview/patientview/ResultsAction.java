@@ -62,51 +62,49 @@ public class ResultsAction extends Action {
         String resultType2 = ActionUtils.retrieveStringPropertyValue("resultType2", form, request);
         String monthBeforeNow = ActionUtils.retrieveStringPropertyValue("period", form, request);
 
-        // creatinine
-        if (StringUtils.isEmpty(resultType1)) {
-            resultType1 = "glucose";
-        }
-        // phosphate
-        if (StringUtils.isEmpty(resultType2)) {
-            resultType2 = "hco3";
-        }
+        if (StringUtils.isNotEmpty(resultType1) || StringUtils.isNotEmpty(resultType2)) {
+            resultCodes.add(resultType1);
+            resultCodes.add(resultType2);
 
-        resultCodes.add(resultType1);
-        resultCodes.add(resultType2);
-
-        if (StringUtils.isEmpty(monthBeforeNow)) {
-            monthBeforeNow = "24";
-        }
-
-        if (user != null) {
-            request.setAttribute("user", user);
-
-            List<TestResultWithUnitShortname> results
-                    = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, resultCodes,
-                    monthBeforeNow);
-
-            Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
-
-            String jsonData = convertToJsonData(resultsInRecords, resultType1, resultType2);
-
-            try {
-                PrintWriter printWriter = response.getWriter();
-                printWriter.write(jsonData);
-                printWriter.flush();
-                printWriter.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            // default show two years testresult data
+            if (StringUtils.isEmpty(monthBeforeNow)) {
+                monthBeforeNow = "24";
             }
 
-        } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
-            return LogonUtils.logonChecks(mapping, request, "control");
+            if (user != null) {
+                request.setAttribute("user", user);
+
+                List<TestResultWithUnitShortname> results
+                        = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, resultCodes,
+                        monthBeforeNow);
+
+                Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
+
+                String jsonData = convertToJsonData(resultsInRecords, resultType1, resultType2);
+
+                try {
+                    PrintWriter printWriter = response.getWriter();
+                    printWriter.write(jsonData);
+                    printWriter.flush();
+                    printWriter.close();
+
+                } catch (Exception e) {
+                    LOGGER.debug("Couldn't wring json data fro testresult graphing" + e.getMessage());
+                }
+
+            } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
+                return LogonUtils.logonChecks(mapping, request, "control");
+            }
         }
 
         return null;
     }
 
     private String convertToJsonData(Collection<Result> resultData, String resultType1, String resultType2) {
+
+        String resultValue1 = "";
+        String resultValue2 = "";
+
         ResultHeading heading1 = LegacySpringUtils.getResultHeadingManager().get(resultType1);
         ResultHeading heading2 = LegacySpringUtils.getResultHeadingManager().get(resultType2);
 
@@ -115,42 +113,68 @@ public class ResultsAction extends Action {
         sb.append("{\"cols\":[");
         // DateTime
         sb.append("{\"id\":\"DateTime\",\"label\":\"DateTime\",\"type\":\"string\"},");
-        // result type 1
-        sb.append("{\"id\":\"").append(heading1.getHeading()).append("\",");
-        sb.append("\"label\":\"").append(heading1.getHeading()).append("\",");
-        sb.append("\"type\":\"number\"},");
-        // tooltip for result type 1
-        sb.append("{\"id\":\"\",");
-        sb.append("\"role\":\"tooltip\",");
-        sb.append("\"type\":\"string\",");
-        sb.append("\"p\":{\"role\":\"tooltip\",\"html\":\"true\"}},");
-        // result type 2
-        sb.append("{\"id\":\"").append(heading2.getHeading()).append("\",");
-        sb.append("\"label\":\"").append(heading2.getHeading()).append("\",");
-        sb.append("\"type\":\"number\"},");
-        // tooltip result type 2
-        sb.append("{\"id\":\"\",");
-        sb.append("\"role\":\"tooltip\",");
-        sb.append("\"type\":\"string\",");
-        sb.append("\"p\":{\"role\":\"tooltip\",\"html\":\"true\"}}],");
+
+        if (StringUtils.isNotEmpty(resultType1)) {
+            // result type 1
+            sb.append("{\"id\":\"").append(heading1.getHeading()).append("\",");
+            sb.append("\"label\":\"").append(heading1.getHeading()).append("\",");
+            sb.append("\"type\":\"number\"},");
+            // tooltip for result type 1
+            sb.append("{\"id\":\"\",");
+            sb.append("\"role\":\"tooltip\",");
+            sb.append("\"type\":\"string\",");
+            sb.append("\"p\":{\"role\":\"tooltip\",\"html\":\"true\"}}");
+
+            if (StringUtils.isEmpty(resultType2)) {
+                sb.append("],");
+            } else {
+                sb.append(",");
+            }
+        }
+
+        if (StringUtils.isNotEmpty(resultType2)) {
+
+            // result type 2
+            sb.append("{\"id\":\"").append(heading2.getHeading()).append("\",");
+            sb.append("\"label\":\"").append(heading2.getHeading()).append("\",");
+            sb.append("\"type\":\"number\"},");
+            // tooltip result type 2
+            sb.append("{\"id\":\"\",");
+            sb.append("\"role\":\"tooltip\",");
+            sb.append("\"type\":\"string\",");
+            sb.append("\"p\":{\"role\":\"tooltip\",\"html\":\"true\"}}],");
+        }
 
         // rows value
         sb.append("\"rows\":[");
 
         for (Iterator iterator = resultData.iterator(); iterator.hasNext();) {
             Result result = (Result) iterator.next();
+            resultValue1 = result.getValue(resultType1);
+            resultValue2 = result.getValue(resultType2);
+
             sb.append("{\"c\":[");
             // DateTime
             sb.append("{\"v\":\"").append(result.getFormattedTimeStamp()).append("\"},");
-            // result type 1
-            sb.append("{\"v\":\"").append(result.getValue(resultType1)).append("\"},");
-            // tooltip for result type 1
-            sb.append("{\"v\":\"").append(getHtmlTooltip(result, heading1, result.getValue(resultType1)));
-            sb.append("\"},");
-            // column 3: result type 2
-            sb.append("{\"v\":\"").append(result.getValue(resultType2)).append("\"},");
-            // tooltip for result type 2
-            sb.append("{\"v\":\"").append(getHtmlTooltip(result, heading2, result.getValue(resultType2))).append("\"}");
+
+            if (StringUtils.isNotEmpty(resultType1)) {
+                // result type 1
+                sb.append("{\"v\":\"").append(resultValue1).append("\"},");
+                // tooltip for result type 1
+                sb.append("{\"v\":\"").append(getHtmlTooltip(result, heading1, resultValue1));
+                sb.append("\"}");
+
+                if (StringUtils.isNotEmpty(resultType2)) {
+                    sb.append(",");
+                }
+            }
+
+            if (StringUtils.isNotEmpty(resultType2)) {
+                // column 3: result type 2
+                sb.append("{\"v\":\"").append(resultValue2).append("\"},");
+                // tooltip for result type 2
+                sb.append("{\"v\":\"").append(getHtmlTooltip(result, heading2, resultValue2)).append("\"}");
+            }
 
             if (iterator.hasNext()) {
                 sb.append("]},");

@@ -31,11 +31,20 @@ function drawChart() {
         dataType:"json",
         async: false,
         success: function(resultData){
+            if (resultData == null || resultData == "") {
+                return;
+            }
+            var arrColors = ['red','blue'];
+            if ($('#heading1').text() == "") {
+                arrColors = ['blue','red'];
+            }
             var data = new google.visualization.DataTable(resultData);
             var options = {
                 title: 'TestResults',
-                colors: ['red','blue'],
-                tooltip: { isHtml: true, trigger: 'selection' }
+                colors: arrColors,
+                tooltip: { isHtml: true, trigger: 'selection' },
+                vAxis: { logScale: true },
+                interpolateNulls: true
             };
             chart = new google.visualization.LineChart(document.getElementById('chart_div'));
             chart.draw(data, options);
@@ -51,15 +60,16 @@ function mouseOver(e) {
 }
 
 function changeChart(obj, resultCode, resultHeading) {
-    if (obj.id == "btn_1") {
+    if (obj.id == "btn_1" || obj.id == "btn_1_none") {
         $('#result_Type1').val(resultCode);
         $('#heading1').text(resultHeading);
     }
 
-    if (obj.id == "btn_2") {
+    if (obj.id == "btn_2" || obj.id == "btn_2_none") {
         $('#result_Type2').val(resultCode);
         $('#heading2').text(resultHeading);
     }
+    $('#chart_div').empty();
     drawChart();
 }
 
@@ -71,6 +81,7 @@ function changePeriod(obj, value) {
         }
     });
     $(obj).attr("disabled", true);
+    $('#chart_div').empty();
     drawChart();
 }
 

@@ -33,6 +33,7 @@ import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,22 +46,29 @@ public class ResultsInitAction extends Action {
             throws Exception {
 
         User user = UserUtils.retrieveUser(request);
-
+        String testCode1 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode1");
+        String testCode2 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode2");
 
         if (user != null) {
             request.setAttribute("user", user);
+
+            if (StringUtils.isEmpty(testCode1)) {
+                testCode1 = "creatinine";
+            }
+
+            if (StringUtils.isEmpty(testCode2)) {
+                testCode2 = "phosphate";
+            }
 
             List<ResultHeading> resultsHeadingsList
                     = LegacySpringUtils.getResultHeadingManager().getAll();
 
             request.setAttribute("resultsHeadings", resultsHeadingsList);
-            request.setAttribute("resultType1", "glucose");
-            request.setAttribute("resultType2", "hco3");
+            ResultHeading heading1 = LegacySpringUtils.getResultHeadingManager().get(testCode1);
+            ResultHeading heading2 = LegacySpringUtils.getResultHeadingManager().get(testCode2);
+            request.setAttribute("resultTypeHeading1", heading1);
+            request.setAttribute("resultTypeHeading2", heading2);
             request.setAttribute("period", "24");
-            ResultHeading heading1 = LegacySpringUtils.getResultHeadingManager().get("glucose");
-            ResultHeading heading2 = LegacySpringUtils.getResultHeadingManager().get("hco3");
-            request.setAttribute("resultTypeHeading1", heading1.getHeading());
-            request.setAttribute("resultTypeHeading2", heading2.getHeading());
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");
         }
