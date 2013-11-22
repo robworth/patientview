@@ -29,6 +29,7 @@ delete from rdc_genetic_test;
 
 delete from diagnosis;
 delete from tbl_diagnosis;
+delete from tbl_labdata;
 delete from tbl_patient_users;
 delete from tbl_users;
 delete from tbl_adminusers;
