@@ -100,13 +100,8 @@ public class GenericDemographicsPanel extends Panel {
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
 
-            String name = null;
+            String name = utilityManager.getUserName(patient.getNhsno());
 
-            try {
-                name = utilityManager.getUserName(patient.getNhsno());
-            } catch (Exception e) {
-                LOGGER.info("Username not found");
-            }
             if (name != null && !"".equals(name)) {
                 // split the user name with a space
                 String[] names = name.split(" ");
