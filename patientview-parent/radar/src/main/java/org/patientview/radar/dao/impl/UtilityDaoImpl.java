@@ -220,13 +220,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         return patientCountMap;
     }
 
-    // todo
     public int getPatientCountByUnit(Centre centre) {
         try {
-            return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
-                    "FROM patient " +
-                    "WHERE unitcode = ? " +
-                    "GROUP BY unitcode;", new Object[]{centre.getId()});
+            return jdbcTemplate.queryForObject("SELECT COUNT(1) " +
+                                                "FROM    patient " +
+                                                "WHERE   nhsno IN (SELECT nhsNo " +
+                                                "                  FROM   usermapping " +
+                                                "                  WHERE  unitCode = ?);",
+                    new Object[]{centre.getId()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }
@@ -384,11 +385,20 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public String getUserName(String nhsNo) {
-        return jdbcTemplate
+        String username = null;
+
+        try {
+            username = jdbcTemplate
                 .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
                         "WHERE u.username = um.username " +
                         "AND um.nhsno = ? " +
                         "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+        } catch (EmptyResultDataAccessException era) {
+            LOGGER.error("No usernaem result found for " + nhsNo);
+        }
+
+        return username;
+
     }
 
     // Does the username have any mappings to any renal units.

@@ -1,6 +1,8 @@
 package org.patientview.radar.test.service;
 
 import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
@@ -12,9 +14,6 @@ import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.test.TestPvDbSchema;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
@@ -27,24 +26,25 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(locations = {"classpath:test-context.xml"})
 public class UserManagerTest extends TestPvDbSchema {
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private UserManager userManager;
 
-    @Autowired
+    @Inject
     private DemographicsManager demographicsManager;
-
-    private DiseaseGroup diseaseGroup;
-
-    @Autowired
-    private PatientLinkDao patientLinkDao;
-
-    private Centre centre;
 
     @Inject
     private TestDataHelper testDataHelper;
+
+    @Inject
+    private PatientLinkDao patientLinkDao;
+
+    private DiseaseGroup diseaseGroup;
+
+    private Centre centre;
+
 
     @Before
     public void setUp() {
@@ -74,7 +74,8 @@ public class UserManagerTest extends TestPvDbSchema {
     }
 
     /**
-     * todo does this make sense still?
+     * This is testing the creation of a record in the tbl patient users table
+     *
      * @throws Exception
      */
     @Test

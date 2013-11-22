@@ -88,7 +88,13 @@ public class DemographicsPanel extends Panel {
     }
 
     public DemographicsPanel(String id, final IModel<Long> radarNumberModel, final PageParameters pageParameters) {
+
+
+
         super(id);
+
+        List<Component> nonEditableComponents = new ArrayList<Component>();
+
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
@@ -205,19 +211,14 @@ public class DemographicsPanel extends Panel {
 
         // More info
         Label nhsNumber = new Label("nhsno");
-        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
-            }
-        };
+        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer");
         nhsNumberContainer.add(nhsNumber);
 
         Label chiNumber = new Label("chiNumber");
         WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
             @Override
             public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
+                return false;
             }
         };
         chiNumberContainer.add(chiNumber);
@@ -263,7 +264,7 @@ public class DemographicsPanel extends Panel {
                     }
                 };
 
-        if (pageParameters != null) {
+        if (pageParameters != null && pageParameters.get("diagnosis").toString() != null) {
             //if pageParameters not null then creating new demographics - set the diagnosis
             String diseaseGroup = pageParameters.get("diagnosis").toString();
             DiagnosisCode diagnosisCode = new DiagnosisCode();
@@ -288,7 +289,9 @@ public class DemographicsPanel extends Panel {
         dateOfBirth.setRequired(true);
 
         form.add(diagnosis, surname, forename, dateOfBirth);
-
+        nonEditableComponents.add(surname);
+        nonEditableComponents.add(forename);
+        nonEditableComponents.add(dateOfBirth);
         /**
          *  Add basic fields for header too... apparently we can't render same component twice in wicket!..
          *
@@ -445,6 +448,7 @@ public class DemographicsPanel extends Panel {
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
+        nonEditableComponents.add(sex);
 
         // Address fields
         TextField address1 = new TextField("address1");
@@ -456,6 +460,11 @@ public class DemographicsPanel extends Panel {
                 componentsToUpdateList);
 
         form.add(address1, address2, address3, address4, postcode);
+        nonEditableComponents.add(address1);
+        nonEditableComponents.add(address2);
+        nonEditableComponents.add(address3);
+        nonEditableComponents.add(address4);
+        nonEditableComponents.add(postcode);
 
         // Archive fields
         TextField surnameAlias = new TextField("surnameAlias");
@@ -469,7 +478,7 @@ public class DemographicsPanel extends Panel {
         TextField ukTransplantNumber = new TextField("uktNo");
 
         form.add(hospitalNumber, renalRegistryNumber, ukTransplantNumber);
-
+        nonEditableComponents.add(hospitalNumber);
         // Status, consultants and centres drop down boxes
         form.add(new DropDownChoice<Status>("statusModel", demographicsManager.getStatuses(),
                 new ChoiceRenderer<Status>("abbreviation", "id")));
@@ -512,6 +521,7 @@ public class DemographicsPanel extends Panel {
         }
 
         form.add(renalUnit);
+        nonEditableComponents.add(renalUnit);
 
         RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
@@ -598,6 +608,12 @@ public class DemographicsPanel extends Panel {
         }));
 
         form.add(ajaxSubmitLinkBottom);
+
+        if (!model.getObject().isEditableDemographics()) {
+            for (Component component : nonEditableComponents) {
+                component.setEnabled(false);
+            }
+        }
     }
 
     @Override

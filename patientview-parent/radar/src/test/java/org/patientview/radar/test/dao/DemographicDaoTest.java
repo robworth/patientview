@@ -15,11 +15,12 @@ import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.service.UserManager;
 import org.patientview.radar.test.TestDataHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -29,24 +30,28 @@ import static org.junit.Assert.assertTrue;
 
 public class DemographicDaoTest extends BaseDaoTest {
 
-    @Autowired
+    @Inject
     private DemographicsDao demographicDao;
 
-    @Autowired
+    @Inject
     private DiagnosisDao diagnosisDao;
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    private DiseaseGroup diseaseGroup;
+    @Inject
+    private UserManager userManager;
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
-
-    private Centre centre;
 
     @Inject
     private TestDataHelper testDataHelper;
+
+
+    private Centre centre;
+    private DiseaseGroup diseaseGroup;
+
 
     @Before
     public void setUp() {
@@ -64,12 +69,12 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testSaveDemographics() {
+    public void testSaveDemographics() throws Exception {
         createDemographics("Test", "User");
     }
 
     @Test
-    public void testGetDemographic() {
+    public void testGetDemographic() throws Exception {
         Patient patient = createDemographics("Test", "User");
         Patient check = demographicDao.getDemographicsByRadarNumber(patient.getId());
 
@@ -90,7 +95,7 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testGetDemographicsPage1() {
+    public void testGetDemographicsPage1() throws Exception {
         createDemographics("Test", "User");
         createDemographics("Test2", "User2");
         List<Patient> demographics = demographicDao.getDemographics(new DemographicsFilter(), 1, 1);
@@ -114,7 +119,7 @@ public class DemographicDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void testSearchDemographics() {
+    public void testSearchDemographics() throws Exception {
         addDiagnosisForDemographic(createDemographics("Test", "User"), DiagnosisCode.SRNS_ID);
         addDiagnosisForDemographic(createDemographics("Test2", "User2"), DiagnosisCode.MPGN_ID);
         DemographicsFilter demographicsFilter = new DemographicsFilter();
@@ -131,9 +136,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         Centre centre2 = utilityDao.getCentre(2);
 
         String nhsNo1 = getTestNhsNo();
-        userDao.createUserMappingInPatientView("TestUser", nhsNo1, "5");
         String nhsNo2 = getTestNhsNo();
-        userDao.createUserMappingInPatientView("Test2User2", nhsNo2, "5");
 
         createDemographics("Test", "User", centre, nhsNo1);
         createDemographics("Test2", "User2", centre, nhsNo2);
@@ -187,11 +190,14 @@ public class DemographicDaoTest extends BaseDaoTest {
         diagnosisDao.saveDiagnosis(diagnosis);
     }
 
-    private Patient createDemographics(String forename, String surname, Centre centre, String nhsno) {
+    private Patient createDemographics(String forename, String surname, Centre centre, String nhsno)
+            throws Exception {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
+        patient.setDob(new Date());
         patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        patient.setUnitcode(centre.getUnitCode());
         if (nhsno != null) {
             patient.setNhsno(nhsno);
         } else {
@@ -199,16 +205,16 @@ public class DemographicDaoTest extends BaseDaoTest {
         }
         patient.setRenalUnit(centre);
         patient.setDiseaseGroup(diseaseGroup);
-        demographicDao.saveDemographics(patient);
+        userManager.savePatientUser(patient);
         assertNotNull(patient.getId());
         return patient;
     }
 
-    private Patient createDemographics(String forename, String surname) {
+    private Patient createDemographics(String forename, String surname) throws Exception {
         return createDemographics(forename, surname, centre, null);
     }
 
-    private Patient createDemographics(String forename, String surname, String nhsno) {
+    private Patient createDemographics(String forename, String surname, String nhsno) throws Exception {
         return createDemographics(forename, surname, centre, nhsno);
     }
 

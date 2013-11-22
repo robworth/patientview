@@ -128,13 +128,20 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             patientLinkManager.linkPatientRecord(patient);
         }
 
+        //-- Patient View Tables
         // Create the user record
-        patientUser = createUser(patient);
-
+        patientUser = createPatientViewUser(patient);
         // Create the patient mapping in patient view so patient view knows the user is a patient
         userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
-
         createPatientMappings(patient, patientUser);
+
+        // Switch from patient view to Radar
+        patientUser.setUserId(patientUser.getId());
+
+        //-- Radar Tables
+        patientUser = createRadarUser(patientUser, patient);
+        userDao.saveUserMapping(patientUser);
+
 
         if (generateJoinRequest) {
             createJoinRequest(patient);
@@ -142,6 +149,19 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         return patientUser;
 
+    }
+
+    private PatientUser createRadarUser(PatientUser patientUser, Patient patient) throws UserCreationException {
+
+        // Invalidate the id which relates to patient view
+        patientUser.setId(0L);
+        // now fill in the radar patient stuff
+        // and invalidate the id and this will create a record in tbl_patient_users
+        patientUser.setRadarNumber(patient.getId());
+        patientUser.setDateOfBirth(patient.getDob());
+        userDao.savePatientUser(patientUser);
+
+        return patientUser;
     }
 
 
@@ -205,9 +225,15 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             joinRequest.setFirstName(patient.getForename());
             joinRequest.setLastName(patient.getSurname());
             String unitCode = patient.getUnitcode();
-            if (StringUtils.hasText(unitCode) && patient.getRenalUnit() != null) {
+
+            if (!StringUtils.hasText(unitCode) && patient.getRenalUnit() != null) {
                 unitCode = patient.getRenalUnit().getUnitCode();
             }
+
+            if (!StringUtils.hasText(unitCode) && patient.getDiseaseGroup() != null) {
+                unitCode = patient.getDiseaseGroup().getId();
+            }
+
             joinRequest.setUnitcode(unitCode);
             joinRequest.setDateOfRequest(new Date());
 
@@ -219,26 +245,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     }
 
-    private void validatePatient(Patient patient) {
-
-        // Check we have a valid radar number, email address and date of birth
-        if (patient == null || patient.getId() < 1) {
-            throw new IllegalArgumentException("Invalid demographics supplied to savePatientUser");
-        }
-
-        if (patient.getDob() == null) {
-            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
-                    "demographics.getDateOfBirth()");
-        }
-
-        if (patient.getNhsno() == null) {
-            throw new IllegalArgumentException("Missing required parameter to savePatientUser: " +
-                    "demographics.getNhsNumber()");
-        }
-
-    }
-
-    private PatientUser createUser(Patient patient) throws UserCreationException {
+    private PatientUser createPatientViewUser(Patient patient) throws UserCreationException {
 
         PatientUser patientUser = null;
 
@@ -258,10 +265,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
                 patientUser = (PatientUser) userDao.createUser(patientUser);
 
-                // now fill in the radar patient stuff
-                patientUser.setRadarNumber(patient.getId());
-                patientUser.setDateOfBirth(patient.getDob());
-                userDao.savePatientUser(patientUser);
             }
         } catch (Exception e) {
             LOGGER.error("Error creating user");

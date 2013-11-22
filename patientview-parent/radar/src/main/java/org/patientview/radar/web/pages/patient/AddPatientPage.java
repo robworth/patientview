@@ -28,7 +28,6 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -57,9 +56,6 @@ public class AddPatientPage extends BasePage {
 
     @SpringBean
     private UserManager userManager;
-
-    @SpringBean
-    private UtilityManager utilityManager;
 
     @SpringBean
     private PatientManager patientManager;
@@ -101,10 +97,12 @@ public class AddPatientPage extends BasePage {
                 // check nhs number is valid
                 if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     selectPatientPanel.setVisible(false);
+                    createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
                 } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
                     // check that this nhsno has a mapping in the radar system
                     selectPatientPanel.setVisible(false);
+                    createPatientPanel.setVisible(false);
                     error("A patient with this NHS or CHI number already exists");
                 }
 
