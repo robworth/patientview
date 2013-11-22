@@ -79,7 +79,7 @@ public class SelectPatientPanel extends Panel {
                         patient = patientLinkManager.getMergePatient(patient);
                     }
                 } catch (Exception e) {
-                    //TODO fix this
+                    //TODO Refactor to feed back to main page
                     e.printStackTrace();
                 }
 
