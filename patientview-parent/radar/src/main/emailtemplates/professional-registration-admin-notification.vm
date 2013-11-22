@@ -19,7 +19,7 @@
 <p>Telephone number: ${user.phone}</p>
 <p>Centre: ${user.centre.name}</p>
 <br/>
-<p>Please verify this request then check they don't already have a login on Renal PatientView (renalpatientview.org).
+<p>Please verify this request then check they don't already have a login on Renal PatientView (patientview.org).
 If not, add them to your unit on Renal PatientView as a Unit Admin.
 They will be able access renalradar.org with the same logon details that they use for Renal PatientView.</p>
-<p>For help with this please contact us at admin@renalpatientview.org</p>
+<p>For help with this please contact us at admin@patientview.org</p>
