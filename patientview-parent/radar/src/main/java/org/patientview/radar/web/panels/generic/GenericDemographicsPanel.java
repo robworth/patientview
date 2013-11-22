@@ -20,7 +20,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
@@ -99,8 +98,8 @@ public class GenericDemographicsPanel extends Panel {
 
         //Error Message
         String message = "Please complete all mandatory fields";
-        final PropertyModel<String> messageModel =
-                new PropertyModel<String>(message, "message");
+        final Model<String> messageModel =
+                new Model<String>();
 
 
         // no exist data in patient table, then use the user name to populate.
