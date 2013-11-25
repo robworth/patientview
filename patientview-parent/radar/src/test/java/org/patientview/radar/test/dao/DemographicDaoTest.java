@@ -195,6 +195,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
+        patient.setEditableDemographics(true);
         patient.setDob(new Date());
         patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
         patient.setUnitcode(centre.getUnitCode());

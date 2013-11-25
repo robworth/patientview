@@ -118,7 +118,7 @@ public class RoleHelper {
         patient.setUnitcode(unitName);
         patient.setEmailAddress("test@test.com");
         patient.setSex("Male");
-
+        patient.setEditableDemographics(true);
 
         DiseaseGroup diseaseGroup = new DiseaseGroup();
         diseaseGroup.setId(diseaseName);

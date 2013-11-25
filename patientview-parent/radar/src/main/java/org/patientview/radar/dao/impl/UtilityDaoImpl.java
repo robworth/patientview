@@ -227,7 +227,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                                                 "WHERE   nhsno IN (SELECT nhsNo " +
                                                 "                  FROM   usermapping " +
                                                 "                  WHERE  unitCode = ?);",
-                    new Object[]{centre.getId()}, Integer.class);
+                    new Object[]{centre.getUnitCode()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }
