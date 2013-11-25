@@ -2,6 +2,7 @@ package org.patientview.radar.util;
 
 import com.Ostermiller.util.RandPass;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.web.pages.BasePage;
@@ -164,26 +165,23 @@ public class RadarUtility {
     }
 
 
-    public static BasePage getDiseasePage(DiseaseGroup diseaseGroup, Patient patient){
-        if (diseaseGroup != null) {
+    public static BasePage getDiseasePage(Patient patient, PageParameters pageParameters){
 
-            if (patient.getDiseaseGroup() == null) {
-                patient.setDiseaseGroup(diseaseGroup);
-            }
+        if (patient.getDiseaseGroup() != null) {
 
-            if (diseaseGroup.getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
-                    diseaseGroup.getId().
+            if (patient.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
+                    patient.getDiseaseGroup().getId().
                             equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
                 return new SrnsPatientPage(patient);
-            } else if (diseaseGroup.getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
-                return new AlportPatientPage(patient);
-            } else if (diseaseGroup.getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
-                return new HNF1BPatientPage(patient);
+            } else if (patient.getDiseaseGroup().getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
+                return new AlportPatientPage(patient, pageParameters);
+            } else if (patient.getDiseaseGroup().getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
+                return new HNF1BPatientPage(patient, pageParameters);
             } else {
-                return new GenericPatientPage(patient);
+                return new GenericPatientPage(patient, pageParameters);
             }
         }  else {
-            return new GenericPatientPage(patient);
+            return new GenericPatientPage(patient, pageParameters);
         }
 
     }

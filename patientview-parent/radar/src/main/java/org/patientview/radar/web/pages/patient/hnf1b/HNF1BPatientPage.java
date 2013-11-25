@@ -67,7 +67,9 @@ public class HNF1BPatientPage extends BasePage {
         init(new Patient());
     }
 
-    public HNF1BPatientPage(Patient patient) {
+    public HNF1BPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
+        this.patient = patient;
         init(patient);
     }
 

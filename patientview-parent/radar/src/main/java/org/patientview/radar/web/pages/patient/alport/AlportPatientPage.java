@@ -65,14 +65,15 @@ public class AlportPatientPage extends BasePage {
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
-    public AlportPatientPage(Patient patient) {
+    public AlportPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
+        this.patient = patient;
         init(patient);
     }
 
     public AlportPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
         patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
-
         init(patient);
     }
 
