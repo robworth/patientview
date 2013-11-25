@@ -46,8 +46,7 @@ public class ResultsInitAction extends Action {
             throws Exception {
 
         User user = UserUtils.retrieveUser(request);
-        String testCode1 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode1");
-        String testCode2 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode2");
+        String testCode1 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode");
 
         if (user != null) {
             request.setAttribute("user", user);
