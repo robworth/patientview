@@ -84,7 +84,13 @@ public class SelectPatientPanel extends Panel {
                 }
 
                 DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
-                setResponsePage(RadarUtility.getDiseasePage(diseaseGroup, patient));
+
+                if (patient.getDiseaseGroup() == null) {
+                    patient.setDiseaseGroup(diseaseGroup);
+                }
+
+                this.getPage().getPageParameters();
+                setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
             }
         };

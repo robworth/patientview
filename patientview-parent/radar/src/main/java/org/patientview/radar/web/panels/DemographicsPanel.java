@@ -110,6 +110,7 @@ public class DemographicsPanel extends Panel {
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
+
                     userManager.savePatientUser(patient);
 
                 } catch (RegisterException re) {

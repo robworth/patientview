@@ -45,8 +45,10 @@ import java.util.List;
 public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
-    private static final String PATIENT_GROUP = "PATIENT";
-    private static final String PATIENT_VIEW_GROUP = "patient";
+
+
+    private static final String PATIENT_GROUP = "PATIENT"; // Radar patient mapping
+    private static final String PATIENT_VIEW_GROUP = "patient"; // Patient view mapping
 
     private EmailManager emailManager;
     private ProviderManager authenticationManager;
@@ -170,7 +172,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         try {
 
             // Check of the patient needs registering first otherwise just save the patient record
-            if (patient.isEditableDemographics() || !userExistsInPatientView(patient.getNhsno())) {
+            if (patient.isEditableDemographics() && !userExistsInPatientView(patient.getNhsno())) {
                 return registerPatientUser(patient);
             }  else {
                 demographicsDao.saveDemographics(patient);

@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
@@ -40,6 +41,7 @@ import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.CentreDropDown;
 import org.patientview.radar.web.components.ClinicianDropDown;
 import org.patientview.radar.web.components.ComponentHelper;
+import org.patientview.radar.web.components.LabelMessage;
 import org.patientview.radar.web.components.RadarComponentFactory;
 import org.patientview.radar.web.components.RadarRequiredCheckBox;
 import org.patientview.radar.web.components.RadarRequiredDateTextField;
@@ -98,9 +100,10 @@ public class GenericDemographicsPanel extends Panel {
 
         //Error Message
         String message = "Please complete all mandatory fields";
-        final Model<String> messageModel =
-                new Model<String>();
-
+        final LabelMessage labelMessage = new LabelMessage();
+        labelMessage.setMessage(message);
+        final PropertyModel<LabelMessage> messageModel =
+                new PropertyModel<LabelMessage>(labelMessage, "message");
 
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
@@ -145,7 +148,9 @@ public class GenericDemographicsPanel extends Panel {
 
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception", re);
-                    messageModel.setObject("Failed to register patient: " + re.getMessage());
+                    String message = "Failed to register patient: " + re.getMessage();
+                    labelMessage.setMessage(message);
+                    error(message);
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());

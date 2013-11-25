@@ -45,10 +45,11 @@ public class GenericPatientPage extends BasePage {
         init(new Patient());
     }
 
-    public GenericPatientPage(Patient patient) {
+    public GenericPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
         // this constructor is used when adding a new patient
         init(patient);
-        // set the nhs id or chi id based on model
+        this.patient = patient;
     }
 
     public GenericPatientPage(PageParameters pageParameters) {
