@@ -67,6 +67,7 @@
         <prop key="noreply.email">${noreply.email}</prop>
         <prop key="warning.email">${warning.email}</prop>
         <prop key="email.verification.best.before.days">${email.verification.best.before.days}</prop>
+        <prop key="test.result.testCode">${test.result.testCode}</prop>
     </util:properties>
 
 </beans>
