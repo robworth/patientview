@@ -2,6 +2,7 @@ package org.patientview.radar.web.pages.patient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -46,6 +47,9 @@ import java.util.List;
  */
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class AddPatientPage extends BasePage {
+
+    private static final String NO_PATIENTS_FOUND = "No existing patient records for this NHS number. "
+                                                    + "Please press the \"create new patient\" button below";
     public static final String NHS_NUMBER_INVALID_MSG = "NHS or CHI number is not valid";
 
     @SpringBean
@@ -89,6 +93,8 @@ public class AddPatientPage extends BasePage {
             @Override
             protected void onSubmit() {
 
+                Session.get().cleanupFeedbackMessages();
+
                 // just show the user one error at a time
                 DemographicsFilter demographicsFilter = new DemographicsFilter();
                 demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
@@ -99,6 +105,7 @@ public class AddPatientPage extends BasePage {
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
+
                 } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
                     // check that this nhsno has a mapping in the radar system
                     selectPatientPanel.setVisible(false);
@@ -115,6 +122,7 @@ public class AddPatientPage extends BasePage {
                         selectPatientPanel.setVisible(true);
                     } else {
                         selectPatientPanel.setVisible(false);
+                        info(NO_PATIENTS_FOUND);
                     }
                     createPatientPanel.setVisible(true);
 

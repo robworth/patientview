@@ -1,35 +1,5 @@
 package org.patientview.radar.web.panels;
 
-import org.patientview.model.Centre;
-import org.patientview.model.Ethnicity;
-import org.patientview.model.Sex;
-import org.patientview.model.Status;
-import org.patientview.model.enums.NhsNumberType;
-import org.patientview.model.Patient;
-import org.patientview.radar.exception.RegisterException;
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.LabDataManager;
-import org.patientview.radar.service.TherapyManager;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.service.generic.DiseaseGroupManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
-import org.patientview.radar.web.components.ClinicianDropDown;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.components.RadarRequiredCheckBox;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -50,15 +20,41 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.patientview.model.Centre;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
+import org.patientview.radar.exception.RegisterException;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.ClinicalDataManager;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.LabDataManager;
+import org.patientview.radar.service.TherapyManager;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
+import org.patientview.radar.service.generic.DiseaseGroupManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.CentreDropDown;
+import org.patientview.radar.web.components.ClinicianDropDown;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredCheckBox;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DemographicsPanel extends Panel {
@@ -83,13 +79,8 @@ public class DemographicsPanel extends Panel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsPanel.class);
 
-    public DemographicsPanel(String id, final IModel<Long> radarNumberModel) {
-        this(id, radarNumberModel, null);
-    }
 
-    public DemographicsPanel(String id, final IModel<Long> radarNumberModel, final PageParameters pageParameters) {
-
-
+    public DemographicsPanel(String id, final Patient patient) {
 
         super(id);
 
@@ -105,71 +96,8 @@ public class DemographicsPanel extends Panel {
                 new LoadableDetachableModel<Patient>() {
                     @Override
                     public Patient load() {
-                        Patient patientModelObject = null;
-                        if (radarNumberModel.getObject() != null) {
-                            Long radarNumber;
-                            try {
-                                radarNumber = radarNumberModel.getObject();
-                            } catch (ClassCastException e) {
-                                Object obj = radarNumberModel.getObject();
-                                radarNumber = Long.parseLong((String) obj);
-                            }
-                            patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                        } else {
-                            patientModelObject = demographicsManager.getDemographicsByNhsNoAndUnitCode(
-                                    pageParameters.get("idVal").toString(),
-                                    pageParameters.get("diseaseGroupId").toString());
-                        }
 
-                        if (patientModelObject == null) {
-
-                            patientModelObject = new Patient();
-
-                            if (pageParameters != null) {
-                                // if page parameter exists then adding a demographics
-                                // set the id type and val
-                                String idType = pageParameters.get("idType").toString();
-
-                                patientModelObject.setNhsno(pageParameters.get("idVal").toString());
-
-                                if (idType.equals(NhsNumberType.CHI_NUMBER.toString())) {
-                                    patientModelObject.setNhsNumberType(NhsNumberType.CHI_NUMBER);
-                                } else if (idType.equals(NhsNumberType.NHS_NUMBER.toString())) {
-                                    patientModelObject.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-                                }
-
-                                String diseaseGroupId = pageParameters.get("diseaseGroupId").toString();
-
-                                if (diseaseGroupId != null) {
-                                    patientModelObject.setDiseaseGroup(
-                                            diseaseGroupManager.getById(diseaseGroupId));
-                                }
-
-
-                                StringValue idValue = pageParameters.get("renalUnitId");
-                                if (!idValue.isEmpty()) {
-                                    patientModelObject.setRenalUnit(
-                                            utilityManager.getCentre(idValue.toLongObject()));
-                                }
-
-                                // no exist data in patient table, then use the user name to populate.
-                                String name = utilityManager.getUserName(patientModelObject.getNhsno());
-                                if (name != null && !"".equals(name)) {
-                                    // split the user name with a space
-                                    String[] names = name.split(" ");
-                                    if (names != null && names.length >= 2) {
-                                        patientModelObject.setForename(name.substring(0,
-                                                name.indexOf(names[names.length - 1])));
-                                        patientModelObject.setSurname(names[names.length - 1]);
-
-                                    } else {
-                                        patientModelObject.setForename(name);
-                                    }
-                                }
-                            }
-                        }
-
-                        return patientModelObject;
+                        return patient;
                     }
                 });
 
@@ -177,15 +105,13 @@ public class DemographicsPanel extends Panel {
         final Form<Patient> form = new Form<Patient>("form", model) {
             @Override
             protected void onSubmit() {
+
                 Patient patient = getModelObject();
-                // shouldnt need to do this but for some reason the id comes back with null!
-                if (radarNumberModel.getObject() != null) {
-                    patient.setId(radarNumberModel.getObject());
-                }
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
                     userManager.savePatientUser(patient);
+
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception {} ", re.getMessage());
                     error("Could not register patient" + re.getMessage());
@@ -194,16 +120,18 @@ public class DemographicsPanel extends Panel {
                     LOGGER.error("{}, message {}", message, e.getMessage());
                     error(message);
                 }
-                radarNumberModel.setObject(patient.getId());
 
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
-                Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getId());
-                if (diagnosis == null) {
-                    Diagnosis diagnosisNew = new Diagnosis();
-                    diagnosisNew.setRadarNumber(patient.getId());
-                    DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis")).getModelObject();
-                    diagnosisNew.setDiagnosisCode(diagnosisCode);
-                    diagnosisManager.saveDiagnosis(diagnosisNew);
+                if (patient.hasValidId()) {
+                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getId());
+                    if (diagnosis == null) {
+                        Diagnosis diagnosisNew = new Diagnosis();
+                        diagnosisNew.setRadarNumber(patient.getId());
+                        DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis"))
+                                .getModelObject();
+                        diagnosisNew.setDiagnosisCode(diagnosisCode);
+                        diagnosisManager.saveDiagnosis(diagnosisNew);
+                    }
                 }
 
             }
@@ -235,22 +163,21 @@ public class DemographicsPanel extends Panel {
         form.add(new Label("addNewPatientLabel", "Add a New Patient") {
             @Override
             public boolean isVisible() {
-                return radarNumberModel.getObject() == null;
+                return patient.isEditableDemographics();
             }
         });
 
-        TextField<Long> radarNumberField = new TextField<Long>("radarNo", radarNumberModel);
+        TextField<Long> radarNumberField = new TextField<Long>("radarNo", new Model<Long>(patient.getId()));
         radarNumberField.setEnabled(false);
         form.add(radarNumberField);
 
         DateTextField dateRegistered = DateTextField.forDatePattern("dateReg", RadarApplication.DATE_PATTERN);
-        if (radarNumberModel.getObject() == null) {
-            model.getObject().setDateReg(new Date());
-        }
+
         form.add(dateRegistered);
 
         RadarRequiredDropdownChoice diagnosis =
-                new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
+                new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(
+                        new Model<Long>(patient.getId()),
                         diagnosisManager),
                         diagnosisManager.getDiagnosisCodes(),
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
@@ -264,19 +191,16 @@ public class DemographicsPanel extends Panel {
                     }
                 };
 
-        if (pageParameters != null && pageParameters.get("diagnosis").toString() != null) {
-            //if pageParameters not null then creating new demographics - set the diagnosis
-            String diseaseGroup = pageParameters.get("diagnosis").toString();
-            DiagnosisCode diagnosisCode = new DiagnosisCode();
+        String diseaseGroup = patient.getDiseaseGroup().getId();
+        DiagnosisCode diagnosisCode = new DiagnosisCode();
 
-            if (diseaseGroup.equals(DiagnosisCode.SRNS_ID + "")) {
-                diagnosisCode.setId(DiagnosisCode.SRNS_ID);
-            } else if (diseaseGroup.equals(DiagnosisCode.MPGN_ID + "")) {
-                diagnosisCode.setId(DiagnosisCode.MPGN_ID);
-            }
-
-            diagnosis.setModel(new Model(diagnosisCode));
+        if (diseaseGroup.equals(DiagnosisCode.SRNS_ID + "")) {
+            diagnosisCode.setId(DiagnosisCode.SRNS_ID);
+        } else if (diseaseGroup.equals(DiagnosisCode.MPGN_ID + "")) {
+            diagnosisCode.setId(DiagnosisCode.MPGN_ID);
         }
+
+        diagnosis.setModel(new Model(diagnosisCode));
 
         /**
          * Basic fields
@@ -303,23 +227,7 @@ public class DemographicsPanel extends Panel {
         Label nameLabel = new Label("nameLabel", "Name") {
             @Override
             public boolean isVisible() {
-                Patient patientModelObject = null;
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
-                    }
-                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                }
-
-                if (patientModelObject == null) {
-                    patientModelObject = new Patient();
-                }
-
-                return StringUtils.isNotBlank(patientModelObject.getForename());
+                return StringUtils.isNotBlank(patient.getForename());
             }
         };
         nameLabel.setOutputMarkupId(true);
@@ -327,26 +235,10 @@ public class DemographicsPanel extends Panel {
         form.add(nameLabel);
 
         TextField forenameForHeader = new TextField("forenameForHeader", RadarModelFactory.getFirstNameModel(
-                radarNumberModel, demographicsManager)) {
+                new Model<Long>(patient.getId()), demographicsManager)) {
             @Override
             public boolean isVisible() {
-                Patient patientModelObject = null;
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
-                    }
-                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                }
-
-                if (patientModelObject == null) {
-                    patientModelObject = new Patient();
-                }
-
-                return StringUtils.isNotBlank(patientModelObject.getForename());
+                return StringUtils.isNotBlank(patient.getForename());
             }
         };
         forenameForHeader.setOutputMarkupId(true);
@@ -356,26 +248,11 @@ public class DemographicsPanel extends Panel {
 
         // surname
         TextField surnameForHeader = new TextField("surnameForHeader", RadarModelFactory.getSurnameModel(
-                radarNumberModel, demographicsManager)) {
+                new Model<Long>(patient.getId()), demographicsManager)) {
             @Override
             public boolean isVisible() {
-                Patient patientModelObject = null;
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
-                    }
-                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                }
 
-                if (patientModelObject == null) {
-                    patientModelObject = new Patient();
-                }
-
-                return StringUtils.isNotBlank(patientModelObject.getSurname());
+                return StringUtils.isNotBlank(patient.getSurname());
             }
         };
         surnameForHeader.setOutputMarkupId(true);
@@ -386,23 +263,7 @@ public class DemographicsPanel extends Panel {
         Label dobLabel = new Label("dobLabel", "DoB") {
             @Override
             public boolean isVisible() {
-                Patient patientModelObject = null;
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
-                    }
-                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                }
-
-                if (patientModelObject == null) {
-                    patientModelObject = new Patient();
-                }
-
-                return patientModelObject.getDob() != null;
+                return patient.getDob() != null;
             }
         };
         dobLabel.setOutputMarkupId(true);
@@ -410,27 +271,11 @@ public class DemographicsPanel extends Panel {
         form.add(dobLabel);
 
         TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
-                "dateOfBirthForHeader",
-                RadarModelFactory.getDobModel(radarNumberModel, demographicsManager), RadarApplication.DATE_PATTERN) {
+                "dateOfBirthForHeader", RadarModelFactory.getDobModel(new Model<Long>(patient.getId()),
+                demographicsManager), RadarApplication.DATE_PATTERN) {
             @Override
             public boolean isVisible() {
-                Patient patientModelObject = null;
-                if (radarNumberModel.getObject() != null) {
-                    Long radarNumber;
-                    try {
-                        radarNumber = radarNumberModel.getObject();
-                    } catch (ClassCastException e) {
-                        Object obj = radarNumberModel.getObject();
-                        radarNumber = Long.parseLong((String) obj);
-                    }
-                    patientModelObject = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                }
-
-                if (patientModelObject == null) {
-                    patientModelObject = new Patient();
-                }
-
-                return patientModelObject.getDob() != null;
+                return patient.getDob() != null;
             }
         };
         dateOfBirthForHeader.setOutputMarkupId(true);
@@ -515,7 +360,13 @@ public class DemographicsPanel extends Panel {
             });
         } else {
             List<Centre> centres = new ArrayList<Centre>();
-            centres.add(form.getModelObject().getRenalUnit());
+
+            for (String unitCode : userManager.getUnitCodes(RadarSecuredSession.get().getUser())) {
+                Centre centre = new Centre();
+                centre.setUnitCode(unitCode);
+                centre.setName(unitCode);
+                centres.add(centre);
+            }
 
             renalUnit = new CentreDropDown("renalUnit", centres);
         }
@@ -572,7 +423,7 @@ public class DemographicsPanel extends Panel {
         ajaxSubmitLinkTop.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
             @Override
             public Object getObject() {
-                return radarNumberModel.getObject() == null ? "Add this patient" : "Update";
+                return patient == null ? "Add this patient" : "Update";
             }
         }));
 
@@ -603,7 +454,7 @@ public class DemographicsPanel extends Panel {
         ajaxSubmitLinkBottom.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
             @Override
             public Object getObject() {
-                return radarNumberModel.getObject() == null ? "Add this patient" : "Update";
+                return patient == null ? "Add this patient" : "Update";
             }
         }));
 

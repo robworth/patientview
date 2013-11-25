@@ -394,7 +394,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                         "AND um.nhsno = ? " +
                         "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
         } catch (EmptyResultDataAccessException era) {
-            LOGGER.error("No usernaem result found for " + nhsNo);
+            LOGGER.debug("No username result found for " + nhsNo);
         }
 
         return username;

@@ -260,7 +260,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
                 patientUser.setUsername(generateUsername(patient));
                 patientUser.setName(patient.getForename() + " " + patient.getSurname());
-                patientUser.setPassword(generateRandomPassword());
+                patientUser.setPassword(User.getPasswordHash(generateRandomPassword()));
                 patientUser.setEmail(patient.getEmailAddress());
 
                 patientUser = (PatientUser) userDao.createUser(patientUser);
