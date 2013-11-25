@@ -15,6 +15,7 @@ delete from emailverification;
 delete from diagnostic;
 delete from comment;
 delete from aboutme;
+delete from news;
 
 delete from conversation;
 delete from message;
@@ -28,6 +29,7 @@ delete from rdc_genetic_test;
 
 delete from diagnosis;
 delete from tbl_diagnosis;
+delete from tbl_labdata;
 delete from tbl_patient_users;
 delete from tbl_users;
 delete from tbl_adminusers;
