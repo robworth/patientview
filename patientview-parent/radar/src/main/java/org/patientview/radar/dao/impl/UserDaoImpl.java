@@ -494,14 +494,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME) +
+        String query =  buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME) +
                 " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME
                 + " = '" + User.ROLE_PATIENT + "'" + " " +
                 " AND " + PATIENT_USER_TABLE_NAME + "." + PATIENT_USER_ID_FIELD_NAME
                 + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
                 " AND " + USER_TABLE_NAME + "." + ID_FIELD_NAME
-                + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME
-        );
+                + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME;
+
+        sqlQueries.add(query);
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
