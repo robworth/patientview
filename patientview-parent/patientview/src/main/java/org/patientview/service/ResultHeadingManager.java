@@ -40,6 +40,8 @@ public interface ResultHeadingManager {
 
     List<ResultHeading> getAll();
 
+    List<ResultHeading> getAll(String username);
+
     List<ResultHeading> get(int panel);
 
     void save(ResultHeading resultHeading);

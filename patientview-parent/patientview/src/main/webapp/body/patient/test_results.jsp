@@ -38,9 +38,10 @@
     </ul>
 </div>
 
+<h3>Select test result to graph</h3>
 <div class="btn-toolbar">
     <div class="btn-group">
-        <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span id="heading1"><bean:write name="resultTypeHeading1" property="heading"/></span><span id="d1" class="caret"></span></button>
+        <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span id="heading1"><bean:write name="resultTypeHeading" property="heading"/></span><span id="d1" class="caret"></span></button>
         <ul class="dropdown dropdown-menu">
             <li><a id="btn_1_none" href="#" onclick='changeChart(this, "","")'>&nbsp;</a></li>
             <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
@@ -48,8 +49,8 @@
             </logic:iterate>
         </ul>
     </div>
-    <div class="btn-group" style="margin-left: -4px;">
-        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="heading2"><bean:write name="resultTypeHeading2" property="heading"/></span><span id="d2" class="caret"></span></button>
+    <div class="btn-group" style="margin-left: -3px;">
+        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="heading2"></span><span id="d2" class="caret"></span></button>
         <ul class="dropdown dropdown-menu">
             <li><a id="btn_2_none" href="#" onclick='changeChart(this, "","")'>&nbsp;</a></li>
             <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
@@ -57,7 +58,19 @@
     </logic:iterate>
         </ul>
     </div>
-    <div class="btn-group" style="margin-left: -4px;" id="btn_group">
+
+</div>
+
+<div class="alert alert-error" id="errorMsg" style="display: none">Test result doesn't exist.</div>
+
+<input type="hidden" name="resultCode1" value="<bean:write name='resultTypeHeading' property="headingcode"/>" id="result_Type1"/>
+<input type="hidden" name="resultCode2" value="" id="result_Type2"/>
+<input type="hidden" name="period" value="<bean:write name='period'/>" id="period"/>
+
+<div id="chart_div" style="height:500px;" ></div>
+<div id="time_period">
+    <div><h3>Change time period </h3></div>
+    <div class="btn-group" style="margin-top: 5px;" id="button_group">
         <button type="button" class="btn btn-default" id="1_Month" onclick="changePeriod(this,1)">1M</button>
         <button type="button" class="btn btn-default" id="3_Months" onclick="changePeriod(this,3)">3M</button>
         <button type="button" class="btn btn-default" id="6_Months" onclick="changePeriod(this,6)">6M</button>
@@ -68,11 +81,7 @@
     </div>
 </div>
 
-<input type="hidden" name="resultCode1" value="<bean:write name='resultTypeHeading1' property="headingcode"/>" id="result_Type1"/>
-<input type="hidden" name="resultCode2" value="<bean:write name='resultTypeHeading2' property="headingcode"/>" id="result_Type2"/>
-<input type="hidden" name="period" value="<bean:write name='period'/>" id="period"/>
 
-<div id="chart_div" style="height:500px;" ></div>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="/js/testresults.js" type="text/javascript"></script>

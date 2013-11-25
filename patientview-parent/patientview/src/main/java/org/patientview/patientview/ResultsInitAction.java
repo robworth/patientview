@@ -56,18 +56,12 @@ public class ResultsInitAction extends Action {
                 testCode1 = "creatinine";
             }
 
-            if (StringUtils.isEmpty(testCode2)) {
-                testCode2 = "phosphate";
-            }
-
             List<ResultHeading> resultsHeadingsList
-                    = LegacySpringUtils.getResultHeadingManager().getAll();
+                    = LegacySpringUtils.getResultHeadingManager().getAll(user.getUsername());
 
             request.setAttribute("resultsHeadings", resultsHeadingsList);
-            ResultHeading heading1 = LegacySpringUtils.getResultHeadingManager().get(testCode1);
-            ResultHeading heading2 = LegacySpringUtils.getResultHeadingManager().get(testCode2);
-            request.setAttribute("resultTypeHeading1", heading1);
-            request.setAttribute("resultTypeHeading2", heading2);
+            ResultHeading heading = LegacySpringUtils.getResultHeadingManager().get(testCode1);
+            request.setAttribute("resultTypeHeading", heading);
             request.setAttribute("period", "24");
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
             return LogonUtils.logonChecks(mapping, request, "control");

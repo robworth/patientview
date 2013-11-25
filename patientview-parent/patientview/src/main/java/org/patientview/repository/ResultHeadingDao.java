@@ -41,6 +41,8 @@ public interface ResultHeadingDao {
 
     List<ResultHeading> getAll(Specialty specialty);
 
+    List<ResultHeading> getAll(Specialty specialty, String username);
+
     List<ResultHeading> get(int panel, Specialty specialty);
 
     void save(ResultHeading resultHeading);

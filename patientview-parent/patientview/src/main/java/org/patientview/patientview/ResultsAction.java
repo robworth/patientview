@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -51,6 +52,8 @@ import java.util.TreeMap;
 public class ResultsAction extends Action {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsAction.class);
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
@@ -78,18 +81,19 @@ public class ResultsAction extends Action {
                         = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, resultCodes,
                         monthBeforeNow);
 
-                Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
+                if (!results.isEmpty()) {
 
-                String jsonData = convertToJsonData(resultsInRecords, resultType1, resultType2);
+                    Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
+                    String jsonData = convertToJsonData(resultsInRecords, resultType1, resultType2);
+                    try {
+                        PrintWriter printWriter = response.getWriter();
+                        printWriter.write(jsonData);
+                        printWriter.flush();
+                        printWriter.close();
 
-                try {
-                    PrintWriter printWriter = response.getWriter();
-                    printWriter.write(jsonData);
-                    printWriter.flush();
-                    printWriter.close();
-
-                } catch (Exception e) {
-                    LOGGER.debug("Couldn't wring json data fro testresult graphing" + e.getMessage());
+                    } catch (Exception e) {
+                        LOGGER.debug("Couldn't wring json data fro testresult graphing" + e.getMessage());
+                    }
                 }
 
             } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
@@ -155,7 +159,7 @@ public class ResultsAction extends Action {
 
             sb.append("{\"c\":[");
             // DateTime
-            sb.append("{\"v\":\"").append(result.getFormattedTimeStamp()).append("\"},");
+            sb.append("{\"v\":\"").append(dateFormat.format(result.getTimeStamp().getTime())).append("\"},");
 
             if (StringUtils.isNotEmpty(resultType1)) {
                 // result type 1

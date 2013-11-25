@@ -32,22 +32,34 @@ function drawChart() {
         async: false,
         success: function(resultData){
             if (resultData == null || resultData == "") {
+                $('#errorMsg').show();
                 return;
+            } else {
+                $('#errorMsg').hide();
             }
+
             var arrColors = ['red','blue'];
             if ($('#heading1').text() == "") {
                 arrColors = ['blue','red'];
             }
+
             var data = new google.visualization.DataTable(resultData);
+            var dataView = new google.visualization.DataView(data);
+
+            var boolScale = true;
+            if (dataView.getViewRows().length == 1) {
+                boolScale = false;
+            }
+
             var options = {
                 title: 'TestResults',
                 colors: arrColors,
                 tooltip: { isHtml: true, trigger: 'selection' },
-                vAxis: { logScale: true },
+                vAxis: { logScale: boolScale },
                 interpolateNulls: true
             };
-            chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
+            chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(dataView, options);
 
             // Add mouse over handlers.
             google.visualization.events.addListener(chart, 'onmouseover', mouseOver);
@@ -75,7 +87,7 @@ function changeChart(obj, resultCode, resultHeading) {
 
 function changePeriod(obj, value) {
     $('#period').val(value);
-    $("#btn_group").children().each(function(i,n){
+    $("#button_group").children().each(function(i,n){
         if(n.disabled == true){
             n.disabled = false;
         }
