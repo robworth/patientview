@@ -1,10 +1,15 @@
 package org.patientview.test.quartz;
 
+import com.Ostermiller.util.CSVParser;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.patientview.model.Patient;
 import org.patientview.patientview.model.*;
 import org.patientview.quartz.UktImportExportScheduler;
+import org.patientview.repository.PatientDao;
 import org.patientview.service.*;
+import org.patientview.test.helpers.RepositoryHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -12,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 
 import static org.junit.Assert.*;
@@ -30,8 +37,40 @@ public class UktImportExportSchedulerTest {
 
     private String uktDirectory;
 
+    private Specialty specialty;
+
+    private User user;
+
+    private Patient patient;
+
+    @Inject
+    private RepositoryHelpers repositoryHelpers;
+
     @Inject
     private UKTransplantManager ukTransplantManager;
+
+    @Inject
+    private PatientDao patientDao;
+
+    @Before
+    public void setupSystem() throws Exception {
+
+        specialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
+
+        user = repositoryHelpers.createUserWithMapping("username", "paul@test.com", "p", "username", "UNITCODEA",
+                "9876543211", specialty);
+
+        patient = new Patient();
+        patient.setNhsno("9876543211");
+        patient.setUnitcode("UNITCODEA");
+        patient.setSurname("surname");
+        patient.setForename("forname");
+        patient.setPostcode("postcode");
+        patient.setDateofbirth("2013/03/04");
+
+        patientDao.save(patient);
+
+    }
 
     @Test
     public void testExecute() throws Exception {
@@ -56,12 +95,24 @@ public class UktImportExportSchedulerTest {
         assertTrue("Can not read UKT files", uktFilesSize != 0);
 
         uktImportExportScheduler.setUktDirectory(parentDir);
+        uktImportExportScheduler.setUktExportDirectory(parentDir);
         uktImportExportScheduler.execute();
 
         UktStatus uktStatus = ukTransplantManager.getUktStatus("9876543210");
 
         if (uktFilesSize > 0) {
             assertNotNull("UktStatus not be saved", uktStatus);
+            File file = ResourceUtils.getFile("classpath:schedule/ukt_rpv_export.txt");
+            CSVParser uktParser = new CSVParser(new FileReader(file));
+            uktParser.changeDelimiter(',');
+            String[][] uktValues = uktParser.getAllValues();
+
+            assertEquals("nhsno not same", patient.getNhsno(), uktValues[0][0]);
+            assertEquals("surname not same", patient.getSurname(), uktValues[0][1]);
+            assertEquals("forname not same", patient.getForename(), uktValues[0][2]);
+            assertEquals("postcode not same", patient.getPostcode(), uktValues[0][4]);
+
+            uktParser.close();
         } else {
             assertNull("Wrong entity exists.", uktStatus);
         }
