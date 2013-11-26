@@ -1,7 +1,5 @@
 package org.patientview.radar.service.impl;
 
-import com.Ostermiller.util.RandPass;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -23,7 +21,6 @@ import org.patientview.radar.model.Consultant;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.UtilityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -252,24 +249,6 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getUserName(nhsNo);
     }
 
-    // todo this method should remove after running once
-    public void generateUserWithUsermapping() {
-        List<Consultant> consultants = utilityDao.getConsultants(null, -1, -1);
-        for (Consultant consultant : consultants) {
-            String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
-            password = DigestUtils.sha256Hex(password);
-
-            PatientUser patientUser = new PatientUser();
-            patientUser.setName(consultant.getFullName());
-            patientUser.setPassword(password);
-
-            /// TODO -- This is originally a test method being used in the code
-            //  TODO -- Mappings need to be added perhaps use the correct registration method
-            userDao.createUser(patientUser);
-        }
-
-        writeConsultantToFile(consultants);
-    }
 
     public String getUserName(Long id) {
         return utilityDao.getUserName(id);

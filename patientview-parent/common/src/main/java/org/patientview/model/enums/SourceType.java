@@ -1,4 +1,4 @@
-package org.patientview.radar.model.enums;
+package org.patientview.model.enums;
 
 /**
  * User: james@solidstategroup.com
@@ -9,7 +9,7 @@ public enum SourceType {
 
     RADAR("Radar"),
     PATIENT_VIEW("PatientView"),
-    XML_IMPORTER("XMLImporter") ;
+    XML_IMPORTER("XMLImporter");
 
     private String name;
 
