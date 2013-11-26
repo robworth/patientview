@@ -63,7 +63,5 @@ public interface UtilityManager {
 
     String getUserName(String nhsNo);
 
-    void generateUserWithUsermapping();
-
     String getUserName(Long id);
 }
