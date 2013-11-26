@@ -15,6 +15,7 @@ import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
+import org.patientview.radar.model.enums.SourceType;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.patientview.radar.util.RadarUtility;
@@ -52,6 +53,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private PatientLinkDao patientLinkDao;
     private UserDao userDao;
 
+
     @Override
     public void setDataSource(DataSource dataSource) {
         // Call super
@@ -67,7 +69,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                         "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
                         "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
                         "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-                        "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
+                        "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType");
     }
 
     public void saveDemographics(final Patient patient) {
@@ -219,6 +221,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("indiaId", patient.getIndiaId());
                     put("generic", patient.isGeneric());
                     put("radarConsentConfirmedByUserId", patient.getRadarConsentConfirmedByUserId());
+                    put("sourceType", SourceType.RADAR.getName());
                 }
             });
             patient.setId(id.longValue());
@@ -307,16 +310,23 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     public List<Patient> getDemographicsByUnitCode(List<String> unitCodes) {
         String unitCodeValues = buildValueList(unitCodes);
         List<Patient> patients = null;
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT  DISTINCT p.* ");
+        query.append("FROM    user u ");
+        query.append("INNER JOIN patient p ");
+        query.append("INNER JOIN usermapping m ");
+        query.append("WHERE  m.nhsno = p.nhsno ");
+        query.append("AND    u.username NOT LIKE '%-GP%' ");
+        query.append("AND    u.username = m.username ");
+        query.append("AND    m.unitcode IN (");
+        query.append(unitCodeValues);
+        query.append(")");
+        query.append("AND    p.sourceType = '");
+        query.append(SourceType.RADAR.getName());
+        query.append("'");
 
         if (StringUtils.isNotEmpty(unitCodeValues)) {
-             patients =  jdbcTemplate.query("SELECT  DISTINCT p.* "
-                     + "FROM    user u "
-                     + "INNER JOIN patient p "
-                     + "INNER JOIN usermapping m "
-                     + "WHERE  m.nhsno = p.nhsno "
-                     + "AND    u.username NOT LIKE '%-GP%' "
-                     + "AND    u.username = m.username "
-                     + "AND    m.unitcode IN (" + unitCodeValues + ")", new DemographicsRowMapper());
+             patients =  jdbcTemplate.query(query.toString(), new DemographicsRowMapper());
 
 
             List<Patient> linkedPatients = new ArrayList<Patient>();
@@ -494,10 +504,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             if (StringUtils.isNotBlank(dateOfBirthString)) {
                 Date dateOfBirth = null;
 
+                // TODO This needs fixing if it already hasn't been
+                // TODO Store the format with the date if you do it like this
+
                 // It seems that the encrypted strings in the DB have different date formats, nice.
                 for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
                     try {
-                        dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
+                        dateOfBirth = new SimpleDateFormat(dateFormat).  parse(dateOfBirthString);
+                        break;
                     } catch (ParseException e) {
                         LOGGER.debug("Could not parse date of birth {}", dateOfBirthString);
                     }
@@ -509,7 +523,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 } else {
                     LOGGER.error("Could not parse date of birth from any format for dob {}",
                             dateOfBirthString);
-                    String a = "";
                 }
             }
 
@@ -607,9 +620,17 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setIndiaId(resultSet.getString("indiaId"));
             patient.setGeneric(resultSet.getBoolean("generic"));
             patient.setEthnicGp(resultSet.getString("ethnicGp"));
+            patient.setSourceType(resultSet.getString("sourceType"));
 
             patient.setPatientLink(patientLinkDao.getPatientLink(patient.getNhsno(), patient.getUnitcode()));
-            patient.setEditableDemographics(false);
+
+            if (patient.getSourceType().equals(SourceType.RADAR.getName())) {
+                patient.setEditableDemographics(true);
+            } else {
+                patient.setEditableDemographics(false);
+            }
+
+
 
             return patient;
         }

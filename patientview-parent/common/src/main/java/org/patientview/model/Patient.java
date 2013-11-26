@@ -190,6 +190,9 @@ public class Patient extends BaseModel {
     @Column
     private Date mostRecentTestResultDateRangeStopDate;
 
+    @Column
+    private String sourceType;
+
     @Transient
     private Clinician clinician;
 
@@ -823,6 +826,14 @@ public class Patient extends BaseModel {
 
     public void setMostRecentTestResultDateRangeStopDate(Date mostRecentTestResultDateRangeStopDate) {
         this.mostRecentTestResultDateRangeStopDate = mostRecentTestResultDateRangeStopDate;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 }
 
