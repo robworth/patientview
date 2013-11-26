@@ -16,3 +16,5 @@
  ALTER TABLE pv_patientjoin_request CHANGE email email VARCHAR(255) NULL;
 
  ALTER TABLE patient ADD COLUMN sourceType VARCHAR(20);
+
+ ALTER TABLE pv_patientjoin_request MODIFY COLUMN dateofbirth DATETIME NOT NULL;
