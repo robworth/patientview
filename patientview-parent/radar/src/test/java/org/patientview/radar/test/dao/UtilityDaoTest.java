@@ -280,6 +280,7 @@ public class UtilityDaoTest extends BaseDaoTest {
         patient.setDiseaseGroup(diseaseGroup);
         patient.setUnitcode(centre.getUnitCode());
         patient.setDob(new Date());
+        patient.setEditableDemographics(true);
         userManager.savePatientUser(patient);
         assertNotNull(patient.getId());
         return patient;

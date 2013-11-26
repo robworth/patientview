@@ -180,7 +180,8 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
     }
 
     /**
-     * When we are listing by patient record by unitcode the patient record must display
+     * When we are listing patient records by unitcode the patient record must display linked records as well as
+     * patient records belonging to the unit.
      *
      *
      * @throws Exception

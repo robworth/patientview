@@ -115,6 +115,7 @@ public class UserManagerTest extends TestPvDbSchema {
         patient.setEmailAddress(email);
         patient.setDob(dateOfBirth);
         patient.setDiseaseGroup(diseaseGroup);
+        patient.setEditableDemographics(true);
         demographicsManager.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;
