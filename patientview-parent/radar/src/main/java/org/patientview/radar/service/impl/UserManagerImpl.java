@@ -457,8 +457,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         username = username.toLowerCase();
 
         int i = 1;
-        while (userDao.usernameExistsInPatientView(username + i) &&
-                userDao.getPatientUserWithUsername(username + 1) == null) {
+        while (userDao.usernameExistsInPatientView(username + i) ||
+                userDao.getPatientUserWithUsername(username + i) != null) {
             ++i;
         }
         return username + i;
