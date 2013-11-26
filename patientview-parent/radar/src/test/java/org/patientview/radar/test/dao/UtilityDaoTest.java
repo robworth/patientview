@@ -202,6 +202,12 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertNotNull("Relatives list is null", relatives);
     }
 
+    /**
+     * We create 4 patients in at the same centre and disease group and then query back the patient by
+     * disease group.
+     *
+     * @throws Exception
+     */
     @Test
     public void testGetPatientCountPerUnitByDiagnosisCode() throws Exception {
         Centre centre = new Centre();
@@ -232,7 +238,7 @@ public class UtilityDaoTest extends BaseDaoTest {
 
         DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
         Map<Long, Integer> patientCountMap = utilityDao.getPatientCountPerUnitByDiagnosisCode(diagnosisCode);
-        assertTrue(patientCountMap.get(5L).equals(2));
+        assertTrue(patientCountMap.get(5L).equals(4));
     }
 
     @Test
