@@ -14,3 +14,5 @@
  CREATE TABLE rdr_patient_linkage (id BIGINT PRIMARY KEY AUTO_INCREMENT, source_nhsno VARCHAR(20), source_unitcode VARCHAR(20), dest_nhsno VARCHAR(20), dest_unitcode VARCHAR(20));
 
  ALTER TABLE pv_patientjoin_request CHANGE email email VARCHAR(255) NULL;
+
+ ALTER TABLE patient ADD COLUMN sourceType VARCHAR(20);
