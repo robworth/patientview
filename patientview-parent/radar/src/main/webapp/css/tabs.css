@@ -64,3 +64,11 @@
 	padding:30px 20px 20px 20px;
 	
 	}
+
+.clearfix:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
