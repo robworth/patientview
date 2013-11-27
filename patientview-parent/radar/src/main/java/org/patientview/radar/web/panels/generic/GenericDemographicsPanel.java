@@ -401,6 +401,11 @@ public class GenericDemographicsPanel extends Panel {
         final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
         form.add(clinician);
 
+
+        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode());
+        form.add(sourceUnitCode);
+
+
         DropDownChoice<Centre> renalUnit;
 
         // if its a super user then the drop down will let them change renal units
@@ -439,6 +444,7 @@ public class GenericDemographicsPanel extends Panel {
 
             renalUnit = new CentreDropDown("renalUnit", centres);
         }
+
 
         form.add(renalUnit);
         nonEditableComponents.add(renalUnit);
