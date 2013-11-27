@@ -20,6 +20,8 @@ import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.util.RadarUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -30,6 +32,8 @@ import java.util.List;
  */
 public class SelectPatientPanel extends Panel {
 
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(SelectPatientPanel.class);
 
     @SpringBean
     private DemographicsManager demographicsManager;
@@ -63,7 +67,9 @@ public class SelectPatientPanel extends Panel {
 
         // Form that displays the potential patient records to link with from the Patient table
 
-        IModel<Patient> selected = new Model<Patient>();
+        final IModel<Patient> selected = new Model<Patient>();
+
+
         final RadioGroup group = new RadioGroup("group", selected);
 
 
@@ -79,8 +85,7 @@ public class SelectPatientPanel extends Panel {
                         patient = patientLinkManager.getMergePatient(patient);
                     }
                 } catch (Exception e) {
-                    //TODO Refactor to feed back to main page
-                    e.printStackTrace();
+                    LOGGER.error("Error merging link patient", e);
                 }
 
                 DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
@@ -88,8 +93,6 @@ public class SelectPatientPanel extends Panel {
                 if (patient.getDiseaseGroup() == null) {
                     patient.setDiseaseGroup(diseaseGroup);
                 }
-
-                patient.setEditableDemographics(true);
 
                 setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
@@ -112,21 +115,35 @@ public class SelectPatientPanel extends Panel {
 
         // Construct a radio button and patient record with the nhs number
         group.add(new ListView<Patient>("choice", model) {
+
+            private boolean setSelected = false;
+
             protected void populateItem(ListItem<Patient> it) {
 
+
+                Patient patient = it.getModelObject();
+
+                if (setSelected == false) {
+                    selected.setObject(patient);
+                    setSelected = true;
+                }
+
+
                 it.add(new Radio("radio", it.getModel()));
-                it.add(new Label("id", Long.toString(it.getModelObject().getId())));
-                it.add(new Label("nhsNo", it.getModelObject().getNhsno()));
-                it.add(new Label("forename", it.getModelObject().getForename()));
-                it.add(new Label("surname", it.getModelObject().getSurname()));
-                it.add(new Label("dateOfBirth", it.getModelObject().getDateofbirth()));
-                it.add(new Label("unitCode", it.getModelObject().getUnitcode()));
+                it.add(new Label("id", Long.toString(patient.getId())));
+                it.add(new Label("nhsNo", patient.getNhsno()));
+                it.add(new Label("forename", patient.getForename()));
+                it.add(new Label("surname", patient.getSurname()));
+                it.add(new Label("dateOfBirth", patient.getDateofbirth()));
+                it.add(new Label("unitCode", patient.getUnitcode()));
                 String dateResultsLastReceivedLabel = "";
                 if (it.getModelObject().getMostRecentTestResultDateRangeStopDate() != null) {
                     dateResultsLastReceivedLabel
                             = it.getModelObject().getMostRecentTestResultDateRangeStopDate().toString();
                 }
                 it.add(new Label("dateResultsLastReceived", dateResultsLastReceivedLabel));
+
+                this.setStartIndex(0);
             }
         });
 
