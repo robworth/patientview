@@ -225,7 +225,7 @@ vertical-align:text-top;
     margin-bottom:20px;
 }
 
-.short-container{
+#mainBlock.short-container{
     min-height:0;
 }
 
@@ -241,4 +241,13 @@ vertical-align:text-top;
 
 .create-new-patient{
     margin-right:0;
+}
+
+.patientsLisitingTable tbody td{
+    word-wrap: break-word;
+}
+
+.patientsLisitingTable thead th{
+    font-size:88%;
+    word-wrap: break-word;
 }
