@@ -95,6 +95,7 @@ public class SrnsPatientPage extends BasePage {
         // this constructor is used when a patient exists
         patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
         demographicsPanel = new DemographicsPanel("demographicsPanel", patient) ;
+        radarNumberModel.setObject(patient.getId());
         init();
     }
 
@@ -106,7 +107,6 @@ public class SrnsPatientPage extends BasePage {
 
     }
      public void init() {
-
 
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel", radarNumberModel);

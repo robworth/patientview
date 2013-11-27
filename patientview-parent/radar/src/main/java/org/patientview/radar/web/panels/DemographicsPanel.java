@@ -27,6 +27,7 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
@@ -195,9 +196,11 @@ public class DemographicsPanel extends Panel {
         String diseaseGroup = patient.getDiseaseGroup().getId();
         DiagnosisCode diagnosisCode = new DiagnosisCode();
 
-        if (diseaseGroup.equals(DiagnosisCode.SRNS_ID + "")) {
+        // WARNING - This doesn't make sense, you cannot equate a disease group with a diagnosis code,
+        // but works because these groups do not have specific diagnosis
+        if (diseaseGroup.equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID)) {
             diagnosisCode.setId(DiagnosisCode.SRNS_ID);
-        } else if (diseaseGroup.equals(DiagnosisCode.MPGN_ID + "")) {
+        } else if (diseaseGroup.equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
             diagnosisCode.setId(DiagnosisCode.MPGN_ID);
         }
 
