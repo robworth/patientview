@@ -700,7 +700,7 @@ CREATE TABLE `log` (
   KEY `log_index_nhsno` (`nhsno`),
   KEY `log_index_action` (`action`),
   KEY `log_index_date` (`date`)
-) ENGINE=MyISAM AUTO_INCREMENT=18191421 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18191423 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -709,7 +709,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (18191405,'2013-11-21 12:00:38','superadmin','logon','','superadmin','','',1),(18191406,'2013-11-21 12:10:31','superadmin','admin add','','renala-unitadmin1','RENALA','',1),(18191407,'2013-11-21 12:11:30','superadmin','admin add','','renalb-unitadmin1','RENALB','',1),(18191408,'2013-11-21 12:12:04','superadmin','admin add','','renalc-unitadmin1','RENALC','',1),(18191409,'2013-11-21 12:16:43','superadmin','admin add','','renala-renalb-unitadmin','RENALA','',1),(18191410,'2013-11-21 12:18:18','superadmin','admin add','','renala-renalb-unitadmin','RENALB','',1),(18191411,'2013-11-21 12:26:51','superadmin','admin add','','srns-groupadmin1','SRNS','',1),(18191412,'2013-11-21 12:27:31','superadmin','admin add','','mpgn-groupadmin1','MPGN','',1),(18191413,'2013-11-21 12:27:55','superadmin','admin add','','alport-groupadmin1','ALPORT','',1),(18191414,'2013-11-21 12:28:21','superadmin','admin add','','hnf1b-groupadmin1','HNF1B','',1),(18191415,'2013-11-21 12:28:55','superadmin','admin add','','gen1-groupadmin1','GENDISGRP1','',1),(18191416,'2013-11-21 12:29:51','superadmin','admin add','','gen2-groupadmin1','GENDISGRP2','',1),(18191417,'2013-11-21 12:32:32','superadmin','admin add','','srns-gen1-groupadmin','SRNS','',1),(18191418,'2013-11-21 12:33:15','superadmin','admin add','','srns-gen1-groupadmin','GENDISGRP1','',1),(18191419,'2013-11-21 12:37:03','superadmin','admin add','','renala-alport-unitadmin','RENALA','',1),(18191420,'2013-11-21 12:37:28','superadmin','admin add','','renala-alport-unitadmin','ALPORT','',1);
+INSERT INTO `log` VALUES (18191405,'2013-11-21 12:00:38','superadmin','logon','','superadmin','','',1),(18191406,'2013-11-21 12:10:31','superadmin','admin add','','renala-unitadmin1','RENALA','',1),(18191407,'2013-11-21 12:11:30','superadmin','admin add','','renalb-unitadmin1','RENALB','',1),(18191408,'2013-11-21 12:12:04','superadmin','admin add','','renalc-unitadmin1','RENALC','',1),(18191409,'2013-11-21 12:16:43','superadmin','admin add','','renala-renalb-unitadmin','RENALA','',1),(18191410,'2013-11-21 12:18:18','superadmin','admin add','','renala-renalb-unitadmin','RENALB','',1),(18191411,'2013-11-21 12:26:51','superadmin','admin add','','srns-groupadmin1','SRNS','',1),(18191412,'2013-11-21 12:27:31','superadmin','admin add','','mpgn-groupadmin1','MPGN','',1),(18191413,'2013-11-21 12:27:55','superadmin','admin add','','alport-groupadmin1','ALPORT','',1),(18191414,'2013-11-21 12:28:21','superadmin','admin add','','hnf1b-groupadmin1','HNF1B','',1),(18191415,'2013-11-21 12:28:55','superadmin','admin add','','gen1-groupadmin1','GENDISGRP1','',1),(18191416,'2013-11-21 12:29:51','superadmin','admin add','','gen2-groupadmin1','GENDISGRP2','',1),(18191417,'2013-11-21 12:32:32','superadmin','admin add','','srns-gen1-groupadmin','SRNS','',1),(18191418,'2013-11-21 12:33:15','superadmin','admin add','','srns-gen1-groupadmin','GENDISGRP1','',1),(18191419,'2013-11-21 12:37:03','superadmin','admin add','','renala-alport-unitadmin','RENALA','',1),(18191420,'2013-11-21 12:37:28','superadmin','admin add','','renala-alport-unitadmin','ALPORT','',1),(18191421,'2013-11-26 15:41:09','renala-unitadmin1','logon','','renala-unitadmin1','RENALA','',1),(18191422,'2013-11-26 15:54:59','superadmin','logon','','superadmin','','',1);
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -875,7 +875,7 @@ CREATE TABLE `patient` (
   UNIQUE KEY `nhsno` (`nhsno`,`unitcode`),
   KEY `fk_unitcode` (`unitcode`),
   KEY `fk_genericDiagnosis` (`genericDiagnosis`)
-) ENGINE=MyISAM AUTO_INCREMENT=605527 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=605530 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -884,7 +884,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES ('2234567890','Alport-renala','Patient1','1986-11-10','Male','radar street',NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605522,NULL,NULL,NULL,NULL,NULL,NULL,605522,NULL,'2013-11-26 00:00:00',1,NULL,NULL,27,'9S1..',NULL,'','2013-11-26 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2756','2013-11-24 00:00:00','RENALA',58127,NULL,'Radar'),('6548973216','SRNS-renala','Patient2','1999-11-10','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','123','','','','','','',605523,NULL,NULL,NULL,NULL,NULL,NULL,605523,NULL,NULL,1,NULL,NULL,14,'9S1..',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'RENALA',58127,NULL,'Radar'),('6548973275','MPGN-renala','Patient3','2001-11-10','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','8979','','','','','','',605524,NULL,NULL,NULL,NULL,NULL,NULL,605524,NULL,NULL,1,NULL,NULL,12,'9S1..',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'RENALA',58127,NULL,'Radar'),('1235677893','HNF1B-renala','Patient4','1954-11-10','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605525,NULL,NULL,NULL,NULL,NULL,NULL,605525,NULL,'2013-11-26 00:00:00',1,NULL,NULL,59,'9S1..',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'3627','2013-11-24 00:00:00','RENALA',58127,NULL,'Radar'),('1235277895','GENDISGRP1-renala','Patient5','1975-11-10','Male','Address added by radar',NULL,NULL,NULL,NULL,NULL,'234234234','','','',NULL,'','','','','','',605526,NULL,NULL,NULL,NULL,NULL,NULL,605526,NULL,'2013-11-26 00:00:00',1,NULL,NULL,38,'9S1..',NULL,'','2013-11-26 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'1300','2013-11-24 00:00:00','RENALA',58127,NULL,'Radar');
+INSERT INTO `patient` VALUES ('2234567890','Alport-renala','Patient1','1986-11-10','Male','radar street',NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605522,NULL,NULL,NULL,NULL,NULL,NULL,605522,NULL,'2013-11-26 00:00:00',1,NULL,NULL,27,'9S1..',NULL,'','2013-11-26 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2756','2013-11-24 00:00:00','RENALA',58127,NULL,'Radar'),('6548973216','SRNS-renala','Patient2','1999-11-10','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','123','','','','','','',605523,NULL,NULL,NULL,NULL,NULL,NULL,605523,NULL,NULL,1,NULL,NULL,14,'9S1..',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'RENALA',58127,NULL,'Radar'),('6548973275','MPGN-renala','Patient3','2001-11-10','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','8979','','','','','','',605524,NULL,NULL,NULL,NULL,NULL,NULL,605524,NULL,NULL,1,NULL,NULL,12,'9S1..',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'RENALA',58127,NULL,'Radar'),('1235677893','HNF1B-renala','Patient4','1954-11-10','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605525,NULL,NULL,NULL,NULL,NULL,NULL,605525,NULL,'2013-11-26 00:00:00',1,NULL,NULL,59,'9S1..',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'3627','2013-11-24 00:00:00','RENALA',58127,NULL,'Radar'),('1235277895','GENDISGRP1-renala','Patient5','1975-11-10','Male','Address added by radar',NULL,NULL,NULL,NULL,NULL,'234234234','','','',NULL,'','','','','','',605526,NULL,NULL,NULL,NULL,NULL,NULL,605526,NULL,'2013-11-26 00:00:00',1,NULL,NULL,38,'9S1..',NULL,'','2013-11-26 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'1300','2013-11-24 00:00:00','RENALA',58127,NULL,'Radar'),('5285424232','EATON','James','2013-11-03','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605527,NULL,NULL,NULL,NULL,NULL,NULL,605527,NULL,'2013-11-26 00:00:00',1,NULL,'Me',0,'9SAD.',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2756','2013-11-08 00:00:00','RENALA',58127,NULL,'Radar'),('5225424236','EATON','James','2013-11-01','Male',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605528,NULL,NULL,NULL,NULL,NULL,NULL,605528,NULL,'2013-11-26 00:00:00',1,NULL,'Me Again',0,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2756','2013-11-30 00:00:00','RENALA',58127,NULL,'Radar'),('5225424236',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','',NULL,'','','','','','',605529,NULL,NULL,NULL,NULL,NULL,NULL,605529,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ALPORT',NULL,NULL,'Radar');
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1071,7 +1071,7 @@ CREATE TABLE `pv_patientjoin_request` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `firstname` varchar(100) NOT NULL DEFAULT '',
   `lastname` varchar(100) NOT NULL DEFAULT '',
-  `dateofbirth` varchar(100) NOT NULL DEFAULT '',
+  `dateofbirth` datetime NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `unitcode` varchar(100) NOT NULL DEFAULT '',
   `nhsNo` varchar(100) DEFAULT NULL,
@@ -1079,7 +1079,7 @@ CREATE TABLE `pv_patientjoin_request` (
   `isComplete` tinyint(1) DEFAULT '0',
   `notes` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1088,7 +1088,7 @@ CREATE TABLE `pv_patientjoin_request` (
 
 LOCK TABLES `pv_patientjoin_request` WRITE;
 /*!40000 ALTER TABLE `pv_patientjoin_request` DISABLE KEYS */;
-INSERT INTO `pv_patientjoin_request` VALUES (7,'Patient1','Alport-renala','Mon Nov 10 00:00:00 GMT 1986',NULL,'RENALA','2234567890','2013-11-26 15:16:23',0,NULL),(8,'Patient2','SRNS-renala','Wed Nov 10 00:00:00 GMT 1999',NULL,'RENALA','6548973216','2013-11-26 15:21:33',0,NULL),(9,'Patient3','MPGN-renala','Sat Nov 10 00:00:00 GMT 2001',NULL,'RENALA','6548973275','2013-11-26 15:23:10',0,NULL),(10,'Patient4','HNF1B-renala','Wed Nov 10 00:00:00 GMT 1954',NULL,'RENALA','1235677893','2013-11-26 15:24:30',0,NULL),(11,'Patient5','GENDISGRP1-renala','Mon Nov 10 00:00:00 GMT 1975',NULL,'RENALA','1235277895','2013-11-26 15:36:52',0,NULL);
+INSERT INTO `pv_patientjoin_request` VALUES (7,'Patient1','Alport-renala','1986-11-10 00:00:00',NULL,'RENALA','2234567890','2013-11-26 15:16:23',0,NULL),(8,'Patient2','SRNS-renala','1999-11-10 00:00:00',NULL,'RENALA','6548973216','2013-11-26 15:21:33',0,NULL),(9,'Patient3','MPGN-renala','2001-11-10 00:00:00',NULL,'RENALA','6548973275','2013-11-26 15:23:10',0,NULL),(10,'Patient4','HNF1B-renala','1954-11-10 00:00:00',NULL,'RENALA','1235677893','2013-11-26 15:24:30',0,NULL),(11,'Patient5','GENDISGRP1-renala','1975-11-10 00:00:00',NULL,'RENALA','1235277895','2013-11-26 15:36:52',0,NULL),(12,'James','EATON','2013-11-03 00:00:00',NULL,'RENALA','5285424232','2013-11-26 16:12:45',0,NULL);
 /*!40000 ALTER TABLE `pv_patientjoin_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1272,7 +1272,7 @@ CREATE TABLE `rdr_patient_linkage` (
   `dest_nhsno` varchar(20) DEFAULT NULL,
   `dest_unitcode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1281,6 +1281,7 @@ CREATE TABLE `rdr_patient_linkage` (
 
 LOCK TABLES `rdr_patient_linkage` WRITE;
 /*!40000 ALTER TABLE `rdr_patient_linkage` DISABLE KEYS */;
+INSERT INTO `rdr_patient_linkage` VALUES (18,'5225424236','RENALA','5225424236','ALPORT');
 /*!40000 ALTER TABLE `rdr_patient_linkage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1351,7 +1352,7 @@ CREATE TABLE `rdr_user_mapping` (
 
 LOCK TABLES `rdr_user_mapping` WRITE;
 /*!40000 ALTER TABLE `rdr_user_mapping` DISABLE KEYS */;
-INSERT INTO `rdr_user_mapping` VALUES (58127,1101,'ROLE_PROFESSIONAL'),(58128,1102,'ROLE_PROFESSIONAL'),(58129,1103,'ROLE_PROFESSIONAL'),(58130,1104,'ROLE_PROFESSIONAL'),(58131,1105,'ROLE_PROFESSIONAL'),(58132,1106,'ROLE_PROFESSIONAL'),(58133,1107,'ROLE_PROFESSIONAL'),(58134,1108,'ROLE_PROFESSIONAL'),(58135,1109,'ROLE_PROFESSIONAL'),(58136,1110,'ROLE_PROFESSIONAL'),(58137,1111,'ROLE_PROFESSIONAL'),(58138,1112,'ROLE_PROFESSIONAL'),(58140,121,'ROLE_PATIENT'),(58141,122,'ROLE_PATIENT'),(58142,123,'ROLE_PATIENT'),(58143,124,'ROLE_PATIENT'),(58144,125,'ROLE_PATIENT');
+INSERT INTO `rdr_user_mapping` VALUES (58127,1101,'ROLE_PROFESSIONAL'),(58128,1102,'ROLE_PROFESSIONAL'),(58129,1103,'ROLE_PROFESSIONAL'),(58130,1104,'ROLE_PROFESSIONAL'),(58131,1105,'ROLE_PROFESSIONAL'),(58132,1106,'ROLE_PROFESSIONAL'),(58133,1107,'ROLE_PROFESSIONAL'),(58134,1108,'ROLE_PROFESSIONAL'),(58135,1109,'ROLE_PROFESSIONAL'),(58136,1110,'ROLE_PROFESSIONAL'),(58137,1111,'ROLE_PROFESSIONAL'),(58138,1112,'ROLE_PROFESSIONAL'),(58140,121,'ROLE_PATIENT'),(58141,122,'ROLE_PATIENT'),(58142,123,'ROLE_PATIENT'),(58143,124,'ROLE_PATIENT'),(58144,125,'ROLE_PATIENT'),(58145,126,'ROLE_PATIENT'),(58146,127,'ROLE_PATIENT');
 /*!40000 ALTER TABLE `rdr_user_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1429,7 +1430,7 @@ CREATE TABLE `specialtyuserrole` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `tenancy_id` (`specialty_id`,`user_id`,`role`),
   KEY `FK7A1749E1AEFDD122` (`specialty_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=58008 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=58010 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1438,7 +1439,7 @@ CREATE TABLE `specialtyuserrole` (
 
 LOCK TABLES `specialtyuserrole` WRITE;
 /*!40000 ALTER TABLE `specialtyuserrole` DISABLE KEYS */;
-INSERT INTO `specialtyuserrole` VALUES (57849,'superadmin',1,57987),(57987,'patient',1,NULL),(57985,'patient',1,NULL),(58002,'patient',1,58139),(58001,'unitadmin',1,58138),(58000,'unitadmin',1,58137),(57999,'unitadmin',1,58136),(57998,'unitadmin',1,58135),(57997,'unitadmin',1,58134),(57996,'unitadmin',1,58133),(57995,'unitadmin',1,58132),(57994,'unitadmin',1,58131),(57993,'unitadmin',1,58130),(57992,'unitadmin',1,58129),(57991,'unitadmin',1,58128),(57990,'unitadmin',1,58127),(58003,'patient',1,58140),(58004,'patient',1,58141),(58005,'patient',1,58142),(58006,'patient',1,58143),(58007,'patient',1,58144);
+INSERT INTO `specialtyuserrole` VALUES (57849,'superadmin',1,57987),(57987,'patient',1,NULL),(57985,'patient',1,NULL),(58002,'patient',1,58139),(58001,'unitadmin',1,58138),(58000,'unitadmin',1,58137),(57999,'unitadmin',1,58136),(57998,'unitadmin',1,58135),(57997,'unitadmin',1,58134),(57996,'unitadmin',1,58133),(57995,'unitadmin',1,58132),(57994,'unitadmin',1,58131),(57993,'unitadmin',1,58130),(57992,'unitadmin',1,58129),(57991,'unitadmin',1,58128),(57990,'unitadmin',1,58127),(58003,'patient',1,58140),(58004,'patient',1,58141),(58005,'patient',1,58142),(58006,'patient',1,58143),(58007,'patient',1,58144),(58008,'patient',1,58145),(58009,'patient',1,58146);
 /*!40000 ALTER TABLE `specialtyuserrole` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2302,7 +2303,7 @@ CREATE TABLE `tbl_patient_users` (
   `pDOB` datetime DEFAULT NULL,
   `pDateReg` datetime DEFAULT NULL,
   PRIMARY KEY (`pID`)
-) ENGINE=MyISAM AUTO_INCREMENT=126 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=128 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2311,7 +2312,7 @@ CREATE TABLE `tbl_patient_users` (
 
 LOCK TABLES `tbl_patient_users` WRITE;
 /*!40000 ALTER TABLE `tbl_patient_users` DISABLE KEYS */;
-INSERT INTO `tbl_patient_users` VALUES (121,605522,'1986-11-10 00:00:00','2013-11-26 15:16:23'),(122,605523,'1999-11-10 00:00:00','2013-11-26 15:21:33'),(123,605524,'2001-11-10 00:00:00','2013-11-26 15:23:10'),(124,605525,'1954-11-10 00:00:00','2013-11-26 15:24:30'),(125,605526,'1975-11-10 00:00:00','2013-11-26 15:36:52');
+INSERT INTO `tbl_patient_users` VALUES (121,605522,'1986-11-10 00:00:00','2013-11-26 15:16:23'),(122,605523,'1999-11-10 00:00:00','2013-11-26 15:21:33'),(123,605524,'2001-11-10 00:00:00','2013-11-26 15:23:10'),(124,605525,'1954-11-10 00:00:00','2013-11-26 15:24:30'),(125,605526,'1975-11-10 00:00:00','2013-11-26 15:36:52'),(126,605527,'2013-11-03 00:00:00','2013-11-26 16:12:45'),(127,605528,'2013-11-01 00:00:00','2013-11-26 16:15:07');
 /*!40000 ALTER TABLE `tbl_patient_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3155,7 +3156,7 @@ CREATE TABLE `user` (
   `isclinician` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=58145 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=58147 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3164,7 +3165,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (57987,'superadmin','891e12e156d8c6609c6d5f3e04b2fc8da6d9ff3d7e9f906314c0909da69637eb','','Super Admin','patientview-testing@solidstategroup.com',0,0,0,'2013-11-21 12:01:07',0,0,0,0),(58137,'srns-gen1-groupadmin','d1e3e9368a19c4c1e1afa29970de006a08d0ab9028cfeee782d388d4c55ffcb4','','srns-gen1-groupadmin','srns-gen1-groupadmin@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58138,'renala-alport-unitadmin','d080008e60418faf03aa582c82030bcd7300bd3c06bcfd3876aee0fbd57aa4ab','','renala-alport-unitadmin','renala-alport-unitadmin@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58136,'gen2-groupadmin1','9444f8b435e807e7c7898c93526d7bce1fd87ee50e25389277177705e5ed108f','','gen2-groupadmin1','gen2-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58135,'gen1-groupadmin1','85d9eb0ba96b7cb765301e91470eaf7b33e8899026ee564155a84e03648383f2','','gen1-groupadmin1','gen1-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58134,'hnf1b-groupadmin1','4da77718fdd45a0a01d6f60502ba37d1128f6c8615ab30fbe41120f260231f0e','','hnf1b-groupadmin1','hnf1b-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58132,'mpgn-groupadmin1','e3d755ec725fa76defbf121b4fb257bafad2ff1fd7aac451e78b5a21943b081e','','mpgn-groupadmin1','mpgn-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58133,'alport-groupadmin1','da0def2b91a3240409380f58517b61fbad703ab1966aed3e8642afbf5ce2e75b','','alport-groupadmin1','alport-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58131,'srns-groupadmin1','1d67c3d423bb3de898a3f17ce76d968f41e860a23cbcc035c74c346e2c1ef161','','srns-groupadmin1','srns-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58129,'renalc-unitadmin1','2cde9026e99976dd0b0e88e595f1ada71144199fc5d25fb88d0615ecdc2298b9','','renalc-unitadmin1','renalc-unitadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58130,'renala-renalb-unitadmin','317b94b16a776fddcaa721df95df0c31aa55d901b7a7089affcc26f104431885','','renala-renalb-unitadmin','renala-renalb-unitadmin@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58128,'renalb-unitadmin1','b0c4c0371a5139884a6893b1b622f10d4a70e7e4c19cdf7ccd299ec2afc3cbad','','renalb-unitadmin1','renalb-unitadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58127,'renala-unitadmin1','714fd46eb844a6af5659de212702f2086ffcdfe07ac98523e6017d8841cdc9bf','','renala-unitadmin1','renala-unitadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58140,'patient1.alportrenala1','6a6cd6110a0ecb5c721a863596d4e6a5a5e3e06a89f437e551c08df452e8fbdf','','Patient1 Alport-renala',NULL,0,0,0,NULL,0,0,0,1),(58141,'patient2.srnsrenala1','2da6277aea8046c5c67ae2da9fa051e677c2e1c9c5eafdad431b60b52cd7ff07','','Patient2 SRNS-renala',NULL,0,0,0,NULL,0,0,0,1),(58142,'patient3.mpgnrenala1','94460e218abe459b994d148e9c9d17b6b1d8e41cfbf8426ef82def801f335336','','Patient3 MPGN-renala',NULL,0,0,0,NULL,0,0,0,1),(58143,'patient4.hnf1brenala1','4fdbd5f2027c350959c8821bab4710ac0f848746ded06fcbca3db6de996db4d3','','Patient4 HNF1B-renala',NULL,0,0,0,NULL,0,0,0,1),(58144,'patient5.gendisgrp1renala1','0ba9de9ab54722770ba164a029b8e811c63021052960b0b59feb17c614c9731f','','Patient5 GENDISGRP1-renala',NULL,0,0,0,NULL,0,0,0,1);
+INSERT INTO `user` VALUES (57987,'superadmin','891e12e156d8c6609c6d5f3e04b2fc8da6d9ff3d7e9f906314c0909da69637eb','','Super Admin','patientview-testing@solidstategroup.com',0,0,0,'2013-11-26 15:54:59',0,0,0,0),(58137,'srns-gen1-groupadmin','d1e3e9368a19c4c1e1afa29970de006a08d0ab9028cfeee782d388d4c55ffcb4','','srns-gen1-groupadmin','srns-gen1-groupadmin@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58138,'renala-alport-unitadmin','d080008e60418faf03aa582c82030bcd7300bd3c06bcfd3876aee0fbd57aa4ab','','renala-alport-unitadmin','renala-alport-unitadmin@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58136,'gen2-groupadmin1','9444f8b435e807e7c7898c93526d7bce1fd87ee50e25389277177705e5ed108f','','gen2-groupadmin1','gen2-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58135,'gen1-groupadmin1','85d9eb0ba96b7cb765301e91470eaf7b33e8899026ee564155a84e03648383f2','','gen1-groupadmin1','gen1-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58134,'hnf1b-groupadmin1','4da77718fdd45a0a01d6f60502ba37d1128f6c8615ab30fbe41120f260231f0e','','hnf1b-groupadmin1','hnf1b-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58132,'mpgn-groupadmin1','e3d755ec725fa76defbf121b4fb257bafad2ff1fd7aac451e78b5a21943b081e','','mpgn-groupadmin1','mpgn-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58133,'alport-groupadmin1','da0def2b91a3240409380f58517b61fbad703ab1966aed3e8642afbf5ce2e75b','','alport-groupadmin1','alport-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58131,'srns-groupadmin1','1d67c3d423bb3de898a3f17ce76d968f41e860a23cbcc035c74c346e2c1ef161','','srns-groupadmin1','srns-groupadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58129,'renalc-unitadmin1','2cde9026e99976dd0b0e88e595f1ada71144199fc5d25fb88d0615ecdc2298b9','','renalc-unitadmin1','renalc-unitadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58130,'renala-renalb-unitadmin','317b94b16a776fddcaa721df95df0c31aa55d901b7a7089affcc26f104431885','','renala-renalb-unitadmin','renala-renalb-unitadmin@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58128,'renalb-unitadmin1','b0c4c0371a5139884a6893b1b622f10d4a70e7e4c19cdf7ccd299ec2afc3cbad','','renalb-unitadmin1','renalb-unitadmin1@solidstategroup.com',0,1,0,NULL,0,0,0,0),(58127,'renala-unitadmin1','714fd46eb844a6af5659de212702f2086ffcdfe07ac98523e6017d8841cdc9bf','','renala-unitadmin1','renala-unitadmin1@solidstategroup.com',0,1,0,'2013-11-26 16:06:06',0,0,0,0),(58140,'patient1.alportrenala1','6a6cd6110a0ecb5c721a863596d4e6a5a5e3e06a89f437e551c08df452e8fbdf','','Patient1 Alport-renala',NULL,0,0,0,NULL,0,0,0,1),(58141,'patient2.srnsrenala1','2da6277aea8046c5c67ae2da9fa051e677c2e1c9c5eafdad431b60b52cd7ff07','','Patient2 SRNS-renala',NULL,0,0,0,NULL,0,0,0,1),(58142,'patient3.mpgnrenala1','94460e218abe459b994d148e9c9d17b6b1d8e41cfbf8426ef82def801f335336','','Patient3 MPGN-renala',NULL,0,0,0,NULL,0,0,0,1),(58143,'patient4.hnf1brenala1','4fdbd5f2027c350959c8821bab4710ac0f848746ded06fcbca3db6de996db4d3','','Patient4 HNF1B-renala',NULL,0,0,0,NULL,0,0,0,1),(58144,'patient5.gendisgrp1renala1','0ba9de9ab54722770ba164a029b8e811c63021052960b0b59feb17c614c9731f','','Patient5 GENDISGRP1-renala',NULL,0,0,0,NULL,0,0,0,1),(58145,'james.eaton1','7839de5d930a57154cb4845caef44d25fe96df534d8b290ea7303552b844a7d1','','James EATON',NULL,0,0,0,NULL,0,0,0,1),(58146,'james.eaton21','6c056e4884af6437c8d503530281e536bc1b57d16320fe12d4e9087961ee5c68','','James EATON2',NULL,0,0,0,NULL,0,0,0,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3210,7 +3211,7 @@ CREATE TABLE `usermapping` (
   PRIMARY KEY (`id`),
   KEY `usermapping_index_nhsno` (`nhsno`),
   KEY `usermapping_index_username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=88293 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=88299 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3219,7 +3220,7 @@ CREATE TABLE `usermapping` (
 
 LOCK TABLES `usermapping` WRITE;
 /*!40000 ALTER TABLE `usermapping` DISABLE KEYS */;
-INSERT INTO `usermapping` VALUES (88260,'renala-unitadmin1','RENALA','',1),(88261,'renalb-unitadmin1','RENALB','',1),(88262,'renalc-unitadmin1','RENALC','',1),(88263,'renala-renalb-unitadmin','RENALA','',1),(88264,'renala-renalb-unitadmin','RENALB','',1),(88265,'srns-groupadmin1','SRNS','',1),(88266,'mpgn-groupadmin1','MPGN','',1),(88267,'alport-groupadmin1','ALPORT','',1),(88268,'hnf1b-groupadmin1','HNF1B','',1),(88269,'gen1-groupadmin1','GENDISGRP1','',1),(88270,'gen2-groupadmin1','GENDISGRP2','',1),(88271,'srns-gen1-groupadmin','SRNS','',1),(88272,'srns-gen1-groupadmin','GENDISGRP1','',1),(88273,'renala-alport-unitadmin','RENALA','',1),(88274,'renala-alport-unitadmin','ALPORT','',1),(88278,'patient1.alportrenala1','RENALA','2234567890',1),(88279,'patient1.alportrenala1','ALPORT','2234567890',1),(88280,'patient1.alportrenala1','PATIENT','2234567890',1),(88281,'patient2.srnsrenala1','RENALA','6548973216',1),(88282,'patient2.srnsrenala1','SRNS','6548973216',1),(88283,'patient2.srnsrenala1','PATIENT','6548973216',1),(88284,'patient3.mpgnrenala1','RENALA','6548973275',1),(88285,'patient3.mpgnrenala1','MPGN','6548973275',1),(88286,'patient3.mpgnrenala1','PATIENT','6548973275',1),(88287,'patient4.hnf1brenala1','RENALA','1235677893',1),(88288,'patient4.hnf1brenala1','HNF1B','1235677893',1),(88289,'patient4.hnf1brenala1','PATIENT','1235677893',1),(88290,'patient5.gendisgrp1renala1','RENALA','1235277895',1),(88291,'patient5.gendisgrp1renala1','GENDISGRP1','1235277895',1),(88292,'patient5.gendisgrp1renala1','PATIENT','1235277895',1);
+INSERT INTO `usermapping` VALUES (88260,'renala-unitadmin1','RENALA','',1),(88261,'renalb-unitadmin1','RENALB','',1),(88262,'renalc-unitadmin1','RENALC','',1),(88263,'renala-renalb-unitadmin','RENALA','',1),(88264,'renala-renalb-unitadmin','RENALB','',1),(88265,'srns-groupadmin1','SRNS','',1),(88266,'mpgn-groupadmin1','MPGN','',1),(88267,'alport-groupadmin1','ALPORT','',1),(88268,'hnf1b-groupadmin1','HNF1B','',1),(88269,'gen1-groupadmin1','GENDISGRP1','',1),(88270,'gen2-groupadmin1','GENDISGRP2','',1),(88271,'srns-gen1-groupadmin','SRNS','',1),(88272,'srns-gen1-groupadmin','GENDISGRP1','',1),(88273,'renala-alport-unitadmin','RENALA','',1),(88274,'renala-alport-unitadmin','ALPORT','',1),(88278,'patient1.alportrenala1','RENALA','2234567890',1),(88279,'patient1.alportrenala1','ALPORT','2234567890',1),(88280,'patient1.alportrenala1','PATIENT','2234567890',1),(88281,'patient2.srnsrenala1','RENALA','6548973216',1),(88282,'patient2.srnsrenala1','SRNS','6548973216',1),(88283,'patient2.srnsrenala1','PATIENT','6548973216',1),(88284,'patient3.mpgnrenala1','RENALA','6548973275',1),(88285,'patient3.mpgnrenala1','MPGN','6548973275',1),(88286,'patient3.mpgnrenala1','PATIENT','6548973275',1),(88287,'patient4.hnf1brenala1','RENALA','1235677893',1),(88288,'patient4.hnf1brenala1','HNF1B','1235677893',1),(88289,'patient4.hnf1brenala1','PATIENT','1235677893',1),(88290,'patient5.gendisgrp1renala1','RENALA','1235277895',1),(88291,'patient5.gendisgrp1renala1','GENDISGRP1','1235277895',1),(88292,'patient5.gendisgrp1renala1','PATIENT','1235277895',1),(88293,'james.eaton1','RENALA','5285424232',1),(88294,'james.eaton1','ALPORT','5285424232',1),(88295,'james.eaton1','PATIENT','5285424232',1),(88296,'james.eaton21','RENALA','5225424236',1),(88297,'james.eaton21','ALPORT','5225424236',1),(88298,'james.eaton21','PATIENT','5225424236',1);
 /*!40000 ALTER TABLE `usermapping` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -3232,6 +3233,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-11-26 15:37:55
+-- Dump completed on 2013-11-26 16:28:01
 SET AUTOCOMMIT=1;
 SET FOREIGN_KEY_CHECKS=1;
