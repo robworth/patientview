@@ -83,6 +83,7 @@ public class SrnsPatientPage extends BasePage {
 
     private Patient patient;
 
+
     public SrnsPatientPage(){
        patient = new Patient();
     }

@@ -89,7 +89,8 @@ public class SelectPatientPanel extends Panel {
                     patient.setDiseaseGroup(diseaseGroup);
                 }
 
-                this.getPage().getPageParameters();
+                patient.setEditableDemographics(true);
+
                 setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
             }
@@ -109,7 +110,7 @@ public class SelectPatientPanel extends Panel {
         };
 
 
-        // Construct a radio button and label for each company.
+        // Construct a radio button and patient record with the nhs number
         group.add(new ListView<Patient>("choice", model) {
             protected void populateItem(ListItem<Patient> it) {
 
