@@ -202,13 +202,13 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
         List<PatientCountItem> patientCountList = jdbcTemplate.query(
                 "SELECT COUNT(*) as \"count\", u.id as \"unitcode\" " +
-                "FROM patient p " +
+                "FROM   patient p " +
                 "INNER JOIN tbl_diagnosis diagnosis ON p.radarNo = diagnosis.RADAR_NO " +
                 "INNER JOIN usermapping um on p.nhsno = um.nhsno " +
                 "INNER JOIN unit u ON um.unitcode = u.unitcode " +
                 "WHERE diag = ? " +
-                "   AND u.sourceType = ? " +
-                "   AND um.username NOT LIKE '%-GP%' " +
+                "AND    u.sourceType = ? " +
+                "AND   um.username NOT LIKE '%-GP%' " +
                 "GROUP BY u.id;", new Object[]{diagnosisCode.getId(), "renalunit"},
                 new PatientCountByUnitRowMapper());
 
