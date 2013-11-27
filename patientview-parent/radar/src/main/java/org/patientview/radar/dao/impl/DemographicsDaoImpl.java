@@ -626,6 +626,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             patient.setPatientLink(patientLinkDao.getPatientLink(patient.getNhsno(), patient.getUnitcode()));
 
+            patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
+
             if (patient.getSourceType().equals(SourceType.RADAR.getName())) {
                 patient.setEditableDemographics(true);
             } else {
