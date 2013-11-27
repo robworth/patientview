@@ -24,6 +24,7 @@
 package org.patientview.patientview.patiententry;
 
 import org.patientview.patientview.PatientUtils;
+import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.unit.UnitUtils;
@@ -66,6 +67,10 @@ public class PatientResultSubmitAllAction extends Action {
         }
 
         session.removeAttribute(patientResultName);
+
+        ResultHeading resultHeading = LegacySpringUtils.getResultHeadingManager().get(patientResultName);
+
+        request.setAttribute("resultHeading", resultHeading);
 
         return mapping.findForward("success");
     }

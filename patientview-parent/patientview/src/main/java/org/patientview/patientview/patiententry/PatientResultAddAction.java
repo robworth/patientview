@@ -28,6 +28,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.model.ResultHeading;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,6 +81,10 @@ public class PatientResultAddAction extends Action {
         BeanUtils.setProperty(form, "patientResultCode2", null);
         BeanUtils.setProperty(form, "patientResultValue1", null);
         BeanUtils.setProperty(form, "patientResultValue2", null);
+
+        ResultHeading resultHeading = LegacySpringUtils.getResultHeadingManager().get(resultName);
+
+        request.setAttribute("resultHeading", resultHeading);
 
         return mapping.findForward("success");
     }
