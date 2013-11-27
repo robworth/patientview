@@ -89,7 +89,7 @@ public class ExistingPatientsListingPage extends BasePage {
 
                 item.add(new Label("lastverificationdate",
                         formatDate(demographicsUserDetail.getLastverificationdate())));
-                item.add(new Label("email", demographicsUserDetail.getEmail()));
+                item.add(new Label("email", patient.getEmailAddress()));
 
                 item.add(new Label("lastlogon", formatDate(demographicsUserDetail.getLastlogon())));
                 item.add(new Label("accountlocked", "" + (demographicsUserDetail.isAccountlocked() ? "Yes" : "No")));
