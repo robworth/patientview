@@ -402,7 +402,7 @@ public class GenericDemographicsPanel extends Panel {
         form.add(clinician);
 
 
-        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode());
+        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) ;
         form.add(sourceUnitCode);
 
 
@@ -447,7 +447,7 @@ public class GenericDemographicsPanel extends Panel {
 
 
         form.add(renalUnit);
-        nonEditableComponents.add(renalUnit);
+    //    nonEditableComponents.add(renalUnit);
 
         RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
