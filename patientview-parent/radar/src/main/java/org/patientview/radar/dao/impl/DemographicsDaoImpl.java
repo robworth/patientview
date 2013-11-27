@@ -333,12 +333,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
             for (Patient patient : patients)  {
 
-                PatientLink patientLink = patient.getPatientLink();
+                // Look for the source patient record
+                PatientLink patientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(),
+                        patient.getUnitcode());
 
                 if (patientLink != null) {
-                    Patient linkedPatient = RadarUtility.overRideLinkRecord(patient,
-                            this.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
-                            patientLink.getDestinationUnit()));
+                    Patient linkedPatient = RadarUtility.overRideLinkRecord(
+                            this.getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
+                            patientLink.getSourceUnit()), patient);
                     linkedPatient.setSurname("(LINKED) " + linkedPatient.getSurname());
                     linkedPatients.add(linkedPatient);
                 }
