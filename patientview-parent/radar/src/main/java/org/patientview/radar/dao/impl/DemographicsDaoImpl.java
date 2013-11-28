@@ -75,7 +75,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     public void saveDemographics(final Patient patient) {
 
         // If this is a link record then we need to start any duplicated data being saved
-        if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
+        PatientLink patientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode());
+        if (patientLink != null) {
             RadarUtility.cleanLinkRecord(patient);
         }
 
@@ -227,6 +228,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setId(id.longValue());
 
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
+
+        }
+
+        // We have to re-populate fields after they are cleaned from the save only for link patients
+        if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
+            RadarUtility.overRideLinkRecord(getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
+                    patientLink.getSourceUnit()), patient);
 
         }
     }
