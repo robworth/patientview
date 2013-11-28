@@ -127,7 +127,7 @@
         <td class="tablecell"><bean:write name="logentry" property="user"/></td>
         <td class="tablecell"><bean:write name="logentry" property="action"/></td>
         <td class="tablecell"><bean:write name="logentry" property="actor"/></td>
-        <td class="tablecell"><bean:write name="logentry" property="unitcode"/></td>
+        <td class="tablecell"><html:link action="/control/unitEdit" paramId="unitcode" paramName="logentry" paramProperty="unitcode" target="_blank"><bean:write name="logentry" property="unitcode"/></html:link></td>
         <logic:notEqual value="patient data load" name="logentry" property="action" >
           <logic:notEqual value="patient data remove" name="logentry" property="action">
             <logic:notEqual value="patient data fail" name="logentry" property="action">
@@ -136,13 +136,13 @@
           </logic:notEqual>
         </logic:notEqual>
         <logic:equal value="patient data load" name="logentry" property="action">
-          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename"><bean:write name="logentry" property="extrainfo"/></html:link></td>
+          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename" target="_blank"><bean:write name="logentry" property="extrainfo"/></html:link></td>
         </logic:equal>
         <logic:equal value="patient data remove" name="logentry" property="action">
-          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename"><bean:write name="logentry" property="extrainfo"/></html:link></td>
+          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename" target="_blank"><bean:write name="logentry" property="extrainfo"/></html:link></td>
         </logic:equal>
         <logic:equal value="patient data fail" name="logentry" property="action">
-          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename"><bean:write name="logentry" property="xmlfilename"/></html:link><bean:write name="logentry" property="extrainfolessxmlfilename"/></td>
+          <td class="tablecell"><html:link action="/control/xmlFileView" paramId="xmlfile" paramName="logentry" paramProperty="xmlfilename" target="_blank"><bean:write name="logentry" property="xmlfilename"/></html:link><bean:write name="logentry" property="extrainfolessxmlfilename"/></td>
         </logic:equal>
       </tr>
     </logic:iterate>
