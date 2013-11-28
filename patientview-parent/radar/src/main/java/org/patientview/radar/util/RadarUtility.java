@@ -94,7 +94,7 @@ public class RadarUtility {
         link.setTelephone1(source.getTelephone1());
         link.setHospitalnumber(source.getHospitalnumber());
         link.setRenalUnit(source.getRenalUnit());
-
+        link.setUnitcode(source.getUnitcode());
         link.setEditableDemographics(false);
 
         return link;
