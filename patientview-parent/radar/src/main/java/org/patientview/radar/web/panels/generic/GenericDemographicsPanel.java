@@ -72,8 +72,11 @@ public class GenericDemographicsPanel extends Panel {
     @SpringBean
     private UserManager userManager;
 
+    private MarkupContainer dateOfGenericDiagnosisContainer;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
+
+
 
     public GenericDemographicsPanel(String id, Patient patient) {
         super(id);
@@ -244,6 +247,7 @@ public class GenericDemographicsPanel extends Panel {
                     }
                 }
             }
+
         };
 
         AjaxSubmitLink addIdSubmit = new AjaxSubmitLink("addIdSubmit") {
@@ -482,15 +486,11 @@ public class GenericDemographicsPanel extends Panel {
                         componentsToUpdateList);
 
         final IModel<Boolean> diagnosisDateVisibility =
-                new Model<Boolean>(form.getModelObject().getDateOfGenericDiagnosis() == null);
+                new Model<Boolean>(Boolean.FALSE);
 
         CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect");
-        model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect()==Boolean.TRUE);
-        if (form.getModelObject().getId() == null) {
-            diagnosisDateVisibility.setObject(false);
-        } else {
-            model.getObject().setDiagnosisDateSelect(form.getModelObject().getDateOfGenericDiagnosis() == null);
-        }
+        model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect() == Boolean.TRUE);
+
         diagnosisDateSelect.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -518,6 +518,8 @@ public class GenericDemographicsPanel extends Panel {
         componentsToUpdateList.add(dateOfGenericDiagnosisContainer);
         dateOfGenericDiagnosisContainer.setOutputMarkupId(true);
         dateOfGenericDiagnosisContainer.setOutputMarkupPlaceholderTag(true);
+
+        this.dateOfGenericDiagnosisContainer = dateOfGenericDiagnosisContainer;
 
         TextArea otherClinicianAndContactInfo = new TextArea("otherClinicianAndContactInfo");
         TextArea comments = new TextArea("comments");
@@ -581,6 +583,7 @@ public class GenericDemographicsPanel extends Panel {
                 component.setEnabled(false);
             }
         }
+
     }
 
     private static class AddIdModel implements Serializable {
