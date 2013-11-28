@@ -34,6 +34,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
+        <property name="patientLinkDao" ref="patientLinkDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 
@@ -50,11 +51,19 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="joinRequestDao" class="org.patientview.radar.dao.impl.JoinRequestDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="labDataDao" class="org.patientview.radar.dao.impl.LabDataDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="pathologyDao" class="org.patientview.radar.dao.impl.PathologyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="patientLinkDao" class="org.patientview.radar.dao.impl.PatientLinkDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
@@ -99,6 +108,10 @@
     <bean id="medicalResultDao" class="org.patientview.radar.dao.impl.MedicalResultDaoImpl">
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+    </bean>
+
+    <bean id="patientDao" class="org.patientview.radar.dao.impl.PatientDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">

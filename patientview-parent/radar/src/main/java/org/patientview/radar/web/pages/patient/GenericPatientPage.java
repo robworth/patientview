@@ -1,18 +1,5 @@
 package org.patientview.radar.web.pages.patient;
 
-import org.patientview.model.Patient;
-import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.generic.MedicalResultManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.alport.MedicinePanel;
-import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
-import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
-import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -27,7 +14,17 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
+import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
+import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
+import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class GenericPatientPage extends BasePage {
@@ -40,40 +37,27 @@ public class GenericPatientPage extends BasePage {
 
     private Patient patient;
 
+
     @SpringBean
     private DemographicsManager demographicsManager;
 
-    @SpringBean
-    private MedicalResultManager medicalResultManager;
+    public GenericPatientPage(){
+        init(new Patient());
+    }
 
-    public GenericPatientPage(AddPatientModel patientModel) {
+    public GenericPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
         // this constructor is used when adding a new patient
-        super();
-
-        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
-                patientModel.getDiseaseGroup().getId());
-
-        if (patient == null) {
-            patient = new Patient();
-            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-            patient.setRenalUnit(patientModel.getCentre());
-            patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
-        }
-        // set the nhs id or chi id based on model
-
         init(patient);
+        this.patient = patient;
     }
 
     public GenericPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
-        // get the demographics based on radar id
-        StringValue idValue = pageParameters.get("id");
-        Long id = idValue.toLong();
-        patient = demographicsManager.getDemographicsByRadarNumber(id);
-
+        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
         init(patient);
     }
+
 
     public void init(Patient patient) {
         // init all the panels
@@ -86,6 +70,15 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
+        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.GENETICS);
+            }
+        };
+        geneticsPanel.setOutputMarkupPlaceholderTag(true);
+        add(geneticsPanel);
+
         medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", patient) {
             @Override
             public boolean isVisible() {
@@ -96,15 +89,6 @@ public class GenericPatientPage extends BasePage {
         medicalResultsPanel.setOutputMarkupPlaceholderTag(true);
 
         add(genericDemographicsPanel, medicalResultsPanel);
-
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
-            @Override
-            public boolean isVisible() {
-                return currentTab.equals(Tab.GENETICS);
-            }
-        };
-        geneticsPanel.setOutputMarkupPlaceholderTag(true);
-        add(geneticsPanel);
 
         medicinePanel = new MedicinePanel("medicinePanel", patient) {
             @Override
@@ -122,8 +106,8 @@ public class GenericPatientPage extends BasePage {
         // Add the links to switch tab
 
         linksContainer.add(new TabAjaxLink("demographicsLink", Tab.DEMOGRAPHICS));
-        linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
         linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
+        linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
         linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         add(linksContainer);
@@ -187,7 +171,7 @@ public class GenericPatientPage extends BasePage {
                 GenericPatientPage.this.currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
-                target.add(genericDemographicsPanel, medicalResultsPanel, geneticsPanel, medicinePanel);
+                target.add(genericDemographicsPanel, geneticsPanel, medicalResultsPanel, medicinePanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();

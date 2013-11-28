@@ -1,6 +1,5 @@
 package org.patientview.radar.dao;
 
-import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
@@ -14,8 +13,6 @@ public interface DemographicsDao {
     void saveDemographics(Patient patient);
 
     Patient getDemographicsByRadarNumber(long radarNumber);
-
-    List<Patient> getDemographicsByRenalUnit(Centre centre);
 
     List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage);
 
@@ -31,4 +28,7 @@ public interface DemographicsDao {
 
     DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
 
+    List<Patient> getDemographicsByUnitCode(List<String> unitCodes);
+
+    Patient get(Long id);
 }

@@ -76,6 +76,11 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public boolean checkDuplicateUnitCode(String unitCode) {
+        return unitDao.get(unitCode, securityUserManager.getLoggedInSpecialty()) != null;
+    }
+
+    @Override
     public void save(Unit unit) {
 
         // set the Specialty against the unit if not already set
@@ -181,12 +186,8 @@ public class UnitManagerImpl implements UnitManager {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
-    public List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup) {
-        return unitDao.getAllUnitUsers(isRadarGroup, securityUserManager.getLoggedInSpecialty());
-    }
-
     public List<UnitAdmin> getAllUnitUsers() {
-        return unitDao.getAllUnitUsers(null, securityUserManager.getLoggedInSpecialty());
+        return unitDao.getAllUnitUsers(securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

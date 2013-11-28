@@ -23,6 +23,7 @@
 package org.patientview.service;
 
 import org.patientview.patientview.model.Unit;
+import org.patientview.quartz.exception.ProcessException;
 
 import java.io.File;
 
@@ -37,7 +38,7 @@ public interface ImportManager {
      * scheduled importer job.  Each has the same behaviour.
      * @param xmlFile the file to import
      */
-    void update(File xmlFile);
+    void process(File xmlFile) throws ProcessException;
 
     /**
      * This method is here because importer task should running without login user's authority,
@@ -45,6 +46,5 @@ public interface ImportManager {
      */
     Unit retrieveUnit(String unitcode);
 
-    void archiveFileAfterProcessing(File xmlFile);
 
 }

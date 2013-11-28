@@ -25,6 +25,7 @@ package com.worthsoln.test.web;
 import net.sourceforge.jwebunit.util.TestingEngineRegistry;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-context.xml")
+@Ignore
 public class TestResultTest {
 
     @Value("${base.url}")
@@ -57,7 +59,7 @@ public class TestResultTest {
         setBaseUrl(baseUrl);
     }
 
-    @Test
+    @Ignore
     public void testEnterMyOwnResults() {
         login();
         assertLinkPresentWithText("Enter My Own Results");
@@ -87,7 +89,7 @@ public class TestResultTest {
 
     }
 
-    @Test
+    @Ignore
     public void testResults() {
         login();
         clickLinkWithExactText("Results");

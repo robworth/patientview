@@ -187,6 +187,12 @@ public class Patient extends BaseModel {
     @Column
     private Long radarConsentConfirmedByUserId;
 
+    @Column
+    private Date mostRecentTestResultDateRangeStopDate;
+
+    @Column
+    private String sourceType;
+
     @Transient
     private Clinician clinician;
 
@@ -222,6 +228,15 @@ public class Patient extends BaseModel {
 
     @Transient
     private Boolean diagnosisDateSelect;
+
+    @Transient
+    private PatientLink patientLink;
+
+    @Transient
+    private boolean editableDemographics;
+
+    @Transient
+    private boolean link;
 
     public enum RRTModality {
         HD(1),
@@ -790,6 +805,46 @@ public class Patient extends BaseModel {
 
     public void setRadarConsentConfirmedByUserId(Long radarConsentConfirmedByUserId) {
         this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
+    }
+
+    public PatientLink getPatientLink() {
+        return patientLink;
+    }
+
+    public void setPatientLink(PatientLink patientLink) {
+        this.patientLink = patientLink;
+    }
+
+    public boolean isEditableDemographics() {
+        return editableDemographics;
+    }
+
+    public void setEditableDemographics(boolean editableDemographics) {
+        this.editableDemographics = editableDemographics;
+    }
+
+    public Date getMostRecentTestResultDateRangeStopDate() {
+        return mostRecentTestResultDateRangeStopDate;
+    }
+
+    public void setMostRecentTestResultDateRangeStopDate(Date mostRecentTestResultDateRangeStopDate) {
+        this.mostRecentTestResultDateRangeStopDate = mostRecentTestResultDateRangeStopDate;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }
 

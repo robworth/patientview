@@ -1,12 +1,16 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.radar.dao.DiagnosisDao;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Karotype;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +21,16 @@ public class DiagnosisDaoTest extends BaseDaoTest {
 
     @Autowired
     private DiagnosisDao diagnosisDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() {
+        testDataHelper.createDiagCode();
+        testDataHelper.createKarotype();
+        testDataHelper.createDiagnosis();
+    }
 
     @Test
     public void testSaveDiagnosis() {

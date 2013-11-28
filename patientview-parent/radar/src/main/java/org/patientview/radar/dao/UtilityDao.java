@@ -20,6 +20,14 @@ public interface UtilityDao {
 
     Consultant getConsultant(long id);
 
+    void deleteUnit(String unitCode);
+
+    void deletePatientViewUser(String username);
+
+    void deletePatientViewMapping(String username);
+
+    void createUnit(String unitCode);
+
     List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
     List<Consultant> getConsultantsByCentre(Centre centre);
@@ -54,6 +62,13 @@ public interface UtilityDao {
 
     String getUserName(String nhsNo);
 
+    boolean isGroupAdmin(String username);
+
     String getUserName(Long id);
 
+    List<Centre> getRenalUnitCentre(String nhsNo);
+
+    void deletePatient(String nshNo);
+
+    void deletePatientForRadar(Long radarId);
 }

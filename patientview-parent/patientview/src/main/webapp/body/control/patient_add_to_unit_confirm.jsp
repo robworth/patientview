@@ -28,7 +28,10 @@
 
 <html:xhtml/>
 
-<p class="header">Patient</p>
+<div class="span9">
+<div class="page-header">
+    <h1>Patient</h1>
+</div>
 
 
 You successfully added an existing patient to your unit with the following details:
@@ -44,3 +47,5 @@ You successfully added an existing patient to your unit with the following detai
       <td><bean:write name="userMapping" property="nhsno" /></td>
     </tr>
  </table>
+</div>
+</div>

@@ -1,7 +1,5 @@
 package org.patientview.radar.service.impl;
 
-import com.Ostermiller.util.RandPass;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -27,8 +25,8 @@ import org.patientview.radar.service.UtilityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Font;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
 import java.io.IOException;
@@ -251,18 +249,6 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getUserName(nhsNo);
     }
 
-    // todo this method should remove after running once
-    public void generateUserWithUsermapping() {
-        List<Consultant> consultants = utilityDao.getConsultants(null, -1, -1);
-        for (Consultant consultant : consultants) {
-            String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
-            password = DigestUtils.sha256Hex(password);
-            userDao.createRawUser(consultant.getFullName(), password, consultant.getFullName(), null,
-                    consultant.getCentre().getUnitCode(), null);
-        }
-
-        writeConsultantToFile(consultants);
-    }
 
     public String getUserName(Long id) {
         return utilityDao.getUserName(id);

@@ -13,6 +13,8 @@ public class ProfessionalUser extends User {
 
     private String securityRole;
 
+    private boolean isGroupAdmin;
+
     /**
      * Maintain the 'wrong' implementation of hard wiring users to have super user status based on id.
      * Allow the security role to be set as ROLE_SUPER_USER for other users with the role.
@@ -115,5 +117,13 @@ public class ProfessionalUser extends User {
 
     public void setSecurityQuestionAnsw(String securityQuestionAnsw) {
         this.securityQuestionAnsw = securityQuestionAnsw;
+    }
+
+    public boolean isGroupAdmin() {
+        return isGroupAdmin;
+    }
+
+    public void setGroupAdmin(boolean groupAdmin) {
+        isGroupAdmin = groupAdmin;
     }
 }

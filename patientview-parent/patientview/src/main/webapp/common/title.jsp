@@ -69,10 +69,10 @@
                 }
                 %>
                 <logic:present specialty="ibd">
-                    <li><html:link action="/ibd-help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
+                    <li><html:link action="/ibd-help" styleClass='<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>'>Need help <i class="icon-question-sign icon-white"></i></html:link></li>
                 </logic:present>
                 <logic:present specialty="renal">
-                    <li><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Need help <i class="icon-question-sign icon-white"></i></html:link></li>
+                    <li><html:link action="/help" styleClass='<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>'>Need help <i class="icon-question-sign icon-white"></i></html:link></li>
                 </logic:present>
             </ul>
 

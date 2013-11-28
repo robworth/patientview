@@ -95,7 +95,7 @@
 
                 <tr>
                     <td class="tablecell">
-                        <logic:present role="superadmin,unitadmin,radaradmin">
+                        <logic:present role="superadmin,unitadmin">
                             <html:link action="/control/patientEditInput" name="patientKeyParams">
                                 <bean:write name="patient" property="name"/>
                             </html:link>
@@ -120,7 +120,10 @@
                             <bean:write name="patient" property="treatment"/>
                         </logic:notEmpty>
                     </td>
-                    <td class="tablecell"><bean:write name="patient" property="email"/></td>
+                    <td class="tablecell">
+                        <logic:notEmpty name="patient" property="email">
+                             <bean:write name="patient" property="email"/></td>
+                        </logic:notEmpty>
                     <td class="tablecell">
                         <logic:equal value="false" name="patient" property="emailverified">
                             <big><font color="red">&#10008;</font></big>
@@ -142,7 +145,7 @@
                     <td class="tablecell"><bean:write name="patient" property="modality"/></td>
                     <td class="tablecell"><bean:write name="patient" property="lastdatadateFormatted"/></td>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/logViewForPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -151,7 +154,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/viewsOfPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -160,7 +163,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/dataLoadsForPatient">
                                 <html:hidden name="patient" property="nhsno" />
@@ -169,7 +172,7 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <html:form action="/control/activityByUser">
                                 <html:hidden name="patient" property="username" />
@@ -187,11 +190,13 @@
                         </td>
                     </logic:present>
 
-                    <logic:present role="superadmin,unitadmin,radaradmin">
+                    <logic:present role="superadmin,unitadmin">
                         <td>
                             <bean:define id="username" name="patient" property="username" />
-                            <bean:define id="email" name="patient" property="email" />
-                            <bean:define id="emailverified" name="patient" property="emailverified"/>
+                            <logic:notEmpty name="patient" property="email">
+                                <bean:define id="email" name="patient" property="email" />
+                                <bean:define id="emailverified" name="patient" property="emailverified"/>
+                            </logic:notEmpty>
                             <input type="button" value="Send Verification Email" class="btn formbutton" ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
                         </td>
                     </logic:present>

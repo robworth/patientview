@@ -41,6 +41,7 @@ public class PatientViewPresentTag extends PresentTag {
 
     private String specialty;
     private String feature;
+    private String containSourceType;
 
     @Override
     protected boolean condition(boolean desired) throws JspException {
@@ -63,6 +64,20 @@ public class PatientViewPresentTag extends PresentTag {
             StringTokenizer st = new StringTokenizer(role, ROLE_DELIMITER, false);
             while (!present && st.hasMoreTokens()) {
                 present = LegacySpringUtils.getSecurityUserManager().isRolePresent(st.nextToken());
+            }
+
+            if (present && containSourceType != null) {
+                present = LegacySpringUtils.getSecurityUserManager().isRolePresent("superadmin");
+
+                if (!present) {
+                    List<Unit> usersUnits = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits();
+                    for (Unit userUnit : usersUnits) {
+                        if (containSourceType.equalsIgnoreCase(userUnit.getSourceType())) {
+                            present = true;
+                            break;
+                        }
+                    }
+                }
             }
         } else if (user != null) {
             String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
@@ -94,7 +109,7 @@ public class PatientViewPresentTag extends PresentTag {
                     }
                 }
             }
-        } else {
+        }  else {
             JspException e = new JspException(messages.getMessage("logic.selector"));
             TagUtils.getInstance().saveException(pageContext, e);
             throw e;
@@ -125,5 +140,13 @@ public class PatientViewPresentTag extends PresentTag {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public String getContainSourceType() {
+        return containSourceType;
+    }
+
+    public void setContainSourceType(String containSourceType) {
+        this.containSourceType = containSourceType;
     }
 }

@@ -1,10 +1,13 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Ignore;
 import org.patientview.radar.dao.PathologyDao;
 import org.patientview.radar.model.sequenced.Pathology;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +19,9 @@ public class PathologyDaoTest extends BaseDaoTest {
 
     @Autowired
     private PathologyDao pathologyDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     @Test
     public void testSavePathology() throws Exception {
@@ -32,6 +38,7 @@ public class PathologyDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetPathology() {
+        testDataHelper.createPathology();
         Pathology pathology = pathologyDao.getPathology(2L);
         assertNotNull("Pathology object was null", pathology);
         assertEquals("Wrong ID", new Long(2), pathology.getId());
@@ -45,6 +52,7 @@ public class PathologyDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetPathologyByRadarNumber() {
+        testDataHelper.createPathology();
         List<Pathology> pathologyList = pathologyDao.getPathologyByRadarNumber(238L);
         assertNotNull("Pathology list was null", pathologyList);
         assertTrue("Pathology list was empty", !pathologyList.isEmpty());

@@ -124,10 +124,11 @@
                 <label wicket:id="nhsno"/>
             </td>
         </tr>
-        <tr wicket:id="chiNumberContainer">
-            <td><span>CHI No. (Scotland Only)</span></td>
+
+        <tr>
+            <td><span>Source Unit Code</span></td>
             <td>
-                <label wicket:id="chiNumber"/>
+                <label wicket:id="sourceUnitCode"/>
             </td>
         </tr>
         <tr>
@@ -225,6 +226,7 @@
             <td>
                 <input type="checkbox" wicket:id="consent"/> <a wicket:id="consentFormsLink" href="#"
                                                                 target="_blank">Consent Forms</a>
+                <span wicket:id="consentFeedbackIndicator"></span>
             </td>
         </tr>
         <tr>

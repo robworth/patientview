@@ -120,7 +120,9 @@ public class BaseTestPvDbSchema {
 
         while (resultSet.next()) {
             String tableName =  resultSet.getString(1);
-            dropStatement.execute("DROP table " + tableName);
+            String sqlStatement = "DROP table " + tableName;
+            LOGGER.info(sqlStatement);
+            dropStatement.execute(sqlStatement);
         }
 
         dropStatement.execute("SET FOREIGN_KEY_CHECKS = 1;");
@@ -148,6 +150,19 @@ public class BaseTestPvDbSchema {
         dropStatement.close();
     }
 
+    public void clearData() throws Exception {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            clearData(connection);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+    }
+
     protected void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
         LOGGER.info("Starting create tables");
 
@@ -165,6 +180,7 @@ public class BaseTestPvDbSchema {
                 for (String sqlStatement : createTablesScript.split(";")) {
                     if (StringUtils.isNotBlank(sqlStatement)) {
                         try {
+                            LOGGER.info(sqlStatement);
                             statement.execute(sqlStatement);
                         } catch (SQLException e) {
                             String error = e.getMessage() + " error executing: " + script + ", sql:"

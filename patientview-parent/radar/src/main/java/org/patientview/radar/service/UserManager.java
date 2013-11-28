@@ -44,7 +44,7 @@ public interface UserManager {
 
     void deletePatientUser(PatientUser patientUser) throws Exception;
 
-    void registerPatient(Patient patient) throws Exception;
+    PatientUser savePatientUser(Patient patient) throws Exception;
 
     void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
             RegistrationException, InvalidSecurityQuestionAnswer;
@@ -81,4 +81,13 @@ public interface UserManager {
     void changeUserPassword(String username, String password) throws DecryptionException, DaoException;
 
     boolean userExistsInPatientView(String nhsno);
+
+    User getExternallyCreatedUser(String nshNo);
+
+    List<String> getUnitCodes(User user);
+
+    String generateUsername(Patient patient);
+
+    List<String> getPatientRadarMappings(String nhsNo);
+
 }

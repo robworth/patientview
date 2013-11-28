@@ -1,30 +1,7 @@
 package org.patientview.radar.web.panels.generic;
 
-import org.apache.wicket.MarkupContainer;
-import org.patientview.model.Centre;
-import org.patientview.model.Ethnicity;
-import org.patientview.model.Patient;
-import org.patientview.model.Sex;
-import org.patientview.model.enums.NhsNumberType;
-import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.service.generic.GenericDiagnosisManager;
-import org.patientview.radar.util.RadarUtility;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
-import org.patientview.radar.web.components.ComponentHelper;
-import org.patientview.radar.web.components.ClinicianDropDown;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -43,10 +20,35 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
-
+import org.patientview.model.Centre;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.radar.exception.RegisterException;
+import org.patientview.radar.model.user.ProfessionalUser;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
+import org.patientview.radar.service.generic.GenericDiagnosisManager;
+import org.patientview.radar.util.RadarUtility;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.CentreDropDown;
+import org.patientview.radar.web.components.ClinicianDropDown;
+import org.patientview.radar.web.components.ComponentHelper;
+import org.patientview.radar.web.components.LabelMessage;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredCheckBox;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,6 +72,7 @@ public class GenericDemographicsPanel extends Panel {
     @SpringBean
     private UserManager userManager;
 
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
 
     public GenericDemographicsPanel(String id, Patient patient) {
@@ -80,6 +83,8 @@ public class GenericDemographicsPanel extends Panel {
     private void init(Patient patient) {
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        List<Component> nonEditableComponents = new ArrayList<Component>();
 
         final ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
 
@@ -93,10 +98,18 @@ public class GenericDemographicsPanel extends Panel {
         // add form
         final IModel<Patient> model = new Model(patient);
 
+        //Error Message
+        String message = "Please complete all mandatory fields";
+        final LabelMessage labelMessage = new LabelMessage();
+        labelMessage.setMessage(message);
+        final PropertyModel<LabelMessage> messageModel =
+                new PropertyModel<LabelMessage>(labelMessage, "message");
+
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
 
             String name = utilityManager.getUserName(patient.getNhsno());
+
             if (name != null && !"".equals(name)) {
                 // split the user name with a space
                 String[] names = name.split(" ");
@@ -128,9 +141,16 @@ public class GenericDemographicsPanel extends Panel {
 
                 patient.setGeneric(true);
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
-                demographicsManager.saveDemographics(patient);
+
                 try {
-                    userManager.registerPatient(patient);
+
+                     userManager.savePatientUser(patient);
+
+                } catch (RegisterException re) {
+                    LOGGER.error("Registration Exception", re);
+                    String message = "Failed to register patient: " + re.getMessage();
+                    labelMessage.setMessage(message);
+                    error(message);
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
                     LOGGER.error("{}, message {}", message, e.getMessage());
@@ -154,16 +174,22 @@ public class GenericDemographicsPanel extends Panel {
                 componentsToUpdateList);
 
         form.add(surname, forename, alias, dateOfBirth);
-
+        nonEditableComponents.add(surname);
+        nonEditableComponents.add(forename);
+        nonEditableComponents.add(dateOfBirth);
         // Sex
         RadarRequiredDropdownChoice sex =
                 new RadarRequiredDropdownChoice("sexModel", demographicsManager.getSexes(),
                         new ChoiceRenderer<Sex>("type", "id"), form, componentsToUpdateList);
 
+        nonEditableComponents.add(sex);
+
         // Ethnicity
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
+
+        nonEditableComponents.add(ethnicity);
 
         // Address fields
         TextField address1 = new TextField("address1");
@@ -175,28 +201,17 @@ public class GenericDemographicsPanel extends Panel {
                 componentsToUpdateList);
         form.add(address1, address2, address3, address4, postcode);
 
-
+        nonEditableComponents.add(address1);
+        nonEditableComponents.add(address2);
+        nonEditableComponents.add(address3);
+        nonEditableComponents.add(address4);
+        nonEditableComponents.add(postcode);
         // More info
         Label nhsNumber = new Label("nhsno");
 
-        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.NHS_NUMBER);
-            }
-        };
+        WebMarkupContainer nhsNumberContainer = new WebMarkupContainer("nhsNumberContainer");
+
         nhsNumberContainer.add(nhsNumber);
-
-        Label chiNumber = new Label("chiNumber");
-
-        WebMarkupContainer chiNumberContainer = new WebMarkupContainer("chiNumberContainer") {
-            @Override
-            public boolean isVisible() {
-                return model.getObject().getNhsNumberType().equals(NhsNumberType.CHI_NUMBER);
-            }
-        };
-
-        chiNumberContainer.add(chiNumber);
 
         // add new ids section
         final List<Component> addIdComponentsToUpdate = new ArrayList<Component>();
@@ -266,6 +281,7 @@ public class GenericDemographicsPanel extends Panel {
         };
 
         hospitalNumberContainer.add(hospitalNumber);
+        nonEditableComponents.add(hospitalNumber);
 
         TextField renalRegistryNumber = new TextField("rrNo");
         WebMarkupContainer renalRegistryNumberContainer = new WebMarkupContainer("renalRegistryNumberContainer") {
@@ -373,7 +389,7 @@ public class GenericDemographicsPanel extends Panel {
         }
 
         form.add(hospitalNumberContainer, nhsNumberContainer, renalRegistryNumberContainer,
-                ukTransplantNumberContainer, chiNumberContainer);
+                ukTransplantNumberContainer);
         form.add(republicOfIrelandIdContainer, isleOfManIdContainer, channelIslandsIdContainer, indiaIdContainer);
 
 
@@ -384,6 +400,11 @@ public class GenericDemographicsPanel extends Panel {
 
         final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
         form.add(clinician);
+
+
+        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) ;
+        form.add(sourceUnitCode);
+
 
         DropDownChoice<Centre> renalUnit;
 
@@ -406,6 +427,17 @@ public class GenericDemographicsPanel extends Panel {
                     target.add(clinician);
                 }
             });
+        } else if (user.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
+
+            List<Centre> centres = new ArrayList<Centre>();
+            for (String unitCode : userManager.getUnitCodes(user)) {
+                Centre centre = new Centre();
+                centre.setUnitCode(unitCode);
+                centre.setName(unitCode);
+                centres.add(centre);
+            }
+            renalUnit = new CentreDropDown("renalUnit", centres);
+
         } else {
             List<Centre> centres = new ArrayList<Centre>();
             centres.add(form.getModelObject().getRenalUnit());
@@ -413,10 +445,11 @@ public class GenericDemographicsPanel extends Panel {
             renalUnit = new CentreDropDown("renalUnit", centres);
         }
 
-        form.add(renalUnit);
 
-        CheckBox consent = new CheckBox("consent");
-        consent.setRequired(true);
+        form.add(renalUnit);
+    //    nonEditableComponents.add(renalUnit);
+
+        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
@@ -436,6 +469,8 @@ public class GenericDemographicsPanel extends Panel {
         TextField emailAddress = new TextField("emailAddress");
         TextField phone1 = new TextField("telephone1");
         TextField phone2 = new TextField("telephone2");
+
+        nonEditableComponents.add(phone1);
 
         RadarTextFieldWithValidation mobile = new RadarTextFieldWithValidation("mobile",
                 new PatternValidator(MetaPattern.DIGITS), form,
@@ -505,10 +540,12 @@ public class GenericDemographicsPanel extends Panel {
         RadarComponentFactory.getSuccessMessageLabel("successMessageUp", form,
                 componentsToUpdateList);
 
-        RadarComponentFactory.getErrorMessageLabel("errorMessage", form,
-                "Please complete all mandatory fields", componentsToUpdateList);
-        RadarComponentFactory.getErrorMessageLabel("errorMessageUp", form,
-                "Please complete all mandatory fields", componentsToUpdateList);
+        RadarComponentFactory.getMessageLabel("errorMessage", form,
+                messageModel, componentsToUpdateList);
+        RadarComponentFactory.getMessageLabel("errorMessageUp", form,
+                messageModel, componentsToUpdateList);
+
+
 
         AjaxSubmitLink ajaxSubmitLinkTop = new AjaxSubmitLink("saveTop") {
             @Override
@@ -538,6 +575,12 @@ public class GenericDemographicsPanel extends Panel {
 
         form.add(ajaxSubmitLinkTop);
         form.add(ajaxSubmitLinkBottom);
+
+        if (!patient.isEditableDemographics()) {
+            for (Component component : nonEditableComponents) {
+                component.setEnabled(false);
+            }
+        }
     }
 
     private static class AddIdModel implements Serializable {

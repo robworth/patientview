@@ -1,11 +1,16 @@
 package org.patientview.radar.web.pages.patient;
 
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.patientview.model.Centre;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.DemographicsUserDetail;
-import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.DiagnosisManager;
@@ -16,14 +21,6 @@ import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
 import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
-import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Date;
 
@@ -38,20 +35,8 @@ public class ExistingPatientsListingPage extends BasePage {
 
     public ExistingPatientsListingPage() {
 
-        Centre centre = null;
-        AuthenticatedWebSession session = RadarSecuredSession.get();
-        if (session.isSignedIn()) {
-            if (session.getRoles().hasRole(User.ROLE_SUPER_USER)) {
-                // super user can see all patients - centre might be already null but setting to null again for clarity
-                centre = null;
-            } else if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL)) {
-                //get centre from the logged in professional user
-                ProfessionalUser professionalUser = (ProfessionalUser) RadarSecuredSession.get().getUser();
-                centre = professionalUser.getCentre();
-            }
-        }
-
-        DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager, centre);
+        DemographicsDataProvider demographicsDataProvider = new DemographicsDataProvider(demographicsManager,
+                RadarSecuredSession.get().getUser());
 
         // List existing patients
         add(new DataView<Patient>("patients", demographicsDataProvider) {
@@ -84,7 +69,13 @@ public class ExistingPatientsListingPage extends BasePage {
                 item.add(new Label("surname"), new Label("forename"));
                 item.add(DateLabel.forDatePattern("dob", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("id"));
-                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(patient)));
+
+                String diseaseGroup = "";
+                if (patient.getDiseaseGroup() != null) {
+                    diseaseGroup = patient.getDiseaseGroup().getId();
+                }
+
+                item.add(new Label("diagnosis", diseaseGroup));
 
                 item.add(new Label("nhsNumber", patient.getNhsno()));
                 item.add(new Label("hospitalnumber"));
@@ -98,13 +89,10 @@ public class ExistingPatientsListingPage extends BasePage {
 
                 item.add(new Label("lastverificationdate",
                         formatDate(demographicsUserDetail.getLastverificationdate())));
-                item.add(new Label("email", demographicsUserDetail.getEmail()));
+                item.add(new Label("email", patient.getEmailAddress()));
 
                 item.add(new Label("lastlogon", formatDate(demographicsUserDetail.getLastlogon())));
                 item.add(new Label("accountlocked", "" + (demographicsUserDetail.isAccountlocked() ? "Yes" : "No")));
-
-                item.add(new Label("lastdatadate", formatDate(demographicsUserDetail.getLastdatadate())));
-
             }
 
             private String formatDate(Date date){

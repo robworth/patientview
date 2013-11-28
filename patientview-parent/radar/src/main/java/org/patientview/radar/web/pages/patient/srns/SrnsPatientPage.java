@@ -1,11 +1,24 @@
 package org.patientview.radar.web.pages.patient.srns;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.ClinicalDataManager;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.DiagnosisManager;
 import org.patientview.radar.web.RadarApplication;
@@ -21,32 +34,17 @@ import org.patientview.radar.web.panels.HospitalisationPanel;
 import org.patientview.radar.web.panels.PathologyPanel;
 import org.patientview.radar.web.panels.RelapsePanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class SrnsPatientPage extends BasePage {
 
     protected static final String PARAM_ID = "id";
+
     @SpringBean
     private DiagnosisManager diagnosisManager;
+
     @SpringBean
     private DemographicsManager demographicsManager;
-    @SpringBean
-    private ClinicalDataManager clinicalDataManager;
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -83,26 +81,32 @@ public class SrnsPatientPage extends BasePage {
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
-    public SrnsPatientPage(PageParameters parameters) {
+    private Patient patient;
+
+
+    public SrnsPatientPage(){
+       patient = new Patient();
+    }
+
+
+    public SrnsPatientPage(PageParameters pageParameters) {
         super();
 
-        // Get radar number from parameters - we might not have one for new patients
-        StringValue idValue = parameters.get(PARAM_ID);
-        if (!idValue.isEmpty()) {
-            radarNumberModel.setObject(idValue.toLongObject());
-        }
+        // this constructor is used when a patient exists
+        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
+        demographicsPanel = new DemographicsPanel("demographicsPanel", patient) ;
+        radarNumberModel.setObject(patient.getId());
+        init();
+    }
 
-        // Construct panels for each of the tabs
-        if (parameters != null) {
-            if (parameters.get("idType").toString() != null) {
-                demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel, parameters);
-            } else {
-                demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
-            }
-        } else {
-            demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
-        }
+    public SrnsPatientPage(Patient patient) {
 
+        demographicsPanel = new DemographicsPanel("demographicsPanel", patient) ;
+        this.patient = patient;
+        init();
+
+    }
+     public void init() {
 
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel", radarNumberModel);

@@ -54,27 +54,27 @@
         <li <%=("ibd_myibd".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/myibd">My IBD</html:link></li>
 
         <%
-            String symptomsUrl = null;
+        String symptomsUrl = null;
 
-            Diagnosis loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getLoggedInUserDiagnosis();
+        Diagnosis loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getLoggedInUserDiagnosis();
 
-            // check, we could be viewing as a superadmin at a patient's account
-            if (loggedInUserDiagnosis == null) {
-                loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(UserUtils.retrieveUser(request));
-            }
+        // check, we could be viewing as a superadmin at a patient's account
+        if (loggedInUserDiagnosis == null) {
+            loggedInUserDiagnosis = LegacySpringUtils.getIbdManager().getDiagnosis(UserUtils.retrieveUser(request));
+        }
 
-            if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
-                    Diagnosis.ULCERATIVE_COLITIS == loggedInUserDiagnosis) {
-                symptomsUrl = "/colitis-edit";
-            } else if (Diagnosis.CROHNS == loggedInUserDiagnosis) {
-                symptomsUrl = "/crohns-edit";
-            }
+        if (Diagnosis.COLITIS_UNSPECIFIED == loggedInUserDiagnosis ||
+                Diagnosis.ULCERATIVE_COLITIS == loggedInUserDiagnosis) {
+            symptomsUrl = "/colitis-edit";
+        } else if (Diagnosis.CROHNS == loggedInUserDiagnosis) {
+            symptomsUrl = "/crohns-edit";
+        }
 
-            if (symptomsUrl != null && symptomsUrl.length() > 0) {
+        if (symptomsUrl != null && symptomsUrl.length() > 0) {
         %>
             <li <%=("ibd_entersymptoms".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="<%=symptomsUrl%>">Enter Symptoms</html:link></li>
         <%
-            }
+        }
         %>
         <li <%=("ibd_medications".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/medications">Medicines</html:link></li>
         <li <%=("ibd_careplan".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/careplan">Care Plan</html:link></li>
@@ -159,7 +159,7 @@
         if (!LegacySpringUtils.getSecurityUserManager().isLoggedInToSpecialty()) {
     %>
 
-    <li class="pull-right"><html:link action="/forgotten-password" styleClass="<%= ("forgotten-password".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Forgotten password?</html:link></li>
+    <li class="pull-right"><html:link action="/forgotten-password" styleClass='<%= ("forgotten-password".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>'>Forgotten password?</html:link></li>
 
     <%
         }

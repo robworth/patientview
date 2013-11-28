@@ -15,7 +15,7 @@
 
 <div>
 <table class="tableSorter patientsLisitingTable" cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
-       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;">
+       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;table-layout: fixed; width:100%">
 <thead>
 <tr style="background-color:#EEF6ED;">
     <th scope="col">View / Edit</th>
@@ -38,7 +38,6 @@
     <th scope="col"><a href="javascript:void(0)">Email</a></th>
     <th scope="col"><a href="javascript:void(0)">Last Logon</a></th>
     <th scope="col"><a href="javascript:void(0)">Password Locked</a></th>
-    <th scope="col"><a href="javascript:void(0)">Last Data Received Date</a></th>
 </tr>
 </thead>
 
@@ -62,7 +61,6 @@
     <td wicket:id="email" style="word-break:break-all; word-wrap:break-word; overflow:hidden;"/>
     <td wicket:id="lastlogon"/>
     <td wicket:id="accountlocked"/>
-    <td wicket:id="lastdatadate"/>
 
 </tr>
 </tbody>

@@ -1,5 +1,8 @@
 package org.patientview.radar.dao;
 
+import org.patientview.radar.exception.UserCreationException;
+import org.patientview.radar.exception.UserMappingException;
+import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;
@@ -11,7 +14,7 @@ import java.util.List;
 
 public interface UserDao {
 
-    public<T extends User> T getUser(String email);
+    public <T extends User> T getUser(String email);
 
     AdminUser getAdminUser(String email);
 
@@ -29,15 +32,17 @@ public interface UserDao {
 
     PatientUser getPatientUserWithUsername(String username);
 
-    // Only use for testing purposes!
-    void createRawUser(String username, String password, String name, String email, String unitcode,
-                       String nhsno);
+    User createUser(User user);
 
-    PatientUser getExternallyCreatedPatientUser(String nhsno);
+    List<String> getUnitCodes(User user);
+
+    void createPVUser(String username, String password, String name, String email) throws Exception;
+
+    PatientUser getPatientViewUser(String nhsno);
 
     List<PatientUser> getPatientUsers(PatientUserFilter filter, int page, int numberPerPage);
 
-    void savePatientUser(PatientUser patientUser) throws Exception;
+    void savePatientUser(PatientUser patientUser) throws UserCreationException;
 
     void deletePatientUser(PatientUser patientUser) throws Exception;
 
@@ -57,6 +62,8 @@ public interface UserDao {
 
     boolean userExistsInPatientView(String nhsno);
 
+    List<String> getPatientRadarMappings(String nhsNo);
+
     void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                String rpvRole) throws Exception;
 
@@ -64,13 +71,18 @@ public interface UserDao {
 
     void deleteUserMappingInPatientView(String username) throws Exception;
 
-    void createRoleInPatientView(Long userId, String rpvRole) throws Exception;
+    void createRoleInPatientView(Long userId, String rpvRole) throws UserRoleException;
 
     void deleteRoleInPatientView(Long userId) throws Exception;
 
-    void saveUserMapping(User user) throws Exception;
+    void saveUserMapping(User user) throws UserMappingException;
 
     void deleteUserMapping(User user) throws Exception;
 
     boolean userExistsInPatientView(String nhsno, String unitcode);
+
+    boolean usernameExistsInPatientView(String username);
+
+    public void deleteUser(User user) throws Exception;
+
 }

@@ -1,18 +1,5 @@
 package org.patientview.radar.web.pages.patient.alport;
 
-import org.patientview.model.Patient;
-import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.generic.MedicalResultManager;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.alport.DeafnessPanel;
-import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.alport.MedicinePanel;
-import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
-import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
-import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -27,6 +14,17 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.alport.DeafnessPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
+import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
+import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
+import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class AlportPatientPage extends BasePage {
@@ -55,9 +53,6 @@ public class AlportPatientPage extends BasePage {
     @SpringBean
     private DemographicsManager demographicsManager;
 
-    @SpringBean
-    private MedicalResultManager medicalResultManager;
-
     private Patient patient;
     private MarkupContainer linksContainer;
 
@@ -70,21 +65,9 @@ public class AlportPatientPage extends BasePage {
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
-    public AlportPatientPage(AddPatientModel patientModel) {
-
-        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
-                patientModel.getDiseaseGroup().getId());
-
-        // set the nhs id or chi id based on model
-        if (patient == null) {
-            patient = new Patient();
-            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-            patient.setRenalUnit(patientModel.getCentre());
-
-            patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
-        }
-
+    public AlportPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
+        this.patient = patient;
         init(patient);
     }
 
@@ -92,6 +75,10 @@ public class AlportPatientPage extends BasePage {
         // this constructor is used when a patient exists
         patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
         init(patient);
+    }
+
+    public AlportPatientPage() {
+        init(new Patient());
     }
 
     public void init(Patient patient) {

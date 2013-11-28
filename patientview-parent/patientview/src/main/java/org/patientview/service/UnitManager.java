@@ -54,6 +54,13 @@ public interface UnitManager {
      */
     Unit get(String unitCode);
 
+    /**
+     * a new unitcode doesn't exist, so any user doesn't have SecurityConfig.UNIT_ACCESS permission to check this code
+     * @param unitCode String
+     * @return true if duplicate
+     */
+    boolean checkDuplicateUnitCode(String unitCode);
+
     void save(Unit unit);
 
     List<Unit> getAllDisregardingSpeciality(boolean sortByName);
@@ -81,9 +88,6 @@ public interface UnitManager {
     List<UnitStat> getUnitStatsForUnit(String unitCode);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
-
-    @Secured(value =  "ROLE_RENAL_SUPERADMIN")
-    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup);
 
     @Secured(value =  "ROLE_RENAL_SUPERADMIN")
     List<UnitAdmin> getAllUnitUsers();

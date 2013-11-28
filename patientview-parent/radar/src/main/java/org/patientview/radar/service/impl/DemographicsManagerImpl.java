@@ -1,23 +1,31 @@
 package org.patientview.radar.service.impl;
 
-import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
+import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 
 import java.util.List;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
+
     private DemographicsDao demographicsDao;
+
+    private UserDao userDao;
 
     public void saveDemographics(Patient patient) {
         // Save or update the demographics object
         demographicsDao.saveDemographics(patient);
+    }
+
+    public Patient get(Long id) {
+        return demographicsDao.get(id);
     }
 
     public Patient getDemographicsByRadarNumber(long radarNumber) {
@@ -26,10 +34,6 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
         return demographicsDao.getDemographicsByNhsNoAndUnitCode(nhsNo, unitCode);
-    }
-
-    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
-        return demographicsDao.getDemographicsByRenalUnit(centre);
     }
 
     public List<Patient> getDemographics() {
@@ -54,6 +58,11 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     public Status getStatus(long id) {
         return demographicsDao.getStatus(id);
+    }
+
+    public List<Patient> getDemographicsByUnitAdmin(User user) {
+        List<String> unitCodes = userDao.getUnitCodes(user);
+        return demographicsDao.getDemographicsByUnitCode(unitCodes);
     }
 
     public List<Status> getStatuses() {
@@ -131,4 +140,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
     }
 
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 }
