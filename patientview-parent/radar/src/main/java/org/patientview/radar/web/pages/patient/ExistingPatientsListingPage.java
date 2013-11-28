@@ -80,7 +80,8 @@ public class ExistingPatientsListingPage extends BasePage {
                 item.add(new Label("nhsNumber", patient.getNhsno()));
                 item.add(new Label("hospitalnumber"));
                 item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
-                item.add(new Label("status.abbreviation"));
+                item.add(new Label("status.abbreviation", patient.getStatusModel() != null
+                        ? patient.getStatusModel().getAbbreviation() : ""));
                 item.add(new Label("renalUnit.name"));
 
                 item.add(new Label("rrtModalityEunm"));
