@@ -235,6 +235,9 @@ public class Patient extends BaseModel {
     @Transient
     private boolean editableDemographics;
 
+    @Transient
+    private boolean link;
+
     public enum RRTModality {
         HD(1),
         PD(2),
@@ -834,6 +837,14 @@ public class Patient extends BaseModel {
 
     public void setSourceType(String sourceType) {
         this.sourceType = sourceType;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }
 

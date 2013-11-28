@@ -94,6 +94,9 @@ public class SelectPatientPanel extends Panel {
                     patient.setDiseaseGroup(diseaseGroup);
                 }
 
+                // Set the diagnosis date should the user should enter is
+                patient.setLink(true);
+
                 setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
             }
