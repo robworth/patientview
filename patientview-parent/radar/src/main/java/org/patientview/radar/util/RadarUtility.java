@@ -157,6 +157,7 @@ public class RadarUtility {
         patient.setSurname(null);
         patient.setForename(null);
         patient.setDob(null);
+        patient.setDateofbirth(null);
         patient.setAddress1(null);
         patient.setAddress2(null);
         patient.setAddress3(null);
