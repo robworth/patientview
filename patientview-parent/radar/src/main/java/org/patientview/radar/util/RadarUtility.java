@@ -95,6 +95,8 @@ public class RadarUtility {
         link.setHospitalnumber(source.getHospitalnumber());
         link.setRenalUnit(source.getRenalUnit());
 
+        link.setEditableDemographics(false);
+
         return link;
 
     }
@@ -144,6 +146,8 @@ public class RadarUtility {
         if (StringUtils.hasText(link.getComments())) {
             source.setComments(link.getComments());
         }
+
+        source.setEditableDemographics(false);
 
         return source;
     }
