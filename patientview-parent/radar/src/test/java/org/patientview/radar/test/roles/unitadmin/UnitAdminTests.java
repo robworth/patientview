@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.user.PatientUser;
@@ -95,17 +96,18 @@ public class UnitAdminTests extends TestPvDbSchema {
      */
     @Test
     public void testUnitAdminCanSeePatientsInTheirRenalUnit() throws Exception {
-        int patientCount = 12;
+        int patientCount = 34;
 
-        // Create a Unit Admin the the Renal A Unit
-        PatientUser userAdmin = roleHelper.createUnitAdmin(StringUtils.right(Long.toString(new Date().getTime()), 10), testRenalUnit);
-        // Create the users that are mapped to the Renal A Unit
-        roleHelper.createPatientsInUnit(testRenalUnit, testRenalUnit, patientCount);
-        // Retrieve all the users that are mapped to the UnitAdmins Unit.
+        // Create patients that are in only in 1 disease group (no renal unit)
+        roleHelper.createPatientsInUnit(testDiseaseUnit, testDiseaseUnit, patientCount);
+        // Create a unit admin the belongs to that disease group
+        PatientUser userAdmin = roleHelper.createUnitAdmin("675675", testDiseaseUnit);
+
         List<Patient> patientInUnit = demographicsManager.getDemographicsByUnitAdmin(userAdmin);
-        Assert.assertTrue("There should 10 patient returned", patientInUnit.size() == patientCount);
 
+        Assert.assertTrue("There should be the correct number of people in the disease group", patientInUnit.size() == patientCount);
     }
+
 
     /**
      * Add a user mapping for Disease group Alports

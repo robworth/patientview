@@ -326,7 +326,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         query.append("'");
 
         if (StringUtils.isNotEmpty(unitCodeValues)) {
-             patients =  jdbcTemplate.query(query.toString(), new DemographicsRowMapper());
+            patients =  jdbcTemplate.query(query.toString(), new DemographicsRowMapper());
 
 
             List<Patient> linkedPatients = new ArrayList<Patient>();
@@ -340,7 +340,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 if (patientLink != null) {
                     Patient linkedPatient = RadarUtility.overRideLinkRecord(
                             this.getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
-                            patientLink.getSourceUnit()), patient);
+                                    patientLink.getSourceUnit()), patient);
                     linkedPatient.setSurname("(LINKED) " + linkedPatient.getSurname());
                     linkedPatients.add(linkedPatient);
                 }
@@ -351,9 +351,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         } else {
             return null;
         }
-
-
-        return patients;
+    
     }
 
 
