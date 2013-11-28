@@ -1,0 +1,115 @@
+<wicket:panel>
+    <form wicket:id="form">
+        <div id="mainBlock">
+
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageTop"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageTop"></span>
+            </div>
+
+            <p><span id="ctl00_ContentPlaceHolder1_lblMsg"></span></p>
+
+            <div wicket:id="patientDetail">
+
+            </div>
+
+            <table id="ctl00_ContentPlaceHolder1_mainForm" cellpadding="0" style="width: 100%; border-collapse:collapse"
+                   class="style3">
+                <tr>
+                    <td style="width:90%; vertical-align:top;">
+
+
+
+                        <table cellpadding="5" style="width: 90%; border-collapse:collapse">
+                            <tr>
+                                <td valign="top" width="30%">
+                                    <strong>Has a sample been sent for Genetic analysis?</strong>
+                                </td>
+                                <td width=5%>
+                                    <div wicket:id="testsDone">
+                                        <label for="testsDoneYes">Yes</label><input type="radio" wicket:id="testsDoneYes" id="testsDoneYes"/>
+                                        <br />
+                                        <label for="testsDoneNo">No&nbsp;</label><input type="radio" wicket:id="testsDoneNo" id="testsDoneNo"/>
+                                        <br />
+                                    </div>
+                                </td>
+
+                                <td width="40%" valign="top">&nbsp;
+                                    <span wicket:id="dateSentLabel" class="dateSentContainer"><strong>Date Sent</strong>
+                                        <input wicket:id="dateSent" type="text" id="dateSent"/>
+                                    </span>
+                                    <span wicket:id="dateSentFeedbackIndicator"></span>
+                                    <span class="feedback" wicket:id="dateSentFeedback"></span>
+                                </td>
+                                <td width="15%"><a target="_blank" href="http://ukgtn.nhs.uk"><span>RDG Laboratory Recommendation</span></a></td>
+                            </tr>
+                        </table>
+                        <table cellpadding="5" style="width: 85%; border-collapse:collapse" align="right">
+                            <tr>
+                                <td colspan="2">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="right">
+                                    <strong>Laboratory where test sent/done</strong>
+                                </td>
+                                <td  style="width:60%;">
+                                    <textarea rows="5" cols="5" wicket:id="labWhereTestWasDone"></textarea>
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="right">
+                                    <strong>Lab reference No</strong>
+                                </td>
+                                <td>
+                                    <input type="text" wicket:id="referenceNumber" />
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <br />
+                        <table cellpadding="5" style="width: 100%; border-collapse:collapse">
+                            <tr>
+                                <td style="width:15%;"></td>
+                                <td >
+                                    <strong>Results</strong>
+                                    <textarea rows="10" cols="5" wicket:id="whatResultsShowed"></textarea>
+                                    <span class="feedback"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Note</strong>
+                                    <br />
+                                    <em>Findings can only be displayed on the authority of the patient's consultant
+                                        once the result has been discussed and the patient has given their agreement obtained.
+                                        Only entry of the full, unaltered laboratory report, identical to the investigating
+                                        laboratory is permitted.</em>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <br/><br/>
+
+                    </td>
+                    <td style="vertical-align:top; padding:5px 0">
+                        <input type="button" wicket:id="saveTop" value="Save" class="saveBtn"/>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="2" align="right" style="padding: 5px 0"><input type="button" wicket:id="saveBottom" value="Save" class="saveBtn"/></td>
+                </tr>
+            </table>
+
+            <div class="feedback" wicket:id="formFeedbackPanel"></div>
+            <div style="text-align: right;">
+                <span style="font-weight:bold;" wicket:id="successMessageBottom"></span>
+                <span style="font-weight: bold; color:red" wicket:id="errorMessageBottom"></span>
+            </div>
+        </div>
+    </form>
+</wicket:panel>

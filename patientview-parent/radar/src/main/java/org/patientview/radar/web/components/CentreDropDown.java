@@ -15,7 +15,7 @@ public class CentreDropDown extends DropDownChoice<Centre> {
 
     public CentreDropDown(String id, String nhsNo) {
         super(id);
-        setChoices(utilityManager.getCentres(nhsNo));
+        setChoices(utilityManager.getCentres());
         setChoiceRenderer(new ChoiceRenderer<Centre>("name", "id"));
     }
 

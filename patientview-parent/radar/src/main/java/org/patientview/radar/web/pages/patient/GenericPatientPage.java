@@ -20,7 +20,7 @@ import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.NonAlportGeneticsPanel;
 import org.patientview.radar.web.panels.alport.MedicinePanel;
 import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
 import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
@@ -30,7 +30,7 @@ import org.patientview.radar.web.visitors.PatientFormVisitor;
 public class GenericPatientPage extends BasePage {
     private GenericDemographicsPanel genericDemographicsPanel;
     private MedicalResultsPanel medicalResultsPanel;
-    private GeneticsPanel geneticsPanel;
+    private NonAlportGeneticsPanel geneticsPanel;
     private MedicinePanel medicinePanel;
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
@@ -70,7 +70,7 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);

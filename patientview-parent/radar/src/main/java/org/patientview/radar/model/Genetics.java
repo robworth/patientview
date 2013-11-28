@@ -1,6 +1,7 @@
 package org.patientview.radar.model;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Genetics extends BaseModel {
@@ -48,6 +49,7 @@ public class Genetics extends BaseModel {
     private String referenceNumber;
     private String whatResultsShowed;
     private String keyEvidence;
+    private Date dateSent;
 
     public Long getRadarNo() {
         return radarNo;
@@ -103,5 +105,13 @@ public class Genetics extends BaseModel {
 
     public void setKeyEvidence(String keyEvidence) {
         this.keyEvidence = keyEvidence;
+    }
+
+    public Date getDateSent() {
+        return dateSent;
+    }
+
+    public void setDateSent(Date dateSent) {
+        this.dateSent = dateSent;
     }
 }
