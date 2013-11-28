@@ -376,7 +376,7 @@ public class DemographicsPanel extends Panel {
         }
 
         form.add(renalUnit);
-        nonEditableComponents.add(renalUnit);
+        //nonEditableComponents.add(renalUnit);
 
         RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
         form.add(consent);
