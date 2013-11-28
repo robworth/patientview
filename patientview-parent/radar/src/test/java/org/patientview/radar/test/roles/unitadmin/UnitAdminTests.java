@@ -1,11 +1,9 @@
 package org.patientview.radar.test.roles.unitadmin;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.user.PatientUser;
@@ -15,7 +13,6 @@ import org.patientview.radar.test.TestPvDbSchema;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
-import java.util.Date;
 import java.util.List;
 
 /**

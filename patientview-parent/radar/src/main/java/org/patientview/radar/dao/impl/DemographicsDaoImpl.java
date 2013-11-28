@@ -352,6 +352,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             return null;
         }
     
+
+        return patients;
     }
 
 

@@ -120,19 +120,19 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             UserRoleException, PatientLinkException, JoinCreationException {
 
         PatientUser patientUser = null;
-        boolean generateJoinRequest = false;
 
         // If the patient is new then we save the patient record otherwise we have to link it
         if (!patient.hasValidId()) {
-            generateJoinRequest = true;
             demographicsDao.saveDemographics(patient);
         } else {
             patientLinkManager.linkPatientRecord(patient);
         }
 
+
         //-- Patient View Tables
         // Create the user record
         patientUser = createPatientViewUser(patient);
+
         // Create the patient mapping in patient view so patient view knows the user is a patient
         userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
         createPatientMappings(patient, patientUser);
@@ -140,14 +140,15 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // Switch from patient view to Radar
         patientUser.setUserId(patientUser.getId());
 
+        demographicsDao.saveDemographics(patient);
+
         //-- Radar Tables
         patientUser = createRadarUser(patientUser, patient);
         userDao.saveUserMapping(patientUser);
 
+         // We've created a new user so we need to create a join request
+        createJoinRequest(patient);
 
-        if (generateJoinRequest) {
-            createJoinRequest(patient);
-        }
 
         return patientUser;
 
