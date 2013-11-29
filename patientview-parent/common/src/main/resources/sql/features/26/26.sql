@@ -54,3 +54,7 @@ CREATE TABLE `dia_careplan` (
 
  ALTER TABLE pv_patientjoin_request MODIFY COLUMN dateofbirth DATETIME NOT NULL;
 
+ /**
+    Required for the generic genetic panel - should already by on live site
+  */
+ ALTER TABLE rdc_genetic_test ADD COLUMN dateSent DATETIME NULL;

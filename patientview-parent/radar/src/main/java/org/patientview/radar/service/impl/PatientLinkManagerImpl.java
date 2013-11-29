@@ -53,15 +53,20 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
             patientLink.setDestinationNhsNo(patient.getNhsno());
             patientLink.setDestinationUnit(patient.getDiseaseGroup().getId());
 
-            demographicsDao.saveDemographics(createLinkRecord(patient));
             patientLinkDao.createLink(patientLink);
+
        } catch (Exception e) {
            LOGGER.error("Error creating link record for patient", e);
            throw new PatientLinkException("There has been an error creating the link record for the patient", e);
        }
 
+       Patient newPatient = new Patient();
+       newPatient.setNhsno(patient.getNhsno());
+       if (patient.getDiseaseGroup() != null) {
+            newPatient.setUnitcode(patient.getDiseaseGroup().getId());
+       }
 
-        return patient;
+       return RadarUtility.mergePatientRecords(patient, newPatient);
     }
 
     public Patient getMergePatient(Patient sourcePatient) throws Exception {
@@ -73,13 +78,13 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
     }
 
 
-    // Create bare patient record for Radar
+    // Create bare patient record for Radar - reset the Id and remove fields that shouldn't be used
     public Patient createLinkRecord(Patient patient) {
-        Patient newPatient = new Patient();
-        newPatient.setNhsno(patient.getNhsno());
-        newPatient.setUnitcode(patient.getDiseaseGroup().getId());
 
-        return newPatient;
+        patient.setId(0L);
+        RadarUtility.mergePatientRecords(patient, new Patient());
+        patient.setUnitcode(patient.getDiseaseGroup().getId());
+        return patient;
     }
 
     public void setDemographicsDao(DemographicsDao demographicsDao) {

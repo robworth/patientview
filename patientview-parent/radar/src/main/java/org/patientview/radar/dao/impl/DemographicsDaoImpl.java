@@ -75,7 +75,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     public void saveDemographics(final Patient patient) {
 
         // If this is a link record then we need to start any duplicated data being saved
-        if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
+        PatientLink patientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode());
+        if (patientLink != null) {
             RadarUtility.cleanLinkRecord(patient);
         }
 
@@ -229,6 +230,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
 
         }
+
+        // We have to re-populate fields after they are cleaned from the save only for link patients
+        if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
+            RadarUtility.overRideLinkRecord(getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
+                    patientLink.getSourceUnit()), patient);
+
+        }
     }
 
 
@@ -326,7 +334,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         query.append("'");
 
         if (StringUtils.isNotEmpty(unitCodeValues)) {
-             patients =  jdbcTemplate.query(query.toString(), new DemographicsRowMapper());
+            patients =  jdbcTemplate.query(query.toString(), new DemographicsRowMapper());
 
 
             List<Patient> linkedPatients = new ArrayList<Patient>();
@@ -340,7 +348,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 if (patientLink != null) {
                     Patient linkedPatient = RadarUtility.overRideLinkRecord(
                             this.getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
-                            patientLink.getSourceUnit()), patient);
+                                    patientLink.getSourceUnit()), patient);
                     linkedPatient.setSurname("(LINKED) " + linkedPatient.getSurname());
                     linkedPatients.add(linkedPatient);
                 }
@@ -351,7 +359,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         } else {
             return null;
         }
-
+    
 
         return patients;
     }

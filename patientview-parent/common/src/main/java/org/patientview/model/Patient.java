@@ -312,10 +312,16 @@ public class Patient extends BaseModel {
     }
 
     public String getFormatedDateOfBirth() {
-        try {
-            return UK_DATE_FORMAT.format(DATE_FORMAT.parse(dateofbirth));
-        } catch (ParseException e) {
-            return dateofbirth;
+
+        if (dateofbirth != null) {
+
+            try {
+                return UK_DATE_FORMAT.format(DATE_FORMAT.parse(dateofbirth));
+            } catch (ParseException e) {
+                return dateofbirth;
+            }
+        } else {
+            return "";
         }
     }
 

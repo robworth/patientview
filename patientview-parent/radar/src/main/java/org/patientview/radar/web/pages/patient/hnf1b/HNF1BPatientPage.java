@@ -17,9 +17,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
+import org.patientview.radar.web.panels.NonAlportGeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
 import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
 import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
 import org.patientview.radar.web.panels.hnf1b.HNF1BMiscPanel;
@@ -34,7 +36,8 @@ public class HNF1BPatientPage extends BasePage {
         GENETICS(2),
         PROTEINURIA(3),
         HNF1BMisc(4),
-        MEDICAL_RESULTS(5);
+        MEDICAL_RESULTS(5),
+        MEDICINE(RadarApplication.MEDICINE_PAGE_NO);
 
         private int pageNumber;
 
@@ -57,9 +60,10 @@ public class HNF1BPatientPage extends BasePage {
 
     // The panels we are using
     private GenericDemographicsPanel genericDemographicsPanel;
-    private GeneticsPanel geneticsPanel;
+    private NonAlportGeneticsPanel geneticsPanel;
     private HNF1BMiscPanel hnf1BMiscPanel;
     private MedicalResultsPanel medicalResultsPanel;
+    private MedicinePanel medicinePanel;
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
@@ -89,7 +93,7 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(genericDemographicsPanel);
 
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);
@@ -116,6 +120,17 @@ public class HNF1BPatientPage extends BasePage {
 
         add(medicalResultsPanel);
 
+        add(genericDemographicsPanel, medicalResultsPanel);
+
+        medicinePanel = new MedicinePanel("medicinePanel", patient) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.MEDICINE);
+            }
+        };
+        medicinePanel.setOutputMarkupPlaceholderTag(true);
+        add(medicinePanel);
+
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
         linksContainer.setOutputMarkupId(true);
@@ -126,6 +141,7 @@ public class HNF1BPatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
         linksContainer.add(new TabAjaxLink("hnf1BMiscLink", Tab.HNF1BMisc));
         linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
+        linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         IModel<Integer> pageNumberModel = new Model<Integer>();
         pageNumberModel.setObject(Tab.DEMOGRAPHICS.getPageNumber());
@@ -174,7 +190,7 @@ public class HNF1BPatientPage extends BasePage {
                 target.add(linksContainer);
 
                 // add each panel to the response
-                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel);
+                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel, medicinePanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();

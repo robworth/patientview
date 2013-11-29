@@ -28,6 +28,7 @@ public class GeneticsDaoImpl extends BaseDaoImpl implements GeneticsDao {
     private static final String REFERENCE_NUMBER_FIELD_NAME = "referenceNumber";
     private static final String WHAT_RESULTS_SHOWED_FIELD_NAME = "whatResultsShowed";
     private static final String KEY_EVIDENCE_FIELD_NAME = "keyEvidence";
+    private static final String DATE_SENT_FIELD_NAME = "dateSent";
 
     private SimpleJdbcInsert geneticsInsert;
 
@@ -41,19 +42,22 @@ public class GeneticsDaoImpl extends BaseDaoImpl implements GeneticsDao {
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(RADAR_NO_FIELD_NAME, TESTS_DONE_FIELD_NAME, LAB_WHERE_TESTS_WERE_DONE_FIELD_NAME,
                         TESTS_DONE_ON_FIELD_NAME, REFERENCE_NUMBER_FIELD_NAME, WHAT_RESULTS_SHOWED_FIELD_NAME,
-                        KEY_EVIDENCE_FIELD_NAME);
+                        KEY_EVIDENCE_FIELD_NAME, DATE_SENT_FIELD_NAME);
     }
 
     public void save(Genetics genetics) {
         Map<String, Object> geneticsMap = new HashMap<String, Object>();
         geneticsMap.put(ID_FIELD_NAME, genetics.getId());
         geneticsMap.put(RADAR_NO_FIELD_NAME, genetics.getRadarNo());
-        geneticsMap.put(TESTS_DONE_FIELD_NAME, genetics.getTestsDone().getId());
+        if (genetics.getTestsDone() != null) {
+            geneticsMap.put(TESTS_DONE_FIELD_NAME, genetics.getTestsDone().getId());
+        }
         geneticsMap.put(LAB_WHERE_TESTS_WERE_DONE_FIELD_NAME, genetics.getLabWhereTestWasDone());
         geneticsMap.put(TESTS_DONE_ON_FIELD_NAME, genetics.getTestDoneOn());
         geneticsMap.put(REFERENCE_NUMBER_FIELD_NAME, genetics.getReferenceNumber());
         geneticsMap.put(WHAT_RESULTS_SHOWED_FIELD_NAME, genetics.getWhatResultsShowed());
         geneticsMap.put(KEY_EVIDENCE_FIELD_NAME, genetics.getKeyEvidence());
+        geneticsMap.put(DATE_SENT_FIELD_NAME, genetics.getDateSent());
 
         if (genetics.hasValidId()) {
             namedParameterJdbcTemplate.update(buildUpdateQuery(TABLE_NAME, ID_FIELD_NAME, geneticsMap), geneticsMap);
@@ -85,6 +89,7 @@ public class GeneticsDaoImpl extends BaseDaoImpl implements GeneticsDao {
             genetics.setReferenceNumber(rs.getString(REFERENCE_NUMBER_FIELD_NAME));
             genetics.setWhatResultsShowed(rs.getString(WHAT_RESULTS_SHOWED_FIELD_NAME));
             genetics.setKeyEvidence(rs.getString(KEY_EVIDENCE_FIELD_NAME));
+            genetics.setDateSent(rs.getDate(DATE_SENT_FIELD_NAME));
 
             return genetics;
         }
