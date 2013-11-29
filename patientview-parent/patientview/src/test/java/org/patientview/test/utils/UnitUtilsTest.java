@@ -216,7 +216,7 @@ public class UnitUtilsTest extends BaseServiceTest {
         assertTrue("radaradmin should be present", securityUserManager.isRolePresent("radaradmin"));
         request = new MockHttpServletRequest();
         UnitUtils.setUserUnits(request);
-        assertEquals("units size is wrong.",null, request.getAttribute("units"));
+        assertEquals("units size is wrong.", 0, ((List) request.getAttribute("units")).size());
         logout();
     }
 
