@@ -185,7 +185,7 @@ public class AddPatientPage extends BasePage {
 
         guidanceContainer.add(
                 new ExternalLink("consentFormsAndDiseaseGroupsCriteriaLink",
-                        "http://rarerenal.org/join/criteria-and-consent/"));
+                        "http://rarerenal.org/radar-registry/criteria-and-consent/"));
 
         guidanceContainer.add(
                 new ExternalLink("enrollingAPatientGuideLink", "http://rarerenal.org/radar-registry/" +
