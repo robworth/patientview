@@ -1,5 +1,6 @@
 package org.patientview.radar.web.panels.generic;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -132,9 +133,6 @@ public class GenericDemographicsPanel extends Panel {
             protected void onSubmit() {
                 Patient patient = getModel().getObject();
 
-                if (patient.getDiagnosisDateSelect()) {
-                    patient.setDateOfGenericDiagnosis(null);
-                }
                 // make sure diagnosis date is after dob
                 if (patient.getDateOfGenericDiagnosis() != null
                         && patient.getDateOfGenericDiagnosis().compareTo(patient.getDob()) < 0) {
@@ -263,10 +261,21 @@ public class GenericDemographicsPanel extends Panel {
         };
 
         TextField addIdValue = new TextField("id");
-        DropDownChoice addIdType =
+
+        DropDownChoice addIdType = null;
+
+        // Link patients should not be able to add hospital numbers
+        if (patient.isLink()) {
+            addIdType =
                 new DropDownChoice("idType", Arrays.asList(IdType.HOSPITAL_NUMBER,
                         IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
                         IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
+        } else {
+            addIdType =
+                    new DropDownChoice("idType", Arrays.asList(
+                            IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
+                            IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
+        }
 
         addIdForm.add(addIdValue, addIdType, addIdSubmit);
         form.add(addIdForm);
@@ -451,23 +460,46 @@ public class GenericDemographicsPanel extends Panel {
 
 
         form.add(renalUnit);
-    //    nonEditableComponents.add(renalUnit);
 
-        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
-        form.add(consent);
+        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
+                patient.getRadarConsentConfirmedByUserId()));
 
-        form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
 
-        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
-                utilityManager.getUserName(patient.getRadarConsentConfirmedByUserId())) {
+
+        final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                consentUserModel) {
             @Override
             public boolean isVisible() {
-                return true;
+                return StringUtils.isNotEmpty(consentUserModel.getObject());
             }
         };
         tickConsentUser.setOutputMarkupId(true);
         tickConsentUser.setOutputMarkupPlaceholderTag(true);
         form.add(tickConsentUser);
+
+        final RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
+
+        consent.add(new AjaxFormComponentUpdatingBehavior("onclick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+
+                target.add(tickConsentUser);
+
+                if (consent.getModel().getObject().equals(Boolean.TRUE)) {
+                    consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
+                    tickConsentUser.setVisible(true);
+
+                } else {
+                    tickConsentUser.setVisible(false);
+                }
+            }
+        });
+
+        form.add(consent);
+
+        form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+
 
         // add generic fields
         TextField emailAddress = new TextField("emailAddress");
