@@ -1,5 +1,6 @@
 package org.patientview.radar.web.panels.generic;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -451,23 +452,46 @@ public class GenericDemographicsPanel extends Panel {
 
 
         form.add(renalUnit);
-    //    nonEditableComponents.add(renalUnit);
 
-        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
-        form.add(consent);
+        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
+                patient.getRadarConsentConfirmedByUserId()));
 
-        form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
 
-        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
-                utilityManager.getUserName(patient.getRadarConsentConfirmedByUserId())) {
+
+        final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                consentUserModel) {
             @Override
             public boolean isVisible() {
-                return true;
+                return StringUtils.isNotEmpty(consentUserModel.getObject());
             }
         };
         tickConsentUser.setOutputMarkupId(true);
         tickConsentUser.setOutputMarkupPlaceholderTag(true);
         form.add(tickConsentUser);
+
+        final RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
+
+        consent.add(new AjaxFormComponentUpdatingBehavior("onclick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+
+                target.add(tickConsentUser);
+
+                if (consent.getModel().getObject().equals(Boolean.TRUE)) {
+                    consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
+                    tickConsentUser.setVisible(true);
+
+                } else {
+                    tickConsentUser.setVisible(false);
+                }
+            }
+        });
+
+        form.add(consent);
+
+        form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+
 
         // add generic fields
         TextField emailAddress = new TextField("emailAddress");
