@@ -261,10 +261,21 @@ public class GenericDemographicsPanel extends Panel {
         };
 
         TextField addIdValue = new TextField("id");
-        DropDownChoice addIdType =
+
+        DropDownChoice addIdType = null;
+
+        // Link patients should not be able to add hospital numbers
+        if (patient.isLink()) {
+            addIdType =
                 new DropDownChoice("idType", Arrays.asList(IdType.HOSPITAL_NUMBER,
                         IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
                         IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
+        } else {
+            addIdType =
+                    new DropDownChoice("idType", Arrays.asList(
+                            IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
+                            IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
+        }
 
         addIdForm.add(addIdValue, addIdType, addIdSubmit);
         form.add(addIdForm);
