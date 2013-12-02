@@ -62,6 +62,7 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
 
        Patient newPatient = new Patient();
        newPatient.setNhsno(patient.getNhsno());
+       newPatient.setDiagnosisDate(patient.getDiagnosisDate());
        if (patient.getDiseaseGroup() != null) {
             newPatient.setUnitcode(patient.getDiseaseGroup().getId());
        }

@@ -133,9 +133,6 @@ public class GenericDemographicsPanel extends Panel {
             protected void onSubmit() {
                 Patient patient = getModel().getObject();
 
-                if (patient.getDiagnosisDateSelect()) {
-                    patient.setDateOfGenericDiagnosis(null);
-                }
                 // make sure diagnosis date is after dob
                 if (patient.getDateOfGenericDiagnosis() != null
                         && patient.getDateOfGenericDiagnosis().compareTo(patient.getDob()) < 0) {
