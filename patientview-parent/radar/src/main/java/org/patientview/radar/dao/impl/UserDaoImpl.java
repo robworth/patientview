@@ -239,6 +239,32 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
+
+    public ProfessionalUser getProfessionalUserByUsername(String username) {
+
+        try {
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  prf.* ");
+            query.append(",       usr.* ");
+            query.append("FROM    rdr_user_mapping rmp ");
+            query.append(",       user usr ");
+            query.append(",       tbl_users prf ");
+            query.append("WHERE   rmp.userId = usr.id ");
+            query.append("AND     prf.uId = rmp.radarUserId ");
+            query.append("AND     usr.username = ?");
+
+            return jdbcTemplate.queryForObject(query.toString(), new Object[]{username},
+                    new ProfessionalUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not find professional user with username {}", username);
+        }
+
+        return null;
+
+    }
+
+
+    // TODO no idea why this is using email and getting passed a username but it's used in a few places
     public ProfessionalUser getProfessionalUser(String email) {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)

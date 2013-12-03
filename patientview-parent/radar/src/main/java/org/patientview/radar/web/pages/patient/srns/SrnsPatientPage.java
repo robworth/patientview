@@ -35,8 +35,11 @@ import org.patientview.radar.web.panels.PathologyPanel;
 import org.patientview.radar.web.panels.RelapsePanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
-public class SrnsPatientPage extends BasePage {
+public class SrnsPatientPage extends BasePage implements PatientCallBack {
 
     protected static final String PARAM_ID = "id";
 
@@ -81,11 +84,13 @@ public class SrnsPatientPage extends BasePage {
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
-    private Patient patient;
+    private List<Component> componentsToUpdate = new ArrayList<Component>();
+
+    private IModel<Patient> patientModel = new Model<Patient>();
 
 
     public SrnsPatientPage(){
-       patient = new Patient();
+        patientModel.setObject(new Patient());
     }
 
 
@@ -93,19 +98,24 @@ public class SrnsPatientPage extends BasePage {
         super();
 
         // this constructor is used when a patient exists
-        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
-        demographicsPanel = new DemographicsPanel("demographicsPanel", patient) ;
-        radarNumberModel.setObject(patient.getId());
+        patientModel.setObject(demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong()));
+        demographicsPanel = new DemographicsPanel("demographicsPanel", patientModel, this) ;
+        radarNumberModel.setObject(patientModel.getObject().getId());
         init();
     }
 
     public SrnsPatientPage(Patient patient) {
-
-        demographicsPanel = new DemographicsPanel("demographicsPanel", patient) ;
-        this.patient = patient;
+        patientModel.setObject(patient);
+        demographicsPanel = new DemographicsPanel("demographicsPanel", patientModel, this) ;
+        patientModel.setObject(patient);
         init();
 
     }
+
+    public void updateModel(Long radarNumber) {
+        this.radarNumberModel.setObject(radarNumber);
+    }
+
      public void init() {
 
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
@@ -114,6 +124,8 @@ public class SrnsPatientPage extends BasePage {
         pathologyPanel = new PathologyPanel("pathologyPanel", radarNumberModel);
         relapsePanel = new RelapsePanel("relapsePanel", radarNumberModel);
         hospitalisationPanel = new HospitalisationPanel("hospitalisationPanel", radarNumberModel);
+
+        componentsToUpdate.add(diagnosisPanel);
 
         // Add them all to the page
         add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
@@ -172,26 +184,26 @@ public class SrnsPatientPage extends BasePage {
         @Override
         public void onClick(AjaxRequestTarget target) {
 //            if (radarNumberModel.getObject() != null) {
-                currentTab = tab;
-                // Add the links container to update hover class
-                target.add(linksContainer);
-                target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
-                        relapsePanel, hospitalisationPanel);
+            currentTab = tab;
+            // Add the links container to update hover class
+            target.add(linksContainer);
+            target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
+            relapsePanel, hospitalisationPanel);
 
-                Component pageNumber = getPage().get("pageNumber");
-                PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
+            Component pageNumber = getPage().get("pageNumber");
+            PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
 
-                // if a tab has sub tabs then get the current selected page number of the sub tab
-                if (currentTab.equals(CurrentTab.FIRST_VISIT)) {
-                    pageNumberModel.setPageNumber(firstVisitPanel.getCurrentTab().getPageNumber());
-                } else if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
-                    pageNumberModel.setPageNumber(followUpPanel.getCurrentTab().getPageNumber());
-                } else {
-                    pageNumberModel.setPageNumber(currentTab.getPageNumber());
-                }
+            // if a tab has sub tabs then get the current selected page number of the sub tab
+            if (currentTab.equals(CurrentTab.FIRST_VISIT)) {
+                pageNumberModel.setPageNumber(firstVisitPanel.getCurrentTab().getPageNumber());
+            } else if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
+                pageNumberModel.setPageNumber(followUpPanel.getCurrentTab().getPageNumber());
+            } else {
+                pageNumberModel.setPageNumber(currentTab.getPageNumber());
+            }
 
-                target.add(pageNumber);
-//            }
+            target.add(pageNumber);
+            //            }
 
         }
 
