@@ -74,13 +74,20 @@ FROM tbl_demographics d, tbl_patient_users, rdr_user_mapping, user
 WHERE d.RADAR_NO = tbl_patient_users.RADAR_NO
   AND tbl_patient_users.pID = rdr_user_mapping.radarUserId
   AND rdr_user_mapping.userId = user.id
+  AND role = 'ROLE_PATIENT'
   AND NOT EXISTS (
-                      SELECT d.*
-                        FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.renal_unit = u.id, usermapping ump
-                        WHERE d.nhs_no = ump.nhsno
-                          AND u.unitcode = ump.unitcode
-                          AND ump.username NOT LIKE '%-GP%'
-                    );
+SELECT d2.*
+FROM tbl_demographics d2, unit u, usermapping ump
+WHERE
+d2.renal_unit = u.id
+AND
+d2.nhs_no = ump.nhsno
+AND
+u.unitcode = ump.unitcode
+AND
+ump.username NOT LIKE '%-GP%'
+AND
+d.RADAR_NO = d2.RADAR_NO);
 
 
 /**
@@ -102,11 +109,18 @@ WHERE d.RADAR_NO = tbl_patient_users.RADAR_NO
   AND tbl_patient_users.pID = rdr_user_mapping.radarUserId
   AND rdr_user_mapping.userId = user.id
   AND d.renal_unit_2 IS NOT NULL
+  and role = 'ROLE_PATIENT'
   AND NOT EXISTS (
-                      SELECT d.*
-                        FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.renal_unit_2 = u.id, usermapping ump
-                        WHERE d.nhs_no = ump.nhsno
-                          AND u.unitcode = ump.unitcode
-                          AND ump.username NOT LIKE '%-GP%'
-                    );
+SELECT d2.*
+FROM tbl_demographics d2, unit u, usermapping ump
+WHERE
+d2.renal_unit_2 = u.id
+AND
+d2.nhs_no = ump.nhsno
+AND
+u.unitcode = ump.unitcode
+AND
+ump.username NOT LIKE '%-GP%'
+AND
+d.RADAR_NO = d2.RADAR_NO);
 
