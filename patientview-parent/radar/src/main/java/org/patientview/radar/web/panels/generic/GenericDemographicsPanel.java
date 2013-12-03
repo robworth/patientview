@@ -520,13 +520,13 @@ public class GenericDemographicsPanel extends Panel {
         final IModel<Boolean> diagnosisDateVisibility =
                 new Model<Boolean>(Boolean.FALSE);
 
-        CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect");
+        final CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect", new Model<Boolean>(Boolean.FALSE));
         model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect() == Boolean.TRUE);
 
         diagnosisDateSelect.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                diagnosisDateVisibility.setObject(model.getObject().getDiagnosisDateSelect());
+                diagnosisDateVisibility.setObject(diagnosisDateSelect.getModel().getObject());
                 target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
         });
