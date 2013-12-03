@@ -30,3 +30,11 @@ ALTER TABLE patient CHANGE centreCode unitcode varchar(100) NOT NULL DEFAULT '';
 
 ALTER TABLE patient ADD CONSTRAINT fk_unitcode Foreign Key (unitcode) References unit (unitcode);
 
+ALTER TABLE patient ADD COLUMN sourceType VARCHAR(20);
+update patient set sourceType = 'PatientView';  -- these are all PV patients
+
+/**
+    Add a date column in unit table to store the mostRecentTestResultDateRangeStopDate to be set by the importer.
+ */
+ ALTER TABLE patient ADD COLUMN `mostRecentTestResultDateRangeStopDate` datetime DEFAULT NULL;
+
