@@ -9,6 +9,7 @@ import org.patientview.radar.model.user.AdminUser;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
+import org.patientview.radar.model.user.UserMapping;
 
 import java.util.List;
 
@@ -32,11 +33,13 @@ public interface UserDao {
 
     PatientUser getPatientUserWithUsername(String username);
 
+    PatientUser getPatientUserByRadarNo(Long radarNo);
+
     User createUser(User user);
 
     List<String> getUnitCodes(User user);
 
-    void createPVUser(String username, String password, String name, String email) throws Exception;
+    Long createLockedPVUser(String username, String password, String name, String email) throws Exception;
 
     PatientUser getPatientViewUser(String nhsno);
 
@@ -85,4 +88,5 @@ public interface UserDao {
 
     public void deleteUser(User user) throws Exception;
 
+    UserMapping getUserMapping(Long userId, Long radarUserId, String role);
 }

@@ -1,13 +1,17 @@
 package org.patientview.radar.util.impl;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.commons.lang.RandomStringUtils;
+import org.patientview.model.Patient;
 import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.user.AdminUser;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.UserManager;
 import org.patientview.radar.util.TripleDes;
 import org.patientview.radar.util.UserUpgradeManager;
 import org.slf4j.Logger;
@@ -56,7 +60,13 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
     private static final String PROFESSIONAL_USER_CENTRE_ROLE_FIELD_NAME = "uRole";
 
     @Autowired
+    private PatientDao patientDao;
+
+    @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private UserManager userManager;
 
     @Autowired
     private UtilityDao utilityDao;
@@ -157,6 +167,50 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
         for (String s : failedUsers) {
             LOGGER.error(s);
         }
+    }
+
+    public void addUserForAllRadarPatients() throws Exception {
+        int numUsersCreated = 0;
+        int numRadarUsersCreated = 0;
+        List<Patient> patients = patientDao.getPatientsWithRadarSourceType();
+        // get all patients with sourceType = 'Radar'
+        for (Patient patient : patients) {
+
+            User user;
+            boolean userCreated = false;
+            // if patient has one or more users row for their nhsno, take the set of users
+            if (!userDao.userExistsInPatientView(patient.getNhsno())) {
+                String username = userManager.generateUsername(patient);
+                user = new PatientUser();
+                user.setUserId(userDao.createLockedPVUser(username,
+                        User.getPasswordHash(RandomStringUtils.randomAlphanumeric(8)),
+                        patient.getForename() + " " + patient.getSurname(), null));
+                numUsersCreated++;
+                userCreated = true;
+            } else {
+                user = userDao.getPatientViewUser(patient.getNhsno());
+            }
+
+            // if a record exists in tbl_patient_users, get it, otherwise create it,
+            // and then create a rdr_user_mapping - > done
+            PatientUser patientUser = userDao.getPatientUserByRadarNo(patient.getRadarNo());
+            if (patientUser == null || userCreated) {   // if we created a new user, always created a new patientUser
+                patientUser = new PatientUser();
+                patientUser.setRadarNumber(patient.getRadarNo());
+                userDao.savePatientUser(patientUser);
+                numRadarUsersCreated++;
+            }
+
+            // update so the user mapping can be created
+            user.setId(patientUser.getId());
+
+            // check for a rdr_user_mapping record for any of these users with the existing tbl_patient_users record,
+            // if none exist, create
+            userDao.saveUserMapping(user);
+        }
+
+        LOGGER.info("Completed. Created {} new users, and {} new mappings for {} users",
+                new Object[]{numUsersCreated, numRadarUsersCreated, patients.size()});
     }
 
     private String decryptField(byte[] fieldData) throws Exception {

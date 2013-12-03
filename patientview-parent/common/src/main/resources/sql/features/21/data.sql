@@ -38,23 +38,24 @@ SET p.sex = dData.sType;
 
     429 row(s) affected
  */
-INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
-SELECT user.username AS username,
-  d.RDG AS unitcode,
-  d.nhs_no AS nhsno,
-  1 AS specialty_id
-FROM tbl_demographics d, tbl_patient_users, rdr_user_mapping, user
-WHERE d.RADAR_NO = tbl_patient_users.RADAR_NO
-  AND tbl_patient_users.pID = rdr_user_mapping.radarUserId
-  AND rdr_user_mapping.userId = user.id
-  AND NOT EXISTS (
-                      SELECT d.*
-                        FROM tbl_demographics d LEFT OUTER JOIN unit u ON d.RDG = u.id, usermapping ump
-                        WHERE d.nhs_no = ump.nhsno
-                          AND u.unitcode = ump.unitcode
-                          AND ump.username NOT LIKE '%-GP%'
-                    );
 
+INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
+SELECT
+u.username AS username,
+unitcode,
+p.nhsno,
+1 AS specialty_id
+FROM patient p, tbl_patient_users pu, rdr_user_mapping m, USER u
+WHERE
+p.radarNo = pu.RADAR_NO
+AND
+pu.pID = m.radarUserId
+AND
+m.userId = u.id
+AND
+p.sourceType = 'Radar'
+AND
+m.role = 'ROLE_PATIENT';
 /**
     Create a user mapping for the source data entering user's unit
     Only do this if it does not already exist

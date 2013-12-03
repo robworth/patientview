@@ -31,6 +31,15 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao {
         return jdbcTemplate.query(query.toString(), new Object[]{nhsNo}, new PatientSearchMapper());
     }
 
+    public List<Patient> getPatientsWithRadarSourceType() {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT  * ");
+        query.append("FROM    patient ");
+        query.append("WHERE   sourceType = ? ");
+
+        return jdbcTemplate.query(query.toString(), new Object[]{"Radar"}, new EnhancedPatientSearchMapper());
+    }
+
     private class PatientSearchMapper implements RowMapper<Patient> {
 
         public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -43,7 +52,23 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao {
             patient.setUnitcode(resultSet.getString("unitcode"));
             patient.setMostRecentTestResultDateRangeStopDate(
                     resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
+            return patient;
+        }
+    }
 
+    private class EnhancedPatientSearchMapper implements RowMapper<Patient> {
+
+        public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
+            Patient patient = new Patient();
+            patient.setId(resultSet.getLong("id"));
+            patient.setNhsno(resultSet.getString("nhsno"));
+            patient.setSurname(resultSet.getString("surname"));
+            patient.setForename(resultSet.getString("forename"));
+            patient.setDateofbirth(resultSet.getString("dateofbirth"));
+            patient.setUnitcode(resultSet.getString("unitcode"));
+            patient.setMostRecentTestResultDateRangeStopDate(
+                    resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
+            patient.setRadarNo(resultSet.getLong("radarNo"));
             return patient;
         }
     }

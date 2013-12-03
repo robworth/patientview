@@ -66,6 +66,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_NAME_FIELD_NAME = "name";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
     private static final String USER_IS_CLINICIAN_FIELD_NAME = "isClinician";
+    private static final String USER_ACCOUNT_LOCKED_FIELD_NAME = "accountlocked";
 
     // admin user fields
     private static final String ADMIN_USER_ID_FIELD_NAME = "uID";
@@ -107,6 +108,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
                         USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
+                        USER_ACCOUNT_LOCKED_FIELD_NAME,
                         USER_IS_CLINICIAN_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
@@ -431,6 +433,24 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
+    public PatientUser getPatientUserByRadarNo(Long radarNo) {
+        try {
+            List<PatientUser> patients = jdbcTemplate.query(buildSelectFromStatement(PATIENT_USER_TABLE_NAME)
+                    + " where radar_no = ?",
+                    new Object[]{radarNo}, new BasicPatientUserRowMapper());
+
+            if (patients != null && patients.size() > 1) {
+                LOGGER.error("Duplicate patient users found for radarno {}, taking first", radarNo);
+            }
+
+            return patients != null && patients.size() > 0 ? patients.get(0) : null;
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not patient user with " + PATIENT_USER_RADAR_NO_FIELD_NAME + " {}", radarNo);
+        }
+
+        return null;
+    }
+
     public User createUser(User user) {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
@@ -452,7 +472,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 new Object[]{user.getUsername()}, String.class);
     }
 
-    public void createPVUser(String username, String password, String name, String email) throws Exception {
+    public Long createLockedPVUser(String username, String password, String name, String email) throws Exception {
 
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, username);
@@ -460,11 +480,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, name);
         userMap.put(USER_EMAIL_FIELD_NAME, email);
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_ACCOUNT_LOCKED_FIELD_NAME, true);
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, false);
 
         Number id = userInsert.executeAndReturnKey(userMap);
 
         createRoleInPatientView(id.longValue(), "patient");
+
+        return id.longValue();
     }
 
     // users are created in Patient View without our radar mappings
@@ -475,10 +498,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                     "AND u.name NOT LIKE '%-GP%'";
 
 
-            return jdbcTemplate.queryForObject(sql,
+            List<PatientUser> patients = jdbcTemplate.query(sql,
                     new Object[]{nhsno}, new ExternallyCreatedPatientUserRowMapper());
 
-        } catch (EmptyResultDataAccessException e) {
+            if (patients != null && patients.size() > 1) {
+                LOGGER.error("Duplicate patient user found for nhsno {}, taking first", nhsno);
+            }
+
+            return patients != null && patients.size() > 0 ? patients.get(0) : null;
+
+        } catch (Exception e) {
             LOGGER.debug("Could not patient user with nhsno {}", nhsno);
         }
 
@@ -771,6 +800,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);
     }
 
+    public UserMapping getUserMapping(Long userId, Long radarUserId, String role) {
+        try {
+            String sql = buildSelectFromStatement(USER_MAPPING_TABLE_NAME) +
+                    " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME + " = ? "  +
+                    " AND " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? "  +
+                    " AND " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME + " = ? ";
+            return jdbcTemplate.queryForObject(sql,
+                    new Object[]{userId, radarUserId, role}, new UserMappingRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not getUserMapping " + USER_MAPPING_USER_ID_FIELD_NAME + " {}", userId);
+        }
+
+        return null;
+    }
+
 
     private UserMapping getUserMapping(String email) {
         try {
@@ -924,6 +968,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             if (patientUser.getEmail() == null || patientUser.getEmail().length() == 0) {
                 patientUser.setEmail(patientUser.getUsername());
             }
+
+            return patientUser;
+        }
+    }
+
+    private class BasicPatientUserRowMapper implements RowMapper<PatientUser> {
+        public PatientUser mapRow(ResultSet resultSet, int i) throws SQLException {
+            // map the base user properties
+            PatientUser patientUser = new PatientUser();
+
+            // map radar specific ones
+            patientUser.setId(resultSet.getLong(PATIENT_USER_ID_FIELD_NAME));
+            patientUser.setDateOfBirth(resultSet.getDate(PATIENT_USER_DOB_FIELD_NAME));
+            patientUser.setDateRegistered(resultSet.getDate(PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME));
+            patientUser.setRadarNumber(resultSet.getLong(PATIENT_USER_RADAR_NO_FIELD_NAME));
 
             return patientUser;
         }

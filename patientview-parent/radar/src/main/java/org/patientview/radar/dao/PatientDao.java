@@ -12,4 +12,6 @@ import java.util.List;
 public interface PatientDao {
 
     List<Patient> getPatientsByNhsNumber(String nhsNo);
+
+    List<Patient> getPatientsWithRadarSourceType();
 }
