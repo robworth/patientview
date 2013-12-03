@@ -55,9 +55,9 @@ import java.util.List;
 
 public class DiagnosisPanel extends Panel {
 
-    public static final Long SRNS_ID = new Long(1);
+    public static final Long SRNS_ID = 1L;
     public static final String OTHER_CONTAINER_ID = "otherContainer";
-    public static final Long KAROTYPE_OTHER_ID = new Long(8);
+    public static final Long KAROTYPE_OTHER_ID = 8L;
     @SpringBean
     private DiagnosisManager diagnosisManager;
     @SpringBean

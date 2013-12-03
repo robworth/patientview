@@ -49,6 +49,7 @@ import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
 import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.components.RadarTextFieldWithValidation;
 import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.patient.srns.PatientCallBack;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +81,7 @@ public class DemographicsPanel extends Panel {
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsPanel.class);
 
 
-    public DemographicsPanel(String id, final Patient patient) {
+    public DemographicsPanel(String id, final IModel<Patient> patientModel, final PatientCallBack patientCallBack) {
 
         super(id);
 
@@ -92,9 +93,12 @@ public class DemographicsPanel extends Panel {
         final User user = RadarSecuredSession.get().getUser();
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
-        final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patient);
-        final IModel<Date> registrationHeaderModel = new Model<Date>(patient.getDateReg());
-        final IModel<String> radarHeaderModel = new Model<String>(patient.getRrNo());
+        final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patientModel.getObject());
+        final IModel<Date> registrationHeaderModel = new Model<Date>(patientModel.getObject().getDateReg());
+        final IModel<String> radarHeaderModel = new Model<String>(patientModel.getObject().getRrNo());
+        final IModel<String> forenameHeaderModel = new Model<String>(patientModel.getObject().getForename());
+        final IModel<String> surnameHeaderModel = new Model<String>(patientModel.getObject().getSurname());
+        final IModel<Date> dobHeaderModel = new Model<Date>(patientModel.getObject().getDob());
 
         // Set up form
         final Form<Patient> form = new Form<Patient>("form", model) {
@@ -107,7 +111,16 @@ public class DemographicsPanel extends Panel {
                 try {
 
                     userManager.savePatientUser(patient);
+                    patientCallBack.updateModel(patient.getId());
+                    // Update the header with the saved record
+                    patientModel.setObject(patient);
+                    patientModel.getObject().setDateReg(new Date());
+                    forenameHeaderModel.setObject(patientModel.getObject().getForename());
+                    surnameHeaderModel.setObject(patientModel.getObject().getSurname());
+                    dobHeaderModel.setObject(patientModel.getObject().getDob());
+                    registrationHeaderModel.setObject(patientModel.getObject().getDateReg());
                     radarHeaderModel.setObject(Long.toString(patient.getId()));
+
 
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception {} ", re.getMessage());
@@ -161,7 +174,7 @@ public class DemographicsPanel extends Panel {
         form.add(new Label("addNewPatientLabel", "Add a New Patient") {
             @Override
             public boolean isVisible() {
-                return patient.isEditableDemographics();
+                return patientModel.getObject().isEditableDemographics();
             }
         });
 
@@ -184,7 +197,7 @@ public class DemographicsPanel extends Panel {
 
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(
-                        new Model<Long>(patient.getId()),
+                        new Model<Long>(patientModel.getObject().getId()),
                         diagnosisManager),
                         diagnosisManager.getDiagnosisCodes(),
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
@@ -198,7 +211,7 @@ public class DemographicsPanel extends Panel {
                     }
                 };
 
-        String diseaseGroup = patient.getDiseaseGroup().getId();
+        String diseaseGroup = patientModel.getObject().getDiseaseGroup().getId();
         DiagnosisCode diagnosisCode = new DiagnosisCode();
 
         // WARNING - This doesn't make sense, you cannot equate a disease group with a diagnosis code,
@@ -233,14 +246,11 @@ public class DemographicsPanel extends Panel {
          */
 
         // forename
-        final IModel<String> forenameHeaderModel = new Model<String>(patient.getForename());
-        final IModel<String> surnameHeaderModel = new Model<String>(patient.getSurname());
-        final IModel<Date> dobHeaderModel = new Model<Date>(patient.getDob());
 
         final Label nameLabel = new Label("nameLabel", "Name") {
             @Override
             public boolean isVisible() {
-                return StringUtils.isNotBlank(patient.getForename());
+                return StringUtils.isNotBlank(patientModel.getObject().getForename());
             }
         };
         nameLabel.setOutputMarkupId(true);
@@ -250,7 +260,7 @@ public class DemographicsPanel extends Panel {
         final TextField forenameForHeader = new TextField("forenameForHeader", forenameHeaderModel) {
             @Override
             public boolean isVisible() {
-                return StringUtils.isNotBlank(patient.getForename());
+                return StringUtils.isNotBlank(patientModel.getObject().getForename());
             }
         };
         forenameForHeader.setOutputMarkupId(true);
@@ -263,7 +273,7 @@ public class DemographicsPanel extends Panel {
             @Override
             public boolean isVisible() {
 
-                return StringUtils.isNotBlank(patient.getSurname());
+                return StringUtils.isNotBlank(patientModel.getObject().getSurname());
             }
         };
         surnameForHeader.setOutputMarkupId(true);
@@ -274,7 +284,7 @@ public class DemographicsPanel extends Panel {
         final Label dobLabel = new Label("dobLabel", "DoB") {
             @Override
             public boolean isVisible() {
-                return patient.getDob() != null;
+                return patientModel.getObject().getDob() != null;
             }
         };
         dobLabel.setOutputMarkupId(true);
@@ -285,7 +295,7 @@ public class DemographicsPanel extends Panel {
                 "dateOfBirthForHeader", dobHeaderModel) {
             @Override
             public boolean isVisible() {
-                return patient.getDob() != null;
+                return patientModel.getObject().getDob() != null;
             }
         };
         dateOfBirthForHeader.setOutputMarkupId(true);
@@ -385,7 +395,7 @@ public class DemographicsPanel extends Panel {
         form.add(renalUnit);
 
         final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
-                patient.getRadarConsentConfirmedByUserId()));
+                patientModel.getObject().getRadarConsentConfirmedByUserId()));
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
 
@@ -453,7 +463,7 @@ public class DemographicsPanel extends Panel {
         ajaxSubmitLinkTop.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
             @Override
             public Object getObject() {
-                return patient == null ? "Add this patient" : "Update";
+                return patientModel.getObject() == null ? "Add this patient" : "Update";
             }
         }));
 
@@ -463,11 +473,7 @@ public class DemographicsPanel extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
-                patient.setDateReg(new Date());
-                forenameHeaderModel.setObject(patient.getForename());
-                surnameHeaderModel.setObject(patient.getSurname());
-                dobHeaderModel.setObject(patient.getDob());
-                registrationHeaderModel.setObject(patient.getDateReg());
+
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
                 successMessageTop.setVisible(true);
                 successMessageBottom.setVisible(true);
@@ -489,7 +495,7 @@ public class DemographicsPanel extends Panel {
         ajaxSubmitLinkBottom.add(new AttributeModifier("value", new AbstractReadOnlyModel() {
             @Override
             public Object getObject() {
-                return patient == null ? "Add this patient" : "Update";
+                return patientModel.getObject() == null ? "Add this patient" : "Update";
             }
         }));
 
