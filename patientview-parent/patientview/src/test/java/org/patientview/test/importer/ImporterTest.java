@@ -29,6 +29,7 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Centre;
@@ -197,6 +198,35 @@ public class ImporterTest extends BaseServiceTest {
         List<Letter> letters = letterManager.getAll();
 
         assertEquals("Incorrect number of letters", 2, letters.size());
+    }
+
+    /**
+     * Test to see if an exception is thrown when an update is being carried out on a radar patient
+     *
+     *
+     * @throws IOException
+     * @throws ProcessException
+     */
+    @Test(expected = ProcessException.class)
+    public void testFileImportUpdatingRadarPatient() throws IOException, ProcessException {
+
+        // Create the Radar patient to map the patient in the XML file
+        Patient patient = new Patient();
+        patient.setNhsno("1234567890");
+        patient.setSurname("Test");
+        patient.setForename("Radar");
+        patient.setUnitcode("A");
+        patient.setDob(new Date());
+        patient.setNhsNoType("1");
+        patient.setSourceType(SourceType.RADAR.getName());
+
+        patientManager.save(patient);
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890.gpg.xml");
+
+        importManager.process(xmlFileResource.getFile());
+
     }
 
     @Test
