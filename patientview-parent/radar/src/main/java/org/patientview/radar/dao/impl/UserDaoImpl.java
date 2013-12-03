@@ -498,6 +498,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 new Object[]{user.getUsername()}, String.class);
     }
 
+    public List<String> getAllUnitCodes() {
+        return jdbcTemplate.queryForList("SELECT DISTINCT unitcode FROM unit",
+                new Object[]{}, String.class);
+    }
+
     public Long createLockedPVUser(String username, String password, String name, String email) throws Exception {
 
         Map<String, Object> userMap = new HashMap<String, Object>();

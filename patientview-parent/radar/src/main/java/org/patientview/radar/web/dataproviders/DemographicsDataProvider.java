@@ -70,7 +70,7 @@ public class DemographicsDataProvider implements IDataProvider<Patient>, Sortabl
 
     private List<Patient> getResults(int page, int resultsPerPage) {
         if (user != null) {
-            return demographicsManager.getDemographicsByUnitAdmin(user);
+            return demographicsManager.getDemographicsByUser(user);
         } else {
             return demographicsManager.getDemographics(demographicsFilter, page, resultsPerPage);
         }

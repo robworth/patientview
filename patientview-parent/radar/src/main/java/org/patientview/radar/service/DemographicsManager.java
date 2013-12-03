@@ -27,7 +27,7 @@ public interface DemographicsManager {
 
     Status getStatus(long id);
 
-    List<Patient> getDemographicsByUnitAdmin(User user);
+    List<Patient> getDemographicsByUser(User user);
 
     List<Status> getStatuses();
 

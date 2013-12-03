@@ -33,10 +33,13 @@ UPDATE patient p INNER JOIN
 SET p.sex = dData.sType;
 
 /**
+    NOTE - RUN THE UserUpgradeManager.addUserForAllRadarPatients before this part of script
+    (Created 279 new users, and 372 new mappings for 544 users)
+
     Create a user mapping for the disease group
     Insert into usermapping with tbl_demographics nhs_no and RDG fields
 
-    429 row(s) affected
+    582 row(s) affected
  */
 
 INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
@@ -61,7 +64,7 @@ m.role = 'ROLE_PATIENT';
     Only do this if it does not already exist
     Insert into usermapping with use renal_unit
 
-    0 row(s) affected
+    348 row(s) affected
  */
 INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
 SELECT user.username AS username,
@@ -95,7 +98,7 @@ d.RADAR_NO = d2.RADAR_NO);
     Only do this if it does not already exist
     Insert into usermapping with use renal_unit_2
 
-    0 row(s) affected
+    4 row(s) affected
  */
 INSERT INTO usermapping (username, unitcode, nhsno, specialty_id)
 SELECT user.username AS username,
@@ -123,4 +126,72 @@ AND
 ump.username NOT LIKE '%-GP%'
 AND
 d.RADAR_NO = d2.RADAR_NO);
+
+
+/**
+12/03 20:44:54 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient user found for nhsno 6008727193, taking first
+12/03 20:44:54 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient user found for nhsno 6446314329, taking first
+12/03 20:44:54 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 311, taking first
+12/03 20:44:54 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient user found for nhsno 6439467786, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 381, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 394, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 398, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 401, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 747, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 746, taking first
+12/03 20:44:55 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 745, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 744, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 739, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 738, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 737, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 735, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 733, taking first
+12/03 20:44:56 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 491, taking first
+12/03 20:44:57 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 518, taking first
+12/03 20:44:57 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 767, taking first
+12/03 20:44:57 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient user found for nhsno 4240248582, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient user found for nhsno 2709025965, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 691, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient user found for nhsno 7094410859, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 710, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 750, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 752, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 762, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 763, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 764, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 771, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 773, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 776, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 777, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 778, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 779, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 783, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 784, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 787, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 793, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 794, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 795, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 798, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 799, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 801, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 807, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 809, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 810, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 815, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 816, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 818, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 821, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 822, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 827, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 829, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 830, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 837, taking first
+12/03 20:44:58 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 838, taking first
+12/03 20:44:59 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 842, taking first
+12/03 20:44:59 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 843, taking first
+12/03 20:44:59 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 844, taking first
+12/03 20:44:59 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 845, taking first
+12/03 20:44:59 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 848, taking first
+12/03 20:44:59 ERROR iew.radar.dao.impl.UserDaoImpl  - Duplicate patient users found for radarno 855, taking first
+ */
 

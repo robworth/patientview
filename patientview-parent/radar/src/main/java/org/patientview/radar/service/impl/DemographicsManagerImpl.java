@@ -60,8 +60,15 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getStatus(id);
     }
 
-    public List<Patient> getDemographicsByUnitAdmin(User user) {
-        List<String> unitCodes = userDao.getUnitCodes(user);
+    public List<Patient> getDemographicsByUser(User user) {
+
+        List<String> unitCodes;
+        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
+            unitCodes = userDao.getAllUnitCodes();
+        } else {
+            unitCodes = userDao.getUnitCodes(user);
+        }
+
         return demographicsDao.getDemographicsByUnitCode(unitCodes);
     }
 

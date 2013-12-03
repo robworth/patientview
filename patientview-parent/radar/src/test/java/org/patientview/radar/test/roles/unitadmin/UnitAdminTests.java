@@ -100,7 +100,7 @@ public class UnitAdminTests extends TestPvDbSchema {
         // Create a unit admin the belongs to that disease group
         PatientUser userAdmin = roleHelper.createUnitAdmin("675675", testDiseaseUnit);
 
-        List<Patient> patientInUnit = demographicsManager.getDemographicsByUnitAdmin(userAdmin);
+        List<Patient> patientInUnit = demographicsManager.getDemographicsByUser(userAdmin);
 
         Assert.assertTrue("There should be the correct number of people in the disease group", patientInUnit.size() == patientCount);
     }
@@ -121,7 +121,7 @@ public class UnitAdminTests extends TestPvDbSchema {
         // Create a unit admin the belongs to that disease group
         PatientUser userAdmin = roleHelper.createUnitAdmin("675675", testDiseaseUnit);
 
-        List<Patient> patientInUnit = demographicsManager.getDemographicsByUnitAdmin(userAdmin);
+        List<Patient> patientInUnit = demographicsManager.getDemographicsByUser(userAdmin);
 
         Assert.assertTrue("There should be the correct number of people in the disease group", patientInUnit.size() == patientCount);
     }
@@ -146,7 +146,7 @@ public class UnitAdminTests extends TestPvDbSchema {
         PatientUser userAdmin = roleHelper.createUnitAdmin("675675", testDiseaseUnit, testRenalUnit);
 
         // Retrieve the patients that are mapped to the Renal Unit and Disease Group
-        List<Patient> patientInUnit = demographicsManager.getDemographicsByUnitAdmin(userAdmin);
+        List<Patient> patientInUnit = demographicsManager.getDemographicsByUser(userAdmin);
 
         Assert.assertTrue("There should be the correct number of people returned for the mappings",
                 patientInUnit.size() == (renalPatientCount + diseasePatientCount) );
