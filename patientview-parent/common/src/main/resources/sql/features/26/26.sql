@@ -3,11 +3,6 @@
  */
  ALTER TABLE unit ADD COLUMN `lastImportDate` datetime DEFAULT NULL;
 
-/**
-    Add a date column in unit table to store the mostRecentTestResultDateRangeStopDate to be set by the importer.
- */
- ALTER TABLE patient ADD COLUMN `mostRecentTestResultDateRangeStopDate` datetime DEFAULT NULL;
-
  /**
     Create the link table for patient->patient
  */
@@ -15,9 +10,7 @@
 
  ALTER TABLE pv_patientjoin_request CHANGE email email VARCHAR(255) NULL;
 
- ALTER TABLE patient ADD COLUMN sourceType VARCHAR(20);
-
- ALTER TABLE pv_patientjoin_request MODIFY COLUMN dateofbirth DATETIME NOT NULL;
+ ALTER TABLE pv_patientjoin_request MODIFY COLUMN dateofbirth DATETIME NOT NULL;  -- check dateofbirth has valid dates
 
  /**
     Required for the generic genetic panel - should already by on live site
