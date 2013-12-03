@@ -343,7 +343,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
     public boolean authenticateProfessionalUser(String username, String password) throws AuthenticationException {
-        ProfessionalUser professionalUser = userDao.getProfessionalUser(username);
+        ProfessionalUser professionalUser = userDao.getProfessionalUserByUsername(username);
         if (professionalUser != null) {
             try {
                 Authentication authentication = authenticationManager.

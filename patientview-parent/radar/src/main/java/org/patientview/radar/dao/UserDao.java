@@ -85,4 +85,5 @@ public interface UserDao {
 
     public void deleteUser(User user) throws Exception;
 
+    ProfessionalUser getProfessionalUserByUsername(String username);
 }
