@@ -274,7 +274,7 @@ public class DemographicsPanel extends Panel {
         dobLabel.setOutputMarkupPlaceholderTag(true);
         form.add(dobLabel);
 
-        TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField (
+        TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
                 "dateOfBirthForHeader", RadarModelFactory.getDobModel(new Model<Long>(patient.getId()),
                 demographicsManager), RadarApplication.DATE_PATTERN) {
             @Override
