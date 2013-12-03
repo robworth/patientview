@@ -484,6 +484,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, user.getName());
         userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_ACCOUNT_LOCKED_FIELD_NAME, false);
         userMap.put(USER_IS_CLINICIAN_FIELD_NAME, false);
 
         Number id = userInsert.executeAndReturnKey(userMap);
