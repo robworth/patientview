@@ -25,7 +25,6 @@ package org.patientview.repository.impl;
 
 import org.patientview.model.Patient;
 import org.patientview.model.Patient_;
-import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
 import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.unit.UnitUtils;
@@ -89,8 +88,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
         Patient patient = get(nhsno, unitcode);
 
-        // getName used because of Radar
-        if (patient != null && !patient.getSourceType().equals(SourceType.RADAR.getName())) {
+        if (patient != null) {
             delete(patient);
         }
     }
