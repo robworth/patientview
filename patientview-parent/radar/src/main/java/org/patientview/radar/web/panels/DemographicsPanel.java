@@ -6,7 +6,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -18,7 +17,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
@@ -56,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DemographicsPanel extends Panel {
@@ -93,14 +92,9 @@ public class DemographicsPanel extends Panel {
         final User user = RadarSecuredSession.get().getUser();
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
-        final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(
-                new LoadableDetachableModel<Patient>() {
-                    @Override
-                    public Patient load() {
-
-                        return patient;
-                    }
-                });
+        final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patient);
+        final IModel<Date> registrationHeaderModel = new Model<Date>(patient.getDateReg());
+        final IModel<String> radarHeaderModel = new Model<String>(patient.getRrNo());
 
         // Set up form
         final Form<Patient> form = new Form<Patient>("form", model) {
@@ -113,6 +107,7 @@ public class DemographicsPanel extends Panel {
                 try {
 
                     userManager.savePatientUser(patient);
+                    radarHeaderModel.setObject(Long.toString(patient.getId()));
 
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception {} ", re.getMessage());
@@ -160,6 +155,7 @@ public class DemographicsPanel extends Panel {
 
         add(form);
 
+
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
 
         form.add(new Label("addNewPatientLabel", "Add a New Patient") {
@@ -169,13 +165,22 @@ public class DemographicsPanel extends Panel {
             }
         });
 
-        TextField<Long> radarNumberField = new TextField<Long>("radarNo", new Model<Long>(patient.getId()));
+        final TextField radarNumberField = new TextField("radarNo", radarHeaderModel);
         radarNumberField.setEnabled(false);
-        form.add(radarNumberField);
+        radarNumberField.setOutputMarkupId(true);
+        radarNumberField.setOutputMarkupPlaceholderTag(true);
 
-        DateTextField dateRegistered = DateTextField.forDatePattern("dateReg", RadarApplication.DATE_PATTERN);
+        form.add(radarNumberField);
+        componentsToUpdateList.add(radarNumberField);
+
+        final TextField dateRegistered = new org.apache.wicket.extensions.markup.html.form.DateTextField("dateReg",
+                registrationHeaderModel);
+
+        dateRegistered.setOutputMarkupId(true);
+        dateRegistered.setOutputMarkupPlaceholderTag(true);
 
         form.add(dateRegistered);
+        componentsToUpdateList.add(dateRegistered);
 
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(
@@ -228,7 +233,11 @@ public class DemographicsPanel extends Panel {
          */
 
         // forename
-        Label nameLabel = new Label("nameLabel", "Name") {
+        final IModel<String> forenameHeaderModel = new Model<String>(patient.getForename());
+        final IModel<String> surnameHeaderModel = new Model<String>(patient.getSurname());
+        final IModel<Date> dobHeaderModel = new Model<Date>(patient.getDob());
+
+        final Label nameLabel = new Label("nameLabel", "Name") {
             @Override
             public boolean isVisible() {
                 return StringUtils.isNotBlank(patient.getForename());
@@ -238,8 +247,7 @@ public class DemographicsPanel extends Panel {
         nameLabel.setOutputMarkupPlaceholderTag(true);
         form.add(nameLabel);
 
-        TextField forenameForHeader = new TextField("forenameForHeader", RadarModelFactory.getFirstNameModel(
-                new Model<Long>(patient.getId()), demographicsManager)) {
+        final TextField forenameForHeader = new TextField("forenameForHeader", forenameHeaderModel) {
             @Override
             public boolean isVisible() {
                 return StringUtils.isNotBlank(patient.getForename());
@@ -248,11 +256,10 @@ public class DemographicsPanel extends Panel {
         forenameForHeader.setOutputMarkupId(true);
         forenameForHeader.setOutputMarkupPlaceholderTag(true);
         componentsToUpdateList.add(forenameForHeader);
-
+        componentsToUpdateList.add(nameLabel);
 
         // surname
-        TextField surnameForHeader = new TextField("surnameForHeader", RadarModelFactory.getSurnameModel(
-                new Model<Long>(patient.getId()), demographicsManager)) {
+        final TextField surnameForHeader = new TextField("surnameForHeader", surnameHeaderModel) {
             @Override
             public boolean isVisible() {
 
@@ -264,7 +271,7 @@ public class DemographicsPanel extends Panel {
         componentsToUpdateList.add(surnameForHeader);
 
         // date of birth
-        Label dobLabel = new Label("dobLabel", "DoB") {
+        final Label dobLabel = new Label("dobLabel", "DoB") {
             @Override
             public boolean isVisible() {
                 return patient.getDob() != null;
@@ -274,9 +281,8 @@ public class DemographicsPanel extends Panel {
         dobLabel.setOutputMarkupPlaceholderTag(true);
         form.add(dobLabel);
 
-        TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
-                "dateOfBirthForHeader", RadarModelFactory.getDobModel(new Model<Long>(patient.getId()),
-                demographicsManager), RadarApplication.DATE_PATTERN) {
+        final TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
+                "dateOfBirthForHeader", dobHeaderModel) {
             @Override
             public boolean isVisible() {
                 return patient.getDob() != null;
@@ -285,6 +291,7 @@ public class DemographicsPanel extends Panel {
         dateOfBirthForHeader.setOutputMarkupId(true);
         dateOfBirthForHeader.setOutputMarkupPlaceholderTag(true);
         componentsToUpdateList.add(dateOfBirthForHeader);
+        componentsToUpdateList.add(dobLabel);
 
         form.add(diagnosis, surnameForHeader, forenameForHeader, dateOfBirthForHeader);
 
@@ -376,24 +383,43 @@ public class DemographicsPanel extends Panel {
         }
 
         form.add(renalUnit);
-        //nonEditableComponents.add(renalUnit);
 
-        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
-        form.add(consent);
+        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
+                patient.getRadarConsentConfirmedByUserId()));
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
 
-        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
-                model.getObject() != null ? utilityManager.getUserName(
-                        model.getObject().getRadarConsentConfirmedByUserId()) : "") {
+
+        final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                consentUserModel) {
             @Override
             public boolean isVisible() {
-                return true;
+                return StringUtils.isNotEmpty(consentUserModel.getObject());
             }
         };
         tickConsentUser.setOutputMarkupId(true);
         tickConsentUser.setOutputMarkupPlaceholderTag(true);
         form.add(tickConsentUser);
+
+        final RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
+
+        consent.add(new AjaxFormComponentUpdatingBehavior("onclick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+
+                target.add(tickConsentUser);
+
+                if (consent.getModel().getObject().equals(Boolean.TRUE)) {
+                    consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
+                    tickConsentUser.setVisible(true);
+
+                } else {
+                    tickConsentUser.setVisible(false);
+                }
+            }
+        });
+
+        form.add(consent);
 
         final Label successMessageTop = RadarComponentFactory.getSuccessMessageLabel("successMessageTop", form,
                 componentsToUpdateList);
@@ -437,6 +463,11 @@ public class DemographicsPanel extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget ajaxRequestTarget, Form<?> form) {
+                patient.setDateReg(new Date());
+                forenameHeaderModel.setObject(patient.getForename());
+                surnameHeaderModel.setObject(patient.getSurname());
+                dobHeaderModel.setObject(patient.getDob());
+                registrationHeaderModel.setObject(patient.getDateReg());
                 ajaxRequestTarget.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
                 successMessageTop.setVisible(true);
                 successMessageBottom.setVisible(true);
