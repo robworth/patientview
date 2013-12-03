@@ -702,8 +702,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         List<Object> params = new ArrayList<Object>();
         params.add(nhsno);
         try {
-            return jdbcTemplate.queryForObject(sql, params.toArray(), new DemographicsUserDetailMapper());
-        } catch (EmptyResultDataAccessException e) {
+            List<DemographicsUserDetail> results
+                    = jdbcTemplate.query(sql, params.toArray(), new DemographicsUserDetailMapper());
+            if (results != null && results.size() > 1) {
+                LOGGER.error("Found duplicate results for nhsno {}, taking first", nhsno);
+            }
+            return results != null && results.size() > 0 ? results.get(0) : new DemographicsUserDetail();
+        } catch (Exception e) {
             LOGGER.debug("No DemographicsUserDetail found for nhsno:"+nhsno);
             return new DemographicsUserDetail();
         }

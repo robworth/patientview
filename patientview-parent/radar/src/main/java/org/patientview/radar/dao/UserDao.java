@@ -89,4 +89,6 @@ public interface UserDao {
     public void deleteUser(User user) throws Exception;
 
     UserMapping getUserMapping(Long userId, Long radarUserId, String role);
+
+    ProfessionalUser getProfessionalUserByUsername(String username);
 }
