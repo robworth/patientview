@@ -256,7 +256,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return jdbcTemplate.queryForObject(query.toString(), new Object[]{username},
                     new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Could not professional user with username  {}", username);
+            LOGGER.debug("Could not find professional user with username {}", username);
         }
 
         return null;
