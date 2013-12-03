@@ -222,12 +222,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public int getPatientCountByUnit(Centre centre) {
         try {
-            return jdbcTemplate.queryForObject("SELECT COUNT(1) " +
-                                                "FROM    patient " +
-                                                "WHERE   nhsno IN (SELECT nhsNo " +
-                                                "                  FROM   usermapping " +
-                                                "                  WHERE  unitCode = ?);",
-                    new Object[]{centre.getUnitCode()}, Integer.class);
+
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  COUNT(1) ");
+            query.append("FROM    usermapping usm ");
+            query.append("WHERE   EXISTS (SELECT  1 ");
+            query.append("                FROM    patient ptt ");
+            query.append("                WHERE   ptt.nhsno = usm.nhsno) ");
+            query.append("AND     usm.unitCode = ? ");
+
+            return jdbcTemplate.queryForObject(query.toString(), new Object[]{centre.getUnitCode()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }

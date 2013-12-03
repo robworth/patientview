@@ -123,8 +123,10 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "WHERE specialtyuserrole.role = 'patient' "
                 + "AND user.username = usermapping.username "
                 + "AND user.id = specialtyuserrole.user_id "
-                + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' ";
-
+                + "AND usermapping.unitcode <> '" + UnitUtils.PATIENT_ENTERS_UNITCODE + "' "
+                + "AND    (patient.nhsno, patient.unitcode) NOT IN (SELECT dest_nhsno, dest_unitcode "
+                + "                                         FROM   rdr_patient_linkage) ";
+                // TODO Coming back to amend this method to match the one below
         sql += "AND usermapping.unitcode = ? ";
 
         if (nhsno != null && nhsno.length() > 0) {

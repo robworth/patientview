@@ -154,14 +154,21 @@ public class ImportManagerImpl implements ImportManager {
 
         // If the file parse process otherwise email the corruptions
         if (resultParser.parse()) {
+
             String action = null;
+
             try {
                 action = processPatientData(resultParser);
+            } catch (ProcessException pe) {
+                handleProcessError(xmlFile, pe);
+                throw pe;
             } catch (Exception e) {
                 handleProcessError(xmlFile, e);
                 throw new ProcessException("There has been an error processing the data", e);
             }
+
             createLogEntry(xmlFile, action);
+
         } else {
             handleCorruptNodes(xmlFile, resultParser);
             throw new ProcessException("There are file corruptions");
@@ -191,7 +198,7 @@ public class ImportManagerImpl implements ImportManager {
         UserUtils.removePatientFromSystem(parser.getData("nhsno"), parser.getData("centrecode"));
     }
 
-    private String processPatientData(ResultParser resultParser) {
+    private String processPatientData(ResultParser resultParser) throws ProcessException {
         if (hasPatientLeft(resultParser)) {
             removePatientFromSystem(resultParser);
             return AddLog.PATIENT_DATA_REMOVE;
@@ -286,10 +293,15 @@ public class ImportManagerImpl implements ImportManager {
      * @param patient new patient details
      * @param dateRanges the date ranges for test results found in this import
      */
-    private void updatePatientDetails(Patient patient, List<TestResultDateRange> dateRanges) {
+    private void updatePatientDetails(Patient patient, List<TestResultDateRange> dateRanges) throws ProcessException {
 
         Patient existingPatientRecord
                 = LegacySpringUtils.getPatientManager().get(patient.getNhsno(), patient.getUnitcode());
+
+        if (existingPatientRecord.getSourceType().equals(SourceType.RADAR.getName())) {
+            throw new ProcessException("Cannot update an existing Radar patient record");
+        }
+
         Date existingTestResultDateRangeStopDate = null;
         if (existingPatientRecord != null && existingPatientRecord.hasValidId()) {
             existingTestResultDateRangeStopDate = existingPatientRecord.getMostRecentTestResultDateRangeStopDate();
