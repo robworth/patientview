@@ -9,7 +9,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.patientview.model.Patient;
 import org.patientview.radar.web.RadarApplication;
@@ -35,7 +34,14 @@ public class PatientDetailPanel extends Panel {
         details.add(new Label("title", title));
 
         // radar number
-        TextField<Long> radarNumberField = new TextField<Long>("id", new Model<Long>(patient.getRadarNo()));
+        TextField radarNumberField = null;
+        if (patient.getRadarNo() == null) {
+            radarNumberField = new TextField<Long>("id", new PropertyModel<Long>(patient, "radarNo"));
+        } else {
+            radarNumberField = new TextField<Long>("id");
+        }
+        radarNumberField.setOutputMarkupId(true);
+        radarNumberField.setOutputMarkupPlaceholderTag(true);
         details.add(radarNumberField);
 
         // disease group
