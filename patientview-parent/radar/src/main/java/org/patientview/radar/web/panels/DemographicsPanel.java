@@ -95,7 +95,7 @@ public class DemographicsPanel extends Panel {
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patientModel.getObject());
         final IModel<Date> registrationHeaderModel = new Model<Date>(patientModel.getObject().getDateReg());
-        final IModel<String> radarHeaderModel = new Model<String>(patientModel.getObject().getRrNo());
+        final IModel<Long> radarHeaderModel = new Model<Long>(patientModel.getObject().getRadarNo());
         final IModel<String> forenameHeaderModel = new Model<String>(patientModel.getObject().getForename());
         final IModel<String> surnameHeaderModel = new Model<String>(patientModel.getObject().getSurname());
         final IModel<Date> dobHeaderModel = new Model<Date>(patientModel.getObject().getDob());
@@ -110,16 +110,20 @@ public class DemographicsPanel extends Panel {
 
                 try {
 
-                    userManager.savePatientUser(patient);
-                    patientCallBack.updateModel(patient.getId());
-                    // Update the header with the saved record
                     patientModel.setObject(patient);
                     patientModel.getObject().setDateReg(new Date());
+
+                    userManager.savePatientUser(patient);
+
+
+                    patientCallBack.updateModel(patient.getId());
+                    // Update the header with the saved record
+
                     forenameHeaderModel.setObject(patientModel.getObject().getForename());
                     surnameHeaderModel.setObject(patientModel.getObject().getSurname());
                     dobHeaderModel.setObject(patientModel.getObject().getDob());
                     registrationHeaderModel.setObject(patientModel.getObject().getDateReg());
-                    radarHeaderModel.setObject(Long.toString(patient.getId()));
+                    radarHeaderModel.setObject(patient.getRadarNo());
 
 
                 } catch (RegisterException re) {

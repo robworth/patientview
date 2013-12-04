@@ -224,7 +224,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         try {
 
             StringBuilder query = new StringBuilder();
-            query.append("SELECT  COUNT(1) ");
+            query.append("SELECT  COUNT(DISTINCT nhsno) ");
             query.append("FROM    usermapping usm ");
             query.append("WHERE   EXISTS (SELECT  1 ");
             query.append("                FROM    patient ptt ");

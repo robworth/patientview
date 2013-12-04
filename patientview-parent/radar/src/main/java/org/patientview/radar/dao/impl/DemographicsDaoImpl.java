@@ -227,11 +227,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             });
             patient.setId(id.longValue());
 
+            //The id of the patient record is now the new radar number
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
+            patient.setRadarNo(patient.getId());
 
         }
 
-        // We have to re-populate fields after they are cleaned from the save only for link patients
+        // We have to re-populate fields after they are cleaned from the save, only for link patients
         if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
             RadarUtility.overRideLinkRecord(getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
                     patientLink.getSourceUnit()), patient);
