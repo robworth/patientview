@@ -110,11 +110,15 @@ public class DemographicsPanel extends Panel {
 
                 try {
 
-                    userManager.savePatientUser(patient);
-                    patientCallBack.updateModel(patient.getId());
-                    // Update the header with the saved record
                     patientModel.setObject(patient);
                     patientModel.getObject().setDateReg(new Date());
+
+                    userManager.savePatientUser(patient);
+
+
+                    patientCallBack.updateModel(patient.getId());
+                    // Update the header with the saved record
+
                     forenameHeaderModel.setObject(patientModel.getObject().getForename());
                     surnameHeaderModel.setObject(patientModel.getObject().getSurname());
                     dobHeaderModel.setObject(patientModel.getObject().getDob());
