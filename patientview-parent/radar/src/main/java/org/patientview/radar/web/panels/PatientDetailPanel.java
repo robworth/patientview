@@ -1,8 +1,6 @@
 package org.patientview.radar.web.panels;
 
 
-import org.patientview.model.Patient;
-import org.patientview.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -11,7 +9,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.patientview.model.Patient;
+import org.patientview.radar.web.RadarApplication;
 
 import java.util.Date;
 
@@ -34,7 +35,7 @@ public class PatientDetailPanel extends Panel {
         details.add(new Label("title", title));
 
         // radar number
-        TextField<Long> radarNumberField = new TextField<Long>("id");
+        TextField<Long> radarNumberField = new TextField<Long>("id", new Model<Long>(patient.getRadarNo()));
         details.add(radarNumberField);
 
         // disease group

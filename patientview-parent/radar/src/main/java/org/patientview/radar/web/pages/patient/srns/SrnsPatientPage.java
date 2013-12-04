@@ -100,7 +100,7 @@ public class SrnsPatientPage extends BasePage implements PatientCallBack {
         // this constructor is used when a patient exists
         patientModel.setObject(demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong()));
         demographicsPanel = new DemographicsPanel("demographicsPanel", patientModel, this) ;
-        radarNumberModel.setObject(patientModel.getObject().getId());
+        radarNumberModel.setObject(patientModel.getObject().getRadarNo());
         init();
     }
 
