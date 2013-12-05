@@ -15,7 +15,7 @@ public interface PatientLinkManager {
 
     PatientLink getPatientLink(String nhsNo, String unitCode);
 
-    Patient linkPatientRecord(Patient patient) throws PatientLinkException;
+    Patient createLinkPatientRecord(Patient patient) throws PatientLinkException;
 
     Patient getMergePatient(Patient sourcePatient) throws Exception;
 }

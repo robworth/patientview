@@ -5,8 +5,8 @@ import org.patientview.radar.dao.ImmunosuppressionDao;
 import org.patientview.radar.model.Immunosuppression;
 import org.patientview.radar.model.ImmunosuppressionTreatment;
 import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.ImmunosuppressionManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.TreatmentManager;
 import org.patientview.radar.util.RadarUtility;
 
@@ -19,7 +19,9 @@ import java.util.List;
 public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
 
     ImmunosuppressionDao immunosuppressionDao;
-    DemographicsManager demographicsManager;
+
+    PatientManager  patientManager;
+
 
     public void saveImmunosuppressionTreatment(ImmunosuppressionTreatment immunosuppression) throws
             InvalidModelException {
@@ -60,7 +62,7 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
         List<Date> datesToCheck = Arrays.asList(immunosuppression.getStartDate(), immunosuppression.getEndDate());
 
         // cannot be before date of birth
-        Patient patient = demographicsManager.getDemographicsByRadarNumber(
+        Patient patient = patientManager.getPatientByRadarNumber(
                 immunosuppression.getRadarNumber());
         if (patient != null) {
             Date dob = patient.getDob();
@@ -124,7 +126,8 @@ public class ImmunosuppressionManagerImpl implements ImmunosuppressionManager {
         this.immunosuppressionDao = immunosuppressionDao;
     }
 
-    public void setDemographicsManager(DemographicsManager demographicsManager) {
-        this.demographicsManager = demographicsManager;
+
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 }

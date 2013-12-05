@@ -19,8 +19,8 @@ import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.models.PageNumberModel;
@@ -47,7 +47,7 @@ public class SrnsPatientPage extends BasePage implements PatientCallBack {
     private DiagnosisManager diagnosisManager;
 
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -98,7 +98,7 @@ public class SrnsPatientPage extends BasePage implements PatientCallBack {
         super();
 
         // this constructor is used when a patient exists
-        patientModel.setObject(demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong()));
+        patientModel.setObject(patientManager.getPatientByRadarNumber(pageParameters.get("id").toLong()));
         demographicsPanel = new DemographicsPanel("demographicsPanel", patientModel, this) ;
         radarNumberModel.setObject(patientModel.getObject().getRadarNo());
         init();

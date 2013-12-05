@@ -33,7 +33,7 @@ import org.patientview.model.Unit;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.service.UtilityManager;
@@ -64,13 +64,13 @@ import java.util.List;
 public class GenericDemographicsPanel extends Panel {
 
     @SpringBean
-    private DemographicsManager demographicsManager;
-
-    @SpringBean
     private UtilityManager utilityManager;
 
     @SpringBean
     private GenericDiagnosisManager genericDiagnosisManager;
+
+    @SpringBean
+    PatientManager patientManager;
 
     @SpringBean
     private UserManager userManager;
@@ -184,7 +184,7 @@ public class GenericDemographicsPanel extends Panel {
         nonEditableComponents.add(dateOfBirth);
         // Sex
         RadarRequiredDropdownChoice sex =
-                new RadarRequiredDropdownChoice("sexModel", demographicsManager.getSexes(),
+                new RadarRequiredDropdownChoice("sexModel", patientManager.getSexes(),
                         new ChoiceRenderer<Sex>("type", "id"), form, componentsToUpdateList);
 
         nonEditableComponents.add(sex);

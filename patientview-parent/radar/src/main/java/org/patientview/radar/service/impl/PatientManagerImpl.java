@@ -1,8 +1,14 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.util.RadarUtility;
 
 import java.util.List;
 
@@ -21,6 +27,94 @@ public class PatientManagerImpl implements PatientManager {
     public List<Patient> getPatientByNhsNumber(String nhsNo) {
         return patientDao.getPatientsByNhsNumber(nhsNo);
     }
+
+    public Patient getById(Long id) {
+        return resolveLinkRecord(patientDao.getById(id));
+    }
+
+    public Patient getPatientByRadarNumber(Long radarNumber) {
+
+        Patient patient = patientDao.getPatientsByRadarNumber(radarNumber);
+
+        if (patient == null) {
+            patient = patientDao.getById(radarNumber);
+        }
+
+        patient = resolveLinkRecord(patient);
+
+        return patient;
+    }
+
+    public void save(final Patient patient){
+
+        // If this is a link record then we need to start any duplicated data being saved
+        if (patient.getPatientLinkId() != null) {
+            RadarUtility.cleanLinkRecord(patient);
+        }
+
+        patientDao.save(patient);
+
+        // We have to re-populate fields after they are cleaned from the save, only for link patients
+        if (patient.getPatientLinkId() != null) {
+            RadarUtility.overRideLinkRecord(patientDao.getByPatientLinkId(patient.getPatientLinkId()), patient);
+
+        }
+
+    }
+
+    /**
+     * Resolve a two way link.
+     *
+     * 1) If it's a source record them merge the link record on top of it
+     * 2) If it's a link record over write the standard patient fields.
+     *
+     * @param patient
+     * @return
+     */
+    private Patient resolveLinkRecord(final Patient patient){
+        Long patientLinkId = patient.getPatientLinkId();
+
+        if (patientLinkId == null || patientLinkId == 0) {
+
+            Patient source = patientDao.getByPatientLinkId(patient.getId());
+            if (source != null) {
+                return RadarUtility.overRideLinkRecord(source, patient);
+            } else {
+                return patient;
+            }
+        } else {
+
+            Patient linkPatient = getById(patientLinkId);
+            if (linkPatient == null) {
+                return RadarUtility.mergePatientRecords(patient, linkPatient);
+            } else {
+                return patient;
+            }
+
+        }
+    }
+
+
+    public List<Sex> getSexes() {
+        return patientDao.getSexes();
+    }
+
+    public List<Status> getStatuses() {
+        return patientDao.getStatuses();
+    }
+
+    public List<DiseaseGroup> getDiseaseGroups() {
+        return patientDao.getDiseaseGroups();
+    }
+
+    public List<GenericDiagnosis> getGenericDiagnoses() {
+        return patientDao.getGenericDiagnoses();
+    }
+
+    public List<Ethnicity> getEthnicities() {
+        return patientDao.getEthnicities();
+    }
+
 
     public void setPatientDao(PatientDao patientDao) {
         this.patientDao = patientDao;

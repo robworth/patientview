@@ -181,6 +181,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+
     public List<Ethnicity> getEthnicities() {
         return jdbcTemplate.query("SELECT * FROM tbl_Ethnicity", new EthnicityRowMapper());
     }
