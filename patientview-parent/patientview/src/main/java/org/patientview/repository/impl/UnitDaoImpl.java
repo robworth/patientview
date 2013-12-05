@@ -26,7 +26,7 @@ package org.patientview.repository.impl;
 import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.model.Specialty;
 import org.patientview.model.Unit;
-import org.patientview.patientview.model.Unit_;
+import org.patientview.model.Unit_;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
