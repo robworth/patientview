@@ -2,7 +2,6 @@ package org.patientview.radar.service.impl;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
-import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.JoinRequestDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.exception.JoinCreationException;
@@ -26,6 +25,7 @@ import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.EmailManager;
 import org.patientview.radar.service.PatientLinkManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private UserDao userDao;
     private JoinRequestDao joinRequestDao;
-    private DemographicsDao demographicsDao;
+    private PatientManager patientManager;
     private PatientLinkManager patientLinkManager;
 
 
@@ -119,13 +119,16 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private PatientUser registerPatientUser(Patient patient) throws UserCreationException, UserMappingException,
             UserRoleException, PatientLinkException, JoinCreationException {
 
+
         PatientUser patientUser = null;
+        Patient linkPatient = null;
 
         // If the patient is new then we save the patient record otherwise we have to link it
         if (!patient.hasValidId()) {
-            demographicsDao.saveDemographics(patient);
+            patientManager.save(patient);
         } else {
-            patientLinkManager.linkPatientRecord(patient);
+            linkPatient = patientLinkManager.createLinkPatientRecord(patient);
+
         }
 
 
@@ -140,7 +143,14 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // Switch from patient view to Radar
         patientUser.setUserId(patientUser.getId());
 
-        demographicsDao.saveDemographics(patient);
+
+        if (linkPatient != null) {
+            patientManager.save(linkPatient);
+            patient.setPatientLinkId(linkPatient.getPatientLinkId());
+        }
+        patientManager.save(patient);
+
+
 
         //-- Radar Tables
         patientUser = createRadarUser(patientUser, patient);
@@ -177,7 +187,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                     && !userExistsInPatientView(patient.getNhsno())) {
                 return registerPatientUser(patient);
             }  else {
-                demographicsDao.saveDemographics(patient);
+                patientManager.save(patient);
                 return null;
             }
 
@@ -482,8 +492,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         this.joinRequestDao = joinRequestDao;
     }
 
-    public void setDemographicsDao(DemographicsDao demographicsDao) {
-        this.demographicsDao = demographicsDao;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 
     public void setPatientLinkManager(PatientLinkManager patientLinkManager) {

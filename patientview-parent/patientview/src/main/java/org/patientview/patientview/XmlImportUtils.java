@@ -23,10 +23,15 @@
 
 package org.patientview.patientview;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.patientview.model.BaseModel;
+import org.patientview.model.Patient;
 import org.patientview.model.Unit;
 import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXParseException;
@@ -34,11 +39,12 @@ import org.xml.sax.SAXParseException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 @Component(value = "xmlImportUtils")
 public final class XmlImportUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportUtils.class);
 
     @Value("${noreply.email}")
     private String noReplyEmail;
@@ -196,31 +202,39 @@ public final class XmlImportUtils {
     /**
      * Copy all the fields from one source object to another original object
      *
-     * @param original
+     * @param target
      * @param source
      * @param <T>
      * @return
      */
-    public static <T> T copyObject(T original, T source) {
-        Class clazz = original.getClass();
-        for (Method setterMethod : clazz.getDeclaredMethods()) {
+    public static <T extends BaseModel> T copyObject(T target, T source) {
 
-            if (setterMethod.getName().startsWith("set") && !setterMethod.getName().equals("setId")) {
+       Long id = target.getId();
 
-                try {
-                    Method getterMethod = null;
+       Long linkPatientId = null;
 
-                    getterMethod = source.getClass().getMethod(setterMethod.getName().replace("set", "get"));
+        // We have to retain the Patient Link Id as well as the normal Id if the object is a patient
+       if (target instanceof Patient) {
+           linkPatientId = (Long) ((Patient) target).getPatientLinkId();
+       }
 
-                    setterMethod.invoke(original, getterMethod.invoke(source));
+        try {
 
-                } catch (NoSuchMethodException msh) {
-                } catch (InvocationTargetException ete) {
-                } catch (IllegalAccessException ie) {
-                }
-            }
+            BeanUtils.copyProperties(target, source);
+
+        } catch (InvocationTargetException ete) {
+            LOGGER.error("Failed to clone object", ete);
+        } catch (IllegalAccessException ie) {
+            LOGGER.error("Failed to clone object", ie);
         }
 
-        return original;
+        target.setId(id);
+
+        // Assuming the we have a patientLinkId because the target in a Patient object
+        if (linkPatientId != null) {
+            ((Patient) target).setPatientLinkId(linkPatientId);
+        }
+
+        return target;
     }
 }

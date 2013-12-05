@@ -14,10 +14,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
-import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.PatientLinkManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
@@ -42,7 +41,7 @@ public class SelectPatientPanel extends Panel {
     private UserManager userManager;
 
     @SpringBean
-    private PatientLinkManager patientLinkManager;
+    private PatientManager patientManager;
 
     private IModel<List<Patient>> model;
     private AddPatientModel patientModel;
@@ -78,23 +77,8 @@ public class SelectPatientPanel extends Panel {
             protected void onSubmit() {
 
                 Patient patient = (Patient) group.getDefaultModelObject();
-                patient = demographicsManager.get(patient.getId());
 
-                try {
-                    if (patientLinkManager.getPatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
-                        patient = patientLinkManager.getMergePatient(patient);
-                    }
-                } catch (Exception e) {
-                    LOGGER.error("Error merging link patient", e);
-                }
-
-                DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
-
-                if (patient.getDiseaseGroup() == null) {
-                    patient.setDiseaseGroup(diseaseGroup);
-                }
-
-
+                patient = patientManager.getById(patient.getId());
                 patient.setLink(true);
 
                 setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));

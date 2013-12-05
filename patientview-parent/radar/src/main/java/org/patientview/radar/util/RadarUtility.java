@@ -10,14 +10,27 @@ import org.patientview.radar.web.pages.patient.GenericPatientPage;
 import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
 import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Radar Utility - miscellaneous utility methods go here
  */
 public class RadarUtility {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT_1 = "dd.MM.y";
+    private static final String DATE_FORMAT_2 = "dd-MM-y";
+    private static final String DATE_FORMAT_3 = "dd/MM/y";
+
+
 
     /**
      * @param event1Start cannot be null
@@ -249,6 +262,33 @@ public class RadarUtility {
             return false; // nhsNumber contains letters
         }
     }
+
+    /**
+     * Class to return the date from the database text field representation of a date.
+     *
+     * @param dateField
+     * @return
+     */
+    public static Date parseDate(String dateField) {
+
+        if (StringUtils.hasText(dateField)) {
+            Date dateOfBirth = null;
+            // It seems that the encrypted strings in the DB have different date formats, nice.
+            for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
+                try {
+                    dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateField);
+                    break;
+                } catch (ParseException e) {
+                    LOGGER.debug("Could not parse date of birth {}", dateField);
+                }
+            }
+
+            return dateOfBirth;
+        }
+
+        return null;
+    }
+
 
 
 }

@@ -26,6 +26,7 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
+import org.patientview.model.Unit;
 import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.TestResultDateRange;
@@ -38,7 +39,6 @@ import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.LogEntry;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
@@ -312,8 +312,8 @@ public class ImportManagerImpl implements ImportManager {
         // Have to do it like this because Radar uses JDBC only
         patient.setSourceType(SourceType.PATIENT_VIEW.getName());
 
-        LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getUnitcode());
-        LegacySpringUtils.getPatientManager().save(patient);
+
+        LegacySpringUtils.getPatientManager().save(XmlImportUtils.copyObject(existingPatientRecord, patient));
     }
 
     private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,

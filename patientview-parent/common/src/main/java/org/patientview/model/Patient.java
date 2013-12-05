@@ -193,6 +193,9 @@ public class Patient extends BaseModel {
     @Column
     private String sourceType;
 
+    @Column
+    private Long patientLinkId;
+
     @Transient
     private Clinician clinician;
 
@@ -228,9 +231,6 @@ public class Patient extends BaseModel {
 
     @Transient
     private Boolean diagnosisDateSelect;
-
-    @Transient
-    private PatientLink patientLink;
 
     @Transient
     private boolean editableDemographics;
@@ -813,14 +813,6 @@ public class Patient extends BaseModel {
         this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
     }
 
-    public PatientLink getPatientLink() {
-        return patientLink;
-    }
-
-    public void setPatientLink(PatientLink patientLink) {
-        this.patientLink = patientLink;
-    }
-
     public boolean isEditableDemographics() {
         return editableDemographics;
     }
@@ -845,6 +837,14 @@ public class Patient extends BaseModel {
         this.sourceType = sourceType;
     }
 
+    public Long getPatientLinkId() {
+        return patientLinkId;
+    }
+
+    public void setPatientLinkId(Long patientLinkId) {
+        this.patientLinkId = patientLinkId;
+    }
+
     public boolean isLink() {
         return link;
     }
@@ -853,4 +853,6 @@ public class Patient extends BaseModel {
         this.link = link;
     }
 }
+
+
 

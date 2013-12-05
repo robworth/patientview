@@ -9,7 +9,6 @@ import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 /**
  * User: james@solidstategroup.com
@@ -37,28 +36,7 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
     }
 
     // create the new patient record and link entity
-    public Patient linkPatientRecord(Patient patient) throws PatientLinkException {
-       try {
-            PatientLink patientLink =  new PatientLink();
-            patientLink.setSourceNhsNO(patient.getNhsno());
-
-            String unitCode = patient.getUnitcode();
-            if (StringUtils.isEmpty(unitCode)) {
-                if (patient.getRenalUnit() != null) {
-                    unitCode = patient.getRenalUnit().getUnitCode();
-                }
-            }
-
-            patientLink.setSourceUnit(unitCode);
-            patientLink.setDestinationNhsNo(patient.getNhsno());
-            patientLink.setDestinationUnit(patient.getDiseaseGroup().getId());
-
-            patientLinkDao.createLink(patientLink);
-
-       } catch (Exception e) {
-           LOGGER.error("Error creating link record for patient", e);
-           throw new PatientLinkException("There has been an error creating the link record for the patient", e);
-       }
+    public Patient createLinkPatientRecord(Patient patient) throws PatientLinkException {
 
        Patient newPatient = new Patient();
        newPatient.setNhsno(patient.getNhsno());

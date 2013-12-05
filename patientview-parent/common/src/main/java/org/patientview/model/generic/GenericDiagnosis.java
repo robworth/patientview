@@ -9,6 +9,8 @@ public class GenericDiagnosis implements Comparable<GenericDiagnosis>, Serializa
     private String id;
     private String term;
     private Integer order;
+    private String prdCode;
+    private String workingGroup;
 
     public int compareTo(GenericDiagnosis diagnosis) {
         return order - diagnosis.getOrder();
@@ -36,5 +38,21 @@ public class GenericDiagnosis implements Comparable<GenericDiagnosis>, Serializa
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public String getPrdCode() {
+        return prdCode;
+    }
+
+    public void setPrdCode(String prdCode) {
+        this.prdCode = prdCode;
+    }
+
+    public String getWorkingGroup() {
+        return workingGroup;
+    }
+
+    public void setWorkingGroup(String workingGroup) {
+        this.workingGroup = workingGroup;
     }
 }

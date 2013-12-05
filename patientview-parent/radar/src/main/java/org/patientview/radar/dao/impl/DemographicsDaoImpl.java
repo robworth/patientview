@@ -125,6 +125,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "indiaId = ?, " +
                             "radarConsentConfirmedByUserId = ?, " +
                             "generic = ? " +
+                            "patientLinkId = ? " +
                             " WHERE radarNo = ?",
                     patient.getRrNo(),
                     patient.getDateReg(),
@@ -169,6 +170,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getIndiaId(),
                     patient.getRadarConsentConfirmedByUserId(),
                     patient.isGeneric(),
+                    patient.getPatientLinkId(),
                     patient.getId());
         } else {
             Number id = demographicsInsert.executeAndReturnKey(new HashMap<String, Object>() {
@@ -223,6 +225,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("generic", patient.isGeneric());
                     put("radarConsentConfirmedByUserId", patient.getRadarConsentConfirmedByUserId());
                     put("sourceType", SourceType.RADAR.getName());
+                    put("patientLinkId", patient.getPatientLinkId());
                 }
             });
             patient.setId(id.longValue());
@@ -279,7 +282,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
      * @return
      */
     private Patient resolveLinkRecord(Patient patient){
-        PatientLink patientLink = patient.getPatientLink();
+        PatientLink patientLink = null;
 
         if (patientLink == null) {
 
@@ -634,7 +637,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setEthnicGp(resultSet.getString("ethnicGp"));
             patient.setSourceType(resultSet.getString("sourceType"));
 
-            patient.setPatientLink(patientLinkDao.getPatientLink(patient.getNhsno(), patient.getUnitcode()));
+            patient.setPatientLinkId(resultSet.getLong("patientLinkId"));
 
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
 

@@ -5,7 +5,7 @@ import org.patientview.radar.dao.TreatmentDao;
 import org.patientview.radar.model.Treatment;
 import org.patientview.radar.model.TreatmentModality;
 import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.TreatmentManager;
 import org.patientview.radar.util.RadarUtility;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class TreatmentManagerImpl implements TreatmentManager {
 
     TreatmentDao treatmentDao;
-    DemographicsManager demographicsManager;
+    PatientManager patientManager;
 
     public void saveTreatment(Treatment treatment) throws InvalidModelException {
 
@@ -58,7 +58,7 @@ public class TreatmentManagerImpl implements TreatmentManager {
         List<Date> datesToCheck = Arrays.asList(treatment.getStartDate(), treatment.getEndDate());
 
         // cannot be before date of birth
-        Patient patient = demographicsManager.getDemographicsByRadarNumber(treatment.getRadarNumber());
+        Patient patient =  patientManager.getPatientByRadarNumber(treatment.getRadarNumber());
         if (patient != null) {
             Date dob = patient.getDob();
             if (dob != null) {
@@ -121,7 +121,7 @@ public class TreatmentManagerImpl implements TreatmentManager {
         this.treatmentDao = treatmentDao;
     }
 
-    public void setDemographicsManager(DemographicsManager demographicsManager) {
-        this.demographicsManager = demographicsManager;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 }

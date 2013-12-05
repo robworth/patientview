@@ -93,7 +93,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
         // Save the patient record before linking because the record should already exist
         demographicsDao.saveDemographics(patient);
 
-        patientLinkManager.linkPatientRecord(patient);
+        patientLinkManager.createLinkPatientRecord(patient);
 
         PatientLink patientLink = patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
         Assert.assertTrue("The list return should not be empty." , patientLink != null);
@@ -111,7 +111,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
         demographicsDao.saveDemographics(sourcePatient);
-        patientLinkManager.linkPatientRecord(sourcePatient);
+        patientLinkManager.createLinkPatientRecord(sourcePatient);
         PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
         Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 
@@ -157,7 +157,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
         demographicsDao.saveDemographics(sourcePatient);
-        patientLinkManager.linkPatientRecord(sourcePatient);
+        patientLinkManager.createLinkPatientRecord(sourcePatient);
         PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
         Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 
@@ -191,7 +191,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
         userManager.savePatientUser(sourcePatient);
-        patientLinkManager.linkPatientRecord(sourcePatient);
+        patientLinkManager.createLinkPatientRecord(sourcePatient);
         PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
         Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 

@@ -45,7 +45,7 @@
 
     <bean id="immunosuppressionManager" class="org.patientview.radar.service.impl.ImmunosuppressionManagerImpl">
         <property name="immunosuppressionDao" ref="immunosuppressionDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="labDataManager" class="org.patientview.radar.service.impl.LabDataManagerImpl">
@@ -67,7 +67,7 @@
 
     <bean id="plasmapheresisManager" class="org.patientview.radar.service.impl.PlasmapheresisManagerImpl">
         <property name="plasmapheresisDao" ref="plasmapheresisDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="relapseManager" class="org.patientview.radar.service.impl.RelapseManagerImpl">
@@ -80,12 +80,12 @@
 
     <bean id="transplantManager" class="org.patientview.radar.service.impl.TransplantManagerImpl">
         <property name="transplantDao" ref="transplantDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="treatmentManager" class="org.patientview.radar.service.impl.TreatmentManagerImpl">
         <property name="treatmentDao" ref="treatmentDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="utilityManager" class="org.patientview.radar.service.impl.UtilityManagerImpl">
@@ -110,7 +110,7 @@
         <property name="emailManager" ref="emailManager"/>
         <property name="joinRequestDao" ref="joinRequestDao"/>
         <property name="userDao" ref="userDao"/>
-        <property name="demographicsDao" ref="demographicsDao"/>
+        <property name="patientManager" ref="patientManager"/>
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="patientLinkManager" ref="patientLinkManager"/>
     </bean>
