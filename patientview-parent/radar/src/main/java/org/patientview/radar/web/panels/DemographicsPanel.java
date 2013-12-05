@@ -25,6 +25,7 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
+import org.patientview.model.Unit;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.Diagnosis;
@@ -35,6 +36,7 @@ import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.DiagnosisManager;
 import org.patientview.radar.service.LabDataManager;
 import org.patientview.radar.service.TherapyManager;
+import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.DiseaseGroupManager;
@@ -62,18 +64,27 @@ public class DemographicsPanel extends Panel {
 
     @SpringBean
     private DemographicsManager demographicsManager;
+
     @SpringBean
     private DiseaseGroupManager diseaseGroupManager;
+
     @SpringBean
     private DiagnosisManager diagnosisManager;
+
     @SpringBean
     private ClinicalDataManager clinicalDataManager;
+
     @SpringBean
     private LabDataManager labDataManager;
+
     @SpringBean
     private TherapyManager therapyManager;
+
     @SpringBean
     private UtilityManager utilityManager;
+
+    @SpringBean
+    private UnitManager unitManager;
 
     @SpringBean
     private UserManager userManager;
@@ -386,10 +397,10 @@ public class DemographicsPanel extends Panel {
         } else {
             List<Centre> centres = new ArrayList<Centre>();
 
-            for (String unitCode : userManager.getUnitCodes(RadarSecuredSession.get().getUser())) {
+            for (Unit unit : unitManager.getRenalUnits(RadarSecuredSession.get().getUser())) {
                 Centre centre = new Centre();
-                centre.setUnitCode(unitCode);
-                centre.setName(unitCode);
+                centre.setUnitCode(unit.getUnitcode());
+                centre.setName(unit.getName());
                 centres.add(centre);
             }
 

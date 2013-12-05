@@ -84,8 +84,6 @@ public interface UserManager {
 
     User getExternallyCreatedUser(String nshNo);
 
-    List<String> getUnitCodes(User user);
-
     String generateUsername(Patient patient);
 
     List<String> getPatientRadarMappings(String nhsNo);

@@ -29,10 +29,12 @@ import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
+import org.patientview.model.Unit;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.GenericDiagnosisManager;
@@ -73,6 +75,9 @@ public class GenericDemographicsPanel extends Panel {
     @SpringBean
     private UserManager userManager;
 
+    @SpringBean
+    private UnitManager unitManager;
+
     private MarkupContainer dateOfGenericDiagnosisContainer;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
@@ -106,8 +111,7 @@ public class GenericDemographicsPanel extends Panel {
         String message = "Please complete all mandatory fields";
         final LabelMessage labelMessage = new LabelMessage();
         labelMessage.setMessage(message);
-        final PropertyModel<LabelMessage> messageModel =
-                new PropertyModel<LabelMessage>(labelMessage, "message");
+        final PropertyModel<LabelMessage> messageModel = new PropertyModel<LabelMessage>(labelMessage, "message");
 
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
@@ -443,10 +447,10 @@ public class GenericDemographicsPanel extends Panel {
         } else if (user.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
 
             List<Centre> centres = new ArrayList<Centre>();
-            for (String unitCode : userManager.getUnitCodes(user)) {
+            for (Unit unit : unitManager.getRenalUnits(user)) {
                 Centre centre = new Centre();
-                centre.setUnitCode(unitCode);
-                centre.setName(unitCode);
+                centre.setUnitCode(unit.getUnitcode());
+                centre.setName(unit.getName());
                 centres.add(centre);
             }
             renalUnit = new CentreDropDown("renalUnit", centres);

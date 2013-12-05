@@ -8,7 +8,7 @@ import org.patientview.model.Patient;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.test.TestPvDbSchema;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -35,11 +35,10 @@ public class UnitAdminTests extends TestPvDbSchema {
     UtilityDao utilityDao;
 
     @Inject
-    UserManager userManager;
-
-    @Inject
     DemographicsManager demographicsManager;
 
+    @Inject
+    UnitManager unitManager;
 
     final String testDiseaseUnit = "RENALA";
     final String testRenalUnit = "Allports";
@@ -76,7 +75,7 @@ public class UnitAdminTests extends TestPvDbSchema {
 
 
         // Assert
-        List<String> unitCodes = userManager.getUnitCodes(patientUsers.get(0));
+        List<String> unitCodes = unitManager.getUnitCodes(patientUsers.get(0));
         Assert.assertTrue("There should be three units mapped to the user", unitCodes.size() == 3);
         Assert.assertTrue("The should be a " + testDiseaseUnit + " unit code mapped", containsUnitCode(unitCodes, testDiseaseUnit));
         Assert.assertTrue("The should be a " + testRenalUnit + " unit code mapped", containsUnitCode(unitCodes, testRenalUnit));

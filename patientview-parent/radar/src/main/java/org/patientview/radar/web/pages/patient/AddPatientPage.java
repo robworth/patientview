@@ -29,6 +29,7 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.RadarUtility;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -101,7 +102,7 @@ public class AddPatientPage extends BasePage {
                         model.getPatientId());
 
                 // check nhs number is valid
-                if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
+                if (!RadarUtility.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
