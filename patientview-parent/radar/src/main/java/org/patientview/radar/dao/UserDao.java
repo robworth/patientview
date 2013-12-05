@@ -37,10 +37,6 @@ public interface UserDao {
 
     User createUser(User user);
 
-    List<String> getUnitCodes(User user);
-
-    List<String> getAllUnitCodes();
-
     Long createLockedPVUser(String username, String password, String name, String email) throws Exception;
 
     PatientUser getPatientViewUser(String nhsno);

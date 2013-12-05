@@ -434,10 +434,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getPatientViewUser(nshNo);
     }
 
-    public List<String> getUnitCodes(User user) {
-        return userDao.getUnitCodes(user);
-    }
-
     public void setEmailManager(EmailManager emailManager) {
         this.emailManager = emailManager;
     }

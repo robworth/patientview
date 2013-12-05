@@ -22,7 +22,7 @@
  */
 package org.patientview.service;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.quartz.exception.ProcessException;
 
 import java.io.File;

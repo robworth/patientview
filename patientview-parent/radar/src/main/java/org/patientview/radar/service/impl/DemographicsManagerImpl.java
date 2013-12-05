@@ -4,6 +4,7 @@ import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.UnitDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
@@ -18,6 +19,8 @@ public class DemographicsManagerImpl implements DemographicsManager {
     private DemographicsDao demographicsDao;
 
     private UserDao userDao;
+
+    private UnitDao unitDao;
 
     public void saveDemographics(Patient patient) {
         // Save or update the demographics object
@@ -64,9 +67,9 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
         List<String> unitCodes;
         if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            unitCodes = userDao.getAllUnitCodes();
+            unitCodes = unitDao.getAllUnitCodes();
         } else {
-            unitCodes = userDao.getUnitCodes(user);
+            unitCodes = unitDao.getUnitCodes(user);
         }
 
         return demographicsDao.getDemographicsByUnitCode(unitCodes);
@@ -80,65 +83,6 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao;
     }
 
-    public boolean isNhsNumberValid(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, false);
-    }
-
-    public boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, true);
-    }
-
-    private boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
-
-        // Remove all whitespace and non-visible characters such as tab, new line etc
-        nhsNumber = nhsNumber.replaceAll("\\s", "");
-
-        // Only permit 10 characters
-        if (nhsNumber.length() != 10) {
-            return false;
-        }
-
-        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
-        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
-
-        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
-            return true;
-        }
-
-        return isNhsChecksumValid(nhsNumber);
-    }
-
-    private boolean isNhsChecksumValid(String nhsNumber) {
-        /**
-         * Generate the checksum using modulus 11 algorithm
-         */
-        int checksum = 0;
-
-        try {
-            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= 8; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
-                checksum += value;
-            }
-
-            //(modulus 11)
-            checksum = 11 - checksum % 11;
-
-            if (checksum == 11) {
-                checksum = 0;
-            }
-
-            // Does checksum match the 10th digit?
-            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false; // nhsNumber contains letters
-        }
-    }
-
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
     }
@@ -149,5 +93,9 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    public void setUnitDao(UnitDao unitDao) {
+        this.unitDao = unitDao;
     }
 }

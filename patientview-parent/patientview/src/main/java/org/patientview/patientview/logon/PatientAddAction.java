@@ -24,7 +24,7 @@
 package org.patientview.patientview.logon;
 
 import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.model.UserMapping;

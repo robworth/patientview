@@ -493,17 +493,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     }
 
-    public List<String> getUnitCodes(User user) {
-
-        return jdbcTemplate.queryForList("SELECT DISTINCT unitcode FROM usermapping WHERE username = ?",
-                new Object[]{user.getUsername()}, String.class);
-    }
-
-    public List<String> getAllUnitCodes() {
-        return jdbcTemplate.queryForList("SELECT DISTINCT unitcode FROM unit",
-                new Object[]{}, String.class);
-    }
-
     public Long createLockedPVUser(String username, String password, String name, String email) throws Exception {
 
         Map<String, Object> userMap = new HashMap<String, Object>();

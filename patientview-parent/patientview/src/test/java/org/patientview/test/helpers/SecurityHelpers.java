@@ -23,7 +23,7 @@
 
 package org.patientview.test.helpers;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 
 /**
  *

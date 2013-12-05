@@ -21,9 +21,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.model;
-
-import org.patientview.model.BaseModel;
+package org.patientview.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

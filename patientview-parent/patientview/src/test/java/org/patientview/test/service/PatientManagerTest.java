@@ -24,7 +24,7 @@
 package org.patientview.test.service;
 
 import org.patientview.model.Patient;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.User;
 import org.patientview.service.PatientManager;
 import org.patientview.service.UserManager;

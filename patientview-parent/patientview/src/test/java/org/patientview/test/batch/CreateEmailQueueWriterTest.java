@@ -1,13 +1,13 @@
 package org.patientview.test.batch;
 
 import org.patientview.batch.CreateEmailQueueWriter;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.*;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.service.BaseServiceTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

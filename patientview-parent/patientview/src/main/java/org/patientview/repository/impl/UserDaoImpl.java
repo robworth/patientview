@@ -23,8 +23,8 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.User_;
 import org.patientview.repository.AbstractHibernateDAO;

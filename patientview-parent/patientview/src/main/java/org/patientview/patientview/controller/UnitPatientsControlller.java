@@ -24,7 +24,7 @@
 package org.patientview.patientview.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.service.PatientManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.support.MutableSortDefinition;
