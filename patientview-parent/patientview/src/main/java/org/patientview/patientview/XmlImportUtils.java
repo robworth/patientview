@@ -24,7 +24,7 @@
 package org.patientview.patientview;
 
 import org.patientview.model.enums.XmlImportNotification;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;

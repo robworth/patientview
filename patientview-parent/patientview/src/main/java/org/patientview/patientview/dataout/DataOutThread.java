@@ -26,7 +26,7 @@ package org.patientview.patientview.dataout;
 import org.patientview.model.Patient;
 import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;

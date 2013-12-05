@@ -23,7 +23,7 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.user.NhsnoUnitcode;
 import org.patientview.utils.LegacySpringUtils;

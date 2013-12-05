@@ -6,7 +6,7 @@ import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.EmailQueue;
 import org.patientview.patientview.model.Job;
 import org.patientview.patientview.model.Message;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;

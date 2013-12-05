@@ -24,7 +24,7 @@
 package org.patientview.patientview.unit;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.user.UserUtils;

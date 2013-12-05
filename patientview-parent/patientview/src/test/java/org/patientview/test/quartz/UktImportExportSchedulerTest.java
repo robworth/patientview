@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.model.Patient;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.*;
 import org.patientview.quartz.UktImportExportScheduler;
 import org.patientview.repository.PatientDao;
@@ -17,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
 import javax.inject.Inject;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;

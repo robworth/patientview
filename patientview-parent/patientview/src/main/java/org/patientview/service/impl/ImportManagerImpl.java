@@ -38,7 +38,7 @@ import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.LogEntry;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
